@@ -1,8 +1,10 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union, List
+from typing import Optional, Tuple, Union, List, Dict
 from thrift.py3 import Struct
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, concatenateFields
+import ast
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R
+from glean.schema.py.src import *
 
 
 from glean.schema.rust.types import (
@@ -40,76 +42,62 @@ from glean.schema.rust.types import (
 
 class RustEnumDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"rust.EnumDef.1 {{ }}", EnumDef
-    return f"rust.EnumDef.1 { concatenateFields(key) }", EnumDef
+  def build_angle(__env: Dict[str, R], name: ast.Expr, type: ast.Expr) -> Tuple[str, Struct]:
+    return f"rust.EnumDef.1 {{ name = {angle_for(__env, name)}, type = {angle_for(__env, type)} }}", EnumDef
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None, type: Optional[Tuple[()]] = None) -> "RustEnumDef":
+  def angle_query(*, name: Optional["RustQName"] = None, type: Optional["RustType"] = None) -> "RustEnumDef":
     raise Exception("this function can only be called from @angle_query")
 
 class RustDefinitionUses(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"rust.DefinitionUses.1 {{ }}", DefinitionUses
-    return f"rust.DefinitionUses.1 { concatenateFields(key) }", DefinitionUses
+  def build_angle(__env: Dict[str, R], def_: ast.Expr, file: ast.Expr, spans: ast.Expr) -> Tuple[str, Struct]:
+    return f"rust.DefinitionUses.1 {{ def_ = {angle_for(__env, def_)}, file = {angle_for(__env, file)}, spans = {angle_for(__env, spans)} }}", DefinitionUses
 
   @staticmethod
-  def angle_query(*, def_: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, spans: Optional[Tuple[()]] = None) -> "RustDefinitionUses":
+  def angle_query(*, def_: Optional[Tuple[()]] = None, file: Optional["SrcFile"] = None, spans: Optional[Tuple[()]] = None) -> "RustDefinitionUses":
     raise Exception("this function can only be called from @angle_query")
 
 class RustTraitDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"rust.TraitDef.1 {{ }}", TraitDef
-    return f"rust.TraitDef.1 { concatenateFields(key) }", TraitDef
+  def build_angle(__env: Dict[str, R], name: ast.Expr) -> Tuple[str, Struct]:
+    return f"rust.TraitDef.1 {{ name = {angle_for(__env, name)} }}", TraitDef
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None) -> "RustTraitDef":
+  def angle_query(*, name: Optional["RustQName"] = None) -> "RustTraitDef":
     raise Exception("this function can only be called from @angle_query")
 
 class RustImplLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"rust.ImplLocation.1 {{ }}", ImplLocation
-    return f"rust.ImplLocation.1 { concatenateFields(key) }", ImplLocation
+  def build_angle(__env: Dict[str, R], impl: ast.Expr, file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
+    return f"rust.ImplLocation.1 {{ impl = {angle_for(__env, impl)}, file = {angle_for(__env, file)}, span = {angle_for(__env, span)} }}", ImplLocation
 
   @staticmethod
-  def angle_query(*, impl: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None) -> "RustImplLocation":
+  def angle_query(*, impl: Optional["RustImpl"] = None, file: Optional["SrcFile"] = None, span: Optional[Tuple[()]] = None) -> "RustImplLocation":
     raise Exception("this function can only be called from @angle_query")
 
 class RustModuleDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"rust.ModuleDef.1 {{ }}", ModuleDef
-    return f"rust.ModuleDef.1 { concatenateFields(key) }", ModuleDef
+  def build_angle(__env: Dict[str, R], name: ast.Expr) -> Tuple[str, Struct]:
+    return f"rust.ModuleDef.1 {{ name = {angle_for(__env, name)} }}", ModuleDef
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None) -> "RustModuleDef":
+  def angle_query(*, name: Optional["RustQName"] = None) -> "RustModuleDef":
     raise Exception("this function can only be called from @angle_query")
 
 class RustStaticDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"rust.StaticDef.1 {{ }}", StaticDef
-    return f"rust.StaticDef.1 { concatenateFields(key) }", StaticDef
+  def build_angle(__env: Dict[str, R], name: ast.Expr, type: ast.Expr) -> Tuple[str, Struct]:
+    return f"rust.StaticDef.1 {{ name = {angle_for(__env, name)}, type = {angle_for(__env, type)} }}", StaticDef
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None, type: Optional[Tuple[()]] = None) -> "RustStaticDef":
+  def angle_query(*, name: Optional["RustQName"] = None, type: Optional["RustType"] = None) -> "RustStaticDef":
     raise Exception("this function can only be called from @angle_query")
 
 class RustName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"rust.Name.1 {{ }}", Name
-    return f"rust.Name.1 {key}", Name
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"rust.Name.1 {angle_for(__env, arg)}", Name
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "RustName":
@@ -117,10 +105,8 @@ class RustName(GleanSchemaPredicate):
 
 class RustImpl(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"rust.Impl.1 {{ }}", Impl
-    return f"rust.Impl.1 { concatenateFields(key) }", Impl
+  def build_angle(__env: Dict[str, R], kind: ast.Expr) -> Tuple[str, Struct]:
+    return f"rust.Impl.1 {{ kind = {angle_for(__env, kind)} }}", Impl
 
   @staticmethod
   def angle_query(*, kind: Optional[Tuple[()]] = None) -> "RustImpl":
@@ -128,186 +114,152 @@ class RustImpl(GleanSchemaPredicate):
 
 class RustNameLowerCase(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"rust.NameLowerCase.1 {{ }}", NameLowerCase
-    return f"rust.NameLowerCase.1 { concatenateFields(key) }", NameLowerCase
+  def build_angle(__env: Dict[str, R], nameLowerCase: ast.Expr, name: ast.Expr) -> Tuple[str, Struct]:
+    return f"rust.NameLowerCase.1 {{ nameLowerCase = {angle_for(__env, nameLowerCase)}, name = {angle_for(__env, name)} }}", NameLowerCase
 
   @staticmethod
-  def angle_query(*, nameLowerCase: Optional[str] = None, name: Optional[Tuple[()]] = None) -> "RustNameLowerCase":
+  def angle_query(*, nameLowerCase: Optional[str] = None, name: Optional["RustName"] = None) -> "RustNameLowerCase":
     raise Exception("this function can only be called from @angle_query")
 
 class RustStructDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"rust.StructDef.1 {{ }}", StructDef
-    return f"rust.StructDef.1 { concatenateFields(key) }", StructDef
+  def build_angle(__env: Dict[str, R], name: ast.Expr) -> Tuple[str, Struct]:
+    return f"rust.StructDef.1 {{ name = {angle_for(__env, name)} }}", StructDef
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None) -> "RustStructDef":
+  def angle_query(*, name: Optional["RustQName"] = None) -> "RustStructDef":
     raise Exception("this function can only be called from @angle_query")
 
 class RustTupleVariantDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"rust.TupleVariantDef.1 {{ }}", TupleVariantDef
-    return f"rust.TupleVariantDef.1 { concatenateFields(key) }", TupleVariantDef
+  def build_angle(__env: Dict[str, R], name: ast.Expr) -> Tuple[str, Struct]:
+    return f"rust.TupleVariantDef.1 {{ name = {angle_for(__env, name)} }}", TupleVariantDef
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None) -> "RustTupleVariantDef":
+  def angle_query(*, name: Optional["RustQName"] = None) -> "RustTupleVariantDef":
     raise Exception("this function can only be called from @angle_query")
 
 class RustForeignStaticDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"rust.ForeignStaticDef.1 {{ }}", ForeignStaticDef
-    return f"rust.ForeignStaticDef.1 { concatenateFields(key) }", ForeignStaticDef
+  def build_angle(__env: Dict[str, R], name: ast.Expr, type: ast.Expr) -> Tuple[str, Struct]:
+    return f"rust.ForeignStaticDef.1 {{ name = {angle_for(__env, name)}, type = {angle_for(__env, type)} }}", ForeignStaticDef
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None, type: Optional[Tuple[()]] = None) -> "RustForeignStaticDef":
+  def angle_query(*, name: Optional["RustQName"] = None, type: Optional["RustType"] = None) -> "RustForeignStaticDef":
     raise Exception("this function can only be called from @angle_query")
 
 class RustDefLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"rust.DefLocation.1 {{ }}", DefLocation
-    return f"rust.DefLocation.1 { concatenateFields(key) }", DefLocation
+  def build_angle(__env: Dict[str, R], def_: ast.Expr, file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
+    return f"rust.DefLocation.1 {{ def_ = {angle_for(__env, def_)}, file = {angle_for(__env, file)}, span = {angle_for(__env, span)} }}", DefLocation
 
   @staticmethod
-  def angle_query(*, def_: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None) -> "RustDefLocation":
+  def angle_query(*, def_: Optional[Tuple[()]] = None, file: Optional["SrcFile"] = None, span: Optional[Tuple[()]] = None) -> "RustDefLocation":
     raise Exception("this function can only be called from @angle_query")
 
 class RustConstDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"rust.ConstDef.1 {{ }}", ConstDef
-    return f"rust.ConstDef.1 { concatenateFields(key) }", ConstDef
+  def build_angle(__env: Dict[str, R], name: ast.Expr, type: ast.Expr) -> Tuple[str, Struct]:
+    return f"rust.ConstDef.1 {{ name = {angle_for(__env, name)}, type = {angle_for(__env, type)} }}", ConstDef
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None, type: Optional[Tuple[()]] = None) -> "RustConstDef":
+  def angle_query(*, name: Optional["RustQName"] = None, type: Optional["RustType"] = None) -> "RustConstDef":
     raise Exception("this function can only be called from @angle_query")
 
 class RustDefinitionName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"rust.DefinitionName.1 {{ }}", DefinitionName
-    return f"rust.DefinitionName.1 { concatenateFields(key) }", DefinitionName
+  def build_angle(__env: Dict[str, R], def_: ast.Expr, name: ast.Expr) -> Tuple[str, Struct]:
+    return f"rust.DefinitionName.1 {{ def_ = {angle_for(__env, def_)}, name = {angle_for(__env, name)} }}", DefinitionName
 
   @staticmethod
-  def angle_query(*, def_: Optional[Tuple[()]] = None, name: Optional[Tuple[()]] = None) -> "RustDefinitionName":
+  def angle_query(*, def_: Optional[Tuple[()]] = None, name: Optional["RustName"] = None) -> "RustDefinitionName":
     raise Exception("this function can only be called from @angle_query")
 
 class RustSearchByName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"rust.SearchByName.1 {{ }}", SearchByName
-    return f"rust.SearchByName.1 { concatenateFields(key) }", SearchByName
+  def build_angle(__env: Dict[str, R], name: ast.Expr, def_: ast.Expr) -> Tuple[str, Struct]:
+    return f"rust.SearchByName.1 {{ name = {angle_for(__env, name)}, def_ = {angle_for(__env, def_)} }}", SearchByName
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None, def_: Optional[Tuple[()]] = None) -> "RustSearchByName":
+  def angle_query(*, name: Optional["RustName"] = None, def_: Optional[Tuple[()]] = None) -> "RustSearchByName":
     raise Exception("this function can only be called from @angle_query")
 
 class RustFileDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"rust.FileDefinition.1 {{ }}", FileDefinition
-    return f"rust.FileDefinition.1 { concatenateFields(key) }", FileDefinition
+  def build_angle(__env: Dict[str, R], file: ast.Expr, def_: ast.Expr) -> Tuple[str, Struct]:
+    return f"rust.FileDefinition.1 {{ file = {angle_for(__env, file)}, def_ = {angle_for(__env, def_)} }}", FileDefinition
 
   @staticmethod
-  def angle_query(*, file: Optional[Tuple[()]] = None, def_: Optional[Tuple[()]] = None) -> "RustFileDefinition":
+  def angle_query(*, file: Optional["SrcFile"] = None, def_: Optional[Tuple[()]] = None) -> "RustFileDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 class RustFileXRefs(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"rust.FileXRefs.1 {{ }}", FileXRefs
-    return f"rust.FileXRefs.1 { concatenateFields(key) }", FileXRefs
+  def build_angle(__env: Dict[str, R], file: ast.Expr, xrefs: ast.Expr) -> Tuple[str, Struct]:
+    return f"rust.FileXRefs.1 {{ file = {angle_for(__env, file)}, xrefs = {angle_for(__env, xrefs)} }}", FileXRefs
 
   @staticmethod
-  def angle_query(*, file: Optional[Tuple[()]] = None, xrefs: Optional[Tuple[()]] = None) -> "RustFileXRefs":
+  def angle_query(*, file: Optional["SrcFile"] = None, xrefs: Optional[Tuple[()]] = None) -> "RustFileXRefs":
     raise Exception("this function can only be called from @angle_query")
 
 class RustUnionDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"rust.UnionDef.1 {{ }}", UnionDef
-    return f"rust.UnionDef.1 { concatenateFields(key) }", UnionDef
+  def build_angle(__env: Dict[str, R], name: ast.Expr) -> Tuple[str, Struct]:
+    return f"rust.UnionDef.1 {{ name = {angle_for(__env, name)} }}", UnionDef
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None) -> "RustUnionDef":
+  def angle_query(*, name: Optional["RustQName"] = None) -> "RustUnionDef":
     raise Exception("this function can only be called from @angle_query")
 
 class RustFieldDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"rust.FieldDef.1 {{ }}", FieldDef
-    return f"rust.FieldDef.1 { concatenateFields(key) }", FieldDef
+  def build_angle(__env: Dict[str, R], name: ast.Expr, type: ast.Expr) -> Tuple[str, Struct]:
+    return f"rust.FieldDef.1 {{ name = {angle_for(__env, name)}, type = {angle_for(__env, type)} }}", FieldDef
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None, type: Optional[Tuple[()]] = None) -> "RustFieldDef":
+  def angle_query(*, name: Optional["RustQName"] = None, type: Optional["RustType"] = None) -> "RustFieldDef":
     raise Exception("this function can only be called from @angle_query")
 
 class RustFunctionDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"rust.FunctionDef.1 {{ }}", FunctionDef
-    return f"rust.FunctionDef.1 { concatenateFields(key) }", FunctionDef
+  def build_angle(__env: Dict[str, R], name: ast.Expr, type: ast.Expr) -> Tuple[str, Struct]:
+    return f"rust.FunctionDef.1 {{ name = {angle_for(__env, name)}, type = {angle_for(__env, type)} }}", FunctionDef
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None, type: Optional[Tuple[()]] = None) -> "RustFunctionDef":
+  def angle_query(*, name: Optional["RustQName"] = None, type: Optional["RustType"] = None) -> "RustFunctionDef":
     raise Exception("this function can only be called from @angle_query")
 
 class RustQName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"rust.QName.1 {{ }}", QName
-    return f"rust.QName.1 { concatenateFields(key) }", QName
+  def build_angle(__env: Dict[str, R], local_name: ast.Expr, parent: ast.Expr) -> Tuple[str, Struct]:
+    return f"rust.QName.1 {{ local_name = {angle_for(__env, local_name)}, parent = {angle_for(__env, parent)} }}", QName
 
   @staticmethod
-  def angle_query(*, local_name: Optional[Tuple[()]] = None, parent: Optional[Tuple[()]] = None) -> "RustQName":
+  def angle_query(*, local_name: Optional["RustName"] = None, parent: Optional[Tuple[()]] = None) -> "RustQName":
     raise Exception("this function can only be called from @angle_query")
 
 class RustTypeDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"rust.TypeDef.1 {{ }}", TypeDef
-    return f"rust.TypeDef.1 { concatenateFields(key) }", TypeDef
+  def build_angle(__env: Dict[str, R], name: ast.Expr, type: ast.Expr) -> Tuple[str, Struct]:
+    return f"rust.TypeDef.1 {{ name = {angle_for(__env, name)}, type = {angle_for(__env, type)} }}", TypeDef
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None, type: Optional[Tuple[()]] = None) -> "RustTypeDef":
+  def angle_query(*, name: Optional["RustQName"] = None, type: Optional["RustType"] = None) -> "RustTypeDef":
     raise Exception("this function can only be called from @angle_query")
 
 class RustStructVariantDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"rust.StructVariantDef.1 {{ }}", StructVariantDef
-    return f"rust.StructVariantDef.1 { concatenateFields(key) }", StructVariantDef
+  def build_angle(__env: Dict[str, R], name: ast.Expr) -> Tuple[str, Struct]:
+    return f"rust.StructVariantDef.1 {{ name = {angle_for(__env, name)} }}", StructVariantDef
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None) -> "RustStructVariantDef":
+  def angle_query(*, name: Optional["RustQName"] = None) -> "RustStructVariantDef":
     raise Exception("this function can only be called from @angle_query")
 
 class RustType(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"rust.Type.1 {{ }}", Type
-    return f"rust.Type.1 { concatenateFields(key) }", Type
+  def build_angle(__env: Dict[str, R], repr: ast.Expr) -> Tuple[str, Struct]:
+    return f"rust.Type.1 {{ repr = {angle_for(__env, repr)} }}", Type
 
   @staticmethod
   def angle_query(*, repr: Optional[str] = None) -> "RustType":
@@ -315,21 +267,17 @@ class RustType(GleanSchemaPredicate):
 
 class RustMethodDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"rust.MethodDef.1 {{ }}", MethodDef
-    return f"rust.MethodDef.1 { concatenateFields(key) }", MethodDef
+  def build_angle(__env: Dict[str, R], name: ast.Expr, type: ast.Expr) -> Tuple[str, Struct]:
+    return f"rust.MethodDef.1 {{ name = {angle_for(__env, name)}, type = {angle_for(__env, type)} }}", MethodDef
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None, type: Optional[Tuple[()]] = None) -> "RustMethodDef":
+  def angle_query(*, name: Optional["RustQName"] = None, type: Optional["RustType"] = None) -> "RustMethodDef":
     raise Exception("this function can only be called from @angle_query")
 
 class RustXRef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"rust.XRef.1 {{ }}", XRef
-    return f"rust.XRef.1 { concatenateFields(key) }", XRef
+  def build_angle(__env: Dict[str, R], target: ast.Expr, ranges: ast.Expr) -> Tuple[str, Struct]:
+    return f"rust.XRef.1 {{ target = {angle_for(__env, target)}, ranges = {angle_for(__env, ranges)} }}", XRef
 
   @staticmethod
   def angle_query(*, target: Optional[Tuple[()]] = None, ranges: Optional[Tuple[()]] = None) -> "RustXRef":
@@ -337,24 +285,20 @@ class RustXRef(GleanSchemaPredicate):
 
 class RustLocalDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"rust.LocalDef.1 {{ }}", LocalDef
-    return f"rust.LocalDef.1 { concatenateFields(key) }", LocalDef
+  def build_angle(__env: Dict[str, R], name: ast.Expr, type: ast.Expr) -> Tuple[str, Struct]:
+    return f"rust.LocalDef.1 {{ name = {angle_for(__env, name)}, type = {angle_for(__env, type)} }}", LocalDef
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None, type: Optional[Tuple[()]] = None) -> "RustLocalDef":
+  def angle_query(*, name: Optional["RustQName"] = None, type: Optional["RustType"] = None) -> "RustLocalDef":
     raise Exception("this function can only be called from @angle_query")
 
 class RustForeignFunctionDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"rust.ForeignFunctionDef.1 {{ }}", ForeignFunctionDef
-    return f"rust.ForeignFunctionDef.1 { concatenateFields(key) }", ForeignFunctionDef
+  def build_angle(__env: Dict[str, R], name: ast.Expr, type: ast.Expr) -> Tuple[str, Struct]:
+    return f"rust.ForeignFunctionDef.1 {{ name = {angle_for(__env, name)}, type = {angle_for(__env, type)} }}", ForeignFunctionDef
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None, type: Optional[Tuple[()]] = None) -> "RustForeignFunctionDef":
+  def angle_query(*, name: Optional["RustQName"] = None, type: Optional["RustType"] = None) -> "RustForeignFunctionDef":
     raise Exception("this function can only be called from @angle_query")
 
 

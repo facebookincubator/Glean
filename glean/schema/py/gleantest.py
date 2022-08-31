@@ -1,64 +1,63 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union, List
+from typing import Optional, Tuple, Union, List, Dict
 from thrift.py3 import Struct
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, concatenateFields
+import ast
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R
 
 
 from glean.schema.gleantest.types import (
-    TestBar,
-    TestRevStringPairs,
-    TestStoredRevStringPair,
-    TestRef,
-    TestKeyValue,
-    TestIsThree,
-    TestEdgeWrapper,
-    TestRefRef,
-    TestNothingTest,
-    TestFooToFoo,
-    TestExpr,
-    TestRevRevStringPair,
-    TestEdge,
-    TestSameString,
-    TestStoredRevStringPairWithA,
-    TestLeftOr,
-    TestRevStringPair,
-    TestDerivedKeyValue,
-    TestViaStringPair,
-    TestQux,
-    TestStoredDualStringPair,
-    TestIsGlean,
-    TestDerivedKeyValue2,
-    TestRevStringPairRec,
-    TestTree,
-    TestPredicate,
-    TestLeftOr2,
-    TestNode,
-    TestTreeToTree,
-    TestStringPair,
-    TestName,
-    TestSkipRevEdge,
-    TestStoredRevStringPairWithRev,
-    TestMatchOneAlt,
-    TestRevEdge,
-    TestStoredRevStringPairSum,
-    TestEmptyStoredStringPair,
-    TestUnbound,
-    TestPredicate,
-    TestDualStringPair,
-    TestUnbound2,
-    TestStringPairBox,
-    TestReflStringPair,
-    TestFoo,
+    testBar,
+    testRevStringPairs,
+    testStoredRevStringPair,
+    testRef,
+    testKeyValue,
+    testIsThree,
+    testEdgeWrapper,
+    testRefRef,
+    testnothingTest,
+    testFooToFoo,
+    testExpr,
+    testRevRevStringPair,
+    testEdge,
+    testSameString,
+    testStoredRevStringPairWithA,
+    testLeftOr,
+    testRevStringPair,
+    testDerivedKeyValue,
+    testViaStringPair,
+    testQux,
+    testStoredDualStringPair,
+    testIsGlean,
+    testDerivedKeyValue2,
+    testRevStringPairRec,
+    testTree,
+    testPredicate,
+    testLeftOr2,
+    testNode,
+    testTreeToTree,
+    testStringPair,
+    testName,
+    testSkipRevEdge,
+    testStoredRevStringPairWithRev,
+    testMatchOneAlt,
+    testRevEdge,
+    testStoredRevStringPairSum,
+    testEmptyStoredStringPair,
+    testUnbound,
+    testPredicate,
+    testDualStringPair,
+    testUnbound2,
+    testStringPairBox,
+    testReflStringPair,
+    testFoo,
 )
 
 
 class GleanTestBar(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.Bar.5 {{ }}", TestBar
-    return f"glean.test.Bar.5 {key}", TestBar
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.Bar.5 {angle_for(__env, arg)}", testBar
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "GleanTestBar":
@@ -66,21 +65,17 @@ class GleanTestBar(GleanSchemaPredicate):
 
 class GleanTestRevStringPairs(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.RevStringPairs.1 {{ }}", TestRevStringPairs
-    return f"glean.test.RevStringPairs.1 { concatenateFields(key) }", TestRevStringPairs
+  def build_angle(__env: Dict[str, R], x: ast.Expr, r: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.RevStringPairs.1 {{ x = {angle_for(__env, x)}, r = {angle_for(__env, r)} }}", testRevStringPairs
 
   @staticmethod
-  def angle_query(*, x: Optional[str] = None, r: Optional[Tuple[()]] = None) -> "GleanTestRevStringPairs":
+  def angle_query(*, x: Optional[str] = None, r: Optional["GleanTestRevStringPair"] = None) -> "GleanTestRevStringPairs":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestStoredRevStringPair(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.StoredRevStringPair.1 {{ }}", TestStoredRevStringPair
-    return f"glean.test.StoredRevStringPair.1 { concatenateFields(key) }", TestStoredRevStringPair
+  def build_angle(__env: Dict[str, R], fst: ast.Expr, snd: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.StoredRevStringPair.1 {{ fst = {angle_for(__env, fst)}, snd = {angle_for(__env, snd)} }}", testStoredRevStringPair
 
   @staticmethod
   def angle_query(*, fst: Optional[str] = None, snd: Optional[str] = None) -> "GleanTestStoredRevStringPair":
@@ -88,21 +83,17 @@ class GleanTestStoredRevStringPair(GleanSchemaPredicate):
 
 class GleanTestRef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.Ref.5 {{ }}", TestRef
-    return f"glean.test.Ref.5 {key}", TestRef
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.Ref.5 {angle_for(__env, arg)}", testRef
 
   @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "GleanTestRef":
+  def angle_query(*, arg: Optional["GleanTestPredicate"] = None) -> "GleanTestRef":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestKeyValue(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.KeyValue.1 {{ }}", TestKeyValue
-    return f"glean.test.KeyValue.1 { concatenateFields(key) }", TestKeyValue
+  def build_angle(__env: Dict[str, R], kstring: ast.Expr, knat: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.KeyValue.1 {{ kstring = {angle_for(__env, kstring)}, knat = {angle_for(__env, knat)} }}", testKeyValue
 
   @staticmethod
   def angle_query(*, kstring: Optional[str] = None, knat: Optional[int] = None) -> "GleanTestKeyValue":
@@ -110,10 +101,8 @@ class GleanTestKeyValue(GleanSchemaPredicate):
 
 class GleanTestIsThree(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.IsThree.1 {{ }}", TestIsThree
-    return f"glean.test.IsThree.1 {key}", TestIsThree
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.IsThree.1 {angle_for(__env, arg)}", testIsThree
 
   @staticmethod
   def angle_query(*, arg: Optional[int] = None) -> "GleanTestIsThree":
@@ -121,32 +110,26 @@ class GleanTestIsThree(GleanSchemaPredicate):
 
 class GleanTestEdgeWrapper(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.EdgeWrapper.5 {{ }}", TestEdgeWrapper
-    return f"glean.test.EdgeWrapper.5 { concatenateFields(key) }", TestEdgeWrapper
+  def build_angle(__env: Dict[str, R], edge: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.EdgeWrapper.5 {{ edge = {angle_for(__env, edge)} }}", testEdgeWrapper
 
   @staticmethod
-  def angle_query(*, edge: Optional[Tuple[()]] = None) -> "GleanTestEdgeWrapper":
+  def angle_query(*, edge: Optional["GleanTestEdge"] = None) -> "GleanTestEdgeWrapper":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestRefRef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.RefRef.5 {{ }}", TestRefRef
-    return f"glean.test.RefRef.5 {key}", TestRefRef
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.RefRef.5 {angle_for(__env, arg)}", testRefRef
 
   @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "GleanTestRefRef":
+  def angle_query(*, arg: Optional["GleanTestRef"] = None) -> "GleanTestRefRef":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestNothingTest(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.nothingTest.5 {{ }}", TestNothingTest
-    return f"glean.test.nothingTest.5 { concatenateFields(key) }", TestNothingTest
+  def build_angle(__env: Dict[str, R], a: ast.Expr, b: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.nothingTest.5 {{ a = {angle_for(__env, a)}, b = {angle_for(__env, b)} }}", testnothingTest
 
   @staticmethod
   def angle_query(*, a: Optional[Tuple[()]] = None, b: Optional[int] = None) -> "GleanTestNothingTest":
@@ -154,21 +137,17 @@ class GleanTestNothingTest(GleanSchemaPredicate):
 
 class GleanTestFooToFoo(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.FooToFoo.5 {{ }}", TestFooToFoo
-    return f"glean.test.FooToFoo.5 {key}", TestFooToFoo
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.FooToFoo.5 {angle_for(__env, arg)}", testFooToFoo
 
   @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "GleanTestFooToFoo":
+  def angle_query(*, arg: Optional["GleanTestFoo"] = None) -> "GleanTestFooToFoo":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestExpr(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.Expr.1 {{ }}", TestExpr
-    return f"glean.test.Expr.1 {key}", TestExpr
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.Expr.1 {angle_for(__env, arg)}", testExpr
 
   @staticmethod
   def angle_query(*, arg: Optional[Tuple[()]] = None) -> "GleanTestExpr":
@@ -176,10 +155,8 @@ class GleanTestExpr(GleanSchemaPredicate):
 
 class GleanTestRevRevStringPair(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.RevRevStringPair.1 {{ }}", TestRevRevStringPair
-    return f"glean.test.RevRevStringPair.1 { concatenateFields(key) }", TestRevRevStringPair
+  def build_angle(__env: Dict[str, R], fst: ast.Expr, snd: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.RevRevStringPair.1 {{ fst = {angle_for(__env, fst)}, snd = {angle_for(__env, snd)} }}", testRevRevStringPair
 
   @staticmethod
   def angle_query(*, fst: Optional[str] = None, snd: Optional[str] = None) -> "GleanTestRevRevStringPair":
@@ -187,21 +164,17 @@ class GleanTestRevRevStringPair(GleanSchemaPredicate):
 
 class GleanTestEdge(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.Edge.5 {{ }}", TestEdge
-    return f"glean.test.Edge.5 { concatenateFields(key) }", TestEdge
+  def build_angle(__env: Dict[str, R], parent: ast.Expr, child: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.Edge.5 {{ parent = {angle_for(__env, parent)}, child = {angle_for(__env, child)} }}", testEdge
 
   @staticmethod
-  def angle_query(*, parent: Optional[Tuple[()]] = None, child: Optional[Tuple[()]] = None) -> "GleanTestEdge":
+  def angle_query(*, parent: Optional["GleanTestNode"] = None, child: Optional["GleanTestNode"] = None) -> "GleanTestEdge":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestSameString(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.SameString.1 {{ }}", TestSameString
-    return f"glean.test.SameString.1 { concatenateFields(key) }", TestSameString
+  def build_angle(__env: Dict[str, R], x: ast.Expr, y: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.SameString.1 {{ x = {angle_for(__env, x)}, y = {angle_for(__env, y)} }}", testSameString
 
   @staticmethod
   def angle_query(*, x: Optional[str] = None, y: Optional[str] = None) -> "GleanTestSameString":
@@ -209,10 +182,8 @@ class GleanTestSameString(GleanSchemaPredicate):
 
 class GleanTestStoredRevStringPairWithA(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.StoredRevStringPairWithA.1 {{ }}", TestStoredRevStringPairWithA
-    return f"glean.test.StoredRevStringPairWithA.1 { concatenateFields(key) }", TestStoredRevStringPairWithA
+  def build_angle(__env: Dict[str, R], fst: ast.Expr, snd: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.StoredRevStringPairWithA.1 {{ fst = {angle_for(__env, fst)}, snd = {angle_for(__env, snd)} }}", testStoredRevStringPairWithA
 
   @staticmethod
   def angle_query(*, fst: Optional[str] = None, snd: Optional[str] = None) -> "GleanTestStoredRevStringPairWithA":
@@ -220,10 +191,8 @@ class GleanTestStoredRevStringPairWithA(GleanSchemaPredicate):
 
 class GleanTestLeftOr(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.LeftOr.1 {{ }}", TestLeftOr
-    return f"glean.test.LeftOr.1 { concatenateFields(key) }", TestLeftOr
+  def build_angle(__env: Dict[str, R], x: ast.Expr, y: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.LeftOr.1 {{ x = {angle_for(__env, x)}, y = {angle_for(__env, y)} }}", testLeftOr
 
   @staticmethod
   def angle_query(*, x: Optional[str] = None, y: Optional[int] = None) -> "GleanTestLeftOr":
@@ -231,10 +200,8 @@ class GleanTestLeftOr(GleanSchemaPredicate):
 
 class GleanTestRevStringPair(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.RevStringPair.1 {{ }}", TestRevStringPair
-    return f"glean.test.RevStringPair.1 { concatenateFields(key) }", TestRevStringPair
+  def build_angle(__env: Dict[str, R], fst: ast.Expr, snd: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.RevStringPair.1 {{ fst = {angle_for(__env, fst)}, snd = {angle_for(__env, snd)} }}", testRevStringPair
 
   @staticmethod
   def angle_query(*, fst: Optional[str] = None, snd: Optional[str] = None) -> "GleanTestRevStringPair":
@@ -242,10 +209,8 @@ class GleanTestRevStringPair(GleanSchemaPredicate):
 
 class GleanTestDerivedKeyValue(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.DerivedKeyValue.1 {{ }}", TestDerivedKeyValue
-    return f"glean.test.DerivedKeyValue.1 { concatenateFields(key) }", TestDerivedKeyValue
+  def build_angle(__env: Dict[str, R], kstring: ast.Expr, knat: ast.Expr, vnat: ast.Expr, vstring: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.DerivedKeyValue.1 {{ kstring = {angle_for(__env, kstring)}, knat = {angle_for(__env, knat)}, vnat = {angle_for(__env, vnat)}, vstring = {angle_for(__env, vstring)} }}", testDerivedKeyValue
 
   @staticmethod
   def angle_query(*, kstring: Optional[str] = None, knat: Optional[int] = None, vnat: Optional[int] = None, vstring: Optional[str] = None) -> "GleanTestDerivedKeyValue":
@@ -253,10 +218,8 @@ class GleanTestDerivedKeyValue(GleanSchemaPredicate):
 
 class GleanTestViaStringPair(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.ViaStringPair.1 {{ }}", TestViaStringPair
-    return f"glean.test.ViaStringPair.1 { concatenateFields(key) }", TestViaStringPair
+  def build_angle(__env: Dict[str, R], fst: ast.Expr, snd: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.ViaStringPair.1 {{ fst = {angle_for(__env, fst)}, snd = {angle_for(__env, snd)} }}", testViaStringPair
 
   @staticmethod
   def angle_query(*, fst: Optional[str] = None, snd: Optional[str] = None) -> "GleanTestViaStringPair":
@@ -264,10 +227,8 @@ class GleanTestViaStringPair(GleanSchemaPredicate):
 
 class GleanTestQux(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.Qux.5 {{ }}", TestQux
-    return f"glean.test.Qux.5 {key}", TestQux
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.Qux.5 {angle_for(__env, arg)}", testQux
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "GleanTestQux":
@@ -275,21 +236,17 @@ class GleanTestQux(GleanSchemaPredicate):
 
 class GleanTestStoredDualStringPair(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.StoredDualStringPair.1 {{ }}", TestStoredDualStringPair
-    return f"glean.test.StoredDualStringPair.1 { concatenateFields(key) }", TestStoredDualStringPair
+  def build_angle(__env: Dict[str, R], fst: ast.Expr, snd: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.StoredDualStringPair.1 {{ fst = {angle_for(__env, fst)}, snd = {angle_for(__env, snd)} }}", testStoredDualStringPair
 
   @staticmethod
-  def angle_query(*, fst: Optional[Tuple[()]] = None, snd: Optional[Tuple[()]] = None) -> "GleanTestStoredDualStringPair":
+  def angle_query(*, fst: Optional["GleanTestStringPair"] = None, snd: Optional["GleanTestStringPair"] = None) -> "GleanTestStoredDualStringPair":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestIsGlean(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.IsGlean.1 {{ }}", TestIsGlean
-    return f"glean.test.IsGlean.1 {key}", TestIsGlean
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.IsGlean.1 {angle_for(__env, arg)}", testIsGlean
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "GleanTestIsGlean":
@@ -297,10 +254,8 @@ class GleanTestIsGlean(GleanSchemaPredicate):
 
 class GleanTestDerivedKeyValue2(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.DerivedKeyValue2.1 {{ }}", TestDerivedKeyValue2
-    return f"glean.test.DerivedKeyValue2.1 { concatenateFields(key) }", TestDerivedKeyValue2
+  def build_angle(__env: Dict[str, R], kstring: ast.Expr, knat: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.DerivedKeyValue2.1 {{ kstring = {angle_for(__env, kstring)}, knat = {angle_for(__env, knat)} }}", testDerivedKeyValue2
 
   @staticmethod
   def angle_query(*, kstring: Optional[str] = None, knat: Optional[int] = None) -> "GleanTestDerivedKeyValue2":
@@ -308,10 +263,8 @@ class GleanTestDerivedKeyValue2(GleanSchemaPredicate):
 
 class GleanTestRevStringPairRec(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.RevStringPairRec.1 {{ }}", TestRevStringPairRec
-    return f"glean.test.RevStringPairRec.1 { concatenateFields(key) }", TestRevStringPairRec
+  def build_angle(__env: Dict[str, R], fst: ast.Expr, snd: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.RevStringPairRec.1 {{ fst = {angle_for(__env, fst)}, snd = {angle_for(__env, snd)} }}", testRevStringPairRec
 
   @staticmethod
   def angle_query(*, fst: Optional[str] = None, snd: Optional[str] = None) -> "GleanTestRevStringPairRec":
@@ -319,21 +272,17 @@ class GleanTestRevStringPairRec(GleanSchemaPredicate):
 
 class GleanTestTree(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.Tree.5 {{ }}", TestTree
-    return f"glean.test.Tree.5 { concatenateFields(key) }", TestTree
+  def build_angle(__env: Dict[str, R], node: ast.Expr, left: ast.Expr, right: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.Tree.5 {{ node = {angle_for(__env, node)}, left = {angle_for(__env, left)}, right = {angle_for(__env, right)} }}", testTree
 
   @staticmethod
-  def angle_query(*, node: Optional[Tuple[()]] = None, left: Optional[Tuple[()]] = None, right: Optional[Tuple[()]] = None) -> "GleanTestTree":
+  def angle_query(*, node: Optional["GleanTestNode"] = None, left: Optional[Tuple[()]] = None, right: Optional[Tuple[()]] = None) -> "GleanTestTree":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestPredicate(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.Predicate.5 {{ }}", TestPredicate
-    return f"glean.test.Predicate.5 {key}", TestPredicate
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.Predicate.5 {angle_for(__env, arg)}", testPredicate
 
   @staticmethod
   def angle_query(*, arg: Optional[Tuple[()]] = None) -> "GleanTestPredicate":
@@ -341,10 +290,8 @@ class GleanTestPredicate(GleanSchemaPredicate):
 
 class GleanTestLeftOr2(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.LeftOr2.1 {{ }}", TestLeftOr2
-    return f"glean.test.LeftOr2.1 { concatenateFields(key) }", TestLeftOr2
+  def build_angle(__env: Dict[str, R], x: ast.Expr, y: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.LeftOr2.1 {{ x = {angle_for(__env, x)}, y = {angle_for(__env, y)} }}", testLeftOr2
 
   @staticmethod
   def angle_query(*, x: Optional[str] = None, y: Optional[int] = None) -> "GleanTestLeftOr2":
@@ -352,10 +299,8 @@ class GleanTestLeftOr2(GleanSchemaPredicate):
 
 class GleanTestNode(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.Node.5 {{ }}", TestNode
-    return f"glean.test.Node.5 { concatenateFields(key) }", TestNode
+  def build_angle(__env: Dict[str, R], label: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.Node.5 {{ label = {angle_for(__env, label)} }}", testNode
 
   @staticmethod
   def angle_query(*, label: Optional[str] = None) -> "GleanTestNode":
@@ -363,21 +308,17 @@ class GleanTestNode(GleanSchemaPredicate):
 
 class GleanTestTreeToTree(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.TreeToTree.5 {{ }}", TestTreeToTree
-    return f"glean.test.TreeToTree.5 {key}", TestTreeToTree
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.TreeToTree.5 {angle_for(__env, arg)}", testTreeToTree
 
   @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "GleanTestTreeToTree":
+  def angle_query(*, arg: Optional["GleanTestTree"] = None) -> "GleanTestTreeToTree":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestStringPair(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.StringPair.1 {{ }}", TestStringPair
-    return f"glean.test.StringPair.1 { concatenateFields(key) }", TestStringPair
+  def build_angle(__env: Dict[str, R], fst: ast.Expr, snd: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.StringPair.1 {{ fst = {angle_for(__env, fst)}, snd = {angle_for(__env, snd)} }}", testStringPair
 
   @staticmethod
   def angle_query(*, fst: Optional[str] = None, snd: Optional[str] = None) -> "GleanTestStringPair":
@@ -385,10 +326,8 @@ class GleanTestStringPair(GleanSchemaPredicate):
 
 class GleanTestName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.Name.1 {{ }}", TestName
-    return f"glean.test.Name.1 {key}", TestName
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.Name.1 {angle_for(__env, arg)}", testName
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "GleanTestName":
@@ -396,21 +335,17 @@ class GleanTestName(GleanSchemaPredicate):
 
 class GleanTestSkipRevEdge(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.SkipRevEdge.5 {{ }}", TestSkipRevEdge
-    return f"glean.test.SkipRevEdge.5 { concatenateFields(key) }", TestSkipRevEdge
+  def build_angle(__env: Dict[str, R], child: ast.Expr, grandparent: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.SkipRevEdge.5 {{ child = {angle_for(__env, child)}, grandparent = {angle_for(__env, grandparent)} }}", testSkipRevEdge
 
   @staticmethod
-  def angle_query(*, child: Optional[Tuple[()]] = None, grandparent: Optional[Tuple[()]] = None) -> "GleanTestSkipRevEdge":
+  def angle_query(*, child: Optional["GleanTestNode"] = None, grandparent: Optional["GleanTestNode"] = None) -> "GleanTestSkipRevEdge":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestStoredRevStringPairWithRev(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.StoredRevStringPairWithRev.1 {{ }}", TestStoredRevStringPairWithRev
-    return f"glean.test.StoredRevStringPairWithRev.1 { concatenateFields(key) }", TestStoredRevStringPairWithRev
+  def build_angle(__env: Dict[str, R], fst: ast.Expr, snd: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.StoredRevStringPairWithRev.1 {{ fst = {angle_for(__env, fst)}, snd = {angle_for(__env, snd)} }}", testStoredRevStringPairWithRev
 
   @staticmethod
   def angle_query(*, fst: Optional[str] = None, snd: Optional[str] = None) -> "GleanTestStoredRevStringPairWithRev":
@@ -418,10 +353,8 @@ class GleanTestStoredRevStringPairWithRev(GleanSchemaPredicate):
 
 class GleanTestMatchOneAlt(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.MatchOneAlt.1 {{ }}", TestMatchOneAlt
-    return f"glean.test.MatchOneAlt.1 { concatenateFields(key) }", TestMatchOneAlt
+  def build_angle(__env: Dict[str, R], x: ast.Expr, y: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.MatchOneAlt.1 {{ x = {angle_for(__env, x)}, y = {angle_for(__env, y)} }}", testMatchOneAlt
 
   @staticmethod
   def angle_query(*, x: Optional[Tuple[()]] = None, y: Optional[int] = None) -> "GleanTestMatchOneAlt":
@@ -429,21 +362,17 @@ class GleanTestMatchOneAlt(GleanSchemaPredicate):
 
 class GleanTestRevEdge(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.RevEdge.5 {{ }}", TestRevEdge
-    return f"glean.test.RevEdge.5 { concatenateFields(key) }", TestRevEdge
+  def build_angle(__env: Dict[str, R], child: ast.Expr, parent: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.RevEdge.5 {{ child = {angle_for(__env, child)}, parent = {angle_for(__env, parent)} }}", testRevEdge
 
   @staticmethod
-  def angle_query(*, child: Optional[Tuple[()]] = None, parent: Optional[Tuple[()]] = None) -> "GleanTestRevEdge":
+  def angle_query(*, child: Optional["GleanTestNode"] = None, parent: Optional["GleanTestNode"] = None) -> "GleanTestRevEdge":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestStoredRevStringPairSum(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.StoredRevStringPairSum.1 {{ }}", TestStoredRevStringPairSum
-    return f"glean.test.StoredRevStringPairSum.1 { concatenateFields(key) }", TestStoredRevStringPairSum
+  def build_angle(__env: Dict[str, R], fst: ast.Expr, snd: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.StoredRevStringPairSum.1 {{ fst = {angle_for(__env, fst)}, snd = {angle_for(__env, snd)} }}", testStoredRevStringPairSum
 
   @staticmethod
   def angle_query(*, fst: Optional[str] = None, snd: Optional[str] = None) -> "GleanTestStoredRevStringPairSum":
@@ -451,10 +380,8 @@ class GleanTestStoredRevStringPairSum(GleanSchemaPredicate):
 
 class GleanTestEmptyStoredStringPair(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.EmptyStoredStringPair.1 {{ }}", TestEmptyStoredStringPair
-    return f"glean.test.EmptyStoredStringPair.1 { concatenateFields(key) }", TestEmptyStoredStringPair
+  def build_angle(__env: Dict[str, R], fst: ast.Expr, snd: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.EmptyStoredStringPair.1 {{ fst = {angle_for(__env, fst)}, snd = {angle_for(__env, snd)} }}", testEmptyStoredStringPair
 
   @staticmethod
   def angle_query(*, fst: Optional[str] = None, snd: Optional[str] = None) -> "GleanTestEmptyStoredStringPair":
@@ -462,10 +389,8 @@ class GleanTestEmptyStoredStringPair(GleanSchemaPredicate):
 
 class GleanTestUnbound(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.Unbound.1 {{ }}", TestUnbound
-    return f"glean.test.Unbound.1 { concatenateFields(key) }", TestUnbound
+  def build_angle(__env: Dict[str, R], x: ast.Expr, y: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.Unbound.1 {{ x = {angle_for(__env, x)}, y = {angle_for(__env, y)} }}", testUnbound
 
   @staticmethod
   def angle_query(*, x: Optional[str] = None, y: Optional[str] = None) -> "GleanTestUnbound":
@@ -473,10 +398,8 @@ class GleanTestUnbound(GleanSchemaPredicate):
 
 class GleanTestPredicate(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.Predicate.1 {{ }}", TestPredicate
-    return f"glean.test.Predicate.1 {key}", TestPredicate
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.Predicate.1 {angle_for(__env, arg)}", testPredicate
 
   @staticmethod
   def angle_query(*, arg: Optional[Tuple[()]] = None) -> "GleanTestPredicate":
@@ -484,21 +407,17 @@ class GleanTestPredicate(GleanSchemaPredicate):
 
 class GleanTestDualStringPair(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.DualStringPair.1 {{ }}", TestDualStringPair
-    return f"glean.test.DualStringPair.1 { concatenateFields(key) }", TestDualStringPair
+  def build_angle(__env: Dict[str, R], fst: ast.Expr, snd: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.DualStringPair.1 {{ fst = {angle_for(__env, fst)}, snd = {angle_for(__env, snd)} }}", testDualStringPair
 
   @staticmethod
-  def angle_query(*, fst: Optional[Tuple[()]] = None, snd: Optional[Tuple[()]] = None) -> "GleanTestDualStringPair":
+  def angle_query(*, fst: Optional["GleanTestStringPair"] = None, snd: Optional["GleanTestStringPair"] = None) -> "GleanTestDualStringPair":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestUnbound2(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.Unbound2.1 {{ }}", TestUnbound2
-    return f"glean.test.Unbound2.1 { concatenateFields(key) }", TestUnbound2
+  def build_angle(__env: Dict[str, R], x: ast.Expr, y: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.Unbound2.1 {{ x = {angle_for(__env, x)}, y = {angle_for(__env, y)} }}", testUnbound2
 
   @staticmethod
   def angle_query(*, x: Optional[str] = None, y: Optional[str] = None) -> "GleanTestUnbound2":
@@ -506,21 +425,17 @@ class GleanTestUnbound2(GleanSchemaPredicate):
 
 class GleanTestStringPairBox(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.StringPairBox.1 {{ }}", TestStringPairBox
-    return f"glean.test.StringPairBox.1 { concatenateFields(key) }", TestStringPairBox
+  def build_angle(__env: Dict[str, R], box: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.StringPairBox.1 {{ box = {angle_for(__env, box)} }}", testStringPairBox
 
   @staticmethod
-  def angle_query(*, box: Optional[Tuple[()]] = None) -> "GleanTestStringPairBox":
+  def angle_query(*, box: Optional["GleanTestStringPair"] = None) -> "GleanTestStringPairBox":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestReflStringPair(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.ReflStringPair.1 {{ }}", TestReflStringPair
-    return f"glean.test.ReflStringPair.1 {key}", TestReflStringPair
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.ReflStringPair.1 {angle_for(__env, arg)}", testReflStringPair
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "GleanTestReflStringPair":
@@ -528,10 +443,8 @@ class GleanTestReflStringPair(GleanSchemaPredicate):
 
 class GleanTestFoo(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"glean.test.Foo.5 {{ }}", TestFoo
-    return f"glean.test.Foo.5 {key}", TestFoo
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.Foo.5 {angle_for(__env, arg)}", testFoo
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "GleanTestFoo":

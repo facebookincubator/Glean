@@ -1,8 +1,10 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union, List
+from typing import Optional, Tuple, Union, List, Dict
 from thrift.py3 import Struct
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, concatenateFields
+import ast
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R
+from glean.schema.py.src import *
 
 
 from glean.schema.omega.types import (
@@ -28,10 +30,8 @@ from glean.schema.omega.types import (
 
 class OmegaDependencyList(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"omega.DependencyList.1 {{ }}", DependencyList
-    return f"omega.DependencyList.1 { concatenateFields(key) }", DependencyList
+  def build_angle(__env: Dict[str, R], node: ast.Expr, entities: ast.Expr) -> Tuple[str, Struct]:
+    return f"omega.DependencyList.1 {{ node = {angle_for(__env, node)}, entities = {angle_for(__env, entities)} }}", DependencyList
 
   @staticmethod
   def angle_query(*, node: Optional[Tuple[()]] = None, entities: Optional[Tuple[()]] = None) -> "OmegaDependencyList":
@@ -39,87 +39,71 @@ class OmegaDependencyList(GleanSchemaPredicate):
 
 class OmegaEnum_(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"omega.Enum_.1 {{ }}", Enum_
-    return f"omega.Enum_.1 { concatenateFields(key) }", Enum_
+  def build_angle(__env: Dict[str, R], name: ast.Expr) -> Tuple[str, Struct]:
+    return f"omega.Enum_.1 {{ name = {angle_for(__env, name)} }}", Enum_
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None) -> "OmegaEnum_":
+  def angle_query(*, name: Optional["OmegaName"] = None) -> "OmegaEnum_":
     raise Exception("this function can only be called from @angle_query")
 
 class OmegaOmegaAction(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"omega.OmegaAction.1 {{ }}", OmegaAction
-    return f"omega.OmegaAction.1 { concatenateFields(key) }", OmegaAction
+  def build_angle(__env: Dict[str, R], class_: ast.Expr) -> Tuple[str, Struct]:
+    return f"omega.OmegaAction.1 {{ class_ = {angle_for(__env, class_)} }}", OmegaAction
 
   @staticmethod
-  def angle_query(*, class_: Optional[Tuple[()]] = None) -> "OmegaOmegaAction":
+  def angle_query(*, class_: Optional["OmegaClass_"] = None) -> "OmegaOmegaAction":
     raise Exception("this function can only be called from @angle_query")
 
 class OmegaOmegaPolicy(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"omega.OmegaPolicy.1 {{ }}", OmegaPolicy
-    return f"omega.OmegaPolicy.1 { concatenateFields(key) }", OmegaPolicy
+  def build_angle(__env: Dict[str, R], class_: ast.Expr) -> Tuple[str, Struct]:
+    return f"omega.OmegaPolicy.1 {{ class_ = {angle_for(__env, class_)} }}", OmegaPolicy
 
   @staticmethod
-  def angle_query(*, class_: Optional[Tuple[()]] = None) -> "OmegaOmegaPolicy":
+  def angle_query(*, class_: Optional["OmegaClass_"] = None) -> "OmegaOmegaPolicy":
     raise Exception("this function can only be called from @angle_query")
 
 class OmegaOmegaBlock(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"omega.OmegaBlock.1 {{ }}", OmegaBlock
-    return f"omega.OmegaBlock.1 { concatenateFields(key) }", OmegaBlock
+  def build_angle(__env: Dict[str, R], class_: ast.Expr) -> Tuple[str, Struct]:
+    return f"omega.OmegaBlock.1 {{ class_ = {angle_for(__env, class_)} }}", OmegaBlock
 
   @staticmethod
-  def angle_query(*, class_: Optional[Tuple[()]] = None) -> "OmegaOmegaBlock":
+  def angle_query(*, class_: Optional["OmegaClass_"] = None) -> "OmegaOmegaBlock":
     raise Exception("this function can only be called from @angle_query")
 
 class OmegaOncall(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"omega.Oncall.1 {{ }}", Oncall
-    return f"omega.Oncall.1 { concatenateFields(key) }", Oncall
+  def build_angle(__env: Dict[str, R], name: ast.Expr) -> Tuple[str, Struct]:
+    return f"omega.Oncall.1 {{ name = {angle_for(__env, name)} }}", Oncall
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None) -> "OmegaOncall":
+  def angle_query(*, name: Optional["OmegaName"] = None) -> "OmegaOncall":
     raise Exception("this function can only be called from @angle_query")
 
 class OmegaConfig(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"omega.Config.1 {{ }}", Config
-    return f"omega.Config.1 { concatenateFields(key) }", Config
+  def build_angle(__env: Dict[str, R], name: ast.Expr) -> Tuple[str, Struct]:
+    return f"omega.Config.1 {{ name = {angle_for(__env, name)} }}", Config
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None) -> "OmegaConfig":
+  def angle_query(*, name: Optional["OmegaName"] = None) -> "OmegaConfig":
     raise Exception("this function can only be called from @angle_query")
 
 class OmegaOmegaEndpoint(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"omega.OmegaEndpoint.1 {{ }}", OmegaEndpoint
-    return f"omega.OmegaEndpoint.1 { concatenateFields(key) }", OmegaEndpoint
+  def build_angle(__env: Dict[str, R], class_: ast.Expr) -> Tuple[str, Struct]:
+    return f"omega.OmegaEndpoint.1 {{ class_ = {angle_for(__env, class_)} }}", OmegaEndpoint
 
   @staticmethod
-  def angle_query(*, class_: Optional[Tuple[()]] = None) -> "OmegaOmegaEndpoint":
+  def angle_query(*, class_: Optional["OmegaClass_"] = None) -> "OmegaOmegaEndpoint":
     raise Exception("this function can only be called from @angle_query")
 
 class OmegaDependencyPathByEntity(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"omega.DependencyPathByEntity.1 {{ }}", DependencyPathByEntity
-    return f"omega.DependencyPathByEntity.1 { concatenateFields(key) }", DependencyPathByEntity
+  def build_angle(__env: Dict[str, R], entity: ast.Expr, node: ast.Expr, shortestPath: ast.Expr) -> Tuple[str, Struct]:
+    return f"omega.DependencyPathByEntity.1 {{ entity = {angle_for(__env, entity)}, node = {angle_for(__env, node)}, shortestPath = {angle_for(__env, shortestPath)} }}", DependencyPathByEntity
 
   @staticmethod
   def angle_query(*, entity: Optional[Tuple[()]] = None, node: Optional[Tuple[()]] = None, shortestPath: Optional[Tuple[()]] = None) -> "OmegaDependencyPathByEntity":
@@ -127,32 +111,26 @@ class OmegaDependencyPathByEntity(GleanSchemaPredicate):
 
 class OmegaFunction_(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"omega.Function_.1 {{ }}", Function_
-    return f"omega.Function_.1 { concatenateFields(key) }", Function_
+  def build_angle(__env: Dict[str, R], name: ast.Expr) -> Tuple[str, Struct]:
+    return f"omega.Function_.1 {{ name = {angle_for(__env, name)} }}", Function_
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None) -> "OmegaFunction_":
+  def angle_query(*, name: Optional["OmegaName"] = None) -> "OmegaFunction_":
     raise Exception("this function can only be called from @angle_query")
 
 class OmegaTargetNodeLocations(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"omega.TargetNodeLocations.1 {{ }}", TargetNodeLocations
-    return f"omega.TargetNodeLocations.1 { concatenateFields(key) }", TargetNodeLocations
+  def build_angle(__env: Dict[str, R], source: ast.Expr, target: ast.Expr, pathToFile: ast.Expr, targetByteSpan: ast.Expr) -> Tuple[str, Struct]:
+    return f"omega.TargetNodeLocations.1 {{ source = {angle_for(__env, source)}, target = {angle_for(__env, target)}, pathToFile = {angle_for(__env, pathToFile)}, targetByteSpan = {angle_for(__env, targetByteSpan)} }}", TargetNodeLocations
 
   @staticmethod
-  def angle_query(*, source: Optional[Tuple[()]] = None, target: Optional[Tuple[()]] = None, pathToFile: Optional[Tuple[()]] = None, targetByteSpan: Optional[Tuple[()]] = None) -> "OmegaTargetNodeLocations":
+  def angle_query(*, source: Optional[Tuple[()]] = None, target: Optional[Tuple[()]] = None, pathToFile: Optional["SrcFile"] = None, targetByteSpan: Optional[Tuple[()]] = None) -> "OmegaTargetNodeLocations":
     raise Exception("this function can only be called from @angle_query")
 
 class OmegaName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"omega.Name.1 {{ }}", Name
-    return f"omega.Name.1 {key}", Name
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"omega.Name.1 {angle_for(__env, arg)}", Name
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "OmegaName":
@@ -160,21 +138,17 @@ class OmegaName(GleanSchemaPredicate):
 
 class OmegaMethod(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"omega.Method.1 {{ }}", Method
-    return f"omega.Method.1 { concatenateFields(key) }", Method
+  def build_angle(__env: Dict[str, R], name: ast.Expr) -> Tuple[str, Struct]:
+    return f"omega.Method.1 {{ name = {angle_for(__env, name)} }}", Method
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None) -> "OmegaMethod":
+  def angle_query(*, name: Optional["OmegaName"] = None) -> "OmegaMethod":
     raise Exception("this function can only be called from @angle_query")
 
 class OmegaOmegaEntityMetadata(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"omega.OmegaEntityMetadata.1 {{ }}", OmegaEntityMetadata
-    return f"omega.OmegaEntityMetadata.1 { concatenateFields(key) }", OmegaEntityMetadata
+  def build_angle(__env: Dict[str, R], entity: ast.Expr, oncall: ast.Expr, isAbstract: ast.Expr, isICE: ast.Expr) -> Tuple[str, Struct]:
+    return f"omega.OmegaEntityMetadata.1 {{ entity = {angle_for(__env, entity)}, oncall = {angle_for(__env, oncall)}, isAbstract = {angle_for(__env, isAbstract)}, isICE = {angle_for(__env, isICE)} }}", OmegaEntityMetadata
 
   @staticmethod
   def angle_query(*, entity: Optional[Tuple[()]] = None, oncall: Optional[Tuple[()]] = None, isAbstract: Optional[bool] = None, isICE: Optional[bool] = None) -> "OmegaOmegaEntityMetadata":
@@ -182,32 +156,26 @@ class OmegaOmegaEntityMetadata(GleanSchemaPredicate):
 
 class OmegaClass_(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"omega.Class_.1 {{ }}", Class_
-    return f"omega.Class_.1 { concatenateFields(key) }", Class_
+  def build_angle(__env: Dict[str, R], name: ast.Expr) -> Tuple[str, Struct]:
+    return f"omega.Class_.1 {{ name = {angle_for(__env, name)} }}", Class_
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None) -> "OmegaClass_":
+  def angle_query(*, name: Optional["OmegaName"] = None) -> "OmegaClass_":
     raise Exception("this function can only be called from @angle_query")
 
 class OmegaOmegaExecutionNode(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"omega.OmegaExecutionNode.1 {{ }}", OmegaExecutionNode
-    return f"omega.OmegaExecutionNode.1 { concatenateFields(key) }", OmegaExecutionNode
+  def build_angle(__env: Dict[str, R], class_: ast.Expr) -> Tuple[str, Struct]:
+    return f"omega.OmegaExecutionNode.1 {{ class_ = {angle_for(__env, class_)} }}", OmegaExecutionNode
 
   @staticmethod
-  def angle_query(*, class_: Optional[Tuple[()]] = None) -> "OmegaOmegaExecutionNode":
+  def angle_query(*, class_: Optional["OmegaClass_"] = None) -> "OmegaOmegaExecutionNode":
     raise Exception("this function can only be called from @angle_query")
 
 class OmegaDependencyPath(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"omega.DependencyPath.1 {{ }}", DependencyPath
-    return f"omega.DependencyPath.1 { concatenateFields(key) }", DependencyPath
+  def build_angle(__env: Dict[str, R], node: ast.Expr, entity: ast.Expr, shortestPath: ast.Expr) -> Tuple[str, Struct]:
+    return f"omega.DependencyPath.1 {{ node = {angle_for(__env, node)}, entity = {angle_for(__env, entity)}, shortestPath = {angle_for(__env, shortestPath)} }}", DependencyPath
 
   @staticmethod
   def angle_query(*, node: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None, shortestPath: Optional[Tuple[()]] = None) -> "OmegaDependencyPath":

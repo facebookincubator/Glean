@@ -1,61 +1,61 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union, List
+from typing import Optional, Tuple, Union, List, Dict
 from thrift.py3 import Struct
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, concatenateFields
+import ast
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R
+from glean.schema.py.cxx1 import *
+from glean.schema.py.hack import *
+from glean.schema.py.python import *
 
 
 from glean.schema.searchcode.types import (
-    CodeCxxSearchByNameAndScopeFact,
-    CodeSearchByLowerCaseScope,
-    CodePythonSearchByLowerCaseName,
-    CodeErlangSearchByName,
-    CodeHsSearchByName,
-    CodeHackSearchByLowerCaseScope,
-    CodeCxxSearchByName,
-    CodeSearchByName,
-    CodeHackSearchByName,
-    CodeHackSearchByScopeWithName,
-    CodeCxxSearchByLowerCaseScope,
-    CodePythonSearchByLocalNameFact,
-    CodeHackSearchByLowerCaseName,
-    CodeLsifSearchByLowerCaseName,
-    CodeRustSearchByLowerCaseName,
-    CodeCxxSearchByLowerCaseName,
-    CodePythonSearchByNameFact,
-    CodeHsSearchByLowerCaseName,
-    CodeErlangSearchByLowerCaseName,
-    CodeSearchByScope,
-    CodeFlowSearchByLowerCaseName,
-    CodeFlowSearchByName,
-    CodeRustSearchByName,
-    CodeLsifSearchByName,
-    CodeSearchByNameAndLanguage,
-    CodeCxxSearchByScope,
-    CodeSearchByLowerCaseNameAndLanguage,
-    CodeSearchByLowerCaseName,
-    CodeHackSearchByScope,
-    CodePythonSearchByName,
+    codeCxxSearchByNameAndScopeFact,
+    codeSearchByLowerCaseScope,
+    codePythonSearchByLowerCaseName,
+    codeErlangSearchByName,
+    codeHsSearchByName,
+    codeHackSearchByLowerCaseScope,
+    codeCxxSearchByName,
+    codeSearchByName,
+    codeHackSearchByName,
+    codeHackSearchByScopeWithName,
+    codeCxxSearchByLowerCaseScope,
+    codePythonSearchByLocalNameFact,
+    codeHackSearchByLowerCaseName,
+    codeLsifSearchByLowerCaseName,
+    codeRustSearchByLowerCaseName,
+    codeCxxSearchByLowerCaseName,
+    codePythonSearchByNameFact,
+    codeHsSearchByLowerCaseName,
+    codeErlangSearchByLowerCaseName,
+    codeSearchByScope,
+    codeFlowSearchByLowerCaseName,
+    codeFlowSearchByName,
+    codeRustSearchByName,
+    codeLsifSearchByName,
+    codeSearchByNameAndLanguage,
+    codeCxxSearchByScope,
+    codeSearchByLowerCaseNameAndLanguage,
+    codeSearchByLowerCaseName,
+    codeHackSearchByScope,
+    codePythonSearchByName,
 )
 
 
 class SearchCodeCxxSearchByNameAndScopeFact(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.code.CxxSearchByNameAndScopeFact.16 {{ }}", CodeCxxSearchByNameAndScopeFact
-    return f"search.code.CxxSearchByNameAndScopeFact.16 { concatenateFields(key) }", CodeCxxSearchByNameAndScopeFact
+  def build_angle(__env: Dict[str, R], name: ast.Expr, scope: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.code.CxxSearchByNameAndScopeFact.16 {{ name = {angle_for(__env, name)}, scope = {angle_for(__env, scope)}, entity = {angle_for(__env, entity)} }}", codeCxxSearchByNameAndScopeFact
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None, scope: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeCxxSearchByNameAndScopeFact":
+  def angle_query(*, name: Optional["Cxx1Name"] = None, scope: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeCxxSearchByNameAndScopeFact":
     raise Exception("this function can only be called from @angle_query")
 
 class SearchCodeSearchByLowerCaseScope(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.code.SearchByLowerCaseScope.16 {{ }}", CodeSearchByLowerCaseScope
-    return f"search.code.SearchByLowerCaseScope.16 { concatenateFields(key) }", CodeSearchByLowerCaseScope
+  def build_angle(__env: Dict[str, R], name: ast.Expr, scope: ast.Expr, language: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.code.SearchByLowerCaseScope.16 {{ name = {angle_for(__env, name)}, scope = {angle_for(__env, scope)}, language = {angle_for(__env, language)}, entity = {angle_for(__env, entity)} }}", codeSearchByLowerCaseScope
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, scope: Optional[Tuple[()]] = None, language: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeSearchByLowerCaseScope":
@@ -63,10 +63,8 @@ class SearchCodeSearchByLowerCaseScope(GleanSchemaPredicate):
 
 class SearchCodePythonSearchByLowerCaseName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.code.PythonSearchByLowerCaseName.16 {{ }}", CodePythonSearchByLowerCaseName
-    return f"search.code.PythonSearchByLowerCaseName.16 { concatenateFields(key) }", CodePythonSearchByLowerCaseName
+  def build_angle(__env: Dict[str, R], name: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.code.PythonSearchByLowerCaseName.16 {{ name = {angle_for(__env, name)}, entity = {angle_for(__env, entity)} }}", codePythonSearchByLowerCaseName
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodePythonSearchByLowerCaseName":
@@ -74,10 +72,8 @@ class SearchCodePythonSearchByLowerCaseName(GleanSchemaPredicate):
 
 class SearchCodeErlangSearchByName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.code.ErlangSearchByName.16 {{ }}", CodeErlangSearchByName
-    return f"search.code.ErlangSearchByName.16 { concatenateFields(key) }", CodeErlangSearchByName
+  def build_angle(__env: Dict[str, R], name: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.code.ErlangSearchByName.16 {{ name = {angle_for(__env, name)}, entity = {angle_for(__env, entity)} }}", codeErlangSearchByName
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeErlangSearchByName":
@@ -85,10 +81,8 @@ class SearchCodeErlangSearchByName(GleanSchemaPredicate):
 
 class SearchCodeHsSearchByName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.code.HsSearchByName.16 {{ }}", CodeHsSearchByName
-    return f"search.code.HsSearchByName.16 { concatenateFields(key) }", CodeHsSearchByName
+  def build_angle(__env: Dict[str, R], name: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.code.HsSearchByName.16 {{ name = {angle_for(__env, name)}, entity = {angle_for(__env, entity)} }}", codeHsSearchByName
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeHsSearchByName":
@@ -96,10 +90,8 @@ class SearchCodeHsSearchByName(GleanSchemaPredicate):
 
 class SearchCodeHackSearchByLowerCaseScope(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.code.HackSearchByLowerCaseScope.16 {{ }}", CodeHackSearchByLowerCaseScope
-    return f"search.code.HackSearchByLowerCaseScope.16 { concatenateFields(key) }", CodeHackSearchByLowerCaseScope
+  def build_angle(__env: Dict[str, R], name: ast.Expr, scope: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.code.HackSearchByLowerCaseScope.16 {{ name = {angle_for(__env, name)}, scope = {angle_for(__env, scope)}, entity = {angle_for(__env, entity)} }}", codeHackSearchByLowerCaseScope
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, scope: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeHackSearchByLowerCaseScope":
@@ -107,10 +99,8 @@ class SearchCodeHackSearchByLowerCaseScope(GleanSchemaPredicate):
 
 class SearchCodeCxxSearchByName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.code.CxxSearchByName.16 {{ }}", CodeCxxSearchByName
-    return f"search.code.CxxSearchByName.16 { concatenateFields(key) }", CodeCxxSearchByName
+  def build_angle(__env: Dict[str, R], name: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.code.CxxSearchByName.16 {{ name = {angle_for(__env, name)}, entity = {angle_for(__env, entity)} }}", codeCxxSearchByName
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeCxxSearchByName":
@@ -118,10 +108,8 @@ class SearchCodeCxxSearchByName(GleanSchemaPredicate):
 
 class SearchCodeSearchByName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.code.SearchByName.16 {{ }}", CodeSearchByName
-    return f"search.code.SearchByName.16 { concatenateFields(key) }", CodeSearchByName
+  def build_angle(__env: Dict[str, R], name: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.code.SearchByName.16 {{ name = {angle_for(__env, name)}, entity = {angle_for(__env, entity)} }}", codeSearchByName
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeSearchByName":
@@ -129,10 +117,8 @@ class SearchCodeSearchByName(GleanSchemaPredicate):
 
 class SearchCodeHackSearchByName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.code.HackSearchByName.16 {{ }}", CodeHackSearchByName
-    return f"search.code.HackSearchByName.16 { concatenateFields(key) }", CodeHackSearchByName
+  def build_angle(__env: Dict[str, R], name: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.code.HackSearchByName.16 {{ name = {angle_for(__env, name)}, entity = {angle_for(__env, entity)} }}", codeHackSearchByName
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeHackSearchByName":
@@ -140,21 +126,17 @@ class SearchCodeHackSearchByName(GleanSchemaPredicate):
 
 class SearchCodeHackSearchByScopeWithName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.code.HackSearchByScopeWithName.16 {{ }}", CodeHackSearchByScopeWithName
-    return f"search.code.HackSearchByScopeWithName.16 { concatenateFields(key) }", CodeHackSearchByScopeWithName
+  def build_angle(__env: Dict[str, R], name: ast.Expr, scope: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.code.HackSearchByScopeWithName.16 {{ name = {angle_for(__env, name)}, scope = {angle_for(__env, scope)}, entity = {angle_for(__env, entity)} }}", codeHackSearchByScopeWithName
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None, scope: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeHackSearchByScopeWithName":
+  def angle_query(*, name: Optional["HackName"] = None, scope: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeHackSearchByScopeWithName":
     raise Exception("this function can only be called from @angle_query")
 
 class SearchCodeCxxSearchByLowerCaseScope(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.code.CxxSearchByLowerCaseScope.16 {{ }}", CodeCxxSearchByLowerCaseScope
-    return f"search.code.CxxSearchByLowerCaseScope.16 { concatenateFields(key) }", CodeCxxSearchByLowerCaseScope
+  def build_angle(__env: Dict[str, R], name: ast.Expr, scope: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.code.CxxSearchByLowerCaseScope.16 {{ name = {angle_for(__env, name)}, scope = {angle_for(__env, scope)}, entity = {angle_for(__env, entity)} }}", codeCxxSearchByLowerCaseScope
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, scope: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeCxxSearchByLowerCaseScope":
@@ -162,21 +144,17 @@ class SearchCodeCxxSearchByLowerCaseScope(GleanSchemaPredicate):
 
 class SearchCodePythonSearchByLocalNameFact(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.code.PythonSearchByLocalNameFact.16 {{ }}", CodePythonSearchByLocalNameFact
-    return f"search.code.PythonSearchByLocalNameFact.16 { concatenateFields(key) }", CodePythonSearchByLocalNameFact
+  def build_angle(__env: Dict[str, R], name: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.code.PythonSearchByLocalNameFact.16 {{ name = {angle_for(__env, name)}, entity = {angle_for(__env, entity)} }}", codePythonSearchByLocalNameFact
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodePythonSearchByLocalNameFact":
+  def angle_query(*, name: Optional["PythonLocalName"] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodePythonSearchByLocalNameFact":
     raise Exception("this function can only be called from @angle_query")
 
 class SearchCodeHackSearchByLowerCaseName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.code.HackSearchByLowerCaseName.16 {{ }}", CodeHackSearchByLowerCaseName
-    return f"search.code.HackSearchByLowerCaseName.16 { concatenateFields(key) }", CodeHackSearchByLowerCaseName
+  def build_angle(__env: Dict[str, R], name: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.code.HackSearchByLowerCaseName.16 {{ name = {angle_for(__env, name)}, entity = {angle_for(__env, entity)} }}", codeHackSearchByLowerCaseName
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeHackSearchByLowerCaseName":
@@ -184,10 +162,8 @@ class SearchCodeHackSearchByLowerCaseName(GleanSchemaPredicate):
 
 class SearchCodeLsifSearchByLowerCaseName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.code.LsifSearchByLowerCaseName.16 {{ }}", CodeLsifSearchByLowerCaseName
-    return f"search.code.LsifSearchByLowerCaseName.16 { concatenateFields(key) }", CodeLsifSearchByLowerCaseName
+  def build_angle(__env: Dict[str, R], name: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.code.LsifSearchByLowerCaseName.16 {{ name = {angle_for(__env, name)}, entity = {angle_for(__env, entity)} }}", codeLsifSearchByLowerCaseName
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeLsifSearchByLowerCaseName":
@@ -195,10 +171,8 @@ class SearchCodeLsifSearchByLowerCaseName(GleanSchemaPredicate):
 
 class SearchCodeRustSearchByLowerCaseName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.code.RustSearchByLowerCaseName.16 {{ }}", CodeRustSearchByLowerCaseName
-    return f"search.code.RustSearchByLowerCaseName.16 { concatenateFields(key) }", CodeRustSearchByLowerCaseName
+  def build_angle(__env: Dict[str, R], name: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.code.RustSearchByLowerCaseName.16 {{ name = {angle_for(__env, name)}, entity = {angle_for(__env, entity)} }}", codeRustSearchByLowerCaseName
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeRustSearchByLowerCaseName":
@@ -206,10 +180,8 @@ class SearchCodeRustSearchByLowerCaseName(GleanSchemaPredicate):
 
 class SearchCodeCxxSearchByLowerCaseName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.code.CxxSearchByLowerCaseName.16 {{ }}", CodeCxxSearchByLowerCaseName
-    return f"search.code.CxxSearchByLowerCaseName.16 { concatenateFields(key) }", CodeCxxSearchByLowerCaseName
+  def build_angle(__env: Dict[str, R], name: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.code.CxxSearchByLowerCaseName.16 {{ name = {angle_for(__env, name)}, entity = {angle_for(__env, entity)} }}", codeCxxSearchByLowerCaseName
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeCxxSearchByLowerCaseName":
@@ -217,21 +189,17 @@ class SearchCodeCxxSearchByLowerCaseName(GleanSchemaPredicate):
 
 class SearchCodePythonSearchByNameFact(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.code.PythonSearchByNameFact.16 {{ }}", CodePythonSearchByNameFact
-    return f"search.code.PythonSearchByNameFact.16 { concatenateFields(key) }", CodePythonSearchByNameFact
+  def build_angle(__env: Dict[str, R], name: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.code.PythonSearchByNameFact.16 {{ name = {angle_for(__env, name)}, entity = {angle_for(__env, entity)} }}", codePythonSearchByNameFact
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodePythonSearchByNameFact":
+  def angle_query(*, name: Optional["PythonName"] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodePythonSearchByNameFact":
     raise Exception("this function can only be called from @angle_query")
 
 class SearchCodeHsSearchByLowerCaseName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.code.HsSearchByLowerCaseName.16 {{ }}", CodeHsSearchByLowerCaseName
-    return f"search.code.HsSearchByLowerCaseName.16 { concatenateFields(key) }", CodeHsSearchByLowerCaseName
+  def build_angle(__env: Dict[str, R], name: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.code.HsSearchByLowerCaseName.16 {{ name = {angle_for(__env, name)}, entity = {angle_for(__env, entity)} }}", codeHsSearchByLowerCaseName
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeHsSearchByLowerCaseName":
@@ -239,10 +207,8 @@ class SearchCodeHsSearchByLowerCaseName(GleanSchemaPredicate):
 
 class SearchCodeErlangSearchByLowerCaseName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.code.ErlangSearchByLowerCaseName.16 {{ }}", CodeErlangSearchByLowerCaseName
-    return f"search.code.ErlangSearchByLowerCaseName.16 { concatenateFields(key) }", CodeErlangSearchByLowerCaseName
+  def build_angle(__env: Dict[str, R], name: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.code.ErlangSearchByLowerCaseName.16 {{ name = {angle_for(__env, name)}, entity = {angle_for(__env, entity)} }}", codeErlangSearchByLowerCaseName
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeErlangSearchByLowerCaseName":
@@ -250,10 +216,8 @@ class SearchCodeErlangSearchByLowerCaseName(GleanSchemaPredicate):
 
 class SearchCodeSearchByScope(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.code.SearchByScope.16 {{ }}", CodeSearchByScope
-    return f"search.code.SearchByScope.16 { concatenateFields(key) }", CodeSearchByScope
+  def build_angle(__env: Dict[str, R], name: ast.Expr, scope: ast.Expr, language: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.code.SearchByScope.16 {{ name = {angle_for(__env, name)}, scope = {angle_for(__env, scope)}, language = {angle_for(__env, language)}, entity = {angle_for(__env, entity)} }}", codeSearchByScope
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, scope: Optional[Tuple[()]] = None, language: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeSearchByScope":
@@ -261,10 +225,8 @@ class SearchCodeSearchByScope(GleanSchemaPredicate):
 
 class SearchCodeFlowSearchByLowerCaseName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.code.FlowSearchByLowerCaseName.16 {{ }}", CodeFlowSearchByLowerCaseName
-    return f"search.code.FlowSearchByLowerCaseName.16 { concatenateFields(key) }", CodeFlowSearchByLowerCaseName
+  def build_angle(__env: Dict[str, R], name: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.code.FlowSearchByLowerCaseName.16 {{ name = {angle_for(__env, name)}, entity = {angle_for(__env, entity)} }}", codeFlowSearchByLowerCaseName
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeFlowSearchByLowerCaseName":
@@ -272,10 +234,8 @@ class SearchCodeFlowSearchByLowerCaseName(GleanSchemaPredicate):
 
 class SearchCodeFlowSearchByName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.code.FlowSearchByName.16 {{ }}", CodeFlowSearchByName
-    return f"search.code.FlowSearchByName.16 { concatenateFields(key) }", CodeFlowSearchByName
+  def build_angle(__env: Dict[str, R], name: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.code.FlowSearchByName.16 {{ name = {angle_for(__env, name)}, entity = {angle_for(__env, entity)} }}", codeFlowSearchByName
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeFlowSearchByName":
@@ -283,10 +243,8 @@ class SearchCodeFlowSearchByName(GleanSchemaPredicate):
 
 class SearchCodeRustSearchByName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.code.RustSearchByName.16 {{ }}", CodeRustSearchByName
-    return f"search.code.RustSearchByName.16 { concatenateFields(key) }", CodeRustSearchByName
+  def build_angle(__env: Dict[str, R], name: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.code.RustSearchByName.16 {{ name = {angle_for(__env, name)}, entity = {angle_for(__env, entity)} }}", codeRustSearchByName
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeRustSearchByName":
@@ -294,10 +252,8 @@ class SearchCodeRustSearchByName(GleanSchemaPredicate):
 
 class SearchCodeLsifSearchByName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.code.LsifSearchByName.16 {{ }}", CodeLsifSearchByName
-    return f"search.code.LsifSearchByName.16 { concatenateFields(key) }", CodeLsifSearchByName
+  def build_angle(__env: Dict[str, R], name: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.code.LsifSearchByName.16 {{ name = {angle_for(__env, name)}, entity = {angle_for(__env, entity)} }}", codeLsifSearchByName
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeLsifSearchByName":
@@ -305,10 +261,8 @@ class SearchCodeLsifSearchByName(GleanSchemaPredicate):
 
 class SearchCodeSearchByNameAndLanguage(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.code.SearchByNameAndLanguage.16 {{ }}", CodeSearchByNameAndLanguage
-    return f"search.code.SearchByNameAndLanguage.16 { concatenateFields(key) }", CodeSearchByNameAndLanguage
+  def build_angle(__env: Dict[str, R], name: ast.Expr, language: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.code.SearchByNameAndLanguage.16 {{ name = {angle_for(__env, name)}, language = {angle_for(__env, language)}, entity = {angle_for(__env, entity)} }}", codeSearchByNameAndLanguage
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, language: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeSearchByNameAndLanguage":
@@ -316,10 +270,8 @@ class SearchCodeSearchByNameAndLanguage(GleanSchemaPredicate):
 
 class SearchCodeCxxSearchByScope(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.code.CxxSearchByScope.16 {{ }}", CodeCxxSearchByScope
-    return f"search.code.CxxSearchByScope.16 { concatenateFields(key) }", CodeCxxSearchByScope
+  def build_angle(__env: Dict[str, R], name: ast.Expr, scope: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.code.CxxSearchByScope.16 {{ name = {angle_for(__env, name)}, scope = {angle_for(__env, scope)}, entity = {angle_for(__env, entity)} }}", codeCxxSearchByScope
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, scope: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeCxxSearchByScope":
@@ -327,10 +279,8 @@ class SearchCodeCxxSearchByScope(GleanSchemaPredicate):
 
 class SearchCodeSearchByLowerCaseNameAndLanguage(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.code.SearchByLowerCaseNameAndLanguage.16 {{ }}", CodeSearchByLowerCaseNameAndLanguage
-    return f"search.code.SearchByLowerCaseNameAndLanguage.16 { concatenateFields(key) }", CodeSearchByLowerCaseNameAndLanguage
+  def build_angle(__env: Dict[str, R], name: ast.Expr, language: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.code.SearchByLowerCaseNameAndLanguage.16 {{ name = {angle_for(__env, name)}, language = {angle_for(__env, language)}, entity = {angle_for(__env, entity)} }}", codeSearchByLowerCaseNameAndLanguage
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, language: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeSearchByLowerCaseNameAndLanguage":
@@ -338,10 +288,8 @@ class SearchCodeSearchByLowerCaseNameAndLanguage(GleanSchemaPredicate):
 
 class SearchCodeSearchByLowerCaseName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.code.SearchByLowerCaseName.16 {{ }}", CodeSearchByLowerCaseName
-    return f"search.code.SearchByLowerCaseName.16 { concatenateFields(key) }", CodeSearchByLowerCaseName
+  def build_angle(__env: Dict[str, R], name: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.code.SearchByLowerCaseName.16 {{ name = {angle_for(__env, name)}, entity = {angle_for(__env, entity)} }}", codeSearchByLowerCaseName
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeSearchByLowerCaseName":
@@ -349,10 +297,8 @@ class SearchCodeSearchByLowerCaseName(GleanSchemaPredicate):
 
 class SearchCodeHackSearchByScope(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.code.HackSearchByScope.16 {{ }}", CodeHackSearchByScope
-    return f"search.code.HackSearchByScope.16 { concatenateFields(key) }", CodeHackSearchByScope
+  def build_angle(__env: Dict[str, R], name: ast.Expr, scope: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.code.HackSearchByScope.16 {{ name = {angle_for(__env, name)}, scope = {angle_for(__env, scope)}, entity = {angle_for(__env, entity)} }}", codeHackSearchByScope
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, scope: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeHackSearchByScope":
@@ -360,10 +306,8 @@ class SearchCodeHackSearchByScope(GleanSchemaPredicate):
 
 class SearchCodePythonSearchByName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.code.PythonSearchByName.16 {{ }}", CodePythonSearchByName
-    return f"search.code.PythonSearchByName.16 { concatenateFields(key) }", CodePythonSearchByName
+  def build_angle(__env: Dict[str, R], name: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.code.PythonSearchByName.16 {{ name = {angle_for(__env, name)}, entity = {angle_for(__env, entity)} }}", codePythonSearchByName
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodePythonSearchByName":

@@ -1,8 +1,9 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union, List
+from typing import Optional, Tuple, Union, List, Dict
 from thrift.py3 import Struct
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, concatenateFields
+import ast
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R
 
 
 from glean.schema.codexref.types import (
@@ -14,10 +15,8 @@ from glean.schema.codexref.types import (
 
 class CodexrefOutgoingXRefs(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"codexref.OutgoingXRefs.6 {{ }}", OutgoingXRefs
-    return f"codexref.OutgoingXRefs.6 { concatenateFields(key) }", OutgoingXRefs
+  def build_angle(__env: Dict[str, R], file: ast.Expr, shard: ast.Expr) -> Tuple[str, Struct]:
+    return f"codexref.OutgoingXRefs.6 {{ file = {angle_for(__env, file)}, shard = {angle_for(__env, shard)} }}", OutgoingXRefs
 
   @staticmethod
   def angle_query(*, file: Optional[str] = None, shard: Optional[Tuple[()]] = None) -> "CodexrefOutgoingXRefs":
@@ -25,10 +24,8 @@ class CodexrefOutgoingXRefs(GleanSchemaPredicate):
 
 class CodexrefSymbolName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"codexref.SymbolName.6 {{ }}", SymbolName
-    return f"codexref.SymbolName.6 {key}", SymbolName
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"codexref.SymbolName.6 {angle_for(__env, arg)}", SymbolName
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "CodexrefSymbolName":
@@ -36,10 +33,8 @@ class CodexrefSymbolName(GleanSchemaPredicate):
 
 class CodexrefIncomingXRefs(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"codexref.IncomingXRefs.6 {{ }}", IncomingXRefs
-    return f"codexref.IncomingXRefs.6 { concatenateFields(key) }", IncomingXRefs
+  def build_angle(__env: Dict[str, R], file: ast.Expr, shard: ast.Expr) -> Tuple[str, Struct]:
+    return f"codexref.IncomingXRefs.6 {{ file = {angle_for(__env, file)}, shard = {angle_for(__env, shard)} }}", IncomingXRefs
 
   @staticmethod
   def angle_query(*, file: Optional[str] = None, shard: Optional[Tuple[()]] = None) -> "CodexrefIncomingXRefs":

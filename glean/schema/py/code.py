@@ -1,8 +1,9 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union, List
+from typing import Optional, Tuple, Union, List, Dict
 from thrift.py3 import Struct
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, concatenateFields
+import ast
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R
 
 
 from glean.schema.code.types import (
@@ -13,10 +14,8 @@ from glean.schema.code.types import (
 
 class CodeEntityLanguageLSIF(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"code.EntityLanguageLSIF.24 {{ }}", EntityLanguageLSIF
-    return f"code.EntityLanguageLSIF.24 { concatenateFields(key) }", EntityLanguageLSIF
+  def build_angle(__env: Dict[str, R], entity: ast.Expr, language: ast.Expr) -> Tuple[str, Struct]:
+    return f"code.EntityLanguageLSIF.24 {{ entity = {angle_for(__env, entity)}, language = {angle_for(__env, language)} }}", EntityLanguageLSIF
 
   @staticmethod
   def angle_query(*, entity: Optional[Tuple[()]] = None, language: Optional[Tuple[()]] = None) -> "CodeEntityLanguageLSIF":
@@ -24,10 +23,8 @@ class CodeEntityLanguageLSIF(GleanSchemaPredicate):
 
 class CodeEntityLanguage(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"code.EntityLanguage.24 {{ }}", EntityLanguage
-    return f"code.EntityLanguage.24 { concatenateFields(key) }", EntityLanguage
+  def build_angle(__env: Dict[str, R], entity: ast.Expr, language: ast.Expr) -> Tuple[str, Struct]:
+    return f"code.EntityLanguage.24 {{ entity = {angle_for(__env, entity)}, language = {angle_for(__env, language)} }}", EntityLanguage
 
   @staticmethod
   def angle_query(*, entity: Optional[Tuple[()]] = None, language: Optional[Tuple[()]] = None) -> "CodeEntityLanguage":

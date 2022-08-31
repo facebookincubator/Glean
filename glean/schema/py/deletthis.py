@@ -1,8 +1,10 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union, List
+from typing import Optional, Tuple, Union, List, Dict
 from thrift.py3 import Struct
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, concatenateFields
+import ast
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R
+from glean.schema.py.src import *
 
 
 from glean.schema.deletthis.types import (
@@ -12,13 +14,11 @@ from glean.schema.deletthis.types import (
 
 class DeletthisFileReverseDeps(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"deletthis.FileReverseDeps.15 {{ }}", FileReverseDeps
-    return f"deletthis.FileReverseDeps.15 { concatenateFields(key) }", FileReverseDeps
+  def build_angle(__env: Dict[str, R], file: ast.Expr, referenced_by: ast.Expr, via: ast.Expr) -> Tuple[str, Struct]:
+    return f"deletthis.FileReverseDeps.15 {{ file = {angle_for(__env, file)}, referenced_by = {angle_for(__env, referenced_by)}, via = {angle_for(__env, via)} }}", FileReverseDeps
 
   @staticmethod
-  def angle_query(*, file: Optional[Tuple[()]] = None, referenced_by: Optional[Tuple[()]] = None, via: Optional[Tuple[()]] = None) -> "DeletthisFileReverseDeps":
+  def angle_query(*, file: Optional["SrcFile"] = None, referenced_by: Optional["SrcFile"] = None, via: Optional[Tuple[()]] = None) -> "DeletthisFileReverseDeps":
     raise Exception("this function can only be called from @angle_query")
 
 

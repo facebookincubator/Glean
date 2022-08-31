@@ -1,26 +1,26 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union, List
+from typing import Optional, Tuple, Union, List, Dict
 from thrift.py3 import Struct
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, concatenateFields
+import ast
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R
+from glean.schema.py.src import *
 
 
 from glean.schema.codemarkupflow.types import (
-    FlowFlowEntityLocation,
-    FlowFlowResolveLocation,
-    FlowFlowFileReferenceEntityXRefLocations,
-    FlowFlowFileImportDeclEntityXRefLocations,
-    FlowFlowFileEntityXRefLocations,
-    FlowFlowEntityUses,
+    flowFlowEntityLocation,
+    flowFlowResolveLocation,
+    flowFlowFileReferenceEntityXRefLocations,
+    flowFlowFileImportDeclEntityXRefLocations,
+    flowFlowFileEntityXRefLocations,
+    flowFlowEntityUses,
 )
 
 
 class CodemarkupFlowFlowEntityLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"codemarkup.flow.FlowEntityLocation.2 {{ }}", FlowFlowEntityLocation
-    return f"codemarkup.flow.FlowEntityLocation.2 { concatenateFields(key) }", FlowFlowEntityLocation
+  def build_angle(__env: Dict[str, R], entity: ast.Expr, location: ast.Expr) -> Tuple[str, Struct]:
+    return f"codemarkup.flow.FlowEntityLocation.2 {{ entity = {angle_for(__env, entity)}, location = {angle_for(__env, location)} }}", flowFlowEntityLocation
 
   @staticmethod
   def angle_query(*, entity: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "CodemarkupFlowFlowEntityLocation":
@@ -28,10 +28,8 @@ class CodemarkupFlowFlowEntityLocation(GleanSchemaPredicate):
 
 class CodemarkupFlowFlowResolveLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"codemarkup.flow.FlowResolveLocation.2 {{ }}", FlowFlowResolveLocation
-    return f"codemarkup.flow.FlowResolveLocation.2 { concatenateFields(key) }", FlowFlowResolveLocation
+  def build_angle(__env: Dict[str, R], location: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"codemarkup.flow.FlowResolveLocation.2 {{ location = {angle_for(__env, location)}, entity = {angle_for(__env, entity)} }}", flowFlowResolveLocation
 
   @staticmethod
   def angle_query(*, location: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupFlowFlowResolveLocation":
@@ -39,46 +37,38 @@ class CodemarkupFlowFlowResolveLocation(GleanSchemaPredicate):
 
 class CodemarkupFlowFlowFileReferenceEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"codemarkup.flow.FlowFileReferenceEntityXRefLocations.2 {{ }}", FlowFlowFileReferenceEntityXRefLocations
-    return f"codemarkup.flow.FlowFileReferenceEntityXRefLocations.2 { concatenateFields(key) }", FlowFlowFileReferenceEntityXRefLocations
+  def build_angle(__env: Dict[str, R], file: ast.Expr, xref: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"codemarkup.flow.FlowFileReferenceEntityXRefLocations.2 {{ file = {angle_for(__env, file)}, xref = {angle_for(__env, xref)}, entity = {angle_for(__env, entity)} }}", flowFlowFileReferenceEntityXRefLocations
 
   @staticmethod
-  def angle_query(*, file: Optional[Tuple[()]] = None, xref: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupFlowFlowFileReferenceEntityXRefLocations":
+  def angle_query(*, file: Optional["SrcFile"] = None, xref: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupFlowFlowFileReferenceEntityXRefLocations":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupFlowFlowFileImportDeclEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"codemarkup.flow.FlowFileImportDeclEntityXRefLocations.2 {{ }}", FlowFlowFileImportDeclEntityXRefLocations
-    return f"codemarkup.flow.FlowFileImportDeclEntityXRefLocations.2 { concatenateFields(key) }", FlowFlowFileImportDeclEntityXRefLocations
+  def build_angle(__env: Dict[str, R], file: ast.Expr, xref: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"codemarkup.flow.FlowFileImportDeclEntityXRefLocations.2 {{ file = {angle_for(__env, file)}, xref = {angle_for(__env, xref)}, entity = {angle_for(__env, entity)} }}", flowFlowFileImportDeclEntityXRefLocations
 
   @staticmethod
-  def angle_query(*, file: Optional[Tuple[()]] = None, xref: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupFlowFlowFileImportDeclEntityXRefLocations":
+  def angle_query(*, file: Optional["SrcFile"] = None, xref: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupFlowFlowFileImportDeclEntityXRefLocations":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupFlowFlowFileEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"codemarkup.flow.FlowFileEntityXRefLocations.2 {{ }}", FlowFlowFileEntityXRefLocations
-    return f"codemarkup.flow.FlowFileEntityXRefLocations.2 { concatenateFields(key) }", FlowFlowFileEntityXRefLocations
+  def build_angle(__env: Dict[str, R], file: ast.Expr, xref: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"codemarkup.flow.FlowFileEntityXRefLocations.2 {{ file = {angle_for(__env, file)}, xref = {angle_for(__env, xref)}, entity = {angle_for(__env, entity)} }}", flowFlowFileEntityXRefLocations
 
   @staticmethod
-  def angle_query(*, file: Optional[Tuple[()]] = None, xref: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupFlowFlowFileEntityXRefLocations":
+  def angle_query(*, file: Optional["SrcFile"] = None, xref: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupFlowFlowFileEntityXRefLocations":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupFlowFlowEntityUses(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"codemarkup.flow.FlowEntityUses.2 {{ }}", FlowFlowEntityUses
-    return f"codemarkup.flow.FlowEntityUses.2 { concatenateFields(key) }", FlowFlowEntityUses
+  def build_angle(__env: Dict[str, R], target: ast.Expr, file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
+    return f"codemarkup.flow.FlowEntityUses.2 {{ target = {angle_for(__env, target)}, file = {angle_for(__env, file)}, span = {angle_for(__env, span)} }}", flowFlowEntityUses
 
   @staticmethod
-  def angle_query(*, target: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None) -> "CodemarkupFlowFlowEntityUses":
+  def angle_query(*, target: Optional[Tuple[()]] = None, file: Optional["SrcFile"] = None, span: Optional[Tuple[()]] = None) -> "CodemarkupFlowFlowEntityUses":
     raise Exception("this function can only be called from @angle_query")
 
 

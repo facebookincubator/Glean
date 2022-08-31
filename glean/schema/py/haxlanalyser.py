@@ -1,8 +1,10 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union, List
+from typing import Optional, Tuple, Union, List, Dict
 from thrift.py3 import Struct
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, concatenateFields
+import ast
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R
+from glean.schema.py.src import *
 
 
 from glean.schema.haxlanalyser.types import (
@@ -43,10 +45,8 @@ from glean.schema.haxlanalyser.types import (
 
 class HaxlanalyserThriftResponse(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.ThriftResponse.1 {{ }}", ThriftResponse
-    return f"haxlanalyser.ThriftResponse.1 {key}", ThriftResponse
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.ThriftResponse.1 {angle_for(__env, arg)}", ThriftResponse
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserThriftResponse":
@@ -54,21 +54,17 @@ class HaxlanalyserThriftResponse(GleanSchemaPredicate):
 
 class HaxlanalyserTallyConfig(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.TallyConfig.1 {{ }}", TallyConfig
-    return f"haxlanalyser.TallyConfig.1 { concatenateFields(key) }", TallyConfig
+  def build_angle(__env: Dict[str, R], name: ast.Expr, source: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.TallyConfig.1 {{ name = {angle_for(__env, name)}, source = {angle_for(__env, source)} }}", TallyConfig
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None) -> "HaxlanalyserTallyConfig":
+  def angle_query(*, name: Optional["HaxlanalyserTallyName"] = None, source: Optional[Tuple[()]] = None) -> "HaxlanalyserTallyConfig":
     raise Exception("this function can only be called from @angle_query")
 
 class HaxlanalyserPolicyName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.PolicyName.1 {{ }}", PolicyName
-    return f"haxlanalyser.PolicyName.1 {key}", PolicyName
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.PolicyName.1 {angle_for(__env, arg)}", PolicyName
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserPolicyName":
@@ -76,10 +72,8 @@ class HaxlanalyserPolicyName(GleanSchemaPredicate):
 
 class HaxlanalyserRestrictionResponse(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.RestrictionResponse.1 {{ }}", RestrictionResponse
-    return f"haxlanalyser.RestrictionResponse.1 {key}", RestrictionResponse
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.RestrictionResponse.1 {angle_for(__env, arg)}", RestrictionResponse
 
   @staticmethod
   def angle_query(*, arg: Optional[int] = None) -> "HaxlanalyserRestrictionResponse":
@@ -87,21 +81,17 @@ class HaxlanalyserRestrictionResponse(GleanSchemaPredicate):
 
 class HaxlanalyserContext(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.Context.1 {{ }}", Context
-    return f"haxlanalyser.Context.1 { concatenateFields(key) }", Context
+  def build_angle(__env: Dict[str, R], name: ast.Expr, source: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.Context.1 {{ name = {angle_for(__env, name)}, source = {angle_for(__env, source)} }}", Context
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None) -> "HaxlanalyserContext":
+  def angle_query(*, name: Optional["HaxlanalyserContextName"] = None, source: Optional[Tuple[()]] = None) -> "HaxlanalyserContext":
     raise Exception("this function can only be called from @angle_query")
 
 class HaxlanalyserEndpointName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.EndpointName.1 {{ }}", EndpointName
-    return f"haxlanalyser.EndpointName.1 {key}", EndpointName
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.EndpointName.1 {angle_for(__env, arg)}", EndpointName
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserEndpointName":
@@ -109,10 +99,8 @@ class HaxlanalyserEndpointName(GleanSchemaPredicate):
 
 class HaxlanalyserJankyJSONResponse(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.JankyJSONResponse.1 {{ }}", JankyJSONResponse
-    return f"haxlanalyser.JankyJSONResponse.1 {key}", JankyJSONResponse
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.JankyJSONResponse.1 {angle_for(__env, arg)}", JankyJSONResponse
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserJankyJSONResponse":
@@ -120,10 +108,8 @@ class HaxlanalyserJankyJSONResponse(GleanSchemaPredicate):
 
 class HaxlanalyserClassifierRead(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.ClassifierRead.1 {{ }}", ClassifierRead
-    return f"haxlanalyser.ClassifierRead.1 {key}", ClassifierRead
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.ClassifierRead.1 {angle_for(__env, arg)}", ClassifierRead
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserClassifierRead":
@@ -131,10 +117,8 @@ class HaxlanalyserClassifierRead(GleanSchemaPredicate):
 
 class HaxlanalyserScubaResponse(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.ScubaResponse.1 {{ }}", ScubaResponse
-    return f"haxlanalyser.ScubaResponse.1 {key}", ScubaResponse
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.ScubaResponse.1 {angle_for(__env, arg)}", ScubaResponse
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserScubaResponse":
@@ -142,10 +126,8 @@ class HaxlanalyserScubaResponse(GleanSchemaPredicate):
 
 class HaxlanalyserFeatureSetFeature(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.FeatureSetFeature.1 {{ }}", FeatureSetFeature
-    return f"haxlanalyser.FeatureSetFeature.1 {key}", FeatureSetFeature
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.FeatureSetFeature.1 {angle_for(__env, arg)}", FeatureSetFeature
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserFeatureSetFeature":
@@ -153,10 +135,8 @@ class HaxlanalyserFeatureSetFeature(GleanSchemaPredicate):
 
 class HaxlanalyserSitevarFetch(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.SitevarFetch.1 {{ }}", SitevarFetch
-    return f"haxlanalyser.SitevarFetch.1 {key}", SitevarFetch
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.SitevarFetch.1 {angle_for(__env, arg)}", SitevarFetch
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserSitevarFetch":
@@ -164,10 +144,8 @@ class HaxlanalyserSitevarFetch(GleanSchemaPredicate):
 
 class HaxlanalyserCall(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.Call.1 {{ }}", Call
-    return f"haxlanalyser.Call.1 { concatenateFields(key) }", Call
+  def build_angle(__env: Dict[str, R], ref: ast.Expr, qname: ast.Expr, loc: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.Call.1 {{ ref = {angle_for(__env, ref)}, qname = {angle_for(__env, qname)}, loc = {angle_for(__env, loc)} }}", Call
 
   @staticmethod
   def angle_query(*, ref: Optional[str] = None, qname: Optional[str] = None, loc: Optional[Tuple[()]] = None) -> "HaxlanalyserCall":
@@ -175,10 +153,8 @@ class HaxlanalyserCall(GleanSchemaPredicate):
 
 class HaxlanalyserACDCProperty(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.ACDCProperty.1 {{ }}", ACDCProperty
-    return f"haxlanalyser.ACDCProperty.1 { concatenateFields(key) }", ACDCProperty
+  def build_angle(__env: Dict[str, R], name: ast.Expr, source: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.ACDCProperty.1 {{ name = {angle_for(__env, name)}, source = {angle_for(__env, source)} }}", ACDCProperty
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, source: Optional[Tuple[()]] = None) -> "HaxlanalyserACDCProperty":
@@ -186,10 +162,8 @@ class HaxlanalyserACDCProperty(GleanSchemaPredicate):
 
 class HaxlanalyserEdge(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.Edge.1 {{ }}", Edge
-    return f"haxlanalyser.Edge.1 { concatenateFields(key) }", Edge
+  def build_angle(__env: Dict[str, R], origin: ast.Expr, dest: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.Edge.1 {{ origin = {angle_for(__env, origin)}, dest = {angle_for(__env, dest)} }}", Edge
 
   @staticmethod
   def angle_query(*, origin: Optional[Tuple[()]] = None, dest: Optional[Tuple[()]] = None) -> "HaxlanalyserEdge":
@@ -197,21 +171,17 @@ class HaxlanalyserEdge(GleanSchemaPredicate):
 
 class HaxlanalyserEndpoint(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.Endpoint.1 {{ }}", Endpoint
-    return f"haxlanalyser.Endpoint.1 { concatenateFields(key) }", Endpoint
+  def build_angle(__env: Dict[str, R], name: ast.Expr, source: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.Endpoint.1 {{ name = {angle_for(__env, name)}, source = {angle_for(__env, source)} }}", Endpoint
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None) -> "HaxlanalyserEndpoint":
+  def angle_query(*, name: Optional["HaxlanalyserEndpointName"] = None, source: Optional[Tuple[()]] = None) -> "HaxlanalyserEndpoint":
     raise Exception("this function can only be called from @angle_query")
 
 class HaxlanalyserTallyFetch(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.TallyFetch.1 {{ }}", TallyFetch
-    return f"haxlanalyser.TallyFetch.1 {key}", TallyFetch
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.TallyFetch.1 {angle_for(__env, arg)}", TallyFetch
 
   @staticmethod
   def angle_query(*, arg: Optional[Tuple[()]] = None) -> "HaxlanalyserTallyFetch":
@@ -219,21 +189,17 @@ class HaxlanalyserTallyFetch(GleanSchemaPredicate):
 
 class HaxlanalyserPolicy(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.Policy.1 {{ }}", Policy
-    return f"haxlanalyser.Policy.1 { concatenateFields(key) }", Policy
+  def build_angle(__env: Dict[str, R], name: ast.Expr, source: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.Policy.1 {{ name = {angle_for(__env, name)}, source = {angle_for(__env, source)} }}", Policy
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None) -> "HaxlanalyserPolicy":
+  def angle_query(*, name: Optional["HaxlanalyserPolicyName"] = None, source: Optional[Tuple[()]] = None) -> "HaxlanalyserPolicy":
     raise Exception("this function can only be called from @angle_query")
 
 class HaxlanalyserContextName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.ContextName.1 {{ }}", ContextName
-    return f"haxlanalyser.ContextName.1 {key}", ContextName
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.ContextName.1 {angle_for(__env, arg)}", ContextName
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserContextName":
@@ -241,21 +207,17 @@ class HaxlanalyserContextName(GleanSchemaPredicate):
 
 class HaxlanalyserTestFile(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.TestFile.1 {{ }}", TestFile
-    return f"haxlanalyser.TestFile.1 {key}", TestFile
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.TestFile.1 {angle_for(__env, arg)}", TestFile
 
   @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "HaxlanalyserTestFile":
+  def angle_query(*, arg: Optional["SrcFile"] = None) -> "HaxlanalyserTestFile":
     raise Exception("this function can only be called from @angle_query")
 
 class HaxlanalyserThriftFetch(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.ThriftFetch.1 {{ }}", ThriftFetch
-    return f"haxlanalyser.ThriftFetch.1 {key}", ThriftFetch
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.ThriftFetch.1 {angle_for(__env, arg)}", ThriftFetch
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserThriftFetch":
@@ -263,10 +225,8 @@ class HaxlanalyserThriftFetch(GleanSchemaPredicate):
 
 class HaxlanalyserInputKey(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.InputKey.1 {{ }}", InputKey
-    return f"haxlanalyser.InputKey.1 {key}", InputKey
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.InputKey.1 {angle_for(__env, arg)}", InputKey
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserInputKey":
@@ -274,10 +234,8 @@ class HaxlanalyserInputKey(GleanSchemaPredicate):
 
 class HaxlanalyserPiranhaResponse(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.PiranhaResponse.1 {{ }}", PiranhaResponse
-    return f"haxlanalyser.PiranhaResponse.1 {key}", PiranhaResponse
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.PiranhaResponse.1 {angle_for(__env, arg)}", PiranhaResponse
 
   @staticmethod
   def angle_query(*, arg: Optional[int] = None) -> "HaxlanalyserPiranhaResponse":
@@ -285,10 +243,8 @@ class HaxlanalyserPiranhaResponse(GleanSchemaPredicate):
 
 class HaxlanalyserACDCPropertyAccess(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.ACDCPropertyAccess.1 {{ }}", ACDCPropertyAccess
-    return f"haxlanalyser.ACDCPropertyAccess.1 {key}", ACDCPropertyAccess
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.ACDCPropertyAccess.1 {angle_for(__env, arg)}", ACDCPropertyAccess
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserACDCPropertyAccess":
@@ -296,10 +252,8 @@ class HaxlanalyserACDCPropertyAccess(GleanSchemaPredicate):
 
 class HaxlanalyserTallyResponse(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.TallyResponse.1 {{ }}", TallyResponse
-    return f"haxlanalyser.TallyResponse.1 {key}", TallyResponse
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.TallyResponse.1 {angle_for(__env, arg)}", TallyResponse
 
   @staticmethod
   def angle_query(*, arg: Optional[Tuple[()]] = None) -> "HaxlanalyserTallyResponse":
@@ -307,10 +261,8 @@ class HaxlanalyserTallyResponse(GleanSchemaPredicate):
 
 class HaxlanalyserScribeResponse(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.ScribeResponse.1 {{ }}", ScribeResponse
-    return f"haxlanalyser.ScribeResponse.1 {key}", ScribeResponse
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.ScribeResponse.1 {angle_for(__env, arg)}", ScribeResponse
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserScribeResponse":
@@ -318,21 +270,17 @@ class HaxlanalyserScribeResponse(GleanSchemaPredicate):
 
 class HaxlanalyserInputFetch(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.InputFetch.1 {{ }}", InputFetch
-    return f"haxlanalyser.InputFetch.1 { concatenateFields(key) }", InputFetch
+  def build_angle(__env: Dict[str, R], key: ast.Expr, source: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.InputFetch.1 {{ key = {angle_for(__env, key)}, source = {angle_for(__env, source)} }}", InputFetch
 
   @staticmethod
-  def angle_query(*, key: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None) -> "HaxlanalyserInputFetch":
+  def angle_query(*, key: Optional["HaxlanalyserInputKey"] = None, source: Optional[Tuple[()]] = None) -> "HaxlanalyserInputFetch":
     raise Exception("this function can only be called from @angle_query")
 
 class HaxlanalyserClassifierFetch(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.ClassifierFetch.1 {{ }}", ClassifierFetch
-    return f"haxlanalyser.ClassifierFetch.1 {key}", ClassifierFetch
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.ClassifierFetch.1 {angle_for(__env, arg)}", ClassifierFetch
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserClassifierFetch":
@@ -340,10 +288,8 @@ class HaxlanalyserClassifierFetch(GleanSchemaPredicate):
 
 class HaxlanalyserLogFeatureResponse(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.LogFeatureResponse.1 {{ }}", LogFeatureResponse
-    return f"haxlanalyser.LogFeatureResponse.1 {key}", LogFeatureResponse
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.LogFeatureResponse.1 {angle_for(__env, arg)}", LogFeatureResponse
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserLogFeatureResponse":
@@ -351,10 +297,8 @@ class HaxlanalyserLogFeatureResponse(GleanSchemaPredicate):
 
 class HaxlanalyserLaserDataset(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.LaserDataset.1 {{ }}", LaserDataset
-    return f"haxlanalyser.LaserDataset.1 {key}", LaserDataset
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.LaserDataset.1 {angle_for(__env, arg)}", LaserDataset
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserLaserDataset":
@@ -362,10 +306,8 @@ class HaxlanalyserLaserDataset(GleanSchemaPredicate):
 
 class HaxlanalyserTallyName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.TallyName.1 {{ }}", TallyName
-    return f"haxlanalyser.TallyName.1 {key}", TallyName
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.TallyName.1 {angle_for(__env, arg)}", TallyName
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserTallyName":
@@ -373,10 +315,8 @@ class HaxlanalyserTallyName(GleanSchemaPredicate):
 
 class HaxlanalyserConfigeratorFetch(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.ConfigeratorFetch.1 {{ }}", ConfigeratorFetch
-    return f"haxlanalyser.ConfigeratorFetch.1 {key}", ConfigeratorFetch
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.ConfigeratorFetch.1 {angle_for(__env, arg)}", ConfigeratorFetch
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserConfigeratorFetch":
@@ -384,10 +324,8 @@ class HaxlanalyserConfigeratorFetch(GleanSchemaPredicate):
 
 class HaxlanalyserHiveResponse(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"haxlanalyser.HiveResponse.1 {{ }}", HiveResponse
-    return f"haxlanalyser.HiveResponse.1 {key}", HiveResponse
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"haxlanalyser.HiveResponse.1 {angle_for(__env, arg)}", HiveResponse
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserHiveResponse":

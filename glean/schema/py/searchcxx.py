@@ -1,40 +1,38 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union, List
+from typing import Optional, Tuple, Union, List, Dict
 from thrift.py3 import Struct
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, concatenateFields
+import ast
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R
+from glean.schema.py.cxx1 import *
 
 
 from glean.schema.searchcxx.types import (
-    CxxSearchBySelector,
-    CxxSearchByScope,
-    CxxQueryToQName,
-    CxxGlobalDeclarationWithName,
-    CxxDeclIsDefn,
-    CxxQueryToScope,
-    CxxSearchByNameAndScope,
-    CxxEntityUses,
-    CxxQueryToNSQName,
+    cxxSearchBySelector,
+    cxxSearchByScope,
+    cxxQueryToQName,
+    cxxGlobalDeclarationWithName,
+    cxxDeclIsDefn,
+    cxxQueryToScope,
+    cxxSearchByNameAndScope,
+    cxxEntityUses,
+    cxxQueryToNSQName,
 )
 
 
 class SearchCxxSearchBySelector(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.cxx.SearchBySelector.5 {{ }}", CxxSearchBySelector
-    return f"search.cxx.SearchBySelector.5 { concatenateFields(key) }", CxxSearchBySelector
+  def build_angle(__env: Dict[str, R], selector: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.cxx.SearchBySelector.5 {{ selector = {angle_for(__env, selector)}, entity = {angle_for(__env, entity)} }}", cxxSearchBySelector
 
   @staticmethod
-  def angle_query(*, selector: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCxxSearchBySelector":
+  def angle_query(*, selector: Optional["Cxx1ObjcSelector"] = None, entity: Optional[Tuple[()]] = None) -> "SearchCxxSearchBySelector":
     raise Exception("this function can only be called from @angle_query")
 
 class SearchCxxSearchByScope(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.cxx.SearchByScope.5 {{ }}", CxxSearchByScope
-    return f"search.cxx.SearchByScope.5 { concatenateFields(key) }", CxxSearchByScope
+  def build_angle(__env: Dict[str, R], scope: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.cxx.SearchByScope.5 {{ scope = {angle_for(__env, scope)}, entity = {angle_for(__env, entity)} }}", cxxSearchByScope
 
   @staticmethod
   def angle_query(*, scope: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCxxSearchByScope":
@@ -42,32 +40,26 @@ class SearchCxxSearchByScope(GleanSchemaPredicate):
 
 class SearchCxxQueryToQName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.cxx.QueryToQName.5 {{ }}", CxxQueryToQName
-    return f"search.cxx.QueryToQName.5 { concatenateFields(key) }", CxxQueryToQName
+  def build_angle(__env: Dict[str, R], query: ast.Expr, scope: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.cxx.QueryToQName.5 {{ query = {angle_for(__env, query)}, scope = {angle_for(__env, scope)} }}", cxxQueryToQName
 
   @staticmethod
-  def angle_query(*, query: Optional[Tuple[()]] = None, scope: Optional[Tuple[()]] = None) -> "SearchCxxQueryToQName":
+  def angle_query(*, query: Optional[Tuple[()]] = None, scope: Optional["Cxx1QName"] = None) -> "SearchCxxQueryToQName":
     raise Exception("this function can only be called from @angle_query")
 
 class SearchCxxGlobalDeclarationWithName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.cxx.GlobalDeclarationWithName.5 {{ }}", CxxGlobalDeclarationWithName
-    return f"search.cxx.GlobalDeclarationWithName.5 { concatenateFields(key) }", CxxGlobalDeclarationWithName
+  def build_angle(__env: Dict[str, R], name: ast.Expr, decl: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.cxx.GlobalDeclarationWithName.5 {{ name = {angle_for(__env, name)}, decl = {angle_for(__env, decl)} }}", cxxGlobalDeclarationWithName
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None, decl: Optional[Tuple[()]] = None) -> "SearchCxxGlobalDeclarationWithName":
+  def angle_query(*, name: Optional["Cxx1Name"] = None, decl: Optional[Tuple[()]] = None) -> "SearchCxxGlobalDeclarationWithName":
     raise Exception("this function can only be called from @angle_query")
 
 class SearchCxxDeclIsDefn(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.cxx.DeclIsDefn.5 {{ }}", CxxDeclIsDefn
-    return f"search.cxx.DeclIsDefn.5 { concatenateFields(key) }", CxxDeclIsDefn
+  def build_angle(__env: Dict[str, R], decl: ast.Expr, defn: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.cxx.DeclIsDefn.5 {{ decl = {angle_for(__env, decl)}, defn = {angle_for(__env, defn)} }}", cxxDeclIsDefn
 
   @staticmethod
   def angle_query(*, decl: Optional[Tuple[()]] = None, defn: Optional[Tuple[()]] = None) -> "SearchCxxDeclIsDefn":
@@ -75,10 +67,8 @@ class SearchCxxDeclIsDefn(GleanSchemaPredicate):
 
 class SearchCxxQueryToScope(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.cxx.QueryToScope.5 {{ }}", CxxQueryToScope
-    return f"search.cxx.QueryToScope.5 { concatenateFields(key) }", CxxQueryToScope
+  def build_angle(__env: Dict[str, R], query: ast.Expr, scope: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.cxx.QueryToScope.5 {{ query = {angle_for(__env, query)}, scope = {angle_for(__env, scope)} }}", cxxQueryToScope
 
   @staticmethod
   def angle_query(*, query: Optional[Tuple[()]] = None, scope: Optional[Tuple[()]] = None) -> "SearchCxxQueryToScope":
@@ -86,35 +76,29 @@ class SearchCxxQueryToScope(GleanSchemaPredicate):
 
 class SearchCxxSearchByNameAndScope(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.cxx.SearchByNameAndScope.5 {{ }}", CxxSearchByNameAndScope
-    return f"search.cxx.SearchByNameAndScope.5 { concatenateFields(key) }", CxxSearchByNameAndScope
+  def build_angle(__env: Dict[str, R], name: ast.Expr, scope: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.cxx.SearchByNameAndScope.5 {{ name = {angle_for(__env, name)}, scope = {angle_for(__env, scope)}, entity = {angle_for(__env, entity)} }}", cxxSearchByNameAndScope
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None, scope: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCxxSearchByNameAndScope":
+  def angle_query(*, name: Optional["Cxx1Name"] = None, scope: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCxxSearchByNameAndScope":
     raise Exception("this function can only be called from @angle_query")
 
 class SearchCxxEntityUses(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.cxx.EntityUses.5 {{ }}", CxxEntityUses
-    return f"search.cxx.EntityUses.5 { concatenateFields(key) }", CxxEntityUses
+  def build_angle(__env: Dict[str, R], entity: ast.Expr, uses: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.cxx.EntityUses.5 {{ entity = {angle_for(__env, entity)}, uses = {angle_for(__env, uses)} }}", cxxEntityUses
 
   @staticmethod
-  def angle_query(*, entity: Optional[Tuple[()]] = None, uses: Optional[Tuple[()]] = None) -> "SearchCxxEntityUses":
+  def angle_query(*, entity: Optional[Tuple[()]] = None, uses: Optional["Cxx1TargetUses"] = None) -> "SearchCxxEntityUses":
     raise Exception("this function can only be called from @angle_query")
 
 class SearchCxxQueryToNSQName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"search.cxx.QueryToNSQName.5 {{ }}", CxxQueryToNSQName
-    return f"search.cxx.QueryToNSQName.5 { concatenateFields(key) }", CxxQueryToNSQName
+  def build_angle(__env: Dict[str, R], query: ast.Expr, scope: ast.Expr) -> Tuple[str, Struct]:
+    return f"search.cxx.QueryToNSQName.5 {{ query = {angle_for(__env, query)}, scope = {angle_for(__env, scope)} }}", cxxQueryToNSQName
 
   @staticmethod
-  def angle_query(*, query: Optional[Tuple[()]] = None, scope: Optional[Tuple[()]] = None) -> "SearchCxxQueryToNSQName":
+  def angle_query(*, query: Optional[Tuple[()]] = None, scope: Optional["Cxx1NamespaceQName"] = None) -> "SearchCxxQueryToNSQName":
     raise Exception("this function can only be called from @angle_query")
 
 

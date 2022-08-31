@@ -1,33 +1,30 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union, List
+from typing import Optional, Tuple, Union, List, Dict
 from thrift.py3 import Struct
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, concatenateFields
+import ast
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R
 
 
 from glean.schema.hackdependency.types import (
-    Inheritance,
-    Name,
+    inheritance,
+    name,
 )
 
 
 class HackdependencyInheritance(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"hackdependency.inheritance.1 {{ }}", Inheritance
-    return f"hackdependency.inheritance.1 { concatenateFields(key) }", Inheritance
+  def build_angle(__env: Dict[str, R], parent: ast.Expr, child: ast.Expr) -> Tuple[str, Struct]:
+    return f"hackdependency.inheritance.1 {{ parent = {angle_for(__env, parent)}, child = {angle_for(__env, child)} }}", inheritance
 
   @staticmethod
-  def angle_query(*, parent: Optional[Tuple[()]] = None, child: Optional[Tuple[()]] = None) -> "HackdependencyInheritance":
+  def angle_query(*, parent: Optional["Hackdependencyname"] = None, child: Optional["Hackdependencyname"] = None) -> "HackdependencyInheritance":
     raise Exception("this function can only be called from @angle_query")
 
 class HackdependencyName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"hackdependency.name.1 {{ }}", Name
-    return f"hackdependency.name.1 {key}", Name
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"hackdependency.name.1 {angle_for(__env, arg)}", name
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HackdependencyName":

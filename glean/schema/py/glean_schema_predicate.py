@@ -1,18 +1,66 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union, List
+from typing import Dict, Tuple, TypeVar, Type
 from thrift.py3 import Struct
+import json
+import inspect
+import ast
+
+R = TypeVar("R", int, str, bool, Tuple[()])
 
 class GleanSchemaPredicate:
-  @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
-    raise Exception("this function can only be called from @angle_query")
-
   @staticmethod
   def angle_query(*, arg: str) -> "GleanSchemaPredicate":
     raise Exception("this function can only be called from @angle_query")
 
-def concatenateFields(fields: List[Tuple[str,str]]) -> str:
-  f = ', '.join(map((lambda f: f'{f[0]} = {f[1]}'), fields))
-  return f'{{ {f} }}'
+def angle_for(__env: Dict[str, R], key: ast.Expr):
+  if key is None:
+    return f'_'
+  if isinstance(key, ast.Name):
+    return json.dumps(__env[key.id])
+  elif isinstance(key, ast.Constant):
+    return json.dumps(key.value)
+  elif isinstance(key, ast.Call):
+    nested_call_arg = callGleanSchemaPredicateQuery(key, {}, "__target__", __env)["__target__"]
+    return nested_call_arg[0]
+  raise NotImplementedError(f"Query key type not implemented")
+
+def _class_name_to_py_query(class_name: str, __env: Dict[str, R], method_args: Dict[str, ast.Expr]) -> Tuple[str, Type[Struct]]:
+  # Before this function call, we check that the node is an ast.Name (part of an ast.Call).
+  # It will always evaluate to a class name.
+
+  # Using globals() to get the class_name does not work because it needs all the user classes imported
+  # in this module. Instead: we use the frame info to access the global namespace of the user's code.
+  # The variable no_frames_to_user_code is dependent on the number of nested functions calls from the user code.
+  num_frames_to_user_code = 3
+  frame = 0
+  angle_query_args = inspect.getfullargspec(
+    inspect.stack()[num_frames_to_user_code][frame]
+    .f_globals[class_name]
+    .build_angle
+  ).args[1:]
+  fields = (method_args.get(k) for k in angle_query_args)
+  return (
+    inspect.stack()[num_frames_to_user_code][frame]
+    .f_globals[class_name]
+    .build_angle(__env, *tuple(fields))
+  )
+
+def callGleanSchemaPredicateQuery(function_call: ast.Call, variables: Dict[str, Tuple[str, Type[Struct]]], target: str, __env: Dict[str, R]) -> Dict[str, Tuple[str, Type[Struct]]]:
+  method_args = function_call.keywords
+  method_args_ = {}
+  for method_arg in method_args:
+    query_arg_name = method_arg.arg
+    arg_val = method_arg.value
+    method_args_[query_arg_name] = arg_val
+  function_attribute = function_call.func
+  if isinstance(function_attribute, ast.Attribute):
+    class_name = function_attribute.value
+    class_method = function_attribute.attr
+    if isinstance(class_name, ast.Name):
+      class_name = class_name.id
+      if class_method != "angle_query":
+        raise AttributeError(f"{class_method} is an undefined method")
+      variables[target] = _class_name_to_py_query(class_name, __env, method_args_)
+  return variables
 
