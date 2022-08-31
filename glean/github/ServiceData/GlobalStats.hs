@@ -9,11 +9,18 @@
 module ServiceData.GlobalStats (module ServiceData.GlobalStats) where
 
 import Data.ByteString (ByteString)
+import qualified Data.HashMap.Strict as HashMap
 
 import ServiceData.Types
 
 setCounter :: ByteString -> Int -> IO ()
 setCounter _ _ = return ()
+
+clearCounter :: ByteString -> IO ()
+clearCounter _ = return ()
+
+getCounters :: IO (HashMap.HashMap ByteString Int)
+getCounters = return HashMap.empty
 
 addStatValue :: ByteString -> Int -> IO ()
 addStatValue _ _ = return ()
