@@ -167,3 +167,14 @@ optTest = dbTestCase $ \env repo -> do
      |]
   assertEqual "optimise if condition" Nothing $
     factsSearched (PredicateRef "glean.test.StringPair" 1) lookupPid stats
+
+
+  -- we should recognise that the `cxx1.Name _` statement only checks
+  -- whether there is any cxx1.Name fact in the db and stop after finding
+  -- the first result.
+  (_, stats) <- queryStats env repo $ angle @Glean.Test.Predicate
+    [s| cxx1.Name _;
+        glean.test.Predicate _
+    |]
+  assertEqual "optimise existence check" (Just 1) $
+    factsSearched (PredicateRef "cxx1.Name" 5) lookupPid stats

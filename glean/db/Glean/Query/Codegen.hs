@@ -729,78 +729,46 @@ compileStatements
           done <- label
           return a
 
-      compile (CgStatement (Ref (MatchWild _)) gen : rest) =
-        compileGen gen Nothing $ compile rest
-
-      compile (CgStatement (Ref (MatchBind (Var _ var _))) gen : rest) =
-        compileGen gen (Just (vars ! var)) $ compile rest
-
-      -- <pat> = <fact gen> is a lookup if <pat> is known
-      compile
-        (CgStatement pat (FactGenerator (PidRef pid _) kpat vpat _) : rest)
-        | Just load <- patIsExactFid vars pat = mdo
-          let
-            patOutput
-              :: forall a .
-                 [QueryChunk Var]
-              -> (Register 'BinaryOutputPtr -> (Label -> Code ()) -> Code a)
-              -> Code a
-            patOutput chunks cont = case chunks of
-              [QueryBind (Var ty v _)] | not (isWordTy ty) ->
-                cont (castRegister (vars ! v)) (\_ -> return ())
-              _ | all isWild chunks -> do
-                  reg <- constant 0  -- null means "don't copy the key/value"
-                  cont (castRegister reg) (\_ -> return ())
-                | otherwise ->
-                  output $ \reg ->
-                    cont reg (\fail -> cmpOutputPat vars reg chunks fail)
-
-          patOutput (preProcessPat kpat) $ \kout kcmp ->
-            patOutput (preProcessPat vpat) $ \vout vcmp -> do
-              reg <- load fail
-              local $ \pidReg -> mdo
-                lookupKeyValue reg kout vout pidReg
-                -- TODO: if this is a trusted fact ID (i.e. not supplied by
-                -- the user) then we could skip this test.
-                expected <- constant (fromIntegral (fromPid pid))
-                jumpIfEq pidReg expected ok
-                raise "fact has the wrong type"
-                ok <- label
-                return ()
-              kcmp fail
-              vcmp fail
-          a <- compile rest
-          fail <- label
-          return a
-
-      -- ToDO: push the pat into compileGen and match it eagerly, save
-      -- some copying.
       compile (CgStatement pat gen : rest) =
-        outReg $ \reg ->
-          compileGen gen (Just reg) $ mdo
-            filterPat reg pat fail
-            a <- compile rest
-            fail <- label
-            return a
+        if isExistenceCheck
+        then singleResult (compileStmt pat gen) $ compile rest
+        else compileStmt pat gen $ compile rest
         where
-        outReg
-          | Just{} <- maybeWordFilter = local
-          | otherwise = \f -> output $ \r ->
-              f $ castRegister (r :: Register 'BinaryOutputPtr)
+          -- An existence check is a statement whose sole purpose is to assert
+          -- whether there is any entry in the database that satisfies it.
+          -- Variables bound by an existencial check are not used by subsequent
+          -- statements.
+          --
+          -- Given the environment is not meaningfully changed, all executions
+          -- of the code after it will be identical. This means we can stop
+          -- after going through the first result.
+          --
+          -- For now instead of checking the use of bound variables we will
+          -- just say that a statement is an existence check if it doesn't bind
+          -- any variables at all.
+          isExistenceCheck = case gen of
+            FactGenerator _ k v _ ->
+              let bindsAnywhere = bindsIn pat || bindsIn k || bindsIn v in
+              not bindsAnywhere
+            _ -> False
 
-        maybeWordFilter = cmpWordPat vars pat
+          -- does the pattern bind a variable?
+          bindsIn pat = flip any (matches pat) $ \case
+            MatchBind _ -> True
+            MatchWild _ -> False
+            MatchNever _ -> False
+            MatchFid _ -> False
+            MatchVar _ -> False
+            MatchAnd l r -> bindsIn l || bindsIn r
+            MatchPrefix _ exp -> bindsIn exp
+            MatchArrayPrefix _ exps -> any bindsIn exps
+            MatchExt _ -> False
 
-        filterPat reg pat fail
-          | Just cmp <- maybeWordFilter = cmp reg fail
-          | otherwise = cmpOutputPat vars (castRegister reg) chunks fail
-          where chunks = preProcessPat pat
+          matches :: Term (Match e v) -> [Match e v]
+          matches p = foldMap pure p
 
       compile (CgNegation stmts : rest) = mdo
-        local $ \seekLevel -> do
-          currentSeek seekLevel
-          compileStatements bounds regs stmts vars $ do
-            endSeek seekLevel
-            jump fail
+        singleResult (compileStatements bounds regs stmts vars) $ jump fail
         a <- compile rest
         fail <- label
         return a
@@ -843,6 +811,73 @@ compileStatements
 
         done <- label
         return a
+
+      compileStmt :: forall a. Pat -> Generator -> Code a -> Code a
+      compileStmt pat gen continue = case (pat, gen) of
+        (Ref (MatchWild _), gen) ->
+          compileGen gen Nothing continue
+
+        (Ref (MatchBind (Var _ var _)), gen) ->
+          compileGen gen (Just (vars ! var)) continue
+
+        -- <pat> = <fact gen> is a lookup if <pat> is known
+        (pat, FactGenerator (PidRef pid _) kpat vpat _)
+          | Just load <- patIsExactFid vars pat -> mdo
+          let
+            patOutput
+              :: forall a .
+                 [QueryChunk Var]
+              -> (Register 'BinaryOutputPtr -> (Label -> Code ()) -> Code a)
+              -> Code a
+            patOutput chunks cont = case chunks of
+              [QueryBind (Var ty v _)] | not (isWordTy ty) ->
+                cont (castRegister (vars ! v)) (\_ -> return ())
+              _ | all isWild chunks -> do
+                  reg <- constant 0  -- null means "don't copy the key/value"
+                  cont (castRegister reg) (\_ -> return ())
+                | otherwise ->
+                  output $ \reg ->
+                    cont reg (\fail -> cmpOutputPat vars reg chunks fail)
+
+          patOutput (preProcessPat kpat) $ \kout kcmp ->
+            patOutput (preProcessPat vpat) $ \vout vcmp -> do
+              reg <- load fail
+              local $ \pidReg -> mdo
+                lookupKeyValue reg kout vout pidReg
+                -- TODO: if this is a trusted fact ID (i.e. not supplied by
+                -- the user) then we could skip this test.
+                expected <- constant (fromIntegral (fromPid pid))
+                jumpIfEq pidReg expected ok
+                raise "fact has the wrong type"
+                ok <- label
+                return ()
+              kcmp fail
+              vcmp fail
+          a <- continue
+          fail <- label
+          return a
+
+        -- ToDO: push the pat into compileGen and match it eagerly, save
+        -- some copying.
+        (pat, gen) ->
+          let outReg
+                | Just{} <- maybeWordFilter = local
+                | otherwise = \f -> output $ \r ->
+                    f $ castRegister (r :: Register 'BinaryOutputPtr)
+
+              maybeWordFilter = cmpWordPat vars pat
+
+              filterPat reg pat fail
+                | Just cmp <- maybeWordFilter = cmp reg fail
+                | otherwise = cmpOutputPat vars (castRegister reg) chunks fail
+                where chunks = preProcessPat pat
+          in
+          outReg $ \reg ->
+            compileGen gen (Just reg) $ mdo
+              filterPat reg pat fail
+              a <- continue
+              fail <- label
+              return a
 
       -- Helper function for processing numeric primitive operations
       compileGenNumericPrim
@@ -1015,6 +1050,19 @@ compileStatements
         compileFactGenerator bounds regs vars pid kpat vpat range maybeReg inner
 
 
+      -- Perform an action but interrupt it and clean-up after the first result.
+      singleResult :: (forall a. Code a -> Code a) -> Code b -> Code b
+      singleResult action continue =
+        local $ \seekLevel -> mdo
+          currentSeek seekLevel
+          action $ mdo
+            endSeek seekLevel
+            jump success
+          jump fail
+          success <- label
+          a <- continue
+          fail <- label
+          return a
 
 compileFactGenerator
   :: forall a s
