@@ -185,11 +185,11 @@ findCxxDecls lim backend repo SearchQuery{..} refs = do
     namespaceQNameQuery [] = wild
     namespaceQNameQuery (n:ns) =
       rec $
-        field @"name" (alt @"just" (string n)) $
+        field @"name" (alt @"just" (predicate (string n))) $
         field @"parent"
           (if null ns
             then wild -- allow any amount of parents
-            else alt @"just" (namespaceQNameQuery ns)) $
+            else alt @"just" (predicate (namespaceQNameQuery ns))) $
         end
 
     findXRefs :: Cxx.Entity -> Glean.Haxl w [Search.FileXRef]
@@ -437,7 +437,7 @@ findHackDecls lim backend repo SearchQuery{..} = Glean.runHaxl backend repo $
     -- The final namespace parent is always a wildcard
     namespaceOf [] = wild
     namespaceOf (x:xs) =
-      alt @"just" $
+      just $ predicate $
         rec $
           field @"name" (string x) $
           field @"parent" (namespaceOf xs)

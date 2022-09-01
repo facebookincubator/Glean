@@ -237,10 +237,10 @@ shareTypeDef mode genSub here t = do
   return (haskellTypeName mode (localOrExternal here name))
 
 haskellTy :: NameSpaces -> ResolvedType -> M Text
-haskellTy = haskellTy_ PredId Data True
+haskellTy = haskellTy_ PredName Data True
 
 -- | how to render predicate types in haskellTy
-data PredTy = PredName | PredId | PredKey
+data PredTy = PredName | PredKey
 
 haskellTy_
   :: PredTy
@@ -257,18 +257,17 @@ haskellTy_ withId mode genSub here t = case t of
   StringTy{} -> return "Data.Text.Text"
   ArrayTy ByteTy -> return "Data.ByteString.ByteString"
   ArrayTy tInner -> do
-    inner <- haskellTy_ withId mode genSub here tInner
+    inner <- haskellTy_ PredName mode genSub here tInner
     return $ "[" <> inner <> "]"
   RecordTy{} -> shareTypeDef mode genSub here t
   SumTy{} -> shareTypeDef mode genSub here t
   MaybeTy ty -> do
-    inner <- haskellTy_ withId mode genSub here ty
+    inner <- haskellTy_ PredName mode genSub here ty
     return (optionalize inner)
   -- References
   PredicateTy pred -> do
     let wrap = case withId of
           PredName -> id
-          PredId -> ("Glean.IdOf" <>!)
           PredKey -> ("Glean.KeyType " <>)
     wrap . haskellTypeName mode <$> predicateName pred
 

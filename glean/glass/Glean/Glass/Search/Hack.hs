@@ -110,9 +110,9 @@ searchInContainerOrEnum_ isPrefix ns context name =
       entityLocation (alt @"hack" (alt @"decl" decl)) file rangespan lname
     ]
 
-namespaceQName :: [Text] -> Angle (Maybe Hack.NamespaceQName_key)
+namespaceQName :: [Text] -> Angle (Maybe Hack.NamespaceQName)
 namespaceQName [] = nothing
-namespaceQName (n:ns) = just $
+namespaceQName (n:ns) = just $ predicate $
   rec $
     field @"name" (string n) $
     field @"parent" (namespaceQName ns)

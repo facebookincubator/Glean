@@ -108,6 +108,7 @@ scope ns@(n:ns') =
   alt @"local" (functionQName n ns')
 
   where
+    namespaceQName :: [Text] -> Angle Cxx.NamespaceQName_key
     namespaceQName [] =
       rec $
         field @"name" nothing $
@@ -115,11 +116,12 @@ scope ns@(n:ns') =
       end
     namespaceQName (n:ns) =
       rec $
-        field @"name" (if n == "" then nothing else alt @"just" (string n)) $
+        field @"name" (
+          if n == "" then nothing else just (predicate (string n))) $
         field @"parent"
           (if null ns
             then nothing
-            else just (namespaceQName ns))
+            else just (predicate (namespaceQName ns)))
       end
 
     functionQName n ns =

@@ -116,6 +116,16 @@ angleDSL modify = dbTestCase $ \env repo -> do
       ]
   assertEqual "angle - DSL type signatures" 1 (length results)
 
+  -- test for a bug in which RecordFields and SumFields gave the wrong
+  -- type for a predicate nested inside an array or maybe type.
+  results <- runQuery_ env repo $ modify $ Angle.query @[Glean.Test.Predicate] $
+    var $ \p -> p `where_` [
+      wild .= predicate @Glean.Test.Predicate (
+        rec $ field @"array_of_pred" p end)
+    ]
+  assertEqual "angle - DSL 5" 2 (length (concat results))
+
+
 scopingTest :: Test
 scopingTest = dbTestCase $ \env repo -> do
   r <- try $ runQuery_ env repo $ angle @Glean.Test.Predicate

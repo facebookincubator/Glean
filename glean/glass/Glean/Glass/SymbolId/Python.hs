@@ -111,7 +111,7 @@ qNameQuery nameId = vars $
   \ (lname :: Angle Py.Name)
     (pname :: Angle Py.Name)
     (psname :: Angle Py.SName)
-    (maybe_psname :: Angle (Maybe Py.SName_key)) ->
+    (maybe_psname :: Angle (Maybe Py.SName)) ->
     tuple (lname, pname) `where_` [
         wild .= predicate @Py.NameToSName (factId nameId
           .-> predicate @Py.SName (rec $
@@ -119,7 +119,7 @@ qNameQuery nameId = vars $
               field @"parent" maybe_psname
             end))
       , wild .=
-          or_ [ just (asPredicate psname) .= maybe_psname,
+          or_ [ just psname .= maybe_psname,
                 wild .= (predicate @Py.SNameToName $ psname .-> pname) ]
               [ nothing .= maybe_psname, pname .= predicate @Py.Name "" ]
       ]

@@ -203,15 +203,15 @@ queryNamespace sfId outer rest =
           field @"parent" nothing
         end
     -- Empty names mean anonymous which are encoded as Nothing
-    nqnOf :: Text -> Angle (Maybe Text)
+    nqnOf :: Text -> Angle (Maybe Cxx.Name)
     nqnOf "" = nothing
-    nqnOf name = just $ string name
+    nqnOf name = just $ predicate $ string name
     addNamespace :: Angle Cxx.NamespaceQName_key -> Text ->
       Angle Cxx.NamespaceQName_key
     addNamespace angle text =
       rec $
         field @"name" (nqnOf text) $
-        field @"parent" (just angle)
+        field @"parent" (just (predicate angle))
       end
 
 -- | Provide the 'Cxx.NamespaceQName' from 'queryNamespace' and the record name
