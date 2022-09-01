@@ -233,7 +233,6 @@ configWithValue cfgapi path deserialize mkValue maybeDefault action =
               onUpdate (const val)
               return Nothing
             | otherwise -> throwIO e
-    let
     bracket acquire (mapM (cancel cfgapi)) $ const $ action ob
 
 configLoad

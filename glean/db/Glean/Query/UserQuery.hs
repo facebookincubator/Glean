@@ -542,7 +542,6 @@ userQueryImpl
         -- This is either a new query or the continuation of a query
         -- that returns a temporary predicate.
         _ -> do
-          let
           (compileTime, _, (query@QueryWithInfo{..}, ty, appliedTrans)) <-
             timeIt $ compileAngleQuery
               schemaVersion

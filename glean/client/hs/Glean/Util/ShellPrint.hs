@@ -169,8 +169,8 @@ withFormatOpts :: ShellFormat o a => a -> o -> WithFormatOpts o a
 withFormatOpts = WithFormatOpts
 
 instance ShellFormat o Void where
-  shellFormatText _ctx _ v = case v of
-  shellFormatJson _ctx _ v = case v of
+  shellFormatText _ctx _ v = case v of {}
+  shellFormatJson _ctx _ v = case v of {}
 
 instance ShellFormat o String where
   shellFormatText _ctx _ s = pretty s
