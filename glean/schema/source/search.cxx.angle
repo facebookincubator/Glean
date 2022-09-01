@@ -47,6 +47,8 @@ predicate DeclIsDefn :
     ({ variable = D } = Decl;
      cxx1.VariableDeclaration { kind = { global_ = { definition = true }}} = D;
      { variable = D } = Defn) |
+    ({ namespace_ = D } = Decl;
+      { namespace_ = cxx1.NamespaceDefinition { declaration = D } } = Defn) |
     ({ objcMethod = D } = Decl;
      { objcMethod = cxx1.ObjcMethodDefinition D } = Defn ) |
     ({ objcContainer = D } = Decl;

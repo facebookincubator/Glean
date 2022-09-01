@@ -1,9 +1,10 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union
-import json
+from typing import Optional, Tuple, Union, List, Dict
 from thrift.py3 import Struct
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
+import ast
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R
+from glean.schema.py.src import *
 
 
 from glean.schema.fbthrift.types import (
@@ -27,10 +28,8 @@ from glean.schema.fbthrift.types import (
 
 class FbthriftTypeSpecification(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"fbthrift.TypeSpecification.1 {{ }}", TypeSpecification
-    return f"fbthrift.TypeSpecification.1 {json.dumps(key)}", TypeSpecification
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"fbthrift.TypeSpecification.1 {angle_for(__env, arg)}", TypeSpecification
 
   @staticmethod
   def angle_query(*, arg: Optional[Tuple[()]] = None) -> "FbthriftTypeSpecification":
@@ -38,76 +37,62 @@ class FbthriftTypeSpecification(GleanSchemaPredicate):
 
 class FbthriftFunctionName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"fbthrift.FunctionName.1 {{ }}", FunctionName
-    return f"fbthrift.FunctionName.1 {{ service_ = _, name = _, locName = _ }}", FunctionName
+  def build_angle(__env: Dict[str, R], service_: ast.Expr, name: ast.Expr, locName: ast.Expr) -> Tuple[str, Struct]:
+    return f"fbthrift.FunctionName.1 {{ service_ = {angle_for(__env, service_)}, name = {angle_for(__env, name)}, locName = {angle_for(__env, locName)} }}", FunctionName
 
   @staticmethod
-  def angle_query(*, service_: Optional[Tuple[()]] = None, name: Optional[Tuple[()]] = None, locName: Optional[Tuple[()]] = None) -> "FbthriftFunctionName":
+  def angle_query(*, service_: Optional["FbthriftServiceName"] = None, name: Optional["FbthriftIdentifier"] = None, locName: Optional[Tuple[()]] = None) -> "FbthriftFunctionName":
     raise Exception("this function can only be called from @angle_query")
 
 class FbthriftFunctionSpecification(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"fbthrift.FunctionSpecification.1 {{ }}", FunctionSpecification
-    return f"fbthrift.FunctionSpecification.1 {{ name = _, result = _, arguments = _, throws_ = _ }}", FunctionSpecification
+  def build_angle(__env: Dict[str, R], name: ast.Expr, result: ast.Expr, arguments: ast.Expr, throws_: ast.Expr) -> Tuple[str, Struct]:
+    return f"fbthrift.FunctionSpecification.1 {{ name = {angle_for(__env, name)}, result = {angle_for(__env, result)}, arguments = {angle_for(__env, arguments)}, throws_ = {angle_for(__env, throws_)} }}", FunctionSpecification
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None, result: Optional[Tuple[()]] = None, arguments: Optional[Tuple[()]] = None, throws_: Optional[Tuple[()]] = None) -> "FbthriftFunctionSpecification":
+  def angle_query(*, name: Optional["FbthriftFunctionName"] = None, result: Optional[Tuple[()]] = None, arguments: Optional[Tuple[()]] = None, throws_: Optional[Tuple[()]] = None) -> "FbthriftFunctionSpecification":
     raise Exception("this function can only be called from @angle_query")
 
 class FbthriftEnumValue(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"fbthrift.EnumValue.1 {{ }}", EnumValue
-    return f"fbthrift.EnumValue.1 {{ enum_ = _, name = _, locName = _ }}", EnumValue
+  def build_angle(__env: Dict[str, R], enum_: ast.Expr, name: ast.Expr, locName: ast.Expr) -> Tuple[str, Struct]:
+    return f"fbthrift.EnumValue.1 {{ enum_ = {angle_for(__env, enum_)}, name = {angle_for(__env, name)}, locName = {angle_for(__env, locName)} }}", EnumValue
 
   @staticmethod
-  def angle_query(*, enum_: Optional[Tuple[()]] = None, name: Optional[Tuple[()]] = None, locName: Optional[Tuple[()]] = None) -> "FbthriftEnumValue":
+  def angle_query(*, enum_: Optional[Tuple[()]] = None, name: Optional["FbthriftIdentifier"] = None, locName: Optional[Tuple[()]] = None) -> "FbthriftEnumValue":
     raise Exception("this function can only be called from @angle_query")
 
 class FbthriftServiceDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"fbthrift.ServiceDefinition.1 {{ }}", ServiceDefinition
-    return f"fbthrift.ServiceDefinition.1 {{ name = _, functions = _ }}", ServiceDefinition
+  def build_angle(__env: Dict[str, R], name: ast.Expr, functions: ast.Expr) -> Tuple[str, Struct]:
+    return f"fbthrift.ServiceDefinition.1 {{ name = {angle_for(__env, name)}, functions = {angle_for(__env, functions)} }}", ServiceDefinition
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None, functions: Optional[Tuple[()]] = None) -> "FbthriftServiceDefinition":
+  def angle_query(*, name: Optional["FbthriftServiceName"] = None, functions: Optional[Tuple[()]] = None) -> "FbthriftServiceDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 class FbthriftTypeDefException(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"fbthrift.TypeDefException.1 {{ }}", TypeDefException
-    return f"fbthrift.TypeDefException.1 {{ alias = _, type_ = _ }}", TypeDefException
+  def build_angle(__env: Dict[str, R], alias: ast.Expr, type_: ast.Expr) -> Tuple[str, Struct]:
+    return f"fbthrift.TypeDefException.1 {{ alias = {angle_for(__env, alias)}, type_ = {angle_for(__env, type_)} }}", TypeDefException
 
   @staticmethod
-  def angle_query(*, alias: Optional[Tuple[()]] = None, type_: Optional[Tuple[()]] = None) -> "FbthriftTypeDefException":
+  def angle_query(*, alias: Optional["FbthriftNamedDecl"] = None, type_: Optional[Tuple[()]] = None) -> "FbthriftTypeDefException":
     raise Exception("this function can only be called from @angle_query")
 
 class FbthriftServiceName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"fbthrift.ServiceName.1 {{ }}", ServiceName
-    return f"fbthrift.ServiceName.1 {{ name = _, locName = _ }}", ServiceName
+  def build_angle(__env: Dict[str, R], name: ast.Expr, locName: ast.Expr) -> Tuple[str, Struct]:
+    return f"fbthrift.ServiceName.1 {{ name = {angle_for(__env, name)}, locName = {angle_for(__env, locName)} }}", ServiceName
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None, locName: Optional[Tuple[()]] = None) -> "FbthriftServiceName":
+  def angle_query(*, name: Optional["FbthriftQualName"] = None, locName: Optional[Tuple[()]] = None) -> "FbthriftServiceName":
     raise Exception("this function can only be called from @angle_query")
 
 class FbthriftNamedDecl(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"fbthrift.NamedDecl.1 {{ }}", NamedDecl
-    return f"fbthrift.NamedDecl.1 {{ name = _, locName = _ }}", NamedDecl
+  def build_angle(__env: Dict[str, R], name: ast.Expr, locName: ast.Expr) -> Tuple[str, Struct]:
+    return f"fbthrift.NamedDecl.1 {{ name = {angle_for(__env, name)}, locName = {angle_for(__env, locName)} }}", NamedDecl
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, locName: Optional[Tuple[()]] = None) -> "FbthriftNamedDecl":
@@ -115,76 +100,62 @@ class FbthriftNamedDecl(GleanSchemaPredicate):
 
 class FbthriftFileXRefs(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"fbthrift.FileXRefs.1 {{ }}", FileXRefs
-    return f"fbthrift.FileXRefs.1 {{ file = _, targets = _, xrefs = _ }}", FileXRefs
+  def build_angle(__env: Dict[str, R], file: ast.Expr, targets: ast.Expr, xrefs: ast.Expr) -> Tuple[str, Struct]:
+    return f"fbthrift.FileXRefs.1 {{ file = {angle_for(__env, file)}, targets = {angle_for(__env, targets)}, xrefs = {angle_for(__env, xrefs)} }}", FileXRefs
 
   @staticmethod
-  def angle_query(*, file: Optional[Tuple[()]] = None, targets: Optional[Tuple[()]] = None, xrefs: Optional[Tuple[()]] = None) -> "FbthriftFileXRefs":
+  def angle_query(*, file: Optional["FbthriftFile"] = None, targets: Optional[Tuple[()]] = None, xrefs: Optional[Tuple[()]] = None) -> "FbthriftFileXRefs":
     raise Exception("this function can only be called from @angle_query")
 
 class FbthriftConstant(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"fbthrift.Constant.1 {{ }}", Constant
-    return f"fbthrift.Constant.1 {{ name = _, locName = _ }}", Constant
+  def build_angle(__env: Dict[str, R], name: ast.Expr, locName: ast.Expr) -> Tuple[str, Struct]:
+    return f"fbthrift.Constant.1 {{ name = {angle_for(__env, name)}, locName = {angle_for(__env, locName)} }}", Constant
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None, locName: Optional[Tuple[()]] = None) -> "FbthriftConstant":
+  def angle_query(*, name: Optional["FbthriftQualName"] = None, locName: Optional[Tuple[()]] = None) -> "FbthriftConstant":
     raise Exception("this function can only be called from @angle_query")
 
 class FbthriftFile(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"fbthrift.File.1 {{ }}", File
-    return f"fbthrift.File.1 {json.dumps(key)}", File
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"fbthrift.File.1 {angle_for(__env, arg)}", File
 
   @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "FbthriftFile":
+  def angle_query(*, arg: Optional["SrcFile"] = None) -> "FbthriftFile":
     raise Exception("this function can only be called from @angle_query")
 
 class FbthriftQualName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"fbthrift.QualName.1 {{ }}", QualName
-    return f"fbthrift.QualName.1 {{ file = _, name = _ }}", QualName
+  def build_angle(__env: Dict[str, R], file: ast.Expr, name: ast.Expr) -> Tuple[str, Struct]:
+    return f"fbthrift.QualName.1 {{ file = {angle_for(__env, file)}, name = {angle_for(__env, name)} }}", QualName
 
   @staticmethod
-  def angle_query(*, file: Optional[Tuple[()]] = None, name: Optional[Tuple[()]] = None) -> "FbthriftQualName":
+  def angle_query(*, file: Optional["FbthriftFile"] = None, name: Optional["FbthriftIdentifier"] = None) -> "FbthriftQualName":
     raise Exception("this function can only be called from @angle_query")
 
 class FbthriftServiceParent(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"fbthrift.ServiceParent.1 {{ }}", ServiceParent
-    return f"fbthrift.ServiceParent.1 {{ child = _, parent = _ }}", ServiceParent
+  def build_angle(__env: Dict[str, R], child: ast.Expr, parent: ast.Expr) -> Tuple[str, Struct]:
+    return f"fbthrift.ServiceParent.1 {{ child = {angle_for(__env, child)}, parent = {angle_for(__env, parent)} }}", ServiceParent
 
   @staticmethod
-  def angle_query(*, child: Optional[Tuple[()]] = None, parent: Optional[Tuple[()]] = None) -> "FbthriftServiceParent":
+  def angle_query(*, child: Optional["FbthriftServiceName"] = None, parent: Optional["FbthriftServiceName"] = None) -> "FbthriftServiceParent":
     raise Exception("this function can only be called from @angle_query")
 
 class FbthriftExceptionName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"fbthrift.ExceptionName.1 {{ }}", ExceptionName
-    return f"fbthrift.ExceptionName.1 {{ name = _, locName = _ }}", ExceptionName
+  def build_angle(__env: Dict[str, R], name: ast.Expr, locName: ast.Expr) -> Tuple[str, Struct]:
+    return f"fbthrift.ExceptionName.1 {{ name = {angle_for(__env, name)}, locName = {angle_for(__env, locName)} }}", ExceptionName
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None, locName: Optional[Tuple[()]] = None) -> "FbthriftExceptionName":
+  def angle_query(*, name: Optional["FbthriftQualName"] = None, locName: Optional[Tuple[()]] = None) -> "FbthriftExceptionName":
     raise Exception("this function can only be called from @angle_query")
 
 class FbthriftIdentifier(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    if key is None:
-      return f"fbthrift.Identifier.1 {{ }}", Identifier
-    return f"fbthrift.Identifier.1 {json.dumps(key)}", Identifier
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"fbthrift.Identifier.1 {angle_for(__env, arg)}", Identifier
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "FbthriftIdentifier":
