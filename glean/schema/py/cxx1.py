@@ -126,7 +126,7 @@ class Cxx1DeclarationTargets(GleanSchemaPredicate):
     return f"cxx1.DeclarationTargets.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, source, 'source'), angle_for(__env, targets, 'targets')])) or '_' } }}", DeclarationTargets
 
   @staticmethod
-  def angle_query(*, source: Optional[Tuple[()]] = None, targets: Optional[Tuple[()]] = None) -> "Cxx1DeclarationTargets":
+  def angle_query(*, source: Optional[Tuple[()]] = None, targets: Optional[List[Tuple[()]]] = None) -> "Cxx1DeclarationTargets":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -159,7 +159,7 @@ class Cxx1FileXRefMap(GleanSchemaPredicate):
     return f"cxx1.FileXRefMap.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, fixed, 'fixed'), angle_for(__env, variable, 'variable')])) or '_' } }}", FileXRefMap
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, fixed: Optional[Tuple[()]] = None, variable: Optional[Tuple[()]] = None) -> "Cxx1FileXRefMap":
+  def angle_query(*, file: Optional["SrcFile"] = None, fixed: Optional[List[Tuple[()]]] = None, variable: Optional[List[Tuple[()]]] = None) -> "Cxx1FileXRefMap":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -269,7 +269,7 @@ class Cxx1PPTrace(GleanSchemaPredicate):
     return f"cxx1.PPTrace.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, events, 'events')])) or '_' } }}", PPTrace
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, events: Optional[Tuple[()]] = None) -> "Cxx1PPTrace":
+  def angle_query(*, file: Optional["SrcFile"] = None, events: Optional[List[Tuple[()]]] = None) -> "Cxx1PPTrace":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -544,7 +544,7 @@ class Cxx1Declarations(GleanSchemaPredicate):
     return f"cxx1.Declarations.5 { angle_for(__env, arg, None) or '_' }", Declarations
 
   @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "Cxx1Declarations":
+  def angle_query(*, arg: Optional[List[Tuple[()]]] = None) -> "Cxx1Declarations":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -566,7 +566,7 @@ class Cxx1DeclFamily(GleanSchemaPredicate):
     return f"cxx1.DeclFamily.5 { angle_for(__env, arg, None) or '_' }", DeclFamily
 
   @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "Cxx1DeclFamily":
+  def angle_query(*, arg: Optional[List[Tuple[()]]] = None) -> "Cxx1DeclFamily":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -599,7 +599,7 @@ class Cxx1RecordDefinition(GleanSchemaPredicate):
     return f"cxx1.RecordDefinition.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, bases, 'bases'), angle_for(__env, members, 'members')])) or '_' } }}", RecordDefinition
 
   @staticmethod
-  def angle_query(*, declaration: Optional["Cxx1RecordDeclaration"] = None, bases: Optional[Tuple[()]] = None, members: Optional["Cxx1Declarations"] = None) -> "Cxx1RecordDefinition":
+  def angle_query(*, declaration: Optional["Cxx1RecordDeclaration"] = None, bases: Optional[List[Tuple[()]]] = None, members: Optional["Cxx1Declarations"] = None) -> "Cxx1RecordDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -654,7 +654,7 @@ class Cxx1ObjcSelector(GleanSchemaPredicate):
     return f"cxx1.ObjcSelector.5 { angle_for(__env, arg, None) or '_' }", ObjcSelector
 
   @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "Cxx1ObjcSelector":
+  def angle_query(*, arg: Optional[List[str]] = None) -> "Cxx1ObjcSelector":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -720,7 +720,7 @@ class Cxx1ObjcContainerDefinition(GleanSchemaPredicate):
     return f"cxx1.ObjcContainerDefinition.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, protocols, 'protocols'), angle_for(__env, members, 'members')])) or '_' } }}", ObjcContainerDefinition
 
   @staticmethod
-  def angle_query(*, declaration: Optional["Cxx1ObjcContainerDeclaration"] = None, protocols: Optional[Tuple[()]] = None, members: Optional["Cxx1Declarations"] = None) -> "Cxx1ObjcContainerDefinition":
+  def angle_query(*, declaration: Optional["Cxx1ObjcContainerDeclaration"] = None, protocols: Optional[List["Cxx1ObjcContainerDeclaration"]] = None, members: Optional["Cxx1Declarations"] = None) -> "Cxx1ObjcContainerDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -731,7 +731,7 @@ class Cxx1EnumDefinition(GleanSchemaPredicate):
     return f"cxx1.EnumDefinition.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, enumerators, 'enumerators')])) or '_' } }}", EnumDefinition
 
   @staticmethod
-  def angle_query(*, declaration: Optional["Cxx1EnumDeclaration"] = None, enumerators: Optional[Tuple[()]] = None) -> "Cxx1EnumDefinition":
+  def angle_query(*, declaration: Optional["Cxx1EnumDeclaration"] = None, enumerators: Optional[List["Cxx1Enumerator"]] = None) -> "Cxx1EnumDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -775,7 +775,7 @@ class Cxx1DeclarationSources(GleanSchemaPredicate):
     return f"cxx1.DeclarationSources.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, sources, 'sources')])) or '_' } }}", DeclarationSources
 
   @staticmethod
-  def angle_query(*, target: Optional[Tuple[()]] = None, sources: Optional[Tuple[()]] = None) -> "Cxx1DeclarationSources":
+  def angle_query(*, target: Optional[Tuple[()]] = None, sources: Optional[List[Tuple[()]]] = None) -> "Cxx1DeclarationSources":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -786,7 +786,7 @@ class Cxx1TranslationUnitXRefs(GleanSchemaPredicate):
     return f"cxx1.TranslationUnitXRefs.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, tunit, 'tunit'), angle_for(__env, xrefs, 'xrefs')])) or '_' } }}", TranslationUnitXRefs
 
   @staticmethod
-  def angle_query(*, tunit: Optional["BuckTranslationUnit"] = None, xrefs: Optional[Tuple[()]] = None) -> "Cxx1TranslationUnitXRefs":
+  def angle_query(*, tunit: Optional["BuckTranslationUnit"] = None, xrefs: Optional[List["Cxx1FileXRefs"]] = None) -> "Cxx1TranslationUnitXRefs":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -830,7 +830,7 @@ class Cxx1Signature(GleanSchemaPredicate):
     return f"cxx1.Signature.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, returns, 'returns'), angle_for(__env, parameters, 'parameters')])) or '_' } }}", Signature
 
   @staticmethod
-  def angle_query(*, returns: Optional["Cxx1Type"] = None, parameters: Optional[Tuple[()]] = None) -> "Cxx1Signature":
+  def angle_query(*, returns: Optional["Cxx1Type"] = None, parameters: Optional[List[Tuple[()]]] = None) -> "Cxx1Signature":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -852,7 +852,7 @@ class Cxx1FileXRefs(GleanSchemaPredicate):
     return f"cxx1.FileXRefs.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, xmap, 'xmap'), angle_for(__env, externals, 'externals')])) or '_' } }}", FileXRefs
 
   @staticmethod
-  def angle_query(*, xmap: Optional["Cxx1FileXRefMap"] = None, externals: Optional[Tuple[()]] = None) -> "Cxx1FileXRefs":
+  def angle_query(*, xmap: Optional["Cxx1FileXRefMap"] = None, externals: Optional[List[Tuple[()]]] = None) -> "Cxx1FileXRefs":
     raise Exception("this function can only be called from @angle_query")
 
 

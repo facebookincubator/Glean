@@ -397,7 +397,7 @@ class PythonFileDirectXRefs(GleanSchemaPredicate):
     return f"python.FileDirectXRefs.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xrefs, 'xrefs')])) or '_' } }}", FileDirectXRefs
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, xrefs: Optional[Tuple[()]] = None) -> "PythonFileDirectXRefs":
+  def angle_query(*, file: Optional["SrcFile"] = None, xrefs: Optional[List[Tuple[()]]] = None) -> "PythonFileDirectXRefs":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -452,7 +452,7 @@ class PythonFunctionDefinition(GleanSchemaPredicate):
     return f"python.FunctionDefinition.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, is_async, 'is_async'), angle_for(__env, returns, 'returns'), angle_for(__env, params, 'params'), angle_for(__env, posonly_params, 'posonly_params'), angle_for(__env, kwonly_params, 'kwonly_params'), angle_for(__env, star_arg, 'star_arg'), angle_for(__env, star_kwarg, 'star_kwarg'), angle_for(__env, decorators, 'decorators'), angle_for(__env, docstring, 'docstring')])) or '_' } }}", FunctionDefinition
 
   @staticmethod
-  def angle_query(*, declaration: Optional["PythonFunctionDeclaration"] = None, is_async: Optional[bool] = None, returns: Optional[Tuple[()]] = None, params: Optional[Tuple[()]] = None, posonly_params: Optional[Tuple[()]] = None, kwonly_params: Optional[Tuple[()]] = None, star_arg: Optional[Tuple[()]] = None, star_kwarg: Optional[Tuple[()]] = None, decorators: Optional[Tuple[()]] = None, docstring: Optional[Tuple[()]] = None) -> "PythonFunctionDefinition":
+  def angle_query(*, declaration: Optional["PythonFunctionDeclaration"] = None, is_async: Optional[bool] = None, returns: Optional[Tuple[()]] = None, params: Optional[List[Tuple[()]]] = None, posonly_params: Optional[Tuple[()]] = None, kwonly_params: Optional[Tuple[()]] = None, star_arg: Optional[Tuple[()]] = None, star_kwarg: Optional[Tuple[()]] = None, decorators: Optional[Tuple[()]] = None, docstring: Optional[Tuple[()]] = None) -> "PythonFunctionDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -507,7 +507,7 @@ class PythonXRefsViaNameByFile(GleanSchemaPredicate):
     return f"python.XRefsViaNameByFile.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xrefs, 'xrefs')])) or '_' } }}", XRefsViaNameByFile
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, xrefs: Optional[Tuple[()]] = None) -> "PythonXRefsViaNameByFile":
+  def angle_query(*, file: Optional["SrcFile"] = None, xrefs: Optional[List[Tuple[()]]] = None) -> "PythonXRefsViaNameByFile":
     raise Exception("this function can only be called from @angle_query")
 
 

@@ -139,7 +139,7 @@ class HsTargetUses(GleanSchemaPredicate):
     return f"hs.TargetUses.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, file, 'file'), angle_for(__env, uses, 'uses')])) or '_' } }}", TargetUses
 
   @staticmethod
-  def angle_query(*, target: Optional["HsDefinition"] = None, file: Optional["SrcFile"] = None, uses: Optional[Tuple[()]] = None) -> "HsTargetUses":
+  def angle_query(*, target: Optional["HsDefinition"] = None, file: Optional["SrcFile"] = None, uses: Optional[List[Tuple[()]]] = None) -> "HsTargetUses":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -227,7 +227,7 @@ class HsModuleDefinitions(GleanSchemaPredicate):
     return f"hs.ModuleDefinitions.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, module, 'module'), angle_for(__env, functionDefinitions, 'functionDefinitions')])) or '_' } }}", ModuleDefinitions
 
   @staticmethod
-  def angle_query(*, module: Optional["HsModule"] = None, functionDefinitions: Optional[Tuple[()]] = None) -> "HsModuleDefinitions":
+  def angle_query(*, module: Optional["HsModule"] = None, functionDefinitions: Optional[List["HsFunctionDefinition"]] = None) -> "HsModuleDefinitions":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -282,7 +282,7 @@ class HsFileXRefMap(GleanSchemaPredicate):
     return f"hs.FileXRefMap.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, refs, 'refs')])) or '_' } }}", FileXRefMap
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, refs: Optional[Tuple[()]] = None) -> "HsFileXRefMap":
+  def angle_query(*, file: Optional["SrcFile"] = None, refs: Optional[List[Tuple[()]]] = None) -> "HsFileXRefMap":
     raise Exception("this function can only be called from @angle_query")
 
 

@@ -34,7 +34,7 @@ class DeadcodeGraphNode(GleanSchemaPredicate):
     return f"deadcode.GraphNode.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, type, 'type'), angle_for(__env, entities, 'entities'), angle_for(__env, out_degree, 'out_degree'), angle_for(__env, in_degree, 'in_degree')])) or '_' } }}", GraphNode
 
   @staticmethod
-  def angle_query(*, type: Optional[Tuple[()]] = None, entities: Optional[Tuple[()]] = None, out_degree: Optional[int] = None, in_degree: Optional[int] = None) -> "DeadcodeGraphNode":
+  def angle_query(*, type: Optional[Tuple[()]] = None, entities: Optional[List["DeadcodeGraphEntity"]] = None, out_degree: Optional[int] = None, in_degree: Optional[int] = None) -> "DeadcodeGraphNode":
     raise Exception("this function can only be called from @angle_query")
 
 

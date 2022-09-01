@@ -23,6 +23,10 @@ def angle_for(__env: Dict[str, R], key: ast.Expr, field_name: Optional[str]) -> 
   elif isinstance(key, ast.Call):
     nested_call_arg = callGleanSchemaPredicateQuery(key, {}, "__target__", __env)["__target__"]
     return _make_attribute(field_name, nested_call_arg[0])
+  elif isinstance(key, ast.List):
+    elems = map(lambda el: angle_for(__env, el, None), key.elts)
+    value = f'[{ ", ".join(elems) }]'
+    return _make_attribute(field_name, value)
   raise NotImplementedError(f"Query key type not implemented")
 
 def _make_attribute(field_name: Optional[str], value: str) -> str:
@@ -39,17 +43,17 @@ def _class_name_to_py_query(class_name: str, __env: Dict[str, R], method_args: D
   # The variable no_frames_to_user_code is dependent on the number of nested functions calls from the user code.
   num_frames_to_user_code = 3
   frame = 0
-  angle_query_args = inspect.getfullargspec(
-    inspect.stack()[num_frames_to_user_code][frame]
-    .f_globals[class_name]
-    .build_angle
-  ).args[1:]
+  ctr = 0
+  while True:
+    try:
+      globals_ = inspect.stack()[num_frames_to_user_code + ctr][frame].f_globals
+      angle_query_args = inspect.getfullargspec(globals_[class_name].build_angle).args[1:]
+      break
+    except KeyError as e:
+      # inner calls to GleanSchemaPredicates need extra num_frames_to_user_code
+      ctr = ctr + num_frames_to_user_code
   fields = (method_args.get(k) for k in angle_query_args)
-  return (
-    inspect.stack()[num_frames_to_user_code][frame]
-    .f_globals[class_name]
-    .build_angle(__env, *tuple(fields))
-  )
+  return (globals_[class_name].build_angle(__env, *tuple(fields)))
 
 def callGleanSchemaPredicateQuery(function_call: ast.Call, variables: Dict[str, Tuple[str, Type[Struct]]], target: str, __env: Dict[str, R]) -> Dict[str, Tuple[str, Type[Struct]]]:
   method_args = function_call.keywords

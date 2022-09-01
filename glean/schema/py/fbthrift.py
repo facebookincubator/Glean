@@ -63,7 +63,7 @@ class FbthriftFunctionSpecification(GleanSchemaPredicate):
     return f"fbthrift.FunctionSpecification.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, result, 'result'), angle_for(__env, arguments, 'arguments'), angle_for(__env, throws_, 'throws_')])) or '_' } }}", FunctionSpecification
 
   @staticmethod
-  def angle_query(*, name: Optional["FbthriftFunctionName"] = None, result: Optional[Tuple[()]] = None, arguments: Optional[Tuple[()]] = None, throws_: Optional[Tuple[()]] = None) -> "FbthriftFunctionSpecification":
+  def angle_query(*, name: Optional["FbthriftFunctionName"] = None, result: Optional[Tuple[()]] = None, arguments: Optional[List[Tuple[()]]] = None, throws_: Optional[List[Tuple[()]]] = None) -> "FbthriftFunctionSpecification":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -85,7 +85,7 @@ class FbthriftServiceDefinition(GleanSchemaPredicate):
     return f"fbthrift.ServiceDefinition.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, functions, 'functions')])) or '_' } }}", ServiceDefinition
 
   @staticmethod
-  def angle_query(*, name: Optional["FbthriftServiceName"] = None, functions: Optional[Tuple[()]] = None) -> "FbthriftServiceDefinition":
+  def angle_query(*, name: Optional["FbthriftServiceName"] = None, functions: Optional[List["FbthriftFunctionSpecification"]] = None) -> "FbthriftServiceDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -129,7 +129,7 @@ class FbthriftFileXRefs(GleanSchemaPredicate):
     return f"fbthrift.FileXRefs.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, targets, 'targets'), angle_for(__env, xrefs, 'xrefs')])) or '_' } }}", FileXRefs
 
   @staticmethod
-  def angle_query(*, file: Optional["FbthriftFile"] = None, targets: Optional[Tuple[()]] = None, xrefs: Optional[Tuple[()]] = None) -> "FbthriftFileXRefs":
+  def angle_query(*, file: Optional["FbthriftFile"] = None, targets: Optional[List[Tuple[()]]] = None, xrefs: Optional[List[Tuple[()]]] = None) -> "FbthriftFileXRefs":
     raise Exception("this function can only be called from @angle_query")
 
 

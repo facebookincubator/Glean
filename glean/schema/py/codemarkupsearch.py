@@ -77,7 +77,7 @@ class CodemarkupSearchSearchByScope(GleanSchemaPredicate):
     return f"codemarkup.search.SearchByScope.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, searchcase, 'searchcase'), angle_for(__env, name, 'name'), angle_for(__env, scope, 'scope'), angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location'), angle_for(__env, kind, 'kind'), angle_for(__env, language, 'language')])) or '_' } }}", searchSearchByScope
 
   @staticmethod
-  def angle_query(*, searchcase: Optional[Tuple[()]] = None, name: Optional[str] = None, scope: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None, kind: Optional[Tuple[()]] = None, language: Optional[Tuple[()]] = None) -> "CodemarkupSearchSearchByScope":
+  def angle_query(*, searchcase: Optional[Tuple[()]] = None, name: Optional[str] = None, scope: Optional[List[str]] = None, entity: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None, kind: Optional[Tuple[()]] = None, language: Optional[Tuple[()]] = None) -> "CodemarkupSearchSearchByScope":
     raise Exception("this function can only be called from @angle_query")
 
 

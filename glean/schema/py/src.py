@@ -65,7 +65,7 @@ class SrcFileLines(GleanSchemaPredicate):
     return f"src.FileLines.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, lengths, 'lengths'), angle_for(__env, endsInNewline, 'endsInNewline'), angle_for(__env, hasUnicodeOrTabs, 'hasUnicodeOrTabs')])) or '_' } }}", FileLines
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, lengths: Optional[Tuple[()]] = None, endsInNewline: Optional[bool] = None, hasUnicodeOrTabs: Optional[bool] = None) -> "SrcFileLines":
+  def angle_query(*, file: Optional["SrcFile"] = None, lengths: Optional[List[int]] = None, endsInNewline: Optional[bool] = None, hasUnicodeOrTabs: Optional[bool] = None) -> "SrcFileLines":
     raise Exception("this function can only be called from @angle_query")
 
 

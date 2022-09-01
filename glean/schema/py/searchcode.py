@@ -60,7 +60,7 @@ class SearchCodeSearchByLowerCaseScope(GleanSchemaPredicate):
     return f"search.code.SearchByLowerCaseScope.16 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, scope, 'scope'), angle_for(__env, language, 'language'), angle_for(__env, entity, 'entity')])) or '_' } }}", codeSearchByLowerCaseScope
 
   @staticmethod
-  def angle_query(*, name: Optional[str] = None, scope: Optional[Tuple[()]] = None, language: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeSearchByLowerCaseScope":
+  def angle_query(*, name: Optional[str] = None, scope: Optional[List[str]] = None, language: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeSearchByLowerCaseScope":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -104,7 +104,7 @@ class SearchCodeHackSearchByLowerCaseScope(GleanSchemaPredicate):
     return f"search.code.HackSearchByLowerCaseScope.16 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, scope, 'scope'), angle_for(__env, entity, 'entity')])) or '_' } }}", codeHackSearchByLowerCaseScope
 
   @staticmethod
-  def angle_query(*, name: Optional[str] = None, scope: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeHackSearchByLowerCaseScope":
+  def angle_query(*, name: Optional[str] = None, scope: Optional[List[str]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeHackSearchByLowerCaseScope":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -148,7 +148,7 @@ class SearchCodeHackSearchByScopeWithName(GleanSchemaPredicate):
     return f"search.code.HackSearchByScopeWithName.16 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, scope, 'scope'), angle_for(__env, entity, 'entity')])) or '_' } }}", codeHackSearchByScopeWithName
 
   @staticmethod
-  def angle_query(*, name: Optional["HackName"] = None, scope: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeHackSearchByScopeWithName":
+  def angle_query(*, name: Optional["HackName"] = None, scope: Optional[List[str]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeHackSearchByScopeWithName":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -159,7 +159,7 @@ class SearchCodeCxxSearchByLowerCaseScope(GleanSchemaPredicate):
     return f"search.code.CxxSearchByLowerCaseScope.16 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, scope, 'scope'), angle_for(__env, entity, 'entity')])) or '_' } }}", codeCxxSearchByLowerCaseScope
 
   @staticmethod
-  def angle_query(*, name: Optional[str] = None, scope: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeCxxSearchByLowerCaseScope":
+  def angle_query(*, name: Optional[str] = None, scope: Optional[List[str]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeCxxSearchByLowerCaseScope":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -258,7 +258,7 @@ class SearchCodeSearchByScope(GleanSchemaPredicate):
     return f"search.code.SearchByScope.16 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, scope, 'scope'), angle_for(__env, language, 'language'), angle_for(__env, entity, 'entity')])) or '_' } }}", codeSearchByScope
 
   @staticmethod
-  def angle_query(*, name: Optional[str] = None, scope: Optional[Tuple[()]] = None, language: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeSearchByScope":
+  def angle_query(*, name: Optional[str] = None, scope: Optional[List[str]] = None, language: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeSearchByScope":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -324,7 +324,7 @@ class SearchCodeCxxSearchByScope(GleanSchemaPredicate):
     return f"search.code.CxxSearchByScope.16 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, scope, 'scope'), angle_for(__env, entity, 'entity')])) or '_' } }}", codeCxxSearchByScope
 
   @staticmethod
-  def angle_query(*, name: Optional[str] = None, scope: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeCxxSearchByScope":
+  def angle_query(*, name: Optional[str] = None, scope: Optional[List[str]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeCxxSearchByScope":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -357,7 +357,7 @@ class SearchCodeHackSearchByScope(GleanSchemaPredicate):
     return f"search.code.HackSearchByScope.16 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, scope, 'scope'), angle_for(__env, entity, 'entity')])) or '_' } }}", codeHackSearchByScope
 
   @staticmethod
-  def angle_query(*, name: Optional[str] = None, scope: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeHackSearchByScope":
+  def angle_query(*, name: Optional[str] = None, scope: Optional[List[str]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCodeHackSearchByScope":
     raise Exception("this function can only be called from @angle_query")
 
 

@@ -57,7 +57,7 @@ class RustDefinitionUses(GleanSchemaPredicate):
     return f"rust.DefinitionUses.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, def_, 'def_'), angle_for(__env, file, 'file'), angle_for(__env, spans, 'spans')])) or '_' } }}", DefinitionUses
 
   @staticmethod
-  def angle_query(*, def_: Optional[Tuple[()]] = None, file: Optional["SrcFile"] = None, spans: Optional[Tuple[()]] = None) -> "RustDefinitionUses":
+  def angle_query(*, def_: Optional[Tuple[()]] = None, file: Optional["SrcFile"] = None, spans: Optional[List[Tuple[()]]] = None) -> "RustDefinitionUses":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -233,7 +233,7 @@ class RustFileXRefs(GleanSchemaPredicate):
     return f"rust.FileXRefs.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xrefs, 'xrefs')])) or '_' } }}", FileXRefs
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, xrefs: Optional[Tuple[()]] = None) -> "RustFileXRefs":
+  def angle_query(*, file: Optional["SrcFile"] = None, xrefs: Optional[List["RustXRef"]] = None) -> "RustFileXRefs":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -332,7 +332,7 @@ class RustXRef(GleanSchemaPredicate):
     return f"rust.XRef.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, ranges, 'ranges')])) or '_' } }}", XRef
 
   @staticmethod
-  def angle_query(*, target: Optional[Tuple[()]] = None, ranges: Optional[Tuple[()]] = None) -> "RustXRef":
+  def angle_query(*, target: Optional[Tuple[()]] = None, ranges: Optional[List[Tuple[()]]] = None) -> "RustXRef":
     raise Exception("this function can only be called from @angle_query")
 
 

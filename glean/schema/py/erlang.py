@@ -115,7 +115,7 @@ class ErlangXRefsViaFqnByFile(GleanSchemaPredicate):
     return f"erlang.XRefsViaFqnByFile.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xrefs, 'xrefs')])) or '_' } }}", XRefsViaFqnByFile
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, xrefs: Optional[Tuple[()]] = None) -> "ErlangXRefsViaFqnByFile":
+  def angle_query(*, file: Optional["SrcFile"] = None, xrefs: Optional[List[Tuple[()]]] = None) -> "ErlangXRefsViaFqnByFile":
     raise Exception("this function can only be called from @angle_query")
 
 

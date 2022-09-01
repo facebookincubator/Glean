@@ -163,7 +163,7 @@ class TestinfraFileMetadata(GleanSchemaPredicate):
     return f"testinfra.FileMetadata.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, hash, 'hash'), angle_for(__env, length, 'length'), angle_for(__env, nonexecutableRanges, 'nonexecutableRanges')])) or '_' } }}", FileMetadata
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, hash: Optional[Tuple[()]] = None, length: Optional[Tuple[()]] = None, nonexecutableRanges: Optional[Tuple[()]] = None) -> "TestinfraFileMetadata":
+  def angle_query(*, file: Optional["SrcFile"] = None, hash: Optional[List[Tuple[()]]] = None, length: Optional[Tuple[()]] = None, nonexecutableRanges: Optional[Tuple[()]] = None) -> "TestinfraFileMetadata":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -185,7 +185,7 @@ class TestinfraCoveredFolder(GleanSchemaPredicate):
     return f"testinfra.CoveredFolder.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, folder, 'folder'), angle_for(__env, folders, 'folders'), angle_for(__env, files, 'files')])) or '_' } }}", CoveredFolder
 
   @staticmethod
-  def angle_query(*, folder: Optional["TestinfraFolder"] = None, folders: Optional[Tuple[()]] = None, files: Optional[Tuple[()]] = None) -> "TestinfraCoveredFolder":
+  def angle_query(*, folder: Optional["TestinfraFolder"] = None, folders: Optional[List["TestinfraCoveredFolder"]] = None, files: Optional[List["TestinfraCoveredFile"]] = None) -> "TestinfraCoveredFolder":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -229,7 +229,7 @@ class TestinfraAssemblies(GleanSchemaPredicate):
     return f"testinfra.Assemblies.4 { angle_for(__env, arg, None) or '_' }", Assemblies
 
   @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "TestinfraAssemblies":
+  def angle_query(*, arg: Optional[List["TestinfraCoveredAssembly"]] = None) -> "TestinfraAssemblies":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -240,7 +240,7 @@ class TestinfraFileMetadata(GleanSchemaPredicate):
     return f"testinfra.FileMetadata.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, hash, 'hash'), angle_for(__env, length, 'length'), angle_for(__env, nonexecutableRanges, 'nonexecutableRanges'), angle_for(__env, executableLength, 'executableLength')])) or '_' } }}", FileMetadata
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, hash: Optional[Tuple[()]] = None, length: Optional[Tuple[()]] = None, nonexecutableRanges: Optional[Tuple[()]] = None, executableLength: Optional[Tuple[()]] = None) -> "TestinfraFileMetadata":
+  def angle_query(*, file: Optional["SrcFile"] = None, hash: Optional[List[Tuple[()]]] = None, length: Optional[Tuple[()]] = None, nonexecutableRanges: Optional[Tuple[()]] = None, executableLength: Optional[Tuple[()]] = None) -> "TestinfraFileMetadata":
     raise Exception("this function can only be called from @angle_query")
 
 

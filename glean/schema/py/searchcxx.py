@@ -48,7 +48,7 @@ class SearchCxxQueryToQName(GleanSchemaPredicate):
     return f"search.cxx.QueryToQName.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, query, 'query'), angle_for(__env, scope, 'scope')])) or '_' } }}", cxxQueryToQName
 
   @staticmethod
-  def angle_query(*, query: Optional[Tuple[()]] = None, scope: Optional["Cxx1QName"] = None) -> "SearchCxxQueryToQName":
+  def angle_query(*, query: Optional[List[str]] = None, scope: Optional["Cxx1QName"] = None) -> "SearchCxxQueryToQName":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -81,7 +81,7 @@ class SearchCxxQueryToScope(GleanSchemaPredicate):
     return f"search.cxx.QueryToScope.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, query, 'query'), angle_for(__env, scope, 'scope')])) or '_' } }}", cxxQueryToScope
 
   @staticmethod
-  def angle_query(*, query: Optional[Tuple[()]] = None, scope: Optional[Tuple[()]] = None) -> "SearchCxxQueryToScope":
+  def angle_query(*, query: Optional[List[str]] = None, scope: Optional[Tuple[()]] = None) -> "SearchCxxQueryToScope":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -114,7 +114,7 @@ class SearchCxxQueryToNSQName(GleanSchemaPredicate):
     return f"search.cxx.QueryToNSQName.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, query, 'query'), angle_for(__env, scope, 'scope')])) or '_' } }}", cxxQueryToNSQName
 
   @staticmethod
-  def angle_query(*, query: Optional[Tuple[()]] = None, scope: Optional["Cxx1NamespaceQName"] = None) -> "SearchCxxQueryToNSQName":
+  def angle_query(*, query: Optional[List[str]] = None, scope: Optional["Cxx1NamespaceQName"] = None) -> "SearchCxxQueryToNSQName":
     raise Exception("this function can only be called from @angle_query")
 
 

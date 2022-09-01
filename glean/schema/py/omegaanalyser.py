@@ -65,7 +65,7 @@ class OmegaanalyserDependencyPath(GleanSchemaPredicate):
     return f"omegaanalyser.DependencyPath.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, node, 'node'), angle_for(__env, coreNode, 'coreNode'), angle_for(__env, shortestPath, 'shortestPath')])) or '_' } }}", DependencyPath
 
   @staticmethod
-  def angle_query(*, node: Optional[Tuple[()]] = None, coreNode: Optional["OmegaanalyserOmegaEndpoint"] = None, shortestPath: Optional[Tuple[()]] = None) -> "OmegaanalyserDependencyPath":
+  def angle_query(*, node: Optional[Tuple[()]] = None, coreNode: Optional["OmegaanalyserOmegaEndpoint"] = None, shortestPath: Optional[List[Tuple[()]]] = None) -> "OmegaanalyserDependencyPath":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -131,7 +131,7 @@ class OmegaanalyserDependencyList(GleanSchemaPredicate):
     return f"omegaanalyser.DependencyList.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, node, 'node'), angle_for(__env, endpoints, 'endpoints')])) or '_' } }}", DependencyList
 
   @staticmethod
-  def angle_query(*, node: Optional[Tuple[()]] = None, endpoints: Optional[Tuple[()]] = None) -> "OmegaanalyserDependencyList":
+  def angle_query(*, node: Optional[Tuple[()]] = None, endpoints: Optional[List["OmegaanalyserOmegaEndpoint"]] = None) -> "OmegaanalyserDependencyList":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -175,7 +175,7 @@ class OmegaanalyserDependencyPathByCoreNode(GleanSchemaPredicate):
     return f"omegaanalyser.DependencyPathByCoreNode.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, coreNode, 'coreNode'), angle_for(__env, node, 'node'), angle_for(__env, shortestPath, 'shortestPath')])) or '_' } }}", DependencyPathByCoreNode
 
   @staticmethod
-  def angle_query(*, coreNode: Optional["OmegaanalyserOmegaEndpoint"] = None, node: Optional[Tuple[()]] = None, shortestPath: Optional[Tuple[()]] = None) -> "OmegaanalyserDependencyPathByCoreNode":
+  def angle_query(*, coreNode: Optional["OmegaanalyserOmegaEndpoint"] = None, node: Optional[Tuple[()]] = None, shortestPath: Optional[List[Tuple[()]]] = None) -> "OmegaanalyserDependencyPathByCoreNode":
     raise Exception("this function can only be called from @angle_query")
 
 

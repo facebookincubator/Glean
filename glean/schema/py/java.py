@@ -53,7 +53,7 @@ class JavaClassDeclaration(GleanSchemaPredicate):
     return f"java.ClassDeclaration.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, modifiers, 'modifiers'), angle_for(__env, extends_, 'extends_'), angle_for(__env, implements_, 'implements_'), angle_for(__env, annotations, 'annotations'), angle_for(__env, variables, 'variables'), angle_for(__env, constructors, 'constructors'), angle_for(__env, methods, 'methods'), angle_for(__env, typeParams, 'typeParams'), angle_for(__env, loc, 'loc'), angle_for(__env, innerDefinitions, 'innerDefinitions'), angle_for(__env, location, 'location')])) or '_' } }}", ClassDeclaration
 
   @staticmethod
-  def angle_query(*, name: Optional["JavaQName"] = None, modifiers: Optional[Tuple[()]] = None, extends_: Optional[Tuple[()]] = None, implements_: Optional[Tuple[()]] = None, annotations: Optional[Tuple[()]] = None, variables: Optional[Tuple[()]] = None, constructors: Optional[Tuple[()]] = None, methods: Optional[Tuple[()]] = None, typeParams: Optional[Tuple[()]] = None, loc: Optional[Tuple[()]] = None, innerDefinitions: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "JavaClassDeclaration":
+  def angle_query(*, name: Optional["JavaQName"] = None, modifiers: Optional[List[Tuple[()]]] = None, extends_: Optional[Tuple[()]] = None, implements_: Optional[List["JavaType"]] = None, annotations: Optional[List["JavaAnnotation"]] = None, variables: Optional[List["JavaVariableDeclaration"]] = None, constructors: Optional[List["JavaConstructorDeclaration"]] = None, methods: Optional[List["JavaMethodDeclaration"]] = None, typeParams: Optional[List["JavaTypeParam"]] = None, loc: Optional[Tuple[()]] = None, innerDefinitions: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "JavaClassDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -75,7 +75,7 @@ class JavaInterfaceDeclaration(GleanSchemaPredicate):
     return f"java.InterfaceDeclaration.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, annotations, 'annotations'), angle_for(__env, modifiers, 'modifiers'), angle_for(__env, extends_, 'extends_'), angle_for(__env, methods, 'methods'), angle_for(__env, typeParams, 'typeParams'), angle_for(__env, loc, 'loc'), angle_for(__env, variables, 'variables'), angle_for(__env, innerDefinitions, 'innerDefinitions'), angle_for(__env, location, 'location')])) or '_' } }}", InterfaceDeclaration
 
   @staticmethod
-  def angle_query(*, name: Optional["JavaQName"] = None, annotations: Optional[Tuple[()]] = None, modifiers: Optional[Tuple[()]] = None, extends_: Optional[Tuple[()]] = None, methods: Optional[Tuple[()]] = None, typeParams: Optional[Tuple[()]] = None, loc: Optional[Tuple[()]] = None, variables: Optional[Tuple[()]] = None, innerDefinitions: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "JavaInterfaceDeclaration":
+  def angle_query(*, name: Optional["JavaQName"] = None, annotations: Optional[List["JavaAnnotation"]] = None, modifiers: Optional[List[Tuple[()]]] = None, extends_: Optional[List["JavaType"]] = None, methods: Optional[List["JavaMethodDeclaration"]] = None, typeParams: Optional[List["JavaTypeParam"]] = None, loc: Optional[Tuple[()]] = None, variables: Optional[Tuple[()]] = None, innerDefinitions: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "JavaInterfaceDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -97,7 +97,7 @@ class JavaEnumDeclaration(GleanSchemaPredicate):
     return f"java.EnumDeclaration.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, annotations, 'annotations'), angle_for(__env, modifiers, 'modifiers'), angle_for(__env, implements_, 'implements_'), angle_for(__env, variables, 'variables'), angle_for(__env, methods, 'methods'), angle_for(__env, loc, 'loc'), angle_for(__env, innerDefinitions, 'innerDefinitions'), angle_for(__env, location, 'location')])) or '_' } }}", EnumDeclaration
 
   @staticmethod
-  def angle_query(*, name: Optional["JavaQName"] = None, annotations: Optional[Tuple[()]] = None, modifiers: Optional[Tuple[()]] = None, implements_: Optional[Tuple[()]] = None, variables: Optional[Tuple[()]] = None, methods: Optional[Tuple[()]] = None, loc: Optional[Tuple[()]] = None, innerDefinitions: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "JavaEnumDeclaration":
+  def angle_query(*, name: Optional["JavaQName"] = None, annotations: Optional[List["JavaAnnotation"]] = None, modifiers: Optional[List[Tuple[()]]] = None, implements_: Optional[List["JavaType"]] = None, variables: Optional[List["JavaVariableDeclaration"]] = None, methods: Optional[List["JavaMethodDeclaration"]] = None, loc: Optional[Tuple[()]] = None, innerDefinitions: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "JavaEnumDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -108,7 +108,7 @@ class JavaPackageDeclaration(GleanSchemaPredicate):
     return f"java.PackageDeclaration.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, annotation, 'annotation'), angle_for(__env, loc, 'loc'), angle_for(__env, path, 'path'), angle_for(__env, location, 'location')])) or '_' } }}", PackageDeclaration
 
   @staticmethod
-  def angle_query(*, name: Optional[str] = None, annotation: Optional[Tuple[()]] = None, loc: Optional[Tuple[()]] = None, path: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "JavaPackageDeclaration":
+  def angle_query(*, name: Optional[str] = None, annotation: Optional[List["JavaAnnotation"]] = None, loc: Optional[Tuple[()]] = None, path: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "JavaPackageDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -141,7 +141,7 @@ class JavaTypeParam(GleanSchemaPredicate):
     return f"java.TypeParam.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, extends_, 'extends_'), angle_for(__env, location, 'location')])) or '_' } }}", TypeParam
 
   @staticmethod
-  def angle_query(*, name: Optional[str] = None, extends_: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "JavaTypeParam":
+  def angle_query(*, name: Optional[str] = None, extends_: Optional[List["JavaType"]] = None, location: Optional[Tuple[()]] = None) -> "JavaTypeParam":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -174,7 +174,7 @@ class JavaMethodDeclaration(GleanSchemaPredicate):
     return f"java.MethodDeclaration.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, parameters, 'parameters'), angle_for(__env, returnType, 'returnType'), angle_for(__env, annotations, 'annotations'), angle_for(__env, modifiers, 'modifiers'), angle_for(__env, typeParams, 'typeParams'), angle_for(__env, loc, 'loc'), angle_for(__env, throws_, 'throws_'), angle_for(__env, location, 'location')])) or '_' } }}", MethodDeclaration
 
   @staticmethod
-  def angle_query(*, name: Optional["JavaQName"] = None, parameters: Optional[Tuple[()]] = None, returnType: Optional["JavaType"] = None, annotations: Optional[Tuple[()]] = None, modifiers: Optional[Tuple[()]] = None, typeParams: Optional[Tuple[()]] = None, loc: Optional[Tuple[()]] = None, throws_: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "JavaMethodDeclaration":
+  def angle_query(*, name: Optional["JavaQName"] = None, parameters: Optional[List["JavaVariableDeclaration"]] = None, returnType: Optional["JavaType"] = None, annotations: Optional[List["JavaAnnotation"]] = None, modifiers: Optional[List[Tuple[()]]] = None, typeParams: Optional[List["JavaTypeParam"]] = None, loc: Optional[Tuple[()]] = None, throws_: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "JavaMethodDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -196,7 +196,7 @@ class JavaVariableDeclaration(GleanSchemaPredicate):
     return f"java.VariableDeclaration.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, type, 'type'), angle_for(__env, annotations, 'annotations'), angle_for(__env, modifiers, 'modifiers'), angle_for(__env, loc, 'loc'), angle_for(__env, location, 'location')])) or '_' } }}", VariableDeclaration
 
   @staticmethod
-  def angle_query(*, name: Optional["JavaQName"] = None, type: Optional["JavaType"] = None, annotations: Optional[Tuple[()]] = None, modifiers: Optional[Tuple[()]] = None, loc: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "JavaVariableDeclaration":
+  def angle_query(*, name: Optional["JavaQName"] = None, type: Optional["JavaType"] = None, annotations: Optional[List["JavaAnnotation"]] = None, modifiers: Optional[List[Tuple[()]]] = None, loc: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "JavaVariableDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -245,7 +245,7 @@ class JavaFileXRefs(GleanSchemaPredicate):
     return f"java.FileXRefs.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xrefs, 'xrefs')])) or '_' } }}", FileXRefs
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, xrefs: Optional[Tuple[()]] = None) -> "JavaFileXRefs":
+  def angle_query(*, file: Optional["SrcFile"] = None, xrefs: Optional[List["JavaXRef"]] = None) -> "JavaFileXRefs":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -267,7 +267,7 @@ class JavaJavaFile(GleanSchemaPredicate):
     return f"java.JavaFile.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, package_, 'package_'), angle_for(__env, import_, 'import_'), angle_for(__env, definition, 'definition'), angle_for(__env, file, 'file')])) or '_' } }}", JavaFile
 
   @staticmethod
-  def angle_query(*, package_: Optional[Tuple[()]] = None, import_: Optional[Tuple[()]] = None, definition: Optional[Tuple[()]] = None, file: Optional["SrcFile"] = None) -> "JavaJavaFile":
+  def angle_query(*, package_: Optional[Tuple[()]] = None, import_: Optional[List["JavaImportDeclaration"]] = None, definition: Optional[List[Tuple[()]]] = None, file: Optional["SrcFile"] = None) -> "JavaJavaFile":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -289,7 +289,7 @@ class JavaXRef(GleanSchemaPredicate):
     return f"java.XRef.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, ranges, 'ranges'), angle_for(__env, xtarget, 'xtarget')])) or '_' } }}", XRef
 
   @staticmethod
-  def angle_query(*, target: Optional[Tuple[()]] = None, ranges: Optional[Tuple[()]] = None, xtarget: Optional[Tuple[()]] = None) -> "JavaXRef":
+  def angle_query(*, target: Optional[Tuple[()]] = None, ranges: Optional[List[Tuple[()]]] = None, xtarget: Optional[Tuple[()]] = None) -> "JavaXRef":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -300,7 +300,7 @@ class JavaConstructorDeclaration(GleanSchemaPredicate):
     return f"java.ConstructorDeclaration.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, parameters, 'parameters'), angle_for(__env, annotations, 'annotations'), angle_for(__env, modifiers, 'modifiers'), angle_for(__env, typeParams, 'typeParams'), angle_for(__env, loc, 'loc'), angle_for(__env, throws_, 'throws_'), angle_for(__env, location, 'location')])) or '_' } }}", ConstructorDeclaration
 
   @staticmethod
-  def angle_query(*, name: Optional["JavaQName"] = None, parameters: Optional[Tuple[()]] = None, annotations: Optional[Tuple[()]] = None, modifiers: Optional[Tuple[()]] = None, typeParams: Optional[Tuple[()]] = None, loc: Optional[Tuple[()]] = None, throws_: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "JavaConstructorDeclaration":
+  def angle_query(*, name: Optional["JavaQName"] = None, parameters: Optional[List["JavaVariableDeclaration"]] = None, annotations: Optional[List["JavaAnnotation"]] = None, modifiers: Optional[List[Tuple[()]]] = None, typeParams: Optional[List["JavaTypeParam"]] = None, loc: Optional[Tuple[()]] = None, throws_: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "JavaConstructorDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -311,7 +311,7 @@ class JavaType(GleanSchemaPredicate):
     return f"java.Type.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, type, 'type'), angle_for(__env, typeArgs, 'typeArgs'), angle_for(__env, stype, 'stype')])) or '_' } }}", Type
 
   @staticmethod
-  def angle_query(*, type: Optional[str] = None, typeArgs: Optional[Tuple[()]] = None, stype: Optional[Tuple[()]] = None) -> "JavaType":
+  def angle_query(*, type: Optional[str] = None, typeArgs: Optional[List["JavaTypeArg"]] = None, stype: Optional[Tuple[()]] = None) -> "JavaType":
     raise Exception("this function can only be called from @angle_query")
 
 

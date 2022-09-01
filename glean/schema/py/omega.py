@@ -34,7 +34,7 @@ class OmegaDependencyList(GleanSchemaPredicate):
     return f"omega.DependencyList.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, node, 'node'), angle_for(__env, entities, 'entities')])) or '_' } }}", DependencyList
 
   @staticmethod
-  def angle_query(*, node: Optional[Tuple[()]] = None, entities: Optional[Tuple[()]] = None) -> "OmegaDependencyList":
+  def angle_query(*, node: Optional[Tuple[()]] = None, entities: Optional[List[Tuple[()]]] = None) -> "OmegaDependencyList":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -122,7 +122,7 @@ class OmegaDependencyPathByEntity(GleanSchemaPredicate):
     return f"omega.DependencyPathByEntity.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, node, 'node'), angle_for(__env, shortestPath, 'shortestPath')])) or '_' } }}", DependencyPathByEntity
 
   @staticmethod
-  def angle_query(*, entity: Optional[Tuple[()]] = None, node: Optional[Tuple[()]] = None, shortestPath: Optional[Tuple[()]] = None) -> "OmegaDependencyPathByEntity":
+  def angle_query(*, entity: Optional[Tuple[()]] = None, node: Optional[Tuple[()]] = None, shortestPath: Optional[List[Tuple[()]]] = None) -> "OmegaDependencyPathByEntity":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -210,7 +210,7 @@ class OmegaDependencyPath(GleanSchemaPredicate):
     return f"omega.DependencyPath.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, node, 'node'), angle_for(__env, entity, 'entity'), angle_for(__env, shortestPath, 'shortestPath')])) or '_' } }}", DependencyPath
 
   @staticmethod
-  def angle_query(*, node: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None, shortestPath: Optional[Tuple[()]] = None) -> "OmegaDependencyPath":
+  def angle_query(*, node: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None, shortestPath: Optional[List[Tuple[()]]] = None) -> "OmegaDependencyPath":
     raise Exception("this function can only be called from @angle_query")
 
 

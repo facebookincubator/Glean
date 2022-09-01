@@ -88,7 +88,7 @@ class ThriftToPython(GleanSchemaPredicate):
     return f"thrift.ToPython.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, thrift, 'thrift'), angle_for(__env, lang, 'lang'), angle_for(__env, python, 'python')])) or '_' } }}", ToPython
 
   @staticmethod
-  def angle_query(*, thrift: Optional["ThriftFile"] = None, lang: Optional["ThriftLang"] = None, python: Optional[Tuple[()]] = None) -> "ThriftToPython":
+  def angle_query(*, thrift: Optional["ThriftFile"] = None, lang: Optional["ThriftLang"] = None, python: Optional[List["ThriftFromPython"]] = None) -> "ThriftToPython":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -99,7 +99,7 @@ class ThriftFunctionSpecification(GleanSchemaPredicate):
     return f"thrift.FunctionSpecification.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, result, 'result'), angle_for(__env, arguments, 'arguments'), angle_for(__env, throws_, 'throws_')])) or '_' } }}", FunctionSpecification
 
   @staticmethod
-  def angle_query(*, name: Optional["ThriftFunctionName"] = None, result: Optional[Tuple[()]] = None, arguments: Optional[Tuple[()]] = None, throws_: Optional[Tuple[()]] = None) -> "ThriftFunctionSpecification":
+  def angle_query(*, name: Optional["ThriftFunctionName"] = None, result: Optional[Tuple[()]] = None, arguments: Optional[List[Tuple[()]]] = None, throws_: Optional[List[Tuple[()]]] = None) -> "ThriftFunctionSpecification":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -110,7 +110,7 @@ class ThriftExceptionType(GleanSchemaPredicate):
     return f"thrift.ExceptionType.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, fields, 'fields'), angle_for(__env, structuredAnnotations, 'structuredAnnotations')])) or '_' } }}", ExceptionType
 
   @staticmethod
-  def angle_query(*, name: Optional["ThriftQualName"] = None, fields: Optional[Tuple[()]] = None, structuredAnnotations: Optional[Tuple[()]] = None) -> "ThriftExceptionType":
+  def angle_query(*, name: Optional["ThriftQualName"] = None, fields: Optional[List[Tuple[()]]] = None, structuredAnnotations: Optional[List["ThriftStructuredAnnotation"]] = None) -> "ThriftExceptionType":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -339,7 +339,7 @@ class ThriftPythonClassContains(GleanSchemaPredicate):
     return f"thrift.PythonClassContains.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, class_, 'class_'), angle_for(__env, methods, 'methods'), angle_for(__env, fields, 'fields')])) or '_' } }}", PythonClassContains
 
   @staticmethod
-  def angle_query(*, class_: Optional["ThriftPythonClass"] = None, methods: Optional[Tuple[()]] = None, fields: Optional[Tuple[()]] = None) -> "ThriftPythonClassContains":
+  def angle_query(*, class_: Optional["ThriftPythonClass"] = None, methods: Optional[List["ThriftPythonMethod"]] = None, fields: Optional[List["ThriftPythonField"]] = None) -> "ThriftPythonClassContains":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -383,7 +383,7 @@ class ThriftServiceDefinition(GleanSchemaPredicate):
     return f"thrift.ServiceDefinition.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, functions, 'functions')])) or '_' } }}", ServiceDefinition
 
   @staticmethod
-  def angle_query(*, name: Optional["ThriftServiceName"] = None, functions: Optional[Tuple[()]] = None) -> "ThriftServiceDefinition":
+  def angle_query(*, name: Optional["ThriftServiceName"] = None, functions: Optional[List["ThriftFunctionSpecification"]] = None) -> "ThriftServiceDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -449,7 +449,7 @@ class ThriftHackRecordContains(GleanSchemaPredicate):
     return f"thrift.HackRecordContains.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, record, 'record'), angle_for(__env, methods, 'methods')])) or '_' } }}", HackRecordContains
 
   @staticmethod
-  def angle_query(*, record: Optional["ThriftHackRecord"] = None, methods: Optional[Tuple[()]] = None) -> "ThriftHackRecordContains":
+  def angle_query(*, record: Optional["ThriftHackRecord"] = None, methods: Optional[List["ThriftHackMethod"]] = None) -> "ThriftHackRecordContains":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -471,7 +471,7 @@ class ThriftStructType(GleanSchemaPredicate):
     return f"thrift.StructType.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, fields, 'fields'), angle_for(__env, structuredAnnotations, 'structuredAnnotations')])) or '_' } }}", StructType
 
   @staticmethod
-  def angle_query(*, name: Optional["ThriftQualName"] = None, fields: Optional[Tuple[()]] = None, structuredAnnotations: Optional[Tuple[()]] = None) -> "ThriftStructType":
+  def angle_query(*, name: Optional["ThriftQualName"] = None, fields: Optional[List[Tuple[()]]] = None, structuredAnnotations: Optional[List["ThriftStructuredAnnotation"]] = None) -> "ThriftStructType":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -603,7 +603,7 @@ class ThriftPythonModuleContains(GleanSchemaPredicate):
     return f"thrift.PythonModuleContains.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, module, 'module'), angle_for(__env, classes, 'classes'), angle_for(__env, functions, 'functions'), angle_for(__env, values, 'values')])) or '_' } }}", PythonModuleContains
 
   @staticmethod
-  def angle_query(*, module: Optional["ThriftPythonModule"] = None, classes: Optional[Tuple[()]] = None, functions: Optional[Tuple[()]] = None, values: Optional[Tuple[()]] = None) -> "ThriftPythonModuleContains":
+  def angle_query(*, module: Optional["ThriftPythonModule"] = None, classes: Optional[List["ThriftPythonClass"]] = None, functions: Optional[List["ThriftPythonFunction"]] = None, values: Optional[List["ThriftPythonValue"]] = None) -> "ThriftPythonModuleContains":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -636,7 +636,7 @@ class ThriftFileXRefs(GleanSchemaPredicate):
     return f"thrift.FileXRefs.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, targets, 'targets'), angle_for(__env, xrefs, 'xrefs')])) or '_' } }}", FileXRefs
 
   @staticmethod
-  def angle_query(*, file: Optional["ThriftFile"] = None, targets: Optional[Tuple[()]] = None, xrefs: Optional[Tuple[()]] = None) -> "ThriftFileXRefs":
+  def angle_query(*, file: Optional["ThriftFile"] = None, targets: Optional[List[Tuple[()]]] = None, xrefs: Optional[List[Tuple[()]]] = None) -> "ThriftFileXRefs":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -658,7 +658,7 @@ class ThriftStructVal(GleanSchemaPredicate):
     return f"thrift.StructVal.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, fields, 'fields')])) or '_' } }}", StructVal
 
   @staticmethod
-  def angle_query(*, fields: Optional[Tuple[()]] = None) -> "ThriftStructVal":
+  def angle_query(*, fields: Optional[List[Tuple[()]]] = None) -> "ThriftStructVal":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -723,27 +723,27 @@ class ThriftLiteral(GleanSchemaPredicate):
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_binary_(*, binary_: Tuple[()]) -> "ThriftLiteral":
+  def angle_query_binary_(*, binary_: List[Tuple[()]]) -> "ThriftLiteral":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_set_(*, set_: Tuple[()]) -> "ThriftLiteral":
+  def angle_query_set_(*, set_: List[Tuple[()]]) -> "ThriftLiteral":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_hashSet_(*, hashSet_: Tuple[()]) -> "ThriftLiteral":
+  def angle_query_hashSet_(*, hashSet_: List[Tuple[()]]) -> "ThriftLiteral":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_list_(*, list_: Tuple[()]) -> "ThriftLiteral":
+  def angle_query_list_(*, list_: List[Tuple[()]]) -> "ThriftLiteral":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_map_(*, map_: Tuple[()]) -> "ThriftLiteral":
+  def angle_query_map_(*, map_: List[Tuple[()]]) -> "ThriftLiteral":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_hashMap_(*, hashMap_: Tuple[()]) -> "ThriftLiteral":
+  def angle_query_hashMap_(*, hashMap_: List[Tuple[()]]) -> "ThriftLiteral":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
@@ -786,7 +786,7 @@ class ThriftUnionType(GleanSchemaPredicate):
     return f"thrift.UnionType.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, alts, 'alts')])) or '_' } }}", UnionType
 
   @staticmethod
-  def angle_query(*, name: Optional["ThriftQualName"] = None, alts: Optional[Tuple[()]] = None) -> "ThriftUnionType":
+  def angle_query(*, name: Optional["ThriftQualName"] = None, alts: Optional[List[Tuple[()]]] = None) -> "ThriftUnionType":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -830,7 +830,7 @@ class ThriftToCpp2(GleanSchemaPredicate):
     return f"thrift.ToCpp2.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, thrift, 'thrift'), angle_for(__env, cpp2, 'cpp2')])) or '_' } }}", ToCpp2
 
   @staticmethod
-  def angle_query(*, thrift: Optional["ThriftFile"] = None, cpp2: Optional[Tuple[()]] = None) -> "ThriftToCpp2":
+  def angle_query(*, thrift: Optional["ThriftFile"] = None, cpp2: Optional[List["ThriftFromCpp2"]] = None) -> "ThriftToCpp2":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -841,7 +841,7 @@ class ThriftToHack(GleanSchemaPredicate):
     return f"thrift.ToHack.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, thrift, 'thrift'), angle_for(__env, hack, 'hack')])) or '_' } }}", ToHack
 
   @staticmethod
-  def angle_query(*, thrift: Optional["ThriftFile"] = None, hack: Optional[Tuple[()]] = None) -> "ThriftToHack":
+  def angle_query(*, thrift: Optional["ThriftFile"] = None, hack: Optional[List["ThriftFromHack"]] = None) -> "ThriftToHack":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -852,7 +852,7 @@ class ThriftEnumerationType(GleanSchemaPredicate):
     return f"thrift.EnumerationType.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, value, 'value')])) or '_' } }}", EnumerationType
 
   @staticmethod
-  def angle_query(*, name: Optional["ThriftQualName"] = None, value: Optional[Tuple[()]] = None) -> "ThriftEnumerationType":
+  def angle_query(*, name: Optional["ThriftQualName"] = None, value: Optional[List["ThriftEnumValueDef"]] = None) -> "ThriftEnumerationType":
     raise Exception("this function can only be called from @angle_query")
 
 

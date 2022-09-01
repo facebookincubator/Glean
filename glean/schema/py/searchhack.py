@@ -24,7 +24,7 @@ class SearchHackQueryToScope(GleanSchemaPredicate):
     return f"search.hack.QueryToScope.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, query, 'query'), angle_for(__env, scopeName, 'scopeName'), angle_for(__env, scopeNamespace, 'scopeNamespace')])) or '_' } }}", hackQueryToScope
 
   @staticmethod
-  def angle_query(*, query: Optional[Tuple[()]] = None, scopeName: Optional["HackName"] = None, scopeNamespace: Optional[Tuple[()]] = None) -> "SearchHackQueryToScope":
+  def angle_query(*, query: Optional[List[str]] = None, scopeName: Optional["HackName"] = None, scopeNamespace: Optional[Tuple[()]] = None) -> "SearchHackQueryToScope":
     raise Exception("this function can only be called from @angle_query")
 
 
