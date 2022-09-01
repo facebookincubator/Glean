@@ -120,6 +120,13 @@ struct Subroutine {
       return outputs()[i];
     }
 
+    /// Registers in which a subroutine returns its results
+    folly::Range<const uint64_t *> results() const {
+      return
+        { frame() + sub.inputs + sub.constants.size()
+        , frame() + sub.frameSize()};
+    }
+
     /// Execute the activation. If 'suspended' is true after the call, execution
     /// can be resumed by another call to 'execute'.
     void execute();
