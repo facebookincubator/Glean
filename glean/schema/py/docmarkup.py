@@ -20,55 +20,67 @@ from glean.schema.docmarkup.types import (
 class DocmarkupDocAttr(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], key: ast.Expr, value: ast.Expr) -> Tuple[str, Struct]:
-    return f"docmarkup.DocAttr.14 {{ key = {angle_for(__env, key)}, value = {angle_for(__env, value)} }}", DocAttr
+    return f"docmarkup.DocAttr.14 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, key, 'key'), angle_for(__env, value, 'value')])) or '_' } }}", DocAttr
 
   @staticmethod
   def angle_query(*, key: Optional["DocmarkupDocAttrKey"] = None, value: Optional[Tuple[()]] = None) -> "DocmarkupDocAttr":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class DocmarkupEntityComments(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], entity: ast.Expr, file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
-    return f"docmarkup.EntityComments.14 {{ entity = {angle_for(__env, entity)}, file = {angle_for(__env, file)}, span = {angle_for(__env, span)} }}", EntityComments
+    return f"docmarkup.EntityComments.14 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", EntityComments
 
   @staticmethod
   def angle_query(*, entity: Optional[Tuple[()]] = None, file: Optional["SrcFile"] = None, span: Optional[Tuple[()]] = None) -> "DocmarkupEntityComments":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class DocmarkupEntityDocAttr(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"docmarkup.EntityDocAttr.14 {angle_for(__env, arg)}", EntityDocAttr
+    return f"docmarkup.EntityDocAttr.14 { angle_for(__env, arg, None) or '_' }", EntityDocAttr
 
   @staticmethod
   def angle_query(*, arg: Optional[Tuple[()]] = None) -> "DocmarkupEntityDocAttr":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class DocmarkupEntityByDocAttrKey(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], key: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"docmarkup.EntityByDocAttrKey.14 {{ key = {angle_for(__env, key)}, entity = {angle_for(__env, entity)} }}", EntityByDocAttrKey
+    return f"docmarkup.EntityByDocAttrKey.14 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, key, 'key'), angle_for(__env, entity, 'entity')])) or '_' } }}", EntityByDocAttrKey
 
   @staticmethod
   def angle_query(*, key: Optional["DocmarkupDocAttrKey"] = None, entity: Optional[Tuple[()]] = None) -> "DocmarkupEntityByDocAttrKey":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class DocmarkupEntityAnnotations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], entity: ast.Expr, annotations: ast.Expr) -> Tuple[str, Struct]:
-    return f"docmarkup.EntityAnnotations.14 {{ entity = {angle_for(__env, entity)}, annotations = {angle_for(__env, annotations)} }}", EntityAnnotations
+    return f"docmarkup.EntityAnnotations.14 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, annotations, 'annotations')])) or '_' } }}", EntityAnnotations
 
   @staticmethod
   def angle_query(*, entity: Optional[Tuple[()]] = None, annotations: Optional[Tuple[()]] = None) -> "DocmarkupEntityAnnotations":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class DocmarkupDocAttrKey(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"docmarkup.DocAttrKey.14 {angle_for(__env, arg)}", DocAttrKey
+    return f"docmarkup.DocAttrKey.14 { angle_for(__env, arg, None) or '_' }", DocAttrKey
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "DocmarkupDocAttrKey":
     raise Exception("this function can only be called from @angle_query")
+
+
 
 

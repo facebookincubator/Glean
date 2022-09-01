@@ -37,208 +37,254 @@ from glean.schema.hs.types import (
 class HsPackageId(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"hs.PackageId.1 {angle_for(__env, arg)}", PackageId
+    return f"hs.PackageId.1 { angle_for(__env, arg, None) or '_' }", PackageId
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HsPackageId":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class HsDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, source: ast.Expr) -> Tuple[str, Struct]:
-    return f"hs.Definition.2 {{ name = {angle_for(__env, name)}, source = {angle_for(__env, source)} }}", Definition
+    return f"hs.Definition.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, source, 'source')])) or '_' } }}", Definition
 
   @staticmethod
   def angle_query(*, name: Optional["HsDefinitionName"] = None, source: Optional[Tuple[()]] = None) -> "HsDefinition":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class HsClassNameLowerCase(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], nameLowerCase: ast.Expr, name: ast.Expr) -> Tuple[str, Struct]:
-    return f"hs.ClassNameLowerCase.1 {{ nameLowerCase = {angle_for(__env, nameLowerCase)}, name = {angle_for(__env, name)} }}", ClassNameLowerCase
+    return f"hs.ClassNameLowerCase.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, nameLowerCase, 'nameLowerCase'), angle_for(__env, name, 'name')])) or '_' } }}", ClassNameLowerCase
 
   @staticmethod
   def angle_query(*, nameLowerCase: Optional[str] = None, name: Optional["HsClassName"] = None) -> "HsClassNameLowerCase":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class HsDefinitionNameLowerCase(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], nameLowerCase: ast.Expr, name: ast.Expr) -> Tuple[str, Struct]:
-    return f"hs.DefinitionNameLowerCase.1 {{ nameLowerCase = {angle_for(__env, nameLowerCase)}, name = {angle_for(__env, name)} }}", DefinitionNameLowerCase
+    return f"hs.DefinitionNameLowerCase.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, nameLowerCase, 'nameLowerCase'), angle_for(__env, name, 'name')])) or '_' } }}", DefinitionNameLowerCase
 
   @staticmethod
   def angle_query(*, nameLowerCase: Optional[str] = None, name: Optional["HsDefinitionName"] = None) -> "HsDefinitionNameLowerCase":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class HsModuleName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"hs.ModuleName.1 {angle_for(__env, arg)}", ModuleName
+    return f"hs.ModuleName.1 { angle_for(__env, arg, None) or '_' }", ModuleName
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HsModuleName":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class HsDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, source: ast.Expr) -> Tuple[str, Struct]:
-    return f"hs.Definition.1 {{ name = {angle_for(__env, name)}, source = {angle_for(__env, source)} }}", Definition
+    return f"hs.Definition.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, source, 'source')])) or '_' } }}", Definition
 
   @staticmethod
   def angle_query(*, name: Optional["HsDefinitionName"] = None, source: Optional[Tuple[()]] = None) -> "HsDefinition":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class HsDefinitionLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], defn: ast.Expr, name: ast.Expr, source: ast.Expr) -> Tuple[str, Struct]:
-    return f"hs.DefinitionLocation.2 {{ defn = {angle_for(__env, defn)}, name = {angle_for(__env, name)}, source = {angle_for(__env, source)} }}", DefinitionLocation
+    return f"hs.DefinitionLocation.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, defn, 'defn'), angle_for(__env, name, 'name'), angle_for(__env, source, 'source')])) or '_' } }}", DefinitionLocation
 
   @staticmethod
   def angle_query(*, defn: Optional[Tuple[()]] = None, name: Optional[str] = None, source: Optional[Tuple[()]] = None) -> "HsDefinitionLocation":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class HsDefinitionName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"hs.DefinitionName.1 {angle_for(__env, arg)}", DefinitionName
+    return f"hs.DefinitionName.1 { angle_for(__env, arg, None) or '_' }", DefinitionName
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HsDefinitionName":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class HsModule(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], packageId: ast.Expr, moduleName: ast.Expr, source: ast.Expr) -> Tuple[str, Struct]:
-    return f"hs.Module.1 {{ packageId = {angle_for(__env, packageId)}, moduleName = {angle_for(__env, moduleName)}, source = {angle_for(__env, source)} }}", Module
+    return f"hs.Module.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, packageId, 'packageId'), angle_for(__env, moduleName, 'moduleName'), angle_for(__env, source, 'source')])) or '_' } }}", Module
 
   @staticmethod
   def angle_query(*, packageId: Optional["HsPackageId"] = None, moduleName: Optional["HsModuleName"] = None, source: Optional["SrcFile"] = None) -> "HsModule":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class HsTargetUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], target: ast.Expr, file: ast.Expr, uses: ast.Expr) -> Tuple[str, Struct]:
-    return f"hs.TargetUses.2 {{ target = {angle_for(__env, target)}, file = {angle_for(__env, file)}, uses = {angle_for(__env, uses)} }}", TargetUses
+    return f"hs.TargetUses.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, file, 'file'), angle_for(__env, uses, 'uses')])) or '_' } }}", TargetUses
 
   @staticmethod
   def angle_query(*, target: Optional["HsDefinition"] = None, file: Optional["SrcFile"] = None, uses: Optional[Tuple[()]] = None) -> "HsTargetUses":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class HsFunctionNameLowerCase(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], nameLowerCase: ast.Expr, name: ast.Expr) -> Tuple[str, Struct]:
-    return f"hs.FunctionNameLowerCase.1 {{ nameLowerCase = {angle_for(__env, nameLowerCase)}, name = {angle_for(__env, name)} }}", FunctionNameLowerCase
+    return f"hs.FunctionNameLowerCase.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, nameLowerCase, 'nameLowerCase'), angle_for(__env, name, 'name')])) or '_' } }}", FunctionNameLowerCase
 
   @staticmethod
   def angle_query(*, nameLowerCase: Optional[str] = None, name: Optional["HsFunctionName"] = None) -> "HsFunctionNameLowerCase":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class HsFileDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, defn: ast.Expr) -> Tuple[str, Struct]:
-    return f"hs.FileDefinition.2 {{ file = {angle_for(__env, file)}, defn = {angle_for(__env, defn)} }}", FileDefinition
+    return f"hs.FileDefinition.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, defn, 'defn')])) or '_' } }}", FileDefinition
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, defn: Optional[Tuple[()]] = None) -> "HsFileDefinition":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class HsSourceModule(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], moduleName: ast.Expr, source: ast.Expr) -> Tuple[str, Struct]:
-    return f"hs.SourceModule.1 {{ moduleName = {angle_for(__env, moduleName)}, source = {angle_for(__env, source)} }}", SourceModule
+    return f"hs.SourceModule.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, moduleName, 'moduleName'), angle_for(__env, source, 'source')])) or '_' } }}", SourceModule
 
   @staticmethod
   def angle_query(*, moduleName: Optional["HsModuleName"] = None, source: Optional["SrcFile"] = None) -> "HsSourceModule":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class HsFunctionDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, source: ast.Expr) -> Tuple[str, Struct]:
-    return f"hs.FunctionDefinition.1 {{ name = {angle_for(__env, name)}, source = {angle_for(__env, source)} }}", FunctionDefinition
+    return f"hs.FunctionDefinition.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, source, 'source')])) or '_' } }}", FunctionDefinition
 
   @staticmethod
   def angle_query(*, name: Optional["HsFunctionName"] = None, source: Optional[Tuple[()]] = None) -> "HsFunctionDefinition":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class HsClassInstance(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], typeclass: ast.Expr, instance: ast.Expr, source: ast.Expr) -> Tuple[str, Struct]:
-    return f"hs.ClassInstance.1 {{ typeclass = {angle_for(__env, typeclass)}, instance = {angle_for(__env, instance)}, source = {angle_for(__env, source)} }}", ClassInstance
+    return f"hs.ClassInstance.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, typeclass, 'typeclass'), angle_for(__env, instance, 'instance'), angle_for(__env, source, 'source')])) or '_' } }}", ClassInstance
 
   @staticmethod
   def angle_query(*, typeclass: Optional["HsClassName"] = None, instance: Optional["HsType"] = None, source: Optional[Tuple[()]] = None) -> "HsClassInstance":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class HsClass(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, source: ast.Expr) -> Tuple[str, Struct]:
-    return f"hs.Class.1 {{ name = {angle_for(__env, name)}, source = {angle_for(__env, source)} }}", Class
+    return f"hs.Class.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, source, 'source')])) or '_' } }}", Class
 
   @staticmethod
   def angle_query(*, name: Optional["HsClassName"] = None, source: Optional[Tuple[()]] = None) -> "HsClass":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class HsFunctionName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"hs.FunctionName.1 {angle_for(__env, arg)}", FunctionName
+    return f"hs.FunctionName.1 { angle_for(__env, arg, None) or '_' }", FunctionName
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HsFunctionName":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class HsModuleDefinitions(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], module: ast.Expr, functionDefinitions: ast.Expr) -> Tuple[str, Struct]:
-    return f"hs.ModuleDefinitions.1 {{ module = {angle_for(__env, module)}, functionDefinitions = {angle_for(__env, functionDefinitions)} }}", ModuleDefinitions
+    return f"hs.ModuleDefinitions.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, module, 'module'), angle_for(__env, functionDefinitions, 'functionDefinitions')])) or '_' } }}", ModuleDefinitions
 
   @staticmethod
   def angle_query(*, module: Optional["HsModule"] = None, functionDefinitions: Optional[Tuple[()]] = None) -> "HsModuleDefinitions":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class HsModuleNameLowerCase(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], nameLowerCase: ast.Expr, name: ast.Expr) -> Tuple[str, Struct]:
-    return f"hs.ModuleNameLowerCase.1 {{ nameLowerCase = {angle_for(__env, nameLowerCase)}, name = {angle_for(__env, name)} }}", ModuleNameLowerCase
+    return f"hs.ModuleNameLowerCase.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, nameLowerCase, 'nameLowerCase'), angle_for(__env, name, 'name')])) or '_' } }}", ModuleNameLowerCase
 
   @staticmethod
   def angle_query(*, nameLowerCase: Optional[str] = None, name: Optional["HsModuleName"] = None) -> "HsModuleNameLowerCase":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class HsXRef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], loc: ast.Expr, ref: ast.Expr) -> Tuple[str, Struct]:
-    return f"hs.XRef.2 {{ loc = {angle_for(__env, loc)}, ref = {angle_for(__env, ref)} }}", XRef
+    return f"hs.XRef.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, loc, 'loc'), angle_for(__env, ref, 'ref')])) or '_' } }}", XRef
 
   @staticmethod
   def angle_query(*, loc: Optional[Tuple[()]] = None, ref: Optional[Tuple[()]] = None) -> "HsXRef":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class HsClassName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"hs.ClassName.1 {angle_for(__env, arg)}", ClassName
+    return f"hs.ClassName.1 { angle_for(__env, arg, None) or '_' }", ClassName
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HsClassName":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class HsType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"hs.Type.1 {angle_for(__env, arg)}", Type
+    return f"hs.Type.1 { angle_for(__env, arg, None) or '_' }", Type
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HsType":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class HsFileXRefMap(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, refs: ast.Expr) -> Tuple[str, Struct]:
-    return f"hs.FileXRefMap.2 {{ file = {angle_for(__env, file)}, refs = {angle_for(__env, refs)} }}", FileXRefMap
+    return f"hs.FileXRefMap.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, refs, 'refs')])) or '_' } }}", FileXRefMap
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, refs: Optional[Tuple[()]] = None) -> "HsFileXRefMap":
     raise Exception("this function can only be called from @angle_query")
+
+
 
 

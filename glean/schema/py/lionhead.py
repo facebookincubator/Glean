@@ -16,19 +16,23 @@ from glean.schema.lionhead.types import (
 class LionheadCoveredHarness(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], harnessId: ast.Expr, root: ast.Expr) -> Tuple[str, Struct]:
-    return f"lionhead.CoveredHarness.1 {{ harnessId = {angle_for(__env, harnessId)}, root = {angle_for(__env, root)} }}", CoveredHarness
+    return f"lionhead.CoveredHarness.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, harnessId, 'harnessId'), angle_for(__env, root, 'root')])) or '_' } }}", CoveredHarness
 
   @staticmethod
   def angle_query(*, harnessId: Optional["LionheadFbId"] = None, root: Optional["TestinfraCoveredFolder"] = None) -> "LionheadCoveredHarness":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class LionheadFbId(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"lionhead.FbId.1 {angle_for(__env, arg)}", FbId
+    return f"lionhead.FbId.1 { angle_for(__env, arg, None) or '_' }", FbId
 
   @staticmethod
   def angle_query(*, arg: Optional[int] = None) -> "LionheadFbId":
     raise Exception("this function can only be called from @angle_query")
+
+
 
 

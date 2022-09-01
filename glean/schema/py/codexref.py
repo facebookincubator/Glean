@@ -16,28 +16,34 @@ from glean.schema.codexref.types import (
 class CodexrefOutgoingXRefs(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, shard: ast.Expr) -> Tuple[str, Struct]:
-    return f"codexref.OutgoingXRefs.6 {{ file = {angle_for(__env, file)}, shard = {angle_for(__env, shard)} }}", OutgoingXRefs
+    return f"codexref.OutgoingXRefs.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, shard, 'shard')])) or '_' } }}", OutgoingXRefs
 
   @staticmethod
   def angle_query(*, file: Optional[str] = None, shard: Optional[Tuple[()]] = None) -> "CodexrefOutgoingXRefs":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class CodexrefSymbolName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"codexref.SymbolName.6 {angle_for(__env, arg)}", SymbolName
+    return f"codexref.SymbolName.6 { angle_for(__env, arg, None) or '_' }", SymbolName
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "CodexrefSymbolName":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class CodexrefIncomingXRefs(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, shard: ast.Expr) -> Tuple[str, Struct]:
-    return f"codexref.IncomingXRefs.6 {{ file = {angle_for(__env, file)}, shard = {angle_for(__env, shard)} }}", IncomingXRefs
+    return f"codexref.IncomingXRefs.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, shard, 'shard')])) or '_' } }}", IncomingXRefs
 
   @staticmethod
   def angle_query(*, file: Optional[str] = None, shard: Optional[Tuple[()]] = None) -> "CodexrefIncomingXRefs":
     raise Exception("this function can only be called from @angle_query")
+
+
 
 

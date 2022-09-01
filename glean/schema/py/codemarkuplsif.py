@@ -20,55 +20,67 @@ from glean.schema.codemarkuplsif.types import (
 class CodemarkupLsifLsifEntityLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], entity: ast.Expr, location: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.lsif.LsifEntityLocation.3 {{ entity = {angle_for(__env, entity)}, location = {angle_for(__env, location)} }}", lsifLsifEntityLocation
+    return f"codemarkup.lsif.LsifEntityLocation.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location')])) or '_' } }}", lsifLsifEntityLocation
 
   @staticmethod
   def angle_query(*, entity: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "CodemarkupLsifLsifEntityLocation":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class CodemarkupLsifLsifResolveLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], location: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.lsif.LsifResolveLocation.3 {{ location = {angle_for(__env, location)}, entity = {angle_for(__env, entity)} }}", lsifLsifResolveLocation
+    return f"codemarkup.lsif.LsifResolveLocation.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, location, 'location'), angle_for(__env, entity, 'entity')])) or '_' } }}", lsifLsifResolveLocation
 
   @staticmethod
   def angle_query(*, location: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupLsifLsifResolveLocation":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class CodemarkupLsifLsifEntityUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], target: ast.Expr, file: ast.Expr, range: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.lsif.LsifEntityUses.3 {{ target = {angle_for(__env, target)}, file = {angle_for(__env, file)}, range = {angle_for(__env, range)} }}", lsifLsifEntityUses
+    return f"codemarkup.lsif.LsifEntityUses.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, file, 'file'), angle_for(__env, range, 'range')])) or '_' } }}", lsifLsifEntityUses
 
   @staticmethod
   def angle_query(*, target: Optional[Tuple[()]] = None, file: Optional["SrcFile"] = None, range: Optional[Tuple[()]] = None) -> "CodemarkupLsifLsifEntityUses":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class CodemarkupLsifLsifFileEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, xref: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.lsif.LsifFileEntityXRefLocations.3 {{ file = {angle_for(__env, file)}, xref = {angle_for(__env, xref)}, entity = {angle_for(__env, entity)} }}", lsifLsifFileEntityXRefLocations
+    return f"codemarkup.lsif.LsifFileEntityXRefLocations.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xref, 'xref'), angle_for(__env, entity, 'entity')])) or '_' } }}", lsifLsifFileEntityXRefLocations
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, xref: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupLsifLsifFileEntityXRefLocations":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class CodemarkupLsifEntityInfo(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], entity: ast.Expr, info: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.lsif.EntityInfo.3 {{ entity = {angle_for(__env, entity)}, info = {angle_for(__env, info)} }}", lsifEntityInfo
+    return f"codemarkup.lsif.EntityInfo.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, info, 'info')])) or '_' } }}", lsifEntityInfo
 
   @staticmethod
   def angle_query(*, entity: Optional[Tuple[()]] = None, info: Optional[Tuple[()]] = None) -> "CodemarkupLsifEntityInfo":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class CodemarkupLsifLsifKindToKind(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], lsif: ast.Expr, kind: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.lsif.LsifKindToKind.3 {{ lsif = {angle_for(__env, lsif)}, kind = {angle_for(__env, kind)} }}", lsifLsifKindToKind
+    return f"codemarkup.lsif.LsifKindToKind.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, lsif, 'lsif'), angle_for(__env, kind, 'kind')])) or '_' } }}", lsifLsifKindToKind
 
   @staticmethod
   def angle_query(*, lsif: Optional[Tuple[()]] = None, kind: Optional[Tuple[()]] = None) -> "CodemarkupLsifLsifKindToKind":
     raise Exception("this function can only be called from @angle_query")
+
+
 
 

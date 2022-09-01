@@ -15,10 +15,12 @@ from glean.schema.deletthis.types import (
 class DeletthisFileReverseDeps(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, referenced_by: ast.Expr, via: ast.Expr) -> Tuple[str, Struct]:
-    return f"deletthis.FileReverseDeps.15 {{ file = {angle_for(__env, file)}, referenced_by = {angle_for(__env, referenced_by)}, via = {angle_for(__env, via)} }}", FileReverseDeps
+    return f"deletthis.FileReverseDeps.15 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, referenced_by, 'referenced_by'), angle_for(__env, via, 'via')])) or '_' } }}", FileReverseDeps
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, referenced_by: Optional["SrcFile"] = None, via: Optional[Tuple[()]] = None) -> "DeletthisFileReverseDeps":
     raise Exception("this function can only be called from @angle_query")
+
+
 
 

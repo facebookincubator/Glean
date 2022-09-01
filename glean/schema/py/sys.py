@@ -14,10 +14,12 @@ from glean.schema.sys.types import (
 class SysBlob(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"sys.Blob.1 {angle_for(__env, arg)}", Blob
+    return f"sys.Blob.1 { angle_for(__env, arg, None) or '_' }", Blob
 
   @staticmethod
   def angle_query(*, arg: Optional[Tuple[()]] = None) -> "SysBlob":
     raise Exception("this function can only be called from @angle_query")
+
+
 
 

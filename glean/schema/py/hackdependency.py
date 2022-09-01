@@ -15,19 +15,23 @@ from glean.schema.hackdependency.types import (
 class HackdependencyInheritance(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], parent: ast.Expr, child: ast.Expr) -> Tuple[str, Struct]:
-    return f"hackdependency.inheritance.1 {{ parent = {angle_for(__env, parent)}, child = {angle_for(__env, child)} }}", inheritance
+    return f"hackdependency.inheritance.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, parent, 'parent'), angle_for(__env, child, 'child')])) or '_' } }}", inheritance
 
   @staticmethod
   def angle_query(*, parent: Optional["Hackdependencyname"] = None, child: Optional["Hackdependencyname"] = None) -> "HackdependencyInheritance":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class HackdependencyName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"hackdependency.name.1 {angle_for(__env, arg)}", name
+    return f"hackdependency.name.1 { angle_for(__env, arg, None) or '_' }", name
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HackdependencyName":
     raise Exception("this function can only be called from @angle_query")
+
+
 
 

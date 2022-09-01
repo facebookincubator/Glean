@@ -1,6 +1,6 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Dict, Tuple, TypeVar, Type
+from typing import Dict, Tuple, TypeVar, Type, Optional
 from thrift.py3 import Struct
 import json
 import inspect
@@ -13,17 +13,22 @@ class GleanSchemaPredicate:
   def angle_query(*, arg: str) -> "GleanSchemaPredicate":
     raise Exception("this function can only be called from @angle_query")
 
-def angle_for(__env: Dict[str, R], key: ast.Expr):
+def angle_for(__env: Dict[str, R], key: ast.Expr, field_name: Optional[str]) -> str:
   if key is None:
-    return f'_'
+    return f''
   if isinstance(key, ast.Name):
-    return json.dumps(__env[key.id])
+    return _make_attribute(field_name, json.dumps(__env[key.id]))
   elif isinstance(key, ast.Constant):
-    return json.dumps(key.value)
+    return _make_attribute(field_name, json.dumps(key.value))
   elif isinstance(key, ast.Call):
     nested_call_arg = callGleanSchemaPredicateQuery(key, {}, "__target__", __env)["__target__"]
-    return nested_call_arg[0]
+    return _make_attribute(field_name, nested_call_arg[0])
   raise NotImplementedError(f"Query key type not implemented")
+
+def _make_attribute(field_name: Optional[str], value: str) -> str:
+  if field_name:
+    return f'{field_name} = {value}'
+  return value
 
 def _class_name_to_py_query(class_name: str, __env: Dict[str, R], method_args: Dict[str, ast.Expr]) -> Tuple[str, Type[Struct]]:
   # Before this function call, we check that the node is an ast.Name (part of an ast.Call).
@@ -56,11 +61,8 @@ def callGleanSchemaPredicateQuery(function_call: ast.Call, variables: Dict[str, 
   function_attribute = function_call.func
   if isinstance(function_attribute, ast.Attribute):
     class_name = function_attribute.value
-    class_method = function_attribute.attr
     if isinstance(class_name, ast.Name):
       class_name = class_name.id
-      if class_method != "angle_query":
-        raise AttributeError(f"{class_method} is an undefined method")
       variables[target] = _class_name_to_py_query(class_name, __env, method_args_)
   return variables
 

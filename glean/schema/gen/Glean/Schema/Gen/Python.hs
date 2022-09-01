@@ -36,7 +36,7 @@ genSchemaPy _version preddefs typedefs =
   Text.unlines
   [ "# \x40generated"
   , "# To regenerate this file run fbcode//glean/schema/gen/sync"
-  , "from typing import Dict, Tuple, TypeVar, Type"
+  , "from typing import Dict, Tuple, TypeVar, Type, Optional"
   , "from thrift.py3 import Struct"
   , "import json"
   , "import inspect"
@@ -50,18 +50,23 @@ genSchemaPy _version preddefs typedefs =
   , "    " <> "raise Exception" <>
     "(\"this function can only be called from @angle_query\")"
   , ""
-  , "def angle_for(__env: Dict[str, R], key: ast.Expr):"
+  , "def angle_for(__env: Dict[str, R], key: ast.Expr, field_name: Optional[str]) -> str:"
   , "  " <> "if key is None:"
-  , "    " <> "return f'_'"
+  , "    " <> "return f''"
   , "  " <> "if isinstance(key, ast.Name):"
-  , "    " <> "return json.dumps(__env[key.id])"
+  , "    " <> "return _make_attribute(field_name, json.dumps(__env[key.id]))"
   , "  " <> "elif isinstance(key, ast.Constant):"
-  , "    " <> "return json.dumps(key.value)"
+  , "    " <> "return _make_attribute(field_name, json.dumps(key.value))"
   , "  " <> "elif isinstance(key, ast.Call):"
   , "    " <> "nested_call_arg = callGleanSchemaPredicateQuery" <>
     "(key, {}, \"__target__\", __env)[\"__target__\"]"
-  , "    " <> "return nested_call_arg[0]"
+  , "    " <> "return _make_attribute(field_name, nested_call_arg[0])"
   , "  " <> "raise NotImplementedError(f\"Query key type not implemented\")"
+  , ""
+  , "def _make_attribute(field_name: Optional[str], value: str) -> str:"
+  , "  " <> "if field_name:"
+  , "    " <> "return f'{field_name} = {value}'"
+  , "  " <> "return value"
   , ""
   , "def _class_name_to_py_query(class_name: str, __env: Dict[str, R" <>
     "], method_args: Dict[str, ast.Expr]) -> Tuple[str, Type[Struct]]:"
@@ -101,12 +106,8 @@ genSchemaPy _version preddefs typedefs =
   , "  " <> "function_attribute = function_call.func"
   , "  " <> "if isinstance(function_attribute, ast.Attribute):"
   , "    " <> "class_name = function_attribute.value"
-  , "    " <> "class_method = function_attribute.attr"
   , "    " <> "if isinstance(class_name, ast.Name):"
   , "      " <> "class_name = class_name.id"
-  , "      " <> "if class_method != \"angle_query\":"
-  , "        " <> "raise AttributeError(f\"{class_method} is an undefined " <>
-    "method\")"
   , "      " <> "variables[target] = _class_name_to_py_query(class_name, " <>
     "__env, method_args_)"
   , "  " <> "return variables"
@@ -116,7 +117,7 @@ genSchemaPy _version preddefs typedefs =
       Text.intercalate (newline <> newline)
         ( header namespaces namePolicy preds :
           genPredicateImports namespaces preds :
-          [genAllPredicates namespaces namePolicy preds]
+          [genAllPredicates AngleQuery namespaces namePolicy preds]
         )
     )
   | (namespaces, (_, preds, _)) <- schemas
@@ -140,37 +141,89 @@ genSchemaPy _version preddefs typedefs =
       addBuckImportsForKeys namespaces namePolicy preds) |
         (namespaces, (_, preds, _)) <- schemas ]
 
+-- To handle SumTypes inner fields, the API creates dummy predicates as a
+-- form of syntactic sugar for the user. The dummy queries created through them
+-- do not correspond to any Angle query.
+data PredicateMode = AngleQuery | DummyQuery
+
 genAllPredicates
-  :: NameSpaces
+  :: PredicateMode
+  -> NameSpaces
   -> NamePolicy
   -> [ResolvedPredicateDef]
   -> Text
-genAllPredicates _ namePolicy preds = Text.unlines $
+genAllPredicates predicateMode _ namePolicy preds = Text.unlines $
   [ Text.unlines
     [ "class " <> class_name <> "(GleanSchemaPredicate):"
       , "  " <> "@staticmethod"
       , "  " <> "def build_angle(__env: Dict[str, R], " <> buildAngleTypes <>
         ") -> Tuple[str, Struct]:"
-      , "    " <> "return f\"" <> predicateName <> "." <>
-        showt (predicateRef_version ref) <> " " <> angleForTypes <>
+      , "    " <> "return f\"" <> anglePredicateAndVersion <> angleForTypes <>
         "\", " <> return_class_name
       , ""
-      , "  " <> "@staticmethod"
-      , "  " <> "def angle_query(*, " <> kTy <> ") -> \"" <>
-        class_name <> "\":"
-      , "    " <> "raise Exception" <>
-        "(\"this function can only be called from @angle_query\")"
+      , addClientMethods class_name kTy namePolicy key
+      , addSumTypes
     ]
     | pred <- preds
     , let ref = predicateDefRef pred
           key = predicateDefKeyType pred
-          kTy = valueTy APIValues namePolicy key
-          angleForTypes = valueTy AngleForValues namePolicy key
-          buildAngleTypes = valueTy ASTValues namePolicy key
+          kTy = valueTy class_name APIValues namePolicy key
+          angleForTypes = valueTy class_name AngleForValues namePolicy key
+          buildAngleTypes = valueTy class_name ASTValues namePolicy key
           predicateName = predicateRef_name ref
           class_name = pythonClassName predicateName
           return_class_name = returnPythonClassName predicateName
+          addSumTypes = genAllPredicates DummyQuery [Text.pack ""] namePolicy $
+            unionDummyPreds key pred class_name
+          anglePredicateAndVersion = case predicateMode of
+            AngleQuery -> predicateName <> "." <>
+              showt (predicateRef_version ref)
+            _ -> Text.pack ""
   ]
+
+unionDummyPreds :: Type_ PredicateRef tref
+  -> PredicateDef_ s PredicateRef tref
+  -> Text
+  -> [PredicateDef_ s PredicateRef tref]
+unionDummyPreds key pred class_name = map
+  (\(n, t) -> PredicateDef (predRef n) t t (predicateDefDeriving pred))
+  dummyPredicateGens
+  where
+    predRef n = PredicateRef (class_name <> "_" <> n) 0
+    dummyPredicateGens = case key of
+      RecordTy fields ->
+        concatMap (\f -> handleFields (name f) (fieldDefType f)) fields
+      SumTy fields ->
+        concatMap (\f -> handleFields (name f) (fieldDefType f)) fields
+      _ -> []
+      where
+        handleFields n t = case t of
+          SumTy fields -> [(n, SumTy fields)]
+          _ -> []
+        name = from_ . fieldDefName
+
+
+addClientMethods :: Text -> Text -> NamePolicy -> ResolvedType -> Text
+addClientMethods class_name kTy namePolicy key = case key of
+  SumTy fields -> Text.unlines $ map createMethodWrapper unionFields
+    where
+      unionFields = map
+        (\ f
+        -> ((from_ . fieldDefName) f,
+            (baseTy class_name namePolicy . fieldDefType) f))
+       fields
+      createMethodWrapper (name, type_) =
+        createMethod ("_" <> name) (name <> ": " <> type_)
+
+  _ -> createMethod (Text.pack "") kTy
+  where
+    createMethod method_name args = Text.unlines
+      [ "  " <> "@staticmethod"
+      , "  " <> "def angle_query" <> method_name <> "(*, " <> args <>
+        ") -> \"" <> class_name <> "\":"
+      , "    " <> "raise Exception" <>
+        "(\"this function can only be called from @angle_query\")"
+      ]
 
 header :: NameSpaces -> NamePolicy -> [ResolvedPredicateDef] -> Text
 header namespaces namePolicy preds = Text.unlines $
@@ -187,7 +240,9 @@ pythonClassName :: Text -> Text
 pythonClassName c = Text.intercalate "" $ map cap1 $ Text.split (== '.') c
 
 returnPythonClassName :: Text -> Text
-returnPythonClassName c = Text.intercalate "" $ tail $ Text.split (== '.') c
+returnPythonClassName c = Text.intercalate "" $ case Text.split (== '.') c of
+      [x] -> [x]
+      any -> tail any
 
 genTargets
   :: HashMap NameSpaces ([NameSpaces], [ResolvedPredicateDef], [ResolvedTypeDef])
@@ -233,50 +288,58 @@ data ValueTy = APIValues | ASTValues | AngleForValues
   deriving (Eq, Show)
 
 -- | Generate a value type
-valueTy :: ValueTy  -> NamePolicy -> ResolvedType -> Text
-valueTy mode namePolicy t = case t of
-  RecordTy fields ->
-    let
-      queryFields = map (createQueryField mode) fields
-      intercalatedFields = Text.intercalate ", " queryFields
-      intercalatedFieldsWithBrackets = "{{ " <> intercalatedFields <> " }}"
-    in
-      if mode == AngleForValues then intercalatedFieldsWithBrackets
-      else intercalatedFields
+valueTy :: Text -> ValueTy  -> NamePolicy -> ResolvedType -> Text
+valueTy predName mode namePolicy t = case t of
+  RecordTy fields -> handleFields fields
+  SumTy fields -> handleFields fields
   _ -> if mode  == APIValues then defaultFieldName <> ": " <>
-          baseTy namePolicy t
+        wrapOptionalArg (baseTy predName namePolicy t)
        else if mode == ASTValues then defaultFieldName <> ": ast.Expr"
-       else "{angle_for(__env, " <> defaultFieldName <> ")}"
+       else " { angle_for(__env, " <> defaultFieldName <> ", None" <> ") " <>
+        "or \'_\' }"
 
   where
+    handleFields fields = if mode == AngleForValues
+      then intercalatedFieldsWithBrackets
+      else intercalatedFields
+      where
+        queryFields = map (createQueryField mode) fields
+        intercalatedFields = Text.intercalate ", " queryFields
+        intercalatedFieldsWithBrackets = " {{ { \', \'.join(filter" <>
+          "(lambda x: x != '', [" <> intercalatedFields <> "])) or \'_\' } }}"
     createQueryField mode field = case mode of
-      APIValues -> appendType $ (baseTy namePolicy . fieldDefType) field
+      APIValues -> appendType $ (wrapOptionalArg .
+        baseTy (predName <> "_" <> pythonVarName) namePolicy . fieldDefType)
+        field
       ASTValues -> appendType "ast.Expr"
-      AngleForValues -> name <> " = {angle_for(__env, " <> pythonVarName <> ")}"
+      AngleForValues -> "angle_for(__env, " <> pythonVarName <> ", \'" <>
+       name <> "\')"
       where
           name = fieldDefName field
           pythonVarName = from_ name
           appendType t = pythonVarName <> ": " <> t
     defaultFieldName = Text.pack "arg"
-    from_ name -- avoid Python keywards
-      | name == Text.pack "from" = "_" <> name
+    wrapOptionalArg arg = "Optional[" <> arg <> "] = None"
+
+from_ :: Text -> Text
+from_ name -- avoid Python keywards
+      | Text.unpack name `elem` pythonKeywords = "_" <> name
       | otherwise = name
+      where
+        pythonKeywords = ["from", "str"]
 
 
-
-baseTy :: NamePolicy -> ResolvedType -> Text
-baseTy namePolicy t = wrapOptionalArg $ case t of
+baseTy :: Text -> NamePolicy -> ResolvedType -> Text
+baseTy unionName namePolicy t = Text.pack $ case t of
   NatTy{} -> "int"
   BooleanTy{} -> "bool"
   StringTy{} -> "str"
   PredicateTy pred -> case HashMap.lookup pred (predNames namePolicy) of
     Just (ns, x) -> concatMap Text.unpack ("\"" : map cap1 ns ++ [x] ++ ["\""])
     _ -> error $ "predicatePythonName: " ++ show pred
+  SumTy{} -> Text.unpack $ "\'" <> unionName <> "\'"
   -- TODO other types
   _ -> "Tuple[()]"
-  where
-    wrapOptionalArg :: String -> Text
-    wrapOptionalArg arg = "Optional[" <> Text.pack arg <> "] = None"
 
 addPythonImportsForKeys
   :: NameSpaces

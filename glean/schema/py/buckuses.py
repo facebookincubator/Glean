@@ -17,19 +17,23 @@ from glean.schema.buckuses.types import (
 class BuckusesUsesOfTargetHeader(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], locator: ast.Expr, exportedHeader: ast.Expr) -> Tuple[str, Struct]:
-    return f"buckuses.UsesOfTargetHeader.4 {{ locator = {angle_for(__env, locator)}, exportedHeader = {angle_for(__env, exportedHeader)} }}", UsesOfTargetHeader
+    return f"buckuses.UsesOfTargetHeader.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, locator, 'locator'), angle_for(__env, exportedHeader, 'exportedHeader')])) or '_' } }}", UsesOfTargetHeader
 
   @staticmethod
   def angle_query(*, locator: Optional["BuckLocator"] = None, exportedHeader: Optional["SrcFile"] = None) -> "BuckusesUsesOfTargetHeader":
     raise Exception("this function can only be called from @angle_query")
 
+
+
 class BuckusesUsesOfTarget(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], locator: ast.Expr, use_xref: ast.Expr, use_file: ast.Expr) -> Tuple[str, Struct]:
-    return f"buckuses.UsesOfTarget.4 {{ locator = {angle_for(__env, locator)}, use_xref = {angle_for(__env, use_xref)}, use_file = {angle_for(__env, use_file)} }}", UsesOfTarget
+    return f"buckuses.UsesOfTarget.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, locator, 'locator'), angle_for(__env, use_xref, 'use_xref'), angle_for(__env, use_file, 'use_file')])) or '_' } }}", UsesOfTarget
 
   @staticmethod
   def angle_query(*, locator: Optional["BuckLocator"] = None, use_xref: Optional[Tuple[()]] = None, use_file: Optional["SrcFile"] = None) -> "BuckusesUsesOfTarget":
     raise Exception("this function can only be called from @angle_query")
+
+
 
 
