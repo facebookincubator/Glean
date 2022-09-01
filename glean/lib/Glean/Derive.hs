@@ -19,7 +19,6 @@ import Glean.Angle.Types
 import Glean.Query.Thrift.Internal
 import Glean.Types
 import Glean
-import qualified Glean.Schema.Builtin.Types as Builtin
 import Glean.Schema.Util (showRef)
 import Util.Log
 
@@ -30,7 +29,10 @@ derivePredicate
   -> Repo
   -> Maybe Int64  -- ^ page size (bytes)
   -> Maybe Int64  -- ^ page size (results)
-  -> SourceRef    -- ^ predicate to derive
+  -> SourceRef
+     -- ^ predicate to derive. This will be resolved using the schema
+     -- specified by the `glean.schema_id` property when the DB was
+     -- created; otherwise the current schema at the time.
   -> Maybe ParallelDerivation -- ^ how to derive in parallel
   -> IO ()
 
@@ -48,8 +50,6 @@ derivePredicate backend repo maxBytes maxResults s parallel = loop
     query = def
       { derivePredicateQuery_predicate = name
       , derivePredicateQuery_predicate_version = version
-      , derivePredicateQuery_schema_version =
-          Just $ fromIntegral Builtin.version
       , derivePredicateQuery_options = Just def
         { derivePredicateOptions_max_results_per_query = maxResults
         , derivePredicateOptions_max_bytes_per_query = maxBytes

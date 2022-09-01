@@ -562,9 +562,9 @@ struct DerivePredicateQuery {
   5: optional DerivePredicateOptions options;
   // How to parallelise derivation
   6: optional ParallelDerivation parallel;
-  // Deprecated. The predicate/version is interpreted relative to the
-  // version of the schema given by the glean.schema_version property
-  // in the DB.
+  // Deprecated. The predicate/version is resolved using the schema
+  // specified by the `glean.schema_id` property when the DB was
+  // created; otherwise the current schema at the time.
   7: optional Version schema_version;
 }
 
