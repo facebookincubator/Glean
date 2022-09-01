@@ -1705,12 +1705,13 @@ test-suite backup
     main-is: BackupTest.hs
     ghc-options: -main-is BackupTest
     build-depends:
-        glean:stubs,
+        glean:config,
         glean:core,
         glean:db,
         glean:if-glean-hs,
+        glean:if-internal-hs,
         glean:schema,
-        glean:config,
+        glean:stubs,
         glean:util
 
 test-suite catalog
