@@ -96,6 +96,8 @@ jobs:
         run: make EXTRA_GHC_OPTS="-j4 +RTS -A128m -n2m -RTS"
       - name: Build glass
         run: make glass
+      - name: Build glean-clang
+        run: make glean-clang
     # disable tests for languages we don't have indexer installed
       - name: Run tests
         run: cabal test glean:tests -f-hack-tests
