@@ -11,6 +11,7 @@ module Glean.Bytecode.Generate.Instruction
   , Effect(..)
   , Arg(..)
   , ArgTy(..)
+  , ImmTy(..)
   , Usage(..)
   , instructions
   , version
@@ -50,10 +51,17 @@ data Arg = Arg
 
 -- | Argument type
 data ArgTy
-  = Imm Ty -- ^ immediate value in instruction stream
+  = Imm ImmTy -- ^ immediate value in instruction stream
   | Reg (Maybe Text) Ty Usage -- ^ register argument
   | Offsets -- ^ array of jump offsets (length + array in the insn stream)
   | Regs [Ty] -- ^ list of registers (array without length in the insn stream)
+
+-- | Type of an immediate value
+data ImmTy
+  = ImmWord
+  | ImmOffset
+  | ImmLit
+  deriving(Eq,Ord,Show)
 
 -- | Register argument of a particular type
 reg :: Ty -> Usage -> ArgTy
@@ -111,7 +119,7 @@ instructions =
   , Insn "InputShiftLit" [] []
       [ Arg "begin" $ reg DataPtr Update
       , Arg "end" $ reg DataPtr Load
-      , Arg "lit" $ Imm Literal
+      , Arg "lit" $ Imm ImmLit
       , Arg "match" $ reg Word Store ]
 
     -- Check that the input starts with the given byte sequence, and
@@ -145,12 +153,12 @@ instructions =
 
     -- Encode an immediate Nat and store it in a binary::Output.
   , Insn "OutputNatImm" [] []
-      [ Arg "src" $ Imm Word
+      [ Arg "src" $ Imm ImmWord
       , Arg "output" $ reg BinaryOutputPtr Load ]
 
     -- Encode a byte in a binary::Output
   , Insn "OutputByteImm" [] []
-      [ Arg "src" $ Imm Word
+      [ Arg "src" $ Imm ImmWord
       , Arg "output" $ reg BinaryOutputPtr Load ]
 
     -- Write a sequence of bytes to a binary::Output.
@@ -186,12 +194,12 @@ instructions =
 
     -- Write a constant into a register.
   , Insn "LoadConst" [] []
-      [ Arg "imm" $ Imm Word
+      [ Arg "imm" $ Imm ImmWord
       , Arg "dst" $ reg Word Store ]
 
     -- Load the address and size of a literal
   , Insn "LoadLiteral" [] []
-      [ Arg "lit" $ Imm Literal
+      [ Arg "lit" $ Imm ImmLit
       , Arg "ptr" $ reg DataPtr Store
       , Arg "end" $ reg DataPtr Store ]
 
@@ -202,7 +210,7 @@ instructions =
 
     -- Subtract a constant from a register.
   , Insn "SubConst" [] []
-      [ Arg "imm" $ Imm Word
+      [ Arg "imm" $ Imm ImmWord
       , Arg "dst" $ reg Word Update ]
 
     -- Subtract a register from a register.
@@ -212,7 +220,7 @@ instructions =
 
     -- Add a constant to a register.
   , Insn "AddConst" [] ["Addable a 'Word"]
-      [ Arg "imm" $ Imm Word
+      [ Arg "imm" $ Imm ImmWord
       , Arg "dst" $ polyReg "a" Word Update ]
 
     -- Add a register to another register
@@ -227,12 +235,12 @@ instructions =
       , Arg "dst" $ reg Word Store ]
 
   , Insn "LoadLabel" [] []
-      [ Arg "lbl" $ Imm Offset
+      [ Arg "lbl" $ Imm ImmOffset
       , Arg "dst" $ reg Offset Store ]
 
     -- Unconditional jump.
   , Insn "Jump" [EndBlock] []
-      [ Arg "tgt" $ Imm Offset ]
+      [ Arg "tgt" $ Imm ImmOffset ]
 
   , Insn "JumpReg" [EndBlock] []
       [ Arg "tgt" $ reg Offset Load ]
@@ -240,58 +248,58 @@ instructions =
     -- Jump if a register is 0.
   , Insn "JumpIf0" [] []
       [ Arg "reg" $ reg Word Load
-      , Arg "tgt" $ Imm Offset ]
+      , Arg "tgt" $ Imm ImmOffset ]
 
     -- Jump if a register is not 0.
   , Insn "JumpIfNot0" [] []
       [ Arg "reg" $ reg Word Load
-      , Arg "tgt" $ Imm Offset ]
+      , Arg "tgt" $ Imm ImmOffset ]
 
     -- Jump if two registers are equal.
   , Insn "JumpIfEq" [] []
       [ Arg "reg1" $ polyReg "a" Word Load
       , Arg "reg2" $ polyReg "a" Word Load
-      , Arg "tgt" $ Imm Offset ]
+      , Arg "tgt" $ Imm ImmOffset ]
 
     -- Jump if two registers are not equal.
   , Insn "JumpIfNe" [] []
       [ Arg "reg1" $ polyReg "a" Word Load
       , Arg "reg2" $ polyReg "a" Word Load
-      , Arg "tgt" $ Imm Offset ]
+      , Arg "tgt" $ Imm ImmOffset ]
 
     -- Jump if a > b.
   , Insn "JumpIfGt" [] ["Ordered a"]
       [ Arg "reg1" $ polyReg "a" Word Load
       , Arg "reg2" $ polyReg "a" Word Load
-      , Arg "tgt" $ Imm Offset ]
+      , Arg "tgt" $ Imm ImmOffset ]
 
     -- Jump if a >= b.
   , Insn "JumpIfGe" [] ["Ordered a"]
       [ Arg "reg1" $ polyReg "a" Word Load
       , Arg "reg2" $ polyReg "a" Word Load
-      , Arg "tgt" $ Imm Offset ]
+      , Arg "tgt" $ Imm ImmOffset ]
 
     -- Jump if a < b.
   , Insn "JumpIfLt" [] ["Ordered a"]
       [ Arg "reg1" $ polyReg "a" Word Load
       , Arg "reg2" $ polyReg "a" Word Load
-      , Arg "tgt" $ Imm Offset ]
+      , Arg "tgt" $ Imm ImmOffset ]
 
     -- Jump if a <= b.
   , Insn "JumpIfLe" [] ["Ordered a"]
       [ Arg "reg1" $ polyReg "a" Word Load
       , Arg "reg2" $ polyReg "a" Word Load
-      , Arg "tgt" $ Imm Offset ]
+      , Arg "tgt" $ Imm ImmOffset ]
 
     -- Decrement the value in a register and jump if it isn't 0.
   , Insn "DecrAndJumpIfNot0" [] []
       [ Arg "reg" $ reg Word Update
-      , Arg "tgt" $ Imm Offset ]
+      , Arg "tgt" $ Imm ImmOffset ]
 
     -- Decrement the value in a register and jump if it is 0.
   , Insn "DecrAndJumpIf0" [] []
       [ Arg "reg" $ reg Word Update
-      , Arg "tgt" $ Imm Offset ]
+      , Arg "tgt" $ Imm ImmOffset ]
 
   , Insn "CallFun_0_1" [] []
       [ Arg "fun" $ reg (Fun [WordPtr]) Load
@@ -356,21 +364,21 @@ instructions =
 
     -- Raise an exception.
   , Insn "Raise" [EndBlock] []
-      [ Arg "msg" $ Imm Literal ]
+      [ Arg "msg" $ Imm ImmLit ]
 
     -- For debugging
   , Insn "Trace" [] []
-      [ Arg "msg" $ Imm Literal ]
+      [ Arg "msg" $ Imm ImmLit ]
 
   , Insn "TraceReg" [] []
-      [ Arg "msg" $ Imm Literal
+      [ Arg "msg" $ Imm ImmLit
       , Arg "reg" $ reg Word Load ]
 
     -- Adjust PC to point to 'cont' and suspend execution. The first argument
     -- is a temporary, unused left-over for backwards compatibility.
   , Insn "Suspend" [EndBlock, Return] []
       [ Arg "unused" $ reg Word Load
-      , Arg "cont" $ Imm Offset
+      , Arg "cont" $ Imm ImmOffset
       ]
 
     -- Return from a subroutine.

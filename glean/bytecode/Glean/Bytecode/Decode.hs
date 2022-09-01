@@ -39,6 +39,9 @@ instance Decodable Word64 where
     y : ys -> (Just y, ys)
     _ -> (Nothing, xs)
 
+instance Decodable Literal where
+  decode = Literal <$> decode
+
 instance Decodable Label where
   decode = Label . fromIntegral <$> (decode :: Decode Word64)
 

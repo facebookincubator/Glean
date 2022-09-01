@@ -12,6 +12,7 @@ module Glean.Bytecode.Types
   , Addable
   , Register(..)
   , Label(..)
+  , Literal(..)
   , castRegister
   ) where
 
@@ -22,7 +23,7 @@ import Data.Word (Word64)
 data Ty
   = Word -- ^ 64 bit word
   | WordPtr -- ^ pointer to 64 bit word
-  | Literal -- ^ index into the (string) literal table
+  | Lit -- ^ index into the (string) literal table
   | Offset -- ^ jump offset (relative to start of next instruction)
   | DataPtr -- ^ a void pointer
   | BinaryOutputPtr -- ^ pointer to binary::Output (temporary, will be removed)
@@ -49,3 +50,6 @@ castRegister = coerce
 -- | Labels
 newtype Label = Label { fromLabel :: Int }
   deriving(Eq,Ord,Enum,Show)
+
+newtype Literal = Literal { fromLiteral :: Word64 }
+  deriving(Eq,Ord,Show)
