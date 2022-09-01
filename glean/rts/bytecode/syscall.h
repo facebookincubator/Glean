@@ -73,11 +73,11 @@ private:
   }
 
   // data pointers
-  static void fromWord(unsigned char *&x, uint64_t w) {
-    x = reinterpret_cast<unsigned char *>(w);
+  static void fromWord(const unsigned char *&x, uint64_t w) {
+    x = reinterpret_cast<const unsigned char *>(w);
   }
 
-  static uint64_t toWord(unsigned char *x) {
+  static uint64_t toWord(const unsigned char *x) {
     return reinterpret_cast<uint64_t>(x);
   }
 
@@ -86,21 +86,16 @@ private:
     x = reinterpret_cast<binary::Output *>(w);
   }
 
+  static void fromWord(const binary::Output *&x, uint64_t w) {
+    x = reinterpret_cast<binary::Output *>(w);
+  }
+
   static uint64_t toWord(binary::Output *x) {
     return reinterpret_cast<uint64_t>(x);
   }
 
-  // Also support const data and output pointers
-  template<typename U>
-  static void fromWord(const U *&x, uint64_t w) {
-    U *y;
-    fromWord(y,w);
-    x = y;
-  }
-
-  template<typename U>
-  static uint64_t toWord(const U *x) {
-    return toWord(const_cast<U *>(x));
+  static uint64_t toWord(const binary::Output *x) {
+    return reinterpret_cast<uint64_t>(x);
   }
 
   // SysFun

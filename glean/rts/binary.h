@@ -325,15 +325,12 @@ struct Output {
     return (isSmall() ? large.size & 0xFF : large.size) >> TAG_BITS;
   }
 
+  /// Return a pointer to the underlying memory. This is guaranteed to never
+  /// be null, not even for empty buffers.
   const unsigned char* data() const noexcept {
     return isSmall() ? small+1 : large.data;
   }
 
-  /// Return a pointer to the underlying memory. This is guaranteed to never
-  /// be null, not even for empty buffers.
-  unsigned char* data() noexcept {
-    return isSmall() ? small+1 : large.data;
-  }
 
   size_t capacity() const noexcept {
     return isSmall() ? SMALL_CAP : large.cap;
@@ -460,6 +457,10 @@ struct Output {
     small[0] = 0;
   }
 
+  unsigned char* mutableData() noexcept {
+    return isSmall() ? small+1 : large.data;
+  }
+
   /// Return a pointer to enough space for n bytes. This reserves memory but
   /// doesn't increase the size - this can be done via 'use' afterwards.
   unsigned char *alloc(size_t n) {
@@ -470,7 +471,7 @@ struct Output {
       // results in slightly better code.
       folly::assume((small[0] & LARGE_BIT) != 0);
     }
-    return data() + size();
+    return mutableData() + size();
   }
 
   /// Grow the buffer by at least `n` bytes. This changes capacity but not size.

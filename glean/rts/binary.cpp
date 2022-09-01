@@ -59,7 +59,7 @@ folly::fbstring Output::moveToFbString() {
     // fbstring requires the data to be NUL-terminated. The terminator isn't
     // included in the size.
     *alloc(1) = 0;
-    const auto d = data();
+    const auto d = mutableData();
     const auto s = size();
     const auto c = large.cap;
     markEmpty();

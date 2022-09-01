@@ -137,7 +137,7 @@ genInsnEval Insn{..} =
       , "pc += args." <> name <> "_arity;" ]
 
 cppType :: Ty -> Text
-cppType DataPtr = "unsigned char *"
+cppType DataPtr = "const unsigned char *"
 cppType Lit = "const std::string *"
 cppType WordPtr = "uint64_t *"
 cppType BinaryOutputPtr = "binary::Output *"
