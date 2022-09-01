@@ -252,8 +252,9 @@ doRestore env@Env{..} repo meta
       let neededBytes = ceiling $ dbSizeDownloadFactor * fromIntegral size
       when (freeBytes < neededBytes) $
         -- the catch-all exception handler will log and cancel the download
-        error $ printf "Not enough disk space: %d needed, %d available"
-                        neededBytes freeBytes
+        throwIO $ ErrorCall $
+          printf "Not enough disk space: %d needed, %d available"
+            neededBytes freeBytes
 
       withScratchDirectory envRoot repo $ \scratch -> do
       say logInfo "starting"
