@@ -2,116 +2,50 @@
   "@generated",
   {
     "key": {
-      "decl": {
-        "objcContainer": {
-          "key": {
-            "id": { "implementation": { "key": "A" } },
-            "source": {
-              "file": { "key": "test.m" },
-              "lineBegin": 17,
-              "columnBegin": 1,
-              "lineEnd": 21,
-              "columnEnd": 1
-            }
-          }
-        }
-      },
-      "source": {
-        "file": { "key": "test.m" },
-        "lineBegin": 17,
-        "columnBegin": 1,
-        "lineEnd": 21,
-        "columnEnd": 1
-      },
-      "name": "A"
-    }
-  },
-  {
-    "key": {
-      "decl": {
-        "objcContainer": {
-          "key": {
-            "id": { "interface_": { "key": "A" } },
-            "source": {
-              "file": { "key": "test.m" },
-              "lineBegin": 9,
-              "columnBegin": 1,
-              "lineEnd": 15,
-              "columnEnd": 4
-            }
-          }
-        }
-      },
-      "source": {
+      "tuplefield0": {
         "file": { "key": "test.m" },
         "lineBegin": 9,
         "columnBegin": 1,
         "lineEnd": 15,
         "columnEnd": 4
       },
-      "name": "A"
+      "tuplefield1": "A"
     }
   },
   {
     "key": {
-      "decl": {
-        "objcProperty": {
-          "key": {
-            "name": { "key": "i" },
-            "container": { "interface_": { "key": "A" } },
-            "type": { "key": "int" },
-            "isInstance": true,
-            "isOptional": false,
-            "isReadOnly": false,
-            "isAtomic": false,
-            "source": {
-              "file": { "key": "test.m" },
-              "lineBegin": 13,
-              "columnBegin": 1,
-              "lineEnd": 13,
-              "columnEnd": 35
-            }
-          }
-        }
-      },
-      "source": {
-        "file": { "key": "test.m" },
-        "lineBegin": 13,
-        "columnBegin": 1,
-        "lineEnd": 13,
-        "columnEnd": 35
-      },
-      "name": "i"
-    }
-  },
-  {
-    "key": {
-      "decl": {
-        "variable": {
-          "key": {
-            "name": {
-              "key": { "name": { "key": "_i" }, "scope": { "global_": { } } }
-            },
-            "type": { "key": "int" },
-            "kind": { "ivar": { "synthesize": false } },
-            "source": {
-              "file": { "key": "test.m" },
-              "lineBegin": 10,
-              "columnBegin": 3,
-              "lineEnd": 10,
-              "columnEnd": 8
-            }
-          }
-        }
-      },
-      "source": {
+      "tuplefield0": {
         "file": { "key": "test.m" },
         "lineBegin": 10,
         "columnBegin": 3,
         "lineEnd": 10,
         "columnEnd": 8
       },
-      "name": "_i"
+      "tuplefield1": "_i"
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "file": { "key": "test.m" },
+        "lineBegin": 13,
+        "columnBegin": 1,
+        "lineEnd": 13,
+        "columnEnd": 35
+      },
+      "tuplefield1": "i"
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "file": { "key": "test.m" },
+        "lineBegin": 17,
+        "columnBegin": 1,
+        "lineEnd": 21,
+        "columnEnd": 1
+      },
+      "tuplefield1": "A"
     }
   }
 ]

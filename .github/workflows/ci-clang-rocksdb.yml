@@ -21,7 +21,7 @@ jobs:
       - name: Install additional tools
         run: |
           apt-get update
-          apt-get install -y libxxhash-dev m4 rsync wget unzip libgmock-dev
+          apt install -y libxxhash-dev m4 rsync wget unzip libclang-12-dev llvm-12-dev libgmock-dev
 
       - name: Make utf8 default locale
         run: |
@@ -32,7 +32,7 @@ jobs:
       - name: Install GHC ${{ matrix.ghc }}
         run: ghcup install ghc ${{ matrix.ghc }} --set
       - name: Install cabal-install
-        run: ghcup install cabal -u https://downloads.haskell.org/cabal/cabal-install-3.6.2.0/cabal-install-3.6.2.0-x86_64-linux-deb10.tar.xz 3.6.2.0 --set
+        run: ghcup install cabal -u https://downloads.haskell.org/cabal/cabal-install-3.8.1.0/cabal-install-3.8.1.0-x86_64-linux-deb10.tar.xz 3.8.1.0 --set
       - name: Add GHC and cabal to PATH
         run: echo "$HOME/.ghcup/bin" >> "$GITHUB_PATH"
 
@@ -95,5 +95,7 @@ jobs:
       - name: Build glass
         run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make glass
       # no hhvm/hack or typescript indexer, so we run without hack regression tests
+      - name: Build glean-clang
+        run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make glean-clang
       - name: Run tests
         run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" cabal test glean:tests -f-hack-tests
