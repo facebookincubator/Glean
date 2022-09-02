@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ghc: [8.4.4, 8.6.5, 8.8.4, 8.10.7]
+        ghc: [8.6.5, 8.8.4, 8.10.7]
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/facebookincubator/hsthrift/ci-base:ghcup
