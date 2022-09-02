@@ -38,7 +38,7 @@ jobs:
 
       - name: Install indexer (flow)
         run: |
-          export FLOW=0.178.0
+          export FLOW=0.186.0
           wget "https://github.com/facebook/flow/releases/download/v${FLOW}/flow-linux64-v${FLOW}.zip"
           unzip "flow-linux64-v${FLOW}.zip"
           mkdir -p "$HOME"/.hsthrift/bin && mv flow/flow "$HOME"/.hsthrift/bin
@@ -67,7 +67,7 @@ jobs:
         run: |
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
-          export RUST_ANALYZER=2022-04-04
+          export RUST_ANALYZER=2022-08-29
           mkdir -p "$HOME"/.hsthrift/bin
           curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/${RUST_ANALYZER}/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > "$HOME"/.hsthrift/bin/rust-analyzer
           chmod +x "$HOME"/.hsthrift/bin/rust-analyzer
