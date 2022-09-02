@@ -2,488 +2,158 @@
   "@generated",
   {
     "key": {
-      "decl": {
-        "function_": {
-          "key": {
-            "name": {
-              "key": {
-                "name": { "key": { "name": { "key": "f" } } },
-                "scope": { "global_": { } }
-              }
-            },
-            "signature": {
-              "key": { "returns": { "key": "void" }, "parameters": [ ] }
-            },
-            "source": {
-              "file": { "key": "test.cpp" },
-              "lineBegin": 11,
-              "columnBegin": 1,
-              "lineEnd": 17,
-              "columnEnd": 1
-            }
-          }
-        }
-      },
-      "source": {
-        "file": { "key": "test.cpp" },
-        "lineBegin": 11,
-        "columnBegin": 1,
-        "lineEnd": 17,
-        "columnEnd": 1
-      },
-      "name": "f"
-    }
-  },
-  {
-    "key": {
-      "decl": {
-        "function_": {
-          "key": {
-            "name": {
-              "key": {
-                "name": { "key": { "name": { "key": "g" } } },
-                "scope": { "global_": { } }
-              }
-            },
-            "signature": {
-              "key": { "returns": { "key": "void" }, "parameters": [ ] }
-            },
-            "source": {
-              "file": { "key": "test.cpp" },
-              "lineBegin": 22,
-              "columnBegin": 1,
-              "lineEnd": 37,
-              "columnEnd": 1
-            }
-          }
-        }
-      },
-      "source": {
-        "file": { "key": "test.cpp" },
-        "lineBegin": 22,
-        "columnBegin": 1,
-        "lineEnd": 37,
-        "columnEnd": 1
-      },
-      "name": "g"
-    }
-  },
-  {
-    "key": {
-      "decl": {
-        "record_": {
-          "key": {
-            "name": {
-              "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-            },
-            "kind": { "struct_": { } },
-            "source": {
-              "file": { "key": "test.cpp" },
-              "lineBegin": 9,
-              "columnBegin": 1,
-              "lineEnd": 9,
-              "columnEnd": 11
-            }
-          }
-        }
-      },
-      "source": {
+      "tuplefield0": {
         "file": { "key": "test.cpp" },
         "lineBegin": 9,
         "columnBegin": 1,
         "lineEnd": 9,
         "columnEnd": 11
       },
-      "name": "A"
+      "tuplefield1": "A"
     }
   },
   {
     "key": {
-      "decl": {
-        "record_": {
-          "key": {
-            "name": {
-              "key": { "name": { "key": "B" }, "scope": { "global_": { } } }
-            },
-            "kind": { "struct_": { } },
-            "source": {
-              "file": { "key": "test.cpp" },
-              "lineBegin": 20,
-              "columnBegin": 1,
-              "lineEnd": 20,
-              "columnEnd": 11
-            }
-          }
-        }
-      },
-      "source": {
+      "tuplefield0": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 20,
+        "lineBegin": 11,
         "columnBegin": 1,
-        "lineEnd": 20,
-        "columnEnd": 11
+        "lineEnd": 17,
+        "columnEnd": 1
       },
-      "name": "B"
+      "tuplefield1": "f"
     }
   },
   {
     "key": {
-      "decl": {
-        "variable": {
-          "key": {
-            "name": {
-              "key": {
-                "name": { "key": "a" },
-                "scope": {
-                  "local": {
-                    "key": {
-                      "name": { "key": { "name": { "key": "f" } } },
-                      "scope": { "global_": { } }
-                    }
-                  }
-                }
-              }
-            },
-            "type": { "key": "A" },
-            "kind": { "local": { "kind": 0, "attribute": 0 } },
-            "source": {
-              "file": { "key": "test.cpp" },
-              "lineBegin": 12,
-              "columnBegin": 3,
-              "lineEnd": 12,
-              "columnEnd": 5
-            }
-          }
-        }
-      },
-      "source": {
+      "tuplefield0": {
         "file": { "key": "test.cpp" },
         "lineBegin": 12,
         "columnBegin": 3,
         "lineEnd": 12,
         "columnEnd": 5
       },
-      "name": "a"
+      "tuplefield1": "a"
     }
   },
   {
     "key": {
-      "decl": {
-        "variable": {
-          "key": {
-            "name": {
-              "key": {
-                "name": { "key": "a1" },
-                "scope": {
-                  "local": {
-                    "key": {
-                      "name": { "key": { "name": { "key": "f" } } },
-                      "scope": { "global_": { } }
-                    }
-                  }
-                }
-              }
-            },
-            "type": { "key": "A" },
-            "kind": { "local": { "kind": 0, "attribute": 0 } },
-            "source": {
-              "file": { "key": "test.cpp" },
-              "lineBegin": 13,
-              "columnBegin": 3,
-              "lineEnd": 13,
-              "columnEnd": 9
-            }
-          }
-        }
-      },
-      "source": {
+      "tuplefield0": {
         "file": { "key": "test.cpp" },
         "lineBegin": 13,
         "columnBegin": 3,
         "lineEnd": 13,
         "columnEnd": 9
       },
-      "name": "a1"
+      "tuplefield1": "a1"
     }
   },
   {
     "key": {
-      "decl": {
-        "variable": {
-          "key": {
-            "name": {
-              "key": {
-                "name": { "key": "a2" },
-                "scope": {
-                  "local": {
-                    "key": {
-                      "name": { "key": { "name": { "key": "f" } } },
-                      "scope": { "global_": { } }
-                    }
-                  }
-                }
-              }
-            },
-            "type": { "key": "A" },
-            "kind": { "local": { "kind": 0, "attribute": 0 } },
-            "source": {
-              "file": { "key": "test.cpp" },
-              "lineBegin": 14,
-              "columnBegin": 3,
-              "lineEnd": 14,
-              "columnEnd": 14
-            }
-          }
-        }
-      },
-      "source": {
+      "tuplefield0": {
         "file": { "key": "test.cpp" },
         "lineBegin": 14,
         "columnBegin": 3,
         "lineEnd": 14,
         "columnEnd": 14
       },
-      "name": "a2"
+      "tuplefield1": "a2"
     }
   },
   {
     "key": {
-      "decl": {
-        "variable": {
-          "key": {
-            "name": {
-              "key": {
-                "name": { "key": "b" },
-                "scope": {
-                  "local": {
-                    "key": {
-                      "name": { "key": { "name": { "key": "g" } } },
-                      "scope": { "global_": { } }
-                    }
-                  }
-                }
-              }
-            },
-            "type": { "key": "B<int>" },
-            "kind": { "local": { "kind": 0, "attribute": 0 } },
-            "source": {
-              "file": { "key": "test.cpp" },
-              "lineBegin": 24,
-              "columnBegin": 5,
-              "lineEnd": 24,
-              "columnEnd": 12
-            }
-          }
-        }
+      "tuplefield0": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 20,
+        "columnBegin": 1,
+        "lineEnd": 20,
+        "columnEnd": 11
       },
-      "source": {
+      "tuplefield1": "B"
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 22,
+        "columnBegin": 1,
+        "lineEnd": 37,
+        "columnEnd": 1
+      },
+      "tuplefield1": "g"
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
         "file": { "key": "test.cpp" },
         "lineBegin": 24,
         "columnBegin": 5,
         "lineEnd": 24,
         "columnEnd": 12
       },
-      "name": "b"
+      "tuplefield1": "b"
     }
   },
   {
     "key": {
-      "decl": {
-        "variable": {
-          "key": {
-            "name": {
-              "key": {
-                "name": { "key": "b" },
-                "scope": {
-                  "local": {
-                    "key": {
-                      "name": { "key": { "name": { "key": "g" } } },
-                      "scope": { "global_": { } }
-                    }
-                  }
-                }
-              }
-            },
-            "type": { "key": "B<short>" },
-            "kind": { "local": { "kind": 0, "attribute": 0 } },
-            "source": {
-              "file": { "key": "test.cpp" },
-              "lineBegin": 31,
-              "columnBegin": 5,
-              "lineEnd": 31,
-              "columnEnd": 14
-            }
-          }
-        }
-      },
-      "source": {
-        "file": { "key": "test.cpp" },
-        "lineBegin": 31,
-        "columnBegin": 5,
-        "lineEnd": 31,
-        "columnEnd": 14
-      },
-      "name": "b"
-    }
-  },
-  {
-    "key": {
-      "decl": {
-        "variable": {
-          "key": {
-            "name": {
-              "key": {
-                "name": { "key": "b1" },
-                "scope": {
-                  "local": {
-                    "key": {
-                      "name": { "key": { "name": { "key": "g" } } },
-                      "scope": { "global_": { } }
-                    }
-                  }
-                }
-              }
-            },
-            "type": { "key": "B<int>" },
-            "kind": { "local": { "kind": 0, "attribute": 0 } },
-            "source": {
-              "file": { "key": "test.cpp" },
-              "lineBegin": 25,
-              "columnBegin": 5,
-              "lineEnd": 25,
-              "columnEnd": 16
-            }
-          }
-        }
-      },
-      "source": {
+      "tuplefield0": {
         "file": { "key": "test.cpp" },
         "lineBegin": 25,
         "columnBegin": 5,
         "lineEnd": 25,
         "columnEnd": 16
       },
-      "name": "b1"
+      "tuplefield1": "b1"
     }
   },
   {
     "key": {
-      "decl": {
-        "variable": {
-          "key": {
-            "name": {
-              "key": {
-                "name": { "key": "b1" },
-                "scope": {
-                  "local": {
-                    "key": {
-                      "name": { "key": { "name": { "key": "g" } } },
-                      "scope": { "global_": { } }
-                    }
-                  }
-                }
-              }
-            },
-            "type": { "key": "B<short>" },
-            "kind": { "local": { "kind": 0, "attribute": 0 } },
-            "source": {
-              "file": { "key": "test.cpp" },
-              "lineBegin": 32,
-              "columnBegin": 5,
-              "lineEnd": 32,
-              "columnEnd": 18
-            }
-          }
-        }
-      },
-      "source": {
-        "file": { "key": "test.cpp" },
-        "lineBegin": 32,
-        "columnBegin": 5,
-        "lineEnd": 32,
-        "columnEnd": 18
-      },
-      "name": "b1"
-    }
-  },
-  {
-    "key": {
-      "decl": {
-        "variable": {
-          "key": {
-            "name": {
-              "key": {
-                "name": { "key": "b2" },
-                "scope": {
-                  "local": {
-                    "key": {
-                      "name": { "key": { "name": { "key": "g" } } },
-                      "scope": { "global_": { } }
-                    }
-                  }
-                }
-              }
-            },
-            "type": { "key": "B<int>" },
-            "kind": { "local": { "kind": 0, "attribute": 0 } },
-            "source": {
-              "file": { "key": "test.cpp" },
-              "lineBegin": 26,
-              "columnBegin": 5,
-              "lineEnd": 26,
-              "columnEnd": 26
-            }
-          }
-        }
-      },
-      "source": {
+      "tuplefield0": {
         "file": { "key": "test.cpp" },
         "lineBegin": 26,
         "columnBegin": 5,
         "lineEnd": 26,
         "columnEnd": 26
       },
-      "name": "b2"
+      "tuplefield1": "b2"
     }
   },
   {
     "key": {
-      "decl": {
-        "variable": {
-          "key": {
-            "name": {
-              "key": {
-                "name": { "key": "b2" },
-                "scope": {
-                  "local": {
-                    "key": {
-                      "name": { "key": { "name": { "key": "g" } } },
-                      "scope": { "global_": { } }
-                    }
-                  }
-                }
-              }
-            },
-            "type": { "key": "B<short>" },
-            "kind": { "local": { "kind": 0, "attribute": 0 } },
-            "source": {
-              "file": { "key": "test.cpp" },
-              "lineBegin": 33,
-              "columnBegin": 5,
-              "lineEnd": 33,
-              "columnEnd": 30
-            }
-          }
-        }
+      "tuplefield0": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 31,
+        "columnBegin": 5,
+        "lineEnd": 31,
+        "columnEnd": 14
       },
-      "source": {
+      "tuplefield1": "b"
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 32,
+        "columnBegin": 5,
+        "lineEnd": 32,
+        "columnEnd": 18
+      },
+      "tuplefield1": "b1"
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
         "file": { "key": "test.cpp" },
         "lineBegin": 33,
         "columnBegin": 5,
         "lineEnd": 33,
         "columnEnd": 30
       },
-      "name": "b2"
+      "tuplefield1": "b2"
     }
   }
 ]

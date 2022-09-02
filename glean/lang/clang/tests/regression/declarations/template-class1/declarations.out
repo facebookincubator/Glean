@@ -25,7 +25,7 @@
               "key": {
                 "returns": { "key": "void" },
                 "parameters": [
-                  { "name": { "key": "" }, "type": { "key": "const S<T> &" } }
+                  { "name": { "key": "" }, "type": { "key": "const S &" } }
                 ]
               }
             },
@@ -68,7 +68,7 @@
               "key": {
                 "returns": { "key": "void" },
                 "parameters": [
-                  { "name": { "key": "" }, "type": { "key": "S<T> &&" } }
+                  { "name": { "key": "" }, "type": { "key": "S &&" } }
                 ]
               }
             },
@@ -187,7 +187,7 @@
               "key": {
                 "returns": { "key": "void" },
                 "parameters": [
-                  { "name": { "key": "" }, "type": { "key": "const S<T> &" } }
+                  { "name": { "key": "" }, "type": { "key": "const S &" } }
                 ]
               }
             },
@@ -233,7 +233,7 @@
                 }
               }
             },
-            "type": { "key": "const S<T> &" },
+            "type": { "key": "const S &" },
             "kind": { "local": { "kind": 2, "attribute": 0 } },
             "source": {
               "file": { "key": "test.cpp" },
@@ -268,7 +268,7 @@
               "key": {
                 "returns": { "key": "void" },
                 "parameters": [
-                  { "name": { "key": "" }, "type": { "key": "S<T> &&" } }
+                  { "name": { "key": "" }, "type": { "key": "S &&" } }
                 ]
               }
             },
@@ -314,7 +314,7 @@
                 }
               }
             },
-            "type": { "key": "S<T> &&" },
+            "type": { "key": "S &&" },
             "kind": { "local": { "kind": 2, "attribute": 0 } },
             "source": {
               "file": { "key": "test.cpp" },
