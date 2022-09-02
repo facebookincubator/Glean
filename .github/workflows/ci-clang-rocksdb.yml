@@ -95,5 +95,7 @@ jobs:
       - name: Build glass
         run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make glass
       # no hhvm/hack or typescript indexer, so we run without hack regression tests
+      - name: Build glean-clang
+        run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make glean-clang
       - name: Run tests
         run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" cabal test glean:tests -f-hack-tests
