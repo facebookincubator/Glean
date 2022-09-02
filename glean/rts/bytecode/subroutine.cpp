@@ -315,14 +315,6 @@ struct Eval {
   FOLLY_ALWAYS_INLINE const uint64_t * FOLLY_NULLABLE execute(Ret) {
     return nullptr;
   }
-
-  FOLLY_ALWAYS_INLINE void execute(LoadWord a) {
-    *a.dst = *a.src;
-  }
-
-  FOLLY_ALWAYS_INLINE void execute(StoreWord a) {
-    *a.dst = a.src;
-  }
 };
 
 }

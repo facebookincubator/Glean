@@ -384,15 +384,4 @@ instructions =
     -- Return from a subroutine.
   , Insn "Ret" [EndBlock, Return] [] []
 
-    -- Load a word from a memory location pointed to by a register
-  , Insn "LoadWord" [] []
-      [ Arg "src" $ reg WordPtr Load
-      , Arg "dst" $ reg Word Store
-      ]
-
-    -- Store a word into a memory location pointed to by a register
-  , Insn "StoreWord" [] []
-      [ Arg "src" $ reg Word Load
-      , Arg "dst" $ reg WordPtr Load
-      ]
   ]

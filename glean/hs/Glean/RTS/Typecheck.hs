@@ -123,18 +123,19 @@ checkType ty = checkSignature ty $ RecordTy []
 -- const void * - begin of clause/key
 -- const void * - end of key/begin of value
 -- const void * - end of clause/value
--- binary::Output * - substituted clause
--- uint64_t * - size of substituted key
+--
+-- It returns the substituted clause in the first output and size of the
+-- substituted key in the first local register.
 --
 checkSignature :: Type -> Type -> IO (Subroutine CompiledTypecheck)
 checkSignature key_ty val_ty =
   generate Optimised $
-    \rename clause_begin key_end clause_end out_key_size -> output $ \out -> mdo
+    \rename clause_begin key_end clause_end -> output $ \out ->
+    -- We return the key size in the first local register
+    local $ \key_size -> mdo
     typecheck rename clause_begin key_end out key_ty
     check "key" clause_begin key_end
-    local $ \size -> do
-      getOutputSize out size
-      storeWord size out_key_size
+    getOutputSize out key_size
     typecheck rename clause_begin clause_end out val_ty
     check "value" clause_begin clause_end
     ret

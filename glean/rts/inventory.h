@@ -45,7 +45,8 @@ struct Predicate {
   /// const void * - end of key/begin of value
   /// const void * - end of clause/value
   /// binary::Output * - substituted clause
-  /// uint64_t * - size of substituted key
+  ///
+  /// Returns size of substituted key in first result register
   std::shared_ptr<Subroutine> typechecker;
 
   /// Generic fact traversal. Takes these arguments:
@@ -96,9 +97,9 @@ struct Predicate {
           *rename.handlers_begin(),
           reinterpret_cast<uint64_t>(clause.data),
           reinterpret_cast<uint64_t>(clause.data + clause.key_size),
-          reinterpret_cast<uint64_t>(clause.data + clause.size()),
-          reinterpret_cast<uint64_t>(&key_size)});
+          reinterpret_cast<uint64_t>(clause.data + clause.size())});
         output = std::move(activation.output(0));
+        key_size = activation.results()[0];
     });
   }
 
