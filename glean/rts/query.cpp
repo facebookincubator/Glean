@@ -400,7 +400,8 @@ thrift::internal::QueryCont QueryExecutor::queryCont(
   for (auto &iter : iters) {
     thrift::internal::KeyIterator i;
     if (auto fact = iter.iter->get(FactIterator::KeyOnly)) {
-      i.type() = iter.type.toWord();
+      i.fact() = fact.id.toThrift();
+      i.type() = iter.type.toThrift();
       i.key() = binary::mkString(fact.key());
       i.prefix_size() = static_cast<int64_t>(iter.prefix_size);
       i.first() = iter.first;
@@ -411,8 +412,9 @@ thrift::internal::QueryCont QueryExecutor::queryCont(
         i.to() = iter.iter->upper_bound().value().toThrift();
       }
     } else {
-      // A finished iterator - we have no key to serialize
-      i.type() = Pid::invalid().toWord();
+      // A finished iterator - we have nothing to serialize
+      i.fact() = Id::invalid().toThrift();
+      i.type() = Pid::invalid().toThrift();
     }
     contIters.emplace_back(std::move(i));
   }
@@ -640,9 +642,25 @@ std::unique_ptr<QueryResults> executeQuery (
     for (auto& savedIter : *restart->iters()) {
       std::unique_ptr<FactIterator> iter;
       Id id;
+      const size_t prefixSize = savedIter.get_prefix_size();
       if (const auto type = Pid::fromThrift(*savedIter.type())) {
-        auto key = binary::byteRange(*savedIter.key());
-        size_t prefixSize = savedIter.get_prefix_size();
+        std::string keyBuf;
+        if (savedIter.fact().has_value()) {
+          bool found = facts.factById(
+            Id::fromThrift(*savedIter.fact()),
+            [&](auto pid, Fact::Clause clause) {
+              if (pid != type) {
+                error("restart iter fact has wrong type");
+              }
+              keyBuf = binary::mkString(clause.key());
+            });
+          if (!found) {
+            error("restart iter fact not found");
+          }
+        } else {
+          keyBuf = std::move(*savedIter.key());
+        }
+        const auto key = binary::byteRange(keyBuf);
         if (savedIter.from().has_value() && savedIter.to().has_value()) {
           auto from = savedIter.from().value();
           auto to = savedIter.to().value();
@@ -664,7 +682,7 @@ std::unique_ptr<QueryResults> executeQuery (
       q.iters.emplace_back(QueryExecutor::Iter{std::move(iter),
           Pid::fromWord(*savedIter.type()),
           id,
-          static_cast<size_t>(savedIter.get_prefix_size()),
+          prefixSize,
           *savedIter.first()});
     }
   }
