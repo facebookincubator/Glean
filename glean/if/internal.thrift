@@ -14,9 +14,8 @@ namespace hs Glean
 
 struct KeyIterator {
   // id of fact the iterator is pointing to
-  7: optional glean.Id fact;
+  7: glean.Id fact;
   1: i64 type;
-  2: optional string key;
   // size of prefix - the value of the prefix can be obtained from the current
   // fact's key
   3: i64 prefix_size;
