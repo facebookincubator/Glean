@@ -15,6 +15,10 @@ namespace facebook {
 namespace glean {
 namespace rts {
 
+/// Type of functions which can be called from bytecode
+using SysFun =
+  void(*)(void *context, uint64_t *frame, const uint64_t *regs, uint64_t nregs);
+
 /// A typed bytecode register which can be read from and written to
 template<typename T>
 struct Reg {
@@ -28,8 +32,17 @@ struct Reg {
     return x;
   }
 
+  T operator*() const {
+    return get();
+  }
+
   void set(T x) {
     *ptr = toWord(x);
+  }
+
+  // This is ugly but not having an operator for this is uglier.
+  void operator<<(T x) {
+    set(x);
   }
 
 private:
@@ -60,11 +73,11 @@ private:
   }
 
   // data pointers
-  static void fromWord(unsigned char *&x, uint64_t w) {
-    x = reinterpret_cast<unsigned char *>(w);
+  static void fromWord(const unsigned char *&x, uint64_t w) {
+    x = reinterpret_cast<const unsigned char *>(w);
   }
 
-  static uint64_t toWord(unsigned char *x) {
+  static uint64_t toWord(const unsigned char *x) {
     return reinterpret_cast<uint64_t>(x);
   }
 
@@ -73,21 +86,25 @@ private:
     x = reinterpret_cast<binary::Output *>(w);
   }
 
+  static void fromWord(const binary::Output *&x, uint64_t w) {
+    x = reinterpret_cast<binary::Output *>(w);
+  }
+
   static uint64_t toWord(binary::Output *x) {
     return reinterpret_cast<uint64_t>(x);
   }
 
-  // Also support const data and output pointers
-  template<typename U>
-  static void fromWord(const U *&x, uint64_t w) {
-    U *y;
-    fromWord(y,w);
-    x = y;
+  static uint64_t toWord(const binary::Output *x) {
+    return reinterpret_cast<uint64_t>(x);
   }
 
-  template<typename U>
-  static uint64_t toWord(const U *x) {
-    return toWord(const_cast<U *>(x));
+  // SysFun
+  static void fromWord(SysFun& x, uint64_t w) {
+    x = reinterpret_cast<SysFun>(w);
+  }
+
+  static uint64_t toWord(SysFun x) {
+    return reinterpret_cast<uint64_t>(x);
   }
 };
 
@@ -110,10 +127,6 @@ struct SysArg<Reg<T>> {
     return Reg<T>(ptr);
   }
 };
-
-/// Type of functions which can be called from bytecode
-using SysFun =
-  void(*)(void *context, uint64_t *frame, const uint64_t *regs, uint64_t nregs);
 
 /// Typed wrapper over a function which can be invoked from bytecode
 template<typename... Args>
