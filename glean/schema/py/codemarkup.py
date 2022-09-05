@@ -17,6 +17,7 @@ from glean.schema.codemarkup.types import (
     FileEntityXRefInfos,
     EntityLocation,
     ExtendsChildEntity,
+    ContainsParentEntity,
     EntityToAnnotations,
     EntityInfo,
     ExtendsParentEntity,
@@ -126,6 +127,17 @@ class CodemarkupExtendsChildEntity(GleanSchemaPredicate):
 
   @staticmethod
   def angle_query(*, parent: Optional[Tuple[()]] = None, child: Optional[Tuple[()]] = None) -> "CodemarkupExtendsChildEntity":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class CodemarkupContainsParentEntity(GleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], child: ast.Expr, parent: ast.Expr) -> Tuple[str, Struct]:
+    return f"codemarkup.ContainsParentEntity.30 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, child, 'child'), angle_for(__env, parent, 'parent')])) or '_' } }}", ContainsParentEntity
+
+  @staticmethod
+  def angle_query(*, child: Optional[Tuple[()]] = None, parent: Optional[Tuple[()]] = None) -> "CodemarkupContainsParentEntity":
     raise Exception("this function can only be called from @angle_query")
 
 

@@ -177,6 +177,23 @@ predicate HackVisibility :
 # Relations
 #
 
+predicate HackContainsParentEntity :
+  {
+    child: code.hack.Entity,
+    parent: code.hack.Entity,
+  }
+  { { decl = Child }, { decl = Parent } } where
+    (
+      (
+        { method = { container = Container }} = Child;
+        Parent = hack.Declaration { container = Container }
+      )
+    ) |
+    (
+      hack.NamespaceMember { namespace_ = Name, decl = Child};
+      Parent = hack.Declaration { namespace_ = {name = Name }}
+    )
+
 predicate HackContainsChildEntity :
   {
     parent: code.hack.Entity,

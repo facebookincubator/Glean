@@ -361,6 +361,14 @@ predicate ExtendsChildEntity :
       )
     )
 
+predicate ContainsParentEntity :
+  {
+    child: code.Entity,
+    parent: code.Entity,
+  }
+  { Child, Parent } where
+    (codemarkup.hack.HackContainsParentEntity { C, P }; Child={hack=C}:code.Entity; Parent={hack=P}:code.Entity)
+
 predicate ContainsChildEntity :
   {
     parent: code.Entity,
@@ -389,7 +397,7 @@ type RelationType = enum {
   ExtendsParentOfChild |
   ExtendsChildOfParent |
   ContainsChildOfParent |
-  ContainsParentOfChild | # not yet implemented
+  ContainsParentOfChild |
 }
 
 # find parent/child semantic relationships
@@ -402,6 +410,7 @@ predicate SearchRelatedEntities:
   { Query, {parent = P, location = PLoc}, {child = C, location = CLoc} } where
     ( ExtendsParentOfChild = Query; ExtendsParentEntity { C, P }) | # child key
     ( ExtendsChildOfParent = Query; ExtendsChildEntity { P, C } ) | # parent key
+    ( ContainsParentOfChild = Query; ContainsParentEntity { C, P }) | # child key
     ( ContainsChildOfParent = Query; ContainsChildEntity { P, C }); # parent key
     codemarkup.EntityLocation {C, CLoc};
     codemarkup.EntityLocation {P, PLoc};

@@ -8,6 +8,7 @@ from glean.schema.py.src import *
 
 
 from glean.schema.codemarkuphack.types import (
+    hackHackContainsParentEntity,
     hackHackEntityInfo,
     hackHackEntityLocation,
     hackHackVisibility,
@@ -19,6 +20,17 @@ from glean.schema.codemarkuphack.types import (
     hackHackEntityKind,
     hackHackFileEntityXRefSpans,
 )
+
+
+class CodemarkupHackHackContainsParentEntity(GleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], child: ast.Expr, parent: ast.Expr) -> Tuple[str, Struct]:
+    return f"codemarkup.hack.HackContainsParentEntity.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, child, 'child'), angle_for(__env, parent, 'parent')])) or '_' } }}", hackHackContainsParentEntity
+
+  @staticmethod
+  def angle_query(*, child: Optional[Tuple[()]] = None, parent: Optional[Tuple[()]] = None) -> "CodemarkupHackHackContainsParentEntity":
+    raise Exception("this function can only be called from @angle_query")
+
 
 
 class CodemarkupHackHackEntityInfo(GleanSchemaPredicate):
