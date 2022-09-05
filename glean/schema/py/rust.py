@@ -3,7 +3,7 @@
 from typing import Optional, Tuple, Union, List, Dict
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
 from glean.schema.py.src import *
 
 
@@ -277,7 +277,7 @@ class RustQName(GleanSchemaPredicate):
     return f"rust.QName.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, local_name, 'local_name'), angle_for(__env, parent, 'parent')])) or '_' } }}", QName
 
   @staticmethod
-  def angle_query(*, local_name: Optional["RustName"] = None, parent: Optional[Tuple[()]] = None) -> "RustQName":
+  def angle_query(*, local_name: Optional["RustName"] = None, parent: Optional[Union[Just["RustQName"], Just[None]]] = None) -> "RustQName":
     raise Exception("this function can only be called from @angle_query")
 
 

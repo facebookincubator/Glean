@@ -3,7 +3,7 @@
 from typing import Optional, Tuple, Union, List, Dict
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
 from glean.schema.py.src import *
 from glean.schema.py.sys import *
 
@@ -73,7 +73,7 @@ class BuckTargetSourcesBaseModule(GleanSchemaPredicate):
     return f"buck.TargetSourcesBaseModule.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, locator, 'locator'), angle_for(__env, srcs, 'srcs'), angle_for(__env, baseModule, 'baseModule')])) or '_' } }}", TargetSourcesBaseModule
 
   @staticmethod
-  def angle_query(*, locator: Optional["BuckTarget"] = None, srcs: Optional[List["BuckFile"]] = None, baseModule: Optional[Tuple[()]] = None) -> "BuckTargetSourcesBaseModule":
+  def angle_query(*, locator: Optional["BuckTarget"] = None, srcs: Optional[List["BuckFile"]] = None, baseModule: Optional[Union[Just["BuckAttributeValue"], Just[None]]] = None) -> "BuckTargetSourcesBaseModule":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -117,7 +117,7 @@ class BuckLocator(GleanSchemaPredicate):
     return f"buck.Locator.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, subdir, 'subdir'), angle_for(__env, path, 'path'), angle_for(__env, name, 'name')])) or '_' } }}", Locator
 
   @staticmethod
-  def angle_query(*, subdir: Optional[Tuple[()]] = None, path: Optional[str] = None, name: Optional[str] = None) -> "BuckLocator":
+  def angle_query(*, subdir: Optional[Union[Just[str], Just[None]]] = None, path: Optional[str] = None, name: Optional[str] = None) -> "BuckLocator":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -194,7 +194,7 @@ class BuckTargetOuts(GleanSchemaPredicate):
     return f"buck.TargetOuts.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, outputLabel, 'outputLabel'), angle_for(__env, file, 'file')])) or '_' } }}", TargetOuts
 
   @staticmethod
-  def angle_query(*, target: Optional["BuckTarget"] = None, outputLabel: Optional[Tuple[()]] = None, file: Optional["SrcFile"] = None) -> "BuckTargetOuts":
+  def angle_query(*, target: Optional["BuckTarget"] = None, outputLabel: Optional[Union[Just["BuckOutputLabel"], Just[None]]] = None, file: Optional["SrcFile"] = None) -> "BuckTargetOuts":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -205,7 +205,7 @@ class BuckOutsTarget(GleanSchemaPredicate):
     return f"buck.OutsTarget.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, target, 'target'), angle_for(__env, outputLabel, 'outputLabel')])) or '_' } }}", OutsTarget
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, target: Optional["BuckTarget"] = None, outputLabel: Optional[Tuple[()]] = None) -> "BuckOutsTarget":
+  def angle_query(*, file: Optional["SrcFile"] = None, target: Optional["BuckTarget"] = None, outputLabel: Optional[Union[Just["BuckOutputLabel"], Just[None]]] = None) -> "BuckOutsTarget":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -313,7 +313,7 @@ class BuckTarget(GleanSchemaPredicate):
     return f"buck.Target.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, locator, 'locator'), angle_for(__env, type_, 'type_'), angle_for(__env, defaultPlatform, 'defaultPlatform'), angle_for(__env, labels, 'labels')])) or '_' } }}", Target
 
   @staticmethod
-  def angle_query(*, locator: Optional["BuckLocator"] = None, type_: Optional["BuckType"] = None, defaultPlatform: Optional[Tuple[()]] = None, labels: Optional["BuckLabels"] = None) -> "BuckTarget":
+  def angle_query(*, locator: Optional["BuckLocator"] = None, type_: Optional["BuckType"] = None, defaultPlatform: Optional[Union[Just["BuckPlatform"], Just[None]]] = None, labels: Optional["BuckLabels"] = None) -> "BuckTarget":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -357,7 +357,7 @@ class BuckTarget(GleanSchemaPredicate):
     return f"buck.Target.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, repo, 'repo'), angle_for(__env, name, 'name'), angle_for(__env, platform, 'platform')])) or '_' } }}", Target
 
   @staticmethod
-  def angle_query(*, repo: Optional["SysBlob"] = None, name: Optional["SysBlob"] = None, platform: Optional[Tuple[()]] = None) -> "BuckTarget":
+  def angle_query(*, repo: Optional["SysBlob"] = None, name: Optional["SysBlob"] = None, platform: Optional[Union[Just["SysBlob"], Just[None]]] = None) -> "BuckTarget":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -467,7 +467,7 @@ class BuckTranslationUnit(GleanSchemaPredicate):
     return f"buck.TranslationUnit.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, target, 'target'), angle_for(__env, platform, 'platform')])) or '_' } }}", TranslationUnit
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, target: Optional["BuckLocator"] = None, platform: Optional[Tuple[()]] = None) -> "BuckTranslationUnit":
+  def angle_query(*, file: Optional["SrcFile"] = None, target: Optional["BuckLocator"] = None, platform: Optional[Union[Just["BuckPlatform"], Just[None]]] = None) -> "BuckTranslationUnit":
     raise Exception("this function can only be called from @angle_query")
 
 

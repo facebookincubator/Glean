@@ -3,7 +3,7 @@
 from typing import Optional, Tuple, Union, List, Dict
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
 from glean.schema.py.buck import *
 from glean.schema.py.scm import *
 from glean.schema.py.src import *
@@ -614,7 +614,7 @@ class ThriftHackMap(GleanSchemaPredicate):
     return f"thrift.HackMap.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, source, 'source'), angle_for(__env, repoCode, 'repoCode'), angle_for(__env, path, 'path'), angle_for(__env, kind, 'kind'), angle_for(__env, mangledsvcs, 'mangledsvcs'), angle_for(__env, rest, 'rest'), angle_for(__env, server, 'server')])) or '_' } }}", HackMap
 
   @staticmethod
-  def angle_query(*, source: Optional[Tuple[()]] = None, repoCode: Optional["ScmRepoName"] = None, path: Optional[str] = None, kind: Optional[Tuple[()]] = None, mangledsvcs: Optional[bool] = None, rest: Optional[bool] = None, server: Optional[bool] = None) -> "ThriftHackMap":
+  def angle_query(*, source: Optional[Union[Just["SrcFile"], Just[None]]] = None, repoCode: Optional["ScmRepoName"] = None, path: Optional[str] = None, kind: Optional[Tuple[()]] = None, mangledsvcs: Optional[bool] = None, rest: Optional[bool] = None, server: Optional[bool] = None) -> "ThriftHackMap":
     raise Exception("this function can only be called from @angle_query")
 
 

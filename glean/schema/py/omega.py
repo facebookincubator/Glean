@@ -3,7 +3,7 @@
 from typing import Optional, Tuple, Union, List, Dict
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
 from glean.schema.py.src import *
 
 
@@ -177,7 +177,7 @@ class OmegaOmegaEntityMetadata(GleanSchemaPredicate):
     return f"omega.OmegaEntityMetadata.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, oncall, 'oncall'), angle_for(__env, isAbstract, 'isAbstract'), angle_for(__env, isICE, 'isICE')])) or '_' } }}", OmegaEntityMetadata
 
   @staticmethod
-  def angle_query(*, entity: Optional[Tuple[()]] = None, oncall: Optional[Tuple[()]] = None, isAbstract: Optional[bool] = None, isICE: Optional[bool] = None) -> "OmegaOmegaEntityMetadata":
+  def angle_query(*, entity: Optional[Tuple[()]] = None, oncall: Optional[Union[Just["OmegaOncall"], Just[None]]] = None, isAbstract: Optional[bool] = None, isICE: Optional[bool] = None) -> "OmegaOmegaEntityMetadata":
     raise Exception("this function can only be called from @angle_query")
 
 

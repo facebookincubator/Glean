@@ -3,7 +3,7 @@
 from typing import Optional, Tuple, Union, List, Dict
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
 from glean.schema.py.src import *
 
 
@@ -54,7 +54,7 @@ class LsifRange(GleanSchemaPredicate):
     return f"lsif.Range.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, range, 'range'), angle_for(__env, fullRange, 'fullRange'), angle_for(__env, text, 'text')])) or '_' } }}", Range
 
   @staticmethod
-  def angle_query(*, range: Optional[Tuple[()]] = None, fullRange: Optional[Tuple[()]] = None, text: Optional["LsifName"] = None) -> "LsifRange":
+  def angle_query(*, range: Optional[Tuple[()]] = None, fullRange: Optional[Union[Just[Tuple[()]], Just[None]]] = None, text: Optional["LsifName"] = None) -> "LsifRange":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -164,7 +164,7 @@ class LsifDefinitionMoniker(GleanSchemaPredicate):
     return f"lsif.DefinitionMoniker.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, defn, 'defn'), angle_for(__env, moniker, 'moniker')])) or '_' } }}", DefinitionMoniker
 
   @staticmethod
-  def angle_query(*, defn: Optional["LsifDefinition"] = None, moniker: Optional[Tuple[()]] = None) -> "LsifDefinitionMoniker":
+  def angle_query(*, defn: Optional["LsifDefinition"] = None, moniker: Optional[Union[Just["LsifMoniker"], Just[None]]] = None) -> "LsifDefinitionMoniker":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -395,7 +395,7 @@ class LsifMetadata(GleanSchemaPredicate):
     return f"lsif.Metadata.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, lsifVersion, 'lsifVersion'), angle_for(__env, positionEncoding, 'positionEncoding'), angle_for(__env, toolInfo, 'toolInfo')])) or '_' } }}", Metadata
 
   @staticmethod
-  def angle_query(*, lsifVersion: Optional[str] = None, positionEncoding: Optional[str] = None, toolInfo: Optional[Tuple[()]] = None) -> "LsifMetadata":
+  def angle_query(*, lsifVersion: Optional[str] = None, positionEncoding: Optional[str] = None, toolInfo: Optional[Union[Just[Tuple[()]], Just[None]]] = None) -> "LsifMetadata":
     raise Exception("this function can only be called from @angle_query")
 
 

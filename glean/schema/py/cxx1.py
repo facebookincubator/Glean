@@ -3,7 +3,7 @@
 from typing import Optional, Tuple, Union, List, Dict
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
 from glean.schema.py.buck import *
 from glean.schema.py.pp1 import *
 from glean.schema.py.src import *
@@ -148,7 +148,7 @@ class Cxx1EnumDeclaration(GleanSchemaPredicate):
     return f"cxx1.EnumDeclaration.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, isScoped, 'isScoped'), angle_for(__env, type, 'type'), angle_for(__env, source, 'source')])) or '_' } }}", EnumDeclaration
 
   @staticmethod
-  def angle_query(*, name: Optional["Cxx1QName"] = None, isScoped: Optional[bool] = None, type: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None) -> "Cxx1EnumDeclaration":
+  def angle_query(*, name: Optional["Cxx1QName"] = None, isScoped: Optional[bool] = None, type: Optional[Union[Just["Cxx1Type"], Just[None]]] = None, source: Optional[Tuple[()]] = None) -> "Cxx1EnumDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -247,7 +247,7 @@ class Cxx1ObjcPropertyImplementation(GleanSchemaPredicate):
     return f"cxx1.ObjcPropertyImplementation.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, kind, 'kind'), angle_for(__env, ivar, 'ivar'), angle_for(__env, source, 'source')])) or '_' } }}", ObjcPropertyImplementation
 
   @staticmethod
-  def angle_query(*, declaration: Optional["Cxx1ObjcPropertyDeclaration"] = None, kind: Optional[Tuple[()]] = None, ivar: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None) -> "Cxx1ObjcPropertyImplementation":
+  def angle_query(*, declaration: Optional["Cxx1ObjcPropertyDeclaration"] = None, kind: Optional[Tuple[()]] = None, ivar: Optional[Union[Just["Cxx1Name"], Just[None]]] = None, source: Optional[Tuple[()]] = None) -> "Cxx1ObjcPropertyImplementation":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -434,7 +434,7 @@ class Cxx1NamespaceQName(GleanSchemaPredicate):
     return f"cxx1.NamespaceQName.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, parent, 'parent')])) or '_' } }}", NamespaceQName
 
   @staticmethod
-  def angle_query(*, name: Optional[Tuple[()]] = None, parent: Optional[Tuple[()]] = None) -> "Cxx1NamespaceQName":
+  def angle_query(*, name: Optional[Union[Just["Cxx1Name"], Just[None]]] = None, parent: Optional[Union[Just["Cxx1NamespaceQName"], Just[None]]] = None) -> "Cxx1NamespaceQName":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -478,7 +478,7 @@ class Cxx1FunctionDeclaration(GleanSchemaPredicate):
     return f"cxx1.FunctionDeclaration.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, signature, 'signature'), angle_for(__env, method, 'method'), angle_for(__env, source, 'source')])) or '_' } }}", FunctionDeclaration
 
   @staticmethod
-  def angle_query(*, name: Optional["Cxx1FunctionQName"] = None, signature: Optional["Cxx1Signature"] = None, method: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None) -> "Cxx1FunctionDeclaration":
+  def angle_query(*, name: Optional["Cxx1FunctionQName"] = None, signature: Optional["Cxx1Signature"] = None, method: Optional[Union[Just[Tuple[()]], Just[None]]] = None, source: Optional[Tuple[()]] = None) -> "Cxx1FunctionDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 

@@ -36,13 +36,14 @@ genSchemaPy _version preddefs typedefs =
   Text.unlines
   [ "# \x40generated"
   , "# To regenerate this file run fbcode//glean/schema/gen/sync"
-  , "from typing import Dict, Tuple, TypeVar, Type, Optional"
+  , "from typing import Dict, Generic, Tuple, TypeVar, Type, Optional"
   , "from thrift.py3 import Struct"
   , "import json"
   , "import inspect"
   , "import ast"
   , ""
   , "R = TypeVar(\"R\", int, str, bool, Tuple[()])"
+  , "T = TypeVar(\"T\")"
   , ""
   , "class GleanSchemaPredicate:"
   , "  " <> "@staticmethod"
@@ -58,9 +59,18 @@ genSchemaPy _version preddefs typedefs =
   , "  " <> "elif isinstance(key, ast.Constant):"
   , "    " <> "return _make_attribute(field_name, json.dumps(key.value))"
   , "  " <> "elif isinstance(key, ast.Call):"
+  , "    " <> "if (isinstance(key.func, ast.Subscript) and key.func.value.id == 'Just')" <>
+    " or (isinstance(key.func, ast.Name) and key.func.id == 'Just'):"
+  , "      " <> "if key.args and isinstance(key.args[0], ast.Call):"
+  , "        " <> "value = f'{{ just = {angle_for(__env, key.args[0], None)} }}'"
+  , "      " <> "else:"
+  , "        " <> "value = \'nothing\'"
+  , "      " <> "return _make_attribute(field_name, value)"
   , "    " <> "nested_call_arg = callGleanSchemaPredicateQuery" <>
     "(key, {}, \"__target__\", __env)[\"__target__\"]"
-  , "    " <> "return _make_attribute(field_name, nested_call_arg[0])"
+  , "    " <> "# eliminate the name of GleanPredicate from inner call"
+  , "    " <> "nested_call_arg = \" \".join(nested_call_arg[0].split(\" \")[1:])"
+  , "    " <> "return _make_attribute(field_name, nested_call_arg)"
   , "  " <> "elif isinstance(key, ast.List):"
   , "    " <> "elems = map(lambda el: angle_for(__env, el, None), key.elts)"
   , "    " <> "value = f\'[{ \", \".join(elems) }]\'"
@@ -96,8 +106,8 @@ genSchemaPy _version preddefs typedefs =
   , "      " <> "break"
   , "    " <> "except KeyError as e:"
   , "      " <> "# inner calls to GleanSchemaPredicates " <>
-    "need extra num_frames_to_user_code"
-  , "      " <> "ctr = ctr + num_frames_to_user_code"
+    "need extra number of frames"
+  , "      " <> "ctr = ctr + 1"
   , "  " <> "fields = (method_args.get(k) for k in angle_query_args)"
   , "  " <> "return (globals_[class_name].build_angle(__env, *tuple(fields)))"
   , ""
@@ -118,6 +128,13 @@ genSchemaPy _version preddefs typedefs =
   , "      " <> "variables[target] = _class_name_to_py_query(class_name, " <>
     "__env, method_args_)"
   , "  " <> "return variables"
+  , ""
+  , "class Just(Generic[T]):"
+  , "  " <> "just: T = None"
+  , "  " <> "def __init__(self, just: T = None) -> None:"
+  , "    " <> "self.just = just"
+  , "  " <> "def get(self) -> Optional[T]:"
+  , "    " <> "return self.just"
   ]) :
   [ ("py" </>
       Text.unpack (Text.concat namespaces) <.> "py",
@@ -240,7 +257,7 @@ header namespaces namePolicy preds = Text.unlines $
   , "from thrift.py3 import Struct"
   , "import ast"
   , "from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate"<>
-    ", angle_for, R"
+    ", angle_for, R, Just"
   ] ++ addPythonImportsForKeys namespaces namePolicy preds
 
 pythonClassName :: Text -> Text
@@ -347,6 +364,8 @@ baseTy unionName namePolicy t = Text.pack $ case t of
   SumTy{} -> Text.unpack $ "\'" <> unionName <> "\'"
   ArrayTy field -> Text.unpack $
     "List[" <> baseTy unionName namePolicy field <> "]"
+  MaybeTy field -> Text.unpack $
+    "Union[Just[" <> baseTy unionName namePolicy field <> "], Just[None]]"
   -- TODO other types
   _ -> "Tuple[()]"
 

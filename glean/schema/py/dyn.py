@@ -3,7 +3,7 @@
 from typing import Optional, Tuple, Union, List, Dict
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
 from glean.schema.py.src import *
 
 
@@ -43,7 +43,7 @@ class DynEntityUsage(GleanSchemaPredicate):
     return f"dyn.EntityUsage.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, observer, 'observer'), angle_for(__env, usage, 'usage'), angle_for(__env, environment, 'environment')])) or '_' } }}", EntityUsage
 
   @staticmethod
-  def angle_query(*, entity: Optional[Tuple[()]] = None, observer: Optional[Tuple[()]] = None, usage: Optional[Tuple[()]] = None, environment: Optional[Tuple[()]] = None) -> "DynEntityUsage":
+  def angle_query(*, entity: Optional[Tuple[()]] = None, observer: Optional[Tuple[()]] = None, usage: Optional[Tuple[()]] = None, environment: Optional[Union[Just["DynEnvironment"], Just[None]]] = None) -> "DynEntityUsage":
     raise Exception("this function can only be called from @angle_query")
 
 

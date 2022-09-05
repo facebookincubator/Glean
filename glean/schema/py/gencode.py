@@ -3,7 +3,7 @@
 from typing import Optional, Tuple, Union, List, Dict
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
 from glean.schema.py.src import *
 
 
@@ -66,7 +66,7 @@ class GencodeGenCode(GleanSchemaPredicate):
     return f"gencode.GenCode.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, variant, 'variant'), angle_for(__env, source, 'source'), angle_for(__env, command, 'command'), angle_for(__env, class_, 'class_'), angle_for(__env, signature, 'signature')])) or '_' } }}", GenCode
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, variant: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None, command: Optional[Tuple[()]] = None, class_: Optional[Tuple[()]] = None, signature: Optional[Tuple[()]] = None) -> "GencodeGenCode":
+  def angle_query(*, file: Optional["SrcFile"] = None, variant: Optional[Tuple[()]] = None, source: Optional[Union[Just["SrcFile"], Just[None]]] = None, command: Optional[Union[Just["GencodeGenCodeCommand"], Just[None]]] = None, class_: Optional[Union[Just["GencodeGenCodeClass"], Just[None]]] = None, signature: Optional[Union[Just["GencodeGenCodeSignature"], Just[None]]] = None) -> "GencodeGenCode":
     raise Exception("this function can only be called from @angle_query")
 
 

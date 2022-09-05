@@ -3,7 +3,7 @@
 from typing import Optional, Tuple, Union, List, Dict
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
 from glean.schema.py.src import *
 
 
@@ -44,7 +44,7 @@ class Pp1Use(GleanSchemaPredicate):
     return f"pp1.Use.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, macro, 'macro'), angle_for(__env, name, 'name'), angle_for(__env, definition, 'definition'), angle_for(__env, expand, 'expand'), angle_for(__env, source, 'source')])) or '_' } }}", Use
 
   @staticmethod
-  def angle_query(*, macro: Optional["Pp1Macro"] = None, name: Optional[Tuple[()]] = None, definition: Optional[Tuple[()]] = None, expand: Optional[bool] = None, source: Optional[Tuple[()]] = None) -> "Pp1Use":
+  def angle_query(*, macro: Optional["Pp1Macro"] = None, name: Optional[Tuple[()]] = None, definition: Optional[Union[Just[Tuple[()]], Just[None]]] = None, expand: Optional[bool] = None, source: Optional[Tuple[()]] = None) -> "Pp1Use":
     raise Exception("this function can only be called from @angle_query")
 
 

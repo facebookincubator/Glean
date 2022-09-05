@@ -3,7 +3,7 @@
 from typing import Optional, Tuple, Union, List, Dict
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
 
 
 from glean.schema.gleantest.types import (
@@ -148,7 +148,7 @@ class GleanTestNothingTest(GleanSchemaPredicate):
     return f"glean.test.nothingTest.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, a, 'a'), angle_for(__env, b, 'b')])) or '_' } }}", testnothingTest
 
   @staticmethod
-  def angle_query(*, a: Optional[Tuple[()]] = None, b: Optional[int] = None) -> "GleanTestNothingTest":
+  def angle_query(*, a: Optional[Union[Just[str], Just[None]]] = None, b: Optional[int] = None) -> "GleanTestNothingTest":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -341,7 +341,7 @@ class GleanTestTree(GleanSchemaPredicate):
     return f"glean.test.Tree.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, node, 'node'), angle_for(__env, left, 'left'), angle_for(__env, right, 'right')])) or '_' } }}", testTree
 
   @staticmethod
-  def angle_query(*, node: Optional["GleanTestNode"] = None, left: Optional[Tuple[()]] = None, right: Optional[Tuple[()]] = None) -> "GleanTestTree":
+  def angle_query(*, node: Optional["GleanTestNode"] = None, left: Optional[Union[Just["GleanTestTree"], Just[None]]] = None, right: Optional[Union[Just["GleanTestTree"], Just[None]]] = None) -> "GleanTestTree":
     raise Exception("this function can only be called from @angle_query")
 
 

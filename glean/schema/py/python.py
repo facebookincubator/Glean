@@ -3,7 +3,7 @@
 from typing import Optional, Tuple, Union, List, Dict
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
 from glean.schema.py.src import *
 
 
@@ -100,7 +100,7 @@ class PythonClassDefinition(GleanSchemaPredicate):
     return f"python.ClassDefinition.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, bases, 'bases'), angle_for(__env, keywords, 'keywords'), angle_for(__env, decorators, 'decorators'), angle_for(__env, docstring, 'docstring')])) or '_' } }}", ClassDefinition
 
   @staticmethod
-  def angle_query(*, declaration: Optional["PythonClassDeclaration"] = None, bases: Optional[Tuple[()]] = None, keywords: Optional[Tuple[()]] = None, decorators: Optional[Tuple[()]] = None, docstring: Optional[Tuple[()]] = None) -> "PythonClassDefinition":
+  def angle_query(*, declaration: Optional["PythonClassDeclaration"] = None, bases: Optional[Union[Just[List["PythonClassDeclaration"]], Just[None]]] = None, keywords: Optional[Union[Just[List[Tuple[()]]], Just[None]]] = None, decorators: Optional[Union[Just[List[Tuple[()]]], Just[None]]] = None, docstring: Optional[Union[Just[Tuple[()]], Just[None]]] = None) -> "PythonClassDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -199,7 +199,7 @@ class PythonModuleDefinition(GleanSchemaPredicate):
     return f"python.ModuleDefinition.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, module, 'module'), angle_for(__env, docstring, 'docstring')])) or '_' } }}", ModuleDefinition
 
   @staticmethod
-  def angle_query(*, module: Optional["PythonModule"] = None, docstring: Optional[Tuple[()]] = None) -> "PythonModuleDefinition":
+  def angle_query(*, module: Optional["PythonModule"] = None, docstring: Optional[Union[Just[Tuple[()]], Just[None]]] = None) -> "PythonModuleDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -265,7 +265,7 @@ class PythonClassDeclaration(GleanSchemaPredicate):
     return f"python.ClassDeclaration.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, bases, 'bases')])) or '_' } }}", ClassDeclaration
 
   @staticmethod
-  def angle_query(*, name: Optional["PythonName"] = None, bases: Optional[Tuple[()]] = None) -> "PythonClassDeclaration":
+  def angle_query(*, name: Optional["PythonName"] = None, bases: Optional[Union[Just[List["PythonName"]], Just[None]]] = None) -> "PythonClassDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -342,7 +342,7 @@ class PythonVariableDefinition(GleanSchemaPredicate):
     return f"python.VariableDefinition.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, type, 'type')])) or '_' } }}", VariableDefinition
 
   @staticmethod
-  def angle_query(*, declaration: Optional["PythonVariableDeclaration"] = None, type: Optional[Tuple[()]] = None) -> "PythonVariableDefinition":
+  def angle_query(*, declaration: Optional["PythonVariableDeclaration"] = None, type: Optional[Union[Just["PythonType"], Just[None]]] = None) -> "PythonVariableDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -452,7 +452,7 @@ class PythonFunctionDefinition(GleanSchemaPredicate):
     return f"python.FunctionDefinition.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, is_async, 'is_async'), angle_for(__env, returns, 'returns'), angle_for(__env, params, 'params'), angle_for(__env, posonly_params, 'posonly_params'), angle_for(__env, kwonly_params, 'kwonly_params'), angle_for(__env, star_arg, 'star_arg'), angle_for(__env, star_kwarg, 'star_kwarg'), angle_for(__env, decorators, 'decorators'), angle_for(__env, docstring, 'docstring')])) or '_' } }}", FunctionDefinition
 
   @staticmethod
-  def angle_query(*, declaration: Optional["PythonFunctionDeclaration"] = None, is_async: Optional[bool] = None, returns: Optional[Tuple[()]] = None, params: Optional[List[Tuple[()]]] = None, posonly_params: Optional[Tuple[()]] = None, kwonly_params: Optional[Tuple[()]] = None, star_arg: Optional[Tuple[()]] = None, star_kwarg: Optional[Tuple[()]] = None, decorators: Optional[Tuple[()]] = None, docstring: Optional[Tuple[()]] = None) -> "PythonFunctionDefinition":
+  def angle_query(*, declaration: Optional["PythonFunctionDeclaration"] = None, is_async: Optional[bool] = None, returns: Optional[Union[Just["PythonType"], Just[None]]] = None, params: Optional[List[Tuple[()]]] = None, posonly_params: Optional[Union[Just[List[Tuple[()]]], Just[None]]] = None, kwonly_params: Optional[Union[Just[List[Tuple[()]]], Just[None]]] = None, star_arg: Optional[Union[Just[Tuple[()]], Just[None]]] = None, star_kwarg: Optional[Union[Just[Tuple[()]], Just[None]]] = None, decorators: Optional[Union[Just[List[Tuple[()]]], Just[None]]] = None, docstring: Optional[Union[Just[Tuple[()]], Just[None]]] = None) -> "PythonFunctionDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -595,7 +595,7 @@ class PythonSName(GleanSchemaPredicate):
     return f"python.SName.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, local_name, 'local_name'), angle_for(__env, parent, 'parent')])) or '_' } }}", SName
 
   @staticmethod
-  def angle_query(*, local_name: Optional["PythonName"] = None, parent: Optional[Tuple[()]] = None) -> "PythonSName":
+  def angle_query(*, local_name: Optional["PythonName"] = None, parent: Optional[Union[Just["PythonSName"], Just[None]]] = None) -> "PythonSName":
     raise Exception("this function can only be called from @angle_query")
 
 

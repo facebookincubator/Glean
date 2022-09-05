@@ -3,7 +3,7 @@
 from typing import Optional, Tuple, Union, List, Dict
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
 from glean.schema.py.src import *
 
 
@@ -127,7 +127,7 @@ class FlowDeclarationInfo(GleanSchemaPredicate):
     return f"flow.DeclarationInfo.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, type, 'type'), angle_for(__env, documentation, 'documentation')])) or '_' } }}", DeclarationInfo
 
   @staticmethod
-  def angle_query(*, declaration: Optional["FlowDeclaration"] = None, type: Optional["FlowType"] = None, documentation: Optional[Tuple[()]] = None) -> "FlowDeclarationInfo":
+  def angle_query(*, declaration: Optional["FlowDeclaration"] = None, type: Optional["FlowType"] = None, documentation: Optional[Union[Just["FlowDocumentation"], Just[None]]] = None) -> "FlowDeclarationInfo":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -520,7 +520,7 @@ class FlowMemberDeclarationInfo(GleanSchemaPredicate):
     return f"flow.MemberDeclarationInfo.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, memberDeclaration, 'memberDeclaration'), angle_for(__env, type, 'type'), angle_for(__env, documentation, 'documentation')])) or '_' } }}", MemberDeclarationInfo
 
   @staticmethod
-  def angle_query(*, memberDeclaration: Optional["FlowMemberDeclaration"] = None, type: Optional["FlowType"] = None, documentation: Optional[Tuple[()]] = None) -> "FlowMemberDeclarationInfo":
+  def angle_query(*, memberDeclaration: Optional["FlowMemberDeclaration"] = None, type: Optional["FlowType"] = None, documentation: Optional[Union[Just["FlowDocumentation"], Just[None]]] = None) -> "FlowMemberDeclarationInfo":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -531,7 +531,7 @@ class FlowTypeDeclarationInfo(GleanSchemaPredicate):
     return f"flow.TypeDeclarationInfo.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, typeDeclaration, 'typeDeclaration'), angle_for(__env, type, 'type'), angle_for(__env, documentation, 'documentation')])) or '_' } }}", TypeDeclarationInfo
 
   @staticmethod
-  def angle_query(*, typeDeclaration: Optional["FlowTypeDeclaration"] = None, type: Optional["FlowType"] = None, documentation: Optional[Tuple[()]] = None) -> "FlowTypeDeclarationInfo":
+  def angle_query(*, typeDeclaration: Optional["FlowTypeDeclaration"] = None, type: Optional["FlowType"] = None, documentation: Optional[Union[Just["FlowDocumentation"], Just[None]]] = None) -> "FlowTypeDeclarationInfo":
     raise Exception("this function can only be called from @angle_query")
 
 

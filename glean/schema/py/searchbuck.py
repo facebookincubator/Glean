@@ -3,7 +3,7 @@
 from typing import Optional, Tuple, Union, List, Dict
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
 from glean.schema.py.src import *
 
 
@@ -42,7 +42,7 @@ class SearchBuckSearchByFQN(GleanSchemaPredicate):
     return f"search.buck.SearchByFQN.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, subdir, 'subdir'), angle_for(__env, path, 'path'), angle_for(__env, name, 'name'), angle_for(__env, entity, 'entity')])) or '_' } }}", buckSearchByFQN
 
   @staticmethod
-  def angle_query(*, subdir: Optional[Tuple[()]] = None, path: Optional[str] = None, name: Optional[str] = None, entity: Optional[Tuple[()]] = None) -> "SearchBuckSearchByFQN":
+  def angle_query(*, subdir: Optional[Union[Just[str], Just[None]]] = None, path: Optional[str] = None, name: Optional[str] = None, entity: Optional[Tuple[()]] = None) -> "SearchBuckSearchByFQN":
     raise Exception("this function can only be called from @angle_query")
 
 

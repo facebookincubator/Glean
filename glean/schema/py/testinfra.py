@@ -3,7 +3,7 @@
 from typing import Optional, Tuple, Union, List, Dict
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
 from glean.schema.py.src import *
 
 
@@ -163,7 +163,7 @@ class TestinfraFileMetadata(GleanSchemaPredicate):
     return f"testinfra.FileMetadata.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, hash, 'hash'), angle_for(__env, length, 'length'), angle_for(__env, nonexecutableRanges, 'nonexecutableRanges')])) or '_' } }}", FileMetadata
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, hash: Optional[List[Tuple[()]]] = None, length: Optional[Tuple[()]] = None, nonexecutableRanges: Optional[Tuple[()]] = None) -> "TestinfraFileMetadata":
+  def angle_query(*, file: Optional["SrcFile"] = None, hash: Optional[List[Tuple[()]]] = None, length: Optional[Union[Just[Tuple[()]], Just[None]]] = None, nonexecutableRanges: Optional[Union[Just[Tuple[()]], Just[None]]] = None) -> "TestinfraFileMetadata":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -240,7 +240,7 @@ class TestinfraFileMetadata(GleanSchemaPredicate):
     return f"testinfra.FileMetadata.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, hash, 'hash'), angle_for(__env, length, 'length'), angle_for(__env, nonexecutableRanges, 'nonexecutableRanges'), angle_for(__env, executableLength, 'executableLength')])) or '_' } }}", FileMetadata
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, hash: Optional[List[Tuple[()]]] = None, length: Optional[Tuple[()]] = None, nonexecutableRanges: Optional[Tuple[()]] = None, executableLength: Optional[Tuple[()]] = None) -> "TestinfraFileMetadata":
+  def angle_query(*, file: Optional["SrcFile"] = None, hash: Optional[List[Tuple[()]]] = None, length: Optional[Union[Just[Tuple[()]], Just[None]]] = None, nonexecutableRanges: Optional[Union[Just[Tuple[()]], Just[None]]] = None, executableLength: Optional[Union[Just[Tuple[()]], Just[None]]] = None) -> "TestinfraFileMetadata":
     raise Exception("this function can only be called from @angle_query")
 
 
