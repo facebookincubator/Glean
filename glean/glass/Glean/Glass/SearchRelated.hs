@@ -116,7 +116,7 @@ searchRelation limit recursive relation direction repo toVisit visited = do
     (RelationType_Extends, RelationDirection_Child)
       -> runSearchRelated limit angle Code.RelationType_ExtendsChildOfParent
     (RelationType_Contains, RelationDirection_Parent)
-      -> pure [] -- todo
+      -> runSearchRelated limit angle Code.RelationType_ContainsParentOfChild
     (RelationType_Contains, RelationDirection_Child)
       -> runSearchRelated limit angle Code.RelationType_ContainsChildOfParent
     _ -> pure [] -- unknown thrift case

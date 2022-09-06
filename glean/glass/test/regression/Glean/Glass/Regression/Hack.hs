@@ -178,4 +178,11 @@ testHackSearchRelated get = TestLabel "searchRelated" $ TestList $ concat [
           RelationType_Contains
           (SymbolId parent, SymbolId child)
           get
+      , testSearchRelated
+          (SymbolId child)
+          recurse
+          RelationDirection_Parent
+          RelationType_Contains
+          (SymbolId parent, SymbolId child)
+          get
       ]
