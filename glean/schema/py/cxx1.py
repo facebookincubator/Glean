@@ -33,6 +33,7 @@ from glean.schema.cxx1.types import (
     FunctionAttribute,
     FilePPUseTraceXRefs,
     TypeAliasDeclaration,
+    USRToDeclaration,
     DefToBaseDecl,
     Name,
     FilePPUseXRefs,
@@ -336,6 +337,17 @@ class Cxx1TypeAliasDeclaration(GleanSchemaPredicate):
 
   @staticmethod
   def angle_query(*, name: Optional["Cxx1QName"] = None, type: Optional["Cxx1Type"] = None, kind: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None) -> "Cxx1TypeAliasDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class Cxx1USRToDeclaration(GleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], hash: ast.Expr, declaration: ast.Expr) -> Tuple[str, Struct]:
+    return f"cxx1.USRToDeclaration.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, hash, 'hash'), angle_for(__env, declaration, 'declaration')])) or '_' } }}", USRToDeclaration
+
+  @staticmethod
+  def angle_query(*, hash: Optional[Tuple[()]] = None, declaration: Optional[Tuple[()]] = None) -> "Cxx1USRToDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 

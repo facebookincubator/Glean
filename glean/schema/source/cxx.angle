@@ -242,6 +242,14 @@ predicate FunctionDefinition :
     isInline : bool,
   }
 
+# Unified Symbol Resolution (USR) hash for function
+type USR = string
+predicate USRToDeclaration:
+  {
+    hash : USR,
+    declaration : Declaration,
+  }
+
 # Objective C interface-implementation relationship
 predicate ObjcImplements :
   {

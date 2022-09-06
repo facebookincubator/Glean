@@ -8,9 +8,12 @@
 
 #include <variant>
 
+#include <clang/AST/DeclBase.h>
 #include <clang/AST/RecursiveASTVisitor.h>
 #include <clang/Sema/SemaConsumer.h>
 #include <llvm/Config/llvm-config.h>
+#include <clang/Index/USRGeneration.h>
+#include <llvm/Support/SHA1.h>
 
 #include "folly/MapUtil.h"
 #include "folly/Overload.h"
@@ -26,6 +29,33 @@ using namespace facebook::glean::clangx;
 using namespace facebook::glean::cpp;
 
 template<typename T> T identity(T x) { return x; }
+
+/// Utility function to get Unified Symbol Resolution (USR) Hash for a Decl
+/// Creates SHA1 hash of USR and uses 8 bytes of which as Index. This is same
+/// as what is being done in clangd. This would allow clangd to use Glean
+/// index as a global Index.
+/// We currently keep hex string (16bit encoding). We could use 64bit encoding
+/// to reduce the size further.
+//
+std::optional<std::string> getUsrHash (const clang::Decl *decl){
+  llvm::SmallString<32> usr;
+  constexpr static size_t size = 8;
+  //generateUSRForDecl can return false for reasons such as:
+  // 1. Decl is null
+  // 2. anonymous bit fields
+  // 3. ParmDecl with no name for declaration of a function pointer type such
+  //    as void  (*f)(void *);
+  // 4. USRs for linkage specs themselves etc.
+  // These cases does not really matter much to us and not going to lead to any
+  // false positives. Also, Glean and clangd uses the same implementation.
+  //
+  if (!clang::index::generateUSRForDecl(decl, usr)) {
+    auto Hash = llvm::SHA1::hash(llvm::arrayRefFromStringRef(usr.str()));
+    return llvm::toHex(
+        llvm::StringRef(reinterpret_cast<const char *>(Hash.data()), size));
+  }
+  return {};
+}
 
 /// Track usage of using declarations
 class UsingTracker {
@@ -1317,6 +1347,11 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       visitor.db.fact<Cxx::FunctionDefinition>(
         decl,
         d->isInlineSpecified());
+
+      if (auto usr_hash = getUsrHash(d)){
+        visitor.db.fact<Cxx::USRToDeclaration>(usr_hash.value(),
+            Cxx::Declaration::function_(decl));
+      }
 
       if (method) {
         if (auto mtd = clang::dyn_cast<clang::CXXMethodDecl>(d)) {
