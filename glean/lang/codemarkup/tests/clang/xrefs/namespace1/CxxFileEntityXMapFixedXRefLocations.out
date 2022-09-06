@@ -220,25 +220,31 @@
         "source": { "span": { "start": 354, "length": 1 } }
       },
       "entity": {
-        "decl": {
+        "defn": {
           "record_": {
             "key": {
-              "name": {
+              "declaration": {
                 "key": {
-                  "name": { "key": "S" },
-                  "scope": {
-                    "namespace_": { "key": { "name": { "key": "foo" } } }
+                  "name": {
+                    "key": {
+                      "name": { "key": "S" },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "foo" } } }
+                      }
+                    }
+                  },
+                  "kind": { "struct_": { } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 11,
+                    "columnBegin": 1,
+                    "lineEnd": 11,
+                    "columnEnd": 11
                   }
                 }
               },
-              "kind": { "struct_": { } },
-              "source": {
-                "file": { "key": "test.cpp" },
-                "lineBegin": 11,
-                "columnBegin": 1,
-                "lineEnd": 11,
-                "columnEnd": 11
-              }
+              "bases": [ ],
+              "members": { "key": [ ] }
             }
           }
         }
@@ -465,30 +471,36 @@
         "source": { "span": { "start": 371, "length": 1 } }
       },
       "entity": {
-        "decl": {
+        "defn": {
           "record_": {
             "key": {
-              "name": {
+              "declaration": {
                 "key": {
-                  "name": { "key": "T" },
-                  "scope": {
-                    "namespace_": {
-                      "key": {
-                        "name": { "key": "bar" },
-                        "parent": { "key": { "name": { "key": "foo" } } }
+                  "name": {
+                    "key": {
+                      "name": { "key": "T" },
+                      "scope": {
+                        "namespace_": {
+                          "key": {
+                            "name": { "key": "bar" },
+                            "parent": { "key": { "name": { "key": "foo" } } }
+                          }
+                        }
                       }
                     }
+                  },
+                  "kind": { "struct_": { } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 20,
+                    "columnBegin": 1,
+                    "lineEnd": 20,
+                    "columnEnd": 11
                   }
                 }
               },
-              "kind": { "struct_": { } },
-              "source": {
-                "file": { "key": "test.cpp" },
-                "lineBegin": 20,
-                "columnBegin": 1,
-                "lineEnd": 20,
-                "columnEnd": 11
-              }
+              "bases": [ ],
+              "members": { "key": [ ] }
             }
           }
         }
@@ -715,22 +727,27 @@
         "source": { "span": { "start": 366, "length": 3 } }
       },
       "entity": {
-        "decl": {
+        "defn": {
           "namespace_": {
             "key": {
-              "name": {
+              "declaration": {
                 "key": {
-                  "name": { "key": "bar" },
-                  "parent": { "key": { "name": { "key": "foo" } } }
+                  "name": {
+                    "key": {
+                      "name": { "key": "bar" },
+                      "parent": { "key": { "name": { "key": "foo" } } }
+                    }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 18,
+                    "columnBegin": 1,
+                    "lineEnd": 23,
+                    "columnEnd": 1
+                  }
                 }
               },
-              "source": {
-                "file": { "key": "test.cpp" },
-                "lineBegin": 18,
-                "columnBegin": 1,
-                "lineEnd": 23,
-                "columnEnd": 1
-              }
+              "members": { "key": [ ] }
             }
           }
         }
@@ -957,22 +974,27 @@
         "source": { "span": { "start": 395, "length": 3 } }
       },
       "entity": {
-        "decl": {
+        "defn": {
           "namespace_": {
             "key": {
-              "name": {
+              "declaration": {
                 "key": {
-                  "name": { "key": "bar" },
-                  "parent": { "key": { "name": { "key": "foo" } } }
+                  "name": {
+                    "key": {
+                      "name": { "key": "bar" },
+                      "parent": { "key": { "name": { "key": "foo" } } }
+                    }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 18,
+                    "columnBegin": 1,
+                    "lineEnd": 23,
+                    "columnEnd": 1
+                  }
                 }
               },
-              "source": {
-                "file": { "key": "test.cpp" },
-                "lineBegin": 18,
-                "columnBegin": 1,
-                "lineEnd": 23,
-                "columnEnd": 1
-              }
+              "members": { "key": [ ] }
             }
           }
         }
@@ -1446,17 +1468,22 @@
         "source": { "span": { "start": 349, "length": 3 } }
       },
       "entity": {
-        "decl": {
+        "defn": {
           "namespace_": {
             "key": {
-              "name": { "key": { "name": { "key": "foo" } } },
-              "source": {
-                "file": { "key": "test.cpp" },
-                "lineBegin": 9,
-                "columnBegin": 1,
-                "lineEnd": 24,
-                "columnEnd": 1
-              }
+              "declaration": {
+                "key": {
+                  "name": { "key": { "name": { "key": "foo" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 9,
+                    "columnBegin": 1,
+                    "lineEnd": 24,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "members": { "key": [ ] }
             }
           }
         }
@@ -1683,17 +1710,22 @@
         "source": { "span": { "start": 361, "length": 3 } }
       },
       "entity": {
-        "decl": {
+        "defn": {
           "namespace_": {
             "key": {
-              "name": { "key": { "name": { "key": "foo" } } },
-              "source": {
-                "file": { "key": "test.cpp" },
-                "lineBegin": 9,
-                "columnBegin": 1,
-                "lineEnd": 24,
-                "columnEnd": 1
-              }
+              "declaration": {
+                "key": {
+                  "name": { "key": { "name": { "key": "foo" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 9,
+                    "columnBegin": 1,
+                    "lineEnd": 24,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "members": { "key": [ ] }
             }
           }
         }
@@ -1920,17 +1952,22 @@
         "source": { "span": { "start": 378, "length": 3 } }
       },
       "entity": {
-        "decl": {
+        "defn": {
           "namespace_": {
             "key": {
-              "name": { "key": { "name": { "key": "foo" } } },
-              "source": {
-                "file": { "key": "test.cpp" },
-                "lineBegin": 9,
-                "columnBegin": 1,
-                "lineEnd": 24,
-                "columnEnd": 1
-              }
+              "declaration": {
+                "key": {
+                  "name": { "key": { "name": { "key": "foo" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 9,
+                    "columnBegin": 1,
+                    "lineEnd": 24,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "members": { "key": [ ] }
             }
           }
         }
@@ -2157,17 +2194,22 @@
         "source": { "span": { "start": 390, "length": 3 } }
       },
       "entity": {
-        "decl": {
+        "defn": {
           "namespace_": {
             "key": {
-              "name": { "key": { "name": { "key": "foo" } } },
-              "source": {
-                "file": { "key": "test.cpp" },
-                "lineBegin": 9,
-                "columnBegin": 1,
-                "lineEnd": 24,
-                "columnEnd": 1
-              }
+              "declaration": {
+                "key": {
+                  "name": { "key": { "name": { "key": "foo" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 9,
+                    "columnBegin": 1,
+                    "lineEnd": 24,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "members": { "key": [ ] }
             }
           }
         }

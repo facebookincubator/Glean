@@ -700,7 +700,7 @@
                     },
                     {
                         "attribute": {
-                            "aInteger": 2
+                            "aInteger": 1
                         },
                         "key": "symbolDefinitionType"
                     }
@@ -751,7 +751,7 @@
                     },
                     {
                         "attribute": {
-                            "aInteger": 2
+                            "aInteger": 1
                         },
                         "key": "symbolDefinitionType"
                     }
@@ -802,7 +802,7 @@
                     },
                     {
                         "attribute": {
-                            "aInteger": 2
+                            "aInteger": 1
                         },
                         "key": "symbolDefinitionType"
                     }
@@ -853,7 +853,7 @@
                     },
                     {
                         "attribute": {
-                            "aInteger": 2
+                            "aInteger": 1
                         },
                         "key": "symbolDefinitionType"
                     }
@@ -904,7 +904,7 @@
                     },
                     {
                         "attribute": {
-                            "aInteger": 2
+                            "aInteger": 1
                         },
                         "key": "symbolDefinitionType"
                     }
@@ -937,12 +937,6 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "S"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
                             "aString": "struct foo::S"
                         },
                         "key": "symbolSignature"
@@ -961,7 +955,7 @@
                     },
                     {
                         "attribute": {
-                            "aInteger": 2
+                            "aInteger": 1
                         },
                         "key": "symbolDefinitionType"
                     }
@@ -994,12 +988,6 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "foo"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
                             "aString": "namespace foo::bar"
                         },
                         "key": "symbolSignature"
@@ -1018,7 +1006,7 @@
                     },
                     {
                         "attribute": {
-                            "aInteger": 2
+                            "aInteger": 1
                         },
                         "key": "symbolDefinitionType"
                     }
@@ -1051,12 +1039,6 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "foo"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
                             "aString": "namespace foo::bar"
                         },
                         "key": "symbolSignature"
@@ -1075,7 +1057,7 @@
                     },
                     {
                         "attribute": {
-                            "aInteger": 2
+                            "aInteger": 1
                         },
                         "key": "symbolDefinitionType"
                     }
@@ -1108,12 +1090,6 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "T"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
                             "aString": "struct foo::bar::T"
                         },
                         "key": "symbolSignature"
@@ -1132,7 +1108,7 @@
                     },
                     {
                         "attribute": {
-                            "aInteger": 2
+                            "aInteger": 1
                         },
                         "key": "symbolDefinitionType"
                     }
@@ -1627,7 +1603,7 @@
                     },
                     {
                         "attribute": {
-                            "aInteger": 2
+                            "aInteger": 1
                         },
                         "key": "symbolDefinitionType"
                     }

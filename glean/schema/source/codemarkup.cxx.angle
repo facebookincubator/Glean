@@ -174,7 +174,7 @@ predicate CxxXRefTargetLocation:
       cxx1.DeclarationLocationNameSpan { Decl, Range, Name, _, Span };
       { file = TargetFile } = Range;
       { Name, TargetFile, { range = Range }, { just = Span } } = Location;
-      { decl = Decl } = Entity;
+      CxxResolveDeclarationToEntity { Decl, Entity };
     ) | (
     # or jump through the decl sometimes to a def
       { declaration = Decl } = XRefTarget;

@@ -4286,17 +4286,22 @@
         "source": { "span": { "start": 465, "length": 2 } }
       },
       "entity": {
-        "decl": {
+        "defn": {
           "namespace_": {
             "key": {
-              "name": { "key": { "name": { "key": "N1" } } },
-              "source": {
-                "file": { "key": "test.cpp" },
-                "lineBegin": 9,
-                "columnBegin": 1,
-                "lineEnd": 24,
-                "columnEnd": 1
-              }
+              "declaration": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N1" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 9,
+                    "columnBegin": 1,
+                    "lineEnd": 24,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "members": { "key": [ ] }
             }
           }
         }
@@ -5349,17 +5354,22 @@
         "source": { "span": { "start": 478, "length": 2 } }
       },
       "entity": {
-        "decl": {
+        "defn": {
           "namespace_": {
             "key": {
-              "name": { "key": { "name": { "key": "N1" } } },
-              "source": {
-                "file": { "key": "test.cpp" },
-                "lineBegin": 9,
-                "columnBegin": 1,
-                "lineEnd": 24,
-                "columnEnd": 1
-              }
+              "declaration": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N1" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 9,
+                    "columnBegin": 1,
+                    "lineEnd": 24,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "members": { "key": [ ] }
             }
           }
         }
@@ -6412,17 +6422,22 @@
         "source": { "span": { "start": 491, "length": 2 } }
       },
       "entity": {
-        "decl": {
+        "defn": {
           "namespace_": {
             "key": {
-              "name": { "key": { "name": { "key": "N1" } } },
-              "source": {
-                "file": { "key": "test.cpp" },
-                "lineBegin": 9,
-                "columnBegin": 1,
-                "lineEnd": 24,
-                "columnEnd": 1
-              }
+              "declaration": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N1" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 9,
+                    "columnBegin": 1,
+                    "lineEnd": 24,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "members": { "key": [ ] }
             }
           }
         }
@@ -7475,17 +7490,22 @@
         "source": { "span": { "start": 505, "length": 2 } }
       },
       "entity": {
-        "decl": {
+        "defn": {
           "namespace_": {
             "key": {
-              "name": { "key": { "name": { "key": "N1" } } },
-              "source": {
-                "file": { "key": "test.cpp" },
-                "lineBegin": 9,
-                "columnBegin": 1,
-                "lineEnd": 24,
-                "columnEnd": 1
-              }
+              "declaration": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N1" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 9,
+                    "columnBegin": 1,
+                    "lineEnd": 24,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "members": { "key": [ ] }
             }
           }
         }
@@ -8538,17 +8558,22 @@
         "source": { "span": { "start": 518, "length": 2 } }
       },
       "entity": {
-        "decl": {
+        "defn": {
           "namespace_": {
             "key": {
-              "name": { "key": { "name": { "key": "N1" } } },
-              "source": {
-                "file": { "key": "test.cpp" },
-                "lineBegin": 9,
-                "columnBegin": 1,
-                "lineEnd": 24,
-                "columnEnd": 1
-              }
+              "declaration": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N1" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 9,
+                    "columnBegin": 1,
+                    "lineEnd": 24,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "members": { "key": [ ] }
             }
           }
         }
@@ -9601,17 +9626,22 @@
         "source": { "span": { "start": 531, "length": 2 } }
       },
       "entity": {
-        "decl": {
+        "defn": {
           "namespace_": {
             "key": {
-              "name": { "key": { "name": { "key": "N1" } } },
-              "source": {
-                "file": { "key": "test.cpp" },
-                "lineBegin": 9,
-                "columnBegin": 1,
-                "lineEnd": 24,
-                "columnEnd": 1
-              }
+              "declaration": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N1" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 9,
+                    "columnBegin": 1,
+                    "lineEnd": 24,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "members": { "key": [ ] }
             }
           }
         }
@@ -10664,17 +10694,22 @@
         "source": { "span": { "start": 544, "length": 2 } }
       },
       "entity": {
-        "decl": {
+        "defn": {
           "namespace_": {
             "key": {
-              "name": { "key": { "name": { "key": "N1" } } },
-              "source": {
-                "file": { "key": "test.cpp" },
-                "lineBegin": 9,
-                "columnBegin": 1,
-                "lineEnd": 24,
-                "columnEnd": 1
-              }
+              "declaration": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N1" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 9,
+                    "columnBegin": 1,
+                    "lineEnd": 24,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "members": { "key": [ ] }
             }
           }
         }
@@ -11727,17 +11762,22 @@
         "source": { "span": { "start": 792, "length": 2 } }
       },
       "entity": {
-        "decl": {
+        "defn": {
           "namespace_": {
             "key": {
-              "name": { "key": { "name": { "key": "N1" } } },
-              "source": {
-                "file": { "key": "test.cpp" },
-                "lineBegin": 9,
-                "columnBegin": 1,
-                "lineEnd": 24,
-                "columnEnd": 1
-              }
+              "declaration": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N1" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 9,
+                    "columnBegin": 1,
+                    "lineEnd": 24,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "members": { "key": [ ] }
             }
           }
         }
@@ -12790,17 +12830,22 @@
         "source": { "span": { "start": 805, "length": 2 } }
       },
       "entity": {
-        "decl": {
+        "defn": {
           "namespace_": {
             "key": {
-              "name": { "key": { "name": { "key": "N1" } } },
-              "source": {
-                "file": { "key": "test.cpp" },
-                "lineBegin": 9,
-                "columnBegin": 1,
-                "lineEnd": 24,
-                "columnEnd": 1
-              }
+              "declaration": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N1" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 9,
+                    "columnBegin": 1,
+                    "lineEnd": 24,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "members": { "key": [ ] }
             }
           }
         }
@@ -13853,17 +13898,22 @@
         "source": { "span": { "start": 818, "length": 2 } }
       },
       "entity": {
-        "decl": {
+        "defn": {
           "namespace_": {
             "key": {
-              "name": { "key": { "name": { "key": "N1" } } },
-              "source": {
-                "file": { "key": "test.cpp" },
-                "lineBegin": 9,
-                "columnBegin": 1,
-                "lineEnd": 24,
-                "columnEnd": 1
-              }
+              "declaration": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N1" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 9,
+                    "columnBegin": 1,
+                    "lineEnd": 24,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "members": { "key": [ ] }
             }
           }
         }
@@ -14916,17 +14966,22 @@
         "source": { "span": { "start": 832, "length": 2 } }
       },
       "entity": {
-        "decl": {
+        "defn": {
           "namespace_": {
             "key": {
-              "name": { "key": { "name": { "key": "N1" } } },
-              "source": {
-                "file": { "key": "test.cpp" },
-                "lineBegin": 9,
-                "columnBegin": 1,
-                "lineEnd": 24,
-                "columnEnd": 1
-              }
+              "declaration": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N1" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 9,
+                    "columnBegin": 1,
+                    "lineEnd": 24,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "members": { "key": [ ] }
             }
           }
         }
@@ -15979,17 +16034,22 @@
         "source": { "span": { "start": 845, "length": 2 } }
       },
       "entity": {
-        "decl": {
+        "defn": {
           "namespace_": {
             "key": {
-              "name": { "key": { "name": { "key": "N1" } } },
-              "source": {
-                "file": { "key": "test.cpp" },
-                "lineBegin": 9,
-                "columnBegin": 1,
-                "lineEnd": 24,
-                "columnEnd": 1
-              }
+              "declaration": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N1" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 9,
+                    "columnBegin": 1,
+                    "lineEnd": 24,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "members": { "key": [ ] }
             }
           }
         }
@@ -17042,17 +17102,22 @@
         "source": { "span": { "start": 858, "length": 2 } }
       },
       "entity": {
-        "decl": {
+        "defn": {
           "namespace_": {
             "key": {
-              "name": { "key": { "name": { "key": "N1" } } },
-              "source": {
-                "file": { "key": "test.cpp" },
-                "lineBegin": 9,
-                "columnBegin": 1,
-                "lineEnd": 24,
-                "columnEnd": 1
-              }
+              "declaration": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N1" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 9,
+                    "columnBegin": 1,
+                    "lineEnd": 24,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "members": { "key": [ ] }
             }
           }
         }
@@ -18105,17 +18170,22 @@
         "source": { "span": { "start": 871, "length": 2 } }
       },
       "entity": {
-        "decl": {
+        "defn": {
           "namespace_": {
             "key": {
-              "name": { "key": { "name": { "key": "N1" } } },
-              "source": {
-                "file": { "key": "test.cpp" },
-                "lineBegin": 9,
-                "columnBegin": 1,
-                "lineEnd": 24,
-                "columnEnd": 1
-              }
+              "declaration": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N1" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 9,
+                    "columnBegin": 1,
+                    "lineEnd": 24,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "members": { "key": [ ] }
             }
           }
         }

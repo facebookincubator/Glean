@@ -6,33 +6,6 @@
       "entity": {
         "cxx": {
           "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "S" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "main.cpp" },
-                  "lineBegin": 10,
-                  "columnBegin": 1,
-                  "lineEnd": 10,
-                  "columnEnd": 11
-                }
-              }
-            }
-          }
-        }
-      },
-      "kind": 24
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "main.cpp" },
-      "entity": {
-        "cxx": {
-          "decl": {
             "typeAlias": {
               "key": {
                 "name": {
@@ -118,6 +91,42 @@
         }
       },
       "kind": 6
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.cpp" },
+      "entity": {
+        "cxx": {
+          "defn": {
+            "record_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "S" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "main.cpp" },
+                      "lineBegin": 10,
+                      "columnBegin": 1,
+                      "lineEnd": 10,
+                      "columnEnd": 11
+                    }
+                  }
+                },
+                "bases": [ ],
+                "members": { "key": [ ] }
+              }
+            }
+          }
+        }
+      },
+      "kind": 24
     }
   }
 ]

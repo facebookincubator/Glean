@@ -22,42 +22,48 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "record_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": "Bar" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "Foo" },
-                            "scope": {
-                              "namespace_": {
-                                "key": {
-                                  "name": { "key": "N2" },
-                                  "parent": {
-                                    "key": { "name": { "key": "N1" } }
+                    "name": {
+                      "key": {
+                        "name": { "key": "Bar" },
+                        "scope": {
+                          "recordWithAccess": {
+                            "record": {
+                              "key": {
+                                "name": { "key": "Foo" },
+                                "scope": {
+                                  "namespace_": {
+                                    "key": {
+                                      "name": { "key": "N2" },
+                                      "parent": {
+                                        "key": { "name": { "key": "N1" } }
+                                      }
+                                    }
                                   }
                                 }
                               }
-                            }
+                            },
+                            "access": 0
                           }
-                        },
-                        "access": 0
+                        }
                       }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 22,
+                      "columnBegin": 3,
+                      "lineEnd": 22,
+                      "columnEnd": 15
                     }
                   }
                 },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 22,
-                  "columnBegin": 3,
-                  "lineEnd": 22,
-                  "columnEnd": 15
-                }
+                "bases": [ ],
+                "members": { "key": [ ] }
               }
             }
           }
@@ -87,42 +93,48 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "record_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": "Bar" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "Foo" },
-                            "scope": {
-                              "namespace_": {
-                                "key": {
-                                  "name": { "key": "N2" },
-                                  "parent": {
-                                    "key": { "name": { "key": "N1" } }
+                    "name": {
+                      "key": {
+                        "name": { "key": "Bar" },
+                        "scope": {
+                          "recordWithAccess": {
+                            "record": {
+                              "key": {
+                                "name": { "key": "Foo" },
+                                "scope": {
+                                  "namespace_": {
+                                    "key": {
+                                      "name": { "key": "N2" },
+                                      "parent": {
+                                        "key": { "name": { "key": "N1" } }
+                                      }
+                                    }
                                   }
                                 }
                               }
-                            }
+                            },
+                            "access": 0
                           }
-                        },
-                        "access": 0
+                        }
                       }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 22,
+                      "columnBegin": 3,
+                      "lineEnd": 22,
+                      "columnEnd": 15
                     }
                   }
                 },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 22,
-                  "columnBegin": 3,
-                  "lineEnd": 22,
-                  "columnEnd": 15
-                }
+                "bases": [ ],
+                "members": { "key": [ ] }
               }
             }
           }
@@ -152,42 +164,48 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "record_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": "Bar" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "Foo" },
-                            "scope": {
-                              "namespace_": {
-                                "key": {
-                                  "name": { "key": "N2" },
-                                  "parent": {
-                                    "key": { "name": { "key": "N1" } }
+                    "name": {
+                      "key": {
+                        "name": { "key": "Bar" },
+                        "scope": {
+                          "recordWithAccess": {
+                            "record": {
+                              "key": {
+                                "name": { "key": "Foo" },
+                                "scope": {
+                                  "namespace_": {
+                                    "key": {
+                                      "name": { "key": "N2" },
+                                      "parent": {
+                                        "key": { "name": { "key": "N1" } }
+                                      }
+                                    }
                                   }
                                 }
                               }
-                            }
+                            },
+                            "access": 0
                           }
-                        },
-                        "access": 0
+                        }
                       }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 22,
+                      "columnBegin": 3,
+                      "lineEnd": 22,
+                      "columnEnd": 15
                     }
                   }
                 },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 22,
-                  "columnBegin": 3,
-                  "lineEnd": 22,
-                  "columnEnd": 15
-                }
+                "bases": [ ],
+                "members": { "key": [ ] }
               }
             }
           }
@@ -217,42 +235,48 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "record_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": "Bar" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "Foo" },
-                            "scope": {
-                              "namespace_": {
-                                "key": {
-                                  "name": { "key": "N2" },
-                                  "parent": {
-                                    "key": { "name": { "key": "N1" } }
+                    "name": {
+                      "key": {
+                        "name": { "key": "Bar" },
+                        "scope": {
+                          "recordWithAccess": {
+                            "record": {
+                              "key": {
+                                "name": { "key": "Foo" },
+                                "scope": {
+                                  "namespace_": {
+                                    "key": {
+                                      "name": { "key": "N2" },
+                                      "parent": {
+                                        "key": { "name": { "key": "N1" } }
+                                      }
+                                    }
                                   }
                                 }
                               }
-                            }
+                            },
+                            "access": 0
                           }
-                        },
-                        "access": 0
+                        }
                       }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 22,
+                      "columnBegin": 3,
+                      "lineEnd": 22,
+                      "columnEnd": 15
                     }
                   }
                 },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 22,
-                  "columnBegin": 3,
-                  "lineEnd": 22,
-                  "columnEnd": 15
-                }
+                "bases": [ ],
+                "members": { "key": [ ] }
               }
             }
           }
@@ -282,42 +306,48 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "record_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": "Bar" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "Foo" },
-                            "scope": {
-                              "namespace_": {
-                                "key": {
-                                  "name": { "key": "N2" },
-                                  "parent": {
-                                    "key": { "name": { "key": "N1" } }
+                    "name": {
+                      "key": {
+                        "name": { "key": "Bar" },
+                        "scope": {
+                          "recordWithAccess": {
+                            "record": {
+                              "key": {
+                                "name": { "key": "Foo" },
+                                "scope": {
+                                  "namespace_": {
+                                    "key": {
+                                      "name": { "key": "N2" },
+                                      "parent": {
+                                        "key": { "name": { "key": "N1" } }
+                                      }
+                                    }
                                   }
                                 }
                               }
-                            }
+                            },
+                            "access": 0
                           }
-                        },
-                        "access": 0
+                        }
                       }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 22,
+                      "columnBegin": 3,
+                      "lineEnd": 22,
+                      "columnEnd": 15
                     }
                   }
                 },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 22,
-                  "columnBegin": 3,
-                  "lineEnd": 22,
-                  "columnEnd": 15
-                }
+                "bases": [ ],
+                "members": { "key": [ ] }
               }
             }
           }
@@ -347,42 +377,48 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "record_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": "Bar" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "Foo" },
-                            "scope": {
-                              "namespace_": {
-                                "key": {
-                                  "name": { "key": "N2" },
-                                  "parent": {
-                                    "key": { "name": { "key": "N1" } }
+                    "name": {
+                      "key": {
+                        "name": { "key": "Bar" },
+                        "scope": {
+                          "recordWithAccess": {
+                            "record": {
+                              "key": {
+                                "name": { "key": "Foo" },
+                                "scope": {
+                                  "namespace_": {
+                                    "key": {
+                                      "name": { "key": "N2" },
+                                      "parent": {
+                                        "key": { "name": { "key": "N1" } }
+                                      }
+                                    }
                                   }
                                 }
                               }
-                            }
+                            },
+                            "access": 0
                           }
-                        },
-                        "access": 0
+                        }
                       }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 22,
+                      "columnBegin": 3,
+                      "lineEnd": 22,
+                      "columnEnd": 15
                     }
                   }
                 },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 22,
-                  "columnBegin": 3,
-                  "lineEnd": 22,
-                  "columnEnd": 15
-                }
+                "bases": [ ],
+                "members": { "key": [ ] }
               }
             }
           }
@@ -412,29 +448,195 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "record_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": "Foo" },
-                    "scope": {
-                      "namespace_": {
-                        "key": {
-                          "name": { "key": "N2" },
-                          "parent": { "key": { "name": { "key": "N1" } } }
+                    "name": {
+                      "key": {
+                        "name": { "key": "Foo" },
+                        "scope": {
+                          "namespace_": {
+                            "key": {
+                              "name": { "key": "N2" },
+                              "parent": { "key": { "name": { "key": "N1" } } }
+                            }
+                          }
                         }
                       }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 21,
+                      "columnBegin": 1,
+                      "lineEnd": 25,
+                      "columnEnd": 1
                     }
                   }
                 },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
-                  "columnBegin": 1,
-                  "lineEnd": 25,
-                  "columnEnd": 1
+                "bases": [ ],
+                "members": {
+                  "key": [
+                    {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Bar" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Foo" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": {
+                                            "name": { "key": "N2" },
+                                            "parent": {
+                                              "key": { "name": { "key": "N1" } }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 22,
+                            "columnBegin": 3,
+                            "lineEnd": 22,
+                            "columnEnd": 15
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "foo" } } },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Foo" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": {
+                                            "name": { "key": "N2" },
+                                            "parent": {
+                                              "key": { "name": { "key": "N1" } }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "N1::N2::Foo::Bar" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "N1::N2::Foo" }
+                                },
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "N1::N2::Foo::Bar" }
+                                }
+                              ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": false,
+                            "isConst": false,
+                            "isVolatile": false,
+                            "refQualifier": 0
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 23,
+                            "columnBegin": 3,
+                            "lineEnd": 23,
+                            "columnEnd": 19
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "bar" } } },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Foo" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": {
+                                            "name": { "key": "N2" },
+                                            "parent": {
+                                              "key": { "name": { "key": "N1" } }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "N1::N2::XXX" }
+                                },
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "N1::N2::N3::YYY" }
+                                }
+                              ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": false,
+                            "isConst": false,
+                            "isVolatile": false,
+                            "refQualifier": 0
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 24,
+                            "columnBegin": 3,
+                            "lineEnd": 24,
+                            "columnEnd": 20
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -465,29 +667,195 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "record_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": "Foo" },
-                    "scope": {
-                      "namespace_": {
-                        "key": {
-                          "name": { "key": "N2" },
-                          "parent": { "key": { "name": { "key": "N1" } } }
+                    "name": {
+                      "key": {
+                        "name": { "key": "Foo" },
+                        "scope": {
+                          "namespace_": {
+                            "key": {
+                              "name": { "key": "N2" },
+                              "parent": { "key": { "name": { "key": "N1" } } }
+                            }
+                          }
                         }
                       }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 21,
+                      "columnBegin": 1,
+                      "lineEnd": 25,
+                      "columnEnd": 1
                     }
                   }
                 },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
-                  "columnBegin": 1,
-                  "lineEnd": 25,
-                  "columnEnd": 1
+                "bases": [ ],
+                "members": {
+                  "key": [
+                    {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Bar" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Foo" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": {
+                                            "name": { "key": "N2" },
+                                            "parent": {
+                                              "key": { "name": { "key": "N1" } }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 22,
+                            "columnBegin": 3,
+                            "lineEnd": 22,
+                            "columnEnd": 15
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "foo" } } },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Foo" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": {
+                                            "name": { "key": "N2" },
+                                            "parent": {
+                                              "key": { "name": { "key": "N1" } }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "N1::N2::Foo::Bar" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "N1::N2::Foo" }
+                                },
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "N1::N2::Foo::Bar" }
+                                }
+                              ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": false,
+                            "isConst": false,
+                            "isVolatile": false,
+                            "refQualifier": 0
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 23,
+                            "columnBegin": 3,
+                            "lineEnd": 23,
+                            "columnEnd": 19
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "bar" } } },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Foo" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": {
+                                            "name": { "key": "N2" },
+                                            "parent": {
+                                              "key": { "name": { "key": "N1" } }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "N1::N2::XXX" }
+                                },
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "N1::N2::N3::YYY" }
+                                }
+                              ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": false,
+                            "isConst": false,
+                            "isVolatile": false,
+                            "refQualifier": 0
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 24,
+                            "columnBegin": 3,
+                            "lineEnd": 24,
+                            "columnEnd": 20
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -518,29 +886,195 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "record_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": "Foo" },
-                    "scope": {
-                      "namespace_": {
-                        "key": {
-                          "name": { "key": "N2" },
-                          "parent": { "key": { "name": { "key": "N1" } } }
+                    "name": {
+                      "key": {
+                        "name": { "key": "Foo" },
+                        "scope": {
+                          "namespace_": {
+                            "key": {
+                              "name": { "key": "N2" },
+                              "parent": { "key": { "name": { "key": "N1" } } }
+                            }
+                          }
                         }
                       }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 21,
+                      "columnBegin": 1,
+                      "lineEnd": 25,
+                      "columnEnd": 1
                     }
                   }
                 },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
-                  "columnBegin": 1,
-                  "lineEnd": 25,
-                  "columnEnd": 1
+                "bases": [ ],
+                "members": {
+                  "key": [
+                    {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Bar" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Foo" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": {
+                                            "name": { "key": "N2" },
+                                            "parent": {
+                                              "key": { "name": { "key": "N1" } }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 22,
+                            "columnBegin": 3,
+                            "lineEnd": 22,
+                            "columnEnd": 15
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "foo" } } },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Foo" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": {
+                                            "name": { "key": "N2" },
+                                            "parent": {
+                                              "key": { "name": { "key": "N1" } }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "N1::N2::Foo::Bar" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "N1::N2::Foo" }
+                                },
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "N1::N2::Foo::Bar" }
+                                }
+                              ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": false,
+                            "isConst": false,
+                            "isVolatile": false,
+                            "refQualifier": 0
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 23,
+                            "columnBegin": 3,
+                            "lineEnd": 23,
+                            "columnEnd": 19
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "bar" } } },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Foo" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": {
+                                            "name": { "key": "N2" },
+                                            "parent": {
+                                              "key": { "name": { "key": "N1" } }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "N1::N2::XXX" }
+                                },
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "N1::N2::N3::YYY" }
+                                }
+                              ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": false,
+                            "isConst": false,
+                            "isVolatile": false,
+                            "refQualifier": 0
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 24,
+                            "columnBegin": 3,
+                            "lineEnd": 24,
+                            "columnEnd": 20
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -571,29 +1105,195 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "record_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": "Foo" },
-                    "scope": {
-                      "namespace_": {
-                        "key": {
-                          "name": { "key": "N2" },
-                          "parent": { "key": { "name": { "key": "N1" } } }
+                    "name": {
+                      "key": {
+                        "name": { "key": "Foo" },
+                        "scope": {
+                          "namespace_": {
+                            "key": {
+                              "name": { "key": "N2" },
+                              "parent": { "key": { "name": { "key": "N1" } } }
+                            }
+                          }
                         }
                       }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 21,
+                      "columnBegin": 1,
+                      "lineEnd": 25,
+                      "columnEnd": 1
                     }
                   }
                 },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
-                  "columnBegin": 1,
-                  "lineEnd": 25,
-                  "columnEnd": 1
+                "bases": [ ],
+                "members": {
+                  "key": [
+                    {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Bar" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Foo" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": {
+                                            "name": { "key": "N2" },
+                                            "parent": {
+                                              "key": { "name": { "key": "N1" } }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 22,
+                            "columnBegin": 3,
+                            "lineEnd": 22,
+                            "columnEnd": 15
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "foo" } } },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Foo" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": {
+                                            "name": { "key": "N2" },
+                                            "parent": {
+                                              "key": { "name": { "key": "N1" } }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "N1::N2::Foo::Bar" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "N1::N2::Foo" }
+                                },
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "N1::N2::Foo::Bar" }
+                                }
+                              ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": false,
+                            "isConst": false,
+                            "isVolatile": false,
+                            "refQualifier": 0
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 23,
+                            "columnBegin": 3,
+                            "lineEnd": 23,
+                            "columnEnd": 19
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "bar" } } },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Foo" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": {
+                                            "name": { "key": "N2" },
+                                            "parent": {
+                                              "key": { "name": { "key": "N1" } }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "N1::N2::XXX" }
+                                },
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "N1::N2::N3::YYY" }
+                                }
+                              ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": false,
+                            "isConst": false,
+                            "isVolatile": false,
+                            "refQualifier": 0
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 24,
+                            "columnBegin": 3,
+                            "lineEnd": 24,
+                            "columnEnd": 20
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -624,29 +1324,195 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "record_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": "Foo" },
-                    "scope": {
-                      "namespace_": {
-                        "key": {
-                          "name": { "key": "N2" },
-                          "parent": { "key": { "name": { "key": "N1" } } }
+                    "name": {
+                      "key": {
+                        "name": { "key": "Foo" },
+                        "scope": {
+                          "namespace_": {
+                            "key": {
+                              "name": { "key": "N2" },
+                              "parent": { "key": { "name": { "key": "N1" } } }
+                            }
+                          }
                         }
                       }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 21,
+                      "columnBegin": 1,
+                      "lineEnd": 25,
+                      "columnEnd": 1
                     }
                   }
                 },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
-                  "columnBegin": 1,
-                  "lineEnd": 25,
-                  "columnEnd": 1
+                "bases": [ ],
+                "members": {
+                  "key": [
+                    {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Bar" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Foo" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": {
+                                            "name": { "key": "N2" },
+                                            "parent": {
+                                              "key": { "name": { "key": "N1" } }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 22,
+                            "columnBegin": 3,
+                            "lineEnd": 22,
+                            "columnEnd": 15
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "foo" } } },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Foo" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": {
+                                            "name": { "key": "N2" },
+                                            "parent": {
+                                              "key": { "name": { "key": "N1" } }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "N1::N2::Foo::Bar" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "N1::N2::Foo" }
+                                },
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "N1::N2::Foo::Bar" }
+                                }
+                              ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": false,
+                            "isConst": false,
+                            "isVolatile": false,
+                            "refQualifier": 0
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 23,
+                            "columnBegin": 3,
+                            "lineEnd": 23,
+                            "columnEnd": 19
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "bar" } } },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Foo" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": {
+                                            "name": { "key": "N2" },
+                                            "parent": {
+                                              "key": { "name": { "key": "N1" } }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "N1::N2::XXX" }
+                                },
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "N1::N2::N3::YYY" }
+                                }
+                              ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": false,
+                            "isConst": false,
+                            "isVolatile": false,
+                            "refQualifier": 0
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 24,
+                            "columnBegin": 3,
+                            "lineEnd": 24,
+                            "columnEnd": 20
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -677,29 +1543,195 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "record_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": "Foo" },
-                    "scope": {
-                      "namespace_": {
-                        "key": {
-                          "name": { "key": "N2" },
-                          "parent": { "key": { "name": { "key": "N1" } } }
+                    "name": {
+                      "key": {
+                        "name": { "key": "Foo" },
+                        "scope": {
+                          "namespace_": {
+                            "key": {
+                              "name": { "key": "N2" },
+                              "parent": { "key": { "name": { "key": "N1" } } }
+                            }
+                          }
                         }
                       }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 21,
+                      "columnBegin": 1,
+                      "lineEnd": 25,
+                      "columnEnd": 1
                     }
                   }
                 },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
-                  "columnBegin": 1,
-                  "lineEnd": 25,
-                  "columnEnd": 1
+                "bases": [ ],
+                "members": {
+                  "key": [
+                    {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Bar" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Foo" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": {
+                                            "name": { "key": "N2" },
+                                            "parent": {
+                                              "key": { "name": { "key": "N1" } }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 22,
+                            "columnBegin": 3,
+                            "lineEnd": 22,
+                            "columnEnd": 15
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "foo" } } },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Foo" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": {
+                                            "name": { "key": "N2" },
+                                            "parent": {
+                                              "key": { "name": { "key": "N1" } }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "N1::N2::Foo::Bar" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "N1::N2::Foo" }
+                                },
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "N1::N2::Foo::Bar" }
+                                }
+                              ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": false,
+                            "isConst": false,
+                            "isVolatile": false,
+                            "refQualifier": 0
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 23,
+                            "columnBegin": 3,
+                            "lineEnd": 23,
+                            "columnEnd": 19
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "bar" } } },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Foo" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": {
+                                            "name": { "key": "N2" },
+                                            "parent": {
+                                              "key": { "name": { "key": "N1" } }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "N1::N2::XXX" }
+                                },
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "N1::N2::N3::YYY" }
+                                }
+                              ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": false,
+                            "isConst": false,
+                            "isVolatile": false,
+                            "refQualifier": 0
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 24,
+                            "columnBegin": 3,
+                            "lineEnd": 24,
+                            "columnEnd": 20
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -730,29 +1762,195 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "record_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": "Foo" },
-                    "scope": {
-                      "namespace_": {
-                        "key": {
-                          "name": { "key": "N2" },
-                          "parent": { "key": { "name": { "key": "N1" } } }
+                    "name": {
+                      "key": {
+                        "name": { "key": "Foo" },
+                        "scope": {
+                          "namespace_": {
+                            "key": {
+                              "name": { "key": "N2" },
+                              "parent": { "key": { "name": { "key": "N1" } } }
+                            }
+                          }
                         }
                       }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 21,
+                      "columnBegin": 1,
+                      "lineEnd": 25,
+                      "columnEnd": 1
                     }
                   }
                 },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
-                  "columnBegin": 1,
-                  "lineEnd": 25,
-                  "columnEnd": 1
+                "bases": [ ],
+                "members": {
+                  "key": [
+                    {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Bar" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Foo" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": {
+                                            "name": { "key": "N2" },
+                                            "parent": {
+                                              "key": { "name": { "key": "N1" } }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 22,
+                            "columnBegin": 3,
+                            "lineEnd": 22,
+                            "columnEnd": 15
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "foo" } } },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Foo" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": {
+                                            "name": { "key": "N2" },
+                                            "parent": {
+                                              "key": { "name": { "key": "N1" } }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "N1::N2::Foo::Bar" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "N1::N2::Foo" }
+                                },
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "N1::N2::Foo::Bar" }
+                                }
+                              ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": false,
+                            "isConst": false,
+                            "isVolatile": false,
+                            "refQualifier": 0
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 23,
+                            "columnBegin": 3,
+                            "lineEnd": 23,
+                            "columnEnd": 19
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "bar" } } },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Foo" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": {
+                                            "name": { "key": "N2" },
+                                            "parent": {
+                                              "key": { "name": { "key": "N1" } }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "N1::N2::XXX" }
+                                },
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "N1::N2::N3::YYY" }
+                                }
+                              ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": false,
+                            "isConst": false,
+                            "isVolatile": false,
+                            "refQualifier": 0
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 24,
+                            "columnBegin": 3,
+                            "lineEnd": 24,
+                            "columnEnd": 20
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -783,17 +1981,22 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "namespace_": {
               "key": {
-                "name": { "key": { "name": { "key": "M1" } } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 35,
-                  "columnBegin": 1,
-                  "lineEnd": 35,
-                  "columnEnd": 31
-                }
+                "declaration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "M1" } } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 35,
+                      "columnBegin": 1,
+                      "lineEnd": 35,
+                      "columnEnd": 31
+                    }
+                  }
+                },
+                "members": { "key": [ ] }
               }
             }
           }
@@ -823,17 +2026,22 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "namespace_": {
               "key": {
-                "name": { "key": { "name": { "key": "N1" } } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 9,
-                  "columnBegin": 1,
-                  "lineEnd": 33,
-                  "columnEnd": 1
-                }
+                "declaration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "N1" } } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 9,
+                      "columnBegin": 1,
+                      "lineEnd": 33,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "members": { "key": [ ] }
               }
             }
           }
@@ -863,17 +2071,22 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "namespace_": {
               "key": {
-                "name": { "key": { "name": { "key": "N1" } } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 9,
-                  "columnBegin": 1,
-                  "lineEnd": 33,
-                  "columnEnd": 1
-                }
+                "declaration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "N1" } } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 9,
+                      "columnBegin": 1,
+                      "lineEnd": 33,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "members": { "key": [ ] }
               }
             }
           }
@@ -903,22 +2116,27 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "namespace_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": "N2" },
-                    "parent": { "key": { "name": { "key": "N1" } } }
+                    "name": {
+                      "key": {
+                        "name": { "key": "N2" },
+                        "parent": { "key": { "name": { "key": "N1" } } }
+                      }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 11,
+                      "columnBegin": 1,
+                      "lineEnd": 29,
+                      "columnEnd": 1
+                    }
                   }
                 },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 1,
-                  "lineEnd": 29,
-                  "columnEnd": 1
-                }
+                "members": { "key": [ ] }
               }
             }
           }
@@ -948,22 +2166,27 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "namespace_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": "N2" },
-                    "parent": { "key": { "name": { "key": "N1" } } }
+                    "name": {
+                      "key": {
+                        "name": { "key": "N2" },
+                        "parent": { "key": { "name": { "key": "N1" } } }
+                      }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 11,
+                      "columnBegin": 1,
+                      "lineEnd": 29,
+                      "columnEnd": 1
+                    }
                   }
                 },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 1,
-                  "lineEnd": 29,
-                  "columnEnd": 1
-                }
+                "members": { "key": [ ] }
               }
             }
           }
@@ -993,27 +2216,32 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "namespace_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": "N3" },
-                    "parent": {
+                    "name": {
                       "key": {
-                        "name": { "key": "N2" },
-                        "parent": { "key": { "name": { "key": "N1" } } }
+                        "name": { "key": "N3" },
+                        "parent": {
+                          "key": {
+                            "name": { "key": "N2" },
+                            "parent": { "key": { "name": { "key": "N1" } } }
+                          }
+                        }
                       }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 15,
+                      "columnBegin": 1,
+                      "lineEnd": 15,
+                      "columnEnd": 31
                     }
                   }
                 },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 15,
-                  "columnBegin": 1,
-                  "lineEnd": 15,
-                  "columnEnd": 31
-                }
+                "members": { "key": [ ] }
               }
             }
           }
@@ -1043,27 +2271,32 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "namespace_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": "N4" },
-                    "parent": {
+                    "name": {
                       "key": {
-                        "name": { "key": "N2" },
-                        "parent": { "key": { "name": { "key": "N1" } } }
+                        "name": { "key": "N4" },
+                        "parent": {
+                          "key": {
+                            "name": { "key": "N2" },
+                            "parent": { "key": { "name": { "key": "N1" } } }
+                          }
+                        }
                       }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 16,
+                      "columnBegin": 1,
+                      "lineEnd": 16,
+                      "columnEnd": 31
                     }
                   }
                 },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 16,
-                  "columnBegin": 1,
-                  "lineEnd": 16,
-                  "columnEnd": 31
-                }
+                "members": { "key": [ ] }
               }
             }
           }
@@ -1093,30 +2326,36 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "record_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": "XXX" },
-                    "scope": {
-                      "namespace_": {
-                        "key": {
-                          "name": { "key": "N2" },
-                          "parent": { "key": { "name": { "key": "N1" } } }
+                    "name": {
+                      "key": {
+                        "name": { "key": "XXX" },
+                        "scope": {
+                          "namespace_": {
+                            "key": {
+                              "name": { "key": "N2" },
+                              "parent": { "key": { "name": { "key": "N1" } } }
+                            }
+                          }
                         }
                       }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 13,
+                      "columnBegin": 1,
+                      "lineEnd": 13,
+                      "columnEnd": 13
                     }
                   }
                 },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 13,
-                  "columnBegin": 1,
-                  "lineEnd": 13,
-                  "columnEnd": 13
-                }
+                "bases": [ ],
+                "members": { "key": [ ] }
               }
             }
           }
@@ -1146,30 +2385,36 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "record_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": "XXX" },
-                    "scope": {
-                      "namespace_": {
-                        "key": {
-                          "name": { "key": "N2" },
-                          "parent": { "key": { "name": { "key": "N1" } } }
+                    "name": {
+                      "key": {
+                        "name": { "key": "XXX" },
+                        "scope": {
+                          "namespace_": {
+                            "key": {
+                              "name": { "key": "N2" },
+                              "parent": { "key": { "name": { "key": "N1" } } }
+                            }
+                          }
                         }
                       }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 13,
+                      "columnBegin": 1,
+                      "lineEnd": 13,
+                      "columnEnd": 13
                     }
                   }
                 },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 13,
-                  "columnBegin": 1,
-                  "lineEnd": 13,
-                  "columnEnd": 13
-                }
+                "bases": [ ],
+                "members": { "key": [ ] }
               }
             }
           }
@@ -1199,30 +2444,36 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "record_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": "XXX" },
-                    "scope": {
-                      "namespace_": {
-                        "key": {
-                          "name": { "key": "N2" },
-                          "parent": { "key": { "name": { "key": "N1" } } }
+                    "name": {
+                      "key": {
+                        "name": { "key": "XXX" },
+                        "scope": {
+                          "namespace_": {
+                            "key": {
+                              "name": { "key": "N2" },
+                              "parent": { "key": { "name": { "key": "N1" } } }
+                            }
+                          }
                         }
                       }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 13,
+                      "columnBegin": 1,
+                      "lineEnd": 13,
+                      "columnEnd": 13
                     }
                   }
                 },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 13,
-                  "columnBegin": 1,
-                  "lineEnd": 13,
-                  "columnEnd": 13
-                }
+                "bases": [ ],
+                "members": { "key": [ ] }
               }
             }
           }
@@ -1252,30 +2503,36 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "record_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": "XXX" },
-                    "scope": {
-                      "namespace_": {
-                        "key": {
-                          "name": { "key": "N2" },
-                          "parent": { "key": { "name": { "key": "N1" } } }
+                    "name": {
+                      "key": {
+                        "name": { "key": "XXX" },
+                        "scope": {
+                          "namespace_": {
+                            "key": {
+                              "name": { "key": "N2" },
+                              "parent": { "key": { "name": { "key": "N1" } } }
+                            }
+                          }
                         }
                       }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 13,
+                      "columnBegin": 1,
+                      "lineEnd": 13,
+                      "columnEnd": 13
                     }
                   }
                 },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 13,
-                  "columnBegin": 1,
-                  "lineEnd": 13,
-                  "columnEnd": 13
-                }
+                "bases": [ ],
+                "members": { "key": [ ] }
               }
             }
           }
@@ -1305,30 +2562,36 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "record_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": "XXX" },
-                    "scope": {
-                      "namespace_": {
-                        "key": {
-                          "name": { "key": "N2" },
-                          "parent": { "key": { "name": { "key": "N1" } } }
+                    "name": {
+                      "key": {
+                        "name": { "key": "XXX" },
+                        "scope": {
+                          "namespace_": {
+                            "key": {
+                              "name": { "key": "N2" },
+                              "parent": { "key": { "name": { "key": "N1" } } }
+                            }
+                          }
                         }
                       }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 13,
+                      "columnBegin": 1,
+                      "lineEnd": 13,
+                      "columnEnd": 13
                     }
                   }
                 },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 13,
-                  "columnBegin": 1,
-                  "lineEnd": 13,
-                  "columnEnd": 13
-                }
+                "bases": [ ],
+                "members": { "key": [ ] }
               }
             }
           }

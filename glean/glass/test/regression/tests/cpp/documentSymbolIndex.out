@@ -527,7 +527,7 @@
                 {
                     "attributes": {
                         "symbolDefinitionType": {
-                            "aInteger": 2
+                            "aInteger": 1
                         },
                         "symbolKind": {
                             "aInteger": 14
@@ -610,7 +610,7 @@
                 {
                     "attributes": {
                         "symbolDefinitionType": {
-                            "aInteger": 2
+                            "aInteger": 1
                         },
                         "symbolKind": {
                             "aInteger": 6
@@ -649,16 +649,13 @@
                 {
                     "attributes": {
                         "symbolDefinitionType": {
-                            "aInteger": 2
+                            "aInteger": 1
                         },
                         "symbolKind": {
                             "aInteger": 25
                         },
                         "symbolLanguage": {
                             "aInteger": 1
-                        },
-                        "symbolParent": {
-                            "aString": "S"
                         },
                         "symbolSignature": {
                             "aString": "struct foo::S"
@@ -725,7 +722,7 @@
                 {
                     "attributes": {
                         "symbolDefinitionType": {
-                            "aInteger": 2
+                            "aInteger": 1
                         },
                         "symbolKind": {
                             "aInteger": 6
@@ -764,16 +761,13 @@
                 {
                     "attributes": {
                         "symbolDefinitionType": {
-                            "aInteger": 2
+                            "aInteger": 1
                         },
                         "symbolKind": {
                             "aInteger": 6
                         },
                         "symbolLanguage": {
                             "aInteger": 1
-                        },
-                        "symbolParent": {
-                            "aString": "foo"
                         },
                         "symbolSignature": {
                             "aString": "namespace foo::bar"
@@ -806,16 +800,13 @@
                 {
                     "attributes": {
                         "symbolDefinitionType": {
-                            "aInteger": 2
+                            "aInteger": 1
                         },
                         "symbolKind": {
                             "aInteger": 25
                         },
                         "symbolLanguage": {
                             "aInteger": 1
-                        },
-                        "symbolParent": {
-                            "aString": "T"
                         },
                         "symbolSignature": {
                             "aString": "struct foo::bar::T"
@@ -882,7 +873,7 @@
                 {
                     "attributes": {
                         "symbolDefinitionType": {
-                            "aInteger": 2
+                            "aInteger": 1
                         },
                         "symbolKind": {
                             "aInteger": 6
@@ -965,7 +956,7 @@
                 {
                     "attributes": {
                         "symbolDefinitionType": {
-                            "aInteger": 2
+                            "aInteger": 1
                         },
                         "symbolKind": {
                             "aInteger": 6
@@ -1087,7 +1078,7 @@
                 {
                     "attributes": {
                         "symbolDefinitionType": {
-                            "aInteger": 2
+                            "aInteger": 1
                         },
                         "symbolKind": {
                             "aInteger": 6
@@ -1126,16 +1117,13 @@
                 {
                     "attributes": {
                         "symbolDefinitionType": {
-                            "aInteger": 2
+                            "aInteger": 1
                         },
                         "symbolKind": {
                             "aInteger": 6
                         },
                         "symbolLanguage": {
                             "aInteger": 1
-                        },
-                        "symbolParent": {
-                            "aString": "foo"
                         },
                         "symbolSignature": {
                             "aString": "namespace foo::bar"
