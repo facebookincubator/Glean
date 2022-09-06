@@ -1,0 +1,121 @@
+[
+  "@generated",
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "f" } } },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "a.h" },
+                  "lineBegin": 10,
+                  "columnBegin": 1,
+                  "lineEnd": 10,
+                  "columnEnd": 11
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "a.h" },
+      "range": { "span": { "start": 268, "length": 1 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "g" } } },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "a.h" },
+                  "lineBegin": 12,
+                  "columnBegin": 1,
+                  "lineEnd": 15,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "b.h" },
+      "range": { "span": { "start": 255, "length": 1 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "decl": {
+            "record_": {
+              "key": {
+                "name": {
+                  "key": { "name": { "key": "R" }, "scope": { "global_": { } } }
+                },
+                "kind": { "struct_": { } },
+                "source": {
+                  "file": { "key": "b.h" },
+                  "lineBegin": 9,
+                  "columnBegin": 1,
+                  "lineEnd": 9,
+                  "columnEnd": 11
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "b.h" },
+      "range": { "span": { "start": 248, "length": 1 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "decl": {
+            "record_": {
+              "key": {
+                "name": {
+                  "key": { "name": { "key": "T" }, "scope": { "global_": { } } }
+                },
+                "kind": { "struct_": { } },
+                "source": {
+                  "file": { "key": "a.h" },
+                  "lineBegin": 9,
+                  "columnBegin": 1,
+                  "lineEnd": 9,
+                  "columnEnd": 11
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "a.h" },
+      "range": { "span": { "start": 261, "length": 1 } }
+    }
+  }
+]

@@ -1,0 +1,34 @@
+[
+  "@generated",
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "_i" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "ivar": { "synthesize": false } },
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 10,
+                  "columnBegin": 3,
+                  "lineEnd": 10,
+                  "columnEnd": 8
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.m" },
+      "range": { "span": { "start": 356, "length": 2 } }
+    }
+  }
+]

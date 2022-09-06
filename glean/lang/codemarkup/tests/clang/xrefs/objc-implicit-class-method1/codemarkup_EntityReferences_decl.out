@@ -1,0 +1,82 @@
+[
+  "@generated",
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "decl": {
+            "objcContainer": {
+              "key": {
+                "id": { "interface_": { "key": "I" } },
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 9,
+                  "columnBegin": 1,
+                  "lineEnd": 13,
+                  "columnEnd": 4
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.m" },
+      "range": { "span": { "start": 263, "length": 1 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "decl": {
+            "objcContainer": {
+              "key": {
+                "id": { "interface_": { "key": "I" } },
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 9,
+                  "columnBegin": 1,
+                  "lineEnd": 13,
+                  "columnEnd": 4
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.m" },
+      "range": { "span": { "start": 280, "length": 1 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "decl": {
+            "objcMethod": {
+              "key": {
+                "selector": { "key": [ "foo" ] },
+                "container": { "interface_": { "key": "I" } },
+                "signature": {
+                  "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                },
+                "isInstance": false,
+                "isOptional": false,
+                "isAccessor": false,
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 11,
+                  "columnBegin": 1,
+                  "lineEnd": 11,
+                  "columnEnd": 11
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.m" },
+      "range": { "span": { "start": 282, "length": 3 } }
+    }
+  }
+]

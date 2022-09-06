@@ -1,0 +1,3 @@
+query: codemarkup.EntityReferences { target = { cxx = { enumerator = _ } } }
+perf: true
+transform: [gensort, []]

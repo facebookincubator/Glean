@@ -289,7 +289,14 @@ predicate CxxEntityUses:
     file: src.File,
     span: src.ByteSpan,
   }
-  ({ { decl = D }, File, Span } where
+  ({ { decl = Decl }, File, Span } where
+    cxx1.DeclFamilyOf { Decl, D };
+    cxx1.TargetUses { { declaration = D }, File, Uses };
+    Spans = prim.relToAbsByteSpans Uses;
+    Span = Spans[..]) |
+  ({ { defn = Defn }, File, Span } where
+    cxx1.DefToBaseDecl { Defn, DeclBase };
+    cxx1.DeclFamilyOf { DeclBase, D };
     cxx1.TargetUses { { declaration = D }, File, Uses };
     Spans = prim.relToAbsByteSpans Uses;
     Span = Spans[..]) |
