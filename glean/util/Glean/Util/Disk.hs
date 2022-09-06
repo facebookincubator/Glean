@@ -14,18 +14,22 @@ module Glean.Util.Disk
 import System.Process
 import Text.Printf
 
--- | Return the size in bytes for the current volume
+-- | Return the size in bytes for the given volume
+--   Throws an IOException if the path doesn't exist
 getDiskSize :: FilePath -> IO Int
 getDiskSize = getDfOutput "size"
 
--- | Return the used bytes for the current volume
+-- | Return the used bytes for the given volume
+--   Throws an IOException if the path doesn't exist
 getUsedDiskSpace :: FilePath -> IO Int
 getUsedDiskSpace = getDfOutput "used"
 
--- | Return the free bytes in the current volume
+-- | Return the free bytes in the given volume
+--   Throws an IOException if the path doesn't exist
 getFreeDiskSpace :: FilePath -> IO Int
 getFreeDiskSpace = getDfOutput "avail"
 
+-- | Throws an IOException if the path doesn't exist
 getDfOutput :: String -> FilePath -> IO Int
 getDfOutput outp path =
   read . (!! 1) . words <$> readCreateProcess cmd ""

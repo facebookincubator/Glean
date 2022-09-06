@@ -248,13 +248,17 @@ doRestore env@Env{..} repo meta
   , r_repo == repo =
     loggingAction (runLogRepo "restore" env repo) (const mempty) (do
       atomically $ notify envListener $ RestoreStarted repo
-      freeBytes <- getFreeDiskSpace envRoot
-      let neededBytes = ceiling $ dbSizeDownloadFactor * fromIntegral size
-      when (freeBytes < neededBytes) $
-        -- the catch-all exception handler will log and cancel the download
-        throwIO $ ErrorCall $
-          printf "Not enough disk space: %d needed, %d available"
-            neededBytes freeBytes
+      mbFreeBytes <- (Just <$> getFreeDiskSpace envRoot)
+                    `catch` \(_ :: IOException) -> return Nothing
+      case mbFreeBytes of
+        Just freeBytes -> do
+          let neededBytes = ceiling $ dbSizeDownloadFactor * fromIntegral size
+          when (freeBytes < neededBytes) $
+            -- the catch-all exception handler will log and cancel the download
+            throwIO $ ErrorCall $
+              printf "Not enough disk space: %d needed, %d available"
+                neededBytes freeBytes
+        Nothing -> return ()
 
       withScratchDirectory envRoot repo $ \scratch -> do
       say logInfo "starting"
