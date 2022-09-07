@@ -59,6 +59,7 @@ indexer = Indexer {
             , "hack.MethodOverridden"
             , "hack.TargetUses"
             , "hack.DeclarationSource"
+            , "hack.AttributeToDeclaration"
             ]
         }
 

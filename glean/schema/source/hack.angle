@@ -713,4 +713,26 @@ predicate MethodOverridden :
   {Base, Derived}
   where
     hack.MethodOverrides{derived = Derived, base = Base}
+
+# Maps an attribute to its defining class, and file where the class is defined
+predicate AttributeToDeclaration :
+  {
+    attribute : UserAttribute,
+    declaration : Declaration,
+    file : src.File
+  }
+  stored
+  { Attr, Decl, File } where
+    { name = Name } = Attr;
+    { container = { class_ = { name = { name = Name } } } } = Decl;
+    DeclarationLocation { declaration = Decl, file = File };
+
+    # TODO qname for attributes aren't filled by the indexer yet
+    # See T111862540. Also this should be a stored predicate
+    # In the meantime, we just use the name. It'll work as
+    # attribute names are never qualified in the codebase.
+    # The correct version is below
+    # { qname = { just = Q } } = A;
+    # { container = { class_ = { name = Q } } } = D
+
 }

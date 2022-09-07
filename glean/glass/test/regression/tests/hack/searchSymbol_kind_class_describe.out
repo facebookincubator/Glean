@@ -105,7 +105,8 @@
                 "annotations": [
                     {
                         "name": "TestAnnotation",
-                        "source": "TestAnnotation(\"Text\")"
+                        "source": "TestAnnotation(\"Text\")",
+                        "symbol": "test/php/TestAnnotation"
                     }
                 ],
                 "comments": [

@@ -1156,7 +1156,7 @@ describeEntity
 describeEntity ent SymbolResult{..} = do
   symbolDescription_repo_hash <- Glean.repo_hash <$> Glean.haxlRepo
   symbolDescription_name <- eThrow =<< toQualifiedName ent
-  symbolDescription_annotations <- eThrow =<< getAnnotationsForEntity ent
+  symbolDescription_annotations <- eThrow =<< getAnnotationsForEntity repo ent
   symbolDescription_comments <- eThrow =<< getCommentsForEntity repo ent
   symbolDescription_visibility <- eThrow =<< getVisibilityForEntity ent
   symbolDescription_signature <- toSymbolSignature ent
