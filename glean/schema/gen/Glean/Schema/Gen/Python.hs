@@ -216,12 +216,12 @@ genAllPredicates predicateMode _ namePolicy parent preds = Text.unlines $
           predicateName = predicateRef_name ref
           class_name = pythonClassName predicateName
           return_class_name = returnPythonClassName predicateName
-          addSumTypes = genAllPredicates DummyQuery [Text.pack ""] namePolicy
+          addSumTypes = genAllPredicates DummyQuery [Text.empty] namePolicy
             parent $ unionDummyPreds key pred class_name
           anglePredicateAndVersion = case predicateMode of
             AngleQuery -> predicateName <> "." <>
               showt (predicateRef_version ref)
-            _ -> Text.pack ""
+            _ -> Text.empty
   ]
 
 genNamedTypes
@@ -230,10 +230,8 @@ genNamedTypes
   -> [ResolvedPredicateDef]
 genNamedTypes pred types = map (\t -> genTypePred (genType t)) types
   where
-    genTypePred (n, t, v) = PredicateDef (PredicateRef n v) t t
-      (predicateDefDeriving pred)
-    genType TypeDef{typeDefRef = TypeRef{..}, ..} =
-      (typeRef_name, typeDefType, typeRef_version)
+    genTypePred (n, t, v) = PredicateDef (PredicateRef n v) t t (predicateDefDeriving pred)
+    genType TypeDef{typeDefRef = TypeRef{..}, ..} = (typeRef_name, typeDefType, typeRef_version)
 
 unionDummyPreds :: Type_ PredicateRef tref
   -> PredicateDef_ s PredicateRef tref
@@ -246,15 +244,14 @@ unionDummyPreds key pred class_name = map
     predRef n = PredicateRef (class_name <> "_" <> n) 0
     dummyPredicateGens = case key of
       RecordTy fields ->
-        concatMap (\f -> handleFields (name f) (fieldDefType f)) fields
+        concatMap (\f -> handleFields (fieldName f) (fieldDefType f)) fields
       SumTy fields ->
-        concatMap (\f -> handleFields (name f) (fieldDefType f)) fields
+        concatMap (\f -> handleFields (fieldName f) (fieldDefType f)) fields
       _ -> []
       where
         handleFields n t = case t of
           SumTy fields -> [(n, SumTy fields)]
           _ -> []
-        name = from_ . fieldDefName
 
 addClientMethods :: Text -> Text -> NamePolicy -> ResolvedType -> Text
 addClientMethods class_name kTy namePolicy key = case key of
@@ -262,13 +259,13 @@ addClientMethods class_name kTy namePolicy key = case key of
     where
       unionFields = map
         (\ f
-        -> ((from_ . fieldDefName) f,
+        -> (fieldName f,
             (baseTy class_name namePolicy . fieldDefType) f))
        fields
       createMethodWrapper (name, type_) =
         createMethod ("_" <> name) (name <> ": " <> type_)
 
-  _ -> createMethod (Text.pack "") kTy
+  _ -> createMethod Text.empty kTy
   where
     createMethod method_name args = Text.unlines
       [ "  " <> "@staticmethod"
@@ -352,9 +349,9 @@ valueTy predName mode namePolicy t = case t of
         "or \'_\' }"
 
   where
-    handleFields fields = if mode == AngleForValues
-      then intercalatedFieldsWithBrackets
-      else intercalatedFields
+    handleFields fields = case mode of
+      AngleForValues -> intercalatedFieldsWithBrackets
+      _ -> intercalatedFields
       where
         queryFields = map (createQueryField mode) fields
         intercalatedFields = intercalateQueryFields queryFields
@@ -374,11 +371,11 @@ valueTy predName mode namePolicy t = case t of
     defaultFieldName = Text.pack "arg"
 
 from_ :: Text -> Text
-from_ name -- avoid Python keywards
-      | Text.unpack name `elem` pythonKeywords = "_" <> name
-      | otherwise = name
-      where
-        pythonKeywords = ["from", "str"]
+from_ name -- avoid Python keywords
+  | Text.unpack name `elem` pythonKeywords = "_" <> name
+  | otherwise = name
+  where
+    pythonKeywords = ["from", "str"]
 
 
 baseTy :: Text -> NamePolicy -> ResolvedType -> Text
@@ -387,9 +384,7 @@ baseTy unionName namePolicy t = Text.pack $ case t of
   BooleanTy{} -> "bool"
   StringTy{} -> "str"
   ByteTy{} -> "bytes"
-  PredicateTy pred -> case HashMap.lookup pred (predNames namePolicy) of
-    Just (ns, x) -> concatMap Text.unpack ("\"" : map cap1 ns ++ [x] ++ ["\""])
-    _ -> error $ "predicatePythonName: " ++ show pred
+  PredicateTy pred -> nameLookup pred predNames namePolicy "predicate"
   SumTy{} -> Text.unpack $ "\'" <> unionName <> "\'"
   ArrayTy field -> Text.unpack $ if type_ == "bytes"
     then type_
@@ -398,11 +393,15 @@ baseTy unionName namePolicy t = Text.pack $ case t of
       type_ = baseTy unionName namePolicy field
   MaybeTy field -> Text.unpack $
     "Union[Just[" <> baseTy unionName namePolicy field <> "], Just[None]]"
-  NamedTy typeRef -> case HashMap.lookup typeRef (typeNames namePolicy) of
-    Just(ns, x) -> concatMap Text.unpack ("\"" : map cap1 ns ++ [x] ++ ["\""])
-    _ -> error $ "namedPythonName: " ++ show typeRef
+  NamedTy typeRef -> nameLookup typeRef typeNames namePolicy "named"
   -- TODO other types
   _ -> "Tuple[()]"
+  where
+    nameLookup type_ names namePolicy errMessage =
+      case HashMap.lookup type_ (names namePolicy) of
+        Just (ns, x) -> Text.unpack $
+          "\"" <> Text.concat (map cap1 ns ++ [x]) <> "\""
+        _ -> error $ errMessage ++ "PythonName: " ++ show type_
 
 addPythonImportsForKeys
   :: NameSpaces
@@ -449,7 +448,10 @@ predicateImports namespaces namePolicy preds = filter
           PredicateTy pred -> case HashMap.lookup pred (predNames namePolicy) of
             Just (ns, _) -> Text.concat ns
             _ -> error $ "predicatePythonName: " ++ show pred
-          _ -> Text.pack ""
+          _ -> Text.empty
+
+fieldName :: FieldDef_ PredicateRef tref -> Text
+fieldName = from_ . fieldDefName
 
 intercalateQueryFields :: [Text] -> Text
 intercalateQueryFields fields = Text.intercalate ", " fields
