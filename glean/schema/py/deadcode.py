@@ -1,9 +1,9 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union, List, Dict
+from typing import Optional, Tuple, Union, List, Dict, TypeVar
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 from glean.schema.py.src import *
 
 
@@ -14,6 +14,7 @@ from glean.schema.deadcode.types import (
     GraphEntity,
     GraphEdge,
     GraphNodeByEntity,
+    GraphType,
 )
 
 
@@ -34,7 +35,7 @@ class DeadcodeGraphNode(GleanSchemaPredicate):
     return f"deadcode.GraphNode.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, type, 'type'), angle_for(__env, entities, 'entities'), angle_for(__env, out_degree, 'out_degree'), angle_for(__env, in_degree, 'in_degree')])) or '_' } }}", GraphNode
 
   @staticmethod
-  def angle_query(*, type: Optional[Tuple[()]] = None, entities: Optional[List["DeadcodeGraphEntity"]] = None, out_degree: Optional[int] = None, in_degree: Optional[int] = None) -> "DeadcodeGraphNode":
+  def angle_query(*, type: Optional["DeadcodeGraphType"] = None, entities: Optional[List["DeadcodeGraphEntity"]] = None, out_degree: Optional[int] = None, in_degree: Optional[int] = None) -> "DeadcodeGraphNode":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -56,7 +57,7 @@ class DeadcodeGraphEntity(GleanSchemaPredicate):
     return f"deadcode.GraphEntity.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", GraphEntity
 
   @staticmethod
-  def angle_query(*, entity: Optional[Tuple[()]] = None, file: Optional["SrcFile"] = None, span: Optional[Tuple[()]] = None) -> "DeadcodeGraphEntity":
+  def angle_query(*, entity: Optional["CodeEntity"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "DeadcodeGraphEntity":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -79,6 +80,19 @@ class DeadcodeGraphNodeByEntity(GleanSchemaPredicate):
 
   @staticmethod
   def angle_query(*, entity: Optional["DeadcodeGraphEntity"] = None, node: Optional["DeadcodeGraphNode"] = None) -> "DeadcodeGraphNodeByEntity":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+
+
+class DeadcodeGraphType(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"deadcode.GraphType.7 { angle_for(__env, arg, None) or '_' }", GraphType
+
+  @staticmethod
+  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "DeadcodeGraphType":
     raise Exception("this function can only be called from @angle_query")
 
 

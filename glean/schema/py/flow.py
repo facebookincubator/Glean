@@ -1,9 +1,9 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union, List, Dict
+from typing import Optional, Tuple, Union, List, Dict, TypeVar
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 from glean.schema.py.src import *
 
 
@@ -53,6 +53,9 @@ from glean.schema.flow.types import (
     MemberDeclarationReference,
     FlowTypeExportLocation,
     TypeDeclarationReference,
+    SomeDeclaration,
+    SomeEntity,
+    XRef,
 )
 
 
@@ -62,7 +65,7 @@ class FlowFlowTypeEntityImportUses(GleanSchemaPredicate):
     return f"flow.FlowTypeEntityImportUses.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, local, 'local')])) or '_' } }}", FlowTypeEntityImportUses
 
   @staticmethod
-  def angle_query(*, target: Optional[Tuple[()]] = None, local: Optional["FlowTypeDeclaration"] = None) -> "FlowFlowTypeEntityImportUses":
+  def angle_query(*, target: Optional["FlowSomeEntity"] = None, local: Optional["FlowTypeDeclaration"] = None) -> "FlowFlowTypeEntityImportUses":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -116,7 +119,7 @@ class FlowDeclarationLocation(GleanSchemaPredicate):
     return f"flow.DeclarationLocation.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", DeclarationLocation
 
   @staticmethod
-  def angle_query(*, decl: Optional[Tuple[()]] = None, file: Optional["SrcFile"] = None, span: Optional[Tuple[()]] = None) -> "FlowDeclarationLocation":
+  def angle_query(*, decl: Optional["FlowSomeDeclaration"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "FlowDeclarationLocation":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -138,7 +141,7 @@ class FlowFileDeclaration(GleanSchemaPredicate):
     return f"flow.FileDeclaration.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, declaration, 'declaration')])) or '_' } }}", FileDeclaration
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, declaration: Optional[Tuple[()]] = None) -> "FlowFileDeclaration":
+  def angle_query(*, file: Optional["SrcFile"] = None, declaration: Optional["FlowSomeDeclaration"] = None) -> "FlowFileDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -171,7 +174,7 @@ class FlowFlowTypeImportXRef(GleanSchemaPredicate):
     return f"flow.FlowTypeImportXRef.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, local, 'local'), angle_for(__env, entity, 'entity'), angle_for(__env, targetFile, 'targetFile'), angle_for(__env, targetSpan, 'targetSpan')])) or '_' } }}", FlowTypeImportXRef
 
   @staticmethod
-  def angle_query(*, local: Optional["FlowTypeDeclaration"] = None, entity: Optional[Tuple[()]] = None, targetFile: Optional["SrcFile"] = None, targetSpan: Optional[Tuple[()]] = None) -> "FlowFlowTypeImportXRef":
+  def angle_query(*, local: Optional["FlowTypeDeclaration"] = None, entity: Optional["FlowSomeEntity"] = None, targetFile: Optional["SrcFile"] = None, targetSpan: Optional["SrcByteSpan"] = None) -> "FlowFlowTypeImportXRef":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -193,7 +196,7 @@ class FlowSearchByModule(GleanSchemaPredicate):
     return f"flow.SearchByModule.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, string_, 'string_'), angle_for(__env, name, 'name'), angle_for(__env, decl, 'decl')])) or '_' } }}", SearchByModule
 
   @staticmethod
-  def angle_query(*, string_: Optional[str] = None, name: Optional["FlowName"] = None, decl: Optional[Tuple[()]] = None) -> "FlowSearchByModule":
+  def angle_query(*, string_: Optional[str] = None, name: Optional["FlowName"] = None, decl: Optional["FlowSomeDeclaration"] = None) -> "FlowSearchByModule":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -204,7 +207,7 @@ class FlowRange(GleanSchemaPredicate):
     return f"flow.Range.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, module, 'module'), angle_for(__env, span, 'span')])) or '_' } }}", Range
 
   @staticmethod
-  def angle_query(*, module: Optional["FlowModule"] = None, span: Optional[Tuple[()]] = None) -> "FlowRange":
+  def angle_query(*, module: Optional["FlowModule"] = None, span: Optional["SrcByteSpan"] = None) -> "FlowRange":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -226,7 +229,7 @@ class FlowDeclarationUses(GleanSchemaPredicate):
     return f"flow.DeclarationUses.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, file, 'file'), angle_for(__env, use, 'use')])) or '_' } }}", DeclarationUses
 
   @staticmethod
-  def angle_query(*, target: Optional[Tuple[()]] = None, file: Optional["SrcFile"] = None, use: Optional[Tuple[()]] = None) -> "FlowDeclarationUses":
+  def angle_query(*, target: Optional["FlowSomeDeclaration"] = None, file: Optional["SrcFile"] = None, use: Optional["SrcByteSpan"] = None) -> "FlowDeclarationUses":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -279,7 +282,7 @@ class FlowFlowEntityUsesAll(GleanSchemaPredicate):
     return f"flow.FlowEntityUsesAll.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", FlowEntityUsesAll
 
   @staticmethod
-  def angle_query(*, target: Optional[Tuple[()]] = None, file: Optional["SrcFile"] = None, span: Optional[Tuple[()]] = None) -> "FlowFlowEntityUsesAll":
+  def angle_query(*, target: Optional["FlowSomeEntity"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "FlowFlowEntityUsesAll":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -301,7 +304,7 @@ class FlowSearchByFileModule(GleanSchemaPredicate):
     return f"flow.SearchByFileModule.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, name, 'name'), angle_for(__env, decl, 'decl')])) or '_' } }}", SearchByFileModule
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, name: Optional["FlowName"] = None, decl: Optional[Tuple[()]] = None) -> "FlowSearchByFileModule":
+  def angle_query(*, file: Optional["SrcFile"] = None, name: Optional["FlowName"] = None, decl: Optional["FlowSomeDeclaration"] = None) -> "FlowSearchByFileModule":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -351,7 +354,7 @@ class FlowFlowModuleNamespaceXRef(GleanSchemaPredicate):
     return f"flow.FlowModuleNamespaceXRef.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, local, 'local'), angle_for(__env, entity, 'entity'), angle_for(__env, file, 'file')])) or '_' } }}", FlowModuleNamespaceXRef
 
   @staticmethod
-  def angle_query(*, local: Optional["FlowDeclaration"] = None, entity: Optional[Tuple[()]] = None, file: Optional["SrcFile"] = None) -> "FlowFlowModuleNamespaceXRef":
+  def angle_query(*, local: Optional["FlowDeclaration"] = None, entity: Optional["FlowSomeEntity"] = None, file: Optional["SrcFile"] = None) -> "FlowFlowModuleNamespaceXRef":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -373,7 +376,7 @@ class FlowSearchByName(GleanSchemaPredicate):
     return f"flow.SearchByName.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, decl, 'decl')])) or '_' } }}", SearchByName
 
   @staticmethod
-  def angle_query(*, name: Optional["FlowName"] = None, decl: Optional[Tuple[()]] = None) -> "FlowSearchByName":
+  def angle_query(*, name: Optional["FlowName"] = None, decl: Optional["FlowSomeDeclaration"] = None) -> "FlowSearchByName":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -395,7 +398,7 @@ class FlowFlowExportLocation(GleanSchemaPredicate):
     return f"flow.FlowExportLocation.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, module, 'module'), angle_for(__env, export_, 'export_'), angle_for(__env, entity, 'entity'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", FlowExportLocation
 
   @staticmethod
-  def angle_query(*, module: Optional["FlowModule"] = None, export_: Optional["FlowExport"] = None, entity: Optional[Tuple[()]] = None, file: Optional["SrcFile"] = None, span: Optional[Tuple[()]] = None) -> "FlowFlowExportLocation":
+  def angle_query(*, module: Optional["FlowModule"] = None, export_: Optional["FlowExport"] = None, entity: Optional["FlowSomeEntity"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "FlowFlowExportLocation":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -406,7 +409,7 @@ class FlowFlowXRefDeclInfo(GleanSchemaPredicate):
     return f"flow.FlowXRefDeclInfo.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, ref, 'ref'), angle_for(__env, srcLoc, 'srcLoc'), angle_for(__env, name, 'name'), angle_for(__env, targetLoc, 'targetLoc'), angle_for(__env, entity, 'entity')])) or '_' } }}", FlowXRefDeclInfo
 
   @staticmethod
-  def angle_query(*, ref: Optional[Tuple[()]] = None, srcLoc: Optional["FlowRange"] = None, name: Optional["FlowName"] = None, targetLoc: Optional["FlowRange"] = None, entity: Optional[Tuple[()]] = None) -> "FlowFlowXRefDeclInfo":
+  def angle_query(*, ref: Optional["FlowXRef"] = None, srcLoc: Optional["FlowRange"] = None, name: Optional["FlowName"] = None, targetLoc: Optional["FlowRange"] = None, entity: Optional["FlowSomeDeclaration"] = None) -> "FlowFlowXRefDeclInfo":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -417,7 +420,7 @@ class FlowSearchTypeByModuleExport(GleanSchemaPredicate):
     return f"flow.SearchTypeByModuleExport.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, string_, 'string_'), angle_for(__env, name, 'name'), angle_for(__env, decl, 'decl')])) or '_' } }}", SearchTypeByModuleExport
 
   @staticmethod
-  def angle_query(*, string_: Optional[str] = None, name: Optional["FlowName"] = None, decl: Optional[Tuple[()]] = None) -> "FlowSearchTypeByModuleExport":
+  def angle_query(*, string_: Optional[str] = None, name: Optional["FlowName"] = None, decl: Optional["FlowSomeDeclaration"] = None) -> "FlowSearchTypeByModuleExport":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -428,7 +431,7 @@ class FlowFlowEntityImportUses(GleanSchemaPredicate):
     return f"flow.FlowEntityImportUses.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, local, 'local')])) or '_' } }}", FlowEntityImportUses
 
   @staticmethod
-  def angle_query(*, target: Optional[Tuple[()]] = None, local: Optional["FlowDeclaration"] = None) -> "FlowFlowEntityImportUses":
+  def angle_query(*, target: Optional["FlowSomeEntity"] = None, local: Optional["FlowDeclaration"] = None) -> "FlowFlowEntityImportUses":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -498,7 +501,7 @@ class FlowFlowImportXRef(GleanSchemaPredicate):
     return f"flow.FlowImportXRef.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, local, 'local'), angle_for(__env, entity, 'entity'), angle_for(__env, targetFile, 'targetFile'), angle_for(__env, targetSpan, 'targetSpan')])) or '_' } }}", FlowImportXRef
 
   @staticmethod
-  def angle_query(*, local: Optional["FlowDeclaration"] = None, entity: Optional[Tuple[()]] = None, targetFile: Optional["SrcFile"] = None, targetSpan: Optional[Tuple[()]] = None) -> "FlowFlowImportXRef":
+  def angle_query(*, local: Optional["FlowDeclaration"] = None, entity: Optional["FlowSomeEntity"] = None, targetFile: Optional["SrcFile"] = None, targetSpan: Optional["SrcByteSpan"] = None) -> "FlowFlowImportXRef":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -542,7 +545,7 @@ class FlowFileXRef(GleanSchemaPredicate):
     return f"flow.FileXRef.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, ref, 'ref')])) or '_' } }}", FileXRef
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, ref: Optional[Tuple[()]] = None) -> "FlowFileXRef":
+  def angle_query(*, file: Optional["SrcFile"] = None, ref: Optional["FlowXRef"] = None) -> "FlowFileXRef":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -632,7 +635,7 @@ class FlowDeclarationNameSpan(GleanSchemaPredicate):
     return f"flow.DeclarationNameSpan.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, name, 'name'), angle_for(__env, span, 'span')])) or '_' } }}", DeclarationNameSpan
 
   @staticmethod
-  def angle_query(*, decl: Optional[Tuple[()]] = None, name: Optional["FlowName"] = None, span: Optional[Tuple[()]] = None) -> "FlowDeclarationNameSpan":
+  def angle_query(*, decl: Optional["FlowSomeDeclaration"] = None, name: Optional["FlowName"] = None, span: Optional["SrcByteSpan"] = None) -> "FlowDeclarationNameSpan":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -654,7 +657,7 @@ class FlowFlowTypeExportLocation(GleanSchemaPredicate):
     return f"flow.FlowTypeExportLocation.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, moduleTypeExport, 'moduleTypeExport'), angle_for(__env, entity, 'entity'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", FlowTypeExportLocation
 
   @staticmethod
-  def angle_query(*, moduleTypeExport: Optional["FlowModuleTypeExport"] = None, entity: Optional[Tuple[()]] = None, file: Optional["SrcFile"] = None, span: Optional[Tuple[()]] = None) -> "FlowFlowTypeExportLocation":
+  def angle_query(*, moduleTypeExport: Optional["FlowModuleTypeExport"] = None, entity: Optional["FlowSomeEntity"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "FlowFlowTypeExportLocation":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -667,6 +670,64 @@ class FlowTypeDeclarationReference(GleanSchemaPredicate):
   @staticmethod
   def angle_query(*, typeDeclaration: Optional["FlowTypeDeclaration"] = None, loc: Optional["FlowRange"] = None) -> "FlowTypeDeclarationReference":
     raise Exception("this function can only be called from @angle_query")
+
+
+
+
+
+class FlowSomeDeclaration(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], localDecl: ast.Expr, memberDecl: ast.Expr, typeDecl: ast.Expr) -> Tuple[str, Struct]:
+    return f"flow.SomeDeclaration.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, localDecl, 'localDecl'), angle_for(__env, memberDecl, 'memberDecl'), angle_for(__env, typeDecl, 'typeDecl')])) or '_' } }}", SomeDeclaration
+
+  @staticmethod
+  def angle_query_localDecl(*, localDecl: "FlowDeclaration") -> "FlowSomeDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_memberDecl(*, memberDecl: "FlowMemberDeclaration") -> "FlowSomeDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_typeDecl(*, typeDecl: "FlowTypeDeclaration") -> "FlowSomeDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+
+class FlowSomeEntity(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], decl: ast.Expr, module_: ast.Expr) -> Tuple[str, Struct]:
+    return f"flow.SomeEntity.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, module_, 'module_')])) or '_' } }}", SomeEntity
+
+  @staticmethod
+  def angle_query_decl(*, decl: "FlowSomeDeclaration") -> "FlowSomeEntity":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_module_(*, module_: "FlowModule") -> "FlowSomeEntity":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+
+class FlowXRef(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], localRef: ast.Expr, memberRef: ast.Expr, typeRef: ast.Expr) -> Tuple[str, Struct]:
+    return f"flow.XRef.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, localRef, 'localRef'), angle_for(__env, memberRef, 'memberRef'), angle_for(__env, typeRef, 'typeRef')])) or '_' } }}", XRef
+
+  @staticmethod
+  def angle_query_localRef(*, localRef: "FlowLocalDeclarationReference") -> "FlowXRef":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_memberRef(*, memberRef: "FlowMemberDeclarationReference") -> "FlowXRef":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_typeRef(*, typeRef: "FlowTypeDeclarationReference") -> "FlowXRef":
+    raise Exception("this function can only be called from @angle_query")
+
 
 
 

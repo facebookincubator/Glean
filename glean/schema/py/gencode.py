@@ -1,9 +1,9 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union, List, Dict
+from typing import Optional, Tuple, Union, List, Dict, TypeVar
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 from glean.schema.py.src import *
 
 
@@ -13,6 +13,7 @@ from glean.schema.gencode.types import (
     GenCodeCommand,
     GenCodeClass,
     GenCode,
+    GenCodeVariant,
 )
 
 
@@ -66,7 +67,20 @@ class GencodeGenCode(GleanSchemaPredicate):
     return f"gencode.GenCode.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, variant, 'variant'), angle_for(__env, source, 'source'), angle_for(__env, command, 'command'), angle_for(__env, class_, 'class_'), angle_for(__env, signature, 'signature')])) or '_' } }}", GenCode
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, variant: Optional[Tuple[()]] = None, source: Optional[Union[Just["SrcFile"], Just[None]]] = None, command: Optional[Union[Just["GencodeGenCodeCommand"], Just[None]]] = None, class_: Optional[Union[Just["GencodeGenCodeClass"], Just[None]]] = None, signature: Optional[Union[Just["GencodeGenCodeSignature"], Just[None]]] = None) -> "GencodeGenCode":
+  def angle_query(*, file: Optional["SrcFile"] = None, variant: Optional["GencodeGenCodeVariant"] = None, source: Optional[Union[Just["SrcFile"], Just[None]]] = None, command: Optional[Union[Just["GencodeGenCodeCommand"], Just[None]]] = None, class_: Optional[Union[Just["GencodeGenCodeClass"], Just[None]]] = None, signature: Optional[Union[Just["GencodeGenCodeSignature"], Just[None]]] = None) -> "GencodeGenCode":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+
+
+class GencodeGenCodeVariant(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"gencode.GenCodeVariant.1 { angle_for(__env, arg, None) or '_' }", GenCodeVariant
+
+  @staticmethod
+  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "GencodeGenCodeVariant":
     raise Exception("this function can only be called from @angle_query")
 
 

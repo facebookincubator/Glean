@@ -1,9 +1,9 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union, List, Dict
+from typing import Optional, Tuple, Union, List, Dict, TypeVar
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 from glean.schema.py.src import *
 
 
@@ -58,6 +58,13 @@ from glean.schema.python.types import (
     ContainingTopLevelDeclaration,
     SName,
     LocalNameLowerCase,
+    Parameter,
+    XRefViaName,
+    Declaration,
+    Docstring,
+    Definition,
+    DirectXRef,
+    Decorator,
 )
 
 
@@ -89,7 +96,7 @@ class PythonIsTopLevelDefinition(GleanSchemaPredicate):
     return f"python.IsTopLevelDefinition.3 { angle_for(__env, arg, None) or '_' }", IsTopLevelDefinition
 
   @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "PythonIsTopLevelDefinition":
+  def angle_query(*, arg: Optional["PythonDefinition"] = None) -> "PythonIsTopLevelDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -100,7 +107,7 @@ class PythonClassDefinition(GleanSchemaPredicate):
     return f"python.ClassDefinition.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, bases, 'bases'), angle_for(__env, keywords, 'keywords'), angle_for(__env, decorators, 'decorators'), angle_for(__env, docstring, 'docstring')])) or '_' } }}", ClassDefinition
 
   @staticmethod
-  def angle_query(*, declaration: Optional["PythonClassDeclaration"] = None, bases: Optional[Union[Just[List["PythonClassDeclaration"]], Just[None]]] = None, keywords: Optional[Union[Just[List[Tuple[()]]], Just[None]]] = None, decorators: Optional[Union[Just[List[Tuple[()]]], Just[None]]] = None, docstring: Optional[Union[Just[Tuple[()]], Just[None]]] = None) -> "PythonClassDefinition":
+  def angle_query(*, declaration: Optional["PythonClassDeclaration"] = None, bases: Optional[Union[Just[List["PythonClassDeclaration"]], Just[None]]] = None, keywords: Optional[Union[Just[List["PythonParameter"]], Just[None]]] = None, decorators: Optional[Union[Just[List["PythonDecorator"]], Just[None]]] = None, docstring: Optional[Union[Just["PythonDocstring"], Just[None]]] = None) -> "PythonClassDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -111,7 +118,7 @@ class PythonNonImportDeclaration(GleanSchemaPredicate):
     return f"python.NonImportDeclaration.2 { angle_for(__env, arg, None) or '_' }", NonImportDeclaration
 
   @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "PythonNonImportDeclaration":
+  def angle_query(*, arg: Optional["PythonDeclaration"] = None) -> "PythonNonImportDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -122,7 +129,7 @@ class PythonDeclarationReference(GleanSchemaPredicate):
     return f"python.DeclarationReference.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, source, 'source')])) or '_' } }}", DeclarationReference
 
   @staticmethod
-  def angle_query(*, target: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None) -> "PythonDeclarationReference":
+  def angle_query(*, target: Optional["PythonDeclaration"] = None, source: Optional["PythonDeclaration"] = None) -> "PythonDeclarationReference":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -133,7 +140,7 @@ class PythonDefinitionsByFile(GleanSchemaPredicate):
     return f"python.DefinitionsByFile.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, span, 'span'), angle_for(__env, definition, 'definition')])) or '_' } }}", DefinitionsByFile
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, span: Optional[Tuple[()]] = None, definition: Optional[Tuple[()]] = None) -> "PythonDefinitionsByFile":
+  def angle_query(*, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None, definition: Optional["PythonDefinition"] = None) -> "PythonDefinitionsByFile":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -155,7 +162,7 @@ class PythonDefinitionLocation(GleanSchemaPredicate):
     return f"python.DefinitionLocation.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, definition, 'definition'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", DefinitionLocation
 
   @staticmethod
-  def angle_query(*, definition: Optional[Tuple[()]] = None, file: Optional["SrcFile"] = None, span: Optional[Tuple[()]] = None) -> "PythonDefinitionLocation":
+  def angle_query(*, definition: Optional["PythonDefinition"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "PythonDefinitionLocation":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -177,7 +184,7 @@ class PythonDeclarationUses(GleanSchemaPredicate):
     return f"python.DeclarationUses.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", DeclarationUses
 
   @staticmethod
-  def angle_query(*, declaration: Optional[Tuple[()]] = None, file: Optional["SrcFile"] = None, span: Optional[Tuple[()]] = None) -> "PythonDeclarationUses":
+  def angle_query(*, declaration: Optional["PythonDeclaration"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "PythonDeclarationUses":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -199,7 +206,7 @@ class PythonModuleDefinition(GleanSchemaPredicate):
     return f"python.ModuleDefinition.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, module, 'module'), angle_for(__env, docstring, 'docstring')])) or '_' } }}", ModuleDefinition
 
   @staticmethod
-  def angle_query(*, module: Optional["PythonModule"] = None, docstring: Optional[Union[Just[Tuple[()]], Just[None]]] = None) -> "PythonModuleDefinition":
+  def angle_query(*, module: Optional["PythonModule"] = None, docstring: Optional[Union[Just["PythonDocstring"], Just[None]]] = None) -> "PythonModuleDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -221,7 +228,7 @@ class PythonDeclarationWithSName(GleanSchemaPredicate):
     return f"python.DeclarationWithSName.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, sname, 'sname'), angle_for(__env, declaration, 'declaration')])) or '_' } }}", DeclarationWithSName
 
   @staticmethod
-  def angle_query(*, sname: Optional["PythonSName"] = None, declaration: Optional[Tuple[()]] = None) -> "PythonDeclarationWithSName":
+  def angle_query(*, sname: Optional["PythonSName"] = None, declaration: Optional["PythonDeclaration"] = None) -> "PythonDeclarationWithSName":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -254,7 +261,7 @@ class PythonDeclarationLocation(GleanSchemaPredicate):
     return f"python.DeclarationLocation.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", DeclarationLocation
 
   @staticmethod
-  def angle_query(*, declaration: Optional[Tuple[()]] = None, file: Optional["SrcFile"] = None, span: Optional[Tuple[()]] = None) -> "PythonDeclarationLocation":
+  def angle_query(*, declaration: Optional["PythonDeclaration"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "PythonDeclarationLocation":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -276,7 +283,7 @@ class PythonDeclarationToName(GleanSchemaPredicate):
     return f"python.DeclarationToName.2 { angle_for(__env, arg, None) or '_' }", DeclarationToName
 
   @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "PythonDeclarationToName":
+  def angle_query(*, arg: Optional["PythonDeclaration"] = None) -> "PythonDeclarationToName":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -287,7 +294,7 @@ class PythonDeclarationDefinition(GleanSchemaPredicate):
     return f"python.DeclarationDefinition.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, definition, 'definition')])) or '_' } }}", DeclarationDefinition
 
   @staticmethod
-  def angle_query(*, declaration: Optional[Tuple[()]] = None, definition: Optional[Tuple[()]] = None) -> "PythonDeclarationDefinition":
+  def angle_query(*, declaration: Optional["PythonDeclaration"] = None, definition: Optional["PythonDefinition"] = None) -> "PythonDeclarationDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -364,7 +371,7 @@ class PythonDirectXRefsByFile(GleanSchemaPredicate):
     return f"python.DirectXRefsByFile.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xref, 'xref')])) or '_' } }}", DirectXRefsByFile
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, xref: Optional[Tuple[()]] = None) -> "PythonDirectXRefsByFile":
+  def angle_query(*, file: Optional["SrcFile"] = None, xref: Optional["PythonDirectXRef"] = None) -> "PythonDirectXRefsByFile":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -386,7 +393,7 @@ class PythonDeclarationWithLocalName(GleanSchemaPredicate):
     return f"python.DeclarationWithLocalName.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, local_name, 'local_name'), angle_for(__env, declaration, 'declaration')])) or '_' } }}", DeclarationWithLocalName
 
   @staticmethod
-  def angle_query(*, local_name: Optional["PythonName"] = None, declaration: Optional[Tuple[()]] = None) -> "PythonDeclarationWithLocalName":
+  def angle_query(*, local_name: Optional["PythonName"] = None, declaration: Optional["PythonDeclaration"] = None) -> "PythonDeclarationWithLocalName":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -397,7 +404,7 @@ class PythonFileDirectXRefs(GleanSchemaPredicate):
     return f"python.FileDirectXRefs.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xrefs, 'xrefs')])) or '_' } }}", FileDirectXRefs
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, xrefs: Optional[List[Tuple[()]]] = None) -> "PythonFileDirectXRefs":
+  def angle_query(*, file: Optional["SrcFile"] = None, xrefs: Optional[List["PythonDirectXRef"]] = None) -> "PythonFileDirectXRefs":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -452,7 +459,7 @@ class PythonFunctionDefinition(GleanSchemaPredicate):
     return f"python.FunctionDefinition.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, is_async, 'is_async'), angle_for(__env, returns, 'returns'), angle_for(__env, params, 'params'), angle_for(__env, posonly_params, 'posonly_params'), angle_for(__env, kwonly_params, 'kwonly_params'), angle_for(__env, star_arg, 'star_arg'), angle_for(__env, star_kwarg, 'star_kwarg'), angle_for(__env, decorators, 'decorators'), angle_for(__env, docstring, 'docstring')])) or '_' } }}", FunctionDefinition
 
   @staticmethod
-  def angle_query(*, declaration: Optional["PythonFunctionDeclaration"] = None, is_async: Optional[bool] = None, returns: Optional[Union[Just["PythonType"], Just[None]]] = None, params: Optional[List[Tuple[()]]] = None, posonly_params: Optional[Union[Just[List[Tuple[()]]], Just[None]]] = None, kwonly_params: Optional[Union[Just[List[Tuple[()]]], Just[None]]] = None, star_arg: Optional[Union[Just[Tuple[()]], Just[None]]] = None, star_kwarg: Optional[Union[Just[Tuple[()]], Just[None]]] = None, decorators: Optional[Union[Just[List[Tuple[()]]], Just[None]]] = None, docstring: Optional[Union[Just[Tuple[()]], Just[None]]] = None) -> "PythonFunctionDefinition":
+  def angle_query(*, declaration: Optional["PythonFunctionDeclaration"] = None, is_async: Optional[bool] = None, returns: Optional[Union[Just["PythonType"], Just[None]]] = None, params: Optional[List["PythonParameter"]] = None, posonly_params: Optional[Union[Just[List["PythonParameter"]], Just[None]]] = None, kwonly_params: Optional[Union[Just[List["PythonParameter"]], Just[None]]] = None, star_arg: Optional[Union[Just["PythonParameter"], Just[None]]] = None, star_kwarg: Optional[Union[Just["PythonParameter"], Just[None]]] = None, decorators: Optional[Union[Just[List["PythonDecorator"]], Just[None]]] = None, docstring: Optional[Union[Just["PythonDocstring"], Just[None]]] = None) -> "PythonFunctionDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -463,7 +470,7 @@ class PythonImportStarsByFile(GleanSchemaPredicate):
     return f"python.ImportStarsByFile.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, span, 'span'), angle_for(__env, declaration, 'declaration')])) or '_' } }}", ImportStarsByFile
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, span: Optional[Tuple[()]] = None, declaration: Optional["PythonImportStarStatement"] = None) -> "PythonImportStarsByFile":
+  def angle_query(*, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None, declaration: Optional["PythonImportStarStatement"] = None) -> "PythonImportStarsByFile":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -474,7 +481,7 @@ class PythonIsTopLevelDeclaration(GleanSchemaPredicate):
     return f"python.IsTopLevelDeclaration.3 { angle_for(__env, arg, None) or '_' }", IsTopLevelDeclaration
 
   @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "PythonIsTopLevelDeclaration":
+  def angle_query(*, arg: Optional["PythonDeclaration"] = None) -> "PythonIsTopLevelDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -485,7 +492,7 @@ class PythonSearchByLocalName(GleanSchemaPredicate):
     return f"python.SearchByLocalName.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, decl, 'decl')])) or '_' } }}", SearchByLocalName
 
   @staticmethod
-  def angle_query(*, name: Optional["PythonLocalName"] = None, decl: Optional[Tuple[()]] = None) -> "PythonSearchByLocalName":
+  def angle_query(*, name: Optional["PythonLocalName"] = None, decl: Optional["PythonDeclaration"] = None) -> "PythonSearchByLocalName":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -496,7 +503,7 @@ class PythonDeclarationsByFile(GleanSchemaPredicate):
     return f"python.DeclarationsByFile.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, span, 'span'), angle_for(__env, declaration, 'declaration')])) or '_' } }}", DeclarationsByFile
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, span: Optional[Tuple[()]] = None, declaration: Optional[Tuple[()]] = None) -> "PythonDeclarationsByFile":
+  def angle_query(*, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None, declaration: Optional["PythonDeclaration"] = None) -> "PythonDeclarationsByFile":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -507,7 +514,7 @@ class PythonXRefsViaNameByFile(GleanSchemaPredicate):
     return f"python.XRefsViaNameByFile.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xrefs, 'xrefs')])) or '_' } }}", XRefsViaNameByFile
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, xrefs: Optional[List[Tuple[()]]] = None) -> "PythonXRefsViaNameByFile":
+  def angle_query(*, file: Optional["SrcFile"] = None, xrefs: Optional[List["PythonXRefViaName"]] = None) -> "PythonXRefsViaNameByFile":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -518,7 +525,7 @@ class PythonDeclarationWithName(GleanSchemaPredicate):
     return f"python.DeclarationWithName.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, declaration, 'declaration')])) or '_' } }}", DeclarationWithName
 
   @staticmethod
-  def angle_query(*, name: Optional["PythonName"] = None, declaration: Optional[Tuple[()]] = None) -> "PythonDeclarationWithName":
+  def angle_query(*, name: Optional["PythonName"] = None, declaration: Optional["PythonDeclaration"] = None) -> "PythonDeclarationWithName":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -551,7 +558,7 @@ class PythonImportStarLocation(GleanSchemaPredicate):
     return f"python.ImportStarLocation.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, import_star, 'import_star'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", ImportStarLocation
 
   @staticmethod
-  def angle_query(*, import_star: Optional["PythonImportStarStatement"] = None, file: Optional["SrcFile"] = None, span: Optional[Tuple[()]] = None) -> "PythonImportStarLocation":
+  def angle_query(*, import_star: Optional["PythonImportStarStatement"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "PythonImportStarLocation":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -573,7 +580,7 @@ class PythonDefinitionDeclaration(GleanSchemaPredicate):
     return f"python.DefinitionDeclaration.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, definition, 'definition'), angle_for(__env, declaration, 'declaration')])) or '_' } }}", DefinitionDeclaration
 
   @staticmethod
-  def angle_query(*, definition: Optional[Tuple[()]] = None, declaration: Optional[Tuple[()]] = None) -> "PythonDefinitionDeclaration":
+  def angle_query(*, definition: Optional["PythonDefinition"] = None, declaration: Optional["PythonDeclaration"] = None) -> "PythonDefinitionDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -584,7 +591,7 @@ class PythonContainingTopLevelDeclaration(GleanSchemaPredicate):
     return f"python.ContainingTopLevelDeclaration.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, container, 'container')])) or '_' } }}", ContainingTopLevelDeclaration
 
   @staticmethod
-  def angle_query(*, declaration: Optional[Tuple[()]] = None, container: Optional[Tuple[()]] = None) -> "PythonContainingTopLevelDeclaration":
+  def angle_query(*, declaration: Optional["PythonDeclaration"] = None, container: Optional["PythonDeclaration"] = None) -> "PythonContainingTopLevelDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -607,6 +614,115 @@ class PythonLocalNameLowerCase(GleanSchemaPredicate):
 
   @staticmethod
   def angle_query(*, lowercase: Optional[str] = None, name: Optional["PythonLocalName"] = None) -> "PythonLocalNameLowerCase":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+
+
+class PythonParameter(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], name: ast.Expr, type: ast.Expr, value: ast.Expr) -> Tuple[str, Struct]:
+    return f"python.Parameter.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, type, 'type'), angle_for(__env, value, 'value')])) or '_' } }}", Parameter
+
+  @staticmethod
+  def angle_query(*, name: Optional["PythonName"] = None, type: Optional[Union[Just["PythonType"], Just[None]]] = None, value: Optional[Union[Just[str], Just[None]]] = None) -> "PythonParameter":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class PythonXRefViaName(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], target: ast.Expr, source: ast.Expr) -> Tuple[str, Struct]:
+    return f"python.XRefViaName.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, source, 'source')])) or '_' } }}", XRefViaName
+
+  @staticmethod
+  def angle_query(*, target: Optional["PythonName"] = None, source: Optional["SrcByteSpan"] = None) -> "PythonXRefViaName":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class PythonDeclaration(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], cls: ast.Expr, func: ast.Expr, variable: ast.Expr, imp: ast.Expr, module: ast.Expr) -> Tuple[str, Struct]:
+    return f"python.Declaration.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, cls, 'cls'), angle_for(__env, func, 'func'), angle_for(__env, variable, 'variable'), angle_for(__env, imp, 'imp'), angle_for(__env, module, 'module')])) or '_' } }}", Declaration
+
+  @staticmethod
+  def angle_query_cls(*, cls: "PythonClassDeclaration") -> "PythonDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_func(*, func: "PythonFunctionDeclaration") -> "PythonDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_variable(*, variable: "PythonVariableDeclaration") -> "PythonDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_imp(*, imp: "PythonImportStatement") -> "PythonDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_module(*, module: "PythonModule") -> "PythonDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+
+class PythonDocstring(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], location: ast.Expr) -> Tuple[str, Struct]:
+    return f"python.Docstring.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, location, 'location')])) or '_' } }}", Docstring
+
+  @staticmethod
+  def angle_query(*, location: Optional["SrcByteSpan"] = None) -> "PythonDocstring":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class PythonDefinition(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], cls: ast.Expr, func: ast.Expr, variable: ast.Expr, module: ast.Expr) -> Tuple[str, Struct]:
+    return f"python.Definition.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, cls, 'cls'), angle_for(__env, func, 'func'), angle_for(__env, variable, 'variable'), angle_for(__env, module, 'module')])) or '_' } }}", Definition
+
+  @staticmethod
+  def angle_query_cls(*, cls: "PythonClassDefinition") -> "PythonDefinition":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_func(*, func: "PythonFunctionDefinition") -> "PythonDefinition":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_variable(*, variable: "PythonVariableDefinition") -> "PythonDefinition":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_module(*, module: "PythonModuleDefinition") -> "PythonDefinition":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+
+class PythonDirectXRef(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], target: ast.Expr, source: ast.Expr) -> Tuple[str, Struct]:
+    return f"python.DirectXRef.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, source, 'source')])) or '_' } }}", DirectXRef
+
+  @staticmethod
+  def angle_query(*, target: Optional["PythonDeclaration"] = None, source: Optional["SrcByteSpan"] = None) -> "PythonDirectXRef":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class PythonDecorator(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"python.Decorator.2 { angle_for(__env, arg, None) or '_' }", Decorator
+
+  @staticmethod
+  def angle_query(*, arg: Optional[str] = None) -> "PythonDecorator":
     raise Exception("this function can only be called from @angle_query")
 
 

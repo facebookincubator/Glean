@@ -1,9 +1,9 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union, List, Dict
+from typing import Optional, Tuple, Union, List, Dict, TypeVar
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 from glean.schema.py.cxx1 import *
 from glean.schema.py.src import *
 
@@ -28,7 +28,7 @@ class CodemarkupPpPpEntityInfo(GleanSchemaPredicate):
     return f"codemarkup.pp.PpEntityInfo.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, info, 'info')])) or '_' } }}", ppPpEntityInfo
 
   @staticmethod
-  def angle_query(*, entity: Optional[Tuple[()]] = None, info: Optional[Tuple[()]] = None) -> "CodemarkupPpPpEntityInfo":
+  def angle_query(*, entity: Optional["CodePpEntity"] = None, info: Optional["CodemarkupTypesSymbolInfo"] = None) -> "CodemarkupPpPpEntityInfo":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -39,7 +39,7 @@ class CodemarkupPpPPEntityLocation(GleanSchemaPredicate):
     return f"codemarkup.pp.PPEntityLocation.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location')])) or '_' } }}", ppPPEntityLocation
 
   @staticmethod
-  def angle_query(*, entity: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "CodemarkupPpPPEntityLocation":
+  def angle_query(*, entity: Optional["CodePpEntity"] = None, location: Optional["CodemarkupTypesLocation"] = None) -> "CodemarkupPpPPEntityLocation":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -50,7 +50,7 @@ class CodemarkupPpPpResolveLocation(GleanSchemaPredicate):
     return f"codemarkup.pp.PpResolveLocation.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, location, 'location'), angle_for(__env, entity, 'entity')])) or '_' } }}", ppPpResolveLocation
 
   @staticmethod
-  def angle_query(*, location: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupPpPpResolveLocation":
+  def angle_query(*, location: Optional["CodemarkupTypesLocation"] = None, entity: Optional["CodePpEntity"] = None) -> "CodemarkupPpPpResolveLocation":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -61,7 +61,7 @@ class CodemarkupPpPpIncludeXRefLocations(GleanSchemaPredicate):
     return f"codemarkup.pp.PpIncludeXRefLocations.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, trace, 'trace'), angle_for(__env, range, 'range'), angle_for(__env, target, 'target')])) or '_' } }}", ppPpIncludeXRefLocations
 
   @staticmethod
-  def angle_query(*, trace: Optional["Cxx1PPTrace"] = None, range: Optional[Tuple[()]] = None, target: Optional["SrcFile"] = None) -> "CodemarkupPpPpIncludeXRefLocations":
+  def angle_query(*, trace: Optional["Cxx1PPTrace"] = None, range: Optional["SrcRange"] = None, target: Optional["SrcFile"] = None) -> "CodemarkupPpPpIncludeXRefLocations":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -72,7 +72,7 @@ class CodemarkupPpPpEntityKind(GleanSchemaPredicate):
     return f"codemarkup.pp.PpEntityKind.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, kind, 'kind')])) or '_' } }}", ppPpEntityKind
 
   @staticmethod
-  def angle_query(*, entity: Optional[Tuple[()]] = None, kind: Optional[Tuple[()]] = None) -> "CodemarkupPpPpEntityKind":
+  def angle_query(*, entity: Optional["CodePpEntity"] = None, kind: Optional["CodemarkupTypesSymbolKind"] = None) -> "CodemarkupPpPpEntityKind":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -83,7 +83,7 @@ class CodemarkupPpPpFileEntityXRefLocations(GleanSchemaPredicate):
     return f"codemarkup.pp.PpFileEntityXRefLocations.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xref, 'xref'), angle_for(__env, entity, 'entity')])) or '_' } }}", ppPpFileEntityXRefLocations
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, xref: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupPpPpFileEntityXRefLocations":
+  def angle_query(*, file: Optional["SrcFile"] = None, xref: Optional["CodemarkupTypesXRefLocation"] = None, entity: Optional["CodePpEntity"] = None) -> "CodemarkupPpPpFileEntityXRefLocations":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -94,7 +94,7 @@ class CodemarkupPpPpEntityTraceXRefLocations(GleanSchemaPredicate):
     return f"codemarkup.pp.PpEntityTraceXRefLocations.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, trace, 'trace'), angle_for(__env, xref, 'xref'), angle_for(__env, entity, 'entity')])) or '_' } }}", ppPpEntityTraceXRefLocations
 
   @staticmethod
-  def angle_query(*, trace: Optional["Cxx1Trace"] = None, xref: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupPpPpEntityTraceXRefLocations":
+  def angle_query(*, trace: Optional["Cxx1Trace"] = None, xref: Optional["CodemarkupTypesXRefLocation"] = None, entity: Optional["CodePpEntity"] = None) -> "CodemarkupPpPpEntityTraceXRefLocations":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -105,7 +105,7 @@ class CodemarkupPpPpResolveTraceLocation(GleanSchemaPredicate):
     return f"codemarkup.pp.PpResolveTraceLocation.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, trace, 'trace'), angle_for(__env, location, 'location'), angle_for(__env, entity, 'entity')])) or '_' } }}", ppPpResolveTraceLocation
 
   @staticmethod
-  def angle_query(*, trace: Optional["Cxx1Trace"] = None, location: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupPpPpResolveTraceLocation":
+  def angle_query(*, trace: Optional["Cxx1Trace"] = None, location: Optional["CodemarkupTypesLocation"] = None, entity: Optional["CodePpEntity"] = None) -> "CodemarkupPpPpResolveTraceLocation":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -116,7 +116,7 @@ class CodemarkupPpPpFileEntityTraceXRefLocations(GleanSchemaPredicate):
     return f"codemarkup.pp.PpFileEntityTraceXRefLocations.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, trace, 'trace'), angle_for(__env, xref, 'xref'), angle_for(__env, entity, 'entity')])) or '_' } }}", ppPpFileEntityTraceXRefLocations
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, trace: Optional["Cxx1Trace"] = None, xref: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupPpPpFileEntityTraceXRefLocations":
+  def angle_query(*, file: Optional["SrcFile"] = None, trace: Optional["Cxx1Trace"] = None, xref: Optional["CodemarkupTypesXRefLocation"] = None, entity: Optional["CodePpEntity"] = None) -> "CodemarkupPpPpFileEntityTraceXRefLocations":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -127,8 +127,10 @@ class CodemarkupPpPpFileEntityTraceLocations(GleanSchemaPredicate):
     return f"codemarkup.pp.PpFileEntityTraceLocations.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, trace, 'trace'), angle_for(__env, location, 'location'), angle_for(__env, entity, 'entity')])) or '_' } }}", ppPpFileEntityTraceLocations
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, trace: Optional["Cxx1Trace"] = None, location: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupPpPpFileEntityTraceLocations":
+  def angle_query(*, file: Optional["SrcFile"] = None, trace: Optional["Cxx1Trace"] = None, location: Optional["CodemarkupTypesLocation"] = None, entity: Optional["CodePpEntity"] = None) -> "CodemarkupPpPpFileEntityTraceLocations":
     raise Exception("this function can only be called from @angle_query")
+
+
 
 
 

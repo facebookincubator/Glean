@@ -1,9 +1,9 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union, List, Dict
+from typing import Optional, Tuple, Union, List, Dict, TypeVar
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 from glean.schema.py.src import *
 
 
@@ -28,6 +28,9 @@ from glean.schema.graphql.types import (
     InputValueDef,
     Value,
     InlineFragment,
+    DirectiveDefLocation,
+    SelectionSet,
+    Declaration,
 )
 
 
@@ -81,7 +84,7 @@ class GraphqlField(GleanSchemaPredicate):
     return f"graphql.Field.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, type, 'type'), angle_for(__env, name, 'name'), angle_for(__env, directives, 'directives'), angle_for(__env, selectionSet, 'selectionSet'), angle_for(__env, arguments, 'arguments'), angle_for(__env, alias, 'alias'), angle_for(__env, loc, 'loc')])) or '_' } }}", Field
 
   @staticmethod
-  def angle_query(*, type: Optional["GraphqlValue"] = None, name: Optional["GraphqlValue"] = None, directives: Optional[List["GraphqlDirective"]] = None, selectionSet: Optional[Tuple[()]] = None, arguments: Optional[List["GraphqlArgument"]] = None, alias: Optional[Union[Just["GraphqlValue"], Just[None]]] = None, loc: Optional[Tuple[()]] = None) -> "GraphqlField":
+  def angle_query(*, type: Optional["GraphqlValue"] = None, name: Optional["GraphqlValue"] = None, directives: Optional[List["GraphqlDirective"]] = None, selectionSet: Optional["GraphqlSelectionSet"] = None, arguments: Optional[List["GraphqlArgument"]] = None, alias: Optional[Union[Just["GraphqlValue"], Just[None]]] = None, loc: Optional["SrcFileLocation"] = None) -> "GraphqlField":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -114,7 +117,7 @@ class GraphqlDirectiveDef(GleanSchemaPredicate):
     return f"graphql.DirectiveDef.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, argumentDefs, 'argumentDefs'), angle_for(__env, locations, 'locations')])) or '_' } }}", DirectiveDef
 
   @staticmethod
-  def angle_query(*, name: Optional["GraphqlValue"] = None, argumentDefs: Optional[List["GraphqlInputValueDef"]] = None, locations: Optional[List[Tuple[()]]] = None) -> "GraphqlDirectiveDef":
+  def angle_query(*, name: Optional["GraphqlValue"] = None, argumentDefs: Optional[List["GraphqlInputValueDef"]] = None, locations: Optional[List["GraphqlDirectiveDefLocation"]] = None) -> "GraphqlDirectiveDef":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -125,7 +128,7 @@ class GraphqlFragment(GleanSchemaPredicate):
     return f"graphql.Fragment.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, typeCondition, 'typeCondition'), angle_for(__env, variableDefs, 'variableDefs'), angle_for(__env, directives, 'directives'), angle_for(__env, selectionSet, 'selectionSet'), angle_for(__env, loc, 'loc')])) or '_' } }}", Fragment
 
   @staticmethod
-  def angle_query(*, name: Optional["GraphqlValue"] = None, typeCondition: Optional["GraphqlValue"] = None, variableDefs: Optional[List["GraphqlVariableDef"]] = None, directives: Optional[List["GraphqlDirective"]] = None, selectionSet: Optional[Tuple[()]] = None, loc: Optional[Tuple[()]] = None) -> "GraphqlFragment":
+  def angle_query(*, name: Optional["GraphqlValue"] = None, typeCondition: Optional["GraphqlValue"] = None, variableDefs: Optional[List["GraphqlVariableDef"]] = None, directives: Optional[List["GraphqlDirective"]] = None, selectionSet: Optional["GraphqlSelectionSet"] = None, loc: Optional["SrcFileLocation"] = None) -> "GraphqlFragment":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -158,7 +161,7 @@ class GraphqlDeclarationName(GleanSchemaPredicate):
     return f"graphql.DeclarationName.2 { angle_for(__env, arg, None) or '_' }", DeclarationName
 
   @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "GraphqlDeclarationName":
+  def angle_query(*, arg: Optional["GraphqlDeclaration"] = None) -> "GraphqlDeclarationName":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -169,7 +172,7 @@ class GraphqlFileDeclarations(GleanSchemaPredicate):
     return f"graphql.FileDeclarations.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, span, 'span'), angle_for(__env, declaration, 'declaration')])) or '_' } }}", FileDeclarations
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, span: Optional[Tuple[()]] = None, declaration: Optional[Tuple[()]] = None) -> "GraphqlFileDeclarations":
+  def angle_query(*, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None, declaration: Optional["GraphqlDeclaration"] = None) -> "GraphqlFileDeclarations":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -180,7 +183,7 @@ class GraphqlDeclarationLocation(GleanSchemaPredicate):
     return f"graphql.DeclarationLocation.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", DeclarationLocation
 
   @staticmethod
-  def angle_query(*, declaration: Optional[Tuple[()]] = None, file: Optional["SrcFile"] = None, span: Optional[Tuple[()]] = None) -> "GraphqlDeclarationLocation":
+  def angle_query(*, declaration: Optional["GraphqlDeclaration"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "GraphqlDeclarationLocation":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -213,7 +216,7 @@ class GraphqlQuery(GleanSchemaPredicate):
     return f"graphql.Query.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, directives, 'directives'), angle_for(__env, variableDefs, 'variableDefs'), angle_for(__env, selectionSet, 'selectionSet'), angle_for(__env, loc, 'loc')])) or '_' } }}", Query
 
   @staticmethod
-  def angle_query(*, name: Optional["GraphqlValue"] = None, directives: Optional[List["GraphqlDirective"]] = None, variableDefs: Optional[List["GraphqlVariableDef"]] = None, selectionSet: Optional[Tuple[()]] = None, loc: Optional[Tuple[()]] = None) -> "GraphqlQuery":
+  def angle_query(*, name: Optional["GraphqlValue"] = None, directives: Optional[List["GraphqlDirective"]] = None, variableDefs: Optional[List["GraphqlVariableDef"]] = None, selectionSet: Optional["GraphqlSelectionSet"] = None, loc: Optional["SrcFileLocation"] = None) -> "GraphqlQuery":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -246,8 +249,60 @@ class GraphqlInlineFragment(GleanSchemaPredicate):
     return f"graphql.InlineFragment.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, inferredTypeCondition, 'inferredTypeCondition'), angle_for(__env, directives, 'directives'), angle_for(__env, selectionSet, 'selectionSet'), angle_for(__env, typeCondition, 'typeCondition')])) or '_' } }}", InlineFragment
 
   @staticmethod
-  def angle_query(*, inferredTypeCondition: Optional["GraphqlValue"] = None, directives: Optional[List["GraphqlDirective"]] = None, selectionSet: Optional[Tuple[()]] = None, typeCondition: Optional[Union[Just["GraphqlValue"], Just[None]]] = None) -> "GraphqlInlineFragment":
+  def angle_query(*, inferredTypeCondition: Optional["GraphqlValue"] = None, directives: Optional[List["GraphqlDirective"]] = None, selectionSet: Optional["GraphqlSelectionSet"] = None, typeCondition: Optional[Union[Just["GraphqlValue"], Just[None]]] = None) -> "GraphqlInlineFragment":
     raise Exception("this function can only be called from @angle_query")
+
+
+
+
+
+class GraphqlDirectiveDefLocation(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"graphql.DirectiveDefLocation.2 { angle_for(__env, arg, None) or '_' }", DirectiveDefLocation
+
+  @staticmethod
+  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "GraphqlDirectiveDefLocation":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class GraphqlSelectionSet(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], fields: ast.Expr, inlineFragments: ast.Expr, fragmentSpreads: ast.Expr) -> Tuple[str, Struct]:
+    return f"graphql.SelectionSet.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, fields, 'fields'), angle_for(__env, inlineFragments, 'inlineFragments'), angle_for(__env, fragmentSpreads, 'fragmentSpreads')])) or '_' } }}", SelectionSet
+
+  @staticmethod
+  def angle_query(*, fields: Optional[List["GraphqlField"]] = None, inlineFragments: Optional[List["GraphqlInlineFragment"]] = None, fragmentSpreads: Optional[List["GraphqlValue"]] = None) -> "GraphqlSelectionSet":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class GraphqlDeclaration(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], query_: ast.Expr, fragment_: ast.Expr, field_: ast.Expr, enum_: ast.Expr, directive_: ast.Expr) -> Tuple[str, Struct]:
+    return f"graphql.Declaration.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, query_, 'query_'), angle_for(__env, fragment_, 'fragment_'), angle_for(__env, field_, 'field_'), angle_for(__env, enum_, 'enum_'), angle_for(__env, directive_, 'directive_')])) or '_' } }}", Declaration
+
+  @staticmethod
+  def angle_query_query_(*, query_: "GraphqlQuery") -> "GraphqlDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_fragment_(*, fragment_: "GraphqlFragment") -> "GraphqlDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_field_(*, field_: "GraphqlFieldDef") -> "GraphqlDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_enum_(*, enum_: "GraphqlEnumTypeDef") -> "GraphqlDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_directive_(*, directive_: "GraphqlDirectiveDef") -> "GraphqlDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
 
 
 

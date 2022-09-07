@@ -1,9 +1,9 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union, List, Dict
+from typing import Optional, Tuple, Union, List, Dict, TypeVar
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 from glean.schema.py.src import *
 
 
@@ -23,7 +23,7 @@ class CodemarkupLsifLsifEntityLocation(GleanSchemaPredicate):
     return f"codemarkup.lsif.LsifEntityLocation.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location')])) or '_' } }}", lsifLsifEntityLocation
 
   @staticmethod
-  def angle_query(*, entity: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "CodemarkupLsifLsifEntityLocation":
+  def angle_query(*, entity: Optional["CodeLsifEntity"] = None, location: Optional["CodemarkupTypesLocation"] = None) -> "CodemarkupLsifLsifEntityLocation":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -34,7 +34,7 @@ class CodemarkupLsifLsifResolveLocation(GleanSchemaPredicate):
     return f"codemarkup.lsif.LsifResolveLocation.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, location, 'location'), angle_for(__env, entity, 'entity')])) or '_' } }}", lsifLsifResolveLocation
 
   @staticmethod
-  def angle_query(*, location: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupLsifLsifResolveLocation":
+  def angle_query(*, location: Optional["CodemarkupTypesLocation"] = None, entity: Optional["CodeLsifEntity"] = None) -> "CodemarkupLsifLsifResolveLocation":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -45,7 +45,7 @@ class CodemarkupLsifLsifEntityUses(GleanSchemaPredicate):
     return f"codemarkup.lsif.LsifEntityUses.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, file, 'file'), angle_for(__env, range, 'range')])) or '_' } }}", lsifLsifEntityUses
 
   @staticmethod
-  def angle_query(*, target: Optional[Tuple[()]] = None, file: Optional["SrcFile"] = None, range: Optional[Tuple[()]] = None) -> "CodemarkupLsifLsifEntityUses":
+  def angle_query(*, target: Optional["CodeLsifEntity"] = None, file: Optional["SrcFile"] = None, range: Optional["SrcRange"] = None) -> "CodemarkupLsifLsifEntityUses":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -56,7 +56,7 @@ class CodemarkupLsifLsifFileEntityXRefLocations(GleanSchemaPredicate):
     return f"codemarkup.lsif.LsifFileEntityXRefLocations.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xref, 'xref'), angle_for(__env, entity, 'entity')])) or '_' } }}", lsifLsifFileEntityXRefLocations
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, xref: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupLsifLsifFileEntityXRefLocations":
+  def angle_query(*, file: Optional["SrcFile"] = None, xref: Optional["CodemarkupTypesXRefLocation"] = None, entity: Optional["CodeLsifEntity"] = None) -> "CodemarkupLsifLsifFileEntityXRefLocations":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -67,7 +67,7 @@ class CodemarkupLsifEntityInfo(GleanSchemaPredicate):
     return f"codemarkup.lsif.EntityInfo.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, info, 'info')])) or '_' } }}", lsifEntityInfo
 
   @staticmethod
-  def angle_query(*, entity: Optional[Tuple[()]] = None, info: Optional[Tuple[()]] = None) -> "CodemarkupLsifEntityInfo":
+  def angle_query(*, entity: Optional["CodeLsifEntity"] = None, info: Optional["CodemarkupTypesSymbolInfo"] = None) -> "CodemarkupLsifEntityInfo":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -78,8 +78,10 @@ class CodemarkupLsifLsifKindToKind(GleanSchemaPredicate):
     return f"codemarkup.lsif.LsifKindToKind.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, lsif, 'lsif'), angle_for(__env, kind, 'kind')])) or '_' } }}", lsifLsifKindToKind
 
   @staticmethod
-  def angle_query(*, lsif: Optional[Tuple[()]] = None, kind: Optional[Tuple[()]] = None) -> "CodemarkupLsifLsifKindToKind":
+  def angle_query(*, lsif: Optional["LsifSymbolKind"] = None, kind: Optional["CodemarkupTypesSymbolKind"] = None) -> "CodemarkupLsifLsifKindToKind":
     raise Exception("this function can only be called from @angle_query")
+
+
 
 
 

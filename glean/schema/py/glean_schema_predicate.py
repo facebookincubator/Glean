@@ -14,6 +14,11 @@ class GleanSchemaPredicate:
   def angle_query(*, arg: str) -> "GleanSchemaPredicate":
     raise Exception("this function can only be called from @angle_query")
 
+class InnerGleanSchemaPredicate:
+  @staticmethod
+  def angle_query(*, arg: str) -> "InnerGleanSchemaPredicate":
+    raise Exception("this function can only be called as a parameter of a GleanSchemaPredicate")
+
 def angle_for(__env: Dict[str, R], key: ast.Expr, field_name: Optional[str]) -> str:
   if key is None:
     return f''

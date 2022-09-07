@@ -51,6 +51,12 @@ genSchemaPy _version preddefs typedefs =
   , "    " <> "raise Exception" <>
     "(\"this function can only be called from @angle_query\")"
   , ""
+  , "class InnerGleanSchemaPredicate:"
+  , "  " <> "@staticmethod"
+  , "  " <> "def angle_query(*, arg: str) -> \"InnerGleanSchemaPredicate\":"
+  , "    " <> "raise Exception" <> "(\"this function can only be called as" <>
+    " a parameter of a GleanSchemaPredicate\")"
+  , ""
   , "def angle_for(__env: Dict[str, R], key: ast.Expr, field_name: Optional[str]) -> str:"
   , "  " <> "if key is None:"
   , "    " <> "return f''"
@@ -145,14 +151,21 @@ genSchemaPy _version preddefs typedefs =
       Text.unpack (Text.concat namespaces) <.> "py",
       Text.intercalate (newline <> newline)
         ( header namespaces namePolicy preds :
-          genPredicateImports namespaces preds :
-          [genAllPredicates AngleQuery namespaces namePolicy preds]
+          genPredicateImports namespaces (preds ++ predsFromTypes preds types) :
+          genAllPredicates AngleQuery namespaces namePolicy
+            "GleanSchemaPredicate" preds :
+          -- InnerGleanSchemaPredicate hides Named Types from the user's outer
+          -- query. InnerGleanSchemaPredicates cannot be called directly by an
+          -- Angle query, they must be used only as inner query fields.
+          [genAllPredicates AngleQuery namespaces namePolicy
+            "InnerGleanSchemaPredicate" $ predsFromTypes preds types]
         )
     )
-  | (namespaces, (_, preds, _)) <- schemas
+  | (namespaces, (_, preds, types)) <- schemas
   ]
   where
     schemas = HashMap.toList declsPerNamespace
+    predsFromTypes preds types = genNamedTypes (head preds) types
     namePolicy = mkNamePolicy preddefs typedefs
     declsPerNamespace =
       addNamespaceDependencies $ sortDeclsByNamespace preddefs typedefs
@@ -179,11 +192,12 @@ genAllPredicates
   :: PredicateMode
   -> NameSpaces
   -> NamePolicy
+  -> Text
   -> [ResolvedPredicateDef]
   -> Text
-genAllPredicates predicateMode _ namePolicy preds = Text.unlines $
+genAllPredicates predicateMode _ namePolicy parent preds = Text.unlines $
   [ Text.unlines
-    [ "class " <> class_name <> "(GleanSchemaPredicate):"
+    [ "class " <> class_name <> "(" <> parent <> "):"
       , "  " <> "@staticmethod"
       , "  " <> "def build_angle(__env: Dict[str, R], " <> buildAngleTypes <>
         ") -> Tuple[str, Struct]:"
@@ -202,13 +216,24 @@ genAllPredicates predicateMode _ namePolicy preds = Text.unlines $
           predicateName = predicateRef_name ref
           class_name = pythonClassName predicateName
           return_class_name = returnPythonClassName predicateName
-          addSumTypes = genAllPredicates DummyQuery [Text.pack ""] namePolicy $
-            unionDummyPreds key pred class_name
+          addSumTypes = genAllPredicates DummyQuery [Text.pack ""] namePolicy
+            parent $ unionDummyPreds key pred class_name
           anglePredicateAndVersion = case predicateMode of
             AngleQuery -> predicateName <> "." <>
               showt (predicateRef_version ref)
             _ -> Text.pack ""
   ]
+
+genNamedTypes
+  :: ResolvedPredicateDef
+  -> [ResolvedTypeDef]
+  -> [ResolvedPredicateDef]
+genNamedTypes pred types = map (\t -> genTypePred (genType t)) types
+  where
+    genTypePred (n, t, v) = PredicateDef (PredicateRef n v) t t
+      (predicateDefDeriving pred)
+    genType TypeDef{typeDefRef = TypeRef{..}, ..} =
+      (typeRef_name, typeDefType, typeRef_version)
 
 unionDummyPreds :: Type_ PredicateRef tref
   -> PredicateDef_ s PredicateRef tref
@@ -230,7 +255,6 @@ unionDummyPreds key pred class_name = map
           SumTy fields -> [(n, SumTy fields)]
           _ -> []
         name = from_ . fieldDefName
-
 
 addClientMethods :: Text -> Text -> NamePolicy -> ResolvedType -> Text
 addClientMethods class_name kTy namePolicy key = case key of
@@ -258,11 +282,11 @@ header :: NameSpaces -> NamePolicy -> [ResolvedPredicateDef] -> Text
 header namespaces namePolicy preds = Text.unlines $
   [ "# \x40generated"
   , "# To regenerate this file run fbcode//glean/schema/gen/sync"
-  , "from typing import Optional, Tuple, Union, List, Dict"
+  , "from typing import Optional, Tuple, Union, List, Dict, TypeVar"
   , "from thrift.py3 import Struct"
   , "import ast"
   , "from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate"<>
-    ", angle_for, R, Just"
+    ", angle_for, R, Just, InnerGleanSchemaPredicate"
   ] ++ addPythonImportsForKeys namespaces namePolicy preds
 
 pythonClassName :: Text -> Text
@@ -317,7 +341,7 @@ data ValueTy = APIValues | ASTValues | AngleForValues
   deriving (Eq, Show)
 
 -- | Generate a value type
-valueTy :: Text -> ValueTy  -> NamePolicy -> ResolvedType -> Text
+valueTy :: Text -> ValueTy -> NamePolicy -> ResolvedType -> Text
 valueTy predName mode namePolicy t = case t of
   RecordTy fields -> handleFields fields
   SumTy fields -> handleFields fields
@@ -333,7 +357,7 @@ valueTy predName mode namePolicy t = case t of
       else intercalatedFields
       where
         queryFields = map (createQueryField mode) fields
-        intercalatedFields = Text.intercalate ", " queryFields
+        intercalatedFields = intercalateQueryFields queryFields
         intercalatedFieldsWithBrackets = " {{ { \', \'.join(filter" <>
           "(lambda x: x != '', [" <> intercalatedFields <> "])) or \'_\' } }}"
     createQueryField mode field = case mode of
@@ -348,7 +372,6 @@ valueTy predName mode namePolicy t = case t of
           pythonVarName = from_ name
           appendType t = pythonVarName <> ": " <> t
     defaultFieldName = Text.pack "arg"
-    wrapOptionalArg arg = "Optional[" <> arg <> "] = None"
 
 from_ :: Text -> Text
 from_ name -- avoid Python keywards
@@ -375,6 +398,9 @@ baseTy unionName namePolicy t = Text.pack $ case t of
       type_ = baseTy unionName namePolicy field
   MaybeTy field -> Text.unpack $
     "Union[Just[" <> baseTy unionName namePolicy field <> "], Just[None]]"
+  NamedTy typeRef -> case HashMap.lookup typeRef (typeNames namePolicy) of
+    Just(ns, x) -> concatMap Text.unpack ("\"" : map cap1 ns ++ [x] ++ ["\""])
+    _ -> error $ "namedPythonName: " ++ show typeRef
   -- TODO other types
   _ -> "Tuple[()]"
 
@@ -424,6 +450,12 @@ predicateImports namespaces namePolicy preds = filter
             Just (ns, _) -> Text.concat ns
             _ -> error $ "predicatePythonName: " ++ show pred
           _ -> Text.pack ""
+
+intercalateQueryFields :: [Text] -> Text
+intercalateQueryFields fields = Text.intercalate ", " fields
+
+wrapOptionalArg :: Text -> Text
+wrapOptionalArg arg = "Optional[" <> arg <> "] = None"
 
 mkUniq :: Ord a => [a] -> [a]
 mkUniq = toList . fromList

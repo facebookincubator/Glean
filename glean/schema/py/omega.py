@@ -1,9 +1,9 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union, List, Dict
+from typing import Optional, Tuple, Union, List, Dict, TypeVar
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 from glean.schema.py.src import *
 
 
@@ -25,6 +25,8 @@ from glean.schema.omega.types import (
     Class_,
     OmegaExecutionNode,
     DependencyPath,
+    OmegaEntity,
+    GraphNode,
 )
 
 
@@ -34,7 +36,7 @@ class OmegaDependencyList(GleanSchemaPredicate):
     return f"omega.DependencyList.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, node, 'node'), angle_for(__env, entities, 'entities')])) or '_' } }}", DependencyList
 
   @staticmethod
-  def angle_query(*, node: Optional[Tuple[()]] = None, entities: Optional[List[Tuple[()]]] = None) -> "OmegaDependencyList":
+  def angle_query(*, node: Optional["OmegaGraphNode"] = None, entities: Optional[List["OmegaOmegaEntity"]] = None) -> "OmegaDependencyList":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -122,7 +124,7 @@ class OmegaDependencyPathByEntity(GleanSchemaPredicate):
     return f"omega.DependencyPathByEntity.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, node, 'node'), angle_for(__env, shortestPath, 'shortestPath')])) or '_' } }}", DependencyPathByEntity
 
   @staticmethod
-  def angle_query(*, entity: Optional[Tuple[()]] = None, node: Optional[Tuple[()]] = None, shortestPath: Optional[List[Tuple[()]]] = None) -> "OmegaDependencyPathByEntity":
+  def angle_query(*, entity: Optional["OmegaOmegaEntity"] = None, node: Optional["OmegaGraphNode"] = None, shortestPath: Optional[List["OmegaGraphNode"]] = None) -> "OmegaDependencyPathByEntity":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -144,7 +146,7 @@ class OmegaTargetNodeLocations(GleanSchemaPredicate):
     return f"omega.TargetNodeLocations.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, source, 'source'), angle_for(__env, target, 'target'), angle_for(__env, pathToFile, 'pathToFile'), angle_for(__env, targetByteSpan, 'targetByteSpan')])) or '_' } }}", TargetNodeLocations
 
   @staticmethod
-  def angle_query(*, source: Optional[Tuple[()]] = None, target: Optional[Tuple[()]] = None, pathToFile: Optional["SrcFile"] = None, targetByteSpan: Optional[Tuple[()]] = None) -> "OmegaTargetNodeLocations":
+  def angle_query(*, source: Optional["HackDeclaration"] = None, target: Optional["HackDeclaration"] = None, pathToFile: Optional["SrcFile"] = None, targetByteSpan: Optional["SrcByteSpan"] = None) -> "OmegaTargetNodeLocations":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -177,7 +179,7 @@ class OmegaOmegaEntityMetadata(GleanSchemaPredicate):
     return f"omega.OmegaEntityMetadata.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, oncall, 'oncall'), angle_for(__env, isAbstract, 'isAbstract'), angle_for(__env, isICE, 'isICE')])) or '_' } }}", OmegaEntityMetadata
 
   @staticmethod
-  def angle_query(*, entity: Optional[Tuple[()]] = None, oncall: Optional[Union[Just["OmegaOncall"], Just[None]]] = None, isAbstract: Optional[bool] = None, isICE: Optional[bool] = None) -> "OmegaOmegaEntityMetadata":
+  def angle_query(*, entity: Optional["OmegaOmegaEntity"] = None, oncall: Optional[Union[Just["OmegaOncall"], Just[None]]] = None, isAbstract: Optional[bool] = None, isICE: Optional[bool] = None) -> "OmegaOmegaEntityMetadata":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -210,8 +212,66 @@ class OmegaDependencyPath(GleanSchemaPredicate):
     return f"omega.DependencyPath.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, node, 'node'), angle_for(__env, entity, 'entity'), angle_for(__env, shortestPath, 'shortestPath')])) or '_' } }}", DependencyPath
 
   @staticmethod
-  def angle_query(*, node: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None, shortestPath: Optional[List[Tuple[()]]] = None) -> "OmegaDependencyPath":
+  def angle_query(*, node: Optional["OmegaGraphNode"] = None, entity: Optional["OmegaOmegaEntity"] = None, shortestPath: Optional[List["OmegaGraphNode"]] = None) -> "OmegaDependencyPath":
     raise Exception("this function can only be called from @angle_query")
+
+
+
+
+
+class OmegaOmegaEntity(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], endpoint: ast.Expr, policy: ast.Expr, action: ast.Expr, block: ast.Expr, executionNode: ast.Expr) -> Tuple[str, Struct]:
+    return f"omega.OmegaEntity.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, endpoint, 'endpoint'), angle_for(__env, policy, 'policy'), angle_for(__env, action, 'action'), angle_for(__env, block, 'block'), angle_for(__env, executionNode, 'executionNode')])) or '_' } }}", OmegaEntity
+
+  @staticmethod
+  def angle_query_endpoint(*, endpoint: "OmegaOmegaEndpoint") -> "OmegaOmegaEntity":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_policy(*, policy: "OmegaOmegaPolicy") -> "OmegaOmegaEntity":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_action(*, action: "OmegaOmegaAction") -> "OmegaOmegaEntity":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_block(*, block: "OmegaOmegaBlock") -> "OmegaOmegaEntity":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_executionNode(*, executionNode: "OmegaOmegaExecutionNode") -> "OmegaOmegaEntity":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+
+class OmegaGraphNode(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], class_: ast.Expr, function_: ast.Expr, method: ast.Expr, enum_: ast.Expr, config: ast.Expr) -> Tuple[str, Struct]:
+    return f"omega.GraphNode.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, class_, 'class_'), angle_for(__env, function_, 'function_'), angle_for(__env, method, 'method'), angle_for(__env, enum_, 'enum_'), angle_for(__env, config, 'config')])) or '_' } }}", GraphNode
+
+  @staticmethod
+  def angle_query_class_(*, class_: "OmegaClass_") -> "OmegaGraphNode":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_function_(*, function_: "OmegaFunction_") -> "OmegaGraphNode":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_method(*, method: "OmegaMethod") -> "OmegaGraphNode":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_enum_(*, enum_: "OmegaEnum_") -> "OmegaGraphNode":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_config(*, config: "OmegaConfig") -> "OmegaGraphNode":
+    raise Exception("this function can only be called from @angle_query")
+
 
 
 

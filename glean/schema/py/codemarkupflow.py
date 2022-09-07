@@ -1,9 +1,9 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union, List, Dict
+from typing import Optional, Tuple, Union, List, Dict, TypeVar
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 from glean.schema.py.src import *
 
 
@@ -23,7 +23,7 @@ class CodemarkupFlowFlowEntityLocation(GleanSchemaPredicate):
     return f"codemarkup.flow.FlowEntityLocation.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location')])) or '_' } }}", flowFlowEntityLocation
 
   @staticmethod
-  def angle_query(*, entity: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "CodemarkupFlowFlowEntityLocation":
+  def angle_query(*, entity: Optional["CodeFlowEntity"] = None, location: Optional["CodemarkupTypesLocation"] = None) -> "CodemarkupFlowFlowEntityLocation":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -34,7 +34,7 @@ class CodemarkupFlowFlowResolveLocation(GleanSchemaPredicate):
     return f"codemarkup.flow.FlowResolveLocation.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, location, 'location'), angle_for(__env, entity, 'entity')])) or '_' } }}", flowFlowResolveLocation
 
   @staticmethod
-  def angle_query(*, location: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupFlowFlowResolveLocation":
+  def angle_query(*, location: Optional["CodemarkupTypesLocation"] = None, entity: Optional["CodeFlowEntity"] = None) -> "CodemarkupFlowFlowResolveLocation":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -45,7 +45,7 @@ class CodemarkupFlowFlowFileReferenceEntityXRefLocations(GleanSchemaPredicate):
     return f"codemarkup.flow.FlowFileReferenceEntityXRefLocations.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xref, 'xref'), angle_for(__env, entity, 'entity')])) or '_' } }}", flowFlowFileReferenceEntityXRefLocations
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, xref: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupFlowFlowFileReferenceEntityXRefLocations":
+  def angle_query(*, file: Optional["SrcFile"] = None, xref: Optional["CodemarkupTypesXRefLocation"] = None, entity: Optional["CodeFlowEntity"] = None) -> "CodemarkupFlowFlowFileReferenceEntityXRefLocations":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -56,7 +56,7 @@ class CodemarkupFlowFlowFileImportDeclEntityXRefLocations(GleanSchemaPredicate):
     return f"codemarkup.flow.FlowFileImportDeclEntityXRefLocations.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xref, 'xref'), angle_for(__env, entity, 'entity')])) or '_' } }}", flowFlowFileImportDeclEntityXRefLocations
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, xref: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupFlowFlowFileImportDeclEntityXRefLocations":
+  def angle_query(*, file: Optional["SrcFile"] = None, xref: Optional["CodemarkupTypesXRefLocation"] = None, entity: Optional["CodeFlowEntity"] = None) -> "CodemarkupFlowFlowFileImportDeclEntityXRefLocations":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -67,7 +67,7 @@ class CodemarkupFlowFlowFileEntityXRefLocations(GleanSchemaPredicate):
     return f"codemarkup.flow.FlowFileEntityXRefLocations.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xref, 'xref'), angle_for(__env, entity, 'entity')])) or '_' } }}", flowFlowFileEntityXRefLocations
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, xref: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupFlowFlowFileEntityXRefLocations":
+  def angle_query(*, file: Optional["SrcFile"] = None, xref: Optional["CodemarkupTypesXRefLocation"] = None, entity: Optional["CodeFlowEntity"] = None) -> "CodemarkupFlowFlowFileEntityXRefLocations":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -78,8 +78,10 @@ class CodemarkupFlowFlowEntityUses(GleanSchemaPredicate):
     return f"codemarkup.flow.FlowEntityUses.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", flowFlowEntityUses
 
   @staticmethod
-  def angle_query(*, target: Optional[Tuple[()]] = None, file: Optional["SrcFile"] = None, span: Optional[Tuple[()]] = None) -> "CodemarkupFlowFlowEntityUses":
+  def angle_query(*, target: Optional["CodeFlowEntity"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "CodemarkupFlowFlowEntityUses":
     raise Exception("this function can only be called from @angle_query")
+
+
 
 
 

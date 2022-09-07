@@ -1,9 +1,9 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union, List, Dict
+from typing import Optional, Tuple, Union, List, Dict, TypeVar
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 from glean.schema.py.src import *
 
 
@@ -68,6 +68,24 @@ from glean.schema.hack.types import (
     FileDeclarations,
     TypeConstDeclaration,
     DeclarationLocation,
+    Argument,
+    context,
+    TypeParameter,
+    Definition,
+    Declaration,
+    XRefTarget,
+    ModuleMembership,
+    ReifyKind,
+    XRef,
+    Parameter,
+    CallArgument,
+    Visibility,
+    Occurrence,
+    ContainerDeclaration,
+    TypeConstKind,
+    Constraint,
+    Variance,
+    ConstraintKind,
 )
 
 
@@ -77,7 +95,7 @@ class HackMethodDefinition(GleanSchemaPredicate):
     return f"hack.MethodDefinition.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, signature, 'signature'), angle_for(__env, visibility, 'visibility'), angle_for(__env, isAbstract, 'isAbstract'), angle_for(__env, isAsync, 'isAsync'), angle_for(__env, isFinal, 'isFinal'), angle_for(__env, isStatic, 'isStatic'), angle_for(__env, attributes, 'attributes'), angle_for(__env, typeParams, 'typeParams')])) or '_' } }}", MethodDefinition
 
   @staticmethod
-  def angle_query(*, declaration: Optional["HackMethodDeclaration"] = None, signature: Optional["HackSignature"] = None, visibility: Optional[Tuple[()]] = None, isAbstract: Optional[bool] = None, isAsync: Optional[bool] = None, isFinal: Optional[bool] = None, isStatic: Optional[bool] = None, attributes: Optional[List["HackUserAttribute"]] = None, typeParams: Optional[List[Tuple[()]]] = None) -> "HackMethodDefinition":
+  def angle_query(*, declaration: Optional["HackMethodDeclaration"] = None, signature: Optional["HackSignature"] = None, visibility: Optional["HackVisibility"] = None, isAbstract: Optional[bool] = None, isAsync: Optional[bool] = None, isFinal: Optional[bool] = None, isStatic: Optional[bool] = None, attributes: Optional[List["HackUserAttribute"]] = None, typeParams: Optional[List["HackTypeParameter"]] = None) -> "HackMethodDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -121,7 +139,7 @@ class HackTypedefDefinition(GleanSchemaPredicate):
     return f"hack.TypedefDefinition.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, isTransparent, 'isTransparent'), angle_for(__env, attributes, 'attributes'), angle_for(__env, typeParams, 'typeParams'), angle_for(__env, module_, 'module_')])) or '_' } }}", TypedefDefinition
 
   @staticmethod
-  def angle_query(*, declaration: Optional["HackTypedefDeclaration"] = None, isTransparent: Optional[bool] = None, attributes: Optional[List["HackUserAttribute"]] = None, typeParams: Optional[List[Tuple[()]]] = None, module_: Optional[Union[Just[Tuple[()]], Just[None]]] = None) -> "HackTypedefDefinition":
+  def angle_query(*, declaration: Optional["HackTypedefDeclaration"] = None, isTransparent: Optional[bool] = None, attributes: Optional[List["HackUserAttribute"]] = None, typeParams: Optional[List["HackTypeParameter"]] = None, module_: Optional[Union[Just["HackModuleMembership"], Just[None]]] = None) -> "HackTypedefDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -132,7 +150,7 @@ class HackAttributeToDefinition(GleanSchemaPredicate):
     return f"hack.AttributeToDefinition.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, attribute, 'attribute'), angle_for(__env, definition, 'definition')])) or '_' } }}", AttributeToDefinition
 
   @staticmethod
-  def angle_query(*, attribute: Optional["HackUserAttribute"] = None, definition: Optional[Tuple[()]] = None) -> "HackAttributeToDefinition":
+  def angle_query(*, attribute: Optional["HackUserAttribute"] = None, definition: Optional["HackDefinition"] = None) -> "HackAttributeToDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -143,7 +161,7 @@ class HackNamespaceMember(GleanSchemaPredicate):
     return f"hack.NamespaceMember.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, namespace_, 'namespace_'), angle_for(__env, decl, 'decl')])) or '_' } }}", NamespaceMember
 
   @staticmethod
-  def angle_query(*, namespace_: Optional["HackNamespaceQName"] = None, decl: Optional[Tuple[()]] = None) -> "HackNamespaceMember":
+  def angle_query(*, namespace_: Optional["HackNamespaceQName"] = None, decl: Optional["HackDeclaration"] = None) -> "HackNamespaceMember":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -165,7 +183,7 @@ class HackContainerParent(GleanSchemaPredicate):
     return f"hack.ContainerParent.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, container, 'container'), angle_for(__env, parent, 'parent')])) or '_' } }}", ContainerParent
 
   @staticmethod
-  def angle_query(*, container: Optional[Tuple[()]] = None, parent: Optional[Tuple[()]] = None) -> "HackContainerParent":
+  def angle_query(*, container: Optional["HackContainerDeclaration"] = None, parent: Optional["HackContainerDeclaration"] = None) -> "HackContainerParent":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -176,7 +194,7 @@ class HackInterfaceDefinition(GleanSchemaPredicate):
     return f"hack.InterfaceDefinition.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, members, 'members'), angle_for(__env, extends_, 'extends_'), angle_for(__env, attributes, 'attributes'), angle_for(__env, typeParams, 'typeParams'), angle_for(__env, requireExtends, 'requireExtends'), angle_for(__env, module_, 'module_')])) or '_' } }}", InterfaceDefinition
 
   @staticmethod
-  def angle_query(*, declaration: Optional["HackInterfaceDeclaration"] = None, members: Optional[List[Tuple[()]]] = None, extends_: Optional[List["HackInterfaceDeclaration"]] = None, attributes: Optional[List["HackUserAttribute"]] = None, typeParams: Optional[List[Tuple[()]]] = None, requireExtends: Optional[List["HackClassDeclaration"]] = None, module_: Optional[Union[Just[Tuple[()]], Just[None]]] = None) -> "HackInterfaceDefinition":
+  def angle_query(*, declaration: Optional["HackInterfaceDeclaration"] = None, members: Optional[List["HackDeclaration"]] = None, extends_: Optional[List["HackInterfaceDeclaration"]] = None, attributes: Optional[List["HackUserAttribute"]] = None, typeParams: Optional[List["HackTypeParameter"]] = None, requireExtends: Optional[List["HackClassDeclaration"]] = None, module_: Optional[Union[Just["HackModuleMembership"], Just[None]]] = None) -> "HackInterfaceDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -198,7 +216,7 @@ class HackContainerDeclarationQName(GleanSchemaPredicate):
     return f"hack.ContainerDeclarationQName.6 { angle_for(__env, arg, None) or '_' }", ContainerDeclarationQName
 
   @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "HackContainerDeclarationQName":
+  def angle_query(*, arg: Optional["HackContainerDeclaration"] = None) -> "HackContainerDeclarationQName":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -209,7 +227,7 @@ class HackTargetUses(GleanSchemaPredicate):
     return f"hack.TargetUses.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, file, 'file'), angle_for(__env, uses, 'uses')])) or '_' } }}", TargetUses
 
   @staticmethod
-  def angle_query(*, target: Optional[Tuple[()]] = None, file: Optional["SrcFile"] = None, uses: Optional[Tuple[()]] = None) -> "HackTargetUses":
+  def angle_query(*, target: Optional["HackXRefTarget"] = None, file: Optional["SrcFile"] = None, uses: Optional["SrcByteSpans"] = None) -> "HackTargetUses":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -220,7 +238,7 @@ class HackTargetUsesAbs(GleanSchemaPredicate):
     return f"hack.TargetUsesAbs.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, file, 'file'), angle_for(__env, uses, 'uses')])) or '_' } }}", TargetUsesAbs
 
   @staticmethod
-  def angle_query(*, target: Optional[Tuple[()]] = None, file: Optional["SrcFile"] = None, uses: Optional[Tuple[()]] = None) -> "HackTargetUsesAbs":
+  def angle_query(*, target: Optional["HackXRefTarget"] = None, file: Optional["SrcFile"] = None, uses: Optional["SrcByteSpans"] = None) -> "HackTargetUsesAbs":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -330,7 +348,7 @@ class HackMethodDeclaration(GleanSchemaPredicate):
     return f"hack.MethodDeclaration.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, container, 'container')])) or '_' } }}", MethodDeclaration
 
   @staticmethod
-  def angle_query(*, name: Optional["HackName"] = None, container: Optional[Tuple[()]] = None) -> "HackMethodDeclaration":
+  def angle_query(*, name: Optional["HackName"] = None, container: Optional["HackContainerDeclaration"] = None) -> "HackMethodDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -341,7 +359,7 @@ class HackFileXRefs(GleanSchemaPredicate):
     return f"hack.FileXRefs.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xrefs, 'xrefs')])) or '_' } }}", FileXRefs
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, xrefs: Optional[List[Tuple[()]]] = None) -> "HackFileXRefs":
+  def angle_query(*, file: Optional["SrcFile"] = None, xrefs: Optional[List["HackXRef"]] = None) -> "HackFileXRefs":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -374,7 +392,7 @@ class HackDeclarationSpan(GleanSchemaPredicate):
     return f"hack.DeclarationSpan.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", DeclarationSpan
 
   @staticmethod
-  def angle_query(*, declaration: Optional[Tuple[()]] = None, file: Optional["SrcFile"] = None, span: Optional[Tuple[()]] = None) -> "HackDeclarationSpan":
+  def angle_query(*, declaration: Optional["HackDeclaration"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "HackDeclarationSpan":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -385,7 +403,7 @@ class HackSignature(GleanSchemaPredicate):
     return f"hack.Signature.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, returns, 'returns'), angle_for(__env, parameters, 'parameters'), angle_for(__env, contexts, 'contexts')])) or '_' } }}", Signature
 
   @staticmethod
-  def angle_query(*, returns: Optional[Union[Just["HackType"], Just[None]]] = None, parameters: Optional[List[Tuple[()]]] = None, contexts: Optional[Union[Just[List["HackContext_"]], Just[None]]] = None) -> "HackSignature":
+  def angle_query(*, returns: Optional[Union[Just["HackType"], Just[None]]] = None, parameters: Optional[List["HackParameter"]] = None, contexts: Optional[Union[Just[List["HackContext_"]], Just[None]]] = None) -> "HackSignature":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -396,7 +414,7 @@ class HackContainerChild(GleanSchemaPredicate):
     return f"hack.ContainerChild.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, container, 'container'), angle_for(__env, child, 'child')])) or '_' } }}", ContainerChild
 
   @staticmethod
-  def angle_query(*, container: Optional[Tuple[()]] = None, child: Optional[Tuple[()]] = None) -> "HackContainerChild":
+  def angle_query(*, container: Optional["HackContainerDeclaration"] = None, child: Optional["HackContainerDeclaration"] = None) -> "HackContainerChild":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -429,7 +447,7 @@ class HackDeclarationSource(GleanSchemaPredicate):
     return f"hack.DeclarationSource.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, source, 'source')])) or '_' } }}", DeclarationSource
 
   @staticmethod
-  def angle_query(*, target: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None) -> "HackDeclarationSource":
+  def angle_query(*, target: Optional["HackDeclaration"] = None, source: Optional["HackDeclaration"] = None) -> "HackDeclarationSource":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -462,7 +480,7 @@ class HackPropertyDefinition(GleanSchemaPredicate):
     return f"hack.PropertyDefinition.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, type, 'type'), angle_for(__env, visibility, 'visibility'), angle_for(__env, isFinal, 'isFinal'), angle_for(__env, isAbstract, 'isAbstract'), angle_for(__env, isStatic, 'isStatic'), angle_for(__env, attributes, 'attributes')])) or '_' } }}", PropertyDefinition
 
   @staticmethod
-  def angle_query(*, declaration: Optional["HackPropertyDeclaration"] = None, type: Optional[Union[Just["HackType"], Just[None]]] = None, visibility: Optional[Tuple[()]] = None, isFinal: Optional[bool] = None, isAbstract: Optional[bool] = None, isStatic: Optional[bool] = None, attributes: Optional[List["HackUserAttribute"]] = None) -> "HackPropertyDefinition":
+  def angle_query(*, declaration: Optional["HackPropertyDeclaration"] = None, type: Optional[Union[Just["HackType"], Just[None]]] = None, visibility: Optional["HackVisibility"] = None, isFinal: Optional[bool] = None, isAbstract: Optional[bool] = None, isStatic: Optional[bool] = None, attributes: Optional[List["HackUserAttribute"]] = None) -> "HackPropertyDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -473,7 +491,7 @@ class HackClassConstDeclaration(GleanSchemaPredicate):
     return f"hack.ClassConstDeclaration.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, container, 'container')])) or '_' } }}", ClassConstDeclaration
 
   @staticmethod
-  def angle_query(*, name: Optional["HackName"] = None, container: Optional[Tuple[()]] = None) -> "HackClassConstDeclaration":
+  def angle_query(*, name: Optional["HackName"] = None, container: Optional["HackContainerDeclaration"] = None) -> "HackClassConstDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -495,7 +513,7 @@ class HackDeclarationComment(GleanSchemaPredicate):
     return f"hack.DeclarationComment.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", DeclarationComment
 
   @staticmethod
-  def angle_query(*, declaration: Optional[Tuple[()]] = None, file: Optional["SrcFile"] = None, span: Optional[Tuple[()]] = None) -> "HackDeclarationComment":
+  def angle_query(*, declaration: Optional["HackDeclaration"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "HackDeclarationComment":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -517,7 +535,7 @@ class HackClassDefinition(GleanSchemaPredicate):
     return f"hack.ClassDefinition.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, isAbstract, 'isAbstract'), angle_for(__env, isFinal, 'isFinal'), angle_for(__env, members, 'members'), angle_for(__env, extends_, 'extends_'), angle_for(__env, implements_, 'implements_'), angle_for(__env, uses, 'uses'), angle_for(__env, attributes, 'attributes'), angle_for(__env, typeParams, 'typeParams'), angle_for(__env, module_, 'module_')])) or '_' } }}", ClassDefinition
 
   @staticmethod
-  def angle_query(*, declaration: Optional["HackClassDeclaration"] = None, isAbstract: Optional[bool] = None, isFinal: Optional[bool] = None, members: Optional[List[Tuple[()]]] = None, extends_: Optional[Union[Just["HackClassDeclaration"], Just[None]]] = None, implements_: Optional[List["HackInterfaceDeclaration"]] = None, uses: Optional[List["HackTraitDeclaration"]] = None, attributes: Optional[List["HackUserAttribute"]] = None, typeParams: Optional[List[Tuple[()]]] = None, module_: Optional[Union[Just[Tuple[()]], Just[None]]] = None) -> "HackClassDefinition":
+  def angle_query(*, declaration: Optional["HackClassDeclaration"] = None, isAbstract: Optional[bool] = None, isFinal: Optional[bool] = None, members: Optional[List["HackDeclaration"]] = None, extends_: Optional[Union[Just["HackClassDeclaration"], Just[None]]] = None, implements_: Optional[List["HackInterfaceDeclaration"]] = None, uses: Optional[List["HackTraitDeclaration"]] = None, attributes: Optional[List["HackUserAttribute"]] = None, typeParams: Optional[List["HackTypeParameter"]] = None, module_: Optional[Union[Just["HackModuleMembership"], Just[None]]] = None) -> "HackClassDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -572,7 +590,7 @@ class HackTypeConstDefinition(GleanSchemaPredicate):
     return f"hack.TypeConstDefinition.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, type, 'type'), angle_for(__env, kind, 'kind'), angle_for(__env, attributes, 'attributes')])) or '_' } }}", TypeConstDefinition
 
   @staticmethod
-  def angle_query(*, declaration: Optional["HackTypeConstDeclaration"] = None, type: Optional[Union[Just["HackType"], Just[None]]] = None, kind: Optional[Tuple[()]] = None, attributes: Optional[List["HackUserAttribute"]] = None) -> "HackTypeConstDefinition":
+  def angle_query(*, declaration: Optional["HackTypeConstDeclaration"] = None, type: Optional[Union[Just["HackType"], Just[None]]] = None, kind: Optional["HackTypeConstKind"] = None, attributes: Optional[List["HackUserAttribute"]] = None) -> "HackTypeConstDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -583,7 +601,7 @@ class HackDeclarationTarget(GleanSchemaPredicate):
     return f"hack.DeclarationTarget.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, source, 'source'), angle_for(__env, target, 'target')])) or '_' } }}", DeclarationTarget
 
   @staticmethod
-  def angle_query(*, source: Optional[Tuple[()]] = None, target: Optional[Tuple[()]] = None) -> "HackDeclarationTarget":
+  def angle_query(*, source: Optional["HackDeclaration"] = None, target: Optional["HackDeclaration"] = None) -> "HackDeclarationTarget":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -594,7 +612,7 @@ class HackSymbol(GleanSchemaPredicate):
     return f"hack.symbol.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name_lowercase, 'name_lowercase'), angle_for(__env, valid, 'valid'), angle_for(__env, kind_id, 'kind_id'), angle_for(__env, ns_id, 'ns_id'), angle_for(__env, filehash_id, 'filehash_id'), angle_for(__env, is_abstract, 'is_abstract'), angle_for(__env, is_final, 'is_final'), angle_for(__env, canonical_name, 'canonical_name')])) or '_' } }}", symbol
 
   @staticmethod
-  def angle_query(*, name_lowercase: Optional[str] = None, valid: Optional[Tuple[()]] = None, kind_id: Optional[int] = None, ns_id: Optional[int] = None, filehash_id: Optional[str] = None, is_abstract: Optional[bool] = None, is_final: Optional[bool] = None, canonical_name: Optional[str] = None) -> "HackSymbol":
+  def angle_query(*, name_lowercase: Optional[str] = None, valid: Optional["Hackcontext"] = None, kind_id: Optional[int] = None, ns_id: Optional[int] = None, filehash_id: Optional[str] = None, is_abstract: Optional[bool] = None, is_final: Optional[bool] = None, canonical_name: Optional[str] = None) -> "HackSymbol":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -605,7 +623,7 @@ class HackEnumDefinition(GleanSchemaPredicate):
     return f"hack.EnumDefinition.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, enumBase, 'enumBase'), angle_for(__env, enumConstraint, 'enumConstraint'), angle_for(__env, enumerators, 'enumerators'), angle_for(__env, attributes, 'attributes'), angle_for(__env, includes, 'includes'), angle_for(__env, isEnumClass, 'isEnumClass'), angle_for(__env, module_, 'module_')])) or '_' } }}", EnumDefinition
 
   @staticmethod
-  def angle_query(*, declaration: Optional["HackEnumDeclaration"] = None, enumBase: Optional["HackType"] = None, enumConstraint: Optional[Union[Just["HackType"], Just[None]]] = None, enumerators: Optional[List["HackEnumerator"]] = None, attributes: Optional[List["HackUserAttribute"]] = None, includes: Optional[List["HackEnumDeclaration"]] = None, isEnumClass: Optional[bool] = None, module_: Optional[Union[Just[Tuple[()]], Just[None]]] = None) -> "HackEnumDefinition":
+  def angle_query(*, declaration: Optional["HackEnumDeclaration"] = None, enumBase: Optional["HackType"] = None, enumConstraint: Optional[Union[Just["HackType"], Just[None]]] = None, enumerators: Optional[List["HackEnumerator"]] = None, attributes: Optional[List["HackUserAttribute"]] = None, includes: Optional[List["HackEnumDeclaration"]] = None, isEnumClass: Optional[bool] = None, module_: Optional[Union[Just["HackModuleMembership"], Just[None]]] = None) -> "HackEnumDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -649,7 +667,7 @@ class HackFunctionDefinition(GleanSchemaPredicate):
     return f"hack.FunctionDefinition.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, signature, 'signature'), angle_for(__env, isAsync, 'isAsync'), angle_for(__env, attributes, 'attributes'), angle_for(__env, typeParams, 'typeParams'), angle_for(__env, module_, 'module_')])) or '_' } }}", FunctionDefinition
 
   @staticmethod
-  def angle_query(*, declaration: Optional["HackFunctionDeclaration"] = None, signature: Optional["HackSignature"] = None, isAsync: Optional[bool] = None, attributes: Optional[List["HackUserAttribute"]] = None, typeParams: Optional[List[Tuple[()]]] = None, module_: Optional[Union[Just[Tuple[()]], Just[None]]] = None) -> "HackFunctionDefinition":
+  def angle_query(*, declaration: Optional["HackFunctionDeclaration"] = None, signature: Optional["HackSignature"] = None, isAsync: Optional[bool] = None, attributes: Optional[List["HackUserAttribute"]] = None, typeParams: Optional[List["HackTypeParameter"]] = None, module_: Optional[Union[Just["HackModuleMembership"], Just[None]]] = None) -> "HackFunctionDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -660,7 +678,7 @@ class HackTraitDefinition(GleanSchemaPredicate):
     return f"hack.TraitDefinition.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, members, 'members'), angle_for(__env, implements_, 'implements_'), angle_for(__env, uses, 'uses'), angle_for(__env, attributes, 'attributes'), angle_for(__env, typeParams, 'typeParams'), angle_for(__env, requireExtends, 'requireExtends'), angle_for(__env, requireImplements, 'requireImplements'), angle_for(__env, module_, 'module_')])) or '_' } }}", TraitDefinition
 
   @staticmethod
-  def angle_query(*, declaration: Optional["HackTraitDeclaration"] = None, members: Optional[List[Tuple[()]]] = None, implements_: Optional[List["HackInterfaceDeclaration"]] = None, uses: Optional[List["HackTraitDeclaration"]] = None, attributes: Optional[List["HackUserAttribute"]] = None, typeParams: Optional[List[Tuple[()]]] = None, requireExtends: Optional[List["HackClassDeclaration"]] = None, requireImplements: Optional[List["HackInterfaceDeclaration"]] = None, module_: Optional[Union[Just[Tuple[()]], Just[None]]] = None) -> "HackTraitDefinition":
+  def angle_query(*, declaration: Optional["HackTraitDeclaration"] = None, members: Optional[List["HackDeclaration"]] = None, implements_: Optional[List["HackInterfaceDeclaration"]] = None, uses: Optional[List["HackTraitDeclaration"]] = None, attributes: Optional[List["HackUserAttribute"]] = None, typeParams: Optional[List["HackTypeParameter"]] = None, requireExtends: Optional[List["HackClassDeclaration"]] = None, requireImplements: Optional[List["HackInterfaceDeclaration"]] = None, module_: Optional[Union[Just["HackModuleMembership"], Just[None]]] = None) -> "HackTraitDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -671,7 +689,7 @@ class HackDeclarationName(GleanSchemaPredicate):
     return f"hack.DeclarationName.6 { angle_for(__env, arg, None) or '_' }", DeclarationName
 
   @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "HackDeclarationName":
+  def angle_query(*, arg: Optional["HackDeclaration"] = None) -> "HackDeclarationName":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -682,7 +700,7 @@ class HackPropertyDeclaration(GleanSchemaPredicate):
     return f"hack.PropertyDeclaration.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, container, 'container')])) or '_' } }}", PropertyDeclaration
 
   @staticmethod
-  def angle_query(*, name: Optional["HackName"] = None, container: Optional[Tuple[()]] = None) -> "HackPropertyDeclaration":
+  def angle_query(*, name: Optional["HackName"] = None, container: Optional["HackContainerDeclaration"] = None) -> "HackPropertyDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -693,7 +711,7 @@ class HackFileCall(GleanSchemaPredicate):
     return f"hack.FileCall.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, callee_span, 'callee_span'), angle_for(__env, call_args, 'call_args')])) or '_' } }}", FileCall
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, callee_span: Optional[Tuple[()]] = None, call_args: Optional[List[Tuple[()]]] = None) -> "HackFileCall":
+  def angle_query(*, file: Optional["SrcFile"] = None, callee_span: Optional["SrcByteSpan"] = None, call_args: Optional[List["HackCallArgument"]] = None) -> "HackFileCall":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -704,7 +722,7 @@ class HackFileDeclarations(GleanSchemaPredicate):
     return f"hack.FileDeclarations.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, declarations, 'declarations')])) or '_' } }}", FileDeclarations
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, declarations: Optional[List[Tuple[()]]] = None) -> "HackFileDeclarations":
+  def angle_query(*, file: Optional["SrcFile"] = None, declarations: Optional[List["HackDeclaration"]] = None) -> "HackFileDeclarations":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -715,7 +733,7 @@ class HackTypeConstDeclaration(GleanSchemaPredicate):
     return f"hack.TypeConstDeclaration.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, container, 'container')])) or '_' } }}", TypeConstDeclaration
 
   @staticmethod
-  def angle_query(*, name: Optional["HackName"] = None, container: Optional[Tuple[()]] = None) -> "HackTypeConstDeclaration":
+  def angle_query(*, name: Optional["HackName"] = None, container: Optional["HackContainerDeclaration"] = None) -> "HackTypeConstDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -726,7 +744,317 @@ class HackDeclarationLocation(GleanSchemaPredicate):
     return f"hack.DeclarationLocation.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", DeclarationLocation
 
   @staticmethod
-  def angle_query(*, declaration: Optional[Tuple[()]] = None, file: Optional["SrcFile"] = None, span: Optional[Tuple[()]] = None) -> "HackDeclarationLocation":
+  def angle_query(*, declaration: Optional["HackDeclaration"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "HackDeclarationLocation":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+
+
+class HackArgument(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], lit: ast.Expr, xref: ast.Expr) -> Tuple[str, Struct]:
+    return f"hack.Argument.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, lit, 'lit'), angle_for(__env, xref, 'xref')])) or '_' } }}", Argument
+
+  @staticmethod
+  def angle_query_lit(*, lit: "HackStringLiteral") -> "HackArgument":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_xref(*, xref: "HackXRefTarget") -> "HackArgument":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+
+class HackContext(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], acid: ast.Expr, actype: ast.Expr, acnew: ast.Expr) -> Tuple[str, Struct]:
+    return f"hack.context.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, acid, 'acid'), angle_for(__env, actype, 'actype'), angle_for(__env, acnew, 'acnew')])) or '_' } }}", context
+
+  @staticmethod
+  def angle_query(*, acid: Optional[bool] = None, actype: Optional[bool] = None, acnew: Optional[bool] = None) -> "HackContext":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class HackTypeParameter(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], name: ast.Expr, variance: ast.Expr, reifyKind: ast.Expr, constraints: ast.Expr, attributes: ast.Expr) -> Tuple[str, Struct]:
+    return f"hack.TypeParameter.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, variance, 'variance'), angle_for(__env, reifyKind, 'reifyKind'), angle_for(__env, constraints, 'constraints'), angle_for(__env, attributes, 'attributes')])) or '_' } }}", TypeParameter
+
+  @staticmethod
+  def angle_query(*, name: Optional["HackName"] = None, variance: Optional["HackVariance"] = None, reifyKind: Optional["HackReifyKind"] = None, constraints: Optional[List["HackConstraint"]] = None, attributes: Optional[List["HackUserAttribute"]] = None) -> "HackTypeParameter":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class HackDefinition(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], class_: ast.Expr, classConst: ast.Expr, enum_: ast.Expr, function_: ast.Expr, globalConst: ast.Expr, interface_: ast.Expr, trait: ast.Expr, method: ast.Expr, property_: ast.Expr, typeConst: ast.Expr, typedef_: ast.Expr, module: ast.Expr) -> Tuple[str, Struct]:
+    return f"hack.Definition.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, class_, 'class_'), angle_for(__env, classConst, 'classConst'), angle_for(__env, enum_, 'enum_'), angle_for(__env, function_, 'function_'), angle_for(__env, globalConst, 'globalConst'), angle_for(__env, interface_, 'interface_'), angle_for(__env, trait, 'trait'), angle_for(__env, method, 'method'), angle_for(__env, property_, 'property_'), angle_for(__env, typeConst, 'typeConst'), angle_for(__env, typedef_, 'typedef_'), angle_for(__env, module, 'module')])) or '_' } }}", Definition
+
+  @staticmethod
+  def angle_query_class_(*, class_: "HackClassDefinition") -> "HackDefinition":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_classConst(*, classConst: "HackClassConstDefinition") -> "HackDefinition":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_enum_(*, enum_: "HackEnumDefinition") -> "HackDefinition":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_function_(*, function_: "HackFunctionDefinition") -> "HackDefinition":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_globalConst(*, globalConst: "HackGlobalConstDefinition") -> "HackDefinition":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_interface_(*, interface_: "HackInterfaceDefinition") -> "HackDefinition":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_trait(*, trait: "HackTraitDefinition") -> "HackDefinition":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_method(*, method: "HackMethodDefinition") -> "HackDefinition":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_property_(*, property_: "HackPropertyDefinition") -> "HackDefinition":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_typeConst(*, typeConst: "HackTypeConstDefinition") -> "HackDefinition":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_typedef_(*, typedef_: "HackTypedefDefinition") -> "HackDefinition":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_module(*, module: "HackModuleDefinition") -> "HackDefinition":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+
+class HackDeclaration(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], classConst: ast.Expr, container: ast.Expr, enumerator: ast.Expr, function_: ast.Expr, globalConst: ast.Expr, namespace_: ast.Expr, method: ast.Expr, property_: ast.Expr, typeConst: ast.Expr, typedef_: ast.Expr, module: ast.Expr) -> Tuple[str, Struct]:
+    return f"hack.Declaration.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, classConst, 'classConst'), angle_for(__env, container, 'container'), angle_for(__env, enumerator, 'enumerator'), angle_for(__env, function_, 'function_'), angle_for(__env, globalConst, 'globalConst'), angle_for(__env, namespace_, 'namespace_'), angle_for(__env, method, 'method'), angle_for(__env, property_, 'property_'), angle_for(__env, typeConst, 'typeConst'), angle_for(__env, typedef_, 'typedef_'), angle_for(__env, module, 'module')])) or '_' } }}", Declaration
+
+  @staticmethod
+  def angle_query_classConst(*, classConst: "HackClassConstDeclaration") -> "HackDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_container(*, container: "HackContainerDeclaration") -> "HackDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_enumerator(*, enumerator: "HackEnumerator") -> "HackDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_function_(*, function_: "HackFunctionDeclaration") -> "HackDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_globalConst(*, globalConst: "HackGlobalConstDeclaration") -> "HackDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_namespace_(*, namespace_: "HackNamespaceDeclaration") -> "HackDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_method(*, method: "HackMethodDeclaration") -> "HackDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_property_(*, property_: "HackPropertyDeclaration") -> "HackDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_typeConst(*, typeConst: "HackTypeConstDeclaration") -> "HackDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_typedef_(*, typedef_: "HackTypedefDeclaration") -> "HackDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_module(*, module: "HackModuleDeclaration") -> "HackDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+
+class HackXRefTarget(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], declaration: ast.Expr, occurrence: ast.Expr) -> Tuple[str, Struct]:
+    return f"hack.XRefTarget.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, occurrence, 'occurrence')])) or '_' } }}", XRefTarget
+
+  @staticmethod
+  def angle_query_declaration(*, declaration: "HackDeclaration") -> "HackXRefTarget":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_occurrence(*, occurrence: "HackOccurrence") -> "HackXRefTarget":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+
+class HackModuleMembership(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], declaration: ast.Expr, internal: ast.Expr) -> Tuple[str, Struct]:
+    return f"hack.ModuleMembership.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, internal, 'internal')])) or '_' } }}", ModuleMembership
+
+  @staticmethod
+  def angle_query(*, declaration: Optional["HackModuleDeclaration"] = None, internal: Optional[bool] = None) -> "HackModuleMembership":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class HackReifyKind(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"hack.ReifyKind.6 { angle_for(__env, arg, None) or '_' }", ReifyKind
+
+  @staticmethod
+  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "HackReifyKind":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class HackXRef(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], target: ast.Expr, ranges: ast.Expr) -> Tuple[str, Struct]:
+    return f"hack.XRef.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, ranges, 'ranges')])) or '_' } }}", XRef
+
+  @staticmethod
+  def angle_query(*, target: Optional["HackXRefTarget"] = None, ranges: Optional["SrcByteSpans"] = None) -> "HackXRef":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class HackParameter(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], name: ast.Expr, type: ast.Expr, isInout: ast.Expr, isVariadic: ast.Expr, defaultValue: ast.Expr, attributes: ast.Expr) -> Tuple[str, Struct]:
+    return f"hack.Parameter.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, type, 'type'), angle_for(__env, isInout, 'isInout'), angle_for(__env, isVariadic, 'isVariadic'), angle_for(__env, defaultValue, 'defaultValue'), angle_for(__env, attributes, 'attributes')])) or '_' } }}", Parameter
+
+  @staticmethod
+  def angle_query(*, name: Optional["HackName"] = None, type: Optional[Union[Just["HackType"], Just[None]]] = None, isInout: Optional[bool] = None, isVariadic: Optional[bool] = None, defaultValue: Optional[Union[Just[str], Just[None]]] = None, attributes: Optional[List["HackUserAttribute"]] = None) -> "HackParameter":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class HackCallArgument(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], span: ast.Expr, argument: ast.Expr) -> Tuple[str, Struct]:
+    return f"hack.CallArgument.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, span, 'span'), angle_for(__env, argument, 'argument')])) or '_' } }}", CallArgument
+
+  @staticmethod
+  def angle_query(*, span: Optional["SrcRelByteSpan"] = None, argument: Optional[Union[Just["HackArgument"], Just[None]]] = None) -> "HackCallArgument":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class HackVisibility(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"hack.Visibility.6 { angle_for(__env, arg, None) or '_' }", Visibility
+
+  @staticmethod
+  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "HackVisibility":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class HackOccurrence(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], method: ast.Expr) -> Tuple[str, Struct]:
+    return f"hack.Occurrence.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, method, 'method')])) or '_' } }}", Occurrence
+
+  @staticmethod
+  def angle_query_method(*, method: "HackMethodOccurrence") -> "HackOccurrence":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+
+class HackContainerDeclaration(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], class_: ast.Expr, enum_: ast.Expr, interface_: ast.Expr, trait: ast.Expr) -> Tuple[str, Struct]:
+    return f"hack.ContainerDeclaration.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, class_, 'class_'), angle_for(__env, enum_, 'enum_'), angle_for(__env, interface_, 'interface_'), angle_for(__env, trait, 'trait')])) or '_' } }}", ContainerDeclaration
+
+  @staticmethod
+  def angle_query_class_(*, class_: "HackClassDeclaration") -> "HackContainerDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_enum_(*, enum_: "HackEnumDeclaration") -> "HackContainerDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_interface_(*, interface_: "HackInterfaceDeclaration") -> "HackContainerDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_trait(*, trait: "HackTraitDeclaration") -> "HackContainerDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+
+class HackTypeConstKind(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"hack.TypeConstKind.6 { angle_for(__env, arg, None) or '_' }", TypeConstKind
+
+  @staticmethod
+  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "HackTypeConstKind":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class HackConstraint(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], constraintKind: ast.Expr, type: ast.Expr) -> Tuple[str, Struct]:
+    return f"hack.Constraint.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, constraintKind, 'constraintKind'), angle_for(__env, type, 'type')])) or '_' } }}", Constraint
+
+  @staticmethod
+  def angle_query(*, constraintKind: Optional["HackConstraintKind"] = None, type: Optional["HackType"] = None) -> "HackConstraint":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class HackVariance(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"hack.Variance.6 { angle_for(__env, arg, None) or '_' }", Variance
+
+  @staticmethod
+  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "HackVariance":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class HackConstraintKind(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"hack.ConstraintKind.6 { angle_for(__env, arg, None) or '_' }", ConstraintKind
+
+  @staticmethod
+  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "HackConstraintKind":
     raise Exception("this function can only be called from @angle_query")
 
 

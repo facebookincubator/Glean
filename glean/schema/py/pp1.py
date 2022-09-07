@@ -1,9 +1,9 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union, List, Dict
+from typing import Optional, Tuple, Union, List, Dict, TypeVar
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 from glean.schema.py.src import *
 
 
@@ -22,7 +22,7 @@ class Pp1Define(GleanSchemaPredicate):
     return f"pp1.Define.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, macro, 'macro'), angle_for(__env, source, 'source')])) or '_' } }}", Define
 
   @staticmethod
-  def angle_query(*, macro: Optional["Pp1Macro"] = None, source: Optional[Tuple[()]] = None) -> "Pp1Define":
+  def angle_query(*, macro: Optional["Pp1Macro"] = None, source: Optional["SrcRange"] = None) -> "Pp1Define":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -33,7 +33,7 @@ class Pp1Undef(GleanSchemaPredicate):
     return f"pp1.Undef.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, macro, 'macro'), angle_for(__env, source, 'source')])) or '_' } }}", Undef
 
   @staticmethod
-  def angle_query(*, macro: Optional["Pp1Macro"] = None, source: Optional[Tuple[()]] = None) -> "Pp1Undef":
+  def angle_query(*, macro: Optional["Pp1Macro"] = None, source: Optional["SrcRange"] = None) -> "Pp1Undef":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -44,7 +44,7 @@ class Pp1Use(GleanSchemaPredicate):
     return f"pp1.Use.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, macro, 'macro'), angle_for(__env, name, 'name'), angle_for(__env, definition, 'definition'), angle_for(__env, expand, 'expand'), angle_for(__env, source, 'source')])) or '_' } }}", Use
 
   @staticmethod
-  def angle_query(*, macro: Optional["Pp1Macro"] = None, name: Optional[Tuple[()]] = None, definition: Optional[Union[Just[Tuple[()]], Just[None]]] = None, expand: Optional[bool] = None, source: Optional[Tuple[()]] = None) -> "Pp1Use":
+  def angle_query(*, macro: Optional["Pp1Macro"] = None, name: Optional["SrcByteRange"] = None, definition: Optional[Union[Just["SrcLoc"], Just[None]]] = None, expand: Optional[bool] = None, source: Optional["SrcRange"] = None) -> "Pp1Use":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -55,7 +55,7 @@ class Pp1Include(GleanSchemaPredicate):
     return f"pp1.Include.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, path, 'path'), angle_for(__env, source, 'source')])) or '_' } }}", Include
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, path: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None) -> "Pp1Include":
+  def angle_query(*, file: Optional["SrcFile"] = None, path: Optional["SrcByteRange"] = None, source: Optional["SrcRange"] = None) -> "Pp1Include":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -68,6 +68,8 @@ class Pp1Macro(GleanSchemaPredicate):
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "Pp1Macro":
     raise Exception("this function can only be called from @angle_query")
+
+
 
 
 

@@ -1,9 +1,9 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union, List, Dict
+from typing import Optional, Tuple, Union, List, Dict, TypeVar
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 from glean.schema.py.src import *
 
 
@@ -20,7 +20,7 @@ class CodemarkupThriftThriftFileEntityXRefLocations(GleanSchemaPredicate):
     return f"codemarkup.thrift.ThriftFileEntityXRefLocations.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xref, 'xref'), angle_for(__env, entity, 'entity')])) or '_' } }}", thriftThriftFileEntityXRefLocations
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, xref: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupThriftThriftFileEntityXRefLocations":
+  def angle_query(*, file: Optional["SrcFile"] = None, xref: Optional["CodemarkupTypesXRefLocation"] = None, entity: Optional["CodeThriftEntity"] = None) -> "CodemarkupThriftThriftFileEntityXRefLocations":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -31,7 +31,7 @@ class CodemarkupThriftThriftResolveLocation(GleanSchemaPredicate):
     return f"codemarkup.thrift.ThriftResolveLocation.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, location, 'location'), angle_for(__env, entity, 'entity')])) or '_' } }}", thriftThriftResolveLocation
 
   @staticmethod
-  def angle_query(*, location: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupThriftThriftResolveLocation":
+  def angle_query(*, location: Optional["CodemarkupTypesLocation"] = None, entity: Optional["CodeThriftEntity"] = None) -> "CodemarkupThriftThriftResolveLocation":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -42,8 +42,10 @@ class CodemarkupThriftThriftEntityLocation(GleanSchemaPredicate):
     return f"codemarkup.thrift.ThriftEntityLocation.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location')])) or '_' } }}", thriftThriftEntityLocation
 
   @staticmethod
-  def angle_query(*, entity: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "CodemarkupThriftThriftEntityLocation":
+  def angle_query(*, entity: Optional["CodeThriftEntity"] = None, location: Optional["CodemarkupTypesLocation"] = None) -> "CodemarkupThriftThriftEntityLocation":
     raise Exception("this function can only be called from @angle_query")
+
+
 
 
 

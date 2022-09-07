@@ -1,9 +1,9 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union, List, Dict
+from typing import Optional, Tuple, Union, List, Dict, TypeVar
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 from glean.schema.py.src import *
 
 
@@ -45,6 +45,14 @@ from glean.schema.lsif.types import (
     EntityKind,
     DefinitionHover,
     Moniker,
+    ToolInfo,
+    Location,
+    LanguageId,
+    SomeEntity,
+    SymbolKind,
+    Entity,
+    RangeSpan,
+    MonikerKind,
 )
 
 
@@ -54,7 +62,7 @@ class LsifRange(GleanSchemaPredicate):
     return f"lsif.Range.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, range, 'range'), angle_for(__env, fullRange, 'fullRange'), angle_for(__env, text, 'text')])) or '_' } }}", Range
 
   @staticmethod
-  def angle_query(*, range: Optional[Tuple[()]] = None, fullRange: Optional[Union[Just[Tuple[()]], Just[None]]] = None, text: Optional["LsifName"] = None) -> "LsifRange":
+  def angle_query(*, range: Optional["LsifRangeSpan"] = None, fullRange: Optional[Union[Just["LsifRangeSpan"], Just[None]]] = None, text: Optional["LsifName"] = None) -> "LsifRange":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -65,7 +73,7 @@ class LsifMonikerSymbolKind(GleanSchemaPredicate):
     return f"lsif.MonikerSymbolKind.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, moniker, 'moniker'), angle_for(__env, kind, 'kind')])) or '_' } }}", MonikerSymbolKind
 
   @staticmethod
-  def angle_query(*, moniker: Optional["LsifMoniker"] = None, kind: Optional[Tuple[()]] = None) -> "LsifMonikerSymbolKind":
+  def angle_query(*, moniker: Optional["LsifMoniker"] = None, kind: Optional["LsifSymbolKind"] = None) -> "LsifMonikerSymbolKind":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -87,7 +95,7 @@ class LsifDocument(GleanSchemaPredicate):
     return f"lsif.Document.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, language, 'language')])) or '_' } }}", Document
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, language: Optional[Tuple[()]] = None) -> "LsifDocument":
+  def angle_query(*, file: Optional["SrcFile"] = None, language: Optional["LsifLanguageId"] = None) -> "LsifDocument":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -98,7 +106,7 @@ class LsifToSrcRange(GleanSchemaPredicate):
     return f"lsif.ToSrcRange.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, lsif, 'lsif'), angle_for(__env, range, 'range')])) or '_' } }}", ToSrcRange
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, lsif: Optional[Tuple[()]] = None, range: Optional[Tuple[()]] = None) -> "LsifToSrcRange":
+  def angle_query(*, file: Optional["SrcFile"] = None, lsif: Optional["LsifRangeSpan"] = None, range: Optional["SrcRange"] = None) -> "LsifToSrcRange":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -131,7 +139,7 @@ class LsifProject(GleanSchemaPredicate):
     return f"lsif.Project.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, kind, 'kind')])) or '_' } }}", Project
 
   @staticmethod
-  def angle_query(*, kind: Optional[Tuple[()]] = None) -> "LsifProject":
+  def angle_query(*, kind: Optional["LsifLanguageId"] = None) -> "LsifProject":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -142,7 +150,7 @@ class LsifDefinitionKind(GleanSchemaPredicate):
     return f"lsif.DefinitionKind.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, defn, 'defn'), angle_for(__env, kind, 'kind')])) or '_' } }}", DefinitionKind
 
   @staticmethod
-  def angle_query(*, defn: Optional["LsifDefinition"] = None, kind: Optional[Tuple[()]] = None) -> "LsifDefinitionKind":
+  def angle_query(*, defn: Optional["LsifDefinition"] = None, kind: Optional["LsifSymbolKind"] = None) -> "LsifDefinitionKind":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -153,7 +161,7 @@ class LsifSearchByMoniker(GleanSchemaPredicate):
     return f"lsif.SearchByMoniker.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, ident, 'ident'), angle_for(__env, entity, 'entity')])) or '_' } }}", SearchByMoniker
 
   @staticmethod
-  def angle_query(*, ident: Optional["LsifMonikerId"] = None, entity: Optional[Tuple[()]] = None) -> "LsifSearchByMoniker":
+  def angle_query(*, ident: Optional["LsifMonikerId"] = None, entity: Optional["LsifEntity"] = None) -> "LsifSearchByMoniker":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -219,7 +227,7 @@ class LsifSearchByExactLocation(GleanSchemaPredicate):
     return f"lsif.SearchByExactLocation.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, span, 'span'), angle_for(__env, entity, 'entity')])) or '_' } }}", SearchByExactLocation
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, span: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "LsifSearchByExactLocation":
+  def angle_query(*, file: Optional["SrcFile"] = None, span: Optional["LsifRangeSpan"] = None, entity: Optional["LsifEntity"] = None) -> "LsifSearchByExactLocation":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -230,7 +238,7 @@ class LsifSearchNonLocalByLocation(GleanSchemaPredicate):
     return f"lsif.SearchNonLocalByLocation.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, name, 'name'), angle_for(__env, entity, 'entity')])) or '_' } }}", SearchNonLocalByLocation
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, name: Optional["LsifName"] = None, entity: Optional[Tuple[()]] = None) -> "LsifSearchNonLocalByLocation":
+  def angle_query(*, file: Optional["SrcFile"] = None, name: Optional["LsifName"] = None, entity: Optional["LsifEntity"] = None) -> "LsifSearchNonLocalByLocation":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -263,7 +271,7 @@ class LsifSearchByName(GleanSchemaPredicate):
     return f"lsif.SearchByName.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, entity, 'entity')])) or '_' } }}", SearchByName
 
   @staticmethod
-  def angle_query(*, name: Optional["LsifName"] = None, entity: Optional[Tuple[()]] = None) -> "LsifSearchByName":
+  def angle_query(*, name: Optional["LsifName"] = None, entity: Optional["LsifEntity"] = None) -> "LsifSearchByName":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -274,7 +282,7 @@ class LsifResolveLocation(GleanSchemaPredicate):
     return f"lsif.ResolveLocation.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, location, 'location'), angle_for(__env, entity, 'entity')])) or '_' } }}", ResolveLocation
 
   @staticmethod
-  def angle_query(*, location: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "LsifResolveLocation":
+  def angle_query(*, location: Optional["LsifLocation"] = None, entity: Optional["LsifEntity"] = None) -> "LsifResolveLocation":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -285,7 +293,7 @@ class LsifFileEntityXRefLocation(GleanSchemaPredicate):
     return f"lsif.FileEntityXRefLocation.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, source, 'source'), angle_for(__env, target, 'target'), angle_for(__env, entity, 'entity')])) or '_' } }}", FileEntityXRefLocation
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, source: Optional[Tuple[()]] = None, target: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "LsifFileEntityXRefLocation":
+  def angle_query(*, file: Optional["SrcFile"] = None, source: Optional["SrcRange"] = None, target: Optional["LsifLocation"] = None, entity: Optional["LsifEntity"] = None) -> "LsifFileEntityXRefLocation":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -296,7 +304,7 @@ class LsifDefinitionLocation(GleanSchemaPredicate):
     return f"lsif.DefinitionLocation.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, defn, 'defn'), angle_for(__env, location, 'location')])) or '_' } }}", DefinitionLocation
 
   @staticmethod
-  def angle_query(*, defn: Optional["LsifDefinition"] = None, location: Optional[Tuple[()]] = None) -> "LsifDefinitionLocation":
+  def angle_query(*, defn: Optional["LsifDefinition"] = None, location: Optional["LsifLocation"] = None) -> "LsifDefinitionLocation":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -329,7 +337,7 @@ class LsifTagDefinition(GleanSchemaPredicate):
     return f"lsif.TagDefinition.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, language, 'language'), angle_for(__env, defn, 'defn'), angle_for(__env, entity, 'entity')])) or '_' } }}", TagDefinition
 
   @staticmethod
-  def angle_query(*, language: Optional[Tuple[()]] = None, defn: Optional["LsifDefinitionMoniker"] = None, entity: Optional[Tuple[()]] = None) -> "LsifTagDefinition":
+  def angle_query(*, language: Optional["LsifLanguageId"] = None, defn: Optional["LsifDefinitionMoniker"] = None, entity: Optional["LsifEntity"] = None) -> "LsifTagDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -340,7 +348,7 @@ class LsifHoverContent(GleanSchemaPredicate):
     return f"lsif.HoverContent.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, text, 'text'), angle_for(__env, language, 'language')])) or '_' } }}", HoverContent
 
   @staticmethod
-  def angle_query(*, text: Optional["LsifHoverText"] = None, language: Optional[Tuple[()]] = None) -> "LsifHoverContent":
+  def angle_query(*, text: Optional["LsifHoverText"] = None, language: Optional["LsifLanguageId"] = None) -> "LsifHoverContent":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -351,7 +359,7 @@ class LsifSearchByExactLocationAndName(GleanSchemaPredicate):
     return f"lsif.SearchByExactLocationAndName.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, name, 'name'), angle_for(__env, span, 'span'), angle_for(__env, entity, 'entity')])) or '_' } }}", SearchByExactLocationAndName
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, name: Optional["LsifName"] = None, span: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "LsifSearchByExactLocationAndName":
+  def angle_query(*, file: Optional["SrcFile"] = None, name: Optional["LsifName"] = None, span: Optional["LsifRangeSpan"] = None, entity: Optional["LsifEntity"] = None) -> "LsifSearchByExactLocationAndName":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -373,7 +381,7 @@ class LsifEntityDefinition(GleanSchemaPredicate):
     return f"lsif.EntityDefinition.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, defn, 'defn')])) or '_' } }}", EntityDefinition
 
   @staticmethod
-  def angle_query(*, entity: Optional[Tuple[()]] = None, defn: Optional["LsifDefinitionMoniker"] = None) -> "LsifEntityDefinition":
+  def angle_query(*, entity: Optional["LsifEntity"] = None, defn: Optional["LsifDefinitionMoniker"] = None) -> "LsifEntityDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -384,7 +392,7 @@ class LsifEntityLocation(GleanSchemaPredicate):
     return f"lsif.EntityLocation.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location')])) or '_' } }}", EntityLocation
 
   @staticmethod
-  def angle_query(*, entity: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "LsifEntityLocation":
+  def angle_query(*, entity: Optional["LsifEntity"] = None, location: Optional["LsifLocation"] = None) -> "LsifEntityLocation":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -395,7 +403,7 @@ class LsifMetadata(GleanSchemaPredicate):
     return f"lsif.Metadata.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, lsifVersion, 'lsifVersion'), angle_for(__env, positionEncoding, 'positionEncoding'), angle_for(__env, toolInfo, 'toolInfo')])) or '_' } }}", Metadata
 
   @staticmethod
-  def angle_query(*, lsifVersion: Optional[str] = None, positionEncoding: Optional[str] = None, toolInfo: Optional[Union[Just[Tuple[()]], Just[None]]] = None) -> "LsifMetadata":
+  def angle_query(*, lsifVersion: Optional[str] = None, positionEncoding: Optional[str] = None, toolInfo: Optional[Union[Just["LsifToolInfo"], Just[None]]] = None) -> "LsifMetadata":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -417,7 +425,7 @@ class LsifEntityUses(GleanSchemaPredicate):
     return f"lsif.EntityUses.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, file, 'file'), angle_for(__env, range, 'range')])) or '_' } }}", EntityUses
 
   @staticmethod
-  def angle_query(*, target: Optional[Tuple[()]] = None, file: Optional["SrcFile"] = None, range: Optional[Tuple[()]] = None) -> "LsifEntityUses":
+  def angle_query(*, target: Optional["LsifEntity"] = None, file: Optional["SrcFile"] = None, range: Optional["SrcRange"] = None) -> "LsifEntityUses":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -428,7 +436,7 @@ class LsifEntityKind(GleanSchemaPredicate):
     return f"lsif.EntityKind.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, kind, 'kind')])) or '_' } }}", EntityKind
 
   @staticmethod
-  def angle_query(*, entity: Optional[Tuple[()]] = None, kind: Optional[Tuple[()]] = None) -> "LsifEntityKind":
+  def angle_query(*, entity: Optional["LsifEntity"] = None, kind: Optional["LsifSymbolKind"] = None) -> "LsifEntityKind":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -450,7 +458,147 @@ class LsifMoniker(GleanSchemaPredicate):
     return f"lsif.Moniker.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, kind, 'kind'), angle_for(__env, scheme, 'scheme'), angle_for(__env, ident, 'ident')])) or '_' } }}", Moniker
 
   @staticmethod
-  def angle_query(*, kind: Optional[Tuple[()]] = None, scheme: Optional["LsifMonikerScheme"] = None, ident: Optional["LsifMonikerId"] = None) -> "LsifMoniker":
+  def angle_query(*, kind: Optional["LsifMonikerKind"] = None, scheme: Optional["LsifMonikerScheme"] = None, ident: Optional["LsifMonikerId"] = None) -> "LsifMoniker":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+
+
+class LsifToolInfo(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], toolName: ast.Expr, toolArgs: ast.Expr, version: ast.Expr) -> Tuple[str, Struct]:
+    return f"lsif.ToolInfo.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, toolName, 'toolName'), angle_for(__env, toolArgs, 'toolArgs'), angle_for(__env, version, 'version')])) or '_' } }}", ToolInfo
+
+  @staticmethod
+  def angle_query(*, toolName: Optional[str] = None, toolArgs: Optional[List[str]] = None, version: Optional[Union[Just[str], Just[None]]] = None) -> "LsifToolInfo":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class LsifLocation(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], name: ast.Expr, file: ast.Expr, location: ast.Expr) -> Tuple[str, Struct]:
+    return f"lsif.Location.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, file, 'file'), angle_for(__env, location, 'location')])) or '_' } }}", Location
+
+  @staticmethod
+  def angle_query(*, name: Optional[str] = None, file: Optional["SrcFile"] = None, location: Optional["SrcRange"] = None) -> "LsifLocation":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class LsifLanguageId(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"lsif.LanguageId.2 { angle_for(__env, arg, None) or '_' }", LanguageId
+
+  @staticmethod
+  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "LsifLanguageId":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class LsifSomeEntity(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], decl: ast.Expr, defn: ast.Expr) -> Tuple[str, Struct]:
+    return f"lsif.SomeEntity.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, defn, 'defn')])) or '_' } }}", SomeEntity
+
+  @staticmethod
+  def angle_query_decl(*, decl: "LsifDeclaration") -> "LsifSomeEntity":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_defn(*, defn: "LsifDefinitionMoniker") -> "LsifSomeEntity":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+
+class LsifSymbolKind(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"lsif.SymbolKind.2 { angle_for(__env, arg, None) or '_' }", SymbolKind
+
+  @staticmethod
+  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "LsifSymbolKind":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class LsifEntity(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], erlang: ast.Expr, fsharp: ast.Expr, go: ast.Expr, haskell: ast.Expr, java: ast.Expr, kotlin: ast.Expr, ocaml: ast.Expr, python: ast.Expr, rust: ast.Expr, scala: ast.Expr, swift: ast.Expr, typescript: ast.Expr) -> Tuple[str, Struct]:
+    return f"lsif.Entity.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, erlang, 'erlang'), angle_for(__env, fsharp, 'fsharp'), angle_for(__env, go, 'go'), angle_for(__env, haskell, 'haskell'), angle_for(__env, java, 'java'), angle_for(__env, kotlin, 'kotlin'), angle_for(__env, ocaml, 'ocaml'), angle_for(__env, python, 'python'), angle_for(__env, rust, 'rust'), angle_for(__env, scala, 'scala'), angle_for(__env, swift, 'swift'), angle_for(__env, typescript, 'typescript')])) or '_' } }}", Entity
+
+  @staticmethod
+  def angle_query_erlang(*, erlang: "LsifSomeEntity") -> "LsifEntity":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_fsharp(*, fsharp: "LsifSomeEntity") -> "LsifEntity":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_go(*, go: "LsifSomeEntity") -> "LsifEntity":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_haskell(*, haskell: "LsifSomeEntity") -> "LsifEntity":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_java(*, java: "LsifSomeEntity") -> "LsifEntity":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_kotlin(*, kotlin: "LsifSomeEntity") -> "LsifEntity":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_ocaml(*, ocaml: "LsifSomeEntity") -> "LsifEntity":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_python(*, python: "LsifSomeEntity") -> "LsifEntity":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_rust(*, rust: "LsifSomeEntity") -> "LsifEntity":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_scala(*, scala: "LsifSomeEntity") -> "LsifEntity":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_swift(*, swift: "LsifSomeEntity") -> "LsifEntity":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_typescript(*, typescript: "LsifSomeEntity") -> "LsifEntity":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+
+class LsifRangeSpan(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], lineBegin: ast.Expr, columnBegin: ast.Expr, lineEnd: ast.Expr, columnEnd: ast.Expr) -> Tuple[str, Struct]:
+    return f"lsif.RangeSpan.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, lineBegin, 'lineBegin'), angle_for(__env, columnBegin, 'columnBegin'), angle_for(__env, lineEnd, 'lineEnd'), angle_for(__env, columnEnd, 'columnEnd')])) or '_' } }}", RangeSpan
+
+  @staticmethod
+  def angle_query(*, lineBegin: Optional[int] = None, columnBegin: Optional[int] = None, lineEnd: Optional[int] = None, columnEnd: Optional[int] = None) -> "LsifRangeSpan":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class LsifMonikerKind(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"lsif.MonikerKind.2 { angle_for(__env, arg, None) or '_' }", MonikerKind
+
+  @staticmethod
+  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "LsifMonikerKind":
     raise Exception("this function can only be called from @angle_query")
 
 

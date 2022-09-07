@@ -1,9 +1,9 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union, List, Dict
+from typing import Optional, Tuple, Union, List, Dict, TypeVar
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 from glean.schema.py.cxx1 import *
 
 
@@ -26,7 +26,7 @@ class SearchCxxSearchBySelector(GleanSchemaPredicate):
     return f"search.cxx.SearchBySelector.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, selector, 'selector'), angle_for(__env, entity, 'entity')])) or '_' } }}", cxxSearchBySelector
 
   @staticmethod
-  def angle_query(*, selector: Optional["Cxx1ObjcSelector"] = None, entity: Optional[Tuple[()]] = None) -> "SearchCxxSearchBySelector":
+  def angle_query(*, selector: Optional["Cxx1ObjcSelector"] = None, entity: Optional["CodeCxxEntity"] = None) -> "SearchCxxSearchBySelector":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -37,7 +37,7 @@ class SearchCxxSearchByScope(GleanSchemaPredicate):
     return f"search.cxx.SearchByScope.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, scope, 'scope'), angle_for(__env, entity, 'entity')])) or '_' } }}", cxxSearchByScope
 
   @staticmethod
-  def angle_query(*, scope: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCxxSearchByScope":
+  def angle_query(*, scope: Optional["Cxx1Scope"] = None, entity: Optional["CodeCxxEntity"] = None) -> "SearchCxxSearchByScope":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -59,7 +59,7 @@ class SearchCxxGlobalDeclarationWithName(GleanSchemaPredicate):
     return f"search.cxx.GlobalDeclarationWithName.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, decl, 'decl')])) or '_' } }}", cxxGlobalDeclarationWithName
 
   @staticmethod
-  def angle_query(*, name: Optional["Cxx1Name"] = None, decl: Optional[Tuple[()]] = None) -> "SearchCxxGlobalDeclarationWithName":
+  def angle_query(*, name: Optional["Cxx1Name"] = None, decl: Optional["Cxx1Declaration"] = None) -> "SearchCxxGlobalDeclarationWithName":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -70,7 +70,7 @@ class SearchCxxDeclIsDefn(GleanSchemaPredicate):
     return f"search.cxx.DeclIsDefn.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, defn, 'defn')])) or '_' } }}", cxxDeclIsDefn
 
   @staticmethod
-  def angle_query(*, decl: Optional[Tuple[()]] = None, defn: Optional[Tuple[()]] = None) -> "SearchCxxDeclIsDefn":
+  def angle_query(*, decl: Optional["Cxx1Declaration"] = None, defn: Optional["CodeCxxDefinition"] = None) -> "SearchCxxDeclIsDefn":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -81,7 +81,7 @@ class SearchCxxQueryToScope(GleanSchemaPredicate):
     return f"search.cxx.QueryToScope.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, query, 'query'), angle_for(__env, scope, 'scope')])) or '_' } }}", cxxQueryToScope
 
   @staticmethod
-  def angle_query(*, query: Optional[List[str]] = None, scope: Optional[Tuple[()]] = None) -> "SearchCxxQueryToScope":
+  def angle_query(*, query: Optional[List[str]] = None, scope: Optional["Cxx1Scope"] = None) -> "SearchCxxQueryToScope":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -92,7 +92,7 @@ class SearchCxxSearchByNameAndScope(GleanSchemaPredicate):
     return f"search.cxx.SearchByNameAndScope.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, scope, 'scope'), angle_for(__env, entity, 'entity')])) or '_' } }}", cxxSearchByNameAndScope
 
   @staticmethod
-  def angle_query(*, name: Optional["Cxx1Name"] = None, scope: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "SearchCxxSearchByNameAndScope":
+  def angle_query(*, name: Optional["Cxx1Name"] = None, scope: Optional["Cxx1Scope"] = None, entity: Optional["CodeCxxEntity"] = None) -> "SearchCxxSearchByNameAndScope":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -103,7 +103,7 @@ class SearchCxxEntityUses(GleanSchemaPredicate):
     return f"search.cxx.EntityUses.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, uses, 'uses')])) or '_' } }}", cxxEntityUses
 
   @staticmethod
-  def angle_query(*, entity: Optional[Tuple[()]] = None, uses: Optional["Cxx1TargetUses"] = None) -> "SearchCxxEntityUses":
+  def angle_query(*, entity: Optional["CodeCxxEntity"] = None, uses: Optional["Cxx1TargetUses"] = None) -> "SearchCxxEntityUses":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -116,6 +116,8 @@ class SearchCxxQueryToNSQName(GleanSchemaPredicate):
   @staticmethod
   def angle_query(*, query: Optional[List[str]] = None, scope: Optional["Cxx1NamespaceQName"] = None) -> "SearchCxxQueryToNSQName":
     raise Exception("this function can only be called from @angle_query")
+
+
 
 
 

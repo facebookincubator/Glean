@@ -1,9 +1,9 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union, List, Dict
+from typing import Optional, Tuple, Union, List, Dict, TypeVar
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 
 
 from glean.schema.gleantest.types import (
@@ -51,6 +51,18 @@ from glean.schema.gleantest.types import (
     testStringPairBox,
     testReflStringPair,
     testFoo,
+    testKitchenSink,
+    testEntity,
+    testKitchenSink,
+    testEnum,
+    testArrayByte,
+    testWrappedStringPair,
+    testArrayNat,
+    testEdgeSum,
+    testRec,
+    testArrayString,
+    testArrayBool,
+    testSum,
 )
 
 
@@ -352,7 +364,7 @@ class GleanTestPredicate(GleanSchemaPredicate):
     return f"glean.test.Predicate.5 { angle_for(__env, arg, None) or '_' }", testPredicate
 
   @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "GleanTestPredicate":
+  def angle_query(*, arg: Optional["GleanTestKitchenSink"] = None) -> "GleanTestPredicate":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -440,7 +452,7 @@ class GleanTestMatchOneAlt(GleanSchemaPredicate):
     return f"glean.test.MatchOneAlt.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, x, 'x'), angle_for(__env, y, 'y')])) or '_' } }}", testMatchOneAlt
 
   @staticmethod
-  def angle_query(*, x: Optional[Tuple[()]] = None, y: Optional[int] = None) -> "GleanTestMatchOneAlt":
+  def angle_query(*, x: Optional["GleanTestSum"] = None, y: Optional[int] = None) -> "GleanTestMatchOneAlt":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -495,7 +507,7 @@ class GleanTestPredicate(GleanSchemaPredicate):
     return f"glean.test.Predicate.1 { angle_for(__env, arg, None) or '_' }", testPredicate
 
   @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "GleanTestPredicate":
+  def angle_query(*, arg: Optional["GleanTestKitchenSink_1"] = None) -> "GleanTestPredicate":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -552,6 +564,191 @@ class GleanTestFoo(GleanSchemaPredicate):
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "GleanTestFoo":
     raise Exception("this function can only be called from @angle_query")
+
+
+
+
+
+class GleanTestKitchenSink(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], byt: ast.Expr, nat: ast.Expr, bool_: ast.Expr, string_: ast.Expr, pred: ast.Expr, maybe_: ast.Expr, record_: ast.Expr, sum_: ast.Expr, enum_: ast.Expr, named_record_: ast.Expr, named_sum_: ast.Expr, named_enum_: ast.Expr, array_of_byte: ast.Expr, array_of_nat: ast.Expr, array_of_bool: ast.Expr, array_of_string: ast.Expr, array_of_pred: ast.Expr, array_of_named_record: ast.Expr, array_of_named_sum: ast.Expr, array_of_named_enum: ast.Expr, array2_of_byte: ast.Expr, array2_of_nat: ast.Expr, array2_of_bool: ast.Expr, array2_of_string: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.KitchenSink.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, byt, 'byt'), angle_for(__env, nat, 'nat'), angle_for(__env, bool_, 'bool_'), angle_for(__env, string_, 'string_'), angle_for(__env, pred, 'pred'), angle_for(__env, maybe_, 'maybe_'), angle_for(__env, record_, 'record_'), angle_for(__env, sum_, 'sum_'), angle_for(__env, enum_, 'enum_'), angle_for(__env, named_record_, 'named_record_'), angle_for(__env, named_sum_, 'named_sum_'), angle_for(__env, named_enum_, 'named_enum_'), angle_for(__env, array_of_byte, 'array_of_byte'), angle_for(__env, array_of_nat, 'array_of_nat'), angle_for(__env, array_of_bool, 'array_of_bool'), angle_for(__env, array_of_string, 'array_of_string'), angle_for(__env, array_of_pred, 'array_of_pred'), angle_for(__env, array_of_named_record, 'array_of_named_record'), angle_for(__env, array_of_named_sum, 'array_of_named_sum'), angle_for(__env, array_of_named_enum, 'array_of_named_enum'), angle_for(__env, array2_of_byte, 'array2_of_byte'), angle_for(__env, array2_of_nat, 'array2_of_nat'), angle_for(__env, array2_of_bool, 'array2_of_bool'), angle_for(__env, array2_of_string, 'array2_of_string')])) or '_' } }}", testKitchenSink
+
+  @staticmethod
+  def angle_query(*, byt: Optional[bytes] = None, nat: Optional[int] = None, bool_: Optional[bool] = None, string_: Optional[str] = None, pred: Optional["SysBlob"] = None, maybe_: Optional[Union[Just[Tuple[()]], Just[None]]] = None, record_: Optional[Tuple[()]] = None, sum_: Optional['GleanTestKitchenSink_sum_'] = None, enum_: Optional[Tuple[()]] = None, named_record_: Optional["GleanTestRec"] = None, named_sum_: Optional["GleanTestSum"] = None, named_enum_: Optional["GleanTestEnum"] = None, array_of_byte: Optional[bytes] = None, array_of_nat: Optional[List[int]] = None, array_of_bool: Optional[List[bool]] = None, array_of_string: Optional[List[str]] = None, array_of_pred: Optional[List["GleanTestPredicate"]] = None, array_of_named_record: Optional[List["GleanTestRec"]] = None, array_of_named_sum: Optional[List["GleanTestSum"]] = None, array_of_named_enum: Optional[List["GleanTestEnum"]] = None, array2_of_byte: Optional[List["GleanTestArrayByte"]] = None, array2_of_nat: Optional[List["GleanTestArrayNat"]] = None, array2_of_bool: Optional[List["GleanTestArrayBool"]] = None, array2_of_string: Optional[List["GleanTestArrayString"]] = None) -> "GleanTestKitchenSink":
+    raise Exception("this function can only be called from @angle_query")
+
+class GleanTestKitchenSink_sum_(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], c: ast.Expr, d: ast.Expr) -> Tuple[str, Struct]:
+    return f" {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, c, 'c'), angle_for(__env, d, 'd')])) or '_' } }}", GleanTestKitchenSink_sum_
+
+  @staticmethod
+  def angle_query_c(*, c: "GleanTestPredicate") -> "GleanTestKitchenSink_sum_":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_d(*, d: "SysBlob") -> "GleanTestKitchenSink_sum_":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+
+
+
+class GleanTestEntity(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], cxx: ast.Expr, pp: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.Entity.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, cxx, 'cxx'), angle_for(__env, pp, 'pp')])) or '_' } }}", testEntity
+
+  @staticmethod
+  def angle_query_cxx(*, cxx: "CodeCxxEntity") -> "GleanTestEntity":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_pp(*, pp: "Pp1Define") -> "GleanTestEntity":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+
+class GleanTestKitchenSink(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], byt: ast.Expr, nat: ast.Expr, array_of_byte: ast.Expr, array_of_nat: ast.Expr, record_: ast.Expr, sum_: ast.Expr, named_record_: ast.Expr, named_sum_: ast.Expr, named_enum_: ast.Expr, pred: ast.Expr, maybe_: ast.Expr, bool_: ast.Expr, string_: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.KitchenSink.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, byt, 'byt'), angle_for(__env, nat, 'nat'), angle_for(__env, array_of_byte, 'array_of_byte'), angle_for(__env, array_of_nat, 'array_of_nat'), angle_for(__env, record_, 'record_'), angle_for(__env, sum_, 'sum_'), angle_for(__env, named_record_, 'named_record_'), angle_for(__env, named_sum_, 'named_sum_'), angle_for(__env, named_enum_, 'named_enum_'), angle_for(__env, pred, 'pred'), angle_for(__env, maybe_, 'maybe_'), angle_for(__env, bool_, 'bool_'), angle_for(__env, string_, 'string_')])) or '_' } }}", testKitchenSink
+
+  @staticmethod
+  def angle_query(*, byt: Optional[bytes] = None, nat: Optional[int] = None, array_of_byte: Optional[bytes] = None, array_of_nat: Optional[List[int]] = None, record_: Optional[Tuple[()]] = None, sum_: Optional['GleanTestKitchenSink_sum_'] = None, named_record_: Optional["GleanTestRec"] = None, named_sum_: Optional["GleanTestSum"] = None, named_enum_: Optional["GleanTestEnum"] = None, pred: Optional["SysBlob"] = None, maybe_: Optional[Union[Just[Tuple[()]], Just[None]]] = None, bool_: Optional[bool] = None, string_: Optional[str] = None) -> "GleanTestKitchenSink":
+    raise Exception("this function can only be called from @angle_query")
+
+class GleanTestKitchenSink_sum_(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], c: ast.Expr, d: ast.Expr) -> Tuple[str, Struct]:
+    return f" {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, c, 'c'), angle_for(__env, d, 'd')])) or '_' } }}", GleanTestKitchenSink_sum_
+
+  @staticmethod
+  def angle_query_c(*, c: bytes) -> "GleanTestKitchenSink_sum_":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_d(*, d: int) -> "GleanTestKitchenSink_sum_":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+
+
+
+class GleanTestEnum(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.Enum.1 { angle_for(__env, arg, None) or '_' }", testEnum
+
+  @staticmethod
+  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "GleanTestEnum":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class GleanTestArrayByte(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.ArrayByte.1 { angle_for(__env, arg, None) or '_' }", testArrayByte
+
+  @staticmethod
+  def angle_query(*, arg: Optional[bytes] = None) -> "GleanTestArrayByte":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class GleanTestWrappedStringPair(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], wrapped: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.WrappedStringPair.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, wrapped, 'wrapped')])) or '_' } }}", testWrappedStringPair
+
+  @staticmethod
+  def angle_query(*, wrapped: Optional["GleanTestStringPair"] = None) -> "GleanTestWrappedStringPair":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class GleanTestArrayNat(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.ArrayNat.1 { angle_for(__env, arg, None) or '_' }", testArrayNat
+
+  @staticmethod
+  def angle_query(*, arg: Optional[List[int]] = None) -> "GleanTestArrayNat":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class GleanTestEdgeSum(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], fst: ast.Expr, snd: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.EdgeSum.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, fst, 'fst'), angle_for(__env, snd, 'snd')])) or '_' } }}", testEdgeSum
+
+  @staticmethod
+  def angle_query_fst(*, fst: "GleanTestEdgeWrapper") -> "GleanTestEdgeSum":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_snd(*, snd: "GleanTestEdgeWrapper") -> "GleanTestEdgeSum":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+
+class GleanTestRec(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], alpha: ast.Expr, beta: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.Rec.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, alpha, 'alpha'), angle_for(__env, beta, 'beta')])) or '_' } }}", testRec
+
+  @staticmethod
+  def angle_query(*, alpha: Optional["GleanTestEnum"] = None, beta: Optional["GleanTestSum"] = None) -> "GleanTestRec":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class GleanTestArrayString(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.ArrayString.1 { angle_for(__env, arg, None) or '_' }", testArrayString
+
+  @staticmethod
+  def angle_query(*, arg: Optional[List[str]] = None) -> "GleanTestArrayString":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class GleanTestArrayBool(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.ArrayBool.1 { angle_for(__env, arg, None) or '_' }", testArrayBool
+
+  @staticmethod
+  def angle_query(*, arg: Optional[List[bool]] = None) -> "GleanTestArrayBool":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class GleanTestSum(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], mon: ast.Expr, tue: ast.Expr, wed: ast.Expr) -> Tuple[str, Struct]:
+    return f"glean.test.Sum.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, mon, 'mon'), angle_for(__env, tue, 'tue'), angle_for(__env, wed, 'wed')])) or '_' } }}", testSum
+
+  @staticmethod
+  def angle_query_mon(*, mon: bytes) -> "GleanTestSum":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_tue(*, tue: int) -> "GleanTestSum":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_wed(*, wed: bool) -> "GleanTestSum":
+    raise Exception("this function can only be called from @angle_query")
+
 
 
 

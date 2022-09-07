@@ -1,9 +1,9 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union, List, Dict
+from typing import Optional, Tuple, Union, List, Dict, TypeVar
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 from glean.schema.py.src import *
 
 
@@ -33,6 +33,12 @@ from glean.schema.testinfra.types import (
     ContainsPushBlockingAssembly,
     Tag,
     CoveredFileAssemblies,
+    HashAlgo,
+    CoverageRange,
+    OffsetSpan,
+    CoverageGranularity,
+    FileLength,
+    FileHash,
 )
 
 
@@ -42,7 +48,7 @@ class TestinfraCoveredFile(GleanSchemaPredicate):
     return f"testinfra.CoveredFile.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, coverage, 'coverage')])) or '_' } }}", CoveredFile
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, coverage: Optional[Tuple[()]] = None) -> "TestinfraCoveredFile":
+  def angle_query(*, file: Optional["SrcFile"] = None, coverage: Optional["TestinfraCoverageGranularity"] = None) -> "TestinfraCoveredFile":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -163,7 +169,7 @@ class TestinfraFileMetadata(GleanSchemaPredicate):
     return f"testinfra.FileMetadata.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, hash, 'hash'), angle_for(__env, length, 'length'), angle_for(__env, nonexecutableRanges, 'nonexecutableRanges')])) or '_' } }}", FileMetadata
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, hash: Optional[List[Tuple[()]]] = None, length: Optional[Union[Just[Tuple[()]], Just[None]]] = None, nonexecutableRanges: Optional[Union[Just[Tuple[()]], Just[None]]] = None) -> "TestinfraFileMetadata":
+  def angle_query(*, file: Optional["SrcFile"] = None, hash: Optional[List["TestinfraFileHash"]] = None, length: Optional[Union[Just["TestinfraFileLength"], Just[None]]] = None, nonexecutableRanges: Optional[Union[Just["TestinfraCoverageRange"], Just[None]]] = None) -> "TestinfraFileMetadata":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -240,7 +246,7 @@ class TestinfraFileMetadata(GleanSchemaPredicate):
     return f"testinfra.FileMetadata.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, hash, 'hash'), angle_for(__env, length, 'length'), angle_for(__env, nonexecutableRanges, 'nonexecutableRanges'), angle_for(__env, executableLength, 'executableLength')])) or '_' } }}", FileMetadata
 
   @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, hash: Optional[List[Tuple[()]]] = None, length: Optional[Union[Just[Tuple[()]], Just[None]]] = None, nonexecutableRanges: Optional[Union[Just[Tuple[()]], Just[None]]] = None, executableLength: Optional[Union[Just[Tuple[()]], Just[None]]] = None) -> "TestinfraFileMetadata":
+  def angle_query(*, file: Optional["SrcFile"] = None, hash: Optional[List["TestinfraFileHash"]] = None, length: Optional[Union[Just["TestinfraFileLength"], Just[None]]] = None, nonexecutableRanges: Optional[Union[Just["TestinfraCoverageRange"], Just[None]]] = None, executableLength: Optional[Union[Just["TestinfraFileLength"], Just[None]]] = None) -> "TestinfraFileMetadata":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -312,6 +318,97 @@ class TestinfraCoveredFileAssemblies(GleanSchemaPredicate):
 
   @staticmethod
   def angle_query(*, coveredFile: Optional["TestinfraCoveredFile"] = None, assemblies: Optional["TestinfraAssemblies"] = None) -> "TestinfraCoveredFileAssemblies":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+
+
+class TestinfraHashAlgo(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    return f"testinfra.HashAlgo.1 { angle_for(__env, arg, None) or '_' }", HashAlgo
+
+  @staticmethod
+  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "TestinfraHashAlgo":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class TestinfraCoverageRange(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], lineRanges: ast.Expr, byteRanges: ast.Expr) -> Tuple[str, Struct]:
+    return f"testinfra.CoverageRange.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, lineRanges, 'lineRanges'), angle_for(__env, byteRanges, 'byteRanges')])) or '_' } }}", CoverageRange
+
+  @staticmethod
+  def angle_query_lineRanges(*, lineRanges: List["TestinfraOffsetSpan"]) -> "TestinfraCoverageRange":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_byteRanges(*, byteRanges: List["TestinfraOffsetSpan"]) -> "TestinfraCoverageRange":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+
+class TestinfraOffsetSpan(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], offsetFromZero: ast.Expr, lengthAtLeastZero: ast.Expr) -> Tuple[str, Struct]:
+    return f"testinfra.OffsetSpan.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, offsetFromZero, 'offsetFromZero'), angle_for(__env, lengthAtLeastZero, 'lengthAtLeastZero')])) or '_' } }}", OffsetSpan
+
+  @staticmethod
+  def angle_query(*, offsetFromZero: Optional[int] = None, lengthAtLeastZero: Optional[int] = None) -> "TestinfraOffsetSpan":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class TestinfraCoverageGranularity(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], file: ast.Expr, range: ast.Expr) -> Tuple[str, Struct]:
+    return f"testinfra.CoverageGranularity.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, range, 'range')])) or '_' } }}", CoverageGranularity
+
+  @staticmethod
+  def angle_query_file(*, file: bool) -> "TestinfraCoverageGranularity":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_range(*, range: Tuple[()]) -> "TestinfraCoverageGranularity":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+
+class TestinfraFileLength(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], lines: ast.Expr, offset: ast.Expr, lineOffsets: ast.Expr, linesAndOffset: ast.Expr) -> Tuple[str, Struct]:
+    return f"testinfra.FileLength.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, lines, 'lines'), angle_for(__env, offset, 'offset'), angle_for(__env, lineOffsets, 'lineOffsets'), angle_for(__env, linesAndOffset, 'linesAndOffset')])) or '_' } }}", FileLength
+
+  @staticmethod
+  def angle_query_lines(*, lines: int) -> "TestinfraFileLength":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_offset(*, offset: int) -> "TestinfraFileLength":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_lineOffsets(*, lineOffsets: List[int]) -> "TestinfraFileLength":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_linesAndOffset(*, linesAndOffset: Tuple[()]) -> "TestinfraFileLength":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+
+class TestinfraFileHash(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], algo: ast.Expr, hash: ast.Expr) -> Tuple[str, Struct]:
+    return f"testinfra.FileHash.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, algo, 'algo'), angle_for(__env, hash, 'hash')])) or '_' } }}", FileHash
+
+  @staticmethod
+  def angle_query(*, algo: Optional["TestinfraHashAlgo"] = None, hash: Optional[int] = None) -> "TestinfraFileHash":
     raise Exception("this function can only be called from @angle_query")
 
 

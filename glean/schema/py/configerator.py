@@ -1,9 +1,9 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union, List, Dict
+from typing import Optional, Tuple, Union, List, Dict, TypeVar
 from thrift.py3 import Struct
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 from glean.schema.py.python import *
 
 
@@ -20,6 +20,8 @@ class ConfigeratorImportFilesStatement(GleanSchemaPredicate):
   @staticmethod
   def angle_query(*, import_: Optional["PythonImportStatement"] = None, is_recursive: Optional[bool] = None) -> "ConfigeratorImportFilesStatement":
     raise Exception("this function can only be called from @angle_query")
+
+
 
 
 
