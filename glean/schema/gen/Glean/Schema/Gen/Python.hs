@@ -199,7 +199,7 @@ genAllPredicates predicateMode _ namePolicy parent preds = Text.unlines $
   [ Text.unlines
     [ "class " <> class_name <> "(" <> parent <> "):"
       , "  " <> "@staticmethod"
-      , "  " <> "def build_angle(__env: Dict[str, R], " <> buildAngleTypes <>
+      , "  " <> "def build_angle(__env: Dict[str, R]" <> buildAngleTypes <>
         ") -> Tuple[str, Struct]:"
       , "    " <> "return f\"" <> anglePredicateAndVersion <> angleForTypes <>
         "\", " <> return_class_name
@@ -211,8 +211,9 @@ genAllPredicates predicateMode _ namePolicy parent preds = Text.unlines $
     , let ref = predicateDefRef pred
           key = predicateDefKeyType pred
           kTy = valueTy class_name APIValues namePolicy key
-          angleForTypes = valueTy class_name AngleForValues namePolicy key
-          buildAngleTypes = valueTy class_name ASTValues namePolicy key
+          angleForTypes = case buildAngleTypes of
+            "" -> " " <> "_"
+            _ -> valueTy class_name AngleForValues namePolicy key
           predicateName = predicateRef_name ref
           class_name = pythonClassName predicateName
           return_class_name = returnPythonClassName predicateName
@@ -222,6 +223,11 @@ genAllPredicates predicateMode _ namePolicy parent preds = Text.unlines $
             AngleQuery -> predicateName <> "." <>
               showt (predicateRef_version ref)
             _ -> Text.empty
+          buildAngleTypes = case buildAngleTypes_ of
+            "" -> Text.empty
+            _ -> ", " <> buildAngleTypes_
+            where
+              buildAngleTypes_ = valueTy class_name ASTValues namePolicy key
   ]
 
 genNamedTypes
@@ -269,11 +275,15 @@ addClientMethods class_name kTy namePolicy key = case key of
   where
     createMethod method_name args = Text.unlines
       [ "  " <> "@staticmethod"
-      , "  " <> "def angle_query" <> method_name <> "(*, " <> args <>
+      , "  " <> "def angle_query" <> method_name <> "(" <> args_ <>
         ") -> \"" <> class_name <> "\":"
       , "    " <> "raise Exception" <>
         "(\"this function can only be called from @angle_query\")"
       ]
+      where
+        -- handle GleanSchemaPredicates with no key (ex: builtin.Unit.1)
+        args_ = if args == Text.empty then ""
+          else "*, " <> args
 
 header :: NameSpaces -> NamePolicy -> [ResolvedPredicateDef] -> Text
 header namespaces namePolicy preds = Text.unlines $
