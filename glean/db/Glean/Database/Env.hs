@@ -198,8 +198,8 @@ spawnThreads env = do
   -- Disk usage counters
   Warden.spawn_ (envWarden env) $ doPeriodically (seconds 600) $ do
 
-    diskSize <- getDiskSize "."
-    used <- getUsedDiskSpace "."
+    diskSize <- getDiskSize (envRoot env)
+    used <- getUsedDiskSpace (envRoot env)
     void $ setCounter "glean.db.disk.capacity_bytes" diskSize
     void $ setCounter "glean.db.disk.used_bytes" used
     void $
