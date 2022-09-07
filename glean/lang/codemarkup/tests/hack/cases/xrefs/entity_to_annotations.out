@@ -165,6 +165,24 @@
         "hack": {
           "decl": {
             "container": {
+              "enum_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceEnum" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
               "interface_": {
                 "key": {
                   "name": { "key": { "name": { "key": "SourceInterface" } } }

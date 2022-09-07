@@ -194,6 +194,103 @@
                     "repository": "test"
                 },
                 "sym_other_locations": []
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceEnum.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "",
+                    "localName": "SourceEnum"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/SourceEnum",
+                "sym_location": {
+                    "filepath": "www/SourceEnum.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            {
+                "comments": [],
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceEnum.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "SourceEnum",
+                    "localName": "A"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/SourceEnum/A",
+                "sym_location": {
+                    "filepath": "www/SourceEnum.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            {
+                "comments": [],
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceEnum.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 12,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "SourceEnum",
+                    "localName": "B"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/SourceEnum/B",
+                "sym_location": {
+                    "filepath": "www/SourceEnum.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 12,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             }
         ],
         "symbols": [
@@ -292,6 +389,54 @@
                 },
                 "name": "Top",
                 "symbol": "test/php/Position/Top"
+            },
+            {
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceEnum.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "name": "SourceEnum",
+                "symbol": "test/php/SourceEnum"
+            },
+            {
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceEnum.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "name": "A",
+                "symbol": "test/php/SourceEnum/A"
+            },
+            {
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceEnum.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 12,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "name": "B",
+                "symbol": "test/php/SourceEnum/B"
             }
         ]
     }

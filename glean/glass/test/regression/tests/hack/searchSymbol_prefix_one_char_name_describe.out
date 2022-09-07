@@ -54,6 +54,39 @@
             {
                 "annotations": [],
                 "comments": [],
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceEnum.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "",
+                    "localName": "SourceEnum"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/SourceEnum",
+                "sym_location": {
+                    "filepath": "www/SourceEnum.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            {
+                "annotations": [],
+                "comments": [],
                 "kind": 13,
                 "language": 3,
                 "location": {
@@ -200,6 +233,22 @@
                 },
                 "name": "SourceClass",
                 "symbol": "test/php/SourceClass"
+            },
+            {
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceEnum.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "name": "SourceEnum",
+                "symbol": "test/php/SourceEnum"
             },
             {
                 "kind": 13,

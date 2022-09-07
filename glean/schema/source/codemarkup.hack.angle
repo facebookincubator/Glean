@@ -190,6 +190,10 @@ predicate HackContainsParentEntity :
       )
     ) |
     (
+      { enumerator = { enumeration = Enumeration } } = Child;
+      Parent = hack.Declaration { container = {enum_ = Enumeration} }
+    ) |
+    (
       hack.NamespaceMember { namespace_ = Name, decl = Child};
       Parent = hack.Declaration { namespace_ = {name = Name }}
     )
@@ -214,6 +218,12 @@ predicate HackContainsChildEntity :
         hack.TraitDefinition { declaration = Trait, members = Members };
       );
       Member = Members[..]
+    ) |
+    (
+      { container = { enum_ = EnumDecl }} = Container;
+      hack.EnumDefinition { declaration = EnumDecl, enumerators = Enumerators };
+      Enumerator = Enumerators[..];
+      Member = hack.Declaration {enumerator = Enumerator}
     ) |
     (
       { namespace_ = {name=Name} } = Container;

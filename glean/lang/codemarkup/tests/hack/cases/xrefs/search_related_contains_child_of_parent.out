@@ -782,6 +782,342 @@
           "hack": {
             "decl": {
               "container": {
+                "enum_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "Position" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "Position",
+          "file": { "key": "www/TopLevel.php" },
+          "location": { "span": { "start": 300, "length": 93 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "enumerator": {
+                "key": {
+                  "name": { "key": "Bottom" },
+                  "enumeration": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "Position" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "Bottom",
+          "file": { "key": "www/TopLevel.php" },
+          "location": { "span": { "start": 341, "length": 6 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "enum_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "Position" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "Position",
+          "file": { "key": "www/TopLevel.php" },
+          "location": { "span": { "start": 300, "length": 93 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "enumerator": {
+                "key": {
+                  "name": { "key": "Center" },
+                  "enumeration": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "Position" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "Center",
+          "file": { "key": "www/TopLevel.php" },
+          "location": { "span": { "start": 380, "length": 6 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "enum_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "Position" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "Position",
+          "file": { "key": "www/TopLevel.php" },
+          "location": { "span": { "start": 300, "length": 93 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "enumerator": {
+                "key": {
+                  "name": { "key": "Left" },
+                  "enumeration": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "Position" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "Left",
+          "file": { "key": "www/TopLevel.php" },
+          "location": { "span": { "start": 355, "length": 4 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "enum_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "Position" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "Position",
+          "file": { "key": "www/TopLevel.php" },
+          "location": { "span": { "start": 300, "length": 93 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "enumerator": {
+                "key": {
+                  "name": { "key": "Right" },
+                  "enumeration": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "Position" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "Right",
+          "file": { "key": "www/TopLevel.php" },
+          "location": { "span": { "start": 367, "length": 5 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "enum_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "Position" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "Position",
+          "file": { "key": "www/TopLevel.php" },
+          "location": { "span": { "start": 300, "length": 93 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "enumerator": {
+                "key": {
+                  "name": { "key": "Top" },
+                  "enumeration": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "Position" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "Top",
+          "file": { "key": "www/TopLevel.php" },
+          "location": { "span": { "start": 330, "length": 3 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "enum_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceEnum" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "SourceEnum",
+          "file": { "key": "www/SourceEnum.php" },
+          "location": { "span": { "start": 226, "length": 50 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "enumerator": {
+                "key": {
+                  "name": { "key": "A" },
+                  "enumeration": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceEnum" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "A",
+          "file": { "key": "www/SourceEnum.php" },
+          "location": { "span": { "start": 255, "length": 1 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "enum_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceEnum" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "SourceEnum",
+          "file": { "key": "www/SourceEnum.php" },
+          "location": { "span": { "start": 226, "length": 50 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "enumerator": {
+                "key": {
+                  "name": { "key": "B" },
+                  "enumeration": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceEnum" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "B",
+          "file": { "key": "www/SourceEnum.php" },
+          "location": { "span": { "start": 266, "length": 1 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
                 "interface_": {
                   "key": {
                     "name": { "key": { "name": { "key": "SourceInterface" } } }

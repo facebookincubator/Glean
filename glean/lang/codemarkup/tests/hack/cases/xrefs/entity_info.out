@@ -248,6 +248,24 @@
         "hack": {
           "decl": {
             "container": {
+              "enum_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceEnum" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 11, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
               "interface_": {
                 "key": {
                   "name": { "key": { "name": { "key": "SourceInterface" } } }
@@ -276,6 +294,48 @@
         }
       },
       "info": { "kind": 30, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "enumerator": {
+              "key": {
+                "name": { "key": "A" },
+                "enumeration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceEnum" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 11, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "enumerator": {
+              "key": {
+                "name": { "key": "B" },
+                "enumeration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceEnum" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 11, "isAbstract": false }
     }
   },
   {

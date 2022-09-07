@@ -296,6 +296,28 @@
         "hack": {
           "decl": {
             "container": {
+              "enum_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceEnum" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/SourceEnum.php" },
+        "location": { "span": { "length": 50, "start": 226 } },
+        "name": "SourceEnum"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
               "interface_": {
                 "key": {
                   "name": { "key": { "name": { "key": "SourceInterface" } } }
@@ -456,6 +478,56 @@
         "file": { "key": "www/TopLevel.php" },
         "location": { "span": { "length": 3, "start": 330 } },
         "name": "Top"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "enumerator": {
+              "key": {
+                "enumeration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceEnum" } } }
+                  }
+                },
+                "name": { "key": "A" }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/SourceEnum.php" },
+        "location": { "span": { "length": 1, "start": 255 } },
+        "name": "A"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "enumerator": {
+              "key": {
+                "enumeration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceEnum" } } }
+                  }
+                },
+                "name": { "key": "B" }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/SourceEnum.php" },
+        "location": { "span": { "length": 1, "start": 266 } },
+        "name": "B"
       }
     }
   },
