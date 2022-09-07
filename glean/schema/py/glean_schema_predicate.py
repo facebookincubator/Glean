@@ -6,7 +6,7 @@ import json
 import inspect
 import ast
 
-R = TypeVar("R", int, str, bool, Tuple[()])
+R = TypeVar("R", int, str, bool, bytes, Tuple[()])
 T = TypeVar("T")
 
 class GleanSchemaPredicate:
@@ -18,9 +18,9 @@ def angle_for(__env: Dict[str, R], key: ast.Expr, field_name: Optional[str]) -> 
   if key is None:
     return f''
   if isinstance(key, ast.Name):
-    return _make_attribute(field_name, json.dumps(__env[key.id]))
+    return _make_attribute(field_name, _make_value(__env[key.id]))
   elif isinstance(key, ast.Constant):
-    return _make_attribute(field_name, json.dumps(key.value))
+    return _make_attribute(field_name, _make_value(key.value))
   elif isinstance(key, ast.Call):
     if (isinstance(key.func, ast.Subscript) and key.func.value.id == 'Just') or (isinstance(key.func, ast.Name) and key.func.id == 'Just'):
       if key.args and isinstance(key.args[0], ast.Call):
@@ -42,6 +42,11 @@ def _make_attribute(field_name: Optional[str], value: str) -> str:
   if field_name:
     return f'{field_name} = {value}'
   return value
+
+def _make_value(value: R) -> str:
+  if isinstance(value, bytes):
+    value = [int(byte) for byte in value]
+  return json.dumps(value)
 
 def _class_name_to_py_query(class_name: str, __env: Dict[str, R], method_args: Dict[str, ast.Expr]) -> Tuple[str, Type[Struct]]:
   # Before this function call, we check that the node is an ast.Name (part of an ast.Call).

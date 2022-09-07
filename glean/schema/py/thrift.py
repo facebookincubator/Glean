@@ -723,7 +723,7 @@ class ThriftLiteral(GleanSchemaPredicate):
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_binary_(*, binary_: List[Tuple[()]]) -> "ThriftLiteral":
+  def angle_query_binary_(*, binary_: bytes) -> "ThriftLiteral":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod

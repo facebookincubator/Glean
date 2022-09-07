@@ -42,7 +42,7 @@ genSchemaPy _version preddefs typedefs =
   , "import inspect"
   , "import ast"
   , ""
-  , "R = TypeVar(\"R\", int, str, bool, Tuple[()])"
+  , "R = TypeVar(\"R\", int, str, bool, bytes, Tuple[()])"
   , "T = TypeVar(\"T\")"
   , ""
   , "class GleanSchemaPredicate:"
@@ -55,9 +55,9 @@ genSchemaPy _version preddefs typedefs =
   , "  " <> "if key is None:"
   , "    " <> "return f''"
   , "  " <> "if isinstance(key, ast.Name):"
-  , "    " <> "return _make_attribute(field_name, json.dumps(__env[key.id]))"
+  , "    " <> "return _make_attribute(field_name, _make_value(__env[key.id]))"
   , "  " <> "elif isinstance(key, ast.Constant):"
-  , "    " <> "return _make_attribute(field_name, json.dumps(key.value))"
+  , "    " <> "return _make_attribute(field_name, _make_value(key.value))"
   , "  " <> "elif isinstance(key, ast.Call):"
   , "    " <> "if (isinstance(key.func, ast.Subscript) and key.func.value.id == 'Just')" <>
     " or (isinstance(key.func, ast.Name) and key.func.id == 'Just'):"
@@ -81,6 +81,11 @@ genSchemaPy _version preddefs typedefs =
   , "  " <> "if field_name:"
   , "    " <> "return f'{field_name} = {value}'"
   , "  " <> "return value"
+  , ""
+  , "def _make_value(value: R) -> str:"
+  , "  " <> "if isinstance(value, bytes):"
+  , "    " <> "value = [int(byte) for byte in value]"
+  , "  " <> "return json.dumps(value)"
   , ""
   , "def _class_name_to_py_query(class_name: str, __env: Dict[str, R" <>
     "], method_args: Dict[str, ast.Expr]) -> Tuple[str, Type[Struct]]:"
@@ -358,12 +363,16 @@ baseTy unionName namePolicy t = Text.pack $ case t of
   NatTy{} -> "int"
   BooleanTy{} -> "bool"
   StringTy{} -> "str"
+  ByteTy{} -> "bytes"
   PredicateTy pred -> case HashMap.lookup pred (predNames namePolicy) of
     Just (ns, x) -> concatMap Text.unpack ("\"" : map cap1 ns ++ [x] ++ ["\""])
     _ -> error $ "predicatePythonName: " ++ show pred
   SumTy{} -> Text.unpack $ "\'" <> unionName <> "\'"
-  ArrayTy field -> Text.unpack $
-    "List[" <> baseTy unionName namePolicy field <> "]"
+  ArrayTy field -> Text.unpack $ if type_ == "bytes"
+    then type_
+    else "List[" <> type_ <> "]"
+    where
+      type_ = baseTy unionName namePolicy field
   MaybeTy field -> Text.unpack $
     "Union[Just[" <> baseTy unionName namePolicy field <> "], Just[None]]"
   -- TODO other types

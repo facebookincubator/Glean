@@ -17,7 +17,7 @@ class SysBlob(GleanSchemaPredicate):
     return f"sys.Blob.1 { angle_for(__env, arg, None) or '_' }", Blob
 
   @staticmethod
-  def angle_query(*, arg: Optional[List[Tuple[()]]] = None) -> "SysBlob":
+  def angle_query(*, arg: Optional[bytes] = None) -> "SysBlob":
     raise Exception("this function can only be called from @angle_query")
 
 
