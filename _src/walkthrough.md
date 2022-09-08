@@ -25,10 +25,12 @@ Put the [example
 schema](https://github.com/facebookincubator/Glean/blob/master/glean/example/schema/example.angle)
 in `/tmp/glean/schema/example.angle` and the [example
 data](https://github.com/facebookincubator/Glean/blob/master/glean/example/facts.glean)
-in `/tmp/glean/facts.glean`. Then create a database from the example
-data using `:load <file>` in the shell:
+in `/tmp/glean/facts.glean`. Then reload schema and create a database from the example
+data using `:reload` and `:load <file>` in the shell:
 
 ```lang=sh
+> :reload
+reloading schema [2 schemas, 7 predicates]
 > :load /tmp/glean/facts.glean
 facts>
 ```
