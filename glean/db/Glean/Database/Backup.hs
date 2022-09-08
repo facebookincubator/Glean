@@ -71,6 +71,7 @@ data Event
   | RestoreStarted Repo
   | RestoreFinished Repo
   | RestoreFailed Repo
+  | RestoreAborted Repo
   | FinalizeStarted Repo
   | FinalizeFinished Repo
   | FinalizeFailed Repo
