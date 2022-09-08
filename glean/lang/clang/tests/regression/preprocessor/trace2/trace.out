@@ -18,33 +18,6 @@
                   "columnEnd": 17
                 }
               }
-            },
-            "trace": {
-              "key": {
-                "file": { "key": "test.h" },
-                "declarations": { "key": [ ] },
-                "preprocessor": {
-                  "key": {
-                    "file": { "key": "test.h" },
-                    "events": [
-                      {
-                        "define": {
-                          "key": {
-                            "macro": { "key": "F" },
-                            "source": {
-                              "file": { "key": "test.h" },
-                              "lineBegin": 10,
-                              "columnBegin": 9,
-                              "lineEnd": 10,
-                              "columnEnd": 9
-                            }
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
-              }
             }
           }
         },

@@ -360,7 +360,7 @@ class HackAttributeToDeclaration(GleanSchemaPredicate):
     return f"hack.AttributeToDeclaration.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, attribute, 'attribute'), angle_for(__env, declaration, 'declaration'), angle_for(__env, file, 'file')])) or '_' } }}", AttributeToDeclaration
 
   @staticmethod
-  def angle_query(*, attribute: Optional["HackUserAttribute"] = None, declaration: Optional[Tuple[()]] = None, file: Optional["SrcFile"] = None) -> "HackAttributeToDeclaration":
+  def angle_query(*, attribute: Optional["HackUserAttribute"] = None, declaration: Optional["HackDeclaration"] = None, file: Optional["SrcFile"] = None) -> "HackAttributeToDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 

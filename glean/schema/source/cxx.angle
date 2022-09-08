@@ -324,7 +324,6 @@ predicate ObjcContainerDefinition :
 type IncludeTrace =
   {
     include_ : pp1.Include,
-    trace : maybe Trace,
   }
 
 # A C++ preprocessor event
@@ -349,6 +348,18 @@ predicate Trace :
     file : src.File,
     declarations : Declarations,
     preprocessor : PPTrace,
+  }
+
+type MaybeIncludeTree =
+  {
+    tree : maybe IncludeTree
+  }
+
+predicate IncludeTree :
+  {
+    trace : Trace,
+    # The elements in this list map 1:1 to the `IncludeTrace` in `PPTrace`.
+    children : [MaybeIncludeTree],
   }
 
 # C++ type alias kind
@@ -581,6 +592,13 @@ predicate TranslationUnitTrace :
   {
     tunit : buck.TranslationUnit,
     trace : Trace,
+  }
+
+# An include tree of a translation unit
+predicate TranslationUnitIncludeTree :
+  {
+    tunit : buck.TranslationUnit,
+    tree : IncludeTree,
   }
 
 # The fileXRefs corresponding to a particular translation unit
@@ -1249,7 +1267,7 @@ predicate FilePPTraceXRefs:
 
     # #includes are xrefs to src.Files
     ( { SrcRange, Entity } where
-      { include_ = { Include , _ }  } = PPEvent;
+      { include_ = { include_ = Include } } = PPEvent;
       { TargetFile, _, SrcRange  } = Include;
       { include_ = TargetFile } = Entity; )
 
