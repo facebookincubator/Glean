@@ -251,7 +251,7 @@ backupDatabase env repo loc
 doRestore :: Env -> Repo -> Meta -> IO Bool
 doRestore env@Env{..} repo meta
   | Just loc <- metaBackup meta
-  , Complete DatabaseComplete{databaseComplete_bytes = Just size}
+  , Complete DatabaseComplete{databaseComplete_bytes}
   <- metaCompleteness meta
   , Just (_, Some site, r_repo) <- fromRepoLocator envBackupBackends loc
   , r_repo == repo =
@@ -259,15 +259,15 @@ doRestore env@Env{..} repo meta
       atomically $ notify envListener $ RestoreStarted repo
       mbFreeBytes <- (Just <$> getFreeDiskSpace envRoot)
                     `catch` \(_ :: IOException) -> return Nothing
-      case mbFreeBytes of
-        Just freeBytes -> do
+      case (mbFreeBytes, databaseComplete_bytes)  of
+        (Just freeBytes, Just size) -> do
           let neededBytes = ceiling $ dbSizeDownloadFactor * fromIntegral size
           when (freeBytes < neededBytes) $
             -- the catch-all exception handler will log and cancel the download
             throwIO $ ErrorCall $
               printf "Not enough disk space: %d needed, %d available"
                 neededBytes freeBytes
-        Nothing -> return ()
+        _ -> return ()
 
       withScratchDirectory envRoot repo $ \scratch -> do
       say logInfo "starting"
@@ -302,9 +302,10 @@ doRestore env@Env{..} repo meta
 
   | otherwise = do
       atomically $ notify envListener $ RestoreStarted repo
-      say logError $ case metaBackup meta of
-        Just loc -> "invalid location " ++ show loc
-        Nothing -> "missing location"
+      say logError $ case (metaCompleteness meta, metaBackup meta) of
+        (Complete{}, Just loc) -> "invalid location " ++ show loc
+        (incomplete, Just{}) -> "database incomplete: " <> show incomplete
+        _ -> "missing location"
       atomically $ notify envListener $ RestoreFailed repo
       return False
   where
