@@ -30,6 +30,10 @@ import Glean.Facebook.Logger.Server
 import Glean.Facebook.Logger.Database
 #endif
 
+#ifdef FACEBOOK
+import qualified Glean.Database.Backup.Manifold as Manifold
+#endif
+
 import Glean.Database.Config (Config(..))
 import Glean.Database.Env
 import Glean.Database.Types
@@ -57,7 +61,12 @@ main =
         , cfgDatabaseLogger = Some (GleanDatabaseFacebookLogger logger)
 #endif
       }
+
+#if FACEBOOK
+      cfg = cfg0{cfgDBConfig = Manifold.withManifoldBackups evb dbCfg}
+#else
       cfg = cfg0{cfgDBConfig = dbCfg}
+#endif
   in
   withDatabases evb (cfgDBConfig cfg) configAPI $ \databases ->
   withShardsUpdater evb cfg databases (1 :: Seconds) $ do
