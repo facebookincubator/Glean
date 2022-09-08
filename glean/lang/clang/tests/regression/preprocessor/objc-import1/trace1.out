@@ -18,6 +18,99 @@
                   "columnEnd": 16
                 }
               }
+            },
+            "trace": {
+              "key": {
+                "file": { "key": "test.h" },
+                "declarations": {
+                  "key": [
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "str1" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "char *const" },
+                          "kind": {
+                            "global_": {
+                              "kind": 0,
+                              "attribute": 0,
+                              "definition": false
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.h" },
+                            "lineBegin": 10,
+                            "columnBegin": 1,
+                            "lineEnd": 10,
+                            "columnEnd": 23
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "str2" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "char *const" },
+                          "kind": {
+                            "global_": {
+                              "kind": 0,
+                              "attribute": 0,
+                              "definition": false
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.h" },
+                            "lineBegin": 11,
+                            "columnBegin": 1,
+                            "lineEnd": 11,
+                            "columnEnd": 23
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "str3" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "char *const" },
+                          "kind": {
+                            "global_": {
+                              "kind": 0,
+                              "attribute": 0,
+                              "definition": false
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.h" },
+                            "lineBegin": 12,
+                            "columnBegin": 1,
+                            "lineEnd": 12,
+                            "columnEnd": 23
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                "preprocessor": {
+                  "key": { "file": { "key": "test.h" }, "events": [ ] }
+                }
+              }
             }
           }
         }

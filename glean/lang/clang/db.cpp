@@ -113,7 +113,12 @@ void ClangDB::include(
       name_range.span.start,
       name_range.span.start + name_range.span.length},
     range.range);
-  ppevent(PreInclude{include, id}, range);
+  ppevent(
+    id
+      ? PrePPEvent(PreInclude{include, id.value()})
+      : PrePPEvent(
+          Cxx::PPEvent::include_(Cxx::IncludeTrace{include, nothing()})),
+    range);
 }
 
 void ClangDB::enterFile(
@@ -340,8 +345,19 @@ void ClangDB::finish() {
       return folly::variant_match(
           x,
           [](const Cxx::PPEvent& x) { return x; },
-          [](const PreInclude& x) {
-            return Cxx::PPEvent::include_(Cxx::IncludeTrace{x.include});
+          [db = this](const PreInclude& x) {
+            folly::Optional<Fact<Cxx::Trace>> trace;
+            if (auto p = folly::get_default(db->files, x.file, nullptr)) {
+              if (p->trace) {
+                trace = p->trace.value();
+              } else {
+                LOG(WARNING) << "unresolved include";
+              }
+            } else {
+              LOG(WARNING) << "unknown include";
+            }
+            return Cxx::PPEvent::include_(
+                Cxx::IncludeTrace{x.include, maybe(trace)});
           });
     };
     auto pp_trace = fact<Cxx::PPTrace>(
@@ -349,21 +365,8 @@ void ClangDB::finish() {
       folly::gen::from(file.events)
         | folly::gen::mapped(resolve)
         | folly::gen::as<std::vector>());
-    file.trace = fact<Cxx::Trace>(file.fact, decl_trace, pp_trace);
-    file.include_tree = fact<Cxx::IncludeTree>(file.trace.value(), [&] {
-      std::vector<Cxx::MaybeIncludeTree> trees;
-      for (const auto& event : file.events) {
-        if (auto pre = std::get_if<PreInclude>(&event)) {
-          Cxx::MaybeIncludeTree tree{nothing()};
-          if (pre->file) {
-            tree = {maybe(files.at(pre->file.value())->include_tree)};
-          }
-          trees.push_back(tree);
-        }
-      }
-      return trees;
-    }());
     release(file.events);
+    file.trace = fact<Cxx::Trace>(file.fact, decl_trace, pp_trace);
   }
 
   fact<Cxx::TranslationUnitXRefs>(tunit, std::move(tunitXRefs));
@@ -373,11 +376,6 @@ void ClangDB::finish() {
       fact<Cxx::TranslationUnitTrace>(tunit, p->trace.value());
     } else {
       LOG(WARNING) << "translation unit has no trace";
-    }
-    if (p->include_tree) {
-      fact<Cxx::TranslationUnitIncludeTree>(tunit, p->include_tree.value());
-    } else {
-      LOG(WARNING) << "translation unit has no include tree";
     }
   } else {
     LOG(WARNING) << "translation unit has no file data";

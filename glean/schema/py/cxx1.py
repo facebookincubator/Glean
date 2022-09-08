@@ -11,7 +11,6 @@ from glean.schema.py.src import *
 
 from glean.schema.cxx1.types import (
     DeclInObjcContainer,
-    IncludeTree,
     XRefIndirectTarget,
     DeclByName,
     DeclarationTargets,
@@ -38,7 +37,6 @@ from glean.schema.cxx1.types import (
     DefToBaseDecl,
     Name,
     FilePPUseXRefs,
-    TranslationUnitIncludeTree,
     Enumerator,
     FunctionQName,
     TranslationUnitTrace,
@@ -111,7 +109,6 @@ from glean.schema.cxx1.types import (
     LiteralOperator,
     RecordBase,
     XRefTarget,
-    MaybeIncludeTree,
     VariableKind,
     DefinitionEntity,
     FixedXRef,
@@ -131,17 +128,6 @@ class Cxx1DeclInObjcContainer(GleanSchemaPredicate):
 
   @staticmethod
   def angle_query(*, decl: Optional["Cxx1Declaration"] = None, record: Optional["Cxx1ObjcContainerDefinition"] = None) -> "Cxx1DeclInObjcContainer":
-    raise Exception("this function can only be called from @angle_query")
-
-
-
-class Cxx1IncludeTree(GleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], trace: ast.Expr, children: ast.Expr) -> Tuple[str, Struct]:
-    return f"cxx1.IncludeTree.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, trace, 'trace'), angle_for(__env, children, 'children')])) or '_' } }}", IncludeTree
-
-  @staticmethod
-  def angle_query(*, trace: Optional["Cxx1Trace"] = None, children: Optional[List["Cxx1MaybeIncludeTree"]] = None) -> "Cxx1IncludeTree":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -428,17 +414,6 @@ class Cxx1FilePPUseXRefs(GleanSchemaPredicate):
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, source: Optional["SrcRange"] = None, define: Optional["Pp1Define"] = None) -> "Cxx1FilePPUseXRefs":
-    raise Exception("this function can only be called from @angle_query")
-
-
-
-class Cxx1TranslationUnitIncludeTree(GleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], tunit: ast.Expr, tree: ast.Expr) -> Tuple[str, Struct]:
-    return f"cxx1.TranslationUnitIncludeTree.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, tunit, 'tunit'), angle_for(__env, tree, 'tree')])) or '_' } }}", TranslationUnitIncludeTree
-
-  @staticmethod
-  def angle_query(*, tunit: Optional["BuckTranslationUnit"] = None, tree: Optional["Cxx1IncludeTree"] = None) -> "Cxx1TranslationUnitIncludeTree":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -1377,17 +1352,6 @@ class Cxx1XRefTarget(InnerGleanSchemaPredicate):
 
 
 
-class Cxx1MaybeIncludeTree(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], tree: ast.Expr) -> Tuple[str, Struct]:
-    return f"cxx1.MaybeIncludeTree.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, tree, 'tree')])) or '_' } }}", MaybeIncludeTree
-
-  @staticmethod
-  def angle_query(*, tree: Optional[Union[Just["Cxx1IncludeTree"], Just[None]]] = None) -> "Cxx1MaybeIncludeTree":
-    raise Exception("this function can only be called from @angle_query")
-
-
-
 class Cxx1VariableKind(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], global_: ast.Expr, local: ast.Expr, field: ast.Expr, ivar: ast.Expr) -> Tuple[str, Struct]:
@@ -1538,11 +1502,11 @@ class Cxx1RecordKind(InnerGleanSchemaPredicate):
 
 class Cxx1IncludeTrace(InnerGleanSchemaPredicate):
   @staticmethod
-  def build_angle(__env: Dict[str, R], include_: ast.Expr) -> Tuple[str, Struct]:
-    return f"cxx1.IncludeTrace.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, include_, 'include_')])) or '_' } }}", IncludeTrace
+  def build_angle(__env: Dict[str, R], include_: ast.Expr, trace: ast.Expr) -> Tuple[str, Struct]:
+    return f"cxx1.IncludeTrace.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, include_, 'include_'), angle_for(__env, trace, 'trace')])) or '_' } }}", IncludeTrace
 
   @staticmethod
-  def angle_query(*, include_: Optional["Pp1Include"] = None) -> "Cxx1IncludeTrace":
+  def angle_query(*, include_: Optional["Pp1Include"] = None, trace: Optional[Union[Just["Cxx1Trace"], Just[None]]] = None) -> "Cxx1IncludeTrace":
     raise Exception("this function can only be called from @angle_query")
 
 

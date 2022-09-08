@@ -135,7 +135,7 @@ public:
 
   struct PreInclude {
     Fact<Pp::Include> include;
-    folly::Optional<clang::FileID> file;
+    clang::FileID file;
   };
 
   using PrePPEvent = std::variant<Cxx::PPEvent, PreInclude>;
@@ -153,7 +153,6 @@ public:
     std::vector<PrePPEvent> events;
     std::vector<CrossRef> xrefs;
     folly::Optional<Fact<Cxx::Trace>> trace;
-    folly::Optional<Fact<Cxx::IncludeTree>> include_tree;
   };
 
   struct SourceRange {
