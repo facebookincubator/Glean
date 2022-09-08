@@ -11,7 +11,8 @@
 module Glean.Database.Backup
   ( backuper
   , Event(..)
-) where
+  , backupDatabase
+  ) where
 
 import Control.Applicative
 import Control.Concurrent.Async
@@ -238,6 +239,13 @@ doBackup env@Env{..} repo prefix site =
     return False
   where
     say log s = log $ inRepo repo $ "backup: " ++ s
+
+backupDatabase :: Env -> Repo -> Text -> IO Bool
+backupDatabase env repo loc
+  | Just (prefix, site) <- fromSiteLocator (envBackupBackends env) loc =
+      doBackup env repo prefix site
+  | otherwise = throwIO $
+      Thrift.InvalidLocator $ "invalid locator '" <> loc <>  "'"
 
 doRestore :: Env -> Repo -> Meta -> IO Bool
 doRestore env@Env{..} repo meta

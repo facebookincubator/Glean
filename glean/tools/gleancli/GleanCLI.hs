@@ -45,6 +45,7 @@ import Glean.Util.ConfigProvider
 import Glean.Util.ShellPrint
 import Glean.Shell
 
+import GleanCLI.Backup
 import GleanCLI.Common
 import GleanCLI.Complete
 import GleanCLI.Derive
@@ -83,6 +84,7 @@ plugins =
   , plugin @DeleteCommand
   , plugin @DeriveCommand
   , plugin @QueryCommand
+  , plugin @BackupCommand
   , plugin @RestoreCommand
   , plugin @ValidateCommand
   , plugin @ValidateSchemaCommand
