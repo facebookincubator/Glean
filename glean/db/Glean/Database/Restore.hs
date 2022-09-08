@@ -14,6 +14,7 @@ module Glean.Database.Restore (
 
 import Control.Concurrent.STM
 import Control.Exception hiding(handle)
+import Control.Monad (when)
 import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
@@ -28,6 +29,7 @@ import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types hiding (Database)
 import qualified Glean.Types as Thrift
 import Glean.Util.Observed as Observed
+import Control.Monad.IO.Class (MonadIO(..))
 
 
 forRestoreSitesM
@@ -47,19 +49,18 @@ forRestoreSitesM env@Env{..} none inner = do
     _ -> return [none]
 
 ifRestoreRepo
-  :: Env
-  -> a
+  :: MonadIO m
+  => Env
   -> Repo
-  -> IO a
-  -> IO a
-ifRestoreRepo Env{..} none repo inner = do
+  -> m ()
+  -> m ()
+ifRestoreRepo Env{..} repo inner = do
   let repoName = Thrift.repo_name repo
   ServerConfig.DatabaseRestorePolicy{..} <-
-    ServerConfig.config_restore <$> Observed.get envServerConfig
-  if (repoName `Set.member` databaseRestorePolicy_override)
-          /= databaseRestorePolicy_enabled
-    then inner
-    else return none
+    liftIO $ ServerConfig.config_restore <$> Observed.get envServerConfig
+  when ((repoName `Set.member` databaseRestorePolicy_override)
+          /= databaseRestorePolicy_enabled)
+    inner
 
 restoreDatabase :: Env -> Text -> IO ()
 restoreDatabase env loc

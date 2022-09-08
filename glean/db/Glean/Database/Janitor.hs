@@ -62,6 +62,8 @@ import Glean.Util.ShardManager
       SomeShardManager(SomeShardManager), BaseOfStack (BaseOfStack),
       countersForShardSizes, noSharding )
 import Glean.Util.Time
+import Glean.Database.Backup (Event(RestoreAborted))
+import Glean.Util.Trace (notify)
 
 {- |
 The database janitor has the following functions:
@@ -76,11 +78,12 @@ runDatabaseJanitor env = do
   runDatabaseJanitorPureish env >>= executeJanitorSideEffects env
 
 executeJanitorSideEffects :: Env -> [JanitorSideEffect] -> IO ()
-executeJanitorSideEffects Env{envDatabaseJanitorPublishedCounters} sideEffects =
-  do
+executeJanitorSideEffects Env{..} sideEffects = do
+  t <- getCurrentTime
+
   forM_ sideEffects $ \case
     PublishCounter n v -> void $ Stats.setCounter n v
-
+    StartRestoring _ _ -> pure ()
   -- Record the published counters and clear stale ones
   let countersPublished =
         HashSet.fromList [n | PublishCounter n _ <- sideEffects]
@@ -91,13 +94,37 @@ executeJanitorSideEffects Env{envDatabaseJanitorPublishedCounters} sideEffects =
   forM_ (HashSet.difference lastPublishedCounters countersPublished)
     clearCounter
 
+  -- register all the restoring DBs together in a single transaction,
+  -- so that the backup thread can't jump in early and pick one
+  restoring <- atomically $ do
+    Catalog.Entries{entriesRestoring} <- Catalog.getEntries envCatalog
+    let requested = HashMap.fromList
+          [(repo, meta) | StartRestoring repo meta <- sideEffects]
+        noLongerRestoring = HashMap.difference entriesRestoring requested
+    forM_ (HashMap.toList requested) $ \(repo,meta) ->
+      Catalog.startRestoring envCatalog repo meta
+    -- abort downloads for DBs no longer requested
+    forM_ (HashMap.keys noLongerRestoring) $ \repo -> do
+      Catalog.abortRestoring envCatalog repo
+      notify envListener $ RestoreAborted repo
+    return requested
+
+  forM_ (HashMap.toList restoring) $ \(repo,meta) ->
+    logInfo $ "Restoring: " ++ showRepo repo ++
+      " ("  ++ showNominalDiffTime (dbAge t meta) ++ " old)"
+
+
 
 data JanitorSideEffect
   = PublishCounter !ByteString !Int
+  | StartRestoring !Repo !Meta
   deriving (Eq, Show)
 
 publishCounter :: ByteString -> Int -> WriterT [JanitorSideEffect] IO ()
 publishCounter name value = tell [PublishCounter name value]
+
+restoreDatabase' :: Repo -> Meta -> WriterT [JanitorSideEffect] IO ()
+restoreDatabase' repo meta = tell [StartRestoring repo meta]
 
 -- WIP making the Janitor more testable by returning the list of side effects
 runDatabaseJanitorPureish :: Env -> IO [JanitorSideEffect]
@@ -232,15 +259,6 @@ runWithShards env myShards sm = do
         -- so it's possible that the DB is not in the Catalog at this point
         return ()
 
-  restores <- fmap catMaybes $ forM fetch $ \(Item{..}, _) ->
-    ifRestoreRepo env Nothing itemRepo $ do
-      logInfo $ "Restoring: " ++ showRepo itemRepo ++
-        " ("  ++ showNominalDiffTime (dbAge t itemMeta) ++ " old)"
-      return $ Just $ Catalog.startRestoring (envCatalog env) itemRepo itemMeta
-  -- register all the restoring DBs together in a single transaction,
-  -- so that the backup thread can't jump in early and pick one
-  atomically $ sequence_ restores
-
   atomically $ Catalog.resetElsewhere (envCatalog env) $
     [ item
       -- Nothing means the db is not in any of the shards assigned to this node
@@ -255,6 +273,10 @@ runWithShards env myShards sm = do
      (toList mostRecent)
 
   execWriterT $ do
+    (_, restores) <- listen $ forM_ fetch $ \(Item{..}, _) ->
+      ifRestoreRepo env itemRepo $
+        restoreDatabase' itemRepo itemMeta
+
     forM_ byRepoAndAge $ \(repoNm, dbsByAge) -> do
       let prefix = "glean.db." <> Text.encodeUtf8 repoNm
       let repoKeep =
