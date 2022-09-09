@@ -102,6 +102,7 @@ genTargets mode slashVn version info =
         "\"hs2\"",
         "\"py\"",
         "\"py3\"",
+        "\"python\"",
         "\"java-swift\"",
         "\"rust\"",
         "\"cpp2\""
