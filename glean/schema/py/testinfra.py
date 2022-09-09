@@ -372,8 +372,19 @@ class TestinfraCoverageGranularity(InnerGleanSchemaPredicate):
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_range(*, range: Tuple[()]) -> "TestinfraCoverageGranularity":
+  def angle_query_range(*, range: 'TestinfraCoverageGranularity_range') -> "TestinfraCoverageGranularity":
     raise Exception("this function can only be called from @angle_query")
+
+
+class TestinfraCoverageGranularity_range(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], coveredRanges: ast.Expr, uncoveredRanges: ast.Expr) -> Tuple[str, Struct]:
+    return f" {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, coveredRanges, 'coveredRanges'), angle_for(__env, uncoveredRanges, 'uncoveredRanges')])) or '_' } }}", TestinfraCoverageGranularity_range
+
+  @staticmethod
+  def angle_query(*, coveredRanges: Optional["TestinfraCoverageRange"] = None, uncoveredRanges: Optional[Union[Just["TestinfraCoverageRange"], Just[None]]] = None) -> "TestinfraCoverageGranularity_range":
+    raise Exception("this function can only be called from @angle_query")
+
 
 
 
@@ -396,8 +407,19 @@ class TestinfraFileLength(InnerGleanSchemaPredicate):
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_linesAndOffset(*, linesAndOffset: Tuple[()]) -> "TestinfraFileLength":
+  def angle_query_linesAndOffset(*, linesAndOffset: 'TestinfraFileLength_linesAndOffset') -> "TestinfraFileLength":
     raise Exception("this function can only be called from @angle_query")
+
+
+class TestinfraFileLength_linesAndOffset(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], lines: ast.Expr, offset: ast.Expr) -> Tuple[str, Struct]:
+    return f" {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, lines, 'lines'), angle_for(__env, offset, 'offset')])) or '_' } }}", TestinfraFileLength_linesAndOffset
+
+  @staticmethod
+  def angle_query(*, lines: Optional[int] = None, offset: Optional[int] = None) -> "TestinfraFileLength_linesAndOffset":
+    raise Exception("this function can only be called from @angle_query")
+
 
 
 

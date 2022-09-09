@@ -1271,8 +1271,19 @@ class ThriftStructFieldValValue(InnerGleanSchemaPredicate):
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_nothing(*, nothing: Tuple[()]) -> "ThriftStructFieldValValue":
+  def angle_query_nothing(*, nothing: 'ThriftStructFieldValValue_nothing') -> "ThriftStructFieldValValue":
     raise Exception("this function can only be called from @angle_query")
+
+
+class ThriftStructFieldValValue_nothing(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R]) -> Tuple[str, Struct]:
+    return f" _", ThriftStructFieldValValue_nothing
+
+  @staticmethod
+  def angle_query() -> "ThriftStructFieldValValue_nothing":
+    raise Exception("this function can only be called from @angle_query")
+
 
 
 

@@ -1008,12 +1008,23 @@ class Cxx1Scope(InnerGleanSchemaPredicate):
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_recordWithAccess(*, recordWithAccess: Tuple[()]) -> "Cxx1Scope":
+  def angle_query_recordWithAccess(*, recordWithAccess: 'Cxx1Scope_recordWithAccess') -> "Cxx1Scope":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
   def angle_query_local(*, local: "Cxx1FunctionQName") -> "Cxx1Scope":
     raise Exception("this function can only be called from @angle_query")
+
+
+class Cxx1Scope_recordWithAccess(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], record: ast.Expr, access: ast.Expr) -> Tuple[str, Struct]:
+    return f" {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, record, 'record'), angle_for(__env, access, 'access')])) or '_' } }}", Cxx1Scope_recordWithAccess
+
+  @staticmethod
+  def angle_query(*, record: Optional["Cxx1QName"] = None, access: Optional["Cxx1Access"] = None) -> "Cxx1Scope_recordWithAccess":
+    raise Exception("this function can only be called from @angle_query")
+
 
 
 

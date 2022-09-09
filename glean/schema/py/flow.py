@@ -319,7 +319,7 @@ class FlowModule(GleanSchemaPredicate):
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_builtin(*, builtin: Tuple[()]) -> "FlowModule":
+  def angle_query_builtin(*, builtin: 'FlowModule_builtin') -> "FlowModule":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
@@ -327,12 +327,34 @@ class FlowModule(GleanSchemaPredicate):
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_noSource(*, noSource: Tuple[()]) -> "FlowModule":
+  def angle_query_noSource(*, noSource: 'FlowModule_noSource') -> "FlowModule":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
   def angle_query_string_(*, string_: str) -> "FlowModule":
     raise Exception("this function can only be called from @angle_query")
+
+
+class FlowModule_builtin(GleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R]) -> Tuple[str, Struct]:
+    return f" _", FlowModule_builtin
+
+  @staticmethod
+  def angle_query() -> "FlowModule_builtin":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class FlowModule_noSource(GleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R]) -> Tuple[str, Struct]:
+    return f" _", FlowModule_noSource
+
+  @staticmethod
+  def angle_query() -> "FlowModule_noSource":
+    raise Exception("this function can only be called from @angle_query")
+
 
 
 
@@ -442,7 +464,7 @@ class FlowExport(GleanSchemaPredicate):
     return f"flow.Export.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, commonJS, 'commonJS'), angle_for(__env, commonJSMember, 'commonJSMember'), angle_for(__env, named, 'named'), angle_for(__env, default_, 'default_'), angle_for(__env, star, 'star')])) or '_' } }}", Export
 
   @staticmethod
-  def angle_query_commonJS(*, commonJS: Tuple[()]) -> "FlowExport":
+  def angle_query_commonJS(*, commonJS: 'FlowExport_commonJS') -> "FlowExport":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
@@ -454,12 +476,34 @@ class FlowExport(GleanSchemaPredicate):
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_default_(*, default_: Tuple[()]) -> "FlowExport":
+  def angle_query_default_(*, default_: 'FlowExport_default_') -> "FlowExport":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
   def angle_query_star(*, star: "FlowModule") -> "FlowExport":
     raise Exception("this function can only be called from @angle_query")
+
+
+class FlowExport_commonJS(GleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R]) -> Tuple[str, Struct]:
+    return f" _", FlowExport_commonJS
+
+  @staticmethod
+  def angle_query() -> "FlowExport_commonJS":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class FlowExport_default_(GleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R]) -> Tuple[str, Struct]:
+    return f" _", FlowExport_default_
+
+  @staticmethod
+  def angle_query() -> "FlowExport_default_":
+    raise Exception("this function can only be called from @angle_query")
+
 
 
 

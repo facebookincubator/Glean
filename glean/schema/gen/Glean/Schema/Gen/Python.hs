@@ -256,23 +256,29 @@ unionDummyPreds key pred class_name = map
       _ -> []
       where
         handleFields n t = case t of
-          SumTy fields -> [(n, SumTy fields)]
+          SumTy fields ->
+            (n, SumTy fields) : concatMap extraRecords fields
+          RecordTy fields ->
+            (n, RecordTy fields) : concatMap extraRecords fields
           _ -> []
+          where
+            extraRecords t = case fieldDefType t of
+              RecordTy fields ->
+                (n, RecordTy fields) : handleFields n (RecordTy fields)
+              SumTy fields -> handleFields n (SumTy fields)
+              _ -> []
 
 addClientMethods :: Text -> Text -> NamePolicy -> ResolvedType -> Text
-addClientMethods class_name kTy namePolicy key = case key of
-  SumTy fields -> Text.unlines $ map createMethodWrapper unionFields
-    where
-      unionFields = map
-        (\ f
-        -> (fieldName f,
-            (baseTy class_name namePolicy . fieldDefType) f))
-       fields
-      createMethodWrapper (name, type_) =
-        createMethod ("_" <> name) (name <> ": " <> type_)
-
-  _ -> createMethod Text.empty kTy
+addClientMethods class_name kTy namePolicy key = methods
   where
+    methods = case key of
+      SumTy fields ->Text.unlines $ map createMethodWrapper (unionFields fields)
+      _ -> createMethod Text.empty kTy
+    unionFields fields = map handleField fields
+    handleField f = (fieldName f,
+      (baseTy (class_name <> "_" <> fieldName f) namePolicy . fieldDefType) f)
+    createMethodWrapper (name, type_) =
+      createMethod ("_" <> name) (name <> ": " <> type_)
     createMethod method_name args = Text.unlines
       [ "  " <> "@staticmethod"
       , "  " <> "def angle_query" <> method_name <> "(" <> args_ <>
@@ -404,6 +410,7 @@ baseTy unionName namePolicy t = Text.pack $ case t of
   MaybeTy field -> Text.unpack $
     "Union[Just[" <> baseTy unionName namePolicy field <> "], Just[None]]"
   NamedTy typeRef -> nameLookup typeRef typeNames namePolicy "named"
+  RecordTy _ -> Text.unpack $ "\'" <> unionName <> "\'"
   -- TODO other types
   _ -> "Tuple[()]"
   where
