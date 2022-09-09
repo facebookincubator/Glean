@@ -57,6 +57,7 @@ import GleanCLI.Write
 
 #if FACEBOOK
 import GleanCLI.Facebook
+import qualified Glean.Database.Backup.Manifold as Manifold
 #endif
 
 data Config = Config
@@ -142,7 +143,14 @@ main = do
       withGflags (argTransform c leftOverArgs) $
       withEventBaseDataplane $ \evb ->
       withConfigProvider cfgOpts $ \cfgAPI ->
-      withService evb cfgAPI cfgService c
+      withService evb cfgAPI (withRemoteBackups evb cfgService) c
+
+withRemoteBackups :: EventBaseDataplane -> Glean.Service -> Glean.Service
+withRemoteBackups _evb svc = case svc of
+#if FACEBOOK
+  Glean.Local cfg log -> Glean.Local (Manifold.withManifoldBackups _evb cfg) log
+#endif
+  _other -> svc
 
 
 -- -----------------------------------------------------------------------------

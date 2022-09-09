@@ -27,10 +27,6 @@ import Util.Log
 
 import qualified Glean.RTS.Foreign.LookupCache as LookupCache
 import Glean.Database.Backup (backuper)
-#ifdef FACEBOOK
-import qualified Glean.Database.Backup.Manifold as Backup
-#endif
-import qualified Glean.Database.Backup.Mock as Backup
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Config
 import Glean.Database.Close
@@ -151,13 +147,7 @@ initEnv evb dbRoot envCatalog shardManager cfg
       , envUpdateSchema = cfgUpdateSchema cfg
       , envSchemaId = cfgSchemaId cfg
       , envShardManager = shardManager
-      , envBackupBackends = HashMap.fromList
-          [
-#if FACEBOOK
-            ("manifold", Backup.manifold evb),
-#endif
-            ("mock", Backup.mock)
-          ]
+      , envBackupBackends = cfgBackupBackends cfg
       , .. }
 
 spawnThreads :: Env -> IO ()

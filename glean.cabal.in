@@ -334,7 +334,6 @@ library util
     visibility: public
     hs-source-dirs: glean/util
     exposed-modules:
-        Glean.Database.Backup.Backend
         Glean.Impl.ThriftService
         Glean.Impl.ConfigProvider
         Glean.Impl.TestConfigProvider
@@ -461,6 +460,7 @@ library db
 
     exposed-modules:
         Glean.Database.Backup
+        Glean.Database.Backup.Backend
         Glean.Database.Backup.Locator
         Glean.Database.Backup.Mock
         Glean.Database.Catalog.Filter

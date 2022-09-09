@@ -36,6 +36,7 @@ import Data.ByteString (ByteString)
 import qualified Data.ByteString.Char8 as B
 import qualified Data.ByteString.UTF8 as UTF8
 import Data.Default
+import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.List
 import Data.Map (Map)
@@ -50,6 +51,8 @@ import Thrift.Util
 import Util.IO (listDirectoryRecursive)
 
 import Glean.Angle.Types
+import qualified Glean.Database.Backup.Backend as Backup -- from glean/util
+import qualified Glean.Database.Backup.Mock as Backup.Mock
 import Glean.Database.Catalog (Catalog)
 import qualified Glean.Database.Catalog.Local.Files as Catalog.Local.Files
 import qualified Glean.Database.Catalog.Store as Catalog
@@ -112,6 +115,8 @@ data Config = Config
     -- ^ Logger for server requests and other events
   , cfgDatabaseLogger :: Some GleanDatabaseLogger
     -- ^ Logger for recording stats of databases produced
+  , cfgBackupBackends :: HashMap Text (Some Backup.Backend)
+    -- ^ Backup backends
   }
 
 instance Show Config where
@@ -139,6 +144,7 @@ instance Default Config where
     , cfgShardManager = \_ _ k -> k $ SomeShardManager noSharding
     , cfgServerLogger = Some NullGleanServerLogger
     , cfgDatabaseLogger = Some NullGleanDatabaseLogger
+    , cfgBackupBackends = HashMap.fromList [("mock", Backup.Mock.mock)]
     }
 
 data SchemaIndex = SchemaIndex
@@ -378,6 +384,7 @@ options = do
     , cfgShardManager = cfgShardManager def
     , cfgServerLogger = cfgServerLogger def
     , cfgDatabaseLogger = cfgDatabaseLogger def
+    , cfgBackupBackends = cfgBackupBackends def
     , .. }
   where
     recipesConfigThriftSource = option (eitherReader ThriftSource.parse)
