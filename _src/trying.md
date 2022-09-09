@@ -105,7 +105,7 @@ glean-server --db-root /gleandb --schema /glean-code/glean/schema/source --port 
 Next start the Hyperlink server:
 
 ```
-glean-hyperlink --service localhost:12345 --repo react --root /react-code --http 8888
+glean-hyperlink --service localhost:12345 --db react --root /react-code --http 8888
 ```
 
 Now navigate to `http://localhost:8888` in your browser, and you

@@ -20,7 +20,7 @@ At Facebook, we have adopted an informal convention for database names: `<repo>.
 
 </FbInternalOnly>
 
-The name and hash together uniquely identify a database. This is written `<name>/<hash>`, and it is how you refer to a database in most cases when working with Glean. For example, in the shell's `:db` command, or the `--repo` argument to the command-line tools.
+The name and hash together uniquely identify a database. This is written `<name>/<hash>`, and it is how you refer to a database in most cases when working with Glean. For example, in the shell's `:db` command, or the `--db` argument to the command-line tools.
 
 ## Working with local databases
 

@@ -34,7 +34,7 @@ The indexer can be run via the main `glean` CLI tool.
 
 And index your Java repository with:
 ```
-glean index java-lsif DIR --repo name/hash
+glean index java-lsif DIR --db NAME/INSTANCE
 ```
 
 where

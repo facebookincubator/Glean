@@ -19,7 +19,7 @@ The indexer is run via the main `glean` CLI tool.
 
 And index your Hack repository with:
 ```
-glean index hack DIR --repo name/hash
+glean index hack DIR --db NAME/INSTANCE
 ```
 
 where

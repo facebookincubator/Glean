@@ -220,7 +220,7 @@ mkdir ~/local/gleandb
 Download the DB you want to test with:
 
 ```lang=shell
-glean restore --db-root ~/local/gleandb --repo-name fbsource --date 2021-04-29
+glean restore --db-root ~/local/gleandb --db-name fbsource --date 2021-04-29
 ```
 
 (replace `fbsource` and the date as appropriate). This may take a while.

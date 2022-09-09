@@ -12,7 +12,7 @@ The indexer is run via the main `glean` CLI tool.
 
 ```
 BUILD --ghc-options=-fwrite-ide-info
-glean --db-root DBDIR index haskell ROOT --repo name/hash
+glean --db-root DBDIR index haskell ROOT --db NAME/INSTANCE
 ```
 
 where

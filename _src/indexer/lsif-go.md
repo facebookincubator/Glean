@@ -19,7 +19,7 @@ The indexer is run via the main `glean` CLI tool.
 
 And index your Go repository with:
 ```
-glean index go DIR --repo name/hash
+glean index go DIR --db NAME/INSTANCE
 ```
 
 where
