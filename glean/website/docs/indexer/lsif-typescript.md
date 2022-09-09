@@ -19,7 +19,7 @@ The indexer is run via the main `glean` CLI tool.
 
 And index your TypeScript repository with:
 ```
-glean index typescript DIR --repo name/hash
+glean index typescript DIR --db NAME/INSTANCE
 ```
 
 where

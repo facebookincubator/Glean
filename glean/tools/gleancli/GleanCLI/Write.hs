@@ -137,8 +137,8 @@ finishOpt = switch
 stackedOpt :: Parser Repo
 stackedOpt = option (maybeReader Glean.parseRepo)
   (  long "stacked"
-  <> metavar "REPO"
-  <> help ("Created DB will be stacked on top of this REPO DB. "
+  <> metavar "DB"
+  <> help ("Created DB will be stacked on top of this DB. "
   <> "For more details about its schema, see --update-schema-for-stacked.")
   )
 
@@ -225,8 +225,8 @@ useLocalSwitchOpt = switch
 incrementalOpt :: Parser Repo
 incrementalOpt = option (maybeReader Glean.parseRepo)
   (  long "incremental"
-  <> metavar "REPO"
-  <> help "Create an incremental DB on top of this REPO DB."
+  <> metavar "DB"
+  <> help "Create an incremental DB on top of this DB."
   )
 
 splitUnits :: Text -> [ByteString]
@@ -287,7 +287,7 @@ instance Plugin WriteCommand where
           "Create a new standalone|stacked|incremental DB. "
           <> "Please carefully read help above to understand how various "
           <> "options are related to each other.")) $ do
-        writeRepo <- repoOpts
+        writeRepo <- dbOpts
         writeRepoTime <- optional repoTimeOpt
         writeFiles <- fileArg
         finish <- finishOpt
@@ -310,7 +310,7 @@ instance Plugin WriteCommand where
           <> "Please carefully read help above to understand how various "
           <> "options are related to each other.")) $ do
         ~(writeRepo, scribe) <-
-           (,Nothing) <$> repoOpts <|>
+           (,Nothing) <$> dbOpts <|>
            (do
               ~(cat, bucket, compress) <- writeScribeOptions
               return (def, Just ScribeOptions

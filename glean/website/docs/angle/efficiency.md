@@ -59,7 +59,7 @@ predicate Child :
 We can try this out in the shell. First we have to create a new database to hold the derived facts that is *stacked* on top of the old database. Drop out of the shell and run this command to create the new database:
 
 ```lang=angle
-glean create --db-root /tmp/glean/db --schema dir:/tmp/glean/schema --repo derived/1 --stacked facts/1
+glean create --db-root /tmp/glean/db --schema dir:/tmp/glean/schema --db derived/1 --stacked facts/1
 ```
 
 Now start the shell again and load the stacked database. Note that we can still query facts from the original database:

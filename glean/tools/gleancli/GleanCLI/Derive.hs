@@ -37,7 +37,7 @@ data DeriveCommand
 instance Plugin DeriveCommand where
   parseCommand =
     commandParser "derive" (progDesc "Derive and store a predicate") $ do
-      deriveRepo <- repoOpts
+      deriveRepo <- dbOpts
       deriveMaxConcurrency <- maxConcurrencyOpt
       derivePageOptions <- pageOpts
       predicates <- many (serial <|> parallel)

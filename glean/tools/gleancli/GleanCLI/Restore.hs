@@ -34,8 +34,8 @@ import GleanCLI.Types
 
 data WhatToRestore
   = RestoreLocator Text
-  | RestoreRepo Repo
-  | RestoreRepoOnDay Text Day
+  | RestoreDb Repo
+  | RestoreDbOnDay Text Day
 
 data RestoreCommand
   = Restore
@@ -56,15 +56,15 @@ instance Plugin RestoreCommand where
         )
       deps = switch
         (  long "ignore-dependencies"
-        <> help "Don't download database dependencies when specifying a repo name.")
+        <> help "Don't download database dependencies when specifying a DB name.")
       what =
         (RestoreLocator <$> locator) <|>
-        (RestoreRepo <$> repoSlash) <|> do
-          repoName <- repoNameOpt
-          spec <- Left <$> repoHashOpt <|> Right <$> dayOpt
+        (RestoreDb <$> dbSlash) <|> do
+          repoName <- dbNameOpt
+          spec <- Left <$> dbInstanceOpt <|> Right <$> dayOpt
           return $ case spec of
-            Left hash -> RestoreRepo (Repo repoName hash)
-            Right day -> RestoreRepoOnDay repoName day
+            Left hash -> RestoreDb (Repo repoName hash)
+            Right day -> RestoreDbOnDay repoName day
 
       parseDay = return .
         parseTimeOrError False defaultTimeLocale (iso8601DateFormat Nothing)
@@ -80,13 +80,13 @@ instance Plugin RestoreCommand where
       locatorsToRestore = case what of
         -- ignores dependencies
         RestoreLocator locator -> return [(locator, Nothing)]
-        RestoreRepo repo -> do
+        RestoreDb repo -> do
           databases <- listWithBackups
           let deps = if ignoreDependencies
                 then []
                 else dependencies databases repo
           withLocator databases $ repo : deps
-        RestoreRepoOnDay repoName day -> do
+        RestoreDbOnDay repoName day -> do
           databases <- listWithBackups
           let matchingDay = listToMaybe
                 [ database_repo

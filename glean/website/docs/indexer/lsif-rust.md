@@ -19,7 +19,7 @@ The indexer is run via the main `glean` CLI tool.
 
 And index your Rust repository with:
 ```
-glean index rust-lsif DIR --repo name/hash
+glean index rust-lsif DIR --db NAME/INSTANCE
 ```
 
 where

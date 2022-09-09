@@ -50,7 +50,7 @@ A simple cmake-based indexer can run via the main `glean` CLI tool.
 
 And index your c++ repository with:
 ```
-glean index cpp-cmake DIR --indexer clang-index --deriver clang-derive --repo name/hash
+glean index cpp-cmake DIR --indexer clang-index --deriver clang-derive --db NAME/INSTANCE
 ```
 
 where

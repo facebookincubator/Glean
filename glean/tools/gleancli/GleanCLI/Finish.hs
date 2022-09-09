@@ -40,7 +40,7 @@ instance Plugin FinishCommand where
   parseCommand =
     commandParser "finish"
       (progDesc "Notify server that a database is complete") $ do
-      finishRepo <- repoOpts
+      finishRepo <- dbOpts
       task <- optional $ textOption
         (  long "task"
         <> metavar "NAME"

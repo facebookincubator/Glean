@@ -11,10 +11,10 @@ module GleanCLI.Common
   ( PageOptions(..)
   , pageOpts
   , maxConcurrencyOpt
-  , repoOpts
-  , repoSlash
-  , repoNameOpt
-  , repoHashOpt
+  , dbOpts
+  , dbSlash
+  , dbNameOpt
+  , dbInstanceOpt
   , handleOpt
   ) where
 
@@ -55,33 +55,37 @@ pageOpts = do
     )
   return PageOptions{..}
 
-repoOpts :: Parser Repo
-repoOpts = repoSlash <|> repoNameHash
+dbOpts :: Parser Repo
+dbOpts = dbSlash <|> dbNameInstance
 
-repoSlash :: Parser Repo
-repoSlash = do
+dbSlash :: Parser Repo
+dbSlash = do
   option (maybeReader Glean.parseRepo)
-    (  long "repo"
-    <> metavar "NAME/HASH"
-    <> help "identifies the repository"
+    (  long "db"
+    <> metavar "NAME/INSTANCE"
+    <> help "identifies the database"
     )
+  <|> option (maybeReader Glean.parseRepo)
+    (internal <> long "repo")
 
-repoNameHash :: Parser Repo
-repoNameHash = Repo <$> repoNameOpt <*> repoHashOpt
+dbNameInstance :: Parser Repo
+dbNameInstance = Repo <$> dbNameOpt <*> dbInstanceOpt
 
-repoNameOpt :: Parser Text
-repoNameOpt = textOption
-    (  long "repo-name"
+dbNameOpt :: Parser Text
+dbNameOpt = textOption
+    (  long "db-name"
     <> metavar "NAME"
-    <> help "name of the repository"
+    <> help "name of the database"
     )
+    <|> textOption (internal <> long "repo-name")
 
-repoHashOpt :: Parser Text
-repoHashOpt = textOption
-    (  long "repo-hash"
-    <> metavar "HASH"
-    <> help "hash of the repository"
-    )
+dbInstanceOpt :: Parser Text
+dbInstanceOpt = textOption
+    (  long "db-instance"
+    <> metavar "INSTANCE"
+    <> help "instance of the database"
+    ) <|>
+    textOption (internal <> long "repo-hash") -- backwards compat
 
 handleOpt :: Parser Text
 handleOpt = textOption

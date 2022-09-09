@@ -49,7 +49,7 @@ data QueryCommand
 instance Plugin QueryCommand where
   parseCommand =
     commandParser "query" (progDesc "Execute an Angle query") $ do
-      repoSpec <- Left <$> repoNameOpt <|> Right <$> repoSlash
+      repoSpec <- Left <$> dbNameOpt <|> Right <$> dbSlash
       queryPageOptions <- pageOpts
       recurse <- switch $ long "recursive"
         <> help "fetch nested facts (slower)"

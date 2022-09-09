@@ -21,7 +21,7 @@ The indexer is run via the main `glean` CLI tool.
 
 And index your Flow repository with:
 ```
-glean index flow DIR --repo name/hash
+glean index flow DIR --db NAME/INSTANCE
 ```
 
 where

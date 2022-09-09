@@ -31,7 +31,7 @@ instance Plugin CompleteCommand where
   parseCommand =
     commandParser "complete"
       (progDesc "Notify server that some predicates are complete.") $ do
-      completeRepo <- repoOpts
+      completeRepo <- dbOpts
       completePredicates <-
         many $ parseRef <$> strArgument
         (  metavar "PREDICATE"

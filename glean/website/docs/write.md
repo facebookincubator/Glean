@@ -213,7 +213,7 @@ There is a default retention policy for databases created this way; for details 
 To create a database from a single file of JSON facts:
 
 ```
-glean create --service <write-server> --finish --repo <name>/<hash> <filename>
+glean create --service <write-server> --finish --db <name>/<instance> <filename>
 ```
 where
 
@@ -236,11 +236,11 @@ where
 If the file is more than, say, 100MB, this operation will probably time out sending the data to the server. To send large amounts of data you need to batch it up into multiple files, and then send it like this:
 
 ```
-glean create --service <write-server> --repo <name>/<hash>
-glean write --service <write-server> --repo <name>/<hash> <filename1>
-glean write --service <write-server> --repo <name>/<hash> <filename2>
+glean create --service <write-server> --db <name>/<hash>
+glean write --service <write-server> --db <name>/<hash> <filename1>
+glean write --service <write-server> --db <name>/<hash> <filename2>
 ...
-glean finish --service <write-server> --repo <name>/<hash>
+glean finish --service <write-server> --db <name>/<hash>
 ```
 To find out if your DB made it:
 

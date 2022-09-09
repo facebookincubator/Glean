@@ -162,7 +162,7 @@ instance Plugin UnfinishCommand where
       (progDesc $ "Unfinish a local database "<>
         "(turn it from complete to incomplete state)")
       $ do
-      repo <- repoOpts
+      repo <- dbOpts
       handle <- handleOpt
       return Unfinish{..}
 
@@ -182,9 +182,9 @@ data ListCommand
 instance Plugin ListCommand where
   parseCommand =
     commandParser "list"
-      (progDesc "List databases which match REPONAME")
+      (progDesc "List databases which match DBNAME")
       $ do
-      listDbNames <- many $ strArgument (metavar "REPONAME")
+      listDbNames <- many $ strArgument (metavar "DBNAME")
       listFormat <- shellFormatOpt
       listVerbosity <- flag DbSummarise DbDescribe (
         short 'v' <>
@@ -216,7 +216,7 @@ instance Plugin StatusCommand where
     commandParser "status"
       (progDesc "Get the status of a db")
       $ do
-      statusRepo <- repoOpts
+      statusRepo <- dbOpts
       statusFormat <- shellFormatOpt
       statusSetExitCode <- switch
         (  short 'e'
@@ -254,7 +254,7 @@ instance Plugin PropertiesCommand where
     commandParser "properties"
       (progDesc "Get the properties of a db")
       $ do
-      propertiesRepo <- repoOpts
+      propertiesRepo <- dbOpts
       propertiesFormat <- shellFormatOpt
       return Properties{..}
 
@@ -275,7 +275,7 @@ instance Plugin DumpCommand where
     commandParser "dump"
       (progDesc "Dump the contents of the specified database into a file")
       $ do
-      dumpRepo <- repoOpts
+      dumpRepo <- dbOpts
       dumpFile <- strArgument
         (  metavar "FILE"
         <> help "Destination file path"
@@ -293,7 +293,7 @@ newtype DeleteCommand
 instance Plugin DeleteCommand where
   parseCommand =
     commandParser "delete" (progDesc "Delete a database") $ do
-      Delete <$> repoOpts
+      Delete <$> dbOpts
 
   runCommand _ _ backend Delete{..} =
     void $ Glean.deleteDatabase backend deleteRepo
@@ -308,7 +308,7 @@ data ValidateCommand
 instance Plugin ValidateCommand where
   parseCommand =
     commandParser "validate" (progDesc "Validate a local database") $ do
-      repo <- repoOpts
+      repo <- dbOpts
       no_typecheck <- switch
         (  long "no-typecheck"
         <> help "don't typecheck facts"
@@ -366,7 +366,7 @@ data StatsCommand
 instance Plugin StatsCommand where
   parseCommand =
     commandParser "stats" (progDesc "Get fact counts and sizes") $ do
-      statsRepo <- repoOpts
+      statsRepo <- dbOpts
       perPredicate <- switch ( long "per-predicate" )
       excludeBase <- switch ( long "exclude-base" )
       statsPredicates <- many $ strArgument (metavar "PREDICATE")
@@ -424,7 +424,7 @@ newtype OwnershipCommand
 instance Plugin OwnershipCommand where
   parseCommand =
     commandParser "ownership" (progDesc "") $ do
-      ownershipRepo <- repoOpts
+      ownershipRepo <- dbOpts
       return Ownership{..}
 
   runCommand _ _ backend Ownership{..} = case Glean.backendKind backend of
@@ -440,7 +440,7 @@ data SetPropertyCommand
 instance Plugin SetPropertyCommand where
   parseCommand =
     commandParser "set-property" (progDesc "") $ do
-      setPropRepo <- repoOpts
+      setPropRepo <- dbOpts
       properties <- many $ argument readOption (metavar "NAME=VALUE")
       return SetProperty{..}
     where
@@ -462,7 +462,7 @@ data WriteSerializedInventoryCommand
 instance Plugin WriteSerializedInventoryCommand where
   parseCommand =
     commandParser "write-serialized-inventory" (progDesc "") $ do
-      writeSerializedInventoryRepo <- repoOpts
+      writeSerializedInventoryRepo <- dbOpts
       outputFile <- strArgument (metavar "OUTPUT_FILE")
       return WriteSerializedInventory{..}
 
