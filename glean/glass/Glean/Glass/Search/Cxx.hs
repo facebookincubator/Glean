@@ -27,9 +27,8 @@ import qualified Glean.Schema.CodeCxx.Types as Cxx
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import qualified Glean.Schema.Cxx1.Types as Cxx
-import qualified Glean.Schema.SearchCxx.Types as Cxx
-import qualified Glean.Schema.SearchCode.Types as Code
 import qualified Glean.Schema.Src.Types as Src
+import qualified Glean.Schema.SymbolidCxx.Types as SymbolId
 
 instance Search Cxx.Entity where
   symbolSearch [] =
@@ -47,12 +46,22 @@ instance Search Cxx.Entity where
 -- > fbsource/cpp @ fbcode/folly/Optional/assign
 -- > fbsource/cpp @ fbcode/folly/Optional
 --
--- would resolve to their definition occuences.
+-- would resolve to their definition occurences.
+--
+-- enumerators (fields of enums) are also in this path
 --
 searchDefinitions
   :: [Text] -> Text -> [Text] -> Text -> ReposHaxl u w (SearchResult Cxx.Entity)
-searchDefinitions t path ns local = searchSymbolId t $
-  searchDefnByPathScopeAndName path ns local
+searchDefinitions t path ns name =
+  searchSymbolId t (lookupDefinition path ns name)
+    .|?
+  searchSymbolId t (lookupFunctionDefinition path ns name)
+    .|?
+  searchSymbolId t (lookupNamespaceDefinition path ns name)
+    .|?
+  (if not (null ns)
+      then searchSymbolId t (lookupEnumerator path (init ns) (last ns) name)
+      else pure $ None "Cxx.searchDefinitions: no results found")
 
 --
 -- declaration entities only
@@ -61,121 +70,262 @@ searchDeclarations
   :: [Text] -> Text -> [Text] -> ReposHaxl u w (SearchResult Cxx.Entity)
 searchDeclarations _ _path [] =
   return $ None "Cxx.symbolSearch: empty decl symbol" -- invalid
-searchDeclarations t path rest@(_:_) = do
-  r <- searchSymbolId t $
-    searchDeclByPathScopeAndName path (init rest) (last rest)
-  case r of
-    None{} -> searchSymbolId t $ searchNSDeclByPathAndScope path rest
-    _ -> pure r
+searchDeclarations t path rest@(_:_) =
+    searchSymbolId t (lookupDeclaration path ns name)
+      .|?
+    searchSymbolId t (lookupFunctionDeclaration path ns name)
+      .|?
+    searchSymbolId t (lookupNamespaceDeclaration path ns name)
+  where
+    name = last rest
+    ns = init rest
 
 --
--- Definitions only, by path scope and name
+-- A little `then` or .|. thing for searching until first match
 --
-searchDefnByPathScopeAndName
+(.|?)
+  :: ReposHaxl u w (SearchResult t)
+  -> ReposHaxl u w (SearchResult t)
+  -> ReposHaxl u w (SearchResult t)
+a .|? b = do
+  v <- a
+  case v of
+    None{} -> b
+    _ -> pure v
+
+------------------------------------------------------------------------
+
+--
+-- Records, Variables, Enum, TypeAlias, Using Directives.
+--
+lookupDefinition :: Text -> [Text] -> Text -> Angle (ResultLocation Cxx.Entity)
+lookupDefinition = lookupEntityFn $ \name ns entity ->
+  predicate @SymbolId.LookupDefinition (
+    rec $
+      field @"name" (string name) $
+      field @"scope" (scopeQ (reverse ns)) $
+      field @"entity" entity
+    end)
+
+lookupFunctionDefinition
   :: Text -> [Text] -> Text -> Angle (ResultLocation Cxx.Entity)
-searchDefnByPathScopeAndName anchor ns name =
+lookupFunctionDefinition = lookupEntityFn $ \name ns entity ->
+  predicate @SymbolId.LookupFunctionDefinition (
+    rec $
+      field @"name" (functionName name) $
+      field @"scope" (scopeQ (reverse ns)) $
+      field @"entity" entity
+    end)
+
+lookupNamespaceDefinition
+  :: Text -> [Text] -> Text -> Angle (ResultLocation Cxx.Entity)
+lookupNamespaceDefinition = lookupEntityFn $ \name ns entity ->
+  predicate @SymbolId.LookupNamespaceDefinition (
+    rec $
+      field @"name" (maybeName name) $
+      field @"parent" (namespaceParentQName (reverse ns)) $
+      field @"entity" entity
+    end)
+
+--
+-- enum values (fields of an enumerator) are a bit different again.
+-- they are a field in an enum declaration, so to query you need to
+-- know the field, and also the parent enum name and scope.
+--
+lookupEnumerator
+  :: Text -> [Text] -> Text -> Text -> Angle (ResultLocation Cxx.Entity)
+lookupEnumerator anchor ns parent name =
+  vars $ \ (decl :: Angle Cxx.Enumerator_key) (entity :: Angle Cxx.Entity)
+    (codeEntity :: Angle Code.Entity) (file :: Angle Src.File)
+      (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
+    tuple (entity, file, rangespan, lname) `where_` ((
+      wild .= predicate @SymbolId.LookupEnumerator (
+        rec $
+          field @"name" (string name) $
+          field @"parent" (string parent) $
+          field @"scope" (scopeQ (reverse ns)) $
+          field @"decl" decl
+        end))
+      : (alt @"enumerator" decl .= sig entity)
+      : entityFooter anchor entity codeEntity file rangespan lname
+      )
+
+--
+-- We have four variants, and two ways to resolve each
+--
+-- - record, variable, enum, type , using
+-- - functions (and function-like things)
+-- - namespaces
+-- - enumerators
+--
+-- And for the first 3, a defn version as well.
+--
+
+--
+-- Declarations of records, variables, enums, type , using directives
+-- n.b. a lot of variables are not considered "Definitions" (e.g. local/auto)
+-- so they are only discoverable through decl search
+--
+lookupDeclaration :: Text -> [Text] -> Text -> Angle (ResultLocation Cxx.Entity)
+lookupDeclaration anchor ns name =
+  vars $ \ (decl :: Angle Cxx.Declaration) (entity :: Angle Cxx.Entity)
+    (codeEntity :: Angle Code.Entity) (file :: Angle Src.File)
+      (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
+    tuple (entity, file, rangespan, lname) `where_` ((
+      wild .= predicate @SymbolId.LookupDeclaration (
+        rec $
+          field @"name" (string name) $
+          field @"scope" (scopeQ (reverse ns)) $
+          field @"decl" decl
+        end))
+      : entityDeclFooter anchor decl entity codeEntity file rangespan lname
+      )
+
+--
+-- Declarations of functions, including regular named functions, operators,
+-- literl operators, constructors (anonymous), destructors (anonymous), and
+-- type conversion operators.
+--
+-- Note things like variables, within a function, have a FunctionQName scope
+-- but are not FunctionName-indexed
+--
+lookupFunctionDeclaration
+  :: Text -> [Text] -> Text -> Angle (ResultLocation Cxx.Entity)
+lookupFunctionDeclaration anchor ns name =
+  vars $ \ (decl :: Angle Cxx.Declaration) (entity :: Angle Cxx.Entity)
+    (codeEntity :: Angle Code.Entity) (file :: Angle Src.File)
+      (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
+    tuple (entity, file, rangespan, lname) `where_` ((
+      wild .= predicate @SymbolId.LookupFunctionDeclaration (
+        rec $
+          field @"name" (functionName name) $
+          -- scopeQuery: too generic? can this ever be local or a function?
+          field @"scope" (scopeQ (reverse ns)) $
+          field @"decl" decl
+        end))
+      : entityDeclFooter anchor decl entity codeEntity file rangespan lname
+      )
+
+--
+-- Namespaces are a bit like regular scopes but they can be anonymous.
+-- This is a "" in the symbol id, corresponding to a nothing in the query
+--
+lookupNamespaceDeclaration
+  :: Text -> [Text] -> Text -> Angle (ResultLocation Cxx.Entity)
+lookupNamespaceDeclaration anchor ns name =
+  vars $ \ (decl :: Angle Cxx.Declaration) (entity :: Angle Cxx.Entity)
+    (codeEntity :: Angle Code.Entity) (file :: Angle Src.File)
+      (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
+    tuple (entity, file, rangespan, lname) `where_` ((
+      wild .= predicate @SymbolId.LookupNamespaceDeclaration (
+        rec $
+          field @"name" (maybeName name) $
+          field @"parent" (namespaceParentQName (reverse ns)) $
+          field @"decl" decl
+        end))
+      : entityDeclFooter anchor decl entity codeEntity file rangespan lname
+      )
+
+--
+-- AngleStatement helpers, to generate query fragments
+--
+
+lookupEntityFn ::
+  Angle.AngleVars
+    (Angle Cxx.Entity
+      -> Angle Code.Entity
+      -> Angle Src.File
+      -> Angle Code.RangeSpan
+      -> Angle Text
+      -> Angle (Cxx.Entity, Src.File, Code.RangeSpan, Text)) r
+  => (Text -> [Text] -> Angle Cxx.Entity -> Angle t)
+  -> Text -> [Text] -> Text -> r
+lookupEntityFn pred anchor ns name =
   vars $ \(entity :: Angle Cxx.Entity) (codeEntity :: Angle Code.Entity)
-     (file :: Angle Src.File) (rangespan :: Angle Code.RangeSpan)
+      (file :: Angle Src.File) (rangespan :: Angle Code.RangeSpan)
       (lname :: Angle Text) ->
-    tuple (entity, file, rangespan, lname) `where_` ([
-      wild .= predicate @Code.CxxSearchByNameAndScopeFact (
-        rec $
-          field @"name" (string name) $
-          field @"scope" (scopeQuery ns) $
-          field @"entity" codeEntity
-        end),
-      entityLocation codeEntity file rangespan lname,
-      alt @"cxx" entity .= codeEntity
-    ] ++ -- refine to specific sub-repo
-    [file .= predicate @Src.File (stringPrefix anchor) | not (Text.null anchor)]
+    tuple (entity, file, rangespan, lname) `where_` ((
+      wild .= pred name ns entity)
+      : entityFooter anchor entity codeEntity file rangespan lname
     )
-  where
-    scopeQuery ns = scope (reverse ns)
 
+entityDeclFooter
+  :: Text -> Angle Cxx.Declaration -> Angle Cxx.Entity -> Angle Code.Entity
+  -> Angle Src.File -> Angle Code.RangeSpan -> Angle Text
+  -> [AngleStatement]
+entityDeclFooter anchor decl entity codeEntity file rangespan lname =
+  (alt @"decl" decl .= sig entity)
+  : entityFooter anchor entity codeEntity file rangespan lname
 
--- we always encode C++ symbols by name and scope, with a sub-repo prefix
---
--- E.g. xplat/folly/Optional is a class under "xplat" with namespace "folly"
---
--- Returns declarations. Not definitions.
---
-searchDeclByPathScopeAndName
-  :: Text -> [Text] -> Text -> Angle (ResultLocation Cxx.Entity)
-searchDeclByPathScopeAndName anchor ns name =
-  vars $ \(entity :: Angle Cxx.Entity) (file :: Angle Src.File)
-      (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
-    tuple (entity, file, rangespan, lname) `where_` ([
-      wild .= predicate @Cxx.SearchByNameAndScope (
-        rec $
-          field @"name" (string name) $
-          field @"scope" (scopeQuery ns) $
-          field @"entity" entity
-        end),
-      entityLocation (alt @"cxx" entity) file rangespan lname
-    ] ++ -- refine to specific sub-repo
-    [file .= predicate @Src.File (stringPrefix anchor) | not (Text.null anchor)]
-    )
-  where
-    scopeQuery ns = scope (reverse ns)
+entityFooter
+  :: Text -> Angle Cxx.Entity -> Angle Code.Entity
+  -> Angle Src.File -> Angle Code.RangeSpan -> Angle Text
+  -> [AngleStatement]
+entityFooter anchor entity codeEntity file rangespan lname =
+  [ alt @"cxx" entity .= sig codeEntity
+  , entityLocation codeEntity file rangespan lname
+  ] ++ -- refine to specific sub-repo if we have a prefix
+  [file .= predicate @Src.File (stringPrefix anchor) | not (Text.null anchor)]
 
 --
--- namespaces and records/container decls use scope-only search but its quite
--- lossy
+-- Scope queries
 --
-searchNSDeclByPathAndScope
-  :: Text -> [Text] -> Angle (ResultLocation Cxx.Entity)
-searchNSDeclByPathAndScope anchor ns =
-  vars $ \(entity :: Angle Cxx.Entity) (file :: Angle Src.File)
-      (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
-    tuple (entity, file, rangespan, lname) `where_` ([
-      wild .= predicate @Cxx.SearchByScope (
-        rec $
-          field @"scope" (scopeQuery ns) $
-          field @"entity" entity
-        end),
-      entityLocation (alt @"cxx" entity) file rangespan lname
-    ] ++ -- refine to specific sub-repo
-    [file .= predicate @Src.File (stringPrefix anchor) | not (Text.null anchor)]
-    )
-  where
-    scopeQuery ns = scope (reverse ns)
 
 --
--- Scope queries. There's lots of flavors.
+-- Todo: extend this to encode constructors, destructors and conversion ops
+-- Todo: what would empty string names imply?
 --
-scope :: [Text] -> Angle Cxx.Scope
-scope [] = alt @"global_" wild
-scope ns@(n:ns') =
-  alt @"namespace_" (namespaceQName ns)
+functionName :: Text -> Angle Cxx.FunctionName_key
+functionName name =
+  alt @"name" (string name) .|
+  alt @"operator_" (string name) .|
+  alt @"literalOperator" (string name) .|
+  alt @"conversionOperator" (string name)
+  -- constructor: todo; need symbol id
+  -- destructor: todo:
+
+--
+-- For namespaces, which may have anonymous components
+--
+maybeName :: Text -> Angle (Maybe Cxx.Name)
+maybeName "" = nothing
+maybeName n = just (predicate (string n))
+
+namespaceParentQName :: [Text] -> Angle (Maybe Cxx.NamespaceQName)
+namespaceParentQName [] = nothing
+namespaceParentQName (n:ns) = just $ predicate $
+  rec $
+    field @"name" (maybeName n) $
+    field @"parent" (namespaceParentQName ns)
+  end
+
+namespaceQName :: [Text] -> Text -> Angle Cxx.NamespaceQName_key
+namespaceQName ns n =
+  rec $
+    field @"name" (maybeName n) $
+    field @"parent" (namespaceParentQName ns)
+  end
+
+functionQName :: [Text] -> Text -> Angle Cxx.FunctionQName_key
+functionQName ns n =
+  rec $
+    field @"name" (functionName n) $ -- i suspect we have params to constrs here
+    field @"scope" (scopeQ ns)
+  end
+
+--
+-- Scope queries. There are lots of alternatives, recursively, unfortunately
+--
+scopeQ :: [Text] -> Angle Cxx.Scope
+scopeQ [] = alt @"global_" wild {- builtin.Unit -}
+scopeQ _ss@(n:ns) =
+  alt @"namespace_" (namespaceQName ns n)
   .|
   alt @"recordWithAccess" (rec $
-      field @"record" (rec $
+      field @"record" (rec $ -- anonymous QName
         field @"name" (string n) $
-        field @"scope" (scope ns')
+        field @"scope" (scopeQ ns) -- I suspect this is too generic
       end)
     end)
   .|
-  alt @"local" (functionQName n ns')
-
-  where
-    namespaceQName :: [Text] -> Angle Cxx.NamespaceQName_key
-    namespaceQName [] =
-      rec $
-        field @"name" nothing $
-        field @"parent" nothing
-      end
-    namespaceQName (n:ns) =
-      rec $
-        field @"name" (
-          if n == "" then nothing else just (predicate (string n))) $
-        field @"parent"
-          (if null ns
-            then nothing
-            else just (predicate (namespaceQName ns)))
-      end
-
-    functionQName n ns =
-      rec $
-        field @"name" (alt @"name" (string n)) $
-        field @"scope" (scope ns)
-      end
+  alt @"local" (functionQName ns n) -- too broad, will yield local (global ..)

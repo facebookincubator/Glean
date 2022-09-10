@@ -56,6 +56,7 @@ module Glean.Query.Angle
   , HasFields
   , HasField
   , AngleEnum(..)
+  , AngleVars
   ) where
 
 import Control.Monad.State.Strict
