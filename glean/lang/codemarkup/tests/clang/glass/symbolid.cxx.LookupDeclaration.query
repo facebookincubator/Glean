@@ -1,0 +1,3 @@
+query: symbolid.cxx.LookupDeclaration _
+perf: true
+transform: [gensort, []]

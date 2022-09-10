@@ -1,0 +1,146 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema symbolid.cxx.1 {
+import src.1
+import code.cxx.4
+import codemarkup.types.1
+import cxx1.5
+
+# Decoding C++ symbolids to entities is challenging
+#
+# Unlike search.code.searchByScope we need to be able to resolve all entities, including exotic
+# things, and separately restrict results to defn, defs or enums
+#
+# Unlike codemarkup.cxx.*resolve* we do want to mingle defn and decl (and enum) types, but rather
+# explicitly choose
+#
+# So this "decoder" does all the decl and def lookups for all entity types, exposing a comprehensive
+# symbol id lookup layer to glass
+#
+predicate LookupDefinition:
+  {
+    name : cxx1.Name,
+    scope : cxx1.Scope,
+    entity : code.cxx.Entity
+  }
+  { Name, Scope, Defn } where
+    LookupDeclaration { Name, Scope, Decl };
+    DefinitionOfDecl { Decl, Defn };
+
+predicate LookupFunctionDefinition:
+  {
+    name : cxx1.FunctionName,
+    scope : cxx1.Scope,
+    entity : code.cxx.Entity
+  }
+  { Name, Scope, Defn } where
+    LookupFunctionDeclaration { Name, Scope, Decl };
+    DefinitionOfDecl { Decl, Defn }
+
+predicate LookupNamespaceDefinition:
+  {
+    name : maybe cxx1.Name,
+    parent : maybe cxx1.NamespaceQName,
+    entity : code.cxx.Entity
+  }
+  { Name, Parent, Defn } where
+    LookupNamespaceDeclaration { Name, Parent, Decl };
+    DefinitionOfDecl { Decl, Defn }
+
+#
+# Actually finding things. C++ is indexed decl-first. So lookup is via decls
+#
+
+#
+# By cxx1.Name and cxx1.Scope fact (as cxx1.QName)
+#
+# Many things are found this way. (Records are structs, classes or unions).
+#
+predicate LookupDeclaration:
+  {
+    name : cxx1.Name,
+    scope : cxx1.Scope,
+    decl : cxx1.Declaration
+  }
+  { Name, Scope, Decl } where
+  # records, variables, enums, type aliases
+  Q = cxx1.QName { Name, Scope };
+  ( D = cxx1.RecordDeclaration { name = Q }; { record_ = D } ) |
+  ( D = cxx1.VariableDeclaration { name = Q }; { variable = D } ) |
+  ( D = cxx1.EnumDeclaration { name = Q }; { enum_ = D } ) |
+  ( D = cxx1.TypeAliasDeclaration { name = Q }; { typeAlias = D } ) |
+  ( D = cxx1.UsingDirective { name = Q }; { usingDirective = D } ) = Decl
+
+#
+# By cxx1.FunctionName and cxx1.Scope fact
+#
+# Function declarations are keyed by the FunctionName predicate.
+# UsingDeclarations are also here.
+#
+# Unlike cxx1.Name to find operators, constructors, etc you need a
+# cxx1.FunctionName search
+#
+predicate LookupFunctionDeclaration:
+  {
+    name : cxx1.FunctionName,
+    scope : cxx1.Scope,
+    decl : cxx1.Declaration
+  }
+  { Name, Scope, Decl } where
+    FQN = cxx1.FunctionQName { Name, Scope };
+    ( D = cxx1.FunctionDeclaration { name = FQN }; { function_ = D }) | (
+      D = cxx1.UsingDeclaration { name = FQN }; { usingDeclaration = D }
+    ) = Decl
+
+# Namespace QNames are also a bit tricky as they can be anonymous
+# so there are `nothing` holes in the patterns.
+#
+predicate LookupNamespaceDeclaration:
+  {
+    name : maybe cxx1.Name, # n.b can be anonymous
+    parent : maybe cxx1.NamespaceQName,
+    decl : cxx1.Declaration
+  }
+  { Name, Parent, Decl } where
+    NSN = cxx1.NamespaceQName { Name, Parent };
+    D = cxx1.NamespaceDeclaration { name = NSN };
+    { namespace_ = D } = Decl
+
+# enumerators, fields of enums, keyed by the field and the parent enum qname
+predicate LookupEnumerator:
+  {
+    name : cxx1.Name,
+    parent : cxx1.Name,
+    scope : cxx1.Scope,
+    decl : cxx1.Enumerator
+  }
+  { Name, Parent, Scope, Enum } where
+    Q = cxx1.QName { Parent, Scope };
+    Decl = cxx1.EnumDeclaration { name = Q };
+    cxx1.Enumerator { name = Name, enumeration = Decl } = Enum
+
+# todo : Objective-C things are another kettle of fish
+
+#
+# Internal helpers
+#
+
+#
+# Find direct definition entities for various declaration types
+# If its not in the set we ignore it. We only want to return actual definitions
+#
+# Definitions narrow down the decl space to anchor or base declarations that
+# are usually what you want to know things about.
+#
+# Unlike search.cxx.DeclIsDefn, this should find _all_ definitions, via the
+# decl family.
+#
+predicate DefinitionOfDecl:
+  {
+    decl : cxx1.Declaration,
+    entity : code.cxx.Entity
+  }
+  { Decl, { defn = Defn } } where
+    code.cxx.DeclToDef { Decl, Defn }; # its a def if code.cxx.DeclToDef decides
+
+}

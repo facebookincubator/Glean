@@ -1,0 +1,236 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": { "key": { "name": { "key": "f" } } },
+      "scope": { "namespace_": { "key": { "name": { "key": "foo" } } } },
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "f" } } },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "foo" } } }
+                }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "void" }, "parameters": [ ] }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 16,
+              "columnBegin": 1,
+              "lineEnd": 16,
+              "columnEnd": 8
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": { "name": { "key": "foo" } } },
+      "scope": { "namespace_": { "key": { "name": { "key": "foo" } } } },
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "foo" } } },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "foo" } } }
+                }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "void" }, "parameters": [ ] }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 19,
+              "columnBegin": 1,
+              "lineEnd": 21,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": { "name": { "key": "foo" } } },
+      "scope": { "namespace_": { "key": { "name": { "key": "foo" } } } },
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "foo" } } },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "foo" } } }
+                }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "void" }, "parameters": [ ] }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 25,
+              "columnBegin": 1,
+              "lineEnd": 25,
+              "columnEnd": 10
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": { "name": { "key": "fooFn" } } },
+      "scope": { "namespace_": { "key": { "name": { "key": "foo" } } } },
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "fooFn" } } },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "foo" } } }
+                }
+              }
+            },
+            "signature": {
+              "key": {
+                "returns": { "key": "int" },
+                "parameters": [
+                  { "name": { "key": "fooI" }, "type": { "key": "int" } }
+                ]
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 34,
+              "columnBegin": 1,
+              "lineEnd": 36,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": { "name": { "key": "g" } } },
+      "scope": {
+        "namespace_": {
+          "key": {
+            "name": { "key": "bar" },
+            "parent": { "key": { "name": { "key": "foo" } } }
+          }
+        }
+      },
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "g" } } },
+                "scope": {
+                  "namespace_": {
+                    "key": {
+                      "name": { "key": "bar" },
+                      "parent": { "key": { "name": { "key": "foo" } } }
+                    }
+                  }
+                }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "void" }, "parameters": [ ] }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 30,
+              "columnBegin": 1,
+              "lineEnd": 30,
+              "columnEnd": 8
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": { "name": { "key": "h" } } },
+      "scope": { "global_": { } },
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "h" } } },
+                "scope": { "global_": { } }
+              }
+            },
+            "signature": {
+              "key": {
+                "returns": { "key": "void" },
+                "parameters": [
+                  { "name": { "key": "_i" }, "type": { "key": "int" } }
+                ]
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 41,
+              "columnBegin": 1,
+              "lineEnd": 41,
+              "columnEnd": 14
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": { "name": { "key": "h" } } },
+      "scope": { "global_": { } },
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "h" } } },
+                "scope": { "global_": { } }
+              }
+            },
+            "signature": {
+              "key": {
+                "returns": { "key": "void" },
+                "parameters": [
+                  { "name": { "key": "i" }, "type": { "key": "int" } }
+                ]
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 43,
+              "columnBegin": 1,
+              "lineEnd": 51,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
+  }
+]

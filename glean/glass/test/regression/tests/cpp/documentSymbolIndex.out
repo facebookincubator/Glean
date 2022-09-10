@@ -2,7 +2,7 @@
     "@generated",
     {
         "revision": "testhash",
-        "size": 42,
+        "size": 48,
         "symbols": {
             "11": [
                 {
@@ -1494,6 +1494,192 @@
                         "lineEnd": 56
                     },
                     "sym": "test/pp/test.cpp/B"
+                }
+            ],
+            "58": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 6
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolSignature": {
+                            "aString": "namespace baz"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 11,
+                        "columnEnd": 14,
+                        "lineBegin": 58,
+                        "lineEnd": 58
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 58,
+                        "lineEnd": 65
+                    },
+                    "sym": "test/cpp//baz"
+                }
+            ],
+            "60": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 25
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolSignature": {
+                            "aString": "struct baz::U"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 8,
+                        "columnEnd": 9,
+                        "lineBegin": 60,
+                        "lineEnd": 60
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 60,
+                        "lineEnd": 63
+                    },
+                    "sym": "test/cpp//baz/U"
+                }
+            ],
+            "61": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 12
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolSignature": {
+                            "aString": "enum baz::U::InU"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 8,
+                        "columnEnd": 11,
+                        "lineBegin": 61,
+                        "lineEnd": 61
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 26,
+                        "lineBegin": 61,
+                        "lineEnd": 61
+                    },
+                    "sym": "test/cpp//baz/U/InU"
+                }
+            ],
+            "62": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 12
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolSignature": {
+                            "aString": "enum class baz::U::InUClass"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 14,
+                        "columnEnd": 22,
+                        "lineBegin": 62,
+                        "lineEnd": 62
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 40,
+                        "lineBegin": 62,
+                        "lineEnd": 62
+                    },
+                    "sym": "test/cpp//baz/U/InUClass"
+                }
+            ],
+            "67": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 12
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolSignature": {
+                            "aString": "enum ::Global"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 6,
+                        "columnEnd": 12,
+                        "lineBegin": 67,
+                        "lineEnd": 67
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 27,
+                        "lineBegin": 67,
+                        "lineEnd": 67
+                    },
+                    "sym": "test/cpp//Global"
+                }
+            ],
+            "68": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 12
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolSignature": {
+                            "aString": "enum class ::GlobalClass"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 12,
+                        "columnEnd": 23,
+                        "lineBegin": 68,
+                        "lineEnd": 68
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 41,
+                        "lineBegin": 68,
+                        "lineEnd": 68
+                    },
+                    "sym": "test/cpp//GlobalClass"
                 }
             ],
             "9": [

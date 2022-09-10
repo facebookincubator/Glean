@@ -4,6 +4,278 @@
         "symbolDetails": [],
         "symbols": [
             {
+                "kind": 12,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 27,
+                        "lineBegin": 67,
+                        "lineEnd": 67
+                    },
+                    "repository": "test"
+                },
+                "name": "Global",
+                "symbol": "test/cpp//Global"
+            },
+            {
+                "kind": 24,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 17,
+                        "lineBegin": 67,
+                        "lineEnd": 67
+                    },
+                    "repository": "test"
+                },
+                "name": "GA",
+                "symbol": "test/cpp//Global/GA"
+            },
+            {
+                "kind": 24,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 19,
+                        "columnEnd": 21,
+                        "lineBegin": 67,
+                        "lineEnd": 67
+                    },
+                    "repository": "test"
+                },
+                "name": "GB",
+                "symbol": "test/cpp//Global/GB"
+            },
+            {
+                "kind": 24,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 25,
+                        "lineBegin": 67,
+                        "lineEnd": 67
+                    },
+                    "repository": "test"
+                },
+                "name": "GC",
+                "symbol": "test/cpp//Global/GC"
+            },
+            {
+                "kind": 12,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 41,
+                        "lineBegin": 68,
+                        "lineEnd": 68
+                    },
+                    "repository": "test"
+                },
+                "name": "GlobalClass",
+                "symbol": "test/cpp//GlobalClass"
+            },
+            {
+                "kind": 24,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 26,
+                        "columnEnd": 29,
+                        "lineBegin": 68,
+                        "lineEnd": 68
+                    },
+                    "repository": "test"
+                },
+                "name": "GCA",
+                "symbol": "test/cpp//GlobalClass/GCA"
+            },
+            {
+                "kind": 24,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 31,
+                        "columnEnd": 34,
+                        "lineBegin": 68,
+                        "lineEnd": 68
+                    },
+                    "repository": "test"
+                },
+                "name": "GCB",
+                "symbol": "test/cpp//GlobalClass/GCB"
+            },
+            {
+                "kind": 24,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 36,
+                        "columnEnd": 39,
+                        "lineBegin": 68,
+                        "lineEnd": 68
+                    },
+                    "repository": "test"
+                },
+                "name": "GCC",
+                "symbol": "test/cpp//GlobalClass/GCC"
+            },
+            {
+                "kind": 25,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 60,
+                        "lineEnd": 63
+                    },
+                    "repository": "test"
+                },
+                "name": "U",
+                "symbol": "test/cpp//baz/U"
+            },
+            {
+                "kind": 12,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 26,
+                        "lineBegin": 61,
+                        "lineEnd": 61
+                    },
+                    "repository": "test"
+                },
+                "name": "InU",
+                "symbol": "test/cpp//baz/U/InU"
+            },
+            {
+                "kind": 24,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 16,
+                        "lineBegin": 61,
+                        "lineEnd": 61
+                    },
+                    "repository": "test"
+                },
+                "name": "UA",
+                "symbol": "test/cpp//baz/U/InU/UA"
+            },
+            {
+                "kind": 24,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 18,
+                        "columnEnd": 20,
+                        "lineBegin": 61,
+                        "lineEnd": 61
+                    },
+                    "repository": "test"
+                },
+                "name": "UB",
+                "symbol": "test/cpp//baz/U/InU/UB"
+            },
+            {
+                "kind": 24,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 22,
+                        "columnEnd": 24,
+                        "lineBegin": 61,
+                        "lineEnd": 61
+                    },
+                    "repository": "test"
+                },
+                "name": "UC",
+                "symbol": "test/cpp//baz/U/InU/UC"
+            },
+            {
+                "kind": 12,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 40,
+                        "lineBegin": 62,
+                        "lineEnd": 62
+                    },
+                    "repository": "test"
+                },
+                "name": "InUClass",
+                "symbol": "test/cpp//baz/U/InUClass"
+            },
+            {
+                "kind": 24,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 25,
+                        "columnEnd": 28,
+                        "lineBegin": 62,
+                        "lineEnd": 62
+                    },
+                    "repository": "test"
+                },
+                "name": "UCA",
+                "symbol": "test/cpp//baz/U/InUClass/UCA"
+            },
+            {
+                "kind": 24,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 30,
+                        "columnEnd": 33,
+                        "lineBegin": 62,
+                        "lineEnd": 62
+                    },
+                    "repository": "test"
+                },
+                "name": "UCB",
+                "symbol": "test/cpp//baz/U/InUClass/UCB"
+            },
+            {
+                "kind": 24,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 35,
+                        "columnEnd": 38,
+                        "lineBegin": 62,
+                        "lineEnd": 62
+                    },
+                    "repository": "test"
+                },
+                "name": "UCC",
+                "symbol": "test/cpp//baz/U/InUClass/UCC"
+            },
+            {
                 "kind": 25,
                 "language": 1,
                 "location": {

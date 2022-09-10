@@ -1,7 +1,201 @@
 [
     "@generated",
     {
-        "symbolDetails": [],
-        "symbols": []
+        "symbolDetails": [
+            {
+                "comments": [],
+                "kind": 12,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 27,
+                        "lineBegin": 67,
+                        "lineEnd": 67
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "",
+                    "localName": "Global"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/cpp//Global",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 27,
+                        "lineBegin": 67,
+                        "lineEnd": 67
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            {
+                "comments": [],
+                "kind": 12,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 41,
+                        "lineBegin": 68,
+                        "lineEnd": 68
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "",
+                    "localName": "GlobalClass"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/cpp//GlobalClass",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 41,
+                        "lineBegin": 68,
+                        "lineEnd": 68
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            {
+                "comments": [],
+                "kind": 12,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 26,
+                        "lineBegin": 61,
+                        "lineEnd": 61
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "baz::U",
+                    "localName": "InU"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/cpp//baz/U/InU",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 26,
+                        "lineBegin": 61,
+                        "lineEnd": 61
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            {
+                "comments": [],
+                "kind": 12,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 40,
+                        "lineBegin": 62,
+                        "lineEnd": 62
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "baz::U",
+                    "localName": "InUClass"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/cpp//baz/U/InUClass",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 40,
+                        "lineBegin": 62,
+                        "lineEnd": 62
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            }
+        ],
+        "symbols": [
+            {
+                "kind": 12,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 27,
+                        "lineBegin": 67,
+                        "lineEnd": 67
+                    },
+                    "repository": "test"
+                },
+                "name": "Global",
+                "symbol": "test/cpp//Global"
+            },
+            {
+                "kind": 12,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 41,
+                        "lineBegin": 68,
+                        "lineEnd": 68
+                    },
+                    "repository": "test"
+                },
+                "name": "GlobalClass",
+                "symbol": "test/cpp//GlobalClass"
+            },
+            {
+                "kind": 12,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 26,
+                        "lineBegin": 61,
+                        "lineEnd": 61
+                    },
+                    "repository": "test"
+                },
+                "name": "InU",
+                "symbol": "test/cpp//baz/U/InU"
+            },
+            {
+                "kind": 12,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 40,
+                        "lineBegin": 62,
+                        "lineEnd": 62
+                    },
+                    "repository": "test"
+                },
+                "name": "InUClass",
+                "symbol": "test/cpp//baz/U/InUClass"
+            }
+        ]
     }
 ]

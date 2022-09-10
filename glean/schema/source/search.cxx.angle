@@ -43,7 +43,7 @@ predicate DeclIsDefn :
      { function_ = cxx1.FunctionDefinition { declaration = D } } = Defn) |
     ({ enum_ = D } = Decl;
      { enum_ = cxx1.EnumDefinition { declaration = D } } = Defn) |
-    # global variables only?
+    # variable definitions are considered "definitions" if they're global
     ({ variable = D } = Decl;
      cxx1.VariableDeclaration { kind = { global_ = { definition = true }}} = D;
      { variable = D } = Defn) |

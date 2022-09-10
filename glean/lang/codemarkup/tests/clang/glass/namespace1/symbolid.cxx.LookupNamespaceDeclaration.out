@@ -1,0 +1,66 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": { "key": "bar" },
+      "parent": { "key": { "name": { "key": "foo" } } },
+      "decl": {
+        "namespace_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "bar" },
+                "parent": { "key": { "name": { "key": "foo" } } }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 27,
+              "columnBegin": 1,
+              "lineEnd": 32,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "baz" },
+      "decl": {
+        "namespace_": {
+          "key": {
+            "name": { "key": { "name": { "key": "baz" } } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 58,
+              "columnBegin": 1,
+              "lineEnd": 65,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "foo" },
+      "decl": {
+        "namespace_": {
+          "key": {
+            "name": { "key": { "name": { "key": "foo" } } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 9,
+              "columnBegin": 1,
+              "lineEnd": 38,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
+  }
+]
