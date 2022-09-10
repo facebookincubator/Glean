@@ -34,8 +34,12 @@ instance Symbol Cxx.Entity where
   toSymbol _ = throwM $ SymbolError "Cxx.Entity: use toSymbolWithPath"
 
   toSymbolWithPath e (Path path) = (root++) <$> case e of
-      Cxx.Entity_decl decl -> toSymbol decl
       Cxx.Entity_defn defn -> toSymbol defn
+      -- these are "second class" in that they're less significant in
+      -- glass activities than defns, so we tag them to differentiate
+      Cxx.Entity_decl decl -> do
+        sym <- toSymbol decl
+        pure (sym ++ [".decl"])
       Cxx.Entity_enumerator enum -> toSymbolPredicate enum
       Cxx.Entity_EMPTY -> return []
     where
@@ -399,4 +403,6 @@ instance ToQName Cxx.Entity where
       [] -> Left "C++: toQName: No qualified name for this symbol"
       [name] -> Right (Name name, Name "")
       x@(_:_) -> case (init x, last x) of
+        (ms, ".decl") -> case (init ms, last ms) of
+          (ns, name) -> Right (Name name, Name (intercalate "::" ns))
         (ns, name) -> Right (Name name, Name (intercalate "::" ns))

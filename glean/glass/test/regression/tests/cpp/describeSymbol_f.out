@@ -32,7 +32,7 @@
         },
         "repo_hash": "testhash",
         "signature": "void foo::f()",
-        "sym": "test/cpp//foo/f",
+        "sym": "test/cpp//foo/f/.decl",
         "sym_location": {
             "filepath": "test.cpp",
             "range": {

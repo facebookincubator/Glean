@@ -9,8 +9,8 @@
             "range": {
                 "columnBegin": 8,
                 "columnEnd": 13,
-                "lineBegin": 40,
-                "lineEnd": 40
+                "lineBegin": 43,
+                "lineEnd": 43
             },
             "repository": "test"
         },
@@ -20,14 +20,14 @@
         },
         "repo_hash": "testhash",
         "signature": "int i",
-        "sym": "test/cpp//h/i",
+        "sym": "test/cpp//h/i/.decl",
         "sym_location": {
             "filepath": "test.cpp",
             "range": {
                 "columnBegin": 8,
                 "columnEnd": 13,
-                "lineBegin": 40,
-                "lineEnd": 40
+                "lineBegin": 43,
+                "lineEnd": 43
             },
             "repository": "test"
         },

@@ -37,10 +37,11 @@ unitTests get =
 
 testCppFindReferences :: Getter -> Test
 testCppFindReferences get = TestLabel "findReferences" $ TestList [
-  "test/cpp//foo/S" --> [("test.cpp", 1)],
-  "test/cpp//foo/bar/T" --> [("test.cpp", 1)],
-  "test/cpp//foo/f" --> [("test.cpp", 1)],
-  "test/cpp//foo/bar/g" --> [("test.cpp", 1)],
+  "test/cpp//foo/S/.decl" --> [("test.cpp", 1)],
+  "test/cpp//foo/bar/T/.decl" --> [("test.cpp", 1)],
+  "test/cpp//foo/f/.decl" --> [("test.cpp", 1)],
+  "test/cpp//foo/bar/g/.decl" --> [("test.cpp", 1)],
+  -- a definition occurrence is find-refereable now
   "test/cpp//h" --> [("test.cpp", 1)]
   ]
   where
@@ -53,12 +54,12 @@ testCppFindReferences get = TestLabel "findReferences" $ TestList [
 
 testSymbolIdLookup :: Getter -> Test
 testSymbolIdLookup get = TestLabel "describeSymbol" $ TestList [
-  "test/cpp//foo" --> "test.cpp",
-  "test/cpp//foo/f" --> "test.cpp",
-  "test/cpp//foo/S" --> "test.cpp",
-  "test/cpp//foo/bar" --> "test.cpp",
-  "test/cpp//foo/bar/T" --> "test.cpp",
-  "test/cpp//foo/bar/g" --> "test.cpp"
+  "test/cpp//foo/.decl" --> "test.cpp",
+  "test/cpp//foo/f/.decl" --> "test.cpp",
+  "test/cpp//foo/S/.decl" --> "test.cpp",
+  "test/cpp//foo/bar/.decl" --> "test.cpp",
+  "test/cpp//foo/bar/T/.decl" --> "test.cpp",
+  "test/cpp//foo/bar/g/.decl" --> "test.cpp"
   ]
   where
     (-->) :: Text -> Text -> Test
@@ -71,7 +72,7 @@ testSymbolIdLookup get = TestLabel "describeSymbol" $ TestList [
 testCppDescribeSymbolComments :: Getter -> Test
 testCppDescribeSymbolComments get = TestLabel "describeSymbolComments" $
   TestList [
-    "test/cpp//foo/f" --> (13,1)
+    "test/cpp//foo/f/.decl" --> (13,1)
   ]
   where
     (-->) :: Text -> (Int,Int) -> Test
@@ -83,7 +84,7 @@ testCppDescribeSymbolComments get = TestLabel "describeSymbolComments" $
 
 testCppSearchRelated :: Getter -> Test
 testCppSearchRelated get = TestLabel "searchRelated" $ TestList $
-  "test/cpp//foo" `contains` "test/cpp//foo/S"
+  "test/cpp//foo/.decl" `contains` "test/cpp//foo/S/.decl"
   where
     contains :: Text -> Text -> [Test]
     contains = contains' False

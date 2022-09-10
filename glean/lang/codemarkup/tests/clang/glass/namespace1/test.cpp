@@ -37,8 +37,11 @@ int fooFn(int fooI) {
 
 }
 
+// add decl occurrence
+void h(int _i);
+
 void h(int i) {
-  h(i);
+  ::h(i);
   foo::S s;
   foo::bar::T t;
   foo::f();
@@ -51,4 +54,3 @@ void h(int i) {
 
 #define A "one"
 #define B "two"
-

@@ -103,5 +103,41 @@
       },
       "annotations": { "cxx": { "attributes": [ ] } }
     }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "h" } } },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "signature": {
+                  "key": {
+                    "returns": { "key": "void" },
+                    "parameters": [
+                      { "name": { "key": "_i" }, "type": { "key": "int" } }
+                    ]
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 41,
+                  "columnBegin": 1,
+                  "lineEnd": 41,
+                  "columnEnd": 14
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "cxx": { "attributes": [ ] } }
+    }
   }
 ]
