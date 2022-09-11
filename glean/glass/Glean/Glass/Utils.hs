@@ -33,12 +33,13 @@ module Glean.Glass.Utils
   , QueryType
   ) where
 
+import Data.Maybe (fromMaybe)
 import Data.Text ( Text )
 import qualified Data.Text as Text
 import System.FilePath ( splitDirectories, joinPath )
 import qualified Data.List as List
 
-import Glean ( recursive, limit, limitTime, search, search_, getFirstResult )
+import Glean ( recursive, limit, limitTime, search, getFirstResult )
 import Glean.Angle as Angle ( query, Angle )
 import Glean.Typed.Binary ( Type )
 import Glean.Typed.Predicate ( Predicate )
@@ -46,6 +47,11 @@ import Data.Typeable ( Typeable )
 
 import qualified Glean.Haxl.Repos as Glean
 import Glean.Haxl.Repos (RepoHaxl, ReposHaxl)
+
+import Glean.Glass.Types (
+    mAXIMUM_SYMBOLS_QUERY_LIMIT,
+    mAXIMUM_QUERY_TIME_LIMIT
+  )
 
 type QueryType q =
   ( Typeable q
@@ -64,21 +70,37 @@ fetchData = getFirstResult . query
 fetchDataRecursive :: (QueryType a) => Angle a -> RepoHaxl u w (Maybe a)
 fetchDataRecursive = getFirstResult . recursive . query
 
--- | Run a non-recursive data query with optional limit on search results
+-- | Run a non-recursive data query with optional limit on search results.
+-- Without an explicit limit the global limits apply.
+-- This uses the global time limit of 30s per query (2x the expected thrift
+-- limit)
 searchWithLimit :: QueryType q => Maybe Int -> Angle q -> RepoHaxl u w [q]
-searchWithLimit Nothing =
-  search_ . Angle.query
-searchWithLimit (Just n) =
-  fmap fst <$> search . limit n . Angle.query
+searchWithLimit mlimit = searchWithTimeLimit mlimit
+  (fromIntegral mAXIMUM_QUERY_TIME_LIMIT)
 
 -- | Like searchWithLimit but enforce a time bound on the query too.
 -- Time budget in milliseconds
 searchWithTimeLimit
   :: QueryType q => Maybe Int -> Int -> Angle q -> RepoHaxl u w [q]
-searchWithTimeLimit Nothing time =
-  search_ . limitTime time . Angle.query
-searchWithTimeLimit (Just n) time =
-  fmap fst <$> search . limitTime time . limit n . Angle.query
+searchWithTimeLimit mlimit time =
+    fmap fst <$> search . limitTime time . limit item . Angle.query
+  where
+    item = fromMaybe (fromIntegral mAXIMUM_SYMBOLS_QUERY_LIMIT) mlimit
+
+-- | Run a non-recursive predicate only query with optional limit
+searchPredicateWithLimit
+  :: (Predicate q, QueryType q) => Maybe Int -> Angle q -> RepoHaxl u w [q]
+searchPredicateWithLimit = searchWithLimit
+
+-- | Run a recursive data query with optional limit on search results
+-- If not limit set, MAXIMUM_SYMBOLS_QUERY_LIMIT is enforced
+searchRecursiveWithLimit
+  :: QueryType q => Maybe Int -> Angle q -> RepoHaxl u w [q]
+searchRecursiveWithLimit mlimit =
+    fmap fst <$> search . recursive . limitTime time . limit item . Angle.query
+  where
+    item = fromMaybe (fromIntegral mAXIMUM_SYMBOLS_QUERY_LIMIT) mlimit
+    time = fromIntegral mAXIMUM_QUERY_TIME_LIMIT
 
 -- | Run a non-recursive data query with optional limit over multiple repos
 searchReposWithLimit
@@ -92,22 +114,6 @@ searchReposWithLimit limit angle act = do
     res <- searchWithLimit limit angle
     mapM act res -- we would like this to be concurrent
   return $ maybe id take limit results
-
--- | Run a non-recursive predicate only query with optional limit
-searchPredicateWithLimit
-  :: (Predicate q, QueryType q) => Maybe Int -> Angle q -> RepoHaxl u w [q]
-searchPredicateWithLimit Nothing =
-  search_ . Angle.query
-searchPredicateWithLimit (Just n) =
-  fmap fst <$> search . limit n . Angle.query
-
--- | Run a recursive data query with optional limit on search results
-searchRecursiveWithLimit
-  :: QueryType q => Maybe Int -> Angle q -> RepoHaxl u w [q]
-searchRecursiveWithLimit Nothing =
-  search_ . recursive . Angle.query
-searchRecursiveWithLimit (Just n) =
-  fmap fst <$> search . recursive . limit n . Angle.query
 
 -- | Split a filepath into a list of directory components
 pathFragments :: Text -> [Text]

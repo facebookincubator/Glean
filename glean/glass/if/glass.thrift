@@ -14,6 +14,12 @@ namespace hack GleanGlass
 namespace py3 glean
 namespace cpp2 glean
 
+// Default ceiling on total items on any individual Glean query
+const i32 MAXIMUM_SYMBOLS_QUERY_LIMIT = 10000;
+
+// Hard time ceiling on any individual glean query in ms
+const i32 MAXIMUM_QUERY_TIME_LIMIT = 15000;
+
 // request types
 
 // Repositories are referred to by their SCS repo names
