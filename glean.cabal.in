@@ -1003,6 +1003,7 @@ library indexers
         glean:client-hs-local,
         glean:db,
         glean:handler,
+        glean:interprocess,
         glean:lib,
         glean:lsif,
         glean:stubs,

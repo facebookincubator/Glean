@@ -38,6 +38,7 @@ flag opt
 
 common deps
     build-depends:
+        ansi-terminal ^>= 0.11,
         array ^>=0.5.2.0,
         async ^>=2.2.1,
         base >=4.11.1 && <4.15,
