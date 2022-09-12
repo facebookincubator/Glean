@@ -2,6 +2,7 @@
 # To regenerate this file run fbcode//glean/schema/gen/sync
 from typing import Optional, Tuple, Union, List, Dict, TypeVar
 from thrift.py3 import Struct
+from enum import Enum
 import ast
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 
@@ -39,16 +40,25 @@ class CodeEntityLanguage(GleanSchemaPredicate):
 
 
 
-class CodeLanguage(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.Language.24 { angle_for(__env, arg, None) or '_' }", Language
-
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "CodeLanguage":
-    raise Exception("this function can only be called from @angle_query")
-
-
+class CodeLanguage(Enum):
+  Cpp = 0
+  PreProcessor = 1
+  Java = 2
+  Haskell = 3
+  Python = 4
+  Hack = 5
+  JavaScript = 6
+  Rust = 7
+  Thrift = 8
+  Buck = 9
+  Erlang = 10
+  FSharp = 11
+  Go = 12
+  Kotlin = 13
+  OCaml = 14
+  Scala = 15
+  Swift = 16
+  TypeScript = 17
 
 class CodeAnnotations(InnerGleanSchemaPredicate):
   @staticmethod

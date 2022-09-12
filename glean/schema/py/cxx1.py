@@ -2,6 +2,7 @@
 # To regenerate this file run fbcode//glean/schema/gen/sync
 from typing import Optional, Tuple, Union, List, Dict, TypeVar
 from thrift.py3 import Struct
+from enum import Enum
 import ast
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 from glean.schema.py.buck import *
@@ -1029,16 +1030,9 @@ class Cxx1Scope_recordWithAccess(InnerGleanSchemaPredicate):
 
 
 
-class Cxx1ObjcPropertyKind(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"cxx1.ObjcPropertyKind.5 { angle_for(__env, arg, None) or '_' }", ObjcPropertyKind
-
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "Cxx1ObjcPropertyKind":
-    raise Exception("this function can only be called from @angle_query")
-
-
+class Cxx1ObjcPropertyKind(Enum):
+  Synthesize = 0
+  Dynamic = 1
 
 class Cxx1MethodSignature(InnerGleanSchemaPredicate):
   @staticmethod
@@ -1125,27 +1119,15 @@ class Cxx1Declaration(InnerGleanSchemaPredicate):
 
 
 
-class Cxx1RefQualifier(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"cxx1.RefQualifier.5 { angle_for(__env, arg, None) or '_' }", RefQualifier
+class Cxx1RefQualifier(Enum):
+  None_ = 0
+  LValue = 1
+  RValue = 2
 
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "Cxx1RefQualifier":
-    raise Exception("this function can only be called from @angle_query")
-
-
-
-class Cxx1GlobalVariableAttribute(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"cxx1.GlobalVariableAttribute.5 { angle_for(__env, arg, None) or '_' }", GlobalVariableAttribute
-
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "Cxx1GlobalVariableAttribute":
-    raise Exception("this function can only be called from @angle_query")
-
-
+class Cxx1GlobalVariableAttribute(Enum):
+  Plain = 0
+  Inline = 1
+  Constexpr = 2
 
 class Cxx1ObjcCategoryId(InnerGleanSchemaPredicate):
   @staticmethod
@@ -1169,27 +1151,24 @@ class Cxx1Parameter(InnerGleanSchemaPredicate):
 
 
 
-class Cxx1DeclKind(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"cxx1.DeclKind.5 { angle_for(__env, arg, None) or '_' }", DeclKind
+class Cxx1DeclKind(Enum):
+  namespace_ = 0
+  usingDeclaration = 1
+  usingDirective = 2
+  record_ = 3
+  enum_ = 4
+  enumerator = 5
+  function_ = 6
+  variable = 7
+  objcContainer = 8
+  objcMethod = 9
+  objcProperty = 10
+  typeAlias = 11
+  macro = 12
 
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "Cxx1DeclKind":
-    raise Exception("this function can only be called from @angle_query")
-
-
-
-class Cxx1TypeAliasKind(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"cxx1.TypeAliasKind.5 { angle_for(__env, arg, None) or '_' }", TypeAliasKind
-
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "Cxx1TypeAliasKind":
-    raise Exception("this function can only be called from @angle_query")
-
-
+class Cxx1TypeAliasKind(Enum):
+  Typedef = 0
+  Using = 1
 
 class Cxx1ObjcContainerId(InnerGleanSchemaPredicate):
   @staticmethod
@@ -1274,16 +1253,10 @@ class Cxx1GlobalVariable(InnerGleanSchemaPredicate):
 
 
 
-class Cxx1GlobalVariableKind(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"cxx1.GlobalVariableKind.5 { angle_for(__env, arg, None) or '_' }", GlobalVariableKind
-
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "Cxx1GlobalVariableKind":
-    raise Exception("this function can only be called from @angle_query")
-
-
+class Cxx1GlobalVariableKind(Enum):
+  SimpleVariable = 0
+  StaticVariable = 1
+  StaticMember = 2
 
 class Cxx1Field(InnerGleanSchemaPredicate):
   @staticmethod
@@ -1296,16 +1269,10 @@ class Cxx1Field(InnerGleanSchemaPredicate):
 
 
 
-class Cxx1LocalVariableKind(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"cxx1.LocalVariableKind.5 { angle_for(__env, arg, None) or '_' }", LocalVariableKind
-
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "Cxx1LocalVariableKind":
-    raise Exception("this function can only be called from @angle_query")
-
-
+class Cxx1LocalVariableKind(Enum):
+  SimpleVariable = 0
+  StaticVariable = 1
+  Parameter = 2
 
 class Cxx1PpEntity(InnerGleanSchemaPredicate):
   @staticmethod
@@ -1470,16 +1437,9 @@ class Cxx1FixedXRef(InnerGleanSchemaPredicate):
 
 
 
-class Cxx1LocalVariableAttribute(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"cxx1.LocalVariableAttribute.5 { angle_for(__env, arg, None) or '_' }", LocalVariableAttribute
-
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "Cxx1LocalVariableAttribute":
-    raise Exception("this function can only be called from @angle_query")
-
-
+class Cxx1LocalVariableAttribute(Enum):
+  Plain = 0
+  Constexpr = 1
 
 class Cxx1USR(InnerGleanSchemaPredicate):
   @staticmethod
@@ -1516,16 +1476,10 @@ class Cxx1PPEvent(InnerGleanSchemaPredicate):
 
 
 
-class Cxx1Access(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"cxx1.Access.5 { angle_for(__env, arg, None) or '_' }", Access
-
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "Cxx1Access":
-    raise Exception("this function can only be called from @angle_query")
-
-
+class Cxx1Access(Enum):
+  Public = 0
+  Protected = 1
+  Private = 2
 
 class Cxx1RecordKind(InnerGleanSchemaPredicate):
   @staticmethod

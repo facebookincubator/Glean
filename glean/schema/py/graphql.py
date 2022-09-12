@@ -2,6 +2,7 @@
 # To regenerate this file run fbcode//glean/schema/gen/sync
 from typing import Optional, Tuple, Union, List, Dict, TypeVar
 from thrift.py3 import Struct
+from enum import Enum
 import ast
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 from glean.schema.py.src import *
@@ -256,16 +257,25 @@ class GraphqlInlineFragment(GleanSchemaPredicate):
 
 
 
-class GraphqlDirectiveDefLocation(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"graphql.DirectiveDefLocation.2 { angle_for(__env, arg, None) or '_' }", DirectiveDefLocation
-
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "GraphqlDirectiveDefLocation":
-    raise Exception("this function can only be called from @angle_query")
-
-
+class GraphqlDirectiveDefLocation(Enum):
+  QUERY = 0
+  MUTATION = 1
+  SUBSCRIPTION = 2
+  FIELD = 3
+  FRAGMENT_DEFINITION = 4
+  FRAGMENT_SPREAD = 5
+  INLINE_FRAGMENT = 6
+  SCHEMA = 7
+  SCALAR = 8
+  OBJECT = 9
+  FIELD_DEFINITION = 10
+  ARGUMENT_DEFINITION = 11
+  INTERFACE = 12
+  UNION = 13
+  ENUM = 14
+  ENUM_VALUE = 15
+  INPUT_OBJECT = 16
+  INPUT_FIELD_DEFINITION = 17
 
 class GraphqlSelectionSet(InnerGleanSchemaPredicate):
   @staticmethod

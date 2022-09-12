@@ -2,6 +2,7 @@
 # To regenerate this file run fbcode//glean/schema/gen/sync
 from typing import Optional, Tuple, Union, List, Dict, TypeVar
 from thrift.py3 import Struct
+from enum import Enum
 import ast
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 from glean.schema.py.src import *
@@ -936,16 +937,10 @@ class HackModuleMembership(InnerGleanSchemaPredicate):
 
 
 
-class HackReifyKind(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"hack.ReifyKind.6 { angle_for(__env, arg, None) or '_' }", ReifyKind
-
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "HackReifyKind":
-    raise Exception("this function can only be called from @angle_query")
-
-
+class HackReifyKind(Enum):
+  Erased = 0
+  Reified = 1
+  SoftReified = 2
 
 class HackXRef(InnerGleanSchemaPredicate):
   @staticmethod
@@ -980,16 +975,11 @@ class HackCallArgument(InnerGleanSchemaPredicate):
 
 
 
-class HackVisibility(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"hack.Visibility.6 { angle_for(__env, arg, None) or '_' }", Visibility
-
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "HackVisibility":
-    raise Exception("this function can only be called from @angle_query")
-
-
+class HackVisibility(Enum):
+  Private = 0
+  Protected = 1
+  Public = 2
+  Internal = 3
 
 class HackOccurrence(InnerGleanSchemaPredicate):
   @staticmethod
@@ -1027,16 +1017,10 @@ class HackContainerDeclaration(InnerGleanSchemaPredicate):
 
 
 
-class HackTypeConstKind(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"hack.TypeConstKind.6 { angle_for(__env, arg, None) or '_' }", TypeConstKind
-
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "HackTypeConstKind":
-    raise Exception("this function can only be called from @angle_query")
-
-
+class HackTypeConstKind(Enum):
+  Abstract = 0
+  Concrete = 1
+  PartiallyAbstract = 2
 
 class HackConstraint(InnerGleanSchemaPredicate):
   @staticmethod
@@ -1049,26 +1033,14 @@ class HackConstraint(InnerGleanSchemaPredicate):
 
 
 
-class HackVariance(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"hack.Variance.6 { angle_for(__env, arg, None) or '_' }", Variance
+class HackVariance(Enum):
+  Contravariant = 0
+  Covariant = 1
+  Invariant = 2
 
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "HackVariance":
-    raise Exception("this function can only be called from @angle_query")
-
-
-
-class HackConstraintKind(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"hack.ConstraintKind.6 { angle_for(__env, arg, None) or '_' }", ConstraintKind
-
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "HackConstraintKind":
-    raise Exception("this function can only be called from @angle_query")
-
-
+class HackConstraintKind(Enum):
+  As = 0
+  Equal = 1
+  Super = 2
 
 

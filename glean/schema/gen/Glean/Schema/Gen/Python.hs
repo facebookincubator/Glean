@@ -42,7 +42,7 @@ genSchemaPy _version preddefs typedefs =
   , "import inspect"
   , "import ast"
   , ""
-  , "R = TypeVar(\"R\", int, str, bool, bytes, Tuple[()])"
+  , "R = TypeVar(\"R\", int, str, bool, bytes)"
   , "T = TypeVar(\"T\")"
   , ""
   , "class GleanSchemaPredicate:"
@@ -81,6 +81,8 @@ genSchemaPy _version preddefs typedefs =
   , "    " <> "elems = map(lambda el: angle_for(__env, el, None), key.elts)"
   , "    " <> "value = f\'[{ \", \".join(elems) }]\'"
   , "    " <> "return _make_attribute(field_name, value)"
+  , "  " <> "elif isinstance(key, ast.Attribute):"
+  , "    " <>  "return _make_attribute(field_name, key.attr)"
   , "  " <> "raise NotImplementedError(f\"Query key type not implemented\")"
   , ""
   , "def _make_attribute(field_name: Optional[str], value: str) -> str:"
@@ -196,8 +198,11 @@ genAllPredicates
   -> [ResolvedPredicateDef]
   -> Text
 genAllPredicates predicateMode _ namePolicy parent preds = Text.unlines $
-  [ Text.unlines
-    [ "class " <> class_name <> "(" <> parent <> "):"
+  [ Text.unlines $ case key of
+    EnumeratedTy vals -> "class " <> class_name <> "(Enum):" :
+      zipWith mkEnumerator [0..] vals
+    _ ->
+      [ "class " <> class_name <> "(" <> parent <> "):"
       , "  " <> "@staticmethod"
       , "  " <> "def build_angle(__env: Dict[str, R]" <> buildAngleTypes <>
         ") -> Tuple[str, Struct]:"
@@ -206,7 +211,7 @@ genAllPredicates predicateMode _ namePolicy parent preds = Text.unlines $
       , ""
       , addClientMethods class_name kTy namePolicy key
       , addSumTypes
-    ]
+      ]
     | pred <- preds
     , let ref = predicateDefRef pred
           key = predicateDefKeyType pred
@@ -228,6 +233,7 @@ genAllPredicates predicateMode _ namePolicy parent preds = Text.unlines $
             _ -> ", " <> buildAngleTypes_
             where
               buildAngleTypes_ = valueTy class_name ASTValues namePolicy key
+          mkEnumerator (i :: Int) val = "  " <> val <> " = " <> showt i
   ]
 
 genNamedTypes
@@ -297,6 +303,7 @@ header namespaces namePolicy preds = Text.unlines $
   , "# To regenerate this file run fbcode//glean/schema/gen/sync"
   , "from typing import Optional, Tuple, Union, List, Dict, TypeVar"
   , "from thrift.py3 import Struct"
+  , "from enum import Enum"
   , "import ast"
   , "from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate"<>
     ", angle_for, R, Just, InnerGleanSchemaPredicate"
@@ -395,24 +402,21 @@ from_ name -- avoid Python keywords
 
 
 baseTy :: Text -> NamePolicy -> ResolvedType -> Text
-baseTy unionName namePolicy t = Text.pack $ case t of
+baseTy typeName namePolicy t = Text.pack $ case t of
   NatTy{} -> "int"
   BooleanTy{} -> "bool"
   StringTy{} -> "str"
   ByteTy{} -> "bytes"
   PredicateTy pred -> nameLookup pred predNames namePolicy "predicate"
-  SumTy{} -> Text.unpack $ "\'" <> unionName <> "\'"
+  NamedTy typeRef -> nameLookup typeRef typeNames namePolicy "named"
   ArrayTy field -> Text.unpack $ if type_ == "bytes"
     then type_
     else "List[" <> type_ <> "]"
     where
-      type_ = baseTy unionName namePolicy field
+      type_ = baseTy typeName namePolicy field
   MaybeTy field -> Text.unpack $
-    "Union[Just[" <> baseTy unionName namePolicy field <> "], Just[None]]"
-  NamedTy typeRef -> nameLookup typeRef typeNames namePolicy "named"
-  RecordTy _ -> Text.unpack $ "\'" <> unionName <> "\'"
-  -- TODO other types
-  _ -> "Tuple[()]"
+    "Union[Just[" <> baseTy typeName namePolicy field <> "], Just[None]]"
+  _ -> Text.unpack $ "\'" <> typeName <> "\'"
   where
     nameLookup type_ names namePolicy errMessage =
       case HashMap.lookup type_ (names namePolicy) of

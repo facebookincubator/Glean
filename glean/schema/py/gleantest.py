@@ -2,6 +2,7 @@
 # To regenerate this file run fbcode//glean/schema/gen/sync
 from typing import Optional, Tuple, Union, List, Dict, TypeVar
 from thrift.py3 import Struct
+from enum import Enum
 import ast
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 
@@ -597,7 +598,7 @@ class GleanTestKitchenSink(InnerGleanSchemaPredicate):
     return f"glean.test.KitchenSink.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, byt, 'byt'), angle_for(__env, nat, 'nat'), angle_for(__env, bool_, 'bool_'), angle_for(__env, string_, 'string_'), angle_for(__env, pred, 'pred'), angle_for(__env, maybe_, 'maybe_'), angle_for(__env, record_, 'record_'), angle_for(__env, sum_, 'sum_'), angle_for(__env, enum_, 'enum_'), angle_for(__env, named_record_, 'named_record_'), angle_for(__env, named_sum_, 'named_sum_'), angle_for(__env, named_enum_, 'named_enum_'), angle_for(__env, array_of_byte, 'array_of_byte'), angle_for(__env, array_of_nat, 'array_of_nat'), angle_for(__env, array_of_bool, 'array_of_bool'), angle_for(__env, array_of_string, 'array_of_string'), angle_for(__env, array_of_pred, 'array_of_pred'), angle_for(__env, array_of_named_record, 'array_of_named_record'), angle_for(__env, array_of_named_sum, 'array_of_named_sum'), angle_for(__env, array_of_named_enum, 'array_of_named_enum'), angle_for(__env, array2_of_byte, 'array2_of_byte'), angle_for(__env, array2_of_nat, 'array2_of_nat'), angle_for(__env, array2_of_bool, 'array2_of_bool'), angle_for(__env, array2_of_string, 'array2_of_string')])) or '_' } }}", testKitchenSink
 
   @staticmethod
-  def angle_query(*, byt: Optional[bytes] = None, nat: Optional[int] = None, bool_: Optional[bool] = None, string_: Optional[str] = None, pred: Optional["SysBlob"] = None, maybe_: Optional[Union[Just['GleanTestKitchenSink_maybe_'], Just[None]]] = None, record_: Optional['GleanTestKitchenSink_record_'] = None, sum_: Optional['GleanTestKitchenSink_sum_'] = None, enum_: Optional[Tuple[()]] = None, named_record_: Optional["GleanTestRec"] = None, named_sum_: Optional["GleanTestSum"] = None, named_enum_: Optional["GleanTestEnum"] = None, array_of_byte: Optional[bytes] = None, array_of_nat: Optional[List[int]] = None, array_of_bool: Optional[List[bool]] = None, array_of_string: Optional[List[str]] = None, array_of_pred: Optional[List["GleanTestPredicate"]] = None, array_of_named_record: Optional[List["GleanTestRec"]] = None, array_of_named_sum: Optional[List["GleanTestSum"]] = None, array_of_named_enum: Optional[List["GleanTestEnum"]] = None, array2_of_byte: Optional[List["GleanTestArrayByte"]] = None, array2_of_nat: Optional[List["GleanTestArrayNat"]] = None, array2_of_bool: Optional[List["GleanTestArrayBool"]] = None, array2_of_string: Optional[List["GleanTestArrayString"]] = None) -> "GleanTestKitchenSink":
+  def angle_query(*, byt: Optional[bytes] = None, nat: Optional[int] = None, bool_: Optional[bool] = None, string_: Optional[str] = None, pred: Optional["SysBlob"] = None, maybe_: Optional[Union[Just['GleanTestKitchenSink_maybe_'], Just[None]]] = None, record_: Optional['GleanTestKitchenSink_record_'] = None, sum_: Optional['GleanTestKitchenSink_sum_'] = None, enum_: Optional['GleanTestKitchenSink_enum_'] = None, named_record_: Optional["GleanTestRec"] = None, named_sum_: Optional["GleanTestSum"] = None, named_enum_: Optional["GleanTestEnum"] = None, array_of_byte: Optional[bytes] = None, array_of_nat: Optional[List[int]] = None, array_of_bool: Optional[List[bool]] = None, array_of_string: Optional[List[str]] = None, array_of_pred: Optional[List["GleanTestPredicate"]] = None, array_of_named_record: Optional[List["GleanTestRec"]] = None, array_of_named_sum: Optional[List["GleanTestSum"]] = None, array_of_named_enum: Optional[List["GleanTestEnum"]] = None, array2_of_byte: Optional[List["GleanTestArrayByte"]] = None, array2_of_nat: Optional[List["GleanTestArrayNat"]] = None, array2_of_bool: Optional[List["GleanTestArrayBool"]] = None, array2_of_string: Optional[List["GleanTestArrayString"]] = None) -> "GleanTestKitchenSink":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestKitchenSink_record_(InnerGleanSchemaPredicate):
@@ -683,16 +684,10 @@ class GleanTestKitchenSink_sum_(InnerGleanSchemaPredicate):
 
 
 
-class GleanTestEnum(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"glean.test.Enum.1 { angle_for(__env, arg, None) or '_' }", testEnum
-
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "GleanTestEnum":
-    raise Exception("this function can only be called from @angle_query")
-
-
+class GleanTestEnum(Enum):
+  red = 0
+  green = 1
+  blue = 2
 
 class GleanTestArrayByte(InnerGleanSchemaPredicate):
   @staticmethod

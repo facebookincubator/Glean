@@ -2,6 +2,7 @@
 # To regenerate this file run fbcode//glean/schema/gen/sync
 from typing import Optional, Tuple, Union, List, Dict, TypeVar
 from thrift.py3 import Struct
+from enum import Enum
 import ast
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 
@@ -29,27 +30,43 @@ class CodemarkupTypesXRefLocation(InnerGleanSchemaPredicate):
 
 
 
-class CodemarkupTypesVisibility(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.types.Visibility.1 { angle_for(__env, arg, None) or '_' }", typesVisibility
+class CodemarkupTypesVisibility(Enum):
+  Public = 0
+  Protected = 1
+  Private = 2
 
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "CodemarkupTypesVisibility":
-    raise Exception("this function can only be called from @angle_query")
-
-
-
-class CodemarkupTypesSymbolKind(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.types.SymbolKind.1 { angle_for(__env, arg, None) or '_' }", typesSymbolKind
-
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "CodemarkupTypesSymbolKind":
-    raise Exception("this function can only be called from @angle_query")
-
-
+class CodemarkupTypesSymbolKind(Enum):
+  Package = 0
+  Type = 1
+  Value = 2
+  File = 3
+  Module = 4
+  Namespace = 5
+  Class_ = 6
+  Method = 7
+  Property = 8
+  Field = 9
+  Constructor = 10
+  Enum = 11
+  Interface = 12
+  Function = 13
+  Variable = 14
+  Constant = 15
+  String = 16
+  Number = 17
+  Boolean = 18
+  Array = 19
+  Object_ = 20
+  Key = 21
+  Null = 22
+  Enumerator = 23
+  Struct = 24
+  Event = 25
+  Operator = 26
+  TypeParameter = 27
+  Union = 28
+  Macro = 29
+  Trait = 30
 
 class CodemarkupTypesSymbolInfo(InnerGleanSchemaPredicate):
   @staticmethod

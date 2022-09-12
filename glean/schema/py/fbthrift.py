@@ -2,6 +2,7 @@
 # To regenerate this file run fbcode//glean/schema/gen/sync
 from typing import Optional, Tuple, Union, List, Dict, TypeVar
 from thrift.py3 import Struct
+from enum import Enum
 import ast
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 from glean.schema.py.src import *
@@ -409,16 +410,16 @@ class FbthriftTarget(InnerGleanSchemaPredicate):
 
 
 
-class FbthriftPrimitiveType(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"fbthrift.PrimitiveType.1 { angle_for(__env, arg, None) or '_' }", PrimitiveType
-
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "FbthriftPrimitiveType":
-    raise Exception("this function can only be called from @angle_query")
-
-
+class FbthriftPrimitiveType(Enum):
+  bool_ = 0
+  byte_ = 1
+  i16_ = 2
+  i32_ = 3
+  i64_ = 4
+  float_ = 5
+  double_ = 6
+  binary_ = 7
+  string_ = 8
 
 class FbthriftLoc(InnerGleanSchemaPredicate):
   @staticmethod
@@ -431,15 +432,10 @@ class FbthriftLoc(InnerGleanSchemaPredicate):
 
 
 
-class FbthriftNamedKind(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"fbthrift.NamedKind.1 { angle_for(__env, arg, None) or '_' }", NamedKind
-
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "FbthriftNamedKind":
-    raise Exception("this function can only be called from @angle_query")
-
-
+class FbthriftNamedKind(Enum):
+  typedef_ = 0
+  enum_ = 1
+  struct_ = 2
+  union_ = 3
 
 

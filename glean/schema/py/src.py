@@ -2,6 +2,7 @@
 # To regenerate this file run fbcode//glean/schema/gen/sync
 from typing import Optional, Tuple, Union, List, Dict, TypeVar
 from thrift.py3 import Struct
+from enum import Enum
 import ast
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 
@@ -114,16 +115,8 @@ class SrcByteRange(InnerGleanSchemaPredicate):
 
 
 
-class SrcIndexFailureReason(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"src.IndexFailureReason.1 { angle_for(__env, arg, None) or '_' }", IndexFailureReason
-
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "SrcIndexFailureReason":
-    raise Exception("this function can only be called from @angle_query")
-
-
+class SrcIndexFailureReason(Enum):
+  CompileError = 0
 
 class SrcLoc(InnerGleanSchemaPredicate):
   @staticmethod
@@ -158,16 +151,18 @@ class SrcRange(InnerGleanSchemaPredicate):
 
 
 
-class SrcLanguage(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"src.Language.1 { angle_for(__env, arg, None) or '_' }", Language
-
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "SrcLanguage":
-    raise Exception("this function can only be called from @angle_query")
-
-
+class SrcLanguage(Enum):
+  Buck = 0
+  C = 1
+  Cpp = 2
+  Hack = 3
+  Haskell = 4
+  ObjC = 5
+  ObjCpp = 6
+  Python = 7
+  Thrift = 8
+  Java = 9
+  GraphQL = 10
 
 class SrcFileLocation(InnerGleanSchemaPredicate):
   @staticmethod

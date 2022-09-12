@@ -2,6 +2,7 @@
 # To regenerate this file run fbcode//glean/schema/gen/sync
 from typing import Optional, Tuple, Union, List, Dict, TypeVar
 from thrift.py3 import Struct
+from enum import Enum
 import ast
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 from glean.schema.py.buck import *
@@ -1071,16 +1072,12 @@ class ThriftExceptionSpecName(InnerGleanSchemaPredicate):
 
 
 
-class ThriftHackRecordKind(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.HackRecordKind.7 { angle_for(__env, arg, None) or '_' }", HackRecordKind
-
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "ThriftHackRecordKind":
-    raise Exception("this function can only be called from @angle_query")
-
-
+class ThriftHackRecordKind(Enum):
+  class_ = 0
+  abstract_class = 1
+  interface_ = 2
+  trait_ = 3
+  shape_ = 4
 
 class ThriftKeyValue(InnerGleanSchemaPredicate):
   @staticmethod
@@ -1157,16 +1154,12 @@ class ThriftXRef(InnerGleanSchemaPredicate):
 
 
 
-class ThriftGenRole(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.GenRole.7 { angle_for(__env, arg, None) or '_' }", GenRole
-
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "ThriftGenRole":
-    raise Exception("this function can only be called from @angle_query")
-
-
+class ThriftGenRole(Enum):
+  helper = 0
+  server = 1
+  client = 2
+  type = 3
+  constant = 4
 
 class ThriftUnqualField(InnerGleanSchemaPredicate):
   @staticmethod
@@ -1310,16 +1303,9 @@ class ThriftTypedConstT(InnerGleanSchemaPredicate):
 
 
 
-class ThriftHackMapKind(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.HackMapKind.7 { angle_for(__env, arg, None) or '_' }", HackMapKind
-
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "ThriftHackMapKind":
-    raise Exception("this function can only be called from @angle_query")
-
-
+class ThriftHackMapKind(Enum):
+  core = 0
+  intern = 1
 
 class ThriftMapType(InnerGleanSchemaPredicate):
   @staticmethod
@@ -1332,16 +1318,11 @@ class ThriftMapType(InnerGleanSchemaPredicate):
 
 
 
-class ThriftNamedKind(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.NamedKind.7 { angle_for(__env, arg, None) or '_' }", NamedKind
-
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "ThriftNamedKind":
-    raise Exception("this function can only be called from @angle_query")
-
-
+class ThriftNamedKind(Enum):
+  typedef_ = 0
+  enum_ = 1
+  struct_ = 2
+  union_ = 3
 
 class ThriftFloatLiteral(InnerGleanSchemaPredicate):
   @staticmethod
@@ -1370,16 +1351,16 @@ class ThriftTypedConst(InnerGleanSchemaPredicate):
 
 
 
-class ThriftPrimitiveType(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.PrimitiveType.7 { angle_for(__env, arg, None) or '_' }", PrimitiveType
-
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "ThriftPrimitiveType":
-    raise Exception("this function can only be called from @angle_query")
-
-
+class ThriftPrimitiveType(Enum):
+  bool_ = 0
+  byte_ = 1
+  i16_ = 2
+  i32_ = 3
+  i64_ = 4
+  float_ = 5
+  double_ = 6
+  binary_ = 7
+  string_ = 8
 
 class ThriftResultType(InnerGleanSchemaPredicate):
   @staticmethod
@@ -1476,16 +1457,10 @@ class ThriftHackKind(InnerGleanSchemaPredicate):
 
 
 
-class ThriftQualifier(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.Qualifier.7 { angle_for(__env, arg, None) or '_' }", Qualifier
-
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "ThriftQualifier":
-    raise Exception("this function can only be called from @angle_query")
-
-
+class ThriftQualifier(Enum):
+  default_ = 0
+  optional_ = 1
+  required_ = 2
 
 class ThriftLoc(InnerGleanSchemaPredicate):
   @staticmethod

@@ -2,6 +2,7 @@
 # To regenerate this file run fbcode//glean/schema/gen/sync
 from typing import Optional, Tuple, Union, List, Dict, TypeVar
 from thrift.py3 import Struct
+from enum import Enum
 import ast
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 from glean.schema.py.src import *
@@ -324,16 +325,10 @@ class TestinfraCoveredFileAssemblies(GleanSchemaPredicate):
 
 
 
-class TestinfraHashAlgo(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"testinfra.HashAlgo.1 { angle_for(__env, arg, None) or '_' }", HashAlgo
-
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "TestinfraHashAlgo":
-    raise Exception("this function can only be called from @angle_query")
-
-
+class TestinfraHashAlgo(Enum):
+  crc32 = 0
+  md5 = 1
+  sha1 = 2
 
 class TestinfraCoverageRange(InnerGleanSchemaPredicate):
   @staticmethod

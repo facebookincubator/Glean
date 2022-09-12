@@ -2,6 +2,7 @@
 # To regenerate this file run fbcode//glean/schema/gen/sync
 from typing import Optional, Tuple, Union, List, Dict, TypeVar
 from thrift.py3 import Struct
+from enum import Enum
 import ast
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 from glean.schema.py.src import *
@@ -487,16 +488,66 @@ class LsifLocation(InnerGleanSchemaPredicate):
 
 
 
-class LsifLanguageId(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"lsif.LanguageId.2 { angle_for(__env, arg, None) or '_' }", LanguageId
-
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "LsifLanguageId":
-    raise Exception("this function can only be called from @angle_query")
-
-
+class LsifLanguageId(Enum):
+  ABAP = 0
+  WindowsBat = 1
+  BibTeX = 2
+  Clojure = 3
+  Coffeescript = 4
+  C = 5
+  Cpp = 6
+  CSharp = 7
+  CSS = 8
+  Diff = 9
+  Dart = 10
+  Dockerfile = 11
+  Elixir = 12
+  Erlang = 13
+  FSharp = 14
+  Git = 15
+  Go = 16
+  Groovy = 17
+  Handlebars = 18
+  Haskell = 19
+  HTML = 20
+  Ini = 21
+  Java = 22
+  JavaScript = 23
+  JavaScriptReact = 24
+  JSON = 25
+  LaTeX = 26
+  Less = 27
+  Lua = 28
+  Makefile = 29
+  Markdown = 30
+  ObjectiveC = 31
+  ObjectiveCpp = 32
+  Perl = 33
+  Perl6 = 34
+  PHP = 35
+  Powershell = 36
+  Pug = 37
+  Python = 38
+  R = 39
+  Razor = 40
+  Ruby = 41
+  Rust = 42
+  SCSS = 43
+  Scala = 44
+  ShaderLab = 45
+  Shell = 46
+  SQL = 47
+  Swift = 48
+  TypeScript = 49
+  TypeScriptReact = 50
+  TeX = 51
+  VisualBasic = 52
+  XML = 53
+  XSL = 54
+  YAML = 55
+  UnknownLanguage = 56
+  Kotlin = 57
+  OCaml = 58
 
 class LsifSomeEntity(InnerGleanSchemaPredicate):
   @staticmethod
@@ -514,16 +565,34 @@ class LsifSomeEntity(InnerGleanSchemaPredicate):
 
 
 
-class LsifSymbolKind(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"lsif.SymbolKind.2 { angle_for(__env, arg, None) or '_' }", SymbolKind
-
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "LsifSymbolKind":
-    raise Exception("this function can only be called from @angle_query")
-
-
+class LsifSymbolKind(Enum):
+  File = 0
+  Module = 1
+  Namespace = 2
+  Package = 3
+  Class_ = 4
+  Method = 5
+  Property = 6
+  Field = 7
+  Constructor = 8
+  Enum = 9
+  Interface = 10
+  Function = 11
+  Variable = 12
+  Constant = 13
+  String = 14
+  Number = 15
+  Boolean = 16
+  Array = 17
+  Object_ = 18
+  Key = 19
+  Null = 20
+  EnumMember = 21
+  Struct = 22
+  Event = 23
+  Operator = 24
+  TypeParameter = 25
+  Unknown = 26
 
 class LsifEntity(InnerGleanSchemaPredicate):
   @staticmethod
@@ -592,15 +661,10 @@ class LsifRangeSpan(InnerGleanSchemaPredicate):
 
 
 
-class LsifMonikerKind(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"lsif.MonikerKind.2 { angle_for(__env, arg, None) or '_' }", MonikerKind
-
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "LsifMonikerKind":
-    raise Exception("this function can only be called from @angle_query")
-
-
+class LsifMonikerKind(Enum):
+  Export = 0
+  Local = 1
+  Import = 2
+  Implementation = 3
 
 

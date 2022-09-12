@@ -2,6 +2,7 @@
 # To regenerate this file run fbcode//glean/schema/gen/sync
 from typing import Optional, Tuple, Union, List, Dict, TypeVar
 from thrift.py3 import Struct
+from enum import Enum
 import ast
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 from glean.schema.py.src import *
@@ -430,16 +431,16 @@ class HaxlanalyserFetch(InnerGleanSchemaPredicate):
 
 
 
-class HaxlanalyserTallyCounterType(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.TallyCounterType.1 { angle_for(__env, arg, None) or '_' }", TallyCounterType
-
-  @staticmethod
-  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "HaxlanalyserTallyCounterType":
-    raise Exception("this function can only be called from @angle_query")
-
-
+class HaxlanalyserTallyCounterType(Enum):
+  counter = 0
+  uniqueCounter = 1
+  topK = 2
+  quantiles = 3
+  uniqueQuantiles = 4
+  firstN = 5
+  lastN = 6
+  moments = 7
+  infiniteCounter = 8
 
 class HaxlanalyserTally(InnerGleanSchemaPredicate):
   @staticmethod
