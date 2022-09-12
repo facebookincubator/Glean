@@ -1013,6 +1013,7 @@ executable glean
     hs-source-dirs: glean/tools/gleancli
     main-is: GleanCLI.hs
     other-modules:
+        GleanCLI.Backup
         GleanCLI.Common
         GleanCLI.Complete
         GleanCLI.Derive
