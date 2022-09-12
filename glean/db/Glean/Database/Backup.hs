@@ -59,7 +59,6 @@ import Glean.ServerConfig.Types (DatabaseBackupPolicy(..))
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Internal.Types as Thrift
 import Glean.Types as Thrift
-import Glean.Util.Disk
 import Glean.Util.Some
 import Glean.Util.Observed as Observed
 import Glean.Util.Trace
@@ -200,7 +199,7 @@ doBackup env@Env{..} repo prefix site =
     stats <- mapMaybe
       (\(pid,stats) -> (,stats) . predicateRef <$> lookupPid pid odbSchema)
       <$> Storage.predicateStats odbHandle
-    Backend.Data{..} <- withScratchDirectory envRoot repo $ \scratch ->
+    Backend.Data{..} <- withScratchDirectory envStorage repo $ \scratch ->
       Storage.backup odbHandle scratch $ \bytes Data{dataSize} -> do
         say logInfo "uploading"
         policy <- ServerConfig.databaseBackupPolicy_repos
@@ -257,7 +256,7 @@ doRestore env@Env{..} repo meta
   , r_repo == repo =
     loggingAction (runLogRepo "restore" env repo) (const mempty) (do
       atomically $ notify envListener $ RestoreStarted repo
-      mbFreeBytes <- (Just <$> getFreeDiskSpace envRoot)
+      mbFreeBytes <- (Just <$> Storage.getFreeCapacity envStorage)
                     `catch` \(_ :: IOException) -> return Nothing
       case (mbFreeBytes, databaseComplete_bytes)  of
         (Just freeBytes, Just size) -> do
@@ -269,7 +268,7 @@ doRestore env@Env{..} repo meta
                 neededBytes freeBytes
         _ -> return ()
 
-      withScratchDirectory envRoot repo $ \scratch -> do
+      withScratchDirectory envStorage repo $ \scratch -> do
       say logInfo "starting"
       say logInfo "downloading"
       let scratch_restore = scratch </> "restore"
@@ -294,7 +293,7 @@ doRestore env@Env{..} repo meta
       return failed
     when failed $ do
       say logError $ "failed: " ++ show exc
-      swallow $ safeRemovePathForcibly $ databasePath envRoot repo
+      swallow $ Storage.safeRemoveForcibly envStorage repo
     rethrowAsync exc
     -- NOTE: No point in adding the repo to the sinbin, we just removed
     -- it from the list of known DBs anyway.
@@ -388,15 +387,16 @@ backuper env@Env{..} = loop mempty `catchAll` \exc -> do
           repoV `inF` if ok then sinbin else HashSet.insert repo sinbin)
       loop sinbin'
 
-withScratchDirectory :: FilePath -> Repo -> (FilePath -> IO a) -> IO a
-withScratchDirectory root repo action = do
-  safeRemovePathForcibly scratch
-  bracket_
-    (createDirectoryIfMissing True scratch)
-    (logExceptions id $ safeRemovePathForcibly scratch)
-    (action scratch)
-  where
-    scratch = root </> ".scratch" </> databaseSubdir repo
+withScratchDirectory
+  :: Storage.Storage s => s -> Repo -> (FilePath -> IO a) -> IO a
+withScratchDirectory storage repo action =
+  Storage.withScratchRoot storage $ \root -> do
+    let scratch = root </> databaseSubdir repo
+    safeRemovePathForcibly scratch
+    bracket_
+      (createDirectoryIfMissing True scratch)
+      (logExceptions id $ safeRemovePathForcibly scratch)
+      (action scratch)
 
 rethrowAsync :: SomeException -> IO ()
 rethrowAsync exc

@@ -19,6 +19,7 @@ import Control.Concurrent.STM
 import Data.ByteString (ByteString)
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
+import System.IO.Temp (withSystemTempDirectory)
 
 import Glean.Database.Exception
 import Glean.Database.Storage
@@ -42,6 +43,8 @@ instance Storage Memory where
     , dbData :: TVar (HashMap ByteString ByteString)
     }
 
+  describe = const "memory:"
+
   open (Memory v) repo (Create start _) _ = do
     facts <- FactSet.new start
     atomically $ do
@@ -62,6 +65,8 @@ instance Storage Memory where
   close _ = return ()
 
   delete (Memory v) = atomically . modifyTVar' v . HashMap.delete
+
+  safeRemoveForcibly (Memory v) = atomically . modifyTVar' v . HashMap.delete
 
   -- FIXME: This is a terrible hack to ensure we don't remove everything when
   -- thinning the schema
@@ -88,6 +93,17 @@ instance Storage Memory where
     return (error "unimplemented addDefineOwnership")
   computeDerivedOwnership _ _ _ =
     return (error "unimplemented computeDerivedOwnership")
+
+  -- TODO
+  getTotalCapacity _ = return maxBound
+
+  -- TODO
+  getUsedCapacity _ = return 0
+
+  -- TODO
+  getFreeCapacity _ = return maxBound
+
+  withScratchRoot _ f = withSystemTempDirectory "glean" f
 
   -- TODO
   backup db _ _ = dbError (dbRepo db) "unimplemented 'backup'"

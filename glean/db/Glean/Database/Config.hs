@@ -8,6 +8,10 @@
 
 {-# LANGUAGE ApplicativeDo, CPP #-}
 module Glean.Database.Config (
+  DataStore(..),
+  fileDataStore,
+  tmpDataStore,
+  memoryDataStore,
   Config(..),
   options,
   processSchema,
@@ -45,16 +49,19 @@ import Data.Text (Text)
 import qualified Data.Text as Text
 import Options.Applicative
 import System.FilePath
+import System.IO.Temp (withSystemTempDirectory)
 
 import Thrift.Protocol.JSON
 import Thrift.Util
 import Util.IO (listDirectoryRecursive)
+import Util.Log (logInfo)
 
 import Glean.Angle.Types
 import qualified Glean.Database.Backup.Backend as Backup -- from glean/util
 import qualified Glean.Database.Backup.Mock as Backup.Mock
 import Glean.Database.Catalog (Catalog)
-import qualified Glean.Database.Catalog.Local.Files as Catalog.Local.Files
+import qualified Glean.Database.Catalog.Local.Files as Catalog
+import qualified Glean.Database.Catalog.Local.Memory as Catalog
 import qualified Glean.Database.Catalog.Store as Catalog
 import Glean.Database.Schema.ComputeIds
 import Glean.Database.Storage
@@ -78,8 +85,42 @@ import Glean.Util.ThriftSource (ThriftSource)
 import qualified Glean.Util.ThriftSource as ThriftSource
 import qualified Glean.Tailer as Tailer
 
+data DataStore = DataStore
+  { dataStoreCreate
+      :: forall a. ServerConfig.Config
+      -> (forall c s. (Catalog.Store c, Storage s) => c -> s -> IO a)
+      -> IO a
+  , dataStoreTag :: String
+  }
+
+fileDataStore :: FilePath -> DataStore
+fileDataStore path = DataStore
+  { dataStoreCreate = \scfg f -> do
+      rocksdb <- RocksDB.newStorage path scfg
+      f (Catalog.fileCatalog path) rocksdb
+  , dataStoreTag = "rocksdb:" <> path
+  }
+
+tmpDataStore :: DataStore
+tmpDataStore = DataStore
+  { dataStoreCreate = \scfg f -> withSystemTempDirectory "glean" $ \tmp -> do
+      logInfo $ "Storing temporary DBs in " <> tmp
+      rocksdb <- RocksDB.newStorage tmp scfg
+      f (Catalog.fileCatalog tmp) rocksdb
+  , dataStoreTag = "rocksdb:{TMP}"
+  }
+
+memoryDataStore :: DataStore
+memoryDataStore = DataStore
+  { dataStoreCreate = \_ f -> do
+      cat <- Catalog.memoryCatalog
+      mem <- Memory.newStorage
+      f cat mem
+  , dataStoreTag = "memory"
+  }
+
 data Config = Config
-  { cfgRoot :: Maybe FilePath
+  { cfgDataStore :: DataStore
   , cfgSchemaSource :: ThriftSource SchemaIndex
   , cfgUpdateSchema :: Bool
       -- ^ When True (the default), the schema for open DBs is updated
@@ -97,8 +138,6 @@ data Config = Config
       -- interpret a query.
   , cfgRecipeConfig :: ThriftSource Recipes.Config
   , cfgServerConfig :: ThriftSource ServerConfig.Config
-  , cfgStorage :: FilePath -> ServerConfig.Config -> IO (Some Storage)
-  , cfgCatalogStore :: FilePath -> IO (Some Catalog.Store)
   , cfgReadOnly :: Bool
   , cfgMockWrites :: Bool
   , cfgTailerOpts :: Tailer.TailerOptions
@@ -121,13 +160,13 @@ data Config = Config
 
 instance Show Config where
   show c = unwords [ "Config {"
-    , "cfgRoot: " <> show (cfgRoot c)
+    , "cfgDataStore: " <> dataStoreTag (cfgDataStore c)
     , "cfgServerConfig: " <> show (cfgServerConfig c)
     , "}" ]
 
 instance Default Config where
   def = Config
-    { cfgRoot = Just "."
+    { cfgDataStore = fileDataStore "."
     , cfgSchemaSource = ThriftSource.value (error "undefined schema")
     , cfgUpdateSchema = True
     , cfgSchemaDir = Nothing
@@ -135,8 +174,6 @@ instance Default Config where
     , cfgSchemaId = Nothing
     , cfgRecipeConfig = def
     , cfgServerConfig = def
-    , cfgStorage = \root scfg -> Some <$> RocksDB.newStorage root scfg
-    , cfgCatalogStore = return . Some . Catalog.Local.Files.local
     , cfgReadOnly = False
     , cfgMockWrites = False
     , cfgTailerOpts = def
@@ -341,14 +378,17 @@ schemaSourceOption = option (eitherReader schemaSourceParser)
 options :: Parser Config
 options = do
   let
-    dbRoot = Just <$> strOption (
+    dbRoot = fileDataStore <$> strOption (
       long "db-root" <>
       metavar "DIR" <>
       help "Directory containing databases")
-    dbTmp = flag' Nothing (
+    dbTmp = tmpDataStore <$ flag' () (
       long "db-tmp" <>
       help "Store databases in a temporary directory")
-  cfgRoot <- dbRoot <|> dbTmp
+    dbMem = memoryDataStore <$ flag' () (
+      long "db-memory" <>
+      help "Store databases in memory")
+  cfgDataStore <- dbRoot <|> dbTmp <|> dbMem
   ~(cfgSchemaDir, cfgSchemaSource) <- schemaSourceOption
   _ignored_for_backwards_compat <- switch (long "db-schema-override")
   cfgSchemaVersion <- optional $ option auto
@@ -373,13 +413,11 @@ options = do
     serverConfigThriftSource <|>
     serverConfigTier <|>
     pure def  -- default settings if no option given
-  cfgStorage <- storageOption
   cfgReadOnly <- switch (long "db-read-only")
   cfgMockWrites <- switch (long "db-mock-writes")
   cfgTailerOpts <- Tailer.options
   return Config
-    { cfgCatalogStore = cfgCatalogStore def
-    , cfgListener = mempty
+    { cfgListener = mempty
     , cfgUpdateSchema = True
     , cfgShardManager = cfgShardManager def
     , cfgServerLogger = cfgServerLogger def
@@ -402,16 +440,3 @@ options = do
         (  long "tier"
         <> metavar "TIER"
         <> help "specifies the server configuration to load")
-
-    storageOption = option (eitherReader parseStorage)
-        (  long "storage"
-        <> metavar "(rocksdb | memory)"
-        <> value (cfgStorage def))
-
-    parseStorage
-      :: String
-      -> Either String (FilePath -> ServerConfig.Config -> IO (Some Storage))
-    parseStorage "rocksdb" = Right $
-      \root scfg -> Some <$> RocksDB.newStorage root scfg
-    parseStorage "memory" = Right $ \_ _ -> Some <$> Memory.newStorage
-    parseStorage s = Left $ "unsupported storage '" ++ s ++ "'"

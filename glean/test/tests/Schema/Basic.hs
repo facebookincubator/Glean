@@ -384,7 +384,7 @@ changeSchemaTest = TestCase $ do
 
         let
           dbConfig = def
-            { cfgRoot = Nothing
+            { cfgDataStore = tmpDataStore
             , cfgSchemaSource = ThriftSource.configWithDeserializer
                 fakeSchemaKey (processOneSchema Map.empty)
             , cfgServerConfig = ThriftSource.value def

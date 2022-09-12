@@ -78,6 +78,9 @@ class CanLookup (Database s) => Storage s where
   -- | A fact database
   data Database s
 
+  -- | A short, user-readable description of the storage
+  describe :: s -> String
+
   -- | Open a database
   open :: s -> Repo -> Mode -> DBVersion -> IO (Database s)
 
@@ -86,6 +89,11 @@ class CanLookup (Database s) => Storage s where
 
   -- | Delete a database if it exists
   delete :: s -> Repo -> IO ()
+
+  -- | Unconditionally remove a database or anything that might be stored where
+  -- the database would exist. For disk-based storage, this would remove the
+  -- directory where the database would be stored.
+  safeRemoveForcibly :: s -> Repo -> IO ()
 
   -- | Obtain the 'PredicateStats' for each predicate
   predicateStats :: Database s -> IO [(Pid, PredicateStats)]
@@ -134,6 +142,22 @@ class CanLookup (Database s) => Storage s where
     -> Ownership
     -> Pid
     -> IO ComputedOwnership
+
+  -- | Determine the total capacity of the storage medium (e.g., disk size).
+  getTotalCapacity :: s -> IO Int
+
+  -- | Determine the used capacity of the storage medium (e.g., how much of the
+  -- disk is in use).
+  getUsedCapacity :: s -> IO Int
+
+  -- | Determine the free capacity of the storage medium (e.g., how much of the
+  -- disk is free).
+  getFreeCapacity :: s -> IO Int
+
+  -- | Execute the action, passing to it a path to a scratch directory which can
+  -- be used, e.g., for downloading databases. This directory is not guaranteed
+  -- to persist beyond the call and is not guaranteed to be empty.
+  withScratchRoot :: s -> (FilePath -> IO a) -> IO a
 
   -- | Backup a database. The scratch directory which can be used for storing
   -- intermediate files is guaranteed to be empty and will be deleted after

@@ -43,7 +43,6 @@ import Glean.Internal.Types
 import Glean.Test.HUnit
 import Glean.Test.Mock
 import Glean.Types hiding (Exception)
-import Glean.Util.Some
 
 data TEnv = TEnv
   { tEnv :: Env
@@ -52,15 +51,17 @@ data TEnv = TEnv
 
 withTEnv :: (TEnv -> IO a) -> IO a
 withTEnv f = do
+  catalog <- memStore
   storage <- newStorage
-  store <- memStore
   withTestEnv
     [\cfg -> cfg
-        { cfgStorage = \_ _ -> return $ Some storage
-        , cfgCatalogStore = \_ -> return $ Some store
+        { cfgDataStore = DataStore
+            { dataStoreCreate = \_ f -> f catalog storage
+            , dataStoreTag = "test"
+            }
         }]
     $ \env -> do
-      x <- f $ TEnv env store
+      x <- f $ TEnv env catalog
       checkActive env False
       return x
 

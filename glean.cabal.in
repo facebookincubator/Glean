@@ -466,6 +466,7 @@ library db
         Glean.Database.Catalog.Filter
         Glean.Database.Catalog
         Glean.Database.Catalog.Local.Files
+        Glean.Database.Catalog.Local.Memory
         Glean.Database.Catalog.Store
         Glean.Database.CompletePredicates
         Glean.Database.Config

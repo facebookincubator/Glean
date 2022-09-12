@@ -113,7 +113,7 @@ withTestEnv dbs init_server_cfg action evb cfgAPI backupdir = do
     }
   (l, events) <- recorder
   let config = def
-        { cfgRoot = Nothing
+        { cfgDataStore = tmpDataStore
         , cfgSchemaSource = schemaSourceFiles
         , cfgRecipeConfig = def
         , cfgServerConfig = server_cfg
