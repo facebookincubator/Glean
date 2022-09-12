@@ -81,10 +81,8 @@ from glean.schema.thrift.types import (
     EnumVal,
     UnionVal,
     Cpp2ItemNamed,
-    FieldId,
     StructFieldVal,
     Item,
-    FbcodeLang,
     IntegerLiteral,
     ExceptionSpecName,
     HackRecordKind,
@@ -96,7 +94,6 @@ from glean.schema.thrift.types import (
     XRef,
     GenRole,
     UnqualField,
-    Declaration,
     XRefTarget,
     ContainerType,
     FieldSpecification,
@@ -972,17 +969,6 @@ class ThriftCpp2ItemNamed(InnerGleanSchemaPredicate):
 
 
 
-class ThriftFieldId(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.FieldId.7 { angle_for(__env, arg, None) or '_' }", FieldId
-
-  @staticmethod
-  def angle_query(*, arg: Optional["ThriftIntegerLiteral"] = None) -> "ThriftFieldId":
-    raise Exception("this function can only be called from @angle_query")
-
-
-
 class ThriftStructFieldVal(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, value: ast.Expr) -> Tuple[str, Struct]:
@@ -1031,17 +1017,6 @@ class ThriftItem(InnerGleanSchemaPredicate):
   def angle_query_enumValue(*, enumValue: "ThriftEnumValue") -> "ThriftItem":
     raise Exception("this function can only be called from @angle_query")
 
-
-
-
-class ThriftFbcodeLang(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.FbcodeLang.7 { angle_for(__env, arg, None) or '_' }", FbcodeLang
-
-  @staticmethod
-  def angle_query(*, arg: Optional[str] = None) -> "ThriftFbcodeLang":
-    raise Exception("this function can only be called from @angle_query")
 
 
 
@@ -1172,17 +1147,6 @@ class ThriftUnqualField(InnerGleanSchemaPredicate):
 
 
 
-class ThriftDeclaration(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.Declaration.7 { angle_for(__env, arg, None) or '_' }", Declaration
-
-  @staticmethod
-  def angle_query(*, arg: Optional["ThriftXRefTarget"] = None) -> "ThriftDeclaration":
-    raise Exception("this function can only be called from @angle_query")
-
-
-
 class ThriftXRefTarget(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], include_: ast.Expr, named: ast.Expr, exception_: ast.Expr, service_: ast.Expr, constant: ast.Expr, enumValue: ast.Expr) -> Tuple[str, Struct]:
@@ -1268,16 +1232,7 @@ class ThriftStructFieldValValue(InnerGleanSchemaPredicate):
     raise Exception("this function can only be called from @angle_query")
 
 
-class ThriftStructFieldValValue_nothing(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R]) -> Tuple[str, Struct]:
-    return f" _", ThriftStructFieldValValue_nothing
-
-  @staticmethod
-  def angle_query() -> "ThriftStructFieldValValue_nothing":
-    raise Exception("this function can only be called from @angle_query")
-
-
+ThriftStructFieldValValue_nothing = Tuple[()]
 
 
 
@@ -1474,3 +1429,9 @@ class ThriftLoc(InnerGleanSchemaPredicate):
 
 
 
+
+ThriftFieldId = "ThriftIntegerLiteral"
+
+ThriftFbcodeLang = str
+
+ThriftDeclaration = "ThriftXRefTarget"

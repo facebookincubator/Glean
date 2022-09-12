@@ -16,8 +16,6 @@ from glean.schema.docmarkup.types import (
     EntityAnnotations,
     DocAttrKey,
     GeneralAnnotations,
-    DocAttrs,
-    DocAttrValue,
 )
 
 
@@ -109,26 +107,8 @@ class DocmarkupGeneralAnnotations(InnerGleanSchemaPredicate):
 
 
 
-class DocmarkupDocAttrs(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"docmarkup.DocAttrs.14 { angle_for(__env, arg, None) or '_' }", DocAttrs
-
-  @staticmethod
-  def angle_query(*, arg: Optional[List["DocmarkupDocAttr"]] = None) -> "DocmarkupDocAttrs":
-    raise Exception("this function can only be called from @angle_query")
 
 
+DocmarkupDocAttrs = List["DocmarkupDocAttr"]
 
-class DocmarkupDocAttrValue(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"docmarkup.DocAttrValue.14 { angle_for(__env, arg, None) or '_' }", DocAttrValue
-
-  @staticmethod
-  def angle_query(*, arg: Optional[str] = None) -> "DocmarkupDocAttrValue":
-    raise Exception("this function can only be called from @angle_query")
-
-
-
-
+DocmarkupDocAttrValue = str

@@ -26,7 +26,6 @@ from glean.schema.fbthrift.types import (
     Identifier,
     ExceptionSpecName,
     IntegerLiteral,
-    FieldId,
     XRef,
     UnqualField,
     XRefTarget,
@@ -246,17 +245,6 @@ class FbthriftIntegerLiteral(InnerGleanSchemaPredicate):
 
 
 
-class FbthriftFieldId(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"fbthrift.FieldId.1 { angle_for(__env, arg, None) or '_' }", FieldId
-
-  @staticmethod
-  def angle_query(*, arg: Optional["FbthriftIntegerLiteral"] = None) -> "FbthriftFieldId":
-    raise Exception("this function can only be called from @angle_query")
-
-
-
 class FbthriftXRef(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], locRef: ast.Expr, target: ast.Expr) -> Tuple[str, Struct]:
@@ -439,3 +427,5 @@ class FbthriftNamedKind(Enum):
   union_ = 3
 
 
+
+FbthriftFieldId = "FbthriftIntegerLiteral"

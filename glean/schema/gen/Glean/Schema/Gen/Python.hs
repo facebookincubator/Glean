@@ -23,6 +23,7 @@ import qualified Data.Maybe
 import Glean.Schema.Gen.Utils
 import Glean.Angle.Types
 import Glean.Schema.Types
+import Glean.Types (TypeName)
 
 
 genSchemaPy
@@ -42,7 +43,7 @@ genSchemaPy _version preddefs typedefs =
   , "import inspect"
   , "import ast"
   , ""
-  , "R = TypeVar(\"R\", int, str, bool, bytes)"
+  , "R = TypeVar(\"R\", int, str, bool, bytes, Tuple[()])"
   , "T = TypeVar(\"T\")"
   , ""
   , "class GleanSchemaPredicate:"
@@ -83,6 +84,8 @@ genSchemaPy _version preddefs typedefs =
   , "    " <> "return _make_attribute(field_name, value)"
   , "  " <> "elif isinstance(key, ast.Attribute):"
   , "    " <>  "return _make_attribute(field_name, key.attr)"
+  , "  " <> "elif isinstance(key, ast.Tuple):"
+  , "    " <> "return _make_attribute(field_name, \"_\")"
   , "  " <> "raise NotImplementedError(f\"Query key type not implemented\")"
   , ""
   , "def _make_attribute(field_name: Optional[str], value: str) -> str:"
@@ -159,15 +162,16 @@ genSchemaPy _version preddefs typedefs =
           -- InnerGleanSchemaPredicate hides Named Types from the user's outer
           -- query. InnerGleanSchemaPredicates cannot be called directly by an
           -- Angle query, they must be used only as inner query fields.
-          [genAllPredicates AngleQuery namespaces namePolicy
-            "InnerGleanSchemaPredicate" $ predsFromTypes preds types]
+          genAllPredicates AngleQuery namespaces namePolicy
+            "InnerGleanSchemaPredicate" (predsFromTypes preds types) :
+          genNamedTypesAliases namePolicy types
         )
     )
   | (namespaces, (_, preds, types)) <- schemas
   ]
   where
     schemas = HashMap.toList declsPerNamespace
-    predsFromTypes preds types = genNamedTypes (head preds) types
+    predsFromTypes preds types = genNamedTypesClasses (head preds) types
     namePolicy = mkNamePolicy preddefs typedefs
     declsPerNamespace =
       addNamespaceDependencies $ sortDeclsByNamespace preddefs typedefs
@@ -201,6 +205,8 @@ genAllPredicates predicateMode _ namePolicy parent preds = Text.unlines $
   [ Text.unlines $ case key of
     EnumeratedTy vals -> "class " <> class_name <> "(Enum):" :
       zipWith mkEnumerator [0..] vals
+    -- handle GleanSchemaPredicates with no key (ex: builtin.Unit.1)
+    RecordTy [] -> [class_name <> " = Tuple[()]"]
     _ ->
       [ "class " <> class_name <> "(" <> parent <> "):"
       , "  " <> "@staticmethod"
@@ -236,14 +242,35 @@ genAllPredicates predicateMode _ namePolicy parent preds = Text.unlines $
           mkEnumerator (i :: Int) val = "  " <> val <> " = " <> showt i
   ]
 
-genNamedTypes
+genNamedTypesClasses
   :: ResolvedPredicateDef
   -> [ResolvedTypeDef]
   -> [ResolvedPredicateDef]
-genNamedTypes pred types = map (\t -> genTypePred (genType t)) types
+genNamedTypesClasses pred types = map genTypePred $
+  filter (\(_, t, _) -> shouldGenClass t) $ map genType types
   where
     genTypePred (n, t, v) = PredicateDef (PredicateRef n v) t t (predicateDefDeriving pred)
-    genType TypeDef{typeDefRef = TypeRef{..}, ..} = (typeRef_name, typeDefType, typeRef_version)
+
+
+genNamedTypesAliases :: NamePolicy -> [TypeDef_ PredicateRef TypeRef] -> [Text]
+genNamedTypesAliases namePolicy types = map genTypeAlias $
+  filter (\(_, t, _) -> shouldGenAlias t) $ map genType types
+  where
+    genTypeAlias (n, t, _) = pythonClassName n <> " = " <> baseTy Text.empty namePolicy t
+
+
+shouldGenClass :: Type_ pref tref -> Bool
+shouldGenClass t = case t of
+  RecordTy{} -> True
+  SumTy{} -> True
+  EnumeratedTy{} -> True
+  _ -> False
+
+shouldGenAlias :: Type_ pref tref -> Bool
+shouldGenAlias t = not $ shouldGenClass t
+
+genType :: TypeDef_ pref TypeRef -> (TypeName, Type_ pref TypeRef, Version)
+genType TypeDef{typeDefRef = TypeRef{..}, ..} = (typeRef_name, typeDefType, typeRef_version)
 
 unionDummyPreds :: Type_ PredicateRef tref
   -> PredicateDef_ s PredicateRef tref
@@ -287,15 +314,11 @@ addClientMethods class_name kTy namePolicy key = methods
       createMethod ("_" <> name) (name <> ": " <> type_)
     createMethod method_name args = Text.unlines
       [ "  " <> "@staticmethod"
-      , "  " <> "def angle_query" <> method_name <> "(" <> args_ <>
+      , "  " <> "def angle_query" <> method_name <> "(*, " <> args <>
         ") -> \"" <> class_name <> "\":"
       , "    " <> "raise Exception" <>
         "(\"this function can only be called from @angle_query\")"
       ]
-      where
-        -- handle GleanSchemaPredicates with no key (ex: builtin.Unit.1)
-        args_ = if args == Text.empty then ""
-          else "*, " <> args
 
 header :: NameSpaces -> NamePolicy -> [ResolvedPredicateDef] -> Text
 header namespaces namePolicy preds = Text.unlines $

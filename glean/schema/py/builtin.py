@@ -14,15 +14,6 @@ from glean.schema.builtin.types import (
 
 
 
-class BuiltinUnit(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R]) -> Tuple[str, Struct]:
-    return f"builtin.Unit.1 _", Unit
-
-  @staticmethod
-  def angle_query() -> "BuiltinUnit":
-    raise Exception("this function can only be called from @angle_query")
-
-
+BuiltinUnit = Tuple[()]
 
 

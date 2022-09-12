@@ -13,7 +13,6 @@ from glean.schema.src.types import (
     File,
     FileLanguage,
     FileLines,
-    ByteSpans,
     RelByteSpan,
     ByteRange,
     IndexFailureReason,
@@ -79,17 +78,6 @@ class SrcFileLines(GleanSchemaPredicate):
     raise Exception("this function can only be called from @angle_query")
 
 
-
-
-
-class SrcByteSpans(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"src.ByteSpans.1 { angle_for(__env, arg, None) or '_' }", ByteSpans
-
-  @staticmethod
-  def angle_query(*, arg: Optional[List["SrcRelByteSpan"]] = None) -> "SrcByteSpans":
-    raise Exception("this function can only be called from @angle_query")
 
 
 
@@ -176,3 +164,5 @@ class SrcFileLocation(InnerGleanSchemaPredicate):
 
 
 
+
+SrcByteSpans = List["SrcRelByteSpan"]

@@ -92,7 +92,6 @@ from glean.schema.cxx1.types import (
     ObjcPropertyKind,
     MethodSignature,
     ObjcIVar,
-    Operator,
     Declaration,
     RefQualifier,
     GlobalVariableAttribute,
@@ -109,7 +108,6 @@ from glean.schema.cxx1.types import (
     LocalVariableKind,
     PpEntity,
     LocalVariable,
-    LiteralOperator,
     RecordBase,
     XRefTarget,
     MaybeIncludeTree,
@@ -117,7 +115,6 @@ from glean.schema.cxx1.types import (
     DefinitionEntity,
     FixedXRef,
     LocalVariableAttribute,
-    USR,
     PPEvent,
     Access,
     RecordKind,
@@ -1056,17 +1053,6 @@ class Cxx1ObjcIVar(InnerGleanSchemaPredicate):
 
 
 
-class Cxx1Operator(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"cxx1.Operator.5 { angle_for(__env, arg, None) or '_' }", Operator
-
-  @staticmethod
-  def angle_query(*, arg: Optional[str] = None) -> "Cxx1Operator":
-    raise Exception("this function can only be called from @angle_query")
-
-
-
 class Cxx1Declaration(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], namespace_: ast.Expr, usingDeclaration: ast.Expr, usingDirective: ast.Expr, record_: ast.Expr, enum_: ast.Expr, function_: ast.Expr, variable: ast.Expr, objcContainer: ast.Expr, objcMethod: ast.Expr, objcProperty: ast.Expr, typeAlias: ast.Expr) -> Tuple[str, Struct]:
@@ -1305,17 +1291,6 @@ class Cxx1LocalVariable(InnerGleanSchemaPredicate):
 
 
 
-class Cxx1LiteralOperator(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"cxx1.LiteralOperator.5 { angle_for(__env, arg, None) or '_' }", LiteralOperator
-
-  @staticmethod
-  def angle_query(*, arg: Optional[str] = None) -> "Cxx1LiteralOperator":
-    raise Exception("this function can only be called from @angle_query")
-
-
-
 class Cxx1RecordBase(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], base: ast.Expr, access: ast.Expr, isVirtual: ast.Expr) -> Tuple[str, Struct]:
@@ -1441,17 +1416,6 @@ class Cxx1LocalVariableAttribute(Enum):
   Plain = 0
   Constexpr = 1
 
-class Cxx1USR(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"cxx1.USR.5 { angle_for(__env, arg, None) or '_' }", USR
-
-  @staticmethod
-  def angle_query(*, arg: Optional[str] = None) -> "Cxx1USR":
-    raise Exception("this function can only be called from @angle_query")
-
-
-
 class Cxx1PPEvent(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], include_: ast.Expr, define: ast.Expr, undef: ast.Expr, use: ast.Expr) -> Tuple[str, Struct]:
@@ -1513,3 +1477,9 @@ class Cxx1IncludeTrace(InnerGleanSchemaPredicate):
 
 
 
+
+Cxx1Operator = str
+
+Cxx1LiteralOperator = str
+
+Cxx1USR = str

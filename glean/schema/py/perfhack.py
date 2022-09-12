@@ -15,11 +15,8 @@ from glean.schema.perfhack.types import (
     hackFunctionProducts,
     hackLoopCount,
     hackFunctionCallers,
-    hackScaledMillion,
     hackFileLine,
     hackReturnCount,
-    hackFullName,
-    hackFunctionName,
 )
 
 
@@ -91,17 +88,6 @@ class PerfHackFunctionCallers(InnerGleanSchemaPredicate):
 
 
 
-class PerfHackScaledMillion(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"perf.hack.ScaledMillion.1 { angle_for(__env, arg, None) or '_' }", hackScaledMillion
-
-  @staticmethod
-  def angle_query(*, arg: Optional[int] = None) -> "PerfHackScaledMillion":
-    raise Exception("this function can only be called from @angle_query")
-
-
-
 class PerfHackFileLine(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, line: ast.Expr) -> Tuple[str, Struct]:
@@ -124,26 +110,10 @@ class PerfHackReturnCount(InnerGleanSchemaPredicate):
 
 
 
-class PerfHackFullName(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"perf.hack.FullName.1 { angle_for(__env, arg, None) or '_' }", hackFullName
-
-  @staticmethod
-  def angle_query(*, arg: Optional[str] = None) -> "PerfHackFullName":
-    raise Exception("this function can only be called from @angle_query")
 
 
+PerfHackScaledMillion = int
 
-class PerfHackFunctionName(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"perf.hack.FunctionName.1 { angle_for(__env, arg, None) or '_' }", hackFunctionName
+PerfHackFullName = str
 
-  @staticmethod
-  def angle_query(*, arg: Optional[str] = None) -> "PerfHackFunctionName":
-    raise Exception("this function can only be called from @angle_query")
-
-
-
-
+PerfHackFunctionName = str

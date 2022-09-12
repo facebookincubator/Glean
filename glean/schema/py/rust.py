@@ -40,7 +40,6 @@ from glean.schema.rust.types import (
     ForeignFunctionDef,
     Def,
     ImplKind,
-    XRefTarget,
 )
 
 
@@ -441,15 +440,6 @@ class RustImplKind(Enum):
   inherent = 0
   direct = 1
 
-class RustXRefTarget(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"rust.XRefTarget.1 { angle_for(__env, arg, None) or '_' }", XRefTarget
-
-  @staticmethod
-  def angle_query(*, arg: Optional["RustDef"] = None) -> "RustXRefTarget":
-    raise Exception("this function can only be called from @angle_query")
 
 
-
-
+RustXRefTarget = "RustDef"

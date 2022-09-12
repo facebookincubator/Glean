@@ -56,13 +56,9 @@ from glean.schema.gleantest.types import (
     testEntity,
     testKitchenSink,
     testEnum,
-    testArrayByte,
     testWrappedStringPair,
-    testArrayNat,
     testEdgeSum,
     testRec,
-    testArrayString,
-    testArrayBool,
     testSum,
 )
 
@@ -689,17 +685,6 @@ class GleanTestEnum(Enum):
   green = 1
   blue = 2
 
-class GleanTestArrayByte(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"glean.test.ArrayByte.1 { angle_for(__env, arg, None) or '_' }", testArrayByte
-
-  @staticmethod
-  def angle_query(*, arg: Optional[bytes] = None) -> "GleanTestArrayByte":
-    raise Exception("this function can only be called from @angle_query")
-
-
-
 class GleanTestWrappedStringPair(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], wrapped: ast.Expr) -> Tuple[str, Struct]:
@@ -707,17 +692,6 @@ class GleanTestWrappedStringPair(InnerGleanSchemaPredicate):
 
   @staticmethod
   def angle_query(*, wrapped: Optional["GleanTestStringPair"] = None) -> "GleanTestWrappedStringPair":
-    raise Exception("this function can only be called from @angle_query")
-
-
-
-class GleanTestArrayNat(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"glean.test.ArrayNat.1 { angle_for(__env, arg, None) or '_' }", testArrayNat
-
-  @staticmethod
-  def angle_query(*, arg: Optional[List[int]] = None) -> "GleanTestArrayNat":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -749,28 +723,6 @@ class GleanTestRec(InnerGleanSchemaPredicate):
 
 
 
-class GleanTestArrayString(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"glean.test.ArrayString.1 { angle_for(__env, arg, None) or '_' }", testArrayString
-
-  @staticmethod
-  def angle_query(*, arg: Optional[List[str]] = None) -> "GleanTestArrayString":
-    raise Exception("this function can only be called from @angle_query")
-
-
-
-class GleanTestArrayBool(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"glean.test.ArrayBool.1 { angle_for(__env, arg, None) or '_' }", testArrayBool
-
-  @staticmethod
-  def angle_query(*, arg: Optional[List[bool]] = None) -> "GleanTestArrayBool":
-    raise Exception("this function can only be called from @angle_query")
-
-
-
 class GleanTestSum(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], mon: ast.Expr, tue: ast.Expr, wed: ast.Expr) -> Tuple[str, Struct]:
@@ -792,3 +744,11 @@ class GleanTestSum(InnerGleanSchemaPredicate):
 
 
 
+
+GleanTestArrayByte = bytes
+
+GleanTestArrayNat = List[int]
+
+GleanTestArrayString = List[str]
+
+GleanTestArrayBool = List[bool]

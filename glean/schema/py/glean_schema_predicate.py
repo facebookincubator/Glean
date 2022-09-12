@@ -6,7 +6,7 @@ import json
 import inspect
 import ast
 
-R = TypeVar("R", int, str, bool, bytes)
+R = TypeVar("R", int, str, bool, bytes, Tuple[()])
 T = TypeVar("T")
 
 class GleanSchemaPredicate:
@@ -43,6 +43,8 @@ def angle_for(__env: Dict[str, R], key: ast.Expr, field_name: Optional[str]) -> 
     return _make_attribute(field_name, value)
   elif isinstance(key, ast.Attribute):
     return _make_attribute(field_name, key.attr)
+  elif isinstance(key, ast.Tuple):
+    return _make_attribute(field_name, "_")
   raise NotImplementedError(f"Query key type not implemented")
 
 def _make_attribute(field_name: Optional[str], value: str) -> str:

@@ -65,7 +65,6 @@ from glean.schema.python.types import (
     Docstring,
     Definition,
     DirectXRef,
-    Decorator,
 )
 
 
@@ -717,15 +716,6 @@ class PythonDirectXRef(InnerGleanSchemaPredicate):
 
 
 
-class PythonDecorator(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.Decorator.2 { angle_for(__env, arg, None) or '_' }", Decorator
-
-  @staticmethod
-  def angle_query(*, arg: Optional[str] = None) -> "PythonDecorator":
-    raise Exception("this function can only be called from @angle_query")
 
 
-
-
+PythonDecorator = str

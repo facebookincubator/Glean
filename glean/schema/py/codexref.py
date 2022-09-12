@@ -11,7 +11,6 @@ from glean.schema.codexref.types import (
     OutgoingXRefs,
     SymbolName,
     IncomingXRefs,
-    Shard,
     Location,
     XRefDatum,
 )
@@ -52,17 +51,6 @@ class CodexrefIncomingXRefs(GleanSchemaPredicate):
 
 
 
-class CodexrefShard(InnerGleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"codexref.Shard.6 { angle_for(__env, arg, None) or '_' }", Shard
-
-  @staticmethod
-  def angle_query(*, arg: Optional[int] = None) -> "CodexrefShard":
-    raise Exception("this function can only be called from @angle_query")
-
-
-
 class CodexrefLocation(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], start: ast.Expr, line: ast.Expr) -> Tuple[str, Struct]:
@@ -91,3 +79,5 @@ class CodexrefXRefDatum(InnerGleanSchemaPredicate):
 
 
 
+
+CodexrefShard = int
