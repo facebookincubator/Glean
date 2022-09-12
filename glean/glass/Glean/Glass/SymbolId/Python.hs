@@ -13,6 +13,7 @@ module Glean.Glass.SymbolId.Python () where
 
 import Data.Text (Text, splitOn)
 import Data.List (nub)
+import Data.Maybe ( maybeToList )
 
 import qualified Glean
 import Glean.Angle as Angle
@@ -22,7 +23,7 @@ import Glean.Util.ToAngle
 
 import Glean.Glass.SymbolId.Class
 import Glean.Glass.Types (Name(..))
-import Glean.Glass.Utils ( searchWithLimit )
+import Glean.Glass.Utils ( fetchData )
 
 instance Symbol Py.Name where
   toSymbol k = do
@@ -31,8 +32,7 @@ instance Symbol Py.Name where
 
 instance Symbol Py.Declaration where
   toSymbol d = do
-    locations <- Glean.search_ $ Glean.limit 1 $ Angle.query $
-      declarationLocation $ toAngle d
+    locations <- maybeToList <$> fetchData (declarationLocation $ toAngle d)
     let loc = case nub $ map (head . splitOn "/") locations of
               [location] -> location
               _ -> "."
@@ -96,12 +96,12 @@ instance ToQName Py.Module_key where
 instance ToQName Py.Name where
   toQName name = do
     let nameId = Glean.getId name
-    (r :: [(Py.Name, Py.Name)]) <- searchWithLimit (Just 1) $
-      qNameQuery nameId
-    case r of
-      ((local, container):_) ->
+    (mr :: Maybe (Py.Name, Py.Name)) <- fetchData $ qNameQuery nameId
+    case mr of
+      Nothing -> Left . ("No qualified names found for " <>) <$>
+        Glean.keyOf name
+      Just (local, container) ->
         fmap Right $ (,) <$> pyNameToName local <*> pyNameToName container
-      [] -> Left . ("No qualified names found for " <>) <$> Glean.keyOf name
 
 pyNameToName :: Py.Name -> Glean.RepoHaxl u w Name
 pyNameToName name = Name <$> Glean.keyOf name

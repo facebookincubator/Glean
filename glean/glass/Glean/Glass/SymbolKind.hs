@@ -31,7 +31,7 @@ findSymbolKind
 findSymbolKind e = case entityToAngle e of
   Left err -> return $ Left $ "ToSymbolKind: " <> err
   Right ent -> do
-    r <- Utils.searchWithLimit (Just 1) $ Query.symbolKind ent
+    r <- Utils.fetchData $ Query.symbolKind ent
     return $ case r of
-      [] -> Left "No kind found"
-      (kind:_) -> Right $ Glass.symbolKindToSymbolKind kind
+      Nothing -> Left "No kind found"
+      Just kind -> Right $ Glass.symbolKindToSymbolKind kind
