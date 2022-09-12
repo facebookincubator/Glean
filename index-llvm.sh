@@ -192,9 +192,13 @@ mkdir -p "${BUILD_DIR}" >&5
   -S "${SOURCE_DIR}" -B "${BUILD_DIR}" >&5
 
 echo "Generating LLVM code"
+# We get all the *TableGen targets from make help which thankfully lists all
+# available targets. We do want word splitting here so disable the corresponding
+# check.
+# shellcheck disable=SC2046
 (cd "${BUILD_DIR}" && \
-  make "${MAKE_ARGS[@]}" intrinsics_gen X86CommonTableGen WindresOptsTableGen \
-    OtoolOptsTableGen DllOptionsTableGen acc_gen omp_gen) >&5
+  make "${MAKE_ARGS[@]}" intrinsics_gen acc_gen omp_gen llvm_vcsrevision_h \
+    $(make help | sed -n '/^[.][.][.] [A-Za-z0-9]*TableGen$/ s/^....//p')) >&5
 
 if [[ -z "${GLEAN_DB}" ]] ; then
   GLEAN_DB=llvm/$(sed -n '/^Version/ {s/^Version: //p;q}' "${BUILD_DIR}/llvm.spec")
