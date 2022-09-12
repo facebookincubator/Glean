@@ -200,32 +200,14 @@ const char *glean_rocksdb_get_unit(Database *db, uint32_t unit_id, void **unit,
   });
 }
 
-
-const char *glean_rocksdb_database_stats(
+const char *glean_rocksdb_database_predicateStats(
     Database *db,
     size_t *count,
     int64_t **ids,
     uint64_t **counts,
     uint64_t **sizes) {
   return ffi::wrap([=] {
-    const auto stats = db->stats();
-    const auto n = stats.size();
-    auto ids_arr = ffi::malloc_array<int64_t>(n);
-    auto counts_arr = ffi::malloc_array<uint64_t>(n);
-    auto sizes_arr = ffi::malloc_array<uint64_t>(n);
-    size_t i = 0;
-    for (const auto x : stats) {
-      if (x.second.count) {
-        ids_arr[i] = x.first.toThrift();
-        counts_arr[i] = x.second.count;
-        sizes_arr[i] = x.second.memory;
-        ++i;
-      }
-    }
-    *count = i;
-    *ids = ids_arr.release();
-    *counts = counts_arr.release();
-    *sizes = sizes_arr.release();
+    rts::marshal(db->predicateStats(), count, ids, counts, sizes);
   });
 }
 

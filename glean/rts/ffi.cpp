@@ -465,6 +465,17 @@ size_t glean_factset_fact_memory(FactSet *facts) {
   return facts->factMemory();
 }
 
+const char *glean_factset_predicateStats(
+    FactSet *facts,
+    size_t *count,
+    int64_t **ids,
+    uint64_t **counts,
+    uint64_t **sizes) {
+  return ffi::wrap([=] {
+    marshal(facts->predicateStats(), count, ids, counts, sizes);
+  });
+}
+
 int64_t glean_factset_first_free_id(FactSet *facts) {
   return facts->firstFreeId().toThrift();
 }

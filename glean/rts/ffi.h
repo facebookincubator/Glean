@@ -295,6 +295,13 @@ size_t glean_factset_fact_memory(
   FactSet *facts
 );
 
+const char *glean_factset_predicateStats(
+  FactSet *facts,
+  size_t *count,
+  int64_t **ids,
+  uint64_t **counts,
+  uint64_t **sizes);
+
 Lookup *glean_factset_lookup(FactSet *facts);
 Define *glean_factset_define(FactSet *define);
 

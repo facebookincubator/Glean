@@ -13,6 +13,7 @@
 #include "glean/rts/fact.h"
 #include "glean/rts/inventory.h"
 #include "glean/rts/ondemand.h"
+#include "glean/rts/stats.h"
 #include "glean/rts/store.h"
 #include "glean/rts/substitution.h"
 
@@ -166,6 +167,8 @@ public:
     return fact_memory;
   }
 
+  PredicateStats predicateStats() const;
+
  // Lookup implementation
 
   Id idByKey(Pid type, folly::ByteRange key) override;
@@ -249,6 +252,11 @@ private:
   std::vector<Fact::unique_ptr> facts;
   DenseMap<Pid, FastSetBy<const Fact *, FactByKeyOnly>> keys;
   size_t fact_memory;
+
+  /// Cached predicate stats. We create these on-demand rather than maintain
+  /// them throughout because most FactSets don't need them.
+  struct CachedPredicateStats;
+  mutable OnDemand<CachedPredicateStats> predicate_stats;
 
   /// Index for prefix seeks. It is lazily initialised and slow as we typically
   /// don't do seeks on FactSets.

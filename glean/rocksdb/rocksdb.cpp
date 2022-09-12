@@ -540,9 +540,9 @@ struct DatabaseImpl final : Database {
     }
   }
 
-  PredicateStats loadStats() {
+  rts::PredicateStats loadStats() {
     container_.requireOpen();
-    PredicateStats stats;
+    rts::PredicateStats stats;
     std::unique_ptr<rocksdb::Iterator> iter(
       container_.db->NewIterator(
         rocksdb::ReadOptions(),
@@ -1023,7 +1023,7 @@ struct DatabaseImpl final : Database {
     return stats_.count(pid);
   }
 
-  PredicateStats stats() const override {
+  rts::PredicateStats predicateStats() const override {
     return stats_.get();
   }
 

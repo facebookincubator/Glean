@@ -140,7 +140,7 @@ const char *glean_rocksdb_get_unit(
   size_t *unit_size
 );
 
-const char *glean_rocksdb_database_stats(
+const char *glean_rocksdb_database_predicateStats(
   Database *db,
   size_t *count,
   int64_t **ids,
