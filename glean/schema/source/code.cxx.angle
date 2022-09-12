@@ -36,13 +36,7 @@ predicate DeclToDef :
   }
   {Decl, Def}
   where
-  FamDecl = Decl |
-    (
-      D where
-      cxx1.DeclToFamily{decl = Decl, family = DF};
-      DF = cxx1.DeclFamily F;
-      D = F[..]
-    );
+  cxx1.DeclFamilyOf { Decl, FamDecl };
   Def =
     (
       Definition{record_ = { declaration = DD} }
