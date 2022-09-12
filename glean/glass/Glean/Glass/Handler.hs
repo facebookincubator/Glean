@@ -646,17 +646,17 @@ fetchSymbolReferences
   -> Maybe Int
   -> GleanBackend b
   -> IO ([Location], Maybe ErrorLogger)
-fetchSymbolReferences scsrepo lang toks limit b =
-  backendRunHaxl b $ do
-    er <- symbolToAngleEntity lang toks
-    case er of
-      Left err -> return ([], Just err)
-      Right (query, searchErr) -> do
-        locs::[Location] <-
-          searchReposWithLimit limit (Query.findReferenceRangeSpan query) $
-            \(targetFile, rspan) ->
+fetchSymbolReferences scsrepo lang toks limit b = backendRunHaxl b $ do
+  er <- symbolToAngleEntity lang toks
+  case er of
+    Left err -> return ([], Just err)
+    Right (entityRepo, query, searchErr) -> do
+      locs <- withRepo entityRepo $ do
+        let convert (targetFile, rspan) =
               rangeSpanToLocation scsrepo targetFile rspan
-        return (locs, fmap logError searchErr)
+        uses <- searchWithLimit limit $ Query.findReferenceRangeSpan query
+        mapM convert uses
+      return (locs, fmap logError searchErr)
 
 -- | Symbol search for references as ranges.
 fetchSymbolReferenceRanges
@@ -667,34 +667,40 @@ fetchSymbolReferenceRanges
   -> Maybe Int
   -> GleanBackend b
   -> IO ([LocationRange], Maybe ErrorLogger)
-fetchSymbolReferenceRanges scsrepo lang toks limit b =
-  backendRunHaxl b $ do
-    er <- symbolToAngleEntity lang toks
-    case er of
-      Left err -> return ([], Just err)
-      Right (query, searchErr) ->  do
-        ranges <- searchReposWithLimit limit
-            (Query.findReferenceRangeSpan query) $
-          \(targetFile, rspan) ->
-            rangeSpanToLocationRange scsrepo targetFile rspan
-        return (ranges, fmap logError searchErr)
+fetchSymbolReferenceRanges scsrepo lang toks limit b = backendRunHaxl b $ do
+  er <- symbolToAngleEntity lang toks
+  case er of
+    Left err -> return ([], Just err)
+    Right (entityRepo, query, searchErr) -> do
+      ranges <- withRepo entityRepo $ do
+        let convert (targetFile, rspan) =
+              rangeSpanToLocationRange scsrepo targetFile rspan
+        uses <- searchWithLimit limit $ Query.findReferenceRangeSpan query
+        mapM convert uses
+      return (ranges, fmap logError searchErr)
 
 -- | Search for a symbol and return an Angle query that identifies the entity
+-- Return the angle query and the Glean.repo to which it applies.
+--
+-- Todo: this entity query only works on the db it came from.
+-- Should be in the type
+--
 symbolToAngleEntity
   :: Language
   -> [Text]
   -> ReposHaxl u w
       (Either GleanGlassErrorsLogger
-        (Angle Code.Entity, Maybe ErrorTy))
+        (Glean.Repo, Angle Code.Entity, Maybe ErrorTy))
 symbolToAngleEntity lang toks = do
-  r <- Search.searchEntity lang toks
+  r <- Search.searchEntity lang toks -- search everywhere for something a match
   (SearchEntity{..}, searchErr) <- case r of
     None t -> throwM (ServerException t) -- return [] ?
     One e -> return (e, Nothing)
+      -- n.b. picks the first entity only
     Many { initial = e, message = t } -> return (e, Just (EntitySearchFail t))
   return $ case entityToAngle decl of
       Left err -> Left (logError (EntityNotSupported err))
-      Right query -> Right (query, searchErr)
+      Right query -> Right (entityRepo, query, searchErr)
 
 -- | Run an action on the result of looking up a symbol id
 withEntity
