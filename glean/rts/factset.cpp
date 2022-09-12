@@ -12,6 +12,33 @@ namespace facebook {
 namespace glean {
 namespace rts {
 
+struct FactSet::Index {
+  /// Type of index maps
+  using map_t = std::map<folly::ByteRange, const Fact *>;
+
+  /// Type of index maps with synchronised access
+  using entry_t = folly::Synchronized<map_t>;
+
+  entry_t& operator[](Pid pid) {
+    auto ulock = index.ulock();
+    if (const auto p = ulock->lookup(pid)) {
+      return **p;
+    } else {
+      auto wlock = ulock.moveFromUpgradeToWrite();
+      auto q = new entry_t;
+      (*wlock)[pid].reset(q);
+      return *q;
+    }
+  }
+
+  folly::Synchronized<DenseMap<Pid, std::unique_ptr<entry_t>>> index;
+};
+
+FactSet::FactSet(Id start) : starting_id(start), fact_memory(0) {}
+FactSet::FactSet(FactSet&&) = default;
+FactSet& FactSet::operator=(FactSet&&) = default;
+FactSet::~FactSet() noexcept = default;
+
 Id FactSet::idByKey(Pid type, folly::ByteRange key) {
   if (const auto p = keys.lookup(type)) {
     const auto i = p->find(key);
@@ -137,7 +164,7 @@ std::unique_ptr<FactIterator> FactSet::seek(
   assert(prefix_size <= start.size());
 
   if (const auto p = keys.lookup(type)) {
-    auto& entry = index[type];
+    auto& entry = index.value()[type];
     // Check if the entry is up to date (i.e., has the same number of items as
     // the key hashmap). If it doesn't, fill it.
     if (!entry.withRLock([&](auto& map) { return map.size() == p->size(); })) {
@@ -328,61 +355,6 @@ bool FactSet::appendable(const FactSet& other) const {
   }
 
   return true;
-}
-
-struct FactSet::Index::Impl {
-  Impl() {}
-  Impl(Impl&&) = default;
-  Impl& operator=(Impl&&) = default;
-  Impl(const Impl&) = delete;
-  Impl& operator=(const Impl&) = delete;
-
-  entry_t& operator[](Pid pid) {
-    // Try getting an existing entry with a reader lock. If there is no entry,
-    // obtain a writer lock and create one if it still doesn't exist.
-    auto p = index.withRLock([pid](auto& locked) {
-      const auto q = locked.lookup(pid);
-      return q ? q->get() : nullptr;
-    });
-    if (!p) {
-      p = index.withWLock([pid](auto& locked) {
-        auto& r = locked[pid];
-        if (r.get() == nullptr) {
-          r.reset(new entry_t);
-        }
-        return r.get();
-      });
-    }
-    return *p;
-  }
-
-  folly::Synchronized<DenseMap<Pid, std::unique_ptr<entry_t>>> index;
-};
-
-FactSet::Index::~Index() {
-  delete impl.load(std::memory_order_relaxed);
-}
-
-FactSet::Index::Index(FactSet::Index&& other) noexcept
-  : impl(other.impl.exchange(nullptr, std::memory_order_acq_rel))
-{}
-
-FactSet::Index& FactSet::Index::operator=(FactSet::Index&& other) {
-  auto ptr = other.impl.exchange(nullptr, std::memory_order_acq_rel);
-  ptr = impl.exchange(ptr, std::memory_order_release);
-  delete ptr;
-  return *this;
-}
-
-FactSet::Index::entry_t& FactSet::Index::operator[](Pid pid) {
-  auto p = impl.load(std::memory_order_relaxed);
-  if (p == nullptr) {
-    auto k = std::make_unique<Impl>();
-    if (impl.compare_exchange_strong(p, k.get(), std::memory_order_acq_rel)) {
-      p = k.release();
-    }
-  }
-  return (*p)[pid];
 }
 
 bool FactSet::sanityCheck() const {
