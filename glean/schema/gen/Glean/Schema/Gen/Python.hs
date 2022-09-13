@@ -321,7 +321,7 @@ addClientMethods class_name kTy namePolicy key = methods
     handleField f = (fieldName f,
       (baseTy (class_name <> "_" <> fieldName f) namePolicy . fieldDefType) f)
     createMethodWrapper (name, type_) =
-      createMethod ("_" <> name) (name <> ": " <> type_)
+      createMethod ("_" <> name) (name <> ": " <> wrapOptionalArg type_)
     createMethod method_name args = Text.unlines
       [ "  " <> "@staticmethod"
       , "  " <> "def angle_query" <> method_name <> "(*, " <> args <>

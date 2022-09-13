@@ -269,11 +269,11 @@ class TestinfraAssemblyId(GleanSchemaPredicate):
     return f"testinfra.AssemblyId.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, testId, 'testId'), angle_for(__env, fbId, 'fbId')])) or '_' } }}", AssemblyId
 
   @staticmethod
-  def angle_query_testId(*, testId: "TestinfraTestId") -> "TestinfraAssemblyId":
+  def angle_query_testId(*, testId: Optional["TestinfraTestId"] = None) -> "TestinfraAssemblyId":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_fbId(*, fbId: "TestinfraFbId") -> "TestinfraAssemblyId":
+  def angle_query_fbId(*, fbId: Optional["TestinfraFbId"] = None) -> "TestinfraAssemblyId":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -336,11 +336,11 @@ class TestinfraCoverageRange(InnerGleanSchemaPredicate):
     return f"testinfra.CoverageRange.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, lineRanges, 'lineRanges'), angle_for(__env, byteRanges, 'byteRanges')])) or '_' } }}", CoverageRange
 
   @staticmethod
-  def angle_query_lineRanges(*, lineRanges: List["TestinfraOffsetSpan"]) -> "TestinfraCoverageRange":
+  def angle_query_lineRanges(*, lineRanges: Optional[List["TestinfraOffsetSpan"]] = None) -> "TestinfraCoverageRange":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_byteRanges(*, byteRanges: List["TestinfraOffsetSpan"]) -> "TestinfraCoverageRange":
+  def angle_query_byteRanges(*, byteRanges: Optional[List["TestinfraOffsetSpan"]] = None) -> "TestinfraCoverageRange":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -363,11 +363,11 @@ class TestinfraCoverageGranularity(InnerGleanSchemaPredicate):
     return f"testinfra.CoverageGranularity.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, range, 'range')])) or '_' } }}", CoverageGranularity
 
   @staticmethod
-  def angle_query_file(*, file: bool) -> "TestinfraCoverageGranularity":
+  def angle_query_file(*, file: Optional[bool] = None) -> "TestinfraCoverageGranularity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_range(*, range: 'TestinfraCoverageGranularity_range') -> "TestinfraCoverageGranularity":
+  def angle_query_range(*, range: Optional['TestinfraCoverageGranularity_range'] = None) -> "TestinfraCoverageGranularity":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -390,19 +390,19 @@ class TestinfraFileLength(InnerGleanSchemaPredicate):
     return f"testinfra.FileLength.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, lines, 'lines'), angle_for(__env, offset, 'offset'), angle_for(__env, lineOffsets, 'lineOffsets'), angle_for(__env, linesAndOffset, 'linesAndOffset')])) or '_' } }}", FileLength
 
   @staticmethod
-  def angle_query_lines(*, lines: int) -> "TestinfraFileLength":
+  def angle_query_lines(*, lines: Optional[int] = None) -> "TestinfraFileLength":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_offset(*, offset: int) -> "TestinfraFileLength":
+  def angle_query_offset(*, offset: Optional[int] = None) -> "TestinfraFileLength":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_lineOffsets(*, lineOffsets: List[int]) -> "TestinfraFileLength":
+  def angle_query_lineOffsets(*, lineOffsets: Optional[List[int]] = None) -> "TestinfraFileLength":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_linesAndOffset(*, linesAndOffset: 'TestinfraFileLength_linesAndOffset') -> "TestinfraFileLength":
+  def angle_query_linesAndOffset(*, linesAndOffset: Optional['TestinfraFileLength_linesAndOffset'] = None) -> "TestinfraFileLength":
     raise Exception("this function can only be called from @angle_query")
 
 

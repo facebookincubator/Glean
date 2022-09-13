@@ -22,15 +22,15 @@ class CodeBuckEntity(InnerGleanSchemaPredicate):
     return f"code.buck.Entity.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, locator, 'locator'), angle_for(__env, file, 'file'), angle_for(__env, definition, 'definition')])) or '_' } }}", Entity
 
   @staticmethod
-  def angle_query_locator(*, locator: "BuckLocator") -> "CodeBuckEntity":
+  def angle_query_locator(*, locator: Optional["BuckLocator"] = None) -> "CodeBuckEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_file(*, file: "SrcFile") -> "CodeBuckEntity":
+  def angle_query_file(*, file: Optional["SrcFile"] = None) -> "CodeBuckEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_definition(*, definition: "BuckDefinition") -> "CodeBuckEntity":
+  def angle_query_definition(*, definition: Optional["BuckDefinition"] = None) -> "CodeBuckEntity":
     raise Exception("this function can only be called from @angle_query")
 
 

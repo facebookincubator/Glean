@@ -77,11 +77,11 @@ class FlowTypeExport(GleanSchemaPredicate):
     return f"flow.TypeExport.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, named, 'named'), angle_for(__env, star, 'star')])) or '_' } }}", TypeExport
 
   @staticmethod
-  def angle_query_named(*, named: "FlowName") -> "FlowTypeExport":
+  def angle_query_named(*, named: Optional["FlowName"] = None) -> "FlowTypeExport":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_star(*, star: "FlowModule") -> "FlowTypeExport":
+  def angle_query_star(*, star: Optional["FlowModule"] = None) -> "FlowTypeExport":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -102,11 +102,11 @@ class FlowImportDeclaration_import_(GleanSchemaPredicate):
     return f" {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, moduleExport, 'moduleExport'), angle_for(__env, moduleNamespace, 'moduleNamespace')])) or '_' } }}", FlowImportDeclaration_import_
 
   @staticmethod
-  def angle_query_moduleExport(*, moduleExport: "FlowModuleExport") -> "FlowImportDeclaration_import_":
+  def angle_query_moduleExport(*, moduleExport: Optional["FlowModuleExport"] = None) -> "FlowImportDeclaration_import_":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_moduleNamespace(*, moduleNamespace: "FlowModule") -> "FlowImportDeclaration_import_":
+  def angle_query_moduleNamespace(*, moduleNamespace: Optional["FlowModule"] = None) -> "FlowImportDeclaration_import_":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -250,15 +250,15 @@ class FlowSourceOfTypeExport_source(GleanSchemaPredicate):
     return f" {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, typeDeclaration, 'typeDeclaration'), angle_for(__env, moduleTypeExport, 'moduleTypeExport'), angle_for(__env, moduleNamespace, 'moduleNamespace')])) or '_' } }}", FlowSourceOfTypeExport_source
 
   @staticmethod
-  def angle_query_typeDeclaration(*, typeDeclaration: "FlowTypeDeclaration") -> "FlowSourceOfTypeExport_source":
+  def angle_query_typeDeclaration(*, typeDeclaration: Optional["FlowTypeDeclaration"] = None) -> "FlowSourceOfTypeExport_source":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_moduleTypeExport(*, moduleTypeExport: "FlowModuleTypeExport") -> "FlowSourceOfTypeExport_source":
+  def angle_query_moduleTypeExport(*, moduleTypeExport: Optional["FlowModuleTypeExport"] = None) -> "FlowSourceOfTypeExport_source":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_moduleNamespace(*, moduleNamespace: "FlowModule") -> "FlowSourceOfTypeExport_source":
+  def angle_query_moduleNamespace(*, moduleNamespace: Optional["FlowModule"] = None) -> "FlowSourceOfTypeExport_source":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -316,23 +316,23 @@ class FlowModule(GleanSchemaPredicate):
     return f"flow.Module.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, builtin, 'builtin'), angle_for(__env, lib, 'lib'), angle_for(__env, noSource, 'noSource'), angle_for(__env, string_, 'string_')])) or '_' } }}", Module
 
   @staticmethod
-  def angle_query_file(*, file: "SrcFile") -> "FlowModule":
+  def angle_query_file(*, file: Optional["SrcFile"] = None) -> "FlowModule":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_builtin(*, builtin: 'FlowModule_builtin') -> "FlowModule":
+  def angle_query_builtin(*, builtin: Optional['FlowModule_builtin'] = None) -> "FlowModule":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_lib(*, lib: str) -> "FlowModule":
+  def angle_query_lib(*, lib: Optional[str] = None) -> "FlowModule":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_noSource(*, noSource: 'FlowModule_noSource') -> "FlowModule":
+  def angle_query_noSource(*, noSource: Optional['FlowModule_noSource'] = None) -> "FlowModule":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_string_(*, string_: str) -> "FlowModule":
+  def angle_query_string_(*, string_: Optional[str] = None) -> "FlowModule":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -447,23 +447,23 @@ class FlowExport(GleanSchemaPredicate):
     return f"flow.Export.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, commonJS, 'commonJS'), angle_for(__env, commonJSMember, 'commonJSMember'), angle_for(__env, named, 'named'), angle_for(__env, default_, 'default_'), angle_for(__env, star, 'star')])) or '_' } }}", Export
 
   @staticmethod
-  def angle_query_commonJS(*, commonJS: 'FlowExport_commonJS') -> "FlowExport":
+  def angle_query_commonJS(*, commonJS: Optional['FlowExport_commonJS'] = None) -> "FlowExport":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_commonJSMember(*, commonJSMember: "FlowName") -> "FlowExport":
+  def angle_query_commonJSMember(*, commonJSMember: Optional["FlowName"] = None) -> "FlowExport":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_named(*, named: "FlowName") -> "FlowExport":
+  def angle_query_named(*, named: Optional["FlowName"] = None) -> "FlowExport":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_default_(*, default_: 'FlowExport_default_') -> "FlowExport":
+  def angle_query_default_(*, default_: Optional['FlowExport_default_'] = None) -> "FlowExport":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_star(*, star: "FlowModule") -> "FlowExport":
+  def angle_query_star(*, star: Optional["FlowModule"] = None) -> "FlowExport":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -488,15 +488,15 @@ class FlowTypeImportDeclaration_import_(GleanSchemaPredicate):
     return f" {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, type, 'type'), angle_for(__env, typeof_, 'typeof_'), angle_for(__env, moduleTypeof, 'moduleTypeof')])) or '_' } }}", FlowTypeImportDeclaration_import_
 
   @staticmethod
-  def angle_query_type(*, type: "FlowModuleTypeExport") -> "FlowTypeImportDeclaration_import_":
+  def angle_query_type(*, type: Optional["FlowModuleTypeExport"] = None) -> "FlowTypeImportDeclaration_import_":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_typeof_(*, typeof_: "FlowModuleExport") -> "FlowTypeImportDeclaration_import_":
+  def angle_query_typeof_(*, typeof_: Optional["FlowModuleExport"] = None) -> "FlowTypeImportDeclaration_import_":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_moduleTypeof(*, moduleTypeof: "FlowModule") -> "FlowTypeImportDeclaration_import_":
+  def angle_query_moduleTypeof(*, moduleTypeof: Optional["FlowModule"] = None) -> "FlowTypeImportDeclaration_import_":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -574,19 +574,19 @@ class FlowSourceOfExport_source(GleanSchemaPredicate):
     return f" {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, memberDeclaration, 'memberDeclaration'), angle_for(__env, moduleExport, 'moduleExport'), angle_for(__env, moduleNamespace, 'moduleNamespace')])) or '_' } }}", FlowSourceOfExport_source
 
   @staticmethod
-  def angle_query_declaration(*, declaration: "FlowDeclaration") -> "FlowSourceOfExport_source":
+  def angle_query_declaration(*, declaration: Optional["FlowDeclaration"] = None) -> "FlowSourceOfExport_source":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_memberDeclaration(*, memberDeclaration: "FlowMemberDeclaration") -> "FlowSourceOfExport_source":
+  def angle_query_memberDeclaration(*, memberDeclaration: Optional["FlowMemberDeclaration"] = None) -> "FlowSourceOfExport_source":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_moduleExport(*, moduleExport: "FlowModuleExport") -> "FlowSourceOfExport_source":
+  def angle_query_moduleExport(*, moduleExport: Optional["FlowModuleExport"] = None) -> "FlowSourceOfExport_source":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_moduleNamespace(*, moduleNamespace: "FlowModule") -> "FlowSourceOfExport_source":
+  def angle_query_moduleNamespace(*, moduleNamespace: Optional["FlowModule"] = None) -> "FlowSourceOfExport_source":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -690,15 +690,15 @@ class FlowSomeDeclaration(InnerGleanSchemaPredicate):
     return f"flow.SomeDeclaration.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, localDecl, 'localDecl'), angle_for(__env, memberDecl, 'memberDecl'), angle_for(__env, typeDecl, 'typeDecl')])) or '_' } }}", SomeDeclaration
 
   @staticmethod
-  def angle_query_localDecl(*, localDecl: "FlowDeclaration") -> "FlowSomeDeclaration":
+  def angle_query_localDecl(*, localDecl: Optional["FlowDeclaration"] = None) -> "FlowSomeDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_memberDecl(*, memberDecl: "FlowMemberDeclaration") -> "FlowSomeDeclaration":
+  def angle_query_memberDecl(*, memberDecl: Optional["FlowMemberDeclaration"] = None) -> "FlowSomeDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_typeDecl(*, typeDecl: "FlowTypeDeclaration") -> "FlowSomeDeclaration":
+  def angle_query_typeDecl(*, typeDecl: Optional["FlowTypeDeclaration"] = None) -> "FlowSomeDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -710,11 +710,11 @@ class FlowSomeEntity(InnerGleanSchemaPredicate):
     return f"flow.SomeEntity.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, module_, 'module_')])) or '_' } }}", SomeEntity
 
   @staticmethod
-  def angle_query_decl(*, decl: "FlowSomeDeclaration") -> "FlowSomeEntity":
+  def angle_query_decl(*, decl: Optional["FlowSomeDeclaration"] = None) -> "FlowSomeEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_module_(*, module_: "FlowModule") -> "FlowSomeEntity":
+  def angle_query_module_(*, module_: Optional["FlowModule"] = None) -> "FlowSomeEntity":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -726,15 +726,15 @@ class FlowXRef(InnerGleanSchemaPredicate):
     return f"flow.XRef.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, localRef, 'localRef'), angle_for(__env, memberRef, 'memberRef'), angle_for(__env, typeRef, 'typeRef')])) or '_' } }}", XRef
 
   @staticmethod
-  def angle_query_localRef(*, localRef: "FlowLocalDeclarationReference") -> "FlowXRef":
+  def angle_query_localRef(*, localRef: Optional["FlowLocalDeclarationReference"] = None) -> "FlowXRef":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_memberRef(*, memberRef: "FlowMemberDeclarationReference") -> "FlowXRef":
+  def angle_query_memberRef(*, memberRef: Optional["FlowMemberDeclarationReference"] = None) -> "FlowXRef":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_typeRef(*, typeRef: "FlowTypeDeclarationReference") -> "FlowXRef":
+  def angle_query_typeRef(*, typeRef: Optional["FlowTypeDeclarationReference"] = None) -> "FlowXRef":
     raise Exception("this function can only be called from @angle_query")
 
 

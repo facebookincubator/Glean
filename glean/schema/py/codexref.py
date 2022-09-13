@@ -59,11 +59,11 @@ class CodexrefLocation(InnerGleanSchemaPredicate):
     return f"codexref.Location.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, start, 'start'), angle_for(__env, line, 'line')])) or '_' } }}", Location
 
   @staticmethod
-  def angle_query_start(*, start: int) -> "CodexrefLocation":
+  def angle_query_start(*, start: Optional[int] = None) -> "CodexrefLocation":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_line(*, line: int) -> "CodexrefLocation":
+  def angle_query_line(*, line: Optional[int] = None) -> "CodexrefLocation":
     raise Exception("this function can only be called from @angle_query")
 
 

@@ -165,7 +165,7 @@ class ErlangDeclaration(InnerGleanSchemaPredicate):
     return f"erlang.Declaration.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, func, 'func')])) or '_' } }}", Declaration
 
   @staticmethod
-  def angle_query_func(*, func: "ErlangFunctionDeclaration") -> "ErlangDeclaration":
+  def angle_query_func(*, func: Optional["ErlangFunctionDeclaration"] = None) -> "ErlangDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 

@@ -22,7 +22,7 @@ class CodePythonAnnotations(InnerGleanSchemaPredicate):
     return f"code.python.Annotations.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decorators, 'decorators')])) or '_' } }}", Annotations
 
   @staticmethod
-  def angle_query_decorators(*, decorators: List["PythonDecorator"]) -> "CodePythonAnnotations":
+  def angle_query_decorators(*, decorators: Optional[List["PythonDecorator"]] = None) -> "CodePythonAnnotations":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -34,7 +34,7 @@ class CodePythonEntity(InnerGleanSchemaPredicate):
     return f"code.python.Entity.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl')])) or '_' } }}", Entity
 
   @staticmethod
-  def angle_query_decl(*, decl: "PythonDeclaration") -> "CodePythonEntity":
+  def angle_query_decl(*, decl: Optional["PythonDeclaration"] = None) -> "CodePythonEntity":
     raise Exception("this function can only be called from @angle_query")
 
 

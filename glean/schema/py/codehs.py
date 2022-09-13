@@ -21,15 +21,15 @@ class CodeHsEntity(InnerGleanSchemaPredicate):
     return f"code.hs.Entity.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, definition, 'definition'), angle_for(__env, function_, 'function_'), angle_for(__env, class_, 'class_')])) or '_' } }}", Entity
 
   @staticmethod
-  def angle_query_definition(*, definition: "HsDefinition") -> "CodeHsEntity":
+  def angle_query_definition(*, definition: Optional["HsDefinition"] = None) -> "CodeHsEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_function_(*, function_: "HsFunctionDefinition") -> "CodeHsEntity":
+  def angle_query_function_(*, function_: Optional["HsFunctionDefinition"] = None) -> "CodeHsEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_class_(*, class_: "HsClass") -> "CodeHsEntity":
+  def angle_query_class_(*, class_: Optional["HsClass"] = None) -> "CodeHsEntity":
     raise Exception("this function can only be called from @angle_query")
 
 

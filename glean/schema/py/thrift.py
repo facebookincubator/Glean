@@ -255,15 +255,15 @@ class ThriftTypeSpecification(GleanSchemaPredicate):
     return f"thrift.TypeSpecification.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, primitive, 'primitive'), angle_for(__env, container, 'container'), angle_for(__env, named, 'named')])) or '_' } }}", TypeSpecification
 
   @staticmethod
-  def angle_query_primitive(*, primitive: "ThriftPrimitiveType") -> "ThriftTypeSpecification":
+  def angle_query_primitive(*, primitive: Optional["ThriftPrimitiveType"] = None) -> "ThriftTypeSpecification":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_container(*, container: "ThriftContainerType") -> "ThriftTypeSpecification":
+  def angle_query_container(*, container: Optional["ThriftContainerType"] = None) -> "ThriftTypeSpecification":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_named(*, named: "ThriftNamedType") -> "ThriftTypeSpecification":
+  def angle_query_named(*, named: Optional["ThriftNamedType"] = None) -> "ThriftTypeSpecification":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -726,79 +726,79 @@ class ThriftLiteral(GleanSchemaPredicate):
     return f"thrift.Literal.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, byte_, 'byte_'), angle_for(__env, i16_, 'i16_'), angle_for(__env, i32_, 'i32_'), angle_for(__env, i64_, 'i64_'), angle_for(__env, float_, 'float_'), angle_for(__env, double_, 'double_'), angle_for(__env, bool_, 'bool_'), angle_for(__env, string_, 'string_'), angle_for(__env, binary_, 'binary_'), angle_for(__env, set_, 'set_'), angle_for(__env, hashSet_, 'hashSet_'), angle_for(__env, list_, 'list_'), angle_for(__env, map_, 'map_'), angle_for(__env, hashMap_, 'hashMap_'), angle_for(__env, newtype_, 'newtype_'), angle_for(__env, struct_, 'struct_'), angle_for(__env, exception_, 'exception_'), angle_for(__env, union_, 'union_'), angle_for(__env, enum_, 'enum_')])) or '_' } }}", Literal
 
   @staticmethod
-  def angle_query_byte_(*, byte_: "ThriftIntegerLiteral") -> "ThriftLiteral":
+  def angle_query_byte_(*, byte_: Optional["ThriftIntegerLiteral"] = None) -> "ThriftLiteral":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_i16_(*, i16_: "ThriftIntegerLiteral") -> "ThriftLiteral":
+  def angle_query_i16_(*, i16_: Optional["ThriftIntegerLiteral"] = None) -> "ThriftLiteral":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_i32_(*, i32_: "ThriftIntegerLiteral") -> "ThriftLiteral":
+  def angle_query_i32_(*, i32_: Optional["ThriftIntegerLiteral"] = None) -> "ThriftLiteral":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_i64_(*, i64_: "ThriftIntegerLiteral") -> "ThriftLiteral":
+  def angle_query_i64_(*, i64_: Optional["ThriftIntegerLiteral"] = None) -> "ThriftLiteral":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_float_(*, float_: "ThriftFloatLiteral") -> "ThriftLiteral":
+  def angle_query_float_(*, float_: Optional["ThriftFloatLiteral"] = None) -> "ThriftLiteral":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_double_(*, double_: "ThriftFloatLiteral") -> "ThriftLiteral":
+  def angle_query_double_(*, double_: Optional["ThriftFloatLiteral"] = None) -> "ThriftLiteral":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_bool_(*, bool_: bool) -> "ThriftLiteral":
+  def angle_query_bool_(*, bool_: Optional[bool] = None) -> "ThriftLiteral":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_string_(*, string_: str) -> "ThriftLiteral":
+  def angle_query_string_(*, string_: Optional[str] = None) -> "ThriftLiteral":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_binary_(*, binary_: bytes) -> "ThriftLiteral":
+  def angle_query_binary_(*, binary_: Optional[bytes] = None) -> "ThriftLiteral":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_set_(*, set_: List["ThriftTypedConst"]) -> "ThriftLiteral":
+  def angle_query_set_(*, set_: Optional[List["ThriftTypedConst"]] = None) -> "ThriftLiteral":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_hashSet_(*, hashSet_: List["ThriftTypedConst"]) -> "ThriftLiteral":
+  def angle_query_hashSet_(*, hashSet_: Optional[List["ThriftTypedConst"]] = None) -> "ThriftLiteral":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_list_(*, list_: List["ThriftTypedConst"]) -> "ThriftLiteral":
+  def angle_query_list_(*, list_: Optional[List["ThriftTypedConst"]] = None) -> "ThriftLiteral":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_map_(*, map_: List["ThriftKeyValue"]) -> "ThriftLiteral":
+  def angle_query_map_(*, map_: Optional[List["ThriftKeyValue"]] = None) -> "ThriftLiteral":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_hashMap_(*, hashMap_: List["ThriftKeyValue"]) -> "ThriftLiteral":
+  def angle_query_hashMap_(*, hashMap_: Optional[List["ThriftKeyValue"]] = None) -> "ThriftLiteral":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_newtype_(*, newtype_: "ThriftLiteral") -> "ThriftLiteral":
+  def angle_query_newtype_(*, newtype_: Optional["ThriftLiteral"] = None) -> "ThriftLiteral":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_struct_(*, struct_: "ThriftStructVal") -> "ThriftLiteral":
+  def angle_query_struct_(*, struct_: Optional["ThriftStructVal"] = None) -> "ThriftLiteral":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_exception_(*, exception_: "ThriftExceptionVal") -> "ThriftLiteral":
+  def angle_query_exception_(*, exception_: Optional["ThriftExceptionVal"] = None) -> "ThriftLiteral":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_union_(*, union_: "ThriftUnionVal") -> "ThriftLiteral":
+  def angle_query_union_(*, union_: Optional["ThriftUnionVal"] = None) -> "ThriftLiteral":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_enum_(*, enum_: "ThriftEnumVal") -> "ThriftLiteral":
+  def angle_query_enum_(*, enum_: Optional["ThriftEnumVal"] = None) -> "ThriftLiteral":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -988,35 +988,35 @@ class ThriftItem(InnerGleanSchemaPredicate):
     return f"thrift.Item.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, namespace_, 'namespace_'), angle_for(__env, service_, 'service_'), angle_for(__env, function_, 'function_'), angle_for(__env, decl, 'decl'), angle_for(__env, exception_, 'exception_'), angle_for(__env, constant, 'constant'), angle_for(__env, enumValue, 'enumValue')])) or '_' } }}", Item
 
   @staticmethod
-  def angle_query_file(*, file: "ThriftFile") -> "ThriftItem":
+  def angle_query_file(*, file: Optional["ThriftFile"] = None) -> "ThriftItem":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_namespace_(*, namespace_: "ThriftNamespace") -> "ThriftItem":
+  def angle_query_namespace_(*, namespace_: Optional["ThriftNamespace"] = None) -> "ThriftItem":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_service_(*, service_: "ThriftServiceName") -> "ThriftItem":
+  def angle_query_service_(*, service_: Optional["ThriftServiceName"] = None) -> "ThriftItem":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_function_(*, function_: "ThriftFunctionName") -> "ThriftItem":
+  def angle_query_function_(*, function_: Optional["ThriftFunctionName"] = None) -> "ThriftItem":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_decl(*, decl: "ThriftNamedDecl") -> "ThriftItem":
+  def angle_query_decl(*, decl: Optional["ThriftNamedDecl"] = None) -> "ThriftItem":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_exception_(*, exception_: "ThriftExceptionName") -> "ThriftItem":
+  def angle_query_exception_(*, exception_: Optional["ThriftExceptionName"] = None) -> "ThriftItem":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_constant(*, constant: "ThriftConstant") -> "ThriftItem":
+  def angle_query_constant(*, constant: Optional["ThriftConstant"] = None) -> "ThriftItem":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_enumValue(*, enumValue: "ThriftEnumValue") -> "ThriftItem":
+  def angle_query_enumValue(*, enumValue: Optional["ThriftEnumValue"] = None) -> "ThriftItem":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -1039,11 +1039,11 @@ class ThriftExceptionSpecName(InnerGleanSchemaPredicate):
     return f"thrift.ExceptionSpecName.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, simple, 'simple'), angle_for(__env, typedef_, 'typedef_')])) or '_' } }}", ExceptionSpecName
 
   @staticmethod
-  def angle_query_simple(*, simple: "ThriftExceptionName") -> "ThriftExceptionSpecName":
+  def angle_query_simple(*, simple: Optional["ThriftExceptionName"] = None) -> "ThriftExceptionSpecName":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_typedef_(*, typedef_: "ThriftTypeDefException") -> "ThriftExceptionSpecName":
+  def angle_query_typedef_(*, typedef_: Optional["ThriftTypeDefException"] = None) -> "ThriftExceptionSpecName":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -1073,15 +1073,15 @@ class ThriftCpp2Item(InnerGleanSchemaPredicate):
     return f"thrift.Cpp2Item.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, decl, 'decl'), angle_for(__env, named, 'named')])) or '_' } }}", Cpp2Item
 
   @staticmethod
-  def angle_query_file(*, file: "SrcFile") -> "ThriftCpp2Item":
+  def angle_query_file(*, file: Optional["SrcFile"] = None) -> "ThriftCpp2Item":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_decl(*, decl: "Cxx1Declaration") -> "ThriftCpp2Item":
+  def angle_query_decl(*, decl: Optional["Cxx1Declaration"] = None) -> "ThriftCpp2Item":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_named(*, named: "ThriftCpp2ItemNamed") -> "ThriftCpp2Item":
+  def angle_query_named(*, named: Optional["ThriftCpp2ItemNamed"] = None) -> "ThriftCpp2Item":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -1155,27 +1155,27 @@ class ThriftXRefTarget(InnerGleanSchemaPredicate):
     return f"thrift.XRefTarget.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, include_, 'include_'), angle_for(__env, named, 'named'), angle_for(__env, exception_, 'exception_'), angle_for(__env, service_, 'service_'), angle_for(__env, constant, 'constant'), angle_for(__env, enumValue, 'enumValue')])) or '_' } }}", XRefTarget
 
   @staticmethod
-  def angle_query_include_(*, include_: "ThriftFile") -> "ThriftXRefTarget":
+  def angle_query_include_(*, include_: Optional["ThriftFile"] = None) -> "ThriftXRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_named(*, named: "ThriftNamedDecl") -> "ThriftXRefTarget":
+  def angle_query_named(*, named: Optional["ThriftNamedDecl"] = None) -> "ThriftXRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_exception_(*, exception_: "ThriftExceptionName") -> "ThriftXRefTarget":
+  def angle_query_exception_(*, exception_: Optional["ThriftExceptionName"] = None) -> "ThriftXRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_service_(*, service_: "ThriftServiceName") -> "ThriftXRefTarget":
+  def angle_query_service_(*, service_: Optional["ThriftServiceName"] = None) -> "ThriftXRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_constant(*, constant: "ThriftConstant") -> "ThriftXRefTarget":
+  def angle_query_constant(*, constant: Optional["ThriftConstant"] = None) -> "ThriftXRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_enumValue(*, enumValue: "ThriftEnumValue") -> "ThriftXRefTarget":
+  def angle_query_enumValue(*, enumValue: Optional["ThriftEnumValue"] = None) -> "ThriftXRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -1187,15 +1187,15 @@ class ThriftContainerType(InnerGleanSchemaPredicate):
     return f"thrift.ContainerType.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, list_, 'list_'), angle_for(__env, set_, 'set_'), angle_for(__env, map_, 'map_')])) or '_' } }}", ContainerType
 
   @staticmethod
-  def angle_query_list_(*, list_: "ThriftTypeSpecification") -> "ThriftContainerType":
+  def angle_query_list_(*, list_: Optional["ThriftTypeSpecification"] = None) -> "ThriftContainerType":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_set_(*, set_: "ThriftTypeSpecification") -> "ThriftContainerType":
+  def angle_query_set_(*, set_: Optional["ThriftTypeSpecification"] = None) -> "ThriftContainerType":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_map_(*, map_: "ThriftMapType") -> "ThriftContainerType":
+  def angle_query_map_(*, map_: Optional["ThriftMapType"] = None) -> "ThriftContainerType":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -1218,19 +1218,19 @@ class ThriftStructFieldValValue(InnerGleanSchemaPredicate):
     return f"thrift.StructFieldValValue.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, val, 'val'), angle_for(__env, default_, 'default_'), angle_for(__env, just, 'just'), angle_for(__env, nothing, 'nothing')])) or '_' } }}", StructFieldValValue
 
   @staticmethod
-  def angle_query_val(*, val: "ThriftTypedConstT") -> "ThriftStructFieldValValue":
+  def angle_query_val(*, val: Optional["ThriftTypedConstT"] = None) -> "ThriftStructFieldValValue":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_default_(*, default_: "ThriftTypeSpecification") -> "ThriftStructFieldValValue":
+  def angle_query_default_(*, default_: Optional["ThriftTypeSpecification"] = None) -> "ThriftStructFieldValValue":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_just(*, just: "ThriftTypedConstT") -> "ThriftStructFieldValValue":
+  def angle_query_just(*, just: Optional["ThriftTypedConstT"] = None) -> "ThriftStructFieldValValue":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_nothing(*, nothing: 'ThriftStructFieldValValue_nothing') -> "ThriftStructFieldValValue":
+  def angle_query_nothing(*, nothing: Optional['ThriftStructFieldValValue_nothing'] = None) -> "ThriftStructFieldValValue":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -1298,11 +1298,11 @@ class ThriftTypedConst(InnerGleanSchemaPredicate):
     return f"thrift.TypedConst.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, literal, 'literal'), angle_for(__env, identifier, 'identifier')])) or '_' } }}", TypedConst
 
   @staticmethod
-  def angle_query_literal(*, literal: "ThriftLiteral") -> "ThriftTypedConst":
+  def angle_query_literal(*, literal: Optional["ThriftLiteral"] = None) -> "ThriftTypedConst":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_identifier(*, identifier: "ThriftConstant") -> "ThriftTypedConst":
+  def angle_query_identifier(*, identifier: Optional["ThriftConstant"] = None) -> "ThriftTypedConst":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -1325,19 +1325,19 @@ class ThriftResultType(InnerGleanSchemaPredicate):
     return f"thrift.ResultType.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, oneway_, 'oneway_'), angle_for(__env, void_, 'void_'), angle_for(__env, result, 'result'), angle_for(__env, stream_, 'stream_')])) or '_' } }}", ResultType
 
   @staticmethod
-  def angle_query_oneway_(*, oneway_: "BuiltinUnit") -> "ThriftResultType":
+  def angle_query_oneway_(*, oneway_: Optional["BuiltinUnit"] = None) -> "ThriftResultType":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_void_(*, void_: "BuiltinUnit") -> "ThriftResultType":
+  def angle_query_void_(*, void_: Optional["BuiltinUnit"] = None) -> "ThriftResultType":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_result(*, result: "ThriftTypeSpecification") -> "ThriftResultType":
+  def angle_query_result(*, result: Optional["ThriftTypeSpecification"] = None) -> "ThriftResultType":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_stream_(*, stream_: "ThriftResultStream") -> "ThriftResultType":
+  def angle_query_stream_(*, stream_: Optional["ThriftResultStream"] = None) -> "ThriftResultType":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -1349,31 +1349,31 @@ class ThriftPythonItem(InnerGleanSchemaPredicate):
     return f"thrift.PythonItem.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, module, 'module'), angle_for(__env, class_, 'class_'), angle_for(__env, method, 'method'), angle_for(__env, field, 'field'), angle_for(__env, function_, 'function_'), angle_for(__env, value, 'value')])) or '_' } }}", PythonItem
 
   @staticmethod
-  def angle_query_file(*, file: "SrcFile") -> "ThriftPythonItem":
+  def angle_query_file(*, file: Optional["SrcFile"] = None) -> "ThriftPythonItem":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_module(*, module: "ThriftPythonModule") -> "ThriftPythonItem":
+  def angle_query_module(*, module: Optional["ThriftPythonModule"] = None) -> "ThriftPythonItem":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_class_(*, class_: "ThriftPythonClass") -> "ThriftPythonItem":
+  def angle_query_class_(*, class_: Optional["ThriftPythonClass"] = None) -> "ThriftPythonItem":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_method(*, method: "ThriftPythonMethod") -> "ThriftPythonItem":
+  def angle_query_method(*, method: Optional["ThriftPythonMethod"] = None) -> "ThriftPythonItem":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_field(*, field: "ThriftPythonField") -> "ThriftPythonItem":
+  def angle_query_field(*, field: Optional["ThriftPythonField"] = None) -> "ThriftPythonItem":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_function_(*, function_: "ThriftPythonFunction") -> "ThriftPythonItem":
+  def angle_query_function_(*, function_: Optional["ThriftPythonFunction"] = None) -> "ThriftPythonItem":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_value(*, value: "ThriftPythonValue") -> "ThriftPythonItem":
+  def angle_query_value(*, value: Optional["ThriftPythonValue"] = None) -> "ThriftPythonItem":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -1396,19 +1396,19 @@ class ThriftHackKind(InnerGleanSchemaPredicate):
     return f"thrift.HackKind.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, record, 'record'), angle_for(__env, method, 'method'), angle_for(__env, namespace_, 'namespace_')])) or '_' } }}", HackKind
 
   @staticmethod
-  def angle_query_file(*, file: "SrcFile") -> "ThriftHackKind":
+  def angle_query_file(*, file: Optional["SrcFile"] = None) -> "ThriftHackKind":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_record(*, record: "ThriftHackRecord") -> "ThriftHackKind":
+  def angle_query_record(*, record: Optional["ThriftHackRecord"] = None) -> "ThriftHackKind":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_method(*, method: "ThriftHackMethod") -> "ThriftHackKind":
+  def angle_query_method(*, method: Optional["ThriftHackMethod"] = None) -> "ThriftHackKind":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_namespace_(*, namespace_: "ThriftHackName") -> "ThriftHackKind":
+  def angle_query_namespace_(*, namespace_: Optional["ThriftHackName"] = None) -> "ThriftHackKind":
     raise Exception("this function can only be called from @angle_query")
 
 

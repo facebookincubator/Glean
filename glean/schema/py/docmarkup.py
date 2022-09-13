@@ -94,15 +94,15 @@ class DocmarkupGeneralAnnotations(InnerGleanSchemaPredicate):
     return f"docmarkup.GeneralAnnotations.14 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, doc, 'doc'), angle_for(__env, hack, 'hack'), angle_for(__env, java, 'java')])) or '_' } }}", GeneralAnnotations
 
   @staticmethod
-  def angle_query_doc(*, doc: "DocmarkupDocAttrs") -> "DocmarkupGeneralAnnotations":
+  def angle_query_doc(*, doc: Optional["DocmarkupDocAttrs"] = None) -> "DocmarkupGeneralAnnotations":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_hack(*, hack: List["HackUserAttribute"]) -> "DocmarkupGeneralAnnotations":
+  def angle_query_hack(*, hack: Optional[List["HackUserAttribute"]] = None) -> "DocmarkupGeneralAnnotations":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_java(*, java: List["JavaAnnotation"]) -> "DocmarkupGeneralAnnotations":
+  def angle_query_java(*, java: Optional[List["JavaAnnotation"]] = None) -> "DocmarkupGeneralAnnotations":
     raise Exception("this function can only be called from @angle_query")
 
 

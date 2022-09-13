@@ -370,67 +370,67 @@ class RustDef(InnerGleanSchemaPredicate):
     return f"rust.Def.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, const_, 'const_'), angle_for(__env, enum_, 'enum_'), angle_for(__env, field, 'field'), angle_for(__env, foreign_function, 'foreign_function'), angle_for(__env, foreign_static, 'foreign_static'), angle_for(__env, function_, 'function_'), angle_for(__env, local, 'local'), angle_for(__env, method, 'method'), angle_for(__env, module, 'module'), angle_for(__env, static_, 'static_'), angle_for(__env, struct_, 'struct_'), angle_for(__env, struct_variant, 'struct_variant'), angle_for(__env, trait, 'trait'), angle_for(__env, tuple_variant, 'tuple_variant'), angle_for(__env, type, 'type'), angle_for(__env, union_, 'union_')])) or '_' } }}", Def
 
   @staticmethod
-  def angle_query_const_(*, const_: "RustConstDef") -> "RustDef":
+  def angle_query_const_(*, const_: Optional["RustConstDef"] = None) -> "RustDef":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_enum_(*, enum_: "RustEnumDef") -> "RustDef":
+  def angle_query_enum_(*, enum_: Optional["RustEnumDef"] = None) -> "RustDef":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_field(*, field: "RustFieldDef") -> "RustDef":
+  def angle_query_field(*, field: Optional["RustFieldDef"] = None) -> "RustDef":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_foreign_function(*, foreign_function: "RustForeignFunctionDef") -> "RustDef":
+  def angle_query_foreign_function(*, foreign_function: Optional["RustForeignFunctionDef"] = None) -> "RustDef":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_foreign_static(*, foreign_static: "RustForeignStaticDef") -> "RustDef":
+  def angle_query_foreign_static(*, foreign_static: Optional["RustForeignStaticDef"] = None) -> "RustDef":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_function_(*, function_: "RustFunctionDef") -> "RustDef":
+  def angle_query_function_(*, function_: Optional["RustFunctionDef"] = None) -> "RustDef":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_local(*, local: "RustLocalDef") -> "RustDef":
+  def angle_query_local(*, local: Optional["RustLocalDef"] = None) -> "RustDef":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_method(*, method: "RustMethodDef") -> "RustDef":
+  def angle_query_method(*, method: Optional["RustMethodDef"] = None) -> "RustDef":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_module(*, module: "RustModuleDef") -> "RustDef":
+  def angle_query_module(*, module: Optional["RustModuleDef"] = None) -> "RustDef":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_static_(*, static_: "RustStaticDef") -> "RustDef":
+  def angle_query_static_(*, static_: Optional["RustStaticDef"] = None) -> "RustDef":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_struct_(*, struct_: "RustStructDef") -> "RustDef":
+  def angle_query_struct_(*, struct_: Optional["RustStructDef"] = None) -> "RustDef":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_struct_variant(*, struct_variant: "RustStructVariantDef") -> "RustDef":
+  def angle_query_struct_variant(*, struct_variant: Optional["RustStructVariantDef"] = None) -> "RustDef":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_trait(*, trait: "RustTraitDef") -> "RustDef":
+  def angle_query_trait(*, trait: Optional["RustTraitDef"] = None) -> "RustDef":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_tuple_variant(*, tuple_variant: "RustTupleVariantDef") -> "RustDef":
+  def angle_query_tuple_variant(*, tuple_variant: Optional["RustTupleVariantDef"] = None) -> "RustDef":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_type(*, type: "RustTypeDef") -> "RustDef":
+  def angle_query_type(*, type: Optional["RustTypeDef"] = None) -> "RustDef":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_union_(*, union_: "RustUnionDef") -> "RustDef":
+  def angle_query_union_(*, union_: Optional["RustUnionDef"] = None) -> "RustDef":
     raise Exception("this function can only be called from @angle_query")
 
 

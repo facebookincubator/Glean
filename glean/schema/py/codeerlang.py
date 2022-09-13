@@ -21,7 +21,7 @@ class CodeErlangEntity(InnerGleanSchemaPredicate):
     return f"code.erlang.Entity.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl')])) or '_' } }}", Entity
 
   @staticmethod
-  def angle_query_decl(*, decl: "ErlangDeclaration") -> "CodeErlangEntity":
+  def angle_query_decl(*, decl: Optional["ErlangDeclaration"] = None) -> "CodeErlangEntity":
     raise Exception("this function can only be called from @angle_query")
 
 

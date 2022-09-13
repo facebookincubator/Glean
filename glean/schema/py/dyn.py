@@ -71,11 +71,11 @@ class DynObserver(InnerGleanSchemaPredicate):
     return f"dyn.Observer.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, symbol, 'symbol'), angle_for(__env, other, 'other')])) or '_' } }}", Observer
 
   @staticmethod
-  def angle_query_symbol(*, symbol: "DynObserverIdentifier") -> "DynObserver":
+  def angle_query_symbol(*, symbol: Optional["DynObserverIdentifier"] = None) -> "DynObserver":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_other(*, other: "DynObserverIdentifier") -> "DynObserver":
+  def angle_query_other(*, other: Optional["DynObserverIdentifier"] = None) -> "DynObserver":
     raise Exception("this function can only be called from @angle_query")
 
 

@@ -86,11 +86,11 @@ class CodemarkupTypesRangeSpan(InnerGleanSchemaPredicate):
     return f"codemarkup.types.RangeSpan.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, span, 'span'), angle_for(__env, range, 'range')])) or '_' } }}", RangeSpan
 
   @staticmethod
-  def angle_query_span(*, span: "SrcByteSpan") -> "CodemarkupTypesRangeSpan":
+  def angle_query_span(*, span: Optional["SrcByteSpan"] = None) -> "CodemarkupTypesRangeSpan":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_range(*, range: "SrcRange") -> "CodemarkupTypesRangeSpan":
+  def angle_query_range(*, range: Optional["SrcRange"] = None) -> "CodemarkupTypesRangeSpan":
     raise Exception("this function can only be called from @angle_query")
 
 

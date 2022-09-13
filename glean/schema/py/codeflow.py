@@ -21,11 +21,11 @@ class CodeFlowEntity(InnerGleanSchemaPredicate):
     return f"code.flow.Entity.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, module_, 'module_')])) or '_' } }}", Entity
 
   @staticmethod
-  def angle_query_decl(*, decl: "FlowSomeDeclaration") -> "CodeFlowEntity":
+  def angle_query_decl(*, decl: Optional["FlowSomeDeclaration"] = None) -> "CodeFlowEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_module_(*, module_: "FlowModule") -> "CodeFlowEntity":
+  def angle_query_module_(*, module_: Optional["FlowModule"] = None) -> "CodeFlowEntity":
     raise Exception("this function can only be called from @angle_query")
 
 

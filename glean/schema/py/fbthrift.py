@@ -49,15 +49,15 @@ class FbthriftTypeSpecification(GleanSchemaPredicate):
     return f"fbthrift.TypeSpecification.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, primitive, 'primitive'), angle_for(__env, container, 'container'), angle_for(__env, named, 'named')])) or '_' } }}", TypeSpecification
 
   @staticmethod
-  def angle_query_primitive(*, primitive: "FbthriftPrimitiveType") -> "FbthriftTypeSpecification":
+  def angle_query_primitive(*, primitive: Optional["FbthriftPrimitiveType"] = None) -> "FbthriftTypeSpecification":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_container(*, container: "FbthriftContainerType") -> "FbthriftTypeSpecification":
+  def angle_query_container(*, container: Optional["FbthriftContainerType"] = None) -> "FbthriftTypeSpecification":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_named(*, named: "FbthriftNamedType") -> "FbthriftTypeSpecification":
+  def angle_query_named(*, named: Optional["FbthriftNamedType"] = None) -> "FbthriftTypeSpecification":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -225,11 +225,11 @@ class FbthriftExceptionSpecName(InnerGleanSchemaPredicate):
     return f"fbthrift.ExceptionSpecName.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, simple, 'simple'), angle_for(__env, typedef_, 'typedef_')])) or '_' } }}", ExceptionSpecName
 
   @staticmethod
-  def angle_query_simple(*, simple: "FbthriftExceptionName") -> "FbthriftExceptionSpecName":
+  def angle_query_simple(*, simple: Optional["FbthriftExceptionName"] = None) -> "FbthriftExceptionSpecName":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_typedef_(*, typedef_: "FbthriftTypeDefException") -> "FbthriftExceptionSpecName":
+  def angle_query_typedef_(*, typedef_: Optional["FbthriftTypeDefException"] = None) -> "FbthriftExceptionSpecName":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -274,27 +274,27 @@ class FbthriftXRefTarget(InnerGleanSchemaPredicate):
     return f"fbthrift.XRefTarget.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, include_, 'include_'), angle_for(__env, named, 'named'), angle_for(__env, exception_, 'exception_'), angle_for(__env, service_, 'service_'), angle_for(__env, constant, 'constant'), angle_for(__env, enumValue, 'enumValue')])) or '_' } }}", XRefTarget
 
   @staticmethod
-  def angle_query_include_(*, include_: "FbthriftFile") -> "FbthriftXRefTarget":
+  def angle_query_include_(*, include_: Optional["FbthriftFile"] = None) -> "FbthriftXRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_named(*, named: "FbthriftNamedDecl") -> "FbthriftXRefTarget":
+  def angle_query_named(*, named: Optional["FbthriftNamedDecl"] = None) -> "FbthriftXRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_exception_(*, exception_: "FbthriftExceptionName") -> "FbthriftXRefTarget":
+  def angle_query_exception_(*, exception_: Optional["FbthriftExceptionName"] = None) -> "FbthriftXRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_service_(*, service_: "FbthriftServiceName") -> "FbthriftXRefTarget":
+  def angle_query_service_(*, service_: Optional["FbthriftServiceName"] = None) -> "FbthriftXRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_constant(*, constant: "FbthriftConstant") -> "FbthriftXRefTarget":
+  def angle_query_constant(*, constant: Optional["FbthriftConstant"] = None) -> "FbthriftXRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_enumValue(*, enumValue: "FbthriftEnumValue") -> "FbthriftXRefTarget":
+  def angle_query_enumValue(*, enumValue: Optional["FbthriftEnumValue"] = None) -> "FbthriftXRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -350,15 +350,15 @@ class FbthriftContainerType(InnerGleanSchemaPredicate):
     return f"fbthrift.ContainerType.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, list_, 'list_'), angle_for(__env, set_, 'set_'), angle_for(__env, map_, 'map_')])) or '_' } }}", ContainerType
 
   @staticmethod
-  def angle_query_list_(*, list_: "FbthriftTypeSpecification") -> "FbthriftContainerType":
+  def angle_query_list_(*, list_: Optional["FbthriftTypeSpecification"] = None) -> "FbthriftContainerType":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_set_(*, set_: "FbthriftTypeSpecification") -> "FbthriftContainerType":
+  def angle_query_set_(*, set_: Optional["FbthriftTypeSpecification"] = None) -> "FbthriftContainerType":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_map_(*, map_: "FbthriftMapType") -> "FbthriftContainerType":
+  def angle_query_map_(*, map_: Optional["FbthriftMapType"] = None) -> "FbthriftContainerType":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -370,19 +370,19 @@ class FbthriftResultType(InnerGleanSchemaPredicate):
     return f"fbthrift.ResultType.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, oneway_, 'oneway_'), angle_for(__env, void_, 'void_'), angle_for(__env, result, 'result'), angle_for(__env, stream_, 'stream_')])) or '_' } }}", ResultType
 
   @staticmethod
-  def angle_query_oneway_(*, oneway_: "BuiltinUnit") -> "FbthriftResultType":
+  def angle_query_oneway_(*, oneway_: Optional["BuiltinUnit"] = None) -> "FbthriftResultType":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_void_(*, void_: "BuiltinUnit") -> "FbthriftResultType":
+  def angle_query_void_(*, void_: Optional["BuiltinUnit"] = None) -> "FbthriftResultType":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_result(*, result: "FbthriftTypeSpecification") -> "FbthriftResultType":
+  def angle_query_result(*, result: Optional["FbthriftTypeSpecification"] = None) -> "FbthriftResultType":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_stream_(*, stream_: "FbthriftResultStream") -> "FbthriftResultType":
+  def angle_query_stream_(*, stream_: Optional["FbthriftResultStream"] = None) -> "FbthriftResultType":
     raise Exception("this function can only be called from @angle_query")
 
 

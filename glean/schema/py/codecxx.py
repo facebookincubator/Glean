@@ -35,31 +35,31 @@ class CodeCxxDefinition(InnerGleanSchemaPredicate):
     return f"code.cxx.Definition.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, record_, 'record_'), angle_for(__env, function_, 'function_'), angle_for(__env, enum_, 'enum_'), angle_for(__env, objcMethod, 'objcMethod'), angle_for(__env, objcContainer, 'objcContainer'), angle_for(__env, variable, 'variable'), angle_for(__env, namespace_, 'namespace_')])) or '_' } }}", Definition
 
   @staticmethod
-  def angle_query_record_(*, record_: "Cxx1RecordDefinition") -> "CodeCxxDefinition":
+  def angle_query_record_(*, record_: Optional["Cxx1RecordDefinition"] = None) -> "CodeCxxDefinition":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_function_(*, function_: "Cxx1FunctionDefinition") -> "CodeCxxDefinition":
+  def angle_query_function_(*, function_: Optional["Cxx1FunctionDefinition"] = None) -> "CodeCxxDefinition":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_enum_(*, enum_: "Cxx1EnumDefinition") -> "CodeCxxDefinition":
+  def angle_query_enum_(*, enum_: Optional["Cxx1EnumDefinition"] = None) -> "CodeCxxDefinition":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_objcMethod(*, objcMethod: "Cxx1ObjcMethodDefinition") -> "CodeCxxDefinition":
+  def angle_query_objcMethod(*, objcMethod: Optional["Cxx1ObjcMethodDefinition"] = None) -> "CodeCxxDefinition":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_objcContainer(*, objcContainer: "Cxx1ObjcContainerDefinition") -> "CodeCxxDefinition":
+  def angle_query_objcContainer(*, objcContainer: Optional["Cxx1ObjcContainerDefinition"] = None) -> "CodeCxxDefinition":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_variable(*, variable: "Cxx1VariableDeclaration") -> "CodeCxxDefinition":
+  def angle_query_variable(*, variable: Optional["Cxx1VariableDeclaration"] = None) -> "CodeCxxDefinition":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_namespace_(*, namespace_: "Cxx1NamespaceDefinition") -> "CodeCxxDefinition":
+  def angle_query_namespace_(*, namespace_: Optional["Cxx1NamespaceDefinition"] = None) -> "CodeCxxDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -71,15 +71,15 @@ class CodeCxxEntity(InnerGleanSchemaPredicate):
     return f"code.cxx.Entity.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, defn, 'defn'), angle_for(__env, enumerator, 'enumerator')])) or '_' } }}", Entity
 
   @staticmethod
-  def angle_query_decl(*, decl: "Cxx1Declaration") -> "CodeCxxEntity":
+  def angle_query_decl(*, decl: Optional["Cxx1Declaration"] = None) -> "CodeCxxEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_defn(*, defn: "CodeCxxDefinition") -> "CodeCxxEntity":
+  def angle_query_defn(*, defn: Optional["CodeCxxDefinition"] = None) -> "CodeCxxEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_enumerator(*, enumerator: "Cxx1Enumerator") -> "CodeCxxEntity":
+  def angle_query_enumerator(*, enumerator: Optional["Cxx1Enumerator"] = None) -> "CodeCxxEntity":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -91,7 +91,7 @@ class CodeCxxAnnotations(InnerGleanSchemaPredicate):
     return f"code.cxx.Annotations.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, attributes, 'attributes')])) or '_' } }}", Annotations
 
   @staticmethod
-  def angle_query_attributes(*, attributes: List["Cxx1Attribute"]) -> "CodeCxxAnnotations":
+  def angle_query_attributes(*, attributes: Optional[List["Cxx1Attribute"]] = None) -> "CodeCxxAnnotations":
     raise Exception("this function can only be called from @angle_query")
 
 

@@ -21,7 +21,7 @@ class CodeRustEntity(InnerGleanSchemaPredicate):
     return f"code.rust.Entity.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, definition, 'definition')])) or '_' } }}", Entity
 
   @staticmethod
-  def angle_query_definition(*, definition: "RustDef") -> "CodeRustEntity":
+  def angle_query_definition(*, definition: Optional["RustDef"] = None) -> "CodeRustEntity":
     raise Exception("this function can only be called from @angle_query")
 
 

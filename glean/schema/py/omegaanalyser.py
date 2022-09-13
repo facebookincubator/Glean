@@ -190,19 +190,19 @@ class OmegaanalyserNode(InnerGleanSchemaPredicate):
     return f"omegaanalyser.Node.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, class_, 'class_'), angle_for(__env, method, 'method'), angle_for(__env, function_, 'function_'), angle_for(__env, config, 'config')])) or '_' } }}", Node
 
   @staticmethod
-  def angle_query_class_(*, class_: "OmegaanalyserClass_") -> "OmegaanalyserNode":
+  def angle_query_class_(*, class_: Optional["OmegaanalyserClass_"] = None) -> "OmegaanalyserNode":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_method(*, method: "OmegaanalyserMethod") -> "OmegaanalyserNode":
+  def angle_query_method(*, method: Optional["OmegaanalyserMethod"] = None) -> "OmegaanalyserNode":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_function_(*, function_: "OmegaanalyserFunction_") -> "OmegaanalyserNode":
+  def angle_query_function_(*, function_: Optional["OmegaanalyserFunction_"] = None) -> "OmegaanalyserNode":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_config(*, config: "OmegaanalyserConfig") -> "OmegaanalyserNode":
+  def angle_query_config(*, config: Optional["OmegaanalyserConfig"] = None) -> "OmegaanalyserNode":
     raise Exception("this function can only be called from @angle_query")
 
 

@@ -182,23 +182,23 @@ class GleanTestExpr(GleanSchemaPredicate):
     return f"glean.test.Expr.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, var_, 'var_'), angle_for(__env, lit, 'lit'), angle_for(__env, prim, 'prim'), angle_for(__env, ap, 'ap'), angle_for(__env, lam, 'lam')])) or '_' } }}", Expr
 
   @staticmethod
-  def angle_query_var_(*, var_: "GleanTestName") -> "GleanTestExpr":
+  def angle_query_var_(*, var_: Optional["GleanTestName"] = None) -> "GleanTestExpr":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_lit(*, lit: int) -> "GleanTestExpr":
+  def angle_query_lit(*, lit: Optional[int] = None) -> "GleanTestExpr":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_prim(*, prim: "GleanTestName") -> "GleanTestExpr":
+  def angle_query_prim(*, prim: Optional["GleanTestName"] = None) -> "GleanTestExpr":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_ap(*, ap: 'GleanTestExpr_ap') -> "GleanTestExpr":
+  def angle_query_ap(*, ap: Optional['GleanTestExpr_ap'] = None) -> "GleanTestExpr":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_lam(*, lam: 'GleanTestExpr_lam') -> "GleanTestExpr":
+  def angle_query_lam(*, lam: Optional['GleanTestExpr_lam'] = None) -> "GleanTestExpr":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -617,11 +617,11 @@ class GleanTestKitchenSink_sum_(InnerGleanSchemaPredicate):
     return f" {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, c, 'c'), angle_for(__env, d, 'd')])) or '_' } }}", GleanTestKitchenSink_sum_
 
   @staticmethod
-  def angle_query_c(*, c: "GleanTestPredicate") -> "GleanTestKitchenSink_sum_":
+  def angle_query_c(*, c: Optional["GleanTestPredicate"] = None) -> "GleanTestKitchenSink_sum_":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_d(*, d: "SysBlob") -> "GleanTestKitchenSink_sum_":
+  def angle_query_d(*, d: Optional["SysBlob"] = None) -> "GleanTestKitchenSink_sum_":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -635,11 +635,11 @@ class GleanTestEntity(InnerGleanSchemaPredicate):
     return f"glean.test.Entity.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, cxx, 'cxx'), angle_for(__env, pp, 'pp')])) or '_' } }}", Entity
 
   @staticmethod
-  def angle_query_cxx(*, cxx: "CodeCxxEntity") -> "GleanTestEntity":
+  def angle_query_cxx(*, cxx: Optional["CodeCxxEntity"] = None) -> "GleanTestEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_pp(*, pp: "Pp1Define") -> "GleanTestEntity":
+  def angle_query_pp(*, pp: Optional["Pp1Define"] = None) -> "GleanTestEntity":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -671,11 +671,11 @@ class GleanTestKitchenSink_sum_(InnerGleanSchemaPredicate):
     return f" {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, c, 'c'), angle_for(__env, d, 'd')])) or '_' } }}", GleanTestKitchenSink_sum_
 
   @staticmethod
-  def angle_query_c(*, c: bytes) -> "GleanTestKitchenSink_sum_":
+  def angle_query_c(*, c: Optional[bytes] = None) -> "GleanTestKitchenSink_sum_":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_d(*, d: int) -> "GleanTestKitchenSink_sum_":
+  def angle_query_d(*, d: Optional[int] = None) -> "GleanTestKitchenSink_sum_":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -705,11 +705,11 @@ class GleanTestEdgeSum(InnerGleanSchemaPredicate):
     return f"glean.test.EdgeSum.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, fst, 'fst'), angle_for(__env, snd, 'snd')])) or '_' } }}", EdgeSum
 
   @staticmethod
-  def angle_query_fst(*, fst: "GleanTestEdgeWrapper") -> "GleanTestEdgeSum":
+  def angle_query_fst(*, fst: Optional["GleanTestEdgeWrapper"] = None) -> "GleanTestEdgeSum":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_snd(*, snd: "GleanTestEdgeWrapper") -> "GleanTestEdgeSum":
+  def angle_query_snd(*, snd: Optional["GleanTestEdgeWrapper"] = None) -> "GleanTestEdgeSum":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -732,15 +732,15 @@ class GleanTestSum(InnerGleanSchemaPredicate):
     return f"glean.test.Sum.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, mon, 'mon'), angle_for(__env, tue, 'tue'), angle_for(__env, wed, 'wed')])) or '_' } }}", Sum
 
   @staticmethod
-  def angle_query_mon(*, mon: bytes) -> "GleanTestSum":
+  def angle_query_mon(*, mon: Optional[bytes] = None) -> "GleanTestSum":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_tue(*, tue: int) -> "GleanTestSum":
+  def angle_query_tue(*, tue: Optional[int] = None) -> "GleanTestSum":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_wed(*, wed: bool) -> "GleanTestSum":
+  def angle_query_wed(*, wed: Optional[bool] = None) -> "GleanTestSum":
     raise Exception("this function can only be called from @angle_query")
 
 

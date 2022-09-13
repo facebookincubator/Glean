@@ -78,23 +78,23 @@ class CodeAnnotations(InnerGleanSchemaPredicate):
     return f"code.Annotations.24 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, cxx, 'cxx'), angle_for(__env, java, 'java'), angle_for(__env, python, 'python'), angle_for(__env, hack, 'hack'), angle_for(__env, thrift, 'thrift')])) or '_' } }}", Annotations
 
   @staticmethod
-  def angle_query_cxx(*, cxx: "CodeCxxAnnotations") -> "CodeAnnotations":
+  def angle_query_cxx(*, cxx: Optional["CodeCxxAnnotations"] = None) -> "CodeAnnotations":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_java(*, java: "CodeJavaAnnotations") -> "CodeAnnotations":
+  def angle_query_java(*, java: Optional["CodeJavaAnnotations"] = None) -> "CodeAnnotations":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_python(*, python: "CodePythonAnnotations") -> "CodeAnnotations":
+  def angle_query_python(*, python: Optional["CodePythonAnnotations"] = None) -> "CodeAnnotations":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_hack(*, hack: "CodeHackAnnotations") -> "CodeAnnotations":
+  def angle_query_hack(*, hack: Optional["CodeHackAnnotations"] = None) -> "CodeAnnotations":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_thrift(*, thrift: "CodeThriftAnnotations") -> "CodeAnnotations":
+  def angle_query_thrift(*, thrift: Optional["CodeThriftAnnotations"] = None) -> "CodeAnnotations":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -106,51 +106,51 @@ class CodeEntity(InnerGleanSchemaPredicate):
     return f"code.Entity.24 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, cxx, 'cxx'), angle_for(__env, pp, 'pp'), angle_for(__env, java, 'java'), angle_for(__env, hs, 'hs'), angle_for(__env, python, 'python'), angle_for(__env, hack, 'hack'), angle_for(__env, flow, 'flow'), angle_for(__env, rust, 'rust'), angle_for(__env, thrift, 'thrift'), angle_for(__env, buck, 'buck'), angle_for(__env, erlang, 'erlang'), angle_for(__env, lsif, 'lsif')])) or '_' } }}", Entity
 
   @staticmethod
-  def angle_query_cxx(*, cxx: "CodeCxxEntity") -> "CodeEntity":
+  def angle_query_cxx(*, cxx: Optional["CodeCxxEntity"] = None) -> "CodeEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_pp(*, pp: "CodePpEntity") -> "CodeEntity":
+  def angle_query_pp(*, pp: Optional["CodePpEntity"] = None) -> "CodeEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_java(*, java: "CodeJavaEntity") -> "CodeEntity":
+  def angle_query_java(*, java: Optional["CodeJavaEntity"] = None) -> "CodeEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_hs(*, hs: "CodeHsEntity") -> "CodeEntity":
+  def angle_query_hs(*, hs: Optional["CodeHsEntity"] = None) -> "CodeEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_python(*, python: "CodePythonEntity") -> "CodeEntity":
+  def angle_query_python(*, python: Optional["CodePythonEntity"] = None) -> "CodeEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_hack(*, hack: "CodeHackEntity") -> "CodeEntity":
+  def angle_query_hack(*, hack: Optional["CodeHackEntity"] = None) -> "CodeEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_flow(*, flow: "CodeFlowEntity") -> "CodeEntity":
+  def angle_query_flow(*, flow: Optional["CodeFlowEntity"] = None) -> "CodeEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_rust(*, rust: "CodeRustEntity") -> "CodeEntity":
+  def angle_query_rust(*, rust: Optional["CodeRustEntity"] = None) -> "CodeEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_thrift(*, thrift: "CodeThriftEntity") -> "CodeEntity":
+  def angle_query_thrift(*, thrift: Optional["CodeThriftEntity"] = None) -> "CodeEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_buck(*, buck: "CodeBuckEntity") -> "CodeEntity":
+  def angle_query_buck(*, buck: Optional["CodeBuckEntity"] = None) -> "CodeEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_erlang(*, erlang: "CodeErlangEntity") -> "CodeEntity":
+  def angle_query_erlang(*, erlang: Optional["CodeErlangEntity"] = None) -> "CodeEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_lsif(*, lsif: "CodeLsifEntity") -> "CodeEntity":
+  def angle_query_lsif(*, lsif: Optional["CodeLsifEntity"] = None) -> "CodeEntity":
     raise Exception("this function can only be called from @angle_query")
 
 

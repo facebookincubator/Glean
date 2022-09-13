@@ -22,15 +22,15 @@ class CodePpEntity(InnerGleanSchemaPredicate):
     return f"code.pp.Entity.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, define, 'define'), angle_for(__env, undef, 'undef'), angle_for(__env, include_, 'include_')])) or '_' } }}", Entity
 
   @staticmethod
-  def angle_query_define(*, define: "Pp1Define") -> "CodePpEntity":
+  def angle_query_define(*, define: Optional["Pp1Define"] = None) -> "CodePpEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_undef(*, undef: "Pp1Undef") -> "CodePpEntity":
+  def angle_query_undef(*, undef: Optional["Pp1Undef"] = None) -> "CodePpEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_include_(*, include_: "SrcFile") -> "CodePpEntity":
+  def angle_query_include_(*, include_: Optional["SrcFile"] = None) -> "CodePpEntity":
     raise Exception("this function can only be called from @angle_query")
 
 

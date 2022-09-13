@@ -299,15 +299,15 @@ class HsDefinitionEntity(InnerGleanSchemaPredicate):
     return f"hs.DefinitionEntity.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, definition, 'definition'), angle_for(__env, function_, 'function_'), angle_for(__env, class_, 'class_')])) or '_' } }}", DefinitionEntity
 
   @staticmethod
-  def angle_query_definition(*, definition: "HsDefinition") -> "HsDefinitionEntity":
+  def angle_query_definition(*, definition: Optional["HsDefinition"] = None) -> "HsDefinitionEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_function_(*, function_: "HsFunctionDefinition") -> "HsDefinitionEntity":
+  def angle_query_function_(*, function_: Optional["HsFunctionDefinition"] = None) -> "HsDefinitionEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_class_(*, class_: "HsClass") -> "HsDefinitionEntity":
+  def angle_query_class_(*, class_: Optional["HsClass"] = None) -> "HsDefinitionEntity":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -319,15 +319,15 @@ class HsXRefTarget(InnerGleanSchemaPredicate):
     return f"hs.XRefTarget.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, definition, 'definition'), angle_for(__env, typeclass, 'typeclass'), angle_for(__env, hs_module, 'hs_module')])) or '_' } }}", XRefTarget
 
   @staticmethod
-  def angle_query_definition(*, definition: "HsDefinitionName") -> "HsXRefTarget":
+  def angle_query_definition(*, definition: Optional["HsDefinitionName"] = None) -> "HsXRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_typeclass(*, typeclass: "HsClassName") -> "HsXRefTarget":
+  def angle_query_typeclass(*, typeclass: Optional["HsClassName"] = None) -> "HsXRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_hs_module(*, hs_module: "HsModuleName") -> "HsXRefTarget":
+  def angle_query_hs_module(*, hs_module: Optional["HsModuleName"] = None) -> "HsXRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
 
