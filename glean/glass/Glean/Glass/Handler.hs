@@ -62,7 +62,7 @@ import Logger.GleanGlass ( GleanGlassLogger )
 import Logger.GleanGlassErrors ( GleanGlassErrorsLogger )
 import Util.Logger ( loggingAction )
 import Util.Text ( textShow )
-import Util.List ( uniqBy )
+import Util.List ( uniq, uniqBy )
 import Util.Control.Exception (catchAll)
 import qualified Logger.GleanGlass as Logger
 import qualified Logger.GleanGlassErrors as ErrorsLogger
@@ -344,8 +344,11 @@ combineDescriptions y x =
     , symbolDescription_comments = symbolDescription_comments x <>
         symbolDescription_comments y
     , symbolDescription_sym_other_locations =
-        symbolDescription_sym_other_locations x <>
-          [symbolDescription_sym_location y] -- copy the single unique value
+        filter (/= symbolDescription_sym_location x) $
+          uniq ( -- collapse duplicate syms
+            symbolDescription_sym_location y : -- copy the single unique value
+            symbolDescription_sym_other_locations x
+          )
     }
 
 fileIncludeLocations
