@@ -5,10 +5,11 @@ from thrift.py3 import Struct
 from enum import Enum
 import ast
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
+from glean.schema.py.rust import *
 
 
-from glean.schema.coderust.types import (
-    rustEntity,
+from glean.schema.code_rust.types import (
+    Entity,
 )
 
 
@@ -17,7 +18,7 @@ from glean.schema.coderust.types import (
 class CodeRustEntity(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], definition: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.rust.Entity.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, definition, 'definition')])) or '_' } }}", rustEntity
+    return f"code.rust.Entity.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, definition, 'definition')])) or '_' } }}", Entity
 
   @staticmethod
   def angle_query_definition(*, definition: "RustDef") -> "CodeRustEntity":

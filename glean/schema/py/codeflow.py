@@ -5,10 +5,11 @@ from thrift.py3 import Struct
 from enum import Enum
 import ast
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
+from glean.schema.py.flow import *
 
 
-from glean.schema.codeflow.types import (
-    flowEntity,
+from glean.schema.code_flow.types import (
+    Entity,
 )
 
 
@@ -17,7 +18,7 @@ from glean.schema.codeflow.types import (
 class CodeFlowEntity(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], decl: ast.Expr, module_: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.flow.Entity.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, module_, 'module_')])) or '_' } }}", flowEntity
+    return f"code.flow.Entity.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, module_, 'module_')])) or '_' } }}", Entity
 
   @staticmethod
   def angle_query_decl(*, decl: "FlowSomeDeclaration") -> "CodeFlowEntity":

@@ -5,11 +5,12 @@ from thrift.py3 import Struct
 from enum import Enum
 import ast
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
+from glean.schema.py.hack import *
 
 
-from glean.schema.codehack.types import (
-    hackEntity,
-    hackAnnotations,
+from glean.schema.code_hack.types import (
+    Entity,
+    Annotations,
 )
 
 
@@ -18,7 +19,7 @@ from glean.schema.codehack.types import (
 class CodeHackEntity(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], decl: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.hack.Entity.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl')])) or '_' } }}", hackEntity
+    return f"code.hack.Entity.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl')])) or '_' } }}", Entity
 
   @staticmethod
   def angle_query_decl(*, decl: "HackDeclaration") -> "CodeHackEntity":
@@ -30,7 +31,7 @@ class CodeHackEntity(InnerGleanSchemaPredicate):
 class CodeHackAnnotations(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], attributes: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.hack.Annotations.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, attributes, 'attributes')])) or '_' } }}", hackAnnotations
+    return f"code.hack.Annotations.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, attributes, 'attributes')])) or '_' } }}", Annotations
 
   @staticmethod
   def angle_query_attributes(*, attributes: List["HackUserAttribute"]) -> "CodeHackAnnotations":

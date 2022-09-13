@@ -155,8 +155,8 @@ genSchemaPy _version preddefs typedefs =
   [ ("py" </>
       Text.unpack (Text.concat namespaces) <.> "py",
       Text.intercalate (newline <> newline)
-        ( header namespaces namePolicy preds :
-          genPredicateImports namespaces (preds ++ predsFromTypes preds types) :
+        ( header namespaces namePolicy allPreds :
+          genPredicateImports namespaces allPreds :
           genAllPredicates AngleQuery namespaces namePolicy
             "GleanSchemaPredicate" preds :
           -- InnerGleanSchemaPredicate hides Named Types from the user's outer
@@ -167,7 +167,8 @@ genSchemaPy _version preddefs typedefs =
           genNamedTypesAliases namePolicy types
         )
     )
-  | (namespaces, (_, preds, types)) <- schemas
+  | (namespaces, (_, preds, types)) <- schemas,
+    let allPreds = preds ++ predsFromTypes preds types
   ]
   where
     schemas = HashMap.toList declsPerNamespace
@@ -176,7 +177,7 @@ genSchemaPy _version preddefs typedefs =
     declsPerNamespace =
       addNamespaceDependencies $ sortDeclsByNamespace preddefs typedefs
     genPredicateImports namespaces preds = Text.unlines $
-      ("from glean.schema." <> Text.concat namespaces <> ".types import (" ) :
+      ("from glean.schema." <> namespaceToFileName namespaces <> ".types import (") :
       [ "    " <> return_class_name <> ","
           | pred <- preds
           , let ref = predicateDefRef pred
@@ -186,8 +187,9 @@ genSchemaPy _version preddefs typedefs =
       [")"]
     extraImports = [
       (Text.concat namespaces,
-      addBuckImportsForKeys namespaces namePolicy preds) |
-        (namespaces, (_, preds, _)) <- schemas ]
+      addBuckImportsForKeys namespaces namePolicy allPreds) |
+        (namespaces, (_, preds, types)) <- schemas,
+        let allPreds = preds ++ predsFromTypes preds types]
 
 -- To handle SumTypes inner fields, the API creates dummy predicates as a
 -- form of syntactic sugar for the user. The dummy queries created through them
@@ -336,9 +338,13 @@ pythonClassName :: Text -> Text
 pythonClassName c = Text.intercalate "" $ map cap1 $ Text.split (== '.') c
 
 returnPythonClassName :: Text -> Text
-returnPythonClassName c = Text.intercalate "" $ case Text.split (== '.') c of
-      [x] -> [x]
-      any -> tail any
+returnPythonClassName c = last $ Text.split (== '.') c
+
+filenameToNamespace :: Text -> Text
+filenameToNamespace n = Text.concat $ Text.split (=='_') n
+
+namespaceToFileName :: [Text] -> Text
+namespaceToFileName n = Text.intercalate "_" n
 
 genTargets
   :: HashMap NameSpaces ([NameSpaces], [ResolvedPredicateDef], [ResolvedTypeDef])
@@ -457,7 +463,8 @@ addPythonImportsForKeys namespaces namePolicy preds = map addImport $
 
   where
     addImport :: Text -> Text
-    addImport imp = "from glean.schema.py." <> imp <> " import *"
+    addImport imp =
+      "from glean.schema.py." <> filenameToNamespace imp <> " import *"
 
 addBuckImportsForKeys
   :: NameSpaces
@@ -478,7 +485,7 @@ predicateImports namespaces namePolicy preds = filter
 
   where
     current_namespace :: Text
-    current_namespace = Text.concat namespaces
+    current_namespace = namespaceToFileName namespaces
 
     extractImports :: ResolvedPredicateDef -> [Text]
     extractImports = extractPredicateImport namePolicy . predicateDefKeyType
@@ -486,13 +493,17 @@ predicateImports namespaces namePolicy preds = filter
     extractPredicateImport :: NamePolicy -> ResolvedType  -> [Text]
     extractPredicateImport namePolicy t = case t of
       RecordTy fields -> map (extractImport namePolicy . fieldDefType) fields
+      SumTy fields -> map (extractImport namePolicy . fieldDefType) fields
       _ -> [extractImport namePolicy t]
       where
-        extractImport namePolicy t = case t of
-          PredicateTy pred -> case HashMap.lookup pred (predNames namePolicy) of
-            Just (ns, _) -> Text.concat ns
-            _ -> error $ "predicatePythonName: " ++ show pred
-          _ -> Text.empty
+        extractImport namePolicy t = Text.pack $ case t of
+          PredicateTy pred -> nameLookup pred predNames namePolicy "predicate"
+          NamedTy typeRef -> nameLookup typeRef typeNames namePolicy "named"
+          _ -> ""
+        nameLookup type_ names namePolicy errMessage =
+          case HashMap.lookup type_ (names namePolicy) of
+            Just (ns, _) -> Text.unpack $ namespaceToFileName ns
+            _ -> error $ errMessage ++ "PythonName: " ++ show type_
 
 fieldName :: FieldDef_ PredicateRef tref -> Text
 fieldName = from_ . fieldDefName

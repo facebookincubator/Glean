@@ -5,11 +5,12 @@ from thrift.py3 import Struct
 from enum import Enum
 import ast
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
+from glean.schema.py.python import *
 
 
-from glean.schema.codepython.types import (
-    pythonAnnotations,
-    pythonEntity,
+from glean.schema.code_python.types import (
+    Annotations,
+    Entity,
 )
 
 
@@ -18,7 +19,7 @@ from glean.schema.codepython.types import (
 class CodePythonAnnotations(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], decorators: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.python.Annotations.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decorators, 'decorators')])) or '_' } }}", pythonAnnotations
+    return f"code.python.Annotations.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decorators, 'decorators')])) or '_' } }}", Annotations
 
   @staticmethod
   def angle_query_decorators(*, decorators: List["PythonDecorator"]) -> "CodePythonAnnotations":
@@ -30,7 +31,7 @@ class CodePythonAnnotations(InnerGleanSchemaPredicate):
 class CodePythonEntity(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], decl: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.python.Entity.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl')])) or '_' } }}", pythonEntity
+    return f"code.python.Entity.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl')])) or '_' } }}", Entity
 
   @staticmethod
   def angle_query_decl(*, decl: "PythonDeclaration") -> "CodePythonEntity":

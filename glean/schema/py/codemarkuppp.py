@@ -5,28 +5,30 @@ from thrift.py3 import Struct
 from enum import Enum
 import ast
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
+from glean.schema.py.codepp import *
+from glean.schema.py.codemarkuptypes import *
 from glean.schema.py.cxx1 import *
 from glean.schema.py.src import *
 
 
-from glean.schema.codemarkuppp.types import (
-    ppPpEntityInfo,
-    ppPPEntityLocation,
-    ppPpResolveLocation,
-    ppPpIncludeXRefLocations,
-    ppPpEntityKind,
-    ppPpFileEntityXRefLocations,
-    ppPpEntityTraceXRefLocations,
-    ppPpResolveTraceLocation,
-    ppPpFileEntityTraceXRefLocations,
-    ppPpFileEntityTraceLocations,
+from glean.schema.codemarkup_pp.types import (
+    PpEntityInfo,
+    PPEntityLocation,
+    PpResolveLocation,
+    PpIncludeXRefLocations,
+    PpEntityKind,
+    PpFileEntityXRefLocations,
+    PpEntityTraceXRefLocations,
+    PpResolveTraceLocation,
+    PpFileEntityTraceXRefLocations,
+    PpFileEntityTraceLocations,
 )
 
 
 class CodemarkupPpPpEntityInfo(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], entity: ast.Expr, info: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.pp.PpEntityInfo.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, info, 'info')])) or '_' } }}", ppPpEntityInfo
+    return f"codemarkup.pp.PpEntityInfo.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, info, 'info')])) or '_' } }}", PpEntityInfo
 
   @staticmethod
   def angle_query(*, entity: Optional["CodePpEntity"] = None, info: Optional["CodemarkupTypesSymbolInfo"] = None) -> "CodemarkupPpPpEntityInfo":
@@ -37,7 +39,7 @@ class CodemarkupPpPpEntityInfo(GleanSchemaPredicate):
 class CodemarkupPpPPEntityLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], entity: ast.Expr, location: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.pp.PPEntityLocation.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location')])) or '_' } }}", ppPPEntityLocation
+    return f"codemarkup.pp.PPEntityLocation.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location')])) or '_' } }}", PPEntityLocation
 
   @staticmethod
   def angle_query(*, entity: Optional["CodePpEntity"] = None, location: Optional["CodemarkupTypesLocation"] = None) -> "CodemarkupPpPPEntityLocation":
@@ -48,7 +50,7 @@ class CodemarkupPpPPEntityLocation(GleanSchemaPredicate):
 class CodemarkupPpPpResolveLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], location: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.pp.PpResolveLocation.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, location, 'location'), angle_for(__env, entity, 'entity')])) or '_' } }}", ppPpResolveLocation
+    return f"codemarkup.pp.PpResolveLocation.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, location, 'location'), angle_for(__env, entity, 'entity')])) or '_' } }}", PpResolveLocation
 
   @staticmethod
   def angle_query(*, location: Optional["CodemarkupTypesLocation"] = None, entity: Optional["CodePpEntity"] = None) -> "CodemarkupPpPpResolveLocation":
@@ -59,7 +61,7 @@ class CodemarkupPpPpResolveLocation(GleanSchemaPredicate):
 class CodemarkupPpPpIncludeXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], trace: ast.Expr, range: ast.Expr, target: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.pp.PpIncludeXRefLocations.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, trace, 'trace'), angle_for(__env, range, 'range'), angle_for(__env, target, 'target')])) or '_' } }}", ppPpIncludeXRefLocations
+    return f"codemarkup.pp.PpIncludeXRefLocations.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, trace, 'trace'), angle_for(__env, range, 'range'), angle_for(__env, target, 'target')])) or '_' } }}", PpIncludeXRefLocations
 
   @staticmethod
   def angle_query(*, trace: Optional["Cxx1PPTrace"] = None, range: Optional["SrcRange"] = None, target: Optional["SrcFile"] = None) -> "CodemarkupPpPpIncludeXRefLocations":
@@ -70,7 +72,7 @@ class CodemarkupPpPpIncludeXRefLocations(GleanSchemaPredicate):
 class CodemarkupPpPpEntityKind(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], entity: ast.Expr, kind: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.pp.PpEntityKind.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, kind, 'kind')])) or '_' } }}", ppPpEntityKind
+    return f"codemarkup.pp.PpEntityKind.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, kind, 'kind')])) or '_' } }}", PpEntityKind
 
   @staticmethod
   def angle_query(*, entity: Optional["CodePpEntity"] = None, kind: Optional["CodemarkupTypesSymbolKind"] = None) -> "CodemarkupPpPpEntityKind":
@@ -81,7 +83,7 @@ class CodemarkupPpPpEntityKind(GleanSchemaPredicate):
 class CodemarkupPpPpFileEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, xref: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.pp.PpFileEntityXRefLocations.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xref, 'xref'), angle_for(__env, entity, 'entity')])) or '_' } }}", ppPpFileEntityXRefLocations
+    return f"codemarkup.pp.PpFileEntityXRefLocations.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xref, 'xref'), angle_for(__env, entity, 'entity')])) or '_' } }}", PpFileEntityXRefLocations
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, xref: Optional["CodemarkupTypesXRefLocation"] = None, entity: Optional["CodePpEntity"] = None) -> "CodemarkupPpPpFileEntityXRefLocations":
@@ -92,7 +94,7 @@ class CodemarkupPpPpFileEntityXRefLocations(GleanSchemaPredicate):
 class CodemarkupPpPpEntityTraceXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], trace: ast.Expr, xref: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.pp.PpEntityTraceXRefLocations.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, trace, 'trace'), angle_for(__env, xref, 'xref'), angle_for(__env, entity, 'entity')])) or '_' } }}", ppPpEntityTraceXRefLocations
+    return f"codemarkup.pp.PpEntityTraceXRefLocations.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, trace, 'trace'), angle_for(__env, xref, 'xref'), angle_for(__env, entity, 'entity')])) or '_' } }}", PpEntityTraceXRefLocations
 
   @staticmethod
   def angle_query(*, trace: Optional["Cxx1Trace"] = None, xref: Optional["CodemarkupTypesXRefLocation"] = None, entity: Optional["CodePpEntity"] = None) -> "CodemarkupPpPpEntityTraceXRefLocations":
@@ -103,7 +105,7 @@ class CodemarkupPpPpEntityTraceXRefLocations(GleanSchemaPredicate):
 class CodemarkupPpPpResolveTraceLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], trace: ast.Expr, location: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.pp.PpResolveTraceLocation.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, trace, 'trace'), angle_for(__env, location, 'location'), angle_for(__env, entity, 'entity')])) or '_' } }}", ppPpResolveTraceLocation
+    return f"codemarkup.pp.PpResolveTraceLocation.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, trace, 'trace'), angle_for(__env, location, 'location'), angle_for(__env, entity, 'entity')])) or '_' } }}", PpResolveTraceLocation
 
   @staticmethod
   def angle_query(*, trace: Optional["Cxx1Trace"] = None, location: Optional["CodemarkupTypesLocation"] = None, entity: Optional["CodePpEntity"] = None) -> "CodemarkupPpPpResolveTraceLocation":
@@ -114,7 +116,7 @@ class CodemarkupPpPpResolveTraceLocation(GleanSchemaPredicate):
 class CodemarkupPpPpFileEntityTraceXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, trace: ast.Expr, xref: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.pp.PpFileEntityTraceXRefLocations.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, trace, 'trace'), angle_for(__env, xref, 'xref'), angle_for(__env, entity, 'entity')])) or '_' } }}", ppPpFileEntityTraceXRefLocations
+    return f"codemarkup.pp.PpFileEntityTraceXRefLocations.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, trace, 'trace'), angle_for(__env, xref, 'xref'), angle_for(__env, entity, 'entity')])) or '_' } }}", PpFileEntityTraceXRefLocations
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, trace: Optional["Cxx1Trace"] = None, xref: Optional["CodemarkupTypesXRefLocation"] = None, entity: Optional["CodePpEntity"] = None) -> "CodemarkupPpPpFileEntityTraceXRefLocations":
@@ -125,7 +127,7 @@ class CodemarkupPpPpFileEntityTraceXRefLocations(GleanSchemaPredicate):
 class CodemarkupPpPpFileEntityTraceLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, trace: ast.Expr, location: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.pp.PpFileEntityTraceLocations.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, trace, 'trace'), angle_for(__env, location, 'location'), angle_for(__env, entity, 'entity')])) or '_' } }}", ppPpFileEntityTraceLocations
+    return f"codemarkup.pp.PpFileEntityTraceLocations.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, trace, 'trace'), angle_for(__env, location, 'location'), angle_for(__env, entity, 'entity')])) or '_' } }}", PpFileEntityTraceLocations
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, trace: Optional["Cxx1Trace"] = None, location: Optional["CodemarkupTypesLocation"] = None, entity: Optional["CodePpEntity"] = None) -> "CodemarkupPpPpFileEntityTraceLocations":

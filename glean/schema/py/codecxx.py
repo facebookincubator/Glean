@@ -5,20 +5,21 @@ from thrift.py3 import Struct
 from enum import Enum
 import ast
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
+from glean.schema.py.cxx1 import *
 
 
-from glean.schema.codecxx.types import (
-    cxxDeclToDef,
-    cxxDefinition,
-    cxxEntity,
-    cxxAnnotations,
+from glean.schema.code_cxx.types import (
+    DeclToDef,
+    Definition,
+    Entity,
+    Annotations,
 )
 
 
 class CodeCxxDeclToDef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], decl: ast.Expr, defn: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.cxx.DeclToDef.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, defn, 'defn')])) or '_' } }}", cxxDeclToDef
+    return f"code.cxx.DeclToDef.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, defn, 'defn')])) or '_' } }}", DeclToDef
 
   @staticmethod
   def angle_query(*, decl: Optional["Cxx1Declaration"] = None, defn: Optional["CodeCxxDefinition"] = None) -> "CodeCxxDeclToDef":
@@ -31,7 +32,7 @@ class CodeCxxDeclToDef(GleanSchemaPredicate):
 class CodeCxxDefinition(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], record_: ast.Expr, function_: ast.Expr, enum_: ast.Expr, objcMethod: ast.Expr, objcContainer: ast.Expr, variable: ast.Expr, namespace_: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.cxx.Definition.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, record_, 'record_'), angle_for(__env, function_, 'function_'), angle_for(__env, enum_, 'enum_'), angle_for(__env, objcMethod, 'objcMethod'), angle_for(__env, objcContainer, 'objcContainer'), angle_for(__env, variable, 'variable'), angle_for(__env, namespace_, 'namespace_')])) or '_' } }}", cxxDefinition
+    return f"code.cxx.Definition.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, record_, 'record_'), angle_for(__env, function_, 'function_'), angle_for(__env, enum_, 'enum_'), angle_for(__env, objcMethod, 'objcMethod'), angle_for(__env, objcContainer, 'objcContainer'), angle_for(__env, variable, 'variable'), angle_for(__env, namespace_, 'namespace_')])) or '_' } }}", Definition
 
   @staticmethod
   def angle_query_record_(*, record_: "Cxx1RecordDefinition") -> "CodeCxxDefinition":
@@ -67,7 +68,7 @@ class CodeCxxDefinition(InnerGleanSchemaPredicate):
 class CodeCxxEntity(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], decl: ast.Expr, defn: ast.Expr, enumerator: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.cxx.Entity.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, defn, 'defn'), angle_for(__env, enumerator, 'enumerator')])) or '_' } }}", cxxEntity
+    return f"code.cxx.Entity.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, defn, 'defn'), angle_for(__env, enumerator, 'enumerator')])) or '_' } }}", Entity
 
   @staticmethod
   def angle_query_decl(*, decl: "Cxx1Declaration") -> "CodeCxxEntity":
@@ -87,7 +88,7 @@ class CodeCxxEntity(InnerGleanSchemaPredicate):
 class CodeCxxAnnotations(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], attributes: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.cxx.Annotations.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, attributes, 'attributes')])) or '_' } }}", cxxAnnotations
+    return f"code.cxx.Annotations.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, attributes, 'attributes')])) or '_' } }}", Annotations
 
   @staticmethod
   def angle_query_attributes(*, attributes: List["Cxx1Attribute"]) -> "CodeCxxAnnotations":

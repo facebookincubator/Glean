@@ -6,6 +6,7 @@ from enum import Enum
 import ast
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 from glean.schema.py.buck import *
+from glean.schema.py.builtin import *
 from glean.schema.py.pp1 import *
 from glean.schema.py.src import *
 

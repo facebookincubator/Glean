@@ -5,10 +5,12 @@ from thrift.py3 import Struct
 from enum import Enum
 import ast
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
+from glean.schema.py.buck import *
+from glean.schema.py.src import *
 
 
-from glean.schema.codebuck.types import (
-    buckEntity,
+from glean.schema.code_buck.types import (
+    Entity,
 )
 
 
@@ -17,7 +19,7 @@ from glean.schema.codebuck.types import (
 class CodeBuckEntity(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], locator: ast.Expr, file: ast.Expr, definition: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.buck.Entity.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, locator, 'locator'), angle_for(__env, file, 'file'), angle_for(__env, definition, 'definition')])) or '_' } }}", buckEntity
+    return f"code.buck.Entity.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, locator, 'locator'), angle_for(__env, file, 'file'), angle_for(__env, definition, 'definition')])) or '_' } }}", Entity
 
   @staticmethod
   def angle_query_locator(*, locator: "BuckLocator") -> "CodeBuckEntity":

@@ -5,6 +5,8 @@ from thrift.py3 import Struct
 from enum import Enum
 import ast
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
+from glean.schema.py.codemarkuptypes import *
+from glean.schema.py.src import *
 
 
 from glean.schema.codexref.types import (

@@ -8,21 +8,21 @@ from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_f
 from glean.schema.py.hack import *
 
 
-from glean.schema.searchhack.types import (
-    hackQueryToScope,
-    hackSearchInEnum,
-    hackSearchInContext,
-    hackSearchInNamespace,
-    hackSearchByName,
-    hackSearchInContainerOrEnum,
-    hackSearchInContainer,
+from glean.schema.search_hack.types import (
+    QueryToScope,
+    SearchInEnum,
+    SearchInContext,
+    SearchInNamespace,
+    SearchByName,
+    SearchInContainerOrEnum,
+    SearchInContainer,
 )
 
 
 class SearchHackQueryToScope(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], query: ast.Expr, scopeName: ast.Expr, scopeNamespace: ast.Expr) -> Tuple[str, Struct]:
-    return f"search.hack.QueryToScope.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, query, 'query'), angle_for(__env, scopeName, 'scopeName'), angle_for(__env, scopeNamespace, 'scopeNamespace')])) or '_' } }}", hackQueryToScope
+    return f"search.hack.QueryToScope.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, query, 'query'), angle_for(__env, scopeName, 'scopeName'), angle_for(__env, scopeNamespace, 'scopeNamespace')])) or '_' } }}", QueryToScope
 
   @staticmethod
   def angle_query(*, query: Optional[List[str]] = None, scopeName: Optional["HackName"] = None, scopeNamespace: Optional[Union[Just["HackNamespaceQName"], Just[None]]] = None) -> "SearchHackQueryToScope":
@@ -33,7 +33,7 @@ class SearchHackQueryToScope(GleanSchemaPredicate):
 class SearchHackSearchInEnum(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, enumName: ast.Expr, enumNamespace: ast.Expr, decl: ast.Expr) -> Tuple[str, Struct]:
-    return f"search.hack.SearchInEnum.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, enumName, 'enumName'), angle_for(__env, enumNamespace, 'enumNamespace'), angle_for(__env, decl, 'decl')])) or '_' } }}", hackSearchInEnum
+    return f"search.hack.SearchInEnum.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, enumName, 'enumName'), angle_for(__env, enumNamespace, 'enumNamespace'), angle_for(__env, decl, 'decl')])) or '_' } }}", SearchInEnum
 
   @staticmethod
   def angle_query(*, name: Optional["HackName"] = None, enumName: Optional["HackName"] = None, enumNamespace: Optional[Union[Just["HackNamespaceQName"], Just[None]]] = None, decl: Optional["HackDeclaration"] = None) -> "SearchHackSearchInEnum":
@@ -44,7 +44,7 @@ class SearchHackSearchInEnum(GleanSchemaPredicate):
 class SearchHackSearchInContext(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, contextName: ast.Expr, contextNamespace: ast.Expr, decl: ast.Expr) -> Tuple[str, Struct]:
-    return f"search.hack.SearchInContext.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, contextName, 'contextName'), angle_for(__env, contextNamespace, 'contextNamespace'), angle_for(__env, decl, 'decl')])) or '_' } }}", hackSearchInContext
+    return f"search.hack.SearchInContext.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, contextName, 'contextName'), angle_for(__env, contextNamespace, 'contextNamespace'), angle_for(__env, decl, 'decl')])) or '_' } }}", SearchInContext
 
   @staticmethod
   def angle_query(*, name: Optional["HackName"] = None, contextName: Optional["HackName"] = None, contextNamespace: Optional[Union[Just["HackNamespaceQName"], Just[None]]] = None, decl: Optional["HackDeclaration"] = None) -> "SearchHackSearchInContext":
@@ -55,7 +55,7 @@ class SearchHackSearchInContext(GleanSchemaPredicate):
 class SearchHackSearchInNamespace(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, namespace_: ast.Expr, decl: ast.Expr) -> Tuple[str, Struct]:
-    return f"search.hack.SearchInNamespace.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, namespace_, 'namespace_'), angle_for(__env, decl, 'decl')])) or '_' } }}", hackSearchInNamespace
+    return f"search.hack.SearchInNamespace.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, namespace_, 'namespace_'), angle_for(__env, decl, 'decl')])) or '_' } }}", SearchInNamespace
 
   @staticmethod
   def angle_query(*, name: Optional["HackName"] = None, namespace_: Optional[Union[Just["HackNamespaceQName"], Just[None]]] = None, decl: Optional["HackDeclaration"] = None) -> "SearchHackSearchInNamespace":
@@ -66,7 +66,7 @@ class SearchHackSearchInNamespace(GleanSchemaPredicate):
 class SearchHackSearchByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, decl: ast.Expr) -> Tuple[str, Struct]:
-    return f"search.hack.SearchByName.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, decl, 'decl')])) or '_' } }}", hackSearchByName
+    return f"search.hack.SearchByName.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, decl, 'decl')])) or '_' } }}", SearchByName
 
   @staticmethod
   def angle_query(*, name: Optional["HackName"] = None, decl: Optional["HackDeclaration"] = None) -> "SearchHackSearchByName":
@@ -77,7 +77,7 @@ class SearchHackSearchByName(GleanSchemaPredicate):
 class SearchHackSearchInContainerOrEnum(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, contextName: ast.Expr, contextNamespace: ast.Expr, decl: ast.Expr) -> Tuple[str, Struct]:
-    return f"search.hack.SearchInContainerOrEnum.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, contextName, 'contextName'), angle_for(__env, contextNamespace, 'contextNamespace'), angle_for(__env, decl, 'decl')])) or '_' } }}", hackSearchInContainerOrEnum
+    return f"search.hack.SearchInContainerOrEnum.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, contextName, 'contextName'), angle_for(__env, contextNamespace, 'contextNamespace'), angle_for(__env, decl, 'decl')])) or '_' } }}", SearchInContainerOrEnum
 
   @staticmethod
   def angle_query(*, name: Optional["HackName"] = None, contextName: Optional["HackName"] = None, contextNamespace: Optional[Union[Just["HackNamespaceQName"], Just[None]]] = None, decl: Optional["HackDeclaration"] = None) -> "SearchHackSearchInContainerOrEnum":
@@ -88,7 +88,7 @@ class SearchHackSearchInContainerOrEnum(GleanSchemaPredicate):
 class SearchHackSearchInContainer(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, containerName: ast.Expr, containerNamespace: ast.Expr, decl: ast.Expr) -> Tuple[str, Struct]:
-    return f"search.hack.SearchInContainer.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, containerName, 'containerName'), angle_for(__env, containerNamespace, 'containerNamespace'), angle_for(__env, decl, 'decl')])) or '_' } }}", hackSearchInContainer
+    return f"search.hack.SearchInContainer.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, containerName, 'containerName'), angle_for(__env, containerNamespace, 'containerNamespace'), angle_for(__env, decl, 'decl')])) or '_' } }}", SearchInContainer
 
   @staticmethod
   def angle_query(*, name: Optional["HackName"] = None, containerName: Optional["HackName"] = None, containerNamespace: Optional[Union[Just["HackNamespaceQName"], Just[None]]] = None, decl: Optional["HackDeclaration"] = None) -> "SearchHackSearchInContainer":
