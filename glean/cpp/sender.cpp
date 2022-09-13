@@ -59,7 +59,7 @@ public:
       future = std::make_unique<folly::Future<thrift::Subst>>(
         send(
           std::make_shared<thrift::ComputedBatch>(std::move(cbatch)))
-        .via(folly::getIOExecutor().get()));
+        .via(folly::getGlobalIOExecutor()));
     }
   }
 
