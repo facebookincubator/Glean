@@ -151,7 +151,7 @@ then
     dir=$(dirname "${dir}")
   done
   if [[ -z "${GLEAN_DIR}" ]] ; then
-    fatal "Couldn't local Glean source directory, please specify --glean"
+    fatal "Couldn't locate Glean source directory, please specify --glean"
   fi
 fi
 
