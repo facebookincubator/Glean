@@ -207,12 +207,12 @@ predicate CxxFileEntityTraceDeclToDefXRefLocations:
   { File, Trace, XRef, Entity } where
     Trace = cxx1.Trace { File, cxx1.Declarations Decls, _ };
     Decl = Decls[..];
+    cxx1.DeclarationNameSpan { Decl, _, Span };
     # Get xrefs from decl to defn ,and defn back to decl family
     ({ Entity, Location } where
       CxxDeclToDefXRefTargetLocation { Decl, Entity, Location } |
       CxxDefToDeclFamilyXRefTargetLocation { Decl, Entity, Location }
     );
-    cxx1.DeclarationNameSpan { Decl, _, Span };
     { Location, { span = Span }} = XRef;
 
 # For a given Decl, it might have a base Defn, build an entity for that
