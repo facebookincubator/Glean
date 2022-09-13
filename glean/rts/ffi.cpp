@@ -7,11 +7,9 @@
  */
 
 #ifdef OSS
-#include <cpp/ffi.h> // @manual
 #include <cpp/memory.h> // @manual
 #include <cpp/wrap.h> // @manual
 #else
-#include <common/hs/util/cpp/ffi.h>
 #include <common/hs/util/cpp/memory.h>
 #include <common/hs/util/cpp/wrap.h>
 #endif
