@@ -418,11 +418,10 @@ public:
   explicit BatchBase(
     const SchemaInventory *inventory,
     size_t cache_capacity);
-  BatchBase(BatchBase&&) = default;
-  BatchBase& operator=(BatchBase&&) = default;
-
   BatchBase(const BatchBase&) = delete;
+  BatchBase(BatchBase&&) = delete;
   BatchBase& operator=(const BatchBase&) = delete;
+  BatchBase& operator=(BatchBase&&) = delete;
 
   const rts::Predicate * FOLLY_NULLABLE predicate(size_t i) const {
     return inventory->predicates[i];
