@@ -196,11 +196,15 @@ runDescribe sym = do
 
 runSearch :: Protocol p => RepoName -> Text -> GlassM p [Text]
 runSearch repoName strName = do
-  SearchByNameResult syms _ <- searchByName req def
+  SymbolSearchResult syms _ <- searchSymbol req def
   return (map textShow syms)
   where
-    req = SearchByNameRequest ctx strName False True
-    ctx = SearchContext (Just repoName) Nothing{-lang-} def{- kinds -}
+    req = SymbolSearchRequest
+        strName
+        (Just repoName)
+        def -- language
+        def -- kinds
+        (SymbolSearchOptions False False False True False)
 
 runResolve :: Protocol p => SymbolId -> GlassM p [Text]
 runResolve sym = do

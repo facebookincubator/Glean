@@ -511,22 +511,6 @@ service GlassService extends fb303.FacebookService {
     3: RequestOptions options,
   ) throws (1: ServerException e);
 
-  // Find symbol ids based on exact local name
-  // (e.g. Glean)
-  // (deprecated)
-  SearchByNameResult searchByName(
-    1: SearchByNameRequest request,
-    3: RequestOptions options,
-  ) throws (1: ServerException e);
-
-  // Find symbol ids based on local name prefix
-  // (e.g. Glea).
-  // (deprecated)
-  SearchByNameResult searchByNamePrefix(
-    1: SearchByNameRequest request,
-    2: RequestOptions options,
-  ) throws (1: ServerException e);
-
   // Find symbol ids based on the prefix of a full symbol id
   // (e.g. www/php/Gl).
   // (deprecated)

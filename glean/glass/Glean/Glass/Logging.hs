@@ -65,9 +65,6 @@ instance LogRequest SymbolPath where
 instance LogRequest Location where
   logRequest = logLocationSG Logger.setFilepath Logger.setRepo
 
-instance LogRequest SearchByNameRequest where
-  logRequest = logSearchByNameRequestSG Logger.setSymbol Logger.setRepo
-
 instance LogRequest SymbolSearchRequest where
   logRequest = logSymbolSearchRequestSG Logger.setSymbol Logger.setRepo
 
@@ -130,10 +127,6 @@ instance LogResult SymbolId where
 
 instance LogResult [SymbolId] where
   logResult (xs, log) = log <> Logger.setItemCount (length xs)
-
-instance LogResult SearchByNameResult where
-  logResult (SearchByNameResult{..}, log) =
-    log <> Logger.setItemCount (length searchByNameResult_symbols)
 
 instance LogResult SymbolSearchResult where
   logResult (SymbolSearchResult{..}, log) =
@@ -257,9 +250,6 @@ instance LogError SymbolPath where
 instance LogError Location where
   logError = logLocationSG Errors.setFilepath Errors.setRepo
 
-instance LogError SearchByNameRequest where
-  logError = logSearchByNameRequestSG Errors.setSymbol Errors.setRepo
-
 instance LogError SymbolSearchRequest where
   logError = logSymbolSearchRequestSG Errors.setSymbol Errors.setRepo
 
@@ -296,15 +286,6 @@ logDocumentSymbolsRequestSG :: Semigroup a => (Text -> a) -> (Text -> a)
 logDocumentSymbolsRequestSG f g DocumentSymbolsRequest{..} =
     f (unPath documentSymbolsRequest_filepath) <>
     g (unRepoName documentSymbolsRequest_repository)
-
-logSearchByNameRequestSG :: Semigroup a => (Text -> a) -> (Text -> a)
-  -> SearchByNameRequest -> a
-logSearchByNameRequestSG logQuery logRepo SearchByNameRequest{..} =
-  case repo of
-    Nothing -> logQuery searchByNameRequest_name
-    Just r -> logRepo r <> logQuery searchByNameRequest_name
-  where
-    repo = unRepoName <$> searchContext_repo_name searchByNameRequest_context
 
 logSymbolSearchRequestSG :: Semigroup a => (Text -> a) -> (Text -> a)
   -> SymbolSearchRequest -> a

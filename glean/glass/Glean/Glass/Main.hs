@@ -134,8 +134,6 @@ glassHandler env cmd = case cmd of
   SearchRelated r opts req -> Handler.searchRelated env r opts req
 
   -- deprecated
-  SearchByName r opts -> Handler.searchByName env r opts
-  SearchByNamePrefix r opts -> Handler.searchByNamePrefix env r opts
   SearchBySymbolId r opts -> Handler.searchBySymbolId env r opts
 
   -- Create an incremental database

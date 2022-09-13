@@ -32,8 +32,6 @@ module Glean.Glass.Handler
   , searchRelated
 
   -- * deprecated
-  , searchByName
-  , searchByNamePrefix
   , searchBySymbolId
 
   -- * indexing requests
@@ -136,9 +134,7 @@ import Glean.Glass.SymbolSig
     ( ToSymbolSignature(toSymbolSignature) )
 import Glean.Glass.SymbolKind ( findSymbolKind )
 import Glean.Glass.Types
-    ( SearchContext(searchContext_kinds, searchContext_repo_name,
-                    searchContext_language),
-      SymbolPath(SymbolPath, symbolPath_range, symbolPath_repository,
+    ( SymbolPath(SymbolPath, symbolPath_range, symbolPath_repository,
                  symbolPath_filepath),
       Attribute(Attribute_aInteger, Attribute_aString),
       KeyedAttribute(KeyedAttribute),
@@ -150,11 +146,8 @@ import Glean.Glass.Types
       DefinitionSymbolX(DefinitionSymbolX),
       ReferenceRangeSymbolX(ReferenceRangeSymbolX),
       SearchBySymbolIdResult(SearchBySymbolIdResult),
-      SearchByNameResult(..),
-      SearchByNameRequest(..),
       SearchRelatedRequest(..),
       SearchRelatedResult(..),
-      SearchContext(..),
       SymbolSearchRequest(..),
       SymbolSearchResult(..),
       SymbolResult(..),
@@ -512,60 +505,6 @@ joinSearchResults mlimit terse sorted xs = SymbolSearchResult syms $
             Query.unRepoSearchResult) xs
 
     flattened = concatMap Query.unRepoSearchResult xs
-
--- | Search for entities by string fragments of names
--- (deprecated)
-searchByName
-  :: Glass.Env
-  -> SearchByNameRequest
-  -> RequestOptions
-  -> IO SearchByNameResult
-searchByName env SearchByNameRequest{..} opt = do
-    SymbolSearchResult{..} <- searchSymbol env SymbolSearchRequest{..} opt
-    let searchByNameResult_symbols = map symbolResult_symbol
-          symbolSearchResult_symbols
-        searchByNameResult_symbolDetails = symbolSearchResult_symbolDetails
-    pure $ SearchByNameResult{..}
-  where
-    SearchContext{..} = searchByNameRequest_context
-    symbolSearchRequest_name = searchByNameRequest_name
-    symbolSearchRequest_repo_name = searchContext_repo_name
-    symbolSearchRequest_language = Set.fromList
-      (maybeToList searchContext_language)
-    symbolSearchRequest_kinds = searchContext_kinds
-    symbolSearchOptions_detailedResults = searchByNameRequest_detailedResults
-    symbolSearchOptions_exactMatch = True
-    symbolSearchOptions_ignoreCase = searchByNameRequest_ignoreCase
-    symbolSearchOptions_namespaceSearch = False
-    symbolSearchOptions_sortResults = False
-    symbolSearchRequest_options = SymbolSearchOptions{..}
-
--- | Search for entities by string fragments of names
--- (deprecated)
-searchByNamePrefix
-  :: Glass.Env
-  -> SearchByNameRequest
-  -> RequestOptions
-  -> IO SearchByNameResult
-searchByNamePrefix env SearchByNameRequest{..} opt = do
-    SymbolSearchResult{..} <- searchSymbol env SymbolSearchRequest{..} opt
-    let searchByNameResult_symbols = map symbolResult_symbol
-          symbolSearchResult_symbols
-        searchByNameResult_symbolDetails = symbolSearchResult_symbolDetails
-    pure $ SearchByNameResult{..}
-  where
-    SearchContext{..} = searchByNameRequest_context
-    symbolSearchRequest_name = searchByNameRequest_name
-    symbolSearchRequest_repo_name = searchContext_repo_name
-    symbolSearchRequest_language = Set.fromList
-      (maybeToList searchContext_language)
-    symbolSearchRequest_kinds = searchContext_kinds
-    symbolSearchOptions_detailedResults = searchByNameRequest_detailedResults
-    symbolSearchOptions_exactMatch = False -- just this
-    symbolSearchOptions_ignoreCase = searchByNameRequest_ignoreCase
-    symbolSearchOptions_namespaceSearch = False
-    symbolSearchOptions_sortResults = False
-    symbolSearchRequest_options = SymbolSearchOptions{..}
 
 -- | Search for entities by symbol id prefix
 -- (deprecated)
