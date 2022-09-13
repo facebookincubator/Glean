@@ -696,6 +696,7 @@ library schema
         Glean.Schema.SearchHs.Types
         Glean.Schema.SearchPp.Types
         Glean.Schema.Src.Types
+        Glean.Schema.SymbolidCxx.Types
         Glean.Schema.Sys.Types
         Glean.Schema.Thrift.Types
     build-depends:
