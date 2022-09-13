@@ -14,16 +14,18 @@ import Control.Exception
 import Control.Monad
 import qualified Data.Bifunctor
 import qualified Data.ByteString as B
+import Data.Char (isSpace)
 import Data.Default
 import Data.Foldable
 import qualified Data.HashMap.Strict as HashMap
-import qualified Data.Map.Strict as Map
 import Data.List (isInfixOf)
 import Data.List.Split
+import qualified Data.Map.Strict as Map
 import Data.Proxy
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Options.Applicative
+import Options.Applicative.Help (vcat)
 import System.IO
 import System.Environment
 
@@ -31,6 +33,7 @@ import Util.Control.Exception
 import Util.EventBase
 import Util.IO
 import Util.OptParse
+import Util.Timing (timeIt, showTime, showAllocs)
 import System.Exit (exitWith, ExitCode(..))
 
 import qualified Glean hiding (options)
@@ -97,6 +100,7 @@ plugins =
   , plugin @ShellCommand
   , plugin @CompleteCommand
   , plugin @IndexCommand
+  , plugin @ScriptCommand
 #if FACEBOOK
   , plugin @FacebookPlugin
 #endif
@@ -157,6 +161,96 @@ withRemoteBackups _evb svc = case svc of
 -- Commands
 
 -- A few small commands that don't deserve their own modules.
+
+data ScriptCommand
+  = Script
+      { scriptInput :: String
+      , scriptTime :: Maybe String
+      , scriptVerbose :: Bool
+      }
+
+instance Plugin ScriptCommand where
+  parseCommand =
+    commandParser "script"
+      (progDesc "Execute multiple commands"
+      <> footerDoc (Just $ vcat
+          [ "Example: glean --db-memory script <<EOF"
+          , "create --db foo/1"
+          , "write --db foo/1 --finish /some/batch"
+          , "query --db foo/1 \"src.File _\""
+          , "EOF"
+          ]))
+      $ do
+          scriptVerbose <- switch (
+            short 'v' <>
+            long "verbose" <>
+            help "Print executed commands"
+            )
+          scriptTime <- optional $ strOption (
+            short 't' <>
+            long "time" <>
+            metavar "FILE" <>
+            help "Print duration of individual commands (- means stdout)"
+            )
+          scriptInput <- strArgument (
+            metavar "FILE" <>
+            help ("File containing commands to execute (- means read from "
+            <> "stdin). Commands are specified just like they would be on the "
+            <> "command line. Commands can span multiple lines. A non-indented "
+            <> "line starts a new command which spans all subsequent indented "
+            <> "lines. Multiple words can be grouped into one argument by "
+            <> " quoting (\"...\"). Lines which start with # are ignored.")
+            )
+          return Script{..}
+
+  runCommand evb cfg backend Script{..} = do
+    args <- split [] [] <$> case scriptInput of
+      "-" -> getContents
+      file -> readFile file
+    cmds <- forM args $ handleParseResult . execParserPure
+      (prefs subparserInline)
+      (info
+        (asum
+        [ PluginCommand <$> parseCommand @c
+        | PluginType (Proxy :: Proxy c) <- plugins
+        ])
+        mempty)
+    let withTimeFile f = case scriptTime of
+          Nothing -> f $ const $ return ()
+          Just "-" -> f $ \s -> putStrLn s >> hFlush stdout
+          Just path -> withFile path WriteMode $ f . hPutStrLn
+    withTimeFile $ \time ->
+      forM_ (zip3 [1..] (map head args) cmds) $
+        \(i, name, PluginCommand cmd) -> do
+          when scriptVerbose $
+            putStrLn $ "Step " <> show (i::Int) <> ": " <> name
+          (t,b,_) <- timeIt $ runCommand evb cfg backend cmd
+          time $ unwords [show (i::Int), name, showTime t, showAllocs b]
+    where
+      split ws cs "" = filter (not . null) $ reverse $ reverse ws : cs
+      split ws cs ('#':s) = split ws cs $ dropWhile (/= '\n') s
+      split ws cs ('\n':x:s)
+        | isSpace x = split ws cs s
+        | otherwise = split [] (reverse ws : cs) (x:s)
+      split ws cs ('\\':x:s)
+        | isSpace x = split ws cs s
+      split ws cs (x:s)
+        | isSpace x = split ws cs s
+      split ws cs s = case word "" s of (w,t) -> split (w:ws) cs t
+
+      word w "" = (reverse w, "")
+      word w ('"':s) = string w s
+      word w ('\\':c:s)
+        | isSpace c = (reverse w, '\\':c:s)
+        | otherwise = word (c:w) s
+      word w (c:s)
+        | isSpace c = (reverse w, c:s)
+        | otherwise = word (c:w) s
+
+      string w "" = (reverse w, "")
+      string w ('"':s) = word w s
+      string w ('\\':c:s) = string (c:w) s
+      string w (c:s) = string (c:w) s
 
 data UnfinishCommand
   = Unfinish
