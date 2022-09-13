@@ -194,6 +194,7 @@ SCHEMAS= \
 	search_hs \
 	search_pp \
 	src \
+	symbolid_cxx \
 	sys \
 	thrift \
 
