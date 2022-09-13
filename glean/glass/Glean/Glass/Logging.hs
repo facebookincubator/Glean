@@ -116,7 +116,8 @@ instance LogResult LocationRange where
 instance LogResult SymbolDescription where
   logResult (SymbolDescription{..}, log) = log <>
     logResult (symbolDescription_location, log) <>
-    logResult (symbolDescription_sym, log)
+    logResult (symbolDescription_sym, log) <>
+    Logger.setItemCount 1
 
 instance LogResult SymbolPath where
   logResult (SymbolPath{..}, log) = log <>
