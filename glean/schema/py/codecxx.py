@@ -19,7 +19,8 @@ from glean.schema.code_cxx.types import (
 class CodeCxxDeclToDef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], decl: ast.Expr, defn: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.cxx.DeclToDef.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, defn, 'defn')])) or '_' } }}", DeclToDef
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, defn, 'defn')]))
+    return f"code.cxx.DeclToDef.4 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DeclToDef
 
   @staticmethod
   def angle_query(*, decl: Optional["Cxx1Declaration"] = None, defn: Optional["CodeCxxDefinition"] = None) -> "CodeCxxDeclToDef":
@@ -32,7 +33,8 @@ class CodeCxxDeclToDef(GleanSchemaPredicate):
 class CodeCxxDefinition(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], record_: ast.Expr, function_: ast.Expr, enum_: ast.Expr, objcMethod: ast.Expr, objcContainer: ast.Expr, variable: ast.Expr, namespace_: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.cxx.Definition.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, record_, 'record_'), angle_for(__env, function_, 'function_'), angle_for(__env, enum_, 'enum_'), angle_for(__env, objcMethod, 'objcMethod'), angle_for(__env, objcContainer, 'objcContainer'), angle_for(__env, variable, 'variable'), angle_for(__env, namespace_, 'namespace_')])) or '_' } }}", Definition
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, record_, 'record_'), angle_for(__env, function_, 'function_'), angle_for(__env, enum_, 'enum_'), angle_for(__env, objcMethod, 'objcMethod'), angle_for(__env, objcContainer, 'objcContainer'), angle_for(__env, variable, 'variable'), angle_for(__env, namespace_, 'namespace_')]))
+    return f"code.cxx.Definition.4 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Definition
 
   @staticmethod
   def angle_query_record_(*, record_: Optional["Cxx1RecordDefinition"] = None) -> "CodeCxxDefinition":
@@ -68,7 +70,8 @@ class CodeCxxDefinition(InnerGleanSchemaPredicate):
 class CodeCxxEntity(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], decl: ast.Expr, defn: ast.Expr, enumerator: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.cxx.Entity.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, defn, 'defn'), angle_for(__env, enumerator, 'enumerator')])) or '_' } }}", Entity
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, defn, 'defn'), angle_for(__env, enumerator, 'enumerator')]))
+    return f"code.cxx.Entity.4 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Entity
 
   @staticmethod
   def angle_query_decl(*, decl: Optional["Cxx1Declaration"] = None) -> "CodeCxxEntity":
@@ -88,7 +91,8 @@ class CodeCxxEntity(InnerGleanSchemaPredicate):
 class CodeCxxAnnotations(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], attributes: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.cxx.Annotations.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, attributes, 'attributes')])) or '_' } }}", Annotations
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, attributes, 'attributes')]))
+    return f"code.cxx.Annotations.4 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Annotations
 
   @staticmethod
   def angle_query_attributes(*, attributes: Optional[List["Cxx1Attribute"]] = None) -> "CodeCxxAnnotations":

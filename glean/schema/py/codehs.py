@@ -18,7 +18,8 @@ from glean.schema.code_hs.types import (
 class CodeHsEntity(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], definition: ast.Expr, function_: ast.Expr, class_: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.hs.Entity.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, definition, 'definition'), angle_for(__env, function_, 'function_'), angle_for(__env, class_, 'class_')])) or '_' } }}", Entity
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, definition, 'definition'), angle_for(__env, function_, 'function_'), angle_for(__env, class_, 'class_')]))
+    return f"code.hs.Entity.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Entity
 
   @staticmethod
   def angle_query_definition(*, definition: Optional["HsDefinition"] = None) -> "CodeHsEntity":

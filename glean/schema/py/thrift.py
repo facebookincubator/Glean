@@ -120,7 +120,8 @@ from glean.schema.thrift.types import (
 class ThriftToPython(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], thrift: ast.Expr, lang: ast.Expr, python: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.ToPython.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, thrift, 'thrift'), angle_for(__env, lang, 'lang'), angle_for(__env, python, 'python')])) or '_' } }}", ToPython
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, thrift, 'thrift'), angle_for(__env, lang, 'lang'), angle_for(__env, python, 'python')]))
+    return f"thrift.ToPython.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ToPython
 
   @staticmethod
   def angle_query(*, thrift: Optional["ThriftFile"] = None, lang: Optional["ThriftLang"] = None, python: Optional[List["ThriftFromPython"]] = None) -> "ThriftToPython":
@@ -131,7 +132,8 @@ class ThriftToPython(GleanSchemaPredicate):
 class ThriftFunctionSpecification(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, result: ast.Expr, arguments: ast.Expr, throws_: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.FunctionSpecification.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, result, 'result'), angle_for(__env, arguments, 'arguments'), angle_for(__env, throws_, 'throws_')])) or '_' } }}", FunctionSpecification
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, result, 'result'), angle_for(__env, arguments, 'arguments'), angle_for(__env, throws_, 'throws_')]))
+    return f"thrift.FunctionSpecification.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FunctionSpecification
 
   @staticmethod
   def angle_query(*, name: Optional["ThriftFunctionName"] = None, result: Optional["ThriftResultType"] = None, arguments: Optional[List["ThriftUnqualField"]] = None, throws_: Optional[List["ThriftExceptionSpecification"]] = None) -> "ThriftFunctionSpecification":
@@ -142,7 +144,8 @@ class ThriftFunctionSpecification(GleanSchemaPredicate):
 class ThriftExceptionType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, fields: ast.Expr, structuredAnnotations: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.ExceptionType.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, fields, 'fields'), angle_for(__env, structuredAnnotations, 'structuredAnnotations')])) or '_' } }}", ExceptionType
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, fields, 'fields'), angle_for(__env, structuredAnnotations, 'structuredAnnotations')]))
+    return f"thrift.ExceptionType.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ExceptionType
 
   @staticmethod
   def angle_query(*, name: Optional["ThriftQualName"] = None, fields: Optional[List["ThriftFieldSpecification"]] = None, structuredAnnotations: Optional[List["ThriftStructuredAnnotation"]] = None) -> "ThriftExceptionType":
@@ -153,7 +156,8 @@ class ThriftExceptionType(GleanSchemaPredicate):
 class ThriftTypeDefType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], alias: ast.Expr, type_: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.TypeDefType.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, alias, 'alias'), angle_for(__env, type_, 'type_')])) or '_' } }}", TypeDefType
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, alias, 'alias'), angle_for(__env, type_, 'type_')]))
+    return f"thrift.TypeDefType.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", TypeDefType
 
   @staticmethod
   def angle_query(*, alias: Optional["ThriftQualName"] = None, type_: Optional["ThriftTypeSpecification"] = None) -> "ThriftTypeDefType":
@@ -164,7 +168,8 @@ class ThriftTypeDefType(GleanSchemaPredicate):
 class ThriftFromCpp2(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], cpp2: ast.Expr, thrift: ast.Expr, role: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.FromCpp2.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, cpp2, 'cpp2'), angle_for(__env, thrift, 'thrift'), angle_for(__env, role, 'role')])) or '_' } }}", FromCpp2
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, cpp2, 'cpp2'), angle_for(__env, thrift, 'thrift'), angle_for(__env, role, 'role')]))
+    return f"thrift.FromCpp2.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FromCpp2
 
   @staticmethod
   def angle_query(*, cpp2: Optional["ThriftCpp2Item"] = None, thrift: Optional["ThriftItem"] = None, role: Optional["ThriftGenRole"] = None) -> "ThriftFromCpp2":
@@ -175,7 +180,8 @@ class ThriftFromCpp2(GleanSchemaPredicate):
 class ThriftFromHack(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], hack: ast.Expr, thrift: ast.Expr, role: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.FromHack.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, hack, 'hack'), angle_for(__env, thrift, 'thrift'), angle_for(__env, role, 'role')])) or '_' } }}", FromHack
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, hack, 'hack'), angle_for(__env, thrift, 'thrift'), angle_for(__env, role, 'role')]))
+    return f"thrift.FromHack.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FromHack
 
   @staticmethod
   def angle_query(*, hack: Optional["ThriftHackKind"] = None, thrift: Optional["ThriftItem"] = None, role: Optional["ThriftGenRole"] = None) -> "ThriftFromHack":
@@ -186,7 +192,8 @@ class ThriftFromHack(GleanSchemaPredicate):
 class ThriftFileDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, decl: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.FileDeclaration.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, decl, 'decl')])) or '_' } }}", FileDeclaration
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, decl, 'decl')]))
+    return f"thrift.FileDeclaration.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FileDeclaration
 
   @staticmethod
   def angle_query(*, file: Optional["ThriftFile"] = None, decl: Optional["ThriftDeclaration"] = None) -> "ThriftFileDeclaration":
@@ -197,7 +204,8 @@ class ThriftFileDeclaration(GleanSchemaPredicate):
 class ThriftPythonField(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, class_: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.PythonField.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, class_, 'class_')])) or '_' } }}", PythonField
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, class_, 'class_')]))
+    return f"thrift.PythonField.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", PythonField
 
   @staticmethod
   def angle_query(*, name: Optional["ThriftPythonName"] = None, class_: Optional["ThriftPythonClass"] = None) -> "ThriftPythonField":
@@ -208,7 +216,8 @@ class ThriftPythonField(GleanSchemaPredicate):
 class ThriftFileError(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, error: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.FileError.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, error, 'error')])) or '_' } }}", FileError
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, error, 'error')]))
+    return f"thrift.FileError.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FileError
 
   @staticmethod
   def angle_query(*, file: Optional["ThriftFile"] = None, error: Optional[str] = None) -> "ThriftFileError":
@@ -219,7 +228,8 @@ class ThriftFileError(GleanSchemaPredicate):
 class ThriftPythonModule(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.PythonModule.7 { angle_for(__env, arg, None) or '_' }", PythonModule
+    query_fields =  angle_for(__env, arg, None)
+    return f"thrift.PythonModule.7 { query_fields if query_fields else '_' }", PythonModule
 
   @staticmethod
   def angle_query(*, arg: Optional["ThriftPythonName"] = None) -> "ThriftPythonModule":
@@ -230,7 +240,8 @@ class ThriftPythonModule(GleanSchemaPredicate):
 class ThriftConstantType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, type_: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.ConstantType.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, type_, 'type_')])) or '_' } }}", ConstantType
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, type_, 'type_')]))
+    return f"thrift.ConstantType.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ConstantType
 
   @staticmethod
   def angle_query(*, name: Optional["ThriftQualName"] = None, type_: Optional["ThriftTypeSpecification"] = None) -> "ThriftConstantType":
@@ -241,7 +252,8 @@ class ThriftConstantType(GleanSchemaPredicate):
 class ThriftFunctionName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], service_: ast.Expr, name: ast.Expr, locName: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.FunctionName.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, service_, 'service_'), angle_for(__env, name, 'name'), angle_for(__env, locName, 'locName')])) or '_' } }}", FunctionName
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, service_, 'service_'), angle_for(__env, name, 'name'), angle_for(__env, locName, 'locName')]))
+    return f"thrift.FunctionName.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FunctionName
 
   @staticmethod
   def angle_query(*, service_: Optional["ThriftServiceName"] = None, name: Optional["ThriftIdentifier"] = None, locName: Optional["ThriftLoc"] = None) -> "ThriftFunctionName":
@@ -252,7 +264,8 @@ class ThriftFunctionName(GleanSchemaPredicate):
 class ThriftTypeSpecification(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], primitive: ast.Expr, container: ast.Expr, named: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.TypeSpecification.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, primitive, 'primitive'), angle_for(__env, container, 'container'), angle_for(__env, named, 'named')])) or '_' } }}", TypeSpecification
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, primitive, 'primitive'), angle_for(__env, container, 'container'), angle_for(__env, named, 'named')]))
+    return f"thrift.TypeSpecification.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", TypeSpecification
 
   @staticmethod
   def angle_query_primitive(*, primitive: Optional["ThriftPrimitiveType"] = None) -> "ThriftTypeSpecification":
@@ -272,7 +285,8 @@ class ThriftTypeSpecification(GleanSchemaPredicate):
 class ThriftNamespaceName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.NamespaceName.7 { angle_for(__env, arg, None) or '_' }", NamespaceName
+    query_fields =  angle_for(__env, arg, None)
+    return f"thrift.NamespaceName.7 { query_fields if query_fields else '_' }", NamespaceName
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "ThriftNamespaceName":
@@ -283,7 +297,8 @@ class ThriftNamespaceName(GleanSchemaPredicate):
 class ThriftExceptionVal(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.ExceptionVal.7 { angle_for(__env, arg, None) or '_' }", ExceptionVal
+    query_fields =  angle_for(__env, arg, None)
+    return f"thrift.ExceptionVal.7 { query_fields if query_fields else '_' }", ExceptionVal
 
   @staticmethod
   def angle_query(*, arg: Optional["ThriftStructVal"] = None) -> "ThriftExceptionVal":
@@ -294,7 +309,8 @@ class ThriftExceptionVal(GleanSchemaPredicate):
 class ThriftHackRecord(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, kind: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.HackRecord.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, kind, 'kind')])) or '_' } }}", HackRecord
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, kind, 'kind')]))
+    return f"thrift.HackRecord.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", HackRecord
 
   @staticmethod
   def angle_query(*, name: Optional["ThriftHackName"] = None, kind: Optional["ThriftHackRecordKind"] = None) -> "ThriftHackRecord":
@@ -305,7 +321,8 @@ class ThriftHackRecord(GleanSchemaPredicate):
 class ThriftPythonMethod(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, class_: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.PythonMethod.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, class_, 'class_')])) or '_' } }}", PythonMethod
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, class_, 'class_')]))
+    return f"thrift.PythonMethod.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", PythonMethod
 
   @staticmethod
   def angle_query(*, name: Optional["ThriftPythonName"] = None, class_: Optional["ThriftPythonClass"] = None) -> "ThriftPythonMethod":
@@ -316,7 +333,8 @@ class ThriftPythonMethod(GleanSchemaPredicate):
 class ThriftPythonName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.PythonName.7 { angle_for(__env, arg, None) or '_' }", PythonName
+    query_fields =  angle_for(__env, arg, None)
+    return f"thrift.PythonName.7 { query_fields if query_fields else '_' }", PythonName
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "ThriftPythonName":
@@ -327,7 +345,8 @@ class ThriftPythonName(GleanSchemaPredicate):
 class ThriftNamespace(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], target: ast.Expr, name: ast.Expr, namespace_: ast.Expr, quoted: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.Namespace.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, name, 'name'), angle_for(__env, namespace_, 'namespace_'), angle_for(__env, quoted, 'quoted')])) or '_' } }}", Namespace
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, name, 'name'), angle_for(__env, namespace_, 'namespace_'), angle_for(__env, quoted, 'quoted')]))
+    return f"thrift.Namespace.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Namespace
 
   @staticmethod
   def angle_query(*, target: Optional["ThriftFile"] = None, name: Optional["ThriftNamespaceName"] = None, namespace_: Optional["ThriftNamespaceValue"] = None, quoted: Optional[bool] = None) -> "ThriftNamespace":
@@ -338,7 +357,8 @@ class ThriftNamespace(GleanSchemaPredicate):
 class ThriftServiceName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, locName: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.ServiceName.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, locName, 'locName')])) or '_' } }}", ServiceName
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, locName, 'locName')]))
+    return f"thrift.ServiceName.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ServiceName
 
   @staticmethod
   def angle_query(*, name: Optional["ThriftQualName"] = None, locName: Optional["ThriftLoc"] = None) -> "ThriftServiceName":
@@ -349,7 +369,8 @@ class ThriftServiceName(GleanSchemaPredicate):
 class ThriftIncludeStatement(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], target: ast.Expr, source: ast.Expr, locSource: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.IncludeStatement.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, source, 'source'), angle_for(__env, locSource, 'locSource')])) or '_' } }}", IncludeStatement
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, source, 'source'), angle_for(__env, locSource, 'locSource')]))
+    return f"thrift.IncludeStatement.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", IncludeStatement
 
   @staticmethod
   def angle_query(*, target: Optional["ThriftFile"] = None, source: Optional["ThriftFile"] = None, locSource: Optional["ThriftLoc"] = None) -> "ThriftIncludeStatement":
@@ -360,7 +381,8 @@ class ThriftIncludeStatement(GleanSchemaPredicate):
 class ThriftTargetX(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], target: ast.Expr, fileRef: ast.Expr, locRef: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.TargetX.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, fileRef, 'fileRef'), angle_for(__env, locRef, 'locRef')])) or '_' } }}", TargetX
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, fileRef, 'fileRef'), angle_for(__env, locRef, 'locRef')]))
+    return f"thrift.TargetX.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", TargetX
 
   @staticmethod
   def angle_query(*, target: Optional["ThriftXRefTarget"] = None, fileRef: Optional["ThriftFile"] = None, locRef: Optional["ThriftLoc"] = None) -> "ThriftTargetX":
@@ -371,7 +393,8 @@ class ThriftTargetX(GleanSchemaPredicate):
 class ThriftPythonClassContains(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], class_: ast.Expr, methods: ast.Expr, fields: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.PythonClassContains.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, class_, 'class_'), angle_for(__env, methods, 'methods'), angle_for(__env, fields, 'fields')])) or '_' } }}", PythonClassContains
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, class_, 'class_'), angle_for(__env, methods, 'methods'), angle_for(__env, fields, 'fields')]))
+    return f"thrift.PythonClassContains.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", PythonClassContains
 
   @staticmethod
   def angle_query(*, class_: Optional["ThriftPythonClass"] = None, methods: Optional[List["ThriftPythonMethod"]] = None, fields: Optional[List["ThriftPythonField"]] = None) -> "ThriftPythonClassContains":
@@ -382,7 +405,8 @@ class ThriftPythonClassContains(GleanSchemaPredicate):
 class ThriftPythonFileModule(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, module: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.PythonFileModule.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, module, 'module')])) or '_' } }}", PythonFileModule
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, module, 'module')]))
+    return f"thrift.PythonFileModule.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", PythonFileModule
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, module: Optional["ThriftPythonModule"] = None) -> "ThriftPythonFileModule":
@@ -393,7 +417,8 @@ class ThriftPythonFileModule(GleanSchemaPredicate):
 class ThriftTypeDefException(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], alias: ast.Expr, type_: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.TypeDefException.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, alias, 'alias'), angle_for(__env, type_, 'type_')])) or '_' } }}", TypeDefException
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, alias, 'alias'), angle_for(__env, type_, 'type_')]))
+    return f"thrift.TypeDefException.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", TypeDefException
 
   @staticmethod
   def angle_query(*, alias: Optional["ThriftNamedDecl"] = None, type_: Optional["ThriftExceptionSpecName"] = None) -> "ThriftTypeDefException":
@@ -404,7 +429,8 @@ class ThriftTypeDefException(GleanSchemaPredicate):
 class ThriftEnumValue(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], enum_: ast.Expr, name: ast.Expr, locName: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.EnumValue.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, enum_, 'enum_'), angle_for(__env, name, 'name'), angle_for(__env, locName, 'locName')])) or '_' } }}", EnumValue
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, enum_, 'enum_'), angle_for(__env, name, 'name'), angle_for(__env, locName, 'locName')]))
+    return f"thrift.EnumValue.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", EnumValue
 
   @staticmethod
   def angle_query(*, enum_: Optional["ThriftNamedType"] = None, name: Optional["ThriftIdentifier"] = None, locName: Optional["ThriftLoc"] = None) -> "ThriftEnumValue":
@@ -415,7 +441,8 @@ class ThriftEnumValue(GleanSchemaPredicate):
 class ThriftServiceDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, functions: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.ServiceDefinition.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, functions, 'functions')])) or '_' } }}", ServiceDefinition
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, functions, 'functions')]))
+    return f"thrift.ServiceDefinition.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ServiceDefinition
 
   @staticmethod
   def angle_query(*, name: Optional["ThriftServiceName"] = None, functions: Optional[List["ThriftFunctionSpecification"]] = None) -> "ThriftServiceDefinition":
@@ -426,7 +453,8 @@ class ThriftServiceDefinition(GleanSchemaPredicate):
 class ThriftNamespaceValue(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.NamespaceValue.7 { angle_for(__env, arg, None) or '_' }", NamespaceValue
+    query_fields =  angle_for(__env, arg, None)
+    return f"thrift.NamespaceValue.7 { query_fields if query_fields else '_' }", NamespaceValue
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "ThriftNamespaceValue":
@@ -437,7 +465,8 @@ class ThriftNamespaceValue(GleanSchemaPredicate):
 class ThriftCompileTarget(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], includes: ast.Expr, lang: ast.Expr, compile: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.CompileTarget.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, includes, 'includes'), angle_for(__env, lang, 'lang'), angle_for(__env, compile, 'compile')])) or '_' } }}", CompileTarget
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, includes, 'includes'), angle_for(__env, lang, 'lang'), angle_for(__env, compile, 'compile')]))
+    return f"thrift.CompileTarget.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", CompileTarget
 
   @staticmethod
   def angle_query(*, includes: Optional["ThriftFileTarget"] = None, lang: Optional["ThriftFbcodeLang"] = None, compile: Optional["BuckTarget"] = None) -> "ThriftCompileTarget":
@@ -448,7 +477,8 @@ class ThriftCompileTarget(GleanSchemaPredicate):
 class ThriftPythonModuleFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], module: ast.Expr, file: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.PythonModuleFile.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, module, 'module'), angle_for(__env, file, 'file')])) or '_' } }}", PythonModuleFile
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, module, 'module'), angle_for(__env, file, 'file')]))
+    return f"thrift.PythonModuleFile.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", PythonModuleFile
 
   @staticmethod
   def angle_query(*, module: Optional["ThriftPythonModule"] = None, file: Optional["SrcFile"] = None) -> "ThriftPythonModuleFile":
@@ -459,7 +489,8 @@ class ThriftPythonModuleFile(GleanSchemaPredicate):
 class ThriftFileTarget(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, target: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.FileTarget.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, target, 'target')])) or '_' } }}", FileTarget
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, target, 'target')]))
+    return f"thrift.FileTarget.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FileTarget
 
   @staticmethod
   def angle_query(*, file: Optional["ThriftFile"] = None, target: Optional["BuckTarget"] = None) -> "ThriftFileTarget":
@@ -470,7 +501,8 @@ class ThriftFileTarget(GleanSchemaPredicate):
 class ThriftEnumValueDef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, value: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.EnumValueDef.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, value, 'value')])) or '_' } }}", EnumValueDef
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, value, 'value')]))
+    return f"thrift.EnumValueDef.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", EnumValueDef
 
   @staticmethod
   def angle_query(*, name: Optional["ThriftEnumValue"] = None, value: Optional["ThriftIntegerLiteral"] = None) -> "ThriftEnumValueDef":
@@ -481,7 +513,8 @@ class ThriftEnumValueDef(GleanSchemaPredicate):
 class ThriftHackRecordContains(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], record: ast.Expr, methods: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.HackRecordContains.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, record, 'record'), angle_for(__env, methods, 'methods')])) or '_' } }}", HackRecordContains
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, record, 'record'), angle_for(__env, methods, 'methods')]))
+    return f"thrift.HackRecordContains.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", HackRecordContains
 
   @staticmethod
   def angle_query(*, record: Optional["ThriftHackRecord"] = None, methods: Optional[List["ThriftHackMethod"]] = None) -> "ThriftHackRecordContains":
@@ -492,7 +525,8 @@ class ThriftHackRecordContains(GleanSchemaPredicate):
 class ThriftPythonValue(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, module: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.PythonValue.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, module, 'module')])) or '_' } }}", PythonValue
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, module, 'module')]))
+    return f"thrift.PythonValue.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", PythonValue
 
   @staticmethod
   def angle_query(*, name: Optional["ThriftPythonName"] = None, module: Optional["ThriftPythonModule"] = None) -> "ThriftPythonValue":
@@ -503,7 +537,8 @@ class ThriftPythonValue(GleanSchemaPredicate):
 class ThriftStructType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, fields: ast.Expr, structuredAnnotations: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.StructType.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, fields, 'fields'), angle_for(__env, structuredAnnotations, 'structuredAnnotations')])) or '_' } }}", StructType
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, fields, 'fields'), angle_for(__env, structuredAnnotations, 'structuredAnnotations')]))
+    return f"thrift.StructType.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", StructType
 
   @staticmethod
   def angle_query(*, name: Optional["ThriftQualName"] = None, fields: Optional[List["ThriftFieldSpecification"]] = None, structuredAnnotations: Optional[List["ThriftStructuredAnnotation"]] = None) -> "ThriftStructType":
@@ -514,7 +549,8 @@ class ThriftStructType(GleanSchemaPredicate):
 class ThriftServiceChild(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], parent: ast.Expr, child: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.ServiceChild.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, parent, 'parent'), angle_for(__env, child, 'child')])) or '_' } }}", ServiceChild
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, parent, 'parent'), angle_for(__env, child, 'child')]))
+    return f"thrift.ServiceChild.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ServiceChild
 
   @staticmethod
   def angle_query(*, parent: Optional["ThriftServiceName"] = None, child: Optional["ThriftServiceName"] = None) -> "ThriftServiceChild":
@@ -525,7 +561,8 @@ class ThriftServiceChild(GleanSchemaPredicate):
 class ThriftIncludes(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], source: ast.Expr, target: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.Includes.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, source, 'source'), angle_for(__env, target, 'target')])) or '_' } }}", Includes
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, source, 'source'), angle_for(__env, target, 'target')]))
+    return f"thrift.Includes.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Includes
 
   @staticmethod
   def angle_query(*, source: Optional["ThriftFile"] = None, target: Optional["ThriftFile"] = None) -> "ThriftIncludes":
@@ -536,7 +573,8 @@ class ThriftIncludes(GleanSchemaPredicate):
 class ThriftQualName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, name: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.QualName.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, name, 'name')])) or '_' } }}", QualName
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, name, 'name')]))
+    return f"thrift.QualName.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", QualName
 
   @staticmethod
   def angle_query(*, file: Optional["ThriftFile"] = None, name: Optional["ThriftIdentifier"] = None) -> "ThriftQualName":
@@ -547,7 +585,8 @@ class ThriftQualName(GleanSchemaPredicate):
 class ThriftOutputTarget(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], compile: ast.Expr, output: ast.Expr, out: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.OutputTarget.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, compile, 'compile'), angle_for(__env, output, 'output'), angle_for(__env, out, 'out')])) or '_' } }}", OutputTarget
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, compile, 'compile'), angle_for(__env, output, 'output'), angle_for(__env, out, 'out')]))
+    return f"thrift.OutputTarget.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", OutputTarget
 
   @staticmethod
   def angle_query(*, compile: Optional["ThriftCompileTarget"] = None, output: Optional["BuckTarget"] = None, out: Optional["SrcFile"] = None) -> "ThriftOutputTarget":
@@ -558,7 +597,8 @@ class ThriftOutputTarget(GleanSchemaPredicate):
 class ThriftPythonFunction(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, module: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.PythonFunction.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, module, 'module')])) or '_' } }}", PythonFunction
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, module, 'module')]))
+    return f"thrift.PythonFunction.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", PythonFunction
 
   @staticmethod
   def angle_query(*, name: Optional["ThriftPythonName"] = None, module: Optional["ThriftPythonModule"] = None) -> "ThriftPythonFunction":
@@ -569,7 +609,8 @@ class ThriftPythonFunction(GleanSchemaPredicate):
 class ThriftStructuredAnnotation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], type_: ast.Expr, value: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.StructuredAnnotation.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, type_, 'type_'), angle_for(__env, value, 'value')])) or '_' } }}", StructuredAnnotation
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, type_, 'type_'), angle_for(__env, value, 'value')]))
+    return f"thrift.StructuredAnnotation.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", StructuredAnnotation
 
   @staticmethod
   def angle_query(*, type_: Optional["ThriftTypeSpecification"] = None, value: Optional["ThriftStructVal"] = None) -> "ThriftStructuredAnnotation":
@@ -580,7 +621,8 @@ class ThriftStructuredAnnotation(GleanSchemaPredicate):
 class ThriftFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.File.7 { angle_for(__env, arg, None) or '_' }", File
+    query_fields =  angle_for(__env, arg, None)
+    return f"thrift.File.7 { query_fields if query_fields else '_' }", File
 
   @staticmethod
   def angle_query(*, arg: Optional["SrcFile"] = None) -> "ThriftFile":
@@ -591,7 +633,8 @@ class ThriftFile(GleanSchemaPredicate):
 class ThriftHackMethod(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, record: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.HackMethod.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, record, 'record')])) or '_' } }}", HackMethod
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, record, 'record')]))
+    return f"thrift.HackMethod.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", HackMethod
 
   @staticmethod
   def angle_query(*, name: Optional["ThriftHackName"] = None, record: Optional["ThriftHackRecord"] = None) -> "ThriftHackMethod":
@@ -602,7 +645,8 @@ class ThriftHackMethod(GleanSchemaPredicate):
 class ThriftConstant(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, locName: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.Constant.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, locName, 'locName')])) or '_' } }}", Constant
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, locName, 'locName')]))
+    return f"thrift.Constant.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Constant
 
   @staticmethod
   def angle_query(*, name: Optional["ThriftQualName"] = None, locName: Optional["ThriftLoc"] = None) -> "ThriftConstant":
@@ -613,7 +657,8 @@ class ThriftConstant(GleanSchemaPredicate):
 class ThriftHackName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.HackName.7 { angle_for(__env, arg, None) or '_' }", HackName
+    query_fields =  angle_for(__env, arg, None)
+    return f"thrift.HackName.7 { query_fields if query_fields else '_' }", HackName
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "ThriftHackName":
@@ -624,7 +669,8 @@ class ThriftHackName(GleanSchemaPredicate):
 class ThriftNamedDecl(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, locName: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.NamedDecl.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, locName, 'locName')])) or '_' } }}", NamedDecl
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, locName, 'locName')]))
+    return f"thrift.NamedDecl.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", NamedDecl
 
   @staticmethod
   def angle_query(*, name: Optional["ThriftNamedType"] = None, locName: Optional["ThriftLoc"] = None) -> "ThriftNamedDecl":
@@ -635,7 +681,8 @@ class ThriftNamedDecl(GleanSchemaPredicate):
 class ThriftPythonModuleContains(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], module: ast.Expr, classes: ast.Expr, functions: ast.Expr, values: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.PythonModuleContains.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, module, 'module'), angle_for(__env, classes, 'classes'), angle_for(__env, functions, 'functions'), angle_for(__env, values, 'values')])) or '_' } }}", PythonModuleContains
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, module, 'module'), angle_for(__env, classes, 'classes'), angle_for(__env, functions, 'functions'), angle_for(__env, values, 'values')]))
+    return f"thrift.PythonModuleContains.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", PythonModuleContains
 
   @staticmethod
   def angle_query(*, module: Optional["ThriftPythonModule"] = None, classes: Optional[List["ThriftPythonClass"]] = None, functions: Optional[List["ThriftPythonFunction"]] = None, values: Optional[List["ThriftPythonValue"]] = None) -> "ThriftPythonModuleContains":
@@ -646,7 +693,8 @@ class ThriftPythonModuleContains(GleanSchemaPredicate):
 class ThriftHackMap(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], source: ast.Expr, repoCode: ast.Expr, path: ast.Expr, kind: ast.Expr, mangledsvcs: ast.Expr, rest: ast.Expr, server: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.HackMap.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, source, 'source'), angle_for(__env, repoCode, 'repoCode'), angle_for(__env, path, 'path'), angle_for(__env, kind, 'kind'), angle_for(__env, mangledsvcs, 'mangledsvcs'), angle_for(__env, rest, 'rest'), angle_for(__env, server, 'server')])) or '_' } }}", HackMap
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, source, 'source'), angle_for(__env, repoCode, 'repoCode'), angle_for(__env, path, 'path'), angle_for(__env, kind, 'kind'), angle_for(__env, mangledsvcs, 'mangledsvcs'), angle_for(__env, rest, 'rest'), angle_for(__env, server, 'server')]))
+    return f"thrift.HackMap.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", HackMap
 
   @staticmethod
   def angle_query(*, source: Optional[Union[Just["SrcFile"], Just[None]]] = None, repoCode: Optional["ScmRepoName"] = None, path: Optional[str] = None, kind: Optional["ThriftHackMapKind"] = None, mangledsvcs: Optional[bool] = None, rest: Optional[bool] = None, server: Optional[bool] = None) -> "ThriftHackMap":
@@ -657,7 +705,8 @@ class ThriftHackMap(GleanSchemaPredicate):
 class ThriftIncludeSpecial(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], source: ast.Expr, special: ast.Expr, target: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.IncludeSpecial.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, source, 'source'), angle_for(__env, special, 'special'), angle_for(__env, target, 'target')])) or '_' } }}", IncludeSpecial
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, source, 'source'), angle_for(__env, special, 'special'), angle_for(__env, target, 'target')]))
+    return f"thrift.IncludeSpecial.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", IncludeSpecial
 
   @staticmethod
   def angle_query(*, source: Optional["ThriftFile"] = None, special: Optional[str] = None, target: Optional["ThriftIncludeSplice"] = None) -> "ThriftIncludeSpecial":
@@ -668,7 +717,8 @@ class ThriftIncludeSpecial(GleanSchemaPredicate):
 class ThriftFileXRefs(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, targets: ast.Expr, xrefs: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.FileXRefs.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, targets, 'targets'), angle_for(__env, xrefs, 'xrefs')])) or '_' } }}", FileXRefs
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, targets, 'targets'), angle_for(__env, xrefs, 'xrefs')]))
+    return f"thrift.FileXRefs.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FileXRefs
 
   @staticmethod
   def angle_query(*, file: Optional["ThriftFile"] = None, targets: Optional[List["ThriftTarget"]] = None, xrefs: Optional[List["ThriftXRef"]] = None) -> "ThriftFileXRefs":
@@ -679,7 +729,8 @@ class ThriftFileXRefs(GleanSchemaPredicate):
 class ThriftMangle(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], _from: ast.Expr, to: ast.Expr, lang: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.Mangle.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, _from, 'from'), angle_for(__env, to, 'to'), angle_for(__env, lang, 'lang')])) or '_' } }}", Mangle
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, _from, 'from'), angle_for(__env, to, 'to'), angle_for(__env, lang, 'lang')]))
+    return f"thrift.Mangle.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Mangle
 
   @staticmethod
   def angle_query(*, _from: Optional["ScmCommit"] = None, to: Optional["ScmCommit"] = None, lang: Optional["ThriftMangleLang"] = None) -> "ThriftMangle":
@@ -690,7 +741,8 @@ class ThriftMangle(GleanSchemaPredicate):
 class ThriftStructVal(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], fields: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.StructVal.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, fields, 'fields')])) or '_' } }}", StructVal
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, fields, 'fields')]))
+    return f"thrift.StructVal.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", StructVal
 
   @staticmethod
   def angle_query(*, fields: Optional[List["ThriftStructFieldVal"]] = None) -> "ThriftStructVal":
@@ -701,7 +753,8 @@ class ThriftStructVal(GleanSchemaPredicate):
 class ThriftIncludeSplice(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.IncludeSplice.7 { angle_for(__env, arg, None) or '_' }", IncludeSplice
+    query_fields =  angle_for(__env, arg, None)
+    return f"thrift.IncludeSplice.7 { query_fields if query_fields else '_' }", IncludeSplice
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "ThriftIncludeSplice":
@@ -712,7 +765,8 @@ class ThriftIncludeSplice(GleanSchemaPredicate):
 class ThriftLang(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.Lang.7 { angle_for(__env, arg, None) or '_' }", Lang
+    query_fields =  angle_for(__env, arg, None)
+    return f"thrift.Lang.7 { query_fields if query_fields else '_' }", Lang
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "ThriftLang":
@@ -723,7 +777,8 @@ class ThriftLang(GleanSchemaPredicate):
 class ThriftLiteral(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], byte_: ast.Expr, i16_: ast.Expr, i32_: ast.Expr, i64_: ast.Expr, float_: ast.Expr, double_: ast.Expr, bool_: ast.Expr, string_: ast.Expr, binary_: ast.Expr, set_: ast.Expr, hashSet_: ast.Expr, list_: ast.Expr, map_: ast.Expr, hashMap_: ast.Expr, newtype_: ast.Expr, struct_: ast.Expr, exception_: ast.Expr, union_: ast.Expr, enum_: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.Literal.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, byte_, 'byte_'), angle_for(__env, i16_, 'i16_'), angle_for(__env, i32_, 'i32_'), angle_for(__env, i64_, 'i64_'), angle_for(__env, float_, 'float_'), angle_for(__env, double_, 'double_'), angle_for(__env, bool_, 'bool_'), angle_for(__env, string_, 'string_'), angle_for(__env, binary_, 'binary_'), angle_for(__env, set_, 'set_'), angle_for(__env, hashSet_, 'hashSet_'), angle_for(__env, list_, 'list_'), angle_for(__env, map_, 'map_'), angle_for(__env, hashMap_, 'hashMap_'), angle_for(__env, newtype_, 'newtype_'), angle_for(__env, struct_, 'struct_'), angle_for(__env, exception_, 'exception_'), angle_for(__env, union_, 'union_'), angle_for(__env, enum_, 'enum_')])) or '_' } }}", Literal
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, byte_, 'byte_'), angle_for(__env, i16_, 'i16_'), angle_for(__env, i32_, 'i32_'), angle_for(__env, i64_, 'i64_'), angle_for(__env, float_, 'float_'), angle_for(__env, double_, 'double_'), angle_for(__env, bool_, 'bool_'), angle_for(__env, string_, 'string_'), angle_for(__env, binary_, 'binary_'), angle_for(__env, set_, 'set_'), angle_for(__env, hashSet_, 'hashSet_'), angle_for(__env, list_, 'list_'), angle_for(__env, map_, 'map_'), angle_for(__env, hashMap_, 'hashMap_'), angle_for(__env, newtype_, 'newtype_'), angle_for(__env, struct_, 'struct_'), angle_for(__env, exception_, 'exception_'), angle_for(__env, union_, 'union_'), angle_for(__env, enum_, 'enum_')]))
+    return f"thrift.Literal.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Literal
 
   @staticmethod
   def angle_query_byte_(*, byte_: Optional["ThriftIntegerLiteral"] = None) -> "ThriftLiteral":
@@ -807,7 +862,8 @@ class ThriftLiteral(GleanSchemaPredicate):
 class ThriftIdentifier(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.Identifier.7 { angle_for(__env, arg, None) or '_' }", Identifier
+    query_fields =  angle_for(__env, arg, None)
+    return f"thrift.Identifier.7 { query_fields if query_fields else '_' }", Identifier
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "ThriftIdentifier":
@@ -818,7 +874,8 @@ class ThriftIdentifier(GleanSchemaPredicate):
 class ThriftUnionType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, alts: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.UnionType.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, alts, 'alts')])) or '_' } }}", UnionType
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, alts, 'alts')]))
+    return f"thrift.UnionType.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", UnionType
 
   @staticmethod
   def angle_query(*, name: Optional["ThriftQualName"] = None, alts: Optional[List["ThriftUnqualField"]] = None) -> "ThriftUnionType":
@@ -829,7 +886,8 @@ class ThriftUnionType(GleanSchemaPredicate):
 class ThriftDeclarationNameSpan(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], decl: ast.Expr, name: ast.Expr, file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.DeclarationNameSpan.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, name, 'name'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", DeclarationNameSpan
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, name, 'name'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')]))
+    return f"thrift.DeclarationNameSpan.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DeclarationNameSpan
 
   @staticmethod
   def angle_query(*, decl: Optional["ThriftDeclaration"] = None, name: Optional["ThriftIdentifier"] = None, file: Optional["ThriftFile"] = None, span: Optional["ThriftLoc"] = None) -> "ThriftDeclarationNameSpan":
@@ -840,7 +898,8 @@ class ThriftDeclarationNameSpan(GleanSchemaPredicate):
 class ThriftFromPython(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], python: ast.Expr, thrift: ast.Expr, role: ast.Expr, lang: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.FromPython.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, python, 'python'), angle_for(__env, thrift, 'thrift'), angle_for(__env, role, 'role'), angle_for(__env, lang, 'lang')])) or '_' } }}", FromPython
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, python, 'python'), angle_for(__env, thrift, 'thrift'), angle_for(__env, role, 'role'), angle_for(__env, lang, 'lang')]))
+    return f"thrift.FromPython.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FromPython
 
   @staticmethod
   def angle_query(*, python: Optional["ThriftPythonItem"] = None, thrift: Optional["ThriftItem"] = None, role: Optional["ThriftGenRole"] = None, lang: Optional["ThriftLang"] = None) -> "ThriftFromPython":
@@ -851,7 +910,8 @@ class ThriftFromPython(GleanSchemaPredicate):
 class ThriftPythonClass(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, module: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.PythonClass.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, module, 'module')])) or '_' } }}", PythonClass
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, module, 'module')]))
+    return f"thrift.PythonClass.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", PythonClass
 
   @staticmethod
   def angle_query(*, name: Optional["ThriftPythonName"] = None, module: Optional["ThriftPythonModule"] = None) -> "ThriftPythonClass":
@@ -862,7 +922,8 @@ class ThriftPythonClass(GleanSchemaPredicate):
 class ThriftToCpp2(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], thrift: ast.Expr, cpp2: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.ToCpp2.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, thrift, 'thrift'), angle_for(__env, cpp2, 'cpp2')])) or '_' } }}", ToCpp2
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, thrift, 'thrift'), angle_for(__env, cpp2, 'cpp2')]))
+    return f"thrift.ToCpp2.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ToCpp2
 
   @staticmethod
   def angle_query(*, thrift: Optional["ThriftFile"] = None, cpp2: Optional[List["ThriftFromCpp2"]] = None) -> "ThriftToCpp2":
@@ -873,7 +934,8 @@ class ThriftToCpp2(GleanSchemaPredicate):
 class ThriftToHack(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], thrift: ast.Expr, hack: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.ToHack.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, thrift, 'thrift'), angle_for(__env, hack, 'hack')])) or '_' } }}", ToHack
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, thrift, 'thrift'), angle_for(__env, hack, 'hack')]))
+    return f"thrift.ToHack.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ToHack
 
   @staticmethod
   def angle_query(*, thrift: Optional["ThriftFile"] = None, hack: Optional[List["ThriftFromHack"]] = None) -> "ThriftToHack":
@@ -884,7 +946,8 @@ class ThriftToHack(GleanSchemaPredicate):
 class ThriftEnumerationType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, value: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.EnumerationType.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, value, 'value')])) or '_' } }}", EnumerationType
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, value, 'value')]))
+    return f"thrift.EnumerationType.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", EnumerationType
 
   @staticmethod
   def angle_query(*, name: Optional["ThriftQualName"] = None, value: Optional[List["ThriftEnumValueDef"]] = None) -> "ThriftEnumerationType":
@@ -895,7 +958,8 @@ class ThriftEnumerationType(GleanSchemaPredicate):
 class ThriftFileOutput(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], output: ast.Expr, origin: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.FileOutput.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, output, 'output'), angle_for(__env, origin, 'origin')])) or '_' } }}", FileOutput
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, output, 'output'), angle_for(__env, origin, 'origin')]))
+    return f"thrift.FileOutput.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FileOutput
 
   @staticmethod
   def angle_query(*, output: Optional["SrcFile"] = None, origin: Optional["ThriftOutputTarget"] = None) -> "ThriftFileOutput":
@@ -906,7 +970,8 @@ class ThriftFileOutput(GleanSchemaPredicate):
 class ThriftServiceParent(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], child: ast.Expr, parent: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.ServiceParent.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, child, 'child'), angle_for(__env, parent, 'parent')])) or '_' } }}", ServiceParent
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, child, 'child'), angle_for(__env, parent, 'parent')]))
+    return f"thrift.ServiceParent.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ServiceParent
 
   @staticmethod
   def angle_query(*, child: Optional["ThriftServiceName"] = None, parent: Optional["ThriftServiceName"] = None) -> "ThriftServiceParent":
@@ -917,7 +982,8 @@ class ThriftServiceParent(GleanSchemaPredicate):
 class ThriftMangleLang(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.MangleLang.7 { angle_for(__env, arg, None) or '_' }", MangleLang
+    query_fields =  angle_for(__env, arg, None)
+    return f"thrift.MangleLang.7 { query_fields if query_fields else '_' }", MangleLang
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "ThriftMangleLang":
@@ -928,7 +994,8 @@ class ThriftMangleLang(GleanSchemaPredicate):
 class ThriftExceptionName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, locName: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.ExceptionName.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, locName, 'locName')])) or '_' } }}", ExceptionName
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, locName, 'locName')]))
+    return f"thrift.ExceptionName.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ExceptionName
 
   @staticmethod
   def angle_query(*, name: Optional["ThriftQualName"] = None, locName: Optional["ThriftLoc"] = None) -> "ThriftExceptionName":
@@ -939,7 +1006,8 @@ class ThriftExceptionName(GleanSchemaPredicate):
 class ThriftEnumVal(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, loc: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.EnumVal.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, loc, 'loc')])) or '_' } }}", EnumVal
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, loc, 'loc')]))
+    return f"thrift.EnumVal.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", EnumVal
 
   @staticmethod
   def angle_query(*, name: Optional["ThriftQualName"] = None, loc: Optional["ThriftLoc"] = None) -> "ThriftEnumVal":
@@ -950,7 +1018,8 @@ class ThriftEnumVal(GleanSchemaPredicate):
 class ThriftUnionVal(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], field: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.UnionVal.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, field, 'field')])) or '_' } }}", UnionVal
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, field, 'field')]))
+    return f"thrift.UnionVal.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", UnionVal
 
   @staticmethod
   def angle_query(*, field: Optional["ThriftUnionFieldVal"] = None) -> "ThriftUnionVal":
@@ -963,7 +1032,8 @@ class ThriftUnionVal(GleanSchemaPredicate):
 class ThriftCpp2ItemNamed(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, kind: ast.Expr, name: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.Cpp2ItemNamed.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, kind, 'kind'), angle_for(__env, name, 'name')])) or '_' } }}", Cpp2ItemNamed
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, kind, 'kind'), angle_for(__env, name, 'name')]))
+    return f"thrift.Cpp2ItemNamed.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Cpp2ItemNamed
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, kind: Optional[str] = None, name: Optional[str] = None) -> "ThriftCpp2ItemNamed":
@@ -974,7 +1044,8 @@ class ThriftCpp2ItemNamed(InnerGleanSchemaPredicate):
 class ThriftStructFieldVal(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, value: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.StructFieldVal.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, value, 'value')])) or '_' } }}", StructFieldVal
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, value, 'value')]))
+    return f"thrift.StructFieldVal.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", StructFieldVal
 
   @staticmethod
   def angle_query(*, name: Optional["ThriftIdentifier"] = None, value: Optional["ThriftStructFieldValValue"] = None) -> "ThriftStructFieldVal":
@@ -985,7 +1056,8 @@ class ThriftStructFieldVal(InnerGleanSchemaPredicate):
 class ThriftItem(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, namespace_: ast.Expr, service_: ast.Expr, function_: ast.Expr, decl: ast.Expr, exception_: ast.Expr, constant: ast.Expr, enumValue: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.Item.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, namespace_, 'namespace_'), angle_for(__env, service_, 'service_'), angle_for(__env, function_, 'function_'), angle_for(__env, decl, 'decl'), angle_for(__env, exception_, 'exception_'), angle_for(__env, constant, 'constant'), angle_for(__env, enumValue, 'enumValue')])) or '_' } }}", Item
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, namespace_, 'namespace_'), angle_for(__env, service_, 'service_'), angle_for(__env, function_, 'function_'), angle_for(__env, decl, 'decl'), angle_for(__env, exception_, 'exception_'), angle_for(__env, constant, 'constant'), angle_for(__env, enumValue, 'enumValue')]))
+    return f"thrift.Item.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Item
 
   @staticmethod
   def angle_query_file(*, file: Optional["ThriftFile"] = None) -> "ThriftItem":
@@ -1025,7 +1097,8 @@ class ThriftItem(InnerGleanSchemaPredicate):
 class ThriftIntegerLiteral(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], isNonNegative: ast.Expr, absValue: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.IntegerLiteral.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, isNonNegative, 'isNonNegative'), angle_for(__env, absValue, 'absValue')])) or '_' } }}", IntegerLiteral
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, isNonNegative, 'isNonNegative'), angle_for(__env, absValue, 'absValue')]))
+    return f"thrift.IntegerLiteral.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", IntegerLiteral
 
   @staticmethod
   def angle_query(*, isNonNegative: Optional[bool] = None, absValue: Optional[int] = None) -> "ThriftIntegerLiteral":
@@ -1036,7 +1109,8 @@ class ThriftIntegerLiteral(InnerGleanSchemaPredicate):
 class ThriftExceptionSpecName(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], simple: ast.Expr, typedef_: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.ExceptionSpecName.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, simple, 'simple'), angle_for(__env, typedef_, 'typedef_')])) or '_' } }}", ExceptionSpecName
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, simple, 'simple'), angle_for(__env, typedef_, 'typedef_')]))
+    return f"thrift.ExceptionSpecName.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ExceptionSpecName
 
   @staticmethod
   def angle_query_simple(*, simple: Optional["ThriftExceptionName"] = None) -> "ThriftExceptionSpecName":
@@ -1059,7 +1133,8 @@ class ThriftHackRecordKind(Enum):
 class ThriftKeyValue(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], key: ast.Expr, value: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.KeyValue.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, key, 'key'), angle_for(__env, value, 'value')])) or '_' } }}", KeyValue
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, key, 'key'), angle_for(__env, value, 'value')]))
+    return f"thrift.KeyValue.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", KeyValue
 
   @staticmethod
   def angle_query(*, key: Optional["ThriftTypedConst"] = None, value: Optional["ThriftTypedConst"] = None) -> "ThriftKeyValue":
@@ -1070,7 +1145,8 @@ class ThriftKeyValue(InnerGleanSchemaPredicate):
 class ThriftCpp2Item(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, decl: ast.Expr, named: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.Cpp2Item.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, decl, 'decl'), angle_for(__env, named, 'named')])) or '_' } }}", Cpp2Item
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, decl, 'decl'), angle_for(__env, named, 'named')]))
+    return f"thrift.Cpp2Item.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Cpp2Item
 
   @staticmethod
   def angle_query_file(*, file: Optional["SrcFile"] = None) -> "ThriftCpp2Item":
@@ -1090,7 +1166,8 @@ class ThriftCpp2Item(InnerGleanSchemaPredicate):
 class ThriftNamedType(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, kind: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.NamedType.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, kind, 'kind')])) or '_' } }}", NamedType
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, kind, 'kind')]))
+    return f"thrift.NamedType.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", NamedType
 
   @staticmethod
   def angle_query(*, name: Optional["ThriftQualName"] = None, kind: Optional["ThriftNamedKind"] = None) -> "ThriftNamedType":
@@ -1101,7 +1178,8 @@ class ThriftNamedType(InnerGleanSchemaPredicate):
 class ThriftUnionFieldVal(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, value: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.UnionFieldVal.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, value, 'value')])) or '_' } }}", UnionFieldVal
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, value, 'value')]))
+    return f"thrift.UnionFieldVal.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", UnionFieldVal
 
   @staticmethod
   def angle_query(*, name: Optional["ThriftIdentifier"] = None, value: Optional["ThriftTypedConstT"] = None) -> "ThriftUnionFieldVal":
@@ -1112,7 +1190,8 @@ class ThriftUnionFieldVal(InnerGleanSchemaPredicate):
 class ThriftExceptionSpecification(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], id: ast.Expr, type_: ast.Expr, name: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.ExceptionSpecification.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, id, 'id'), angle_for(__env, type_, 'type_'), angle_for(__env, name, 'name')])) or '_' } }}", ExceptionSpecification
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, id, 'id'), angle_for(__env, type_, 'type_'), angle_for(__env, name, 'name')]))
+    return f"thrift.ExceptionSpecification.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ExceptionSpecification
 
   @staticmethod
   def angle_query(*, id: Optional["ThriftFieldId"] = None, type_: Optional["ThriftExceptionSpecName"] = None, name: Optional["ThriftIdentifier"] = None) -> "ThriftExceptionSpecification":
@@ -1123,7 +1202,8 @@ class ThriftExceptionSpecification(InnerGleanSchemaPredicate):
 class ThriftXRef(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], locRef: ast.Expr, target: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.XRef.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, locRef, 'locRef'), angle_for(__env, target, 'target')])) or '_' } }}", XRef
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, locRef, 'locRef'), angle_for(__env, target, 'target')]))
+    return f"thrift.XRef.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", XRef
 
   @staticmethod
   def angle_query(*, locRef: Optional["ThriftLoc"] = None, target: Optional["ThriftXRefTarget"] = None) -> "ThriftXRef":
@@ -1141,7 +1221,8 @@ class ThriftGenRole(Enum):
 class ThriftUnqualField(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], id: ast.Expr, type_: ast.Expr, name: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.UnqualField.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, id, 'id'), angle_for(__env, type_, 'type_'), angle_for(__env, name, 'name')])) or '_' } }}", UnqualField
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, id, 'id'), angle_for(__env, type_, 'type_'), angle_for(__env, name, 'name')]))
+    return f"thrift.UnqualField.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", UnqualField
 
   @staticmethod
   def angle_query(*, id: Optional["ThriftFieldId"] = None, type_: Optional["ThriftTypeSpecification"] = None, name: Optional["ThriftIdentifier"] = None) -> "ThriftUnqualField":
@@ -1152,7 +1233,8 @@ class ThriftUnqualField(InnerGleanSchemaPredicate):
 class ThriftXRefTarget(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], include_: ast.Expr, named: ast.Expr, exception_: ast.Expr, service_: ast.Expr, constant: ast.Expr, enumValue: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.XRefTarget.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, include_, 'include_'), angle_for(__env, named, 'named'), angle_for(__env, exception_, 'exception_'), angle_for(__env, service_, 'service_'), angle_for(__env, constant, 'constant'), angle_for(__env, enumValue, 'enumValue')])) or '_' } }}", XRefTarget
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, include_, 'include_'), angle_for(__env, named, 'named'), angle_for(__env, exception_, 'exception_'), angle_for(__env, service_, 'service_'), angle_for(__env, constant, 'constant'), angle_for(__env, enumValue, 'enumValue')]))
+    return f"thrift.XRefTarget.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", XRefTarget
 
   @staticmethod
   def angle_query_include_(*, include_: Optional["ThriftFile"] = None) -> "ThriftXRefTarget":
@@ -1184,7 +1266,8 @@ class ThriftXRefTarget(InnerGleanSchemaPredicate):
 class ThriftContainerType(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], list_: ast.Expr, set_: ast.Expr, map_: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.ContainerType.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, list_, 'list_'), angle_for(__env, set_, 'set_'), angle_for(__env, map_, 'map_')])) or '_' } }}", ContainerType
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, list_, 'list_'), angle_for(__env, set_, 'set_'), angle_for(__env, map_, 'map_')]))
+    return f"thrift.ContainerType.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ContainerType
 
   @staticmethod
   def angle_query_list_(*, list_: Optional["ThriftTypeSpecification"] = None) -> "ThriftContainerType":
@@ -1204,7 +1287,8 @@ class ThriftContainerType(InnerGleanSchemaPredicate):
 class ThriftFieldSpecification(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], id: ast.Expr, qualifier: ast.Expr, type_: ast.Expr, name: ast.Expr, value: ast.Expr, structuredAnnotations: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.FieldSpecification.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, id, 'id'), angle_for(__env, qualifier, 'qualifier'), angle_for(__env, type_, 'type_'), angle_for(__env, name, 'name'), angle_for(__env, value, 'value'), angle_for(__env, structuredAnnotations, 'structuredAnnotations')])) or '_' } }}", FieldSpecification
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, id, 'id'), angle_for(__env, qualifier, 'qualifier'), angle_for(__env, type_, 'type_'), angle_for(__env, name, 'name'), angle_for(__env, value, 'value'), angle_for(__env, structuredAnnotations, 'structuredAnnotations')]))
+    return f"thrift.FieldSpecification.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FieldSpecification
 
   @staticmethod
   def angle_query(*, id: Optional["ThriftFieldId"] = None, qualifier: Optional["ThriftQualifier"] = None, type_: Optional["ThriftTypeSpecification"] = None, name: Optional["ThriftIdentifier"] = None, value: Optional[Union[Just["ThriftTypedConst"], Just[None]]] = None, structuredAnnotations: Optional[List["ThriftStructuredAnnotation"]] = None) -> "ThriftFieldSpecification":
@@ -1215,7 +1299,8 @@ class ThriftFieldSpecification(InnerGleanSchemaPredicate):
 class ThriftStructFieldValValue(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], val: ast.Expr, default_: ast.Expr, just: ast.Expr, nothing: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.StructFieldValValue.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, val, 'val'), angle_for(__env, default_, 'default_'), angle_for(__env, just, 'just'), angle_for(__env, nothing, 'nothing')])) or '_' } }}", StructFieldValValue
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, val, 'val'), angle_for(__env, default_, 'default_'), angle_for(__env, just, 'just'), angle_for(__env, nothing, 'nothing')]))
+    return f"thrift.StructFieldValValue.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", StructFieldValValue
 
   @staticmethod
   def angle_query_val(*, val: Optional["ThriftTypedConstT"] = None) -> "ThriftStructFieldValValue":
@@ -1241,7 +1326,8 @@ ThriftStructFieldValValue_nothing = Tuple[()]
 class ThriftResultStream(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], response: ast.Expr, stream_: ast.Expr, throws_: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.ResultStream.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, response, 'response'), angle_for(__env, stream_, 'stream_'), angle_for(__env, throws_, 'throws_')])) or '_' } }}", ResultStream
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, response, 'response'), angle_for(__env, stream_, 'stream_'), angle_for(__env, throws_, 'throws_')]))
+    return f"thrift.ResultStream.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ResultStream
 
   @staticmethod
   def angle_query(*, response: Optional[Union[Just["ThriftTypeSpecification"], Just[None]]] = None, stream_: Optional["ThriftTypeSpecification"] = None, throws_: Optional[List["ThriftExceptionSpecification"]] = None) -> "ThriftResultStream":
@@ -1252,7 +1338,8 @@ class ThriftResultStream(InnerGleanSchemaPredicate):
 class ThriftTypedConstT(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], const_: ast.Expr, type_: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.TypedConstT.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, const_, 'const_'), angle_for(__env, type_, 'type_')])) or '_' } }}", TypedConstT
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, const_, 'const_'), angle_for(__env, type_, 'type_')]))
+    return f"thrift.TypedConstT.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", TypedConstT
 
   @staticmethod
   def angle_query(*, const_: Optional["ThriftTypedConst"] = None, type_: Optional["ThriftTypeSpecification"] = None) -> "ThriftTypedConstT":
@@ -1267,7 +1354,8 @@ class ThriftHackMapKind(Enum):
 class ThriftMapType(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], key_: ast.Expr, value: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.MapType.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, key_, 'key_'), angle_for(__env, value, 'value')])) or '_' } }}", MapType
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, key_, 'key_'), angle_for(__env, value, 'value')]))
+    return f"thrift.MapType.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", MapType
 
   @staticmethod
   def angle_query(*, key_: Optional["ThriftTypeSpecification"] = None, value: Optional["ThriftTypeSpecification"] = None) -> "ThriftMapType":
@@ -1284,7 +1372,8 @@ class ThriftNamedKind(Enum):
 class ThriftFloatLiteral(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], isNaN: ast.Expr, isPositive: ast.Expr, exponent: ast.Expr, significand: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.FloatLiteral.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, isNaN, 'isNaN'), angle_for(__env, isPositive, 'isPositive'), angle_for(__env, exponent, 'exponent'), angle_for(__env, significand, 'significand')])) or '_' } }}", FloatLiteral
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, isNaN, 'isNaN'), angle_for(__env, isPositive, 'isPositive'), angle_for(__env, exponent, 'exponent'), angle_for(__env, significand, 'significand')]))
+    return f"thrift.FloatLiteral.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FloatLiteral
 
   @staticmethod
   def angle_query(*, isNaN: Optional[bool] = None, isPositive: Optional[bool] = None, exponent: Optional[int] = None, significand: Optional[int] = None) -> "ThriftFloatLiteral":
@@ -1295,7 +1384,8 @@ class ThriftFloatLiteral(InnerGleanSchemaPredicate):
 class ThriftTypedConst(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], literal: ast.Expr, identifier: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.TypedConst.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, literal, 'literal'), angle_for(__env, identifier, 'identifier')])) or '_' } }}", TypedConst
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, literal, 'literal'), angle_for(__env, identifier, 'identifier')]))
+    return f"thrift.TypedConst.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", TypedConst
 
   @staticmethod
   def angle_query_literal(*, literal: Optional["ThriftLiteral"] = None) -> "ThriftTypedConst":
@@ -1322,7 +1412,8 @@ class ThriftPrimitiveType(Enum):
 class ThriftResultType(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], oneway_: ast.Expr, void_: ast.Expr, result: ast.Expr, stream_: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.ResultType.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, oneway_, 'oneway_'), angle_for(__env, void_, 'void_'), angle_for(__env, result, 'result'), angle_for(__env, stream_, 'stream_')])) or '_' } }}", ResultType
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, oneway_, 'oneway_'), angle_for(__env, void_, 'void_'), angle_for(__env, result, 'result'), angle_for(__env, stream_, 'stream_')]))
+    return f"thrift.ResultType.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ResultType
 
   @staticmethod
   def angle_query_oneway_(*, oneway_: Optional["BuiltinUnit"] = None) -> "ThriftResultType":
@@ -1346,7 +1437,8 @@ class ThriftResultType(InnerGleanSchemaPredicate):
 class ThriftPythonItem(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, module: ast.Expr, class_: ast.Expr, method: ast.Expr, field: ast.Expr, function_: ast.Expr, value: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.PythonItem.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, module, 'module'), angle_for(__env, class_, 'class_'), angle_for(__env, method, 'method'), angle_for(__env, field, 'field'), angle_for(__env, function_, 'function_'), angle_for(__env, value, 'value')])) or '_' } }}", PythonItem
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, module, 'module'), angle_for(__env, class_, 'class_'), angle_for(__env, method, 'method'), angle_for(__env, field, 'field'), angle_for(__env, function_, 'function_'), angle_for(__env, value, 'value')]))
+    return f"thrift.PythonItem.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", PythonItem
 
   @staticmethod
   def angle_query_file(*, file: Optional["SrcFile"] = None) -> "ThriftPythonItem":
@@ -1382,7 +1474,8 @@ class ThriftPythonItem(InnerGleanSchemaPredicate):
 class ThriftTarget(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], locTarget: ast.Expr, target: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.Target.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, locTarget, 'locTarget'), angle_for(__env, target, 'target')])) or '_' } }}", Target
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, locTarget, 'locTarget'), angle_for(__env, target, 'target')]))
+    return f"thrift.Target.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Target
 
   @staticmethod
   def angle_query(*, locTarget: Optional["ThriftLoc"] = None, target: Optional["ThriftXRefTarget"] = None) -> "ThriftTarget":
@@ -1393,7 +1486,8 @@ class ThriftTarget(InnerGleanSchemaPredicate):
 class ThriftHackKind(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, record: ast.Expr, method: ast.Expr, namespace_: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.HackKind.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, record, 'record'), angle_for(__env, method, 'method'), angle_for(__env, namespace_, 'namespace_')])) or '_' } }}", HackKind
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, record, 'record'), angle_for(__env, method, 'method'), angle_for(__env, namespace_, 'namespace_')]))
+    return f"thrift.HackKind.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", HackKind
 
   @staticmethod
   def angle_query_file(*, file: Optional["SrcFile"] = None) -> "ThriftHackKind":
@@ -1422,7 +1516,8 @@ class ThriftQualifier(Enum):
 class ThriftLoc(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], startLine: ast.Expr, startCol: ast.Expr, endLine: ast.Expr, endCol: ast.Expr) -> Tuple[str, Struct]:
-    return f"thrift.Loc.7 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, startLine, 'startLine'), angle_for(__env, startCol, 'startCol'), angle_for(__env, endLine, 'endLine'), angle_for(__env, endCol, 'endCol')])) or '_' } }}", Loc
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, startLine, 'startLine'), angle_for(__env, startCol, 'startCol'), angle_for(__env, endLine, 'endLine'), angle_for(__env, endCol, 'endCol')]))
+    return f"thrift.Loc.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Loc
 
   @staticmethod
   def angle_query(*, startLine: Optional[int] = None, startCol: Optional[int] = None, endLine: Optional[int] = None, endCol: Optional[int] = None) -> "ThriftLoc":

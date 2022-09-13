@@ -31,7 +31,8 @@ from glean.schema.code.types import (
 class CodeEntityLanguageLSIF(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], entity: ast.Expr, language: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.EntityLanguageLSIF.24 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, language, 'language')])) or '_' } }}", EntityLanguageLSIF
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, language, 'language')]))
+    return f"code.EntityLanguageLSIF.24 { ('{ ' + query_fields + ' }') if query_fields else '_' }", EntityLanguageLSIF
 
   @staticmethod
   def angle_query(*, entity: Optional["CodeLsifEntity"] = None, language: Optional["CodeLanguage"] = None) -> "CodeEntityLanguageLSIF":
@@ -42,7 +43,8 @@ class CodeEntityLanguageLSIF(GleanSchemaPredicate):
 class CodeEntityLanguage(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], entity: ast.Expr, language: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.EntityLanguage.24 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, language, 'language')])) or '_' } }}", EntityLanguage
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, language, 'language')]))
+    return f"code.EntityLanguage.24 { ('{ ' + query_fields + ' }') if query_fields else '_' }", EntityLanguage
 
   @staticmethod
   def angle_query(*, entity: Optional["CodeEntity"] = None, language: Optional["CodeLanguage"] = None) -> "CodeEntityLanguage":
@@ -75,7 +77,8 @@ class CodeLanguage(Enum):
 class CodeAnnotations(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], cxx: ast.Expr, java: ast.Expr, python: ast.Expr, hack: ast.Expr, thrift: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.Annotations.24 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, cxx, 'cxx'), angle_for(__env, java, 'java'), angle_for(__env, python, 'python'), angle_for(__env, hack, 'hack'), angle_for(__env, thrift, 'thrift')])) or '_' } }}", Annotations
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, cxx, 'cxx'), angle_for(__env, java, 'java'), angle_for(__env, python, 'python'), angle_for(__env, hack, 'hack'), angle_for(__env, thrift, 'thrift')]))
+    return f"code.Annotations.24 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Annotations
 
   @staticmethod
   def angle_query_cxx(*, cxx: Optional["CodeCxxAnnotations"] = None) -> "CodeAnnotations":
@@ -103,7 +106,8 @@ class CodeAnnotations(InnerGleanSchemaPredicate):
 class CodeEntity(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], cxx: ast.Expr, pp: ast.Expr, java: ast.Expr, hs: ast.Expr, python: ast.Expr, hack: ast.Expr, flow: ast.Expr, rust: ast.Expr, thrift: ast.Expr, buck: ast.Expr, erlang: ast.Expr, lsif: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.Entity.24 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, cxx, 'cxx'), angle_for(__env, pp, 'pp'), angle_for(__env, java, 'java'), angle_for(__env, hs, 'hs'), angle_for(__env, python, 'python'), angle_for(__env, hack, 'hack'), angle_for(__env, flow, 'flow'), angle_for(__env, rust, 'rust'), angle_for(__env, thrift, 'thrift'), angle_for(__env, buck, 'buck'), angle_for(__env, erlang, 'erlang'), angle_for(__env, lsif, 'lsif')])) or '_' } }}", Entity
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, cxx, 'cxx'), angle_for(__env, pp, 'pp'), angle_for(__env, java, 'java'), angle_for(__env, hs, 'hs'), angle_for(__env, python, 'python'), angle_for(__env, hack, 'hack'), angle_for(__env, flow, 'flow'), angle_for(__env, rust, 'rust'), angle_for(__env, thrift, 'thrift'), angle_for(__env, buck, 'buck'), angle_for(__env, erlang, 'erlang'), angle_for(__env, lsif, 'lsif')]))
+    return f"code.Entity.24 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Entity
 
   @staticmethod
   def angle_query_cxx(*, cxx: Optional["CodeCxxEntity"] = None) -> "CodeEntity":

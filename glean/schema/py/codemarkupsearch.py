@@ -23,7 +23,8 @@ from glean.schema.codemarkup_search.types import (
 class CodemarkupSearchSearchByNameAndKind(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], searchcase: ast.Expr, name: ast.Expr, entity: ast.Expr, location: ast.Expr, kind: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.search.SearchByNameAndKind.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, searchcase, 'searchcase'), angle_for(__env, name, 'name'), angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location'), angle_for(__env, kind, 'kind')])) or '_' } }}", SearchByNameAndKind
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, searchcase, 'searchcase'), angle_for(__env, name, 'name'), angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location'), angle_for(__env, kind, 'kind')]))
+    return f"codemarkup.search.SearchByNameAndKind.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SearchByNameAndKind
 
   @staticmethod
   def angle_query(*, searchcase: Optional["CodemarkupSearchSearchCase"] = None, name: Optional[str] = None, entity: Optional["CodeEntity"] = None, location: Optional["CodemarkupTypesLocation"] = None, kind: Optional[Union[Just["CodemarkupTypesSymbolKind"], Just[None]]] = None) -> "CodemarkupSearchSearchByNameAndKind":
@@ -34,7 +35,8 @@ class CodemarkupSearchSearchByNameAndKind(GleanSchemaPredicate):
 class CodemarkupSearchSearchEntityByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, entity: ast.Expr, location: ast.Expr, kind: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.search.SearchEntityByName.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location'), angle_for(__env, kind, 'kind')])) or '_' } }}", SearchEntityByName
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location'), angle_for(__env, kind, 'kind')]))
+    return f"codemarkup.search.SearchEntityByName.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SearchEntityByName
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, entity: Optional["CodeEntity"] = None, location: Optional["CodemarkupTypesLocation"] = None, kind: Optional[Union[Just["CodemarkupTypesSymbolKind"], Just[None]]] = None) -> "CodemarkupSearchSearchEntityByName":
@@ -45,7 +47,8 @@ class CodemarkupSearchSearchEntityByName(GleanSchemaPredicate):
 class CodemarkupSearchSearchEntityByLowerCaseName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, entity: ast.Expr, location: ast.Expr, kind: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.search.SearchEntityByLowerCaseName.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location'), angle_for(__env, kind, 'kind')])) or '_' } }}", SearchEntityByLowerCaseName
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location'), angle_for(__env, kind, 'kind')]))
+    return f"codemarkup.search.SearchEntityByLowerCaseName.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SearchEntityByLowerCaseName
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, entity: Optional["CodeEntity"] = None, location: Optional["CodemarkupTypesLocation"] = None, kind: Optional[Union[Just["CodemarkupTypesSymbolKind"], Just[None]]] = None) -> "CodemarkupSearchSearchEntityByLowerCaseName":
@@ -56,7 +59,8 @@ class CodemarkupSearchSearchEntityByLowerCaseName(GleanSchemaPredicate):
 class CodemarkupSearchSearchByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], searchcase: ast.Expr, name: ast.Expr, entity: ast.Expr, location: ast.Expr, kind: ast.Expr, language: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.search.SearchByName.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, searchcase, 'searchcase'), angle_for(__env, name, 'name'), angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location'), angle_for(__env, kind, 'kind'), angle_for(__env, language, 'language')])) or '_' } }}", SearchByName
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, searchcase, 'searchcase'), angle_for(__env, name, 'name'), angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location'), angle_for(__env, kind, 'kind'), angle_for(__env, language, 'language')]))
+    return f"codemarkup.search.SearchByName.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SearchByName
 
   @staticmethod
   def angle_query(*, searchcase: Optional["CodemarkupSearchSearchCase"] = None, name: Optional[str] = None, entity: Optional["CodeEntity"] = None, location: Optional["CodemarkupTypesLocation"] = None, kind: Optional[Union[Just["CodemarkupTypesSymbolKind"], Just[None]]] = None, language: Optional["CodeLanguage"] = None) -> "CodemarkupSearchSearchByName":
@@ -67,7 +71,8 @@ class CodemarkupSearchSearchByName(GleanSchemaPredicate):
 class CodemarkupSearchEntityLocationAndKind(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], entity: ast.Expr, location: ast.Expr, kind: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.search.EntityLocationAndKind.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location'), angle_for(__env, kind, 'kind')])) or '_' } }}", EntityLocationAndKind
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location'), angle_for(__env, kind, 'kind')]))
+    return f"codemarkup.search.EntityLocationAndKind.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", EntityLocationAndKind
 
   @staticmethod
   def angle_query(*, entity: Optional["CodeEntity"] = None, location: Optional["CodemarkupTypesLocation"] = None, kind: Optional[Union[Just["CodemarkupTypesSymbolKind"], Just[None]]] = None) -> "CodemarkupSearchEntityLocationAndKind":
@@ -78,7 +83,8 @@ class CodemarkupSearchEntityLocationAndKind(GleanSchemaPredicate):
 class CodemarkupSearchSearchByScope(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], searchcase: ast.Expr, name: ast.Expr, scope: ast.Expr, entity: ast.Expr, location: ast.Expr, kind: ast.Expr, language: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.search.SearchByScope.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, searchcase, 'searchcase'), angle_for(__env, name, 'name'), angle_for(__env, scope, 'scope'), angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location'), angle_for(__env, kind, 'kind'), angle_for(__env, language, 'language')])) or '_' } }}", SearchByScope
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, searchcase, 'searchcase'), angle_for(__env, name, 'name'), angle_for(__env, scope, 'scope'), angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location'), angle_for(__env, kind, 'kind'), angle_for(__env, language, 'language')]))
+    return f"codemarkup.search.SearchByScope.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SearchByScope
 
   @staticmethod
   def angle_query(*, searchcase: Optional["CodemarkupSearchSearchCase"] = None, name: Optional[str] = None, scope: Optional[List[str]] = None, entity: Optional["CodeEntity"] = None, location: Optional["CodemarkupTypesLocation"] = None, kind: Optional[Union[Just["CodemarkupTypesSymbolKind"], Just[None]]] = None, language: Optional["CodeLanguage"] = None) -> "CodemarkupSearchSearchByScope":

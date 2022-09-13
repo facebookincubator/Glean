@@ -18,7 +18,8 @@ from glean.schema.code_erlang.types import (
 class CodeErlangEntity(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], decl: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.erlang.Entity.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl')])) or '_' } }}", Entity
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl')]))
+    return f"code.erlang.Entity.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Entity
 
   @staticmethod
   def angle_query_decl(*, decl: Optional["ErlangDeclaration"] = None) -> "CodeErlangEntity":

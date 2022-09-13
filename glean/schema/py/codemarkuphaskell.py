@@ -21,7 +21,8 @@ from glean.schema.codemarkup_haskell.types import (
 class CodemarkupHaskellHaskellEntityLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], entity: ast.Expr, location: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.haskell.HaskellEntityLocation.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location')])) or '_' } }}", HaskellEntityLocation
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location')]))
+    return f"codemarkup.haskell.HaskellEntityLocation.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", HaskellEntityLocation
 
   @staticmethod
   def angle_query(*, entity: Optional["CodeHsEntity"] = None, location: Optional["CodemarkupTypesLocation"] = None) -> "CodemarkupHaskellHaskellEntityLocation":
@@ -32,7 +33,8 @@ class CodemarkupHaskellHaskellEntityLocation(GleanSchemaPredicate):
 class CodemarkupHaskellHaskellResolveLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], location: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.haskell.HaskellResolveLocation.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, location, 'location'), angle_for(__env, entity, 'entity')])) or '_' } }}", HaskellResolveLocation
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, location, 'location'), angle_for(__env, entity, 'entity')]))
+    return f"codemarkup.haskell.HaskellResolveLocation.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", HaskellResolveLocation
 
   @staticmethod
   def angle_query(*, location: Optional["CodemarkupTypesLocation"] = None, entity: Optional["CodeHsEntity"] = None) -> "CodemarkupHaskellHaskellResolveLocation":
@@ -43,7 +45,8 @@ class CodemarkupHaskellHaskellResolveLocation(GleanSchemaPredicate):
 class CodemarkupHaskellHaskellFileEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, xref: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.haskell.HaskellFileEntityXRefLocations.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xref, 'xref'), angle_for(__env, entity, 'entity')])) or '_' } }}", HaskellFileEntityXRefLocations
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xref, 'xref'), angle_for(__env, entity, 'entity')]))
+    return f"codemarkup.haskell.HaskellFileEntityXRefLocations.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", HaskellFileEntityXRefLocations
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, xref: Optional["CodemarkupTypesXRefLocation"] = None, entity: Optional["CodeHsEntity"] = None) -> "CodemarkupHaskellHaskellFileEntityXRefLocations":
@@ -54,7 +57,8 @@ class CodemarkupHaskellHaskellFileEntityXRefLocations(GleanSchemaPredicate):
 class CodemarkupHaskellHaskellEntityUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], target: ast.Expr, file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.haskell.HaskellEntityUses.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", HaskellEntityUses
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')]))
+    return f"codemarkup.haskell.HaskellEntityUses.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", HaskellEntityUses
 
   @staticmethod
   def angle_query(*, target: Optional["CodeHsEntity"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "CodemarkupHaskellHaskellEntityUses":

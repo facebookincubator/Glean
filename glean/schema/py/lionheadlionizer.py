@@ -18,7 +18,8 @@ from glean.schema.lionhead_lionizer.types import (
 class LionheadLionizerFindFunction(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], key: ast.Expr, value: ast.Expr, declaration: ast.Expr) -> Tuple[str, Struct]:
-    return f"lionhead.lionizer.FindFunction.11 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, key, 'key'), angle_for(__env, value, 'value'), angle_for(__env, declaration, 'declaration')])) or '_' } }}", FindFunction
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, key, 'key'), angle_for(__env, value, 'value'), angle_for(__env, declaration, 'declaration')]))
+    return f"lionhead.lionizer.FindFunction.11 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FindFunction
 
   @staticmethod
   def angle_query(*, key: Optional["DocmarkupDocAttrKey"] = None, value: Optional["DocmarkupDocAttrValue"] = None, declaration: Optional["Cxx1FunctionDeclaration"] = None) -> "LionheadLionizerFindFunction":
@@ -29,7 +30,8 @@ class LionheadLionizerFindFunction(GleanSchemaPredicate):
 class LionheadLionizerFindFunctionWithDef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], key: ast.Expr, value: ast.Expr, declaration: ast.Expr, definition: ast.Expr) -> Tuple[str, Struct]:
-    return f"lionhead.lionizer.FindFunctionWithDef.11 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, key, 'key'), angle_for(__env, value, 'value'), angle_for(__env, declaration, 'declaration'), angle_for(__env, definition, 'definition')])) or '_' } }}", FindFunctionWithDef
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, key, 'key'), angle_for(__env, value, 'value'), angle_for(__env, declaration, 'declaration'), angle_for(__env, definition, 'definition')]))
+    return f"lionhead.lionizer.FindFunctionWithDef.11 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FindFunctionWithDef
 
   @staticmethod
   def angle_query(*, key: Optional["DocmarkupDocAttrKey"] = None, value: Optional["DocmarkupDocAttrValue"] = None, declaration: Optional["Cxx1FunctionDeclaration"] = None, definition: Optional["Cxx1FunctionDefinition"] = None) -> "LionheadLionizerFindFunctionWithDef":

@@ -63,7 +63,8 @@ from glean.schema.flow.types import (
 class FlowFlowTypeEntityImportUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], target: ast.Expr, local: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.FlowTypeEntityImportUses.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, local, 'local')])) or '_' } }}", FlowTypeEntityImportUses
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, local, 'local')]))
+    return f"flow.FlowTypeEntityImportUses.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FlowTypeEntityImportUses
 
   @staticmethod
   def angle_query(*, target: Optional["FlowSomeEntity"] = None, local: Optional["FlowTypeDeclaration"] = None) -> "FlowFlowTypeEntityImportUses":
@@ -74,7 +75,8 @@ class FlowFlowTypeEntityImportUses(GleanSchemaPredicate):
 class FlowTypeExport(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], named: ast.Expr, star: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.TypeExport.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, named, 'named'), angle_for(__env, star, 'star')])) or '_' } }}", TypeExport
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, named, 'named'), angle_for(__env, star, 'star')]))
+    return f"flow.TypeExport.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", TypeExport
 
   @staticmethod
   def angle_query_named(*, named: Optional["FlowName"] = None) -> "FlowTypeExport":
@@ -90,7 +92,8 @@ class FlowTypeExport(GleanSchemaPredicate):
 class FlowImportDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], declaration: ast.Expr, import_: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.ImportDeclaration.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, import_, 'import_')])) or '_' } }}", ImportDeclaration
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, import_, 'import_')]))
+    return f"flow.ImportDeclaration.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ImportDeclaration
 
   @staticmethod
   def angle_query(*, declaration: Optional["FlowDeclaration"] = None, import_: Optional['FlowImportDeclaration_import_'] = None) -> "FlowImportDeclaration":
@@ -99,7 +102,8 @@ class FlowImportDeclaration(GleanSchemaPredicate):
 class FlowImportDeclaration_import_(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], moduleExport: ast.Expr, moduleNamespace: ast.Expr) -> Tuple[str, Struct]:
-    return f" {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, moduleExport, 'moduleExport'), angle_for(__env, moduleNamespace, 'moduleNamespace')])) or '_' } }}", FlowImportDeclaration_import_
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, moduleExport, 'moduleExport'), angle_for(__env, moduleNamespace, 'moduleNamespace')]))
+    return f" { ('{ ' + query_fields + ' }') if query_fields else '_' }", FlowImportDeclaration_import_
 
   @staticmethod
   def angle_query_moduleExport(*, moduleExport: Optional["FlowModuleExport"] = None) -> "FlowImportDeclaration_import_":
@@ -117,7 +121,8 @@ class FlowImportDeclaration_import_(GleanSchemaPredicate):
 class FlowDeclarationLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], decl: ast.Expr, file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.DeclarationLocation.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", DeclarationLocation
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')]))
+    return f"flow.DeclarationLocation.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DeclarationLocation
 
   @staticmethod
   def angle_query(*, decl: Optional["FlowSomeDeclaration"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "FlowDeclarationLocation":
@@ -128,7 +133,8 @@ class FlowDeclarationLocation(GleanSchemaPredicate):
 class FlowDeclarationInfo(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], declaration: ast.Expr, type: ast.Expr, documentation: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.DeclarationInfo.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, type, 'type'), angle_for(__env, documentation, 'documentation')])) or '_' } }}", DeclarationInfo
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, type, 'type'), angle_for(__env, documentation, 'documentation')]))
+    return f"flow.DeclarationInfo.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DeclarationInfo
 
   @staticmethod
   def angle_query(*, declaration: Optional["FlowDeclaration"] = None, type: Optional["FlowType"] = None, documentation: Optional[Union[Just["FlowDocumentation"], Just[None]]] = None) -> "FlowDeclarationInfo":
@@ -139,7 +145,8 @@ class FlowDeclarationInfo(GleanSchemaPredicate):
 class FlowFileDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, declaration: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.FileDeclaration.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, declaration, 'declaration')])) or '_' } }}", FileDeclaration
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, declaration, 'declaration')]))
+    return f"flow.FileDeclaration.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FileDeclaration
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, declaration: Optional["FlowSomeDeclaration"] = None) -> "FlowFileDeclaration":
@@ -150,7 +157,8 @@ class FlowFileDeclaration(GleanSchemaPredicate):
 class FlowModuleTypeExport(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], module: ast.Expr, typeExport: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.ModuleTypeExport.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, module, 'module'), angle_for(__env, typeExport, 'typeExport')])) or '_' } }}", ModuleTypeExport
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, module, 'module'), angle_for(__env, typeExport, 'typeExport')]))
+    return f"flow.ModuleTypeExport.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ModuleTypeExport
 
   @staticmethod
   def angle_query(*, module: Optional["FlowModule"] = None, typeExport: Optional["FlowTypeExport"] = None) -> "FlowModuleTypeExport":
@@ -161,7 +169,8 @@ class FlowModuleTypeExport(GleanSchemaPredicate):
 class FlowLocalDeclarationReference(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], declaration: ast.Expr, loc: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.LocalDeclarationReference.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, loc, 'loc')])) or '_' } }}", LocalDeclarationReference
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, loc, 'loc')]))
+    return f"flow.LocalDeclarationReference.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", LocalDeclarationReference
 
   @staticmethod
   def angle_query(*, declaration: Optional["FlowDeclaration"] = None, loc: Optional["FlowRange"] = None) -> "FlowLocalDeclarationReference":
@@ -172,7 +181,8 @@ class FlowLocalDeclarationReference(GleanSchemaPredicate):
 class FlowFlowTypeImportXRef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], local: ast.Expr, entity: ast.Expr, targetFile: ast.Expr, targetSpan: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.FlowTypeImportXRef.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, local, 'local'), angle_for(__env, entity, 'entity'), angle_for(__env, targetFile, 'targetFile'), angle_for(__env, targetSpan, 'targetSpan')])) or '_' } }}", FlowTypeImportXRef
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, local, 'local'), angle_for(__env, entity, 'entity'), angle_for(__env, targetFile, 'targetFile'), angle_for(__env, targetSpan, 'targetSpan')]))
+    return f"flow.FlowTypeImportXRef.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FlowTypeImportXRef
 
   @staticmethod
   def angle_query(*, local: Optional["FlowTypeDeclaration"] = None, entity: Optional["FlowSomeEntity"] = None, targetFile: Optional["SrcFile"] = None, targetSpan: Optional["SrcByteSpan"] = None) -> "FlowFlowTypeImportXRef":
@@ -183,7 +193,8 @@ class FlowFlowTypeImportXRef(GleanSchemaPredicate):
 class FlowName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.Name.3 { angle_for(__env, arg, None) or '_' }", Name
+    query_fields =  angle_for(__env, arg, None)
+    return f"flow.Name.3 { query_fields if query_fields else '_' }", Name
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "FlowName":
@@ -194,7 +205,8 @@ class FlowName(GleanSchemaPredicate):
 class FlowSearchByModule(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], string_: ast.Expr, name: ast.Expr, decl: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.SearchByModule.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, string_, 'string_'), angle_for(__env, name, 'name'), angle_for(__env, decl, 'decl')])) or '_' } }}", SearchByModule
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, string_, 'string_'), angle_for(__env, name, 'name'), angle_for(__env, decl, 'decl')]))
+    return f"flow.SearchByModule.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SearchByModule
 
   @staticmethod
   def angle_query(*, string_: Optional[str] = None, name: Optional["FlowName"] = None, decl: Optional["FlowSomeDeclaration"] = None) -> "FlowSearchByModule":
@@ -205,7 +217,8 @@ class FlowSearchByModule(GleanSchemaPredicate):
 class FlowRange(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], module: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.Range.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, module, 'module'), angle_for(__env, span, 'span')])) or '_' } }}", Range
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, module, 'module'), angle_for(__env, span, 'span')]))
+    return f"flow.Range.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Range
 
   @staticmethod
   def angle_query(*, module: Optional["FlowModule"] = None, span: Optional["SrcByteSpan"] = None) -> "FlowRange":
@@ -216,7 +229,8 @@ class FlowRange(GleanSchemaPredicate):
 class FlowDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, loc: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.Declaration.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, loc, 'loc')])) or '_' } }}", Declaration
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, loc, 'loc')]))
+    return f"flow.Declaration.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Declaration
 
   @staticmethod
   def angle_query(*, name: Optional["FlowName"] = None, loc: Optional["FlowRange"] = None) -> "FlowDeclaration":
@@ -227,7 +241,8 @@ class FlowDeclaration(GleanSchemaPredicate):
 class FlowDeclarationUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], target: ast.Expr, file: ast.Expr, use: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.DeclarationUses.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, file, 'file'), angle_for(__env, use, 'use')])) or '_' } }}", DeclarationUses
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, file, 'file'), angle_for(__env, use, 'use')]))
+    return f"flow.DeclarationUses.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DeclarationUses
 
   @staticmethod
   def angle_query(*, target: Optional["FlowSomeDeclaration"] = None, file: Optional["SrcFile"] = None, use: Optional["SrcByteSpan"] = None) -> "FlowDeclarationUses":
@@ -238,7 +253,8 @@ class FlowDeclarationUses(GleanSchemaPredicate):
 class FlowSourceOfTypeExport(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], moduleTypeExport: ast.Expr, source: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.SourceOfTypeExport.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, moduleTypeExport, 'moduleTypeExport'), angle_for(__env, source, 'source')])) or '_' } }}", SourceOfTypeExport
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, moduleTypeExport, 'moduleTypeExport'), angle_for(__env, source, 'source')]))
+    return f"flow.SourceOfTypeExport.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SourceOfTypeExport
 
   @staticmethod
   def angle_query(*, moduleTypeExport: Optional["FlowModuleTypeExport"] = None, source: Optional['FlowSourceOfTypeExport_source'] = None) -> "FlowSourceOfTypeExport":
@@ -247,7 +263,8 @@ class FlowSourceOfTypeExport(GleanSchemaPredicate):
 class FlowSourceOfTypeExport_source(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], typeDeclaration: ast.Expr, moduleTypeExport: ast.Expr, moduleNamespace: ast.Expr) -> Tuple[str, Struct]:
-    return f" {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, typeDeclaration, 'typeDeclaration'), angle_for(__env, moduleTypeExport, 'moduleTypeExport'), angle_for(__env, moduleNamespace, 'moduleNamespace')])) or '_' } }}", FlowSourceOfTypeExport_source
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, typeDeclaration, 'typeDeclaration'), angle_for(__env, moduleTypeExport, 'moduleTypeExport'), angle_for(__env, moduleNamespace, 'moduleNamespace')]))
+    return f" { ('{ ' + query_fields + ' }') if query_fields else '_' }", FlowSourceOfTypeExport_source
 
   @staticmethod
   def angle_query_typeDeclaration(*, typeDeclaration: Optional["FlowTypeDeclaration"] = None) -> "FlowSourceOfTypeExport_source":
@@ -269,7 +286,8 @@ class FlowSourceOfTypeExport_source(GleanSchemaPredicate):
 class FlowFlowCompatibleExport(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], left: ast.Expr, right: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.FlowCompatibleExport.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, left, 'left'), angle_for(__env, right, 'right')])) or '_' } }}", FlowCompatibleExport
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, left, 'left'), angle_for(__env, right, 'right')]))
+    return f"flow.FlowCompatibleExport.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FlowCompatibleExport
 
   @staticmethod
   def angle_query(*, left: Optional["FlowExport"] = None, right: Optional["FlowExport"] = None) -> "FlowFlowCompatibleExport":
@@ -280,7 +298,8 @@ class FlowFlowCompatibleExport(GleanSchemaPredicate):
 class FlowFlowEntityUsesAll(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], target: ast.Expr, file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.FlowEntityUsesAll.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", FlowEntityUsesAll
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')]))
+    return f"flow.FlowEntityUsesAll.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FlowEntityUsesAll
 
   @staticmethod
   def angle_query(*, target: Optional["FlowSomeEntity"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "FlowFlowEntityUsesAll":
@@ -291,7 +310,8 @@ class FlowFlowEntityUsesAll(GleanSchemaPredicate):
 class FlowNameLowerCase(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], nameLowerCase: ast.Expr, name: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.NameLowerCase.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, nameLowerCase, 'nameLowerCase'), angle_for(__env, name, 'name')])) or '_' } }}", NameLowerCase
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, nameLowerCase, 'nameLowerCase'), angle_for(__env, name, 'name')]))
+    return f"flow.NameLowerCase.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", NameLowerCase
 
   @staticmethod
   def angle_query(*, nameLowerCase: Optional[str] = None, name: Optional["FlowName"] = None) -> "FlowNameLowerCase":
@@ -302,7 +322,8 @@ class FlowNameLowerCase(GleanSchemaPredicate):
 class FlowSearchByFileModule(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, name: ast.Expr, decl: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.SearchByFileModule.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, name, 'name'), angle_for(__env, decl, 'decl')])) or '_' } }}", SearchByFileModule
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, name, 'name'), angle_for(__env, decl, 'decl')]))
+    return f"flow.SearchByFileModule.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SearchByFileModule
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, name: Optional["FlowName"] = None, decl: Optional["FlowSomeDeclaration"] = None) -> "FlowSearchByFileModule":
@@ -313,7 +334,8 @@ class FlowSearchByFileModule(GleanSchemaPredicate):
 class FlowModule(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, builtin: ast.Expr, lib: ast.Expr, noSource: ast.Expr, string_: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.Module.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, builtin, 'builtin'), angle_for(__env, lib, 'lib'), angle_for(__env, noSource, 'noSource'), angle_for(__env, string_, 'string_')])) or '_' } }}", Module
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, builtin, 'builtin'), angle_for(__env, lib, 'lib'), angle_for(__env, noSource, 'noSource'), angle_for(__env, string_, 'string_')]))
+    return f"flow.Module.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Module
 
   @staticmethod
   def angle_query_file(*, file: Optional["SrcFile"] = None) -> "FlowModule":
@@ -345,7 +367,8 @@ FlowModule_noSource = Tuple[()]
 class FlowFlowSameModule(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], left: ast.Expr, right: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.FlowSameModule.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, left, 'left'), angle_for(__env, right, 'right')])) or '_' } }}", FlowSameModule
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, left, 'left'), angle_for(__env, right, 'right')]))
+    return f"flow.FlowSameModule.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FlowSameModule
 
   @staticmethod
   def angle_query(*, left: Optional["FlowModule"] = None, right: Optional["FlowModule"] = None) -> "FlowFlowSameModule":
@@ -356,7 +379,8 @@ class FlowFlowSameModule(GleanSchemaPredicate):
 class FlowFlowModuleNamespaceXRef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], local: ast.Expr, entity: ast.Expr, file: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.FlowModuleNamespaceXRef.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, local, 'local'), angle_for(__env, entity, 'entity'), angle_for(__env, file, 'file')])) or '_' } }}", FlowModuleNamespaceXRef
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, local, 'local'), angle_for(__env, entity, 'entity'), angle_for(__env, file, 'file')]))
+    return f"flow.FlowModuleNamespaceXRef.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FlowModuleNamespaceXRef
 
   @staticmethod
   def angle_query(*, local: Optional["FlowDeclaration"] = None, entity: Optional["FlowSomeEntity"] = None, file: Optional["SrcFile"] = None) -> "FlowFlowModuleNamespaceXRef":
@@ -367,7 +391,8 @@ class FlowFlowModuleNamespaceXRef(GleanSchemaPredicate):
 class FlowDocumentation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.Documentation.3 { angle_for(__env, arg, None) or '_' }", Documentation
+    query_fields =  angle_for(__env, arg, None)
+    return f"flow.Documentation.3 { query_fields if query_fields else '_' }", Documentation
 
   @staticmethod
   def angle_query(*, arg: Optional["FlowRange"] = None) -> "FlowDocumentation":
@@ -378,7 +403,8 @@ class FlowDocumentation(GleanSchemaPredicate):
 class FlowSearchByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, decl: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.SearchByName.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, decl, 'decl')])) or '_' } }}", SearchByName
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, decl, 'decl')]))
+    return f"flow.SearchByName.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SearchByName
 
   @staticmethod
   def angle_query(*, name: Optional["FlowName"] = None, decl: Optional["FlowSomeDeclaration"] = None) -> "FlowSearchByName":
@@ -389,7 +415,8 @@ class FlowSearchByName(GleanSchemaPredicate):
 class FlowStringToFileModule(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], string_: ast.Expr, file: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.StringToFileModule.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, string_, 'string_'), angle_for(__env, file, 'file')])) or '_' } }}", StringToFileModule
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, string_, 'string_'), angle_for(__env, file, 'file')]))
+    return f"flow.StringToFileModule.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", StringToFileModule
 
   @staticmethod
   def angle_query(*, string_: Optional[str] = None, file: Optional["SrcFile"] = None) -> "FlowStringToFileModule":
@@ -400,7 +427,8 @@ class FlowStringToFileModule(GleanSchemaPredicate):
 class FlowFlowExportLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], module: ast.Expr, export_: ast.Expr, entity: ast.Expr, file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.FlowExportLocation.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, module, 'module'), angle_for(__env, export_, 'export_'), angle_for(__env, entity, 'entity'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", FlowExportLocation
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, module, 'module'), angle_for(__env, export_, 'export_'), angle_for(__env, entity, 'entity'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')]))
+    return f"flow.FlowExportLocation.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FlowExportLocation
 
   @staticmethod
   def angle_query(*, module: Optional["FlowModule"] = None, export_: Optional["FlowExport"] = None, entity: Optional["FlowSomeEntity"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "FlowFlowExportLocation":
@@ -411,7 +439,8 @@ class FlowFlowExportLocation(GleanSchemaPredicate):
 class FlowFlowXRefDeclInfo(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], ref: ast.Expr, srcLoc: ast.Expr, name: ast.Expr, targetLoc: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.FlowXRefDeclInfo.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, ref, 'ref'), angle_for(__env, srcLoc, 'srcLoc'), angle_for(__env, name, 'name'), angle_for(__env, targetLoc, 'targetLoc'), angle_for(__env, entity, 'entity')])) or '_' } }}", FlowXRefDeclInfo
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, ref, 'ref'), angle_for(__env, srcLoc, 'srcLoc'), angle_for(__env, name, 'name'), angle_for(__env, targetLoc, 'targetLoc'), angle_for(__env, entity, 'entity')]))
+    return f"flow.FlowXRefDeclInfo.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FlowXRefDeclInfo
 
   @staticmethod
   def angle_query(*, ref: Optional["FlowXRef"] = None, srcLoc: Optional["FlowRange"] = None, name: Optional["FlowName"] = None, targetLoc: Optional["FlowRange"] = None, entity: Optional["FlowSomeDeclaration"] = None) -> "FlowFlowXRefDeclInfo":
@@ -422,7 +451,8 @@ class FlowFlowXRefDeclInfo(GleanSchemaPredicate):
 class FlowSearchTypeByModuleExport(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], string_: ast.Expr, name: ast.Expr, decl: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.SearchTypeByModuleExport.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, string_, 'string_'), angle_for(__env, name, 'name'), angle_for(__env, decl, 'decl')])) or '_' } }}", SearchTypeByModuleExport
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, string_, 'string_'), angle_for(__env, name, 'name'), angle_for(__env, decl, 'decl')]))
+    return f"flow.SearchTypeByModuleExport.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SearchTypeByModuleExport
 
   @staticmethod
   def angle_query(*, string_: Optional[str] = None, name: Optional["FlowName"] = None, decl: Optional["FlowSomeDeclaration"] = None) -> "FlowSearchTypeByModuleExport":
@@ -433,7 +463,8 @@ class FlowSearchTypeByModuleExport(GleanSchemaPredicate):
 class FlowFlowEntityImportUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], target: ast.Expr, local: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.FlowEntityImportUses.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, local, 'local')])) or '_' } }}", FlowEntityImportUses
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, local, 'local')]))
+    return f"flow.FlowEntityImportUses.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FlowEntityImportUses
 
   @staticmethod
   def angle_query(*, target: Optional["FlowSomeEntity"] = None, local: Optional["FlowDeclaration"] = None) -> "FlowFlowEntityImportUses":
@@ -444,7 +475,8 @@ class FlowFlowEntityImportUses(GleanSchemaPredicate):
 class FlowExport(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], commonJS: ast.Expr, commonJSMember: ast.Expr, named: ast.Expr, default_: ast.Expr, star: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.Export.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, commonJS, 'commonJS'), angle_for(__env, commonJSMember, 'commonJSMember'), angle_for(__env, named, 'named'), angle_for(__env, default_, 'default_'), angle_for(__env, star, 'star')])) or '_' } }}", Export
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, commonJS, 'commonJS'), angle_for(__env, commonJSMember, 'commonJSMember'), angle_for(__env, named, 'named'), angle_for(__env, default_, 'default_'), angle_for(__env, star, 'star')]))
+    return f"flow.Export.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Export
 
   @staticmethod
   def angle_query_commonJS(*, commonJS: Optional['FlowExport_commonJS'] = None) -> "FlowExport":
@@ -476,7 +508,8 @@ FlowExport_default_ = Tuple[()]
 class FlowTypeImportDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], typeDeclaration: ast.Expr, import_: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.TypeImportDeclaration.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, typeDeclaration, 'typeDeclaration'), angle_for(__env, import_, 'import_')])) or '_' } }}", TypeImportDeclaration
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, typeDeclaration, 'typeDeclaration'), angle_for(__env, import_, 'import_')]))
+    return f"flow.TypeImportDeclaration.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", TypeImportDeclaration
 
   @staticmethod
   def angle_query(*, typeDeclaration: Optional["FlowTypeDeclaration"] = None, import_: Optional['FlowTypeImportDeclaration_import_'] = None) -> "FlowTypeImportDeclaration":
@@ -485,7 +518,8 @@ class FlowTypeImportDeclaration(GleanSchemaPredicate):
 class FlowTypeImportDeclaration_import_(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], type: ast.Expr, typeof_: ast.Expr, moduleTypeof: ast.Expr) -> Tuple[str, Struct]:
-    return f" {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, type, 'type'), angle_for(__env, typeof_, 'typeof_'), angle_for(__env, moduleTypeof, 'moduleTypeof')])) or '_' } }}", FlowTypeImportDeclaration_import_
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, type, 'type'), angle_for(__env, typeof_, 'typeof_'), angle_for(__env, moduleTypeof, 'moduleTypeof')]))
+    return f" { ('{ ' + query_fields + ' }') if query_fields else '_' }", FlowTypeImportDeclaration_import_
 
   @staticmethod
   def angle_query_type(*, type: Optional["FlowModuleTypeExport"] = None) -> "FlowTypeImportDeclaration_import_":
@@ -507,7 +541,8 @@ class FlowTypeImportDeclaration_import_(GleanSchemaPredicate):
 class FlowFlowImportXRef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], local: ast.Expr, entity: ast.Expr, targetFile: ast.Expr, targetSpan: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.FlowImportXRef.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, local, 'local'), angle_for(__env, entity, 'entity'), angle_for(__env, targetFile, 'targetFile'), angle_for(__env, targetSpan, 'targetSpan')])) or '_' } }}", FlowImportXRef
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, local, 'local'), angle_for(__env, entity, 'entity'), angle_for(__env, targetFile, 'targetFile'), angle_for(__env, targetSpan, 'targetSpan')]))
+    return f"flow.FlowImportXRef.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FlowImportXRef
 
   @staticmethod
   def angle_query(*, local: Optional["FlowDeclaration"] = None, entity: Optional["FlowSomeEntity"] = None, targetFile: Optional["SrcFile"] = None, targetSpan: Optional["SrcByteSpan"] = None) -> "FlowFlowImportXRef":
@@ -518,7 +553,8 @@ class FlowFlowImportXRef(GleanSchemaPredicate):
 class FlowModuleExport(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], module: ast.Expr, export_: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.ModuleExport.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, module, 'module'), angle_for(__env, export_, 'export_')])) or '_' } }}", ModuleExport
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, module, 'module'), angle_for(__env, export_, 'export_')]))
+    return f"flow.ModuleExport.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ModuleExport
 
   @staticmethod
   def angle_query(*, module: Optional["FlowModule"] = None, export_: Optional["FlowExport"] = None) -> "FlowModuleExport":
@@ -529,7 +565,8 @@ class FlowModuleExport(GleanSchemaPredicate):
 class FlowMemberDeclarationInfo(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], memberDeclaration: ast.Expr, type: ast.Expr, documentation: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.MemberDeclarationInfo.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, memberDeclaration, 'memberDeclaration'), angle_for(__env, type, 'type'), angle_for(__env, documentation, 'documentation')])) or '_' } }}", MemberDeclarationInfo
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, memberDeclaration, 'memberDeclaration'), angle_for(__env, type, 'type'), angle_for(__env, documentation, 'documentation')]))
+    return f"flow.MemberDeclarationInfo.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", MemberDeclarationInfo
 
   @staticmethod
   def angle_query(*, memberDeclaration: Optional["FlowMemberDeclaration"] = None, type: Optional["FlowType"] = None, documentation: Optional[Union[Just["FlowDocumentation"], Just[None]]] = None) -> "FlowMemberDeclarationInfo":
@@ -540,7 +577,8 @@ class FlowMemberDeclarationInfo(GleanSchemaPredicate):
 class FlowTypeDeclarationInfo(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], typeDeclaration: ast.Expr, type: ast.Expr, documentation: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.TypeDeclarationInfo.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, typeDeclaration, 'typeDeclaration'), angle_for(__env, type, 'type'), angle_for(__env, documentation, 'documentation')])) or '_' } }}", TypeDeclarationInfo
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, typeDeclaration, 'typeDeclaration'), angle_for(__env, type, 'type'), angle_for(__env, documentation, 'documentation')]))
+    return f"flow.TypeDeclarationInfo.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", TypeDeclarationInfo
 
   @staticmethod
   def angle_query(*, typeDeclaration: Optional["FlowTypeDeclaration"] = None, type: Optional["FlowType"] = None, documentation: Optional[Union[Just["FlowDocumentation"], Just[None]]] = None) -> "FlowTypeDeclarationInfo":
@@ -551,7 +589,8 @@ class FlowTypeDeclarationInfo(GleanSchemaPredicate):
 class FlowFileXRef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, ref: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.FileXRef.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, ref, 'ref')])) or '_' } }}", FileXRef
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, ref, 'ref')]))
+    return f"flow.FileXRef.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FileXRef
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, ref: Optional["FlowXRef"] = None) -> "FlowFileXRef":
@@ -562,7 +601,8 @@ class FlowFileXRef(GleanSchemaPredicate):
 class FlowSourceOfExport(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], moduleExport: ast.Expr, source: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.SourceOfExport.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, moduleExport, 'moduleExport'), angle_for(__env, source, 'source')])) or '_' } }}", SourceOfExport
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, moduleExport, 'moduleExport'), angle_for(__env, source, 'source')]))
+    return f"flow.SourceOfExport.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SourceOfExport
 
   @staticmethod
   def angle_query(*, moduleExport: Optional["FlowModuleExport"] = None, source: Optional['FlowSourceOfExport_source'] = None) -> "FlowSourceOfExport":
@@ -571,7 +611,8 @@ class FlowSourceOfExport(GleanSchemaPredicate):
 class FlowSourceOfExport_source(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], declaration: ast.Expr, memberDeclaration: ast.Expr, moduleExport: ast.Expr, moduleNamespace: ast.Expr) -> Tuple[str, Struct]:
-    return f" {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, memberDeclaration, 'memberDeclaration'), angle_for(__env, moduleExport, 'moduleExport'), angle_for(__env, moduleNamespace, 'moduleNamespace')])) or '_' } }}", FlowSourceOfExport_source
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, memberDeclaration, 'memberDeclaration'), angle_for(__env, moduleExport, 'moduleExport'), angle_for(__env, moduleNamespace, 'moduleNamespace')]))
+    return f" { ('{ ' + query_fields + ' }') if query_fields else '_' }", FlowSourceOfExport_source
 
   @staticmethod
   def angle_query_declaration(*, declaration: Optional["FlowDeclaration"] = None) -> "FlowSourceOfExport_source":
@@ -597,7 +638,8 @@ class FlowSourceOfExport_source(GleanSchemaPredicate):
 class FlowMemberDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, loc: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.MemberDeclaration.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, loc, 'loc')])) or '_' } }}", MemberDeclaration
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, loc, 'loc')]))
+    return f"flow.MemberDeclaration.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", MemberDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional["FlowName"] = None, loc: Optional["FlowRange"] = None) -> "FlowMemberDeclaration":
@@ -608,7 +650,8 @@ class FlowMemberDeclaration(GleanSchemaPredicate):
 class FlowType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.Type.3 { angle_for(__env, arg, None) or '_' }", Type
+    query_fields =  angle_for(__env, arg, None)
+    return f"flow.Type.3 { query_fields if query_fields else '_' }", Type
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "FlowType":
@@ -619,7 +662,8 @@ class FlowType(GleanSchemaPredicate):
 class FlowFileOfStringModule(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, string_: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.FileOfStringModule.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, string_, 'string_')])) or '_' } }}", FileOfStringModule
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, string_, 'string_')]))
+    return f"flow.FileOfStringModule.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FileOfStringModule
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, string_: Optional[str] = None) -> "FlowFileOfStringModule":
@@ -630,7 +674,8 @@ class FlowFileOfStringModule(GleanSchemaPredicate):
 class FlowTypeDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, loc: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.TypeDeclaration.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, loc, 'loc')])) or '_' } }}", TypeDeclaration
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, loc, 'loc')]))
+    return f"flow.TypeDeclaration.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", TypeDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional["FlowName"] = None, loc: Optional["FlowRange"] = None) -> "FlowTypeDeclaration":
@@ -641,7 +686,8 @@ class FlowTypeDeclaration(GleanSchemaPredicate):
 class FlowDeclarationNameSpan(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], decl: ast.Expr, name: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.DeclarationNameSpan.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, name, 'name'), angle_for(__env, span, 'span')])) or '_' } }}", DeclarationNameSpan
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, name, 'name'), angle_for(__env, span, 'span')]))
+    return f"flow.DeclarationNameSpan.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DeclarationNameSpan
 
   @staticmethod
   def angle_query(*, decl: Optional["FlowSomeDeclaration"] = None, name: Optional["FlowName"] = None, span: Optional["SrcByteSpan"] = None) -> "FlowDeclarationNameSpan":
@@ -652,7 +698,8 @@ class FlowDeclarationNameSpan(GleanSchemaPredicate):
 class FlowMemberDeclarationReference(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], memberDeclaration: ast.Expr, loc: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.MemberDeclarationReference.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, memberDeclaration, 'memberDeclaration'), angle_for(__env, loc, 'loc')])) or '_' } }}", MemberDeclarationReference
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, memberDeclaration, 'memberDeclaration'), angle_for(__env, loc, 'loc')]))
+    return f"flow.MemberDeclarationReference.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", MemberDeclarationReference
 
   @staticmethod
   def angle_query(*, memberDeclaration: Optional["FlowMemberDeclaration"] = None, loc: Optional["FlowRange"] = None) -> "FlowMemberDeclarationReference":
@@ -663,7 +710,8 @@ class FlowMemberDeclarationReference(GleanSchemaPredicate):
 class FlowFlowTypeExportLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], moduleTypeExport: ast.Expr, entity: ast.Expr, file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.FlowTypeExportLocation.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, moduleTypeExport, 'moduleTypeExport'), angle_for(__env, entity, 'entity'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", FlowTypeExportLocation
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, moduleTypeExport, 'moduleTypeExport'), angle_for(__env, entity, 'entity'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')]))
+    return f"flow.FlowTypeExportLocation.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FlowTypeExportLocation
 
   @staticmethod
   def angle_query(*, moduleTypeExport: Optional["FlowModuleTypeExport"] = None, entity: Optional["FlowSomeEntity"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "FlowFlowTypeExportLocation":
@@ -674,7 +722,8 @@ class FlowFlowTypeExportLocation(GleanSchemaPredicate):
 class FlowTypeDeclarationReference(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], typeDeclaration: ast.Expr, loc: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.TypeDeclarationReference.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, typeDeclaration, 'typeDeclaration'), angle_for(__env, loc, 'loc')])) or '_' } }}", TypeDeclarationReference
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, typeDeclaration, 'typeDeclaration'), angle_for(__env, loc, 'loc')]))
+    return f"flow.TypeDeclarationReference.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", TypeDeclarationReference
 
   @staticmethod
   def angle_query(*, typeDeclaration: Optional["FlowTypeDeclaration"] = None, loc: Optional["FlowRange"] = None) -> "FlowTypeDeclarationReference":
@@ -687,7 +736,8 @@ class FlowTypeDeclarationReference(GleanSchemaPredicate):
 class FlowSomeDeclaration(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], localDecl: ast.Expr, memberDecl: ast.Expr, typeDecl: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.SomeDeclaration.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, localDecl, 'localDecl'), angle_for(__env, memberDecl, 'memberDecl'), angle_for(__env, typeDecl, 'typeDecl')])) or '_' } }}", SomeDeclaration
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, localDecl, 'localDecl'), angle_for(__env, memberDecl, 'memberDecl'), angle_for(__env, typeDecl, 'typeDecl')]))
+    return f"flow.SomeDeclaration.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SomeDeclaration
 
   @staticmethod
   def angle_query_localDecl(*, localDecl: Optional["FlowDeclaration"] = None) -> "FlowSomeDeclaration":
@@ -707,7 +757,8 @@ class FlowSomeDeclaration(InnerGleanSchemaPredicate):
 class FlowSomeEntity(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], decl: ast.Expr, module_: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.SomeEntity.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, module_, 'module_')])) or '_' } }}", SomeEntity
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, module_, 'module_')]))
+    return f"flow.SomeEntity.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SomeEntity
 
   @staticmethod
   def angle_query_decl(*, decl: Optional["FlowSomeDeclaration"] = None) -> "FlowSomeEntity":
@@ -723,7 +774,8 @@ class FlowSomeEntity(InnerGleanSchemaPredicate):
 class FlowXRef(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], localRef: ast.Expr, memberRef: ast.Expr, typeRef: ast.Expr) -> Tuple[str, Struct]:
-    return f"flow.XRef.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, localRef, 'localRef'), angle_for(__env, memberRef, 'memberRef'), angle_for(__env, typeRef, 'typeRef')])) or '_' } }}", XRef
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, localRef, 'localRef'), angle_for(__env, memberRef, 'memberRef'), angle_for(__env, typeRef, 'typeRef')]))
+    return f"flow.XRef.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", XRef
 
   @staticmethod
   def angle_query_localRef(*, localRef: Optional["FlowLocalDeclarationReference"] = None) -> "FlowXRef":

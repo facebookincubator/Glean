@@ -24,7 +24,8 @@ from glean.schema.symbolid_cxx.types import (
 class SymbolidCxxDefinitionOfDecl(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], decl: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"symbolid.cxx.DefinitionOfDecl.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, entity, 'entity')])) or '_' } }}", DefinitionOfDecl
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, entity, 'entity')]))
+    return f"symbolid.cxx.DefinitionOfDecl.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DefinitionOfDecl
 
   @staticmethod
   def angle_query(*, decl: Optional["Cxx1Declaration"] = None, entity: Optional["CodeCxxEntity"] = None) -> "SymbolidCxxDefinitionOfDecl":
@@ -35,7 +36,8 @@ class SymbolidCxxDefinitionOfDecl(GleanSchemaPredicate):
 class SymbolidCxxLookupFunctionDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, scope: ast.Expr, decl: ast.Expr) -> Tuple[str, Struct]:
-    return f"symbolid.cxx.LookupFunctionDeclaration.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, scope, 'scope'), angle_for(__env, decl, 'decl')])) or '_' } }}", LookupFunctionDeclaration
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, scope, 'scope'), angle_for(__env, decl, 'decl')]))
+    return f"symbolid.cxx.LookupFunctionDeclaration.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", LookupFunctionDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional["Cxx1FunctionName"] = None, scope: Optional["Cxx1Scope"] = None, decl: Optional["Cxx1Declaration"] = None) -> "SymbolidCxxLookupFunctionDeclaration":
@@ -46,7 +48,8 @@ class SymbolidCxxLookupFunctionDeclaration(GleanSchemaPredicate):
 class SymbolidCxxLookupNamespaceDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, parent: ast.Expr, decl: ast.Expr) -> Tuple[str, Struct]:
-    return f"symbolid.cxx.LookupNamespaceDeclaration.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, parent, 'parent'), angle_for(__env, decl, 'decl')])) or '_' } }}", LookupNamespaceDeclaration
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, parent, 'parent'), angle_for(__env, decl, 'decl')]))
+    return f"symbolid.cxx.LookupNamespaceDeclaration.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", LookupNamespaceDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional[Union[Just["Cxx1Name"], Just[None]]] = None, parent: Optional[Union[Just["Cxx1NamespaceQName"], Just[None]]] = None, decl: Optional["Cxx1Declaration"] = None) -> "SymbolidCxxLookupNamespaceDeclaration":
@@ -57,7 +60,8 @@ class SymbolidCxxLookupNamespaceDeclaration(GleanSchemaPredicate):
 class SymbolidCxxLookupFunctionDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, scope: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"symbolid.cxx.LookupFunctionDefinition.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, scope, 'scope'), angle_for(__env, entity, 'entity')])) or '_' } }}", LookupFunctionDefinition
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, scope, 'scope'), angle_for(__env, entity, 'entity')]))
+    return f"symbolid.cxx.LookupFunctionDefinition.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", LookupFunctionDefinition
 
   @staticmethod
   def angle_query(*, name: Optional["Cxx1FunctionName"] = None, scope: Optional["Cxx1Scope"] = None, entity: Optional["CodeCxxEntity"] = None) -> "SymbolidCxxLookupFunctionDefinition":
@@ -68,7 +72,8 @@ class SymbolidCxxLookupFunctionDefinition(GleanSchemaPredicate):
 class SymbolidCxxLookupDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, scope: ast.Expr, decl: ast.Expr) -> Tuple[str, Struct]:
-    return f"symbolid.cxx.LookupDeclaration.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, scope, 'scope'), angle_for(__env, decl, 'decl')])) or '_' } }}", LookupDeclaration
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, scope, 'scope'), angle_for(__env, decl, 'decl')]))
+    return f"symbolid.cxx.LookupDeclaration.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", LookupDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional["Cxx1Name"] = None, scope: Optional["Cxx1Scope"] = None, decl: Optional["Cxx1Declaration"] = None) -> "SymbolidCxxLookupDeclaration":
@@ -79,7 +84,8 @@ class SymbolidCxxLookupDeclaration(GleanSchemaPredicate):
 class SymbolidCxxLookupEnumerator(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, parent: ast.Expr, scope: ast.Expr, decl: ast.Expr) -> Tuple[str, Struct]:
-    return f"symbolid.cxx.LookupEnumerator.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, parent, 'parent'), angle_for(__env, scope, 'scope'), angle_for(__env, decl, 'decl')])) or '_' } }}", LookupEnumerator
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, parent, 'parent'), angle_for(__env, scope, 'scope'), angle_for(__env, decl, 'decl')]))
+    return f"symbolid.cxx.LookupEnumerator.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", LookupEnumerator
 
   @staticmethod
   def angle_query(*, name: Optional["Cxx1Name"] = None, parent: Optional["Cxx1Name"] = None, scope: Optional["Cxx1Scope"] = None, decl: Optional["Cxx1Enumerator"] = None) -> "SymbolidCxxLookupEnumerator":
@@ -90,7 +96,8 @@ class SymbolidCxxLookupEnumerator(GleanSchemaPredicate):
 class SymbolidCxxLookupDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, scope: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"symbolid.cxx.LookupDefinition.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, scope, 'scope'), angle_for(__env, entity, 'entity')])) or '_' } }}", LookupDefinition
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, scope, 'scope'), angle_for(__env, entity, 'entity')]))
+    return f"symbolid.cxx.LookupDefinition.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", LookupDefinition
 
   @staticmethod
   def angle_query(*, name: Optional["Cxx1Name"] = None, scope: Optional["Cxx1Scope"] = None, entity: Optional["CodeCxxEntity"] = None) -> "SymbolidCxxLookupDefinition":
@@ -101,7 +108,8 @@ class SymbolidCxxLookupDefinition(GleanSchemaPredicate):
 class SymbolidCxxLookupNamespaceDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, parent: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"symbolid.cxx.LookupNamespaceDefinition.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, parent, 'parent'), angle_for(__env, entity, 'entity')])) or '_' } }}", LookupNamespaceDefinition
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, parent, 'parent'), angle_for(__env, entity, 'entity')]))
+    return f"symbolid.cxx.LookupNamespaceDefinition.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", LookupNamespaceDefinition
 
   @staticmethod
   def angle_query(*, name: Optional[Union[Just["Cxx1Name"], Just[None]]] = None, parent: Optional[Union[Just["Cxx1NamespaceQName"], Just[None]]] = None, entity: Optional["CodeCxxEntity"] = None) -> "SymbolidCxxLookupNamespaceDefinition":

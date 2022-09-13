@@ -16,7 +16,8 @@ from glean.schema.configerator.types import (
 class ConfigeratorImportFilesStatement(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], import_: ast.Expr, is_recursive: ast.Expr) -> Tuple[str, Struct]:
-    return f"configerator.ImportFilesStatement.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, import_, 'import_'), angle_for(__env, is_recursive, 'is_recursive')])) or '_' } }}", ImportFilesStatement
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, import_, 'import_'), angle_for(__env, is_recursive, 'is_recursive')]))
+    return f"configerator.ImportFilesStatement.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ImportFilesStatement
 
   @staticmethod
   def angle_query(*, import_: Optional["PythonImportStatement"] = None, is_recursive: Optional[bool] = None) -> "ConfigeratorImportFilesStatement":

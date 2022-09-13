@@ -16,7 +16,8 @@ from glean.schema.hackdependency.types import (
 class HackdependencyInheritance(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], parent: ast.Expr, child: ast.Expr) -> Tuple[str, Struct]:
-    return f"hackdependency.inheritance.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, parent, 'parent'), angle_for(__env, child, 'child')])) or '_' } }}", inheritance
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, parent, 'parent'), angle_for(__env, child, 'child')]))
+    return f"hackdependency.inheritance.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", inheritance
 
   @staticmethod
   def angle_query(*, parent: Optional["Hackdependencyname"] = None, child: Optional["Hackdependencyname"] = None) -> "HackdependencyInheritance":
@@ -27,7 +28,8 @@ class HackdependencyInheritance(GleanSchemaPredicate):
 class HackdependencyName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"hackdependency.name.1 { angle_for(__env, arg, None) or '_' }", name
+    query_fields =  angle_for(__env, arg, None)
+    return f"hackdependency.name.1 { query_fields if query_fields else '_' }", name
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HackdependencyName":

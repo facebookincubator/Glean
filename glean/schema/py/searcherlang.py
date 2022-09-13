@@ -17,7 +17,8 @@ from glean.schema.search_erlang.types import (
 class SearchErlangSearchByFQN(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], module: ast.Expr, name: ast.Expr, arity: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"search.erlang.SearchByFQN.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, module, 'module'), angle_for(__env, name, 'name'), angle_for(__env, arity, 'arity'), angle_for(__env, entity, 'entity')])) or '_' } }}", SearchByFQN
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, module, 'module'), angle_for(__env, name, 'name'), angle_for(__env, arity, 'arity'), angle_for(__env, entity, 'entity')]))
+    return f"search.erlang.SearchByFQN.4 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SearchByFQN
 
   @staticmethod
   def angle_query(*, module: Optional[str] = None, name: Optional[str] = None, arity: Optional[int] = None, entity: Optional["CodeErlangEntity"] = None) -> "SearchErlangSearchByFQN":
@@ -28,7 +29,8 @@ class SearchErlangSearchByFQN(GleanSchemaPredicate):
 class SearchErlangSearchByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"search.erlang.SearchByName.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, entity, 'entity')])) or '_' } }}", SearchByName
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, entity, 'entity')]))
+    return f"search.erlang.SearchByName.4 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SearchByName
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, entity: Optional["CodeErlangEntity"] = None) -> "SearchErlangSearchByName":

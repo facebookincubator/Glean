@@ -17,7 +17,8 @@ from glean.schema.lionhead.types import (
 class LionheadCoveredHarness(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], harnessId: ast.Expr, root: ast.Expr) -> Tuple[str, Struct]:
-    return f"lionhead.CoveredHarness.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, harnessId, 'harnessId'), angle_for(__env, root, 'root')])) or '_' } }}", CoveredHarness
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, harnessId, 'harnessId'), angle_for(__env, root, 'root')]))
+    return f"lionhead.CoveredHarness.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", CoveredHarness
 
   @staticmethod
   def angle_query(*, harnessId: Optional["LionheadFbId"] = None, root: Optional["TestinfraCoveredFolder"] = None) -> "LionheadCoveredHarness":
@@ -28,7 +29,8 @@ class LionheadCoveredHarness(GleanSchemaPredicate):
 class LionheadFbId(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"lionhead.FbId.1 { angle_for(__env, arg, None) or '_' }", FbId
+    query_fields =  angle_for(__env, arg, None)
+    return f"lionhead.FbId.1 { query_fields if query_fields else '_' }", FbId
 
   @staticmethod
   def angle_query(*, arg: Optional[int] = None) -> "LionheadFbId":

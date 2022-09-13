@@ -21,7 +21,8 @@ from glean.schema.codemarkup_rust.types import (
 class CodemarkupRustRustEntityLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], entity: ast.Expr, location: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.rust.RustEntityLocation.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location')])) or '_' } }}", RustEntityLocation
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location')]))
+    return f"codemarkup.rust.RustEntityLocation.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", RustEntityLocation
 
   @staticmethod
   def angle_query(*, entity: Optional["CodeRustEntity"] = None, location: Optional["CodemarkupTypesLocation"] = None) -> "CodemarkupRustRustEntityLocation":
@@ -32,7 +33,8 @@ class CodemarkupRustRustEntityLocation(GleanSchemaPredicate):
 class CodemarkupRustRustResolveLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], location: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.rust.RustResolveLocation.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, location, 'location'), angle_for(__env, entity, 'entity')])) or '_' } }}", RustResolveLocation
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, location, 'location'), angle_for(__env, entity, 'entity')]))
+    return f"codemarkup.rust.RustResolveLocation.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", RustResolveLocation
 
   @staticmethod
   def angle_query(*, location: Optional["CodemarkupTypesLocation"] = None, entity: Optional["CodeRustEntity"] = None) -> "CodemarkupRustRustResolveLocation":
@@ -43,7 +45,8 @@ class CodemarkupRustRustResolveLocation(GleanSchemaPredicate):
 class CodemarkupRustRustFileEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, xref: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.rust.RustFileEntityXRefLocations.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xref, 'xref'), angle_for(__env, entity, 'entity')])) or '_' } }}", RustFileEntityXRefLocations
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xref, 'xref'), angle_for(__env, entity, 'entity')]))
+    return f"codemarkup.rust.RustFileEntityXRefLocations.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", RustFileEntityXRefLocations
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, xref: Optional["CodemarkupTypesXRefLocation"] = None, entity: Optional["CodeRustEntity"] = None) -> "CodemarkupRustRustFileEntityXRefLocations":
@@ -54,7 +57,8 @@ class CodemarkupRustRustFileEntityXRefLocations(GleanSchemaPredicate):
 class CodemarkupRustRustEntityUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], target: ast.Expr, file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.rust.RustEntityUses.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", RustEntityUses
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')]))
+    return f"codemarkup.rust.RustEntityUses.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", RustEntityUses
 
   @staticmethod
   def angle_query(*, target: Optional["CodeRustEntity"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "CodemarkupRustRustEntityUses":

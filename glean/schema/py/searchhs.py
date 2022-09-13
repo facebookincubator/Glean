@@ -16,7 +16,8 @@ from glean.schema.search_hs.types import (
 class SearchHsSearchByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"search.hs.SearchByName.9 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, entity, 'entity')])) or '_' } }}", SearchByName
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, entity, 'entity')]))
+    return f"search.hs.SearchByName.9 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SearchByName
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, entity: Optional["CodeHsEntity"] = None) -> "SearchHsSearchByName":

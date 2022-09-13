@@ -38,7 +38,8 @@ from glean.schema.graphql.types import (
 class GraphqlDirective(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, arguments: ast.Expr) -> Tuple[str, Struct]:
-    return f"graphql.Directive.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, arguments, 'arguments')])) or '_' } }}", Directive
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, arguments, 'arguments')]))
+    return f"graphql.Directive.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Directive
 
   @staticmethod
   def angle_query(*, name: Optional["GraphqlValue"] = None, arguments: Optional[List["GraphqlArgument"]] = None) -> "GraphqlDirective":
@@ -49,7 +50,8 @@ class GraphqlDirective(GleanSchemaPredicate):
 class GraphqlInputObjectTypeDef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, fields: ast.Expr, directives: ast.Expr) -> Tuple[str, Struct]:
-    return f"graphql.InputObjectTypeDef.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, fields, 'fields'), angle_for(__env, directives, 'directives')])) or '_' } }}", InputObjectTypeDef
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, fields, 'fields'), angle_for(__env, directives, 'directives')]))
+    return f"graphql.InputObjectTypeDef.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", InputObjectTypeDef
 
   @staticmethod
   def angle_query(*, name: Optional["GraphqlValue"] = None, fields: Optional[List["GraphqlInputValueDef"]] = None, directives: Optional[List["GraphqlDirective"]] = None) -> "GraphqlInputObjectTypeDef":
@@ -60,7 +62,8 @@ class GraphqlInputObjectTypeDef(GleanSchemaPredicate):
 class GraphqlEnumTypeDef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, values: ast.Expr, directives: ast.Expr) -> Tuple[str, Struct]:
-    return f"graphql.EnumTypeDef.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, values, 'values'), angle_for(__env, directives, 'directives')])) or '_' } }}", EnumTypeDef
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, values, 'values'), angle_for(__env, directives, 'directives')]))
+    return f"graphql.EnumTypeDef.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", EnumTypeDef
 
   @staticmethod
   def angle_query(*, name: Optional["GraphqlValue"] = None, values: Optional[List["GraphqlValue"]] = None, directives: Optional[List["GraphqlDirective"]] = None) -> "GraphqlEnumTypeDef":
@@ -71,7 +74,8 @@ class GraphqlEnumTypeDef(GleanSchemaPredicate):
 class GraphqlUnionTypeDef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, types: ast.Expr, directives: ast.Expr) -> Tuple[str, Struct]:
-    return f"graphql.UnionTypeDef.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, types, 'types'), angle_for(__env, directives, 'directives')])) or '_' } }}", UnionTypeDef
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, types, 'types'), angle_for(__env, directives, 'directives')]))
+    return f"graphql.UnionTypeDef.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", UnionTypeDef
 
   @staticmethod
   def angle_query(*, name: Optional["GraphqlValue"] = None, types: Optional[List["GraphqlValue"]] = None, directives: Optional[List["GraphqlDirective"]] = None) -> "GraphqlUnionTypeDef":
@@ -82,7 +86,8 @@ class GraphqlUnionTypeDef(GleanSchemaPredicate):
 class GraphqlField(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], type: ast.Expr, name: ast.Expr, directives: ast.Expr, selectionSet: ast.Expr, arguments: ast.Expr, alias: ast.Expr, loc: ast.Expr) -> Tuple[str, Struct]:
-    return f"graphql.Field.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, type, 'type'), angle_for(__env, name, 'name'), angle_for(__env, directives, 'directives'), angle_for(__env, selectionSet, 'selectionSet'), angle_for(__env, arguments, 'arguments'), angle_for(__env, alias, 'alias'), angle_for(__env, loc, 'loc')])) or '_' } }}", Field
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, type, 'type'), angle_for(__env, name, 'name'), angle_for(__env, directives, 'directives'), angle_for(__env, selectionSet, 'selectionSet'), angle_for(__env, arguments, 'arguments'), angle_for(__env, alias, 'alias'), angle_for(__env, loc, 'loc')]))
+    return f"graphql.Field.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Field
 
   @staticmethod
   def angle_query(*, type: Optional["GraphqlValue"] = None, name: Optional["GraphqlValue"] = None, directives: Optional[List["GraphqlDirective"]] = None, selectionSet: Optional["GraphqlSelectionSet"] = None, arguments: Optional[List["GraphqlArgument"]] = None, alias: Optional[Union[Just["GraphqlValue"], Just[None]]] = None, loc: Optional["SrcFileLocation"] = None) -> "GraphqlField":
@@ -93,7 +98,8 @@ class GraphqlField(GleanSchemaPredicate):
 class GraphqlObjectTypeDef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, interfaces: ast.Expr, fields: ast.Expr, directives: ast.Expr) -> Tuple[str, Struct]:
-    return f"graphql.ObjectTypeDef.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, interfaces, 'interfaces'), angle_for(__env, fields, 'fields'), angle_for(__env, directives, 'directives')])) or '_' } }}", ObjectTypeDef
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, interfaces, 'interfaces'), angle_for(__env, fields, 'fields'), angle_for(__env, directives, 'directives')]))
+    return f"graphql.ObjectTypeDef.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ObjectTypeDef
 
   @staticmethod
   def angle_query(*, name: Optional["GraphqlValue"] = None, interfaces: Optional[List["GraphqlValue"]] = None, fields: Optional[List["GraphqlFieldDef"]] = None, directives: Optional[List["GraphqlDirective"]] = None) -> "GraphqlObjectTypeDef":
@@ -104,7 +110,8 @@ class GraphqlObjectTypeDef(GleanSchemaPredicate):
 class GraphqlArgument(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, value: ast.Expr) -> Tuple[str, Struct]:
-    return f"graphql.Argument.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, value, 'value')])) or '_' } }}", Argument
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, value, 'value')]))
+    return f"graphql.Argument.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Argument
 
   @staticmethod
   def angle_query(*, name: Optional["GraphqlValue"] = None, value: Optional["GraphqlValue"] = None) -> "GraphqlArgument":
@@ -115,7 +122,8 @@ class GraphqlArgument(GleanSchemaPredicate):
 class GraphqlDirectiveDef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, argumentDefs: ast.Expr, locations: ast.Expr) -> Tuple[str, Struct]:
-    return f"graphql.DirectiveDef.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, argumentDefs, 'argumentDefs'), angle_for(__env, locations, 'locations')])) or '_' } }}", DirectiveDef
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, argumentDefs, 'argumentDefs'), angle_for(__env, locations, 'locations')]))
+    return f"graphql.DirectiveDef.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DirectiveDef
 
   @staticmethod
   def angle_query(*, name: Optional["GraphqlValue"] = None, argumentDefs: Optional[List["GraphqlInputValueDef"]] = None, locations: Optional[List["GraphqlDirectiveDefLocation"]] = None) -> "GraphqlDirectiveDef":
@@ -126,7 +134,8 @@ class GraphqlDirectiveDef(GleanSchemaPredicate):
 class GraphqlFragment(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, typeCondition: ast.Expr, variableDefs: ast.Expr, directives: ast.Expr, selectionSet: ast.Expr, loc: ast.Expr) -> Tuple[str, Struct]:
-    return f"graphql.Fragment.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, typeCondition, 'typeCondition'), angle_for(__env, variableDefs, 'variableDefs'), angle_for(__env, directives, 'directives'), angle_for(__env, selectionSet, 'selectionSet'), angle_for(__env, loc, 'loc')])) or '_' } }}", Fragment
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, typeCondition, 'typeCondition'), angle_for(__env, variableDefs, 'variableDefs'), angle_for(__env, directives, 'directives'), angle_for(__env, selectionSet, 'selectionSet'), angle_for(__env, loc, 'loc')]))
+    return f"graphql.Fragment.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Fragment
 
   @staticmethod
   def angle_query(*, name: Optional["GraphqlValue"] = None, typeCondition: Optional["GraphqlValue"] = None, variableDefs: Optional[List["GraphqlVariableDef"]] = None, directives: Optional[List["GraphqlDirective"]] = None, selectionSet: Optional["GraphqlSelectionSet"] = None, loc: Optional["SrcFileLocation"] = None) -> "GraphqlFragment":
@@ -137,7 +146,8 @@ class GraphqlFragment(GleanSchemaPredicate):
 class GraphqlScalarTypeDef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, directives: ast.Expr) -> Tuple[str, Struct]:
-    return f"graphql.ScalarTypeDef.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, directives, 'directives')])) or '_' } }}", ScalarTypeDef
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, directives, 'directives')]))
+    return f"graphql.ScalarTypeDef.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ScalarTypeDef
 
   @staticmethod
   def angle_query(*, name: Optional["GraphqlValue"] = None, directives: Optional[List["GraphqlDirective"]] = None) -> "GraphqlScalarTypeDef":
@@ -148,7 +158,8 @@ class GraphqlScalarTypeDef(GleanSchemaPredicate):
 class GraphqlVariableDef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, type: ast.Expr, directives: ast.Expr, defaultValue: ast.Expr) -> Tuple[str, Struct]:
-    return f"graphql.VariableDef.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, type, 'type'), angle_for(__env, directives, 'directives'), angle_for(__env, defaultValue, 'defaultValue')])) or '_' } }}", VariableDef
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, type, 'type'), angle_for(__env, directives, 'directives'), angle_for(__env, defaultValue, 'defaultValue')]))
+    return f"graphql.VariableDef.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", VariableDef
 
   @staticmethod
   def angle_query(*, name: Optional["GraphqlValue"] = None, type: Optional["GraphqlValue"] = None, directives: Optional[List["GraphqlDirective"]] = None, defaultValue: Optional[Union[Just["GraphqlValue"], Just[None]]] = None) -> "GraphqlVariableDef":
@@ -159,7 +170,8 @@ class GraphqlVariableDef(GleanSchemaPredicate):
 class GraphqlDeclarationName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"graphql.DeclarationName.2 { angle_for(__env, arg, None) or '_' }", DeclarationName
+    query_fields =  angle_for(__env, arg, None)
+    return f"graphql.DeclarationName.2 { query_fields if query_fields else '_' }", DeclarationName
 
   @staticmethod
   def angle_query(*, arg: Optional["GraphqlDeclaration"] = None) -> "GraphqlDeclarationName":
@@ -170,7 +182,8 @@ class GraphqlDeclarationName(GleanSchemaPredicate):
 class GraphqlFileDeclarations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, span: ast.Expr, declaration: ast.Expr) -> Tuple[str, Struct]:
-    return f"graphql.FileDeclarations.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, span, 'span'), angle_for(__env, declaration, 'declaration')])) or '_' } }}", FileDeclarations
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, span, 'span'), angle_for(__env, declaration, 'declaration')]))
+    return f"graphql.FileDeclarations.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FileDeclarations
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None, declaration: Optional["GraphqlDeclaration"] = None) -> "GraphqlFileDeclarations":
@@ -181,7 +194,8 @@ class GraphqlFileDeclarations(GleanSchemaPredicate):
 class GraphqlDeclarationLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], declaration: ast.Expr, file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
-    return f"graphql.DeclarationLocation.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", DeclarationLocation
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')]))
+    return f"graphql.DeclarationLocation.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DeclarationLocation
 
   @staticmethod
   def angle_query(*, declaration: Optional["GraphqlDeclaration"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "GraphqlDeclarationLocation":
@@ -192,7 +206,8 @@ class GraphqlDeclarationLocation(GleanSchemaPredicate):
 class GraphqlFieldDef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, type: ast.Expr, argumentDefs: ast.Expr, directives: ast.Expr) -> Tuple[str, Struct]:
-    return f"graphql.FieldDef.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, type, 'type'), angle_for(__env, argumentDefs, 'argumentDefs'), angle_for(__env, directives, 'directives')])) or '_' } }}", FieldDef
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, type, 'type'), angle_for(__env, argumentDefs, 'argumentDefs'), angle_for(__env, directives, 'directives')]))
+    return f"graphql.FieldDef.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FieldDef
 
   @staticmethod
   def angle_query(*, name: Optional["GraphqlValue"] = None, type: Optional["GraphqlValue"] = None, argumentDefs: Optional[List["GraphqlInputValueDef"]] = None, directives: Optional[List["GraphqlDirective"]] = None) -> "GraphqlFieldDef":
@@ -203,7 +218,8 @@ class GraphqlFieldDef(GleanSchemaPredicate):
 class GraphqlInterfaceTypeDef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, fields: ast.Expr, directives: ast.Expr) -> Tuple[str, Struct]:
-    return f"graphql.InterfaceTypeDef.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, fields, 'fields'), angle_for(__env, directives, 'directives')])) or '_' } }}", InterfaceTypeDef
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, fields, 'fields'), angle_for(__env, directives, 'directives')]))
+    return f"graphql.InterfaceTypeDef.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", InterfaceTypeDef
 
   @staticmethod
   def angle_query(*, name: Optional["GraphqlValue"] = None, fields: Optional[List["GraphqlFieldDef"]] = None, directives: Optional[List["GraphqlDirective"]] = None) -> "GraphqlInterfaceTypeDef":
@@ -214,7 +230,8 @@ class GraphqlInterfaceTypeDef(GleanSchemaPredicate):
 class GraphqlQuery(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, directives: ast.Expr, variableDefs: ast.Expr, selectionSet: ast.Expr, loc: ast.Expr) -> Tuple[str, Struct]:
-    return f"graphql.Query.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, directives, 'directives'), angle_for(__env, variableDefs, 'variableDefs'), angle_for(__env, selectionSet, 'selectionSet'), angle_for(__env, loc, 'loc')])) or '_' } }}", Query
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, directives, 'directives'), angle_for(__env, variableDefs, 'variableDefs'), angle_for(__env, selectionSet, 'selectionSet'), angle_for(__env, loc, 'loc')]))
+    return f"graphql.Query.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Query
 
   @staticmethod
   def angle_query(*, name: Optional["GraphqlValue"] = None, directives: Optional[List["GraphqlDirective"]] = None, variableDefs: Optional[List["GraphqlVariableDef"]] = None, selectionSet: Optional["GraphqlSelectionSet"] = None, loc: Optional["SrcFileLocation"] = None) -> "GraphqlQuery":
@@ -225,7 +242,8 @@ class GraphqlQuery(GleanSchemaPredicate):
 class GraphqlInputValueDef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, type: ast.Expr, directives: ast.Expr, defaultValue: ast.Expr) -> Tuple[str, Struct]:
-    return f"graphql.InputValueDef.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, type, 'type'), angle_for(__env, directives, 'directives'), angle_for(__env, defaultValue, 'defaultValue')])) or '_' } }}", InputValueDef
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, type, 'type'), angle_for(__env, directives, 'directives'), angle_for(__env, defaultValue, 'defaultValue')]))
+    return f"graphql.InputValueDef.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", InputValueDef
 
   @staticmethod
   def angle_query(*, name: Optional["GraphqlValue"] = None, type: Optional["GraphqlValue"] = None, directives: Optional[List["GraphqlDirective"]] = None, defaultValue: Optional[Union[Just["GraphqlValue"], Just[None]]] = None) -> "GraphqlInputValueDef":
@@ -236,7 +254,8 @@ class GraphqlInputValueDef(GleanSchemaPredicate):
 class GraphqlValue(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"graphql.Value.2 { angle_for(__env, arg, None) or '_' }", Value
+    query_fields =  angle_for(__env, arg, None)
+    return f"graphql.Value.2 { query_fields if query_fields else '_' }", Value
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "GraphqlValue":
@@ -247,7 +266,8 @@ class GraphqlValue(GleanSchemaPredicate):
 class GraphqlInlineFragment(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], inferredTypeCondition: ast.Expr, directives: ast.Expr, selectionSet: ast.Expr, typeCondition: ast.Expr) -> Tuple[str, Struct]:
-    return f"graphql.InlineFragment.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, inferredTypeCondition, 'inferredTypeCondition'), angle_for(__env, directives, 'directives'), angle_for(__env, selectionSet, 'selectionSet'), angle_for(__env, typeCondition, 'typeCondition')])) or '_' } }}", InlineFragment
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, inferredTypeCondition, 'inferredTypeCondition'), angle_for(__env, directives, 'directives'), angle_for(__env, selectionSet, 'selectionSet'), angle_for(__env, typeCondition, 'typeCondition')]))
+    return f"graphql.InlineFragment.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", InlineFragment
 
   @staticmethod
   def angle_query(*, inferredTypeCondition: Optional["GraphqlValue"] = None, directives: Optional[List["GraphqlDirective"]] = None, selectionSet: Optional["GraphqlSelectionSet"] = None, typeCondition: Optional[Union[Just["GraphqlValue"], Just[None]]] = None) -> "GraphqlInlineFragment":
@@ -280,7 +300,8 @@ class GraphqlDirectiveDefLocation(Enum):
 class GraphqlSelectionSet(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], fields: ast.Expr, inlineFragments: ast.Expr, fragmentSpreads: ast.Expr) -> Tuple[str, Struct]:
-    return f"graphql.SelectionSet.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, fields, 'fields'), angle_for(__env, inlineFragments, 'inlineFragments'), angle_for(__env, fragmentSpreads, 'fragmentSpreads')])) or '_' } }}", SelectionSet
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, fields, 'fields'), angle_for(__env, inlineFragments, 'inlineFragments'), angle_for(__env, fragmentSpreads, 'fragmentSpreads')]))
+    return f"graphql.SelectionSet.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SelectionSet
 
   @staticmethod
   def angle_query(*, fields: Optional[List["GraphqlField"]] = None, inlineFragments: Optional[List["GraphqlInlineFragment"]] = None, fragmentSpreads: Optional[List["GraphqlValue"]] = None) -> "GraphqlSelectionSet":
@@ -291,7 +312,8 @@ class GraphqlSelectionSet(InnerGleanSchemaPredicate):
 class GraphqlDeclaration(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], query_: ast.Expr, fragment_: ast.Expr, field_: ast.Expr, enum_: ast.Expr, directive_: ast.Expr) -> Tuple[str, Struct]:
-    return f"graphql.Declaration.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, query_, 'query_'), angle_for(__env, fragment_, 'fragment_'), angle_for(__env, field_, 'field_'), angle_for(__env, enum_, 'enum_'), angle_for(__env, directive_, 'directive_')])) or '_' } }}", Declaration
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, query_, 'query_'), angle_for(__env, fragment_, 'fragment_'), angle_for(__env, field_, 'field_'), angle_for(__env, enum_, 'enum_'), angle_for(__env, directive_, 'directive_')]))
+    return f"graphql.Declaration.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Declaration
 
   @staticmethod
   def angle_query_query_(*, query_: Optional["GraphqlQuery"] = None) -> "GraphqlDeclaration":

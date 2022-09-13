@@ -20,7 +20,8 @@ from glean.schema.codemarkup_thrift.types import (
 class CodemarkupThriftThriftFileEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, xref: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.thrift.ThriftFileEntityXRefLocations.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xref, 'xref'), angle_for(__env, entity, 'entity')])) or '_' } }}", ThriftFileEntityXRefLocations
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xref, 'xref'), angle_for(__env, entity, 'entity')]))
+    return f"codemarkup.thrift.ThriftFileEntityXRefLocations.4 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ThriftFileEntityXRefLocations
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, xref: Optional["CodemarkupTypesXRefLocation"] = None, entity: Optional["CodeThriftEntity"] = None) -> "CodemarkupThriftThriftFileEntityXRefLocations":
@@ -31,7 +32,8 @@ class CodemarkupThriftThriftFileEntityXRefLocations(GleanSchemaPredicate):
 class CodemarkupThriftThriftResolveLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], location: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.thrift.ThriftResolveLocation.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, location, 'location'), angle_for(__env, entity, 'entity')])) or '_' } }}", ThriftResolveLocation
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, location, 'location'), angle_for(__env, entity, 'entity')]))
+    return f"codemarkup.thrift.ThriftResolveLocation.4 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ThriftResolveLocation
 
   @staticmethod
   def angle_query(*, location: Optional["CodemarkupTypesLocation"] = None, entity: Optional["CodeThriftEntity"] = None) -> "CodemarkupThriftThriftResolveLocation":
@@ -42,7 +44,8 @@ class CodemarkupThriftThriftResolveLocation(GleanSchemaPredicate):
 class CodemarkupThriftThriftEntityLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], entity: ast.Expr, location: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.thrift.ThriftEntityLocation.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location')])) or '_' } }}", ThriftEntityLocation
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location')]))
+    return f"codemarkup.thrift.ThriftEntityLocation.4 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ThriftEntityLocation
 
   @staticmethod
   def angle_query(*, entity: Optional["CodeThriftEntity"] = None, location: Optional["CodemarkupTypesLocation"] = None) -> "CodemarkupThriftThriftEntityLocation":

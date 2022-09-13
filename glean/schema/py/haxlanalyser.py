@@ -53,7 +53,8 @@ from glean.schema.haxlanalyser.types import (
 class HaxlanalyserThriftResponse(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.ThriftResponse.1 { angle_for(__env, arg, None) or '_' }", ThriftResponse
+    query_fields =  angle_for(__env, arg, None)
+    return f"haxlanalyser.ThriftResponse.1 { query_fields if query_fields else '_' }", ThriftResponse
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserThriftResponse":
@@ -64,7 +65,8 @@ class HaxlanalyserThriftResponse(GleanSchemaPredicate):
 class HaxlanalyserTallyConfig(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, source: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.TallyConfig.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, source, 'source')])) or '_' } }}", TallyConfig
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, source, 'source')]))
+    return f"haxlanalyser.TallyConfig.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", TallyConfig
 
   @staticmethod
   def angle_query(*, name: Optional["HaxlanalyserTallyName"] = None, source: Optional["SrcLoc"] = None) -> "HaxlanalyserTallyConfig":
@@ -75,7 +77,8 @@ class HaxlanalyserTallyConfig(GleanSchemaPredicate):
 class HaxlanalyserPolicyName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.PolicyName.1 { angle_for(__env, arg, None) or '_' }", PolicyName
+    query_fields =  angle_for(__env, arg, None)
+    return f"haxlanalyser.PolicyName.1 { query_fields if query_fields else '_' }", PolicyName
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserPolicyName":
@@ -86,7 +89,8 @@ class HaxlanalyserPolicyName(GleanSchemaPredicate):
 class HaxlanalyserRestrictionResponse(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.RestrictionResponse.1 { angle_for(__env, arg, None) or '_' }", RestrictionResponse
+    query_fields =  angle_for(__env, arg, None)
+    return f"haxlanalyser.RestrictionResponse.1 { query_fields if query_fields else '_' }", RestrictionResponse
 
   @staticmethod
   def angle_query(*, arg: Optional[int] = None) -> "HaxlanalyserRestrictionResponse":
@@ -97,7 +101,8 @@ class HaxlanalyserRestrictionResponse(GleanSchemaPredicate):
 class HaxlanalyserContext(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, source: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.Context.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, source, 'source')])) or '_' } }}", Context
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, source, 'source')]))
+    return f"haxlanalyser.Context.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Context
 
   @staticmethod
   def angle_query(*, name: Optional["HaxlanalyserContextName"] = None, source: Optional["SrcLoc"] = None) -> "HaxlanalyserContext":
@@ -108,7 +113,8 @@ class HaxlanalyserContext(GleanSchemaPredicate):
 class HaxlanalyserEndpointName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.EndpointName.1 { angle_for(__env, arg, None) or '_' }", EndpointName
+    query_fields =  angle_for(__env, arg, None)
+    return f"haxlanalyser.EndpointName.1 { query_fields if query_fields else '_' }", EndpointName
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserEndpointName":
@@ -119,7 +125,8 @@ class HaxlanalyserEndpointName(GleanSchemaPredicate):
 class HaxlanalyserJankyJSONResponse(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.JankyJSONResponse.1 { angle_for(__env, arg, None) or '_' }", JankyJSONResponse
+    query_fields =  angle_for(__env, arg, None)
+    return f"haxlanalyser.JankyJSONResponse.1 { query_fields if query_fields else '_' }", JankyJSONResponse
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserJankyJSONResponse":
@@ -130,7 +137,8 @@ class HaxlanalyserJankyJSONResponse(GleanSchemaPredicate):
 class HaxlanalyserClassifierRead(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.ClassifierRead.1 { angle_for(__env, arg, None) or '_' }", ClassifierRead
+    query_fields =  angle_for(__env, arg, None)
+    return f"haxlanalyser.ClassifierRead.1 { query_fields if query_fields else '_' }", ClassifierRead
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserClassifierRead":
@@ -141,7 +149,8 @@ class HaxlanalyserClassifierRead(GleanSchemaPredicate):
 class HaxlanalyserScubaResponse(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.ScubaResponse.1 { angle_for(__env, arg, None) or '_' }", ScubaResponse
+    query_fields =  angle_for(__env, arg, None)
+    return f"haxlanalyser.ScubaResponse.1 { query_fields if query_fields else '_' }", ScubaResponse
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserScubaResponse":
@@ -152,7 +161,8 @@ class HaxlanalyserScubaResponse(GleanSchemaPredicate):
 class HaxlanalyserFeatureSetFeature(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.FeatureSetFeature.1 { angle_for(__env, arg, None) or '_' }", FeatureSetFeature
+    query_fields =  angle_for(__env, arg, None)
+    return f"haxlanalyser.FeatureSetFeature.1 { query_fields if query_fields else '_' }", FeatureSetFeature
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserFeatureSetFeature":
@@ -163,7 +173,8 @@ class HaxlanalyserFeatureSetFeature(GleanSchemaPredicate):
 class HaxlanalyserSitevarFetch(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.SitevarFetch.1 { angle_for(__env, arg, None) or '_' }", SitevarFetch
+    query_fields =  angle_for(__env, arg, None)
+    return f"haxlanalyser.SitevarFetch.1 { query_fields if query_fields else '_' }", SitevarFetch
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserSitevarFetch":
@@ -174,7 +185,8 @@ class HaxlanalyserSitevarFetch(GleanSchemaPredicate):
 class HaxlanalyserCall(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], ref: ast.Expr, qname: ast.Expr, loc: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.Call.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, ref, 'ref'), angle_for(__env, qname, 'qname'), angle_for(__env, loc, 'loc')])) or '_' } }}", Call
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, ref, 'ref'), angle_for(__env, qname, 'qname'), angle_for(__env, loc, 'loc')]))
+    return f"haxlanalyser.Call.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Call
 
   @staticmethod
   def angle_query(*, ref: Optional[str] = None, qname: Optional[str] = None, loc: Optional["SrcLoc"] = None) -> "HaxlanalyserCall":
@@ -185,7 +197,8 @@ class HaxlanalyserCall(GleanSchemaPredicate):
 class HaxlanalyserACDCProperty(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, source: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.ACDCProperty.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, source, 'source')])) or '_' } }}", ACDCProperty
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, source, 'source')]))
+    return f"haxlanalyser.ACDCProperty.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ACDCProperty
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, source: Optional["SrcLoc"] = None) -> "HaxlanalyserACDCProperty":
@@ -196,7 +209,8 @@ class HaxlanalyserACDCProperty(GleanSchemaPredicate):
 class HaxlanalyserEdge(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], origin: ast.Expr, dest: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.Edge.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, origin, 'origin'), angle_for(__env, dest, 'dest')])) or '_' } }}", Edge
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, origin, 'origin'), angle_for(__env, dest, 'dest')]))
+    return f"haxlanalyser.Edge.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Edge
 
   @staticmethod
   def angle_query(*, origin: Optional["HaxlanalyserNode"] = None, dest: Optional["HaxlanalyserNode"] = None) -> "HaxlanalyserEdge":
@@ -207,7 +221,8 @@ class HaxlanalyserEdge(GleanSchemaPredicate):
 class HaxlanalyserEndpoint(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, source: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.Endpoint.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, source, 'source')])) or '_' } }}", Endpoint
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, source, 'source')]))
+    return f"haxlanalyser.Endpoint.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Endpoint
 
   @staticmethod
   def angle_query(*, name: Optional["HaxlanalyserEndpointName"] = None, source: Optional["SrcLoc"] = None) -> "HaxlanalyserEndpoint":
@@ -218,7 +233,8 @@ class HaxlanalyserEndpoint(GleanSchemaPredicate):
 class HaxlanalyserTallyFetch(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.TallyFetch.1 { angle_for(__env, arg, None) or '_' }", TallyFetch
+    query_fields =  angle_for(__env, arg, None)
+    return f"haxlanalyser.TallyFetch.1 { query_fields if query_fields else '_' }", TallyFetch
 
   @staticmethod
   def angle_query(*, arg: Optional["HaxlanalyserTally"] = None) -> "HaxlanalyserTallyFetch":
@@ -229,7 +245,8 @@ class HaxlanalyserTallyFetch(GleanSchemaPredicate):
 class HaxlanalyserPolicy(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, source: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.Policy.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, source, 'source')])) or '_' } }}", Policy
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, source, 'source')]))
+    return f"haxlanalyser.Policy.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Policy
 
   @staticmethod
   def angle_query(*, name: Optional["HaxlanalyserPolicyName"] = None, source: Optional["SrcLoc"] = None) -> "HaxlanalyserPolicy":
@@ -240,7 +257,8 @@ class HaxlanalyserPolicy(GleanSchemaPredicate):
 class HaxlanalyserContextName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.ContextName.1 { angle_for(__env, arg, None) or '_' }", ContextName
+    query_fields =  angle_for(__env, arg, None)
+    return f"haxlanalyser.ContextName.1 { query_fields if query_fields else '_' }", ContextName
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserContextName":
@@ -251,7 +269,8 @@ class HaxlanalyserContextName(GleanSchemaPredicate):
 class HaxlanalyserTestFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.TestFile.1 { angle_for(__env, arg, None) or '_' }", TestFile
+    query_fields =  angle_for(__env, arg, None)
+    return f"haxlanalyser.TestFile.1 { query_fields if query_fields else '_' }", TestFile
 
   @staticmethod
   def angle_query(*, arg: Optional["SrcFile"] = None) -> "HaxlanalyserTestFile":
@@ -262,7 +281,8 @@ class HaxlanalyserTestFile(GleanSchemaPredicate):
 class HaxlanalyserThriftFetch(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.ThriftFetch.1 { angle_for(__env, arg, None) or '_' }", ThriftFetch
+    query_fields =  angle_for(__env, arg, None)
+    return f"haxlanalyser.ThriftFetch.1 { query_fields if query_fields else '_' }", ThriftFetch
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserThriftFetch":
@@ -273,7 +293,8 @@ class HaxlanalyserThriftFetch(GleanSchemaPredicate):
 class HaxlanalyserInputKey(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.InputKey.1 { angle_for(__env, arg, None) or '_' }", InputKey
+    query_fields =  angle_for(__env, arg, None)
+    return f"haxlanalyser.InputKey.1 { query_fields if query_fields else '_' }", InputKey
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserInputKey":
@@ -284,7 +305,8 @@ class HaxlanalyserInputKey(GleanSchemaPredicate):
 class HaxlanalyserPiranhaResponse(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.PiranhaResponse.1 { angle_for(__env, arg, None) or '_' }", PiranhaResponse
+    query_fields =  angle_for(__env, arg, None)
+    return f"haxlanalyser.PiranhaResponse.1 { query_fields if query_fields else '_' }", PiranhaResponse
 
   @staticmethod
   def angle_query(*, arg: Optional[int] = None) -> "HaxlanalyserPiranhaResponse":
@@ -295,7 +317,8 @@ class HaxlanalyserPiranhaResponse(GleanSchemaPredicate):
 class HaxlanalyserACDCPropertyAccess(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.ACDCPropertyAccess.1 { angle_for(__env, arg, None) or '_' }", ACDCPropertyAccess
+    query_fields =  angle_for(__env, arg, None)
+    return f"haxlanalyser.ACDCPropertyAccess.1 { query_fields if query_fields else '_' }", ACDCPropertyAccess
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserACDCPropertyAccess":
@@ -306,7 +329,8 @@ class HaxlanalyserACDCPropertyAccess(GleanSchemaPredicate):
 class HaxlanalyserTallyResponse(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.TallyResponse.1 { angle_for(__env, arg, None) or '_' }", TallyResponse
+    query_fields =  angle_for(__env, arg, None)
+    return f"haxlanalyser.TallyResponse.1 { query_fields if query_fields else '_' }", TallyResponse
 
   @staticmethod
   def angle_query(*, arg: Optional["HaxlanalyserTally"] = None) -> "HaxlanalyserTallyResponse":
@@ -317,7 +341,8 @@ class HaxlanalyserTallyResponse(GleanSchemaPredicate):
 class HaxlanalyserScribeResponse(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.ScribeResponse.1 { angle_for(__env, arg, None) or '_' }", ScribeResponse
+    query_fields =  angle_for(__env, arg, None)
+    return f"haxlanalyser.ScribeResponse.1 { query_fields if query_fields else '_' }", ScribeResponse
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserScribeResponse":
@@ -328,7 +353,8 @@ class HaxlanalyserScribeResponse(GleanSchemaPredicate):
 class HaxlanalyserInputFetch(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], key: ast.Expr, source: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.InputFetch.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, key, 'key'), angle_for(__env, source, 'source')])) or '_' } }}", InputFetch
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, key, 'key'), angle_for(__env, source, 'source')]))
+    return f"haxlanalyser.InputFetch.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", InputFetch
 
   @staticmethod
   def angle_query(*, key: Optional["HaxlanalyserInputKey"] = None, source: Optional["SrcLoc"] = None) -> "HaxlanalyserInputFetch":
@@ -339,7 +365,8 @@ class HaxlanalyserInputFetch(GleanSchemaPredicate):
 class HaxlanalyserClassifierFetch(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.ClassifierFetch.1 { angle_for(__env, arg, None) or '_' }", ClassifierFetch
+    query_fields =  angle_for(__env, arg, None)
+    return f"haxlanalyser.ClassifierFetch.1 { query_fields if query_fields else '_' }", ClassifierFetch
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserClassifierFetch":
@@ -350,7 +377,8 @@ class HaxlanalyserClassifierFetch(GleanSchemaPredicate):
 class HaxlanalyserLogFeatureResponse(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.LogFeatureResponse.1 { angle_for(__env, arg, None) or '_' }", LogFeatureResponse
+    query_fields =  angle_for(__env, arg, None)
+    return f"haxlanalyser.LogFeatureResponse.1 { query_fields if query_fields else '_' }", LogFeatureResponse
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserLogFeatureResponse":
@@ -361,7 +389,8 @@ class HaxlanalyserLogFeatureResponse(GleanSchemaPredicate):
 class HaxlanalyserLaserDataset(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.LaserDataset.1 { angle_for(__env, arg, None) or '_' }", LaserDataset
+    query_fields =  angle_for(__env, arg, None)
+    return f"haxlanalyser.LaserDataset.1 { query_fields if query_fields else '_' }", LaserDataset
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserLaserDataset":
@@ -372,7 +401,8 @@ class HaxlanalyserLaserDataset(GleanSchemaPredicate):
 class HaxlanalyserTallyName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.TallyName.1 { angle_for(__env, arg, None) or '_' }", TallyName
+    query_fields =  angle_for(__env, arg, None)
+    return f"haxlanalyser.TallyName.1 { query_fields if query_fields else '_' }", TallyName
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserTallyName":
@@ -383,7 +413,8 @@ class HaxlanalyserTallyName(GleanSchemaPredicate):
 class HaxlanalyserConfigeratorFetch(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.ConfigeratorFetch.1 { angle_for(__env, arg, None) or '_' }", ConfigeratorFetch
+    query_fields =  angle_for(__env, arg, None)
+    return f"haxlanalyser.ConfigeratorFetch.1 { query_fields if query_fields else '_' }", ConfigeratorFetch
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserConfigeratorFetch":
@@ -394,7 +425,8 @@ class HaxlanalyserConfigeratorFetch(GleanSchemaPredicate):
 class HaxlanalyserHiveResponse(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.HiveResponse.1 { angle_for(__env, arg, None) or '_' }", HiveResponse
+    query_fields =  angle_for(__env, arg, None)
+    return f"haxlanalyser.HiveResponse.1 { query_fields if query_fields else '_' }", HiveResponse
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HaxlanalyserHiveResponse":
@@ -407,7 +439,8 @@ class HaxlanalyserHiveResponse(GleanSchemaPredicate):
 class HaxlanalyserFetch(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], thrift: ast.Expr, configerator: ast.Expr, tally: ast.Expr, classifier: ast.Expr, sitevar: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.Fetch.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, thrift, 'thrift'), angle_for(__env, configerator, 'configerator'), angle_for(__env, tally, 'tally'), angle_for(__env, classifier, 'classifier'), angle_for(__env, sitevar, 'sitevar')])) or '_' } }}", Fetch
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, thrift, 'thrift'), angle_for(__env, configerator, 'configerator'), angle_for(__env, tally, 'tally'), angle_for(__env, classifier, 'classifier'), angle_for(__env, sitevar, 'sitevar')]))
+    return f"haxlanalyser.Fetch.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Fetch
 
   @staticmethod
   def angle_query_thrift(*, thrift: Optional["HaxlanalyserThriftFetch"] = None) -> "HaxlanalyserFetch":
@@ -446,7 +479,8 @@ class HaxlanalyserTallyCounterType(Enum):
 class HaxlanalyserTally(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, type: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.Tally.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, type, 'type')])) or '_' } }}", Tally
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, type, 'type')]))
+    return f"haxlanalyser.Tally.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Tally
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, type: Optional["HaxlanalyserTallyCounterType"] = None) -> "HaxlanalyserTally":
@@ -457,7 +491,8 @@ class HaxlanalyserTally(InnerGleanSchemaPredicate):
 class HaxlanalyserResponse(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], janky_json: ast.Expr, scuba: ast.Expr, thrift: ast.Expr, piranha: ast.Expr, tally: ast.Expr, log_feature: ast.Expr, restriction: ast.Expr, hive: ast.Expr, scribe: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.Response.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, janky_json, 'janky_json'), angle_for(__env, scuba, 'scuba'), angle_for(__env, thrift, 'thrift'), angle_for(__env, piranha, 'piranha'), angle_for(__env, tally, 'tally'), angle_for(__env, log_feature, 'log_feature'), angle_for(__env, restriction, 'restriction'), angle_for(__env, hive, 'hive'), angle_for(__env, scribe, 'scribe')])) or '_' } }}", Response
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, janky_json, 'janky_json'), angle_for(__env, scuba, 'scuba'), angle_for(__env, thrift, 'thrift'), angle_for(__env, piranha, 'piranha'), angle_for(__env, tally, 'tally'), angle_for(__env, log_feature, 'log_feature'), angle_for(__env, restriction, 'restriction'), angle_for(__env, hive, 'hive'), angle_for(__env, scribe, 'scribe')]))
+    return f"haxlanalyser.Response.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Response
 
   @staticmethod
   def angle_query_janky_json(*, janky_json: Optional["HaxlanalyserJankyJSONResponse"] = None) -> "HaxlanalyserResponse":
@@ -501,7 +536,8 @@ class HaxlanalyserResponse(InnerGleanSchemaPredicate):
 class HaxlanalyserNode(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], hs_module: ast.Expr, definition: ast.Expr, typeclass: ast.Expr, class_instance: ast.Expr, context: ast.Expr, policy: ast.Expr, tally: ast.Expr, endpoint: ast.Expr, acdc: ast.Expr, input_fetch: ast.Expr, response: ast.Expr, fetch: ast.Expr, classifier_read: ast.Expr, laser_dataset: ast.Expr, test_file: ast.Expr, call: ast.Expr, acdc_access: ast.Expr, feature: ast.Expr) -> Tuple[str, Struct]:
-    return f"haxlanalyser.Node.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, hs_module, 'hs_module'), angle_for(__env, definition, 'definition'), angle_for(__env, typeclass, 'typeclass'), angle_for(__env, class_instance, 'class_instance'), angle_for(__env, context, 'context'), angle_for(__env, policy, 'policy'), angle_for(__env, tally, 'tally'), angle_for(__env, endpoint, 'endpoint'), angle_for(__env, acdc, 'acdc'), angle_for(__env, input_fetch, 'input_fetch'), angle_for(__env, response, 'response'), angle_for(__env, fetch, 'fetch'), angle_for(__env, classifier_read, 'classifier_read'), angle_for(__env, laser_dataset, 'laser_dataset'), angle_for(__env, test_file, 'test_file'), angle_for(__env, call, 'call'), angle_for(__env, acdc_access, 'acdc_access'), angle_for(__env, feature, 'feature')])) or '_' } }}", Node
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, hs_module, 'hs_module'), angle_for(__env, definition, 'definition'), angle_for(__env, typeclass, 'typeclass'), angle_for(__env, class_instance, 'class_instance'), angle_for(__env, context, 'context'), angle_for(__env, policy, 'policy'), angle_for(__env, tally, 'tally'), angle_for(__env, endpoint, 'endpoint'), angle_for(__env, acdc, 'acdc'), angle_for(__env, input_fetch, 'input_fetch'), angle_for(__env, response, 'response'), angle_for(__env, fetch, 'fetch'), angle_for(__env, classifier_read, 'classifier_read'), angle_for(__env, laser_dataset, 'laser_dataset'), angle_for(__env, test_file, 'test_file'), angle_for(__env, call, 'call'), angle_for(__env, acdc_access, 'acdc_access'), angle_for(__env, feature, 'feature')]))
+    return f"haxlanalyser.Node.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Node
 
   @staticmethod
   def angle_query_hs_module(*, hs_module: Optional["HsSourceModule"] = None) -> "HaxlanalyserNode":

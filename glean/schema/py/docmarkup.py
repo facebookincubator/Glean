@@ -23,7 +23,8 @@ from glean.schema.docmarkup.types import (
 class DocmarkupDocAttr(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], key: ast.Expr, value: ast.Expr) -> Tuple[str, Struct]:
-    return f"docmarkup.DocAttr.14 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, key, 'key'), angle_for(__env, value, 'value')])) or '_' } }}", DocAttr
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, key, 'key'), angle_for(__env, value, 'value')]))
+    return f"docmarkup.DocAttr.14 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DocAttr
 
   @staticmethod
   def angle_query(*, key: Optional["DocmarkupDocAttrKey"] = None, value: Optional["DocmarkupDocAttrValue"] = None) -> "DocmarkupDocAttr":
@@ -34,7 +35,8 @@ class DocmarkupDocAttr(GleanSchemaPredicate):
 class DocmarkupEntityComments(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], entity: ast.Expr, file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
-    return f"docmarkup.EntityComments.14 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", EntityComments
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')]))
+    return f"docmarkup.EntityComments.14 { ('{ ' + query_fields + ' }') if query_fields else '_' }", EntityComments
 
   @staticmethod
   def angle_query(*, entity: Optional["CodeEntity"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "DocmarkupEntityComments":
@@ -45,7 +47,8 @@ class DocmarkupEntityComments(GleanSchemaPredicate):
 class DocmarkupEntityDocAttr(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"docmarkup.EntityDocAttr.14 { angle_for(__env, arg, None) or '_' }", EntityDocAttr
+    query_fields =  angle_for(__env, arg, None)
+    return f"docmarkup.EntityDocAttr.14 { query_fields if query_fields else '_' }", EntityDocAttr
 
   @staticmethod
   def angle_query(*, arg: Optional["CodeEntity"] = None) -> "DocmarkupEntityDocAttr":
@@ -56,7 +59,8 @@ class DocmarkupEntityDocAttr(GleanSchemaPredicate):
 class DocmarkupEntityByDocAttrKey(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], key: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"docmarkup.EntityByDocAttrKey.14 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, key, 'key'), angle_for(__env, entity, 'entity')])) or '_' } }}", EntityByDocAttrKey
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, key, 'key'), angle_for(__env, entity, 'entity')]))
+    return f"docmarkup.EntityByDocAttrKey.14 { ('{ ' + query_fields + ' }') if query_fields else '_' }", EntityByDocAttrKey
 
   @staticmethod
   def angle_query(*, key: Optional["DocmarkupDocAttrKey"] = None, entity: Optional["CodeEntity"] = None) -> "DocmarkupEntityByDocAttrKey":
@@ -67,7 +71,8 @@ class DocmarkupEntityByDocAttrKey(GleanSchemaPredicate):
 class DocmarkupEntityAnnotations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], entity: ast.Expr, annotations: ast.Expr) -> Tuple[str, Struct]:
-    return f"docmarkup.EntityAnnotations.14 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, annotations, 'annotations')])) or '_' } }}", EntityAnnotations
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, annotations, 'annotations')]))
+    return f"docmarkup.EntityAnnotations.14 { ('{ ' + query_fields + ' }') if query_fields else '_' }", EntityAnnotations
 
   @staticmethod
   def angle_query(*, entity: Optional["CodeEntity"] = None, annotations: Optional["DocmarkupGeneralAnnotations"] = None) -> "DocmarkupEntityAnnotations":
@@ -78,7 +83,8 @@ class DocmarkupEntityAnnotations(GleanSchemaPredicate):
 class DocmarkupDocAttrKey(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"docmarkup.DocAttrKey.14 { angle_for(__env, arg, None) or '_' }", DocAttrKey
+    query_fields =  angle_for(__env, arg, None)
+    return f"docmarkup.DocAttrKey.14 { query_fields if query_fields else '_' }", DocAttrKey
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "DocmarkupDocAttrKey":
@@ -91,7 +97,8 @@ class DocmarkupDocAttrKey(GleanSchemaPredicate):
 class DocmarkupGeneralAnnotations(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], doc: ast.Expr, hack: ast.Expr, java: ast.Expr) -> Tuple[str, Struct]:
-    return f"docmarkup.GeneralAnnotations.14 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, doc, 'doc'), angle_for(__env, hack, 'hack'), angle_for(__env, java, 'java')])) or '_' } }}", GeneralAnnotations
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, doc, 'doc'), angle_for(__env, hack, 'hack'), angle_for(__env, java, 'java')]))
+    return f"docmarkup.GeneralAnnotations.14 { ('{ ' + query_fields + ' }') if query_fields else '_' }", GeneralAnnotations
 
   @staticmethod
   def angle_query_doc(*, doc: Optional["DocmarkupDocAttrs"] = None) -> "DocmarkupGeneralAnnotations":

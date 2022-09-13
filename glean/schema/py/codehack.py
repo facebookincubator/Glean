@@ -19,7 +19,8 @@ from glean.schema.code_hack.types import (
 class CodeHackEntity(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], decl: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.hack.Entity.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl')])) or '_' } }}", Entity
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl')]))
+    return f"code.hack.Entity.4 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Entity
 
   @staticmethod
   def angle_query_decl(*, decl: Optional["HackDeclaration"] = None) -> "CodeHackEntity":
@@ -31,7 +32,8 @@ class CodeHackEntity(InnerGleanSchemaPredicate):
 class CodeHackAnnotations(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], attributes: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.hack.Annotations.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, attributes, 'attributes')])) or '_' } }}", Annotations
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, attributes, 'attributes')]))
+    return f"code.hack.Annotations.4 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Annotations
 
   @staticmethod
   def angle_query_attributes(*, attributes: Optional[List["HackUserAttribute"]] = None) -> "CodeHackAnnotations":

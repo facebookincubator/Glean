@@ -222,7 +222,9 @@ genAllPredicates predicateMode _ namePolicy parent preds = Text.unlines $
       , "  " <> "@staticmethod"
       , "  " <> "def build_angle(__env: Dict[str, R]" <> buildAngleTypes <>
         ") -> Tuple[str, Struct]:"
-      , "    " <> "return f\"" <> anglePredicateAndVersion <> angleForTypes <>
+      , "    " <> "query_fields = " <> angleForTypes
+      , "    " <> "return f\"" <> anglePredicateAndVersion <>
+        " { " <> queryFields <> " if query_fields else '_' }" <>
         "\", " <> return_class_name
       , ""
       , addClientMethods class_name kTy namePolicy key
@@ -232,6 +234,10 @@ genAllPredicates predicateMode _ namePolicy parent preds = Text.unlines $
     , let ref = predicateDefRef pred
           key = predicateDefKeyType pred
           kTy = valueTy class_name APIValues namePolicy key
+          queryFields = Text.pack $ case key of
+            SumTy{} ->  "('{ ' + query_fields + ' }')"
+            RecordTy{} -> "('{ ' + query_fields + ' }')"
+            _ -> "query_fields"
           angleForTypes = case buildAngleTypes of
             "" -> " " <> "_"
             _ -> valueTy class_name AngleForValues namePolicy key
@@ -405,8 +411,7 @@ valueTy predName mode namePolicy t = case t of
   _ -> if mode  == APIValues then defaultFieldName <> ": " <>
         wrapOptionalArg (baseTy predName namePolicy t)
        else if mode == ASTValues then defaultFieldName <> ": ast.Expr"
-       else " { angle_for(__env, " <> defaultFieldName <> ", None" <> ") " <>
-        "or \'_\' }"
+       else " angle_for(__env, " <> defaultFieldName <> ", None" <> ")"
 
   where
     handleFields fields = case mode of
@@ -415,8 +420,8 @@ valueTy predName mode namePolicy t = case t of
       where
         queryFields = map (createQueryField mode) fields
         intercalatedFields = intercalateQueryFields queryFields
-        intercalatedFieldsWithBrackets = " {{ { \', \'.join(filter" <>
-          "(lambda x: x != '', [" <> intercalatedFields <> "])) or \'_\' } }}"
+        intercalatedFieldsWithBrackets = " \', \'.join(filter" <>
+         "(lambda x: x != '', [" <> intercalatedFields <> "]))"
     createQueryField mode field = case mode of
       APIValues -> appendType $ (wrapOptionalArg .
         baseTy (predName <> "_" <> pythonVarName) namePolicy . fieldDefType)

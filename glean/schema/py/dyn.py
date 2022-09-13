@@ -22,7 +22,8 @@ from glean.schema.dyn.types import (
 class DynObserverIdentifier(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"dyn.ObserverIdentifier.6 { angle_for(__env, arg, None) or '_' }", ObserverIdentifier
+    query_fields =  angle_for(__env, arg, None)
+    return f"dyn.ObserverIdentifier.6 { query_fields if query_fields else '_' }", ObserverIdentifier
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "DynObserverIdentifier":
@@ -33,7 +34,8 @@ class DynObserverIdentifier(GleanSchemaPredicate):
 class DynEntityDynamicReference(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], usage: ast.Expr, file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
-    return f"dyn.EntityDynamicReference.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, usage, 'usage'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", EntityDynamicReference
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, usage, 'usage'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')]))
+    return f"dyn.EntityDynamicReference.6 { ('{ ' + query_fields + ' }') if query_fields else '_' }", EntityDynamicReference
 
   @staticmethod
   def angle_query(*, usage: Optional["DynEntityUsage"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "DynEntityDynamicReference":
@@ -44,7 +46,8 @@ class DynEntityDynamicReference(GleanSchemaPredicate):
 class DynEntityUsage(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], entity: ast.Expr, observer: ast.Expr, usage: ast.Expr, environment: ast.Expr) -> Tuple[str, Struct]:
-    return f"dyn.EntityUsage.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, observer, 'observer'), angle_for(__env, usage, 'usage'), angle_for(__env, environment, 'environment')])) or '_' } }}", EntityUsage
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, observer, 'observer'), angle_for(__env, usage, 'usage'), angle_for(__env, environment, 'environment')]))
+    return f"dyn.EntityUsage.6 { ('{ ' + query_fields + ' }') if query_fields else '_' }", EntityUsage
 
   @staticmethod
   def angle_query(*, entity: Optional["CodeEntity"] = None, observer: Optional["DynObserver"] = None, usage: Optional["DynUsage"] = None, environment: Optional[Union[Just["DynEnvironment"], Just[None]]] = None) -> "DynEntityUsage":
@@ -55,7 +58,8 @@ class DynEntityUsage(GleanSchemaPredicate):
 class DynEnvironment(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"dyn.Environment.6 { angle_for(__env, arg, None) or '_' }", Environment
+    query_fields =  angle_for(__env, arg, None)
+    return f"dyn.Environment.6 { query_fields if query_fields else '_' }", Environment
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "DynEnvironment":
@@ -68,7 +72,8 @@ class DynEnvironment(GleanSchemaPredicate):
 class DynObserver(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], symbol: ast.Expr, other: ast.Expr) -> Tuple[str, Struct]:
-    return f"dyn.Observer.6 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, symbol, 'symbol'), angle_for(__env, other, 'other')])) or '_' } }}", Observer
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, symbol, 'symbol'), angle_for(__env, other, 'other')]))
+    return f"dyn.Observer.6 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Observer
 
   @staticmethod
   def angle_query_symbol(*, symbol: Optional["DynObserverIdentifier"] = None) -> "DynObserver":

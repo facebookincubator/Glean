@@ -18,7 +18,8 @@ from glean.schema.code_rust.types import (
 class CodeRustEntity(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], definition: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.rust.Entity.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, definition, 'definition')])) or '_' } }}", Entity
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, definition, 'definition')]))
+    return f"code.rust.Entity.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Entity
 
   @staticmethod
   def angle_query_definition(*, definition: Optional["RustDef"] = None) -> "CodeRustEntity":

@@ -41,7 +41,8 @@ from glean.schema.codemarkup.types import (
 class CodemarkupFileEntityKinds(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, entity: ast.Expr, kind: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.FileEntityKinds.30 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, entity, 'entity'), angle_for(__env, kind, 'kind')])) or '_' } }}", FileEntityKinds
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, entity, 'entity'), angle_for(__env, kind, 'kind')]))
+    return f"codemarkup.FileEntityKinds.30 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FileEntityKinds
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, entity: Optional["CodeEntity"] = None, kind: Optional["CodemarkupTypesSymbolKind"] = None) -> "CodemarkupFileEntityKinds":
@@ -52,7 +53,8 @@ class CodemarkupFileEntityKinds(GleanSchemaPredicate):
 class CodemarkupFileEntityXRefKinds(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, entity: ast.Expr, kind: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.FileEntityXRefKinds.30 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, entity, 'entity'), angle_for(__env, kind, 'kind')])) or '_' } }}", FileEntityXRefKinds
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, entity, 'entity'), angle_for(__env, kind, 'kind')]))
+    return f"codemarkup.FileEntityXRefKinds.30 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FileEntityXRefKinds
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, entity: Optional["CodeEntity"] = None, kind: Optional["CodemarkupTypesSymbolKind"] = None) -> "CodemarkupFileEntityXRefKinds":
@@ -63,7 +65,8 @@ class CodemarkupFileEntityXRefKinds(GleanSchemaPredicate):
 class CodemarkupEntityAnnotations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.EntityAnnotations.30 { angle_for(__env, arg, None) or '_' }", EntityAnnotations
+    query_fields =  angle_for(__env, arg, None)
+    return f"codemarkup.EntityAnnotations.30 { query_fields if query_fields else '_' }", EntityAnnotations
 
   @staticmethod
   def angle_query(*, arg: Optional["CodeEntity"] = None) -> "CodemarkupEntityAnnotations":
@@ -74,7 +77,8 @@ class CodemarkupEntityAnnotations(GleanSchemaPredicate):
 class CodemarkupSearchRelatedEntities(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], query: ast.Expr, parent: ast.Expr, child: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.SearchRelatedEntities.30 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, query, 'query'), angle_for(__env, parent, 'parent'), angle_for(__env, child, 'child')])) or '_' } }}", SearchRelatedEntities
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, query, 'query'), angle_for(__env, parent, 'parent'), angle_for(__env, child, 'child')]))
+    return f"codemarkup.SearchRelatedEntities.30 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SearchRelatedEntities
 
   @staticmethod
   def angle_query(*, query: Optional["CodemarkupRelationType"] = None, parent: Optional["CodemarkupParentEntity"] = None, child: Optional["CodemarkupChildEntity"] = None) -> "CodemarkupSearchRelatedEntities":
@@ -85,7 +89,8 @@ class CodemarkupSearchRelatedEntities(GleanSchemaPredicate):
 class CodemarkupEntityVisibility(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.EntityVisibility.30 { angle_for(__env, arg, None) or '_' }", EntityVisibility
+    query_fields =  angle_for(__env, arg, None)
+    return f"codemarkup.EntityVisibility.30 { query_fields if query_fields else '_' }", EntityVisibility
 
   @staticmethod
   def angle_query(*, arg: Optional["CodeEntity"] = None) -> "CodemarkupEntityVisibility":
@@ -96,7 +101,8 @@ class CodemarkupEntityVisibility(GleanSchemaPredicate):
 class CodemarkupFileEntityInfos(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, entity: ast.Expr, info: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.FileEntityInfos.30 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, entity, 'entity'), angle_for(__env, info, 'info')])) or '_' } }}", FileEntityInfos
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, entity, 'entity'), angle_for(__env, info, 'info')]))
+    return f"codemarkup.FileEntityInfos.30 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FileEntityInfos
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, entity: Optional["CodeEntity"] = None, info: Optional["CodemarkupTypesSymbolInfo"] = None) -> "CodemarkupFileEntityInfos":
@@ -107,7 +113,8 @@ class CodemarkupFileEntityInfos(GleanSchemaPredicate):
 class CodemarkupFileEntityXRefInfos(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, entity: ast.Expr, info: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.FileEntityXRefInfos.30 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, entity, 'entity'), angle_for(__env, info, 'info')])) or '_' } }}", FileEntityXRefInfos
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, entity, 'entity'), angle_for(__env, info, 'info')]))
+    return f"codemarkup.FileEntityXRefInfos.30 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FileEntityXRefInfos
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, entity: Optional["CodeEntity"] = None, info: Optional["CodemarkupTypesSymbolInfo"] = None) -> "CodemarkupFileEntityXRefInfos":
@@ -118,7 +125,8 @@ class CodemarkupFileEntityXRefInfos(GleanSchemaPredicate):
 class CodemarkupEntityLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], entity: ast.Expr, location: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.EntityLocation.30 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location')])) or '_' } }}", EntityLocation
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location')]))
+    return f"codemarkup.EntityLocation.30 { ('{ ' + query_fields + ' }') if query_fields else '_' }", EntityLocation
 
   @staticmethod
   def angle_query(*, entity: Optional["CodeEntity"] = None, location: Optional["CodemarkupTypesLocation"] = None) -> "CodemarkupEntityLocation":
@@ -129,7 +137,8 @@ class CodemarkupEntityLocation(GleanSchemaPredicate):
 class CodemarkupExtendsChildEntity(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], parent: ast.Expr, child: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.ExtendsChildEntity.30 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, parent, 'parent'), angle_for(__env, child, 'child')])) or '_' } }}", ExtendsChildEntity
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, parent, 'parent'), angle_for(__env, child, 'child')]))
+    return f"codemarkup.ExtendsChildEntity.30 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ExtendsChildEntity
 
   @staticmethod
   def angle_query(*, parent: Optional["CodeEntity"] = None, child: Optional["CodeEntity"] = None) -> "CodemarkupExtendsChildEntity":
@@ -140,7 +149,8 @@ class CodemarkupExtendsChildEntity(GleanSchemaPredicate):
 class CodemarkupContainsParentEntity(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], child: ast.Expr, parent: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.ContainsParentEntity.30 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, child, 'child'), angle_for(__env, parent, 'parent')])) or '_' } }}", ContainsParentEntity
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, child, 'child'), angle_for(__env, parent, 'parent')]))
+    return f"codemarkup.ContainsParentEntity.30 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ContainsParentEntity
 
   @staticmethod
   def angle_query(*, child: Optional["CodeEntity"] = None, parent: Optional["CodeEntity"] = None) -> "CodemarkupContainsParentEntity":
@@ -151,7 +161,8 @@ class CodemarkupContainsParentEntity(GleanSchemaPredicate):
 class CodemarkupEntityToAnnotations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], entity: ast.Expr, annotations: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.EntityToAnnotations.30 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, annotations, 'annotations')])) or '_' } }}", EntityToAnnotations
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, annotations, 'annotations')]))
+    return f"codemarkup.EntityToAnnotations.30 { ('{ ' + query_fields + ' }') if query_fields else '_' }", EntityToAnnotations
 
   @staticmethod
   def angle_query(*, entity: Optional["CodeEntity"] = None, annotations: Optional["CodeAnnotations"] = None) -> "CodemarkupEntityToAnnotations":
@@ -162,7 +173,8 @@ class CodemarkupEntityToAnnotations(GleanSchemaPredicate):
 class CodemarkupEntityInfo(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], entity: ast.Expr, info: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.EntityInfo.30 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, info, 'info')])) or '_' } }}", EntityInfo
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, info, 'info')]))
+    return f"codemarkup.EntityInfo.30 { ('{ ' + query_fields + ' }') if query_fields else '_' }", EntityInfo
 
   @staticmethod
   def angle_query(*, entity: Optional["CodeEntity"] = None, info: Optional["CodemarkupTypesSymbolInfo"] = None) -> "CodemarkupEntityInfo":
@@ -173,7 +185,8 @@ class CodemarkupEntityInfo(GleanSchemaPredicate):
 class CodemarkupExtendsParentEntity(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], child: ast.Expr, parent: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.ExtendsParentEntity.30 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, child, 'child'), angle_for(__env, parent, 'parent')])) or '_' } }}", ExtendsParentEntity
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, child, 'child'), angle_for(__env, parent, 'parent')]))
+    return f"codemarkup.ExtendsParentEntity.30 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ExtendsParentEntity
 
   @staticmethod
   def angle_query(*, child: Optional["CodeEntity"] = None, parent: Optional["CodeEntity"] = None) -> "CodemarkupExtendsParentEntity":
@@ -184,7 +197,8 @@ class CodemarkupExtendsParentEntity(GleanSchemaPredicate):
 class CodemarkupContainsChildEntity(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], parent: ast.Expr, child: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.ContainsChildEntity.30 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, parent, 'parent'), angle_for(__env, child, 'child')])) or '_' } }}", ContainsChildEntity
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, parent, 'parent'), angle_for(__env, child, 'child')]))
+    return f"codemarkup.ContainsChildEntity.30 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ContainsChildEntity
 
   @staticmethod
   def angle_query(*, parent: Optional["CodeEntity"] = None, child: Optional["CodeEntity"] = None) -> "CodemarkupContainsChildEntity":
@@ -195,7 +209,8 @@ class CodemarkupContainsChildEntity(GleanSchemaPredicate):
 class CodemarkupFileEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, xref: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.FileEntityXRefLocations.30 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xref, 'xref'), angle_for(__env, entity, 'entity')])) or '_' } }}", FileEntityXRefLocations
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xref, 'xref'), angle_for(__env, entity, 'entity')]))
+    return f"codemarkup.FileEntityXRefLocations.30 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FileEntityXRefLocations
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, xref: Optional["CodemarkupTypesXRefLocation"] = None, entity: Optional["CodeEntity"] = None) -> "CodemarkupFileEntityXRefLocations":
@@ -206,7 +221,8 @@ class CodemarkupFileEntityXRefLocations(GleanSchemaPredicate):
 class CodemarkupFileEntityXRefSpans(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, span: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.FileEntityXRefSpans.30 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, span, 'span'), angle_for(__env, entity, 'entity')])) or '_' } }}", FileEntityXRefSpans
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, span, 'span'), angle_for(__env, entity, 'entity')]))
+    return f"codemarkup.FileEntityXRefSpans.30 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FileEntityXRefSpans
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None, entity: Optional["CodeEntity"] = None) -> "CodemarkupFileEntityXRefSpans":
@@ -217,7 +233,8 @@ class CodemarkupFileEntityXRefSpans(GleanSchemaPredicate):
 class CodemarkupEntityUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], target: ast.Expr, file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.EntityUses.30 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", EntityUses
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')]))
+    return f"codemarkup.EntityUses.30 { ('{ ' + query_fields + ' }') if query_fields else '_' }", EntityUses
 
   @staticmethod
   def angle_query(*, target: Optional["CodeEntity"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "CodemarkupEntityUses":
@@ -228,7 +245,8 @@ class CodemarkupEntityUses(GleanSchemaPredicate):
 class CodemarkupFileEntityLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, location: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.FileEntityLocations.30 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, location, 'location'), angle_for(__env, entity, 'entity')])) or '_' } }}", FileEntityLocations
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, location, 'location'), angle_for(__env, entity, 'entity')]))
+    return f"codemarkup.FileEntityLocations.30 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FileEntityLocations
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, location: Optional["CodemarkupTypesLocation"] = None, entity: Optional["CodeEntity"] = None) -> "CodemarkupFileEntityLocations":
@@ -239,7 +257,8 @@ class CodemarkupFileEntityLocations(GleanSchemaPredicate):
 class CodemarkupEntityReferences(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], target: ast.Expr, file: ast.Expr, range: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.EntityReferences.30 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, file, 'file'), angle_for(__env, range, 'range')])) or '_' } }}", EntityReferences
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, file, 'file'), angle_for(__env, range, 'range')]))
+    return f"codemarkup.EntityReferences.30 { ('{ ' + query_fields + ' }') if query_fields else '_' }", EntityReferences
 
   @staticmethod
   def angle_query(*, target: Optional["CodeEntity"] = None, file: Optional["SrcFile"] = None, range: Optional["CodemarkupTypesRangeSpan"] = None) -> "CodemarkupEntityReferences":
@@ -250,7 +269,8 @@ class CodemarkupEntityReferences(GleanSchemaPredicate):
 class CodemarkupEntityKind(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], entity: ast.Expr, kind: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.EntityKind.30 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, kind, 'kind')])) or '_' } }}", EntityKind
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, kind, 'kind')]))
+    return f"codemarkup.EntityKind.30 { ('{ ' + query_fields + ' }') if query_fields else '_' }", EntityKind
 
   @staticmethod
   def angle_query(*, entity: Optional["CodeEntity"] = None, kind: Optional["CodemarkupTypesSymbolKind"] = None) -> "CodemarkupEntityKind":
@@ -261,7 +281,8 @@ class CodemarkupEntityKind(GleanSchemaPredicate):
 class CodemarkupResolveLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], location: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.ResolveLocation.30 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, location, 'location'), angle_for(__env, entity, 'entity')])) or '_' } }}", ResolveLocation
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, location, 'location'), angle_for(__env, entity, 'entity')]))
+    return f"codemarkup.ResolveLocation.30 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ResolveLocation
 
   @staticmethod
   def angle_query(*, location: Optional["CodemarkupTypesLocation"] = None, entity: Optional["CodeEntity"] = None) -> "CodemarkupResolveLocation":
@@ -280,7 +301,8 @@ class CodemarkupRelationType(Enum):
 class CodemarkupParentEntity(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], parent: ast.Expr, location: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.ParentEntity.30 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, parent, 'parent'), angle_for(__env, location, 'location')])) or '_' } }}", ParentEntity
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, parent, 'parent'), angle_for(__env, location, 'location')]))
+    return f"codemarkup.ParentEntity.30 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ParentEntity
 
   @staticmethod
   def angle_query(*, parent: Optional["CodeEntity"] = None, location: Optional["CodemarkupTypesLocation"] = None) -> "CodemarkupParentEntity":
@@ -291,7 +313,8 @@ class CodemarkupParentEntity(InnerGleanSchemaPredicate):
 class CodemarkupChildEntity(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], child: ast.Expr, location: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.ChildEntity.30 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, child, 'child'), angle_for(__env, location, 'location')])) or '_' } }}", ChildEntity
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, child, 'child'), angle_for(__env, location, 'location')]))
+    return f"codemarkup.ChildEntity.30 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ChildEntity
 
   @staticmethod
   def angle_query(*, child: Optional["CodeEntity"] = None, location: Optional["CodemarkupTypesLocation"] = None) -> "CodemarkupChildEntity":

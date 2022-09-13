@@ -19,7 +19,8 @@ from glean.schema.code_pp.types import (
 class CodePpEntity(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], define: ast.Expr, undef: ast.Expr, include_: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.pp.Entity.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, define, 'define'), angle_for(__env, undef, 'undef'), angle_for(__env, include_, 'include_')])) or '_' } }}", Entity
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, define, 'define'), angle_for(__env, undef, 'undef'), angle_for(__env, include_, 'include_')]))
+    return f"code.pp.Entity.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Entity
 
   @staticmethod
   def angle_query_define(*, define: Optional["Pp1Define"] = None) -> "CodePpEntity":

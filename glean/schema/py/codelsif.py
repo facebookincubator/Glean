@@ -18,7 +18,8 @@ from glean.schema.code_lsif.types import (
 class CodeLsifEntity(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], erlang: ast.Expr, fsharp: ast.Expr, go: ast.Expr, haskell: ast.Expr, java: ast.Expr, kotlin: ast.Expr, ocaml: ast.Expr, python: ast.Expr, rust: ast.Expr, scala: ast.Expr, swift: ast.Expr, typescript: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.lsif.Entity.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, erlang, 'erlang'), angle_for(__env, fsharp, 'fsharp'), angle_for(__env, go, 'go'), angle_for(__env, haskell, 'haskell'), angle_for(__env, java, 'java'), angle_for(__env, kotlin, 'kotlin'), angle_for(__env, ocaml, 'ocaml'), angle_for(__env, python, 'python'), angle_for(__env, rust, 'rust'), angle_for(__env, scala, 'scala'), angle_for(__env, swift, 'swift'), angle_for(__env, typescript, 'typescript')])) or '_' } }}", Entity
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, erlang, 'erlang'), angle_for(__env, fsharp, 'fsharp'), angle_for(__env, go, 'go'), angle_for(__env, haskell, 'haskell'), angle_for(__env, java, 'java'), angle_for(__env, kotlin, 'kotlin'), angle_for(__env, ocaml, 'ocaml'), angle_for(__env, python, 'python'), angle_for(__env, rust, 'rust'), angle_for(__env, scala, 'scala'), angle_for(__env, swift, 'swift'), angle_for(__env, typescript, 'typescript')]))
+    return f"code.lsif.Entity.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Entity
 
   @staticmethod
   def angle_query_erlang(*, erlang: Optional["LsifSomeEntity"] = None) -> "CodeLsifEntity":

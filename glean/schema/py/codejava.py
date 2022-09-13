@@ -19,7 +19,8 @@ from glean.schema.code_java.types import (
 class CodeJavaAnnotations(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], annotations: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.java.Annotations.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, annotations, 'annotations')])) or '_' } }}", Annotations
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, annotations, 'annotations')]))
+    return f"code.java.Annotations.5 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Annotations
 
   @staticmethod
   def angle_query_annotations(*, annotations: Optional[List["JavaAnnotation"]] = None) -> "CodeJavaAnnotations":
@@ -31,7 +32,8 @@ class CodeJavaAnnotations(InnerGleanSchemaPredicate):
 class CodeJavaEntity(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], class_: ast.Expr, definition_: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.java.Entity.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, class_, 'class_'), angle_for(__env, definition_, 'definition_')])) or '_' } }}", Entity
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, class_, 'class_'), angle_for(__env, definition_, 'definition_')]))
+    return f"code.java.Entity.5 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Entity
 
   @staticmethod
   def angle_query_class_(*, class_: Optional["JavaClassDeclaration"] = None) -> "CodeJavaEntity":

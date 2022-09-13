@@ -71,7 +71,8 @@ from glean.schema.python.types import (
 class PythonNameLowerCase(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], nameLowerCase: ast.Expr, name: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.NameLowerCase.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, nameLowerCase, 'nameLowerCase'), angle_for(__env, name, 'name')])) or '_' } }}", NameLowerCase
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, nameLowerCase, 'nameLowerCase'), angle_for(__env, name, 'name')]))
+    return f"python.NameLowerCase.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", NameLowerCase
 
   @staticmethod
   def angle_query(*, nameLowerCase: Optional[str] = None, name: Optional["PythonName"] = None) -> "PythonNameLowerCase":
@@ -82,7 +83,8 @@ class PythonNameLowerCase(GleanSchemaPredicate):
 class PythonLocalName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.LocalName.3 { angle_for(__env, arg, None) or '_' }", LocalName
+    query_fields =  angle_for(__env, arg, None)
+    return f"python.LocalName.3 { query_fields if query_fields else '_' }", LocalName
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "PythonLocalName":
@@ -93,7 +95,8 @@ class PythonLocalName(GleanSchemaPredicate):
 class PythonIsTopLevelDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.IsTopLevelDefinition.3 { angle_for(__env, arg, None) or '_' }", IsTopLevelDefinition
+    query_fields =  angle_for(__env, arg, None)
+    return f"python.IsTopLevelDefinition.3 { query_fields if query_fields else '_' }", IsTopLevelDefinition
 
   @staticmethod
   def angle_query(*, arg: Optional["PythonDefinition"] = None) -> "PythonIsTopLevelDefinition":
@@ -104,7 +107,8 @@ class PythonIsTopLevelDefinition(GleanSchemaPredicate):
 class PythonClassDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], declaration: ast.Expr, bases: ast.Expr, keywords: ast.Expr, decorators: ast.Expr, docstring: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.ClassDefinition.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, bases, 'bases'), angle_for(__env, keywords, 'keywords'), angle_for(__env, decorators, 'decorators'), angle_for(__env, docstring, 'docstring')])) or '_' } }}", ClassDefinition
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, bases, 'bases'), angle_for(__env, keywords, 'keywords'), angle_for(__env, decorators, 'decorators'), angle_for(__env, docstring, 'docstring')]))
+    return f"python.ClassDefinition.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ClassDefinition
 
   @staticmethod
   def angle_query(*, declaration: Optional["PythonClassDeclaration"] = None, bases: Optional[Union[Just[List["PythonClassDeclaration"]], Just[None]]] = None, keywords: Optional[Union[Just[List["PythonParameter"]], Just[None]]] = None, decorators: Optional[Union[Just[List["PythonDecorator"]], Just[None]]] = None, docstring: Optional[Union[Just["PythonDocstring"], Just[None]]] = None) -> "PythonClassDefinition":
@@ -115,7 +119,8 @@ class PythonClassDefinition(GleanSchemaPredicate):
 class PythonNonImportDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.NonImportDeclaration.2 { angle_for(__env, arg, None) or '_' }", NonImportDeclaration
+    query_fields =  angle_for(__env, arg, None)
+    return f"python.NonImportDeclaration.2 { query_fields if query_fields else '_' }", NonImportDeclaration
 
   @staticmethod
   def angle_query(*, arg: Optional["PythonDeclaration"] = None) -> "PythonNonImportDeclaration":
@@ -126,7 +131,8 @@ class PythonNonImportDeclaration(GleanSchemaPredicate):
 class PythonDeclarationReference(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], target: ast.Expr, source: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.DeclarationReference.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, source, 'source')])) or '_' } }}", DeclarationReference
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, source, 'source')]))
+    return f"python.DeclarationReference.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DeclarationReference
 
   @staticmethod
   def angle_query(*, target: Optional["PythonDeclaration"] = None, source: Optional["PythonDeclaration"] = None) -> "PythonDeclarationReference":
@@ -137,7 +143,8 @@ class PythonDeclarationReference(GleanSchemaPredicate):
 class PythonDefinitionsByFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, span: ast.Expr, definition: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.DefinitionsByFile.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, span, 'span'), angle_for(__env, definition, 'definition')])) or '_' } }}", DefinitionsByFile
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, span, 'span'), angle_for(__env, definition, 'definition')]))
+    return f"python.DefinitionsByFile.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DefinitionsByFile
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None, definition: Optional["PythonDefinition"] = None) -> "PythonDefinitionsByFile":
@@ -148,7 +155,8 @@ class PythonDefinitionsByFile(GleanSchemaPredicate):
 class PythonModule(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.Module.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name')])) or '_' } }}", Module
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name')]))
+    return f"python.Module.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Module
 
   @staticmethod
   def angle_query(*, name: Optional["PythonName"] = None) -> "PythonModule":
@@ -159,7 +167,8 @@ class PythonModule(GleanSchemaPredicate):
 class PythonDefinitionLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], definition: ast.Expr, file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.DefinitionLocation.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, definition, 'definition'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", DefinitionLocation
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, definition, 'definition'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')]))
+    return f"python.DefinitionLocation.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DefinitionLocation
 
   @staticmethod
   def angle_query(*, definition: Optional["PythonDefinition"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "PythonDefinitionLocation":
@@ -170,7 +179,8 @@ class PythonDefinitionLocation(GleanSchemaPredicate):
 class PythonClassBySName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.ClassBySName.2 { angle_for(__env, arg, None) or '_' }", ClassBySName
+    query_fields =  angle_for(__env, arg, None)
+    return f"python.ClassBySName.2 { query_fields if query_fields else '_' }", ClassBySName
 
   @staticmethod
   def angle_query(*, arg: Optional["PythonSName"] = None) -> "PythonClassBySName":
@@ -181,7 +191,8 @@ class PythonClassBySName(GleanSchemaPredicate):
 class PythonDeclarationUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], declaration: ast.Expr, file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.DeclarationUses.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", DeclarationUses
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')]))
+    return f"python.DeclarationUses.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DeclarationUses
 
   @staticmethod
   def angle_query(*, declaration: Optional["PythonDeclaration"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "PythonDeclarationUses":
@@ -192,7 +203,8 @@ class PythonDeclarationUses(GleanSchemaPredicate):
 class PythonImportStatement(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], from_name: ast.Expr, as_name: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.ImportStatement.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, from_name, 'from_name'), angle_for(__env, as_name, 'as_name')])) or '_' } }}", ImportStatement
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, from_name, 'from_name'), angle_for(__env, as_name, 'as_name')]))
+    return f"python.ImportStatement.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ImportStatement
 
   @staticmethod
   def angle_query(*, from_name: Optional["PythonName"] = None, as_name: Optional["PythonName"] = None) -> "PythonImportStatement":
@@ -203,7 +215,8 @@ class PythonImportStatement(GleanSchemaPredicate):
 class PythonModuleDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], module: ast.Expr, docstring: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.ModuleDefinition.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, module, 'module'), angle_for(__env, docstring, 'docstring')])) or '_' } }}", ModuleDefinition
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, module, 'module'), angle_for(__env, docstring, 'docstring')]))
+    return f"python.ModuleDefinition.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ModuleDefinition
 
   @staticmethod
   def angle_query(*, module: Optional["PythonModule"] = None, docstring: Optional[Union[Just["PythonDocstring"], Just[None]]] = None) -> "PythonModuleDefinition":
@@ -214,7 +227,8 @@ class PythonModuleDefinition(GleanSchemaPredicate):
 class PythonDeclarationBySName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.DeclarationBySName.2 { angle_for(__env, arg, None) or '_' }", DeclarationBySName
+    query_fields =  angle_for(__env, arg, None)
+    return f"python.DeclarationBySName.2 { query_fields if query_fields else '_' }", DeclarationBySName
 
   @staticmethod
   def angle_query(*, arg: Optional["PythonSName"] = None) -> "PythonDeclarationBySName":
@@ -225,7 +239,8 @@ class PythonDeclarationBySName(GleanSchemaPredicate):
 class PythonDeclarationWithSName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], sname: ast.Expr, declaration: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.DeclarationWithSName.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, sname, 'sname'), angle_for(__env, declaration, 'declaration')])) or '_' } }}", DeclarationWithSName
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, sname, 'sname'), angle_for(__env, declaration, 'declaration')]))
+    return f"python.DeclarationWithSName.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DeclarationWithSName
 
   @staticmethod
   def angle_query(*, sname: Optional["PythonSName"] = None, declaration: Optional["PythonDeclaration"] = None) -> "PythonDeclarationWithSName":
@@ -236,7 +251,8 @@ class PythonDeclarationWithSName(GleanSchemaPredicate):
 class PythonModuleBySName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.ModuleBySName.2 { angle_for(__env, arg, None) or '_' }", ModuleBySName
+    query_fields =  angle_for(__env, arg, None)
+    return f"python.ModuleBySName.2 { query_fields if query_fields else '_' }", ModuleBySName
 
   @staticmethod
   def angle_query(*, arg: Optional["PythonSName"] = None) -> "PythonModuleBySName":
@@ -247,7 +263,8 @@ class PythonModuleBySName(GleanSchemaPredicate):
 class PythonImportStarStatement(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], from_name: ast.Expr, into_module: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.ImportStarStatement.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, from_name, 'from_name'), angle_for(__env, into_module, 'into_module')])) or '_' } }}", ImportStarStatement
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, from_name, 'from_name'), angle_for(__env, into_module, 'into_module')]))
+    return f"python.ImportStarStatement.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ImportStarStatement
 
   @staticmethod
   def angle_query(*, from_name: Optional["PythonName"] = None, into_module: Optional["PythonModule"] = None) -> "PythonImportStarStatement":
@@ -258,7 +275,8 @@ class PythonImportStarStatement(GleanSchemaPredicate):
 class PythonDeclarationLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], declaration: ast.Expr, file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.DeclarationLocation.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", DeclarationLocation
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')]))
+    return f"python.DeclarationLocation.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DeclarationLocation
 
   @staticmethod
   def angle_query(*, declaration: Optional["PythonDeclaration"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "PythonDeclarationLocation":
@@ -269,7 +287,8 @@ class PythonDeclarationLocation(GleanSchemaPredicate):
 class PythonClassDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, bases: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.ClassDeclaration.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, bases, 'bases')])) or '_' } }}", ClassDeclaration
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, bases, 'bases')]))
+    return f"python.ClassDeclaration.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ClassDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional["PythonName"] = None, bases: Optional[Union[Just[List["PythonName"]], Just[None]]] = None) -> "PythonClassDeclaration":
@@ -280,7 +299,8 @@ class PythonClassDeclaration(GleanSchemaPredicate):
 class PythonDeclarationToName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.DeclarationToName.2 { angle_for(__env, arg, None) or '_' }", DeclarationToName
+    query_fields =  angle_for(__env, arg, None)
+    return f"python.DeclarationToName.2 { query_fields if query_fields else '_' }", DeclarationToName
 
   @staticmethod
   def angle_query(*, arg: Optional["PythonDeclaration"] = None) -> "PythonDeclarationToName":
@@ -291,7 +311,8 @@ class PythonDeclarationToName(GleanSchemaPredicate):
 class PythonDeclarationDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], declaration: ast.Expr, definition: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.DeclarationDefinition.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, definition, 'definition')])) or '_' } }}", DeclarationDefinition
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, definition, 'definition')]))
+    return f"python.DeclarationDefinition.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DeclarationDefinition
 
   @staticmethod
   def angle_query(*, declaration: Optional["PythonDeclaration"] = None, definition: Optional["PythonDefinition"] = None) -> "PythonDeclarationDefinition":
@@ -302,7 +323,8 @@ class PythonDeclarationDefinition(GleanSchemaPredicate):
 class PythonDeclarationByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.DeclarationByName.2 { angle_for(__env, arg, None) or '_' }", DeclarationByName
+    query_fields =  angle_for(__env, arg, None)
+    return f"python.DeclarationByName.2 { query_fields if query_fields else '_' }", DeclarationByName
 
   @staticmethod
   def angle_query(*, arg: Optional["PythonName"] = None) -> "PythonDeclarationByName":
@@ -313,7 +335,8 @@ class PythonDeclarationByName(GleanSchemaPredicate):
 class PythonName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.Name.1 { angle_for(__env, arg, None) or '_' }", Name
+    query_fields =  angle_for(__env, arg, None)
+    return f"python.Name.1 { query_fields if query_fields else '_' }", Name
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "PythonName":
@@ -324,7 +347,8 @@ class PythonName(GleanSchemaPredicate):
 class PythonImportStatementByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], as_name: ast.Expr, from_name: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.ImportStatementByName.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, as_name, 'as_name'), angle_for(__env, from_name, 'from_name')])) or '_' } }}", ImportStatementByName
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, as_name, 'as_name'), angle_for(__env, from_name, 'from_name')]))
+    return f"python.ImportStatementByName.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ImportStatementByName
 
   @staticmethod
   def angle_query(*, as_name: Optional["PythonName"] = None, from_name: Optional["PythonName"] = None) -> "PythonImportStatementByName":
@@ -335,7 +359,8 @@ class PythonImportStatementByName(GleanSchemaPredicate):
 class PythonDocstringContent(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.DocstringContent.2 { angle_for(__env, arg, None) or '_' }", DocstringContent
+    query_fields =  angle_for(__env, arg, None)
+    return f"python.DocstringContent.2 { query_fields if query_fields else '_' }", DocstringContent
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "PythonDocstringContent":
@@ -346,7 +371,8 @@ class PythonDocstringContent(GleanSchemaPredicate):
 class PythonVariableDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], declaration: ast.Expr, type: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.VariableDefinition.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, type, 'type')])) or '_' } }}", VariableDefinition
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, type, 'type')]))
+    return f"python.VariableDefinition.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", VariableDefinition
 
   @staticmethod
   def angle_query(*, declaration: Optional["PythonVariableDeclaration"] = None, type: Optional[Union[Just["PythonType"], Just[None]]] = None) -> "PythonVariableDefinition":
@@ -357,7 +383,8 @@ class PythonVariableDefinition(GleanSchemaPredicate):
 class PythonType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.Type.1 { angle_for(__env, arg, None) or '_' }", Type
+    query_fields =  angle_for(__env, arg, None)
+    return f"python.Type.1 { query_fields if query_fields else '_' }", Type
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "PythonType":
@@ -368,7 +395,8 @@ class PythonType(GleanSchemaPredicate):
 class PythonDirectXRefsByFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, xref: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.DirectXRefsByFile.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xref, 'xref')])) or '_' } }}", DirectXRefsByFile
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xref, 'xref')]))
+    return f"python.DirectXRefsByFile.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DirectXRefsByFile
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, xref: Optional["PythonDirectXRef"] = None) -> "PythonDirectXRefsByFile":
@@ -379,7 +407,8 @@ class PythonDirectXRefsByFile(GleanSchemaPredicate):
 class PythonVariableBySName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.VariableBySName.2 { angle_for(__env, arg, None) or '_' }", VariableBySName
+    query_fields =  angle_for(__env, arg, None)
+    return f"python.VariableBySName.2 { query_fields if query_fields else '_' }", VariableBySName
 
   @staticmethod
   def angle_query(*, arg: Optional["PythonSName"] = None) -> "PythonVariableBySName":
@@ -390,7 +419,8 @@ class PythonVariableBySName(GleanSchemaPredicate):
 class PythonDeclarationWithLocalName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], local_name: ast.Expr, declaration: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.DeclarationWithLocalName.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, local_name, 'local_name'), angle_for(__env, declaration, 'declaration')])) or '_' } }}", DeclarationWithLocalName
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, local_name, 'local_name'), angle_for(__env, declaration, 'declaration')]))
+    return f"python.DeclarationWithLocalName.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DeclarationWithLocalName
 
   @staticmethod
   def angle_query(*, local_name: Optional["PythonName"] = None, declaration: Optional["PythonDeclaration"] = None) -> "PythonDeclarationWithLocalName":
@@ -401,7 +431,8 @@ class PythonDeclarationWithLocalName(GleanSchemaPredicate):
 class PythonFileDirectXRefs(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, xrefs: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.FileDirectXRefs.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xrefs, 'xrefs')])) or '_' } }}", FileDirectXRefs
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xrefs, 'xrefs')]))
+    return f"python.FileDirectXRefs.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FileDirectXRefs
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, xrefs: Optional[List["PythonDirectXRef"]] = None) -> "PythonFileDirectXRefs":
@@ -412,7 +443,8 @@ class PythonFileDirectXRefs(GleanSchemaPredicate):
 class PythonFunctionDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.FunctionDeclaration.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name')])) or '_' } }}", FunctionDeclaration
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name')]))
+    return f"python.FunctionDeclaration.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FunctionDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional["PythonName"] = None) -> "PythonFunctionDeclaration":
@@ -423,7 +455,8 @@ class PythonFunctionDeclaration(GleanSchemaPredicate):
 class PythonSNameToName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.SNameToName.2 { angle_for(__env, arg, None) or '_' }", SNameToName
+    query_fields =  angle_for(__env, arg, None)
+    return f"python.SNameToName.2 { query_fields if query_fields else '_' }", SNameToName
 
   @staticmethod
   def angle_query(*, arg: Optional["PythonSName"] = None) -> "PythonSNameToName":
@@ -434,7 +467,8 @@ class PythonSNameToName(GleanSchemaPredicate):
 class PythonNameToSName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.NameToSName.2 { angle_for(__env, arg, None) or '_' }", NameToSName
+    query_fields =  angle_for(__env, arg, None)
+    return f"python.NameToSName.2 { query_fields if query_fields else '_' }", NameToSName
 
   @staticmethod
   def angle_query(*, arg: Optional["PythonName"] = None) -> "PythonNameToSName":
@@ -445,7 +479,8 @@ class PythonNameToSName(GleanSchemaPredicate):
 class PythonImportStatementByAsName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, import_: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.ImportStatementByAsName.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, import_, 'import_')])) or '_' } }}", ImportStatementByAsName
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, import_, 'import_')]))
+    return f"python.ImportStatementByAsName.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ImportStatementByAsName
 
   @staticmethod
   def angle_query(*, name: Optional["PythonName"] = None, import_: Optional["PythonImportStatement"] = None) -> "PythonImportStatementByAsName":
@@ -456,7 +491,8 @@ class PythonImportStatementByAsName(GleanSchemaPredicate):
 class PythonFunctionDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], declaration: ast.Expr, is_async: ast.Expr, returns: ast.Expr, params: ast.Expr, posonly_params: ast.Expr, kwonly_params: ast.Expr, star_arg: ast.Expr, star_kwarg: ast.Expr, decorators: ast.Expr, docstring: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.FunctionDefinition.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, is_async, 'is_async'), angle_for(__env, returns, 'returns'), angle_for(__env, params, 'params'), angle_for(__env, posonly_params, 'posonly_params'), angle_for(__env, kwonly_params, 'kwonly_params'), angle_for(__env, star_arg, 'star_arg'), angle_for(__env, star_kwarg, 'star_kwarg'), angle_for(__env, decorators, 'decorators'), angle_for(__env, docstring, 'docstring')])) or '_' } }}", FunctionDefinition
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, is_async, 'is_async'), angle_for(__env, returns, 'returns'), angle_for(__env, params, 'params'), angle_for(__env, posonly_params, 'posonly_params'), angle_for(__env, kwonly_params, 'kwonly_params'), angle_for(__env, star_arg, 'star_arg'), angle_for(__env, star_kwarg, 'star_kwarg'), angle_for(__env, decorators, 'decorators'), angle_for(__env, docstring, 'docstring')]))
+    return f"python.FunctionDefinition.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FunctionDefinition
 
   @staticmethod
   def angle_query(*, declaration: Optional["PythonFunctionDeclaration"] = None, is_async: Optional[bool] = None, returns: Optional[Union[Just["PythonType"], Just[None]]] = None, params: Optional[List["PythonParameter"]] = None, posonly_params: Optional[Union[Just[List["PythonParameter"]], Just[None]]] = None, kwonly_params: Optional[Union[Just[List["PythonParameter"]], Just[None]]] = None, star_arg: Optional[Union[Just["PythonParameter"], Just[None]]] = None, star_kwarg: Optional[Union[Just["PythonParameter"], Just[None]]] = None, decorators: Optional[Union[Just[List["PythonDecorator"]], Just[None]]] = None, docstring: Optional[Union[Just["PythonDocstring"], Just[None]]] = None) -> "PythonFunctionDefinition":
@@ -467,7 +503,8 @@ class PythonFunctionDefinition(GleanSchemaPredicate):
 class PythonImportStarsByFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, span: ast.Expr, declaration: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.ImportStarsByFile.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, span, 'span'), angle_for(__env, declaration, 'declaration')])) or '_' } }}", ImportStarsByFile
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, span, 'span'), angle_for(__env, declaration, 'declaration')]))
+    return f"python.ImportStarsByFile.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ImportStarsByFile
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None, declaration: Optional["PythonImportStarStatement"] = None) -> "PythonImportStarsByFile":
@@ -478,7 +515,8 @@ class PythonImportStarsByFile(GleanSchemaPredicate):
 class PythonIsTopLevelDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.IsTopLevelDeclaration.3 { angle_for(__env, arg, None) or '_' }", IsTopLevelDeclaration
+    query_fields =  angle_for(__env, arg, None)
+    return f"python.IsTopLevelDeclaration.3 { query_fields if query_fields else '_' }", IsTopLevelDeclaration
 
   @staticmethod
   def angle_query(*, arg: Optional["PythonDeclaration"] = None) -> "PythonIsTopLevelDeclaration":
@@ -489,7 +527,8 @@ class PythonIsTopLevelDeclaration(GleanSchemaPredicate):
 class PythonSearchByLocalName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, decl: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.SearchByLocalName.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, decl, 'decl')])) or '_' } }}", SearchByLocalName
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, decl, 'decl')]))
+    return f"python.SearchByLocalName.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SearchByLocalName
 
   @staticmethod
   def angle_query(*, name: Optional["PythonLocalName"] = None, decl: Optional["PythonDeclaration"] = None) -> "PythonSearchByLocalName":
@@ -500,7 +539,8 @@ class PythonSearchByLocalName(GleanSchemaPredicate):
 class PythonDeclarationsByFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, span: ast.Expr, declaration: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.DeclarationsByFile.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, span, 'span'), angle_for(__env, declaration, 'declaration')])) or '_' } }}", DeclarationsByFile
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, span, 'span'), angle_for(__env, declaration, 'declaration')]))
+    return f"python.DeclarationsByFile.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DeclarationsByFile
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None, declaration: Optional["PythonDeclaration"] = None) -> "PythonDeclarationsByFile":
@@ -511,7 +551,8 @@ class PythonDeclarationsByFile(GleanSchemaPredicate):
 class PythonXRefsViaNameByFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, xrefs: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.XRefsViaNameByFile.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xrefs, 'xrefs')])) or '_' } }}", XRefsViaNameByFile
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xrefs, 'xrefs')]))
+    return f"python.XRefsViaNameByFile.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", XRefsViaNameByFile
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, xrefs: Optional[List["PythonXRefViaName"]] = None) -> "PythonXRefsViaNameByFile":
@@ -522,7 +563,8 @@ class PythonXRefsViaNameByFile(GleanSchemaPredicate):
 class PythonDeclarationWithName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, declaration: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.DeclarationWithName.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, declaration, 'declaration')])) or '_' } }}", DeclarationWithName
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, declaration, 'declaration')]))
+    return f"python.DeclarationWithName.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DeclarationWithName
 
   @staticmethod
   def angle_query(*, name: Optional["PythonName"] = None, declaration: Optional["PythonDeclaration"] = None) -> "PythonDeclarationWithName":
@@ -533,7 +575,8 @@ class PythonDeclarationWithName(GleanSchemaPredicate):
 class PythonVariableDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.VariableDeclaration.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name')])) or '_' } }}", VariableDeclaration
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name')]))
+    return f"python.VariableDeclaration.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", VariableDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional["PythonName"] = None) -> "PythonVariableDeclaration":
@@ -544,7 +587,8 @@ class PythonVariableDeclaration(GleanSchemaPredicate):
 class PythonFunctionBySName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.FunctionBySName.2 { angle_for(__env, arg, None) or '_' }", FunctionBySName
+    query_fields =  angle_for(__env, arg, None)
+    return f"python.FunctionBySName.2 { query_fields if query_fields else '_' }", FunctionBySName
 
   @staticmethod
   def angle_query(*, arg: Optional["PythonSName"] = None) -> "PythonFunctionBySName":
@@ -555,7 +599,8 @@ class PythonFunctionBySName(GleanSchemaPredicate):
 class PythonImportStarLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], import_star: ast.Expr, file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.ImportStarLocation.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, import_star, 'import_star'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", ImportStarLocation
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, import_star, 'import_star'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')]))
+    return f"python.ImportStarLocation.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ImportStarLocation
 
   @staticmethod
   def angle_query(*, import_star: Optional["PythonImportStarStatement"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "PythonImportStarLocation":
@@ -566,7 +611,8 @@ class PythonImportStarLocation(GleanSchemaPredicate):
 class PythonImportStatementByAsSName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], sname: ast.Expr, import_: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.ImportStatementByAsSName.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, sname, 'sname'), angle_for(__env, import_, 'import_')])) or '_' } }}", ImportStatementByAsSName
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, sname, 'sname'), angle_for(__env, import_, 'import_')]))
+    return f"python.ImportStatementByAsSName.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ImportStatementByAsSName
 
   @staticmethod
   def angle_query(*, sname: Optional["PythonSName"] = None, import_: Optional["PythonImportStatement"] = None) -> "PythonImportStatementByAsSName":
@@ -577,7 +623,8 @@ class PythonImportStatementByAsSName(GleanSchemaPredicate):
 class PythonDefinitionDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], definition: ast.Expr, declaration: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.DefinitionDeclaration.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, definition, 'definition'), angle_for(__env, declaration, 'declaration')])) or '_' } }}", DefinitionDeclaration
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, definition, 'definition'), angle_for(__env, declaration, 'declaration')]))
+    return f"python.DefinitionDeclaration.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DefinitionDeclaration
 
   @staticmethod
   def angle_query(*, definition: Optional["PythonDefinition"] = None, declaration: Optional["PythonDeclaration"] = None) -> "PythonDefinitionDeclaration":
@@ -588,7 +635,8 @@ class PythonDefinitionDeclaration(GleanSchemaPredicate):
 class PythonContainingTopLevelDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], declaration: ast.Expr, container: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.ContainingTopLevelDeclaration.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, container, 'container')])) or '_' } }}", ContainingTopLevelDeclaration
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, container, 'container')]))
+    return f"python.ContainingTopLevelDeclaration.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ContainingTopLevelDeclaration
 
   @staticmethod
   def angle_query(*, declaration: Optional["PythonDeclaration"] = None, container: Optional["PythonDeclaration"] = None) -> "PythonContainingTopLevelDeclaration":
@@ -599,7 +647,8 @@ class PythonContainingTopLevelDeclaration(GleanSchemaPredicate):
 class PythonSName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], local_name: ast.Expr, parent: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.SName.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, local_name, 'local_name'), angle_for(__env, parent, 'parent')])) or '_' } }}", SName
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, local_name, 'local_name'), angle_for(__env, parent, 'parent')]))
+    return f"python.SName.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SName
 
   @staticmethod
   def angle_query(*, local_name: Optional["PythonName"] = None, parent: Optional[Union[Just["PythonSName"], Just[None]]] = None) -> "PythonSName":
@@ -610,7 +659,8 @@ class PythonSName(GleanSchemaPredicate):
 class PythonLocalNameLowerCase(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], lowercase: ast.Expr, name: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.LocalNameLowerCase.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, lowercase, 'lowercase'), angle_for(__env, name, 'name')])) or '_' } }}", LocalNameLowerCase
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, lowercase, 'lowercase'), angle_for(__env, name, 'name')]))
+    return f"python.LocalNameLowerCase.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", LocalNameLowerCase
 
   @staticmethod
   def angle_query(*, lowercase: Optional[str] = None, name: Optional["PythonLocalName"] = None) -> "PythonLocalNameLowerCase":
@@ -623,7 +673,8 @@ class PythonLocalNameLowerCase(GleanSchemaPredicate):
 class PythonParameter(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, type: ast.Expr, value: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.Parameter.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, type, 'type'), angle_for(__env, value, 'value')])) or '_' } }}", Parameter
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, type, 'type'), angle_for(__env, value, 'value')]))
+    return f"python.Parameter.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Parameter
 
   @staticmethod
   def angle_query(*, name: Optional["PythonName"] = None, type: Optional[Union[Just["PythonType"], Just[None]]] = None, value: Optional[Union[Just[str], Just[None]]] = None) -> "PythonParameter":
@@ -634,7 +685,8 @@ class PythonParameter(InnerGleanSchemaPredicate):
 class PythonXRefViaName(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], target: ast.Expr, source: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.XRefViaName.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, source, 'source')])) or '_' } }}", XRefViaName
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, source, 'source')]))
+    return f"python.XRefViaName.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", XRefViaName
 
   @staticmethod
   def angle_query(*, target: Optional["PythonName"] = None, source: Optional["SrcByteSpan"] = None) -> "PythonXRefViaName":
@@ -645,7 +697,8 @@ class PythonXRefViaName(InnerGleanSchemaPredicate):
 class PythonDeclaration(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], cls: ast.Expr, func: ast.Expr, variable: ast.Expr, imp: ast.Expr, module: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.Declaration.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, cls, 'cls'), angle_for(__env, func, 'func'), angle_for(__env, variable, 'variable'), angle_for(__env, imp, 'imp'), angle_for(__env, module, 'module')])) or '_' } }}", Declaration
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, cls, 'cls'), angle_for(__env, func, 'func'), angle_for(__env, variable, 'variable'), angle_for(__env, imp, 'imp'), angle_for(__env, module, 'module')]))
+    return f"python.Declaration.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Declaration
 
   @staticmethod
   def angle_query_cls(*, cls: Optional["PythonClassDeclaration"] = None) -> "PythonDeclaration":
@@ -673,7 +726,8 @@ class PythonDeclaration(InnerGleanSchemaPredicate):
 class PythonDocstring(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], location: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.Docstring.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, location, 'location')])) or '_' } }}", Docstring
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, location, 'location')]))
+    return f"python.Docstring.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Docstring
 
   @staticmethod
   def angle_query(*, location: Optional["SrcByteSpan"] = None) -> "PythonDocstring":
@@ -684,7 +738,8 @@ class PythonDocstring(InnerGleanSchemaPredicate):
 class PythonDefinition(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], cls: ast.Expr, func: ast.Expr, variable: ast.Expr, module: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.Definition.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, cls, 'cls'), angle_for(__env, func, 'func'), angle_for(__env, variable, 'variable'), angle_for(__env, module, 'module')])) or '_' } }}", Definition
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, cls, 'cls'), angle_for(__env, func, 'func'), angle_for(__env, variable, 'variable'), angle_for(__env, module, 'module')]))
+    return f"python.Definition.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Definition
 
   @staticmethod
   def angle_query_cls(*, cls: Optional["PythonClassDefinition"] = None) -> "PythonDefinition":
@@ -708,7 +763,8 @@ class PythonDefinition(InnerGleanSchemaPredicate):
 class PythonDirectXRef(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], target: ast.Expr, source: ast.Expr) -> Tuple[str, Struct]:
-    return f"python.DirectXRef.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, source, 'source')])) or '_' } }}", DirectXRef
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, source, 'source')]))
+    return f"python.DirectXRef.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DirectXRef
 
   @staticmethod
   def angle_query(*, target: Optional["PythonDeclaration"] = None, source: Optional["SrcByteSpan"] = None) -> "PythonDirectXRef":

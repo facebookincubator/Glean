@@ -19,7 +19,8 @@ from glean.schema.code_thrift.types import (
 class CodeThriftAnnotations(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], annotations: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.thrift.Annotations.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, annotations, 'annotations')])) or '_' } }}", Annotations
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, annotations, 'annotations')]))
+    return f"code.thrift.Annotations.4 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Annotations
 
   @staticmethod
   def angle_query_annotations(*, annotations: Optional[List["ThriftStructuredAnnotation"]] = None) -> "CodeThriftAnnotations":
@@ -31,7 +32,8 @@ class CodeThriftAnnotations(InnerGleanSchemaPredicate):
 class CodeThriftEntity(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], include_: ast.Expr, named: ast.Expr, exception_: ast.Expr, service_: ast.Expr, constant: ast.Expr, enumValue: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.thrift.Entity.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, include_, 'include_'), angle_for(__env, named, 'named'), angle_for(__env, exception_, 'exception_'), angle_for(__env, service_, 'service_'), angle_for(__env, constant, 'constant'), angle_for(__env, enumValue, 'enumValue')])) or '_' } }}", Entity
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, include_, 'include_'), angle_for(__env, named, 'named'), angle_for(__env, exception_, 'exception_'), angle_for(__env, service_, 'service_'), angle_for(__env, constant, 'constant'), angle_for(__env, enumValue, 'enumValue')]))
+    return f"code.thrift.Entity.4 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Entity
 
   @staticmethod
   def angle_query_include_(*, include_: Optional["ThriftFile"] = None) -> "CodeThriftEntity":

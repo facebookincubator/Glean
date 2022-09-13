@@ -17,7 +17,8 @@ from glean.schema.search_pp.types import (
 class SearchPpSearchByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], macro: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"search.pp.SearchByName.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, macro, 'macro'), angle_for(__env, entity, 'entity')])) or '_' } }}", SearchByName
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, macro, 'macro'), angle_for(__env, entity, 'entity')]))
+    return f"search.pp.SearchByName.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SearchByName
 
   @staticmethod
   def angle_query(*, macro: Optional["Pp1Macro"] = None, entity: Optional["Pp1Define"] = None) -> "SearchPpSearchByName":
@@ -28,7 +29,8 @@ class SearchPpSearchByName(GleanSchemaPredicate):
 class SearchPpSearchByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"search.pp.SearchByName.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, entity, 'entity')])) or '_' } }}", SearchByName
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, entity, 'entity')]))
+    return f"search.pp.SearchByName.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SearchByName
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, entity: Optional["Pp1Define"] = None) -> "SearchPpSearchByName":

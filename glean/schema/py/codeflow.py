@@ -18,7 +18,8 @@ from glean.schema.code_flow.types import (
 class CodeFlowEntity(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], decl: ast.Expr, module_: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.flow.Entity.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, module_, 'module_')])) or '_' } }}", Entity
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, module_, 'module_')]))
+    return f"code.flow.Entity.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Entity
 
   @staticmethod
   def angle_query_decl(*, decl: Optional["FlowSomeDeclaration"] = None) -> "CodeFlowEntity":

@@ -28,7 +28,8 @@ from glean.schema.erlang.types import (
 class ErlangDeclarationReference(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], target: ast.Expr, source: ast.Expr) -> Tuple[str, Struct]:
-    return f"erlang.DeclarationReference.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, source, 'source')])) or '_' } }}", DeclarationReference
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, source, 'source')]))
+    return f"erlang.DeclarationReference.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DeclarationReference
 
   @staticmethod
   def angle_query(*, target: Optional["ErlangDeclaration"] = None, source: Optional["ErlangDeclaration"] = None) -> "ErlangDeclarationReference":
@@ -39,7 +40,8 @@ class ErlangDeclarationReference(GleanSchemaPredicate):
 class ErlangDeclarationWithFqn(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], fqn: ast.Expr, declaration: ast.Expr) -> Tuple[str, Struct]:
-    return f"erlang.DeclarationWithFqn.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, fqn, 'fqn'), angle_for(__env, declaration, 'declaration')])) or '_' } }}", DeclarationWithFqn
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, fqn, 'fqn'), angle_for(__env, declaration, 'declaration')]))
+    return f"erlang.DeclarationWithFqn.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DeclarationWithFqn
 
   @staticmethod
   def angle_query(*, fqn: Optional["ErlangFqn"] = None, declaration: Optional["ErlangDeclaration"] = None) -> "ErlangDeclarationWithFqn":
@@ -50,7 +52,8 @@ class ErlangDeclarationWithFqn(GleanSchemaPredicate):
 class ErlangFunctionDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], fqn: ast.Expr, file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
-    return f"erlang.FunctionDeclaration.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, fqn, 'fqn'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", FunctionDeclaration
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, fqn, 'fqn'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')]))
+    return f"erlang.FunctionDeclaration.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FunctionDeclaration
 
   @staticmethod
   def angle_query(*, fqn: Optional["ErlangFqn"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "ErlangFunctionDeclaration":
@@ -61,7 +64,8 @@ class ErlangFunctionDeclaration(GleanSchemaPredicate):
 class ErlangDeclarationToFqn(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"erlang.DeclarationToFqn.1 { angle_for(__env, arg, None) or '_' }", DeclarationToFqn
+    query_fields =  angle_for(__env, arg, None)
+    return f"erlang.DeclarationToFqn.1 { query_fields if query_fields else '_' }", DeclarationToFqn
 
   @staticmethod
   def angle_query(*, arg: Optional["ErlangDeclaration"] = None) -> "ErlangDeclarationToFqn":
@@ -72,7 +76,8 @@ class ErlangDeclarationToFqn(GleanSchemaPredicate):
 class ErlangSearchByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, func: ast.Expr) -> Tuple[str, Struct]:
-    return f"erlang.SearchByName.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, func, 'func')])) or '_' } }}", SearchByName
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, func, 'func')]))
+    return f"erlang.SearchByName.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SearchByName
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, func: Optional["ErlangDeclaration"] = None) -> "ErlangSearchByName":
@@ -83,7 +88,8 @@ class ErlangSearchByName(GleanSchemaPredicate):
 class ErlangDeclarationsByFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, span: ast.Expr, declaration: ast.Expr) -> Tuple[str, Struct]:
-    return f"erlang.DeclarationsByFile.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, span, 'span'), angle_for(__env, declaration, 'declaration')])) or '_' } }}", DeclarationsByFile
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, span, 'span'), angle_for(__env, declaration, 'declaration')]))
+    return f"erlang.DeclarationsByFile.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DeclarationsByFile
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None, declaration: Optional["ErlangDeclaration"] = None) -> "ErlangDeclarationsByFile":
@@ -94,7 +100,8 @@ class ErlangDeclarationsByFile(GleanSchemaPredicate):
 class ErlangDeclarationLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], declaration: ast.Expr, file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
-    return f"erlang.DeclarationLocation.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", DeclarationLocation
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')]))
+    return f"erlang.DeclarationLocation.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DeclarationLocation
 
   @staticmethod
   def angle_query(*, declaration: Optional["ErlangDeclaration"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "ErlangDeclarationLocation":
@@ -105,7 +112,8 @@ class ErlangDeclarationLocation(GleanSchemaPredicate):
 class ErlangNameLowerCase(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], nameLowercase: ast.Expr, name: ast.Expr) -> Tuple[str, Struct]:
-    return f"erlang.NameLowerCase.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, nameLowercase, 'nameLowercase'), angle_for(__env, name, 'name')])) or '_' } }}", NameLowerCase
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, nameLowercase, 'nameLowercase'), angle_for(__env, name, 'name')]))
+    return f"erlang.NameLowerCase.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", NameLowerCase
 
   @staticmethod
   def angle_query(*, nameLowercase: Optional[str] = None, name: Optional[str] = None) -> "ErlangNameLowerCase":
@@ -116,7 +124,8 @@ class ErlangNameLowerCase(GleanSchemaPredicate):
 class ErlangXRefsViaFqnByFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, xrefs: ast.Expr) -> Tuple[str, Struct]:
-    return f"erlang.XRefsViaFqnByFile.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xrefs, 'xrefs')])) or '_' } }}", XRefsViaFqnByFile
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xrefs, 'xrefs')]))
+    return f"erlang.XRefsViaFqnByFile.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", XRefsViaFqnByFile
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, xrefs: Optional[List["ErlangXRefViaFqn"]] = None) -> "ErlangXRefsViaFqnByFile":
@@ -127,7 +136,8 @@ class ErlangXRefsViaFqnByFile(GleanSchemaPredicate):
 class ErlangDeclarationUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], declaration: ast.Expr, file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
-    return f"erlang.DeclarationUses.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", DeclarationUses
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')]))
+    return f"erlang.DeclarationUses.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DeclarationUses
 
   @staticmethod
   def angle_query(*, declaration: Optional["ErlangDeclaration"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "ErlangDeclarationUses":
@@ -140,7 +150,8 @@ class ErlangDeclarationUses(GleanSchemaPredicate):
 class ErlangXRefViaFqn(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], target: ast.Expr, source: ast.Expr) -> Tuple[str, Struct]:
-    return f"erlang.XRefViaFqn.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, source, 'source')])) or '_' } }}", XRefViaFqn
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, source, 'source')]))
+    return f"erlang.XRefViaFqn.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", XRefViaFqn
 
   @staticmethod
   def angle_query(*, target: Optional["ErlangFqn"] = None, source: Optional["SrcByteSpan"] = None) -> "ErlangXRefViaFqn":
@@ -151,7 +162,8 @@ class ErlangXRefViaFqn(InnerGleanSchemaPredicate):
 class ErlangFqn(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], module: ast.Expr, name: ast.Expr, arity: ast.Expr) -> Tuple[str, Struct]:
-    return f"erlang.Fqn.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, module, 'module'), angle_for(__env, name, 'name'), angle_for(__env, arity, 'arity')])) or '_' } }}", Fqn
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, module, 'module'), angle_for(__env, name, 'name'), angle_for(__env, arity, 'arity')]))
+    return f"erlang.Fqn.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Fqn
 
   @staticmethod
   def angle_query(*, module: Optional[str] = None, name: Optional[str] = None, arity: Optional[int] = None) -> "ErlangFqn":
@@ -162,7 +174,8 @@ class ErlangFqn(InnerGleanSchemaPredicate):
 class ErlangDeclaration(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], func: ast.Expr) -> Tuple[str, Struct]:
-    return f"erlang.Declaration.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, func, 'func')])) or '_' } }}", Declaration
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, func, 'func')]))
+    return f"erlang.Declaration.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Declaration
 
   @staticmethod
   def angle_query_func(*, func: Optional["ErlangFunctionDeclaration"] = None) -> "ErlangDeclaration":

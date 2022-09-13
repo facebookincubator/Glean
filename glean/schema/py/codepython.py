@@ -19,7 +19,8 @@ from glean.schema.code_python.types import (
 class CodePythonAnnotations(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], decorators: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.python.Annotations.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decorators, 'decorators')])) or '_' } }}", Annotations
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, decorators, 'decorators')]))
+    return f"code.python.Annotations.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Annotations
 
   @staticmethod
   def angle_query_decorators(*, decorators: Optional[List["PythonDecorator"]] = None) -> "CodePythonAnnotations":
@@ -31,7 +32,8 @@ class CodePythonAnnotations(InnerGleanSchemaPredicate):
 class CodePythonEntity(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], decl: ast.Expr) -> Tuple[str, Struct]:
-    return f"code.python.Entity.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl')])) or '_' } }}", Entity
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl')]))
+    return f"code.python.Entity.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Entity
 
   @staticmethod
   def angle_query_decl(*, decl: Optional["PythonDeclaration"] = None) -> "CodePythonEntity":

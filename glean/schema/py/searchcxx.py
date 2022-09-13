@@ -25,7 +25,8 @@ from glean.schema.search_cxx.types import (
 class SearchCxxSearchBySelector(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], selector: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"search.cxx.SearchBySelector.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, selector, 'selector'), angle_for(__env, entity, 'entity')])) or '_' } }}", SearchBySelector
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, selector, 'selector'), angle_for(__env, entity, 'entity')]))
+    return f"search.cxx.SearchBySelector.5 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SearchBySelector
 
   @staticmethod
   def angle_query(*, selector: Optional["Cxx1ObjcSelector"] = None, entity: Optional["CodeCxxEntity"] = None) -> "SearchCxxSearchBySelector":
@@ -36,7 +37,8 @@ class SearchCxxSearchBySelector(GleanSchemaPredicate):
 class SearchCxxSearchByScope(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], scope: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"search.cxx.SearchByScope.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, scope, 'scope'), angle_for(__env, entity, 'entity')])) or '_' } }}", SearchByScope
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, scope, 'scope'), angle_for(__env, entity, 'entity')]))
+    return f"search.cxx.SearchByScope.5 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SearchByScope
 
   @staticmethod
   def angle_query(*, scope: Optional["Cxx1Scope"] = None, entity: Optional["CodeCxxEntity"] = None) -> "SearchCxxSearchByScope":
@@ -47,7 +49,8 @@ class SearchCxxSearchByScope(GleanSchemaPredicate):
 class SearchCxxQueryToQName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], query: ast.Expr, scope: ast.Expr) -> Tuple[str, Struct]:
-    return f"search.cxx.QueryToQName.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, query, 'query'), angle_for(__env, scope, 'scope')])) or '_' } }}", QueryToQName
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, query, 'query'), angle_for(__env, scope, 'scope')]))
+    return f"search.cxx.QueryToQName.5 { ('{ ' + query_fields + ' }') if query_fields else '_' }", QueryToQName
 
   @staticmethod
   def angle_query(*, query: Optional[List[str]] = None, scope: Optional["Cxx1QName"] = None) -> "SearchCxxQueryToQName":
@@ -58,7 +61,8 @@ class SearchCxxQueryToQName(GleanSchemaPredicate):
 class SearchCxxGlobalDeclarationWithName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, decl: ast.Expr) -> Tuple[str, Struct]:
-    return f"search.cxx.GlobalDeclarationWithName.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, decl, 'decl')])) or '_' } }}", GlobalDeclarationWithName
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, decl, 'decl')]))
+    return f"search.cxx.GlobalDeclarationWithName.5 { ('{ ' + query_fields + ' }') if query_fields else '_' }", GlobalDeclarationWithName
 
   @staticmethod
   def angle_query(*, name: Optional["Cxx1Name"] = None, decl: Optional["Cxx1Declaration"] = None) -> "SearchCxxGlobalDeclarationWithName":
@@ -69,7 +73,8 @@ class SearchCxxGlobalDeclarationWithName(GleanSchemaPredicate):
 class SearchCxxDeclIsDefn(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], decl: ast.Expr, defn: ast.Expr) -> Tuple[str, Struct]:
-    return f"search.cxx.DeclIsDefn.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, defn, 'defn')])) or '_' } }}", DeclIsDefn
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, defn, 'defn')]))
+    return f"search.cxx.DeclIsDefn.5 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DeclIsDefn
 
   @staticmethod
   def angle_query(*, decl: Optional["Cxx1Declaration"] = None, defn: Optional["CodeCxxDefinition"] = None) -> "SearchCxxDeclIsDefn":
@@ -80,7 +85,8 @@ class SearchCxxDeclIsDefn(GleanSchemaPredicate):
 class SearchCxxQueryToScope(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], query: ast.Expr, scope: ast.Expr) -> Tuple[str, Struct]:
-    return f"search.cxx.QueryToScope.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, query, 'query'), angle_for(__env, scope, 'scope')])) or '_' } }}", QueryToScope
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, query, 'query'), angle_for(__env, scope, 'scope')]))
+    return f"search.cxx.QueryToScope.5 { ('{ ' + query_fields + ' }') if query_fields else '_' }", QueryToScope
 
   @staticmethod
   def angle_query(*, query: Optional[List[str]] = None, scope: Optional["Cxx1Scope"] = None) -> "SearchCxxQueryToScope":
@@ -91,7 +97,8 @@ class SearchCxxQueryToScope(GleanSchemaPredicate):
 class SearchCxxSearchByNameAndScope(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, scope: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"search.cxx.SearchByNameAndScope.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, scope, 'scope'), angle_for(__env, entity, 'entity')])) or '_' } }}", SearchByNameAndScope
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, scope, 'scope'), angle_for(__env, entity, 'entity')]))
+    return f"search.cxx.SearchByNameAndScope.5 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SearchByNameAndScope
 
   @staticmethod
   def angle_query(*, name: Optional["Cxx1Name"] = None, scope: Optional["Cxx1Scope"] = None, entity: Optional["CodeCxxEntity"] = None) -> "SearchCxxSearchByNameAndScope":
@@ -102,7 +109,8 @@ class SearchCxxSearchByNameAndScope(GleanSchemaPredicate):
 class SearchCxxEntityUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], entity: ast.Expr, uses: ast.Expr) -> Tuple[str, Struct]:
-    return f"search.cxx.EntityUses.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, uses, 'uses')])) or '_' } }}", EntityUses
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, uses, 'uses')]))
+    return f"search.cxx.EntityUses.5 { ('{ ' + query_fields + ' }') if query_fields else '_' }", EntityUses
 
   @staticmethod
   def angle_query(*, entity: Optional["CodeCxxEntity"] = None, uses: Optional["Cxx1TargetUses"] = None) -> "SearchCxxEntityUses":
@@ -113,7 +121,8 @@ class SearchCxxEntityUses(GleanSchemaPredicate):
 class SearchCxxQueryToNSQName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], query: ast.Expr, scope: ast.Expr) -> Tuple[str, Struct]:
-    return f"search.cxx.QueryToNSQName.5 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, query, 'query'), angle_for(__env, scope, 'scope')])) or '_' } }}", QueryToNSQName
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, query, 'query'), angle_for(__env, scope, 'scope')]))
+    return f"search.cxx.QueryToNSQName.5 { ('{ ' + query_fields + ' }') if query_fields else '_' }", QueryToNSQName
 
   @staticmethod
   def angle_query(*, query: Optional[List[str]] = None, scope: Optional["Cxx1NamespaceQName"] = None) -> "SearchCxxQueryToNSQName":

@@ -64,7 +64,8 @@ from glean.schema.buck.types import (
 class BuckTargetHash(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], locator: ast.Expr, targetHash: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.TargetHash.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, locator, 'locator'), angle_for(__env, targetHash, 'targetHash')])) or '_' } }}", TargetHash
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, locator, 'locator'), angle_for(__env, targetHash, 'targetHash')]))
+    return f"buck.TargetHash.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", TargetHash
 
   @staticmethod
   def angle_query(*, locator: Optional["BuckLocator"] = None, targetHash: Optional[str] = None) -> "BuckTargetHash":
@@ -75,7 +76,8 @@ class BuckTargetHash(GleanSchemaPredicate):
 class BuckTargetSourcesBaseModule(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], locator: ast.Expr, srcs: ast.Expr, baseModule: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.TargetSourcesBaseModule.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, locator, 'locator'), angle_for(__env, srcs, 'srcs'), angle_for(__env, baseModule, 'baseModule')])) or '_' } }}", TargetSourcesBaseModule
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, locator, 'locator'), angle_for(__env, srcs, 'srcs'), angle_for(__env, baseModule, 'baseModule')]))
+    return f"buck.TargetSourcesBaseModule.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", TargetSourcesBaseModule
 
   @staticmethod
   def angle_query(*, locator: Optional["BuckTarget"] = None, srcs: Optional[List["BuckFile"]] = None, baseModule: Optional[Union[Just["BuckAttributeValue"], Just[None]]] = None) -> "BuckTargetSourcesBaseModule":
@@ -86,7 +88,8 @@ class BuckTargetSourcesBaseModule(GleanSchemaPredicate):
 class BuckLocatorReverseDeps(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], locator: ast.Expr, rdeps: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.LocatorReverseDeps.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, locator, 'locator'), angle_for(__env, rdeps, 'rdeps')])) or '_' } }}", LocatorReverseDeps
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, locator, 'locator'), angle_for(__env, rdeps, 'rdeps')]))
+    return f"buck.LocatorReverseDeps.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", LocatorReverseDeps
 
   @staticmethod
   def angle_query(*, locator: Optional["BuckLocator"] = None, rdeps: Optional[List["BuckLocator"]] = None) -> "BuckLocatorReverseDeps":
@@ -97,7 +100,8 @@ class BuckLocatorReverseDeps(GleanSchemaPredicate):
 class BuckType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.Type.1 { angle_for(__env, arg, None) or '_' }", Type
+    query_fields =  angle_for(__env, arg, None)
+    return f"buck.Type.1 { query_fields if query_fields else '_' }", Type
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "BuckType":
@@ -108,7 +112,8 @@ class BuckType(GleanSchemaPredicate):
 class BuckTargetDependencies(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], target: ast.Expr, dependencies: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.TargetDependencies.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, dependencies, 'dependencies')])) or '_' } }}", TargetDependencies
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, dependencies, 'dependencies')]))
+    return f"buck.TargetDependencies.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", TargetDependencies
 
   @staticmethod
   def angle_query(*, target: Optional["BuckTarget"] = None, dependencies: Optional[List["BuckDependency"]] = None) -> "BuckTargetDependencies":
@@ -119,7 +124,8 @@ class BuckTargetDependencies(GleanSchemaPredicate):
 class BuckLocator(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], subdir: ast.Expr, path: ast.Expr, name: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.Locator.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, subdir, 'subdir'), angle_for(__env, path, 'path'), angle_for(__env, name, 'name')])) or '_' } }}", Locator
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, subdir, 'subdir'), angle_for(__env, path, 'path'), angle_for(__env, name, 'name')]))
+    return f"buck.Locator.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Locator
 
   @staticmethod
   def angle_query(*, subdir: Optional[Union[Just[str], Just[None]]] = None, path: Optional[str] = None, name: Optional[str] = None) -> "BuckLocator":
@@ -130,7 +136,8 @@ class BuckLocator(GleanSchemaPredicate):
 class BuckTargetSources(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], target: ast.Expr, headers: ast.Expr, exportedHeaders: ast.Expr, srcs: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.TargetSources.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, headers, 'headers'), angle_for(__env, exportedHeaders, 'exportedHeaders'), angle_for(__env, srcs, 'srcs')])) or '_' } }}", TargetSources
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, headers, 'headers'), angle_for(__env, exportedHeaders, 'exportedHeaders'), angle_for(__env, srcs, 'srcs')]))
+    return f"buck.TargetSources.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", TargetSources
 
   @staticmethod
   def angle_query(*, target: Optional["BuckTarget"] = None, headers: Optional[List["BuckFile_1"]] = None, exportedHeaders: Optional[List["BuckFile_1"]] = None, srcs: Optional[List["BuckFile_1"]] = None) -> "BuckTargetSources":
@@ -141,7 +148,8 @@ class BuckTargetSources(GleanSchemaPredicate):
 class BuckPlatform(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.Platform.1 { angle_for(__env, arg, None) or '_' }", Platform
+    query_fields =  angle_for(__env, arg, None)
+    return f"buck.Platform.1 { query_fields if query_fields else '_' }", Platform
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "BuckPlatform":
@@ -152,7 +160,8 @@ class BuckPlatform(GleanSchemaPredicate):
 class BuckTargetAttribute(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], target: ast.Expr, attribute: ast.Expr, value: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.TargetAttribute.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, attribute, 'attribute'), angle_for(__env, value, 'value')])) or '_' } }}", TargetAttribute
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, attribute, 'attribute'), angle_for(__env, value, 'value')]))
+    return f"buck.TargetAttribute.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", TargetAttribute
 
   @staticmethod
   def angle_query(*, target: Optional["BuckTarget"] = None, attribute: Optional["BuckAttributeName"] = None, value: Optional["BuckAttributeValue"] = None) -> "BuckTargetAttribute":
@@ -163,7 +172,8 @@ class BuckTargetAttribute(GleanSchemaPredicate):
 class BuckFileEntity(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.FileEntity.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, entity, 'entity')])) or '_' } }}", FileEntity
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, entity, 'entity')]))
+    return f"buck.FileEntity.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FileEntity
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, entity: Optional["BuckXRefDestination"] = None) -> "BuckFileEntity":
@@ -174,7 +184,8 @@ class BuckFileEntity(GleanSchemaPredicate):
 class BuckOutTarget(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, target: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.OutTarget.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, target, 'target')])) or '_' } }}", OutTarget
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, target, 'target')]))
+    return f"buck.OutTarget.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", OutTarget
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, target: Optional["BuckTarget"] = None) -> "BuckOutTarget":
@@ -185,7 +196,8 @@ class BuckOutTarget(GleanSchemaPredicate):
 class BuckLabel(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.Label.1 { angle_for(__env, arg, None) or '_' }", Label
+    query_fields =  angle_for(__env, arg, None)
+    return f"buck.Label.1 { query_fields if query_fields else '_' }", Label
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "BuckLabel":
@@ -196,7 +208,8 @@ class BuckLabel(GleanSchemaPredicate):
 class BuckTargetOuts(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], target: ast.Expr, outputLabel: ast.Expr, file: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.TargetOuts.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, outputLabel, 'outputLabel'), angle_for(__env, file, 'file')])) or '_' } }}", TargetOuts
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, outputLabel, 'outputLabel'), angle_for(__env, file, 'file')]))
+    return f"buck.TargetOuts.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", TargetOuts
 
   @staticmethod
   def angle_query(*, target: Optional["BuckTarget"] = None, outputLabel: Optional[Union[Just["BuckOutputLabel"], Just[None]]] = None, file: Optional["SrcFile"] = None) -> "BuckTargetOuts":
@@ -207,7 +220,8 @@ class BuckTargetOuts(GleanSchemaPredicate):
 class BuckOutsTarget(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, target: ast.Expr, outputLabel: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.OutsTarget.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, target, 'target'), angle_for(__env, outputLabel, 'outputLabel')])) or '_' } }}", OutsTarget
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, target, 'target'), angle_for(__env, outputLabel, 'outputLabel')]))
+    return f"buck.OutsTarget.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", OutsTarget
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, target: Optional["BuckTarget"] = None, outputLabel: Optional[Union[Just["BuckOutputLabel"], Just[None]]] = None) -> "BuckOutsTarget":
@@ -218,7 +232,8 @@ class BuckOutsTarget(GleanSchemaPredicate):
 class BuckLocatorWithLabel(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], locator: ast.Expr, label: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.LocatorWithLabel.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, locator, 'locator'), angle_for(__env, label, 'label')])) or '_' } }}", LocatorWithLabel
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, locator, 'locator'), angle_for(__env, label, 'label')]))
+    return f"buck.LocatorWithLabel.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", LocatorWithLabel
 
   @staticmethod
   def angle_query(*, locator: Optional["BuckLocator"] = None, label: Optional["BuckOutputLabel"] = None) -> "BuckLocatorWithLabel":
@@ -229,7 +244,8 @@ class BuckLocatorWithLabel(GleanSchemaPredicate):
 class BuckTargetSources(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], target: ast.Expr, headers: ast.Expr, exportedHeaders: ast.Expr, srcs: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.TargetSources.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, headers, 'headers'), angle_for(__env, exportedHeaders, 'exportedHeaders'), angle_for(__env, srcs, 'srcs')])) or '_' } }}", TargetSources
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, headers, 'headers'), angle_for(__env, exportedHeaders, 'exportedHeaders'), angle_for(__env, srcs, 'srcs')]))
+    return f"buck.TargetSources.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", TargetSources
 
   @staticmethod
   def angle_query(*, target: Optional["BuckTarget"] = None, headers: Optional[List["BuckFile"]] = None, exportedHeaders: Optional[List["BuckFile"]] = None, srcs: Optional[List["BuckFile"]] = None) -> "BuckTargetSources":
@@ -240,7 +256,8 @@ class BuckTargetSources(GleanSchemaPredicate):
 class BuckAttributeValue(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], _str: ast.Expr, sequence: ast.Expr, mapping: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.AttributeValue.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, _str, 'str'), angle_for(__env, sequence, 'sequence'), angle_for(__env, mapping, 'mapping')])) or '_' } }}", AttributeValue
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, _str, 'str'), angle_for(__env, sequence, 'sequence'), angle_for(__env, mapping, 'mapping')]))
+    return f"buck.AttributeValue.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", AttributeValue
 
   @staticmethod
   def angle_query__str(*, _str: Optional[str] = None) -> "BuckAttributeValue":
@@ -260,7 +277,8 @@ class BuckAttributeValue(GleanSchemaPredicate):
 class BuckLabels(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.Labels.1 { angle_for(__env, arg, None) or '_' }", Labels
+    query_fields =  angle_for(__env, arg, None)
+    return f"buck.Labels.1 { query_fields if query_fields else '_' }", Labels
 
   @staticmethod
   def angle_query(*, arg: Optional[List["BuckLabel"]] = None) -> "BuckLabels":
@@ -271,7 +289,8 @@ class BuckLabels(GleanSchemaPredicate):
 class BuckSourceFileLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.SourceFileLocation.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", SourceFileLocation
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, span, 'span')]))
+    return f"buck.SourceFileLocation.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SourceFileLocation
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "BuckSourceFileLocation":
@@ -282,7 +301,8 @@ class BuckSourceFileLocation(GleanSchemaPredicate):
 class BuckOutputLabel(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.OutputLabel.3 { angle_for(__env, arg, None) or '_' }", OutputLabel
+    query_fields =  angle_for(__env, arg, None)
+    return f"buck.OutputLabel.3 { query_fields if query_fields else '_' }", OutputLabel
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "BuckOutputLabel":
@@ -293,7 +313,8 @@ class BuckOutputLabel(GleanSchemaPredicate):
 class BuckTargetUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], locator: ast.Expr, file: ast.Expr, spans: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.TargetUses.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, locator, 'locator'), angle_for(__env, file, 'file'), angle_for(__env, spans, 'spans')])) or '_' } }}", TargetUses
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, locator, 'locator'), angle_for(__env, file, 'file'), angle_for(__env, spans, 'spans')]))
+    return f"buck.TargetUses.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", TargetUses
 
   @staticmethod
   def angle_query(*, locator: Optional["BuckLocator"] = None, file: Optional["SrcFile"] = None, spans: Optional[List["SrcByteSpan"]] = None) -> "BuckTargetUses":
@@ -304,7 +325,8 @@ class BuckTargetUses(GleanSchemaPredicate):
 class BuckOwner(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], source: ast.Expr, owner: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.Owner.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, source, 'source'), angle_for(__env, owner, 'owner')])) or '_' } }}", Owner
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, source, 'source'), angle_for(__env, owner, 'owner')]))
+    return f"buck.Owner.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Owner
 
   @staticmethod
   def angle_query(*, source: Optional["SrcFile"] = None, owner: Optional["BuckTargetSources"] = None) -> "BuckOwner":
@@ -315,7 +337,8 @@ class BuckOwner(GleanSchemaPredicate):
 class BuckTarget(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], locator: ast.Expr, type_: ast.Expr, defaultPlatform: ast.Expr, labels: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.Target.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, locator, 'locator'), angle_for(__env, type_, 'type_'), angle_for(__env, defaultPlatform, 'defaultPlatform'), angle_for(__env, labels, 'labels')])) or '_' } }}", Target
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, locator, 'locator'), angle_for(__env, type_, 'type_'), angle_for(__env, defaultPlatform, 'defaultPlatform'), angle_for(__env, labels, 'labels')]))
+    return f"buck.Target.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Target
 
   @staticmethod
   def angle_query(*, locator: Optional["BuckLocator"] = None, type_: Optional["BuckType"] = None, defaultPlatform: Optional[Union[Just["BuckPlatform"], Just[None]]] = None, labels: Optional["BuckLabels"] = None) -> "BuckTarget":
@@ -326,7 +349,8 @@ class BuckTarget(GleanSchemaPredicate):
 class BuckDefinitionLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], definition: ast.Expr, file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.DefinitionLocation.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, definition, 'definition'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", DefinitionLocation
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, definition, 'definition'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')]))
+    return f"buck.DefinitionLocation.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DefinitionLocation
 
   @staticmethod
   def angle_query(*, definition: Optional["BuckDefinition"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "BuckDefinitionLocation":
@@ -337,7 +361,8 @@ class BuckDefinitionLocation(GleanSchemaPredicate):
 class BuckTargetIndexer(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, target: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.TargetIndexer.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, target, 'target')])) or '_' } }}", TargetIndexer
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, target, 'target')]))
+    return f"buck.TargetIndexer.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", TargetIndexer
 
   @staticmethod
   def angle_query(*, name: Optional["BuckTargetIndexerName"] = None, target: Optional["BuckTarget"] = None) -> "BuckTargetIndexer":
@@ -348,7 +373,8 @@ class BuckTargetIndexer(GleanSchemaPredicate):
 class BuckFileDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, definition: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.FileDefinition.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, definition, 'definition')])) or '_' } }}", FileDefinition
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, definition, 'definition')]))
+    return f"buck.FileDefinition.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FileDefinition
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, definition: Optional["BuckDefinition"] = None) -> "BuckFileDefinition":
@@ -359,7 +385,8 @@ class BuckFileDefinition(GleanSchemaPredicate):
 class BuckTarget(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], repo: ast.Expr, name: ast.Expr, platform: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.Target.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, repo, 'repo'), angle_for(__env, name, 'name'), angle_for(__env, platform, 'platform')])) or '_' } }}", Target
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, repo, 'repo'), angle_for(__env, name, 'name'), angle_for(__env, platform, 'platform')]))
+    return f"buck.Target.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Target
 
   @staticmethod
   def angle_query(*, repo: Optional["SysBlob"] = None, name: Optional["SysBlob"] = None, platform: Optional[Union[Just["SysBlob"], Just[None]]] = None) -> "BuckTarget":
@@ -370,7 +397,8 @@ class BuckTarget(GleanSchemaPredicate):
 class BuckAttributeName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.AttributeName.3 { angle_for(__env, arg, None) or '_' }", AttributeName
+    query_fields =  angle_for(__env, arg, None)
+    return f"buck.AttributeName.3 { query_fields if query_fields else '_' }", AttributeName
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "BuckAttributeName":
@@ -381,7 +409,8 @@ class BuckAttributeName(GleanSchemaPredicate):
 class BuckOwner(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], source: ast.Expr, owner: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.Owner.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, source, 'source'), angle_for(__env, owner, 'owner')])) or '_' } }}", Owner
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, source, 'source'), angle_for(__env, owner, 'owner')]))
+    return f"buck.Owner.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Owner
 
   @staticmethod
   def angle_query(*, source: Optional["SrcFile"] = None, owner: Optional["BuckTargetSources_1"] = None) -> "BuckOwner":
@@ -392,7 +421,8 @@ class BuckOwner(GleanSchemaPredicate):
 class BuckRuleKey(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], locator: ast.Expr, ruleKey: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.RuleKey.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, locator, 'locator'), angle_for(__env, ruleKey, 'ruleKey')])) or '_' } }}", RuleKey
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, locator, 'locator'), angle_for(__env, ruleKey, 'ruleKey')]))
+    return f"buck.RuleKey.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", RuleKey
 
   @staticmethod
   def angle_query(*, locator: Optional["BuckLocator"] = None, ruleKey: Optional[str] = None) -> "BuckRuleKey":
@@ -403,7 +433,8 @@ class BuckRuleKey(GleanSchemaPredicate):
 class BuckTargetLinkWhole(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.TargetLinkWhole.1 { angle_for(__env, arg, None) or '_' }", TargetLinkWhole
+    query_fields =  angle_for(__env, arg, None)
+    return f"buck.TargetLinkWhole.1 { query_fields if query_fields else '_' }", TargetLinkWhole
 
   @staticmethod
   def angle_query(*, arg: Optional["BuckTarget"] = None) -> "BuckTargetLinkWhole":
@@ -414,7 +445,8 @@ class BuckTargetLinkWhole(GleanSchemaPredicate):
 class BuckDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], module: ast.Expr, name: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.Definition.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, module, 'module'), angle_for(__env, name, 'name')])) or '_' } }}", Definition
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, module, 'module'), angle_for(__env, name, 'name')]))
+    return f"buck.Definition.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Definition
 
   @staticmethod
   def angle_query(*, module: Optional["SrcFile"] = None, name: Optional[str] = None) -> "BuckDefinition":
@@ -425,7 +457,8 @@ class BuckDefinition(GleanSchemaPredicate):
 class BuckTargetOut(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], target: ast.Expr, file: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.TargetOut.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, file, 'file')])) or '_' } }}", TargetOut
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, file, 'file')]))
+    return f"buck.TargetOut.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", TargetOut
 
   @staticmethod
   def angle_query(*, target: Optional["BuckTarget"] = None, file: Optional["SrcFile"] = None) -> "BuckTargetOut":
@@ -436,7 +469,8 @@ class BuckTargetOut(GleanSchemaPredicate):
 class BuckFileXRefs(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, xrefs: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.FileXRefs.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xrefs, 'xrefs')])) or '_' } }}", FileXRefs
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xrefs, 'xrefs')]))
+    return f"buck.FileXRefs.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FileXRefs
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, xrefs: Optional[List["BuckXRef"]] = None) -> "BuckFileXRefs":
@@ -447,7 +481,8 @@ class BuckFileXRefs(GleanSchemaPredicate):
 class BuckTargetLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], locator: ast.Expr, file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.TargetLocation.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, locator, 'locator'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", TargetLocation
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, locator, 'locator'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')]))
+    return f"buck.TargetLocation.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", TargetLocation
 
   @staticmethod
   def angle_query(*, locator: Optional["BuckLocator"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "BuckTargetLocation":
@@ -458,7 +493,8 @@ class BuckTargetLocation(GleanSchemaPredicate):
 class BuckDestinationUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], destination: ast.Expr, file: ast.Expr, spans: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.DestinationUses.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, destination, 'destination'), angle_for(__env, file, 'file'), angle_for(__env, spans, 'spans')])) or '_' } }}", DestinationUses
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, destination, 'destination'), angle_for(__env, file, 'file'), angle_for(__env, spans, 'spans')]))
+    return f"buck.DestinationUses.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DestinationUses
 
   @staticmethod
   def angle_query(*, destination: Optional["BuckXRefDestination"] = None, file: Optional["SrcFile"] = None, spans: Optional[List["SrcByteSpan"]] = None) -> "BuckDestinationUses":
@@ -469,7 +505,8 @@ class BuckDestinationUses(GleanSchemaPredicate):
 class BuckTranslationUnit(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, target: ast.Expr, platform: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.TranslationUnit.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, target, 'target'), angle_for(__env, platform, 'platform')])) or '_' } }}", TranslationUnit
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, target, 'target'), angle_for(__env, platform, 'platform')]))
+    return f"buck.TranslationUnit.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", TranslationUnit
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, target: Optional["BuckLocator"] = None, platform: Optional[Union[Just["BuckPlatform"], Just[None]]] = None) -> "BuckTranslationUnit":
@@ -480,7 +517,8 @@ class BuckTranslationUnit(GleanSchemaPredicate):
 class BuckFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], source: ast.Expr, generated: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.File.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, source, 'source'), angle_for(__env, generated, 'generated')])) or '_' } }}", File
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, source, 'source'), angle_for(__env, generated, 'generated')]))
+    return f"buck.File.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", File
 
   @staticmethod
   def angle_query_source(*, source: Optional["SrcFile"] = None) -> "BuckFile":
@@ -496,7 +534,8 @@ class BuckFile(GleanSchemaPredicate):
 class BuckFileTarget(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, locator: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.FileTarget.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, locator, 'locator')])) or '_' } }}", FileTarget
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, locator, 'locator')]))
+    return f"buck.FileTarget.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FileTarget
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, locator: Optional["BuckLocator"] = None) -> "BuckFileTarget":
@@ -507,7 +546,8 @@ class BuckFileTarget(GleanSchemaPredicate):
 class BuckTranslationUnit(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, target: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.TranslationUnit.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, target, 'target')])) or '_' } }}", TranslationUnit
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, target, 'target')]))
+    return f"buck.TranslationUnit.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", TranslationUnit
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, target: Optional["BuckTarget_1"] = None) -> "BuckTranslationUnit":
@@ -518,7 +558,8 @@ class BuckTranslationUnit(GleanSchemaPredicate):
 class BuckTargetIndexerName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.TargetIndexerName.3 { angle_for(__env, arg, None) or '_' }", TargetIndexerName
+    query_fields =  angle_for(__env, arg, None)
+    return f"buck.TargetIndexerName.3 { query_fields if query_fields else '_' }", TargetIndexerName
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "BuckTargetIndexerName":
@@ -529,7 +570,8 @@ class BuckTargetIndexerName(GleanSchemaPredicate):
 class BuckFileResolved(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], buckFile: ast.Expr, srcFile: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.FileResolved.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, buckFile, 'buckFile'), angle_for(__env, srcFile, 'srcFile')])) or '_' } }}", FileResolved
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, buckFile, 'buckFile'), angle_for(__env, srcFile, 'srcFile')]))
+    return f"buck.FileResolved.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FileResolved
 
   @staticmethod
   def angle_query(*, buckFile: Optional["BuckFile"] = None, srcFile: Optional["SrcFile"] = None) -> "BuckFileResolved":
@@ -540,7 +582,8 @@ class BuckFileResolved(GleanSchemaPredicate):
 class BuckConsumer(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], source: ast.Expr, consumer: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.Consumer.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, source, 'source'), angle_for(__env, consumer, 'consumer')])) or '_' } }}", Consumer
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, source, 'source'), angle_for(__env, consumer, 'consumer')]))
+    return f"buck.Consumer.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Consumer
 
   @staticmethod
   def angle_query(*, source: Optional["SrcFile"] = None, consumer: Optional["BuckTargetSources"] = None) -> "BuckConsumer":
@@ -551,7 +594,8 @@ class BuckConsumer(GleanSchemaPredicate):
 class BuckFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], source: ast.Expr, generated: ast.Expr, generatedLabel: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.File.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, source, 'source'), angle_for(__env, generated, 'generated'), angle_for(__env, generatedLabel, 'generatedLabel')])) or '_' } }}", File
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, source, 'source'), angle_for(__env, generated, 'generated'), angle_for(__env, generatedLabel, 'generatedLabel')]))
+    return f"buck.File.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", File
 
   @staticmethod
   def angle_query_source(*, source: Optional["SrcFile"] = None) -> "BuckFile":
@@ -573,7 +617,8 @@ class BuckFile(GleanSchemaPredicate):
 class BuckXRef(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], destination: ast.Expr, ranges: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.XRef.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, destination, 'destination'), angle_for(__env, ranges, 'ranges')])) or '_' } }}", XRef
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, destination, 'destination'), angle_for(__env, ranges, 'ranges')]))
+    return f"buck.XRef.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", XRef
 
   @staticmethod
   def angle_query(*, destination: Optional["BuckXRefDestination"] = None, ranges: Optional[List["SrcByteSpan"]] = None) -> "BuckXRef":
@@ -584,7 +629,8 @@ class BuckXRef(InnerGleanSchemaPredicate):
 class BuckAttributeMapping(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], key: ast.Expr, value: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.AttributeMapping.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, key, 'key'), angle_for(__env, value, 'value')])) or '_' } }}", AttributeMapping
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, key, 'key'), angle_for(__env, value, 'value')]))
+    return f"buck.AttributeMapping.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", AttributeMapping
 
   @staticmethod
   def angle_query(*, key: Optional[str] = None, value: Optional["BuckAttributeValue"] = None) -> "BuckAttributeMapping":
@@ -595,7 +641,8 @@ class BuckAttributeMapping(InnerGleanSchemaPredicate):
 class BuckXRefDestination(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], locator: ast.Expr, file: ast.Expr, definition: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.XRefDestination.3 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, locator, 'locator'), angle_for(__env, file, 'file'), angle_for(__env, definition, 'definition')])) or '_' } }}", XRefDestination
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, locator, 'locator'), angle_for(__env, file, 'file'), angle_for(__env, definition, 'definition')]))
+    return f"buck.XRefDestination.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", XRefDestination
 
   @staticmethod
   def angle_query_locator(*, locator: Optional["BuckLocator"] = None) -> "BuckXRefDestination":
@@ -615,7 +662,8 @@ class BuckXRefDestination(InnerGleanSchemaPredicate):
 class BuckDependency(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], target: ast.Expr, explicit_: ast.Expr, exported: ast.Expr) -> Tuple[str, Struct]:
-    return f"buck.Dependency.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, explicit_, 'explicit_'), angle_for(__env, exported, 'exported')])) or '_' } }}", Dependency
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, explicit_, 'explicit_'), angle_for(__env, exported, 'exported')]))
+    return f"buck.Dependency.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Dependency
 
   @staticmethod
   def angle_query(*, target: Optional["BuckLocator"] = None, explicit_: Optional[bool] = None, exported: Optional[bool] = None) -> "BuckDependency":

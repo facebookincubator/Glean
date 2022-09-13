@@ -23,7 +23,8 @@ from glean.schema.codemarkup_types.types import (
 class CodemarkupTypesXRefLocation(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], target: ast.Expr, source: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.types.XRefLocation.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, source, 'source')])) or '_' } }}", XRefLocation
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, source, 'source')]))
+    return f"codemarkup.types.XRefLocation.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", XRefLocation
 
   @staticmethod
   def angle_query(*, target: Optional["CodemarkupTypesLocation"] = None, source: Optional["CodemarkupTypesRangeSpan"] = None) -> "CodemarkupTypesXRefLocation":
@@ -72,7 +73,8 @@ class CodemarkupTypesSymbolKind(Enum):
 class CodemarkupTypesSymbolInfo(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], kind: ast.Expr, isAbstract: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.types.SymbolInfo.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, kind, 'kind'), angle_for(__env, isAbstract, 'isAbstract')])) or '_' } }}", SymbolInfo
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, kind, 'kind'), angle_for(__env, isAbstract, 'isAbstract')]))
+    return f"codemarkup.types.SymbolInfo.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SymbolInfo
 
   @staticmethod
   def angle_query(*, kind: Optional["CodemarkupTypesSymbolKind"] = None, isAbstract: Optional[bool] = None) -> "CodemarkupTypesSymbolInfo":
@@ -83,7 +85,8 @@ class CodemarkupTypesSymbolInfo(InnerGleanSchemaPredicate):
 class CodemarkupTypesRangeSpan(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], span: ast.Expr, range: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.types.RangeSpan.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, span, 'span'), angle_for(__env, range, 'range')])) or '_' } }}", RangeSpan
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, span, 'span'), angle_for(__env, range, 'range')]))
+    return f"codemarkup.types.RangeSpan.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", RangeSpan
 
   @staticmethod
   def angle_query_span(*, span: Optional["SrcByteSpan"] = None) -> "CodemarkupTypesRangeSpan":
@@ -99,7 +102,8 @@ class CodemarkupTypesRangeSpan(InnerGleanSchemaPredicate):
 class CodemarkupTypesLocation(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, file: ast.Expr, location: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.types.Location.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, file, 'file'), angle_for(__env, location, 'location'), angle_for(__env, span, 'span')])) or '_' } }}", Location
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, file, 'file'), angle_for(__env, location, 'location'), angle_for(__env, span, 'span')]))
+    return f"codemarkup.types.Location.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Location
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, file: Optional["SrcFile"] = None, location: Optional["CodemarkupTypesRangeSpan"] = None, span: Optional[Union[Just["SrcByteSpan"], Just[None]]] = None) -> "CodemarkupTypesLocation":

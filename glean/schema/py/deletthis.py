@@ -17,7 +17,8 @@ from glean.schema.deletthis.types import (
 class DeletthisFileReverseDeps(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, referenced_by: ast.Expr, via: ast.Expr) -> Tuple[str, Struct]:
-    return f"deletthis.FileReverseDeps.15 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, referenced_by, 'referenced_by'), angle_for(__env, via, 'via')])) or '_' } }}", FileReverseDeps
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, referenced_by, 'referenced_by'), angle_for(__env, via, 'via')]))
+    return f"deletthis.FileReverseDeps.15 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FileReverseDeps
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, referenced_by: Optional["SrcFile"] = None, via: Optional["CodeEntity"] = None) -> "DeletthisFileReverseDeps":

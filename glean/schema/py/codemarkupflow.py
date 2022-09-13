@@ -23,7 +23,8 @@ from glean.schema.codemarkup_flow.types import (
 class CodemarkupFlowFlowEntityLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], entity: ast.Expr, location: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.flow.FlowEntityLocation.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location')])) or '_' } }}", FlowEntityLocation
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, location, 'location')]))
+    return f"codemarkup.flow.FlowEntityLocation.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FlowEntityLocation
 
   @staticmethod
   def angle_query(*, entity: Optional["CodeFlowEntity"] = None, location: Optional["CodemarkupTypesLocation"] = None) -> "CodemarkupFlowFlowEntityLocation":
@@ -34,7 +35,8 @@ class CodemarkupFlowFlowEntityLocation(GleanSchemaPredicate):
 class CodemarkupFlowFlowResolveLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], location: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.flow.FlowResolveLocation.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, location, 'location'), angle_for(__env, entity, 'entity')])) or '_' } }}", FlowResolveLocation
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, location, 'location'), angle_for(__env, entity, 'entity')]))
+    return f"codemarkup.flow.FlowResolveLocation.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FlowResolveLocation
 
   @staticmethod
   def angle_query(*, location: Optional["CodemarkupTypesLocation"] = None, entity: Optional["CodeFlowEntity"] = None) -> "CodemarkupFlowFlowResolveLocation":
@@ -45,7 +47,8 @@ class CodemarkupFlowFlowResolveLocation(GleanSchemaPredicate):
 class CodemarkupFlowFlowFileReferenceEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, xref: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.flow.FlowFileReferenceEntityXRefLocations.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xref, 'xref'), angle_for(__env, entity, 'entity')])) or '_' } }}", FlowFileReferenceEntityXRefLocations
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xref, 'xref'), angle_for(__env, entity, 'entity')]))
+    return f"codemarkup.flow.FlowFileReferenceEntityXRefLocations.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FlowFileReferenceEntityXRefLocations
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, xref: Optional["CodemarkupTypesXRefLocation"] = None, entity: Optional["CodeFlowEntity"] = None) -> "CodemarkupFlowFlowFileReferenceEntityXRefLocations":
@@ -56,7 +59,8 @@ class CodemarkupFlowFlowFileReferenceEntityXRefLocations(GleanSchemaPredicate):
 class CodemarkupFlowFlowFileImportDeclEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, xref: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.flow.FlowFileImportDeclEntityXRefLocations.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xref, 'xref'), angle_for(__env, entity, 'entity')])) or '_' } }}", FlowFileImportDeclEntityXRefLocations
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xref, 'xref'), angle_for(__env, entity, 'entity')]))
+    return f"codemarkup.flow.FlowFileImportDeclEntityXRefLocations.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FlowFileImportDeclEntityXRefLocations
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, xref: Optional["CodemarkupTypesXRefLocation"] = None, entity: Optional["CodeFlowEntity"] = None) -> "CodemarkupFlowFlowFileImportDeclEntityXRefLocations":
@@ -67,7 +71,8 @@ class CodemarkupFlowFlowFileImportDeclEntityXRefLocations(GleanSchemaPredicate):
 class CodemarkupFlowFlowFileEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, xref: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.flow.FlowFileEntityXRefLocations.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xref, 'xref'), angle_for(__env, entity, 'entity')])) or '_' } }}", FlowFileEntityXRefLocations
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, xref, 'xref'), angle_for(__env, entity, 'entity')]))
+    return f"codemarkup.flow.FlowFileEntityXRefLocations.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FlowFileEntityXRefLocations
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, xref: Optional["CodemarkupTypesXRefLocation"] = None, entity: Optional["CodeFlowEntity"] = None) -> "CodemarkupFlowFlowFileEntityXRefLocations":
@@ -78,7 +83,8 @@ class CodemarkupFlowFlowFileEntityXRefLocations(GleanSchemaPredicate):
 class CodemarkupFlowFlowEntityUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], target: ast.Expr, file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.flow.FlowEntityUses.2 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')])) or '_' } }}", FlowEntityUses
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')]))
+    return f"codemarkup.flow.FlowEntityUses.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FlowEntityUses
 
   @staticmethod
   def angle_query(*, target: Optional["CodeFlowEntity"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "CodemarkupFlowFlowEntityUses":

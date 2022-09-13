@@ -19,7 +19,8 @@ from glean.schema.buckuses.types import (
 class BuckusesUsesOfTargetHeader(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], locator: ast.Expr, exportedHeader: ast.Expr) -> Tuple[str, Struct]:
-    return f"buckuses.UsesOfTargetHeader.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, locator, 'locator'), angle_for(__env, exportedHeader, 'exportedHeader')])) or '_' } }}", UsesOfTargetHeader
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, locator, 'locator'), angle_for(__env, exportedHeader, 'exportedHeader')]))
+    return f"buckuses.UsesOfTargetHeader.4 { ('{ ' + query_fields + ' }') if query_fields else '_' }", UsesOfTargetHeader
 
   @staticmethod
   def angle_query(*, locator: Optional["BuckLocator"] = None, exportedHeader: Optional["SrcFile"] = None) -> "BuckusesUsesOfTargetHeader":
@@ -30,7 +31,8 @@ class BuckusesUsesOfTargetHeader(GleanSchemaPredicate):
 class BuckusesUsesOfTarget(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], locator: ast.Expr, use_xref: ast.Expr, use_file: ast.Expr) -> Tuple[str, Struct]:
-    return f"buckuses.UsesOfTarget.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, locator, 'locator'), angle_for(__env, use_xref, 'use_xref'), angle_for(__env, use_file, 'use_file')])) or '_' } }}", UsesOfTarget
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, locator, 'locator'), angle_for(__env, use_xref, 'use_xref'), angle_for(__env, use_file, 'use_file')]))
+    return f"buckuses.UsesOfTarget.4 { ('{ ' + query_fields + ' }') if query_fields else '_' }", UsesOfTarget
 
   @staticmethod
   def angle_query(*, locator: Optional["BuckLocator"] = None, use_xref: Optional["Cxx1XRefTarget"] = None, use_file: Optional["SrcFile"] = None) -> "BuckusesUsesOfTarget":

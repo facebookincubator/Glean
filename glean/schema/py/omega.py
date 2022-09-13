@@ -35,7 +35,8 @@ from glean.schema.omega.types import (
 class OmegaDependencyList(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], node: ast.Expr, entities: ast.Expr) -> Tuple[str, Struct]:
-    return f"omega.DependencyList.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, node, 'node'), angle_for(__env, entities, 'entities')])) or '_' } }}", DependencyList
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, node, 'node'), angle_for(__env, entities, 'entities')]))
+    return f"omega.DependencyList.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DependencyList
 
   @staticmethod
   def angle_query(*, node: Optional["OmegaGraphNode"] = None, entities: Optional[List["OmegaOmegaEntity"]] = None) -> "OmegaDependencyList":
@@ -46,7 +47,8 @@ class OmegaDependencyList(GleanSchemaPredicate):
 class OmegaEnum_(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr) -> Tuple[str, Struct]:
-    return f"omega.Enum_.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name')])) or '_' } }}", Enum_
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name')]))
+    return f"omega.Enum_.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Enum_
 
   @staticmethod
   def angle_query(*, name: Optional["OmegaName"] = None) -> "OmegaEnum_":
@@ -57,7 +59,8 @@ class OmegaEnum_(GleanSchemaPredicate):
 class OmegaOmegaAction(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], class_: ast.Expr) -> Tuple[str, Struct]:
-    return f"omega.OmegaAction.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, class_, 'class_')])) or '_' } }}", OmegaAction
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, class_, 'class_')]))
+    return f"omega.OmegaAction.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", OmegaAction
 
   @staticmethod
   def angle_query(*, class_: Optional["OmegaClass_"] = None) -> "OmegaOmegaAction":
@@ -68,7 +71,8 @@ class OmegaOmegaAction(GleanSchemaPredicate):
 class OmegaOmegaPolicy(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], class_: ast.Expr) -> Tuple[str, Struct]:
-    return f"omega.OmegaPolicy.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, class_, 'class_')])) or '_' } }}", OmegaPolicy
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, class_, 'class_')]))
+    return f"omega.OmegaPolicy.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", OmegaPolicy
 
   @staticmethod
   def angle_query(*, class_: Optional["OmegaClass_"] = None) -> "OmegaOmegaPolicy":
@@ -79,7 +83,8 @@ class OmegaOmegaPolicy(GleanSchemaPredicate):
 class OmegaOmegaBlock(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], class_: ast.Expr) -> Tuple[str, Struct]:
-    return f"omega.OmegaBlock.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, class_, 'class_')])) or '_' } }}", OmegaBlock
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, class_, 'class_')]))
+    return f"omega.OmegaBlock.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", OmegaBlock
 
   @staticmethod
   def angle_query(*, class_: Optional["OmegaClass_"] = None) -> "OmegaOmegaBlock":
@@ -90,7 +95,8 @@ class OmegaOmegaBlock(GleanSchemaPredicate):
 class OmegaOncall(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr) -> Tuple[str, Struct]:
-    return f"omega.Oncall.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name')])) or '_' } }}", Oncall
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name')]))
+    return f"omega.Oncall.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Oncall
 
   @staticmethod
   def angle_query(*, name: Optional["OmegaName"] = None) -> "OmegaOncall":
@@ -101,7 +107,8 @@ class OmegaOncall(GleanSchemaPredicate):
 class OmegaConfig(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr) -> Tuple[str, Struct]:
-    return f"omega.Config.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name')])) or '_' } }}", Config
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name')]))
+    return f"omega.Config.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Config
 
   @staticmethod
   def angle_query(*, name: Optional["OmegaName"] = None) -> "OmegaConfig":
@@ -112,7 +119,8 @@ class OmegaConfig(GleanSchemaPredicate):
 class OmegaOmegaEndpoint(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], class_: ast.Expr) -> Tuple[str, Struct]:
-    return f"omega.OmegaEndpoint.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, class_, 'class_')])) or '_' } }}", OmegaEndpoint
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, class_, 'class_')]))
+    return f"omega.OmegaEndpoint.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", OmegaEndpoint
 
   @staticmethod
   def angle_query(*, class_: Optional["OmegaClass_"] = None) -> "OmegaOmegaEndpoint":
@@ -123,7 +131,8 @@ class OmegaOmegaEndpoint(GleanSchemaPredicate):
 class OmegaDependencyPathByEntity(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], entity: ast.Expr, node: ast.Expr, shortestPath: ast.Expr) -> Tuple[str, Struct]:
-    return f"omega.DependencyPathByEntity.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, node, 'node'), angle_for(__env, shortestPath, 'shortestPath')])) or '_' } }}", DependencyPathByEntity
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, node, 'node'), angle_for(__env, shortestPath, 'shortestPath')]))
+    return f"omega.DependencyPathByEntity.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DependencyPathByEntity
 
   @staticmethod
   def angle_query(*, entity: Optional["OmegaOmegaEntity"] = None, node: Optional["OmegaGraphNode"] = None, shortestPath: Optional[List["OmegaGraphNode"]] = None) -> "OmegaDependencyPathByEntity":
@@ -134,7 +143,8 @@ class OmegaDependencyPathByEntity(GleanSchemaPredicate):
 class OmegaFunction_(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr) -> Tuple[str, Struct]:
-    return f"omega.Function_.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name')])) or '_' } }}", Function_
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name')]))
+    return f"omega.Function_.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Function_
 
   @staticmethod
   def angle_query(*, name: Optional["OmegaName"] = None) -> "OmegaFunction_":
@@ -145,7 +155,8 @@ class OmegaFunction_(GleanSchemaPredicate):
 class OmegaTargetNodeLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], source: ast.Expr, target: ast.Expr, pathToFile: ast.Expr, targetByteSpan: ast.Expr) -> Tuple[str, Struct]:
-    return f"omega.TargetNodeLocations.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, source, 'source'), angle_for(__env, target, 'target'), angle_for(__env, pathToFile, 'pathToFile'), angle_for(__env, targetByteSpan, 'targetByteSpan')])) or '_' } }}", TargetNodeLocations
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, source, 'source'), angle_for(__env, target, 'target'), angle_for(__env, pathToFile, 'pathToFile'), angle_for(__env, targetByteSpan, 'targetByteSpan')]))
+    return f"omega.TargetNodeLocations.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", TargetNodeLocations
 
   @staticmethod
   def angle_query(*, source: Optional["HackDeclaration"] = None, target: Optional["HackDeclaration"] = None, pathToFile: Optional["SrcFile"] = None, targetByteSpan: Optional["SrcByteSpan"] = None) -> "OmegaTargetNodeLocations":
@@ -156,7 +167,8 @@ class OmegaTargetNodeLocations(GleanSchemaPredicate):
 class OmegaName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    return f"omega.Name.1 { angle_for(__env, arg, None) or '_' }", Name
+    query_fields =  angle_for(__env, arg, None)
+    return f"omega.Name.1 { query_fields if query_fields else '_' }", Name
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "OmegaName":
@@ -167,7 +179,8 @@ class OmegaName(GleanSchemaPredicate):
 class OmegaMethod(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr) -> Tuple[str, Struct]:
-    return f"omega.Method.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name')])) or '_' } }}", Method
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name')]))
+    return f"omega.Method.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Method
 
   @staticmethod
   def angle_query(*, name: Optional["OmegaName"] = None) -> "OmegaMethod":
@@ -178,7 +191,8 @@ class OmegaMethod(GleanSchemaPredicate):
 class OmegaOmegaEntityMetadata(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], entity: ast.Expr, oncall: ast.Expr, isAbstract: ast.Expr, isICE: ast.Expr) -> Tuple[str, Struct]:
-    return f"omega.OmegaEntityMetadata.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, oncall, 'oncall'), angle_for(__env, isAbstract, 'isAbstract'), angle_for(__env, isICE, 'isICE')])) or '_' } }}", OmegaEntityMetadata
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, oncall, 'oncall'), angle_for(__env, isAbstract, 'isAbstract'), angle_for(__env, isICE, 'isICE')]))
+    return f"omega.OmegaEntityMetadata.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", OmegaEntityMetadata
 
   @staticmethod
   def angle_query(*, entity: Optional["OmegaOmegaEntity"] = None, oncall: Optional[Union[Just["OmegaOncall"], Just[None]]] = None, isAbstract: Optional[bool] = None, isICE: Optional[bool] = None) -> "OmegaOmegaEntityMetadata":
@@ -189,7 +203,8 @@ class OmegaOmegaEntityMetadata(GleanSchemaPredicate):
 class OmegaClass_(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr) -> Tuple[str, Struct]:
-    return f"omega.Class_.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name')])) or '_' } }}", Class_
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name')]))
+    return f"omega.Class_.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Class_
 
   @staticmethod
   def angle_query(*, name: Optional["OmegaName"] = None) -> "OmegaClass_":
@@ -200,7 +215,8 @@ class OmegaClass_(GleanSchemaPredicate):
 class OmegaOmegaExecutionNode(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], class_: ast.Expr) -> Tuple[str, Struct]:
-    return f"omega.OmegaExecutionNode.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, class_, 'class_')])) or '_' } }}", OmegaExecutionNode
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, class_, 'class_')]))
+    return f"omega.OmegaExecutionNode.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", OmegaExecutionNode
 
   @staticmethod
   def angle_query(*, class_: Optional["OmegaClass_"] = None) -> "OmegaOmegaExecutionNode":
@@ -211,7 +227,8 @@ class OmegaOmegaExecutionNode(GleanSchemaPredicate):
 class OmegaDependencyPath(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], node: ast.Expr, entity: ast.Expr, shortestPath: ast.Expr) -> Tuple[str, Struct]:
-    return f"omega.DependencyPath.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, node, 'node'), angle_for(__env, entity, 'entity'), angle_for(__env, shortestPath, 'shortestPath')])) or '_' } }}", DependencyPath
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, node, 'node'), angle_for(__env, entity, 'entity'), angle_for(__env, shortestPath, 'shortestPath')]))
+    return f"omega.DependencyPath.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DependencyPath
 
   @staticmethod
   def angle_query(*, node: Optional["OmegaGraphNode"] = None, entity: Optional["OmegaOmegaEntity"] = None, shortestPath: Optional[List["OmegaGraphNode"]] = None) -> "OmegaDependencyPath":
@@ -224,7 +241,8 @@ class OmegaDependencyPath(GleanSchemaPredicate):
 class OmegaOmegaEntity(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], endpoint: ast.Expr, policy: ast.Expr, action: ast.Expr, block: ast.Expr, executionNode: ast.Expr) -> Tuple[str, Struct]:
-    return f"omega.OmegaEntity.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, endpoint, 'endpoint'), angle_for(__env, policy, 'policy'), angle_for(__env, action, 'action'), angle_for(__env, block, 'block'), angle_for(__env, executionNode, 'executionNode')])) or '_' } }}", OmegaEntity
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, endpoint, 'endpoint'), angle_for(__env, policy, 'policy'), angle_for(__env, action, 'action'), angle_for(__env, block, 'block'), angle_for(__env, executionNode, 'executionNode')]))
+    return f"omega.OmegaEntity.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", OmegaEntity
 
   @staticmethod
   def angle_query_endpoint(*, endpoint: Optional["OmegaOmegaEndpoint"] = None) -> "OmegaOmegaEntity":
@@ -252,7 +270,8 @@ class OmegaOmegaEntity(InnerGleanSchemaPredicate):
 class OmegaGraphNode(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], class_: ast.Expr, function_: ast.Expr, method: ast.Expr, enum_: ast.Expr, config: ast.Expr) -> Tuple[str, Struct]:
-    return f"omega.GraphNode.1 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, class_, 'class_'), angle_for(__env, function_, 'function_'), angle_for(__env, method, 'method'), angle_for(__env, enum_, 'enum_'), angle_for(__env, config, 'config')])) or '_' } }}", GraphNode
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, class_, 'class_'), angle_for(__env, function_, 'function_'), angle_for(__env, method, 'method'), angle_for(__env, enum_, 'enum_'), angle_for(__env, config, 'config')]))
+    return f"omega.GraphNode.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", GraphNode
 
   @staticmethod
   def angle_query_class_(*, class_: Optional["OmegaClass_"] = None) -> "OmegaGraphNode":
