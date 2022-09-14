@@ -1,12 +1,12 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Dict, Generic, List, Tuple, TypeVar, Type, Optional
+from typing import Dict, Generic, Tuple, TypeVar, Type, Optional
 from thrift.py3 import Struct
 import json
 import inspect
 import ast
 
-R = TypeVar("R", int, str, bool, bytes, Tuple[()], List[int], List[str], List[bool], List[bytes])
+R = TypeVar("R", int, str, bool, bytes, Tuple[()])
 T = TypeVar("T")
 
 class GleanSchemaPredicate:
@@ -18,11 +18,6 @@ class InnerGleanSchemaPredicate:
   @staticmethod
   def angle_query(*, arg: str) -> "InnerGleanSchemaPredicate":
     raise Exception("this function can only be called as a parameter of a GleanSchemaPredicate")
-
-def _OR(l: List[R]) -> str:
-  if l:
-    return '|'.join(map(_make_value, l))
-  return 'never'
 
 def angle_for(__env: Dict[str, R], key: ast.Expr, field_name: Optional[str]) -> str:
   if key is None:
@@ -38,8 +33,6 @@ def angle_for(__env: Dict[str, R], key: ast.Expr, field_name: Optional[str]) -> 
       else:
         value = 'nothing'
       return _make_attribute(field_name, value)
-    elif isinstance(key.func, ast.Name) and (key.func.id == 'OR'):
-      return _OR(__env[key.args[0].id])
     nested_call_arg = callGleanSchemaPredicateQuery(key, {}, "__target__", __env)["__target__"]
     # eliminate the name of GleanPredicate from inner call
     nested_call_arg = " ".join(nested_call_arg[0].split(" ")[1:])

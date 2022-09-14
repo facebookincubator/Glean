@@ -50,15 +50,15 @@ class FbthriftTypeSpecification(GleanSchemaPredicate):
     return f"fbthrift.TypeSpecification.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", TypeSpecification
 
   @staticmethod
-  def angle_query_primitive(*, primitive: Optional["FbthriftPrimitiveType"] = None) -> "FbthriftTypeSpecification":
+  def angle_query_primitive(*, primitive: "FbthriftPrimitiveType") -> "FbthriftTypeSpecification":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_container(*, container: Optional["FbthriftContainerType"] = None) -> "FbthriftTypeSpecification":
+  def angle_query_container(*, container: "FbthriftContainerType") -> "FbthriftTypeSpecification":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_named(*, named: Optional["FbthriftNamedType"] = None) -> "FbthriftTypeSpecification":
+  def angle_query_named(*, named: "FbthriftNamedType") -> "FbthriftTypeSpecification":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -241,11 +241,11 @@ class FbthriftExceptionSpecName(InnerGleanSchemaPredicate):
     return f"fbthrift.ExceptionSpecName.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ExceptionSpecName
 
   @staticmethod
-  def angle_query_simple(*, simple: Optional["FbthriftExceptionName"] = None) -> "FbthriftExceptionSpecName":
+  def angle_query_simple(*, simple: "FbthriftExceptionName") -> "FbthriftExceptionSpecName":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_typedef_(*, typedef_: Optional["FbthriftTypeDefException"] = None) -> "FbthriftExceptionSpecName":
+  def angle_query_typedef_(*, typedef_: "FbthriftTypeDefException") -> "FbthriftExceptionSpecName":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -294,27 +294,27 @@ class FbthriftXRefTarget(InnerGleanSchemaPredicate):
     return f"fbthrift.XRefTarget.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", XRefTarget
 
   @staticmethod
-  def angle_query_include_(*, include_: Optional["FbthriftFile"] = None) -> "FbthriftXRefTarget":
+  def angle_query_include_(*, include_: "FbthriftFile") -> "FbthriftXRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_named(*, named: Optional["FbthriftNamedDecl"] = None) -> "FbthriftXRefTarget":
+  def angle_query_named(*, named: "FbthriftNamedDecl") -> "FbthriftXRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_exception_(*, exception_: Optional["FbthriftExceptionName"] = None) -> "FbthriftXRefTarget":
+  def angle_query_exception_(*, exception_: "FbthriftExceptionName") -> "FbthriftXRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_service_(*, service_: Optional["FbthriftServiceName"] = None) -> "FbthriftXRefTarget":
+  def angle_query_service_(*, service_: "FbthriftServiceName") -> "FbthriftXRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_constant(*, constant: Optional["FbthriftConstant"] = None) -> "FbthriftXRefTarget":
+  def angle_query_constant(*, constant: "FbthriftConstant") -> "FbthriftXRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_enumValue(*, enumValue: Optional["FbthriftEnumValue"] = None) -> "FbthriftXRefTarget":
+  def angle_query_enumValue(*, enumValue: "FbthriftEnumValue") -> "FbthriftXRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -375,15 +375,15 @@ class FbthriftContainerType(InnerGleanSchemaPredicate):
     return f"fbthrift.ContainerType.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ContainerType
 
   @staticmethod
-  def angle_query_list_(*, list_: Optional["FbthriftTypeSpecification"] = None) -> "FbthriftContainerType":
+  def angle_query_list_(*, list_: "FbthriftTypeSpecification") -> "FbthriftContainerType":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_set_(*, set_: Optional["FbthriftTypeSpecification"] = None) -> "FbthriftContainerType":
+  def angle_query_set_(*, set_: "FbthriftTypeSpecification") -> "FbthriftContainerType":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_map_(*, map_: Optional["FbthriftMapType"] = None) -> "FbthriftContainerType":
+  def angle_query_map_(*, map_: "FbthriftMapType") -> "FbthriftContainerType":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -396,19 +396,19 @@ class FbthriftResultType(InnerGleanSchemaPredicate):
     return f"fbthrift.ResultType.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ResultType
 
   @staticmethod
-  def angle_query_oneway_(*, oneway_: Optional["BuiltinUnit"] = None) -> "FbthriftResultType":
+  def angle_query_oneway_(*, oneway_: "BuiltinUnit") -> "FbthriftResultType":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_void_(*, void_: Optional["BuiltinUnit"] = None) -> "FbthriftResultType":
+  def angle_query_void_(*, void_: "BuiltinUnit") -> "FbthriftResultType":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_result(*, result: Optional["FbthriftTypeSpecification"] = None) -> "FbthriftResultType":
+  def angle_query_result(*, result: "FbthriftTypeSpecification") -> "FbthriftResultType":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_stream_(*, stream_: Optional["FbthriftResultStream"] = None) -> "FbthriftResultType":
+  def angle_query_stream_(*, stream_: "FbthriftResultStream") -> "FbthriftResultType":
     raise Exception("this function can only be called from @angle_query")
 
 

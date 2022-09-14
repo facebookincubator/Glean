@@ -254,11 +254,11 @@ class JavaTypeArg(GleanSchemaPredicate):
     return f"java.TypeArg.6 { ('{ ' + query_fields + ' }') if query_fields else '_' }", TypeArg
 
   @staticmethod
-  def angle_query_type(*, type: Optional["JavaType"] = None) -> "JavaTypeArg":
+  def angle_query_type(*, type: "JavaType") -> "JavaTypeArg":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_wildcard(*, wildcard: Optional["JavaWildcard"] = None) -> "JavaTypeArg":
+  def angle_query_wildcard(*, wildcard: "JavaWildcard") -> "JavaTypeArg":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -357,15 +357,15 @@ class JavaDefinition(InnerGleanSchemaPredicate):
     return f"java.Definition.6 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Definition
 
   @staticmethod
-  def angle_query_class_(*, class_: Optional["JavaClassDeclaration"] = None) -> "JavaDefinition":
+  def angle_query_class_(*, class_: "JavaClassDeclaration") -> "JavaDefinition":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_interface_(*, interface_: Optional["JavaInterfaceDeclaration"] = None) -> "JavaDefinition":
+  def angle_query_interface_(*, interface_: "JavaInterfaceDeclaration") -> "JavaDefinition":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_enum_(*, enum_: Optional["JavaEnumDeclaration"] = None) -> "JavaDefinition":
+  def angle_query_enum_(*, enum_: "JavaEnumDeclaration") -> "JavaDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -378,15 +378,15 @@ class JavaWildcard(InnerGleanSchemaPredicate):
     return f"java.Wildcard.6 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Wildcard
 
   @staticmethod
-  def angle_query_extends_(*, extends_: Optional["JavaType"] = None) -> "JavaWildcard":
+  def angle_query_extends_(*, extends_: "JavaType") -> "JavaWildcard":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_super_(*, super_: Optional["JavaType"] = None) -> "JavaWildcard":
+  def angle_query_super_(*, super_: "JavaType") -> "JavaWildcard":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_unbounded(*, unbounded: Optional[bool] = None) -> "JavaWildcard":
+  def angle_query_unbounded(*, unbounded: bool) -> "JavaWildcard":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -413,19 +413,19 @@ class JavaBaseType(InnerGleanSchemaPredicate):
     return f"java.BaseType.6 { ('{ ' + query_fields + ' }') if query_fields else '_' }", BaseType
 
   @staticmethod
-  def angle_query_declared(*, declared: Optional["JavaDeclaredType"] = None) -> "JavaBaseType":
+  def angle_query_declared(*, declared: "JavaDeclaredType") -> "JavaBaseType":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_primitive(*, primitive: Optional["JavaPrimitiveType"] = None) -> "JavaBaseType":
+  def angle_query_primitive(*, primitive: "JavaPrimitiveType") -> "JavaBaseType":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_variable(*, variable: Optional["JavaTypeVar"] = None) -> "JavaBaseType":
+  def angle_query_variable(*, variable: "JavaTypeVar") -> "JavaBaseType":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_array(*, array: Optional["JavaArrayType"] = None) -> "JavaBaseType":
+  def angle_query_array(*, array: "JavaArrayType") -> "JavaBaseType":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -438,23 +438,23 @@ class JavaXRefTargetAmended(InnerGleanSchemaPredicate):
     return f"java.XRefTargetAmended.6 { ('{ ' + query_fields + ' }') if query_fields else '_' }", XRefTargetAmended
 
   @staticmethod
-  def angle_query_class_or_interface_(*, class_or_interface_: Optional["JavaQName"] = None) -> "JavaXRefTargetAmended":
+  def angle_query_class_or_interface_(*, class_or_interface_: "JavaQName") -> "JavaXRefTargetAmended":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_definition_(*, definition_: Optional["JavaQName"] = None) -> "JavaXRefTargetAmended":
+  def angle_query_definition_(*, definition_: "JavaQName") -> "JavaXRefTargetAmended":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_ctor_(*, ctor_: Optional["JavaQName"] = None) -> "JavaXRefTargetAmended":
+  def angle_query_ctor_(*, ctor_: "JavaQName") -> "JavaXRefTargetAmended":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_method_(*, method_: Optional["JavaQName"] = None) -> "JavaXRefTargetAmended":
+  def angle_query_method_(*, method_: "JavaQName") -> "JavaXRefTargetAmended":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_field_(*, field_: Optional["JavaQName"] = None) -> "JavaXRefTargetAmended":
+  def angle_query_field_(*, field_: "JavaQName") -> "JavaXRefTargetAmended":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -467,15 +467,15 @@ class JavaXRefTarget(InnerGleanSchemaPredicate):
     return f"java.XRefTarget.6 { ('{ ' + query_fields + ' }') if query_fields else '_' }", XRefTarget
 
   @staticmethod
-  def angle_query_class_or_interface_(*, class_or_interface_: Optional["JavaQName"] = None) -> "JavaXRefTarget":
+  def angle_query_class_or_interface_(*, class_or_interface_: "JavaQName") -> "JavaXRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_ctor_(*, ctor_: Optional["JavaQName"] = None) -> "JavaXRefTarget":
+  def angle_query_ctor_(*, ctor_: "JavaQName") -> "JavaXRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_method_(*, method_: Optional["JavaQName"] = None) -> "JavaXRefTarget":
+  def angle_query_method_(*, method_: "JavaQName") -> "JavaXRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
 

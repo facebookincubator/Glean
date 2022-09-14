@@ -23,15 +23,15 @@ class CodePpEntity(InnerGleanSchemaPredicate):
     return f"code.pp.Entity.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Entity
 
   @staticmethod
-  def angle_query_define(*, define: Optional["Pp1Define"] = None) -> "CodePpEntity":
+  def angle_query_define(*, define: "Pp1Define") -> "CodePpEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_undef(*, undef: Optional["Pp1Undef"] = None) -> "CodePpEntity":
+  def angle_query_undef(*, undef: "Pp1Undef") -> "CodePpEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_include_(*, include_: Optional["SrcFile"] = None) -> "CodePpEntity":
+  def angle_query_include_(*, include_: "SrcFile") -> "CodePpEntity":
     raise Exception("this function can only be called from @angle_query")
 
 

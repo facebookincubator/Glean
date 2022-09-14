@@ -76,11 +76,11 @@ class DynObserver(InnerGleanSchemaPredicate):
     return f"dyn.Observer.6 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Observer
 
   @staticmethod
-  def angle_query_symbol(*, symbol: Optional["DynObserverIdentifier"] = None) -> "DynObserver":
+  def angle_query_symbol(*, symbol: "DynObserverIdentifier") -> "DynObserver":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_other(*, other: Optional["DynObserverIdentifier"] = None) -> "DynObserver":
+  def angle_query_other(*, other: "DynObserverIdentifier") -> "DynObserver":
     raise Exception("this function can only be called from @angle_query")
 
 

@@ -22,7 +22,7 @@ class CodeRustEntity(InnerGleanSchemaPredicate):
     return f"code.rust.Entity.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Entity
 
   @staticmethod
-  def angle_query_definition(*, definition: Optional["RustDef"] = None) -> "CodeRustEntity":
+  def angle_query_definition(*, definition: "RustDef") -> "CodeRustEntity":
     raise Exception("this function can only be called from @angle_query")
 
 

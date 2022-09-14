@@ -416,43 +416,95 @@ predicate CxxVisibility:
 # Relations
 #
 
+# decls and defns only. enumerators (fields of enums) can't contain anything
 predicate CxxContainsChildEntity :
   {
     parent: code.cxx.Entity,
     child: code.cxx.Entity
   }
-  { { decl = Container }, Member } where
-    (
-      { namespace_ = Decl } = Container;
-      { name = NQN } = Decl;
-      Scope = cxx1.Scope {namespace_ = NQN};
-      Member = (
-        (
-          Q = cxx1.QName { scope = Scope };
-          (
-            code.cxx.Entity { decl = { record_ = { name = Q }}}  |
-            code.cxx.Entity { decl = { variable = { name = Q }}} |
-            code.cxx.Entity { decl = { typeAlias = { name = Q }}} |
-            code.cxx.Entity { decl = { enum_ = { name = Q }}}
-          )
-        ) | (
-          D = cxx1.FunctionDeclaration { name = { scope = Scope } };
-          code.cxx.Entity { decl = { function_ = D } }
-        )
-      )
-    ) |
-    (
-      (
-        (
-          { record_ = Decl } = Container;
-          cxx1.RecordDefinition { declaration = Decl, members = cxx1.Declarations Members }
-        ) |
-        (
-          { objcContainer = Decl } = Container;
-          cxx1.ObjcContainerDefinition { declaration = Decl, members = cxx1.Declarations Members }
-        )
-      );
-      Member = code.cxx.Entity {decl = Members[..]}
+  { Parent, Child } where
+    ( { decl = Decl} = Parent;
+      CxxDeclarationContainsChild { Decl, Child }
+    ) | (
+      { defn = Defn } = Parent;
+      CxxDefinitionContainsChild { Defn, Child }
     )
+
+# Lookup container child for definition occurences
+#
+# - records
+# - objc containers
+# - namespaces
+# - enums
+#
+predicate CxxDefinitionContainsChild:
+  {
+    parent: code.cxx.Definition,
+    child: code.cxx.Entity
+  }
+  { Parent, Child } where
+    ( { record_ = Defn } = Parent;
+      cxx1.RecordDefinition { members = cxx1.Declarations Decls } = Defn;
+      Decl = Decls[..];
+      CxxResolveDeclarationToEntity { Decl, Child }
+    ) | (
+      { objcContainer = Defn } = Parent;
+      cxx1.ObjcContainerDefinition { members = cxx1.Declarations Decls } = Defn;
+      Decl = Decls[..];
+      CxxResolveDeclarationToEntity { Decl, Child }
+    ) | (
+      # namespace member facts are all empty, so instead lookup by scope
+      { namespace_  = Defn } = Parent;
+      cxx1.NamespaceDefinition { declaration = Decl } = Defn;
+      CxxNamespaceDeclarationContainsChild { Decl, Child }
+    ) | (
+      { enum_ = Defn } = Parent;
+      cxx1.EnumDefinition { enumerators = Es } = Defn;
+      E = Es[..];
+      { enumerator = E } = Child
+    )
+      # we could add params of methods and functions
+      # { function_ = Defn } = Container;
+      # ( { objcMethod = Defn } = Container ) |
+
+      # these do not have children
+      # ( { variable = Defn } = Container ) |
+
+# Lookup container children via decl goes via its definition
+predicate CxxDeclarationContainsChild:
+  {
+    parent: cxx1.Declaration,
+    child: code.cxx.Entity
+  }
+  { Parent, Child } where
+    ( { namespace_ = Decl } = Parent;
+      CxxNamespaceDeclarationContainsChild { Decl, Child }
+    ) | (
+      ({ record_ = _ } | { objcContainer = _ } | { enum_ = _ } ) = Parent;
+      code.cxx.DeclToDef { Parent, Defn };
+      CxxDefinitionContainsChild { Defn, Child }
+    )
+
+# Namespaces contain children with the namespace as its scope
+# these can be quite large for common namespaces shared widely
+predicate CxxNamespaceDeclarationContainsChild:
+  {
+    parent: cxx1.NamespaceDeclaration,
+    child: code.cxx.Entity
+  }
+  { Decl, Child } where
+    { name = NSQName } = Decl;
+    Scope = cxx1.Scope { namespace_ = NSQName };
+    ( Q = cxx1.QName { name = _, scope = Scope }; # n.b. not left prefixed!
+        (
+          code.cxx.Entity { decl = { record_ = { name = Q }}}  |
+          code.cxx.Entity { decl = { variable = { name = Q }}} |
+          code.cxx.Entity { decl = { typeAlias = { name = Q }}} |
+          code.cxx.Entity { decl = { enum_ = { name = Q }}}
+        )
+    ) | (
+        D = cxx1.FunctionDeclaration { name = { scope = Scope } };
+        code.cxx.Entity { decl = { function_ = D } }
+    ) = Child;
 
 }

@@ -832,11 +832,11 @@ class HackArgument(InnerGleanSchemaPredicate):
     return f"hack.Argument.6 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Argument
 
   @staticmethod
-  def angle_query_lit(*, lit: Optional["HackStringLiteral"] = None) -> "HackArgument":
+  def angle_query_lit(*, lit: "HackStringLiteral") -> "HackArgument":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_xref(*, xref: Optional["HackXRefTarget"] = None) -> "HackArgument":
+  def angle_query_xref(*, xref: "HackXRefTarget") -> "HackArgument":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -873,51 +873,51 @@ class HackDefinition(InnerGleanSchemaPredicate):
     return f"hack.Definition.6 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Definition
 
   @staticmethod
-  def angle_query_class_(*, class_: Optional["HackClassDefinition"] = None) -> "HackDefinition":
+  def angle_query_class_(*, class_: "HackClassDefinition") -> "HackDefinition":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_classConst(*, classConst: Optional["HackClassConstDefinition"] = None) -> "HackDefinition":
+  def angle_query_classConst(*, classConst: "HackClassConstDefinition") -> "HackDefinition":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_enum_(*, enum_: Optional["HackEnumDefinition"] = None) -> "HackDefinition":
+  def angle_query_enum_(*, enum_: "HackEnumDefinition") -> "HackDefinition":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_function_(*, function_: Optional["HackFunctionDefinition"] = None) -> "HackDefinition":
+  def angle_query_function_(*, function_: "HackFunctionDefinition") -> "HackDefinition":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_globalConst(*, globalConst: Optional["HackGlobalConstDefinition"] = None) -> "HackDefinition":
+  def angle_query_globalConst(*, globalConst: "HackGlobalConstDefinition") -> "HackDefinition":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_interface_(*, interface_: Optional["HackInterfaceDefinition"] = None) -> "HackDefinition":
+  def angle_query_interface_(*, interface_: "HackInterfaceDefinition") -> "HackDefinition":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_trait(*, trait: Optional["HackTraitDefinition"] = None) -> "HackDefinition":
+  def angle_query_trait(*, trait: "HackTraitDefinition") -> "HackDefinition":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_method(*, method: Optional["HackMethodDefinition"] = None) -> "HackDefinition":
+  def angle_query_method(*, method: "HackMethodDefinition") -> "HackDefinition":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_property_(*, property_: Optional["HackPropertyDefinition"] = None) -> "HackDefinition":
+  def angle_query_property_(*, property_: "HackPropertyDefinition") -> "HackDefinition":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_typeConst(*, typeConst: Optional["HackTypeConstDefinition"] = None) -> "HackDefinition":
+  def angle_query_typeConst(*, typeConst: "HackTypeConstDefinition") -> "HackDefinition":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_typedef_(*, typedef_: Optional["HackTypedefDefinition"] = None) -> "HackDefinition":
+  def angle_query_typedef_(*, typedef_: "HackTypedefDefinition") -> "HackDefinition":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_module(*, module: Optional["HackModuleDefinition"] = None) -> "HackDefinition":
+  def angle_query_module(*, module: "HackModuleDefinition") -> "HackDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -930,47 +930,47 @@ class HackDeclaration(InnerGleanSchemaPredicate):
     return f"hack.Declaration.6 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Declaration
 
   @staticmethod
-  def angle_query_classConst(*, classConst: Optional["HackClassConstDeclaration"] = None) -> "HackDeclaration":
+  def angle_query_classConst(*, classConst: "HackClassConstDeclaration") -> "HackDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_container(*, container: Optional["HackContainerDeclaration"] = None) -> "HackDeclaration":
+  def angle_query_container(*, container: "HackContainerDeclaration") -> "HackDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_enumerator(*, enumerator: Optional["HackEnumerator"] = None) -> "HackDeclaration":
+  def angle_query_enumerator(*, enumerator: "HackEnumerator") -> "HackDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_function_(*, function_: Optional["HackFunctionDeclaration"] = None) -> "HackDeclaration":
+  def angle_query_function_(*, function_: "HackFunctionDeclaration") -> "HackDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_globalConst(*, globalConst: Optional["HackGlobalConstDeclaration"] = None) -> "HackDeclaration":
+  def angle_query_globalConst(*, globalConst: "HackGlobalConstDeclaration") -> "HackDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_namespace_(*, namespace_: Optional["HackNamespaceDeclaration"] = None) -> "HackDeclaration":
+  def angle_query_namespace_(*, namespace_: "HackNamespaceDeclaration") -> "HackDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_method(*, method: Optional["HackMethodDeclaration"] = None) -> "HackDeclaration":
+  def angle_query_method(*, method: "HackMethodDeclaration") -> "HackDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_property_(*, property_: Optional["HackPropertyDeclaration"] = None) -> "HackDeclaration":
+  def angle_query_property_(*, property_: "HackPropertyDeclaration") -> "HackDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_typeConst(*, typeConst: Optional["HackTypeConstDeclaration"] = None) -> "HackDeclaration":
+  def angle_query_typeConst(*, typeConst: "HackTypeConstDeclaration") -> "HackDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_typedef_(*, typedef_: Optional["HackTypedefDeclaration"] = None) -> "HackDeclaration":
+  def angle_query_typedef_(*, typedef_: "HackTypedefDeclaration") -> "HackDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_module(*, module: Optional["HackModuleDeclaration"] = None) -> "HackDeclaration":
+  def angle_query_module(*, module: "HackModuleDeclaration") -> "HackDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -983,11 +983,11 @@ class HackXRefTarget(InnerGleanSchemaPredicate):
     return f"hack.XRefTarget.6 { ('{ ' + query_fields + ' }') if query_fields else '_' }", XRefTarget
 
   @staticmethod
-  def angle_query_declaration(*, declaration: Optional["HackDeclaration"] = None) -> "HackXRefTarget":
+  def angle_query_declaration(*, declaration: "HackDeclaration") -> "HackXRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_occurrence(*, occurrence: Optional["HackOccurrence"] = None) -> "HackXRefTarget":
+  def angle_query_occurrence(*, occurrence: "HackOccurrence") -> "HackXRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -1059,7 +1059,7 @@ class HackOccurrence(InnerGleanSchemaPredicate):
     return f"hack.Occurrence.6 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Occurrence
 
   @staticmethod
-  def angle_query_method(*, method: Optional["HackMethodOccurrence"] = None) -> "HackOccurrence":
+  def angle_query_method(*, method: "HackMethodOccurrence") -> "HackOccurrence":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -1072,19 +1072,19 @@ class HackContainerDeclaration(InnerGleanSchemaPredicate):
     return f"hack.ContainerDeclaration.6 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ContainerDeclaration
 
   @staticmethod
-  def angle_query_class_(*, class_: Optional["HackClassDeclaration"] = None) -> "HackContainerDeclaration":
+  def angle_query_class_(*, class_: "HackClassDeclaration") -> "HackContainerDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_enum_(*, enum_: Optional["HackEnumDeclaration"] = None) -> "HackContainerDeclaration":
+  def angle_query_enum_(*, enum_: "HackEnumDeclaration") -> "HackContainerDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_interface_(*, interface_: Optional["HackInterfaceDeclaration"] = None) -> "HackContainerDeclaration":
+  def angle_query_interface_(*, interface_: "HackInterfaceDeclaration") -> "HackContainerDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_trait(*, trait: Optional["HackTraitDeclaration"] = None) -> "HackContainerDeclaration":
+  def angle_query_trait(*, trait: "HackTraitDeclaration") -> "HackContainerDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 

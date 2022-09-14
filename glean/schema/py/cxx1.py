@@ -1042,27 +1042,27 @@ class Cxx1FunctionName(GleanSchemaPredicate):
     return f"cxx1.FunctionName.5 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FunctionName
 
   @staticmethod
-  def angle_query_name(*, name: Optional["Cxx1Name"] = None) -> "Cxx1FunctionName":
+  def angle_query_name(*, name: "Cxx1Name") -> "Cxx1FunctionName":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_operator_(*, operator_: Optional["Cxx1Operator"] = None) -> "Cxx1FunctionName":
+  def angle_query_operator_(*, operator_: "Cxx1Operator") -> "Cxx1FunctionName":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_literalOperator(*, literalOperator: Optional["Cxx1LiteralOperator"] = None) -> "Cxx1FunctionName":
+  def angle_query_literalOperator(*, literalOperator: "Cxx1LiteralOperator") -> "Cxx1FunctionName":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_constructor(*, constructor: Optional["BuiltinUnit"] = None) -> "Cxx1FunctionName":
+  def angle_query_constructor(*, constructor: "BuiltinUnit") -> "Cxx1FunctionName":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_destructor(*, destructor: Optional["BuiltinUnit"] = None) -> "Cxx1FunctionName":
+  def angle_query_destructor(*, destructor: "BuiltinUnit") -> "Cxx1FunctionName":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_conversionOperator(*, conversionOperator: Optional["Cxx1Type"] = None) -> "Cxx1FunctionName":
+  def angle_query_conversionOperator(*, conversionOperator: "Cxx1Type") -> "Cxx1FunctionName":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -1077,19 +1077,19 @@ class Cxx1Scope(InnerGleanSchemaPredicate):
     return f"cxx1.Scope.5 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Scope
 
   @staticmethod
-  def angle_query_global_(*, global_: Optional["BuiltinUnit"] = None) -> "Cxx1Scope":
+  def angle_query_global_(*, global_: "BuiltinUnit") -> "Cxx1Scope":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_namespace_(*, namespace_: Optional["Cxx1NamespaceQName"] = None) -> "Cxx1Scope":
+  def angle_query_namespace_(*, namespace_: "Cxx1NamespaceQName") -> "Cxx1Scope":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_recordWithAccess(*, recordWithAccess: Optional['Cxx1Scope_recordWithAccess'] = None) -> "Cxx1Scope":
+  def angle_query_recordWithAccess(*, recordWithAccess: 'Cxx1Scope_recordWithAccess') -> "Cxx1Scope":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_local(*, local: Optional["Cxx1FunctionQName"] = None) -> "Cxx1Scope":
+  def angle_query_local(*, local: "Cxx1FunctionQName") -> "Cxx1Scope":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -1142,47 +1142,47 @@ class Cxx1Declaration(InnerGleanSchemaPredicate):
     return f"cxx1.Declaration.5 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Declaration
 
   @staticmethod
-  def angle_query_namespace_(*, namespace_: Optional["Cxx1NamespaceDeclaration"] = None) -> "Cxx1Declaration":
+  def angle_query_namespace_(*, namespace_: "Cxx1NamespaceDeclaration") -> "Cxx1Declaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_usingDeclaration(*, usingDeclaration: Optional["Cxx1UsingDeclaration"] = None) -> "Cxx1Declaration":
+  def angle_query_usingDeclaration(*, usingDeclaration: "Cxx1UsingDeclaration") -> "Cxx1Declaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_usingDirective(*, usingDirective: Optional["Cxx1UsingDirective"] = None) -> "Cxx1Declaration":
+  def angle_query_usingDirective(*, usingDirective: "Cxx1UsingDirective") -> "Cxx1Declaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_record_(*, record_: Optional["Cxx1RecordDeclaration"] = None) -> "Cxx1Declaration":
+  def angle_query_record_(*, record_: "Cxx1RecordDeclaration") -> "Cxx1Declaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_enum_(*, enum_: Optional["Cxx1EnumDeclaration"] = None) -> "Cxx1Declaration":
+  def angle_query_enum_(*, enum_: "Cxx1EnumDeclaration") -> "Cxx1Declaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_function_(*, function_: Optional["Cxx1FunctionDeclaration"] = None) -> "Cxx1Declaration":
+  def angle_query_function_(*, function_: "Cxx1FunctionDeclaration") -> "Cxx1Declaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_variable(*, variable: Optional["Cxx1VariableDeclaration"] = None) -> "Cxx1Declaration":
+  def angle_query_variable(*, variable: "Cxx1VariableDeclaration") -> "Cxx1Declaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_objcContainer(*, objcContainer: Optional["Cxx1ObjcContainerDeclaration"] = None) -> "Cxx1Declaration":
+  def angle_query_objcContainer(*, objcContainer: "Cxx1ObjcContainerDeclaration") -> "Cxx1Declaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_objcMethod(*, objcMethod: Optional["Cxx1ObjcMethodDeclaration"] = None) -> "Cxx1Declaration":
+  def angle_query_objcMethod(*, objcMethod: "Cxx1ObjcMethodDeclaration") -> "Cxx1Declaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_objcProperty(*, objcProperty: Optional["Cxx1ObjcPropertyDeclaration"] = None) -> "Cxx1Declaration":
+  def angle_query_objcProperty(*, objcProperty: "Cxx1ObjcPropertyDeclaration") -> "Cxx1Declaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_typeAlias(*, typeAlias: Optional["Cxx1TypeAliasDeclaration"] = None) -> "Cxx1Declaration":
+  def angle_query_typeAlias(*, typeAlias: "Cxx1TypeAliasDeclaration") -> "Cxx1Declaration":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -1248,27 +1248,27 @@ class Cxx1ObjcContainerId(InnerGleanSchemaPredicate):
     return f"cxx1.ObjcContainerId.5 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ObjcContainerId
 
   @staticmethod
-  def angle_query_protocol(*, protocol: Optional["Cxx1Name"] = None) -> "Cxx1ObjcContainerId":
+  def angle_query_protocol(*, protocol: "Cxx1Name") -> "Cxx1ObjcContainerId":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_interface_(*, interface_: Optional["Cxx1Name"] = None) -> "Cxx1ObjcContainerId":
+  def angle_query_interface_(*, interface_: "Cxx1Name") -> "Cxx1ObjcContainerId":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_categoryInterface(*, categoryInterface: Optional["Cxx1ObjcCategoryId"] = None) -> "Cxx1ObjcContainerId":
+  def angle_query_categoryInterface(*, categoryInterface: "Cxx1ObjcCategoryId") -> "Cxx1ObjcContainerId":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_extensionInterface(*, extensionInterface: Optional["Cxx1Name"] = None) -> "Cxx1ObjcContainerId":
+  def angle_query_extensionInterface(*, extensionInterface: "Cxx1Name") -> "Cxx1ObjcContainerId":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_implementation(*, implementation: Optional["Cxx1Name"] = None) -> "Cxx1ObjcContainerId":
+  def angle_query_implementation(*, implementation: "Cxx1Name") -> "Cxx1ObjcContainerId":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_categoryImplementation(*, categoryImplementation: Optional["Cxx1ObjcCategoryId"] = None) -> "Cxx1ObjcContainerId":
+  def angle_query_categoryImplementation(*, categoryImplementation: "Cxx1ObjcCategoryId") -> "Cxx1ObjcContainerId":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -1281,15 +1281,15 @@ class Cxx1XRefVia(InnerGleanSchemaPredicate):
     return f"cxx1.XRefVia.5 { ('{ ' + query_fields + ' }') if query_fields else '_' }", XRefVia
 
   @staticmethod
-  def angle_query_usingDeclaration(*, usingDeclaration: Optional["Cxx1UsingDeclaration"] = None) -> "Cxx1XRefVia":
+  def angle_query_usingDeclaration(*, usingDeclaration: "Cxx1UsingDeclaration") -> "Cxx1XRefVia":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_usingDirective(*, usingDirective: Optional["Cxx1UsingDirective"] = None) -> "Cxx1XRefVia":
+  def angle_query_usingDirective(*, usingDirective: "Cxx1UsingDirective") -> "Cxx1XRefVia":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_macro(*, macro: Optional["Pp1Use"] = None) -> "Cxx1XRefVia":
+  def angle_query_macro(*, macro: "Pp1Use") -> "Cxx1XRefVia":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -1302,15 +1302,15 @@ class Cxx1DeclIdent(InnerGleanSchemaPredicate):
     return f"cxx1.DeclIdent.5 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DeclIdent
 
   @staticmethod
-  def angle_query_name(*, name: Optional["Cxx1Name"] = None) -> "Cxx1DeclIdent":
+  def angle_query_name(*, name: "Cxx1Name") -> "Cxx1DeclIdent":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_macro(*, macro: Optional["Pp1Macro"] = None) -> "Cxx1DeclIdent":
+  def angle_query_macro(*, macro: "Pp1Macro") -> "Cxx1DeclIdent":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_selector(*, selector: Optional["Cxx1ObjcSelector"] = None) -> "Cxx1DeclIdent":
+  def angle_query_selector(*, selector: "Cxx1ObjcSelector") -> "Cxx1DeclIdent":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -1357,15 +1357,15 @@ class Cxx1PpEntity(InnerGleanSchemaPredicate):
     return f"cxx1.PpEntity.5 { ('{ ' + query_fields + ' }') if query_fields else '_' }", PpEntity
 
   @staticmethod
-  def angle_query_define(*, define: Optional["Pp1Define"] = None) -> "Cxx1PpEntity":
+  def angle_query_define(*, define: "Pp1Define") -> "Cxx1PpEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_undef(*, undef: Optional["Pp1Undef"] = None) -> "Cxx1PpEntity":
+  def angle_query_undef(*, undef: "Pp1Undef") -> "Cxx1PpEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_include_(*, include_: Optional["SrcFile"] = None) -> "Cxx1PpEntity":
+  def angle_query_include_(*, include_: "SrcFile") -> "Cxx1PpEntity":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -1402,23 +1402,23 @@ class Cxx1XRefTarget(InnerGleanSchemaPredicate):
     return f"cxx1.XRefTarget.5 { ('{ ' + query_fields + ' }') if query_fields else '_' }", XRefTarget
 
   @staticmethod
-  def angle_query_declaration(*, declaration: Optional["Cxx1Declaration"] = None) -> "Cxx1XRefTarget":
+  def angle_query_declaration(*, declaration: "Cxx1Declaration") -> "Cxx1XRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_enumerator(*, enumerator: Optional["Cxx1Enumerator"] = None) -> "Cxx1XRefTarget":
+  def angle_query_enumerator(*, enumerator: "Cxx1Enumerator") -> "Cxx1XRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_objcSelector(*, objcSelector: Optional["Cxx1ObjcSelector"] = None) -> "Cxx1XRefTarget":
+  def angle_query_objcSelector(*, objcSelector: "Cxx1ObjcSelector") -> "Cxx1XRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_unknown(*, unknown: Optional["SrcLoc"] = None) -> "Cxx1XRefTarget":
+  def angle_query_unknown(*, unknown: "SrcLoc") -> "Cxx1XRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_indirect(*, indirect: Optional["Cxx1XRefIndirectTarget"] = None) -> "Cxx1XRefTarget":
+  def angle_query_indirect(*, indirect: "Cxx1XRefIndirectTarget") -> "Cxx1XRefTarget":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -1443,19 +1443,19 @@ class Cxx1VariableKind(InnerGleanSchemaPredicate):
     return f"cxx1.VariableKind.5 { ('{ ' + query_fields + ' }') if query_fields else '_' }", VariableKind
 
   @staticmethod
-  def angle_query_global_(*, global_: Optional["Cxx1GlobalVariable"] = None) -> "Cxx1VariableKind":
+  def angle_query_global_(*, global_: "Cxx1GlobalVariable") -> "Cxx1VariableKind":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_local(*, local: Optional["Cxx1LocalVariable"] = None) -> "Cxx1VariableKind":
+  def angle_query_local(*, local: "Cxx1LocalVariable") -> "Cxx1VariableKind":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_field(*, field: Optional["Cxx1Field"] = None) -> "Cxx1VariableKind":
+  def angle_query_field(*, field: "Cxx1Field") -> "Cxx1VariableKind":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_ivar(*, ivar: Optional["Cxx1ObjcIVar"] = None) -> "Cxx1VariableKind":
+  def angle_query_ivar(*, ivar: "Cxx1ObjcIVar") -> "Cxx1VariableKind":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -1468,31 +1468,31 @@ class Cxx1DefinitionEntity(InnerGleanSchemaPredicate):
     return f"cxx1.DefinitionEntity.5 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DefinitionEntity
 
   @staticmethod
-  def angle_query_record_(*, record_: Optional["Cxx1RecordDefinition"] = None) -> "Cxx1DefinitionEntity":
+  def angle_query_record_(*, record_: "Cxx1RecordDefinition") -> "Cxx1DefinitionEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_function_(*, function_: Optional["Cxx1FunctionDefinition"] = None) -> "Cxx1DefinitionEntity":
+  def angle_query_function_(*, function_: "Cxx1FunctionDefinition") -> "Cxx1DefinitionEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_enum_(*, enum_: Optional["Cxx1EnumDefinition"] = None) -> "Cxx1DefinitionEntity":
+  def angle_query_enum_(*, enum_: "Cxx1EnumDefinition") -> "Cxx1DefinitionEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_objcMethod(*, objcMethod: Optional["Cxx1ObjcMethodDefinition"] = None) -> "Cxx1DefinitionEntity":
+  def angle_query_objcMethod(*, objcMethod: "Cxx1ObjcMethodDefinition") -> "Cxx1DefinitionEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_objcContainer(*, objcContainer: Optional["Cxx1ObjcContainerDefinition"] = None) -> "Cxx1DefinitionEntity":
+  def angle_query_objcContainer(*, objcContainer: "Cxx1ObjcContainerDefinition") -> "Cxx1DefinitionEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_variable(*, variable: Optional["Cxx1VariableDeclaration"] = None) -> "Cxx1DefinitionEntity":
+  def angle_query_variable(*, variable: "Cxx1VariableDeclaration") -> "Cxx1DefinitionEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_namespace_(*, namespace_: Optional["Cxx1NamespaceDefinition"] = None) -> "Cxx1DefinitionEntity":
+  def angle_query_namespace_(*, namespace_: "Cxx1NamespaceDefinition") -> "Cxx1DefinitionEntity":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -1521,19 +1521,19 @@ class Cxx1PPEvent(InnerGleanSchemaPredicate):
     return f"cxx1.PPEvent.5 { ('{ ' + query_fields + ' }') if query_fields else '_' }", PPEvent
 
   @staticmethod
-  def angle_query_include_(*, include_: Optional["Cxx1IncludeTrace"] = None) -> "Cxx1PPEvent":
+  def angle_query_include_(*, include_: "Cxx1IncludeTrace") -> "Cxx1PPEvent":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_define(*, define: Optional["Pp1Define"] = None) -> "Cxx1PPEvent":
+  def angle_query_define(*, define: "Pp1Define") -> "Cxx1PPEvent":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_undef(*, undef: Optional["Pp1Undef"] = None) -> "Cxx1PPEvent":
+  def angle_query_undef(*, undef: "Pp1Undef") -> "Cxx1PPEvent":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_use(*, use: Optional["Pp1Use"] = None) -> "Cxx1PPEvent":
+  def angle_query_use(*, use: "Pp1Use") -> "Cxx1PPEvent":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -1551,15 +1551,15 @@ class Cxx1RecordKind(InnerGleanSchemaPredicate):
     return f"cxx1.RecordKind.5 { ('{ ' + query_fields + ' }') if query_fields else '_' }", RecordKind
 
   @staticmethod
-  def angle_query_struct_(*, struct_: Optional["BuiltinUnit"] = None) -> "Cxx1RecordKind":
+  def angle_query_struct_(*, struct_: "BuiltinUnit") -> "Cxx1RecordKind":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_class_(*, class_: Optional["BuiltinUnit"] = None) -> "Cxx1RecordKind":
+  def angle_query_class_(*, class_: "BuiltinUnit") -> "Cxx1RecordKind":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_union_(*, union_: Optional["BuiltinUnit"] = None) -> "Cxx1RecordKind":
+  def angle_query_union_(*, union_: "BuiltinUnit") -> "Cxx1RecordKind":
     raise Exception("this function can only be called from @angle_query")
 
 

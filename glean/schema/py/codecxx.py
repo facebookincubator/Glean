@@ -37,31 +37,31 @@ class CodeCxxDefinition(InnerGleanSchemaPredicate):
     return f"code.cxx.Definition.4 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Definition
 
   @staticmethod
-  def angle_query_record_(*, record_: Optional["Cxx1RecordDefinition"] = None) -> "CodeCxxDefinition":
+  def angle_query_record_(*, record_: "Cxx1RecordDefinition") -> "CodeCxxDefinition":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_function_(*, function_: Optional["Cxx1FunctionDefinition"] = None) -> "CodeCxxDefinition":
+  def angle_query_function_(*, function_: "Cxx1FunctionDefinition") -> "CodeCxxDefinition":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_enum_(*, enum_: Optional["Cxx1EnumDefinition"] = None) -> "CodeCxxDefinition":
+  def angle_query_enum_(*, enum_: "Cxx1EnumDefinition") -> "CodeCxxDefinition":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_objcMethod(*, objcMethod: Optional["Cxx1ObjcMethodDefinition"] = None) -> "CodeCxxDefinition":
+  def angle_query_objcMethod(*, objcMethod: "Cxx1ObjcMethodDefinition") -> "CodeCxxDefinition":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_objcContainer(*, objcContainer: Optional["Cxx1ObjcContainerDefinition"] = None) -> "CodeCxxDefinition":
+  def angle_query_objcContainer(*, objcContainer: "Cxx1ObjcContainerDefinition") -> "CodeCxxDefinition":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_variable(*, variable: Optional["Cxx1VariableDeclaration"] = None) -> "CodeCxxDefinition":
+  def angle_query_variable(*, variable: "Cxx1VariableDeclaration") -> "CodeCxxDefinition":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_namespace_(*, namespace_: Optional["Cxx1NamespaceDefinition"] = None) -> "CodeCxxDefinition":
+  def angle_query_namespace_(*, namespace_: "Cxx1NamespaceDefinition") -> "CodeCxxDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -74,15 +74,15 @@ class CodeCxxEntity(InnerGleanSchemaPredicate):
     return f"code.cxx.Entity.4 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Entity
 
   @staticmethod
-  def angle_query_decl(*, decl: Optional["Cxx1Declaration"] = None) -> "CodeCxxEntity":
+  def angle_query_decl(*, decl: "Cxx1Declaration") -> "CodeCxxEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_defn(*, defn: Optional["CodeCxxDefinition"] = None) -> "CodeCxxEntity":
+  def angle_query_defn(*, defn: "CodeCxxDefinition") -> "CodeCxxEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_enumerator(*, enumerator: Optional["Cxx1Enumerator"] = None) -> "CodeCxxEntity":
+  def angle_query_enumerator(*, enumerator: "Cxx1Enumerator") -> "CodeCxxEntity":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -95,7 +95,7 @@ class CodeCxxAnnotations(InnerGleanSchemaPredicate):
     return f"code.cxx.Annotations.4 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Annotations
 
   @staticmethod
-  def angle_query_attributes(*, attributes: Optional[List["Cxx1Attribute"]] = None) -> "CodeCxxAnnotations":
+  def angle_query_attributes(*, attributes: List["Cxx1Attribute"]) -> "CodeCxxAnnotations":
     raise Exception("this function can only be called from @angle_query")
 
 

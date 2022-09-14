@@ -260,15 +260,15 @@ class BuckAttributeValue(GleanSchemaPredicate):
     return f"buck.AttributeValue.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", AttributeValue
 
   @staticmethod
-  def angle_query__str(*, _str: Optional[str] = None) -> "BuckAttributeValue":
+  def angle_query__str(*, _str: str) -> "BuckAttributeValue":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_sequence(*, sequence: Optional[List["BuckAttributeValue"]] = None) -> "BuckAttributeValue":
+  def angle_query_sequence(*, sequence: List["BuckAttributeValue"]) -> "BuckAttributeValue":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_mapping(*, mapping: Optional[List["BuckAttributeMapping"]] = None) -> "BuckAttributeValue":
+  def angle_query_mapping(*, mapping: List["BuckAttributeMapping"]) -> "BuckAttributeValue":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -521,11 +521,11 @@ class BuckFile(GleanSchemaPredicate):
     return f"buck.File.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", File
 
   @staticmethod
-  def angle_query_source(*, source: Optional["SrcFile"] = None) -> "BuckFile":
+  def angle_query_source(*, source: "SrcFile") -> "BuckFile":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_generated(*, generated: Optional["BuckLocator"] = None) -> "BuckFile":
+  def angle_query_generated(*, generated: "BuckLocator") -> "BuckFile":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -598,15 +598,15 @@ class BuckFile(GleanSchemaPredicate):
     return f"buck.File.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", File
 
   @staticmethod
-  def angle_query_source(*, source: Optional["SrcFile"] = None) -> "BuckFile":
+  def angle_query_source(*, source: "SrcFile") -> "BuckFile":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_generated(*, generated: Optional["BuckLocator"] = None) -> "BuckFile":
+  def angle_query_generated(*, generated: "BuckLocator") -> "BuckFile":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_generatedLabel(*, generatedLabel: Optional["BuckLocatorWithLabel"] = None) -> "BuckFile":
+  def angle_query_generatedLabel(*, generatedLabel: "BuckLocatorWithLabel") -> "BuckFile":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -645,15 +645,15 @@ class BuckXRefDestination(InnerGleanSchemaPredicate):
     return f"buck.XRefDestination.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", XRefDestination
 
   @staticmethod
-  def angle_query_locator(*, locator: Optional["BuckLocator"] = None) -> "BuckXRefDestination":
+  def angle_query_locator(*, locator: "BuckLocator") -> "BuckXRefDestination":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_file(*, file: Optional["SrcFile"] = None) -> "BuckXRefDestination":
+  def angle_query_file(*, file: "SrcFile") -> "BuckXRefDestination":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_definition(*, definition: Optional["BuckDefinition"] = None) -> "BuckXRefDestination":
+  def angle_query_definition(*, definition: "BuckDefinition") -> "BuckXRefDestination":
     raise Exception("this function can only be called from @angle_query")
 
 

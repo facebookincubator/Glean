@@ -316,23 +316,23 @@ class GraphqlDeclaration(InnerGleanSchemaPredicate):
     return f"graphql.Declaration.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Declaration
 
   @staticmethod
-  def angle_query_query_(*, query_: Optional["GraphqlQuery"] = None) -> "GraphqlDeclaration":
+  def angle_query_query_(*, query_: "GraphqlQuery") -> "GraphqlDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_fragment_(*, fragment_: Optional["GraphqlFragment"] = None) -> "GraphqlDeclaration":
+  def angle_query_fragment_(*, fragment_: "GraphqlFragment") -> "GraphqlDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_field_(*, field_: Optional["GraphqlFieldDef"] = None) -> "GraphqlDeclaration":
+  def angle_query_field_(*, field_: "GraphqlFieldDef") -> "GraphqlDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_enum_(*, enum_: Optional["GraphqlEnumTypeDef"] = None) -> "GraphqlDeclaration":
+  def angle_query_enum_(*, enum_: "GraphqlEnumTypeDef") -> "GraphqlDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_directive_(*, directive_: Optional["GraphqlDirectiveDef"] = None) -> "GraphqlDeclaration":
+  def angle_query_directive_(*, directive_: "GraphqlDirectiveDef") -> "GraphqlDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 

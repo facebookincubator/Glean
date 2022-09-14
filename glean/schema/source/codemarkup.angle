@@ -361,6 +361,7 @@ predicate ExtendsChildEntity :
       )
     )
 
+# entities with a containing parent
 predicate ContainsParentEntity :
   {
     child: code.Entity,
@@ -369,15 +370,25 @@ predicate ContainsParentEntity :
   { Child, Parent } where
     (codemarkup.hack.HackContainsParentEntity { C, P }; Child={hack=C}:code.Entity; Parent={hack=P}:code.Entity)
 
+# entities contained by the parent
 predicate ContainsChildEntity :
   {
     parent: code.Entity,
     child: code.Entity
   }
   { Parent, Child } where
-    (codemarkup.hack.HackContainsChildEntity { P, C }; Parent={hack=P}:code.Entity; Child={hack=C}:code.Entity)|
-    (codemarkup.cxx.CxxContainsChildEntity  { P, C }; Parent={cxx=P}:code.Entity; Child={cxx=C}:code.Entity)|
-    (codemarkup.python.PythonContainsChildEntity  { P, C }; Parent={python=P}:code.Entity; Child={python=C}:code.Entity)
+    ( { hack = P } = Parent;
+      codemarkup.hack.HackContainsChildEntity { P, C };
+      { hack = C } = Child
+    ) | (
+      {cxx = P} = Parent;
+      codemarkup.cxx.CxxContainsChildEntity { P, C };
+      { cxx = C } = Child
+    ) | (
+      { python = P } = Parent;
+      codemarkup.python.PythonContainsChildEntity { P, C };
+      { python = C } = Child
+    )
 
 #
 # Relational search, extended with entity attributes

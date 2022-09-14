@@ -1,0 +1,2 @@
+action: searchRelated
+args: {"symbol":"test/cpp//baz/U","request":{"relatedBy":2,"relation":2,"recursive":false,"detailedResults": true}}

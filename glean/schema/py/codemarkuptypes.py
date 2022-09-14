@@ -89,11 +89,11 @@ class CodemarkupTypesRangeSpan(InnerGleanSchemaPredicate):
     return f"codemarkup.types.RangeSpan.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", RangeSpan
 
   @staticmethod
-  def angle_query_span(*, span: Optional["SrcByteSpan"] = None) -> "CodemarkupTypesRangeSpan":
+  def angle_query_span(*, span: "SrcByteSpan") -> "CodemarkupTypesRangeSpan":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_range(*, range: Optional["SrcRange"] = None) -> "CodemarkupTypesRangeSpan":
+  def angle_query_range(*, range: "SrcRange") -> "CodemarkupTypesRangeSpan":
     raise Exception("this function can only be called from @angle_query")
 
 

@@ -22,7 +22,7 @@ class CodeErlangEntity(InnerGleanSchemaPredicate):
     return f"code.erlang.Entity.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Entity
 
   @staticmethod
-  def angle_query_decl(*, decl: Optional["ErlangDeclaration"] = None) -> "CodeErlangEntity":
+  def angle_query_decl(*, decl: "ErlangDeclaration") -> "CodeErlangEntity":
     raise Exception("this function can only be called from @angle_query")
 
 

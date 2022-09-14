@@ -101,15 +101,15 @@ class DocmarkupGeneralAnnotations(InnerGleanSchemaPredicate):
     return f"docmarkup.GeneralAnnotations.14 { ('{ ' + query_fields + ' }') if query_fields else '_' }", GeneralAnnotations
 
   @staticmethod
-  def angle_query_doc(*, doc: Optional["DocmarkupDocAttrs"] = None) -> "DocmarkupGeneralAnnotations":
+  def angle_query_doc(*, doc: "DocmarkupDocAttrs") -> "DocmarkupGeneralAnnotations":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_hack(*, hack: Optional[List["HackUserAttribute"]] = None) -> "DocmarkupGeneralAnnotations":
+  def angle_query_hack(*, hack: List["HackUserAttribute"]) -> "DocmarkupGeneralAnnotations":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_java(*, java: Optional[List["JavaAnnotation"]] = None) -> "DocmarkupGeneralAnnotations":
+  def angle_query_java(*, java: List["JavaAnnotation"]) -> "DocmarkupGeneralAnnotations":
     raise Exception("this function can only be called from @angle_query")
 
 

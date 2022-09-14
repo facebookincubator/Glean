@@ -23,7 +23,7 @@ class CodeThriftAnnotations(InnerGleanSchemaPredicate):
     return f"code.thrift.Annotations.4 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Annotations
 
   @staticmethod
-  def angle_query_annotations(*, annotations: Optional[List["ThriftStructuredAnnotation"]] = None) -> "CodeThriftAnnotations":
+  def angle_query_annotations(*, annotations: List["ThriftStructuredAnnotation"]) -> "CodeThriftAnnotations":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -36,27 +36,27 @@ class CodeThriftEntity(InnerGleanSchemaPredicate):
     return f"code.thrift.Entity.4 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Entity
 
   @staticmethod
-  def angle_query_include_(*, include_: Optional["ThriftFile"] = None) -> "CodeThriftEntity":
+  def angle_query_include_(*, include_: "ThriftFile") -> "CodeThriftEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_named(*, named: Optional["ThriftNamedDecl"] = None) -> "CodeThriftEntity":
+  def angle_query_named(*, named: "ThriftNamedDecl") -> "CodeThriftEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_exception_(*, exception_: Optional["ThriftExceptionName"] = None) -> "CodeThriftEntity":
+  def angle_query_exception_(*, exception_: "ThriftExceptionName") -> "CodeThriftEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_service_(*, service_: Optional["ThriftServiceName"] = None) -> "CodeThriftEntity":
+  def angle_query_service_(*, service_: "ThriftServiceName") -> "CodeThriftEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_constant(*, constant: Optional["ThriftConstant"] = None) -> "CodeThriftEntity":
+  def angle_query_constant(*, constant: "ThriftConstant") -> "CodeThriftEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_enumValue(*, enumValue: Optional["ThriftEnumValue"] = None) -> "CodeThriftEntity":
+  def angle_query_enumValue(*, enumValue: "ThriftEnumValue") -> "CodeThriftEntity":
     raise Exception("this function can only be called from @angle_query")
 
 

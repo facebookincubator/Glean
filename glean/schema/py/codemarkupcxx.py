@@ -16,6 +16,7 @@ from glean.schema.codemarkup_cxx.types import (
     CxxContainsChildEntity,
     CxxEntityUses,
     CxxEntityKind,
+    CxxDeclarationContainsChild,
     CxxResolveLocation,
     CxxDefToDeclFamilyXRefTargetLocation,
     CxxEntityLocation,
@@ -23,12 +24,14 @@ from glean.schema.codemarkup_cxx.types import (
     CxxFileEntityXMapVariableXRefDeclLocations,
     CxxDeclToDefXRefTargetLocation,
     CxxAnnotation,
+    CxxDefinitionContainsChild,
     CxxFileEntityFixedXRefLocations,
     CxxResolveDeclarationToEntity,
     CxxXRefTargetLocation,
     CxxFileEntityTraceFixedXRefLocations,
     CxxEntityInfo,
     CxxFileEntityTraceLocations,
+    CxxNamespaceDeclarationContainsChild,
     CxxDeclInfo,
     CxxResolveTraceLocation,
     CxxFileEntityXMapFixedXRefLocations,
@@ -82,6 +85,17 @@ class CodemarkupCxxCxxEntityKind(GleanSchemaPredicate):
 
   @staticmethod
   def angle_query(*, entity: Optional["CodeCxxEntity"] = None, kind: Optional["CodemarkupTypesSymbolKind"] = None) -> "CodemarkupCxxCxxEntityKind":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class CodemarkupCxxCxxDeclarationContainsChild(GleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], parent: ast.Expr, child: ast.Expr) -> Tuple[str, Struct]:
+    return f"codemarkup.cxx.CxxDeclarationContainsChild.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, parent, 'parent'), angle_for(__env, child, 'child')])) or '_' } }}", CxxDeclarationContainsChild
+
+  @staticmethod
+  def angle_query(*, parent: Optional["Cxx1Declaration"] = None, child: Optional["CodeCxxEntity"] = None) -> "CodemarkupCxxCxxDeclarationContainsChild":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -170,6 +184,17 @@ class CodemarkupCxxCxxAnnotation(GleanSchemaPredicate):
 
 
 
+class CodemarkupCxxCxxDefinitionContainsChild(GleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], parent: ast.Expr, child: ast.Expr) -> Tuple[str, Struct]:
+    return f"codemarkup.cxx.CxxDefinitionContainsChild.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, parent, 'parent'), angle_for(__env, child, 'child')])) or '_' } }}", CxxDefinitionContainsChild
+
+  @staticmethod
+  def angle_query(*, parent: Optional["CodeCxxDefinition"] = None, child: Optional["CodeCxxEntity"] = None) -> "CodemarkupCxxCxxDefinitionContainsChild":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
 class CodemarkupCxxCxxFileEntityFixedXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, xref: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
@@ -238,6 +263,17 @@ class CodemarkupCxxCxxFileEntityTraceLocations(GleanSchemaPredicate):
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, trace: Optional["Cxx1Trace"] = None, location: Optional["CodemarkupTypesLocation"] = None, entity: Optional["CodeCxxEntity"] = None) -> "CodemarkupCxxCxxFileEntityTraceLocations":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class CodemarkupCxxCxxNamespaceDeclarationContainsChild(GleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], parent: ast.Expr, child: ast.Expr) -> Tuple[str, Struct]:
+    return f"codemarkup.cxx.CxxNamespaceDeclarationContainsChild.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, parent, 'parent'), angle_for(__env, child, 'child')])) or '_' } }}", CxxNamespaceDeclarationContainsChild
+
+  @staticmethod
+  def angle_query(*, parent: Optional["Cxx1NamespaceDeclaration"] = None, child: Optional["CodeCxxEntity"] = None) -> "CodemarkupCxxCxxNamespaceDeclarationContainsChild":
     raise Exception("this function can only be called from @angle_query")
 
 

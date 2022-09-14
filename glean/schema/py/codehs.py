@@ -22,15 +22,15 @@ class CodeHsEntity(InnerGleanSchemaPredicate):
     return f"code.hs.Entity.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Entity
 
   @staticmethod
-  def angle_query_definition(*, definition: Optional["HsDefinition"] = None) -> "CodeHsEntity":
+  def angle_query_definition(*, definition: "HsDefinition") -> "CodeHsEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_function_(*, function_: Optional["HsFunctionDefinition"] = None) -> "CodeHsEntity":
+  def angle_query_function_(*, function_: "HsFunctionDefinition") -> "CodeHsEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_class_(*, class_: Optional["HsClass"] = None) -> "CodeHsEntity":
+  def angle_query_class_(*, class_: "HsClass") -> "CodeHsEntity":
     raise Exception("this function can only be called from @angle_query")
 
 

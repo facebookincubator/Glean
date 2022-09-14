@@ -443,23 +443,23 @@ class HaxlanalyserFetch(InnerGleanSchemaPredicate):
     return f"haxlanalyser.Fetch.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Fetch
 
   @staticmethod
-  def angle_query_thrift(*, thrift: Optional["HaxlanalyserThriftFetch"] = None) -> "HaxlanalyserFetch":
+  def angle_query_thrift(*, thrift: "HaxlanalyserThriftFetch") -> "HaxlanalyserFetch":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_configerator(*, configerator: Optional["HaxlanalyserConfigeratorFetch"] = None) -> "HaxlanalyserFetch":
+  def angle_query_configerator(*, configerator: "HaxlanalyserConfigeratorFetch") -> "HaxlanalyserFetch":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_tally(*, tally: Optional["HaxlanalyserTallyFetch"] = None) -> "HaxlanalyserFetch":
+  def angle_query_tally(*, tally: "HaxlanalyserTallyFetch") -> "HaxlanalyserFetch":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_classifier(*, classifier: Optional["HaxlanalyserClassifierFetch"] = None) -> "HaxlanalyserFetch":
+  def angle_query_classifier(*, classifier: "HaxlanalyserClassifierFetch") -> "HaxlanalyserFetch":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_sitevar(*, sitevar: Optional["HaxlanalyserSitevarFetch"] = None) -> "HaxlanalyserFetch":
+  def angle_query_sitevar(*, sitevar: "HaxlanalyserSitevarFetch") -> "HaxlanalyserFetch":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -495,39 +495,39 @@ class HaxlanalyserResponse(InnerGleanSchemaPredicate):
     return f"haxlanalyser.Response.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Response
 
   @staticmethod
-  def angle_query_janky_json(*, janky_json: Optional["HaxlanalyserJankyJSONResponse"] = None) -> "HaxlanalyserResponse":
+  def angle_query_janky_json(*, janky_json: "HaxlanalyserJankyJSONResponse") -> "HaxlanalyserResponse":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_scuba(*, scuba: Optional["HaxlanalyserScubaResponse"] = None) -> "HaxlanalyserResponse":
+  def angle_query_scuba(*, scuba: "HaxlanalyserScubaResponse") -> "HaxlanalyserResponse":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_thrift(*, thrift: Optional["HaxlanalyserThriftResponse"] = None) -> "HaxlanalyserResponse":
+  def angle_query_thrift(*, thrift: "HaxlanalyserThriftResponse") -> "HaxlanalyserResponse":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_piranha(*, piranha: Optional["HaxlanalyserPiranhaResponse"] = None) -> "HaxlanalyserResponse":
+  def angle_query_piranha(*, piranha: "HaxlanalyserPiranhaResponse") -> "HaxlanalyserResponse":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_tally(*, tally: Optional["HaxlanalyserTallyResponse"] = None) -> "HaxlanalyserResponse":
+  def angle_query_tally(*, tally: "HaxlanalyserTallyResponse") -> "HaxlanalyserResponse":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_log_feature(*, log_feature: Optional["HaxlanalyserLogFeatureResponse"] = None) -> "HaxlanalyserResponse":
+  def angle_query_log_feature(*, log_feature: "HaxlanalyserLogFeatureResponse") -> "HaxlanalyserResponse":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_restriction(*, restriction: Optional["HaxlanalyserRestrictionResponse"] = None) -> "HaxlanalyserResponse":
+  def angle_query_restriction(*, restriction: "HaxlanalyserRestrictionResponse") -> "HaxlanalyserResponse":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_hive(*, hive: Optional["HaxlanalyserHiveResponse"] = None) -> "HaxlanalyserResponse":
+  def angle_query_hive(*, hive: "HaxlanalyserHiveResponse") -> "HaxlanalyserResponse":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_scribe(*, scribe: Optional["HaxlanalyserScribeResponse"] = None) -> "HaxlanalyserResponse":
+  def angle_query_scribe(*, scribe: "HaxlanalyserScribeResponse") -> "HaxlanalyserResponse":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -540,75 +540,75 @@ class HaxlanalyserNode(InnerGleanSchemaPredicate):
     return f"haxlanalyser.Node.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Node
 
   @staticmethod
-  def angle_query_hs_module(*, hs_module: Optional["HsSourceModule"] = None) -> "HaxlanalyserNode":
+  def angle_query_hs_module(*, hs_module: "HsSourceModule") -> "HaxlanalyserNode":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_definition(*, definition: Optional["HsDefinitionName"] = None) -> "HaxlanalyserNode":
+  def angle_query_definition(*, definition: "HsDefinitionName") -> "HaxlanalyserNode":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_typeclass(*, typeclass: Optional["HsClassName"] = None) -> "HaxlanalyserNode":
+  def angle_query_typeclass(*, typeclass: "HsClassName") -> "HaxlanalyserNode":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_class_instance(*, class_instance: Optional["HsClassInstance"] = None) -> "HaxlanalyserNode":
+  def angle_query_class_instance(*, class_instance: "HsClassInstance") -> "HaxlanalyserNode":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_context(*, context: Optional["HaxlanalyserContext"] = None) -> "HaxlanalyserNode":
+  def angle_query_context(*, context: "HaxlanalyserContext") -> "HaxlanalyserNode":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_policy(*, policy: Optional["HaxlanalyserPolicy"] = None) -> "HaxlanalyserNode":
+  def angle_query_policy(*, policy: "HaxlanalyserPolicy") -> "HaxlanalyserNode":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_tally(*, tally: Optional["HaxlanalyserTallyConfig"] = None) -> "HaxlanalyserNode":
+  def angle_query_tally(*, tally: "HaxlanalyserTallyConfig") -> "HaxlanalyserNode":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_endpoint(*, endpoint: Optional["HaxlanalyserEndpoint"] = None) -> "HaxlanalyserNode":
+  def angle_query_endpoint(*, endpoint: "HaxlanalyserEndpoint") -> "HaxlanalyserNode":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_acdc(*, acdc: Optional["HaxlanalyserACDCProperty"] = None) -> "HaxlanalyserNode":
+  def angle_query_acdc(*, acdc: "HaxlanalyserACDCProperty") -> "HaxlanalyserNode":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_input_fetch(*, input_fetch: Optional["HaxlanalyserInputFetch"] = None) -> "HaxlanalyserNode":
+  def angle_query_input_fetch(*, input_fetch: "HaxlanalyserInputFetch") -> "HaxlanalyserNode":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_response(*, response: Optional["HaxlanalyserResponse"] = None) -> "HaxlanalyserNode":
+  def angle_query_response(*, response: "HaxlanalyserResponse") -> "HaxlanalyserNode":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_fetch(*, fetch: Optional["HaxlanalyserFetch"] = None) -> "HaxlanalyserNode":
+  def angle_query_fetch(*, fetch: "HaxlanalyserFetch") -> "HaxlanalyserNode":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_classifier_read(*, classifier_read: Optional["HaxlanalyserClassifierRead"] = None) -> "HaxlanalyserNode":
+  def angle_query_classifier_read(*, classifier_read: "HaxlanalyserClassifierRead") -> "HaxlanalyserNode":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_laser_dataset(*, laser_dataset: Optional["HaxlanalyserLaserDataset"] = None) -> "HaxlanalyserNode":
+  def angle_query_laser_dataset(*, laser_dataset: "HaxlanalyserLaserDataset") -> "HaxlanalyserNode":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_test_file(*, test_file: Optional["HaxlanalyserTestFile"] = None) -> "HaxlanalyserNode":
+  def angle_query_test_file(*, test_file: "HaxlanalyserTestFile") -> "HaxlanalyserNode":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_call(*, call: Optional["HaxlanalyserCall"] = None) -> "HaxlanalyserNode":
+  def angle_query_call(*, call: "HaxlanalyserCall") -> "HaxlanalyserNode":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_acdc_access(*, acdc_access: Optional["HaxlanalyserACDCPropertyAccess"] = None) -> "HaxlanalyserNode":
+  def angle_query_acdc_access(*, acdc_access: "HaxlanalyserACDCPropertyAccess") -> "HaxlanalyserNode":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_feature(*, feature: Optional["HaxlanalyserFeatureSetFeature"] = None) -> "HaxlanalyserNode":
+  def angle_query_feature(*, feature: "HaxlanalyserFeatureSetFeature") -> "HaxlanalyserNode":
     raise Exception("this function can only be called from @angle_query")
 
 
