@@ -1,0 +1,54 @@
+[
+    "@generated",
+    {
+        "annotations": [
+            {
+                "name": "TestAnnotation",
+                "source": "TestAnnotation(\"Text\")",
+                "symbol": "test/php/TestAnnotation"
+            }
+        ],
+        "comments": [
+            {
+                "filepath": "www/SourceClass.php",
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 4,
+                    "lineBegin": 10,
+                    "lineEnd": 12
+                },
+                "repository": "test"
+            }
+        ],
+        "kind": 7,
+        "language": 3,
+        "location": {
+            "filepath": "www/SourceClass.php",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 2,
+                "lineBegin": 13,
+                "lineEnd": 25
+            },
+            "repository": "test"
+        },
+        "name": {
+            "container": "",
+            "localName": "SourceClass"
+        },
+        "repo_hash": "testhash",
+        "signature": "class SourceClass",
+        "sym": "test/php/SourceClass",
+        "sym_location": {
+            "filepath": "www/SourceClass.php",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 2,
+                "lineBegin": 13,
+                "lineEnd": 25
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": []
+    }
+]
