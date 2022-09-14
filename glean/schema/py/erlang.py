@@ -178,7 +178,7 @@ class ErlangDeclaration(InnerGleanSchemaPredicate):
     return f"erlang.Declaration.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Declaration
 
   @staticmethod
-  def angle_query_func(*, func: "ErlangFunctionDeclaration") -> "ErlangDeclaration":
+  def angle_query_func(*, func: Optional["ErlangFunctionDeclaration"] = None) -> "ErlangDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 

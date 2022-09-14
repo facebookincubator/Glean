@@ -23,7 +23,7 @@ class CodeHackEntity(InnerGleanSchemaPredicate):
     return f"code.hack.Entity.4 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Entity
 
   @staticmethod
-  def angle_query_decl(*, decl: "HackDeclaration") -> "CodeHackEntity":
+  def angle_query_decl(*, decl: Optional["HackDeclaration"] = None) -> "CodeHackEntity":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -36,7 +36,7 @@ class CodeHackAnnotations(InnerGleanSchemaPredicate):
     return f"code.hack.Annotations.4 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Annotations
 
   @staticmethod
-  def angle_query_attributes(*, attributes: List["HackUserAttribute"]) -> "CodeHackAnnotations":
+  def angle_query_attributes(*, attributes: Optional[List["HackUserAttribute"]] = None) -> "CodeHackAnnotations":
     raise Exception("this function can only be called from @angle_query")
 
 

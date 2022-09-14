@@ -23,7 +23,7 @@ class CodeJavaAnnotations(InnerGleanSchemaPredicate):
     return f"code.java.Annotations.5 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Annotations
 
   @staticmethod
-  def angle_query_annotations(*, annotations: List["JavaAnnotation"]) -> "CodeJavaAnnotations":
+  def angle_query_annotations(*, annotations: Optional[List["JavaAnnotation"]] = None) -> "CodeJavaAnnotations":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -36,11 +36,11 @@ class CodeJavaEntity(InnerGleanSchemaPredicate):
     return f"code.java.Entity.5 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Entity
 
   @staticmethod
-  def angle_query_class_(*, class_: "JavaClassDeclaration") -> "CodeJavaEntity":
+  def angle_query_class_(*, class_: Optional["JavaClassDeclaration"] = None) -> "CodeJavaEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_definition_(*, definition_: "JavaDefinition") -> "CodeJavaEntity":
+  def angle_query_definition_(*, definition_: Optional["JavaDefinition"] = None) -> "CodeJavaEntity":
     raise Exception("this function can only be called from @angle_query")
 
 

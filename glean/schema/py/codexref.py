@@ -63,11 +63,11 @@ class CodexrefLocation(InnerGleanSchemaPredicate):
     return f"codexref.Location.6 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Location
 
   @staticmethod
-  def angle_query_start(*, start: int) -> "CodexrefLocation":
+  def angle_query_start(*, start: Optional[int] = None) -> "CodexrefLocation":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_line(*, line: int) -> "CodexrefLocation":
+  def angle_query_line(*, line: Optional[int] = None) -> "CodexrefLocation":
     raise Exception("this function can only be called from @angle_query")
 
 

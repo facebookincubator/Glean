@@ -23,15 +23,15 @@ class CodeBuckEntity(InnerGleanSchemaPredicate):
     return f"code.buck.Entity.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Entity
 
   @staticmethod
-  def angle_query_locator(*, locator: "BuckLocator") -> "CodeBuckEntity":
+  def angle_query_locator(*, locator: Optional["BuckLocator"] = None) -> "CodeBuckEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_file(*, file: "SrcFile") -> "CodeBuckEntity":
+  def angle_query_file(*, file: Optional["SrcFile"] = None) -> "CodeBuckEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_definition(*, definition: "BuckDefinition") -> "CodeBuckEntity":
+  def angle_query_definition(*, definition: Optional["BuckDefinition"] = None) -> "CodeBuckEntity":
     raise Exception("this function can only be called from @angle_query")
 
 

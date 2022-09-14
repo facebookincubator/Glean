@@ -245,23 +245,23 @@ class OmegaOmegaEntity(InnerGleanSchemaPredicate):
     return f"omega.OmegaEntity.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", OmegaEntity
 
   @staticmethod
-  def angle_query_endpoint(*, endpoint: "OmegaOmegaEndpoint") -> "OmegaOmegaEntity":
+  def angle_query_endpoint(*, endpoint: Optional["OmegaOmegaEndpoint"] = None) -> "OmegaOmegaEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_policy(*, policy: "OmegaOmegaPolicy") -> "OmegaOmegaEntity":
+  def angle_query_policy(*, policy: Optional["OmegaOmegaPolicy"] = None) -> "OmegaOmegaEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_action(*, action: "OmegaOmegaAction") -> "OmegaOmegaEntity":
+  def angle_query_action(*, action: Optional["OmegaOmegaAction"] = None) -> "OmegaOmegaEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_block(*, block: "OmegaOmegaBlock") -> "OmegaOmegaEntity":
+  def angle_query_block(*, block: Optional["OmegaOmegaBlock"] = None) -> "OmegaOmegaEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_executionNode(*, executionNode: "OmegaOmegaExecutionNode") -> "OmegaOmegaEntity":
+  def angle_query_executionNode(*, executionNode: Optional["OmegaOmegaExecutionNode"] = None) -> "OmegaOmegaEntity":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -274,23 +274,23 @@ class OmegaGraphNode(InnerGleanSchemaPredicate):
     return f"omega.GraphNode.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", GraphNode
 
   @staticmethod
-  def angle_query_class_(*, class_: "OmegaClass_") -> "OmegaGraphNode":
+  def angle_query_class_(*, class_: Optional["OmegaClass_"] = None) -> "OmegaGraphNode":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_function_(*, function_: "OmegaFunction_") -> "OmegaGraphNode":
+  def angle_query_function_(*, function_: Optional["OmegaFunction_"] = None) -> "OmegaGraphNode":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_method(*, method: "OmegaMethod") -> "OmegaGraphNode":
+  def angle_query_method(*, method: Optional["OmegaMethod"] = None) -> "OmegaGraphNode":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_enum_(*, enum_: "OmegaEnum_") -> "OmegaGraphNode":
+  def angle_query_enum_(*, enum_: Optional["OmegaEnum_"] = None) -> "OmegaGraphNode":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_config(*, config: "OmegaConfig") -> "OmegaGraphNode":
+  def angle_query_config(*, config: Optional["OmegaConfig"] = None) -> "OmegaGraphNode":
     raise Exception("this function can only be called from @angle_query")
 
 

@@ -595,11 +595,11 @@ class LsifSomeEntity(InnerGleanSchemaPredicate):
     return f"lsif.SomeEntity.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SomeEntity
 
   @staticmethod
-  def angle_query_decl(*, decl: "LsifDeclaration") -> "LsifSomeEntity":
+  def angle_query_decl(*, decl: Optional["LsifDeclaration"] = None) -> "LsifSomeEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_defn(*, defn: "LsifDefinitionMoniker") -> "LsifSomeEntity":
+  def angle_query_defn(*, defn: Optional["LsifDefinitionMoniker"] = None) -> "LsifSomeEntity":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -641,51 +641,51 @@ class LsifEntity(InnerGleanSchemaPredicate):
     return f"lsif.Entity.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Entity
 
   @staticmethod
-  def angle_query_erlang(*, erlang: "LsifSomeEntity") -> "LsifEntity":
+  def angle_query_erlang(*, erlang: Optional["LsifSomeEntity"] = None) -> "LsifEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_fsharp(*, fsharp: "LsifSomeEntity") -> "LsifEntity":
+  def angle_query_fsharp(*, fsharp: Optional["LsifSomeEntity"] = None) -> "LsifEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_go(*, go: "LsifSomeEntity") -> "LsifEntity":
+  def angle_query_go(*, go: Optional["LsifSomeEntity"] = None) -> "LsifEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_haskell(*, haskell: "LsifSomeEntity") -> "LsifEntity":
+  def angle_query_haskell(*, haskell: Optional["LsifSomeEntity"] = None) -> "LsifEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_java(*, java: "LsifSomeEntity") -> "LsifEntity":
+  def angle_query_java(*, java: Optional["LsifSomeEntity"] = None) -> "LsifEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_kotlin(*, kotlin: "LsifSomeEntity") -> "LsifEntity":
+  def angle_query_kotlin(*, kotlin: Optional["LsifSomeEntity"] = None) -> "LsifEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_ocaml(*, ocaml: "LsifSomeEntity") -> "LsifEntity":
+  def angle_query_ocaml(*, ocaml: Optional["LsifSomeEntity"] = None) -> "LsifEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_python(*, python: "LsifSomeEntity") -> "LsifEntity":
+  def angle_query_python(*, python: Optional["LsifSomeEntity"] = None) -> "LsifEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_rust(*, rust: "LsifSomeEntity") -> "LsifEntity":
+  def angle_query_rust(*, rust: Optional["LsifSomeEntity"] = None) -> "LsifEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_scala(*, scala: "LsifSomeEntity") -> "LsifEntity":
+  def angle_query_scala(*, scala: Optional["LsifSomeEntity"] = None) -> "LsifEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_swift(*, swift: "LsifSomeEntity") -> "LsifEntity":
+  def angle_query_swift(*, swift: Optional["LsifSomeEntity"] = None) -> "LsifEntity":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_typescript(*, typescript: "LsifSomeEntity") -> "LsifEntity":
+  def angle_query_typescript(*, typescript: Optional["LsifSomeEntity"] = None) -> "LsifEntity":
     raise Exception("this function can only be called from @angle_query")
 
 

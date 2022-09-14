@@ -701,23 +701,23 @@ class PythonDeclaration(InnerGleanSchemaPredicate):
     return f"python.Declaration.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Declaration
 
   @staticmethod
-  def angle_query_cls(*, cls: "PythonClassDeclaration") -> "PythonDeclaration":
+  def angle_query_cls(*, cls: Optional["PythonClassDeclaration"] = None) -> "PythonDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_func(*, func: "PythonFunctionDeclaration") -> "PythonDeclaration":
+  def angle_query_func(*, func: Optional["PythonFunctionDeclaration"] = None) -> "PythonDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_variable(*, variable: "PythonVariableDeclaration") -> "PythonDeclaration":
+  def angle_query_variable(*, variable: Optional["PythonVariableDeclaration"] = None) -> "PythonDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_imp(*, imp: "PythonImportStatement") -> "PythonDeclaration":
+  def angle_query_imp(*, imp: Optional["PythonImportStatement"] = None) -> "PythonDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_module(*, module: "PythonModule") -> "PythonDeclaration":
+  def angle_query_module(*, module: Optional["PythonModule"] = None) -> "PythonDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 
@@ -742,19 +742,19 @@ class PythonDefinition(InnerGleanSchemaPredicate):
     return f"python.Definition.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Definition
 
   @staticmethod
-  def angle_query_cls(*, cls: "PythonClassDefinition") -> "PythonDefinition":
+  def angle_query_cls(*, cls: Optional["PythonClassDefinition"] = None) -> "PythonDefinition":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_func(*, func: "PythonFunctionDefinition") -> "PythonDefinition":
+  def angle_query_func(*, func: Optional["PythonFunctionDefinition"] = None) -> "PythonDefinition":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_variable(*, variable: "PythonVariableDefinition") -> "PythonDefinition":
+  def angle_query_variable(*, variable: Optional["PythonVariableDefinition"] = None) -> "PythonDefinition":
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query_module(*, module: "PythonModuleDefinition") -> "PythonDefinition":
+  def angle_query_module(*, module: Optional["PythonModuleDefinition"] = None) -> "PythonDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 

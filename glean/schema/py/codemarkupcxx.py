@@ -92,7 +92,8 @@ class CodemarkupCxxCxxEntityKind(GleanSchemaPredicate):
 class CodemarkupCxxCxxDeclarationContainsChild(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], parent: ast.Expr, child: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.cxx.CxxDeclarationContainsChild.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, parent, 'parent'), angle_for(__env, child, 'child')])) or '_' } }}", CxxDeclarationContainsChild
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, parent, 'parent'), angle_for(__env, child, 'child')]))
+    return f"codemarkup.cxx.CxxDeclarationContainsChild.4 { ('{ ' + query_fields + ' }') if query_fields else '_' }", CxxDeclarationContainsChild
 
   @staticmethod
   def angle_query(*, parent: Optional["Cxx1Declaration"] = None, child: Optional["CodeCxxEntity"] = None) -> "CodemarkupCxxCxxDeclarationContainsChild":
@@ -187,7 +188,8 @@ class CodemarkupCxxCxxAnnotation(GleanSchemaPredicate):
 class CodemarkupCxxCxxDefinitionContainsChild(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], parent: ast.Expr, child: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.cxx.CxxDefinitionContainsChild.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, parent, 'parent'), angle_for(__env, child, 'child')])) or '_' } }}", CxxDefinitionContainsChild
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, parent, 'parent'), angle_for(__env, child, 'child')]))
+    return f"codemarkup.cxx.CxxDefinitionContainsChild.4 { ('{ ' + query_fields + ' }') if query_fields else '_' }", CxxDefinitionContainsChild
 
   @staticmethod
   def angle_query(*, parent: Optional["CodeCxxDefinition"] = None, child: Optional["CodeCxxEntity"] = None) -> "CodemarkupCxxCxxDefinitionContainsChild":
@@ -270,7 +272,8 @@ class CodemarkupCxxCxxFileEntityTraceLocations(GleanSchemaPredicate):
 class CodemarkupCxxCxxNamespaceDeclarationContainsChild(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], parent: ast.Expr, child: ast.Expr) -> Tuple[str, Struct]:
-    return f"codemarkup.cxx.CxxNamespaceDeclarationContainsChild.4 {{ { ', '.join(filter(lambda x: x != '', [angle_for(__env, parent, 'parent'), angle_for(__env, child, 'child')])) or '_' } }}", CxxNamespaceDeclarationContainsChild
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, parent, 'parent'), angle_for(__env, child, 'child')]))
+    return f"codemarkup.cxx.CxxNamespaceDeclarationContainsChild.4 { ('{ ' + query_fields + ' }') if query_fields else '_' }", CxxNamespaceDeclarationContainsChild
 
   @staticmethod
   def angle_query(*, parent: Optional["Cxx1NamespaceDeclaration"] = None, child: Optional["CodeCxxEntity"] = None) -> "CodemarkupCxxCxxNamespaceDeclarationContainsChild":
