@@ -507,4 +507,22 @@ predicate CxxNamespaceDeclarationContainsChild:
         code.cxx.Entity { decl = { function_ = D } }
     ) = Child;
 
+# comment blocks across declaration families
+predicate CxxEntityDocumentation :
+  {
+    entity : code.cxx.Entity,
+    file : src.File,
+    span : src.ByteSpan,
+  }
+  { E, F, S } where
+    ( { decl = Decl } = E;
+      cxx1.DeclFamilyOf { Decl, DeclFam };
+      cxx1.DeclarationComment{ declaration = DeclFam, file = F, span = S }
+    ) | (
+      { defn = Defn } = E;
+      cxx1.DefToBaseDecl { Defn, DeclBase };
+      cxx1.DeclFamilyOf { DeclBase, Decl };
+      cxx1.DeclarationComment{ declaration = Decl, file = F, span = S }
+    )
+
 }

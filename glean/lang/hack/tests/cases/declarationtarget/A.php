@@ -7,17 +7,29 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+/**
+ *  A class
+ */
 class SourceA {
+  /**
+   * A function
+   */
   public function f(): void {
     new TargetClass();
     TargetMethod::method();
   }
 }
 
+/** Another class
+ *
+ */
 class TargetClass {
 }
 
 class TargetMethod {
+  /**
+   * has a method
+   */
   static public function method(): void {
   }
 }

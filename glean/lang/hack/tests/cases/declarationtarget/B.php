@@ -8,6 +8,7 @@
  */
 
 class SourceB {
+  // function here
   public function f(): void {
     new TargetClass();
     TargetMethod::method();

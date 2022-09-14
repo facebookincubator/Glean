@@ -1,0 +1,101 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "decl": {
+          "objcContainer": {
+            "key": {
+              "id": { "implementation": { "key": "A" } },
+              "source": {
+                "file": { "key": "test.m" },
+                "lineBegin": 33,
+                "columnBegin": 1,
+                "lineEnd": 37,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.m" },
+      "span": { "start": 504, "length": 74 }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "decl": {
+          "objcContainer": {
+            "key": {
+              "id": { "interface_": { "key": "A" } },
+              "source": {
+                "file": { "key": "test.m" },
+                "lineBegin": 13,
+                "columnBegin": 1,
+                "lineEnd": 27,
+                "columnEnd": 4
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.m" },
+      "span": { "start": 221, "length": 69 }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "decl": {
+          "objcProperty": {
+            "key": {
+              "name": { "key": "i" },
+              "container": { "interface_": { "key": "A" } },
+              "type": { "key": "int" },
+              "isInstance": true,
+              "isOptional": false,
+              "isReadOnly": false,
+              "isAtomic": false,
+              "source": {
+                "file": { "key": "test.m" },
+                "lineBegin": 25,
+                "columnBegin": 1,
+                "lineEnd": 25,
+                "columnEnd": 35
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.m" },
+      "span": { "start": 391, "length": 68 }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "_i" }, "scope": { "global_": { } } }
+              },
+              "type": { "key": "int" },
+              "kind": { "ivar": { "synthesize": false } },
+              "source": {
+                "file": { "key": "test.m" },
+                "lineBegin": 18,
+                "columnBegin": 3,
+                "lineEnd": 18,
+                "columnEnd": 8
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.m" },
+      "span": { "start": 308, "length": 69 }
+    }
+  }
+]

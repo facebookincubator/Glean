@@ -230,4 +230,15 @@ predicate HackContainsChildEntity :
       hack.NamespaceMember { namespace_ = Name, decl = Member}
     )
 
+# documentation spans
+predicate HackEntityDocumentation :
+  {
+    entity : code.hack.Entity,
+    file : src.File,
+    span : src.ByteSpan,
+  }
+  { E, F, S } where
+    { decl = D } = E;
+    hack.DeclarationComment{ declaration = D, file = F, span = S }
+
 }

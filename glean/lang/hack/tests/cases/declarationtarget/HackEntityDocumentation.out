@@ -1,0 +1,75 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "decl": {
+          "container": {
+            "class_": {
+              "key": { "name": { "key": { "name": { "key": "SourceA" } } } }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/A.php" },
+      "span": { "start": 226, "length": 19 }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "decl": {
+          "container": {
+            "class_": {
+              "key": { "name": { "key": { "name": { "key": "TargetClass" } } } }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/A.php" },
+      "span": { "start": 378, "length": 24 }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "decl": {
+          "method": {
+            "key": {
+              "name": { "key": "f" },
+              "container": {
+                "class_": {
+                  "key": { "name": { "key": { "name": { "key": "SourceA" } } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/A.php" },
+      "span": { "start": 264, "length": 25 }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "decl": {
+          "method": {
+            "key": {
+              "name": { "key": "method" },
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "TargetMethod" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/A.php" },
+      "span": { "start": 449, "length": 27 }
+    }
+  }
+]
