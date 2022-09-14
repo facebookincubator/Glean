@@ -22,6 +22,7 @@ module Glean.Haxl.Repos
 import Control.Monad.Trans.Maybe (MaybeT (..))
 
 import Haxl.Core hiding (Env, runHaxl)
+import Haxl.Core.Monad (WriteTree)
 import Haxl.DataSource.Glean (HasRepo(..))
 import qualified Haxl.DataSource.Glean
 import Data.List.NonEmpty
@@ -32,11 +33,12 @@ import qualified Glean.Haxl as Glean
 
 -- Searching across repos --------
 
-type ReposHaxl u w a = QueryRepos u => GenHaxl u w a
-type RepoHaxl u w a = Haxl.DataSource.Glean.HasRepo u => GenHaxl u w a
-type MaybeTReposHaxl u w a = QueryRepos u => MaybeT (GenHaxl u w) a
+type ReposHaxl u w a = QueryRepos u => GenHaxl u (WriteTree w) a
+type RepoHaxl u w a =
+  Haxl.DataSource.Glean.HasRepo u => GenHaxl u (WriteTree w) a
+type MaybeTReposHaxl u w a = QueryRepos u => MaybeT (GenHaxl u (WriteTree w)) a
 type MaybeTRepoHaxl u w a =
-  Haxl.DataSource.Glean.HasRepo u => MaybeT (GenHaxl u w) a
+  Haxl.DataSource.Glean.HasRepo u => MaybeT (GenHaxl u (WriteTree w)) a
 
 -- This type has instances for both HasRepo and HasRepos.
 -- The instance `HasRepo` allows us to use it as the userState
