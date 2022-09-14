@@ -321,47 +321,10 @@ restoreNoDiskSpaceTest =
     tb :: Int64
     tb = 1000000000000
 
--- | Test that DBs are removed from the restoring list if they fall out of
---   the replication policy.
-restoreCancelTest :: Test
-restoreCancelTest = TestCase  $ do
-  withTest $ withTestEnv repos id $ \TestEnv{..} -> do
-    -- the initial retention policy selects both test repos
-    testUpdConfig $ \scfg -> scfg
-      { config_restore = def { databaseRestorePolicy_enabled = True }
-      , config_retention = def {
-          databaseRetentionPolicy_default_retention = def {
-            retention_delete_if_older = Nothing
-          }
-        }
-      }
-    -- the janitor schedules both restores
-    runDatabaseJanitor testEnv
-    -- the updated retention policy no longer selects either repo
-    testUpdConfig $ \scfg -> scfg
-      { config_retention = def {
-          databaseRetentionPolicy_default_retention = def {
-            retention_delete_if_older = Just 1
-          }
-        }
-      }
-    -- the janitor aborts both restores
-    runDatabaseJanitor testEnv
-    expect testEvents $
-       opt (want Waiting) <>
-       parallel (map want [RestoreAborted repo1, RestoreAborted repo2])
-  where
-    repo1 = Repo "foo" "1"
-    repo2 = Repo "foo" "2"
-    repos = [ CloudTestDbSpec repo1 True 10 1 Nothing
-            , CloudTestDbSpec repo2 True 10 1 Nothing
-            ]
-
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
   [ TestLabel "basicBackup" basicBackupTest
   , TestLabel "allowedTest" allowedTest
   , TestLabel "restoreOrderTest" restoreOrderTest
   , TestLabel "restoreNoDiskSpace" restoreNoDiskSpaceTest
-  , TestLabel "restoreCancel" restoreCancelTest
   ]
