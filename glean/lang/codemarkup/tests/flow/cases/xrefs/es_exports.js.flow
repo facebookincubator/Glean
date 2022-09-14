@@ -10,6 +10,9 @@
 
 let foo: number = 1;
 
+/**
+ * This is a comment
+ */
 function bor(x: number): number {
   return x + 1;
 }

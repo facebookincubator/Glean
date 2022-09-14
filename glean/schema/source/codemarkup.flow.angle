@@ -124,4 +124,44 @@ predicate FlowEntityUses:
   { Entity, File, Span } where
     flow.FlowEntityUsesAll { Entity, File, Span };
 
+# documentation spans in flow are attached to declarations only
+predicate FlowEntityDocumentation :
+  {
+    entity : code.flow.Entity,
+    file : src.File,
+    span : src.ByteSpan
+  }
+  { Entity, File, Span } where
+    { decl = Decl } = Entity;
+    FlowDeclarationDocumentation { Decl, File, Span }
+
+predicate FlowDeclarationDocumentation :
+  {
+    decl : flow.SomeDeclaration,
+    file : src.File,
+    span : src.ByteSpan
+  }
+  { Decl, File, Span } where
+    ( { localDecl = D } = Decl;
+      flow.DeclarationInfo { D, _, { just = Docs } }
+    ) | (
+      { memberDecl = D } = Decl;
+      flow.MemberDeclarationInfo { D, _, { just = Docs } }
+    ) | (
+      { typeDecl = D } = Decl;
+      flow.TypeDeclarationInfo { D, _, { just = Docs } }
+    );
+    FlowDocumentationSpan { Docs, File, Span }
+
+predicate FlowDocumentationSpan :
+  {
+    doc : flow.Documentation,
+    file : src.File,
+    span : src.ByteSpan
+  }
+  { Docs, File, Span } where
+    { module = M , span = Span } = Docs;
+    ( { file = File } = M ) |
+    ( { string_ = Str } = M; flow.StringToFileModule { Str , File } )
+
 }

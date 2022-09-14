@@ -1,0 +1,26 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "decl": {
+          "localDecl": {
+            "key": {
+              "name": { "key": "bor" },
+              "loc": {
+                "key": {
+                  "module": {
+                    "key": { "file": { "key": "test/es_exports.js.flow" } }
+                  },
+                  "span": { "start": 291, "length": 3 }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test/es_exports.js.flow" },
+      "span": { "start": 253, "length": 28 }
+    }
+  }
+]

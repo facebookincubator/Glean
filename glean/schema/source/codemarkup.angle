@@ -435,12 +435,15 @@ predicate EntityDocumentation:
     file : src.File,
     span : src.ByteSpan,
   }
-  {E, F, S} where
+  { E, F, S } where
     ( { cxx = D } = E;
       codemarkup.cxx.CxxEntityDocumentation { D, F, S }
     ) | (
       { hack = D } = E;
       codemarkup.hack.HackEntityDocumentation { D, F, S }
+    ) | (
+      { flow = D } = E;
+      codemarkup.flow.FlowEntityDocumentation { D, F, S }
     )
 
 # end
