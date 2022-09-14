@@ -24,6 +24,9 @@ def _OR(l: List[R]) -> str:
     return '|'.join(map(_make_value, l))
   return 'never'
 
+def _PREFIX(arg: str) -> str:
+  return _make_value(arg) + '..'
+
 def angle_for(__env: Dict[str, R], key: ast.Expr, field_name: Optional[str]) -> str:
   if key is None:
     return f''
@@ -39,7 +42,9 @@ def angle_for(__env: Dict[str, R], key: ast.Expr, field_name: Optional[str]) -> 
         value = 'nothing'
       return _make_attribute(field_name, value)
     elif isinstance(key.func, ast.Name) and (key.func.id == 'OR'):
-      return _OR(__env[key.args[0].id])
+      return _make_attribute(field_name, _OR(__env[key.args[0].id]))
+    elif isinstance(key.func, ast.Name) and (key.func.id == 'PREFIX'):
+      return _make_attribute(field_name, _PREFIX(__env[key.args[0].id]))
     nested_call_arg = callGleanSchemaPredicateQuery(key, {}, "__target__", __env)["__target__"]
     # eliminate the name of GleanPredicate from inner call
     nested_call_arg = " ".join(nested_call_arg[0].split(" ")[1:])
