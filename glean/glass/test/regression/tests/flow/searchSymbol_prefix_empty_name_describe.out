@@ -72,8 +72,8 @@
                     "range": {
                         "columnBegin": 14,
                         "columnEnd": 15,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "lineBegin": 30,
+                        "lineEnd": 30
                     },
                     "repository": "test"
                 },
@@ -88,8 +88,8 @@
                     "range": {
                         "columnBegin": 14,
                         "columnEnd": 15,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "lineBegin": 30,
+                        "lineEnd": 30
                     },
                     "repository": "test"
                 },
@@ -103,8 +103,8 @@
                     "range": {
                         "columnBegin": 21,
                         "columnEnd": 24,
-                        "lineBegin": 21,
-                        "lineEnd": 21
+                        "lineBegin": 24,
+                        "lineEnd": 24
                     },
                     "repository": "test"
                 },
@@ -119,8 +119,8 @@
                     "range": {
                         "columnBegin": 21,
                         "columnEnd": 24,
-                        "lineBegin": 21,
-                        "lineEnd": 21
+                        "lineBegin": 24,
+                        "lineEnd": 24
                     },
                     "repository": "test"
                 },
@@ -134,8 +134,8 @@
                     "range": {
                         "columnBegin": 7,
                         "columnEnd": 10,
-                        "lineBegin": 17,
-                        "lineEnd": 17
+                        "lineBegin": 20,
+                        "lineEnd": 20
                     },
                     "repository": "test"
                 },
@@ -150,23 +150,34 @@
                     "range": {
                         "columnBegin": 7,
                         "columnEnd": 10,
-                        "lineBegin": 17,
-                        "lineEnd": 17
+                        "lineBegin": 20,
+                        "lineEnd": 20
                     },
                     "repository": "test"
                 },
                 "sym_other_locations": []
             },
             {
-                "comments": [],
+                "comments": [
+                    {
+                        "filepath": "test/es_exports.js.flow",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 4,
+                            "lineBegin": 13,
+                            "lineEnd": 15
+                        },
+                        "repository": "test"
+                    }
+                ],
                 "language": 2,
                 "location": {
                     "filepath": "test/es_exports.js.flow",
                     "range": {
                         "columnBegin": 10,
                         "columnEnd": 13,
-                        "lineBegin": 13,
-                        "lineEnd": 13
+                        "lineBegin": 16,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 },
@@ -181,8 +192,8 @@
                     "range": {
                         "columnBegin": 10,
                         "columnEnd": 13,
-                        "lineBegin": 13,
-                        "lineEnd": 13
+                        "lineBegin": 16,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 },
@@ -196,8 +207,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 6,
-                        "lineBegin": 19,
-                        "lineEnd": 19
+                        "lineBegin": 22,
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -212,8 +223,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 6,
-                        "lineBegin": 19,
-                        "lineEnd": 19
+                        "lineBegin": 22,
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -258,8 +269,8 @@
                     "range": {
                         "columnBegin": 13,
                         "columnEnd": 16,
-                        "lineBegin": 25,
-                        "lineEnd": 25
+                        "lineBegin": 28,
+                        "lineEnd": 28
                     },
                     "repository": "test"
                 },
@@ -274,8 +285,8 @@
                     "range": {
                         "columnBegin": 13,
                         "columnEnd": 16,
-                        "lineBegin": 25,
-                        "lineEnd": 25
+                        "lineBegin": 28,
+                        "lineEnd": 28
                     },
                     "repository": "test"
                 },
@@ -289,8 +300,8 @@
                     "range": {
                         "columnBegin": 14,
                         "columnEnd": 15,
-                        "lineBegin": 13,
-                        "lineEnd": 13
+                        "lineBegin": 16,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 },
@@ -305,8 +316,8 @@
                     "range": {
                         "columnBegin": 14,
                         "columnEnd": 15,
-                        "lineBegin": 13,
-                        "lineEnd": 13
+                        "lineBegin": 16,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 },
@@ -940,8 +951,8 @@
                     "range": {
                         "columnBegin": 14,
                         "columnEnd": 15,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "lineBegin": 30,
+                        "lineEnd": 30
                     },
                     "repository": "test"
                 },
@@ -955,8 +966,8 @@
                     "range": {
                         "columnBegin": 21,
                         "columnEnd": 24,
-                        "lineBegin": 21,
-                        "lineEnd": 21
+                        "lineBegin": 24,
+                        "lineEnd": 24
                     },
                     "repository": "test"
                 },
@@ -970,8 +981,8 @@
                     "range": {
                         "columnBegin": 7,
                         "columnEnd": 10,
-                        "lineBegin": 17,
-                        "lineEnd": 17
+                        "lineBegin": 20,
+                        "lineEnd": 20
                     },
                     "repository": "test"
                 },
@@ -985,8 +996,8 @@
                     "range": {
                         "columnBegin": 10,
                         "columnEnd": 13,
-                        "lineBegin": 13,
-                        "lineEnd": 13
+                        "lineBegin": 16,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 },
@@ -1000,8 +1011,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 6,
-                        "lineBegin": 19,
-                        "lineEnd": 19
+                        "lineBegin": 22,
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -1030,8 +1041,8 @@
                     "range": {
                         "columnBegin": 13,
                         "columnEnd": 16,
-                        "lineBegin": 25,
-                        "lineEnd": 25
+                        "lineBegin": 28,
+                        "lineEnd": 28
                     },
                     "repository": "test"
                 },
@@ -1045,8 +1056,8 @@
                     "range": {
                         "columnBegin": 14,
                         "columnEnd": 15,
-                        "lineBegin": 13,
-                        "lineEnd": 13
+                        "lineBegin": 16,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 },
