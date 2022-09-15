@@ -16,6 +16,7 @@ from glean.schema.codemarkup_hack.types import (
     HackEntityLocation,
     HackVisibility,
     HackAnnotation,
+    HackEntityDocumentation,
     HackResolveLocation,
     HackContainsChildEntity,
     HackFileEntityXRefLocations,
@@ -81,6 +82,18 @@ class CodemarkupHackHackAnnotation(GleanSchemaPredicate):
 
   @staticmethod
   def angle_query(*, entity: Optional["CodeHackEntity"] = None, anns: Optional["CodeHackAnnotations"] = None) -> "CodemarkupHackHackAnnotation":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class CodemarkupHackHackEntityDocumentation(GleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], entity: ast.Expr, file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')]))
+    return f"codemarkup.hack.HackEntityDocumentation.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", HackEntityDocumentation
+
+  @staticmethod
+  def angle_query(*, entity: Optional["CodeHackEntity"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "CodemarkupHackHackEntityDocumentation":
     raise Exception("this function can only be called from @angle_query")
 
 

@@ -32,6 +32,7 @@ from glean.schema.codemarkup.types import (
     EntityReferences,
     EntityKind,
     ResolveLocation,
+    EntityDocumentation,
     RelationType,
     ParentEntity,
     ChildEntity,
@@ -286,6 +287,18 @@ class CodemarkupResolveLocation(GleanSchemaPredicate):
 
   @staticmethod
   def angle_query(*, location: Optional["CodemarkupTypesLocation"] = None, entity: Optional["CodeEntity"] = None) -> "CodemarkupResolveLocation":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class CodemarkupEntityDocumentation(GleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], entity: ast.Expr, file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')]))
+    return f"codemarkup.EntityDocumentation.30 { ('{ ' + query_fields + ' }') if query_fields else '_' }", EntityDocumentation
+
+  @staticmethod
+  def angle_query(*, entity: Optional["CodeEntity"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "CodemarkupEntityDocumentation":
     raise Exception("this function can only be called from @angle_query")
 
 

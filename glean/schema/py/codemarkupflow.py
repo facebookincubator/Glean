@@ -7,6 +7,7 @@ import ast
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
 from glean.schema.py.codeflow import *
 from glean.schema.py.codemarkuptypes import *
+from glean.schema.py.flow import *
 from glean.schema.py.src import *
 
 
@@ -14,9 +15,12 @@ from glean.schema.codemarkup_flow.types import (
     FlowEntityLocation,
     FlowResolveLocation,
     FlowFileReferenceEntityXRefLocations,
+    FlowEntityDocumentation,
     FlowFileImportDeclEntityXRefLocations,
     FlowFileEntityXRefLocations,
     FlowEntityUses,
+    FlowDocumentationSpan,
+    FlowDeclarationDocumentation,
 )
 
 
@@ -56,6 +60,18 @@ class CodemarkupFlowFlowFileReferenceEntityXRefLocations(GleanSchemaPredicate):
 
 
 
+class CodemarkupFlowFlowEntityDocumentation(GleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], entity: ast.Expr, file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, entity, 'entity'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')]))
+    return f"codemarkup.flow.FlowEntityDocumentation.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FlowEntityDocumentation
+
+  @staticmethod
+  def angle_query(*, entity: Optional["CodeFlowEntity"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "CodemarkupFlowFlowEntityDocumentation":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
 class CodemarkupFlowFlowFileImportDeclEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, xref: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
@@ -88,6 +104,30 @@ class CodemarkupFlowFlowEntityUses(GleanSchemaPredicate):
 
   @staticmethod
   def angle_query(*, target: Optional["CodeFlowEntity"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "CodemarkupFlowFlowEntityUses":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class CodemarkupFlowFlowDocumentationSpan(GleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], doc: ast.Expr, file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, doc, 'doc'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')]))
+    return f"codemarkup.flow.FlowDocumentationSpan.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FlowDocumentationSpan
+
+  @staticmethod
+  def angle_query(*, doc: Optional["FlowDocumentation"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "CodemarkupFlowFlowDocumentationSpan":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class CodemarkupFlowFlowDeclarationDocumentation(GleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], decl: ast.Expr, file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, file, 'file'), angle_for(__env, span, 'span')]))
+    return f"codemarkup.flow.FlowDeclarationDocumentation.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", FlowDeclarationDocumentation
+
+  @staticmethod
+  def angle_query(*, decl: Optional["FlowSomeDeclaration"] = None, file: Optional["SrcFile"] = None, span: Optional["SrcByteSpan"] = None) -> "CodemarkupFlowFlowDeclarationDocumentation":
     raise Exception("this function can only be called from @angle_query")
 
 
