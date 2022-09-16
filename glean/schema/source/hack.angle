@@ -735,4 +735,17 @@ predicate AttributeToDeclaration :
     # { qname = { just = Q } } = A;
     # { container = { class_ = { name = Q } } } = D
 
+  # Store arrays of Md5 hashes which characterize indexer inputs.
+  # This is used for incremental indexing to avoid regenerating
+  # existing facts.
+  #
+  # Hash is specified by the indexer, roughly defined as
+  # md5(filename||symbols_def). It characterizes the "external"
+  # symbols within a hack file.
+  #
+  # The key string is the name of the batch of files used to
+  # generate the array.
+  #
+  # This is experimental and may change in the future
+  predicate IndexerInputsHash : string -> [byte]
 }

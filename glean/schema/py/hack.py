@@ -25,6 +25,7 @@ from glean.schema.hack.types import (
     TargetUsesAbs,
     MethodOverridden,
     ClassDeclaration,
+    IndexerInputsHash,
     QName,
     filename,
     kind,
@@ -279,6 +280,18 @@ class HackClassDeclaration(GleanSchemaPredicate):
 
   @staticmethod
   def angle_query(*, name: Optional["HackQName"] = None) -> "HackClassDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class HackIndexerInputsHash(GleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
+    query_fields =  angle_for(__env, arg, None)
+    return f"hack.IndexerInputsHash.6 { query_fields if query_fields else '_' }", IndexerInputsHash
+
+  @staticmethod
+  def angle_query(*, arg: Optional[str] = None) -> "HackIndexerInputsHash":
     raise Exception("this function can only be called from @angle_query")
 
 
