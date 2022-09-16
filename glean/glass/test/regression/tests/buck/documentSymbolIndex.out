@@ -2,7 +2,7 @@
     "@generated",
     {
         "revision": "testhash",
-        "size": 12,
+        "size": 13,
         "symbols": {
             "12": [
                 {
@@ -120,6 +120,30 @@
                         },
                         "repository": "test"
                     }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 20,
+                        "lineBegin": 2,
+                        "lineEnd": 2
+                    },
+                    "sym": "test/buck/f/buck_project/my_defs.bzl",
+                    "target": {
+                        "filepath": "buck_project/my_defs.bzl",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 1,
+                            "lineEnd": 1
+                        },
+                        "repository": "test"
+                    }
                 }
             ],
             "20": [
@@ -155,10 +179,10 @@
                     "target": {
                         "filepath": "buck_project/toto.c",
                         "range": {
-                            "columnBegin": 0,
-                            "columnEnd": 0,
-                            "lineBegin": 0,
-                            "lineEnd": 0
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 1,
+                            "lineEnd": 1
                         },
                         "repository": "test"
                     }
@@ -179,10 +203,10 @@
                     "target": {
                         "filepath": "buck_project/tutu.c",
                         "range": {
-                            "columnBegin": 0,
-                            "columnEnd": 0,
-                            "lineBegin": 0,
-                            "lineEnd": 0
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 1,
+                            "lineEnd": 1
                         },
                         "repository": "test"
                     }

@@ -2,8 +2,24 @@
     "@generated",
     {
         "revision": "testhash",
-        "size": 3,
+        "size": 4,
         "symbols": {
+            "1": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 1
+                    },
+                    "sym": "test/buck/f/buck_project/my_defs.bzl"
+                }
+            ],
             "3": [
                 {
                     "attributes": {

@@ -83,8 +83,8 @@ predicate BuckFileEntityXRefLocations:
       ) | (
         { file = SrcFile } = XRefDestination;
         SrcFile = src.File Name;
-        buck.SourceFileLocation { SrcFile, Span };
-        { Name, SrcFile, { span = Span}, nothing } = Location;
+        # we always refer to the beginning of the file
+        { Name, SrcFile, { range = {SrcFile, 1, 1, 1, 1} }, nothing } = Location;
         Entity = { file = SrcFile } : code.buck.Entity;
       )
 #
