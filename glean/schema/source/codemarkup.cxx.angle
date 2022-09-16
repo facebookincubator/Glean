@@ -416,7 +416,105 @@ predicate CxxVisibility:
 # Relations
 #
 
-# decls and defns only. enumerators (fields of enums) can't contain anything
+# The child `extends` parent relationship
+predicate CxxExtendsParentEntity :
+  {
+    child : code.cxx.Entity,
+    parent : code.cxx.Entity
+  }
+  { Child, Parent } where
+    ( { decl = Decl } = Child;
+      CxxDeclarationExtendsParent { Decl, Parent }
+    ) | (
+      { defn = Defn } = Child;
+      CxxDefinitionExtendsParent { Defn, Parent }
+    )
+
+# child extends parent for definitions
+#
+# - records (structs, classses)
+# - methods
+# - objC things
+#
+predicate CxxDefinitionExtendsParent:
+  {
+    child : code.cxx.Definition,
+    parent : code.cxx.Entity
+  }
+  { Child, Parent } where
+    ( { record_ = C } = Child;
+      cxx1.RecordDefinition { bases = BS } = C;
+      cxx1.RecordBase { base = P } = BS[..];
+      CxxResolveDeclarationToEntity { { record_ = P }, Parent }
+    ) | (
+      { function_ = _ } | { objcContainer = _ } = Child;
+      cxx1.DefToBaseDecl { Child, C };
+      CxxDeclarationExtendsParent { C, Parent }
+    )
+
+predicate CxxDeclarationExtendsParent:
+  {
+    child : cxx1.Declaration,
+    parent : code.cxx.Entity
+  }
+  { Child, Parent } where
+    ( { record_ = _ } = Child;
+      code.cxx.DeclToDef { Child, Defn };
+      CxxDefinitionExtendsParent { Defn, Parent }
+    ) | (
+      { function_ = C } = Child;
+      cxx1.MethodOverrides { C, P };
+      CxxResolveDeclarationToEntity { { function_ = P }, Parent }
+    ) | (
+      { objcContainer = C } = Child;
+      cxx1.ObjcImplements { C, P } | cxx1.ObjcContainerBase{ C, P };
+      CxxResolveDeclarationToEntity { { objcContainer = P }, Parent }
+    )
+
+# The parent `extended by` child relationship
+predicate CxxExtendsChildEntity :
+  {
+    parent: code.cxx.Entity,
+    child: code.cxx.Entity
+  }
+  { Parent, Child } where
+    ( { decl = Decl } = Parent;
+      CxxDeclarationExtendsChild { Decl, Child }
+    ) | (
+      { defn = Defn } = Parent;
+      CxxDefinitionExtendsChild { Defn, Child }
+    )
+
+predicate CxxDefinitionExtendsChild:
+  {
+    parent: code.cxx.Definition,
+    child: code.cxx.Entity
+  }
+  { Parent, Child } where
+    cxx1.DefToBaseDecl { Parent, Decl };
+    CxxDeclarationExtendsChild { Decl, Child }
+
+predicate CxxDeclarationExtendsChild:
+  {
+    parent: cxx1.Declaration,
+    child: code.cxx.Entity
+  }
+  { Parent, Child } where
+    ( { record_ = P } = Parent;
+      cxx1.RecordDerived { P, C };
+      CxxResolveDeclarationToEntity { { record_ = C }, Child }
+    ) | (
+      { function_ = P } = Parent;
+      cxx1.MethodOverridden { P, C };
+      CxxResolveDeclarationToEntity { { function_ = C }, Child }
+    ) | (
+      { objcContainer = P } = Parent;
+      cxx1.ObjcInterfaceToImplementation { P, C } |
+        cxx1.ObjcContainerInheritance { P, C };
+      CxxResolveDeclarationToEntity { { objcContainer = C }, Child }
+    )
+
+# The parent `contains` child relationship
 predicate CxxContainsChildEntity :
   {
     parent: code.cxx.Entity,
@@ -454,7 +552,7 @@ predicate CxxDefinitionContainsChild:
       CxxResolveDeclarationToEntity { Decl, Child }
     ) | (
       # namespace member facts are all empty, so instead lookup by scope
-      { namespace_  = Defn } = Parent;
+      { namespace_ = Defn } = Parent;
       cxx1.NamespaceDefinition { declaration = Decl } = Defn;
       CxxNamespaceDeclarationContainsChild { Decl, Child }
     ) | (

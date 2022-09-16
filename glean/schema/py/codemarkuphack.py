@@ -11,6 +11,7 @@ from glean.schema.py.src import *
 
 
 from glean.schema.codemarkup_hack.types import (
+    HackExtendsChildEntity,
     HackContainsParentEntity,
     HackEntityInfo,
     HackEntityLocation,
@@ -19,11 +20,24 @@ from glean.schema.codemarkup_hack.types import (
     HackEntityDocumentation,
     HackResolveLocation,
     HackContainsChildEntity,
+    HackExtendsParentEntity,
     HackFileEntityXRefLocations,
     HackEntityUses,
     HackEntityKind,
     HackFileEntityXRefSpans,
 )
+
+
+class CodemarkupHackHackExtendsChildEntity(GleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], parent: ast.Expr, child: ast.Expr) -> Tuple[str, Struct]:
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, parent, 'parent'), angle_for(__env, child, 'child')]))
+    return f"codemarkup.hack.HackExtendsChildEntity.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", HackExtendsChildEntity
+
+  @staticmethod
+  def angle_query(*, parent: Optional["CodeHackEntity"] = None, child: Optional["CodeHackEntity"] = None) -> "CodemarkupHackHackExtendsChildEntity":
+    raise Exception("this function can only be called from @angle_query")
+
 
 
 class CodemarkupHackHackContainsParentEntity(GleanSchemaPredicate):
@@ -118,6 +132,18 @@ class CodemarkupHackHackContainsChildEntity(GleanSchemaPredicate):
 
   @staticmethod
   def angle_query(*, parent: Optional["CodeHackEntity"] = None, child: Optional["CodeHackEntity"] = None) -> "CodemarkupHackHackContainsChildEntity":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class CodemarkupHackHackExtendsParentEntity(GleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], child: ast.Expr, parent: ast.Expr) -> Tuple[str, Struct]:
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, child, 'child'), angle_for(__env, parent, 'parent')]))
+    return f"codemarkup.hack.HackExtendsParentEntity.2 { ('{ ' + query_fields + ' }') if query_fields else '_' }", HackExtendsParentEntity
+
+  @staticmethod
+  def angle_query(*, child: Optional["CodeHackEntity"] = None, parent: Optional["CodeHackEntity"] = None) -> "CodemarkupHackHackExtendsParentEntity":
     raise Exception("this function can only be called from @angle_query")
 
 

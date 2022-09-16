@@ -177,6 +177,7 @@ predicate HackVisibility :
 # Relations
 #
 
+# child `contained by` parent
 predicate HackContainsParentEntity :
   {
     child: code.hack.Entity,
@@ -198,6 +199,7 @@ predicate HackContainsParentEntity :
       Parent = hack.Declaration { namespace_ = {name = Name }}
     )
 
+# parent contains child
 predicate HackContainsChildEntity :
   {
     parent: code.hack.Entity,
@@ -229,6 +231,28 @@ predicate HackContainsChildEntity :
       { namespace_ = {name=Name} } = Container;
       hack.NamespaceMember { namespace_ = Name, decl = Member}
     )
+
+# parent extended by child
+predicate HackExtendsChildEntity :
+  {
+    parent : code.hack.Entity,
+    child : code.hack.Entity
+  }
+  { { decl = Parent }, { decl = Child } } where
+    { container = P } = Parent;
+    hack.ContainerChild { container = P, child = C };
+    { container = C } = Child;
+
+# child extends parent
+predicate HackExtendsParentEntity :
+  {
+    child : code.hack.Entity,
+    parent : code.hack.Entity
+  }
+  { { decl = Child }, { decl = Parent } } where
+    { container = C } = Child;
+    hack.ContainerParent { C, P };
+    { container = P } = Parent
 
 # documentation spans
 predicate HackEntityDocumentation :
