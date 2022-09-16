@@ -74,7 +74,7 @@ searchRelatedEntities
   -> ReposHaxl u w [RelatedLocatedEntities]
 searchRelatedEntities limit recurse dir rel SearchEntity{..} repo =
   withRepo entityRepo $ toSymbolIds repo =<<
-    searchRelation limit recurse rel dir repo [decl] HashSet.empty
+    searchRelation limit limit recurse rel dir repo [decl] HashSet.empty
 
 -- | Lift entity search results into pairs of entities that we found,
 -- along with their location and symbol id
@@ -98,6 +98,7 @@ toSymbolIds repo edges = mapM locatePairs edges
 --
 searchRelation
   :: Int
+  -> Int
   -> Recursive
   -> RelationType
   -> RelationDirection
@@ -105,38 +106,40 @@ searchRelation
   -> [Code.Entity]
   -> HashSet RelatedEntities
   -> RepoHaxl u w [RelatedEntities]
-searchRelation limit recursive relation direction repo toVisit visited = do
-  angle <- forM toVisit $ \entity ->
-     case entityToAngle entity of
-      Right angle -> return angle
-      Left t -> throwM (ServerException t)
-  justVisited <- case (relation, direction) of
-    (RelationType_Extends, RelationDirection_Parent)
-      -> runSearchRelated limit angle Code.RelationType_ExtendsParentOfChild
-    (RelationType_Extends, RelationDirection_Child)
-      -> runSearchRelated limit angle Code.RelationType_ExtendsChildOfParent
-    (RelationType_Contains, RelationDirection_Parent)
-      -> runSearchRelated limit angle Code.RelationType_ContainsParentOfChild
-    (RelationType_Contains, RelationDirection_Child)
-      -> runSearchRelated limit angle Code.RelationType_ContainsChildOfParent
-    _ -> pure [] -- unknown thrift case
-  let
-    newlyVisited = HashSet.fromList justVisited `HashSet.difference` visited
-    visited' = visited `HashSet.union` newlyVisited
-    toVisit = HashSet.toList $ case direction of
-      RelationDirection_Parent -> HashSet.map parentEntity newlyVisited
-      RelationDirection_Child -> HashSet.map childEntity newlyVisited
-      _ -> HashSet.empty -- unknown direction
-    recLimit = limit - length visited'
-  if
-    recursive == Recursive &&
-    recLimit > 0 &&
-    recLimit < limit &&
-    not (null toVisit)
-  then
-    searchRelation recLimit recursive relation direction repo toVisit visited'
-  else
-    pure $ HashSet.toList visited'
+searchRelation
+  totalLimit limit recursive relation direction repo toVisit visited = do
+    angle <- forM toVisit $ \entity ->
+      case entityToAngle entity of
+        Right angle -> return angle
+        Left t -> throwM (ServerException t)
+    justVisited <- case (relation, direction) of
+      (RelationType_Extends, RelationDirection_Parent) -> runSearchRelated
+        totalLimit angle Code.RelationType_ExtendsParentOfChild
+      (RelationType_Extends, RelationDirection_Child) -> runSearchRelated
+        totalLimit angle Code.RelationType_ExtendsChildOfParent
+      (RelationType_Contains, RelationDirection_Parent) -> runSearchRelated
+        totalLimit angle Code.RelationType_ContainsParentOfChild
+      (RelationType_Contains, RelationDirection_Child) -> runSearchRelated
+        totalLimit angle Code.RelationType_ContainsChildOfParent
+      _ -> pure [] -- unknown thrift case
+    let
+      newlyVisited = HashSet.fromList justVisited `HashSet.difference` visited
+      visited' = visited `HashSet.union` newlyVisited
+      toVisit = HashSet.toList $ case direction of
+        RelationDirection_Parent -> HashSet.map parentEntity newlyVisited
+        RelationDirection_Child -> HashSet.map childEntity newlyVisited
+        _ -> HashSet.empty -- unknown direction
+      recLimit = limit - length visited'
+    if
+      recursive == Recursive &&
+      recLimit > 0 &&
+      recLimit < limit &&
+      not (null toVisit)
+    then
+      searchRelation
+        totalLimit recLimit recursive relation direction repo toVisit visited'
+    else
+      pure $ HashSet.toList visited'
 
 runSearchRelated
   :: Int
