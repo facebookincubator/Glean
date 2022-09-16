@@ -4,7 +4,8 @@ from typing import Optional, Tuple, Union, List, Dict, TypeVar
 from thrift.py3 import Struct
 from enum import Enum
 import ast
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, angle_for, R, Just, InnerGleanSchemaPredicate
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate , Just, InnerGleanSchemaPredicate
+from glean.client.py3.angle_query import angle_for, R
 from glean.schema.py.code import *
 from glean.schema.py.cxx1 import *
 from glean.schema.py.hack import *
