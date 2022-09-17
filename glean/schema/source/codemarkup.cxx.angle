@@ -77,6 +77,16 @@ predicate CxxResolveDeclarationToEntity:
       NamespaceDefn = cxx1.NamespaceDefinition { declaration = NamespaceDecl }
     ) then (
       { defn = { namespace_ = NamespaceDefn } } = Entity
+    ) else if (
+      { objcContainer = ContDecl } = Decl;
+      ContainerDefn = cxx1.ObjcContainerDefinition { declaration = ContDecl }
+    ) then (
+      { defn = { objcContainer = ContainerDefn } } = Entity
+    ) else if (
+      { objcMethod = MethDecl } = Decl;
+      MethDefn = cxx1.ObjcMethodDefinition MethDecl
+    ) then (
+      { defn = { objcMethod = MethDefn } } = Entity
     ) else (
       { decl = Decl } = Entity
     )

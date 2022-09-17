@@ -126,16 +126,54 @@
         "source": { "span": { "start": 325, "length": 1 } }
       },
       "entity": {
-        "decl": {
+        "defn": {
           "objcContainer": {
             "key": {
-              "id": { "interface_": { "key": "J" } },
-              "source": {
-                "file": { "key": "test.m" },
-                "lineBegin": 9,
-                "columnBegin": 1,
-                "lineEnd": 11,
-                "columnEnd": 4
+              "declaration": {
+                "key": {
+                  "id": { "interface_": { "key": "J" } },
+                  "source": {
+                    "file": { "key": "test.m" },
+                    "lineBegin": 9,
+                    "columnBegin": 1,
+                    "lineEnd": 11,
+                    "columnEnd": 4
+                  }
+                }
+              },
+              "protocols": [ ],
+              "members": {
+                "key": [
+                  {
+                    "objcMethod": {
+                      "key": {
+                        "selector": { "key": [ "checkSelector" ] },
+                        "container": { "interface_": { "key": "J" } },
+                        "signature": {
+                          "key": {
+                            "returns": { "key": "void" },
+                            "parameters": [
+                              {
+                                "name": { "key": "selector" },
+                                "type": { "key": "SEL" }
+                              }
+                            ]
+                          }
+                        },
+                        "isInstance": true,
+                        "isOptional": false,
+                        "isAccessor": false,
+                        "source": {
+                          "file": { "key": "test.m" },
+                          "lineBegin": 10,
+                          "columnBegin": 1,
+                          "lineEnd": 10,
+                          "columnEnd": 36
+                        }
+                      }
+                    }
+                  }
+                ]
               }
             }
           }

@@ -6,37 +6,6 @@
       "entity": {
         "cxx": {
           "decl": {
-            "objcMethod": {
-              "key": {
-                "selector": { "key": [ "fooBar" ] },
-                "container": { "implementation": { "key": "Bar" } },
-                "signature": {
-                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
-                },
-                "isInstance": true,
-                "isOptional": false,
-                "isAccessor": false,
-                "source": {
-                  "file": { "key": "test.mm" },
-                  "lineBegin": 30,
-                  "columnBegin": 1,
-                  "lineEnd": 33,
-                  "columnEnd": 1
-                }
-              }
-            }
-          }
-        }
-      },
-      "info": { "kind": 7, "isAbstract": false }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.mm" },
-      "entity": {
-        "cxx": {
-          "decl": {
             "variable": {
               "key": {
                 "name": {
@@ -199,6 +168,39 @@
         }
       },
       "info": { "kind": 13, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.mm" },
+      "entity": {
+        "cxx": {
+          "defn": {
+            "objcMethod": {
+              "key": {
+                "key": {
+                  "selector": { "key": [ "fooBar" ] },
+                  "container": { "implementation": { "key": "Bar" } },
+                  "signature": {
+                    "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                  },
+                  "isInstance": true,
+                  "isOptional": false,
+                  "isAccessor": false,
+                  "source": {
+                    "file": { "key": "test.mm" },
+                    "lineBegin": 30,
+                    "columnBegin": 1,
+                    "lineEnd": 33,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 7, "isAbstract": false }
     }
   }
 ]

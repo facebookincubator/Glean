@@ -22,16 +22,58 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "objcContainer": {
               "key": {
-                "id": { "protocol": { "key": "Foo" } },
-                "source": {
-                  "file": { "key": "test.mm" },
-                  "lineBegin": 9,
-                  "columnBegin": 1,
-                  "lineEnd": 13,
-                  "columnEnd": 4
+                "declaration": {
+                  "key": {
+                    "id": { "protocol": { "key": "Foo" } },
+                    "source": {
+                      "file": { "key": "test.mm" },
+                      "lineBegin": 9,
+                      "columnBegin": 1,
+                      "lineEnd": 13,
+                      "columnEnd": 4
+                    }
+                  }
+                },
+                "protocols": [ ],
+                "members": {
+                  "key": [
+                    {
+                      "objcMethod": {
+                        "key": {
+                          "selector": { "key": [ "setInt", "setDouble" ] },
+                          "container": { "protocol": { "key": "Foo" } },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "x" },
+                                  "type": { "key": "int" }
+                                },
+                                {
+                                  "name": { "key": "y" },
+                                  "type": { "key": "double" }
+                                }
+                              ]
+                            }
+                          },
+                          "isInstance": true,
+                          "isOptional": false,
+                          "isAccessor": false,
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 11,
+                            "columnBegin": 1,
+                            "lineEnd": 11,
+                            "columnEnd": 42
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -62,16 +104,58 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "objcContainer": {
               "key": {
-                "id": { "protocol": { "key": "Foo" } },
-                "source": {
-                  "file": { "key": "test.mm" },
-                  "lineBegin": 9,
-                  "columnBegin": 1,
-                  "lineEnd": 13,
-                  "columnEnd": 4
+                "declaration": {
+                  "key": {
+                    "id": { "protocol": { "key": "Foo" } },
+                    "source": {
+                      "file": { "key": "test.mm" },
+                      "lineBegin": 9,
+                      "columnBegin": 1,
+                      "lineEnd": 13,
+                      "columnEnd": 4
+                    }
+                  }
+                },
+                "protocols": [ ],
+                "members": {
+                  "key": [
+                    {
+                      "objcMethod": {
+                        "key": {
+                          "selector": { "key": [ "setInt", "setDouble" ] },
+                          "container": { "protocol": { "key": "Foo" } },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "x" },
+                                  "type": { "key": "int" }
+                                },
+                                {
+                                  "name": { "key": "y" },
+                                  "type": { "key": "double" }
+                                }
+                              ]
+                            }
+                          },
+                          "isInstance": true,
+                          "isOptional": false,
+                          "isAccessor": false,
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 11,
+                            "columnBegin": 1,
+                            "lineEnd": 11,
+                            "columnEnd": 42
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }

@@ -4,40 +4,6 @@
     "key": {
       "entity": {
         "decl": {
-          "objcContainer": {
-            "key": {
-              "id": { "interface_": { "key": "J" } },
-              "source": {
-                "file": { "key": "test.m" },
-                "lineBegin": 9,
-                "columnBegin": 1,
-                "lineEnd": 11,
-                "columnEnd": 4
-              }
-            }
-          }
-        }
-      },
-      "location": {
-        "name": "J",
-        "file": { "key": "test.m" },
-        "location": {
-          "range": {
-            "file": { "key": "test.m" },
-            "lineBegin": 9,
-            "columnBegin": 1,
-            "lineEnd": 11,
-            "columnEnd": 4
-          }
-        },
-        "span": { "start": 232, "length": 1 }
-      }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "decl": {
           "objcMethod": {
             "key": {
               "selector": { "key": [ "checkSelector" ] },
@@ -369,6 +335,78 @@
           }
         },
         "span": { "start": 320, "length": 4 }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "defn": {
+          "objcContainer": {
+            "key": {
+              "declaration": {
+                "key": {
+                  "id": { "interface_": { "key": "J" } },
+                  "source": {
+                    "file": { "key": "test.m" },
+                    "lineBegin": 9,
+                    "columnBegin": 1,
+                    "lineEnd": 11,
+                    "columnEnd": 4
+                  }
+                }
+              },
+              "protocols": [ ],
+              "members": {
+                "key": [
+                  {
+                    "objcMethod": {
+                      "key": {
+                        "selector": { "key": [ "checkSelector" ] },
+                        "container": { "interface_": { "key": "J" } },
+                        "signature": {
+                          "key": {
+                            "returns": { "key": "void" },
+                            "parameters": [
+                              {
+                                "name": { "key": "selector" },
+                                "type": { "key": "SEL" }
+                              }
+                            ]
+                          }
+                        },
+                        "isInstance": true,
+                        "isOptional": false,
+                        "isAccessor": false,
+                        "source": {
+                          "file": { "key": "test.m" },
+                          "lineBegin": 10,
+                          "columnBegin": 1,
+                          "lineEnd": 10,
+                          "columnEnd": 36
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "J",
+        "file": { "key": "test.m" },
+        "location": {
+          "range": {
+            "file": { "key": "test.m" },
+            "lineBegin": 9,
+            "columnBegin": 1,
+            "lineEnd": 11,
+            "columnEnd": 4
+          }
+        },
+        "span": { "start": 232, "length": 1 }
       }
     }
   }
