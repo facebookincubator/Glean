@@ -315,6 +315,7 @@ predicate EntityVisibility : code.Entity -> codemarkup.types.Visibility
 # Relations todo to code.search.*
 #
 
+# A child `extends` a parent
 predicate ExtendsParentEntity :
   {
     child: code.Entity,
@@ -330,7 +331,7 @@ predicate ExtendsParentEntity :
       { cxx = P } = Parent
     )
 
-# entities that extend their parent via some inheritance relationship
+# A parent `is extended by` a child
 predicate ExtendsChildEntity :
   {
     parent: code.Entity,
@@ -346,16 +347,23 @@ predicate ExtendsChildEntity :
       { cxx = C } = Child
     )
 
-# entities with a containing parent
+# A child `is contained by` a parent
 predicate ContainsParentEntity :
   {
     child: code.Entity,
     parent: code.Entity,
   }
   { Child, Parent } where
-    (codemarkup.hack.HackContainsParentEntity { C, P }; Child={hack=C}:code.Entity; Parent={hack=P}:code.Entity)
+    ( { hack = C } = Child;
+      codemarkup.hack.HackContainsParentEntity { C, P };
+      { hack = P } = Parent
+    ) | (
+      { cxx = C } = Child;
+      codemarkup.cxx.CxxContainsParentEntity { C, P };
+      { cxx = P } = Parent
+    )
 
-# entities contained by the parent
+# A parent `contains` a child
 predicate ContainsChildEntity :
   {
     parent: code.Entity,
@@ -376,7 +384,8 @@ predicate ContainsChildEntity :
     )
 
 #
-# Relational search, extended with entity attributes
+# Generic relational search API, so you can call different searches
+# in a uniform way
 #
 
 # useful newtypes for a bit of client-side type safety in relational queries

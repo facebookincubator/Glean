@@ -1,7 +1,79 @@
 [
     "@generated",
     {
-        "edges": [],
-        "symbolDetails": {}
+        "edges": [
+            {
+                "child": "test/cpp//baz/U",
+                "parent": "test/cpp//baz"
+            }
+        ],
+        "symbolDetails": {
+            "test/cpp//baz": {
+                "comments": [],
+                "kind": 6,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 58,
+                        "lineEnd": 65
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "",
+                    "localName": "baz"
+                },
+                "repo_hash": "testhash",
+                "signature": "namespace baz",
+                "sym": "test/cpp//baz",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 58,
+                        "lineEnd": 65
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/cpp//baz/U": {
+                "comments": [],
+                "kind": 25,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 60,
+                        "lineEnd": 63
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "baz",
+                    "localName": "U"
+                },
+                "repo_hash": "testhash",
+                "signature": "struct baz::U",
+                "sym": "test/cpp//baz/U",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 60,
+                        "lineEnd": 63
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            }
+        }
     }
 ]

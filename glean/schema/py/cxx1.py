@@ -19,6 +19,7 @@ from glean.schema.cxx1.types import (
     DeclByName,
     DeclarationTargets,
     DeclarationLocationName,
+    DeclarationScope,
     EnumDeclaration,
     FileXRefMap,
     ObjcContainerDeclaration,
@@ -192,6 +193,18 @@ class Cxx1DeclarationLocationName(GleanSchemaPredicate):
 
   @staticmethod
   def angle_query(*, decl: Optional["Cxx1Declaration"] = None, source: Optional["SrcRange"] = None, name: Optional[str] = None) -> "Cxx1DeclarationLocationName":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class Cxx1DeclarationScope(GleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], decl: ast.Expr, scope: ast.Expr) -> Tuple[str, Struct]:
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, decl, 'decl'), angle_for(__env, scope, 'scope')]))
+    return f"cxx1.DeclarationScope.5 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DeclarationScope
+
+  @staticmethod
+  def angle_query(*, decl: Optional["Cxx1Declaration"] = None, scope: Optional["Cxx1Scope"] = None) -> "Cxx1DeclarationScope":
     raise Exception("this function can only be called from @angle_query")
 
 

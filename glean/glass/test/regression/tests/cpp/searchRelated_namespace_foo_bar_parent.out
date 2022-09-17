@@ -1,7 +1,12 @@
 [
     "@generated",
     {
-        "edges": [],
+        "edges": [
+            {
+                "child": "test/cpp//foo/bar/.decl",
+                "parent": "test/cpp//foo"
+            }
+        ],
         "symbolDetails": {}
     }
 ]

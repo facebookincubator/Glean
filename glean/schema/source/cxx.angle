@@ -618,6 +618,28 @@ predicate ObjcPropertyIVar :
 
 # Derived Predicates
 
+# Lots of entities have a Scope-indexed parent
+# This just abstracts out the lookup of the Scope component
+predicate DeclarationScope :
+  {
+    decl : cxx1.Declaration,
+    scope : cxx1.Scope
+  }
+  { Decl, Scope } where
+    # these share FunctionQName scopes
+    ( { function_ = { name = FQN }} |
+      { usingDeclaration = { name = FQN }} = Decl;
+      { scope = Scope } = FQN
+    # vanilla QName scopes
+    ) | (
+      { record_ = { name = QN } } |
+      { variable = { name = QN } } |
+      { typeAlias = { name = QN } } |
+      { enum_ = { name = QN } } |
+      { usingDirective = { name = QN } } = Decl;
+      { scope = Scope } = QN
+    )
+
 # src.Range of an arbitrary Declaration.
 predicate DeclarationSrcRange :
   {

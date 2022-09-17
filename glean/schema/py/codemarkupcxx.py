@@ -28,12 +28,14 @@ from glean.schema.codemarkup_cxx.types import (
     CxxFileEntityXMapVariableXRefDeclLocations,
     CxxDeclarationExtendsChild,
     CxxDeclToDefXRefTargetLocation,
+    CxxDeclarationContainsParent,
     CxxAnnotation,
     CxxDefinitionContainsChild,
     CxxFileEntityFixedXRefLocations,
     CxxDefinitionExtendsParent,
     CxxExtendsChildEntity,
     CxxResolveDeclarationToEntity,
+    CxxContainsParentEntity,
     CxxXRefTargetLocation,
     CxxFileEntityTraceFixedXRefLocations,
     CxxEntityInfo,
@@ -229,6 +231,18 @@ class CodemarkupCxxCxxDeclToDefXRefTargetLocation(GleanSchemaPredicate):
 
 
 
+class CodemarkupCxxCxxDeclarationContainsParent(GleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], child: ast.Expr, parent: ast.Expr) -> Tuple[str, Struct]:
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, child, 'child'), angle_for(__env, parent, 'parent')]))
+    return f"codemarkup.cxx.CxxDeclarationContainsParent.4 { ('{ ' + query_fields + ' }') if query_fields else '_' }", CxxDeclarationContainsParent
+
+  @staticmethod
+  def angle_query(*, child: Optional["Cxx1Declaration"] = None, parent: Optional["CodeCxxEntity"] = None) -> "CodemarkupCxxCxxDeclarationContainsParent":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
 class CodemarkupCxxCxxAnnotation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], entity: ast.Expr, anns: ast.Expr) -> Tuple[str, Struct]:
@@ -297,6 +311,18 @@ class CodemarkupCxxCxxResolveDeclarationToEntity(GleanSchemaPredicate):
 
   @staticmethod
   def angle_query(*, decl: Optional["Cxx1Declaration"] = None, entity: Optional["CodeCxxEntity"] = None) -> "CodemarkupCxxCxxResolveDeclarationToEntity":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class CodemarkupCxxCxxContainsParentEntity(GleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], child: ast.Expr, parent: ast.Expr) -> Tuple[str, Struct]:
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, child, 'child'), angle_for(__env, parent, 'parent')]))
+    return f"codemarkup.cxx.CxxContainsParentEntity.4 { ('{ ' + query_fields + ' }') if query_fields else '_' }", CxxContainsParentEntity
+
+  @staticmethod
+  def angle_query(*, child: Optional["CodeCxxEntity"] = None, parent: Optional["CodeCxxEntity"] = None) -> "CodemarkupCxxCxxContainsParentEntity":
     raise Exception("this function can only be called from @angle_query")
 
 
