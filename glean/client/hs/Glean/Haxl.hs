@@ -81,7 +81,7 @@ runHaxlWithWrites
   -> IO (a, [w])
 runHaxlWithWrites backend u h = do
   e <- initHaxlEnv backend u
-  second flattenWT <$> Haxl.runHaxlWithWrites e h
+  second (foldMap flattenWT) <$> Haxl.runHaxlWithWrites e h
 
 -- | if the Fact has a key, return it, otherwise fetch it with 'getKey'
 keyOf
