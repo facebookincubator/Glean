@@ -6,7 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE ConstraintKinds #-}
+{-# LANGUAGE CPP, ConstraintKinds #-}
 module Glean.Haxl
   ( runHaxl
   , runHaxlWithWrites
@@ -40,8 +40,7 @@ import Data.Maybe (listToMaybe)
 import Data.Typeable
 
 import qualified Haxl.Core as Haxl
-import Haxl.Core (GenHaxl)
-import Haxl.Core.Monad (catchIf, flattenWT, WriteTree)
+import Haxl.Core.Monad
 import Haxl.DataSource.Glean
 import Haxl.DataSource.Glean.Backend as Backend
 import Util.Control.Exception ( isSyncException )
@@ -51,7 +50,17 @@ import Glean.Query.Thrift
 import Glean.Types
 import Glean.Typed
 
-type Haxl w = GenHaxl Repo (WriteTree w)
+#if MIN_VERSION_haxl(2,5,0)
+type HaxlWrite w = WriteTree w
+flatten :: WriteTree w -> [w]
+flatten = flattenWT
+#else
+type HaxlWrite w = w
+flatten :: [w] -> [w]
+flatten = id
+#endif
+
+type Haxl w = GenHaxl Repo (HaxlWrite w)
 
 -- | Constraints needed for 'query' or 'search' or 'search_' from
 -- "Haxl.DataSource.Glean"
@@ -62,13 +71,13 @@ type HaxlQuery p =
   )
 
 -- | Initialize for Glean queries
-initHaxlEnv :: Backend be => be -> u -> IO (Haxl.Env u (WriteTree w))
+initHaxlEnv :: Backend be => be -> u -> IO (Haxl.Env u (HaxlWrite w))
 initHaxlEnv backend e = do
   (state1,state2) <- initGlobalState backend
   let st = Haxl.stateSet state1 $ Haxl.stateSet state2 Haxl.stateEmpty
   Haxl.initEnv st e
 
-runHaxl :: Backend be => be -> u -> GenHaxl u (WriteTree w) a -> IO a
+runHaxl :: Backend be => be -> u -> GenHaxl u (HaxlWrite w) a -> IO a
 runHaxl backend u h = do
   e <- initHaxlEnv backend u
   Haxl.runHaxl e h
@@ -77,17 +86,17 @@ runHaxlWithWrites
   :: Backend be
   => be
   -> u
-  -> GenHaxl u (WriteTree w) a
+  -> GenHaxl u (HaxlWrite w) a
   -> IO (a, [w])
 runHaxlWithWrites backend u h = do
   e <- initHaxlEnv backend u
-  second flattenWT <$> Haxl.runHaxlWithWrites e h
+  second flatten <$> Haxl.runHaxlWithWrites e h
 
 -- | if the Fact has a key, return it, otherwise fetch it with 'getKey'
 keyOf
   :: ( Typeable p, Typeable (KeyType p)
      , Show p, Show (KeyType p)
-     , Predicate p, HasRepo u, Monoid w )
+     , Predicate p, HasRepo u )
   => p
   -> GenHaxl u w (KeyType p)
 keyOf f = case getFactKey f of
@@ -101,6 +110,6 @@ trySyncHaxl act = catchIf isSyncException (Right <$> act) (return . Left)
 
 -- | Search for at most 1 result and return it or Nothing
 getFirstResult
-  :: (Typeable a, Show a, HasRepo u, Monoid w)
+  :: (Typeable a, Show a, HasRepo u)
   => Query a -> GenHaxl u w (Maybe a)
 getFirstResult = fmap (listToMaybe . fst) . search . limit 1
