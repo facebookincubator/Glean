@@ -11,8 +11,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 27,
-                        "lineBegin": 67,
-                        "lineEnd": 67
+                        "lineBegin": 81,
+                        "lineEnd": 81
                     },
                     "repository": "test"
                 },
@@ -27,8 +27,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 27,
-                        "lineBegin": 67,
-                        "lineEnd": 67
+                        "lineBegin": 81,
+                        "lineEnd": 81
                     },
                     "repository": "test"
                 },
@@ -43,8 +43,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 41,
-                        "lineBegin": 68,
-                        "lineEnd": 68
+                        "lineBegin": 82,
+                        "lineEnd": 82
                     },
                     "repository": "test"
                 },
@@ -59,8 +59,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 41,
-                        "lineBegin": 68,
-                        "lineEnd": 68
+                        "lineBegin": 82,
+                        "lineEnd": 82
                     },
                     "repository": "test"
                 },
@@ -75,8 +75,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 26,
-                        "lineBegin": 61,
-                        "lineEnd": 61
+                        "lineBegin": 75,
+                        "lineEnd": 75
                     },
                     "repository": "test"
                 },
@@ -91,8 +91,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 26,
-                        "lineBegin": 61,
-                        "lineEnd": 61
+                        "lineBegin": 75,
+                        "lineEnd": 75
                     },
                     "repository": "test"
                 },
@@ -107,8 +107,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 40,
-                        "lineBegin": 62,
-                        "lineEnd": 62
+                        "lineBegin": 76,
+                        "lineEnd": 76
                     },
                     "repository": "test"
                 },
@@ -123,8 +123,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 40,
-                        "lineBegin": 62,
-                        "lineEnd": 62
+                        "lineBegin": 76,
+                        "lineEnd": 76
                     },
                     "repository": "test"
                 },
@@ -225,6 +225,38 @@
                     "repository": "test"
                 },
                 "sym_other_locations": []
+            },
+            {
+                "comments": [],
+                "kind": 12,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 32,
+                        "lineBegin": 59,
+                        "lineEnd": 59
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "maybe::Nothing",
+                    "localName": "_secret"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/cpp//maybe/Nothing/_secret",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 32,
+                        "lineBegin": 59,
+                        "lineEnd": 59
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             }
         ],
         "symbols": [
@@ -236,8 +268,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 27,
-                        "lineBegin": 67,
-                        "lineEnd": 67
+                        "lineBegin": 81,
+                        "lineEnd": 81
                     },
                     "repository": "test"
                 },
@@ -252,8 +284,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 41,
-                        "lineBegin": 68,
-                        "lineEnd": 68
+                        "lineBegin": 82,
+                        "lineEnd": 82
                     },
                     "repository": "test"
                 },
@@ -268,8 +300,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 26,
-                        "lineBegin": 61,
-                        "lineEnd": 61
+                        "lineBegin": 75,
+                        "lineEnd": 75
                     },
                     "repository": "test"
                 },
@@ -284,8 +316,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 40,
-                        "lineBegin": 62,
-                        "lineEnd": 62
+                        "lineBegin": 76,
+                        "lineEnd": 76
                     },
                     "repository": "test"
                 },
@@ -339,6 +371,22 @@
                 },
                 "name": "h",
                 "symbol": "test/cpp//h"
+            },
+            {
+                "kind": 12,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 32,
+                        "lineBegin": 59,
+                        "lineEnd": 59
+                    },
+                    "repository": "test"
+                },
+                "name": "_secret",
+                "symbol": "test/cpp//maybe/Nothing/_secret"
             }
         ]
     }

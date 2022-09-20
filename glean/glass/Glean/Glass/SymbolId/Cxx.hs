@@ -174,8 +174,8 @@ instance Symbol Cxx.FunctionName_key where
     Cxx.FunctionName_key_name x -> toSymbol x
     Cxx.FunctionName_key_operator_ x -> return [x]
     Cxx.FunctionName_key_literalOperator x -> return [x]
-    Cxx.FunctionName_key_constructor _ -> return []
-    Cxx.FunctionName_key_destructor _ -> return []
+    Cxx.FunctionName_key_constructor _ -> return [".ctor"]
+    Cxx.FunctionName_key_destructor _ -> return [".dtor"]
     Cxx.FunctionName_key_conversionOperator x -> toSymbol x
     Cxx.FunctionName_key_EMPTY -> return []
 
@@ -185,6 +185,7 @@ instance Symbol Cxx.Scope where
     Cxx.Scope_namespace_ nsqname -> toSymbolPredicate nsqname
     Cxx.Scope_recordWithAccess (Cxx.Scope_recordWithAccess_ qname _) ->
       toSymbolPredicate qname
+      -- local scope: could be e.g. a function ctor
     Cxx.Scope_local qname -> toSymbolPredicate qname
     Cxx.Scope_EMPTY -> return []
 
@@ -399,10 +400,12 @@ toSymbolDefnKind k = case k of
 instance ToQName Cxx.Entity where
   toQName e = do
     symId <- toSymbolWithPath e (Path mempty) -- we already had the symbolid tho
-    return $ case symId of
+    return $ case symId of -- this is a hack, should use the real scope/qname
       [] -> Left "C++: toQName: No qualified name for this symbol"
       [name] -> Right (Name name, Name "")
       x@(_:_) -> case (init x, last x) of
-        (ms, ".decl") -> case (init ms, last ms) of
-          (ns, name) -> Right (Name name, Name (intercalate "::" ns))
-        (ns, name) -> Right (Name name, Name (intercalate "::" ns))
+        (ms, name)
+          | name `elem` [".ctor",".dtor",".decl"] ->
+             case (init ms, last ms) of
+              (ns, name') -> Right (Name name', Name (intercalate "::" ns))
+          | otherwise -> Right (Name name, Name (intercalate "::" ms))

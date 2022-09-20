@@ -44,9 +44,9 @@
                   "name": { "key": { "name": { "key": "baz" } } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 58,
+                    "lineBegin": 72,
                     "columnBegin": 1,
-                    "lineEnd": 65,
+                    "lineEnd": 79,
                     "columnEnd": 1
                   }
                 }
@@ -73,6 +73,32 @@
                     "lineBegin": 9,
                     "columnBegin": 1,
                     "lineEnd": 38,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "members": { "key": [ ] }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "maybe" },
+      "entity": {
+        "defn": {
+          "namespace_": {
+            "key": {
+              "declaration": {
+                "key": {
+                  "name": { "key": { "name": { "key": "maybe" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 53,
+                    "columnBegin": 1,
+                    "lineEnd": 65,
                     "columnEnd": 1
                   }
                 }

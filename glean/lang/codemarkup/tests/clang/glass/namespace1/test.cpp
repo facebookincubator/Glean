@@ -50,6 +50,20 @@ void h(int i) {
   i++;
 }
 
+namespace maybe {
+
+/**
+ * Structs and their constructors
+ */
+struct Nothing {
+  enum class _secret { _magic };
+
+  explicit constexpr Nothing(_secret) {}
+};
+constexpr Nothing nothing{Nothing::_secret::_magic};
+
+}
+
 #include "test.h"
 
 #define A "one"
@@ -66,4 +80,3 @@ struct U {
 
 enum Global { GA, GB, GC };
 enum class GlobalClass { GCA, GCB, GCC };
-

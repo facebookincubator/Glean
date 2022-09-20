@@ -39,6 +39,8 @@ instance Search Cxx.Entity where
     searchDefinitions t path [] name
   symbolSearch t@(path:rest@(_:_)) = case last rest of
     ".decl" -> searchDeclarations t path (init rest)
+    ".ctor" -> searchTorDefinitions t path (init rest) (alt @"constructor" wild)
+    ".dtor" -> searchTorDefinitions t path (init rest) (alt @"destructor" wild)
     name -> searchDefinitions t path (init rest) name
 
 -- this is the most common path, for e.g. classes and functions
@@ -71,6 +73,10 @@ searchDeclarations
 searchDeclarations _ _path [] =
   return $ None "Cxx.symbolSearch: empty decl symbol" -- invalid
 searchDeclarations t path rest@(_:_) =
+  --
+  -- n.b. could be e.g. the anonymous param decl of a ctor
+  -- represented as */.ctor//.decl
+  --
     searchSymbolId t (lookupDeclaration path ns name)
       .|?
     searchSymbolId t (lookupFunctionDeclaration path ns name)
@@ -79,6 +85,17 @@ searchDeclarations t path rest@(_:_) =
   where
     name = last rest
     ns = init rest
+
+--
+-- constructor or destructor definitions only
+--
+searchTorDefinitions
+  :: [Text] -> Text -> [Text] -> Angle Cxx.FunctionName_key
+  -> ReposHaxl u w (SearchResult Cxx.Entity)
+searchTorDefinitions _ _path [] _ = return $
+  None "Cxx.symbolSearch: ctor defns: empty scope" -- no global ctors
+searchTorDefinitions t path rest@(_:_) torLabel = searchSymbolId t $
+  lookupTorDefinition path rest torLabel
 
 --
 -- A little `then` or .|. thing for searching until first match
@@ -147,6 +164,23 @@ lookupEnumerator anchor ns parent name =
           field @"decl" decl
         end))
       : (alt @"enumerator" decl .= sig entity)
+      : entityFooter anchor entity codeEntity file rangespan lname
+      )
+
+lookupTorDefinition
+  :: Text -> [Text] -> Angle Cxx.FunctionName_key
+  -> Angle (ResultLocation Cxx.Entity)
+lookupTorDefinition anchor ns torLabel =
+  vars $ \(entity :: Angle Cxx.Entity) (codeEntity :: Angle Code.Entity)
+     (file :: Angle Src.File) (rangespan :: Angle Code.RangeSpan)
+       (lname :: Angle Text) ->
+    tuple (entity, file, rangespan, lname) `where_` ((
+      wild .= predicate @SymbolId.LookupFunctionDefinition (
+        rec $
+          field @"name" torLabel $ -- either @alt ctor or dtor
+          field @"scope" (scopeQ (reverse ns)) $
+          field @"entity" entity
+        end))
       : entityFooter anchor entity codeEntity file rangespan lname
       )
 
@@ -271,18 +305,13 @@ entityFooter anchor entity codeEntity file rangespan lname =
 -- Scope queries
 --
 
---
--- Todo: extend this to encode constructors, destructors and conversion ops
--- Todo: what would empty string names imply?
---
+-- These will never be empty strings
 functionName :: Text -> Angle Cxx.FunctionName_key
 functionName name =
   alt @"name" (string name) .|
   alt @"operator_" (string name) .|
   alt @"literalOperator" (string name) .|
   alt @"conversionOperator" (string name)
-  -- constructor: todo; need symbol id
-  -- destructor: todo:
 
 --
 -- For namespaces, which may have anonymous components
@@ -307,6 +336,16 @@ namespaceQName ns n =
   end
 
 functionQName :: [Text] -> Text -> Angle Cxx.FunctionQName_key
+functionQName ns ".ctor" =
+  rec $
+    field @"name" (alt @"constructor" wild) $
+    field @"scope" (scopeQ ns)
+  end
+functionQName ns ".dtor" =
+  rec $
+    field @"name" (alt @"destructor" wild) $
+    field @"scope" (scopeQ ns)
+  end
 functionQName ns n =
   rec $
     field @"name" (functionName n) $ -- i suspect we have params to constrs here

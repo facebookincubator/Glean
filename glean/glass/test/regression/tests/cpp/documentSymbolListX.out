@@ -32,14 +32,14 @@
                 "nameRange": {
                     "columnBegin": 6,
                     "columnEnd": 12,
-                    "lineBegin": 67,
-                    "lineEnd": 67
+                    "lineBegin": 81,
+                    "lineEnd": 81
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 27,
-                    "lineBegin": 67,
-                    "lineEnd": 67
+                    "lineBegin": 81,
+                    "lineEnd": 81
                 },
                 "sym": "test/cpp//Global"
             },
@@ -73,14 +73,14 @@
                 "nameRange": {
                     "columnBegin": 12,
                     "columnEnd": 23,
-                    "lineBegin": 68,
-                    "lineEnd": 68
+                    "lineBegin": 82,
+                    "lineEnd": 82
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 41,
-                    "lineBegin": 68,
-                    "lineEnd": 68
+                    "lineBegin": 82,
+                    "lineEnd": 82
                 },
                 "sym": "test/cpp//GlobalClass"
             },
@@ -114,14 +114,14 @@
                 "nameRange": {
                     "columnBegin": 11,
                     "columnEnd": 14,
-                    "lineBegin": 58,
-                    "lineEnd": 58
+                    "lineBegin": 72,
+                    "lineEnd": 72
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 58,
-                    "lineEnd": 65
+                    "lineBegin": 72,
+                    "lineEnd": 79
                 },
                 "sym": "test/cpp//baz"
             },
@@ -155,14 +155,14 @@
                 "nameRange": {
                     "columnBegin": 8,
                     "columnEnd": 9,
-                    "lineBegin": 60,
-                    "lineEnd": 60
+                    "lineBegin": 74,
+                    "lineEnd": 74
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 60,
-                    "lineEnd": 63
+                    "lineBegin": 74,
+                    "lineEnd": 77
                 },
                 "sym": "test/cpp//baz/U"
             },
@@ -196,14 +196,14 @@
                 "nameRange": {
                     "columnBegin": 8,
                     "columnEnd": 11,
-                    "lineBegin": 61,
-                    "lineEnd": 61
+                    "lineBegin": 75,
+                    "lineEnd": 75
                 },
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 26,
-                    "lineBegin": 61,
-                    "lineEnd": 61
+                    "lineBegin": 75,
+                    "lineEnd": 75
                 },
                 "sym": "test/cpp//baz/U/InU"
             },
@@ -237,14 +237,14 @@
                 "nameRange": {
                     "columnBegin": 14,
                     "columnEnd": 22,
-                    "lineBegin": 62,
-                    "lineEnd": 62
+                    "lineBegin": 76,
+                    "lineEnd": 76
                 },
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 40,
-                    "lineBegin": 62,
-                    "lineEnd": 62
+                    "lineBegin": 76,
+                    "lineEnd": 76
                 },
                 "sym": "test/cpp//baz/U/InUClass"
             },
@@ -956,6 +956,264 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "namespace maybe"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 6
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "nameRange": {
+                    "columnBegin": 11,
+                    "columnEnd": 16,
+                    "lineBegin": 53,
+                    "lineEnd": 53
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 53,
+                    "lineEnd": 65
+                },
+                "sym": "test/cpp//maybe"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "struct maybe::Nothing"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "nameRange": {
+                    "columnBegin": 8,
+                    "columnEnd": 15,
+                    "lineBegin": 58,
+                    "lineEnd": 58
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 58,
+                    "lineEnd": 62
+                },
+                "sym": "test/cpp//maybe/Nothing"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "maybe::Nothing::Nothing(maybe::Nothing::_secret)"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "nameRange": {
+                    "columnBegin": 22,
+                    "columnEnd": 29,
+                    "lineBegin": 61,
+                    "lineEnd": 61
+                },
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 41,
+                    "lineBegin": 61,
+                    "lineEnd": 61
+                },
+                "sym": "test/cpp//maybe/Nothing/.ctor"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "maybe::Nothing::_secret"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "nameRange": {
+                    "columnBegin": 37,
+                    "columnEnd": 38,
+                    "lineBegin": 61,
+                    "lineEnd": 61
+                },
+                "range": {
+                    "columnBegin": 30,
+                    "columnEnd": 37,
+                    "lineBegin": 61,
+                    "lineEnd": 61
+                },
+                "sym": "test/cpp//maybe/Nothing/.ctor//.decl"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "enum class maybe::Nothing::_secret"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 12
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "nameRange": {
+                    "columnBegin": 14,
+                    "columnEnd": 21,
+                    "lineBegin": 59,
+                    "lineEnd": 59
+                },
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 32,
+                    "lineBegin": 59,
+                    "lineEnd": 59
+                },
+                "sym": "test/cpp//maybe/Nothing/_secret"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "nothing"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "const maybe::Nothing maybe::nothing"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "nameRange": {
+                    "columnBegin": 19,
+                    "columnEnd": 26,
+                    "lineBegin": 63,
+                    "lineEnd": 63
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 52,
+                    "lineBegin": 63,
+                    "lineEnd": 63
+                },
+                "sym": "test/cpp//maybe/nothing/.decl"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
                             "aInteger": 30
                         },
                         "key": "symbolKind"
@@ -976,8 +1234,8 @@
                 "range": {
                     "columnBegin": 9,
                     "columnEnd": 10,
-                    "lineBegin": 55,
-                    "lineEnd": 55
+                    "lineBegin": 69,
+                    "lineEnd": 69
                 },
                 "sym": "test/pp/test.cpp/A"
             },
@@ -1005,8 +1263,8 @@
                 "range": {
                     "columnBegin": 9,
                     "columnEnd": 10,
-                    "lineBegin": 56,
-                    "lineEnd": 56
+                    "lineBegin": 70,
+                    "lineEnd": 70
                 },
                 "sym": "test/pp/test.cpp/B"
             }
@@ -2237,6 +2495,261 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "struct maybe::Nothing"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 11,
+                    "columnEnd": 18,
+                    "lineBegin": 63,
+                    "lineEnd": 63
+                },
+                "sym": "test/cpp//maybe/Nothing",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 58,
+                        "lineEnd": 62
+                    },
+                    "repository": "test"
+                },
+                "targetName": {
+                    "columnBegin": 8,
+                    "columnEnd": 15,
+                    "lineBegin": 58,
+                    "lineEnd": 58
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "struct maybe::Nothing"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 27,
+                    "columnEnd": 34,
+                    "lineBegin": 63,
+                    "lineEnd": 63
+                },
+                "sym": "test/cpp//maybe/Nothing",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 58,
+                        "lineEnd": 62
+                    },
+                    "repository": "test"
+                },
+                "targetName": {
+                    "columnBegin": 8,
+                    "columnEnd": 15,
+                    "lineBegin": 58,
+                    "lineEnd": 58
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "enum class maybe::Nothing::_secret"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 12
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 30,
+                    "columnEnd": 37,
+                    "lineBegin": 61,
+                    "lineEnd": 61
+                },
+                "sym": "test/cpp//maybe/Nothing/_secret",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 32,
+                        "lineBegin": 59,
+                        "lineEnd": 59
+                    },
+                    "repository": "test"
+                },
+                "targetName": {
+                    "columnBegin": 14,
+                    "columnEnd": 21,
+                    "lineBegin": 59,
+                    "lineEnd": 59
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "enum class maybe::Nothing::_secret"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 12
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 36,
+                    "columnEnd": 43,
+                    "lineBegin": 63,
+                    "lineEnd": 63
+                },
+                "sym": "test/cpp//maybe/Nothing/_secret",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 32,
+                        "lineBegin": 59,
+                        "lineEnd": 59
+                    },
+                    "repository": "test"
+                },
+                "targetName": {
+                    "columnBegin": 14,
+                    "columnEnd": 21,
+                    "lineBegin": 59,
+                    "lineEnd": 59
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "_secret"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "_magic"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 24
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 45,
+                    "columnEnd": 51,
+                    "lineBegin": 63,
+                    "lineEnd": 63
+                },
+                "sym": "test/cpp//maybe/Nothing/_secret/_magic",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 24,
+                        "columnEnd": 30,
+                        "lineBegin": 59,
+                        "lineEnd": 59
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
                             "aInteger": 4
                         },
                         "key": "symbolKind"
@@ -2257,8 +2770,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 18,
-                    "lineBegin": 53,
-                    "lineEnd": 53
+                    "lineBegin": 67,
+                    "lineEnd": 67
                 },
                 "sym": "test/pp/test.h",
                 "target": {

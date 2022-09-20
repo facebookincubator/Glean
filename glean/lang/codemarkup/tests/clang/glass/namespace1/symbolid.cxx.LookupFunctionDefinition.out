@@ -2,6 +2,81 @@
   "@generated",
   {
     "key": {
+      "name": { "key": { "constructor": { } } },
+      "scope": {
+        "recordWithAccess": {
+          "record": {
+            "key": {
+              "name": { "key": "Nothing" },
+              "scope": {
+                "namespace_": { "key": { "name": { "key": "maybe" } } }
+              }
+            }
+          },
+          "access": 0
+        }
+      },
+      "entity": {
+        "defn": {
+          "function_": {
+            "key": {
+              "declaration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "constructor": { } } },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "Nothing" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "maybe" } }
+                                }
+                              }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  },
+                  "signature": {
+                    "key": {
+                      "returns": { "key": "void" },
+                      "parameters": [
+                        {
+                          "name": { "key": "" },
+                          "type": { "key": "maybe::Nothing::_secret" }
+                        }
+                      ]
+                    }
+                  },
+                  "method": {
+                    "isVirtual": false,
+                    "isConst": false,
+                    "isVolatile": false,
+                    "refQualifier": 0
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 61,
+                    "columnBegin": 3,
+                    "lineEnd": 61,
+                    "columnEnd": 40
+                  }
+                }
+              },
+              "isInline": false
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "name": { "key": { "name": { "key": "foo" } } },
       "scope": { "namespace_": { "key": { "name": { "key": "foo" } } } },
       "entity": {
