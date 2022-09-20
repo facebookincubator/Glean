@@ -2,7 +2,7 @@
     "@generated",
     {
         "revision": "testhash",
-        "size": 13,
+        "size": 14,
         "symbols": {
             "12": [
                 {
@@ -117,6 +117,30 @@
                             "columnEnd": 16,
                             "lineBegin": 6,
                             "lineEnd": 7
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 32,
+                        "columnEnd": 35,
+                        "lineBegin": 2,
+                        "lineEnd": 2
+                    },
+                    "sym": "test/buck/d/buck_project/my_defs.bzl/h",
+                    "target": {
+                        "filepath": "buck_project/my_defs.bzl",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 14,
+                            "lineEnd": 16
                         },
                         "repository": "test"
                     }

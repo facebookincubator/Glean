@@ -119,6 +119,33 @@
                     }
                 ],
                 "range": {
+                    "columnBegin": 32,
+                    "columnEnd": 35,
+                    "lineBegin": 2,
+                    "lineEnd": 2
+                },
+                "sym": "test/buck/d/buck_project/my_defs.bzl/h",
+                "target": {
+                    "filepath": "buck_project/my_defs.bzl",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 14,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 11
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
                     "columnBegin": 6,
                     "columnEnd": 20,
                     "lineBegin": 2,

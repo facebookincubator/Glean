@@ -2,7 +2,7 @@
     "@generated",
     {
         "revision": "testhash",
-        "size": 4,
+        "size": 5,
         "symbols": {
             "1": [
                 {
@@ -18,6 +18,22 @@
                         "lineEnd": 1
                     },
                     "sym": "test/buck/f/buck_project/my_defs.bzl"
+                }
+            ],
+            "14": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 14,
+                        "lineEnd": 16
+                    },
+                    "sym": "test/buck/d/buck_project/my_defs.bzl/h"
                 }
             ],
             "3": [
