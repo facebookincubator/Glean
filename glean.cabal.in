@@ -141,7 +141,7 @@ common deps
         tar ^>=0.5.1.0,
         ghc-prim >=0.5.2.0 && <0.7,
         parsec ^>=3.1.13.0,
-        haxl >= 2.1.2.0 && < 2.4,
+        haxl >= 2.5 && < 2.6,
         hinotify ^>= 0.4.1
 
 common hsc2hs-cpp
@@ -1097,10 +1097,12 @@ executable hack-derive
     main-is: Derive.hs
     ghc-options: -main-is Derive
     build-depends:
+        aeson-pretty,
         glean:client-hs,
         glean:hack-derive-lib,
+        glean:schema,
         glean:stubs,
-        glean:util,
+        glean:util
 
 -- Haskell indexer via hiedb
 executable hiedb-indexer

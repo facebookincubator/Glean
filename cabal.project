@@ -13,10 +13,17 @@ packages:
     glean.cabal
     glean/lang/clang/glean-clang.cabal
 
+-- we need a haxl with
+-- https://github.com/facebook/Haxl/commit/260a97b757a6239df153b69b127ded5c47efa13c
+source-repository-package
+  type: git
+  location: https://github.com/facebook/Haxl.git
+  tag: ef52a522fb851be8ed0a38bcd370d29310d5bba0
+
 tests: True
 
 -- necessary to use a haskeline <0.8 with GHCs that ship with base >= 4.14
-allow-newer: haskeline:base
+allow-newer: haskeline:base, thrift-haxl:haxl
 
 -- https://github.com/TomMD/entropy/issues/75
 constraints: entropy < 0.4.1.9
