@@ -1,0 +1,7 @@
+query: | 
+  codemarkup.cxx.CxxContainsParentEntity {
+    child = { defn = { variable = _ } | { record_ = _ } | { function_ = _ } | { enum_ = _ } },
+    parent = { defn = { record_ = _ } }
+  }
+perf: true
+transform: [gensort, []]

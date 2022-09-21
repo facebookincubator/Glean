@@ -55,6 +55,7 @@ from glean.schema.cxx1.types import (
     FunctionDeclaration,
     Same,
     NamespaceDeclaration,
+    DefnInRecord,
     ObjcPropertyDeclaration,
     DeclarationComment,
     DeclarationNameSpan,
@@ -625,6 +626,18 @@ class Cxx1NamespaceDeclaration(GleanSchemaPredicate):
 
   @staticmethod
   def angle_query(*, name: Optional["Cxx1NamespaceQName"] = None, source: Optional["SrcRange"] = None) -> "Cxx1NamespaceDeclaration":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class Cxx1DefnInRecord(GleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], defn: ast.Expr, record: ast.Expr) -> Tuple[str, Struct]:
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, defn, 'defn'), angle_for(__env, record, 'record')]))
+    return f"cxx1.DefnInRecord.5 { ('{ ' + query_fields + ' }') if query_fields else '_' }", DefnInRecord
+
+  @staticmethod
+  def angle_query(*, defn: Optional["Cxx1DefinitionEntity"] = None, record: Optional["Cxx1RecordDefinition"] = None) -> "Cxx1DefnInRecord":
     raise Exception("this function can only be called from @angle_query")
 
 

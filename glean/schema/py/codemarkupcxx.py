@@ -39,6 +39,7 @@ from glean.schema.codemarkup_cxx.types import (
     CxxXRefTargetLocation,
     CxxFileEntityTraceFixedXRefLocations,
     CxxEntityInfo,
+    CxxDefinitionContainsParent,
     CxxFileEntityTraceLocations,
     CxxNamespaceDeclarationContainsChild,
     CxxDefinitionExtendsChild,
@@ -359,6 +360,18 @@ class CodemarkupCxxCxxEntityInfo(GleanSchemaPredicate):
 
   @staticmethod
   def angle_query(*, entity: Optional["CodeCxxEntity"] = None, info: Optional["CodemarkupTypesSymbolInfo"] = None) -> "CodemarkupCxxCxxEntityInfo":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class CodemarkupCxxCxxDefinitionContainsParent(GleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], child: ast.Expr, parent: ast.Expr) -> Tuple[str, Struct]:
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, child, 'child'), angle_for(__env, parent, 'parent')]))
+    return f"codemarkup.cxx.CxxDefinitionContainsParent.4 { ('{ ' + query_fields + ' }') if query_fields else '_' }", CxxDefinitionContainsParent
+
+  @staticmethod
+  def angle_query(*, child: Optional["CodeCxxDefinition"] = None, parent: Optional["CodeCxxEntity"] = None) -> "CodemarkupCxxCxxDefinitionContainsParent":
     raise Exception("this function can only be called from @angle_query")
 
 

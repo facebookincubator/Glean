@@ -910,6 +910,21 @@ predicate DeclInRecord :
   Decls = Declarations DS;
   Decl = DS[..];
 
+# Like DeclInRecord but exploit the fact we already have the base decl/defn
+predicate DefnInRecord :
+  {
+    defn : DefinitionEntity,
+    record : RecordDefinition
+  }
+  { DefnIn, Record} where
+    cxx1.DefToBaseDecl { DefnIn, DeclIn };
+    cxx1.DeclarationScope { DeclIn, Scope };
+    { recordWithAccess = { record = QName } } = Scope;
+    DeclOut = cxx1.RecordDeclaration { name = QName }; # find the parent record
+    Record = cxx1.RecordDefinition{ declaration = DeclOut, members = Decls };
+    Decls = cxx1.Declarations DS;
+    DeclIn = DS[..]; # verify in decl is a member
+
 # This allows going from a objc method or property declaration
 # to a definition that contains a family member of the declaration.
 #

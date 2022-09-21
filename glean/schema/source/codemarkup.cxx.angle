@@ -457,7 +457,7 @@ predicate CxxDefinitionExtendsParent:
       cxx1.RecordBase { base = P } = BS[..];
       CxxResolveDeclarationToEntity { { record_ = P }, Parent }
     ) | (
-      { function_ = _ } | { objcContainer = _ } = Child;
+      ( { function_ = _ } | { objcContainer = _ } ) = Child;
       cxx1.DefToBaseDecl { Child, C };
       CxxDeclarationExtendsParent { C, Parent }
     )
@@ -526,11 +526,11 @@ predicate CxxDeclarationExtendsChild:
 
 # The child of parent relationship
 #
-# works for most things including
+# works for only some things
 #
-# - enumerators
-# - nested records
-# - namespaces
+# - enumerators -> enum
+# - nested records/unions/structs
+# - methods -> container classes
 #
 predicate CxxContainsParentEntity :
   {
@@ -542,16 +542,32 @@ predicate CxxContainsParentEntity :
       CxxDeclarationContainsParent { Decl, Parent };
     ) | (
       { defn = Defn } = Child;
-      cxx1.DefToBaseDecl { Defn, C };
-      CxxDeclarationContainsParent { C, Parent }
+      CxxDefinitionContainsParent { Defn, Parent }
     ) | (
      { enumerator = E } = Child;
      cxx1.EnumeratorInEnum { E, Enum };
      { defn = { enum_ = Enum } } = Parent
     )
 
+# Definition to parent container, efficiently
+predicate CxxDefinitionContainsParent:
+  {
+    child : code.cxx.Definition,
+    parent : code.cxx.Entity
+  }
+  { Child, Parent } where
+    # most C++ things: functions, records, variables:
+    { record_ = _ } |
+    { function_ = _ } |
+    { enum_ = _ } |
+    { variable = _ } = Child;
+    cxx1.DefnInRecord { Child, P }; # find the precise parent set
+    { defn = { record_ = P } } = Parent
+
 #
 # we can find parents via the cxx1.Scope of the child
+# this works ok for definition types, where we restrict by membership filters
+# we can't do this for namespaces yet, without enumerating traces or all decls
 #
 predicate CxxDeclarationContainsParent:
   {
@@ -560,37 +576,21 @@ predicate CxxDeclarationContainsParent:
   }
   { Child, Parent } where
     # most C++ things: functions, records, variables:
-    ( cxx1.DeclarationScope { Child, Scope };
-      # and then the parent can be a namespace, record or function
-      ( { recordWithAccess = R } = Scope;
-        { record = QName } = R;
-        P = cxx1.RecordDeclaration { name = QName };
-        CxxResolveDeclarationToEntity { { record_ = P }, Parent }
-      ) | (
-        { namespace_ = ParentNS } = Scope;
-        P = cxx1.NamespaceDeclaration { name = ParentNS };
-        CxxResolveDeclarationToEntity { { namespace_ = P }, Parent }
-      )
-    ) | (
-      { objcMethod = Decl } = Child;
-      cxx1.ObjcMethodDeclaration { container = ContainerId } = Decl;
-      P = cxx1.ObjcContainerDeclaration { id = ContainerId };
-      CxxResolveDeclarationToEntity { { objcContainer = P }, Parent }
-    ) | (
-      { objcProperty = Decl } = Child;
-      cxx1.ObjcPropertyDeclaration { container = ContainerId } = Decl;
-      P = cxx1.ObjcContainerDeclaration { id = ContainerId };
-      CxxResolveDeclarationToEntity { { objcContainer = P }, Parent }
-    # todo: can objcContainerDecls have containers?
-    ) | (
-      # namespaces have direct parents
-      { namespace_ = { name = NQN }  } = Child;
-      { parent = { just = ParentNQN } } = NQN;
-      P = cxx1.NamespaceDeclaration { name = ParentNQN };
-      CxxResolveDeclarationToEntity { { namespace_ = P }, Parent }
-    )
+    { usingDeclaration = _ } |
+    { usingDirective = _ } |
+    { record_ = _ } |
+    { enum_ = _ } |
+    { function_ = _ } |
+    { variable = _ } |
+    { typeAlias = _ } = Child;
+    cxx1.DeclInRecord { Child, P }; # find the precise parent set
+    { defn = { record_ = P } } = Parent
 
-
+    #  | (
+    #  { objcMethod = _ } | { objcProperty = _ } = Child;
+    #  cxx1.DeclInObjcContainer { Child, P };
+    #  { defn = { objcContainer = P } } = Parent
+    #)
 
 #
 # The parent `contains` child relationship
