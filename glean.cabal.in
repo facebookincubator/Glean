@@ -382,6 +382,7 @@ library core
         Glean.RTS.Bytecode.Disassemble
         Glean.RTS.Bytecode.Supply
         Glean.RTS.Constants
+        Glean.RTS.Foreign.Benchmarking
         Glean.RTS.Foreign.Bytecode
         Glean.RTS.Foreign.Define
         Glean.RTS.Foreign.FactSet
