@@ -162,9 +162,7 @@ runSearchRelated limit angle searchType = do
     , let Code.ChildEntity{..} = searchRelatedEntities_key_child
     ]
   where
-    entities = case angle of
-      [e] -> e -- simplify key for singleton search
-      es -> elementsOf (array es)
+    entities = elementsOf (array angle)
 
 --
 -- unified search by relation
