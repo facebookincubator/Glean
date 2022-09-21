@@ -281,11 +281,11 @@ instance ToSymbolParent Cxx.FunctionQName_key where
 
 instance ToSymbolParent Cxx.RecordDeclaration_key where
   toSymbolParent (Cxx.RecordDeclaration_key qname _kind _) =
-    Just <$> cxxParentQName qname
+    cxxParentQNameScope qname
 
 instance ToSymbolParent Cxx.EnumDeclaration_key where
   toSymbolParent (Cxx.EnumDeclaration_key qname _is_scoped _type _) =
-    Just <$> cxxParentQName qname
+    cxxParentQNameScope qname
 
 instance ToSymbolParent Cxx.FunctionDeclaration_key where
   toSymbolParent (Cxx.FunctionDeclaration_key fqname _sig _todo _) =
@@ -293,16 +293,16 @@ instance ToSymbolParent Cxx.FunctionDeclaration_key where
 
 instance ToSymbolParent Cxx.VariableDeclaration_key where
   toSymbolParent (Cxx.VariableDeclaration_key qname _ty _kind _) =
-    Just <$> cxxParentQName qname
+    cxxParentQNameScope qname
 
 instance ToSymbolParent Cxx.TypeAliasDeclaration_key  where
   toSymbolParent (Cxx.TypeAliasDeclaration_key qname _ _ _) =
-    Just <$> cxxParentQName qname
+    cxxParentQNameScope qname
 
 cxxEnumDeclParentName
   :: Cxx.EnumDeclaration_key -> Glean.RepoHaxl u w (Maybe Name)
 cxxEnumDeclParentName (Cxx.EnumDeclaration_key qname _scoped _type _) =
-  Just <$> cxxParentQName qname
+  cxxParentQNameScope qname
 
 cxxScopeName :: Cxx.Scope -> Glean.RepoHaxl u w (Maybe Name)
 cxxScopeName scope = case scope of
@@ -310,13 +310,23 @@ cxxScopeName scope = case scope of
   Cxx.Scope_namespace_ nsqname -> cxxParentNSName nsqname
   Cxx.Scope_recordWithAccess (Cxx.Scope_recordWithAccess_ qname _) ->
     Just <$> cxxParentQName qname
-  Cxx.Scope_local _fqname -> return Nothing
+  Cxx.Scope_local fqname -> cxxParentFunctionQName fqname
   Cxx.Scope_EMPTY -> return Nothing
+
+cxxParentFunctionQName :: Cxx.FunctionQName -> Glean.RepoHaxl u w (Maybe Name)
+cxxParentFunctionQName fqname = do
+  (Cxx.FunctionQName_key _name _scope) <- Glean.keyOf fqname
+  return Nothing -- TODO(batanasov) parent name from Cxx.FunctionName_key
 
 cxxParentQName :: Cxx.QName -> Glean.RepoHaxl u w Name
 cxxParentQName qname = do
   (Cxx.QName_key name _scope) <- Glean.keyOf qname
   cxxNameToName name
+
+cxxParentQNameScope :: Cxx.QName -> Glean.RepoHaxl u w (Maybe Name)
+cxxParentQNameScope qname = do
+  (Cxx.QName_key _name scope) <- Glean.keyOf qname
+  cxxScopeName scope
 
 cxxParentNSName :: Cxx.NamespaceQName -> Glean.RepoHaxl u w (Maybe Name)
 cxxParentNSName nsqname = do

@@ -334,7 +334,7 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "TypedefDeclInteger"
+                            "aString": "S"
                         },
                         "key": "symbolParent"
                     },
@@ -381,7 +381,7 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "UsingDeclInteger"
+                            "aString": "S"
                         },
                         "key": "symbolParent"
                     },
@@ -510,7 +510,7 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "memberVariableDecl"
+                            "aString": "T"
                         },
                         "key": "symbolParent"
                     },
@@ -557,7 +557,7 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "TypedefDeclShort"
+                            "aString": "bar"
                         },
                         "key": "symbolParent"
                     },
@@ -604,7 +604,7 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "UsingDeclShort"
+                            "aString": "bar"
                         },
                         "key": "symbolParent"
                     },
@@ -874,12 +874,6 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "fooI"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
                             "aString": "int fooI"
                         },
                         "key": "symbolSignature"
@@ -1003,12 +997,6 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "_i"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
                             "aString": "int _i"
                         },
                         "key": "symbolSignature"
@@ -1048,12 +1036,6 @@
             },
             {
                 "attributes": [
-                    {
-                        "attribute": {
-                            "aString": "i"
-                        },
-                        "key": "symbolParent"
-                    },
                     {
                         "attribute": {
                             "aString": "int i"
@@ -1097,12 +1079,6 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "s"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
                             "aString": "foo::S s"
                         },
                         "key": "symbolSignature"
@@ -1142,12 +1118,6 @@
             },
             {
                 "attributes": [
-                    {
-                        "attribute": {
-                            "aString": "t"
-                        },
-                        "key": "symbolParent"
-                    },
                     {
                         "attribute": {
                             "aString": "foo::bar::T t"
@@ -1314,12 +1284,6 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": ""
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
                             "aString": "maybe::Nothing::_secret"
                         },
                         "key": "symbolSignature"
@@ -1402,7 +1366,7 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "nothing"
+                            "aString": "maybe"
                         },
                         "key": "symbolParent"
                     },
@@ -2355,12 +2319,6 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "fooI"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
                             "aString": "int fooI"
                         },
                         "key": "symbolSignature"
@@ -2616,12 +2574,6 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "i"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
                             "aString": "int i"
                         },
                         "key": "symbolSignature"
@@ -2671,12 +2623,6 @@
             },
             {
                 "attributes": [
-                    {
-                        "attribute": {
-                            "aString": "i"
-                        },
-                        "key": "symbolParent"
-                    },
                     {
                         "attribute": {
                             "aString": "int i"
@@ -2934,7 +2880,7 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "_secret"
+                            "aString": "Nothing"
                         },
                         "key": "symbolParent"
                     },

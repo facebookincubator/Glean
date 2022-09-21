@@ -48,7 +48,7 @@
                             "aInteger": 1
                         },
                         "symbolParent": {
-                            "aString": "TypedefDeclInteger"
+                            "aString": "S"
                         },
                         "symbolSignature": {
                             "aString": "typedef long foo::S::TypedefDeclInteger"
@@ -82,7 +82,7 @@
                             "aInteger": 1
                         },
                         "symbolParent": {
-                            "aString": "UsingDeclInteger"
+                            "aString": "S"
                         },
                         "symbolSignature": {
                             "aString": "using foo::S::UsingDeclInteger = long"
@@ -369,7 +369,7 @@
                             "aInteger": 1
                         },
                         "symbolParent": {
-                            "aString": "TypedefDeclShort"
+                            "aString": "bar"
                         },
                         "symbolSignature": {
                             "aString": "typedef short foo::bar::TypedefDeclShort"
@@ -403,7 +403,7 @@
                             "aInteger": 1
                         },
                         "symbolParent": {
-                            "aString": "UsingDeclShort"
+                            "aString": "bar"
                         },
                         "symbolSignature": {
                             "aString": "using foo::bar::UsingDeclShort = short"
@@ -468,7 +468,7 @@
                             "aInteger": 1
                         },
                         "symbolParent": {
-                            "aString": "memberVariableDecl"
+                            "aString": "T"
                         },
                         "symbolSignature": {
                             "aString": "int foo::bar::T.memberVariableDecl"
@@ -564,9 +564,6 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
-                        "symbolParent": {
-                            "aString": "fooI"
-                        },
                         "symbolSignature": {
                             "aString": "int fooI"
                         }
@@ -597,9 +594,6 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 1
-                        },
-                        "symbolParent": {
-                            "aString": "fooI"
                         },
                         "symbolSignature": {
                             "aString": "int fooI"
@@ -749,9 +743,6 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
-                        "symbolParent": {
-                            "aString": "_i"
-                        },
                         "symbolSignature": {
                             "aString": "int _i"
                         }
@@ -851,9 +842,6 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
-                        "symbolParent": {
-                            "aString": "i"
-                        },
                         "symbolSignature": {
                             "aString": "int i"
                         }
@@ -923,9 +911,6 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 1
-                        },
-                        "symbolParent": {
-                            "aString": "i"
                         },
                         "symbolSignature": {
                             "aString": "int i"
@@ -1045,9 +1030,6 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 1
-                        },
-                        "symbolParent": {
-                            "aString": "s"
                         },
                         "symbolSignature": {
                             "aString": "foo::S s"
@@ -1196,9 +1178,6 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 1
-                        },
-                        "symbolParent": {
-                            "aString": "t"
                         },
                         "symbolSignature": {
                             "aString": "foo::bar::T t"
@@ -1558,9 +1537,6 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
-                        "symbolParent": {
-                            "aString": "i"
-                        },
                         "symbolSignature": {
                             "aString": "int i"
                         }
@@ -1723,9 +1699,6 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 1
-                        },
-                        "symbolParent": {
-                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "maybe::Nothing::_secret"
@@ -1915,7 +1888,7 @@
                             "aInteger": 1
                         },
                         "symbolParent": {
-                            "aString": "_secret"
+                            "aString": "Nothing"
                         },
                         "symbolSignature": {
                             "aString": "_magic"
@@ -1951,7 +1924,7 @@
                             "aInteger": 1
                         },
                         "symbolParent": {
-                            "aString": "nothing"
+                            "aString": "maybe"
                         },
                         "symbolSignature": {
                             "aString": "const maybe::Nothing maybe::nothing"
