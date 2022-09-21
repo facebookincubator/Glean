@@ -15,9 +15,9 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 27,
+              "lineBegin": 30,
               "columnBegin": 1,
-              "lineEnd": 32,
+              "lineEnd": 40,
               "columnEnd": 1
             }
           }
@@ -34,9 +34,9 @@
             "name": { "key": { "name": { "key": "baz" } } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 72,
+              "lineBegin": 80,
               "columnBegin": 1,
-              "lineEnd": 79,
+              "lineEnd": 87,
               "columnEnd": 1
             }
           }
@@ -55,7 +55,7 @@
               "file": { "key": "test.cpp" },
               "lineBegin": 9,
               "columnBegin": 1,
-              "lineEnd": 38,
+              "lineEnd": 46,
               "columnEnd": 1
             }
           }
@@ -72,9 +72,9 @@
             "name": { "key": { "name": { "key": "maybe" } } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 53,
+              "lineBegin": 61,
               "columnBegin": 1,
-              "lineEnd": 65,
+              "lineEnd": 73,
               "columnEnd": 1
             }
           }

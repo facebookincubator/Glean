@@ -8,7 +8,10 @@
 
 namespace foo {
 
-struct S {};
+struct S {
+  typedef long TypedefDeclInteger;
+  using UsingDeclInteger = long;
+};
 
 /**
  * Test Code Block
@@ -26,7 +29,12 @@ void foo();
 
 namespace bar {
 
-struct T {};
+typedef short TypedefDeclShort;
+using UsingDeclShort = short;
+
+struct T {
+  int memberVariableDecl;
+};
 void g();
 
 }

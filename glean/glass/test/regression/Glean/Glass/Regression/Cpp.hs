@@ -72,7 +72,7 @@ testSymbolIdLookup get = TestLabel "describeSymbol" $ TestList [
 testCppDescribeSymbolComments :: Getter -> Test
 testCppDescribeSymbolComments get = TestLabel "describeSymbolComments" $
   TestList [
-    "test/cpp//foo/f/.decl" --> (13,1)
+    "test/cpp//foo/f/.decl" --> (16,1)
   ]
   where
     (-->) :: Text -> (Int,Int) -> Test

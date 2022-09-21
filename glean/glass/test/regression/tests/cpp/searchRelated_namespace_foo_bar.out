@@ -7,6 +7,14 @@
                 "parent": "test/cpp//foo/bar/.decl"
             },
             {
+                "child": "test/cpp//foo/bar/TypedefDeclShort/.decl",
+                "parent": "test/cpp//foo/bar/.decl"
+            },
+            {
+                "child": "test/cpp//foo/bar/UsingDeclShort/.decl",
+                "parent": "test/cpp//foo/bar/.decl"
+            },
+            {
                 "child": "test/cpp//foo/bar/g/.decl",
                 "parent": "test/cpp//foo/bar/.decl"
             }

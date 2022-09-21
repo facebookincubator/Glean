@@ -57,9 +57,9 @@
             "kind": { "local": { "kind": 2, "attribute": 0 } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 61,
+              "lineBegin": 69,
               "columnBegin": 30,
-              "lineEnd": 61,
+              "lineEnd": 69,
               "columnEnd": 36
             }
           }
@@ -83,9 +83,9 @@
             "isScoped": false,
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 81,
+              "lineBegin": 89,
               "columnBegin": 1,
-              "lineEnd": 81,
+              "lineEnd": 89,
               "columnEnd": 26
             }
           }
@@ -109,9 +109,9 @@
             "isScoped": true,
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 82,
+              "lineBegin": 90,
               "columnBegin": 1,
-              "lineEnd": 82,
+              "lineEnd": 90,
               "columnEnd": 40
             }
           }
@@ -157,9 +157,9 @@
             "isScoped": false,
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 75,
+              "lineBegin": 83,
               "columnBegin": 3,
-              "lineEnd": 75,
+              "lineEnd": 83,
               "columnEnd": 25
             }
           }
@@ -205,9 +205,9 @@
             "isScoped": true,
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 76,
+              "lineBegin": 84,
               "columnBegin": 3,
-              "lineEnd": 76,
+              "lineEnd": 84,
               "columnEnd": 39
             }
           }
@@ -233,9 +233,9 @@
             "kind": { "struct_": { } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 58,
+              "lineBegin": 66,
               "columnBegin": 1,
-              "lineEnd": 62,
+              "lineEnd": 70,
               "columnEnd": 1
             }
           }
@@ -263,8 +263,8 @@
               "file": { "key": "test.cpp" },
               "lineBegin": 11,
               "columnBegin": 1,
-              "lineEnd": 11,
-              "columnEnd": 11
+              "lineEnd": 14,
+              "columnEnd": 1
             }
           }
         }
@@ -301,10 +301,100 @@
             "kind": { "struct_": { } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 29,
+              "lineBegin": 35,
               "columnBegin": 1,
-              "lineEnd": 29,
-              "columnEnd": 11
+              "lineEnd": 37,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "TypedefDeclInteger" },
+      "scope": {
+        "recordWithAccess": {
+          "record": {
+            "key": {
+              "name": { "key": "S" },
+              "scope": { "namespace_": { "key": { "name": { "key": "foo" } } } }
+            }
+          },
+          "access": 0
+        }
+      },
+      "decl": {
+        "typeAlias": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "TypedefDeclInteger" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "S" },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "foo" } } }
+                        }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "type": { "key": "long" },
+            "kind": 0,
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 12,
+              "columnBegin": 3,
+              "lineEnd": 12,
+              "columnEnd": 33
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "TypedefDeclShort" },
+      "scope": {
+        "namespace_": {
+          "key": {
+            "name": { "key": "bar" },
+            "parent": { "key": { "name": { "key": "foo" } } }
+          }
+        }
+      },
+      "decl": {
+        "typeAlias": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "TypedefDeclShort" },
+                "scope": {
+                  "namespace_": {
+                    "key": {
+                      "name": { "key": "bar" },
+                      "parent": { "key": { "name": { "key": "foo" } } }
+                    }
+                  }
+                }
+              }
+            },
+            "type": { "key": "short" },
+            "kind": 0,
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 32,
+              "columnBegin": 1,
+              "lineEnd": 32,
+              "columnEnd": 30
             }
           }
         }
@@ -329,10 +419,100 @@
             "kind": { "struct_": { } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 74,
+              "lineBegin": 82,
               "columnBegin": 1,
-              "lineEnd": 77,
+              "lineEnd": 85,
               "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "UsingDeclInteger" },
+      "scope": {
+        "recordWithAccess": {
+          "record": {
+            "key": {
+              "name": { "key": "S" },
+              "scope": { "namespace_": { "key": { "name": { "key": "foo" } } } }
+            }
+          },
+          "access": 0
+        }
+      },
+      "decl": {
+        "typeAlias": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "UsingDeclInteger" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "S" },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "foo" } } }
+                        }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "type": { "key": "long" },
+            "kind": 1,
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 13,
+              "columnBegin": 3,
+              "lineEnd": 13,
+              "columnEnd": 31
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "UsingDeclShort" },
+      "scope": {
+        "namespace_": {
+          "key": {
+            "name": { "key": "bar" },
+            "parent": { "key": { "name": { "key": "foo" } } }
+          }
+        }
+      },
+      "decl": {
+        "typeAlias": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "UsingDeclShort" },
+                "scope": {
+                  "namespace_": {
+                    "key": {
+                      "name": { "key": "bar" },
+                      "parent": { "key": { "name": { "key": "foo" } } }
+                    }
+                  }
+                }
+              }
+            },
+            "type": { "key": "short" },
+            "kind": 1,
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 33,
+              "columnBegin": 1,
+              "lineEnd": 33,
+              "columnEnd": 28
             }
           }
         }
@@ -370,9 +550,9 @@
             "kind": { "local": { "kind": 2, "attribute": 0 } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 41,
+              "lineBegin": 49,
               "columnBegin": 8,
-              "lineEnd": 41,
+              "lineEnd": 49,
               "columnEnd": 13
             }
           }
@@ -422,9 +602,9 @@
             "isScoped": true,
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 59,
+              "lineBegin": 67,
               "columnBegin": 3,
-              "lineEnd": 59,
+              "lineEnd": 67,
               "columnEnd": 31
             }
           }
@@ -465,9 +645,9 @@
             "kind": { "local": { "kind": 2, "attribute": 0 } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 34,
+              "lineBegin": 42,
               "columnBegin": 11,
-              "lineEnd": 34,
+              "lineEnd": 42,
               "columnEnd": 18
             }
           }
@@ -506,10 +686,71 @@
             "kind": { "local": { "kind": 2, "attribute": 0 } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 43,
+              "lineBegin": 51,
               "columnBegin": 8,
-              "lineEnd": 43,
+              "lineEnd": 51,
               "columnEnd": 12
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "memberVariableDecl" },
+      "scope": {
+        "recordWithAccess": {
+          "record": {
+            "key": {
+              "name": { "key": "T" },
+              "scope": {
+                "namespace_": {
+                  "key": {
+                    "name": { "key": "bar" },
+                    "parent": { "key": { "name": { "key": "foo" } } }
+                  }
+                }
+              }
+            }
+          },
+          "access": 0
+        }
+      },
+      "decl": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "memberVariableDecl" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "T" },
+                        "scope": {
+                          "namespace_": {
+                            "key": {
+                              "name": { "key": "bar" },
+                              "parent": { "key": { "name": { "key": "foo" } } }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "type": { "key": "int" },
+            "kind": { "field": { "mutable_": false } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 36,
+              "columnBegin": 3,
+              "lineEnd": 36,
+              "columnEnd": 24
             }
           }
         }
@@ -537,9 +778,9 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 63,
+              "lineBegin": 71,
               "columnBegin": 1,
-              "lineEnd": 63,
+              "lineEnd": 71,
               "columnEnd": 51
             }
           }
@@ -578,9 +819,9 @@
             "kind": { "local": { "kind": 0, "attribute": 0 } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 45,
+              "lineBegin": 53,
               "columnBegin": 3,
-              "lineEnd": 45,
+              "lineEnd": 53,
               "columnEnd": 10
             }
           }
@@ -619,9 +860,9 @@
             "kind": { "local": { "kind": 0, "attribute": 0 } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 46,
+              "lineBegin": 54,
               "columnBegin": 3,
-              "lineEnd": 46,
+              "lineEnd": 54,
               "columnEnd": 15
             }
           }
