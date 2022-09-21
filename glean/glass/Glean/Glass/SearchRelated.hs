@@ -147,10 +147,8 @@ runSearchRelated
   -> Code.RelationType
   -> RepoHaxl u w [RelatedEntities]
 runSearchRelated limit angle searchType = do
-  entities <-
-    searchRecursiveWithLimit (Just limit) $
-        searchRelatedEntitiesQ searchType $
-      elementsOf $ array angle
+  entities <- searchRecursiveWithLimit (Just limit) $
+    searchRelatedEntitiesQ searchType entities
   pure $
     [ RelatedEntities
       { parentEntity = parentEntity_parent
@@ -159,11 +157,14 @@ runSearchRelated limit angle searchType = do
       , childLocation = childEntity_location
       }
     | Code.SearchRelatedEntities{..} <- entities
-    , Just Code.SearchRelatedEntities_key{..}
-       <- [searchRelatedEntities_key]
+    , Just Code.SearchRelatedEntities_key{..} <- [searchRelatedEntities_key]
     , let Code.ParentEntity{..} = searchRelatedEntities_key_parent
     , let Code.ChildEntity{..} = searchRelatedEntities_key_child
     ]
+  where
+    entities = case angle of
+      [e] -> e -- simplify key for singleton search
+      es -> elementsOf (array es)
 
 --
 -- unified search by relation
