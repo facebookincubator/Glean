@@ -24,6 +24,8 @@ import Data.Hashable
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.HashSet as HashSet
 import Data.List (sortOn)
+import Data.List.NonEmpty (NonEmpty(..))
+import qualified Data.List.NonEmpty as NonEmpty
 import Data.List.Extra (nubOrdOn)
 import qualified Data.Map as Map
 import Data.Maybe
@@ -261,7 +263,7 @@ runWithShards env myShards sm = do
             filter (\item -> repoNm == Thrift.repo_name (itemRepo item)) keep
 
     -- Open the most recent local DB for each repo in order to avoid lag spikes
-      let newestDb = head dbsByAge
+      let newestDb = NonEmpty.head dbsByAge
           isDeletingNewestDb = liftIO $
             HashMap.member (itemRepo newestDb) <$> readTVarIO (envDeleting env)
       let isMostRecentDbAndLocal =
@@ -283,13 +285,14 @@ runWithShards env myShards sm = do
         repoKeep
       publishCounter (prefix <> ".restoring") $
         length restores +
-        length (filter (\Item{..} -> itemLocality == Restoring) dbsByAge)
-      publishCounter (prefix <> ".indexing") $ length $ filter
+        length (NonEmpty.filter (\Item{..} -> itemLocality == Restoring)
+          dbsByAge)
+      publishCounter (prefix <> ".indexing") $ length $ NonEmpty.filter
         (\Item{..} ->
           itemLocality == Local
           && completenessStatus itemMeta == Thrift.DatabaseStatus_Incomplete)
         dbsByAge
-      publishCounter (prefix <> ".backups") $ length $ filter
+      publishCounter (prefix <> ".backups") $ length $ NonEmpty.filter
         (\Item{..} -> itemLocality == Cloud)
         dbsByAge
       when isMostRecentDbAndLocal $ void $ do
@@ -317,7 +320,11 @@ runWithShards env myShards sm = do
 --   - ensure that we have retain_at_least DBs
 --   - ensure that we have retain_at_least local DBs
 --     (i.e. avoid deleting local DBs while we wait for restores)
-dbKeepRoots :: ServerConfig.Config -> UTCTime -> (Text, [Item]) -> [Item]
+dbKeepRoots
+  :: ServerConfig.Config
+  -> UTCTime
+  -> (Text, NonEmpty Item)
+  -> [Item]
 dbKeepRoots ServerConfig.Config{..} t (repoNm, dbs) = keepRoots
   where
     ServerConfig.Retention{..} = repoRetention config_retention repoNm
@@ -327,7 +334,7 @@ dbKeepRoots ServerConfig.Config{..} t (repoNm, dbs) = keepRoots
     deleteIncompleteIfOlder =
       fmap fromIntegral retention_delete_incomplete_if_older
 
-    sorted = sortOn (Down . metaCreated . itemMeta) dbs
+    sorted = sortOn (Down . metaCreated . itemMeta) (NonEmpty.toList dbs)
 
     keepAccordingToPolicy = filter (fresh . itemMeta) (dropExcess sorted)
       where
@@ -381,9 +388,9 @@ fetchBackups env = do
       return dbs
 
 -- Group databases by repository name
-byRepoName :: [Item] -> [(Text, [Item])]
-byRepoName dbs = HashMap.toList $ HashMap.fromListWith (++)
-  [ (Thrift.repo_name $ itemRepo item, [item]) | item <- dbs ]
+byRepoName :: [Item] -> [(Text, NonEmpty Item)]
+byRepoName dbs = HashMap.toList $ HashMap.fromListWith (<>)
+  [ (Thrift.repo_name $ itemRepo item, item :| []) | item <- dbs ]
 
 repoRetention
   :: ServerConfig.DatabaseRetentionPolicy -> Text -> ServerConfig.Retention
