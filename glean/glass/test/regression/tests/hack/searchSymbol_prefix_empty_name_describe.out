@@ -3,70 +3,6 @@
     {
         "symbolDetails": [
             {
-                "comments": [],
-                "kind": 6,
-                "language": 3,
-                "location": {
-                    "filepath": "www/Namespace.php",
-                    "range": {
-                        "columnBegin": 11,
-                        "columnEnd": 13,
-                        "lineBegin": 10,
-                        "lineEnd": 10
-                    },
-                    "repository": "test"
-                },
-                "name": {
-                    "container": "",
-                    "localName": "NS"
-                },
-                "repo_hash": "testhash",
-                "sym": "test/php/NS",
-                "sym_location": {
-                    "filepath": "www/Namespace.php",
-                    "range": {
-                        "columnBegin": 11,
-                        "columnEnd": 13,
-                        "lineBegin": 10,
-                        "lineEnd": 10
-                    },
-                    "repository": "test"
-                },
-                "sym_other_locations": []
-            },
-            {
-                "comments": [],
-                "kind": 6,
-                "language": 3,
-                "location": {
-                    "filepath": "www/Namespace2.php",
-                    "range": {
-                        "columnBegin": 11,
-                        "columnEnd": 13,
-                        "lineBegin": 11,
-                        "lineEnd": 11
-                    },
-                    "repository": "test"
-                },
-                "name": {
-                    "container": "",
-                    "localName": "NS"
-                },
-                "repo_hash": "testhash",
-                "sym": "test/php/NS",
-                "sym_location": {
-                    "filepath": "www/Namespace2.php",
-                    "range": {
-                        "columnBegin": 11,
-                        "columnEnd": 13,
-                        "lineBegin": 11,
-                        "lineEnd": 11
-                    },
-                    "repository": "test"
-                },
-                "sym_other_locations": []
-            },
-            {
                 "annotations": [],
                 "comments": [],
                 "kind": 7,
@@ -1336,10 +1272,9 @@
                     "repository": "test"
                 },
                 "sym_other_locations": []
-            }
-        ],
-        "symbols": [
+            },
             {
+                "comments": [],
                 "kind": 6,
                 "language": 3,
                 "location": {
@@ -1352,10 +1287,26 @@
                     },
                     "repository": "test"
                 },
-                "name": "NS",
-                "symbol": "test/php/NS"
+                "name": {
+                    "container": "",
+                    "localName": "NS"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/ns/NS",
+                "sym_location": {
+                    "filepath": "www/Namespace.php",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 13,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
+                "comments": [],
                 "kind": 6,
                 "language": 3,
                 "location": {
@@ -1368,9 +1319,26 @@
                     },
                     "repository": "test"
                 },
-                "name": "NS",
-                "symbol": "test/php/NS"
-            },
+                "name": {
+                    "container": "",
+                    "localName": "NS"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/ns/NS",
+                "sym_location": {
+                    "filepath": "www/Namespace2.php",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 13,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            }
+        ],
+        "symbols": [
             {
                 "kind": 7,
                 "language": 3,
@@ -1978,6 +1946,38 @@
                 },
                 "name": "corge",
                 "symbol": "test/php/corge"
+            },
+            {
+                "kind": 6,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Namespace.php",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 13,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "name": "NS",
+                "symbol": "test/php/ns/NS"
+            },
+            {
+                "kind": 6,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Namespace2.php",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 13,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "name": "NS",
+                "symbol": "test/php/ns/NS"
             }
         ]
     }

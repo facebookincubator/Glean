@@ -4,38 +4,6 @@
         "symbolDetails": [],
         "symbols": [
             {
-                "kind": 6,
-                "language": 3,
-                "location": {
-                    "filepath": "www/Namespace.php",
-                    "range": {
-                        "columnBegin": 11,
-                        "columnEnd": 13,
-                        "lineBegin": 10,
-                        "lineEnd": 10
-                    },
-                    "repository": "test"
-                },
-                "name": "NS",
-                "symbol": "test/php/NS"
-            },
-            {
-                "kind": 6,
-                "language": 3,
-                "location": {
-                    "filepath": "www/Namespace2.php",
-                    "range": {
-                        "columnBegin": 11,
-                        "columnEnd": 13,
-                        "lineBegin": 11,
-                        "lineEnd": 11
-                    },
-                    "repository": "test"
-                },
-                "name": "NS",
-                "symbol": "test/php/NS"
-            },
-            {
                 "kind": 7,
                 "language": 3,
                 "location": {
@@ -642,6 +610,38 @@
                 },
                 "name": "corge",
                 "symbol": "test/php/corge"
+            },
+            {
+                "kind": 6,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Namespace.php",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 13,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "name": "NS",
+                "symbol": "test/php/ns/NS"
+            },
+            {
+                "kind": 6,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Namespace2.php",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 13,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "name": "NS",
+                "symbol": "test/php/ns/NS"
             }
         ]
     }

@@ -12,7 +12,9 @@ from glean.schema.py.hack import *
 from glean.schema.search_hack.types import (
     QueryToScope,
     SearchInEnum,
+    SearchNamespacedDecl,
     SearchInContext,
+    SearchNamespace,
     SearchInNamespace,
     SearchByName,
     SearchInContainerOrEnum,
@@ -44,6 +46,18 @@ class SearchHackSearchInEnum(GleanSchemaPredicate):
 
 
 
+class SearchHackSearchNamespacedDecl(GleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], name: ast.Expr, namespace_: ast.Expr, decl: ast.Expr) -> Tuple[str, Struct]:
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, namespace_, 'namespace_'), angle_for(__env, decl, 'decl')]))
+    return f"search.hack.SearchNamespacedDecl.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SearchNamespacedDecl
+
+  @staticmethod
+  def angle_query(*, name: Optional["HackName"] = None, namespace_: Optional[Union[Just["HackNamespaceQName"], Just[None]]] = None, decl: Optional["HackDeclaration"] = None) -> "SearchHackSearchNamespacedDecl":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
 class SearchHackSearchInContext(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], name: ast.Expr, contextName: ast.Expr, contextNamespace: ast.Expr, decl: ast.Expr) -> Tuple[str, Struct]:
@@ -52,6 +66,18 @@ class SearchHackSearchInContext(GleanSchemaPredicate):
 
   @staticmethod
   def angle_query(*, name: Optional["HackName"] = None, contextName: Optional["HackName"] = None, contextNamespace: Optional[Union[Just["HackNamespaceQName"], Just[None]]] = None, decl: Optional["HackDeclaration"] = None) -> "SearchHackSearchInContext":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class SearchHackSearchNamespace(GleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], name: ast.Expr, namespace_: ast.Expr, decl: ast.Expr) -> Tuple[str, Struct]:
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, name, 'name'), angle_for(__env, namespace_, 'namespace_'), angle_for(__env, decl, 'decl')]))
+    return f"search.hack.SearchNamespace.7 { ('{ ' + query_fields + ' }') if query_fields else '_' }", SearchNamespace
+
+  @staticmethod
+  def angle_query(*, name: Optional["HackName"] = None, namespace_: Optional[Union[Just["HackNamespaceQName"], Just[None]]] = None, decl: Optional["HackDeclaration"] = None) -> "SearchHackSearchNamespace":
     raise Exception("this function can only be called from @angle_query")
 
 

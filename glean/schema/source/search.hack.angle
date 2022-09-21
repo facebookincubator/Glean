@@ -34,7 +34,7 @@ predicate SearchByName :
     )
 
 # SearchInNamespace can find containers (class_, interface_, trait_),
-# enum_, function_, globalConst, namespace_, and typedef_ in a NamespaceQName
+# enum_, function_, globalConst, and typedef_ in a NamespaceQName
 #
 # With namespace_ of nothing, this searches for top-level declarations (global
 # items without a context).
@@ -57,7 +57,30 @@ predicate SearchInNamespace :
     hack.Declaration { function_ = { name = QN }} |
     hack.Declaration { globalConst = { name = QN }} |
     hack.Declaration { typedef_ = { name = QN }}
-  ) | hack.Declaration { namespace_ = { name = { name = N, parent = NS }}}
+  )
+
+predicate SearchNamespace :
+{
+  name : hack.Name,
+  namespace_ : maybe hack.NamespaceQName,
+  decl : hack.Declaration
+}
+{ Name, Parent, Decl } where
+  NSQ = hack.NamespaceQName { Name, Parent };
+  NS = hack.NamespaceDeclaration { name = NSQ };
+  hack.Declaration { namespace_ = NS } = Decl
+
+
+# Either a namespace or a decl in a namespace
+predicate SearchNamespacedDecl :
+{
+  name : hack.Name,
+  namespace_ : maybe hack.NamespaceQName,
+  decl : hack.Declaration
+}
+{ Name, Parent, Decl } where
+  SearchNamespace { Name, Parent, Decl } |
+  SearchInNamespace { Name, Parent, Decl }
 
 # Find classConst, method, property_, and typeConst in any parent container
 # (class, interface, or trait)

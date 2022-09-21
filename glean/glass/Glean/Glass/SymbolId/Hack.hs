@@ -84,7 +84,7 @@ instance Symbol Hack.TypedefDeclaration_key where
   toSymbol (Hack.TypedefDeclaration_key qn) = toSymbol qn
 
 instance Symbol Hack.NamespaceDeclaration_key where
-  toSymbol (Hack.NamespaceDeclaration_key qn) = toSymbol qn
+  toSymbol (Hack.NamespaceDeclaration_key qn) = ("ns" :) <$> toSymbol qn
 
 instance Symbol Hack.NamespaceDeclaration where
   toSymbol k = Glean.keyOf k >>= toSymbol

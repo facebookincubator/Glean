@@ -32,6 +32,11 @@ instance Search Hack.Entity where
   symbolSearch toks = fmap Hack.Entity_decl <$> symbolSearch toks
 
 instance Search Hack.Declaration where
+  symbolSearch t@("ns":[name]) = searchSymbolId t $ searchNamespace [] name
+  symbolSearch ("ns":t@(_:_:_)) = do -- 2 or more path elements
+    let name:rest = reverse t
+    searchSymbolId t $ searchNamespace rest name
+
   symbolSearch t@[name] = searchSymbolId t $ searchInNamespace [] name
   symbolSearch t@(_:_) = do -- 2 or more path elements
     let (name:rest@(context:ns)) = reverse t
@@ -55,6 +60,11 @@ instance PrefixSearch Hack.Entity where
 
 instance PrefixSearch Hack.Declaration where
   prefixSearch lim [] = prefixSearch lim [""]
+  prefixSearch lim ["ns", pName] = searchWithLimit (Just lim) $
+    prefixSearchNamespace [] pName
+  prefixSearch lim ("ns":toks) = do
+    let (name:rest) = reverse toks
+    searchWithLimit (Just lim) $ prefixSearchNamespace rest name
   prefixSearch lim [pName] = searchWithLimit (Just lim) $
     prefixSearchInNamespace [] pName
   prefixSearch lim toks = do
@@ -68,7 +78,8 @@ instance PrefixSearch Hack.Declaration where
 searchInNamespace :: [Text] -> Text -> Angle (ResultLocation Hack.Declaration)
 searchInNamespace = searchInNamespace_ False
 
-prefixSearchInNamespace :: [Text] -> Text -> Angle (ResultLocation Hack.Declaration)
+prefixSearchInNamespace
+  :: [Text] -> Text -> Angle (ResultLocation Hack.Declaration)
 prefixSearchInNamespace = searchInNamespace_ True
 
 searchInContainerOrEnum
@@ -86,6 +97,28 @@ searchInNamespace_ isPrefix ns name =
       (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
     tuple (decl,file,rangespan, lname) `where_` [
       wild .= predicate @Hack.SearchInNamespace (
+        rec $
+          field @"name" (stringOrPrefix isPrefix name) $
+          field @"namespace_" (namespaceQName ns) $
+          field @"decl" decl
+        end),
+      entityLocation (alt @"hack" (alt @"decl" decl)) file rangespan lname
+    ]
+
+prefixSearchNamespace
+  :: [Text] -> Text -> Angle (ResultLocation Hack.Declaration)
+prefixSearchNamespace = searchNamespace_ True
+
+searchNamespace :: [Text] -> Text -> Angle (ResultLocation Hack.Declaration)
+searchNamespace = searchNamespace_ False
+
+searchNamespace_
+  :: Bool -> [Text] -> Text -> Angle (ResultLocation Hack.Declaration)
+searchNamespace_ isPrefix ns name =
+  vars $ \(decl :: Angle Hack.Declaration) (file :: Angle Src.File)
+      (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
+    tuple (decl,file,rangespan, lname) `where_` [
+      wild .= predicate @Hack.SearchNamespace (
         rec $
           field @"name" (stringOrPrefix isPrefix name) $
           field @"namespace_" (namespaceQName ns) $

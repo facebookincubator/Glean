@@ -475,12 +475,13 @@ findHackDecls lim backend repo SearchQuery{..} = Glean.runHaxl backend repo $
 
     -- \Foo or Foo\Bar or \Foo\Bar
     -- This ignores the SearchQuery{case_sensitive} value
+    -- Decls are either namespaces or things in namespaces
     inNamespace :: [Text] -> Text -> Glean.Haxl w [Hack.Declaration]
     inNamespace ns ident =
-      search $ var $ \d -> d `where_` [wild .= searchInNamespace d]
+      search $ var $ \d -> d `where_` [wild .= searchNamespacedDecl d]
       where
-        searchInNamespace d =
-          predicate @Hack.SearchInNamespace $
+        searchNamespacedDecl d =
+          predicate @Hack.SearchNamespacedDecl $
             rec $
               field @"name" (string ident) $
               field @"namespace_" (namespaceOf ns) $
