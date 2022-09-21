@@ -35,10 +35,12 @@ import Glean.Backend
 import Glean.Database.Config
 import Glean.Database.Env
 import Glean.Database.Test
+import Glean.Derive
 import Glean.Impl.ConfigProvider ()
 import Glean.Impl.TestConfigProvider
 import Glean.Init
 import qualified Glean.ServerConfig.Types as ServerConfig
+import Glean.Schema.Util
 import Glean.Types as Thrift
 import Glean.Util.ConfigProvider
 import qualified Glean.Util.ThriftSource as ThriftSource
@@ -868,7 +870,7 @@ stackedSchemaUpdateTest = TestCase $
         |]
     writeFile schema_v0_file schema_v0
 
-    -- v1 adds a derived predicate to v0
+    -- v1 changes y.Q in an incompatible way, and adds y.R
     let
       schema_v1_file = root </> "schema1"
       schema_v1 =
@@ -887,7 +889,7 @@ stackedSchemaUpdateTest = TestCase $
         |]
     writeFile schema_v1_file schema_v1
 
-    -- v2 is incompatible with v0 (x.P changed)
+    -- v2 modifies x.P in a backwards compatible way, and removes y.R
     let
       schema_v2_file = root </> "schema2"
       schema_v2 =
@@ -904,9 +906,7 @@ stackedSchemaUpdateTest = TestCase $
         |]
     writeFile schema_v2_file schema_v2
 
-    -- v3 is incompatible with v0 (y.Q changed),
-    -- but we should still be able to use it because we only have
-    -- facts of x.P and that didn't change.
+    -- v3 modifies x.P and y.Q
     let
       schema_v3_file = root </> "schema3"
       schema_v3 =
@@ -917,6 +917,9 @@ stackedSchemaUpdateTest = TestCase $
 
           schema y.1 {
             predicate Q : { a : string, b : nat }
+
+            predicate D : string
+              stored S where Q { a = S }
           }
 
           schema all.1 : x.1, y.1 {}
@@ -973,6 +976,7 @@ stackedSchemaUpdateTest = TestCase $
         _ -> False
 
     -- switch to schema v1, make a stacked DB with update_schema_for_stacked
+    -- works even though y.Q changed, because there are no facts of y.Q
     let set x = x {
           Thrift.kickOff_dependencies =
             Just $ Thrift.Dependencies_stacked repo0,
@@ -1009,14 +1013,16 @@ stackedSchemaUpdateTest = TestCase $
           Thrift.kickOff_dependencies =
             Just $ Thrift.Dependencies_stacked repo0,
           Thrift.kickOff_update_schema_for_stacked = True }
-    repo4 <- mkRepo schema_v3_file "4" set $ \env repo ->
+    repo4 <- mkRepo schema_v3_file "4" set $ \env repo -> do
         void $ syncWriteJsonBatch env repo
           [ mkBatch (PredicateRef "y.Q" 1)
               [ [s| { "key" : {} } |] ]
           ] Nothing
+        derivePredicate env repo Nothing Nothing (parseRef "y.D") Nothing
 
     testQuery "stacked schema 5" repo4 schema_v3_file "x.P _" (Just 1)
     testQuery "stacked schema 6" repo4 schema_v3_file "y.Q _" (Just 1)
+    testQuery "stacked schema 7" repo4 schema_v3_file "y.D _" (Just 1)
 
 
 main :: IO ()

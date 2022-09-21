@@ -298,7 +298,7 @@ runDerivation env repo ref pred Thrift.DerivePredicateQuery{..} = do
     deriveQuery odb bounds lookup q = do
       config <- Observed.get (envServerConfig env)
       result <- try $
-        UserQuery.userQueryWrites env odb config bounds lookup repo q
+        UserQuery.userQueryWrites env odb config bounds lookup repo pred q
       case result of
         Left Thrift.Retry{..} ->
           retry retry_seconds (deriveQuery odb bounds lookup q)
