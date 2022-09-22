@@ -348,6 +348,18 @@ predicate ContainingTopLevelDeclaration:
     container: Declaration,
   }
 
+# Reverse containment mapping
+predicate ContainedByTopLevelDeclaration:
+  {
+    container: Declaration,
+    declaration: Declaration,
+  }
+  stored { container = C, declaration = D} where
+  python.ContainingTopLevelDeclaration {
+    declaration = D,
+    container = C
+  }
+
 # Quickly find declarations defined at the module level
 # The dead code automation operates at this level
 predicate IsTopLevelDeclaration: Declaration

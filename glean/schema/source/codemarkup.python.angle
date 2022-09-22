@@ -155,10 +155,10 @@ predicate PythonContainsChildEntity :
     child: code.python.Entity
   }
   { { decl = Container }, { decl = Member } } where
-    ( python.ContainingTopLevelDeclaration
+    ( python.ContainedByTopLevelDeclaration
       {
-        declaration = Member,
-        container = Container
+        container = Container,
+        declaration = Member
       }
     )
 

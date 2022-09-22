@@ -1,2 +1,3 @@
 query: codemarkup.ContainsChildEntity _
 transform: [gensort, []]
+perf: true

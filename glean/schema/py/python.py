@@ -51,6 +51,7 @@ from glean.schema.python.types import (
     SearchByLocalName,
     DeclarationsByFile,
     XRefsViaNameByFile,
+    ContainedByTopLevelDeclaration,
     DeclarationWithName,
     VariableDeclaration,
     FunctionBySName,
@@ -557,6 +558,18 @@ class PythonXRefsViaNameByFile(GleanSchemaPredicate):
 
   @staticmethod
   def angle_query(*, file: Optional["SrcFile"] = None, xrefs: Optional[List["PythonXRefViaName"]] = None) -> "PythonXRefsViaNameByFile":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
+class PythonContainedByTopLevelDeclaration(GleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], container: ast.Expr, declaration: ast.Expr) -> Tuple[str, Struct]:
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, container, 'container'), angle_for(__env, declaration, 'declaration')]))
+    return f"python.ContainedByTopLevelDeclaration.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ContainedByTopLevelDeclaration
+
+  @staticmethod
+  def angle_query(*, container: Optional["PythonDeclaration"] = None, declaration: Optional["PythonDeclaration"] = None) -> "PythonContainedByTopLevelDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 
