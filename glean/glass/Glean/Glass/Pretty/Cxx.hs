@@ -115,13 +115,8 @@ prettyVariable (Cxx.VariableDeclaration _ mkey) = case mkey of
   Just (Cxx.VariableDeclaration_key qname ttype kind _) -> foldr1 (<+>)
     [ prettyVarPrefix kind
     , prettyType ttype
-    , prettyVarName kind qname
+    , prettyQName qname
     ]
-
-prettyVarName :: Cxx.VariableKind -> Cxx.QName -> Text
-prettyVarName kind qname = case kind of
-  Cxx.VariableKind_field (Cxx.Field _ _) -> prettyQNameDot qname
-  _ -> prettyQName qname
 
 prettyVarPrefix :: Cxx.VariableKind -> Text
 prettyVarPrefix kind = case kind of
@@ -298,14 +293,6 @@ prettyRecord (Cxx.RecordDeclaration _ mkey) = case mkey of
     Cxx.RecordKind_class_{} -> "class" <+> prettyQName name
     Cxx.RecordKind_union_{} -> "union" <+> prettyQName name
     Cxx.RecordKind_EMPTY -> "<unknown-declaration>" <+> prettyQName name
-
--- -- Produces X::Y::Z.T
--- -- As we usually access fields through the .
--- Uses "::" as separator everywhere expect the last one, where "." is used
-prettyQNameDot :: Cxx.QName -> Text
-prettyQNameDot (Cxx.QName _ mkey) = case mkey of
-  Nothing -> missingKey
-  Just (Cxx.QName_key name scope) -> prettyScope scope "." <> prettyName name
 
 -- Produces X::Y::Z::T
 -- Uses "::" as separator everywhere

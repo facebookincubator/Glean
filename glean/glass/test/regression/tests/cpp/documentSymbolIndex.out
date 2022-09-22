@@ -471,7 +471,7 @@
                             "aString": "T"
                         },
                         "symbolSignature": {
-                            "aString": "int foo::bar::T.memberVariableDecl"
+                            "aString": "int foo::bar::T::memberVariableDecl"
                         }
                     },
                     "nameRange": {
