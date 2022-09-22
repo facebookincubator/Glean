@@ -1515,99 +1515,106 @@ matchPat
   -> Label                        -- ^ jump to here on mismatch
   -> [QueryChunk Var]             -- ^ pattern to match
   -> Code ()
-
-  -- special case for binding to a single variable: we don't need to
-  -- traverse the data, just copy the bytes.
-matchPat vars input inputend _ [QueryBind (Var ty var _)] | not (isWordTy ty) =
-  do
-    let reg = castRegister (vars ! var)
-    resetOutput reg
-    outputBytes input inputend reg
-
-  -- general case
-matchPat vars input inputend fail chunks = do
-
-  -- there's no point in traversing data at the end of the key
-  -- if we're just ignoring it, so drop trailing wildcards.
-  mapM_isLast' (dropWhile isWild) match chunks
+matchPat vars input inputend fail chunks = match True chunks
   where
-  match _isLast (QueryPrefix bs) = do
-    local $ \ok -> do
-      inputShiftLit input inputend bs ok
-      jumpIf0 ok fail -- chunk didn't match
-  match _ (QueryWild ty) =
-    skipTrusted input inputend ty
-  match _ QueryNever =
-    jump fail
-  match _ (QueryVar (Var ty var _)) | isWordTy ty =
-    local $ \id -> do
-      inputNat input inputend id
-      jumpIfNe id (vars ! var) fail
-  match _ (QueryVar (Var ty var _))
-    | isEmptyTy ty = return ()
-      -- the empty tuple could be represented by a null pointer, so it's
-      -- not safe to do inputShiftBytes anyway.
-    | otherwise =
-      local $ \ptr end ok -> do
-        getOutput (castRegister (vars ! var)) ptr end
-        inputShiftBytes input inputend ptr end ok
-        jumpIf0 ok fail
-  match isLast (QueryAnd a b) = do
-    local $ \start -> do
-      move input start
-      mapM_isLast True match a
-      move start input
-    mapM_isLast isLast match b
-  match isLast (QuerySum alts) = mdo
-    local $ \sel -> do
-      inputNat input inputend sel
-      select sel lbls
-    raise "selector out of range"
-    lbls <- forM alts $ \mb -> do
-      case mb of
-        Nothing -> return fail
-        Just chunks -> do
-          lbl <- label
-          mapM_isLast isLast match chunks
-          jump end
-          return lbl
-    end <- label
-    return ()
-  match _ (QueryBind (Var ty var _))
-    | isWordTy ty = inputNat input inputend (vars ! var)
-    | otherwise = local $ \start -> do
-      let outReg = castRegister (vars ! var)
-      resetOutput outReg
-      move input start
-      skipTrusted input inputend ty
-      outputBytes start input outReg
-      return ()
-  match isLast (QueryArrayPrefix npatterns ty patterns) = do
-    local $ \size patternsLen -> do
-      loadConst npatterns patternsLen
-      inputNat input inputend size
-      jumpIfLt size patternsLen fail
-      mapM_isLast isLast match patterns
-      -- skip to the end unless we are fully done matching
-      unless isLast $ mdo
-          sub patternsLen size
-          jumpIf0 size done
-          skip <- label
+  match
+    :: Bool -- ^ whether the query chunks match until the end of the input.
+    -> [QueryChunk Var]
+    -> Code ()
+  match _ [] = return ()
+  match tillEnd (x:rest) =
+    let isLastPattern = tillEnd && null rest in
+    case x of
+      QueryPrefix bs -> local $ \ok -> do
+        inputShiftLit input inputend bs ok
+        jumpIf0 ok fail -- chunk didn't match
+        match tillEnd rest
+
+      QueryWild ty
+        -- skip trailing wildcards
+        | all isWild rest -> return ()
+        | otherwise -> do
           skipTrusted input inputend ty
-          decrAndJumpIfNot0 size skip
+          match tillEnd rest
 
-          done <- label
-          return ()
+      QueryNever -> jump fail
 
-  -- mapM with last element tracking
-  mapM_isLast isLast f
-    | isLast = mapM_isLast' id f
-    | otherwise = mapM_ (f False)
+      QueryVar (Var ty var _)
+        | isEmptyTy ty -> match tillEnd rest
+        | isWordTy ty -> do
+            local $ \id -> do
+              inputNat input inputend id
+              jumpIfNe id (vars ! var) fail
+            match tillEnd rest
+          -- the empty tuple could be represented by a null pointer, so it's
+          -- not safe to do inputShiftBytes anyway.
+        | otherwise -> do
+          local $ \ptr end ok -> do
+            getOutput (castRegister (vars ! var)) ptr end
+            inputShiftBytes input inputend ptr end ok
+            jumpIf0 ok fail
+          match tillEnd rest
 
-  mapM_isLast' prepro f xx =
-    mapM_ (uncurry f)
-          (reverse (zip (True : repeat False)
-                        (prepro (reverse xx))))
+      QueryAnd a b -> do
+        local $ \start -> do
+          move input start
+          match isLastPattern a
+          move start input
+        match isLastPattern b
+        match tillEnd rest
+
+      QuerySum alts -> mdo
+        local $ \sel -> do
+          inputNat input inputend sel
+          select sel lbls
+        raise "selector out of range"
+        lbls <- forM alts $ \mb -> do
+          case mb of
+            Nothing -> return fail
+            Just chunks -> do
+              lbl <- label
+              match isLastPattern chunks
+              jump end
+              return lbl
+        end <- label
+        match tillEnd rest
+
+      QueryBind (Var ty var _)
+        | isWordTy ty -> do
+          inputNat input inputend (vars ! var)
+          match tillEnd rest
+        | otherwise -> do
+          let outReg = castRegister (vars ! var)
+          resetOutput outReg
+          if isLastPattern
+            -- we don't need to traverse the data, just copy the bytes.
+            then outputBytes input inputend outReg
+            else local $ \start -> do
+              move input start
+              skipTrusted input inputend ty
+              outputBytes start input outReg
+              match tillEnd rest
+
+      QueryArrayPrefix npatterns ty patterns -> do
+        local $ \size patternsLen -> do
+          loadConst npatterns patternsLen
+          inputNat input inputend size
+          jumpIfLt size patternsLen fail
+          match isLastPattern patterns
+          -- skip to the end unless we are done matching this branch, in which
+          -- case we don't need to leave the 'input' pointer in the right
+          -- place.
+          let doneMatching = null rest
+          unless doneMatching $ mdo
+            sub patternsLen size
+            jumpIf0 size done
+            skip <- label
+            skipTrusted input inputend ty
+            decrAndJumpIfNot0 size skip
+
+            done <- label
+            match tillEnd rest
+
 -----------------------------------------------------------------------------
 
 -- | Compile a query for some facts, possibly with recursive expansion.
