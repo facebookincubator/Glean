@@ -1077,84 +1077,17 @@ compileFactGenerator
   -> Code a
   -> Code a
 compileFactGenerator bounds (QueryRegs{..} :: QueryRegs s)
-    vars pid kpat vpat section maybeReg inner =
-
-  local $ \seekTok prefix_size -> do
-
-  let
-    noCapture _ _ = return ()
-
-    withPrefix
-      :: [QueryChunk Var]
-      -> (  -- load the prefix into registers
-            (Register 'DataPtr -> Register 'DataPtr -> Code ())
-            -- remaining non-prefix chunks
-         -> [QueryChunk Var]
-            -- capture the key if necessary
-         -> Maybe (Register 'DataPtr -> Register 'DataPtr -> Code ())
-         -> Code a)
-      -> Code a
-
-    withPrefix chunks fun =
-      case chunks of
-        -- Just a fixed ByteString: use it directly
-        (QueryPrefix bs : rest) | emptyPrefix rest ->
-          fun (loadLiteral bs) rest Nothing
-        -- A variable: use it directly
-        (QueryVar (Var ty v _) : rest)
-          | emptyPrefix rest, not (isWordTy ty) ->
-          fun
-            (getOutput (castRegister (vars ! v)))
-            rest
-            Nothing
-        -- Special case for a QueryBind that covers the whole
-        -- pattern. This is used to capture the key of a fact so
-        -- that we can return it, but we don't want it to interfere
-        -- with prefix lookup.
-        [QueryAnd [QueryBind (Var ty var _)] pats] ->
-          withPrefix pats $ \load remaining capture -> do
-          let capture' input inputend
-                | isWordTy ty = inputNat input inputend (vars ! var)
-                  -- word-typed variables must be represented by
-                  -- the word itself (this is assumed elsewhere)
-                  -- so we can't just copy the bytes in that case.
-                | otherwise = do
-                  let reg = castRegister (vars ! var)
-                  resetOutput reg
-                  outputBytes input inputend reg
-                  fromMaybe noCapture capture input inputend
-          fun load remaining (Just capture')
-        -- Otherwise: build up the prefix in a binary::Output
-        -- (register 'prefixOut')
-        _otherwise -> do
-          output $ \prefixOut -> do
-            resetOutput prefixOut
-            remaining <- buildPrefix prefixOut vars chunks
-            fun (getOutput prefixOut) remaining Nothing
-
+    vars pid kpat vpat section maybeReg inner = do
   let kchunks = preProcessPat kpat
   let vchunks = preProcessPat vpat
-
-  withPrefix kchunks $ \loadPrefix remaining captureKey -> mdo
+  withPrefix kchunks $ \loadPrefix remaining captureKey -> do
 
   -- hasPrefix is True if there is a prefix pattern *and* there is a
   -- non-empty pattern to match after the prefix.
   let hasPrefix = not (emptyPrefix kchunks) && not (all isWild remaining)
-      seek' typ ptr end tok =
-        case (section, bounds) of
-          (SeekOnAllFacts, _) -> seek typ ptr end tok
-          (SeekOnBase, StackedBoundaries (SectionBoundaries from to) _) ->
-            seekBetween from to
-          (SeekOnStacked, StackedBoundaries _ (SectionBoundaries from to)) ->
-            seekBetween from to
-          _ -> error "unexpected section seek on non-stacked db"
-        where
-          seekBetween from to = do
-            pfrom <- constant $ fromIntegral $ fromFid from
-            pto <- constant $ fromIntegral $ fromFid to
-            seekWithinSection typ ptr end pfrom pto tok
 
   typ <- constant (fromIntegral (fromPid pid))
+  local $ \seekTok prefix_size -> mdo
   local $ \ptr ptrend -> do
     loadPrefix ptr ptrend
     when hasPrefix $ ptrDiff ptr ptrend prefix_size
@@ -1208,6 +1141,70 @@ compileFactGenerator bounds (QueryRegs{..} :: QueryRegs s)
   end <- label
   endSeek seekTok
   return a
+  where
+    seek' typ ptr end tok =
+      case (section, bounds) of
+        (SeekOnAllFacts, _) -> seek typ ptr end tok
+        (SeekOnBase, StackedBoundaries (SectionBoundaries from to) _) ->
+          seekBetween from to
+        (SeekOnStacked, StackedBoundaries _ (SectionBoundaries from to)) ->
+          seekBetween from to
+        _ -> error "unexpected section seek on non-stacked db"
+      where
+        seekBetween from to = do
+          pfrom <- constant $ fromIntegral $ fromFid from
+          pto <- constant $ fromIntegral $ fromFid to
+          seekWithinSection typ ptr end pfrom pto tok
+
+    noCapture _ _ = return ()
+
+    withPrefix
+      :: [QueryChunk Var]
+      -> (  -- load the prefix into registers
+            (Register 'DataPtr -> Register 'DataPtr -> Code ())
+            -- remaining non-prefix chunks
+         -> [QueryChunk Var]
+            -- capture the key if necessary
+         -> Maybe (Register 'DataPtr -> Register 'DataPtr -> Code ())
+         -> Code a)
+      -> Code a
+    withPrefix chunks fun =
+      case chunks of
+        -- Just a fixed ByteString: use it directly
+        (QueryPrefix bs : rest) | emptyPrefix rest ->
+          fun (loadLiteral bs) rest Nothing
+        -- A variable: use it directly
+        (QueryVar (Var ty v _) : rest)
+          | emptyPrefix rest, not (isWordTy ty) ->
+          fun
+            (getOutput (castRegister (vars ! v)))
+            rest
+            Nothing
+        -- Special case for a QueryBind that covers the whole
+        -- pattern. This is used to capture the key of a fact so
+        -- that we can return it, but we don't want it to interfere
+        -- with prefix lookup.
+        [QueryAnd [QueryBind (Var ty var _)] pats] ->
+          withPrefix pats $ \load remaining capture -> do
+          let capture' input inputend
+                | isWordTy ty = inputNat input inputend (vars ! var)
+                  -- word-typed variables must be represented by
+                  -- the word itself (this is assumed elsewhere)
+                  -- so we can't just copy the bytes in that case.
+                | otherwise = do
+                  let reg = castRegister (vars ! var)
+                  resetOutput reg
+                  outputBytes input inputend reg
+                  fromMaybe noCapture capture input inputend
+          fun load remaining (Just capture')
+        -- Otherwise: build up the prefix in a binary::Output
+        -- (register 'prefixOut')
+        _otherwise -> do
+          output $ \prefixOut -> do
+            resetOutput prefixOut
+            remaining <- buildPrefix prefixOut vars chunks
+            fun (getOutput prefixOut) remaining Nothing
+
 
 -- ----------------------------------------------------------------------------
 
