@@ -868,47 +868,18 @@ predicate DeclInRecord :
     decl : Declaration,
     record : RecordDefinition,
   }
-  {DeclIn, Record}
-  where
-  DeclFamilyOf{decl=DeclIn, family=Decl};
-
-  Scope{recordWithAccess={record=QN}} =
+  { DeclIn, Record } where
     # Declaration{namespace} cannot be in a record
     # Declaration{objcContainer} cannot be in a record
     # Declaration{ObjcMethodDeclaration} cannot be in a record
     # Declaration{ObjcPropertyDeclaration} cannot be in a record
-    (
-      S where { usingDeclaration = X } = Decl;
-      UsingDeclaration{name = FQN} = X;
-      FunctionQName{scope = S} = FQN;
-    ) | (
-      S where { usingDirective = X } = Decl;
-      UsingDirective{name = QN} = X;
-      QName{scope = S} = QN
-    ) | (
-      S where { record_ = X } = Decl;
-      RecordDeclaration{name = QN} = X;
-      QName{scope = S} = QN
-    ) | (
-      S where { enum_ = X } = Decl;
-      EnumDeclaration{name = QN} = X;
-      QName{scope = S} = QN
-    ) | (
-      S where { function_ = X } = Decl;
-      FunctionDeclaration{name = FQN} = X;
-      FunctionQName{scope = S} = FQN;
-    ) | (
-      S where { variable = X } = Decl;
-      VariableDeclaration{name = QN} = X;
-      QName{scope = S} = QN
-    ) | (
-      S where { typeAlias = X } = Decl;
-      TypeAliasDeclaration{name = QN} = X;
-      QName{scope = S} = QN
-    );
-  Record = RecordDefinition{declaration={name = QN}, members=Decls};
-  Decls = Declarations DS;
-  Decl = DS[..];
+    DeclFamilyOf { DeclIn, Decl };
+    cxx1.DeclarationScope { Decl, Scope };
+    { recordWithAccess = { record = QName } } = Scope;
+    DeclOut = cxx1.RecordDeclaration { name = QName }; # find the parent record
+    Record = cxx1.RecordDefinition{ declaration = DeclOut, members = Decls };
+    Decls = cxx1.Declarations DS;
+    DeclIn = DS[..]; # verify in decl is a member
 
 # Like DeclInRecord but exploit the fact we already have the base decl/defn
 predicate DefnInRecord :
