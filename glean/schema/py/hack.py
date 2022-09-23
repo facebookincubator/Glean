@@ -60,7 +60,6 @@ from glean.schema.hack.types import (
     TypeConstDefinition,
     DeclarationTarget,
     symbol,
-    GlobalNamespaceAlias,
     EnumDefinition,
     ClassConstDefinition,
     StringLiteral,
@@ -690,18 +689,6 @@ class HackSymbol(GleanSchemaPredicate):
 
   @staticmethod
   def angle_query(*, name_lowercase: Optional[str] = None, valid: Optional["Hackcontext"] = None, kind_id: Optional[int] = None, ns_id: Optional[int] = None, filehash_id: Optional[str] = None, is_abstract: Optional[bool] = None, is_final: Optional[bool] = None, canonical_name: Optional[str] = None) -> "HackSymbol":
-    raise Exception("this function can only be called from @angle_query")
-
-
-
-class HackGlobalNamespaceAlias(GleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], _from: ast.Expr, to: ast.Expr) -> Tuple[str, Struct]:
-    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, _from, 'from'), angle_for(__env, to, 'to')]))
-    return f"hack.GlobalNamespaceAlias.6 { ('{ ' + query_fields + ' }') if query_fields else '_' }", GlobalNamespaceAlias
-
-  @staticmethod
-  def angle_query(*, _from: Optional["HackName"] = None, to: Optional["HackQName"] = None) -> "HackGlobalNamespaceAlias":
     raise Exception("this function can only be called from @angle_query")
 
 
