@@ -1822,6 +1822,7 @@ test-suite schematest
         glean:db,
         glean:config,
         glean:if-glean-hs,
+        glean:lib,
         glean:util,
 
 test-suite schemaevolves
