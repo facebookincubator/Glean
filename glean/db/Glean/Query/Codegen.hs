@@ -21,6 +21,8 @@ import Control.Monad.State
 import Data.ByteString (ByteString)
 import qualified Data.ByteString as ByteString
 import Data.Coerce
+import Data.IntMap (IntMap)
+import qualified Data.IntMap as IntMap
 import Data.IntSet (IntSet)
 import qualified Data.IntSet as IntSet
 import Data.List (genericLength)
@@ -42,6 +44,7 @@ import qualified Glean.Angle.Types as Angle
 import Glean.Bytecode.Types
 import qualified Glean.FFI as FFI
 import Glean.Query.Codegen.Types
+import Glean.Database.Schema.Types (PredicateTransformation(..))
 import Glean.RTS
 import Glean.RTS.Builder
 import Glean.RTS.Bytecode.Code
@@ -168,14 +171,15 @@ sectionBounds lookup = SectionBoundaries
   <*> firstFreeId lookup
 
 compileQuery
-  :: Boundaries
+  :: IntMap PredicateTransformation
+  -> Boundaries
   -> CodegenQuery
      -- ^ The query to compile. NB. no type checking or validation is
      -- done on this; we assume that earlier phases have done this.  A
      -- malformed query can cause a crash.
   -> IO CompiledQuery
 
-compileQuery bounds (QueryWithInfo query numVars ty) = do
+compileQuery trans bounds (QueryWithInfo query numVars ty) = do
   vlog 2 $ show (pretty query)
 
   (idTerm, resultKey, resultValue, stmts) <- case query of
@@ -202,7 +206,7 @@ compileQuery bounds (QueryWithInfo query numVars ty) = do
 
     -- resultKeyReg/resultValueReg is where we build up result values
     output $ \resultKeyOutput resultValueOutput ->
-      compileStatements bounds regs stmts vars $ mdo
+      compileStatements trans bounds regs stmts vars $ mdo
         -- If the result term is a variable, avoid unnecessarily
         -- copying it into resultOutput and just use it directly.
         resultKeyReg <- case resultKey of
@@ -393,7 +397,8 @@ compileTermGen term vars maybeReg andThen = do
 
 compileStatements
   :: forall a s
-  .  Boundaries
+  .  IntMap PredicateTransformation
+  -> Boundaries
   -> QueryRegs s
   -> [CgStatement]
   -> Vector (Register 'Word)    -- ^ registers for variables
@@ -401,6 +406,7 @@ compileStatements
                                 -- the result is constructed.
   -> Code a
 compileStatements
+  trans
   bounds
   regs@(QueryRegs{..} :: QueryRegs s)
   stmts
@@ -414,7 +420,7 @@ compileStatements
         local $ \failed innerRet -> mdo
           let
             compileBranch stmts =
-              compileStatements bounds regs stmts vars $ mdo
+              compileStatements trans bounds regs stmts vars $ mdo
                 site <- callSite
                 loadLabel ret innerRet
                 jump doInner
@@ -423,7 +429,7 @@ compileStatements
 
           -- if
           loadConst 1 failed
-          thenSite <- compileStatements bounds regs cond vars $ do
+          thenSite <- compileStatements trans bounds regs cond vars $ do
           -- then
             loadConst 0 failed
             compileBranch then_
@@ -478,7 +484,7 @@ compileStatements
           matches p = foldMap pure p
 
       compile (CgNegation stmts : rest) = mdo
-        singleResult (compileStatements bounds regs stmts vars) $ jump fail
+        singleResult (compileStatements trans bounds regs stmts vars) $ jump fail
         a <- compile rest
         fail <- label
         return a
@@ -507,7 +513,7 @@ compileStatements
       compile (CgDisjunction stmtss : rest) =
         local $ \innerRet -> mdo
         sites <- forM stmtss $ \stmts -> do
-          compileStatements bounds regs stmts vars $ mdo
+          compileStatements trans bounds regs stmts vars $ mdo
             site <- callSite
             loadLabel ret_ innerRet
             jump doInner
@@ -757,7 +763,9 @@ compileStatements
 
       compileGen
         (FactGenerator (PidRef pid _) kpat vpat range) maybeReg inner = do
-        compileFactGenerator bounds regs vars pid kpat vpat range maybeReg inner
+        let mtrans = IntMap.lookup (fromIntegral $ fromPid pid) trans
+        compileFactGenerator
+          mtrans bounds regs vars pid kpat vpat range maybeReg inner
 
 
       -- Perform an action but interrupt it and clean-up after the first result.
@@ -776,7 +784,8 @@ compileStatements
 
 compileFactGenerator
   :: forall a s
-  .  Boundaries
+  .  Maybe PredicateTransformation
+  -> Boundaries
   -> QueryRegs s
   -> Vector (Register 'Word)    -- ^ registers for variables
   -> Pid
@@ -786,7 +795,7 @@ compileFactGenerator
   -> Maybe (Register 'Word)
   -> Code a
   -> Code a
-compileFactGenerator bounds (QueryRegs{..} :: QueryRegs s)
+compileFactGenerator _ bounds (QueryRegs{..} :: QueryRegs s)
     vars pid kpat vpat section maybeReg inner = do
   let kchunks = preProcessPat kpat
   let vchunks = preProcessPat vpat
