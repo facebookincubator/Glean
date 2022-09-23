@@ -748,4 +748,8 @@ predicate AttributeToDeclaration :
   #
   # This is experimental and may change in the future
   predicate IndexerInputsHash : string -> [byte]
+
+# Generated from `auto_namespace_map` in .hhconfig
+predicate GlobalNamespaceAlias : { from: Name, to: QName }
+
 }
