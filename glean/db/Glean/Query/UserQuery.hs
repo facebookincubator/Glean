@@ -68,7 +68,8 @@ import qualified Glean.Database.PredicateStats as PredicateStats
 import Glean.Database.Types as Database
 import Glean.Database.Writes
 import Glean.FFI
-import Glean.Query.Codegen hiding (Match(..))
+import Glean.Query.Codegen
+import Glean.Query.Codegen.Types hiding (Match(..))
 import Glean.Query.Transform
 import Glean.Query.Flatten
 import Glean.Query.Opt

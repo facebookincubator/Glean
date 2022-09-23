@@ -29,7 +29,7 @@ import Data.Maybe (fromMaybe)
 import qualified Data.IntSet as IntSet
 import qualified Data.IntMap.Strict as IntMap
 
-import Glean.Query.Codegen
+import Glean.Query.Codegen.Types (Match(..), Var(..), Generator_(..), Generator)
 import Glean.RTS.Term as RTS hiding (Match(..))
 
 -- -----------------------------------------------------------------------------

@@ -17,7 +17,7 @@ import Data.Maybe
 import Data.Text (Text)
 
 import qualified Glean.Angle.Types as Angle
-import Glean.Query.Codegen as Compiled
+import Glean.Query.Codegen.Types as Compiled
 import Glean.Query.Opt
 import Glean.Query.Reorder
 import Glean.Query.Nested.Types

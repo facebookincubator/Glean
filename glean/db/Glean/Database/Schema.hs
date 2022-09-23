@@ -71,7 +71,7 @@ import Glean.Angle.Types as Schema
 import Glean.Schema.Resolve
 import Glean.Schema.Util (showRef, ShowRef)
 import qualified Glean.ServerConfig.Types as ServerConfig
-import Glean.Query.Codegen (QueryWithInfo(..))
+import Glean.Query.Codegen.Types (QueryWithInfo(..))
 import Glean.Query.Typecheck
 
 import Glean.Query.Transform (transformTypecheckedQuery)

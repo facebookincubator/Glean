@@ -41,7 +41,7 @@ import Data.Text.Prettyprint.Doc hiding ((<>), enclose)
 
 import Glean.Angle.Types hiding (Type)
 import qualified Glean.Angle.Types as Schema
-import Glean.Query.Codegen
+import Glean.Query.Codegen.Types (Match(..), Var(..), QueryWithInfo(..))
 import Glean.Query.Typecheck.Types
 import Glean.RTS.Types as RTS
 import Glean.RTS.Term hiding

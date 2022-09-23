@@ -16,9 +16,9 @@ import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 
 import Glean.Database.Schema.Types (PredicateDetails(..))
-import Glean.Query.Codegen (Match(..), QueryWithInfo(..))
 import Glean.RTS.Types (PidRef(..))
 import Glean.Angle.Types (PredicateId(..), DerivingInfo(..))
+import Glean.Query.Codegen.Types (Match(..), QueryWithInfo(..))
 import Glean.Query.Typecheck (tcQueryDeps)
 import Glean.Query.Typecheck.Types
   (TcPat, TcTerm(..), Typed(..), TcStatement(..), TcQuery(..), TypecheckedQuery)

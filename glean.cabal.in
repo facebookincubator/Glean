@@ -506,6 +506,7 @@ library db
         Glean.Write.JSON
         Glean.Query.BindOrder
         Glean.Query.Codegen
+        Glean.Query.Codegen.Types
         Glean.Query.Transform
         Glean.Query.Expand
         Glean.Query.Flatten

@@ -19,7 +19,7 @@ import qualified Data.IntSet as IntSet
 import Data.IntSet (IntSet)
 import Data.List.NonEmpty (NonEmpty)
 
-import Glean.Query.Codegen
+import Glean.Query.Codegen.Types (Var(..), Match(..), Generator, Generator_(..))
 import Glean.Query.Flatten.Types
 import Glean.RTS.Term hiding (Match(..))
 

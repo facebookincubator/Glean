@@ -28,7 +28,7 @@ import Data.Text (Text)
 import Data.Text.Prettyprint.Doc hiding ((<>))
 
 import Glean.Angle.Types hiding (Type)
-import Glean.Query.Codegen
+import Glean.Query.Codegen.Types (Var(..), QueryWithInfo(..), Pat, Generator)
 import Glean.Database.Schema
 import Glean.RTS.Types as RTS
 

@@ -26,7 +26,14 @@ import Data.Text (Text)
 import qualified Glean.Angle.Types as Type
 import Glean.Angle.Types (FieldDef_(..))
 import Glean.Query.Flatten.Types hiding (fresh)
-import Glean.Query.Codegen
+import Glean.Query.Codegen.Types
+  ( matchVar
+  , Match(..)
+  , Var(..)
+  , Generator_(..)
+  , Pat
+  , Generator
+  , QueryWithInfo(..))
 import Glean.RTS.Term hiding (Match(..))
 import Glean.RTS.Types
 

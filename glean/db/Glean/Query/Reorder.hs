@@ -30,7 +30,17 @@ import qualified Data.Text as Text
 import Data.Text.Prettyprint.Doc hiding ((<>))
 
 import Glean.Query.BindOrder
-import Glean.Query.Codegen
+import Glean.Query.Codegen.Types
+  ( matchVar
+  , Var(..)
+  , Match(..)
+  , CgStatement_(..)
+  , CgStatement
+  , Generator_(..)
+  , CgQuery(..)
+  , QueryWithInfo(..)
+  , SeekSection(..)
+  , CodegenQuery)
 import Glean.Query.Flatten.Types hiding (fresh)
 import Glean.Query.Vars
 import Glean.RTS.Term as RTS hiding (Match(..))

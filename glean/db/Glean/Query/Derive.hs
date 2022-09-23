@@ -47,7 +47,7 @@ import Glean.Database.Writes
 import Glean.Internal.Types hiding (Predicate)
 import qualified Glean.Query.UserQuery as UserQuery
 import Glean.Query.Typecheck (tcQueryDeps)
-import Glean.Query.Codegen
+import Glean.Query.Codegen.Types
 import Glean.Schema.Types
 import Glean.Schema.Util
 import qualified Glean.ServerConfig.Types as ServerConfig

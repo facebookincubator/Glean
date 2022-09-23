@@ -15,7 +15,7 @@ module Glean.Query.Incremental
 
 import Data.Maybe (mapMaybe, catMaybes)
 
-import Glean.Query.Codegen
+import Glean.Query.Codegen.Types
 import Glean.RTS.Types (Pid, PidRef(..))
 
 -- | Make a predicate derivation query efficiently derive new facts on an

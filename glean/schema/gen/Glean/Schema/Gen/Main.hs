@@ -56,7 +56,7 @@ import Util.Timing
 import Util.OptParse (commandParser)
 
 import Glean.Query.Typecheck (tcQueryDeps)
-import Glean.Query.Codegen (QueryWithInfo(..))
+import Glean.Query.Codegen.Types (QueryWithInfo(..))
 import Glean.Angle.Types
 import Glean.Angle.Parser
 import Glean.Database.Config hiding (options)

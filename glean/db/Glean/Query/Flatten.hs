@@ -21,7 +21,15 @@ import qualified Data.Text as Text
 import Data.Text.Prettyprint.Doc hiding ((<>), enclose)
 
 import qualified Glean.Angle.Types as Angle
-import Glean.Query.Codegen
+import Glean.Query.Codegen.Types
+  ( Match(..)
+  , Var(..)
+  , Pat
+  , Generator_(..)
+  , Generator
+  , Expr
+  , SeekSection(..)
+  , QueryWithInfo(..))
 import Glean.Query.Expand
 import Glean.Query.Flatten.Types
 import Glean.Query.Typecheck.Types
