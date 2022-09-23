@@ -12,6 +12,7 @@ module Glean.Database.Schema.Types
   , PredicateDetails(..)
   , predicateRef
   , PredicateTransformation(..)
+  , Bytes(..)
   , SchemaSelector(..)
   , schemaNameEnv
   , addTmpPredicate
@@ -40,10 +41,14 @@ import Data.Text.Prettyprint.Doc hiding ((<>))
 
 import Glean.Angle.Types as Schema hiding (Type, FieldDef)
 import qualified Glean.Angle.Types as Schema
+import Glean.Bytecode.Types
+import Glean.Query.Codegen.Types (Match, Var)
 import Glean.Database.Schema.ComputeIds
 import Glean.Query.Typecheck.Types
 import Glean.RTS.Foreign.Bytecode (Subroutine)
 import Glean.RTS.Foreign.Inventory (Inventory)
+import Glean.RTS.Bytecode.Code
+import Glean.RTS.Term (Term)
 import Glean.RTS.Typecheck
 import Glean.RTS.Traverse
 import Glean.RTS.Types (Pid(..), Type, PidRef(..), FieldDef, ExpandedType(..))
@@ -86,6 +91,29 @@ data PredicateTransformation = PredicateTransformation
     -- ^ available -> requested
     -- ^ transform a fact of the available predicate into a fact
     -- of the requested predicate.
+
+  , transformPrefix
+      :: forall a
+      . Maybe ( Term (Match () Var)
+              -> (IsPointQuery -> Bytes -> Code a)
+              -> Code a)
+    -- ^ requested -> available
+    -- ^ Build a prefix for the available predicate based on a matching
+    -- term for the requested predicate
+
+  , transformKey :: forall a. Maybe (Bytes -> (Bytes -> Code a) -> Code a)
+  , transformValue :: forall a. Maybe (Bytes -> (Bytes -> Code a) -> Code a)
+    -- ^ available -> requested
+  }
+
+-- | Whether a prefix will match a fact from beginning to end and therefore can
+-- only have a single result.
+type IsPointQuery = Bool
+
+-- | bytes in a binary output
+data Bytes = Bytes
+  { b_start :: Register 'DataPtr
+  , b_end :: Register 'DataPtr
   }
 
 data TypeDetails = TypeDetails

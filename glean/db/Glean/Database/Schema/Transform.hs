@@ -37,6 +37,10 @@ mkPredicateTransformation detailsFor fromPid toPid
     , tAvailable = pidRef to
     , tTransformFactBack = fromMaybe id $
         mkFactTransformation to from
+
+    , transformPrefix = Nothing
+    , transformKey = Nothing
+    , transformValue = Nothing
     }
   where
       to = detailsFor toPid
