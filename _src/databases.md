@@ -33,6 +33,7 @@ method is chosen by these command-line flags:
 * `--db-root <dir>`  Use databases stored locally in the directory `<dir>`
 * `--db-tmp` Create a temporary directory to store DBs and delete it
   when the program exits.
+* `--db-memory` Store databases in memory rather than on disk.
 
 These flags are accepted by all the Glean command-line tools,
 including `glean` and `glean-server`.

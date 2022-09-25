@@ -162,8 +162,5 @@ the database is the one that was active at the time when the DB was
 created, so it is likely to be a correct description of the data in
 the database.
 
-* `--storage (rocksdb | memory)`<br />
-**Default:**: `rocksdb`<br />
-
 * `--db-mock-writes`<br />
 Allow write operations, but discard the data and don't write it to the DB.
