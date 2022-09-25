@@ -30,7 +30,7 @@ public:
 
   OnDemand& operator=(OnDemand&& other) noexcept {
     auto p = other.ptr_.exchange(nullptr, std::memory_order_acq_rel);
-    p = ptr_.exchange(ptr_, std::memory_order_release);
+    p = ptr_.exchange(p, std::memory_order_release);
     delete p;
     return *this;
   }
