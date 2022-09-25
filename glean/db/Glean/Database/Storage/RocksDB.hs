@@ -46,6 +46,7 @@ import Glean.RTS.Types (Fid(..), invalidFid, Pid(..))
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types (Repo)
 import qualified Glean.Types as Thrift
+import Glean.Util.Disk
 
 newtype Cache = Cache (ForeignPtr Cache)
 
@@ -93,6 +94,9 @@ instance Storage RocksDB where
     , dbRepo :: Repo
     }
 
+  describe rocks = "rocksdb:" <> rocksRoot rocks
+
+
   open rocks repo mode (DBVersion version) = do
     (cmode, start) <- case mode of
       ReadOnly -> return (0, invalidFid)
@@ -119,6 +123,9 @@ instance Storage RocksDB where
   close db = withContainer db glean_rocksdb_container_close
 
   delete rocks = safeRemovePathForcibly . containerPath rocks
+
+  safeRemoveForcibly rocks =
+      safeRemovePathForcibly . databasePath (rocksRoot rocks)
 
   predicateStats db = withForeignPtr (dbPtr db) $ \db_ptr -> do
     (count, pids, counts, sizes) <- invoke $ glean_rocksdb_database_stats db_ptr
@@ -220,6 +227,13 @@ instance Storage RocksDB where
           db_ptr
           (fromIntegral pid)) $
       Ownership.computeDerivedOwnership ownership
+
+
+  getTotalCapacity = getDiskSize . rocksRoot
+  getUsedCapacity = getUsedDiskSpace . rocksRoot
+  getFreeCapacity = getFreeDiskSpace . rocksRoot
+
+  withScratchRoot rocks f = f $ rocksRoot rocks </> ".scratch"
 
   backup db scratch process = do
     createDirectoryIfMissing True path

@@ -26,7 +26,6 @@ import ServiceData.Types as Stats
 import Util.Control.Exception
 import qualified Util.Control.Exception.CallStack as CallStack
 import Util.Defer
-import Util.IO (safeRemovePathForcibly)
 import Util.Log
 
 import qualified Glean.Database.Catalog as Catalog
@@ -90,11 +89,10 @@ removeDatabase env@Env{..} repo todo = uninterruptibleMask_ $
           Open odb -> closeOpenDB env odb
             `finally` atomically (writeTVar dbState Closed)
           _ -> return ()
-        Catalog.delete envCatalog repo
         Storage.delete envStorage repo
+        Catalog.delete envCatalog repo
         atomically $ modifyTVar envDerivations $
           HashMap.filterWithKey (\(repo',_) _ -> repo' /= repo)
-        safeRemovePathForcibly $ databasePath envRoot repo
       logInfo $ inRepo repo "deleted"
 
 -- | Schedule a DB for deletion and return the 'Async' which can be used to

@@ -18,9 +18,7 @@ import Control.Concurrent.STM
 import Control.Exception hiding (assert)
 import Control.Monad
 import Data.Default
-import Data.IORef
 import Data.HashMap.Strict (HashMap)
-import qualified Data.HashMap.Strict as HashMap
 import Data.List ((\\))
 import Data.Proxy
 import qualified Data.Text as Text
@@ -28,6 +26,7 @@ import Test.HUnit
 
 import Glean.Database.Catalog (Catalog)
 import qualified Glean.Database.Catalog as Catalog
+import qualified Glean.Database.Catalog.Local.Memory as Catalog
 import Glean.Database.Catalog.Filter
 import qualified Glean.Database.Catalog.Store as Store
 import Glean.Database.Meta (Meta)
@@ -52,25 +51,12 @@ instance Store.Store MockStore where
 
 memStore :: IO MockStore
 memStore = do
-  var <- newIORef HashMap.empty
-  storeList <- implement "Store.list" $ readIORef var
-  storeCreate <- implement "Store.create" $ \repo meta ->
-    atomicModifyIORef' var $ \xs ->
-    if repo `HashMap.member` xs
-      then (xs, False)
-      else (HashMap.insert repo meta xs, True)
-  storeDelete <- implement "Store.delete" $ \repo ->
-    atomicModifyIORef' var $ \xs ->
-    if repo `HashMap.member` xs
-      then (HashMap.delete repo xs, True)
-      else (xs, False)
-  storePut <- implement "Store.put" $ \repo meta ->
-    atomicModifyIORef' var $ \xs ->
-    if repo `HashMap.member` xs
-      then (HashMap.insert repo meta xs, True)
-      else (xs, False)
-  storeGet <- implement "Store.get" $ \repo ->
-    HashMap.lookup repo <$> readIORef var
+  cat <- Catalog.memoryCatalog
+  storeList <- implement "Store.list" $ Store.list cat
+  storeCreate <- implement "Store.create" $ Store.create cat
+  storeDelete <- implement "Store.delete" $ Store.delete cat
+  storePut <- implement "Store.put" $ Store.put cat
+  storeGet <- implement "Store.get" $ Store.get cat
   return MockStore{..}
 
 withMemCatalog :: (MockStore -> Catalog -> IO a) -> IO a

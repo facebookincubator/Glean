@@ -8,7 +8,7 @@
 
 module Glean.Database.Catalog.Local.Files
   ( Files
-  , local
+  , fileCatalog
   ) where
 
 import Control.Monad
@@ -37,8 +37,8 @@ newtype Files = Files { _filesRoot :: FilePath }
 metaPath :: FilePath -> Repo -> FilePath
 metaPath root repo = databasePath root repo </> "meta"
 
-local :: FilePath -> Files
-local = Files
+fileCatalog :: FilePath -> Files
+fileCatalog = Files
 
 instance Store Files where
   list (Files root) = do

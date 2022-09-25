@@ -185,7 +185,7 @@ makeFakeCloudDB backupDir repo dbtime completeness stacked =
 
 dbConfig :: FilePath -> ServerTypes.Config -> Glean.Database.Config.Config
 dbConfig dbdir serverConfig = def
-  { cfgRoot = Just dbdir
+  { cfgDataStore = fileDataStore dbdir
   , cfgSchemaSource = schemaSourceFiles
   , cfgRecipeConfig = def
   , cfgServerConfig = ThriftSource.value serverConfig

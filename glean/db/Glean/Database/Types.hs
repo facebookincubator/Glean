@@ -37,7 +37,7 @@ import Glean.Database.Config
 import Glean.Database.Meta
 import Glean.Database.Schema.Types
 import Glean.Database.Stats (Stats)
-import Glean.Database.Storage (Database, Storage)
+import Glean.Database.Storage (Database, Storage, describe)
 import Glean.Database.Work.Heartbeat (Heartbeats)
 import Glean.Database.Work.Queue (WorkQueue)
 import Glean.Logger.Server (GleanServerLogger)
@@ -202,7 +202,6 @@ data Env = forall storage. Storage storage => Env
   , envServerLogger :: Some GleanServerLogger
   , envDatabaseLogger :: Some GleanDatabaseLogger
   , envLoggerRateLimit :: RateLimiterMap Text
-  , envRoot :: FilePath
   , envCatalog :: Catalog
   , envStorage :: storage
   , envSchemaSource :: Observed SchemaIndex
@@ -245,5 +244,5 @@ data Env = forall storage. Storage storage => Env
   }
 
 instance Show Env where
-  show env = unwords [ "Glean.Database.Types.Env {",
-    "envRoot: " <> envRoot env, "}" ]
+  show Env{..} = unwords [ "Glean.Database.Types.Env {",
+    "envStorage: " <> describe envStorage, "}" ]

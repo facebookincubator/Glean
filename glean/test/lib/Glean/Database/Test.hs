@@ -42,7 +42,6 @@ import Glean.Backend
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Config
 import Glean.Database.Env
-import qualified Glean.Database.Storage.Memory as Memory
 import Glean.Database.Write.Batch
 import Glean.Database.Types
 import qualified Glean.Internal.Types as Thrift
@@ -53,14 +52,13 @@ import Glean.Typed
 import qualified Glean.Types as Thrift
 import Glean.Util.ConfigProvider
 import Glean.Util.Observed as Observed
-import Glean.Util.Some
 import qualified Glean.Util.ThriftSource as ThriftSource
 import Glean.Util.ThriftSource (ThriftSource)
 
 type Setting = Config -> Config
 
 setRoot :: FilePath -> Setting
-setRoot path cfg = cfg{ cfgRoot = Just path }
+setRoot path cfg = cfg{ cfgDataStore = fileDataStore path }
 
 setRecipes :: Map Text Recipes -> Setting
 setRecipes recipes cfg = cfg
@@ -98,7 +96,7 @@ disableSchemaId cfg = cfg {
   }
 
 setMemoryStorage :: Setting
-setMemoryStorage cfg = cfg{ cfgStorage = \_ _ -> Some <$> Memory.newStorage }
+setMemoryStorage cfg = cfg{ cfgDataStore = memoryDataStore }
 
 setDBVersion :: ServerConfig.DBVersion -> Setting
 setDBVersion ver cfg = cfg
@@ -121,7 +119,7 @@ withTestEnv settings action =
     let
       dbConfig = foldl' (\acc f -> f acc)
         def
-          { cfgRoot = Nothing
+          { cfgDataStore = tmpDataStore
           , cfgRecipeConfig = ThriftSource.value Recipes.Config
               { config_recipes = mempty }
           , cfgSchemaSource = schemaSourceFiles

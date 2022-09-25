@@ -22,7 +22,6 @@ import qualified Data.Map as Map
 import Data.Maybe
 import Data.Text (Text)
 import qualified Data.Text as Text
-import System.Directory
 import TextShow
 
 #ifdef FACEBOOK
@@ -165,7 +164,6 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
       when (not $ Storage.canOpenVersion Storage.ReadWrite version) $
         dbError kickOff_repo
           "can't create databases (unsupported binary version)"
-      createDirectoryIfMissing True $ databasePath envRoot kickOff_repo
       db <- atomically $ newDB kickOff_repo
       handle
         (\Catalog.EntryAlreadyExists{} ->
