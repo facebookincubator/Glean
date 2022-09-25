@@ -91,6 +91,12 @@ DEFINE_string(clang_resource_dir, "", "PATH to Clang resource dir");
 DEFINE_string(cdb_target, "", "Target name");
 DEFINE_string(cdb_dir, "", "Directory with compile_commands.json in it");
 
+// This is a hack to support parallel indexing in the Glean CLI
+DEFINE_bool(
+    print_sources_count,
+    false,
+    "Print the number source files and exit");
+
 static llvm::cl::OptionCategory indexerCategory("glean");
 
 // This file implements some plumbing and the main function for the
@@ -229,7 +235,7 @@ struct Config {
       // No logging when dumping to a file
       should_log = false;
       sender = fileWriter(FLAGS_dump);
-    } else {
+    } else if (!FLAGS_print_sources_count) {
       fail("missing --service or --dump");
     }
 
@@ -589,6 +595,11 @@ int main(int argc, char **argv) {
   });
 
   Config config(argc, argv);
+
+  if (FLAGS_print_sources_count) {
+    std::cout << config.sources.size();
+    return 0;
+  }
 
   const auto work_counter = FLAGS_work_file.empty()
     ? worklist::serialCounter(0, config.sources.size())

@@ -16,7 +16,7 @@ MAKE_ARGS=()
 
 for arg in "$@"; do
   case $arg in
-    build|run|test)
+    build|run|test|list-bin)
       ACTION="$1"
       shift
       break
@@ -42,4 +42,10 @@ make "${MAKE_ARGS[@]}" .build/current.sh glean.cabal cxx-libraries
 
 . .build/current.sh
 
-call_cabal "${ACTION}" "${TARGET}" -- "$@"
+CABAL_ARGS=()
+# Suppress "Up to date" etc. for list-bin
+if [ "$ACTION" = "list-bin" ]; then
+  CABAL_ARGS+=(-vsilent)
+fi
+
+call_cabal "${CABAL_ARGS[@]}" "${ACTION}" "${TARGET}" -- "$@"

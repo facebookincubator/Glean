@@ -589,6 +589,16 @@ library client-cpp
     build-depends:
         glean:rts
 
+library interprocess
+    import: fb-haskell, deps
+    visibility: public
+    hs-source-dirs: glean/interprocess/hs
+    exposed-modules:
+        Glean.Interprocess.Counters
+        Glean.Interprocess.Worklist
+    build-depends:
+        glean:client-cpp
+
 library schema
     import: fb-haskell, fb-cpp, deps
     visibility: public
@@ -995,6 +1005,7 @@ library indexers
         glean:client-hs-local,
         glean:db,
         glean:handler,
+        glean:interprocess,
         glean:lib,
         glean:lsif,
         glean:stubs,

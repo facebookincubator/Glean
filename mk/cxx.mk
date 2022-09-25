@@ -85,6 +85,7 @@ CXX_LIBRARIES = $(subst CXX_SOURCES_,,$(filter CXX_SOURCES_%, $(.VARIABLES)))
 
 .PHONY: cxx-libraries
 cxx-libraries:
+	@:
 
 # Include the right settings
 #
