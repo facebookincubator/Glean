@@ -304,9 +304,8 @@ inTreeSearchPath :: FilePath -> Maybe FilePath
 inTreeSearchPath exePath = do
   case reverse (splitDirectories  exePath) of
     -- definitely running in tree:
-    ("glean":"glean":"build":"glean":"x":_:xs) -> Just $ joinPath (reverse xs)
-    ("clang-test-regression":"clang-test-regression":"build":"clang-test-regression":"t":_:xs) -> Just $
-      joinPath (reverse xs)
+    (_:_:"build":_:ty:_:xs)
+      | ty `elem` ["x", "t"] -> Just $ joinPath (reverse xs)
     _ -> Nothing
 
 -- do a silly recursive search in the dist-newstyle under the ghc dirs
