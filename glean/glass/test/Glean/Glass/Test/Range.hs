@@ -94,8 +94,8 @@ examples =
   )
   , ("flow-off-by-one T92482625"
     , bytespan 174 31
-    , range 12 3 12 34
-    , filemap "/**\n * (c) Facebook, Inc. and its affiliates. Confidential and proprietary.\n *\n * @emails oncall+codehub\n * @flow strict-local\n * @format\n */\n\n'use strict';\n\nimport type {\n  CodeHubSearchAtoms"
+    , range 12 8 12 39
+    , filemap "/**\n * (c) Meta Platforms, Inc. and affiliates. Confidential and proprietary.\n *\n * @flow strict-local\n * @format\n * @oncall codehub\n */\n\n'use strict';\n\nimport type {\n  CodeHubSearchAtoms"
     )
   ]
 
