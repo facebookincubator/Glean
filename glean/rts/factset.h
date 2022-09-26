@@ -12,8 +12,9 @@
 #include "glean/rts/densemap.h"
 #include "glean/rts/fact.h"
 #include "glean/rts/inventory.h"
-#include "glean/rts/substitution.h"
+#include "glean/rts/ondemand.h"
 #include "glean/rts/store.h"
+#include "glean/rts/substitution.h"
 
 #include <atomic>
 #include <boost/intrusive/list.hpp>
@@ -107,14 +108,14 @@ template<typename T, typename By> using FastSetBy =
  */
 class FactSet final : public Define {
 public:
-  explicit FactSet(Id start)
-    : starting_id(start)
-    , fact_memory(0)
-    {}
-  FactSet(FactSet&&) = default;
-  FactSet& operator=(FactSet&&) = default;
+  explicit FactSet(Id start);
+  FactSet(FactSet&&) noexcept;
+  FactSet& operator=(FactSet&&);
+  ~FactSet() noexcept;
+
   FactSet(const FactSet&) = delete;
   FactSet& operator=(const FactSet&) = delete;
+
 
   size_t size() const noexcept {
     return facts.size();
@@ -251,34 +252,8 @@ private:
 
   /// Index for prefix seeks. It is lazily initialised and slow as we typically
   /// don't do seeks on FactSets.
-  class Index final {
-  public:
-    Index() : impl(nullptr) {}
-    ~Index();
-    Index(Index&&) noexcept;
-    Index& operator=(Index&&);
-    Index(const Index&) = delete;
-    Index& operator=(const Index&) = delete;
-
-    void swap(Index&) noexcept;
-
-    /// Type of index maps
-    using map_t = std::map<folly::ByteRange, const Fact *>;
-
-    /// Type of index maps with synchronised access
-    using entry_t = folly::Synchronized<map_t>;
-
-    /// Get a reference to the index map for the given predicate, creating an
-    /// empty one if necessary
-    entry_t& operator[](Pid pid);
-
-  private:
-    struct Impl;
-
-    std::atomic<Impl *> impl;
-  };
-
-  Index index;
+  struct Index;
+  OnDemand<Index> index;
 };
 
 }
