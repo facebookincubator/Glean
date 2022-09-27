@@ -44,7 +44,7 @@ import qualified Glean.Angle.Types as Angle
 import Glean.Bytecode.Types
 import qualified Glean.FFI as FFI
 import Glean.Query.Codegen.Types
-import Glean.Database.Schema.Types (PredicateTransformation(..))
+import Glean.Database.Schema.Types (Bytes(..), PredicateTransformation(..))
 import Glean.RTS
 import Glean.RTS.Builder
 import Glean.RTS.Bytecode.Code
@@ -537,33 +537,52 @@ compileStatements
           compileGen gen (Just (vars ! var)) continue
 
         -- <pat> = <fact gen> is a lookup if <pat> is known
-        (pat, FactGenerator (PidRef pid _) kpat vpat _)
+        (pat, FactGenerator pref@(PidRef pid _) kpat vpat _)
           | Just load <- patIsExactFid vars pat -> mdo
           let
+            mtrans :: Maybe PredicateTransformation
+            mtrans = IntMap.lookup (fromIntegral $ fromPid pid) trans
+
             patOutput
-              :: forall a .
-                 [QueryChunk Var]
+              :: forall a
+              .  Maybe (Bytes -> (Bytes -> Code ()) -> Code ())
+              -> [QueryChunk Var]
               -> (Register 'BinaryOutputPtr -> (Label -> Code ()) -> Code a)
               -> Code a
-            patOutput chunks cont = case chunks of
-              [QueryBind (Var ty v _)] | not (isWordTy ty) ->
-                cont (castRegister (vars ! v)) (\_ -> return ())
-              _ | all isWild chunks -> do
+            patOutput maybeTrans chunks cont
+              | all isWild chunks = do
                   reg <- constant 0  -- null means "don't copy the key/value"
                   cont (castRegister reg) (\_ -> return ())
-                | otherwise ->
+              | [QueryBind (Var ty v _)] <- chunks
+              , not (isWordTy ty)
+              , Nothing <- maybeTrans =
+                  cont (castRegister (vars ! v)) (\_ -> return ())
+              | Just transform <- maybeTrans =
+                  output $ \out ->
+                  cont out $ \fail ->
+                    local $ \begin end -> do
+                    getOutput out begin end
+                    transform (Bytes begin end) $ \(Bytes begin' end') -> do
+                    matchPat vars begin' end' fail chunks
+              | otherwise =
                   output $ \reg ->
-                    cont reg (\fail -> cmpOutputPat vars reg chunks fail)
+                  cont reg (\fail -> cmpOutputPat vars reg chunks fail)
 
-          patOutput (preProcessPat kpat) $ \kout kcmp ->
-            patOutput (preProcessPat vpat) $ \vout vcmp -> do
+            -- The pid we expect to retrieve from the database
+            PidRef expected _ = maybe pref tAvailable mtrans
+
+            mTransKey = transformKey =<< mtrans
+            mTransValue = transformValue =<< mtrans
+
+          patOutput mTransKey (preProcessPat kpat) $ \kout kcmp ->
+            patOutput mTransValue (preProcessPat vpat) $ \vout vcmp -> do
               reg <- load fail
               local $ \pidReg -> mdo
                 lookupKeyValue reg kout vout pidReg
                 -- TODO: if this is a trusted fact ID (i.e. not supplied by
                 -- the user) then we could skip this test.
-                expected <- constant (fromIntegral (fromPid pid))
-                jumpIfEq pidReg expected ok
+                expectedReg <- constant (fromIntegral (fromPid expected))
+                jumpIfEq pidReg expectedReg ok
                 raise "fact has the wrong type"
                 ok <- label
                 return ()
