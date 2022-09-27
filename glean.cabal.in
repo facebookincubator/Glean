@@ -1600,6 +1600,25 @@ test-suite clang-test-deriveobjcinherit
 --     if !flag(clang-tests)
 --         buildable: False
 
+test-suite clang-test-codemarkup
+    import: fb-haskell, fb-cpp, deps
+    hs-source-dirs:
+       glean/lang/clang/tests,
+       glean/lang/clang/tests/github
+    type: exitcode-stdio-1.0
+    main-is: Glean/Clang/CodeMarkup.hs
+    other-modules: Glean.Clang.Test.DerivePass
+                   Glean.Clang.Test
+                   Glean.Regression.Driver.DeriveForCodemarkup
+    ghc-options: -main-is Glean.Clang.CodeMarkup
+    build-depends:
+       glean:regression-test-lib,
+       glean:clang-derive-lib,
+       glean:indexers,
+       glean:lib
+    if !flag(clang-tests)
+        buildable: False
+
 test-suite hack-derive-test
     import: fb-haskell, fb-cpp, deps
     hs-source-dirs: glean/lang/hack/tests
