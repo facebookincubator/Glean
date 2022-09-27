@@ -938,11 +938,9 @@ compileFactGenerator _ bounds (QueryRegs{..} :: QueryRegs s)
           fun load remaining (Just capture')
         -- Otherwise: build up the prefix in a binary::Output
         -- (register 'prefixOut')
-        _otherwise -> do
-          output $ \prefixOut -> do
-            resetOutput prefixOut
-            remaining <- buildPrefix prefixOut vars chunks
-            fun (getOutput prefixOut) remaining Nothing
+        _otherwise ->
+          buildPrefix vars chunks $ \prefixOut remaining ->
+          fun (getOutput prefixOut) remaining Nothing
 
 
 -- ----------------------------------------------------------------------------
@@ -1100,35 +1098,39 @@ emptyPrefix (QueryVar{} : _) = False
 emptyPrefix [QueryAnd [QueryBind{}] x] = emptyPrefix x
 emptyPrefix _ = True
 
-
 -- | Serialize the prefix of a query into an output register, and return
 -- the remaining non-prefix part of the query.
 buildPrefix
-  :: Register 'BinaryOutputPtr
-  -> Vector (Register 'Word)    -- ^ registers for variables
+  :: Vector (Register 'Word)    -- ^ registers for variables
   -> [QueryChunk Var]
-  -> Code [QueryChunk Var]
-buildPrefix out vars chunks = go chunks
+  -> (Register 'BinaryOutputPtr -> [QueryChunk Var] -> Code a)
+  -> Code a
+buildPrefix vars chunks cont =
+  output $ \out -> do
+    resetOutput out
+    go out cont chunks
   where
-  go (QueryPrefix bs : rest) = do
-    local $ \ptr end -> do
-      loadLiteral bs ptr end
-      outputBytes ptr end out
-    go rest
-  go (QueryVar (Var ty v _) : rest) | isWordTy ty = do
-    outputNat (vars ! v) out
-    go rest
-  -- every other type is currently represented as a binary::Output
-  go (QueryVar (Var _other v _) : rest) = do
-    local $ \ptr end -> do
-      getOutput (castRegister (vars ! v)) ptr end
-      outputBytes ptr end out
-    go rest
-  go other = return other
-    -- We might want to consider handling QuerySum here: if an
-    -- alt can be serialized to a prefix, it might be better
-    -- to seek to it directly. But then we would possibly have
-    -- to do multiple seeks.
+  go out cont [] = cont out []
+  go out cont (chunk:rest) = case chunk of
+    QueryPrefix bs -> do
+      local $ \ptr end -> do
+        loadLiteral bs ptr end
+        outputBytes ptr end out
+      go out cont rest
+    QueryVar (Var ty v _) | isWordTy ty -> do
+      outputNat (vars ! v) out
+      go out cont rest
+    -- every other type is currently represented as a binary::Output
+    QueryVar (Var _other v _) -> do
+      local $ \ptr end -> do
+        getOutput (castRegister (vars ! v)) ptr end
+        outputBytes ptr end out
+      go out cont rest
+    _ -> cont out (chunk:rest)
+      -- We might want to consider handling QuerySum here: if an
+      -- alt can be serialized to a prefix, it might be better
+      -- to seek to it directly. But then we would possibly have
+      -- to do multiple seeks.
 
 --
 -- | Generate code to skip over a value of the given type in the input
