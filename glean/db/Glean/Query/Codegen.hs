@@ -911,6 +911,7 @@ compileFactGenerator _ bounds (QueryRegs{..} :: QueryRegs s)
         -- Just a fixed ByteString: use it directly
         (QueryPrefix bs : rest) | emptyPrefix rest ->
           fun (loadLiteral bs) rest Nothing
+
         -- A variable: use it directly
         (QueryVar (Var ty v _) : rest)
           | emptyPrefix rest, not (isWordTy ty) ->
@@ -952,7 +953,10 @@ data QueryChunk var =
    -- fragment of the serialized pattern
    QueryPrefix ByteString
 
-  -- | An array prefix of length N
+   -- | a sequence of bytes to skip over
+ | QueryPrefixWild (Register 'Word)
+
+   -- | An array prefix of length N
  | QueryArrayPrefix
     Word64                -- ^ Length
     Type                  -- ^ Element type
@@ -986,6 +990,7 @@ type M a = StateT (Builder, Bool, [QueryChunk Var]) IO a
 
 instance IsWild (QueryChunk var) where
   isWild QueryWild{} = True
+  isWild QueryPrefixWild{} = True
   isWild _ = False
 
 --
@@ -1263,6 +1268,10 @@ matchPat vars input inputend fail chunks = match True chunks
       QueryPrefix bs -> local $ \ok -> do
         inputShiftLit input inputend bs ok
         jumpIf0 ok fail -- chunk didn't match
+        match tillEnd rest
+
+      QueryPrefixWild prefix_size -> do
+        add prefix_size input
         match tillEnd rest
 
       QueryWild ty
