@@ -36,6 +36,7 @@ from glean.schema.fbthrift.types import (
     ResultStream,
     MapType,
     ContainerType,
+    ResultSink,
     ResultType,
     Target,
     PrimitiveType,
@@ -390,10 +391,22 @@ class FbthriftContainerType(InnerGleanSchemaPredicate):
 
 
 
+class FbthriftResultSink(InnerGleanSchemaPredicate):
+  @staticmethod
+  def build_angle(__env: Dict[str, R], type_: ast.Expr, firstResponse: ast.Expr, finalResponse: ast.Expr) -> Tuple[str, Struct]:
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, type_, 'type_'), angle_for(__env, firstResponse, 'firstResponse'), angle_for(__env, finalResponse, 'finalResponse')]))
+    return f"fbthrift.ResultSink.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ResultSink
+
+  @staticmethod
+  def angle_query(*, type_: Optional["FbthriftTypeSpecification"] = None, firstResponse: Optional[Union[Just["FbthriftTypeSpecification"], Just[None]]] = None, finalResponse: Optional[Union[Just["FbthriftTypeSpecification"], Just[None]]] = None) -> "FbthriftResultSink":
+    raise Exception("this function can only be called from @angle_query")
+
+
+
 class FbthriftResultType(InnerGleanSchemaPredicate):
   @staticmethod
-  def build_angle(__env: Dict[str, R], oneway_: ast.Expr, void_: ast.Expr, result: ast.Expr, stream_: ast.Expr) -> Tuple[str, Struct]:
-    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, oneway_, 'oneway_'), angle_for(__env, void_, 'void_'), angle_for(__env, result, 'result'), angle_for(__env, stream_, 'stream_')]))
+  def build_angle(__env: Dict[str, R], oneway_: ast.Expr, void_: ast.Expr, result: ast.Expr, stream_: ast.Expr, service_: ast.Expr, sink_: ast.Expr) -> Tuple[str, Struct]:
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, oneway_, 'oneway_'), angle_for(__env, void_, 'void_'), angle_for(__env, result, 'result'), angle_for(__env, stream_, 'stream_'), angle_for(__env, service_, 'service_'), angle_for(__env, sink_, 'sink_')]))
     return f"fbthrift.ResultType.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ResultType
 
   @staticmethod
@@ -410,6 +423,14 @@ class FbthriftResultType(InnerGleanSchemaPredicate):
 
   @staticmethod
   def angle_query_stream_(*, stream_: Optional["FbthriftResultStream"] = None) -> "FbthriftResultType":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_service_(*, service_: Optional["FbthriftServiceName"] = None) -> "FbthriftResultType":
+    raise Exception("this function can only be called from @angle_query")
+
+  @staticmethod
+  def angle_query_sink_(*, sink_: Optional["FbthriftResultSink"] = None) -> "FbthriftResultType":
     raise Exception("this function can only be called from @angle_query")
 
 
