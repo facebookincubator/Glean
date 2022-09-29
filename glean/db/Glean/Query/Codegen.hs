@@ -818,23 +818,17 @@ compileFactGenerator _ bounds (QueryRegs{..} :: QueryRegs s)
     vars pid kpat vpat section maybeReg inner = do
   let kchunks = preProcessPat kpat
   let vchunks = preProcessPat vpat
-  withPrefix kchunks $ \loadPrefix remaining captureKey -> do
-
-  -- hasPrefix is True if there is a prefix pattern *and* there is a
-  -- non-empty pattern to match after the prefix.
-  let hasPrefix = not (emptyPrefix kchunks) && not (all isWild remaining)
+  withPrefix kchunks $ \isPointQuery prefix kchunks' -> do
 
   typ <- constant (fromIntegral (fromPid pid))
-  local $ \seekTok prefix_size -> mdo
-  local $ \ptr ptrend -> do
-    loadPrefix ptr ptrend
-    when hasPrefix $ ptrDiff ptr ptrend prefix_size
-    seek' typ ptr ptrend seekTok
+  local $ \seekTok -> mdo
+  let Bytes pstart pend = prefix
+  seek' typ pstart pend seekTok
 
   -- for each fact...
   loop <- label
 
-  local $ \clause keyend clauseend saveclause -> mdo
+  local $ \clause keyend clauseend -> mdo
       let need_value = not $ all isWild vchunks
       local $ \ignore ok -> do
         next
@@ -854,27 +848,19 @@ compileFactGenerator _ bounds (QueryRegs{..} :: QueryRegs s)
       continue <- label
       return ()
 
-      when (isJust captureKey) $ move clause saveclause
-
-      -- skip the prefix
-      when hasPrefix $ add prefix_size clause
-
       -- check that the rest of the key matches the pattern
-      matchPat vars clause keyend loop remaining
+      matchPat vars clause keyend loop kchunks'
 
       -- match the value
       when need_value $ do
         move keyend clause
         matchPat vars clause clauseend loop vchunks
 
-      -- matched; let's capture the key if necessary
-      fromMaybe noCapture captureKey saveclause keyend
-
   a <- inner
 
   -- loop to find more facts, unless this is a point query which could
   -- only have a single result.
-  unless (null remaining) $ jump loop
+  unless isPointQuery $ jump loop
 
   end <- label
   endSeek seekTok
@@ -894,53 +880,70 @@ compileFactGenerator _ bounds (QueryRegs{..} :: QueryRegs s)
           pto <- constant $ fromIntegral $ fromFid to
           seekWithinSection typ ptr end pfrom pto tok
 
-    noCapture _ _ = return ()
-
+    -- Extract a query prefix and a pattern which should match the entire
+    -- structure
     withPrefix
       :: [QueryChunk Var]
-      -> (  -- load the prefix into registers
-            (Register 'DataPtr -> Register 'DataPtr -> Code ())
-            -- remaining non-prefix chunks
-         -> [QueryChunk Var]
-            -- capture the key if necessary
-         -> Maybe (Register 'DataPtr -> Register 'DataPtr -> Code ())
-         -> Code a)
+      -> ( Bool
+          -- is point query
+          -> Bytes
+          -- prefix bytes
+          -> [QueryChunk Var]
+          -- pattern to match against results from the beginning.
+          -> Code a)
       -> Code a
     withPrefix chunks fun =
       case chunks of
-        -- Just a fixed ByteString: use it directly
-        (QueryPrefix bs : rest) | emptyPrefix rest ->
-          fun (loadLiteral bs) rest Nothing
-
-        -- A variable: use it directly
-        (QueryVar (Var ty v _) : rest)
-          | emptyPrefix rest, not (isWordTy ty) ->
-          fun
-            (getOutput (castRegister (vars ! v)))
-            rest
-            Nothing
         -- Special case for a QueryBind that covers the whole
         -- pattern. This is used to capture the key of a fact so
         -- that we can return it, but we don't want it to interfere
         -- with prefix lookup.
-        [QueryAnd [QueryBind (Var ty var _)] pats] ->
-          withPrefix pats $ \load remaining capture -> do
-          let capture' input inputend
-                | isWordTy ty = inputNat input inputend (vars ! var)
-                  -- word-typed variables must be represented by
-                  -- the word itself (this is assumed elsewhere)
-                  -- so we can't just copy the bytes in that case.
-                | otherwise = do
-                  let reg = castRegister (vars ! var)
-                  resetOutput reg
-                  outputBytes input inputend reg
-                  fromMaybe noCapture capture input inputend
-          fun load remaining (Just capture')
+        (QueryAnd bindVar@[QueryBind _] pats) : [] ->
+          withPrefix pats $ \isPointQuery bytes filters ->
+            fun isPointQuery bytes $
+              if null filters
+                 then bindVar
+                 else [QueryAnd filters bindVar ]
+
+        -- Just a fixed ByteString: use it directly
+        (QueryPrefix bs : rest) | emptyPrefix rest ->
+          local $ \ptr end -> do
+          loadLiteral bs ptr end
+          wildPrefixFor rest (Bytes ptr end) fun
+
+        -- A variable: use it directly
+        (QueryVar (Var ty v _) : rest)
+          | emptyPrefix rest, not (isWordTy ty) ->
+          local $ \ptr end -> do
+          getOutput (castRegister (vars ! v)) ptr end
+          wildPrefixFor rest (Bytes ptr end) fun
+
         -- Otherwise: build up the prefix in a binary::Output
         -- (register 'prefixOut')
         _otherwise ->
-          buildPrefix vars chunks $ \prefixOut remaining ->
-          fun (getOutput prefixOut) remaining Nothing
+          buildPrefix vars chunks $ \prefixOut chunks' ->
+          local $ \ptr end -> do
+          getOutput prefixOut ptr end
+          wildPrefixFor chunks' (Bytes ptr end) fun
+
+    wildPrefixFor
+      :: [QueryChunk Var]
+      -- ^ non-prefix filters
+      -> Bytes
+      -- ^ prefix bytes
+      -> ( Bool
+          -> Bytes
+          -> [QueryChunk Var]
+          -> Code a)
+      -- ^ send prefix-adjusted filters
+      -> Code a
+    wildPrefixFor chunks prefix@(Bytes ptr end) fun =
+      if null chunks
+      then fun True prefix []
+      else
+        local $ \prefix_size -> do
+        ptrDiff ptr end prefix_size
+        fun False prefix (QueryPrefixWild prefix_size : chunks)
 
 
 -- ----------------------------------------------------------------------------
