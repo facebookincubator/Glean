@@ -29,12 +29,10 @@ from glean.schema.buck.types import (
     TargetSources,
     AttributeValue,
     Labels,
-    ContbuildName,
     SourceFileLocation,
     OutputLabel,
     TargetUses,
     Owner,
-    ContbuildLocator,
     Target,
     DefinitionLocation,
     TargetIndexer,
@@ -289,18 +287,6 @@ class BuckLabels(GleanSchemaPredicate):
 
 
 
-class BuckContbuildName(GleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], arg: ast.Expr) -> Tuple[str, Struct]:
-    query_fields =  angle_for(__env, arg, None)
-    return f"buck.ContbuildName.3 { query_fields if query_fields else '_' }", ContbuildName
-
-  @staticmethod
-  def angle_query(*, arg: Optional[str] = None) -> "BuckContbuildName":
-    raise Exception("this function can only be called from @angle_query")
-
-
-
 class BuckSourceFileLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], file: ast.Expr, span: ast.Expr) -> Tuple[str, Struct]:
@@ -345,18 +331,6 @@ class BuckOwner(GleanSchemaPredicate):
 
   @staticmethod
   def angle_query(*, source: Optional["SrcFile"] = None, owner: Optional["BuckTargetSources"] = None) -> "BuckOwner":
-    raise Exception("this function can only be called from @angle_query")
-
-
-
-class BuckContbuildLocator(GleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], target: ast.Expr, name: ast.Expr) -> Tuple[str, Struct]:
-    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, target, 'target'), angle_for(__env, name, 'name')]))
-    return f"buck.ContbuildLocator.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", ContbuildLocator
-
-  @staticmethod
-  def angle_query(*, target: Optional["BuckLocator"] = None, name: Optional["BuckContbuildName"] = None) -> "BuckContbuildLocator":
     raise Exception("this function can only be called from @angle_query")
 
 

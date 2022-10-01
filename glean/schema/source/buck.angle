@@ -453,13 +453,5 @@ predicate DestinationUses:
   { Destination, File, Spans } where
     FileXRefs { File, XRefs };
     { Destination, Spans } = XRefs[..];
-
-predicate ContbuildName : string
-
-predicate ContbuildLocator:
-  {
-    target : Locator,
-    name : ContbuildName,
-  }
-
+  
 } # end schema buck.3
