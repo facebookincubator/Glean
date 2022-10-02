@@ -28,15 +28,11 @@ for arg in "$@"; do
   esac
 done
 
-TARGET=$1
-shift
+[ -n "$ACTION" ] || fatal "No action specified"
 
-if [ -z "$ACTION" ]; then
-  fatal "No action specified"
-fi
-if [ -z "$TARGET" ]; then
-  fatal "No target specified"
-fi
+TARGET=$1
+[ -n "$TARGET" ] || fatal "No target specified"
+shift
 
 make "${MAKE_ARGS[@]}" .build/current.sh glean.cabal cxx-libraries
 
