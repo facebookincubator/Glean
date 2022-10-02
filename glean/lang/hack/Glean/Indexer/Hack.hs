@@ -70,6 +70,7 @@ indexer = Indexer {
           , "lazy_decl=true"
           , "lazy_parse=true"
           , "lazy_init2=true"
+          , "symbol_write_sym_hash_out=true"
           , "enable_enum_classes=true"
           , "enable_enum_supertyping=true"
           ] <>
