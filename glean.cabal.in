@@ -1816,6 +1816,16 @@ test-suite jsonwrite
         glean:if-glean-hs,
         glean:schema,
 
+test-suite BinaryTest
+    import: fb-cpp
+    type: exitcode-stdio-1.0
+    main-is: glean/rts/tests/BinaryTest.cpp
+    ghc-options: -no-hs-main
+    cxx-options: -DOSS=1
+    build-depends:
+        glean:rts
+    pkgconfig-depends: gtest_main
+
 test-suite rtstest
     import: test
     type: exitcode-stdio-1.0
