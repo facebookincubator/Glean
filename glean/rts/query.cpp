@@ -402,7 +402,6 @@ thrift::internal::QueryCont QueryExecutor::queryCont(
     if (auto fact = iter.iter->get(FactIterator::KeyOnly)) {
       i.fact() = fact.id.toThrift();
       i.type() = iter.type.toThrift();
-      i.key() = binary::mkString(fact.key());
       i.prefix_size() = static_cast<int64_t>(iter.prefix_size);
       i.first() = iter.first;
       if (iter.iter->lower_bound().has_value()) {
@@ -645,20 +644,16 @@ std::unique_ptr<QueryResults> executeQuery (
       const size_t prefixSize = savedIter.get_prefix_size();
       if (const auto type = Pid::fromThrift(*savedIter.type())) {
         std::string keyBuf;
-        if (savedIter.fact().has_value()) {
-          bool found = facts.factById(
-            Id::fromThrift(*savedIter.fact()),
-            [&](auto pid, Fact::Clause clause) {
-              if (pid != type) {
-                error("restart iter fact has wrong type");
-              }
-              keyBuf = binary::mkString(clause.key());
-            });
-          if (!found) {
-            error("restart iter fact not found");
-          }
-        } else {
-          keyBuf = std::move(*savedIter.key());
+        bool found = facts.factById(
+          Id::fromThrift(*savedIter.fact()),
+          [&](auto pid, Fact::Clause clause) {
+            if (pid != type) {
+              error("restart iter fact has wrong type");
+            }
+            keyBuf = binary::mkString(clause.key());
+          });
+        if (!found) {
+          error("restart iter fact not found");
         }
         const auto key = binary::byteRange(keyBuf);
         if (savedIter.from().has_value() && savedIter.to().has_value()) {
