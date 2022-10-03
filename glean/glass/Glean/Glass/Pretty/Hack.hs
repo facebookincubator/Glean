@@ -30,6 +30,11 @@ module Glean.Glass.Pretty.Hack
   , DefaultValue(..)
   , Inout(..)
   , Parameter(..)
+  , Variance(..)
+  , Reify(..)
+  , TypeParameter(..)
+  , Constraint(..)
+  , ConstraintKind(..)
   ) where
 
 import qualified Glean
@@ -85,7 +90,12 @@ newtype ReturnType = ReturnType { unReturnType :: Text }
 newtype DefaultValue = DefaultValue Text
 data Inout = Inout
 data Parameter = Parameter Name HackType (Maybe Inout) (Maybe DefaultValue)
-data Signature = Signature ReturnType [Parameter]
+data Variance = Contravariant | Covariant | Invariant deriving (Eq)
+data Reify = Erased | Reified | SoftReified deriving (Eq)
+data ConstraintKind = As | Equal | Super deriving (Eq)
+data Constraint = Constraint ConstraintKind HackType
+data TypeParameter = TypeParameter Name Variance Reify [Constraint]
+data Signature = Signature ReturnType [TypeParameter] [Parameter]
 
 data Decl
   = ClassConst Name
@@ -154,9 +164,30 @@ ppClassModifiers (ClassMod abstract final) =
       when (final==Final) $ tell ["final"]
 
 ppSignature :: Signature -> Text
-ppSignature (Signature returnType params) =
-  "(" <>  Text.intercalate ", " (map ppParameter params) <> "):"
+ppSignature (Signature returnType typeParams params) =
+  ppTypeParams typeParams
+   <> "(" <> Text.intercalate ", " (map ppParameter params) <> "):"
    <+> ppReturnType returnType
+
+ppTypeParams :: [TypeParameter] -> Text
+ppTypeParams typeParams | null typeParams = ""
+ppTypeParams typeParams =
+  "<" <> Text.intercalate ", " (map ppTypeParam typeParams) <> ">"
+
+ppTypeParam :: TypeParameter -> Text
+ppTypeParam (TypeParameter name variance reify constraints) =
+  Text.concat $ execWriter $ do
+    when (reify==SoftReified) $ tell ["<<__Soft>> reify "]
+    when (reify==Reified) $ tell ["reify "]
+    when (variance==Covariant) $ tell ["+"]
+    when (variance==Contravariant) $ tell ["-"]
+    tell [ppName name]
+    forM_ constraints $ \(Constraint kind ty) -> do
+      when (kind==Equal) $ tell [" = "]
+      when (kind==As) $ tell [" as "]
+      when (kind==Super) $ tell [" super "]
+      tell [ppType ty]
+
 
 ppType :: HackType -> Text
 ppType (HackType t) = t
@@ -215,9 +246,10 @@ decl (Hack.Declaration_function_ fun@Hack.FunctionDeclaration{..}) = do
       end
   name <- qName functionDeclaration_key_name
   def <- liftMaybe functionDefinition_key
+  let typeParams = Hack.functionDefinition_key_typeParams def
   let sign = Hack.functionDefinition_key_signature def
   pure $ Function (modifiersForFunction def) (QualName name)
-    (toSignature sign)
+    (toSignature typeParams sign)
 decl (Hack.Declaration_module Hack.ModuleDeclaration{..}) = do
   Hack.ModuleDeclaration_key{..} <- liftMaybe moduleDeclaration_key
   name <- liftMaybe $ Hack.name_key moduleDeclaration_key_name
@@ -243,10 +275,11 @@ decl (Hack.Declaration_method meth@Hack.MethodDeclaration{..}) = do
       end
   name <- liftMaybe $ Hack.name_key methodDeclaration_key_name
   def <- liftMaybe methodDefinition_key
+  let typeParams = Hack.methodDefinition_key_typeParams def
   let sign = Hack.methodDefinition_key_signature def
   container <- containerQualName methodDeclaration_key_container
   pure $ Method (modifiersForMethod def) container (Name name)
-    (toSignature sign)
+    (toSignature typeParams sign)
 decl (Hack.Declaration_property_ Hack.PropertyDeclaration{..}) = do
   Hack.PropertyDeclaration_key{..} <- liftMaybe propertyDeclaration_key
   name <- liftMaybe $ Hack.name_key propertyDeclaration_key_name
@@ -380,13 +413,14 @@ modifiersForMethod Hack.MethodDefinition_key {..} =
   (if methodDefinition_key_isStatic then Static else NotStatic)
   (if methodDefinition_key_isAsync then Async else NotAsync)
 
-toSignature :: Hack.Signature -> Signature
-toSignature Hack.Signature {..} =
+toSignature :: [Hack.TypeParameter] -> Hack.Signature -> Signature
+toSignature typeParams Hack.Signature {..} =
   Signature
   (ReturnType $ case signature_key of
     Nothing -> unknownType
     Just (Hack.Signature_key mtype _ _) -> unHackType $ toType mtype
   )
+  (map toTypeParameter typeParams)
   (case signature_key of
     Nothing -> []
     Just (Hack.Signature_key _ params _) -> map toParameter params
@@ -395,6 +429,37 @@ toSignature Hack.Signature {..} =
 toType :: Maybe Hack.Type -> HackType
 toType Nothing = HackType unknownType
 toType (Just (Hack.Type _ mkey)) = HackType $ fromMaybe unknownType mkey
+
+toTypeParameter :: Hack.TypeParameter -> TypeParameter
+toTypeParameter
+  (Hack.TypeParameter name variance reifyKind constraints _attributes) =
+    TypeParameter
+    (toName name)
+    (toVariance variance)
+    (toReifyKind reifyKind)
+    (map toConstraint constraints)
+
+toVariance :: Hack.Variance -> Variance
+toVariance Hack.Variance_Invariant = Invariant
+toVariance Hack.Variance_Contravariant = Contravariant
+toVariance Hack.Variance_Covariant = Covariant
+toVariance (Hack.Variance__UNKNOWN _) = Invariant
+
+toReifyKind :: Hack.ReifyKind -> Reify
+toReifyKind Hack.ReifyKind_Reified = Reified
+toReifyKind Hack.ReifyKind_SoftReified = SoftReified
+toReifyKind Hack.ReifyKind_Erased = Erased
+toReifyKind (Hack.ReifyKind__UNKNOWN _) = Erased
+
+toConstraint :: Hack.Constraint -> Constraint
+toConstraint (Hack.Constraint kind ty) =
+  Constraint (toConstraintKind kind) (toType $ Just ty)
+
+toConstraintKind :: Hack.ConstraintKind -> ConstraintKind
+toConstraintKind Hack.ConstraintKind_Equal = Equal
+toConstraintKind Hack.ConstraintKind_As = As
+toConstraintKind Hack.ConstraintKind_Super = Super
+toConstraintKind (Hack.ConstraintKind__UNKNOWN _) = Equal
 
 toParameter :: Hack.Parameter -> Parameter
 toParameter (Hack.Parameter name mtype inout _ mdefaultValue _) =
