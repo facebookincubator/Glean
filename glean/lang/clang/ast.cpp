@@ -1360,6 +1360,17 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
               visitor.db.fact<Cxx::MethodOverrides>(decl, cbase->decl);
             }
           }
+          // We have to traverse member initializers explicitly, the
+          // visitor doesn't capture these references.
+          if (auto ctor = clang::dyn_cast<clang::CXXConstructorDecl>(mtd)) {
+            for (const auto *init : ctor->inits()) {
+              if (init->isMemberInitializer()) {
+                 visitor.xrefTarget(
+                     visitor.db.rangeOfToken(init->getMemberLocation()),
+                     XRef::toDecl(visitor.varDecls, init->getMember()));
+              }
+            }
+          }
         }
       }
     }

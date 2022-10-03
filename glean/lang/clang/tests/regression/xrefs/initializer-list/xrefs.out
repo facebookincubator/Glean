@@ -30,6 +30,42 @@
           }
         },
         {
+          "range": { "begin": 284, "end": 286 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x_" },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "S" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "int" },
+                  "kind": { "field": { "mutable_": false } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 16,
+                    "columnBegin": 3,
+                    "lineEnd": 16,
+                    "columnEnd": 8
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
           "range": { "begin": 287, "end": 288 },
           "target": {
             "declaration": {
