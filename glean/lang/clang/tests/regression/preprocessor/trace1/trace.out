@@ -16,7 +16,8 @@
                   "columnBegin": 1,
                   "lineEnd": 9,
                   "columnEnd": 17
-                }
+                },
+                "pathSpan": { "start": 230, "length": 8 }
               }
             }
           }
@@ -38,7 +39,8 @@
                 "columnBegin": 1,
                 "lineEnd": 10,
                 "columnEnd": 18
-              }
+              },
+              "nameSpan": { "start": 239, "length": 1 }
             }
           }
         },
@@ -59,7 +61,8 @@
                 "columnBegin": 14,
                 "lineEnd": 10,
                 "columnEnd": 17
-              }
+              },
+              "nameSpan": { "start": 252, "length": 1 }
             }
           }
         },
