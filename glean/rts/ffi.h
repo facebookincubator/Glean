@@ -299,6 +299,10 @@ size_t glean_factset_fact_memory(
   FactSet *facts
 );
 
+size_t glean_factset_allocated_memory(
+  FactSet *facts
+);
+
 const char *glean_factset_predicateStats(
   FactSet *facts,
   size_t *count,

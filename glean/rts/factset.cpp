@@ -39,6 +39,22 @@ FactSet::FactSet(FactSet&&) noexcept = default;
 FactSet& FactSet::operator=(FactSet&&) = default;
 FactSet::~FactSet() noexcept = default;
 
+size_t FactSet::allocatedMemory() const noexcept {
+  size_t n = facts.allocatedMemory() + keys.allocatedMemory();
+  for (const auto& k : keys) {
+    n += k.second.getAllocatedMemorySize();
+  }
+  return n;
+}
+
+size_t FactSet::Facts::allocatedMemory() const noexcept {
+  size_t n = facts.capacity() * sizeof(facts[0]);
+  for (const auto& fact : facts) {
+    n += fact->size();
+  }
+  return n;
+}
+
 struct FactSet::CachedPredicateStats {
   struct Data {
     /// Cached stats
