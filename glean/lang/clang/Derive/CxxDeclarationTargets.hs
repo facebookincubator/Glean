@@ -71,7 +71,6 @@ toPredicateRef = applyDeclaration (getName . mkProxy)
 getDeclarationsOfType
   :: forall a e. ( DeclBranch a
      , SumBranches a Cxx.Declaration
-     , SumQuery (QueryOf a) (QueryOf Cxx.Declaration)
      , HasSrcRange (KeyType a)
      , Backend e )
   => PidOf a

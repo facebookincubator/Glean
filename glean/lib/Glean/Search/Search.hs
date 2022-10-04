@@ -25,7 +25,6 @@ module Glean.Search.Search
 
 import Control.Monad
 import Data.Aeson hiding ((.=))
-import Data.Default
 import qualified Data.HashSet as HashSet
 import Data.Int
 import qualified Data.Map as Map
@@ -44,6 +43,7 @@ import Glean.Repo
 import Glean.Schema.Code.Types as Code
 import Glean.Schema.CodeCxx.Types as Cxx
 import Glean.Schema.CodeHack.Types as Hack
+import Glean.Schema.Hs.Types as Hs
 import Glean.Schema.CodeHs.Types as Hs
 import Glean.Schema.CodePp.Types as Pp
 import Glean.Schema.Cxx1.Types as Cxx
@@ -51,15 +51,12 @@ import Glean.Schema.Hack.Types as Hack
 import Glean.Schema.SearchCxx.Types as Cxx
 import Glean.Schema.SearchHack.Types as Hack
 import Glean.Schema.SearchPp.Types as Pp
-import Glean.Schema.Query.Cxx1.Types as Query.Cxx
-import Glean.Schema.Query.Hs.Types as Query.Hs
-import Glean.Schema.Query.Src.Types as Query.Src
-import Glean.Schema.Query.SearchCxx.Types as Query.Cxx
 import Glean.Schema.Src.Types as Src
 import Glean.Search.Types as Search
 import Glean.Util.Range as Range
 import Glean.Util.SchemaRepos
 import Glean.Util.Some (Some)
+import Glean.Util.ToAngle
 
 -- -----------------------------------------------------------------------------
 -- Repository discovery
@@ -131,11 +128,10 @@ findHsDecls
   -> SearchQuery
   -> IO [EntityRefs]
 findHsDecls lim backend repo SearchQuery{..} = do
-  let q = Query.Hs.FunctionDefinition_with_key $
-            def{functionDefinition_key_name =
-              Just $ Query.Hs.FunctionName_with_key query}
+  let q = predicate @Hs.FunctionDefinition $
+            rec $ field @"name" (string query) end
   r <- fmap fst $ Glean.runQuery backend repo $ maybe id limit lim
-    (Glean.recursive (Glean.query q))
+    (Glean.recursive (Angle.query q))
   return $
     map (\x -> EntityRefs repo (Code.Entity_hs (Hs.Entity_function_ x)) []) r
 
@@ -202,25 +198,21 @@ findCxxDecls lim backend repo SearchQuery{..} refs = do
             map Cxx.entityUses_key_uses .
             mapMaybe Cxx.entityUses_key .
             fst ) $
-            Glean.search $ maybe id limit lim $ Glean.query $
-              Query.Cxx.EntityUses_with_key def
-                { Query.Cxx.entityUses_key_entity = Just $ Glean.toQuery entity
-                , Query.Cxx.entityUses_key_uses = Just $
-                  Query.Cxx.TargetUses_with_key $ def
-                    { Query.Cxx.targetUses_key_file = Just $
-                      Query.Src.File_with_get def } }
+            Glean.search $ maybe id limit lim $ Glean.recursive $
+              Angle.query $
+                predicate @Cxx.EntityUses $ rec $
+                  field @"entity" (toAngle entity) end
 
         findFileXRef :: Cxx.TargetUses -> Glean.Haxl w Search.FileXRef
         findFileXRef targetUses =
           case targetUses of
             Cxx.TargetUses _ (Just Cxx.TargetUses_key
-              { targetUses_key_file = Src.File fileId (Just name)
+              { targetUses_key_file = file@(Src.File _ (Just name))
               , targetUses_key_uses = uses }) -> do
               -- Load line lengths so we can compute line nos from ranges.
               lines <- fmap fst $ Glean.search $ maybe id limit lim $
-                Glean.query $ Query.Src.FileLines_with_key def
-                  { Query.Src.fileLines_key_file = Just $
-                    Query.Src.File_with_id fileId }
+                Angle.query $ predicate @Src.FileLines $ rec $
+                  field @"file" (asPredicate (factId (Glean.getId file))) end
               case lines of
                 Src.FileLines _ (Just flk) : _ ->
                   return $ buildXRef name flk uses
@@ -289,10 +281,9 @@ findCxxDecls lim backend repo SearchQuery{..} refs = do
         case entity of
           Cxx.Entity_decl decl -> do
             results <- fmap fst $ Glean.search $ maybe id limit lim $
-              Glean.recursive $ Glean.keys $ Glean.query $
-                Query.Cxx.DeclIsDefn_with_key $ def
-                  { Query.Cxx.declIsDefn_key_decl =
-                    Just $ Glean.toQuery decl }
+              Glean.recursive $ Glean.keys $ Angle.query $
+                predicate @Cxx.DeclIsDefn $
+                  rec $ field @"decl" (toAngle decl) end
             return $ listToMaybe $ map Cxx.declIsDefn_key_defn results
           _other -> return Nothing
 

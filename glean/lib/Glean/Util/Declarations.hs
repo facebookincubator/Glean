@@ -12,14 +12,11 @@
 -- using 'IsDeclaration' so we can reuse them.
 module Glean.Util.Declarations
   ( -- * Visiting branches
-    DeclBranch, applyDeclaration, matchDeclaration
+    DeclBranch, applyDeclaration
   , applyConstrainedDeclaration
     -- * Query utils
   , queryNamespace
   , queryRecord
-  , angleFamilyOfDecls
-  , angleOfDeclId
-  , angleOfDeclaration
     -- * Ranges
   , declarationSrcRange
     -- * CxxName
@@ -36,60 +33,15 @@ import Data.Int (Int64)
 import Data.Proxy
 import Data.Kind (Constraint)
 import Data.List.Extra (foldl')
-import Data.List.NonEmpty (NonEmpty)
 import Data.Typeable
 import Data.Text (Text)
 
-import Glean (HaxlQuery, justId)
 import Glean.Angle
 import Glean.Schema.Cxx1.Types as Cxx -- gen
 import Glean.Schema.Src.Types as Src -- gen
-import Glean.Schema.Query.Cxx1.Types as Q.Cxx -- gen
 import Glean.Typed.Id (IdOf(..), Fid(..))
 import Glean.Typed.Predicate (Predicate(..), SumBranches(..))
-import Glean.Typed.Query
 import Glean.Util.Range (HasSrcRange(..))
-
--- | Make a single query to fetch the DeclToFamily for all the inputs
-angleFamilyOfDecls :: NonEmpty Cxx.Declaration -> Angle Cxx.DeclToFamily
-angleFamilyOfDecls ds =
-    var $ \ (declaration :: Angle Cxx.Declaration) ->
-    predicate @Cxx.DeclToFamily (rec $ field @"decl" declaration end)
-      `where_`
-      [ declaration .= (sig @Cxx.Declaration $ foldr1 (.|) fs) ]
-    where
-      fs = angleOfDeclaration <$> ds
-
--- | Helper for building 'Cxx.Declaration' angle queries from explicit @Id@.
-angleOfDeclId :: (DeclBranch p) => IdOf p -> Angle Cxx.Declaration
-angleOfDeclId i = angleOfDeclaration (injectBranch (justId i))
-
--- | Helper for building 'Cxx.Declaration' queries.
-angleOfDeclaration :: Cxx.Declaration -> Angle Cxx.Declaration
-angleOfDeclaration = \case
-  Cxx.Declaration_namespace_ p -> alt @"namespace_"
-    (asPredicate (factId (getId p)))
-  Cxx.Declaration_usingDeclaration p -> alt @"usingDeclaration"
-    (asPredicate (factId (getId p)))
-  Cxx.Declaration_usingDirective p -> alt @"usingDirective"
-    (asPredicate (factId (getId p)))
-  Cxx.Declaration_record_ p -> alt @"record_"
-    (asPredicate (factId (getId p)))
-  Cxx.Declaration_enum_ p -> alt @"enum_"
-    (asPredicate (factId (getId p)))
-  Cxx.Declaration_function_ p -> alt @"function_"
-    (asPredicate (factId (getId p)))
-  Cxx.Declaration_variable p -> alt @"variable"
-    (asPredicate (factId (getId p)))
-  Cxx.Declaration_objcContainer p -> alt @"objcContainer"
-    (asPredicate (factId (getId p)))
-  Cxx.Declaration_objcMethod p -> alt @"objcMethod"
-    (asPredicate (factId (getId p)))
-  Cxx.Declaration_objcProperty p -> alt @"objcProperty"
-    (asPredicate (factId (getId p)))
-  Cxx.Declaration_typeAlias p -> alt @"typeAlias"
-    (asPredicate (factId (getId p)))
-  Cxx.Declaration_EMPTY -> never
 
 -- -----------------------------------------------------------------------------
 
@@ -98,12 +50,12 @@ angleOfDeclaration = \case
 -- with the 'Cxx.Declaration' specific classes
 -- 'HasSrcRange' and 'SumBranches' and 'SumQuery'
 type DeclBranch p =
-  ( HaxlQuery p
-  , PredicateQuery p
+  ( Predicate p
+  , Typeable p
+  , Show p
   , Typeable (KeyType p), Show (KeyType p)
   , HasSrcRange (KeyType p)
-  , SumBranches p Cxx.Declaration
-  , SumQuery (QueryOf p) (QueryOf Cxx.Declaration) )
+  , SumBranches p Cxx.Declaration )
 
 -- -----------------------------------------------------------------------------
 
@@ -161,13 +113,6 @@ applyConstrainedDeclaration Proxy f = \case
   Cxx.Declaration_objcProperty d -> f d
   Cxx.Declaration_typeAlias d -> f d
   Cxx.Declaration_EMPTY -> error "unknown declaration"
-
--- -----------------------------------------------------------------------------
-
--- | Takes the Fid of the provided delaration and makes a query to match
--- precisely this declaration branch and id
-matchDeclaration :: Cxx.Declaration -> Q.Cxx.Declaration
-matchDeclaration = applyDeclaration (injectQuery . toQueryId . getId)
 
 -- -----------------------------------------------------------------------------
 

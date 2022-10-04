@@ -16,7 +16,6 @@ import Data.Aeson.Encode.Pretty (encodePretty)
 import qualified Data.ByteString.Lazy.Char8 as LB
 import Data.Foldable
 import Data.Char
-import Data.Int
 import Data.Maybe
 import Data.Text ( Text, pack )
 import qualified Data.Text as Text
@@ -45,7 +44,6 @@ import Glean.Schema.CodePp.Types as Pp
 import Glean.Schema.Cxx1.Types as Cxx
 import qualified Glean.Schema.Java.Types as Java
 import Glean.Schema.Src.Types
-import Glean.Search.Graph
 import Glean.Search.Search
 import Glean.Search.Types
 import Glean.Util.ConfigProvider
@@ -67,11 +65,6 @@ data Command
     , showDeclId :: Bool
     , caseSensitive :: Bool
     }
-  | FindLocalGraph
-    { declId :: Int64
-    , steps :: Int32
-    , dotFile :: Maybe String
-    }
 
 data Config = Config
   { cfgService :: Glean.ThriftSource Glean.ClientConfig
@@ -86,8 +79,7 @@ options = info (helper <*> parser) fullDesc
       cfgService <- Glean.options
       cfgCommand <- asum
         [ findDeclarations
-        , findLocalGraph
-          -- there will be more commands later
+          -- there will not be more commands later
         ]
       return Config{..}
 
@@ -126,21 +118,6 @@ options = info (helper <*> parser) fullDesc
           <> help "Ignore case when finding matching declarations" )
         return FindDeclarations{..}
 
-    findLocalGraph =
-      commandParser "find-local-graph"
-            (progDesc "Find local graph for a declaration with a given id") $ do
-          declId <- option (auto @Int64)
-            (  long "decl-id"
-            <> help "The id of a function declaration" )
-          steps <- option (auto @Int32)
-            (  long "steps"
-            <> help "Number of steps in graph searching" )
-          dotFile <- optional $ strOption
-            (  long "dot-file"
-            <> help "write Dot graph to the file")
-
-          return FindLocalGraph{..}
-
 main :: IO ()
 main = do
   withConfigOptions options $ \(cfg, cfgOpts) ->
@@ -173,63 +150,6 @@ doQuery backend Config{..}
       -- The above searches both the Cpp, etc and Haskell repos
     let filteredResults = filter (matchesTarget targetFile targetLine) results
     printResults entity filteredResults
-  | FindLocalGraph{..} <- cfgCommand = do
-    repo <- Glean.getLatestRepo backend "fbsource"
-    FindLocalGraphResult{..} <-
-      findLocalGraph backend repo declId (fromIntegral steps)
-
-    printf "Forward search:\n"
-    forM_ (zip [0::Int ..] findLocalGraphResult_source_vertices) $
-      \(i, sourceVertex) -> do
-        printf "%d:\n" i
-        let decl = sourceVertex_declaration sourceVertex
-        putDocW 80 $ pretty decl <> line
-
-        let overriding_methods = sourceVertex_overriding_methods sourceVertex
-        when (not $ null overriding_methods) $ do
-          printf "is overridden by:\n\n"
-          forM_ overriding_methods $ \(Override _ _ method) ->
-            putDocW 80 $ indent 2 (pretty method) <> line <> line
-
-        let called_functions = sourceVertex_called_functions sourceVertex
-        when (not $ null called_functions) $ do
-          printf "calls:\n\n"
-          forM_ called_functions $ \(FunctionCall _ _ func) ->
-            putDocW 80 $ indent 2 (pretty func) <> line <> line
-
-        let dropped_edges = sourceVertex_dropped_edges sourceVertex
-        when (dropped_edges > 0) $ do
-          when (not (null overriding_methods && null called_functions)) $
-            printf "and "
-          printf "is overridden by or calls %d more\n" dropped_edges
-        printf "\n"
-
-    putStrLn "Backward search:"
-    forM_ (zip [0::Int ..] findLocalGraphResult_target_vertices) $
-      \(i, targetVertex) -> do
-        printf "%d:\n" i
-        let decl = targetVertex_declaration targetVertex
-        putDocW 80 $ pretty decl <> line
-
-        let overridden_method = targetVertex_overridden_method targetVertex
-        when (isJust overridden_method) $ do
-          printf "is overriding:\n\n"
-          forM_ overridden_method $ \(Override method _ _) ->
-            putDocW 80 $ indent 2 (pretty method) <> line <> line
-
-        let calling_functions = targetVertex_calling_functions targetVertex
-        when (not $ null calling_functions) $ do
-          printf "is called by:\n\n"
-          forM_ calling_functions $ \(FunctionCall func _ _) ->
-            putDocW 80 $ indent 2 (pretty func) <> line <> line
-
-        let dropped_edges = targetVertex_dropped_edges targetVertex
-        when (dropped_edges > 0) $ do
-          when (not (isNothing overridden_method && null calling_functions)) $
-            printf "and "
-          printf "is overriding or called by %d more\n" dropped_edges
-        printf "\n"
-
 
 -- This should be replaced by symbol view-based rendering in the future
 prettyResults :: Maybe Text
