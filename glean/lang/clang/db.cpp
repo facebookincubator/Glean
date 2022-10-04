@@ -112,11 +112,7 @@ void ClangDB::include(
     Src::ByteRange{
       name_range.span.start,
       name_range.span.start + name_range.span.length},
-    range.range,
-    Src::ByteSpan{
-      name_range.span.start,
-      name_range.span.length
-    });
+    range.range);
   ppevent(PreInclude{include, id}, range);
 }
 

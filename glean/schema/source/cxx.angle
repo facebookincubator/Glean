@@ -1270,14 +1270,14 @@ predicate FilePPTraceXRefs:
     # Uses are xrefs to #define entities
     ( { SrcRange, Entity } where
       { use = Use } = PPEvent;
-      { Macro, _, { just = { file = TargetFile }}, _, SrcRange, _ } = Use;
+      { Macro, _, { just = { file = TargetFile }}, _, SrcRange } = Use;
       Define = pp1.Define { Macro, { file = TargetFile } };
       { define = Define } = Entity ) |
 
     # #includes are xrefs to src.Files
     ( { SrcRange, Entity } where
       { include_ = { include_ = Include } } = PPEvent;
-      { TargetFile, _, SrcRange, _ } = Include;
+      { TargetFile, _, SrcRange  } = Include;
       { include_ = TargetFile } = Entity; )
 
 # Definition location for a pp1.Define

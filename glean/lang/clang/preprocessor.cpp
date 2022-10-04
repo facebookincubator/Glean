@@ -245,8 +245,7 @@ struct PPCallbacks final : public clang::PPCallbacks {
       Src::ByteRange{name_r.span.start, name_r.span.start + name_r.span.length},
       maybe(defloc),
       expand,
-      src.range,
-      Src::ByteSpan{name_r.span.start, name_r.span.length});
+      src.range);
     db.ppevent(Cxx::PPEvent::use(use), src);
 
 #if PROFILE_macroUsed
