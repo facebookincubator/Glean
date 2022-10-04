@@ -1357,6 +1357,23 @@ executable compile-bench
         statistics,
         vector-algorithms
 
+executable factset-bench
+    import: fb-haskell, deps, exe
+    if !flag(benchmarks)
+       buildable: False
+    hs-source-dirs: glean/bench
+    main-is: FactSetBench.hs
+    ghc-options: -main-is FactSetBench
+    build-depends:
+        glean:bench-util,
+        glean:client-hs,
+        glean:client-hs-local,
+        glean:core,
+        glean:db,
+        glean:schema,
+        glean:test-lib,
+        glean:util
+
 -- -----------------------------------------------------------------------------
 -- Tests
 
