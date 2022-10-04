@@ -34,7 +34,7 @@ struct FactSet::Index {
   folly::Synchronized<DenseMap<Pid, std::unique_ptr<entry_t>>> index;
 };
 
-FactSet::FactSet(Id start) : starting_id(start) {}
+FactSet::FactSet(Id start) : facts(start) {}
 FactSet::FactSet(FactSet&&) noexcept = default;
 FactSet& FactSet::operator=(FactSet&&) = default;
 FactSet::~FactSet() noexcept = default;
@@ -60,7 +60,7 @@ PredicateStats FactSet::predicateStats() const {
     wlock->stats.reserve(keys.low_bound(), keys.high_bound());
     for (const auto& fact
           : folly::range(facts.begin() + wlock->upto, facts.end())) {
-      wlock->stats[fact.type()] += MemoryStats::one(fact.clause().size());
+      wlock->stats[fact.type] += MemoryStats::one(fact.clause.size());
     }
     wlock->upto = facts.size();
     return wlock->stats;
@@ -80,20 +80,20 @@ Id FactSet::idByKey(Pid type, folly::ByteRange key) {
 }
 
 Pid FactSet::typeById(Id id) {
-  if (id >= starting_id) {
-    const auto i = distance(starting_id, id);
+  if (id >= facts.startingId()) {
+    const auto i = distance(facts.startingId(), id);
     if (i < facts.size()) {
-      return facts[i].type();
+      return facts[i].type;
     }
   }
   return Pid::invalid();
 }
 
 bool FactSet::factById(Id id, std::function<void(Pid, Fact::Clause)> f) {
-  if (id >= starting_id) {
-    const auto i = distance(starting_id, id);
+  if (id >= facts.startingId()) {
+    const auto i = distance(facts.startingId(), id);
     if (i < facts.size()) {
-      f(facts[i].type(), facts[i].clause());
+      f(facts[i].type, facts[i].clause);
       return true;
     }
   }
@@ -120,7 +120,7 @@ std::unique_ptr<FactIterator> FactSet::enumerate(Id from, Id upto) {
     }
 
     Fact::Ref get(Demand) override {
-      return pos != end ? pos->ref() : Fact::Ref::invalid();
+      return pos != end ? *pos : Fact::Ref::invalid();
     }
 
     std::optional<Id> lower_bound() override { return std::nullopt; }
@@ -150,7 +150,7 @@ std::unique_ptr<FactIterator> FactSet::enumerateBack(Id from, Id downto) {
       if (pos != end) {
         auto i = pos;
         --i;
-        return i->ref();
+        return *i;
       } else {
         return Fact::Ref::invalid();
       }
@@ -259,7 +259,7 @@ Id FactSet::define(Pid type, Fact::Clause clause, Id) {
 
 thrift::Batch FactSet::serialize() const {
   binary::Output output;
-  for (auto& fact : *this) {
+  for (auto fact : *this) {
     fact.serialize(output);
   }
 
@@ -304,12 +304,12 @@ template<typename Context>
 std::pair<binary::Output, size_t> substituteFact(
     const Inventory& inventory,
     const Predicate::Rename<Context>& substitute,
-    const Fact &fact) {
-  auto predicate = inventory.lookupPredicate(fact.type());
+    Fact::Ref fact) {
+  auto predicate = inventory.lookupPredicate(fact.type);
   CHECK_NOTNULL(predicate);
   binary::Output clause;
   uint64_t key_size;
-  predicate->substitute(substitute, fact.clause(), clause, key_size);
+  predicate->substitute(substitute, fact.clause, clause, key_size);
   return {std::move(clause), key_size};
 }
 
@@ -327,21 +327,21 @@ FactSet FactSet::rebase(
 
   const auto split = lower_bound(subst.finish());
 
-  for (auto& fact : folly::range(begin(), split)) {
+  for (auto fact : folly::range(begin(), split)) {
     auto r = substituteFact(inventory, substitute, fact);
     global.insert({
-      subst.subst(fact.id()),
-      fact.type(),
+      subst.subst(fact.id),
+      fact.type,
       Fact::Clause::from(r.first.bytes(), r.second)
     });
   }
 
   FactSet local(new_start);
   auto expected = new_start;
-  for (auto& fact : folly::range(split, end())) {
+  for (auto fact : folly::range(split, end())) {
     auto r = substituteFact(inventory, substitute, fact);
     const auto id =
-      local.define(fact.type(), Fact::Clause::from(r.first.bytes(), r.second));
+      local.define(fact.type, Fact::Clause::from(r.first.bytes(), r.second));
     CHECK(id == expected);
     ++expected;
   }

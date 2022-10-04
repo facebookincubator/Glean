@@ -109,12 +109,16 @@ template<typename T, typename By> using FastSetBy =
  */
 class FactSet final : public Define {
 private:
-  struct Facts {
-    Facts() noexcept = default;
+  class Facts final {
+  public:
+    explicit Facts(Id start) noexcept
+      : starting_id(start) {}
     Facts(Facts&& other) noexcept
-      : facts(std::move(other.facts))
+      : starting_id(other.starting_id)
+      , facts(std::move(other.facts))
       , fact_memory(other.fact_memory) {}
     Facts& operator=(Facts&& other) noexcept {
+      starting_id = other.starting_id;
       facts = std::move(other.facts);
       fact_memory = other.fact_memory;
       return *this;
@@ -128,9 +132,13 @@ private:
       return facts.size();
     }
 
+    Id startingId() const {
+      return starting_id;
+    }
+
     struct deref {
-      const Fact& operator()(const Fact::unique_ptr& p) const {
-        return *p;
+      Fact::Ref operator()(const Fact::unique_ptr& p) const {
+        return p->ref();
       }
     };
 
@@ -147,9 +155,9 @@ private:
       return boost::make_transform_iterator(facts.end(), deref());
     }
 
-    const Fact& operator[](size_t i) const {
+    Fact::Ref operator[](size_t i) const {
       assert (i < facts.size());
-      return *facts[i];
+      return facts[i]->ref();
     }
 
     void clear() {
@@ -181,6 +189,8 @@ private:
       return fact_memory;
     }
 
+  private:
+    Id starting_id;
     std::vector<Fact::unique_ptr> facts;
     size_t fact_memory = 0;
   };
@@ -217,16 +227,16 @@ public:
   /// given id (or end() if no such fact exists).
   const_iterator lower_bound(Id id) const {
     return begin() +
-      (id <= starting_id
+      (id <= facts.startingId()
         ? 0
-        : std::min(distance(starting_id, id), facts.size()));
+        : std::min(distance(facts.startingId(), id), facts.size()));
   }
 
   const_iterator upper_bound(Id id) const {
     return begin() +
-      (id < starting_id
+      (id < facts.startingId()
         ? 0
-        : std::min(distance(starting_id, id)+1, facts.size()));
+        : std::min(distance(facts.startingId(), id)+1, facts.size()));
   }
 
   /// Return the number of bytes occupied by facts.
@@ -245,11 +255,11 @@ public:
   bool factById(Id id, std::function<void(Pid, Fact::Clause)> f) override;
 
   Id startingId() const override {
-    return starting_id;
+    return facts.startingId();
   }
 
   Id firstFreeId() const override {
-    return starting_id + facts.size();
+    return facts.startingId() + facts.size();
   }
 
   Interval count(Pid pid) const override;
@@ -315,8 +325,6 @@ public:
   bool sanityCheck() const;
 
 private:
-  Id starting_id;
-
   Facts facts;
   DenseMap<Pid, FastSetBy<const Fact *, FactByKeyOnly>> keys;
 
