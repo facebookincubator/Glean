@@ -71,6 +71,8 @@ public:
     }
   };
 
+  static void serialize(binary::Output& output, Pid type, Clause clause);
+
   struct Ref {
     Id id = Id::invalid();
     Pid type = Pid::invalid();
@@ -90,6 +92,10 @@ public:
 
     folly::ByteRange value() const {
       return clause.value();
+    }
+
+    void serialize(binary::Output& output) const {
+      Fact::serialize(output, type, clause);
     }
   };
 
@@ -144,7 +150,6 @@ public:
     return size(key_size, value_size);
   }
 
-  static void serialize(binary::Output& output, Pid type, Clause clause);
 
   void serialize(binary::Output& output) const {
     serialize(output, type(), clause());
