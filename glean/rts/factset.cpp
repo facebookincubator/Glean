@@ -39,6 +39,36 @@ FactSet::FactSet(FactSet&&) noexcept = default;
 FactSet& FactSet::operator=(FactSet&&) = default;
 FactSet::~FactSet() noexcept = default;
 
+struct FactSet::CachedPredicateStats {
+  struct Data {
+    /// Cached stats
+    PredicateStats stats;
+
+    /// Index in 'facts' up to which we've computed the stats so far. Since
+    /// FactSet is append-only, 'stats' are out of date if we have more than
+    /// 'upto' facts and we only need to add the new facts to be up to date
+    /// again
+    size_t upto = 0;
+  };
+  folly::Synchronized<Data> data;
+};
+
+PredicateStats FactSet::predicateStats() const {
+  auto ulock = predicate_stats.value().data.ulock();
+  if (ulock->upto < facts.size()) {
+    auto wlock = ulock.moveFromUpgradeToWrite();
+    wlock->stats.reserve(keys.low_bound(), keys.high_bound());
+    for (const auto& fact
+          : folly::range(facts.begin() + wlock->upto, facts.end())) {
+      wlock->stats[fact->type()] += MemoryStats::one(fact->clause().size());
+    }
+    wlock->upto = facts.size();
+    return wlock->stats;
+  } else {
+    return ulock->stats;
+  }
+}
+
 Id FactSet::idByKey(Pid type, folly::ByteRange key) {
   if (const auto p = keys.lookup(type)) {
     const auto i = p->find(key);

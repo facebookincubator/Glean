@@ -42,10 +42,10 @@ import Glean.RTS.Foreign.FactSet (FactSet)
 import Glean.RTS.Foreign.Lookup
   (CanLookup(..), Lookup(..))
 import Glean.RTS.Foreign.Ownership as Ownership
+import Glean.RTS.Foreign.Stats (marshalPredicateStats)
 import Glean.RTS.Types (Fid(..), invalidFid, Pid(..))
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types (Repo)
-import qualified Glean.Types as Thrift
 import Glean.Util.Disk
 
 newtype Cache = Cache (ForeignPtr Cache)
@@ -127,18 +127,8 @@ instance Storage RocksDB where
   safeRemoveForcibly rocks =
       safeRemovePathForcibly . databasePath (rocksRoot rocks)
 
-  predicateStats db = withForeignPtr (dbPtr db) $ \db_ptr -> do
-    (count, pids, counts, sizes) <- invoke $ glean_rocksdb_database_stats db_ptr
-    usingMalloced pids $
-      usingMalloced counts $
-      usingMalloced sizes $
-      forM [0 .. fromIntegral count - 1] $ \i -> do
-        pid <- peekElemOff pids i
-        count <- peekElemOff counts i
-        size <- peekElemOff sizes i
-        return (Pid pid, Thrift.PredicateStats
-                      (fromIntegral count)
-                      (fromIntegral size))
+  predicateStats db = withForeignPtr (dbPtr db)
+    $ marshalPredicateStats . glean_rocksdb_database_predicateStats
 
   store db key value =
     withContainer db $ \s_ptr ->
@@ -362,7 +352,7 @@ foreign import ccall safe glean_rocksdb_get_ownership_unit_iterator
   -> Ptr Ownership.UnitIterator
   -> IO CString
 
-foreign import ccall unsafe glean_rocksdb_database_stats
+foreign import ccall unsafe glean_rocksdb_database_predicateStats
   :: Ptr (Database RocksDB)
   -> Ptr CSize
   -> Ptr (Ptr Int64)

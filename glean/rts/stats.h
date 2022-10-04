@@ -11,6 +11,9 @@
 #include <cstdlib>
 #include <limits>
 
+#include "glean/rts/densemap.h"
+#include "glean/rts/id.h"
+
 namespace facebook {
 namespace glean {
 namespace rts {
@@ -106,8 +109,16 @@ struct MemoryStats {
   bool operator!=(const MemoryStats& other) const {
     return !(*this == other);
   }
-
 };
+
+using PredicateStats = DenseMap<Pid, MemoryStats>;
+
+void marshal(
+  const PredicateStats& stats,
+  size_t *count,
+  int64_t **ids,
+  uint64_t **counts,
+  uint64_t **sizes);
 
 }
 }

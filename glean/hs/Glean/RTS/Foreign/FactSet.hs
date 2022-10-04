@@ -10,6 +10,7 @@ module Glean.RTS.Foreign.FactSet
   ( FactSet
   , new
   , factMemory
+  , predicateStats
   , firstFreeId
   , serialize
   , serializeReorder
@@ -21,6 +22,7 @@ module Glean.RTS.Foreign.FactSet
 import Control.Exception
 import Data.Int
 import Data.Vector.Storable as Vector
+import Data.Word
 import Foreign.C.String
 import Foreign.C.Types
 import Foreign.ForeignPtr
@@ -34,8 +36,9 @@ import Glean.RTS.Foreign.Inventory (Inventory)
 import Glean.RTS.Foreign.Lookup (Lookup(..), CanLookup(..))
 import Glean.RTS.Foreign.LookupCache (LookupCache)
 import Glean.RTS.Foreign.Stacked (stacked)
+import Glean.RTS.Foreign.Stats (marshalPredicateStats)
 import Glean.RTS.Foreign.Subst (Subst)
-import Glean.RTS.Types (Fid(..))
+import Glean.RTS.Types (Fid(..), Pid(..))
 import qualified Glean.Types as Thrift
 
 -- An environment for defining facts
@@ -58,6 +61,10 @@ new next_id = construct $ invoke $ glean_factset_new next_id
 
 factMemory :: FactSet -> IO Int
 factMemory facts = fromIntegral <$> with facts glean_factset_fact_memory
+
+predicateStats :: FactSet -> IO [(Pid, Thrift.PredicateStats)]
+predicateStats facts = with facts
+    $ marshalPredicateStats . glean_factset_predicateStats
 
 firstFreeId :: FactSet -> IO Fid
 firstFreeId facts = with facts glean_factset_first_free_id
@@ -127,6 +134,14 @@ foreign import ccall unsafe "&glean_factset_free" glean_factset_free
 
 foreign import ccall unsafe glean_factset_fact_memory
   :: Ptr FactSet -> IO CSize
+
+foreign import ccall safe glean_factset_predicateStats
+  :: Ptr FactSet
+  -> Ptr CSize
+  -> Ptr (Ptr Int64)
+  -> Ptr (Ptr Word64)
+  -> Ptr (Ptr Word64)
+  -> IO CString
 
 foreign import ccall unsafe glean_factset_first_free_id
   :: Ptr FactSet -> IO Fid

@@ -392,6 +392,7 @@ library core
         Glean.RTS.Foreign.Ownership
         Glean.RTS.Foreign.Query
         Glean.RTS.Foreign.Stacked
+        Glean.RTS.Foreign.Stats
         Glean.RTS.Foreign.Subst
         Glean.RTS.Foreign.Thrift
         Glean.RTS.Foreign.Typecheck

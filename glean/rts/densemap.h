@@ -42,6 +42,14 @@ public:
     return count;
   }
 
+  key_type low_bound() const {
+    return start;
+  }
+
+  key_type high_bound() const {
+    return start + data.size();
+  }
+
 private:
   template<typename Val, typename Base>
   struct Iter {
@@ -123,7 +131,6 @@ public:
     return iterator(start + data.size(), data.end(), data.end());
   }
 
-private:
   // Reserve space to cover all keys from low up to but not including high
   void reserve(key_type from, key_type upto) {
     if (data.empty()) {
@@ -147,7 +154,6 @@ private:
     }
   }
 
-public:
   mapped_type& operator[](key_type key) {
     reserve(key, key+1);
     const auto i = key - start;

@@ -27,8 +27,7 @@ import Glean.Repo.Text
 import Glean.RTS.Foreign.FactSet (FactSet)
 import qualified Glean.RTS.Foreign.FactSet as FactSet
 import Glean.RTS.Foreign.Lookup
-import Glean.RTS.Types (lowestPid)
-import Glean.Types (PredicateStats(..), Repo)
+import Glean.Types (Repo)
 
 newtype Memory = Memory (TVar (HashMap Repo (Database Memory)))
 
@@ -68,10 +67,7 @@ instance Storage Memory where
 
   safeRemoveForcibly = delete
 
-  -- FIXME: This is a terrible hack to ensure we don't remove everything when
-  -- thinning the schema
-  predicateStats _ =
-    return $ take 10000 [(pid, PredicateStats 1 1) | pid <- [lowestPid ..]]
+  predicateStats = FactSet.predicateStats . dbFacts
 
   store db key value =
     atomically $ modifyTVar' (dbData db) $ HashMap.insert key value

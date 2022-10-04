@@ -79,9 +79,7 @@ std::unique_ptr<Container> open(
 struct Database : rts::Lookup {
   virtual Container& container() noexcept = 0;
 
-  using PredicateStats = rts::DenseMap<Pid, rts::MemoryStats>;
-
-  virtual PredicateStats stats() const = 0;
+  virtual rts::PredicateStats predicateStats() const = 0;
 
   struct OwnershipSet {
     folly::ByteRange unit;
