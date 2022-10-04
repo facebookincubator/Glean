@@ -35,6 +35,7 @@ module Glean.Glass.Pretty.Hack
   , TypeParameter(..)
   , Constraint(..)
   , ConstraintKind(..)
+  , Container(..)
   ) where
 
 import qualified Glean
@@ -96,7 +97,9 @@ data ConstraintKind = As | Equal | Super deriving (Eq)
 data Constraint = Constraint ConstraintKind HackType
 data TypeParameter = TypeParameter Name Variance Reify [Constraint]
 data Signature = Signature ReturnType [TypeParameter] [Parameter]
-
+data Container
+  = ClassContainer | InterfaceContainer | TraitContainer | EnumContainer
+  deriving (Eq)
 data Decl
   = ClassConst Name
   | Enum QualName
@@ -107,7 +110,7 @@ data Decl
   | Function FunctionMod QualName Signature
   | GlobalConst QualName
   | Namespace Qual
-  | Method MethodMod QualName Name Signature
+  | Method MethodMod Container Name Signature
   | Property Name
   | TypeConst Name
   | Typedef QualName
@@ -135,8 +138,8 @@ prettyDecl (GlobalConst name) =
   "const" <+> ppQualName name
 prettyDecl (Namespace name) =
   "namespace" <+> ppQual name
-prettyDecl (Method modifiers _container name signature) =
-  ppMethodModifiers modifiers <+> ppName name <>
+prettyDecl (Method modifiers container name signature) =
+  ppMethodModifiers container modifiers <+> ppName name <>
   ppSignature signature
 prettyDecl (Property name) =
   ppName name
@@ -208,10 +211,13 @@ ppInout :: Maybe Inout -> Text
 ppInout Nothing = ""
 ppInout (Just Inout) = "inout"
 
-ppMethodModifiers :: MethodMod -> Text
-ppMethodModifiers (MethodMod abstract final visibility static async) =
+ppMethodModifiers :: Container -> MethodMod -> Text
+ppMethodModifiers container (MethodMod abstract final visibility static async) =
   Text.unwords $ execWriter $ do
-    when (abstract==Abstract) $ tell ["abstract"]
+    when
+      (  abstract == Abstract
+      && container /= InterfaceContainer
+      ) $ tell ["abstract"]
     when (final==Final) $ tell ["final"]
     when (visibility==Public) $ tell ["public"]
     when (visibility==Protected) $ tell ["protected"]
@@ -277,7 +283,7 @@ decl (Hack.Declaration_method meth@Hack.MethodDeclaration{..}) = do
   def <- liftMaybe methodDefinition_key
   let typeParams = Hack.methodDefinition_key_typeParams def
   let sign = Hack.methodDefinition_key_signature def
-  container <- containerQualName methodDeclaration_key_container
+  let container = containerKind methodDeclaration_key_container
   pure $ Method (modifiersForMethod def) container (Name name)
     (toSignature typeParams sign)
 decl (Hack.Declaration_property_ Hack.PropertyDeclaration{..}) = do
@@ -326,29 +332,13 @@ containerDecl
     pure $ Interface $ QualName name
 containerDecl Hack.ContainerDeclaration_EMPTY = MaybeT (return Nothing)
 
-containerQualName
-  :: Hack.ContainerDeclaration -> Glean.MaybeTRepoHaxl u w QualName
-containerQualName
-  (Hack.ContainerDeclaration_enum_ Hack.EnumDeclaration{..}) = do
-    Hack.EnumDeclaration_key{..} <- liftMaybe enumDeclaration_key
-    name <- qName enumDeclaration_key_name
-    pure $ QualName name
-containerQualName
-  (Hack.ContainerDeclaration_trait Hack.TraitDeclaration{..}) = do
-    Hack.TraitDeclaration_key{..} <- liftMaybe traitDeclaration_key
-    name <- qName traitDeclaration_key_name
-    pure $ QualName name
-containerQualName
-  (Hack.ContainerDeclaration_class_ Hack.ClassDeclaration{..}) = do
-    Hack.ClassDeclaration_key{..} <- liftMaybe classDeclaration_key
-    name <- qName classDeclaration_key_name
-    pure $ QualName name
-containerQualName
-  (Hack.ContainerDeclaration_interface_ Hack.InterfaceDeclaration{..}) = do
-    Hack.InterfaceDeclaration_key{..} <- liftMaybe interfaceDeclaration_key
-    name <- qName interfaceDeclaration_key_name
-    pure $ QualName name
-containerQualName Hack.ContainerDeclaration_EMPTY = liftMaybe Nothing
+containerKind
+  :: Hack.ContainerDeclaration -> Container
+containerKind Hack.ContainerDeclaration_enum_ {} = EnumContainer
+containerKind Hack.ContainerDeclaration_trait {} = TraitContainer
+containerKind Hack.ContainerDeclaration_class_ {} = ClassContainer
+containerKind Hack.ContainerDeclaration_interface_ {} = InterfaceContainer
+containerKind Hack.ContainerDeclaration_EMPTY = ClassContainer
 
 qName :: Hack.QName -> Glean.MaybeTRepoHaxl u w ([Text], Text)
 qName Hack.QName{..} = do
