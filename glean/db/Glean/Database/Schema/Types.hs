@@ -42,7 +42,7 @@ import Data.Text.Prettyprint.Doc hiding ((<>))
 import Glean.Angle.Types as Schema hiding (Type, FieldDef)
 import qualified Glean.Angle.Types as Schema
 import Glean.Bytecode.Types
-import Glean.Query.Codegen.Types (Match, Var)
+import Glean.Query.Codegen.Types (Match, Output)
 import Glean.Database.Schema.ComputeIds
 import Glean.Query.Typecheck.Types
 import Glean.RTS.Foreign.Bytecode (Subroutine)
@@ -94,7 +94,7 @@ data PredicateTransformation = PredicateTransformation
 
   , transformPrefix
       :: forall a
-      . Maybe ( Term (Match () Var)
+      . Maybe (  Term (Match () Output)
               -> (IsPointQuery -> Bytes -> Code a)
               -> Code a)
     -- ^ requested -> available

@@ -572,9 +572,11 @@ compileStatements
 
             mTransKey = transformKey =<< mtrans
             mTransValue = transformValue =<< mtrans
+            kchunks = preProcessPat $ inlineVars vars kpat
+            vchunks = preProcessPat $ inlineVars vars vpat
 
-          patOutput mTransKey (preProcessPat vars kpat) $ \kout kcmp ->
-            patOutput mTransValue (preProcessPat vars vpat) $ \vout vcmp -> do
+          patOutput mTransKey kchunks $ \kout kcmp ->
+            patOutput mTransValue vchunks $ \vout vcmp -> do
               reg <- load fail
               local $ \pidReg -> mdo
                 lookupKeyValue reg kout vout pidReg
@@ -604,7 +606,7 @@ compileStatements
               filterPat reg pat fail
                 | Just cmp <- maybeWordFilter = cmp reg fail
                 | otherwise = cmpOutputPat (castRegister reg) chunks fail
-                where chunks = preProcessPat vars pat
+                where chunks = preProcessPat $ inlineVars vars pat
           in
           outReg $ \reg ->
             compileGen gen (Just reg) $ mdo
@@ -665,7 +667,7 @@ compileStatements
             cmp (castRegister q') ok
           Nothing ->
             withTerm vars q $ \q' ->
-            cmpOutputPat q' (preProcessPat vars p) ok
+            cmpOutputPat q' (preProcessPat $ inlineVars vars p) ok
         jump fail
         ok <- label
         whenJust maybeReg (resetOutput . castRegister)
@@ -815,8 +817,8 @@ compileFactGenerator
   -> Code a
 compileFactGenerator _ bounds (QueryRegs{..} :: QueryRegs s)
     vars pid kpat vpat section maybeReg inner = do
-  let kchunks = preProcessPat vars kpat
-  let vchunks = preProcessPat vars vpat
+  let kchunks = preProcessPat $ inlineVars vars kpat
+  let vchunks = preProcessPat $ inlineVars vars vpat
   withPrefix kchunks $ \isPointQuery prefix kchunks' -> do
 
   typ <- constant (fromIntegral (fromPid pid))
@@ -992,15 +994,22 @@ instance IsWild (QueryChunk var) where
   isWild QueryWild{} = True
   isWild QueryPrefixWild{} = True
   isWild _ = False
+
+inlineVars
+  :: Vector (Register 'Word)
+  -> Term (Match () Var)
+  -> Term (Match () Output)
+inlineVars vars term = fmap (fmap toOutput) term
+  where
+    toOutput :: Var -> Output
+    toOutput (Var ty v _) = Typed ty (castRegister (vars ! v))
+
 --
 -- | Process a query into a [QueryChunk], which enables the compiler to
 -- generate efficient code for a pattern match.
 --
-preProcessPat
-  :: Vector (Register 'Word)
-  -> Term (Match () Var)
-  -> [QueryChunk Output]
-preProcessPat vars pat = unsafePerformIO $
+preProcessPat :: Term (Match () Output) -> [QueryChunk Output]
+preProcessPat pat = unsafePerformIO $
   withBuilder $ \builder -> do
     (_, (_, _, chunks)) <-
       flip runStateT (builder, True, []) $
@@ -1048,7 +1057,7 @@ preProcessPat vars pat = unsafePerformIO $
       -- Thus the remaining input is a valid string, and we can continue
       -- by matching it as a StringTy with QueryWild or QueryBind.
 
-  build :: Term (Match () Var) -> M ()
+  build :: Term (Match () Output) -> M ()
   build pat =
     case pat of
       Array terms -> do
@@ -1060,10 +1069,8 @@ preProcessPat vars pat = unsafePerformIO $
           b <- builder
           lift $ FFI.call $ glean_push_value_selector b $ fromIntegral ix
           build term
-      Ref (MatchVar (Var ty v _)) ->
-          chunk $ QueryVar $ Typed ty (castRegister $ vars ! v)
-      Ref (MatchBind (Var ty v _)) ->
-          chunk $ QueryBind $ Typed ty (castRegister $ vars ! v)
+      Ref (MatchVar out) -> chunk $ QueryVar out
+      Ref (MatchBind out) -> chunk $ QueryBind out
       Ref (MatchWild ty) -> chunk (QueryWild ty)
       Ref (MatchNever _) -> chunk QueryNever
       Ref (MatchFid fid) -> do
