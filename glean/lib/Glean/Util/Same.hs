@@ -14,7 +14,7 @@ module Glean.Util.Same
   ) where
 
 import Glean
-import Glean.Angle hiding (query)
+import Glean.Angle
 import qualified Glean.Angle as Angle
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import Glean.Util.ToAngle

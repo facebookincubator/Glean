@@ -19,7 +19,7 @@ import System.Exit
 
 import TestRunner
 
-import Glean hiding (query)
+import Glean
 import Glean.Write (parseRef)
 import Glean.Angle
 import Glean.Init

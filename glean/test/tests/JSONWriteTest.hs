@@ -20,7 +20,7 @@ import TestRunner
 import Thrift.Protocol.JSON
 import Util.String.Quasi
 
-import Glean hiding (query)
+import Glean
 import Glean.Angle
 import Glean.Init
 import Glean.Database.Test

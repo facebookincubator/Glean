@@ -104,11 +104,6 @@ module Glean
   , angleData
   , encodeTextForAngle
 
-  -- ** Query using Thrift query types
-  , ThriftQuery
-  , QueryResult
-  , query
-
   -- ** Query modifiers
   , keys
   , recursive
@@ -123,7 +118,6 @@ module Glean
 
   -- * Haxl: high-performance query API
   , Haxl
-  , HaxlQuery
   , runHaxl
   , runHaxlWithWrites
   , haxlRepo

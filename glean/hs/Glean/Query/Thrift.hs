@@ -8,8 +8,7 @@
 
 module Glean.Query.Thrift
   ( -- * Types
-    ThriftQuery
-  , Query
+    Query
   , MkQuery(..)
     -- * Perform query
   , runQuery
@@ -20,7 +19,6 @@ module Glean.Query.Thrift
   , runQueryEach
   , runQueryEachBatch
     -- * Query combinators
-  , query
   , angle
   , angleData
   , keys

@@ -13,10 +13,8 @@
 -- | Define internal pieces, please import "Glean.Query.Thrift" instead
 module Glean.Query.Thrift.Internal
   ( -- * Types
-    ThriftQuery
-  , Query(..)
+    Query(..)
     -- * Query combinators
-  , query
   , angle
   , angleData
   , keys
@@ -57,18 +55,10 @@ import Data.Text.Prettyprint.Doc hiding ((<>))
 import qualified Text.JSON
 import Text.Printf
 
-import Thrift.Protocol hiding (Type)
-import Thrift.Protocol.JSON
 import Util.Log
 
 import Glean.Typed as Typed
 import Glean.Types as Thrift
-
--- | Collection of constraints on a query
-type ThriftQuery q =
-  ( ThriftSerializable (QueryOf q)
-  , Predicate q
-  )
 
 type ResultDecoder a =
      IntMap Thrift.Fact               -- ^ serialized nested facts
@@ -117,10 +107,6 @@ queryPredicate (Query q) = case userQuery_predicate_version q of
 -- | A human-readable form of the Query (as JSON).
 displayQuery :: Query a -> Text
 displayQuery (Query UserQuery{..}) = Text.decodeUtf8 userQuery_query
-
--- | Build a query for passing to `runQuery` (see "Glean.Query.Thrift")
-query :: forall q . (ThriftQuery q) => QueryOf q -> Query q
-query = mkQuery . serializeJSON
 
 allFacts :: forall q . (Predicate q) => Query q
 allFacts = angle $ Text.pack $

@@ -19,7 +19,7 @@ import Haxl.DataSource.Glean as Glean
 import Haxl.Testing.Skip
 import TestRunner
 
-import Glean hiding (Predicate, runHaxl, query)
+import Glean hiding (Predicate, runHaxl)
 import Glean.Angle
 import Glean.Init
 import Glean.Schema.GleanTest.Types as Glean.Test

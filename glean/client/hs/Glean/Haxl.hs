@@ -24,11 +24,9 @@ module Glean.Haxl
   , search
   , search_
   , Query
-  , query
   , recursive
   , limit
   , trySyncHaxl
-  , HaxlQuery
   , getFirstResult
     -- * re-export
   , Backend.initGlobalState
@@ -65,14 +63,6 @@ flatten = id
 #endif
 
 type Haxl w = GenHaxl Repo (HaxlWrite w)
-
--- | Constraints needed for 'query' or 'search' or 'search_' from
--- "Haxl.DataSource.Glean"
-type HaxlQuery p =
-  ( Typeable p
-  , Show p
-  , ThriftQuery p
-  )
 
 -- | Initialize for Glean queries
 initHaxlEnv :: Backend be => be -> u -> IO (Haxl.Env u (HaxlWrite w))

@@ -78,7 +78,7 @@ import TextShow
 import Glean.Angle.Types hiding
   (SourcePat, SourceStatement, SourceQuery, Field, Type)
 import qualified Glean.Angle.Types as Angle
-import Glean.Query.Thrift.Internal as Thrift hiding (query)
+import Glean.Query.Thrift.Internal as Thrift
 import Glean.Typed hiding (end)
 import Glean.Types (Nat, Byte)
 

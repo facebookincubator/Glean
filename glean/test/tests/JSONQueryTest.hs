@@ -46,6 +46,13 @@ import TestData
 
 import TestDB
 
+query :: forall q . (ThriftQuery q) => QueryOf q -> Query q
+query = mkQuery . serializeJSON
+
+type ThriftQuery q =
+  ( ThriftSerializable (QueryOf q)
+  , Predicate q
+  )
 
 userQueryFactTest :: Test
 userQueryFactTest = dbTestCase $ \env repo -> do
