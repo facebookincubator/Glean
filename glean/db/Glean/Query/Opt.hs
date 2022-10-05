@@ -490,8 +490,11 @@ type U a = StateT OptState (Except Text) a
 type VarSet = IntSet
 type Subst = IntMap Pat
 
--- | Traverse the query, excluding nested (A | B) subterms,
--- collecting the visible variables.
+-- | Traverse the query, excluding nested (A | B), !A, and "if" subterms,
+-- collecting the visible variables.  These are the variables that we must
+-- not unify *inside* an (A | B), !A, or "if" subterm, because they are
+-- visible outside it. Variables that are local to one of these subterms
+-- may be safely unified.
 queryScope :: FlatQuery -> VarSet
 queryScope (FlatQuery key maybeVal groups) =
   foldr termScope (foldr f s groups) maybeVal
@@ -501,8 +504,7 @@ queryScope (FlatQuery key maybeVal groups) =
 
 stmtScope :: FlatStatement -> VarSet -> VarSet
 stmtScope (FlatStatement _ lhs rhs) r = termScope lhs (genScope rhs r)
-stmtScope (FlatNegation stmts) r =
-  foldr (flip (foldr stmtScope)) r stmts
+stmtScope (FlatNegation _) r = r
 stmtScope (FlatDisjunction [stmts]) r =
   foldr (flip (foldr stmtScope)) r stmts
 stmtScope FlatDisjunction{} r = r

@@ -158,6 +158,16 @@ optTest = dbTestCase $ \env repo -> do
   assertEqual "opt - negation" Nothing $
     factsSearched (PredicateRef "glean.test.StringPair" 1) lookupPid stats
 
+  -- Test for unification inside negation
+  (_, stats) <- queryStats env repo $ angleData @Nat
+    [s|
+      A where
+        !(!(glean.test.Node { label = X }; X = "g"..));
+        A = 1;
+    |]
+  assertEqual "opt - negation 2" Nothing $
+    factsSearched (PredicateRef "glean.test.Node" 1) lookupPid stats
+
   -- a false condition in an if pattern gets optimised away.
   (_, stats) <- queryStats env repo $ angleData @Nat
     [s|
