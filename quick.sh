@@ -16,7 +16,7 @@ MAKE_ARGS=()
 
 for arg in "$@"; do
   case $arg in
-    build|run|test|list-bin)
+    build|run|test|list-bin|cxx-test)
       ACTION="$1"
       shift
       break
@@ -28,24 +28,28 @@ for arg in "$@"; do
   esac
 done
 
-TARGET=$1
-shift
+[ -n "$ACTION" ] || fatal "No action specified"
 
-if [ -z "$ACTION" ]; then
-  fatal "No action specified"
-fi
-if [ -z "$TARGET" ]; then
-  fatal "No target specified"
-fi
+TARGET=$1
+[ -n "$TARGET" ] || fatal "No target specified"
+shift
 
 make "${MAKE_ARGS[@]}" .build/current.sh glean.cabal cxx-libraries
 
 . .build/current.sh
 
-CABAL_ARGS=()
-# Suppress "Up to date" etc. for list-bin
-if [ "$ACTION" = "list-bin" ]; then
-  CABAL_ARGS+=(-vsilent)
-fi
+case $ACTION in
+  cxx-test)
+    make "${MAKE_ARGS[@]}" "cxx-test-$TARGET"
+    ;;
 
-call_cabal "${CABAL_ARGS[@]}" "${ACTION}" "${TARGET}" -- "$@"
+  *)
+    CABAL_ARGS=()
+    # Suppress "Up to date" etc. for list-bin
+    if [ "$ACTION" = "list-bin" ]; then
+      CABAL_ARGS+=(-vsilent)
+    fi
+
+    call_cabal "${CABAL_ARGS[@]}" "${ACTION}" -f benchmarks "${TARGET}" -- "$@"
+    ;;
+esac

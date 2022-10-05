@@ -27,6 +27,8 @@ CXX_LIB_DIR = $(CXX_DIR)/lib
 # Target directory for .o files
 CXX_OBJ_DIR = $(CXX_DIR)/obj
 
+CXX_TEST_DIR = $(CXX_DIR)/test
+
 # Actually build the libraries - the individual targets are defined via
 # define_library below
 cxx-libraries: $(CXX_LIBRARIES)
@@ -63,6 +65,38 @@ endef
 
 # Call define_library for each library
 $(foreach lib, $(CXX_LIBRARIES), $(eval $(call define_library,$(lib))))
+
+GTEST_PKGCONFIG_DEPS = libfolly libunwind libglog icu-uc gflags libxxhash gtest_main
+
+GTEST_PKGCONFIG_LIBS := $(shell pkg-config --libs $(GTEST_PKGCONFIG_DEPS))
+
+define define_gtest
+ CXX_GTEST_OBJECTS_$1 = $$(addprefix $$(CXX_OBJ_DIR)/,$$(CXX_GTEST_SOURCES_$1:.cpp=.o))
+ CXX_GTEST_LIB_DEPS_$1 = $$(CXX_GTEST_LIBS_$1:%=$(CXX_LIB_DIR)/lib%.a)
+
+ .PHONY: $1
+
+ $1:: $$(CXX_TEST_DIR)/$1
+
+ .PHONY: cxx-test-$1
+
+ cxx-test-$1: $1
+	$$(CXX_TEST_DIR)/$1
+
+ $$(CXX_TEST_DIR)/$1: $$(CXX_GTEST_OBJECTS_$1) $$(CXX_GTEST_LIB_DEPS_$1)
+	@mkdir -p $$(@D)
+	$(CXX) -o $$@ $$(CXXFLAGS) $$(CXX_GTEST_FLAGS_$1) \
+		$$(CXX_GTEST_OBJECTS_$1) -L$$(CXX_LIB_DIR) $$(CXX_GTEST_LIBS_$1:%=-l%) \
+		$$(GTEST_PKGCONFIG_LIBS)
+
+ $$(CXX_GTEST_OBJECTS_$1): $(CXX_OBJ_DIR)/%.o: %.cpp
+	@mkdir -p $$(@D)
+	$$(CXX) -o $$@ $$(CXXFLAGS) $$(CXX_GTEST_FLAGS_$1) -fPIC -MMD -MP -c $$<
+
+ -include $$(CXX_GTEST_OBJECTS_$1:.o=.d)
+endef
+
+$(foreach lib, $(CXX_GTESTS), $(eval $(call define_gtest,$(lib))))
 
 # Track .a files via extra-source-files - a terrible hack but seems to be the
 # only way to recompile things when the libraries change, see

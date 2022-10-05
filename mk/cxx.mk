@@ -79,10 +79,17 @@ CXX_SOURCES_glean_cpp_client = \
     glean/interprocess/cpp/counters.cpp
 CXX_FLAGS_glean_cpp_client = -DOSS=1
 
+CXX_GTEST_SOURCES_BinaryTest = \
+    glean/rts/tests/BinaryTest.cpp
+CXX_GTEST_LIBS_BinaryTest = glean_cpp_rts
+CXX_GTEST_FLAGS_BinaryTest = -DOSS=1
+
 # End of C++ library definitions
 
 # Determine all C++ libraries
 CXX_LIBRARIES = $(subst CXX_SOURCES_,,$(filter CXX_SOURCES_%, $(.VARIABLES)))
+
+CXX_GTESTS = $(subst CXX_GTEST_SOURCES_,,$(filter CXX_GTEST_SOURCES_%, $(.VARIABLES)))
 
 .PHONY: cxx-libraries
 cxx-libraries:

@@ -125,6 +125,9 @@ $(CXX_DIR)/defs.m4: force
 cxx-libraries: gen-bytecode
 	@$(MAKE) -f mk/cxx.mk --no-print-directory CXX_MODE=$(CXX_MODE) CXX_DIR=$(CXX_DIR) $@
 
+cxx-test-%: force
+	@$(MAKE) -f mk/cxx.mk --no-print-directory CXX_MODE=$(CXX_MODE) CXX_DIR=$(CXX_DIR) $@
+
 .PHONY: glean
 glean:: glean.cabal cxx-libraries
 	$(CABAL) build glean glean-server glean-hyperlink
