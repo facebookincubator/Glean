@@ -837,7 +837,8 @@ reservedWords = HashSet.fromList [
 
     -- Other words to avoid, because they lead to Thrift-generated code that
     -- does not compile for one or more languages.
-    "None", "operator", "Enum",
+    "None", "operator", {- TODO: "Enum" -}
+
     -- Reserved for temporary predicates
     "_tmp_"
   ]
