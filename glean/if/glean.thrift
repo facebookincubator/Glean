@@ -426,7 +426,7 @@ struct UserQueryCont {
   6: i64 hash; // internal continuation hash
   7: optional binary returnType; // angle return type
   8: list<i64> pids; // pids to expand in the results
-  9: map<i64, i64> evolutions; // mapped predicates in the query
+// 9: deprecated
 }
 
 enum QuerySyntax {

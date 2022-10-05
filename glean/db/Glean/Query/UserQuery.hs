@@ -567,7 +567,7 @@ userQueryImpl
         -- This is either a new query or the continuation of a query
         -- that returns a temporary predicate.
         _ -> do
-          (compileTime, _, (query@QueryWithInfo{..}, ty, appliedTrans)) <-
+          (compileTime, _, (query@QueryWithInfo{..}, ty)) <-
             timeIt $ compileAngleQuery
               schemaVersion
               schema
@@ -581,7 +581,7 @@ userQueryImpl
 
             cont = case Thrift.userQueryOptions_continuation opts of
               Just c -> Right c
-              Nothing -> Left (query, appliedTrans)
+              Nothing -> Left query
 
           return (ty, compileTime, irDiag, cont)
 
@@ -637,16 +637,16 @@ userQueryImpl
           newDefineOwnership ownership predicatePid nextId
       else return Nothing
 
+    appliedTrans <- either (throwIO . Thrift.BadQuery) return $
+      transformationsFor schema returnType
+
     ( qResults@QueryResults{..}
-      , appliedTrans
       , queryDiag
       , bytecodeSize
       , codegenTime) <-
       case cont of
         Right ucont -> do
           let binaryCont = Thrift.userQueryCont_continuation ucont
-              appliedTrans = toTransformations schema $
-                Thrift.userQueryCont_evolutions ucont
           results <- transformResultsBack appliedTrans <$>
             restartCompiled
               schemaInventory
@@ -655,9 +655,9 @@ userQueryImpl
               (Just predicatePid)
               limits
               binaryCont
-          return (results, appliedTrans, [], B.length binaryCont, 0)
+          return (results, [], B.length binaryCont, 0)
 
-        Left (query, appliedTrans) -> do
+        Left query -> do
           let
             bytecodeDiag sub =
               [ "bytecode:\n" <> Text.unlines
@@ -674,7 +674,7 @@ userQueryImpl
               diags <-
                 evaluate $ force (bytecodeDiag sub) -- don't keep sub alive
               sz <- evaluate $ Bytecode.size (compiledQuerySub sub)
-              return (results, appliedTrans, diags, sz, codegenTime)
+              return (results, diags, sz, codegenTime)
 
     -- If we're storing derived facts, queue them for writing and
     -- return the handle.
@@ -687,8 +687,7 @@ userQueryImpl
       Nothing -> return Nothing
       Just bs -> do
         nextId <- firstFreeId derived
-        return $ Just $
-          mkUserQueryCont appliedTrans (Right returnType) bs nextId
+        return $ Just $ mkUserQueryCont (Right returnType) bs nextId
 
     stats <- getStats qResults
 
@@ -746,14 +745,18 @@ userQueryImpl
       stored = Thrift.userQueryOptions_store_derived_facts opts
       pred = showRef (predicateRef details)
 
-      mkResults pids firstId derived appliedTrans qResults defineOwners = do
+      mkResults pids firstId derived qResults defineOwners = do
+        appliedTrans <- either (error . Text.unpack) return $ do
+          ktrans <- transformationsFor schema predicateKeyType
+          vtrans <- transformationsFor schema predicateKeyType
+          return (ktrans <> vtrans)
+
         let QueryResults{..} = transformResultsBack appliedTrans qResults
         userCont <- case queryResultsCont of
           Nothing -> return Nothing
           Just bs -> do
             nextId <- firstFreeId derived
-            return $ Just $
-              mkUserQueryCont appliedTrans (Left pids) bs nextId
+            return $ Just $ mkUserQueryCont (Left pids) bs nextId
 
         stats <- getStats qResults
         when (isJust userCont) $
@@ -806,9 +809,7 @@ userQueryImpl
             limits = getLimits pids
         qResults <- restartCompiled schemaInventory defineOwners stack
           (Just predicatePid) limits (Thrift.userQueryCont_continuation ucont)
-        let appliedTrans = toTransformations schema $
-              Thrift.userQueryCont_evolutions ucont
-        mkResults pids nextId derived appliedTrans qResults defineOwners
+        mkResults pids nextId derived qResults defineOwners
 
       Nothing -> do
         let
@@ -828,10 +829,8 @@ userQueryImpl
             nextId <- firstFreeId lookup
             let pids = getExpandPids query
                 limits = getLimits pids
-            (gens, appliedTrans) <-
-              case toGenerators schema stored details query of
-                Left err -> throwIO $ Thrift.BadQuery err
-                Right r -> return r
+            gens <- either (throwIO . Thrift.BadQuery) return $
+              toGenerators schema stored details query
             derived <- FactSet.new nextId
             defineOwners <- mkDefineOwners nextId
             let stack = stacked lookup derived
@@ -840,7 +839,7 @@ userQueryImpl
               (release . compiledQuerySub)
               $ \sub -> executeCompiled schemaInventory defineOwners stack
                 sub limits
-            mkResults pids nextId derived appliedTrans qResults defineOwners
+            mkResults pids nextId derived qResults defineOwners
 
         -- 1. Decode the JSON
         pat <- case Aeson.eitherDecode (LB.fromStrict userQuery_query) of
@@ -926,7 +925,7 @@ compileAngleQuery
     -- ^ only used in predicate derivations on incremental dbs
   -> ByteString
   -> Bool
-  -> IO (CodegenQuery, Type, Transformations)
+  -> IO (CodegenQuery, Type)
 compileAngleQuery ver dbSchema mode source stored = do
   parsed <- checkBadQuery Text.pack $ Angle.parseQuery source
   vlog 2 $ "parsed query: " <> show (pretty parsed)
@@ -942,7 +941,7 @@ compileAngleQuery ver dbSchema mode source stored = do
     typecheck dbSchema latestAngleVersion (dbSchemaRtsType dbSchema) resolved
   vlog 2 $ "typechecked query: " <> show (pretty (qiQuery typechecked))
 
-  (flattened, appliedTrans) <- checkBadQuery id $ runExcept $
+  flattened <- checkBadQuery id $ runExcept $
     flatten dbSchema latestAngleVersion stored typechecked
   vlog 2 $ "flattened query: " <> show (pretty (qiQuery flattened))
 
@@ -958,7 +957,7 @@ compileAngleQuery ver dbSchema mode source stored = do
       vlog 2 "made incremental"
       return $ makeIncremental getStats reordered
 
-  return (final, qiReturnType typechecked, appliedTrans)
+  return (final, qiReturnType typechecked)
   where
   checkBadQuery :: (err -> Text) -> Either err a -> IO a
   checkBadQuery txt act = case act of
@@ -1292,12 +1291,11 @@ parseQuery dbSchema Thrift.UserQueryOptions{..} details val =
         Nothing -> return Nothing
 
 mkUserQueryCont
-  :: Transformations
-  -> Either (Set Pid) Type
+  :: Either (Set Pid) Type
   -> ByteString
   -> Fid
   -> Thrift.UserQueryCont
-mkUserQueryCont appliedTrans contInfo cont nextId =
+mkUserQueryCont contInfo cont nextId =
   hashUserQueryCont $ Thrift.UserQueryCont
   { userQueryCont_continuation = cont
   , userQueryCont_nextId = fromFid nextId
@@ -1305,7 +1303,6 @@ mkUserQueryCont appliedTrans contInfo cont nextId =
   , userQueryCont_hash = 0
   , userQueryCont_returnType = returnType
   , userQueryCont_pids = pids
-  , userQueryCont_evolutions = fromTransformations appliedTrans
   }
   where
     returnType = case contInfo of

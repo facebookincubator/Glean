@@ -22,7 +22,6 @@ import Glean.Query.Opt
 import Glean.Query.Reorder
 import Glean.Query.Nested.Types
 import Glean.Query.Nested
-import Glean.Query.Transform
 import Glean.Query.Flatten
 import Glean.Query.Typecheck.Types
 import Glean.RTS.Types
@@ -45,18 +44,18 @@ toGenerators
   -> Bool -- ^ True <=> derive DerivedAndStored predicates
   -> PredicateDetails
   -> Term (RTS.Match (Nested Fid))
-  -> Either Text (CodegenQuery, Transformations)
+  -> Either Text CodegenQuery
 toGenerators dbSchema deriveStored details term =
   runExcept $ do
     (query, numVars) <- compileResult
     let typechecked = QueryWithInfo query numVars queryTy
-    (flat, evolutions) <- flatten
+    flat <- flatten
       dbSchema
       Angle.latestAngleVersion
       deriveStored
       typechecked
     optimised <- optimise flat
-    (,evolutions) <$> reorder dbSchema optimised
+    reorder dbSchema optimised
   where
   pid = predicatePid details
   ref = predicateId details

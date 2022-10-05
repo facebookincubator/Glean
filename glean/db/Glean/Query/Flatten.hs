@@ -34,8 +34,7 @@ import Glean.Query.Codegen.Types
 import Glean.Query.Expand
 import Glean.Query.Flatten.Types
 import Glean.Query.Typecheck.Types
-import Glean.Query.Transform
-  (Transformations, transformQuery, transformType, transformationsFor)
+import Glean.Query.Transform (transformQuery, transformType)
 import Glean.RTS.Types as RTS
 import Glean.RTS.Term as RTS hiding (Match(..))
 import Glean.Database.Schema.Types
@@ -49,7 +48,7 @@ flatten
   -> Schema.AngleVersion
   -> Bool -- ^ derive DerivedAndStored predicates
   -> TypecheckedQuery
-  -> Except Text (FlattenedQuery, Transformations)
+  -> Except Text FlattenedQuery
 flatten dbSchema _ver deriveStored typechecked = do
   let returnTy = derefType
         $ transformType (predicatesTransformations dbSchema)
@@ -69,9 +68,7 @@ flatten dbSchema _ver deriveStored typechecked = do
            Text.pack (show (pretty query))
       (q', ty) <- captureKey dbSchema q (case query of TcQuery ty _ _ _ -> ty)
       nextVar <- gets flNextVar
-      transformations <- liftEither $
-        transformationsFor dbSchema (qiReturnType typechecked)
-      return (QueryWithInfo q' nextVar ty, transformations)
+      return $ QueryWithInfo q' nextVar ty
   return qi
 
 transform :: TcQuery -> F TcQuery
