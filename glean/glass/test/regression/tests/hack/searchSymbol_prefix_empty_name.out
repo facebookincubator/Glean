@@ -642,6 +642,22 @@
                 },
                 "name": "NS",
                 "symbol": "test/php/ns/NS"
+            },
+            {
+                "kind": 6,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Namespace.php",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 21,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "repository": "test"
+                },
+                "name": "InnerNS",
+                "symbol": "test/php/ns/NS/InnerNS"
             }
         ]
     }

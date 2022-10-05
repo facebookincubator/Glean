@@ -175,7 +175,7 @@ predicate SearchInContext :
       (SearchInContainerOrEnum { N, ParentName, ParentNamespace, D }; D)
     | # member of namespace
       (NS = hack.NamespaceQName { ParentName, ParentNamespace };
-      SearchInNamespace { N, { just = NS }, D}; D )
+      SearchNamespacedDecl { N, { just = NS }, D}; D )
 
 #
 # Generating qnames and namespace qnames. We don't have recursion but we'd

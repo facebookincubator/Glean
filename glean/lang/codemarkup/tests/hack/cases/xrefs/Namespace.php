@@ -14,3 +14,5 @@ class NamespaceClass {
 
     }
 }
+
+namespace NS\InnerNS;
