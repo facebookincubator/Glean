@@ -28,6 +28,7 @@ import Glean.Query.Codegen.Types
   , Generator_(..)
   , Generator
   , Expr
+  , Typed(..)
   , SeekSection(..)
   , QueryWithInfo(..))
 import Glean.Query.Expand

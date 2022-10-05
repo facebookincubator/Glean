@@ -11,14 +11,14 @@ module Glean.Query.Typecheck.Types
   ( TypecheckedQuery
   , TcQuery(..)
   , TcStatement(..)
-  , Typed(..)
   , TcPat
   , TcTerm(..)
   ) where
 
 import Data.Text.Prettyprint.Doc hiding ((<>), enclose)
 
-import Glean.Query.Codegen.Types (Match(..), Var(..), QueryWithInfo(..))
+import Glean.Query.Codegen.Types
+  (Match(..), Var(..), QueryWithInfo(..), Typed(..))
 import Glean.Angle.Types hiding (Type)
 import Glean.RTS.Types as RTS
 import Glean.RTS.Term as RTS hiding (Match(..))
@@ -41,12 +41,6 @@ data TcStatement = TcStatement Type TcPat TcPat
 
 instance Pretty TcStatement where
   pretty (TcStatement _ lhs rhs) = prettyStatement lhs rhs
-
-data Typed x = Typed Type x
-  deriving (Show, Functor, Traversable, Foldable)
-
-instance Pretty x => Pretty (Typed x) where
-  pretty (Typed _ x) = pretty x
 
 type TcPat = Term (Match (Typed TcTerm) Var)
 

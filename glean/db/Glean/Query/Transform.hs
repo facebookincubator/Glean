@@ -44,7 +44,8 @@ import Data.Text.Prettyprint.Doc (pretty)
 import qualified Glean.Angle.Types as Type
 import Glean.Angle.Types (PredicateId, Type_(..), FieldDef_(..))
 import Glean.Schema.Util (showRef, lowerEnum, lowerMaybe, lowerBool)
-import Glean.Query.Codegen.Types (Match(..), Var(..), QueryWithInfo(..))
+import Glean.Query.Codegen.Types
+  (Match(..), Var(..), QueryWithInfo(..), Typed(..))
 import Glean.Query.Typecheck.Types
 import Glean.Database.Schema.Transform (defaultValue)
 import Glean.Database.Schema.Types

@@ -13,7 +13,8 @@ module Glean.Query.Expand
 import Control.Monad.State
 import Data.Bifunctor (first)
 
-import Glean.Query.Codegen.Types (Match(..), Var(..), Pat, QueryWithInfo(..))
+import Glean.Query.Codegen.Types
+  (Match(..), Var(..), Pat, QueryWithInfo(..), Typed(..))
 import Glean.Query.Flatten.Types
 import Glean.Query.Typecheck.Types
 import Glean.RTS.Term as RTS hiding (Match(..))

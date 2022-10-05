@@ -18,10 +18,10 @@ import qualified Data.HashMap.Strict as HashMap
 import Glean.Database.Schema.Types (PredicateDetails(..))
 import Glean.RTS.Types (PidRef(..))
 import Glean.Angle.Types (PredicateId(..), DerivingInfo(..))
-import Glean.Query.Codegen.Types (Match(..), QueryWithInfo(..))
+import Glean.Query.Codegen.Types (Match(..), QueryWithInfo(..), Typed(..))
 import Glean.Query.Typecheck (tcQueryDeps)
 import Glean.Query.Typecheck.Types
-  (TcPat, TcTerm(..), Typed(..), TcStatement(..), TcQuery(..), TypecheckedQuery)
+  (TcPat, TcTerm(..), TcStatement(..), TcQuery(..), TypecheckedQuery)
 import Glean.Query.Transform (renumberVars)
 import Glean.RTS.Term (Term(..))
 

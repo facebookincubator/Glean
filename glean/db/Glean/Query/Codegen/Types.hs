@@ -22,6 +22,7 @@ module Glean.Query.Codegen.Types
   , Pat
   , Expr
   , PrimOp(..)
+  , Typed(..)
   ) where
 
 import Data.Bifunctor
@@ -285,6 +286,12 @@ matchVar :: Match ext var -> Maybe var
 matchVar (MatchVar v) = Just v
 matchVar (MatchBind v ) = Just v
 matchVar _ = Nothing
+
+data Typed x = Typed Type x
+  deriving (Show, Functor, Traversable, Foldable)
+
+instance Pretty x => Pretty (Typed x) where
+  pretty (Typed _ x) = pretty x
 
 -- -----------------------------------------------------------------------------
 -- Pretty-printing
