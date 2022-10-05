@@ -25,7 +25,7 @@ type XRefLocation =
 type SymbolKind =
   enum {
     Package | Type | Value | File | Module | Namespace | Class_ | Method | Property |
-    Field | Constructor | Enum | Interface | Function | Variable | Constant | String |
+    Field | Constructor | Enum_ | Interface | Function | Variable | Constant | String |
     Number | Boolean | Array | Object_ | Key | Null | Enumerator | Struct | Event |
     Operator | TypeParameter | Union | Macro | Trait
   }

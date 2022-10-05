@@ -38,7 +38,7 @@ kitchenSink1 = def
   , Glean.Test.kitchenSink_1_sum_ = Glean.Test.KitchenSink_1_sum__d (Nat 36)
   , Glean.Test.kitchenSink_1_named_record_ = rec
   , Glean.Test.kitchenSink_1_named_sum_ = Glean.Test.Sum_tue (Nat 37)
-  , Glean.Test.kitchenSink_1_named_enum_ = Glean.Test.Enum_blue
+  , Glean.Test.kitchenSink_1_named_enum_ = Glean.Test.Enum__blue
   , Glean.Test.kitchenSink_1_pred = Sys.Blob { blob_id = 3, blob_key = Nothing }
   , Glean.Test.kitchenSink_1_maybe_ = Just def
   , Glean.Test.kitchenSink_1_bool_ = True

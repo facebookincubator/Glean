@@ -616,7 +616,7 @@ class LsifSymbolKind(Enum):
   Property = 6
   Field = 7
   Constructor = 8
-  Enum = 9
+  Enum_ = 9
   Interface = 10
   Function = 11
   Variable = 12

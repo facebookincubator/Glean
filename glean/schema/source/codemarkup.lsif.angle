@@ -88,7 +88,7 @@ predicate LsifKindToKind:
     ( Property = Lsif; Property = Kind ) |
     ( Field = Lsif; Field = Kind ) |
     ( Constructor = Lsif; Constructor = Kind ) |
-    ( Enum = Lsif; Enum = Kind ) |
+    ( Enum_ = Lsif; Enum_ = Kind ) |
     ( Interface = Lsif; Interface = Kind ) |
     ( Function = Lsif; Function = Kind ) |
     ( Variable = Lsif; Variable = Kind ) |

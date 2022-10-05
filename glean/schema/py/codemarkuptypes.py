@@ -50,7 +50,7 @@ class CodemarkupTypesSymbolKind(Enum):
   Property = 8
   Field = 9
   Constructor = 10
-  Enum = 11
+  Enum_ = 11
   Interface = 12
   Function = 13
   Variable = 14

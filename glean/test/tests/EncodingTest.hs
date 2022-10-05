@@ -50,11 +50,11 @@ kitchenSink = KitchenSink
   , kitchenSink_sum_ = KitchenSink_sum__c def
   , kitchenSink_enum_ = def
   , kitchenSink_named_record_ = Rec
-      { rec_alpha = Enum_green
+      { rec_alpha = Enum__green
       , rec_beta = Sum_mon $ Byte 5
       }
   , kitchenSink_named_sum_ = Sum_wed False
-  , kitchenSink_named_enum_ = Enum__UNKNOWN 10
+  , kitchenSink_named_enum_ = Enum___UNKNOWN 10
   , kitchenSink_array_of_byte =
       BS.pack [0,5,127,minBound,maxBound]
   , kitchenSink_array_of_nat = Nat <$>
@@ -66,15 +66,15 @@ kitchenSink = KitchenSink
       [ Glean.Test.Predicate 5432 Nothing
       , Glean.Test.Predicate 0x1234567 Nothing ]
   , kitchenSink_array_of_named_record =
-      [ Rec Enum_red $ Sum_mon $ Byte 42
-      , Rec Enum_green $ Sum_tue $ Nat 1234556
-      , Rec Enum_blue $ Sum_wed False ]
+      [ Rec Enum__red $ Sum_mon $ Byte 42
+      , Rec Enum__green $ Sum_tue $ Nat 1234556
+      , Rec Enum__blue $ Sum_wed False ]
   , kitchenSink_array_of_named_sum =
       [ Sum_mon $ Byte 65
       , Sum_tue $ Nat 32453
       , Sum_wed True ]
   , kitchenSink_array_of_named_enum =
-      [ Enum_blue, Enum_green, Enum_red ]
+      [ Enum__blue, Enum__green, Enum__red ]
   , kitchenSink_array2_of_byte =
       [ BS.pack [6,132,3,0]
       , BS.empty

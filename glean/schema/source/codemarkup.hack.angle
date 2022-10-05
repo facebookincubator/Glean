@@ -81,11 +81,11 @@ predicate HackEntityKind:
     ({ classConst = _ } = Decl; Constant = Kind) |
     ({ container = C } = Decl;
       ({ class_ = _ } = C; Class_ = Kind) |
-      ({ enum_ = _ } = C; Enum = Kind) |
+      ({ enum_ = _ } = C; Enum_ = Kind) |
       ({ interface_ = _ } = C; Interface = Kind) |
       ({ trait = _ } = C; Trait = Kind)
     ) |
-    ({ enumerator = _ } = Decl; Enum = Kind) |
+    ({ enumerator = _ } = Decl; Enum_ = Kind) |
     ({ function_ = _ } = Decl; Function = Kind) |
     ({ globalConst = _ } = Decl; Constant = Kind) |
     ({ method = _ } = Decl; Method = Kind) |
@@ -124,7 +124,7 @@ predicate HackEntityInfo:
     ( false = Abs;
       (Class_ = Kind) |
       (Constant = Kind; { globalConst = _ } = Decl) |
-      (Enum = Kind) |
+      (Enum_ = Kind) |
       (Interface = Kind) |
       (Trait = Kind) |
       (Function = Kind) |

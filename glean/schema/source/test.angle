@@ -4,7 +4,7 @@ schema glean.test.1 {
 import sys.1
 
 # Named enumerated type for testing
-type Enum = enum { red | green | blue }
+type Enum_ = enum { red | green | blue }
 
 # Named sum type for testing
 type Sum =
@@ -17,7 +17,7 @@ type Sum =
 # Named record type for testing
 type Rec =
   {
-    alpha : Enum,
+    alpha : Enum_,
     beta : Sum,
   }
 
@@ -39,7 +39,7 @@ type KitchenSink =
     sum_ : { c : byte | d : nat },
     named_record_ : Rec,
     named_sum_ : Sum,
-    named_enum_ : Enum,
+    named_enum_ : Enum_,
     pred : sys.Blob,
     maybe_ : maybe {},
     bool_ : bool,
@@ -217,7 +217,7 @@ type KitchenSink =
     enum_ : enum { e | f | g },
     named_record_ : Rec,
     named_sum_ : Sum,
-    named_enum_ : Enum,
+    named_enum_ : Enum_,
     array_of_byte : [byte],
     array_of_nat : [nat],
     array_of_bool : [bool],
@@ -225,7 +225,7 @@ type KitchenSink =
     array_of_pred : [Predicate],
     array_of_named_record : [Rec],
     array_of_named_sum : [Sum],
-    array_of_named_enum : [Enum],
+    array_of_named_enum : [Enum_],
     # FIXME: we currently don't support directly nested arrays (T60313773)
     array2_of_byte : [ArrayByte],
     array2_of_nat : [ArrayNat],

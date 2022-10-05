@@ -57,9 +57,9 @@ from glean.schema.glean_test.types import (
     ReflStringPair,
     Foo,
     KitchenSink,
+    Enum_,
     Entity,
     KitchenSink,
-    Enum,
     WrappedStringPair,
     EdgeSum,
     Rec,
@@ -645,7 +645,7 @@ class GleanTestKitchenSink(InnerGleanSchemaPredicate):
     return f"glean.test.KitchenSink.5 { ('{ ' + query_fields + ' }') if query_fields else '_' }", KitchenSink
 
   @staticmethod
-  def angle_query(*, byt: Optional[bytes] = None, nat: Optional[int] = None, bool_: Optional[bool] = None, string_: Optional[str] = None, pred: Optional["SysBlob"] = None, maybe_: Optional[Union[Just['GleanTestKitchenSink_maybe_'], Just[None]]] = None, record_: Optional['GleanTestKitchenSink_record_'] = None, sum_: Optional['GleanTestKitchenSink_sum_'] = None, enum_: Optional['GleanTestKitchenSink_enum_'] = None, named_record_: Optional["GleanTestRec"] = None, named_sum_: Optional["GleanTestSum"] = None, named_enum_: Optional["GleanTestEnum"] = None, array_of_byte: Optional[bytes] = None, array_of_nat: Optional[List[int]] = None, array_of_bool: Optional[List[bool]] = None, array_of_string: Optional[List[str]] = None, array_of_pred: Optional[List["GleanTestPredicate"]] = None, array_of_named_record: Optional[List["GleanTestRec"]] = None, array_of_named_sum: Optional[List["GleanTestSum"]] = None, array_of_named_enum: Optional[List["GleanTestEnum"]] = None, array2_of_byte: Optional[List["GleanTestArrayByte"]] = None, array2_of_nat: Optional[List["GleanTestArrayNat"]] = None, array2_of_bool: Optional[List["GleanTestArrayBool"]] = None, array2_of_string: Optional[List["GleanTestArrayString"]] = None) -> "GleanTestKitchenSink":
+  def angle_query(*, byt: Optional[bytes] = None, nat: Optional[int] = None, bool_: Optional[bool] = None, string_: Optional[str] = None, pred: Optional["SysBlob"] = None, maybe_: Optional[Union[Just['GleanTestKitchenSink_maybe_'], Just[None]]] = None, record_: Optional['GleanTestKitchenSink_record_'] = None, sum_: Optional['GleanTestKitchenSink_sum_'] = None, enum_: Optional['GleanTestKitchenSink_enum_'] = None, named_record_: Optional["GleanTestRec"] = None, named_sum_: Optional["GleanTestSum"] = None, named_enum_: Optional["GleanTestEnum_"] = None, array_of_byte: Optional[bytes] = None, array_of_nat: Optional[List[int]] = None, array_of_bool: Optional[List[bool]] = None, array_of_string: Optional[List[str]] = None, array_of_pred: Optional[List["GleanTestPredicate"]] = None, array_of_named_record: Optional[List["GleanTestRec"]] = None, array_of_named_sum: Optional[List["GleanTestSum"]] = None, array_of_named_enum: Optional[List["GleanTestEnum_"]] = None, array2_of_byte: Optional[List["GleanTestArrayByte"]] = None, array2_of_nat: Optional[List["GleanTestArrayNat"]] = None, array2_of_bool: Optional[List["GleanTestArrayBool"]] = None, array2_of_string: Optional[List["GleanTestArrayString"]] = None) -> "GleanTestKitchenSink":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestKitchenSink_record_(InnerGleanSchemaPredicate):
@@ -679,6 +679,11 @@ class GleanTestKitchenSink_sum_(InnerGleanSchemaPredicate):
 
 
 
+class GleanTestEnum_(Enum):
+  red = 0
+  green = 1
+  blue = 2
+
 class GleanTestEntity(InnerGleanSchemaPredicate):
   @staticmethod
   def build_angle(__env: Dict[str, R], cxx: ast.Expr, pp: ast.Expr) -> Tuple[str, Struct]:
@@ -703,7 +708,7 @@ class GleanTestKitchenSink(InnerGleanSchemaPredicate):
     return f"glean.test.KitchenSink.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", KitchenSink
 
   @staticmethod
-  def angle_query(*, byt: Optional[bytes] = None, nat: Optional[int] = None, array_of_byte: Optional[bytes] = None, array_of_nat: Optional[List[int]] = None, record_: Optional['GleanTestKitchenSink_record_'] = None, sum_: Optional['GleanTestKitchenSink_sum_'] = None, named_record_: Optional["GleanTestRec"] = None, named_sum_: Optional["GleanTestSum"] = None, named_enum_: Optional["GleanTestEnum"] = None, pred: Optional["SysBlob"] = None, maybe_: Optional[Union[Just['GleanTestKitchenSink_maybe_'], Just[None]]] = None, bool_: Optional[bool] = None, string_: Optional[str] = None) -> "GleanTestKitchenSink":
+  def angle_query(*, byt: Optional[bytes] = None, nat: Optional[int] = None, array_of_byte: Optional[bytes] = None, array_of_nat: Optional[List[int]] = None, record_: Optional['GleanTestKitchenSink_record_'] = None, sum_: Optional['GleanTestKitchenSink_sum_'] = None, named_record_: Optional["GleanTestRec"] = None, named_sum_: Optional["GleanTestSum"] = None, named_enum_: Optional["GleanTestEnum_"] = None, pred: Optional["SysBlob"] = None, maybe_: Optional[Union[Just['GleanTestKitchenSink_maybe_'], Just[None]]] = None, bool_: Optional[bool] = None, string_: Optional[str] = None) -> "GleanTestKitchenSink":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestKitchenSink_record_(InnerGleanSchemaPredicate):
@@ -736,11 +741,6 @@ class GleanTestKitchenSink_sum_(InnerGleanSchemaPredicate):
 
 
 
-
-class GleanTestEnum(Enum):
-  red = 0
-  green = 1
-  blue = 2
 
 class GleanTestWrappedStringPair(InnerGleanSchemaPredicate):
   @staticmethod
@@ -778,7 +778,7 @@ class GleanTestRec(InnerGleanSchemaPredicate):
     return f"glean.test.Rec.1 { ('{ ' + query_fields + ' }') if query_fields else '_' }", Rec
 
   @staticmethod
-  def angle_query(*, alpha: Optional["GleanTestEnum"] = None, beta: Optional["GleanTestSum"] = None) -> "GleanTestRec":
+  def angle_query(*, alpha: Optional["GleanTestEnum_"] = None, beta: Optional["GleanTestSum"] = None) -> "GleanTestRec":
     raise Exception("this function can only be called from @angle_query")
 
 

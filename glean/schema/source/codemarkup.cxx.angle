@@ -343,7 +343,7 @@ predicate CxxDeclKind:
        (nothing = MM; Function = Kind)
     ) |
     (
-      ({ enum_ = _ } = Decl; Enum = Kind ) |
+      ({ enum_ = _ } = Decl; Enum_ = Kind ) |
       ({ namespace_ = _ } = Decl; Namespace = Kind ) |
       ({ objcMethod = _ } = Decl; Method = Kind ) |
       ({ objcProperty = _ } = Decl; Property = Kind ) |

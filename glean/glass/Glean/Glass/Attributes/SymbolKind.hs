@@ -108,7 +108,7 @@ symbolKindToSymbolKind k = case k of
   Code.SymbolKind_Property -> Glass.SymbolKind_Property
   Code.SymbolKind_Field -> Glass.SymbolKind_Field
   Code.SymbolKind_Constructor -> Glass.SymbolKind_Constructor
-  Code.SymbolKind_Enum -> Glass.SymbolKind_Enum
+  Code.SymbolKind_Enum_ -> Glass.SymbolKind_Enum
   Code.SymbolKind_Interface -> Glass.SymbolKind_Interface
   Code.SymbolKind_Function -> Glass.SymbolKind_Function
   Code.SymbolKind_Variable -> Glass.SymbolKind_Variable
@@ -148,7 +148,7 @@ symbolKindFromSymbolKind k = case k of
   Glass.SymbolKind_Property -> Code.SymbolKind_Property
   Glass.SymbolKind_Field -> Code.SymbolKind_Field
   Glass.SymbolKind_Constructor -> Code.SymbolKind_Constructor
-  Glass.SymbolKind_Enum -> Code.SymbolKind_Enum
+  Glass.SymbolKind_Enum -> Code.SymbolKind_Enum_
   Glass.SymbolKind_Interface -> Code.SymbolKind_Interface
   Glass.SymbolKind_Function -> Code.SymbolKind_Function
   Glass.SymbolKind_Variable -> Code.SymbolKind_Variable
