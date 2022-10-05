@@ -33,6 +33,7 @@ import Glean.Query.BindOrder
 import Glean.Query.Codegen.Types
   ( matchVar
   , Var(..)
+  , Pat
   , Match(..)
   , CgStatement_(..)
   , CgStatement
@@ -268,7 +269,8 @@ reorderStmtGroup scope stmts =
     isCandidate
       (FlatStatement _ (Ref v) (FactGenerator _ key _ _))
       | Just (Var _ x _) <- matchVar v =
-        Just (x, classifyPattern lhsScope key) -- TODO lookupScope here is wrong
+        Just (x, classifyPattern bound key) -- TODO lookupScope here is wrong
+      where bound = (`IntSet.member` lhsScope)
     isCandidate _ = Nothing
 
     lhsVars = IntSet.unions $
@@ -358,8 +360,8 @@ reorderStmtGroup scope stmts =
           | Just stmts <- [usesOf x]
           , (_,_,FlatStatement _ (Ref v) (FactGenerator _ key _ _)) <- stmts
           , Just (Var _ y _) <- [matchVar v]
-          , PatternSearchesAll <-
-              [classifyPattern (IntSet.delete x lhsScope) key]
+          , let bound = (`IntSet.member` IntSet.delete x lhsScope)
+          , PatternSearchesAll <- [classifyPattern bound key]
           ]
 
     -- find the statements that mention X
@@ -502,24 +504,24 @@ isUnresolved
 isUnresolved scope stmt = not (isReadyFilter scope stmt True)
 
 isReadyFilter :: Scope -> FlatStatement -> Bool -> Bool
-isReadyFilter scope (FlatStatement _ lhs (TermGenerator rhs)) _ =
-  all (isBound scope) (IntSet.toList (vars lhs)) ||
-  all (isBound scope) (IntSet.toList (vars rhs))
-isReadyFilter scope (FlatStatement _ _ (ArrayElementGenerator _ arr)) _ =
-  all (isBound scope) (IntSet.toList (vars arr))
-isReadyFilter scope (FlatStatement _ _ (PrimCall _ args)) _ =
-  all (isBound scope) (IntSet.toList (vars args))
-isReadyFilter scope (FlatNegation stmtss) notFilter =
-  -- See Note [Reordering negations]
-  all (all isReady) stmtss && hasAllNonLocalsBound
-  where
-    isReady stmt = isReadyFilter scope stmt notFilter
-    appearInStmts = foldMap (foldMap vars) stmtss
-    hasAllNonLocalsBound =
-      IntSet.null $
-      IntSet.filter (\var -> isInScope scope var && not (isBound scope var))
-      appearInStmts
-isReadyFilter _ _ notFilter = notFilter
+isReadyFilter scope stmt notFilter = case stmt of
+  FlatStatement _ lhs (TermGenerator rhs) ->
+    patIsBound scope lhs || patIsBound scope rhs
+  FlatStatement _ _ (ArrayElementGenerator _ arr) ->
+    patIsBound scope arr
+  FlatStatement _ _ (PrimCall _ args) ->
+    all (patIsBound scope) args
+  FlatNegation stmtss ->
+    -- See Note [Reordering negations]
+    all (all isReady) stmtss && hasAllNonLocalsBound
+    where
+      isReady stmt = isReadyFilter scope stmt notFilter
+      appearInStmts = foldMap (foldMap vars) stmtss
+      hasAllNonLocalsBound =
+        IntSet.null $
+        IntSet.filter (\var -> isInScope scope var && not (isBound scope var))
+        appearInStmts
+  _ -> notFilter
 
 isInScope :: Scope -> Variable -> Bool
 isInScope (Scope scope) var = var `IntMap.member` scope
@@ -529,6 +531,11 @@ allBound (Scope scope) = IntMap.keysSet $ IntMap.filter id scope
 
 allVars :: Scope -> VarSet
 allVars (Scope scope) = IntMap.keysSet scope
+
+patIsBound :: Scope -> Pat -> Bool
+patIsBound scope pat
+  | PatternMatchesOne <- classifyPattern (isBound scope) pat = True
+  | otherwise = False
 
 data PatternMatch
   = PatternSearchesAll
@@ -540,10 +547,10 @@ data PatternMatch
 
 -- | Classify a pattern according to the cases in 'PatternMatch'
 classifyPattern
-  :: VarSet -- ^ variables in scope
+  :: (Int -> Bool) -- ^ variable is bound?
   -> Term (Match () Var)
   -> PatternMatch
-classifyPattern scope t = fromMaybe PatternMatchesOne (go False t end)
+classifyPattern bound t = fromMaybe PatternMatchesOne (go False t end)
   where
   go
     :: Bool -- non-empty fixed prefix seen?
@@ -585,7 +592,7 @@ classifyPattern scope t = fromMaybe PatternMatchesOne (go False t end)
       MatchExt{} -> Just PatternMatchesSome
     where
     var v
-      | v `IntSet.member` scope = fixed r
+      | bound v = fixed r
       | otherwise = wild pref
 
   -- we've seen a bit of fixed pattern

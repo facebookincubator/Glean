@@ -416,6 +416,18 @@ reorderTest = dbTestCase $ \env repo -> do
   assertEqual "reorder nested 9" (Just 1) $
     factsSearched (PredicateRef "glean.test.Tree" 5) lookupPid stats
 
+  -- Test for a bug in reordering where we were erroneously hoising
+  -- statements that couldn't resolve, because we ignored wildcards
+  (_, stats) <- queryStats env repo $ angleData @Glean.Test.Tree
+    [s|
+      X where
+        A = glean.test.Node { label = "a" };
+        (glean.test.Tree X; { node = A } = X) |
+        glean.test.Tree X
+    |]
+  assertEqual "reorder nested 10" (Just 14) $
+    factsSearched (PredicateRef "glean.test.Tree" 5) lookupPid stats
+
 angleQueryOptions :: Test
 angleQueryOptions = dbTestCase $ \env repo -> do
   let omitResults :: Bool -> Query q -> Query q
