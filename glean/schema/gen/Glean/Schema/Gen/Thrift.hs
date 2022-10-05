@@ -100,15 +100,7 @@ genTargets mode slashVn version info =
       "\"types_cpp_splits=" <> cppSplits <> "\""
       ] <> "],"
     , "  thrift_py_options = \"utf8strings\","
-    , "  languages = [" <> Text.intercalate ", " (filter (\n -> n /= "") [
-        "\"hs2\"",
-        "\"py\"",
-        "\"py3\"",
-        "\"python\"",
-        "\"java-swift\"",
-        "\"rust\"",
-        "\"cpp2\""
-      ]) <> "],"
+    , "  languages = [" <> Text.intercalate ", " langs <> "],"
     , "  thrift_srcs = { \"" <> namespace <> ".thrift\" : [] },"
     , "  deps = [" <> Text.intercalate ","
       ( "\"//glean/if:glean\"" : depTargets mode ++
@@ -133,6 +125,20 @@ genTargets mode slashVn version info =
     depTargets mode =
       [ "\"//" <> thriftDir mode slashVn <> ":" <> underscored dep <> "\""
       | dep <- deps ]
+
+    langs :: [Text]
+    langs = map (\x -> "\"" <> x <> "\"") $ case mode of
+      Query -> ["hs2", "py"] -- only needed for tests and legacy py client
+      Data -> [
+        "hs2",
+        "py",
+        "py3",
+        "python",
+        "java-swift",
+        "rust",
+        "cpp2"
+        ]
+
 
 -- TODO: this shouldn't really go under schema/thrift
 genSchemaRules :: Version -> Text
