@@ -861,7 +861,6 @@ library lib
         Glean.Pretty.Shared
         Glean.Pretty.Style
         Glean.Pretty.Styles
-        Glean.Search.Graph
         Glean.Search.Search
         Glean.Derive
         Glean.Util.AnnMaker
