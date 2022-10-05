@@ -62,7 +62,8 @@ traversal callback input inputend ty = go False (repType ty)
           local $ \sel -> do
             -- TODO: read byte rather than Nat if arity <= 127
             inputNat input inputend sel
-            select sel alts
+            let unknownAlt = [end]
+            select sel (alts ++ unknownAlt)
           raise "selector out of range"
           alts <- forM tys $ \ty -> do
             alt <- label

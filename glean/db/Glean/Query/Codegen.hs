@@ -13,6 +13,8 @@ module Glean.Query.Codegen
   , Boundaries
   , flatBoundaries
   , stackedBoundaries
+  , skipTrusted
+  , buildTerm
   ) where
 
 import Control.Exception
@@ -21,6 +23,7 @@ import Control.Monad.State
 import Data.ByteString (ByteString)
 import qualified Data.ByteString as ByteString
 import Data.Coerce
+import Data.Bifunctor (bimap)
 import Data.Either.Extra (eitherToMaybe)
 import Data.IntMap (IntMap)
 import qualified Data.IntMap as IntMap
@@ -263,13 +266,34 @@ compileQuery trans bounds (QueryWithInfo query numVars ty) = do
             Just <$>
             -- detect temporary predicates, see Glean.Query.Flatten.captureKey
             -- TODO: matching like this is a bit janky.
-              genTraversal (Angle.fieldDefType key) (Angle.fieldDefType val)
+              genTraversal
+                -- If the key and value have been transformed they will have
+                -- the correct shape but the facts they refer to will have the
+                -- types available in the db and not the type requested in the
+                -- query. Therefore we must transform the type of those
+                -- references for the traversal.
+                (transformType trans $ Angle.fieldDefType key)
+                (transformType trans $ Angle.fieldDefType val)
           else
             return Nothing
         return (Just pid, traverse)
     _other -> throwIO $ ErrorCall "unrecognised query return type"
 
   return (CompiledQuery sub pid traverse)
+
+-- | Transform predicates inside the type but keep its structure.
+transformType :: IntMap PredicateTransformation -> Type -> Type
+transformType tmap ty = transform ty
+  where
+    transform ty = bimap overPidRef overExpandedType ty
+
+    overPidRef (PidRef pid ref) =
+      case IntMap.lookup (fromIntegral $ fromPid pid) tmap of
+        Nothing -> PidRef pid ref
+        Just PredicateTransformation{..} -> tAvailable
+
+    overExpandedType (ExpandedType tref ty) =
+      ExpandedType tref (transform ty)
 
 -- | A 'ResultTerm' is represented in two ways depending on the type
 -- of the value being returned:
@@ -1253,9 +1277,11 @@ skipTrusted input inputend ty = skip (repType ty)
     SumRep tys -> mdo
       local $ \sel -> do
         inputNat input inputend sel
-        select sel alts
+        let unknown = [end]
+        select sel (alts ++ unknown)
       raise "selector out of range"
       alts <- forM tys $ \ty -> do
+        -- TODO: for (Tuple []) we don't need to generate any bytecode
         alt <- label
         skip ty
         jump end
@@ -1392,7 +1418,9 @@ matchPat input inputend fail chunks = match True chunks
             jumpIf0 ok fail
           match tillEnd rest
 
-      QueryAnd a b -> do
+      QueryAnd a b
+        | all isWild a -> match tillEnd (b ++ rest)
+        | otherwise -> do
         local $ \start -> do
           move input start
           match isLastPattern a
@@ -1403,7 +1431,9 @@ matchPat input inputend fail chunks = match True chunks
       QuerySum alts -> mdo
         local $ \sel -> do
           inputNat input inputend sel
-          select sel lbls
+          -- an unknown alternative always fails to match.
+          let unknown = [fail]
+          select sel (lbls ++ unknown)
         raise "selector out of range"
         lbls <- forM alts $ \mb -> do
           case mb of

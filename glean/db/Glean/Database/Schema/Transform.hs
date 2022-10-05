@@ -6,6 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# LANGUAGE RecursiveDo #-}
 module Glean.Database.Schema.Transform
   ( mkPredicateTransformation
   , defaultValue
@@ -13,20 +14,24 @@ module Glean.Database.Schema.Transform
 
 import Control.Monad.Cont
 import Data.Coerce (Coercible, coerce)
+import Data.Either (isLeft)
+import Data.Either.Extra (fromEither)
 import qualified Data.Map.Strict as Map
 import Data.Function (fix)
 import Data.Map.Strict (Map)
 import Data.Maybe (fromMaybe, isJust)
-import Data.Text (Text)
+import qualified Data.Set as Set
+import Data.Text (Text, unpack)
 import Data.Word (Word64)
 
-import Glean.Angle.Types (Type_(..), FieldDef_(..))
-import Glean.Bytecode.Types (Ty(..), Register)
+import Glean.Angle.Types (Type_(..), FieldDef_(..), Name)
+import Glean.Bytecode.Types (Ty(..))
 import Glean.Database.Schema.Types
 import Glean.Query.Codegen.Types (Match(..), Output, Typed(..))
+import Glean.Query.Codegen (skipTrusted, buildTerm)
 import qualified Glean.RTS as RTS
-import Glean.RTS.Bytecode.Code (Code, local)
-import Glean.RTS.Bytecode.Gen.Issue (getOutput)
+import Glean.RTS.Bytecode.Code
+import Glean.RTS.Bytecode.Gen.Issue
 import Glean.RTS.Types as RTS
 import Glean.RTS.Term (Term(..), Value)
 import Glean.Schema.Util (lowerMaybe, lowerEnum)
@@ -37,46 +42,27 @@ mkPredicateTransformation
   -> Pid
   -> Pid
   -> Maybe PredicateTransformation
-mkPredicateTransformation detailsFor fromPid toPid
-  | fromPid == toPid = Nothing
+mkPredicateTransformation detailsFor requestedPid availablePid
+  | requestedPid == availablePid = Nothing
   | otherwise = Just PredicateTransformation
-    { tRequested = pidRef from
-    , tAvailable = pidRef to
-    , tTransformFactBack = fromMaybe id $
-        mkFactTransformation to from
-
-    , transformPrefix = transformPattern
-        (predicateKeyType from)
-        (predicateKeyType to)
-    , transformKey = Nothing
-    , transformValue = Nothing
+    { tRequested = pidRef requested
+    , tAvailable = pidRef available
+    , tTransformFactBack = fromMaybe id $ transformFact available requested
+    , transformPrefix = transformPattern (key requested) (key available)
+    , transformKey   = transformBytes (key available) (key requested)
+    , transformValue = transformBytes (val available) (val requested)
     }
   where
-      to = detailsFor toPid
-      from = detailsFor fromPid
+      key = predicateKeyType
+      val = predicateValueType
+      available = detailsFor availablePid
+      requested = detailsFor requestedPid
 
-transformPattern
-  :: Type
-  -> Type
-  -> Maybe
-        ( Term (Match () Output)
-        -> (Term (Match () Output) -> Code a)
-        -> Code a)
-transformPattern from to = do
-  f <- transformTerm transformMatch from to
-  return $ \term -> runCont (f term)
-
-transformBytes
-  :: Type
-  -> Type
-  -> Maybe (Bytes -> (Register 'BinaryOutputPtr -> Code a) -> Code a)
-transformBytes = undefined
-
-mkFactTransformation
+transformFact
   :: PredicateDetails
   -> PredicateDetails
   -> Maybe (Thrift.Fact -> Thrift.Fact)
-mkFactTransformation from to
+transformFact from to
   | Nothing <- mTransformKey
   , Nothing <- mTransformValue = Nothing
   | otherwise = Just $ \(Thrift.Fact _ key value) ->
@@ -89,15 +75,47 @@ mkFactTransformation from to
     overValue = fromMaybe id mTransformValue
     keyRep = repType $ predicateKeyType from
     valueRep = repType $ predicateValueType from
-    mTransformKey = mkValueTransformation
+    mTransformKey = transformExpression
       (predicateKeyType from)
       (predicateKeyType to)
-    mTransformValue = mkValueTransformation
+    mTransformValue = transformExpression
       (predicateValueType from)
       (predicateValueType to)
 
--- | Type compatibility is not checked in this function.
--- It assumes that a transformation is possible and required.
+-- | Transform an expression into a another type.
+-- Missing fields are filled with their default value.
+transformExpression :: Type -> Type -> Maybe (Value -> Value)
+transformExpression from to =
+  case transformTerm defaultValue inner from to of
+    Nothing -> Nothing
+    Just f -> Just $ \ta -> f ta id
+  where
+    inner _ _ _ a f = f a
+
+-- | Transform a matching pattern into a another type.
+-- All variable bindings are removed.
+-- Missing fields are filled with wildcards.
+transformPattern
+  :: Type
+  -> Type
+  -> Maybe
+      (Term (Match () Output)
+      -> (Term (Match () Output) -> Code a)
+      -> Code a)
+transformPattern from to = do
+  f <- transformTerm defaultForType transformMatch from to
+  return $ \term -> runCont (f term)
+  where
+    defaultForType ty = Ref (MatchWild ty)
+
+-- | Transform a Match from one type into another for use as a prefix.
+--
+-- The result must not be used for binding, only for prefix matching, otherwise
+-- it would need to change the type of the variables it is binding into and
+-- this is incorrect.
+--
+-- Type compatibility is not checked. Assumes that a transformation is possible
+-- and required.
 transformMatch
   :: Type
   -> Type
@@ -108,9 +126,8 @@ transformMatch from to overTerm match = case match of
   MatchWild _ -> return $ MatchWild to
   MatchNever _ -> return $ MatchNever to
   MatchFid fid -> return $ MatchFid fid
-  -- this transformation is for the creation of prefixes only and it
-  -- must not support variable binding otherwise we could be binding
-  -- variables to a value of the wrong type.
+  -- bindings are removed as we would otherwise be changing the type of the
+  -- variable we are binding into in only one of its occurrences.
   MatchBind _ -> return $ MatchWild to
   MatchVar (Typed _ output) ->
     case transformBytes from to of
@@ -134,23 +151,15 @@ transformMatch from to overTerm match = case match of
       _ -> error "array transformation did not yield another array"
   MatchExt () -> return $ MatchExt ()
 
-mkValueTransformation :: Type -> Type -> Maybe (Value -> Value)
-mkValueTransformation from to =
-  case transformTerm inner from to of
-    Nothing -> Nothing
-    Just f -> Just $ \ta -> f ta id
-  where
-    inner _ _ _ a f = f a
-
--- | Create a transformation from a term into another term of a compatible
--- type.  Returns Nothing if no change is needed.
+-- | Create a transformation from a term into another term of a compatible type
 transformTerm
   :: forall a b m. (Coercible a b, Show a, Show b, Monad m)
-  => (Type -> Type -> (Term a -> m (Term b)) -> a -> m b)
+  => (Type -> Term b) -- default value for type
+  -> (Type -> Type -> (Term a -> m (Term b)) -> a -> m b)
   -> Type
   -> Type
   -> Maybe (Term a -> m (Term b))
-transformTerm inner from to = go from to
+transformTerm defaultForType inner src dst = go src dst
   where
     -- Types are the same. No transformation is required
     id' :: Term a -> m (Term b)
@@ -196,10 +205,10 @@ transformTerm inner from to = go from to
       go (lowerEnum from) (lowerEnum to)
     go (ArrayTy from) (ArrayTy to) = do
       f <- go from to
-      return $ fix $ \rec term ->
+      return $ fix $ \recurse term ->
         case term of
           Array vs -> Array <$> traverse f vs
-          Ref a -> Ref <$> inner (ArrayTy from) (ArrayTy to) rec a
+          Ref a -> Ref <$> inner (ArrayTy from) (ArrayTy to) recurse a
           _ -> error $ "expected Array, got " <> show term
 
     go (RecordTy from) (RecordTy to) =
@@ -211,12 +220,12 @@ transformTerm inner from to = go from to
       in
       if noChange
       then Nothing
-      else Just $ fix $ \rec term -> case term of
+      else Just $ fix $ \recurse term -> case term of
         Tuple contents -> do
           contents' <- sequence
             [ case Map.lookup name transMap of
                 -- 'to' field doesn't exist in 'from'
-                Nothing -> return $ defaultValue ty
+                Nothing -> return $ defaultForType ty
                 Just (content, Nothing) -> id' content
                 Just (content, Just (_, transform)) -> transform content
             | FieldDef name ty <- to
@@ -225,7 +234,7 @@ transformTerm inner from to = go from to
           where
             transMap = Map.intersectionWith (,) contentsByName transformations
             contentsByName = Map.fromList $ zip (names from) contents
-        Ref a -> Ref <$> inner (RecordTy from) (RecordTy to) rec a
+        Ref a -> Ref <$> inner (RecordTy from) (RecordTy to) recurse a
         _ -> error $ "expected Tuple, got " <> show term
 
     go (SumTy from) (SumTy to) =
@@ -242,7 +251,7 @@ transformTerm inner from to = go from to
       in
       if noChange
         then Nothing
-        else Just $ fix $ \rec term -> case term of
+        else Just $ fix $ \recurse term -> case term of
           Alt n content -> case Map.lookup n transformationsByIx of
             -- alternative in 'from' doesn't exist in 'to'
             Nothing -> return unknown
@@ -250,7 +259,7 @@ transformTerm inner from to = go from to
             Just (Just (n', transform)) -> do
               content' <- transform content
               return (Alt n' content')
-          Ref a -> Ref <$> inner (SumTy from) (SumTy to) rec a
+          Ref a -> Ref <$> inner (SumTy from) (SumTy to) recurse a
           _ -> error $ "expected Alt, got " <> show term
     go from to =
       error $ "invalid type conversion: "
@@ -268,3 +277,150 @@ defaultValue ty = case derefType ty of
   EnumeratedTy{} -> Alt 0 (Tuple [])
   SumTy (first : _) -> Alt 0 (defaultValue (fieldDefType first))
   _ -> error $ "type doesn't have a default value: " <> show ty
+
+-- | Transform a fact key or value contained in some binary input into another
+-- compatible type.
+transformBytes
+  :: Type
+  -> Type
+  -> Maybe (Bytes -> (Register 'BinaryOutputPtr -> Code a) -> Code a)
+transformBytes src dst =
+  case go src dst of
+    Left _ -> Nothing
+    Right transform -> Just $ \bytes act ->
+      output $ \out -> do
+        resetOutput out
+        transform out bytes
+        act out
+  where
+  go :: Type
+     -> Type
+     -> Either
+          (Register 'BinaryOutputPtr -> Bytes -> Code ()) -- copy as is
+          (Register 'BinaryOutputPtr -> Bytes -> Code ()) -- transform and copy
+  go from@(NamedTy _) to = go (derefType from) to
+  go from to@(NamedTy _) = go from (derefType to)
+  go ByteTy ByteTy = Left $ copy ByteTy
+  go NatTy NatTy = Left $ copy NatTy
+  go StringTy StringTy = Left $ copy StringTy
+  go BooleanTy BooleanTy = Left $ copy BooleanTy
+  go (MaybeTy from) (MaybeTy to) = go (lowerMaybe from) (lowerMaybe to)
+  go (PredicateTy _) (PredicateTy pid) = Left $ copy (PredicateTy pid)
+  go (EnumeratedTy from) (EnumeratedTy to) = go (lowerEnum from) (lowerEnum to)
+  go (ArrayTy from) (ArrayTy to) =
+    case go from to of
+      Left _ -> Left $ copy (ArrayTy to)
+      Right trans -> Right $ \out (Bytes start end) ->
+        local $ \size -> mdo
+          inputNat start end size
+          jumpIf0 size finish
+          loop <- label
+          trans out (Bytes start end)
+          decrAndJumpIfNot0 size loop
+          finish <- label
+          return ()
+  go (SumTy from) (SumTy to)
+    | sameOrder && sameTypes = Left $ copy (SumTy to)
+    | otherwise = Right $ \out (Bytes start end) -> mdo
+        local $ \sel -> mdo
+          inputNat start end sel
+          let unknown = [finish]
+          select sel (lbls ++ unknown)
+          -- TODO: Add tests for this unknown.
+          raise "selector out of range"
+        lbls <- forM alts $ \(ixTo, trans) -> mdo
+          lbl <- label
+          outputNatImm (fromIntegral ixTo) out
+          -- the start pointer was already moved to the beginning
+          -- of the content when the selector was read.
+          fromEither trans out (Bytes start end)
+          jump finish
+          return lbl
+        finish <- label
+        return ()
+      where
+        toAlts :: Map Name (Int, Type)
+        toAlts = Map.fromList
+            [ (name, (ixTo, tyTo))
+            | (ixTo, FieldDef name tyTo) <- zip [0..] to
+            ]
+        alts =
+          [ case Map.lookup name toAlts of
+              -- removed alternative
+              Nothing -> (unknownAltIx, unknownAlt tyFrom)
+              Just (ixTo, tyTo) -> (ixTo, go tyFrom tyTo)
+          | FieldDef name tyFrom <- from
+          ]
+
+        unknownAltIx = length to
+        unknownAlt tyFrom = Right $ \_ (Bytes start end) ->
+          skipTrusted start end tyFrom
+
+        sameIndex (ixFrom, (ixTo, _)) = ixFrom == ixTo
+        sameOrder = all sameIndex (zip [0..] alts)
+        sameTypes = all (isLeft . snd) alts
+  go (RecordTy from) (RecordTy to)
+    | sameFieldCount && sameFieldContents = Left $ copy (RecordTy to)
+    | otherwise = Right walk
+    where
+    sameFieldCount = length from == length to
+    sameFieldContents = all identical (zip from to)
+    identical (FieldDef nameFrom tyFrom, FieldDef nameTo tyTo) =
+      nameFrom == nameTo && isLeft (go tyFrom tyTo)
+
+    fieldsFrom = Set.fromList $ map fieldDefName from
+    fieldsTo = Set.fromList $ map fieldDefName to
+
+    -- walk through the record being copied alongside the record being built.
+    walk out bytes@(Bytes start end) = step mempty from to
+      where
+      step saved from' to' = case to' of
+        [] ->
+          -- nothing more to add, skip origin record
+          skipTrusted start end (RecordTy from')
+        FieldDef nameTo tyTo : restTo
+          | Just (fieldBytes, savedTyFrom) <- Map.lookup nameTo saved -> do
+            -- we've saved that field before, move it over now.
+            fromEither (go savedTyFrom tyTo) out fieldBytes
+            let saved' = Map.delete nameTo saved
+            step saved' from' restTo
+          | not (nameTo `Set.member` fieldsFrom) -> do
+            -- target field is not in origin, use default value
+            buildTerm out mempty (defaultValue tyTo)
+            step saved from' restTo
+          | otherwise ->
+            case from' of
+              [] ->
+                -- if there are no more 'from' fields, all remaining 'to'
+                -- fields should either be missing in 'fieldsFrom or already
+                -- saved for copying.
+                error $ "field unaccounted for: '" <> unpack nameTo <> "'"
+              FieldDef nameFrom tyFrom : restFrom
+                | not (nameFrom `Set.member` fieldsTo) -> do
+                  -- origin field is not in target, skip it
+                  skipTrusted start end tyFrom
+                  step saved restFrom to'
+                | nameTo == nameFrom -> do
+                  -- matching field, move it over
+                  fromEither (go tyFrom tyTo) out bytes
+                  step saved restFrom restTo
+                | otherwise ->
+                  -- the field will be required later. Save its location
+                  local $ \fieldStart -> do
+                  move start fieldStart
+                  skipTrusted start end tyFrom
+                  let fieldBytes = Bytes fieldStart end
+                      saved' = Map.insert nameFrom (fieldBytes, tyFrom) saved
+                  step saved' restFrom to'
+  go from to = error $ "invalid type conversion: "
+    <> show from <> " to " <> show to
+
+  -- moves the Bytes start position
+  copy :: Type -> Register 'BinaryOutputPtr -> Bytes -> Code ()
+  copy ty out (Bytes start end)
+    | RecordTy [] <- ty = return ()
+    | otherwise =
+      local $ \saved_start -> do
+        move start saved_start
+        skipTrusted start end ty
+        outputBytes saved_start start out

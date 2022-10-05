@@ -670,6 +670,7 @@ userQueryImpl
             $ \(codegenTime, _, sub) -> do
               results <- transformResultsBack appliedTrans <$>
                 executeCompiled schemaInventory defineOwners stack sub limits
+
               diags <-
                 evaluate $ force (bytecodeDiag sub) -- don't keep sub alive
               sz <- evaluate $ Bytecode.size (compiledQuerySub sub)
