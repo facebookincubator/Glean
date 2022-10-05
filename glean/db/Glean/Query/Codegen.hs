@@ -21,6 +21,7 @@ import Control.Monad.State
 import Data.ByteString (ByteString)
 import qualified Data.ByteString as ByteString
 import Data.Coerce
+import Data.Either.Extra (eitherToMaybe)
 import Data.IntMap (IntMap)
 import qualified Data.IntMap as IntMap
 import Data.IntSet (IntSet)
@@ -44,7 +45,8 @@ import qualified Glean.Angle.Types as Angle
 import Glean.Bytecode.Types
 import qualified Glean.FFI as FFI
 import Glean.Query.Codegen.Types
-import Glean.Database.Schema.Types (Bytes(..), PredicateTransformation(..))
+import Glean.Database.Schema.Types
+  (Bytes(..), PredicateTransformation(..), IsPointQuery)
 import Glean.RTS
 import Glean.RTS.Builder
 import Glean.RTS.Bytecode.Code
@@ -544,9 +546,13 @@ compileStatements
 
             patOutput
               :: forall a
-              .  Maybe (Bytes -> (Bytes -> Code ()) -> Code ())
+              .  Maybe
+                    ( Bytes
+                    -> (Register 'BinaryOutputPtr -> Code ())
+                    -> Code ())
               -> [QueryChunk Output]
-              -> (Register 'BinaryOutputPtr -> (Label -> Code ()) -> Code a)
+              -> (  Register 'BinaryOutputPtr     -- load bytes here
+                 -> (Label -> Code ()) -> Code a) -- test the loaded bytes
               -> Code a
             patOutput maybeTrans chunks cont
               | all isWild chunks = do
@@ -555,14 +561,16 @@ compileStatements
               | [QueryBind (Typed ty out)] <- chunks
               , not (isWordTy ty)
               , Nothing <- maybeTrans =
+                  -- bind into the output directly
                   cont out (\_ -> return ())
               | Just transform <- maybeTrans =
                   output $ \out ->
                   cont out $ \fail ->
                     local $ \begin end -> do
                     getOutput out begin end
-                    transform (Bytes begin end) $ \(Bytes begin' end') -> do
-                    matchPat begin' end' fail chunks
+                    transform (Bytes begin end) $ \transformed -> do
+                    getOutput transformed begin end
+                    matchPat begin end fail chunks
               | otherwise =
                   output $ \reg ->
                   cont reg (\fail -> cmpOutputPat reg chunks fail)
@@ -815,13 +823,13 @@ compileFactGenerator
   -> Maybe (Register 'Word)
   -> Code a
   -> Code a
-compileFactGenerator _ bounds (QueryRegs{..} :: QueryRegs s)
+compileFactGenerator mtrans bounds (QueryRegs{..} :: QueryRegs s)
     vars pid kpat vpat section maybeReg inner = do
-  let kchunks = preProcessPat $ inlineVars vars kpat
-  let vchunks = preProcessPat $ inlineVars vars vpat
-  withPrefix kchunks $ \isPointQuery prefix kchunks' -> do
+  let etrans = maybe (Left pid) Right mtrans
+  withPatterns etrans vars kpat vpat $
+    \availablePid isPointQuery prefix matchKey matchValue -> do
 
-  typ <- constant (fromIntegral (fromPid pid))
+  typ <- constant $ fromIntegral $ fromPid availablePid
   local $ \seekTok -> mdo
   let Bytes pstart pend = prefix
   seek' typ pstart pend seekTok
@@ -830,7 +838,7 @@ compileFactGenerator _ bounds (QueryRegs{..} :: QueryRegs s)
   loop <- label
 
   local $ \clause keyend clauseend -> mdo
-      let need_value = not $ all isWild vchunks
+      let need_value = isJust matchValue
       local $ \ignore ok -> do
         next
           seekTok
@@ -849,13 +857,11 @@ compileFactGenerator _ bounds (QueryRegs{..} :: QueryRegs s)
       continue <- label
       return ()
 
-      -- check that the rest of the key matches the pattern
-      matchPat clause keyend loop kchunks'
+     -- check that the key matches the pattern
+      matchKey (Bytes clause keyend) loop
 
       -- match the value
-      when need_value $ do
-        move keyend clause
-        matchPat clause clauseend loop vchunks
+      forM_ matchValue $ \match -> match (Bytes keyend clauseend) loop
 
   a <- inner
 
@@ -881,52 +887,127 @@ compileFactGenerator _ bounds (QueryRegs{..} :: QueryRegs s)
           pto <- constant $ fromIntegral $ fromFid to
           seekWithinSection typ ptr end pfrom pto tok
 
-    -- Extract a query prefix and a pattern which should match the entire
-    -- structure
-    withPrefix
-      :: [QueryChunk Output]
-      -> ( Bool
-          -- is point query
-          -> Bytes
-          -- prefix bytes
-          -> [QueryChunk Output]
-          -- pattern to match against results from the beginning.
-          -> Code a)
+
+-- ^ Extract a prefix to be searched and create code to match on the key and
+-- value of facts searched.
+--
+-- If a predicate transformation is available, the prefix will match on the
+-- predicate available in the database and the matching code will transform the
+-- key and value from the available predicate into the new one before
+-- performing the matching.
+withPatterns
+  :: Either Pid PredicateTransformation
+  -> Vector (Register 'Word)    -- ^ registers for variables
+  -> Pat                        -- ^ key pattern
+  -> Pat                        -- ^ value pattern
+  ->  (  Pid                                -- predicate to search for
+      -> IsPointQuery
+      -> Bytes                              -- prefix
+      -> (Bytes -> Label -> Code ())        -- match key
+      -> Maybe (Bytes -> Label -> Code ())  -- match value
       -> Code a
-    withPrefix chunks fun =
-      case chunks of
-        -- Special case for a QueryBind that covers the whole
-        -- pattern. This is used to capture the key of a fact so
-        -- that we can return it, but we don't want it to interfere
-        -- with prefix lookup.
-        (QueryAnd bindVar@[QueryBind _] pats) : [] ->
-          withPrefix pats $ \isPointQuery bytes filters ->
-            fun isPointQuery bytes $
-              if null filters
-                 then bindVar
-                 else [QueryAnd filters bindVar ]
+    )
+  -> Code a
+withPatterns etrans vars kpat vpat f = do
+  withTransformedPrefix mtrans vars kpat $ \isPointQuery prefix kchunks ->
+    let matchKey bytes fail =
+          transKey bytes $ \(Bytes s e) ->
+          matchPat s e fail kchunks
 
-        -- Just a fixed ByteString: use it directly
-        (QueryPrefix bs : rest) | emptyPrefix rest ->
-          local $ \ptr end -> do
-          loadLiteral bs ptr end
-          wildPrefixFor rest (Bytes ptr end) fun
+        vchunks = preProcessPat $ inlineVars vars vpat
+        need_value = not $ all isWild vchunks
+        matchValue = if need_value
+          then Just $ \bytes fail ->
+                transValue bytes $ \(Bytes s e) ->
+                matchPat s e fail vchunks
+          else Nothing
+    in
+    f availablePid isPointQuery prefix matchKey matchValue
+  where
+    availablePid :: Pid
+    availablePid = case etrans of
+      Right PredicateTransformation{ tAvailable = PidRef pid _ } -> pid
+      Left pid -> pid
 
-        -- A variable: use it directly
-        (QueryVar (Typed ty out) : rest)
-          | emptyPrefix rest, not (isWordTy ty) ->
-          local $ \ptr end -> do
-          getOutput out ptr end
-          wildPrefixFor rest (Bytes ptr end) fun
+    mtrans = eitherToMaybe etrans
 
-        -- Otherwise: build up the prefix in a binary::Output
-        -- (register 'prefixOut')
-        _otherwise ->
-          buildPrefix chunks $ \prefixOut chunks' ->
-          local $ \ptr end -> do
-          getOutput prefixOut ptr end
-          wildPrefixFor chunks' (Bytes ptr end) fun
+    transKey, transValue :: Bytes -> (Bytes -> Code a) -> Code a
+    transKey = withTransformation $ transformKey =<< mtrans
+    transValue = withTransformation $ transformValue  =<< mtrans
 
+    withTransformation
+      :: Maybe (Bytes -> (Register 'BinaryOutputPtr -> Code a) -> Code a)
+      -> Bytes
+      -> (Bytes -> Code a)
+      -> Code a
+    withTransformation Nothing bytes act = act bytes
+    withTransformation (Just transform) bytes act =
+      transform bytes $ \transformed ->
+      local $ \start end -> do
+        getOutput transformed start end
+        act (Bytes start end)
+
+
+withTransformedPrefix
+  :: Maybe PredicateTransformation
+  -> Vector (Register 'Word)
+  -> Pat
+  -> (Bool -> Bytes -> [QueryChunk Output] -> Code a)
+  -> Code a
+withTransformedPrefix mtrans vars kpat f = do
+  let pat = inlineVars vars kpat
+      kchunks = preProcessPat pat
+  case transformPrefix =<< mtrans of
+    Nothing -> withPrefix kchunks f
+    Just transform ->
+      transform pat $ \kpat' -> do
+        let transformedChunks = preProcessPat kpat'
+        withPrefix transformedChunks $ \isPointQuery prefix _ ->
+          f isPointQuery prefix kchunks
+
+-- Extract a query prefix and a pattern which should match the entire
+-- structure
+withPrefix
+  :: [QueryChunk Output]
+  -> ( IsPointQuery
+      -> Bytes                       -- prefix bytes
+      -> [QueryChunk Output] -- match against results from the beginning
+      -> Code a)
+  -> Code a
+withPrefix chunks fun =
+  case chunks of
+    -- Special case for a QueryBind that covers the whole
+    -- pattern. This is used to capture the key of a fact so
+    -- that we can return it, but we don't want it to interfere
+    -- with prefix lookup.
+    (QueryAnd bindVar@[QueryBind _] pats) : [] ->
+      withPrefix pats $ \isPointQuery bytes filters ->
+        fun isPointQuery bytes $
+          if null filters
+             then bindVar
+             else [QueryAnd filters bindVar ]
+
+    -- Just a fixed ByteString: use it directly
+    (QueryPrefix bs : rest) | emptyPrefix rest ->
+      local $ \ptr end -> do
+      loadLiteral bs ptr end
+      wildPrefixFor rest (Bytes ptr end) fun
+
+    -- A variable: use it directly
+    (QueryVar (Typed ty out) : rest)
+      | emptyPrefix rest, not (isWordTy ty) ->
+      local $ \ptr end -> do
+        getOutput out ptr end
+        wildPrefixFor rest (Bytes ptr end) fun
+
+      -- Otherwise: build up the prefix in a binary::Output
+      -- (register 'prefixOut')
+    _otherwise ->
+        buildPrefix chunks $ \prefixOut chunks' ->
+        local $ \ptr end -> do
+        getOutput prefixOut ptr end
+        wildPrefixFor chunks' (Bytes ptr end) fun
+  where
     wildPrefixFor
       :: [QueryChunk Output]
       -- ^ non-prefix filters
@@ -945,7 +1026,6 @@ compileFactGenerator _ bounds (QueryRegs{..} :: QueryRegs s)
         local $ \prefix_size -> do
         ptrDiff ptr end prefix_size
         fun False prefix (QueryPrefixWild prefix_size : chunks)
-
 
 -- ----------------------------------------------------------------------------
 

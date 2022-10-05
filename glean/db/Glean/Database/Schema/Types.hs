@@ -13,6 +13,7 @@ module Glean.Database.Schema.Types
   , predicateRef
   , PredicateTransformation(..)
   , Bytes(..)
+  , IsPointQuery
   , SchemaSelector(..)
   , schemaNameEnv
   , addTmpPredicate
@@ -93,16 +94,21 @@ data PredicateTransformation = PredicateTransformation
     -- of the requested predicate.
 
   , transformPrefix
-      :: forall a
-      . Maybe (  Term (Match () Output)
-              -> (IsPointQuery -> Bytes -> Code a)
-              -> Code a)
+    :: forall a
+    . Maybe (  Term (Match () Output)
+            -> (Term (Match () Output) -> Code a)
+            -> Code a)
     -- ^ requested -> available
-    -- ^ Build a prefix for the available predicate based on a matching
-    -- term for the requested predicate
+    -- ^ Transform a pattern into one which can be used to build a prefix for
+    -- the available predicate. The resulting pattern cannot be used for
+    -- variable binding.
 
-  , transformKey :: forall a. Maybe (Bytes -> (Bytes -> Code a) -> Code a)
-  , transformValue :: forall a. Maybe (Bytes -> (Bytes -> Code a) -> Code a)
+  , transformKey
+    :: forall a
+    . Maybe (Bytes -> (Register 'BinaryOutputPtr -> Code a) -> Code a)
+  , transformValue
+    :: forall a
+    . Maybe (Bytes -> (Register 'BinaryOutputPtr -> Code a) -> Code a)
     -- ^ available -> requested
   }
 
@@ -115,6 +121,7 @@ data Bytes = Bytes
   { b_start :: Register 'DataPtr
   , b_end :: Register 'DataPtr
   }
+  deriving (Show)
 
 data TypeDetails = TypeDetails
   { typeId :: TypeId
