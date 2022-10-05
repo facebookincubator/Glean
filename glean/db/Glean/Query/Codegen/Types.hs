@@ -23,6 +23,7 @@ module Glean.Query.Codegen.Types
   , Expr
   , PrimOp(..)
   , Typed(..)
+  , Output
   ) where
 
 import Data.Bifunctor
@@ -34,6 +35,7 @@ import Data.Text (Text)
 import Data.Text.Prettyprint.Doc
 
 import Glean.Angle.Types (IsWild(..), PrimOp(..))
+import Glean.Bytecode.Types (Register, Ty(..))
 import Glean.RTS.Term hiding (Match)
 import Glean.RTS.Types (Type, Fid, PidRef)
 
@@ -187,6 +189,8 @@ type Expr = Expr_ Var
 
 type Pat_ var = Term (Match () var)
 type Expr_ var = Term (Match () var)
+
+type Output = Typed (Register 'BinaryOutputPtr)
 
 data Var = Var
   { varType :: Type

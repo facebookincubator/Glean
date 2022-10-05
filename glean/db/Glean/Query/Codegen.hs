@@ -362,15 +362,14 @@ cmpWordPat vars pat = case pat of
 -- | Compare a value in an output register with a pattern. If the
 -- pattern matches, fall through, otherwise jump to the given label.
 cmpOutputPat
-  :: Vector (Register 'Word)
-  -> Register 'BinaryOutputPtr          -- ^ register containing the value
-  -> [QueryChunk Var]                   -- ^ pattern to match against
+  :: Register 'BinaryOutputPtr          -- ^ register containing the value
+  -> [QueryChunk Output]                -- ^ pattern to match against
   -> Label                              -- ^ jump here on match failure
   -> Code ()
-cmpOutputPat vars reg pat fail =
+cmpOutputPat reg pat fail =
   local $ \ptr begin -> do
     getOutput reg begin ptr
-    matchPat vars begin ptr fail pat
+    matchPat begin ptr fail pat
 
 compileTermGen
   :: Expr
@@ -546,27 +545,27 @@ compileStatements
             patOutput
               :: forall a
               .  Maybe (Bytes -> (Bytes -> Code ()) -> Code ())
-              -> [QueryChunk Var]
+              -> [QueryChunk Output]
               -> (Register 'BinaryOutputPtr -> (Label -> Code ()) -> Code a)
               -> Code a
             patOutput maybeTrans chunks cont
               | all isWild chunks = do
                   reg <- constant 0  -- null means "don't copy the key/value"
                   cont (castRegister reg) (\_ -> return ())
-              | [QueryBind (Var ty v _)] <- chunks
+              | [QueryBind (Typed ty out)] <- chunks
               , not (isWordTy ty)
               , Nothing <- maybeTrans =
-                  cont (castRegister (vars ! v)) (\_ -> return ())
+                  cont out (\_ -> return ())
               | Just transform <- maybeTrans =
                   output $ \out ->
                   cont out $ \fail ->
                     local $ \begin end -> do
                     getOutput out begin end
                     transform (Bytes begin end) $ \(Bytes begin' end') -> do
-                    matchPat vars begin' end' fail chunks
+                    matchPat begin' end' fail chunks
               | otherwise =
                   output $ \reg ->
-                  cont reg (\fail -> cmpOutputPat vars reg chunks fail)
+                  cont reg (\fail -> cmpOutputPat reg chunks fail)
 
             -- The pid we expect to retrieve from the database
             PidRef expected _ = maybe pref tAvailable mtrans
@@ -574,8 +573,8 @@ compileStatements
             mTransKey = transformKey =<< mtrans
             mTransValue = transformValue =<< mtrans
 
-          patOutput mTransKey (preProcessPat kpat) $ \kout kcmp ->
-            patOutput mTransValue (preProcessPat vpat) $ \vout vcmp -> do
+          patOutput mTransKey (preProcessPat vars kpat) $ \kout kcmp ->
+            patOutput mTransValue (preProcessPat vars vpat) $ \vout vcmp -> do
               reg <- load fail
               local $ \pidReg -> mdo
                 lookupKeyValue reg kout vout pidReg
@@ -604,8 +603,8 @@ compileStatements
 
               filterPat reg pat fail
                 | Just cmp <- maybeWordFilter = cmp reg fail
-                | otherwise = cmpOutputPat vars (castRegister reg) chunks fail
-                where chunks = preProcessPat pat
+                | otherwise = cmpOutputPat (castRegister reg) chunks fail
+                where chunks = preProcessPat vars pat
           in
           outReg $ \reg ->
             compileGen gen (Just reg) $ mdo
@@ -666,7 +665,7 @@ compileStatements
             cmp (castRegister q') ok
           Nothing ->
             withTerm vars q $ \q' ->
-            cmpOutputPat vars q' (preProcessPat p) ok
+            cmpOutputPat q' (preProcessPat vars p) ok
         jump fail
         ok <- label
         whenJust maybeReg (resetOutput . castRegister)
@@ -816,8 +815,8 @@ compileFactGenerator
   -> Code a
 compileFactGenerator _ bounds (QueryRegs{..} :: QueryRegs s)
     vars pid kpat vpat section maybeReg inner = do
-  let kchunks = preProcessPat kpat
-  let vchunks = preProcessPat vpat
+  let kchunks = preProcessPat vars kpat
+  let vchunks = preProcessPat vars vpat
   withPrefix kchunks $ \isPointQuery prefix kchunks' -> do
 
   typ <- constant (fromIntegral (fromPid pid))
@@ -849,12 +848,12 @@ compileFactGenerator _ bounds (QueryRegs{..} :: QueryRegs s)
       return ()
 
       -- check that the rest of the key matches the pattern
-      matchPat vars clause keyend loop kchunks'
+      matchPat clause keyend loop kchunks'
 
       -- match the value
       when need_value $ do
         move keyend clause
-        matchPat vars clause clauseend loop vchunks
+        matchPat clause clauseend loop vchunks
 
   a <- inner
 
@@ -883,12 +882,12 @@ compileFactGenerator _ bounds (QueryRegs{..} :: QueryRegs s)
     -- Extract a query prefix and a pattern which should match the entire
     -- structure
     withPrefix
-      :: [QueryChunk Var]
+      :: [QueryChunk Output]
       -> ( Bool
           -- is point query
           -> Bytes
           -- prefix bytes
-          -> [QueryChunk Var]
+          -> [QueryChunk Output]
           -- pattern to match against results from the beginning.
           -> Code a)
       -> Code a
@@ -912,28 +911,28 @@ compileFactGenerator _ bounds (QueryRegs{..} :: QueryRegs s)
           wildPrefixFor rest (Bytes ptr end) fun
 
         -- A variable: use it directly
-        (QueryVar (Var ty v _) : rest)
+        (QueryVar (Typed ty out) : rest)
           | emptyPrefix rest, not (isWordTy ty) ->
           local $ \ptr end -> do
-          getOutput (castRegister (vars ! v)) ptr end
+          getOutput out ptr end
           wildPrefixFor rest (Bytes ptr end) fun
 
         -- Otherwise: build up the prefix in a binary::Output
         -- (register 'prefixOut')
         _otherwise ->
-          buildPrefix vars chunks $ \prefixOut chunks' ->
+          buildPrefix chunks $ \prefixOut chunks' ->
           local $ \ptr end -> do
           getOutput prefixOut ptr end
           wildPrefixFor chunks' (Bytes ptr end) fun
 
     wildPrefixFor
-      :: [QueryChunk Var]
+      :: [QueryChunk Output]
       -- ^ non-prefix filters
       -> Bytes
       -- ^ prefix bytes
       -> ( Bool
           -> Bytes
-          -> [QueryChunk Var]
+          -> [QueryChunk Output]
           -> Code a)
       -- ^ send prefix-adjusted filters
       -> Code a
@@ -986,20 +985,22 @@ data QueryChunk var =
  | QuerySum [Maybe [QueryChunk var]]
  deriving Show
 
-type M a = StateT (Builder, Bool, [QueryChunk Var]) IO a
+type M a = StateT (Builder, Bool, [QueryChunk Output]) IO a
   -- @Bool@ is whether the builder is empty (True for empty, False for non-empty)
 
 instance IsWild (QueryChunk var) where
   isWild QueryWild{} = True
   isWild QueryPrefixWild{} = True
   isWild _ = False
-
 --
 -- | Process a query into a [QueryChunk], which enables the compiler to
 -- generate efficient code for a pattern match.
 --
-preProcessPat :: Term (Match () Var) -> [QueryChunk Var]
-preProcessPat pat = unsafePerformIO $
+preProcessPat
+  :: Vector (Register 'Word)
+  -> Term (Match () Var)
+  -> [QueryChunk Output]
+preProcessPat vars pat = unsafePerformIO $
   withBuilder $ \builder -> do
     (_, (_, _, chunks)) <-
       flip runStateT (builder, True, []) $
@@ -1025,7 +1026,7 @@ preProcessPat pat = unsafePerformIO $
         lift $ resetBuilder b
         put (b, True, QueryPrefix bs : chunks)
 
-  getChunks :: M () -> M [QueryChunk Var]
+  getChunks :: M () -> M [QueryChunk Output]
   getChunks m = do
     (b, empty, saveChunks) <- get
     put (b, empty, [])
@@ -1059,8 +1060,10 @@ preProcessPat pat = unsafePerformIO $
           b <- builder
           lift $ FFI.call $ glean_push_value_selector b $ fromIntegral ix
           build term
-      Ref (MatchVar v) -> chunk (QueryVar v)
-      Ref (MatchBind v) -> chunk (QueryBind v)
+      Ref (MatchVar (Var ty v _)) ->
+          chunk $ QueryVar $ Typed ty (castRegister $ vars ! v)
+      Ref (MatchBind (Var ty v _)) ->
+          chunk $ QueryBind $ Typed ty (castRegister $ vars ! v)
       Ref (MatchWild ty) -> chunk (QueryWild ty)
       Ref (MatchNever _) -> chunk QueryNever
       Ref (MatchFid fid) -> do
@@ -1095,7 +1098,7 @@ preProcessPat pat = unsafePerformIO $
 
 
 -- | True if the prefix of this query is empty
-emptyPrefix :: [QueryChunk Var] -> Bool
+emptyPrefix :: [QueryChunk var] -> Bool
 emptyPrefix (QueryPrefix{} : _) = False
 emptyPrefix (QueryVar{} : _) = False
 emptyPrefix [QueryAnd [QueryBind{}] x] = emptyPrefix x
@@ -1104,11 +1107,10 @@ emptyPrefix _ = True
 -- | Serialize the prefix of a query into an output register, and return
 -- the remaining non-prefix part of the query.
 buildPrefix
-  :: Vector (Register 'Word)    -- ^ registers for variables
-  -> [QueryChunk Var]
-  -> (Register 'BinaryOutputPtr -> [QueryChunk Var] -> Code a)
+  :: [QueryChunk Output]
+  -> (Register 'BinaryOutputPtr -> [QueryChunk Output] -> Code a)
   -> Code a
-buildPrefix vars chunks cont =
+buildPrefix chunks cont =
   output $ \out -> do
     resetOutput out
     go out cont chunks
@@ -1120,13 +1122,13 @@ buildPrefix vars chunks cont =
         loadLiteral bs ptr end
         outputBytes ptr end out
       go out cont rest
-    QueryVar (Var ty v _) | isWordTy ty -> do
-      outputNat (vars ! v) out
+    QueryVar (Typed ty o) | isWordTy ty -> do
+      outputNat (castRegister o) out
       go out cont rest
     -- every other type is currently represented as a binary::Output
-    QueryVar (Var _other v _) -> do
+    QueryVar (Typed _ o) -> do
       local $ \ptr end -> do
-        getOutput (castRegister (vars ! v)) ptr end
+        getOutput o ptr end
         outputBytes ptr end out
       go out cont rest
     _ -> cont out (chunk:rest)
@@ -1254,17 +1256,16 @@ buildTerm output vars term = go term
 -- necessary. The pattern is assumed to cover the *whole* of the
 -- input.
 matchPat
-  :: Vector (Register 'Word)      -- ^ registers for variables
-  -> Register 'DataPtr            -- ^ the input
+  :: Register 'DataPtr            -- ^ the input
   -> Register 'DataPtr            -- ^ the input end
   -> Label                        -- ^ jump to here on mismatch
-  -> [QueryChunk Var]             -- ^ pattern to match
+  -> [QueryChunk Output]          -- ^ pattern to match
   -> Code ()
-matchPat vars input inputend fail chunks = match True chunks
+matchPat input inputend fail chunks = match True chunks
   where
   match
     :: Bool -- ^ whether the query chunks match until the end of the input.
-    -> [QueryChunk Var]
+    -> [QueryChunk Output]
     -> Code ()
   match _ [] = return ()
   match tillEnd (x:rest) =
@@ -1288,18 +1289,18 @@ matchPat vars input inputend fail chunks = match True chunks
 
       QueryNever -> jump fail
 
-      QueryVar (Var ty var _)
+      QueryVar (Typed ty out)
         | isEmptyTy ty -> match tillEnd rest
         | isWordTy ty -> do
             local $ \id -> do
               inputNat input inputend id
-              jumpIfNe id (vars ! var) fail
+              jumpIfNe id (castRegister out) fail
             match tillEnd rest
           -- the empty tuple could be represented by a null pointer, so it's
           -- not safe to do inputShiftBytes anyway.
         | otherwise -> do
           local $ \ptr end ok -> do
-            getOutput (castRegister (vars ! var)) ptr end
+            getOutput out ptr end
             inputShiftBytes input inputend ptr end ok
             jumpIf0 ok fail
           match tillEnd rest
@@ -1328,12 +1329,12 @@ matchPat vars input inputend fail chunks = match True chunks
         end <- label
         match tillEnd rest
 
-      QueryBind (Var ty var _)
+      QueryBind (Typed ty out)
         | isWordTy ty -> do
-          inputNat input inputend (vars ! var)
+          inputNat input inputend (castRegister out)
           match tillEnd rest
         | otherwise -> do
-          let outReg = castRegister (vars ! var)
+          let outReg = castRegister out
           resetOutput outReg
           if isLastPattern
             -- we don't need to traverse the data, just copy the bytes.
