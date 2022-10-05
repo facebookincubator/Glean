@@ -13,7 +13,9 @@
 module JSONQueryTest (main) where
 
 import Control.Exception
+import Control.Monad
 import qualified Data.ByteString as ByteString
+import qualified Data.ByteString.Builder as B
 import Data.ByteString (ByteString)
 import Data.Default
 import Data.List
@@ -26,13 +28,15 @@ import Test.HUnit
 import TestRunner
 import Thrift.Protocol
 import Thrift.Protocol.JSON
+import Thrift.Protocol.Compact
+
 import Util.String.Quasi
 
 import qualified Glean.Backend as Backend
-import Glean.Backend (userQuery)
+import Glean.Backend (userQuery, Backend)
 import Glean.Init
 import Glean.Query.Thrift
-import Glean.Query.Thrift.Test
+import Glean.Query.Thrift.Internal
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import qualified Glean.Schema.Sys.Types as Sys
 import qualified Glean.Schema.GleanTest.Types as Glean.Test
@@ -46,20 +50,89 @@ import TestData
 
 import TestDB
 
-query :: forall q . (ThriftQuery q) => QueryOf q -> Query q
+query :: forall q p . (Predicate p, ThriftSerializable q) => q -> Query p
 query = mkQuery . serializeJSON
 
-type ThriftQuery q =
-  ( ThriftSerializable (QueryOf q)
-  , Predicate q
+type TestQuery p =
+  ( Typed.Predicate p
+  , ThriftSerializable p
   )
+
+-- | Perform a query using the Thrift query and result types, using
+-- JSON transport for the results. This is only for testing, use
+-- `runQuery` instead.
+runQueryJSON_
+  :: (TestQuery q, Backend b)
+  => b
+  -> Repo
+  -> Query q
+  -> IO [q]
+runQueryJSON_ be repo q = fst <$> runQueryJSON be repo q
+
+
+runQueryJSON
+  :: (TestQuery q, Backend b)
+  => b
+  -> Repo
+  -> Query q
+  -> IO ([q], Bool)
+runQueryJSON be repo (Query query) = do
+  -- Only works for whole facts, but that's enforced by the TestQuery context.
+  let
+    query' = query
+      { userQuery_options = Just (fromMaybe def (userQuery_options query))
+        { userQueryOptions_expand_results = True } }
+  UserQueryResults{..} <- userQuery be repo query'
+  mapM_ reportUserQueryStats userQueryResults_stats
+  results <- forM userQueryResults_facts $ \fact -> do
+    case deserializeJSON fact of
+      Left err -> throwIO $ ErrorCall $ "deserialization failure: " ++ err
+      Right x -> return x
+  return (results, isJust userQueryResults_continuation)
+
+runQueryCompact_
+  :: (TestQuery q, Backend b)
+  => b
+  -> Repo
+  -> Query q
+  -> IO [q]
+runQueryCompact_ be repo q = fst <$> runQueryCompact be repo q
+
+runQueryCompact
+  :: (TestQuery q, Backend b)
+  => b
+  -> Repo
+  -> Query q
+  -> IO ([q], Bool)
+runQueryCompact be repo (Query query) = do
+  -- Only works for whole facts, but that's enforced by the TestQuery context.
+  let
+    query' = query
+      { userQuery_encodings =
+          [ UserQueryEncoding_compact UserQueryEncodingCompact
+              { userQueryEncodingCompact_expand_results = True }
+          ]
+      }
+  UserQueryResults{..} <- userQuery be repo query'
+  UserQueryEncodedResults_compact UserQueryResultsCompact{..} <-
+    return userQueryResults_results
+  mapM_ reportUserQueryStats userQueryResults_stats
+  results <- forM userQueryResultsCompact_facts $ \fact -> do
+    case deserializeCompact fact of
+      Left err -> throwIO $ ErrorCall $
+        "deserialization failure: "
+        ++ err
+        ++ " " ++ show (B.toLazyByteString $ B.byteStringHex fact)
+      Right x -> return x
+  return (results, isJust userQueryResults_continuation)
 
 userQueryFactTest :: Test
 userQueryFactTest = dbTestCase $ \env repo -> do
   -- Test userQueryFacts and decode the JSON result
-  results1 <- runQuery_ env repo $ query $
-    Query.Glean.Test.Predicate_1_with_key def {
-      Query.Glean.Test.kitchenSink_1_byt = Just (Byte 33) }
+  results1 :: [Glean.Test.Predicate_1] <-
+    runQuery_ env repo $ query $
+      Query.Glean.Test.Predicate_1_with_key def {
+        Query.Glean.Test.kitchenSink_1_byt = Just (Byte 33) }
   results2 <- runQuery_ env repo (allFacts :: Query Sys.Blob)
 
   let
@@ -196,31 +269,30 @@ jsonQueryErrorCases = dbTestCase $ \env repo -> do
 
 
 type QueryFun =
-   forall q b .
-    ( ThriftSerializable (QueryOf q)
-    , ThriftSerializable q
+   forall p b .
+    ( ThriftSerializable p
     , Backend.Backend b
-    , Typed.Predicate q
+    , Typed.Predicate p
     )
   => b
   -> Repo
-  -> Query q
-  -> IO [q]
+  -> Query p
+  -> IO [p]
 
 jsonQueryTest :: QueryFun -> (forall a . Query a -> Query a) -> Test
 jsonQueryTest queryFun modify = dbTestCase $ \env repo -> do
   let
     runQuery ::
-      ( ThriftSerializable (QueryOf q)
+      ( ThriftSerializable query
       , ThriftSerializable q
       , Typed.Predicate q
       )
-      => QueryOf q
+      => query
       -> IO [q]
     runQuery q = queryFun env repo (modify (query q))
 
   -- match zero results
-  results <- runQuery (Query.Sys.Blob_with_key "nomatch")
+  results :: [Sys.Blob] <- runQuery (Query.Sys.Blob_with_key "nomatch")
   assertBool "userQuery - sys.Blob nomatch" $ null results
 
   -- match all results (one)
@@ -244,7 +316,7 @@ jsonQueryTest queryFun modify = dbTestCase $ \env repo -> do
       _ -> False
 
   -- query that matches everything
-  results <- runQuery (Query.Sys.Blob_with_get def)
+  results :: [Sys.Blob] <- runQuery (Query.Sys.Blob_with_get def)
   assertBool "userQuery - sys.Blob match all" $ length results == 2
 
   -- match one result of many
@@ -260,14 +332,16 @@ jsonQueryTest queryFun modify = dbTestCase $ \env repo -> do
       _ -> False
 
   -- match all results (two)
-  results <- runQuery $ Query.Glean.Test.Predicate_1_with_key def
+  results :: [Glean.Test.Predicate_1] <-
+    runQuery $ Query.Glean.Test.Predicate_1_with_key def
   assertBool "userQuery - glean.test.Predicate 2" $
     case results of
       [_, _] -> True
       _ -> False
 
   -- query by nested fact Id, should be two results
-  results <- runQuery $ Query.Glean.Test.Predicate_1_with_key
+  results :: [Glean.Test.Predicate_1] <-
+    runQuery $ Query.Glean.Test.Predicate_1_with_key
     def { Query.Glean.Test.kitchenSink_1_pred =
       Just (Query.Sys.Blob_with_id sysBlobId) }
   assertBool "userQuery - nested fact Id" $ length results == 1
@@ -327,7 +401,7 @@ jsonQueryTest queryFun modify = dbTestCase $ \env repo -> do
       _ -> False
 
   -- match a maybe that's either present or missing
-  results <- runQuery $
+  results :: [Glean.Test.Predicate_1] <- runQuery $
     Query.Glean.Test.Predicate_1_with_key def
       { Query.Glean.Test.kitchenSink_1_maybe_ =
         Just (def { Query.Glean.Test.kitchenSink_1_maybe__any = True })
@@ -379,7 +453,7 @@ jsonQueryTest queryFun modify = dbTestCase $ \env repo -> do
   --  If we get our generators wrong in the JSON->generator compiler,
   -- this will match the same fact multiple times and return too many
   -- results.
-  results <- runQuery $
+  results :: [Glean.Test.Predicate] <- runQuery $
     Query.Glean.Test.Predicate_with_key def
       { Query.Glean.Test.kitchenSink_sum_ = Just def
         { Query.Glean.Test.kitchenSink_sum__d =
@@ -400,7 +474,7 @@ jsonQueryTest queryFun modify = dbTestCase $ \env repo -> do
       _ -> False
 
   -- sum type: one branch matches nothing
-  results <- runQuery $
+  results :: [Glean.Test.Predicate] <- runQuery $
     Query.Glean.Test.Predicate_with_key def
       { Query.Glean.Test.kitchenSink_sum_ = Just def
         { Query.Glean.Test.kitchenSink_sum__d =
@@ -428,7 +502,7 @@ jsonQueryTest queryFun modify = dbTestCase $ \env repo -> do
 
   -- match mutliple alternatives of a sum type, with a refutable pattern
   -- in one alternative.
-  results <- runQuery $
+  results :: [Glean.Test.Predicate] <- runQuery $
     Query.Glean.Test.Predicate_with_key def
       { Query.Glean.Test.kitchenSink_sum_ = Just def
         { Query.Glean.Test.kitchenSink_sum__any = True
@@ -478,14 +552,14 @@ jsonQueryTest queryFun modify = dbTestCase $ \env repo -> do
       _ -> False
 
   -- match against a string
-  results <- runQuery $
+  results :: [Glean.Test.Predicate_1] <- runQuery $
     Query.Glean.Test.Predicate_1_with_key def
       { Query.Glean.Test.kitchenSink_1_string_ = Just "Hello\0world!\0" }
   assertBool "userQuery - string" $
     length results == 1
 
   -- string inside a sum type
-  results <- runQuery $
+  results :: [Cxx.FunctionName] <- runQuery $
     Query.Cxx.FunctionName_with_key $ def
       { Query.Cxx.functionName_key_name = Just (Query.Cxx.Name_with_key "abba")
       , Query.Cxx.functionName_key_operator_ = Just "abba"
@@ -502,11 +576,11 @@ jsonRecQueryTest :: QueryFun -> Test
 jsonRecQueryTest queryFun = dbTestCase $ \env repo -> do
   let
     runQuery ::
-      ( ThriftSerializable (QueryOf q)
+      ( ThriftSerializable query
       , ThriftSerializable q
       , Typed.Predicate q
       )
-      => QueryOf q
+      => query
       -> IO [q]
     runQuery q = queryFun env repo (recursive (query q))
 
@@ -533,8 +607,7 @@ jsonRecQueryTest queryFun = dbTestCase $ \env repo -> do
 
 type QueryFunLimited =
    forall q b .
-    ( ThriftSerializable (QueryOf q)
-    , ThriftSerializable q
+    ( ThriftSerializable q
     , Backend.Backend b
     , Typed.Predicate q
     )
@@ -545,13 +618,13 @@ type QueryFunLimited =
 
 limitTest :: QueryFunLimited -> (forall a . Query a -> Query a) -> Test
 limitTest queryFun modify = dbTestCase $ \env repo -> do
-  (results, truncated) <-
+  (results :: [Glean.Test.Predicate], truncated) <-
     queryFun env repo $ limit 1 $ modify $ query $
       Query.Glean.Test.Predicate_with_get def
   assertEqual "length" 1 (length results)
   assertBool "truncated" truncated
 
-  (results, truncated) <-
+  (results :: [Cxx.Name], truncated) <-
     queryFun env repo $ limitBytes 18  $ modify $ query $
       Query.Cxx.Name_with_get def
   assertEqual "length" 2 (length results)
@@ -616,49 +689,51 @@ jsonPrefixQueryTest = dbTestCase $ \env repo -> do
 -- types instead of Angle.
 jsonDerivedTest :: (forall q. Query q -> Query q) -> Test
 jsonDerivedTest modify = dbTestCase $ \env repo -> do
-  r <- runQuery_ env repo $ modify $ query $
+  r :: [Glean.Test.RevStringPair] <- runQuery_ env repo $ modify $ query $
     Query.Glean.Test.RevStringPair_with_get def
   assertEqual "json derived 1" 6 (length r)
 
-  r <- runQuery_ env repo $ modify $ query $
+  r :: [Glean.Test.RevStringPair] <- runQuery_ env repo $ modify $ query $
     Query.Glean.Test.RevStringPair_with_key def
       { Query.Glean.Test.revStringPair_key_fst = Just "a" }
   assertEqual "json derived 2" 1 (length r)
 
-  r <- runQuery_ env repo $ modify $ query $
+  r :: [Glean.Test.RevStringPair] <- runQuery_ env repo $ modify $ query $
     Query.Glean.Test.RevStringPair_with_key def
       { Query.Glean.Test.revStringPair_key_snd = Just "a" }
-  assertBool "json derived 3" $ case r of
+  assertBool "json derived 3" $ case r :: [Glean.Test.RevStringPair] of
     [one] | Just key <- getFactKey one ->
       "a" == Glean.Test.revStringPair_key_snd key
     _otherwise -> False
 
   -- case 4 not expressible: glean.test.RevStringPair (X,X)
 
-  r <- runQuery_ env repo $ modify $ query $
+  r :: [Glean.Test.RevRevStringPair] <- runQuery_ env repo $ modify $ query $
     Query.Glean.Test.RevRevStringPair_with_get def
   assertEqual "json derived 5" 6 (length r)
 
-  r <- runQuery_ env repo $ modify $ query $
+  r :: [Glean.Test.RevRevStringPair] <- runQuery_ env repo $ modify $ query $
     Query.Glean.Test.RevRevStringPair_with_key def
       { Query.Glean.Test.revRevStringPair_key_fst = Just "a" }
-  assertBool "json derived 6" $ case r of
+  assertBool "json derived 6" $ case r :: [Glean.Test.RevRevStringPair] of
     [one] | Just key <- getFactKey one ->
       "a" == Glean.Test.revRevStringPair_key_fst key
     _otherwise -> False
 
   -- case 7 not expressible: glean.test.ReflStringPair "x"..
 
-  r <- runQuery_ env repo $ modify $ recursive $ query $
+  r :: [Glean.Test.DualStringPair] <-
+    runQuery_ env repo $ modify $ recursive $ query $
     Query.Glean.Test.DualStringPair_with_get def
-  print r
+  print (r :: [Glean.Test.DualStringPair])
   assertBool "json derived 8" $ (==4) $ length
     [ fst
     | Just key <- map getFactKey r
     , Just fst <- [getFactKey $ Glean.Test.dualStringPair_key_fst key] ]
 
   -- slightly modified version of case 10 with a nested pattern
-  r <- runQuery_ env repo $ modify $ recursive $ query $
+  r :: [Glean.Test.DualStringPair] <-
+    runQuery_ env repo $ modify $ recursive $ query $
     Query.Glean.Test.DualStringPair_with_key def
       { Query.Glean.Test.dualStringPair_key_fst = Just $
         Query.Glean.Test.StringPair_with_key def

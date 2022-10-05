@@ -91,8 +91,10 @@ genTargets mode slashVn version info =
     , "  py3_namespace = \"" <> py3Namespace mode <> "\","
     , "  py_base_module = \"" <> pyBaseModule mode <> "\","
     , "  rust_crate_name = \"" <> rustCrate <> "\","
-    , "  hs_includes = [\"" <> namespace <> "_include.hs\"],"
-    , "  thrift_rust_options = [\"serde\", \"skip_none_serialization\"],"
+    ] ++
+    [ "  hs_includes = [\"" <> namespace <> "_include.hs\"],"
+    | mode == Data ] ++
+    [ "  thrift_rust_options = [\"serde\", \"skip_none_serialization\"],"
     , "  thrift_cpp2_options = [" <> Text.intercalate ", " [
       "\"json\"",
       "\"types_cpp_splits=" <> cppSplits <> "\""
@@ -269,9 +271,11 @@ genNamespace mode slashVn namespaces version
     , "namespace java.swift " <> javaBaseModule mode <> "."
       <> underscored namespaces
     , ""
-    , "hs_include \"glean/schema" <> slashVn
+    ] ++
+    [ "hs_include \"glean/schema" <> slashVn
       <> "/thrift/" <> (case mode of Data -> ""; Query -> "query/")
       <>  underscored namespaces <> "_include.hs\""
+      | mode == Data
     ] ++
     predicateVersionMap ++
     -- builtin only

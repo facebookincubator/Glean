@@ -150,10 +150,6 @@ module Glean
   , PredicateRef(..)
   , predicateRef
   , SumBranches(..)
-  , PredicateQuery(..)
-  , SumQuery(..)
-  , QueryOf
-  , ToQuery(..)
 
   -- * Writing
   , fillDatabase

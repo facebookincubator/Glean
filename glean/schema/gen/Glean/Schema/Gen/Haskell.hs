@@ -12,7 +12,6 @@ module Glean.Schema.Gen.Haskell
   ( genSchemaHS
   ) where
 
-import Control.Monad
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.List.Extra ( nubSort )
@@ -32,12 +31,6 @@ genSchemaHS _version preddefs typedefs =
   [ ("thrift" </> Text.unpack (underscored namespaces) <> "_include" <.> "hs",
       Text.intercalate (newline <> newline)
         (header Data namespaces deps : doGen Data preds types))
-  | (namespaces, (deps, preds, types)) <- schemas
-  ] ++
-  [ ("thrift" </> "query" </>
-      Text.unpack (underscored namespaces) <> "_include" <.> "hs",
-      Text.intercalate (newline <> newline)
-        (header Query namespaces deps : doGen Query preds types))
   | (namespaces, (deps, preds, types)) <- schemas
   ] ++
   [ ("hs" </> "Glean" </> "Schema" </>
@@ -137,10 +130,6 @@ header mode here deps = Text.unlines $
   ] ++
   -- import dependencies
   map (importSchema mode) deps ++
-  -- if this is a Query module, import the Data module
-  (case mode of
-    Query -> [importSchema Data here]
-    _ -> []) ++
   -- inject this instance into the Builtin schema, because there's no
   -- other good place to put it.
   (case (here, mode) of
@@ -156,11 +145,10 @@ header mode here deps = Text.unlines $
 
 importSchema :: Mode -> NameSpaces -> Text
 importSchema mode ns
-  | Query <- mode = Text.unlines [data_, query]
+  | Query <- mode = ""
   | otherwise = data_
   where
   data_ = "import qualified Glean.Schema." <> upperSquashNS <> ".Types"
-  query = "import qualified Glean.Schema.Query." <> upperSquashNS <> ".Types"
   upperSquashNS = Text.concat (map cap1 ns)
 
 
@@ -183,9 +171,6 @@ haskellTypeName query (ns, x) = haskellThriftName query (ns, cap1 x)
 
 fieldName :: (NameSpaces, Text) -> Text
 fieldName (ns, x) = haskellThriftName Data (ns, low1 x)
-
-qFieldName :: (NameSpaces, Text) -> Text
-qFieldName (ns, x) = haskellThriftName Query (ns, low1 x)
 
 -- | apply stupid and wrong heuristic
 paren :: Text -> Text
@@ -284,9 +269,7 @@ genPredicate mode PredicateDef{..}
     let
       here = fst pName
       name = haskellTypeName Data pName -- e.g. Clang_File
-      queryName = haskellTypeName Query pName -- e.g. Clang_File
 
-    -- Note: This withPredicateDefHint covers both Mode Data and Mode Query
     withPredicateDefHint (snd pName) $ do
     let
       appendName suffix = let (ns, x) = pName in (ns, x <> suffix)
@@ -306,8 +289,6 @@ genPredicate mode PredicateDef{..}
     (type_value, define_value) <-
       if not has_value then return ("Unit", []) else do
         define_kt mode here predicateDefValueType name_value
-
-    toQueryKey <- toQuery here predicateDefKeyType
 
     let extra = define_key ++ define_value
     let ver = predicateRef_version predicateDefRef
@@ -333,11 +314,6 @@ genPredicate mode PredicateDef{..}
               else "getFactValue _ = Prelude.Just ()"
           ]
 
-        def_Query = inst "Glean.PredicateQuery"
-          [ "toQueryId = " <> queryName <>
-              "_with_id . Glean.fromFid . Glean.idOf"
-          , "toQueryKey = " <> queryName <> "_with_key . " <> toQueryKey ]
-
         def_Type = inst "Glean.Type"
           [ "buildRtsValue b = Glean.buildRtsValue b . Glean.getId"
           , "decodeRtsValue = Glean.decodeRef"
@@ -345,16 +321,9 @@ genPredicate mode PredicateDef{..}
           , "sourceType = Glean.predicateSourceType"
           ]
 
-        def_QueryResult_QueryOf =
-          ["type instance Glean.QueryResult " <> queryName <> " = " <> name
-          ,"type instance Glean.QueryOf " <> name <> " = " <> queryName ]
-
-        def_ToQuery =
-          [ "instance Glean.ToQuery " <> name ]
-
     return $ extra ++ case mode of
       Data -> map myUnlines [def_Predicate, def_Type]
-      Query -> map myUnlines [def_Query, def_QueryResult_QueryOf, def_ToQuery]
+      Query -> []
 
 
 -- Make the thriftTy type text, and the needed [Text] blocks
@@ -404,7 +373,6 @@ structDef mode ident ver fields = do
   let typeRef = TypeRef ident ver
   sName@(here,root) <- typeName typeRef
   let name = haskellTypeName Data sName
-      queryName = haskellTypeName Query sName
 
   withTypeDefHint root $ do
   let
@@ -425,9 +393,6 @@ structDef mode ident ver fields = do
            : indentLines (replicate (pred n) "<*> Glean.decodeRtsValue")
 
   tys <- mapM makeTypeName fields
-  toQueries <- forM fields $ \field ->
-    withRecordFieldHint (fieldDefName field) $
-      toQuery here (fieldDefType field)
   let def_Type =
         "instance Glean.Type " <> name <> " where"
         : indentLines
@@ -436,94 +401,12 @@ structDef mode ident ver fields = do
         <> [sourceTypeDef ident ver]
         )
 
-      def_Query =
-        ["type instance Glean.QueryResult " <> queryName <> " = " <> name
-        ,"type instance Glean.QueryOf " <> name <> " = " <> queryName
-        ]
-
-      def_ToQuery =
-        "instance Glean.ToQuery " <> name <> " where" : indentLines
-          [ "toQuery " <> paren nameAndParams <> " = " <> queryName <>
-            mconcat
-              [ " (Prelude.Just (" <> toq <> " " <> x <> "))"
-              | (toq, x) <- zip toQueries fieldParamNames ]
-          ]
-
       def_RecordFields =
         [ emitFieldTypes "Angle.RecordFields" name (zip fields tys) ]
 
   return $ map myUnlines $ case mode of
     Data -> [def_Type, def_RecordFields]
-    Query -> [def_Query, def_ToQuery]
-
--- | We cannot generate ToQuery instances for arrays and maybes,
--- because they would overlap. e.g. a type [T] corresponds to a query
--- type Foo_array (where Foo is derived from the typedef or field
--- containing this type), so we would need a
---
---   type instance QueryOf [T] Foo_array
---
--- and this would overlap with other instance for [T]. So when we need
--- `toQuery` for an array or maybe type, we have to expand it
--- inline. Getting this right is super painful, but I don't know a
--- better solution.
---
-toQuery :: NameSpaces -> ResolvedType -> M Text
-toQuery here ty = go False here ty
-  where
-  go named here ty = case ty of
-    ArrayTy elemTy | elemTy /= ByteTy -> do
-      (_, name) <-
-        (if named then id else withRecordFieldHint "array") $ nameThisType ty
-      let qname = haskellTypeName Query (here, name)
-      elemToQuery <- toQuery here elemTy
-      return $ "(" <> qname <> "_exact . Prelude.map " <> elemToQuery <> ")"
-    MaybeTy elemTy -> do
-      (_, name) <- nameThisType ty
-      let qname = qFieldName (here, name)
-      elemToQuery <- withRecordFieldHint "just_" $ toQuery here elemTy
-      return $ "(Prelude.maybe (Data.Default.def { " <>
-        qname <> "_nothing = Prelude.Just Data.Default.def}) " <>
-        "(\\x -> Data.Default.def { " <> qname <> "_just = Prelude.Just (" <>
-        elemToQuery <> " x)}))"
-    NamedTy t -> do
-      (here,root) <- typeName t
-      withTopLevelHint root $ do
-        m <- typeDef t
-        case m of
-          Nothing -> error $ "toQuery: arrayTyName: " <> show t
-          Just ty -> go True here ty
-    _other -> return "Glean.toQuery"
-
--- | Help "SumQuery" when the branch type is Array of a named type.
--- We need to append @"_<fieldDefName>_array"@ to the main type.
---
--- Compare with Glean.Schema.Gen.Thrift.thriftTy for mode Query, which
--- add this @"_array"@.
---
--- I do not have a @Maybe@ case to test, so this may need extending
--- in the future.
---
--- First argument is the normal type renaming.
-toQueryType :: (ResolvedFieldDef -> M Text) -> NameSpaces -> ResolvedFieldDef -> M Text
-toQueryType fieldTypeName here field = case fieldDefType field of
-  ArrayTy elemTy | elemTy /= ByteTy -> do
-    (_, name) <- withUnionFieldHint (fieldDefName field) $
-      withRecordFieldHint "array" $ nameThisType (fieldDefType field)
-    let qname = haskellTypeName Query (here, name)
-    return qname
-  _other -> toQueryConTypeName <$> fieldTypeName field
-
--- | Helper for 'unionDef' because @instance SumQuery (QueryOf _)@ gives
--- @Illegal type synonym family application in instance@ so I will write
--- my own transform
-toQueryConTypeName :: Text -> Text
-toQueryConTypeName "Bool" = "Prelude.Bool"
-toQueryConTypeName "Text" = "Data.Text.Text"
-toQueryConTypeName "ByteString" = "Data.ByteString.ByteString"
-toQueryConTypeName "Glean.Nat" = "Glean.Nat"
-toQueryConTypeName "Glean.Byte" = "Glean.Byte"
-toQueryConTypeName n = n
+    Query -> []
 
 
 unionDef :: Mode -> Name -> Version -> [ResolvedFieldDef] -> M [Text]
@@ -531,16 +414,12 @@ unionDef mode ident ver fields = do
   let typeRef = TypeRef ident ver
   uName@(here,root) <- typeName typeRef
   let name = haskellTypeName Data uName
-      queryName = haskellTypeName Query uName
   withTypeDefHint root $ do
   let
     shortConNames = map fieldDefName fields
     conNames = map toConName shortConNames
     toConName shortName = cap1 (prefix <> shortName)
       where prefix = name <> "_"
-    queryConNames = map (prefixQuery <>) shortConNames
-      where nameQuery = qFieldName uName
-            prefixQuery = cap1 nameQuery <> "_"
     makeTypeName pred mode gen (FieldDef p tField) =
       withUnionFieldHint p (haskellTy_ pred mode gen here tField)
 
@@ -549,13 +428,6 @@ unionDef mode ident ver fields = do
 
   conTypeNames <- mapM (makeTypeName PredName Data False) fields
   keyTypeNames <- mapM (makeTypeName PredKey Data False) fields
-  queryConTypeNames <- mapM
-    (toQueryType (makeTypeName PredName Query False) here)
-    fields
-
-  toQueries <- forM fields $ \field ->
-    withUnionFieldHint (fieldDefName field) $
-      toQuery here (fieldDefType field)
 
   let def_Type = case conNames of
         [] ->
@@ -581,11 +453,6 @@ unionDef mode ident ver fields = do
             , indentLines [sourceTypeDef ident ver]
             ]
 
-      def_Query =
-        ["type instance Glean.QueryResult " <> queryName <> " = " <> name
-        ,"type instance Glean.QueryOf " <> name <> " = " <> queryName
-        ]
-
       distinctTypes = length (nubSort conTypeNames) == length conTypeNames
 
       def_Sum
@@ -604,30 +471,12 @@ unionDef mode ident ver fields = do
               : indentLines (makeInjectBranch conName
                   ++ makeProjectBranch conName)
 
-      def_SumQuery
-        | not distinctTypes = []
-        | otherwise = zipWith mk queryConNames queryConTypeNames
-        where
-            instQ queryConTypeName = "instance Glean.SumQuery "
-              <> queryConTypeName <> " " <> queryName <> " where"
-            makeInjectQuery queryConName = "injectQuery q = Data.Default.def"
-              : indentLines [ "{ " <> queryConName <> " = Prelude.Just q }" ]
-            mk queryConName queryConTypeName =
-              instQ queryConTypeName
-              : indentLines (makeInjectQuery queryConName)
-
-      def_ToQuery =
-          ("instance Glean.ToQuery " <> name <> " where") :
-          [ "  toQuery (" <> con <> " x) = Data.Default.def { " <>
-              queryCon <> " = Prelude.Just (" <> toQ <> " x) }"
-          | (con, queryCon, toQ) <- zip3 conNames queryConNames toQueries ]
-
       def_SumFields =
         [ emitFieldTypes "Angle.SumFields" name (zip fields keyTypeNames) ]
 
   return $ map myUnlines $ case mode of
     Data -> [def_Type, def_SumFields] ++ def_Sum
-    Query -> [def_Query, def_ToQuery] ++ def_SumQuery
+    Query -> []
   where
     mkBuildEmpty constructors emptyCon =
       let index = length constructors in
@@ -657,10 +506,6 @@ enumDef mode ident ver eVals = do
   let typeRef = TypeRef ident ver
   eName@(_,root) <- typeName typeRef
   let name = haskellTypeName Data eName
-      queryName = haskellTypeName Query eName
-
-      conNames = map (cap1 . ((name <> "_") <>)) eVals
-      queryConNames = map (cap1 . ((queryName <> "_") <>)) eVals
 
   withTypeDefHint root $ do
   let
@@ -669,17 +514,6 @@ enumDef mode ident ver eVals = do
                           , "decodeRtsValue = Glean.thriftEnumD "
                           , sourceTypeDef ident ver
                           ]
-    def_Query =
-      ["type instance Glean.QueryResult " <> queryName <> " = " <> name
-      ,"type instance Glean.QueryOf " <> name <> " = " <> queryName
-      ]
-
-    def_ToQuery =
-      "instance Glean.ToQuery " <> name <> " where" : indentLines
-        [ "toQuery " <> con <> " = " <> qcon
-        | (con, qcon) <- zip conNames queryConNames
-        ]
-
     def_SumFields =
        [ emitFieldTypes "Angle.SumFields" name
            [ (FieldDef n unitT, "Glean.Schema.Builtin.Types.Unit")
@@ -694,7 +528,7 @@ enumDef mode ident ver eVals = do
 
   return $ map myUnlines $ case mode of
     Data -> [def_Type, def_SumFields, def_AngleEnum]
-    Query -> [def_Query, def_ToQuery]
+    Query -> []
 
 sourceTypeDef :: Name -> Version -> Text
 sourceTypeDef name version =
