@@ -21,7 +21,6 @@ from glean.schema.codemarkup_pp.types import (
     PpFileEntityXRefLocations,
     PpEntityTraceXRefLocations,
     PpResolveTraceLocation,
-    PpFileEntityTraceXRefLocations,
 )
 
 
@@ -117,18 +116,6 @@ class CodemarkupPpPpResolveTraceLocation(GleanSchemaPredicate):
 
   @staticmethod
   def angle_query(*, trace: Optional["Cxx1Trace"] = None, location: Optional["CodemarkupTypesLocation"] = None, entity: Optional["CodePpEntity"] = None) -> "CodemarkupPpPpResolveTraceLocation":
-    raise Exception("this function can only be called from @angle_query")
-
-
-
-class CodemarkupPpPpFileEntityTraceXRefLocations(GleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], file: ast.Expr, trace: ast.Expr, xref: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, trace, 'trace'), angle_for(__env, xref, 'xref'), angle_for(__env, entity, 'entity')]))
-    return f"codemarkup.pp.PpFileEntityTraceXRefLocations.3 { ('{ ' + query_fields + ' }') if query_fields else '_' }", PpFileEntityTraceXRefLocations
-
-  @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, trace: Optional["Cxx1Trace"] = None, xref: Optional["CodemarkupTypesXRefLocation"] = None, entity: Optional["CodePpEntity"] = None) -> "CodemarkupPpPpFileEntityTraceXRefLocations":
     raise Exception("this function can only be called from @angle_query")
 
 
