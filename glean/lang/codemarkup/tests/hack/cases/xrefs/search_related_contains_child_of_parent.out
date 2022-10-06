@@ -1371,6 +1371,50 @@
         },
         "location": {
           "name": "NS",
+          "file": { "key": "www/Namespace.php" },
+          "location": { "span": { "start": 236, "length": 2 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "namespace_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "InnerNS" },
+                      "parent": { "key": { "name": { "key": "NS" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "InnerNS",
+          "file": { "key": "www/Namespace.php" },
+          "location": { "span": { "start": 329, "length": 10 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "namespace_": {
+                "key": { "name": { "key": { "name": { "key": "NS" } } } }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "NS",
           "file": { "key": "www/Namespace2.php" },
           "location": { "span": { "start": 273, "length": 2 } }
         }
@@ -1444,6 +1488,50 @@
           "name": "NamespaceClass",
           "file": { "key": "www/Namespace.php" },
           "location": { "span": { "start": 241, "length": 76 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "namespace_": {
+                "key": { "name": { "key": { "name": { "key": "NS" } } } }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "NS",
+          "file": { "key": "www/Namespace2.php" },
+          "location": { "span": { "start": 273, "length": 2 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "namespace_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "InnerNS" },
+                      "parent": { "key": { "name": { "key": "NS" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "InnerNS",
+          "file": { "key": "www/Namespace.php" },
+          "location": { "span": { "start": 329, "length": 10 } }
         }
       }
     }

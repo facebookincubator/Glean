@@ -719,6 +719,27 @@
         "hack": {
           "decl": {
             "namespace_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "InnerNS" },
+                    "parent": { "key": { "name": { "key": "NS" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 5, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "namespace_": {
               "key": { "name": { "key": { "name": { "key": "NS" } } } }
             }
           }

@@ -926,5 +926,34 @@
         }
       }
     }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "namespace_": {
+              "key": { "name": { "key": { "name": { "key": "NS" } } } }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "namespace_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "InnerNS" },
+                    "parent": { "key": { "name": { "key": "NS" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 ]

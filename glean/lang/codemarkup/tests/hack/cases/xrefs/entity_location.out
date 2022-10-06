@@ -855,6 +855,31 @@
         "hack": {
           "decl": {
             "namespace_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "InnerNS" },
+                    "parent": { "key": { "name": { "key": "NS" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/Namespace.php" },
+        "location": { "span": { "length": 10, "start": 329 } },
+        "name": "InnerNS"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "namespace_": {
               "key": { "name": { "key": { "name": { "key": "NS" } } } }
             }
           }
