@@ -29,18 +29,6 @@ predicate PPEntityLocation:
       { Name, File, { span = {0,0} }, nothing } = Location;
     );
 
-# (deprecated, use PpResolveTraceLocation)
-predicate PpFileEntityTraceLocations:
-  {
-    file: src.File,
-    trace: cxx1.Trace,
-    location: codemarkup.types.Location,
-    entity: code.pp.Entity,
-  }
-  { File, Trace, Location, Entity } where
-    PpResolveTraceLocation { Trace, Location, Entity };
-    codemarkup.types.Location { file = File } = Location;
-
 predicate PpResolveLocation:
   {
     location: codemarkup.types.Location,
