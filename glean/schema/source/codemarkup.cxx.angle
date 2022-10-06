@@ -122,25 +122,8 @@ predicate CxxFileEntityFixedXRefLocations:
     entity: code.cxx.Entity,
   }
   { File, XRef, Entity } where
-    CxxFileEntityTraceFixedXRefLocations { File, _, XRef, Entity }
-
-# Fixed C++ xrefs only, for a specific trace (FileXRefMap)
-# (deprecated, use CxxFileEntityXMapFixedXRefLocations)
-predicate CxxFileEntityTraceFixedXRefLocations:
-  {
-    file: src.File,
-    trace: cxx1.FileXRefMap,
-    xref: codemarkup.types.XRefLocation,
-    entity: code.cxx.Entity,
-  }
-  { File, Trace, XRef, Entity } where
-    cxx1.FileXRefMap { file = File, fixed = Fixeds } = Trace;
-    cxx1.FileXRefs { Trace, _ };
-    cxx1.FixedXRef { XRefTarget, Uses } = Fixeds[..];
-    CxxXRefTargetLocation { XRefTarget, Entity, Location };
-    Spans = prim.relToAbsByteSpans Uses;
-    Span = Spans[..];
-    { Location, { span = Span }} = XRef;
+    Trace = cxx1.FileXRefs { xmap = { file = File } };
+    CxxFileEntityXMapFixedXRefLocations { Trace, XRef, Entity }
 
 # Fixed C++ xrefs, keyed by a specific cxx1.FileXRefs fact
 # We will expand any targets as best we can
