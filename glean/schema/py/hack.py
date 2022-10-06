@@ -768,12 +768,12 @@ class HackFunctionDefinition(GleanSchemaPredicate):
 
 class HackTraitDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(__env: Dict[str, R], declaration: ast.Expr, members: ast.Expr, implements_: ast.Expr, uses: ast.Expr, attributes: ast.Expr, typeParams: ast.Expr, requireExtends: ast.Expr, requireImplements: ast.Expr, module_: ast.Expr) -> Tuple[str, Struct]:
-    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, members, 'members'), angle_for(__env, implements_, 'implements_'), angle_for(__env, uses, 'uses'), angle_for(__env, attributes, 'attributes'), angle_for(__env, typeParams, 'typeParams'), angle_for(__env, requireExtends, 'requireExtends'), angle_for(__env, requireImplements, 'requireImplements'), angle_for(__env, module_, 'module_')]))
+  def build_angle(__env: Dict[str, R], declaration: ast.Expr, members: ast.Expr, implements_: ast.Expr, uses: ast.Expr, attributes: ast.Expr, typeParams: ast.Expr, requireExtends: ast.Expr, requireImplements: ast.Expr, module_: ast.Expr, requireClass: ast.Expr) -> Tuple[str, Struct]:
+    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, declaration, 'declaration'), angle_for(__env, members, 'members'), angle_for(__env, implements_, 'implements_'), angle_for(__env, uses, 'uses'), angle_for(__env, attributes, 'attributes'), angle_for(__env, typeParams, 'typeParams'), angle_for(__env, requireExtends, 'requireExtends'), angle_for(__env, requireImplements, 'requireImplements'), angle_for(__env, module_, 'module_'), angle_for(__env, requireClass, 'requireClass')]))
     return f"hack.TraitDefinition.6 { ('{ ' + query_fields + ' }') if query_fields else '_' }", TraitDefinition
 
   @staticmethod
-  def angle_query(*, declaration: Optional["HackTraitDeclaration"] = None, members: Optional[List["HackDeclaration"]] = None, implements_: Optional[List["HackInterfaceDeclaration"]] = None, uses: Optional[List["HackTraitDeclaration"]] = None, attributes: Optional[List["HackUserAttribute"]] = None, typeParams: Optional[List["HackTypeParameter"]] = None, requireExtends: Optional[List["HackClassDeclaration"]] = None, requireImplements: Optional[List["HackInterfaceDeclaration"]] = None, module_: Optional[Union[Just["HackModuleMembership"], Just[None]]] = None) -> "HackTraitDefinition":
+  def angle_query(*, declaration: Optional["HackTraitDeclaration"] = None, members: Optional[List["HackDeclaration"]] = None, implements_: Optional[List["HackInterfaceDeclaration"]] = None, uses: Optional[List["HackTraitDeclaration"]] = None, attributes: Optional[List["HackUserAttribute"]] = None, typeParams: Optional[List["HackTypeParameter"]] = None, requireExtends: Optional[List["HackClassDeclaration"]] = None, requireImplements: Optional[List["HackInterfaceDeclaration"]] = None, module_: Optional[Union[Just["HackModuleMembership"], Just[None]]] = None, requireClass: Optional[Union[Just[List["HackClassDeclaration"]], Just[None]]] = None) -> "HackTraitDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 
