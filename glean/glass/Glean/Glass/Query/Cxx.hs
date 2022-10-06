@@ -152,11 +152,11 @@ externalXRefs mlimit xrefId = do
   -- process concurrently
   maybeRawXRefs <- variableXRefs xrefId
   declToDefMap <- externalDeclToDefXRefs mlimit xrefId
-  declLocMap <- externalDeclToLocations xrefId
+  declLocMap <- externalDeclToLocations mlimit xrefId
   case maybeRawXRefs of
     Nothing -> return []
     Just (sources, targets) -> do
-      locations <- mapM (cxxXRefTargetToLocation declLocMap) targets
+      locations <- mapM (cxxXRefTargetToLocation declLocMap) targets -- parallel
       let ranges = relativeByteSpansToRanges sources
       let declXRefs = zipXRefSourceAndTargets ranges locations
       let defnXRefs = zipXRefSourcesAndDefinitions declToDefMap ranges locations
@@ -229,12 +229,14 @@ externalDeclToDefXRefs mlimit xrefId = do
 type DeclLocationMap = Map Cxx.Declaration Code.Location
 
 -- | Build lookup table of external xref target decls to their location
--- We need all results
+-- We need all results, so just assume we don't want to exceed the limit.
+-- The value here should actually be the length of the trace `targets*spans`?
 externalDeclToLocations
-  :: Glean.IdOf Cxx.FileXRefs
+  :: Maybe Int
+  -> Glean.IdOf Cxx.FileXRefs
   -> Glean.RepoHaxl u w DeclLocationMap
-externalDeclToLocations xrefId = do
-  Map.fromList <$> searchRecursiveWithLimit Nothing
+externalDeclToLocations mlimit xrefId = do
+  Map.fromList <$> searchRecursiveWithLimit mlimit
     (cxxFileEntityXMapVariableXRefDeclLocations xrefId)
 
 -- and the pp #define and #include occurences
