@@ -104,18 +104,11 @@ predicate CxxEntityLocation:
 
 # Finding references in a file
 
-# Either C++ / ObjC xrefs or C preprocessor xrefs
+# n.b. limited support for finding C++ xrefs by file, as the types are
+# generally too complex to flatten in Angle. We only provide local-to-file
+# xrefs via this path. To do the full set see glass Query/Cxx.hs
+#
 predicate CxxFileEntityXRefLocations:
-  {
-    file: src.File,
-    xref: codemarkup.types.XRefLocation,
-    entity: code.cxx.Entity,
-  }
-  { File, XRef, Entity } where
-    CxxFileEntityFixedXRefLocations { File, XRef, Entity }
-
-# Fixed C++ xrefs only
-predicate CxxFileEntityFixedXRefLocations:
   {
     file: src.File,
     xref: codemarkup.types.XRefLocation,
