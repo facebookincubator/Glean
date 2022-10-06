@@ -40,7 +40,6 @@ from glean.schema.codemarkup_cxx.types import (
     CxxFileEntityTraceFixedXRefLocations,
     CxxEntityInfo,
     CxxDefinitionContainsParent,
-    CxxFileEntityTraceLocations,
     CxxNamespaceDeclarationContainsChild,
     CxxDefinitionExtendsChild,
     CxxDeclInfo,
@@ -372,18 +371,6 @@ class CodemarkupCxxCxxDefinitionContainsParent(GleanSchemaPredicate):
 
   @staticmethod
   def angle_query(*, child: Optional["CodeCxxDefinition"] = None, parent: Optional["CodeCxxEntity"] = None) -> "CodemarkupCxxCxxDefinitionContainsParent":
-    raise Exception("this function can only be called from @angle_query")
-
-
-
-class CodemarkupCxxCxxFileEntityTraceLocations(GleanSchemaPredicate):
-  @staticmethod
-  def build_angle(__env: Dict[str, R], file: ast.Expr, trace: ast.Expr, location: ast.Expr, entity: ast.Expr) -> Tuple[str, Struct]:
-    query_fields =  ', '.join(filter(lambda x: x != '', [angle_for(__env, file, 'file'), angle_for(__env, trace, 'trace'), angle_for(__env, location, 'location'), angle_for(__env, entity, 'entity')]))
-    return f"codemarkup.cxx.CxxFileEntityTraceLocations.4 { ('{ ' + query_fields + ' }') if query_fields else '_' }", CxxFileEntityTraceLocations
-
-  @staticmethod
-  def angle_query(*, file: Optional["SrcFile"] = None, trace: Optional["Cxx1Trace"] = None, location: Optional["CodemarkupTypesLocation"] = None, entity: Optional["CodeCxxEntity"] = None) -> "CodemarkupCxxCxxFileEntityTraceLocations":
     raise Exception("this function can only be called from @angle_query")
 
 

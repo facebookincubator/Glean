@@ -18,19 +18,6 @@ predicate CxxResolveLocation:
     Trace = cxx1.Trace { file = File };
     CxxResolveTraceLocation { Trace, { Str, File, Range, Span }, Entity };
 
-# Like FileEntityLocations but indexed by a specific Trace (for Cxx)
-# (deprecated, use CxxResolveTraceLocation)
-predicate CxxFileEntityTraceLocations:
-  {
-    file: src.File,
-    trace: cxx1.Trace,
-    location: codemarkup.types.Location,
-    entity: code.cxx.Entity,
-  }
-  { File, Trace, Location, Entity } where
-    CxxResolveTraceLocation { Trace, Location, Entity };
-    codemarkup.types.Location { file = File } = Location;
-
 # Resolve locations for Cxx, but for only a specific trace
 # We'll need to pick the trace on the client
 predicate CxxResolveTraceLocation:
