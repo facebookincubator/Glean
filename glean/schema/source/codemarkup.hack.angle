@@ -263,6 +263,11 @@ predicate HackEntityDocumentation :
   }
   { E, F, S } where
     { decl = D } = E;
-    hack.DeclarationComment{ declaration = D, file = F, span = S }
+    ( hack.DeclarationComment{ D, F, S } ) |
+    # if this is a method, also check for docs on the base of any override
+    ( { method = Derived } = D;
+      hack.MethodOverrides { Derived, Base };
+      hack.DeclarationComment { { method = Base }, F, S }
+    )
 
 }

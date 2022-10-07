@@ -34,7 +34,7 @@
       "location": {
         "name": "SourceClass",
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "start": 253, "length": 212 } }
+        "location": { "span": { "start": 253, "length": 321 } }
       },
       "entity": {
         "hack": {
@@ -57,7 +57,7 @@
       "location": {
         "name": "SubClass",
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "start": 467, "length": 37 } }
+        "location": { "span": { "start": 576, "length": 140 } }
       },
       "entity": {
         "hack": {
@@ -106,7 +106,7 @@
       "location": {
         "name": "TestAnnotation",
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "start": 506, "length": 108 } }
+        "location": { "span": { "start": 718, "length": 108 } }
       },
       "entity": {
         "hack": {
@@ -129,7 +129,7 @@
       "location": {
         "name": "__construct",
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "start": 560, "length": 52 } }
+        "location": { "span": { "start": 772, "length": 52 } }
       },
       "entity": {
         "hack": {
@@ -211,9 +211,65 @@
     "key": {
       "file": { "key": "www/SourceClass.php" },
       "location": {
+        "name": "pleaseOverride",
+        "file": { "key": "www/SourceClass.php" },
+        "location": { "span": { "start": 515, "length": 57 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "pleaseOverride" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/SourceClass.php" },
+      "location": {
+        "name": "pleaseOverride",
+        "file": { "key": "www/SourceClass.php" },
+        "location": { "span": { "start": 615, "length": 98 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "pleaseOverride" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SubClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/SourceClass.php" },
+      "location": {
         "name": "test",
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "start": 603, "length": 5 } }
+        "location": { "span": { "start": 815, "length": 5 } }
       },
       "entity": {
         "hack": {

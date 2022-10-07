@@ -22,9 +22,20 @@ class SourceClass extends SuperClass {
   public function bar(int $param): int {
     return $param * corge();
   }
+
+  /**
+   * A thing that can be overridden
+   */
+  public abstract static function pleaseOverride(): string;
 }
 
-class SubClass extends SourceClass {}
+class SubClass extends SourceClass {
+  <<__Override>>
+  public static function pleaseOverride(): string {
+    return 'override this';
+  }
+
+}
 
 class TestAnnotation implements HH\ClassAttribute {
   public function __construct(private string $test) {}

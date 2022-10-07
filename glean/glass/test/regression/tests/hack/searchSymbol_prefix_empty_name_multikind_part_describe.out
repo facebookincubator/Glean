@@ -526,7 +526,7 @@
                         "columnBegin": 1,
                         "columnEnd": 2,
                         "lineBegin": 13,
-                        "lineEnd": 25
+                        "lineEnd": 30
                     },
                     "repository": "test"
                 },
@@ -542,7 +542,7 @@
                         "columnBegin": 1,
                         "columnEnd": 2,
                         "lineBegin": 13,
-                        "lineEnd": 25
+                        "lineEnd": 30
                     },
                     "repository": "test"
                 },
@@ -610,6 +610,51 @@
                         "columnEnd": 23,
                         "lineBegin": 20,
                         "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "visibility": 20
+            },
+            {
+                "annotations": [],
+                "comments": [
+                    {
+                        "filepath": "www/SourceClass.php",
+                        "range": {
+                            "columnBegin": 3,
+                            "columnEnd": 6,
+                            "lineBegin": 26,
+                            "lineEnd": 28
+                        },
+                        "repository": "test"
+                    }
+                ],
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 60,
+                        "lineBegin": 29,
+                        "lineEnd": 29
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "SourceClass",
+                    "localName": "pleaseOverride"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/SourceClass/pleaseOverride",
+                "sym_location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 60,
+                        "lineBegin": 29,
+                        "lineEnd": 29
                     },
                     "repository": "test"
                 },
@@ -790,9 +835,9 @@
                     "filepath": "www/SourceClass.php",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 38,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "columnEnd": 2,
+                        "lineBegin": 32,
+                        "lineEnd": 38
                     },
                     "repository": "test"
                 },
@@ -806,13 +851,63 @@
                     "filepath": "www/SourceClass.php",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 38,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "columnEnd": 2,
+                        "lineBegin": 32,
+                        "lineEnd": 38
                     },
                     "repository": "test"
                 },
                 "sym_other_locations": []
+            },
+            {
+                "annotations": [
+                    {
+                        "name": "__Override",
+                        "source": "__Override"
+                    }
+                ],
+                "comments": [
+                    {
+                        "filepath": "www/SourceClass.php",
+                        "range": {
+                            "columnBegin": 3,
+                            "columnEnd": 6,
+                            "lineBegin": 26,
+                            "lineEnd": 28
+                        },
+                        "repository": "test"
+                    }
+                ],
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 33,
+                        "lineEnd": 36
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "SubClass",
+                    "localName": "pleaseOverride"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/SubClass/pleaseOverride",
+                "sym_location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 33,
+                        "lineEnd": 36
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "visibility": 20
             },
             {
                 "annotations": [],
@@ -891,8 +986,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 29,
-                        "lineEnd": 31
+                        "lineBegin": 40,
+                        "lineEnd": 42
                     },
                     "repository": "test"
                 },
@@ -907,8 +1002,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 29,
-                        "lineEnd": 31
+                        "lineBegin": 40,
+                        "lineEnd": 42
                     },
                     "repository": "test"
                 },
@@ -924,8 +1019,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 55,
-                        "lineBegin": 30,
-                        "lineEnd": 30
+                        "lineBegin": 41,
+                        "lineEnd": 41
                     },
                     "repository": "test"
                 },
@@ -940,8 +1035,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 55,
-                        "lineBegin": 30,
-                        "lineEnd": 30
+                        "lineBegin": 41,
+                        "lineEnd": 41
                     },
                     "repository": "test"
                 },
@@ -958,8 +1053,8 @@
                     "range": {
                         "columnBegin": 46,
                         "columnEnd": 51,
-                        "lineBegin": 30,
-                        "lineEnd": 30
+                        "lineBegin": 41,
+                        "lineEnd": 41
                     },
                     "repository": "test"
                 },
@@ -974,8 +1069,8 @@
                     "range": {
                         "columnBegin": 46,
                         "columnEnd": 51,
-                        "lineBegin": 30,
-                        "lineEnd": 30
+                        "lineBegin": 41,
+                        "lineEnd": 41
                     },
                     "repository": "test"
                 },
@@ -1265,7 +1360,7 @@
                         "columnBegin": 1,
                         "columnEnd": 2,
                         "lineBegin": 13,
-                        "lineEnd": 25
+                        "lineEnd": 30
                     },
                     "repository": "test"
                 },
@@ -1303,6 +1398,22 @@
                 },
                 "name": "daz",
                 "symbol": "test/php/SourceClass/daz"
+            },
+            {
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 60,
+                        "lineBegin": 29,
+                        "lineEnd": 29
+                    },
+                    "repository": "test"
+                },
+                "name": "pleaseOverride",
+                "symbol": "test/php/SourceClass/pleaseOverride"
             },
             {
                 "kind": 12,
@@ -1391,14 +1502,30 @@
                     "filepath": "www/SourceClass.php",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 38,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "columnEnd": 2,
+                        "lineBegin": 32,
+                        "lineEnd": 38
                     },
                     "repository": "test"
                 },
                 "name": "SubClass",
                 "symbol": "test/php/SubClass"
+            },
+            {
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 33,
+                        "lineEnd": 36
+                    },
+                    "repository": "test"
+                },
+                "name": "pleaseOverride",
+                "symbol": "test/php/SubClass/pleaseOverride"
             },
             {
                 "kind": 7,
@@ -1440,8 +1567,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 29,
-                        "lineEnd": 31
+                        "lineBegin": 40,
+                        "lineEnd": 42
                     },
                     "repository": "test"
                 },
@@ -1456,8 +1583,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 55,
-                        "lineBegin": 30,
-                        "lineEnd": 30
+                        "lineBegin": 41,
+                        "lineEnd": 41
                     },
                     "repository": "test"
                 },
@@ -1472,8 +1599,8 @@
                     "range": {
                         "columnBegin": 46,
                         "columnEnd": 51,
-                        "lineBegin": 30,
-                        "lineEnd": 30
+                        "lineBegin": 41,
+                        "lineEnd": 41
                     },
                     "repository": "test"
                 },
