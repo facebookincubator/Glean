@@ -1,7 +1,7 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
 schema contbuild.1 {
-import buck.1
+import buck.3
 
 # Predicates to store contbuild information
 # that has the following form:
