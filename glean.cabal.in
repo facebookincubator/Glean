@@ -1401,7 +1401,6 @@ library test-lib
         TestData
         Glean.Database.Catalog.Test
         Glean.Database.Test
-        Glean.Query.Thrift.Test
     build-depends:
         glean:core,
         glean:db,
