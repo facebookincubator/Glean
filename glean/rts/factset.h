@@ -108,6 +108,93 @@ template<typename T, typename By> using FastSetBy =
  *
  */
 class FactSet final : public Define {
+private:
+  class Facts final {
+  public:
+    explicit Facts(Id start) noexcept
+      : starting_id(start) {}
+    Facts(Facts&& other) noexcept
+      : starting_id(other.starting_id)
+      , facts(std::move(other.facts))
+      , fact_memory(other.fact_memory) {}
+    Facts& operator=(Facts&& other) noexcept {
+      starting_id = other.starting_id;
+      facts = std::move(other.facts);
+      fact_memory = other.fact_memory;
+      return *this;
+    }
+
+    bool empty() const {
+      return facts.empty();
+    }
+
+    size_t size() const {
+      return facts.size();
+    }
+
+    Id startingId() const {
+      return starting_id;
+    }
+
+    struct deref {
+      Fact::Ref operator()(const Fact::unique_ptr& p) const {
+        return p->ref();
+      }
+    };
+
+    using const_iterator =
+      boost::transform_iterator<
+        deref,
+        std::vector<Fact::unique_ptr>::const_iterator>;
+
+    const_iterator begin() const {
+      return boost::make_transform_iterator(facts.begin(), deref());
+    }
+
+    const_iterator end() const {
+      return boost::make_transform_iterator(facts.end(), deref());
+    }
+
+    Fact::Ref operator[](size_t i) const {
+      assert (i < facts.size());
+      return facts[i]->ref();
+    }
+
+    void clear() {
+      facts.clear();
+      fact_memory = 0;
+    }
+
+    using Token = Fact::unique_ptr;
+
+    Token alloc(Id id, Pid type, Fact::Clause clause) {
+      return Fact::create({id, type, clause});
+    }
+
+    void commit(Token token) {
+      fact_memory += token->size();
+      facts.push_back(std::move(token));
+    }
+
+    void append(Facts other) {
+      facts.insert(
+        facts.end(),
+        std::make_move_iterator(other.facts.begin()),
+        std::make_move_iterator(other.facts.end()));
+      fact_memory += other.fact_memory;
+    }
+
+    /// Return the number of bytes occupied by facts.
+    size_t factMemory() const noexcept {
+      return fact_memory;
+    }
+
+  private:
+    Id starting_id;
+    std::vector<Fact::unique_ptr> facts;
+    size_t fact_memory = 0;
+  };
+
 public:
   explicit FactSet(Id start);
   FactSet(FactSet&&) noexcept;
@@ -126,45 +213,35 @@ public:
     return facts.empty();
   }
 
-  // TODO: make this into an iterator over facts
-  struct deref {
-    const Fact& operator()(const Fact::unique_ptr& p) const {
-      return *p;
-    }
-  };
-
-  using const_iterator =
-    boost::transform_iterator<
-      deref,
-      std::vector<Fact::unique_ptr>::const_iterator>;
+  using const_iterator = Facts::const_iterator;
 
   const_iterator begin() const {
-    return boost::make_transform_iterator(facts.begin(), deref());
+    return facts.begin();
   }
 
   const_iterator end() const {
-    return boost::make_transform_iterator(facts.end(), deref());
+    return facts.end();
   }
 
   /// Return iterator to the first fact with an id that's not less than the
   /// given id (or end() if no such fact exists).
   const_iterator lower_bound(Id id) const {
     return begin() +
-      (id <= starting_id
+      (id <= facts.startingId()
         ? 0
-        : std::min(distance(starting_id, id), facts.size()));
+        : std::min(distance(facts.startingId(), id), facts.size()));
   }
 
   const_iterator upper_bound(Id id) const {
     return begin() +
-      (id < starting_id
+      (id < facts.startingId()
         ? 0
-        : std::min(distance(starting_id, id)+1, facts.size()));
+        : std::min(distance(facts.startingId(), id)+1, facts.size()));
   }
 
   /// Return the number of bytes occupied by facts.
   size_t factMemory() const noexcept {
-    return fact_memory;
+    return facts.factMemory();
   }
 
   PredicateStats predicateStats() const;
@@ -178,11 +255,11 @@ public:
   bool factById(Id id, std::function<void(Pid, Fact::Clause)> f) override;
 
   Id startingId() const override {
-    return starting_id;
+    return facts.startingId();
   }
 
   Id firstFreeId() const override {
-    return starting_id + facts.size();
+    return facts.startingId() + facts.size();
   }
 
   Interval count(Pid pid) const override;
@@ -248,10 +325,8 @@ public:
   bool sanityCheck() const;
 
 private:
-  Id starting_id;
-  std::vector<Fact::unique_ptr> facts;
+  Facts facts;
   DenseMap<Pid, FastSetBy<const Fact *, FactByKeyOnly>> keys;
-  size_t fact_memory;
 
   /// Cached predicate stats. We create these on-demand rather than maintain
   /// them throughout because most FactSets don't need them.
