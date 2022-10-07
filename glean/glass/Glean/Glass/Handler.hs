@@ -170,7 +170,8 @@ import Glean.Glass.Types
       FileXRefTarget(..),
       FileIncludeXRef(..),
       XRefFileList(..),
-      rELATED_SYMBOLS_MAX_LIMIT )
+      rELATED_SYMBOLS_MAX_LIMIT,
+      mAXIMUM_SYMBOLS_QUERY_LIMIT )
 import Glean.Index.Types
   ( IndexRequest,
     IndexResponse)
@@ -674,7 +675,8 @@ fetchSymbolsAndAttributes latest req opts be mlang = do
     file = toFileReference
       (documentSymbolsRequest_repository req)
       (documentSymbolsRequest_filepath req)
-    mlimit = fmap fromIntegral (requestOptions_limit opts)
+    mlimit = Just (fromIntegral (fromMaybe mAXIMUM_SYMBOLS_QUERY_LIMIT
+      (requestOptions_limit opts)))
     includeRefs = documentSymbolsRequest_include_refs req
   (res1, logs) <- fetchDocumentSymbols file mlimit includeRefs be mlang
   res2 <- addDynamicAttributes latest file mlimit be res1

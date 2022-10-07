@@ -133,7 +133,12 @@ fileEntityXRefLocations mlimit fileId traceId = do
       variableXRefs <- externalXRefs mlimit xrefId
       ppxrefs <- ppXRefs mlimit traceId
       defXRefs <- declToDefXRefs mlimit traceId
-      return (fixedXRefs ++ variableXRefs ++ ppxrefs ++ defXRefs)
+      return $ maybeTake mlimit $
+        fixedXRefs ++ variableXRefs ++ ppxrefs ++ defXRefs
+
+maybeTake :: Maybe Int -> [a] -> [a]
+maybeTake Nothing = id
+maybeTake (Just n) = take n
 
 -- fixed (easily discoverable) xrefs
 fixedXRefs
@@ -160,7 +165,7 @@ externalXRefs mlimit xrefId = do
       let ranges = relativeByteSpansToRanges sources
       let declXRefs = zipXRefSourceAndTargets ranges locations
       let defnXRefs = zipXRefSourcesAndDefinitions declToDefMap ranges locations
-      return $ defnXRefs ++ declXRefs
+      return $ maybeTake mlimit $ defnXRefs ++ declXRefs
 
 -- N.B. Src.ByteSpans are _relative_ bytespans ([RelByteSpan]), it's misnamed
 relativeByteSpansToRanges :: [Src.ByteSpans] -> [[Src.ByteSpan]]
