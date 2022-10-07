@@ -117,6 +117,7 @@ glean.cabal: glean.cabal.in $(BUILD_DIR)/mode $(CXX_DIR)/defs.m4
 	m4 -E -E -P $(CXX_DIR)/defs.m4 glean.cabal.in \
 		| sed "/-- Copyright/a \\\n-- @""generated from glean.cabal.in\\n-- DO NO EDIT THIS FILE DIRECTLY" \
 		> $@
+	chmod guo-w $@
 
 $(CXX_DIR)/defs.m4: force
 	@$(MAKE) -f mk/cxx.mk --no-print-directory CXX_MODE=$(CXX_MODE) CXX_DIR=$(CXX_DIR) $@
