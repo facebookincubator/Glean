@@ -158,8 +158,18 @@ struct EncodedNat {
   explicit EncodedNat(uint64_t val) {
     encoded_size = storeNat(buf, val);
   }
+  
   folly::ByteRange byteRange() {
     return folly::ByteRange(buf, buf + encoded_size);
+  }
+  
+  size_t size() const {
+    return encoded_size;
+  }
+
+  size_t store(unsigned char *p) const {
+    std::memcpy(p, buf, encoded_size);
+    return encoded_size;
   }
  private:
   uint8_t buf[rts::MAX_NAT_SIZE];

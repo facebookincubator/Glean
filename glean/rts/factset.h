@@ -32,6 +32,61 @@ namespace rts {
 // themselves). Sets with folly's heterogenous key comparisons should use a
 // lot less memory per fact.
 
+struct CompressedFactPtr {
+  const unsigned char *ptr;
+
+  explicit CompressedFactPtr(const unsigned char *p) : ptr(p) {}
+
+  Id id() const {
+    const auto [w,_] = loadTrustedNat(ptr);
+    return Id::fromWord(w);
+  }
+
+  Pid type() const {
+    const auto p = skipTrustedNat(ptr);
+    const auto [w,_] = loadTrustedNat(p);
+    return Pid::fromWord(w);
+  }
+
+  Fact::Ref ref() const {
+    const auto [id,p1] = loadTrustedNat(ptr);
+    const auto [type,p2] = loadTrustedNat(p1);
+    const auto [key_size,p3] = loadTrustedNat(p2);
+    const auto [value_size,data] = loadTrustedNat(p3);
+    return Fact::Ref{
+      Id::fromWord(id),
+      Pid::fromWord(type),
+      Fact::Clause{
+        data,
+        static_cast<uint32_t>(key_size),
+        static_cast<uint32_t>(value_size)
+      }
+    };
+  }
+
+  template<typename Alloc>
+  static std::pair<CompressedFactPtr, unsigned char*> compress(Fact::Ref ref, Alloc&& alloc) {
+    const auto ptr = static_cast<unsigned char *>(alloc(
+      MAX_NAT_SIZE // id
+      + MAX_NAT_SIZE // type
+      + 5 // key_size
+      + 5 // value_size
+      + ref.clause.size()
+    ));
+
+    auto buf = ptr;
+    buf += storeNat(buf, ref.id.toWord());
+    buf += storeNat(buf, ref.type.toWord());
+    buf += storeNat(buf, ref.clause.key_size);
+    buf += storeNat(buf, ref.clause.value_size);
+    if (ref.clause.size() != 0) {
+      std::memcpy(buf, ref.clause.data, ref.clause.size());
+      buf += ref.clause.size();
+    }
+    return {CompressedFactPtr(ptr), buf};
+  }
+};
+
 struct FactById {
   using value_type = Id;
 
@@ -78,6 +133,14 @@ struct FactByKeyOnly {
   static value_type get(const value_type& x) {
     return x;
   }
+
+  static value_type get(const Fact::Ref *ref) {
+    return ref->key();
+  }
+
+  static value_type get(CompressedFactPtr p) {
+    return p.ref().key();
+  }
 };
 
 template<typename By> struct EqualBy {
@@ -110,19 +173,69 @@ template<typename T, typename By> using FastSetBy =
 class FactSet final : public Define {
 private:
   class Facts final {
+  private:
+    Id starting_id;
+
+  private:
+    class Allocator {
+    public:
+      Allocator() noexcept = default;
+      Allocator(Allocator&& other) noexcept;
+      Allocator(const Allocator& other) = delete;
+      Allocator& operator=(Allocator&& other) noexcept;
+      Allocator& operator=(const Allocator& other) = delete;
+      ~Allocator() noexcept;
+
+      void reset() noexcept;
+
+      void *alloc(size_t n) {
+        if (n > avail) {
+          newPage(n);
+          assert(n <= avail);
+        }
+        const auto p = buf;
+        buf += n;
+        avail -= n;
+        used += n;
+        return p;
+      }
+
+      void unalloc(const unsigned char *p);
+
+      void merge(Allocator&& other) noexcept;
+
+      size_t usedSize() const noexcept {
+        return used;
+      }
+
+      size_t totalSize() const noexcept {
+        return total;
+      }
+
+    private:
+      void newPage(size_t n);
+
+      struct Page;
+
+      Page * FOLLY_NULLABLE firstPage = nullptr;
+      Page * FOLLY_NULLABLE currentPage = nullptr;
+      unsigned char * FOLLY_NULLABLE buf = nullptr;
+      size_t avail = 0;
+      size_t used = 0;
+      size_t total = 0;
+    };
+
+    Allocator allocator;
+    std::vector<CompressedFactPtr> facts;
+    size_t fact_memory = 0;
+
   public:
     explicit Facts(Id start) noexcept
-      : starting_id(start) {}
-    Facts(Facts&& other) noexcept
-      : starting_id(other.starting_id)
-      , facts(std::move(other.facts))
-      , fact_memory(other.fact_memory) {}
-    Facts& operator=(Facts&& other) noexcept {
-      starting_id = other.starting_id;
-      facts = std::move(other.facts);
-      fact_memory = other.fact_memory;
-      return *this;
-    }
+      : starting_id(start)
+      {}
+
+    Facts(Facts&& other) noexcept = default;
+    Facts& operator=(Facts&& other) noexcept = default;
 
     bool empty() const {
       return facts.empty();
@@ -136,68 +249,51 @@ private:
       return starting_id;
     }
 
-    struct deref {
-      Fact::Ref operator()(const Fact::unique_ptr& p) const {
-        return p->ref();
-      }
-    };
+    Id firstFreeId() const {
+      return starting_id + size();
+    }
 
-    using const_iterator =
-      boost::transform_iterator<
-        deref,
-        std::vector<Fact::unique_ptr>::const_iterator>;
+    using const_iterator = std::vector<CompressedFactPtr>::const_iterator;
 
     const_iterator begin() const {
-      return boost::make_transform_iterator(facts.begin(), deref());
+      return facts.begin();
     }
 
     const_iterator end() const {
-      return boost::make_transform_iterator(facts.end(), deref());
+      return facts.end();
     }
 
-    Fact::Ref operator[](size_t i) const {
-      assert (i < facts.size());
-      return facts[i]->ref();
+    const_iterator iter(size_t i) const {
+      assert(i < size());
+      return facts.begin() + i;
+    }
+
+    CompressedFactPtr operator[](size_t i) const {
+      assert(i < size());
+      return facts[i];
     }
 
     void clear() {
-      facts.clear();
-      fact_memory = 0;
+      *this = Facts(starting_id);
     }
 
-    using Token = Fact::unique_ptr;
+    using Token = std::pair<CompressedFactPtr, unsigned char *>;
 
-    Token alloc(Id id, Pid type, Fact::Clause clause) {
-      return Fact::create({id, type, clause});
-    }
-
-    void commit(Token token) {
-      fact_memory += token->size();
-      facts.push_back(std::move(token));
-    }
-
-    void append(Facts other) {
-      facts.insert(
-        facts.end(),
-        std::make_move_iterator(other.facts.begin()),
-        std::make_move_iterator(other.facts.end()));
-      fact_memory += other.fact_memory;
-    }
+    Token alloc(Id id, Pid type, Fact::Clause clause);
+    void commit(Token token);
+    void revert(Token token);
+    void append(Facts&& other);
 
     /// Return the number of bytes occupied by facts.
     size_t factMemory() const noexcept {
-      return fact_memory;
+      return allocator.usedSize();
+      // return fact_memory;
     }
 
     /// Return (approximately) the total number of bytes allocated by the
     /// FactSet. This currently does *not* include the memory allocated by seek
     /// indices. 
     size_t allocatedMemory() const noexcept;
-
-  private:
-    Id starting_id;
-    std::vector<Fact::unique_ptr> facts;
-    size_t fact_memory = 0;
   };
 
 public:
@@ -231,14 +327,15 @@ public:
   /// Return iterator to the first fact with an id that's not less than the
   /// given id (or end() if no such fact exists).
   const_iterator lower_bound(Id id) const {
-    return begin() +
+
+    return facts.iter
       (id <= facts.startingId()
         ? 0
         : std::min(distance(facts.startingId(), id), facts.size()));
   }
 
   const_iterator upper_bound(Id id) const {
-    return begin() +
+    return facts.iter
       (id < facts.startingId()
         ? 0
         : std::min(distance(facts.startingId(), id)+1, facts.size()));
@@ -266,7 +363,7 @@ public:
   }
 
   Id firstFreeId() const override {
-    return facts.startingId() + facts.size();
+    return facts.firstFreeId();
   }
 
   Interval count(Pid pid) const override;
@@ -333,7 +430,7 @@ public:
 
 private:
   Facts facts;
-  DenseMap<Pid, FastSetBy<const Fact *, FactByKeyOnly>> keys;
+  DenseMap<Pid, FastSetBy<CompressedFactPtr, FactByKeyOnly>> keys;
 
   /// Cached predicate stats. We create these on-demand rather than maintain
   /// them throughout because most FactSets don't need them.

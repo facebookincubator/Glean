@@ -14,7 +14,7 @@ namespace rts {
 
 struct FactSet::Index {
   /// Type of index maps
-  using map_t = std::map<folly::ByteRange, const Fact *>;
+  using map_t = std::map<folly::ByteRange, CompressedFactPtr>;
 
   /// Type of index maps with synchronised access
   using entry_t = folly::Synchronized<map_t>;
@@ -34,6 +34,139 @@ struct FactSet::Index {
   folly::Synchronized<DenseMap<Pid, std::unique_ptr<entry_t>>> index;
 };
 
+namespace {
+
+const size_t PAGE_SIZE = []{
+  const auto s = std::getenv("GLEAN_FACTSET_PAGE_SIZE");
+  if (s == nullptr || *s == 0) {
+    return 4096Ul;
+  }
+  char *end;
+  errno = 0;
+  const auto n = std::strtoul(s, &end, 10);
+  if (errno != 0 || n < 1024 || *end != 0) {
+    rts::error("Invalid GLEAN_FACTSET_PAGE_SIZE value '{}'", s);
+  }
+  if (!folly::isPowTwo(n)) {
+    rts::error("GLEAN_FACTSET_PAGE_SIZE isn't a power of two");
+  }
+  return n;
+}();
+
+static constexpr size_t MALLOC_HEADER = 16;
+
+}
+
+struct FactSet::Facts::Allocator::Page {
+  Page * FOLLY_NULLABLE prev;
+  unsigned char *data() {
+    return reinterpret_cast<unsigned char *>(this+1);
+  }
+};
+
+FactSet::Facts::Allocator::Allocator(Allocator&& other) noexcept {
+  std::memcpy(this, &other, sizeof(Allocator));
+  std::memset(&other, 0, sizeof(Allocator));
+}
+
+FactSet::Facts::Allocator&
+FactSet::Facts::Allocator::operator=(Allocator&& other) noexcept {
+  if (this != &other) {
+    reset();
+    std::memcpy(this, &other, sizeof(Allocator));
+    std::memset(&other, 0, sizeof(Allocator));
+  }
+  return *this;
+}
+
+FactSet::Facts::Allocator::~Allocator() noexcept {
+  reset();
+}
+
+void FactSet::Facts::Allocator::reset() noexcept {
+  auto page = currentPage;
+  while (page != nullptr) {
+    const auto prev = page->prev;
+    std::free(page);
+    page = prev;
+  }
+  std::memset(this, 0, sizeof(Allocator));
+}
+
+void FactSet::Facts::Allocator::newPage(size_t n) {
+  const auto size = (MALLOC_HEADER + sizeof(Page) + n + (PAGE_SIZE-1))
+    & ~(PAGE_SIZE - 1);
+  const auto page = static_cast<Page *>(std::malloc(size));
+  page->prev = currentPage;
+  if (firstPage == nullptr) {
+    firstPage = page;
+  }
+  currentPage = page;
+  buf = page->data();
+  avail = size - MALLOC_HEADER - sizeof(Page);
+  total += size;
+}
+
+void FactSet::Facts::Allocator::unalloc(const unsigned char *upto) {
+  assert(currentPage);
+  assert(upto >= currentPage->data());
+  assert(upto <= buf);
+  const auto d = buf - upto;
+  avail += d;
+  buf -= d;
+  used -= d;
+}
+
+void FactSet::Facts::Allocator::merge(Allocator&& other) noexcept {
+  if (other.currentPage == nullptr) {
+    return;
+  }
+  if (currentPage == nullptr) {
+    *this = std::move(other);
+    return;
+  }
+
+  if (avail >= other.avail) {
+    firstPage->prev = other.currentPage;
+    firstPage = other.firstPage;
+  } else {
+    other.firstPage->prev = currentPage;
+    currentPage = other.currentPage;
+    buf = other.buf;
+    avail = other.avail;
+  }
+  used += other.used;
+  total += other.total;
+  std::memset(&other, 0, sizeof(Allocator));
+}
+
+FactSet::Facts::Token FactSet::Facts::alloc(Id id, Pid type, Fact::Clause clause) {
+  assert(id == firstFreeId());
+  return CompressedFactPtr::compress(
+    Fact::Ref{id,type,clause},
+    [&](size_t n) {
+      return allocator.alloc(n);
+    });
+}
+
+void FactSet::Facts::commit(Token tok) {
+  assert(tok.first.id() == firstFreeId());
+  facts.push_back(tok.first);
+  allocator.unalloc(tok.second);
+}
+
+void FactSet::Facts::revert(Token tok) {
+  assert(tok.first.id() == firstFreeId());
+  allocator.unalloc(tok.first.ptr);
+}
+
+void FactSet::Facts::append(Facts&& other) {
+  assert(other.startingId() == firstFreeId());
+  allocator.merge(std::move(other.allocator));
+  facts.insert(facts.end(), other.begin(), other.end());
+  fact_memory += other.fact_memory;
+}
+
 FactSet::FactSet(Id start) : facts(start) {}
 FactSet::FactSet(FactSet&&) noexcept = default;
 FactSet& FactSet::operator=(FactSet&&) = default;
@@ -48,11 +181,7 @@ size_t FactSet::allocatedMemory() const noexcept {
 }
 
 size_t FactSet::Facts::allocatedMemory() const noexcept {
-  size_t n = facts.capacity() * sizeof(facts[0]);
-  for (const auto& fact : facts) {
-    n += fact->size();
-  }
-  return n;
+  return facts.capacity() * sizeof(facts[0]) + allocator.totalSize();
 }
 
 struct FactSet::CachedPredicateStats {
@@ -75,8 +204,9 @@ PredicateStats FactSet::predicateStats() const {
     auto wlock = ulock.moveFromUpgradeToWrite();
     wlock->stats.reserve(keys.low_bound(), keys.high_bound());
     for (const auto& fact
-          : folly::range(facts.begin() + wlock->upto, facts.end())) {
-      wlock->stats[fact.type] += MemoryStats::one(fact.clause.size());
+          : folly::range(facts.iter(wlock->upto), facts.end())) {
+      const auto ref = fact.ref();
+      wlock->stats[ref.type] += MemoryStats::one(ref.clause.size());
     }
     wlock->upto = facts.size();
     return wlock->stats;
@@ -89,7 +219,7 @@ Id FactSet::idByKey(Pid type, folly::ByteRange key) {
   if (const auto p = keys.lookup(type)) {
     const auto i = p->find(key);
     if (i != p->end()) {
-      return (*i)->id();
+      return i->id();
     }
   }
   return Id::invalid();
@@ -99,7 +229,7 @@ Pid FactSet::typeById(Id id) {
   if (id >= facts.startingId()) {
     const auto i = distance(facts.startingId(), id);
     if (i < facts.size()) {
-      return facts[i].type;
+      return facts[i].type();
     }
   }
   return Pid::invalid();
@@ -109,7 +239,8 @@ bool FactSet::factById(Id id, std::function<void(Pid, Fact::Clause)> f) {
   if (id >= facts.startingId()) {
     const auto i = distance(facts.startingId(), id);
     if (i < facts.size()) {
-      f(facts[i].type, facts[i].clause);
+      const auto ref = facts[i].ref();
+      f(ref.type, ref.clause);
       return true;
     }
   }
@@ -136,7 +267,7 @@ std::unique_ptr<FactIterator> FactSet::enumerate(Id from, Id upto) {
     }
 
     Fact::Ref get(Demand) override {
-      return pos != end ? *pos : Fact::Ref::invalid();
+      return pos != end ? pos->ref() : Fact::Ref::invalid();
     }
 
     std::optional<Id> lower_bound() override { return std::nullopt; }
@@ -166,7 +297,7 @@ std::unique_ptr<FactIterator> FactSet::enumerateBack(Id from, Id downto) {
       if (pos != end) {
         auto i = pos;
         --i;
-        return *i;
+        return i->ref();
       } else {
         return Fact::Ref::invalid();
       }
@@ -197,7 +328,7 @@ std::unique_ptr<FactIterator> FactSet::seek(
     }
 
     Fact::Ref get(Demand) override {
-      return current != end ? current->second->ref() : Fact::Ref::invalid();
+      return current != end ? current->second.ref() : Fact::Ref::invalid();
     }
 
     std::optional<Id> lower_bound() override { return std::nullopt; }
@@ -217,8 +348,8 @@ std::unique_ptr<FactIterator> FactSet::seek(
       entry.withWLock([&](auto& map) {
         if (map.size() != p->size()) {
           map.clear();
-          for (const Fact *fact : *p) {
-            map.insert({fact->key(), fact});
+          for (const auto fact : *p) {
+            map.insert({fact.ref().key(), fact});
           }
         }
       });
@@ -261,22 +392,23 @@ Id FactSet::define(Pid type, Fact::Clause clause, Id) {
     error("key too large: {}", clause.key_size);
   }
   const auto next_id = firstFreeId();
-  auto fact = facts.alloc(next_id, type, clause);
+  auto tok = facts.alloc(next_id, type, clause);
   auto& key_map = keys[type];
-  const auto r = key_map.insert(fact.get());
+  const auto r = key_map.insert(tok.first);
   if (r.second) {
-    facts.commit(std::move(fact));
+    facts.commit(tok);
     return next_id;
   } else {
-    return
-      fact->value() == (*r.first)->value() ? (*r.first)->id() : Id::invalid();
+    facts.revert(tok);
+    const auto ref = r.first->ref();
+    return clause.value() == ref.value() ? ref.id : Id::invalid();
   }
 }
 
 thrift::Batch FactSet::serialize() const {
   binary::Output output;
   for (auto fact : *this) {
-    fact.serialize(output);
+    fact.ref().serialize(output);
   }
 
   thrift::Batch batch;
@@ -303,7 +435,7 @@ FactSet::serializeReorder(folly::Range<const uint64_t *> order) const {
   for (auto i : order) {
     assert(i >= startingId().toWord() &&
            i - startingId().toWord() < facts.size());
-    facts[i - startingId().toWord()].serialize(output);
+    facts[i - startingId().toWord()].ref().serialize(output);
   }
 
   thrift::Batch batch;
@@ -344,10 +476,11 @@ FactSet FactSet::rebase(
   const auto split = lower_bound(subst.finish());
 
   for (auto fact : folly::range(begin(), split)) {
-    auto r = substituteFact(inventory, substitute, fact);
+    const auto ref = fact.ref();
+    auto r = substituteFact(inventory, substitute, ref);
     global.insert({
-      subst.subst(fact.id),
-      fact.type,
+      subst.subst(ref.id),
+      ref.type,
       Fact::Clause::from(r.first.bytes(), r.second)
     });
   }
@@ -355,9 +488,10 @@ FactSet FactSet::rebase(
   FactSet local(new_start);
   auto expected = new_start;
   for (auto fact : folly::range(split, end())) {
-    auto r = substituteFact(inventory, substitute, fact);
+    const auto ref = fact.ref();
+    auto r = substituteFact(inventory, substitute, ref);
     const auto id =
-      local.define(fact.type, Fact::Clause::from(r.first.bytes(), r.second));
+      local.define(ref.type, Fact::Clause::from(r.first.bytes(), r.second));
     CHECK(id == expected);
     ++expected;
   }
@@ -387,7 +521,7 @@ bool FactSet::appendable(const FactSet& other) const {
   for (const auto& k : other.keys) {
     if (const auto *p = keys.lookup(k.first)) {
       for (auto i = k.second.begin(); i != k.second.end(); ++i) {
-        if (p->contains((*i)->key())) {
+        if (p->contains(i->ref().key())) {
           return false;
         }
       }
