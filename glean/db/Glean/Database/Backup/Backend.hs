@@ -28,6 +28,9 @@ class Backend a where
   -- | Parse the textual representation of a 'Site'
   fromPath :: a -> Text -> Maybe (Some Site)
 
+instance Backend (Some Backend) where
+  fromPath (Some backend) = fromPath backend
+
 -- | A backup site
 class Site a where
   backup
