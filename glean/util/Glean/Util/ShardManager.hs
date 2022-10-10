@@ -12,6 +12,8 @@ module Glean.Util.ShardManager
   , BaseOfStack(..)
   , noSharding
   , shardByRepo
+  , shardByBaseOfStackRepoHash
+  , shardByRepoHash
   ) where
 
 import Data.Int (Int64)
@@ -75,3 +77,19 @@ shardByRepo getAssignedShards =
     computeShardMapping = pure $ \(BaseOfStack db) _ -> Glean.repo_name db,
     countersForShardSizes = const []
   }
+
+-- | A shard manager that uses repo hashes as shards,
+-- and a dynamic shard assignment
+shardByRepoHash :: IO (Maybe [Text]) -> ShardManager Text
+shardByRepoHash refShardAssignment = ShardManager
+  refShardAssignment
+  (pure (\_ Glean.Repo{..} -> repo_hash))
+  (pure [])
+
+-- | A shard manager that uses base of stack repo hashes as shards,
+-- and a dynamic shard assignment
+shardByBaseOfStackRepoHash :: IO (Maybe [Text]) -> ShardManager Text
+shardByBaseOfStackRepoHash refShardAssignment = ShardManager
+  refShardAssignment
+  (pure (\(BaseOfStack Glean.Repo{..}) _ -> repo_hash))
+  (pure [])

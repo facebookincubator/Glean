@@ -486,22 +486,6 @@ closeIdleDBsTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   assertBool "regular DB closed after" normalDbClosed
   assertBool "blacklisted DB open after" blackListedDbStillOpen
 
--- | A shard manager that uses repo hashes as shards,
--- and a dynamic shard assignment
-shardByRepoHash :: IO (Maybe [Text.Text]) -> ShardManager Text.Text
-shardByRepoHash refShardAssignment = ShardManager
-  refShardAssignment
-  (pure (\_ Repo{..} -> repo_hash))
-  (pure [])
-
--- | A shard manager that uses repo hashes as shards,
--- and a dynamic shard assignment
-shardByBaseOfStackRepoHash :: IO (Maybe [Text.Text]) -> ShardManager Text.Text
-shardByBaseOfStackRepoHash refShardAssignment = ShardManager
-  refShardAssignment
-  (pure (\(BaseOfStack Repo{..}) _ -> repo_hash))
-  (pure [])
-
 shardingTest :: Test
 shardingTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   myShards <- newIORef ["0001"] -- initial shard assignment
