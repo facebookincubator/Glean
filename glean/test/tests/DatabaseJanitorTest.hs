@@ -65,7 +65,7 @@ import Glean.Util.ConfigProvider
 import Glean.Util.ShardManager
 import Glean.Util.ThriftSource as ThriftSource
 import Glean.Util.Time (seconds)
-import Glean.Database.Catalog (Entries(entriesRestoring))
+import Glean.Database.Catalog (entriesRestoring)
 import qualified Data.ByteString.Char8 as BS
 import qualified Data.Map as Map
 import Glean.Database.Backup.Backend

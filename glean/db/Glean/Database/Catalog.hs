@@ -6,6 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# LANGUAGE DeriveTraversable #-}
 {- | A Catalog stores metadata about available databases.
 A thread running Glean.Database.Backup.backuper will continuously read the
 state of the catalog to decide which dbs to restore/backup/finalize
@@ -37,13 +38,25 @@ module Glean.Database.Catalog
   , getLocalDatabase
   -- for testing
   , getEntries
-  , Entries(..)
+  , list'
+  , Entries
+  , EntriesF(..)
+  , EntryF(..)
+  , mkEntry
   ) where
 
 import Control.Concurrent.Async
 import Control.Concurrent.STM
 import Control.Exception
+    ( Exception,
+      SomeException,
+      bracket,
+      bracket_,
+      try,
+      mask_,
+      uninterruptibleMask_ )
 import Control.Monad
+import Data.Functor.Identity
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.HashSet (HashSet)
@@ -69,26 +82,37 @@ import qualified Glean.Internal.Types as Thrift
 import qualified Glean.Types as Thrift
 
 -- | Catalog entry
-data Entry = Entry
+type Entry = EntryF TVar
+
+-- | Catalog entry, parameterized by the state type;
+--   This extra generality comes handy in tests.
+data EntryF ref = Entry
   { entryRepo :: Repo
-  , entryStatus :: TVar ItemStatus
+  , entryStatus :: ref ItemStatus
       -- ^ This is the combined status of this db and the entryStatus of its
       -- dependencies. Sent with restorable status as 'Thrift.DatabaseStatus'.
-  , entryMeta :: TVar Meta
-  , entryDirty :: TVar Bool
+  , entryMeta :: ref Meta
+  , entryDirty :: ref Bool
       -- ^ does the metadata need to be written back (Entry must be in
       -- 'catDirtyQueue' in that case)
-  , entryComitting :: TVar Bool
+  , entryComitting :: ref Bool
       -- ^ is the metadata being committed (Entry can't be deleted while this
       -- is happening)
-  , entryExpiring :: TVar (Maybe UTCTime)
+  , entryExpiring :: ref (Maybe UTCTime)
   }
 
--- | All databases known to the 'Catalog'
-data Entries = Entries
-  { entriesLiveHere :: HashMap Repo Entry
+deriving instance Show (EntryF Identity)
+deriving instance Eq (EntryF Identity)
+
+-- | All databases known to the 'Catalog'.
+type Entries = EntriesF Entry
+
+-- | The type of all databases in the 'Catalog', parameterized by the entry type
+--   This extra generality comes handy in tests.
+data EntriesF entry = Entries
+  { entriesLiveHere :: HashMap Repo entry
       -- ^ available databases
-  , entriesLiveElsewhere :: HashMap Repo Entry
+  , entriesLiveElsewhere :: HashMap Repo entry
       -- ^ available databases in another shard
       --   ignored for all purposes except by getLocalDatabases
   , entriesRestoring :: HashMap Repo Meta
@@ -96,6 +120,8 @@ data Entries = Entries
   , entriesEphemeral :: HashSet Repo
       -- ^ databases that are being created or deleted
   }
+  deriving (Eq, Show, Functor, Foldable, Traversable)
+
 
 -- | Catalog of database entries
 data Catalog = forall local. Store local => Catalog
@@ -351,8 +377,16 @@ delete cat@Catalog{..} repo = bracket_
 
 -- | List all databases in the given localities that match the given filters
 list :: Catalog -> [Locality] -> Filter () -> STM [Item]
-list cat locs f = do
-  Entries{..} <- getEntries cat
+list cat locs f = getEntries cat >>= list' readTVar locs f
+
+list'
+  :: Monad m
+  => (forall a. f a -> m a)
+  -> [Locality]
+  -> Filter ()
+  -> EntriesF (EntryF f)
+  -> m [Item]
+list' read locs f Entries{..} = do
   fmap (runFilter f . concat) $ forM locs $ \loc -> do
     xs <- case loc of
       Local -> mapM statusAndMeta entriesLiveHere
@@ -362,10 +396,10 @@ list cat locs f = do
       [ Item repo loc meta status
       | (repo, (status, meta)) <- HashMap.toList xs]
   where
-    statusAndMeta :: Entry -> STM (ItemStatus, Meta)
+    -- statusAndMeta :: Entry -> f (ItemStatus, Meta)
     statusAndMeta Entry{..} = do
-      status <- readTVar entryStatus
-      meta <- readTVar entryMeta
+      status <- read entryStatus
+      meta <- read entryMeta
       return (status, meta)
 
 -- | List the most recent instances of all DBs in the Catalog
