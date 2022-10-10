@@ -44,31 +44,18 @@ import qualified Glean.Haxl.Repos as Glean
 import qualified Glean.Schema.Hack.Types as Hack
 import Glean.Schema.CodeHack.Types as Hack ( Entity(..) )
 import Data.Maybe (fromMaybe)
+import Data.Text.Prettyprint.Doc
 import Data.Text (Text)
-import qualified Data.Text as Text
 import Control.Monad.Trans.Maybe (MaybeT (..))
 import Control.Monad
+import Control.Monad.Extra
 import Control.Monad.Trans (MonadTrans(lift))
 import Control.Monad.Trans.Writer.Strict
 
-prettyHackSignature :: Hack.Entity -> Glean.RepoHaxl u w (Maybe Text)
-prettyHackSignature (Hack.Entity_decl d) = runMaybeT $ prettyDecl <$> decl d
+prettyHackSignature :: Hack.Entity -> Glean.RepoHaxl u w (Maybe (Doc ()))
+prettyHackSignature (Hack.Entity_decl d) =
+  runMaybeT $ prettyDecl <$> decl d
 prettyHackSignature Hack.Entity_EMPTY = return Nothing
-
-(<+>) :: Text -> Text -> Text
-"" <+> b = b
-a <+> "" = a
-a <+> b = a <> " " <> b
-
-(<::>) :: Text -> Text -> Text
-"" <::> b = b
-a <::> "" = a
-a <::> b = a <> "::" <> b
-
-(<\>) :: Text -> Text -> Text
-"" <\> b = b
-a <\> "" = a
-a <\> b = a <> "\\" <> b
 
 newtype Name = Name Text
 newtype Qual = Qual [Text]
@@ -116,7 +103,7 @@ data Decl
   | Typedef QualName
   | Module Name
 
-prettyDecl :: Decl -> Text
+prettyDecl :: Decl -> Doc ()
 prettyDecl (ClassConst name) =
   "const" <+> ppName name
 prettyDecl (Module name) =
@@ -126,20 +113,20 @@ prettyDecl (Enum name) =
 prettyDecl (Trait name) =
   "trait" <+> ppQualName name
 prettyDecl (Class modifiers name) =
-  ppClassModifiers modifiers  <+> "class" <+> ppQualName name
+  ppClassModifiers modifiers <+> ppQualName name
 prettyDecl (Interface name) =
   "interface" <+> ppQualName name
 prettyDecl (Enumerator enum name) =
-  ppQualName enum <::> ppName name
+  ppQualName enum <> "::" <> ppName name
 prettyDecl (Function modifiers name signature) =
-  ppFunctionModifiers modifiers <+> "function" <+> ppQualName name <>
+  ppFunctionModifiers modifiers <+> ppQualName name <>
   ppSignature signature
 prettyDecl (GlobalConst name) =
   "const" <+> ppQualName name
 prettyDecl (Namespace name) =
   "namespace" <+> ppQual name
 prettyDecl (Method modifiers container name signature) =
-  ppMethodModifiers container modifiers <+> "function" <+> ppName name <>
+  ppMethodModifiers container modifiers <+> ppName name <>
   ppSignature signature
 prettyDecl (Property name) =
   ppName name
@@ -148,38 +135,52 @@ prettyDecl (TypeConst name) =
 prettyDecl (Typedef name) =
   "type" <+> ppQualName name
 
-ppName :: Name -> Text
-ppName (Name n) = n
-ppQualName :: QualName -> Text
-ppQualName (QualName (namespace, name)) = ppQual (Qual namespace) <\> name
-ppQual :: Qual -> Text
-ppQual (Qual namespace) = Text.intercalate "\\" namespace
+ppName :: Name -> Doc ()
+ppName (Name n) = pretty n
+ppQualName :: QualName -> Doc ()
+ppQualName (QualName ([], name)) =
+  pretty name
+ppQualName (QualName (namespace, name)) =
+  surround "\\" (ppQual (Qual namespace)) (pretty name)
+ppQual :: Qual -> Doc ()
+ppQual (Qual namespace) =
+  concatWith (surround "\\") (pretty <$> namespace)
 
-ppFunctionModifiers :: FunctionMod -> Text
+ppFunctionModifiers :: FunctionMod -> Doc ()
 ppFunctionModifiers (FunctionMod async) =
-  Text.unwords $ execWriter $ do
+  fillSep $ execWriter $ do
     when (async==Async) $ tell ["async"]
+    tell ["function"]
 
-ppClassModifiers :: ClassMod -> Text
+ppClassModifiers :: ClassMod -> Doc ()
 ppClassModifiers (ClassMod abstract final) =
-  Text.unwords $ execWriter $ do
-      when (abstract==Abstract) $ tell ["abstract"]
-      when (final==Final) $ tell ["final"]
+  fillSep $ execWriter $ do
+    when (abstract==Abstract) $ tell ["abstract"]
+    when (final==Final) $ tell ["final"]
+    tell ["class"]
 
-ppSignature :: Signature -> Text
+ppSignature :: Signature -> Doc ()
 ppSignature (Signature returnType typeParams params) =
-  ppTypeParams typeParams
-   <> "(" <> Text.intercalate ", " (map ppParameter params) <> "):"
-   <+> ppReturnType returnType
+  cat
+    [ ppTypeParams typeParams
+    , nest 4 $ cat
+      [ "("
+      , sep $ punctuate "," (map ppParameter params)
+      ]
+    , "):" <+> ppReturnType returnType
+    ]
 
-ppTypeParams :: [TypeParameter] -> Text
+ppTypeParams :: [TypeParameter] -> Doc ()
 ppTypeParams typeParams | null typeParams = ""
-ppTypeParams typeParams =
-  "<" <> Text.intercalate ", " (map ppTypeParam typeParams) <> ">"
+ppTypeParams typeParams = cat
+  [ nest 4 $ cat
+    [ "<", sep $ punctuate "," (map ppTypeParam typeParams)]
+  , ">"
+  ]
 
-ppTypeParam :: TypeParameter -> Text
+ppTypeParam :: TypeParameter -> Doc ()
 ppTypeParam (TypeParameter name variance reify constraints) =
-  Text.concat $ execWriter $ do
+  hcat $ execWriter $ do
     when (reify==SoftReified) $ tell ["<<__Soft>> reify "]
     when (reify==Reified) $ tell ["reify "]
     when (variance==Covariant) $ tell ["+"]
@@ -192,28 +193,30 @@ ppTypeParam (TypeParameter name variance reify constraints) =
       tell [ppType ty]
 
 
-ppType :: HackType -> Text
-ppType (HackType t) = t
+ppType :: HackType -> Doc ()
+ppType (HackType t) = pretty t
 
-ppReturnType :: ReturnType -> Text
+ppReturnType :: ReturnType -> Doc ()
 ppReturnType (ReturnType t) = ppType $ HackType t
 
-ppParameter :: Parameter -> Text
+ppParameter :: Parameter -> Doc ()
 ppParameter (Parameter name typeName inout defaultValue) =
-  ppInout inout <+> ppType typeName <+> ppName name <+>
-  ppDefaultValue defaultValue
+  nest 4 $ sep $ execWriter $ do
+    whenJust inout $ tell . ppInout
+    tell [ppType typeName]
+    tell [ppName name]
+    whenJust defaultValue $ tell . ppDefaultValue
 
-ppDefaultValue :: Maybe DefaultValue -> Text
-ppDefaultValue Nothing = ""
-ppDefaultValue (Just (DefaultValue defaultValue)) = "= '" <> defaultValue <> "'"
+ppDefaultValue :: DefaultValue -> [Doc ()]
+ppDefaultValue (DefaultValue defaultValue) =
+  ["=" <+> squotes (pretty defaultValue)]
 
-ppInout :: Maybe Inout -> Text
-ppInout Nothing = ""
-ppInout (Just Inout) = "inout"
+ppInout :: Inout -> [Doc ()]
+ppInout Inout = ["inout"]
 
-ppMethodModifiers :: Container -> MethodMod -> Text
+ppMethodModifiers :: Container -> MethodMod -> Doc ()
 ppMethodModifiers container (MethodMod abstract final visibility static async) =
-  Text.unwords $ execWriter $ do
+  fillSep $ execWriter $ do
     when
       (  abstract == Abstract
       && container /= InterfaceContainer
@@ -225,6 +228,7 @@ ppMethodModifiers container (MethodMod abstract final visibility static async) =
     when (visibility==Internal) $ tell ["internal"]
     when (static==Static) $ tell ["static"]
     when (async==Async) $ tell ["async"]
+    tell ["function"]
 
 decl :: Hack.Declaration -> Glean.MaybeTRepoHaxl u w Decl
 decl (Hack.Declaration_classConst Hack.ClassConstDeclaration{..}) = do

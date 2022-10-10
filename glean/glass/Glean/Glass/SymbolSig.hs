@@ -8,10 +8,14 @@
 
 module Glean.Glass.SymbolSig
   (
-    ToSymbolSignature(..)
+    ToSymbolSignature(..),
+    toSymbolSignatureText,
   ) where
 
 import Data.Text (Text)
+import Data.Text.Prettyprint.Doc
+  (Doc (), layoutSmart, LayoutOptions(..), PageWidth(..))
+import Data.Text.Prettyprint.Doc.Render.Text (renderStrict)
 
 import qualified Glean.Haxl.Repos as Glean
 import qualified Glean.Schema.Code.Types as Code
@@ -21,16 +25,25 @@ import Glean.Glass.Pretty.Cxx as Cxx ( prettyCxxSignature )
 import Glean.Glass.Pretty.Hack as Hack ( prettyHackSignature )
 import Glean.Glass.Pretty.LSIF as LSIF ( prettyLsifSignature )
 
+toSymbolSignatureText
+  :: ToSymbolSignature a => a -> Glean.RepoHaxl u w (Maybe Text)
+toSymbolSignatureText x = do
+  maybeDoc <- toSymbolSignature x
+  return $ docToText <$> maybeDoc
+  where
+    docToText =
+      renderStrict . layoutSmart (LayoutOptions (AvailablePerLine 120 1))
+
+
 -- signature of symbols
 class ToSymbolSignature a where
-  toSymbolSignature :: a -> Glean.RepoHaxl u w (Maybe Text)
+  toSymbolSignature :: a -> Glean.RepoHaxl u w (Maybe (Doc ()))
+
 
 instance ToSymbolSignature Code.Entity where
   toSymbolSignature e = case e of
     -- cxx pretty signatures
-    Code.Entity_cxx x -> pure $ case Cxx.prettyCxxSignature x of
-      "" -> Nothing
-      s -> Just s
+    Code.Entity_cxx x -> pure $ Cxx.prettyCxxSignature x
     Code.Entity_pp{} -> pure Nothing
     -- hack pretty signatures
     Code.Entity_hack x -> Hack.prettyHackSignature x

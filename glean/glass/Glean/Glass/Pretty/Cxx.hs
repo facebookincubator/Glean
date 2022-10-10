@@ -20,6 +20,7 @@ import Glean.Schema.CodeCxx.Types as Cxx ( Entity(..), Definition(..) )
 import qualified Glean.Schema.Cxx1.Types as Cxx
 
 import Data.Text ( Text, intercalate )
+import Data.Text.Prettyprint.Doc (pretty, Doc)
 import Data.Maybe ( fromMaybe )
 import Util.Text ( textShow )
 import qualified Data.Text as Text
@@ -40,12 +41,16 @@ a <::> b = a <> "::" <> b
 --   * glean-glass signatures have more information than clangd (easy to fix)
 --   * glean-glass signatures have less information than clangd (hard to fix,
 --      as it may involve changing of the cxx schema and clang indexer changes)
-prettyCxxSignature :: Cxx.Entity -> Text
-prettyCxxSignature e = case e of
-  Cxx.Entity_decl decl -> prettyDecl decl
-  Cxx.Entity_defn def -> prettyDefinition def
-  Cxx.Entity_enumerator x -> prettyEnumerator x
-  Cxx.Entity_EMPTY -> intentionallyEmpty
+prettyCxxSignature :: Cxx.Entity -> Maybe (Doc ())
+prettyCxxSignature e = case text of
+    "" -> Nothing
+    _ ->  Just $ pretty text
+  where
+    text = case e of
+      Cxx.Entity_decl decl -> prettyDecl decl
+      Cxx.Entity_defn def -> prettyDefinition def
+      Cxx.Entity_enumerator x -> prettyEnumerator x
+      Cxx.Entity_EMPTY -> intentionallyEmpty
 
 intentionallyEmpty :: Text
 intentionallyEmpty = ""
