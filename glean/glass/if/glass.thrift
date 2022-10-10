@@ -379,20 +379,6 @@ struct SymbolSearchResult {
   2: list<SymbolDescription> symbolDetails;
 }
 
-// deprecated
-struct SearchByNameRequest {
-  1: SearchContext context;
-  2: string name;
-  3: bool detailedResults; // fill out symbol_details in the response
-  4: bool ignoreCase = false;
-}
-
-// deprecated
-struct SearchByNameResult {
-  1: list<SymbolId> symbols;
-  2: list<SymbolDescription> symbolDetails;
-}
-
 struct SearchBySymbolIdResult {
   1: list<SymbolId> symbols;
 }
