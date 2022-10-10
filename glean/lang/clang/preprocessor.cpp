@@ -57,7 +57,11 @@ struct PPCallbacks final : public clang::PPCallbacks {
       clang::StringRef,
       bool,
       clang::CharSourceRange filenameRange,
+#if LLVM_VERSION_MAJOR >= 15
+      llvm::Optional<clang::FileEntryRef> file,
+#else
       const clang::FileEntry *file,
+#endif
       clang::StringRef,
       clang::StringRef,
       const clang::Module *
@@ -65,7 +69,11 @@ struct PPCallbacks final : public clang::PPCallbacks {
       ,clang::SrcMgr::CharacteristicKind
 #endif
       ) override {
+#if LLVM_VERSION_MAJOR >= 15
+    last_include = ClangDB::Include{hashLoc, filenameRange, &file->getFileEntry()};
+#else
     last_include = ClangDB::Include{hashLoc, filenameRange, file};
+#endif
   }
 
   void Ifdef(
