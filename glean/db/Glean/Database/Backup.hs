@@ -12,6 +12,9 @@ module Glean.Database.Backup
   ( backuper
   , Event(..)
   , backupDatabase
+  -- for testing
+  , newestByRepo
+  , bestRestore
   ) where
 
 import Control.Applicative
@@ -105,9 +108,6 @@ getTodo env@Env{..} sinbin = getFinalize <|> getRestore <|> getBackup
         Item{..} : _ -> return (itemRepo, doFinalize env itemRepo)
 
     getRestore = do
-      let newestByRepo = groupF repoNameV $ do
-            sortF createdV Descending
-            limitF 1
       restoring <- Catalog.list envCatalog [Restoring] $ do
         repoV `notInF` sinbin
         newestByRepo
@@ -142,6 +142,10 @@ getTodo env@Env{..} sinbin = getFinalize <|> getRestore <|> getBackup
       sortF createdV Descending
       limitF 1
 
+newestByRepo :: Filter ()
+newestByRepo = groupF repoNameV $ do
+  sortF createdV Descending
+  limitF 1
 -- To find the next DB to restore, we
 --   - find the newest DB of each repo that needs restoring
 --   - restore the DB which is currently the most stale; that is

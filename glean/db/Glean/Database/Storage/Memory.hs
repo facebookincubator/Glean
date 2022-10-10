@@ -11,8 +11,9 @@
 -- facts.
 
 module Glean.Database.Storage.Memory
-  ( Memory
+  ( Memory(..)
   , newStorage
+  , Database(..)
   ) where
 
 import Control.Concurrent.STM
