@@ -14,7 +14,7 @@ module Glean.Database.Janitor
   -- for testing
   , mergeLocalAndRemote
   , computeRetentionSet
-  , ComputeRetentionSet(..)
+  , ComputedRetentionSet(..)
   ) where
 
 import Control.Concurrent.STM
@@ -310,12 +310,12 @@ mergeLocalAndRemote backups localAndRestoring =
         | (repo, meta) <- backups
         , repo `notElem` map itemRepo localAndRestoring  ]
 
-data ComputeRetentionSet = ComputeRetentionSet
-  { retentionSet :: [Item]
-  , byRepoMap :: Map.Map Repo Item
-  , byRepo    :: [(Text, NonEmpty Item)]
-  , dependencies :: Item -> [Maybe Item]
-  }
+data ComputedRetentionSet = ComputeRetentionSet
+   { retentionSet :: [Item]
+   , byRepoMap :: Map.Map Repo Item
+   , byRepo    :: [(Text, NonEmpty Item)]
+   , dependencies :: Item -> [Maybe Item]
+   }
 
 -- | The final set of DBs we want usable on disk.
 --  This is the set of 'keepRoots' DB extended with all the stacked dependencies
@@ -323,7 +323,7 @@ computeRetentionSet
   :: ServerConfig.DatabaseRetentionPolicy
   -> UTCTime
   -> [Item]
-  -> ComputeRetentionSet
+  -> ComputedRetentionSet
 computeRetentionSet config_retention t items = ComputeRetentionSet{..}
   where
     byRepo = byRepoName items

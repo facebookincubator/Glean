@@ -34,7 +34,7 @@ import Glean.Database.Catalog.Filter (
   (.==.),
  )
 import Glean.Database.Janitor (
-  ComputeRetentionSet (..),
+  ComputedRetentionSet (..),
   computeRetentionSet,
   mergeLocalAndRemote,
  )
