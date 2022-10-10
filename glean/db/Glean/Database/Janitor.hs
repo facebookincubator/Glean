@@ -135,7 +135,7 @@ runWithShards env myShards sm = do
   localAndRestoring <- atomically $
     Catalog.list (envCatalog env) [Local,Restoring] everythingF
 
-  t <- getCurrentTime
+  t <- envGetCurrentTime env
 
   dbToShard <- computeShardMapping sm
 
@@ -369,7 +369,7 @@ fetchBackups env = do
   ServerConfig.Config{..} <- Observed.get (envServerConfig env)
   let syncPeriodSeconds = fromIntegral config_backup_list_sync_period
   maybeLastFetch <- readTVarIO (envCachedRestorableDBs env)
-  now <- getCurrentTime
+  now <- envGetCurrentTime env
   case maybeLastFetch of
     Nothing -> fetch now
     Just (lastFetch, dbs)

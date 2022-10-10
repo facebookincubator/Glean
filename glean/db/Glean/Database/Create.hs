@@ -141,7 +141,7 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
       -- NOTE: We don't want to load recipes (which might fail) if we don't
       -- need them.
       state <- completenessFromFill get_recipes kickOff_repo kickOff_fill
-      creationTime <- envGetCreationTime
+      creationTime <- envGetCurrentTime
       serverProps <- serverProperties
       fbServerProps <- facebookServerProperties
       schemaProps <- schemaProperties

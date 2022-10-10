@@ -236,10 +236,9 @@ data Env = forall storage. Storage storage => Env
   , envListener :: Listener
       -- ^ A 'Listener' which might get notified about various events. This is
       -- for testing support only.
-  , envGetCreationTime :: IO UTCTime
-      -- ^ Yield the creation time for a DB. Is normally getCurrentTime but
-      -- can be changed for testing where 1s granularity might not be enough
-      -- to distinguish databases.
+  , envGetCurrentTime :: IO UTCTime
+      -- ^ Yield the current time. Is normally getCurrentTime but
+      -- can be changed for testing
   , envShardManager :: SomeShardManager
   }
 

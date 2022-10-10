@@ -35,7 +35,7 @@ import qualified Data.Map as Map
 import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
-import Data.Time (UTCTime, getCurrentTime)
+import Data.Time (UTCTime)
 import qualified Data.UUID as UUID
 import qualified Data.UUID.V4 as UUID
 import Data.Vector (Vector)
@@ -387,7 +387,7 @@ heartbeatTimeout n = n * 10
 getWork :: Env -> Thrift.GetWork -> IO Thrift.GetWorkResponse
 getWork env@Env{..} Thrift.GetWork{..} = do
   uuid <- UUID.nextRandom
-  time <- getCurrentTime
+  time <- envGetCurrentTime
   timepoint <- getTimePoint
   let grab = do
         parcel <- lift $ readWorkQueue
@@ -468,7 +468,7 @@ fromThriftWork work = Parcel
 -- the work queue.
 workCancelled :: Env -> Thrift.WorkCancelled -> IO ()
 workCancelled env@Env{..} Thrift.WorkCancelled{..} = do
-  time <- getCurrentTime
+  time <- envGetCurrentTime
   immediately $ do
     pi@ParcelInfo{..} <- lift $ runningParcelInfo env workCancelled_work
     case piState of
@@ -505,7 +505,7 @@ workFinished :: Env -> Thrift.WorkFinished -> IO ()
 workFinished env Thrift.WorkFinished{..} = do
   logInfo $ "workFinished " ++ show workFinished_work
   logInfo $ "workFinished_outcome " ++ show workFinished_outcome
-  time <- getCurrentTime
+  time <- envGetCurrentTime env
   immediately $ do
     info <- lift $ runningParcelInfo env workFinished_work
     lift $ deleteHeartbeat (envHeartbeats env) workFinished_work
@@ -519,7 +519,7 @@ workFinished env Thrift.WorkFinished{..} = do
 -- | Continuously check for heartbeat timeouts and take necessary actions.
 reapHeartbeats :: Env -> IO ()
 reapHeartbeats env = forever $ do
-  time <- getCurrentTime
+  time <- envGetCurrentTime env
   now <- getTimePoint
   void $ tryAll $ immediately $ do
     timeouts <- lift $ checkHeartbeats (envHeartbeats env) now

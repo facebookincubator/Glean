@@ -16,7 +16,6 @@ import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.Maybe
 import Data.Text (Text)
-import Data.Time.Clock (getCurrentTime)
 
 import Util.Control.Exception
 import Util.Log
@@ -34,7 +33,7 @@ import qualified Glean.Util.Observed as Observed
 
 listDatabases :: Env -> Thrift.ListDatabases -> IO Thrift.ListDatabasesResult
 listDatabases env@Env{..} Thrift.ListDatabases{..} = do
-  now <- utcTimeToPosixEpochTime <$> getCurrentTime
+  now <- utcTimeToPosixEpochTime <$> envGetCurrentTime
   minDBAge <- ServerConfig.config_min_db_age <$> Observed.get envServerConfig
   let filterWithMinDBAge = filterDatabasePred now minDBAge
   backups <-

@@ -28,7 +28,6 @@ import qualified Data.Map as Map
 import Data.Maybe
 import Data.Ord
 import Data.Text (Text)
-import Data.Time (getCurrentTime)
 import Data.Typeable (Typeable)
 import GHC.Generics hiding (Meta)
 import System.Directory
@@ -331,7 +330,7 @@ doFinalize env@Env{..} repo =
     -- update and re-merge our internal representation of the schema
     schemaUpdated env (Just repo)
 
-    time <- getCurrentTime
+    time <- envGetCurrentTime
     atomically $ do
       void $ Catalog.modifyMeta envCatalog repo $ \meta -> return meta
         { metaCompleteness = Complete $ DatabaseComplete

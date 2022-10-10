@@ -133,7 +133,7 @@ initEnv evb envStorage envCatalog shardManager cfg
       , envMockWrites = cfgMockWrites cfg
       , envTailerOpts = cfgTailerOpts cfg
       , envListener = cfgListener cfg
-      , envGetCreationTime = getCurrentTime
+      , envGetCurrentTime = getCurrentTime
       , envSchemaVersion = cfgSchemaVersion cfg
       , envUpdateSchema = cfgUpdateSchema cfg
       , envSchemaId = cfgSchemaId cfg
