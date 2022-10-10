@@ -723,43 +723,16 @@ library schema-query
     hs-source-dirs:
         glean/schema/thrift/query/gen-hs2
     exposed-modules:
-        Glean.Schema.Query.Buck.Types
+        -- Just the modules that are needed for the glean:jsonquery
+        -- test, nothing else uses this stuff
         Glean.Schema.Query.Builtin.Types
-        Glean.Schema.Query.Code.Types
+        Glean.Schema.Query.Buck.Types
         Glean.Schema.Query.CodeCxx.Types
-        Glean.Schema.Query.CodeErlang.Types
-        Glean.Schema.Query.CodeFlow.Types
-        Glean.Schema.Query.CodeHack.Types
-        Glean.Schema.Query.CodeHs.Types
-        Glean.Schema.Query.CodeJava.Types
-        Glean.Schema.Query.CodeLsif.Types
-        Glean.Schema.Query.CodeBuck.Types
-        Glean.Schema.Query.Codemarkup.Types
-        Glean.Schema.Query.CodemarkupTypes.Types
-        Glean.Schema.Query.CodePp.Types
-        Glean.Schema.Query.CodePython.Types
-        Glean.Schema.Query.CodeRust.Types
-        Glean.Schema.Query.CodeThrift.Types
         Glean.Schema.Query.Cxx1.Types
-        Glean.Schema.Query.Docmarkup.Types
-        Glean.Schema.Query.Erlang.Types
-        Glean.Schema.Query.Flow.Types
-        Glean.Schema.Query.GleanTest.Types
-        Glean.Schema.Query.Graphql.Types
-        Glean.Schema.Query.Hack.Types
-        Glean.Schema.Query.Hs.Types
-        Glean.Schema.Query.Java.Types
-        Glean.Schema.Query.Lsif.Types
         Glean.Schema.Query.Pp1.Types
-        Glean.Schema.Query.Python.Types
-        Glean.Schema.Query.Rust.Types
-        Glean.Schema.Query.SearchBuck.Types
-        Glean.Schema.Query.SearchCxx.Types
-        Glean.Schema.Query.SearchHack.Types
-        Glean.Schema.Query.SearchPp.Types
         Glean.Schema.Query.Src.Types
         Glean.Schema.Query.Sys.Types
-        Glean.Schema.Query.Thrift.Types
+        Glean.Schema.Query.GleanTest.Types
     build-depends:
         glean:if-glean-hs,
         glean:config,
@@ -872,8 +845,6 @@ library lib
         Glean.Util.XRefs
         Glean.Util.Same
         Glean.Util.SchemaRepos
-        -- TODO: move into facebook/ ?
-        -- Glean.Util.Buck
         Glean.Write.SimpleAsync
     build-depends:
         glean:client-hs,
@@ -882,7 +853,6 @@ library lib
         glean:if-glean-hs,
         glean:if-search-hs,
         glean:schema,
-        glean:schema-query,
         glean:util,
         split
 
@@ -1315,7 +1285,6 @@ executable query-bench
         glean:db,
         glean:if-glean-hs,
         glean:schema,
-        glean:schema-query,
         glean:test-lib,
         glean:util,
         criterion
