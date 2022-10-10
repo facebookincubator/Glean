@@ -62,7 +62,7 @@
                     "localName": "bazza"
                 },
                 "repo_hash": "testhash",
-                "signature": "public bazza(): int",
+                "signature": "public function bazza(): int",
                 "sym": "test/php/RefClass/bazza",
                 "sym_location": {
                     "filepath": "www/RefClass.php",

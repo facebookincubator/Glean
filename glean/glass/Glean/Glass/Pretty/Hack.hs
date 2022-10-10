@@ -139,7 +139,7 @@ prettyDecl (GlobalConst name) =
 prettyDecl (Namespace name) =
   "namespace" <+> ppQual name
 prettyDecl (Method modifiers container name signature) =
-  ppMethodModifiers container modifiers <+> ppName name <>
+  ppMethodModifiers container modifiers <+> "function" <+> ppName name <>
   ppSignature signature
 prettyDecl (Property name) =
   ppName name

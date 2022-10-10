@@ -70,7 +70,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "public bar(SourceClass::T $param): int"
+                            "aString": "public function bar(SourceClass::T $param): int"
                         },
                         "key": "symbolSignature"
                     },
@@ -99,7 +99,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "public bazza(): int"
+                            "aString": "public function bazza(): int"
                         },
                         "key": "symbolSignature"
                     },
@@ -128,7 +128,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "public static foo(): int"
+                            "aString": "public static function foo(): int"
                         },
                         "key": "symbolSignature"
                     },
@@ -383,7 +383,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "public bazza(): int"
+                            "aString": "public function bazza(): int"
                         },
                         "key": "symbolSignature"
                     },
@@ -422,7 +422,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "public static foo(): int"
+                            "aString": "public static function foo(): int"
                         },
                         "key": "symbolSignature"
                     },
@@ -851,7 +851,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "public quux(int $i): int"
+                            "aString": "public function quux(int $i): int"
                         },
                         "key": "symbolSignature"
                     },
@@ -890,7 +890,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "public superAdd(int $i, int $i): int"
+                            "aString": "public function superAdd(int $i, int $i): int"
                         },
                         "key": "symbolSignature"
                     },

@@ -142,7 +142,7 @@
                             "aInteger": 3
                         },
                         "symbolSignature": {
-                            "aString": "public static foo(): int"
+                            "aString": "public static function foo(): int"
                         }
                     },
                     "range": {
@@ -226,7 +226,7 @@
                             "aInteger": 3
                         },
                         "symbolSignature": {
-                            "aString": "public bazza(): int"
+                            "aString": "public function bazza(): int"
                         }
                     },
                     "range": {
@@ -280,7 +280,7 @@
                             "aInteger": 3
                         },
                         "symbolSignature": {
-                            "aString": "public bar(SourceClass::T $param): int"
+                            "aString": "public function bar(SourceClass::T $param): int"
                         }
                     },
                     "range": {
@@ -636,7 +636,7 @@
                             "aInteger": 3
                         },
                         "symbolSignature": {
-                            "aString": "public static foo(): int"
+                            "aString": "public static function foo(): int"
                         }
                     },
                     "range": {
@@ -666,7 +666,7 @@
                             "aInteger": 3
                         },
                         "symbolSignature": {
-                            "aString": "public quux(int $i): int"
+                            "aString": "public function quux(int $i): int"
                         }
                     },
                     "range": {
@@ -698,7 +698,7 @@
                             "aInteger": 3
                         },
                         "symbolSignature": {
-                            "aString": "public bazza(): int"
+                            "aString": "public function bazza(): int"
                         }
                     },
                     "range": {
@@ -788,7 +788,7 @@
                             "aInteger": 3
                         },
                         "symbolSignature": {
-                            "aString": "public superAdd(int $i, int $i): int"
+                            "aString": "public function superAdd(int $i, int $i): int"
                         }
                     },
                     "range": {
