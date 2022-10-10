@@ -11,6 +11,10 @@ module Glean.Database.Janitor
   ( runDatabaseJanitor
   , runDatabaseJanitorPureish
   , JanitorSideEffect(..)
+  -- for testing
+  , mergeLocalAndRemote
+  , computeRetentionSet
+  , ComputeRetentionSet(..)
   ) where
 
 import Control.Concurrent.STM
@@ -123,7 +127,7 @@ runWithShards env myShards sm = do
   logInfo "running database janitor"
   logInfo $ "Assigned shards: " <> show (toList myShards)
 
-  config@ServerConfig.Config{..} <- Observed.get (envServerConfig env)
+  ServerConfig.Config{..} <- Observed.get (envServerConfig env)
 
   let
     !ServerConfig.DatabaseRetentionPolicy{} = config_retention
@@ -146,26 +150,10 @@ runWithShards env myShards sm = do
 
   let
     allDBsByAge :: [Item]
-    allDBsByAge = sortOn (metaCreated . itemMeta) $
-      localAndRestoring ++
-        [ Item repo Cloud meta ItemMissing -- DBs we could restore
-        | (repo, meta) <- backups
-        , repo `notElem` map itemRepo localAndRestoring  ]
+    allDBsByAge = mergeLocalAndRemote backups localAndRestoring
 
-    byRepoAndAge = byRepoName allDBsByAge
-    byRepoMap = Map.fromList $ [(itemRepo item, item) | item <- allDBsByAge]
-
-    keepRoots = concatMap (dbKeepRoots config t) byRepoAndAge
-
-    -- Ensure we keep dependencies for stacked dbs
-    keep =
-      transitiveClosureBy itemRepo (catMaybes . dependencies) keepRoots
-    dependencies = stacked . metaDependencies . itemMeta
-    stacked (Just (Thrift.Dependencies_stacked repo)) =
-      [repo `Map.lookup` byRepoMap]
-    stacked (Just (Thrift.Dependencies_pruned update)) =
-      [pruned_base update `Map.lookup` byRepoMap]
-    stacked Nothing = []
+    ComputeRetentionSet keep byRepoMap byRepoAndAge dependencies =
+      computeRetentionSet config_retention t allDBsByAge
 
     keepAnnotatedWithShard =
       [ (item, guard (shard `Set.member` myShards) >> pure shard)
@@ -313,6 +301,47 @@ runWithShards env myShards sm = do
       | shard <- toList myShards
       , shard `notElem` Set.fromList (map snd keepInThisNode)]
 
+
+mergeLocalAndRemote :: [(Repo, Meta)] -> [Item] -> [Item]
+mergeLocalAndRemote backups localAndRestoring =
+  sortOn (metaCreated . itemMeta) $
+      localAndRestoring ++
+        [ Item repo Cloud meta ItemMissing -- DBs we could restore
+        | (repo, meta) <- backups
+        , repo `notElem` map itemRepo localAndRestoring  ]
+
+data ComputeRetentionSet = ComputeRetentionSet
+  { retentionSet :: [Item]
+  , byRepoMap :: Map.Map Repo Item
+  , byRepo    :: [(Text, NonEmpty Item)]
+  , dependencies :: Item -> [Maybe Item]
+  }
+
+-- | The final set of DBs we want usable on disk.
+--  This is the set of 'keepRoots' DB extended with all the stacked dependencies
+computeRetentionSet
+  :: ServerConfig.DatabaseRetentionPolicy
+  -> UTCTime
+  -> [Item]
+  -> ComputeRetentionSet
+computeRetentionSet config_retention t items = ComputeRetentionSet{..}
+  where
+    byRepo = byRepoName items
+    byRepoMap = Map.fromList $ [(itemRepo item, item) | item <- items]
+    retentionSet = transitiveClosureBy itemRepo (catMaybes . dependencies) $
+      concatMap
+        (\(repoNm, dbs) ->
+          dbKeepRoots (repoRetention config_retention repoNm) t dbs
+        )
+        byRepo
+    dependencies = stacked byRepoMap . metaDependencies . itemMeta
+    stacked byRepoMap (Just (Thrift.Dependencies_stacked repo)) =
+      [repo `Map.lookup` byRepoMap]
+    stacked byRepoMap (Just (Thrift.Dependencies_pruned update)) =
+      [pruned_base update `Map.lookup` byRepoMap]
+    stacked _ Nothing = []
+
+
 -- The target set of DBs we want usable on the disk. This is a set of
 -- DBs that satisfies the policy.
 --   - start from the set of DBs satisfying
@@ -321,13 +350,12 @@ runWithShards env myShards sm = do
 --   - ensure that we have retain_at_least local DBs
 --     (i.e. avoid deleting local DBs while we wait for restores)
 dbKeepRoots
-  :: ServerConfig.Config
+  :: ServerConfig.Retention
   -> UTCTime
-  -> (Text, NonEmpty Item)
+  -> NonEmpty Item
   -> [Item]
-dbKeepRoots ServerConfig.Config{..} t (repoNm, dbs) = keepRoots
+dbKeepRoots ServerConfig.Retention{..} t dbs = keepRoots
   where
-    ServerConfig.Retention{..} = repoRetention config_retention repoNm
     retainAtLeast = fromIntegral $ fromMaybe 0 retention_retain_at_least
     retainAtMost = fmap fromIntegral retention_retain_at_most
     deleteIfOlder = fmap fromIntegral retention_delete_if_older
