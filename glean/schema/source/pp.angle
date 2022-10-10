@@ -7,9 +7,11 @@ import src.1
 # Note that there may be many such facts for a given src.File
 predicate Include :
   {
-    file : src.File,       # file being included
-    path : src.ByteRange,  # span of the file path in the source
-    source : src.Range,    # where #include statement occurs
+    file : src.File,        # file being included
+    # DEPRECATED - Uses deprecated ByteRange. Use pathSpan instead
+    path : src.ByteRange,   # span of the file path in the source
+    source : src.Range,     # where #include statement occurs
+    pathSpan : src.ByteSpan # span of the file path in the source
   }
 
 # Preprocessor macro
@@ -33,10 +35,12 @@ predicate Undef :
 predicate Use :
   {
     macro : Macro,
+    # DEPRECATED - Uses deprecated ByteRange. Use nameSpan instead
     name : src.ByteRange,        # macro name at use site
     definition : maybe src.Loc,  # xref to the macro definition
     expand : bool,               # expansion or defined check?
     source : src.Range,          # entire term including args
+    nameSpan : src.ByteSpan      # macro name at use site
   }
 
 }
