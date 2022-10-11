@@ -237,7 +237,8 @@ runWithShards env myShards sm = do
     | (item, Nothing) <- keepAnnotatedWithShard]
 
   -- ORDERING: 'listMostRecent' reuses the data published by 'resetElsewhere'
-  mostRecent <- Set.fromList . map itemRepo <$>
+  let closeDeps = transitiveClosureBy itemRepo (catMaybes . dependencies)
+  mostRecent <- Set.fromList . map itemRepo . closeDeps <$>
     Catalog.listMostRecent (envCatalog env)
 
   closeIdleDatabases env
@@ -263,7 +264,7 @@ runWithShards env myShards sm = do
           $ void
           $ tryAll
           $ logExceptions (inRepo $ itemRepo newestDb)
-          $ withOpenDatabase env (itemRepo newestDb) (\_ -> return ())
+          $ withOpenDatabaseStack env (itemRepo newestDb) (\_ -> return ())
       -- upsert counters
       publishCounter (prefix <> ".all") $ length repoKeep
       publishCounter (prefix <> ".available") $ length $ filter

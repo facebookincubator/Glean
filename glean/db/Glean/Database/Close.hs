@@ -106,10 +106,10 @@ closeIdleDatabase env repo duration = do
     repo
 
 closeIdleDatabases :: Env -> DiffTimePoints -> [Repo] -> IO ()
-closeIdleDatabases env duration blacklist = do
+closeIdleDatabases env duration blocklist = do
   dbs <- readTVarIO $ envActive env
-  let notBlacklisted = filter (not . (`elem` blacklist)) (HashMap.keys dbs)
-  forM_ notBlacklisted $ \repo -> closeIdleDatabase env repo duration
+  let notBlocklisted = filter (not . (`elem` blocklist)) (HashMap.keys dbs)
+  forM_ notBlocklisted $ \repo -> closeIdleDatabase env repo duration
   exportOpenDBStats env
 
 -- | set a counter glean.db.<repo>.open to the number of currently
