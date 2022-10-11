@@ -31,6 +31,7 @@ import Control.Monad
 import qualified Data.Aeson as Aeson
 import qualified Data.ByteString.Lazy.Char8 as BSL
 import qualified Data.HashMap.Strict as HashMap
+import Data.List
 import Data.Scientific as Scientific
 import qualified Data.Text as Text
 import Options.Applicative
@@ -56,6 +57,7 @@ data Config = Config
   , cfgMinIter :: Int
   , cfgMaxDiff :: Double
   , cfgWhat :: String
+  , cfgOnly :: Maybe String
   }
 
 options :: ParserInfo Config
@@ -114,6 +116,10 @@ options = info (parser <**> helper) fullDesc
         <> metavar "FIELD"
         <> value "execute_time_ns"
         <> help "What parameter to benchmark"
+      cfgOnly <- optional $ strOption $
+        long "only"
+        <> metavar "BENCHMARK"
+        <> help "Which benchmark(s) to run"
       return Config{..}
 
 main :: IO ()
@@ -124,7 +130,7 @@ main =
       Service service -> f service
       DBRoot dbroot ->
         withServer
-          (proc cfgServerBinary ["--db-root=" ++ dbroot, "+RTS", "-N2", "-RTS"])
+          (proc cfgServerBinary ["--db-root=" ++ dbroot, "+RTS", "-N2", "-A32m", "-RTS"])
           $ \port _ _ _ _ -> f $ "localhost:" ++ show port
 
     with_stats f = case cfgStats of
@@ -134,8 +140,14 @@ main =
 
   in
   with_server $ \service ->
-  with_stats $ \hstats ->
-  forM_ benchmarks $ runBenchmark cfg service hstats
+  with_stats $ \hstats -> do
+  let
+    enabled = case cfgOnly of
+      Nothing -> const True
+      Just str -> (str `isInfixOf`)
+  forM_ benchmarks $ \benchmark ->
+    when (enabled (benchmarkName benchmark)) $
+      runBenchmark cfg service hstats benchmark
 
 runBenchmark :: Config -> String -> Maybe Handle -> Benchmark -> IO ()
 runBenchmark Config{..} service hstats Benchmark{..} = do
@@ -188,19 +200,35 @@ data Benchmark = Benchmark
 
 benchmarks :: [Benchmark]
 benchmarks =
-  [ Benchmark "src.File (1MB page)"
+  [
+    -- simple fetching, with string keys
+    Benchmark "src.File (1MB page)"
       "src.File _"
-      ["--page-bytes=1000000"]
+      ["--limit=1000000", "--page-bytes=1000000"]
   , Benchmark "src.File (20MB page)"
       "src.File _"
-      ["--page-bytes=20000000"]
-  , Benchmark "cxx1.DeclarationInTrace"
-      "cxx1.DeclarationInTrace _"
-      ["--limit=50000", "--page-facts=10000" ]
-  , Benchmark "search.cxx.SearchByNameAndScope"
-      "search.cxx.SearchByNameAndScope _"
-      ["--limit=100000", "--page-bytes=20000000"]
-  , Benchmark "search.cxx.EntityUses"
-      "search.cxx.EntityUses _"
       ["--limit=1000000", "--page-bytes=20000000"]
+    -- simple fetching, with smaller keys
+  , Benchmark "hack.ClassDefinition"
+      "hack.ClassDefinition _"
+      ["--limit=100000", "--page-facts=10000" ]
+    -- slightly more complex searching
+  , Benchmark "search.hack.SearchByName"
+      "search.hack.SearchByName _"
+      ["--limit=100000", "--page-facts=10000" ]
+  -- Two queries that represent the kind of queries that Glass makes
+  , Benchmark "codemarkup.FileEntityInfos"
+      "codemarkup.FileEntityInfos { file = \"www/flib/si/sigma/SigmaContext.php\" }"
+      []
+  , Benchmark "codemarkup.FileEntityXRefInfos"
+      "codemarkup.FileEntityXRefInfos { file = \"www/flib/intern/typeahead/InternTypeaheadType.php\" }"
+      []
+  -- Exercise fetching of nested facts
+  , Benchmark "hack.ClassDefinition-recursive"
+      "hack.ClassDefinition _"
+      ["--limit=10000", "--page-facts=1000", "--recursive" ]
+  -- Query that spends most of its time searching and rejecting facts
+  , Benchmark "hack.ClassDefinition-search"
+      "D where C = hack.ClassDeclaration { name = { name = \"Glean\" }}; D = hack.ClassDefinition { extends_ = { just = C }}"
+      []
   ]
