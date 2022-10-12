@@ -8,21 +8,26 @@
 
 module Glean.Query.Prune (pruneDerivations) where
 
+import Control.Monad.State (State, runState)
+import qualified Control.Monad.State as State
+import Data.Bitraversable (bitraverse)
 import Data.Foldable (asum)
 import Data.Maybe (fromMaybe)
 import qualified Data.Set as Set
 import qualified Data.Graph as Graph
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
+import qualified Data.IntMap.Strict as IntMap
+import Data.IntMap.Strict (IntMap)
 
 import Glean.Database.Schema.Types (PredicateDetails(..))
-import Glean.RTS.Types (PidRef(..))
+import Glean.RTS.Types (PidRef(..), Type)
 import Glean.Angle.Types (PredicateId(..), DerivingInfo(..))
-import Glean.Query.Codegen.Types (Match(..), QueryWithInfo(..), Typed(..))
+import Glean.Query.Codegen.Types
+  (Match(..), QueryWithInfo(..), Typed(..), Var(..))
 import Glean.Query.Typecheck (tcQueryDeps)
 import Glean.Query.Typecheck.Types
   (TcPat, TcTerm(..), TcStatement(..), TcQuery(..), TypecheckedQuery)
-import Glean.Query.Transform (renumberVars)
 import Glean.RTS.Term (Term(..))
 
 -- | Remove all branches that we know will not succeed given the content of the
@@ -170,3 +175,57 @@ prune hasFacts (QueryWithInfo q _ t) = do
             , pa
             , pb
             ]
+
+type R a = State S a
+
+data S = S
+  { nextVar :: Int
+  , mappings :: IntMap Int
+  }
+
+-- | After removing branches from the query we must now update
+-- variable names to ensure we use the smallest numbers possible.
+renumberVars :: Type -> TcQuery -> TypecheckedQuery
+renumberVars ty q =
+  let (newQuery, S varCount _) = runState (renameQuery q) (S 0 mempty)
+  in
+  QueryWithInfo newQuery varCount ty
+  where
+  renameQuery :: TcQuery -> R TcQuery
+  renameQuery (TcQuery ty key mval stmts) =
+    TcQuery ty
+      <$> renamePat key
+      <*> traverse renamePat mval
+      <*> traverse renameStmt stmts
+
+  renameStmt :: TcStatement -> R TcStatement
+  renameStmt (TcStatement ty lhs rhs) =
+    TcStatement ty <$> renamePat lhs <*> renamePat rhs
+
+  renamePat :: TcPat -> R TcPat
+  renamePat = traverse (bitraverse renameTyped renameVar)
+
+  renameTyped :: Typed TcTerm -> R (Typed TcTerm)
+  renameTyped (Typed ty term) = Typed ty <$> renameTcTerm term
+
+  renameTcTerm :: TcTerm -> R TcTerm
+  renameTcTerm = \case
+    TcOr a b -> TcOr <$> renamePat a <*> renamePat b
+    TcFactGen ref k v -> TcFactGen ref <$> renamePat k <*> renamePat v
+    TcElementsOfArray x -> TcElementsOfArray <$> renamePat x
+    TcQueryGen q -> TcQueryGen <$> renameQuery q
+    TcNegation xs -> TcNegation <$> traverse renameStmt xs
+    TcPrimCall op xs -> TcPrimCall op <$> traverse renamePat xs
+    TcIf cond then_ else_ ->
+      TcIf <$> traverse renamePat cond <*> renamePat then_ <*> renamePat else_
+
+  renameVar :: Var -> R Var
+  renameVar (Var ty old n) = State.state $ \s ->
+    case IntMap.lookup old (mappings s) of
+      Just new -> (Var ty new n, s)
+      Nothing ->
+        let new = nextVar s
+            mappings' = IntMap.insert old new (mappings s)
+            next' = new + 1
+        in
+        (Var ty new n, S next' mappings')
