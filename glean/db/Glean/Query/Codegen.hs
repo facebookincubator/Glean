@@ -41,7 +41,12 @@ import System.IO.Unsafe
 import qualified Util.FFI as FFI
 import Util.Log
 import qualified Util.Log.Text as TextLog
-import Glean.Query.Transform (skipTrusted, isWordTy, buildTerm, transformType)
+import Glean.Query.Transform
+  ( skipTrusted
+  , isWordTy
+  , buildTerm
+  , transformType
+  , transformBytes )
 import Glean.Angle.Types (IsWild(..), tempPredicateId)
 import qualified Glean.Angle.Types as Angle
 import Glean.Bytecode.Types
@@ -972,12 +977,15 @@ withPrefix chunks fun =
     -- pattern. This is used to capture the key of a fact so
     -- that we can return it, but we don't want it to interfere
     -- with prefix lookup.
-    (QueryAnd bindVar@[QueryBind _] pats) : [] ->
-      withPrefix pats $ \isPointQuery bytes filters ->
-        fun isPointQuery bytes $
-          if null filters
-             then bindVar
-             else [QueryAnd filters bindVar ]
+    [QueryAnd left right]
+      | emptyPrefix left && not (emptyPrefix right) ->
+        withPrefix [QueryAnd right left] fun
+      | not $ emptyPrefix left ->
+        withPrefix left $ \isPointQuery bytes filters ->
+          fun isPointQuery bytes $
+            if null filters
+               then right
+               else [QueryAnd filters right]
 
     -- Just a fixed ByteString: use it directly
     (QueryPrefix bs : rest) | emptyPrefix rest ->
@@ -1046,6 +1054,9 @@ data QueryChunk var =
    -- it to a variable
  | QueryBind var
 
+  -- | Transform a fragment into a different type and bind it to a variable
+ | QueryTransformAndBind Type var
+
    -- | A variable: match this fragment against the specified variable
  | QueryVar var
 
@@ -1070,7 +1081,7 @@ instance IsWild (QueryChunk var) where
 inlineVars
   :: Vector (Register 'Word)
   -> Term (Match () Var)
-  -> Term (Match () Output)
+  -> Term (Match TransformAndBind Output)
 inlineVars vars term = fmap (bimap (error "inlineVars") toOutput) term
   where
     toOutput :: Var -> Output
@@ -1080,7 +1091,7 @@ inlineVars vars term = fmap (bimap (error "inlineVars") toOutput) term
 -- | Process a query into a [QueryChunk], which enables the compiler to
 -- generate efficient code for a pattern match.
 --
-preProcessPat :: Term (Match () Output) -> [QueryChunk Output]
+preProcessPat :: Term (Match TransformAndBind Output) -> [QueryChunk Output]
 preProcessPat pat = unsafePerformIO $
   withBuilder $ \builder -> do
     (_, (_, _, chunks)) <-
@@ -1129,7 +1140,7 @@ preProcessPat pat = unsafePerformIO $
       -- Thus the remaining input is a valid string, and we can continue
       -- by matching it as a StringTy with QueryWild or QueryBind.
 
-  build :: Term (Match () Output) -> M ()
+  build :: Term (Match TransformAndBind Output) -> M ()
   build pat =
     case pat of
       Array terms -> do
@@ -1160,7 +1171,8 @@ preProcessPat pat = unsafePerformIO $
       Ref (MatchArrayPrefix ty prefix) -> do
         chunks <- getChunks $ mapM_ build prefix
         chunk $ QueryArrayPrefix (genericLength chunks) ty chunks
-      Ref (MatchExt ()) -> return ()
+      Ref (MatchExt (TransformAndBind src dst)) ->
+        chunk $ QueryTransformAndBind src dst
       Byte w -> do
         b <- builder
         lift $ FFI.call $ glean_push_value_byte b w
@@ -1346,6 +1358,14 @@ matchPat input inputend fail chunks = match True chunks
               skipTrusted input inputend ty
               outputBytes start input outReg
               match tillEnd rest
+
+      QueryTransformAndBind from (Typed to out) ->
+        case transformBytes from to of
+          Nothing -> match tillEnd (QueryBind (Typed to out) : rest)
+          Just transform -> do
+            let bytes = Bytes input inputend
+            transform bytes out
+
 
       QueryArrayPrefix npatterns ty patterns -> do
         local $ \size patternsLen -> do

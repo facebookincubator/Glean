@@ -24,6 +24,7 @@ module Glean.Query.Codegen.Types
   , PrimOp(..)
   , Typed(..)
   , Output
+  , TransformAndBind(..)
   ) where
 
 import Data.Bifunctor
@@ -244,6 +245,11 @@ data Match ext var
   | MatchExt ext
 
   deriving (Functor, Foldable, Traversable, Show)
+
+-- | Bind a value of one type into an output of a different type by first
+-- performing a type transformation.
+data TransformAndBind = TransformAndBind Type Output
+  deriving Show
 
 instance Bifunctor Match where
   bimap f g = \case

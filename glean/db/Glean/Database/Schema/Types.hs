@@ -43,7 +43,7 @@ import Data.Text.Prettyprint.Doc hiding ((<>))
 import Glean.Angle.Types as Schema hiding (Type, FieldDef)
 import qualified Glean.Angle.Types as Schema
 import Glean.Bytecode.Types
-import Glean.Query.Codegen.Types (Match, Output)
+import Glean.Query.Codegen.Types (Match, Output, TransformAndBind)
 import Glean.Database.Schema.ComputeIds
 import Glean.Query.Typecheck.Types
 import Glean.RTS.Foreign.Bytecode (Subroutine)
@@ -95,8 +95,8 @@ data PredicateTransformation = PredicateTransformation
 
   , transformPrefix
     :: forall a
-    . Maybe (  Term (Match () Output)
-            -> (Term (Match () Output) -> Code a)
+    . Maybe (  Term (Match TransformAndBind Output)
+            -> (Term (Match TransformAndBind Output) -> Code a)
             -> Code a)
     -- ^ requested -> available
     -- ^ Transform a pattern into one which can be used to build a prefix for

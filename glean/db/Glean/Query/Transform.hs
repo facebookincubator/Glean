@@ -63,7 +63,12 @@ import Glean.Angle.Types (PredicateId, Type_(..), FieldDef_(..), Name)
 import Glean.Bytecode.Types (Ty(..))
 import Glean.Schema.Util (showRef, lowerEnum, lowerMaybe, lowerBool)
 import Glean.Query.Codegen.Types
-  (Match(..), Var(..), QueryWithInfo(..), Typed(..), Output)
+  ( Match(..)
+  , Var(..)
+  , QueryWithInfo(..)
+  , Typed(..)
+  , Output
+  , TransformAndBind(..) )
 import Glean.Query.Typecheck.Types
 import Glean.Database.Schema.Types
 import qualified Glean.RTS as RTS
@@ -623,7 +628,7 @@ transformExpression from to =
   where
     inner _ _ _ a f = f a
 
-type Matcher = Match () Output
+type Matcher = Match TransformAndBind Output
 
 -- | Transform a matching pattern into a another type.
 -- All variable bindings are removed.
@@ -655,7 +660,7 @@ transformMatch from to overTerm match = case match of
   MatchFid fid -> return $ MatchFid fid
   -- Convert value from 'to' type into 'from' before binding.
   -- If we get to this case it means that this conversion is required,
-  MatchBind _ -> return $ MatchWild to
+  MatchBind out -> return $ MatchExt $ TransformAndBind to out
   MatchVar (Typed _ var) ->
     case transformBytes from to of
       Nothing -> return $ MatchVar $ Typed to var
