@@ -15,6 +15,7 @@ module Glean.Glass.SearchRelated
   ( searchRelatedEntities
   , Recursive(..)
   , RelatedLocatedEntities(..)
+  , LocatedEntity
   ) where
 
 import Control.Monad (forM)

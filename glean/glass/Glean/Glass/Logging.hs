@@ -144,6 +144,18 @@ instance LogResult SearchRelatedResult where
   logResult (SearchRelatedResult{..}, log) =
     logResult (searchRelatedResult_edges, log)
 
+instance LogResult RelatedNeighborhoodResult where
+  logResult (RelatedNeighborhoodResult{..}, log) =
+    log <> Logger.setItemCount
+      (length relatedNeighborhoodResult_containsChildren +
+        length relatedNeighborhoodResult_extendsChildren +
+        length relatedNeighborhoodResult_containsParents +
+        length relatedNeighborhoodResult_extendsParents +
+        sum (map (\x -> 1 + length (inheritedSymbols_provides x))
+              relatedNeighborhoodResult_inheritedSymbols
+            )
+      )
+
 instance LogResult [RelatedSymbols] where
   logResult (edges, log) = log <> Logger.setItemCount (length edges)
 

@@ -28,8 +28,10 @@ module Glean.Glass.Handler
 
   -- * searching by string
   , searchSymbol
+
   -- ** by relationship
   , searchRelated
+  , searchRelatedNeighborhood
 
   -- * deprecated
   , searchBySymbolId
@@ -153,6 +155,8 @@ import Glean.Glass.Types
       SymbolResult(..),
       SymbolSearchOptions(..),
       RelatedSymbols(..),
+      RelationType(..),
+      RelationDirection(..),
       ServerException(ServerException),
       SymbolDescription(..),
       SymbolId(..),
@@ -170,6 +174,9 @@ import Glean.Glass.Types
       FileXRefTarget(..),
       FileIncludeXRef(..),
       XRefFileList(..),
+      RelatedNeighborhoodRequest(..),
+      RelatedNeighborhoodResult(..),
+      InheritedSymbols(..),
       rELATED_SYMBOLS_MAX_LIMIT,
       mAXIMUM_SYMBOLS_QUERY_LIMIT )
 import Glean.Index.Types
@@ -1166,14 +1173,9 @@ searchRelated env@Glass.Env{..}
     sym RequestOptions{..} SearchRelatedRequest{..} =
   withSymbol "searchRelated" env sym $ \(gleanDBs, (repo, lang, toks)) -> do
     backendRunHaxl GleanBackend {..} $ do
-      r <- Search.searchEntity lang toks
-      (entity, err) <- case r of
-        None t -> throwM (ServerException t)
-        One e -> return (e, Nothing)
-        Many { initial = e } -> return (e, Nothing)
-
+      entity <- searchFirstEntity lang toks
       (entityPairs, descriptions) <- withRepo (entityRepo entity) $ do
-        edgePairs <- withRepo (entityRepo entity) $
+        edgePairs <- withRepo (entityRepo entity) $ do
             Search.searchRelatedEntities limit
               searchRecursively
               searchRelatedRequest_relation
@@ -1197,7 +1199,7 @@ searchRelated env@Glass.Env{..}
             { searchRelatedResult_edges = symbolIdPairs
             , searchRelatedResult_symbolDetails = descriptions
             }
-      pure (result, err)
+      pure (result, Nothing)
   where
     -- building map of sym id -> descriptions, by first occurence
     mkDescribe repo e@(_,SymbolId rawSymId) = (rawSymId,) <$> describe repo e
@@ -1212,6 +1214,150 @@ searchRelated env@Glass.Env{..}
     limit = fromIntegral $ case requestOptions_limit of
       Just x | x < rELATED_SYMBOLS_MAX_LIMIT -> x
       _ -> rELATED_SYMBOLS_MAX_LIMIT
+
+--
+-- Extract the "API" neighborhood of a symbol
+--
+searchRelatedNeighborhood
+  :: Glass.Env
+  -> SymbolId
+  -> RequestOptions
+  -> RelatedNeighborhoodRequest
+  -> IO RelatedNeighborhoodResult
+searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
+    RelatedNeighborhoodRequest{..} =
+  withSymbol "searchRelatedNeighborhood" env sym $
+    \(gleanDBs, (repo, lang, toks)) -> backendRunHaxl GleanBackend {..} $ do
+      baseEntity <- searchFirstEntity lang toks
+      ((a, b, c, d, e), descriptions) <- searchNeighbors repo baseEntity
+      let result = RelatedNeighborhoodResult {
+             relatedNeighborhoodResult_containsChildren = symbolIdPairs a,
+             relatedNeighborhoodResult_extendsChildren = symbolIdPairs b,
+             relatedNeighborhoodResult_containsParents = symbolIdPairs c,
+             relatedNeighborhoodResult_extendsParents = symbolIdPairs d,
+             relatedNeighborhoodResult_inheritedSymbols =
+               map inheritedSymbolIdSets e,
+             relatedNeighborhoodResult_symbolDetails = descriptions
+          }
+      return (result, Nothing)
+  where
+    -- being careful to keep things with clear data dependencies
+    searchNeighbors :: RepoName -> SearchEntity Code.Entity
+      -> ReposHaxl u w NeighborRawResult
+    searchNeighbors repo baseEntity = do
+      a <- childrenContains1Level baseEntity repo
+      b <- childrenExtends1Level baseEntity repo
+      c <- parentContainsNLevel baseEntity repo
+      d <- parentExtends1Level baseEntity repo
+      e <- inheritedNLevel baseEntity repo
+      let syms = uniqBy (comparing snd) $
+             fromSearchEntity sym baseEntity :
+              concatMap flattenEdges [a,b,c,d] ++
+              concatMap (\(parent, children) -> parent : children) e
+      descriptions <- withRepo (entityRepo baseEntity) $ do
+        descs <- mapM (mkDescribe repo) syms
+        pure (Map.fromAscList descs)
+      return ((a,b,c,d,e), descriptions)
+
+    -- building map of sym id -> descriptions, by first occurence
+    mkDescribe repo e@(_,SymbolId rawSymId) = (rawSymId,) <$> describe repo e
+
+    describe repo ((entity, entityFile, entityRange, entityName),symId) =
+      mkSymbolDescription symId repo $ CodeEntityLocation{..}
+
+    childrenContains1Level :: SearchRelatedQuery u w
+    childrenContains1Level baseEntity repo = Search.searchRelatedEntities
+      (fromIntegral relatedNeighborhoodRequest_children_limit)
+      Search.NotRecursive
+      RelationDirection_Child
+      RelationType_Contains
+      baseEntity
+      repo
+    childrenExtends1Level :: SearchRelatedQuery u w
+    childrenExtends1Level baseEntity repo = Search.searchRelatedEntities
+      (fromIntegral relatedNeighborhoodRequest_children_limit)
+      Search.NotRecursive
+      RelationDirection_Child
+      RelationType_Extends
+      baseEntity
+      repo
+    -- Direct inheritance parents
+    parentExtends1Level :: SearchRelatedQuery u w
+    parentExtends1Level baseEntity repo = Search.searchRelatedEntities limit
+      Search.NotRecursive
+      RelationDirection_Parent
+      RelationType_Extends
+      baseEntity
+      repo
+    -- N levels of container hierarchy
+    parentContainsNLevel :: SearchRelatedQuery u w
+    parentContainsNLevel baseEntity repo = Search.searchRelatedEntities
+      (fromIntegral relatedNeighborhoodRequest_parent_depth)
+      Search.Recursive
+      RelationDirection_Parent
+      RelationType_Contains
+      baseEntity
+      repo
+
+    -- Inherited symbols: the contained children of N levels of extended parents
+    inheritedNLevel :: SearchEntity Code.Entity -> RepoName
+       -> ReposHaxl u w [(Search.LocatedEntity,[Search.LocatedEntity])]
+    inheritedNLevel baseEntity repo = do
+      parents <- uniq . map Search.parentRL <$> Search.searchRelatedEntities
+        (fromIntegral relatedNeighborhoodRequest_inherited_limit)
+        Search.Recursive
+        RelationDirection_Parent
+        RelationType_Extends
+        baseEntity
+        repo
+      -- for each parent, collect the inherited children by `contains`
+      mapM (\parent -> do
+          children <- childrenContains1Level
+                (toSearchEntity (entityRepo baseEntity) parent)
+                repo
+          return (parent, map Search.childRL children)
+        ) parents
+
+    symbolIdPairs = map (\Search.RelatedLocatedEntities{..} ->
+      RelatedSymbols (snd parentRL) (snd childRL))
+
+    inheritedSymbolIdSets (parent, children) = InheritedSymbols {
+        inheritedSymbols_base = snd parent,
+        inheritedSymbols_provides = map snd children
+      }
+
+    toSearchEntity entityRepo ((decl, file, rangespan, name), _symId) =
+      SearchEntity{..}
+    fromSearchEntity symId SearchEntity{..} =
+      ((decl, file, rangespan, name), symId)
+
+    flattenEdges pairs = concat
+      [ [ e1, e2 ] | Search.RelatedLocatedEntities e1 e2 <- pairs ]
+
+    limit = fromIntegral $ case requestOptions_limit of
+      Just x | x < rELATED_SYMBOLS_MAX_LIMIT -> x
+      _ -> rELATED_SYMBOLS_MAX_LIMIT
+
+type SearchRelatedQuery u w = SearchEntity Code.Entity -> RepoName
+      -> ReposHaxl u w [Search.RelatedLocatedEntities]
+
+type NeighborRawResult =
+  (([Search.RelatedLocatedEntities]
+  , [Search.RelatedLocatedEntities]
+  , [Search.RelatedLocatedEntities]
+  , [Search.RelatedLocatedEntities]
+  , [(Search.LocatedEntity, [Search.LocatedEntity])])
+  , Map.Map Text SymbolDescription
+  )
+
+searchFirstEntity
+  :: Language -> [Text] -> Glean.ReposHaxl u w (SearchEntity Code.Entity)
+searchFirstEntity lang toks = do
+  r <- Search.searchEntity lang toks
+  case r of
+    None t -> throwM (ServerException t)
+    One e -> return e
+    Many { initial = e } -> return e
 
 -- Processing indexing requests
 index :: Glass.Env -> IndexRequest -> IO IndexResponse

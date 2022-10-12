@@ -415,10 +415,18 @@ struct SearchRelatedRequest {
   5: bool detailedResults; // fill out symbol_details in the response
 }
 
+// Some limits to cap how large the neighborhood can get
+struct RelatedNeighborhoodRequest {
+  1: i32 children_limit = 5000; // max direct children
+  2: i32 inherited_limit = 500; // max inherited, per parent
+  3: i32 parent_depth = 500; // max count of extend or containing parents
+}
+
 // Consider capping the number of symbols in a single angle query before
 // increasing this number
 const i32 RELATED_SYMBOLS_MAX_LIMIT = 1000;
 
+// A directed edge in the related symbols graph
 struct RelatedSymbols {
   1: SymbolId parent;
   2: SymbolId child;
@@ -429,6 +437,24 @@ struct RelatedSymbols {
 struct SearchRelatedResult {
   1: list<RelatedSymbols> edges;
   2: map<string, SymbolDescription> symbolDetails;
+}
+
+// Inheritance sets: a parent by `extends` provides a set of things it contains
+struct InheritedSymbols {
+  1: SymbolId base;
+  2: list<SymbolId> provides;
+}
+
+// Report of neighborhoood of a symbol in all directions (for API discovery)
+// Even if there are no parents or children we guarantee to return details
+// of the base symbol
+struct RelatedNeighborhoodResult {
+  1: list<RelatedSymbols> containsChildren; // 1st level children, contained
+  2: list<RelatedSymbols> extendsChildren; // 1st level children, extends
+  3: list<RelatedSymbols> containsParents; // N level path of containing parents
+  4: list<RelatedSymbols> extendsParents; // 1st level of extended parents
+  5: list<InheritedSymbols> inheritedSymbols; // "inherited" children, in scope
+  6: map<string, SymbolDescription> symbolDetails; // details for everything
 }
 
 # request xref locations (currently just #includes for C++ only)
@@ -519,20 +545,27 @@ service GlassService extends fb303.FacebookService {
     2: RequestOptions options,
   ) throws (1: ServerException e);
 
-  // Search for symbols by some relationship (child/parent, inheritence)
+  // Search for symbols by a specific relationship (child/parent, inheritance)
   SearchRelatedResult searchRelated(
     1: SymbolId symbol,
     2: RequestOptions options,
     3: SearchRelatedRequest request,
   ) throws (1: ServerException e);
 
+  // Search neighborhood of symbols by all relationships
+  RelatedNeighborhoodResult searchRelatedNeighborhood(
+    1: SymbolId symbol,
+    2: RequestOptions options,
+    3: RelatedNeighborhoodRequest request,
+  ) throws (1: ServerException e);
+
+  // Special purpose queries
+
   // Trigger the creation of an incremental database based on file changes
   // relative to an indexed revision
   index.IndexResponse index(1: index.IndexRequest request) throws (
     1: ServerException e,
   );
-
-  // Special purpose queries
 
   // Resolve #include file paths to depth N
   FileIncludeLocationResults fileIncludeLocations(
