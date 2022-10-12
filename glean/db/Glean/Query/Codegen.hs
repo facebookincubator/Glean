@@ -21,9 +21,7 @@ import Control.Exception
 import Control.Monad.Extra (whenJust)
 import Control.Monad.State
 import Data.ByteString (ByteString)
-import qualified Data.ByteString as ByteString
 import Data.Coerce
-import Data.Bifunctor (bimap)
 import Data.Either.Extra (eitherToMaybe)
 import Data.IntMap (IntMap)
 import qualified Data.IntMap as IntMap
@@ -42,7 +40,7 @@ import System.IO.Unsafe
 import qualified Util.FFI as FFI
 import Util.Log
 import qualified Util.Log.Text as TextLog
-
+import Glean.Query.Transform (skipTrusted, isWordTy, buildTerm, transformType)
 import Glean.Angle.Types (IsWild(..), tempPredicateId)
 import qualified Glean.Angle.Types as Angle
 import Glean.Bytecode.Types
@@ -280,37 +278,6 @@ compileQuery trans bounds (QueryWithInfo query numVars ty) = do
     _other -> throwIO $ ErrorCall "unrecognised query return type"
 
   return (CompiledQuery sub pid traverse)
-
--- | Transform predicates inside the type but keep its structure.
-transformType :: IntMap PredicateTransformation -> Type -> Type
-transformType tmap ty = transform ty
-  where
-    transform ty = bimap overPidRef overExpandedType ty
-
-    overPidRef (PidRef pid ref) =
-      case IntMap.lookup (fromIntegral $ fromPid pid) tmap of
-        Nothing -> PidRef pid ref
-        Just PredicateTransformation{..} -> tAvailable
-
-    overExpandedType (ExpandedType tref ty) =
-      ExpandedType tref (transform ty)
-
--- | A 'ResultTerm' is represented in two ways depending on the type
--- of the value being returned:
---
--- * 'PredicateTy' and 'NatTy' results are stored directly in a 'Register Word'
--- * Other types are built in a 'binary::Output' and are represented by a
---   'Register BinaryOutputPtr'.
---
--- 'isWordTy' returns 'True' for the first kind.
---
-isWordTy :: Type -> Bool
-isWordTy = isWordRep . repType
-  where
-  isWordRep PredicateRep{} = True
-  isWordRep ByteRep = True
-  isWordRep NatRep = True
-  isWordRep _ = False
 
 isEmptyTy :: Type -> Bool
 isEmptyTy ty
@@ -971,7 +938,6 @@ withPatterns etrans vars kpat vpat f = do
         getOutput transformed start end
         act (Bytes start end)
 
-
 withTransformedPrefix
   :: Maybe PredicateTransformation
   -> Vector (Register 'Word)
@@ -1248,49 +1214,6 @@ buildPrefix chunks cont =
       -- to seek to it directly. But then we would possibly have
       -- to do multiple seeks.
 
---
--- | Generate code to skip over a value of the given type in the input
---
-skipTrusted
-  :: Register 'DataPtr
-  -> Register 'DataPtr
-  -> Type
-  -> Code ()
-skipTrusted input inputend ty = skip (repType ty)
-  where
-  skip ty = case ty of
-    ByteRep -> do size <- constant 1; inputBytes input inputend size
-    NatRep -> inputSkipNat input inputend
-    ArrayRep eltTy ->
-      local $ \size -> do
-        inputNat input inputend size
-        case eltTy of
-          ByteRep -> inputBytes input inputend size
-          _ -> mdo
-            jumpIf0 size end
-            loop2 <- label
-            skip eltTy
-            decrAndJumpIfNot0 size loop2
-            end <- label
-            return ()
-    TupleRep tys -> mapM_ skip tys
-    SumRep tys -> mdo
-      local $ \sel -> do
-        inputNat input inputend sel
-        let unknown = [end]
-        select sel (alts ++ unknown)
-      raise "selector out of range"
-      alts <- forM tys $ \ty -> do
-        -- TODO: for (Tuple []) we don't need to generate any bytecode
-        alt <- label
-        skip ty
-        jump end
-        return alt
-      end <- label
-      return ()
-    StringRep -> inputSkipTrustedString input inputend
-    PredicateRep _ -> inputSkipNat input inputend
-
 -- | Load a term that is expected to be word-typed into a register.
 withNatTerm
   :: Vector (Register 'Word)    -- ^ registers for variables
@@ -1324,46 +1247,6 @@ withTerm vars term action = do
     resetOutput reg
     buildTerm reg vars term
     action reg
-
--- | Serialize a term into the given output register.
-buildTerm
-  :: Register 'BinaryOutputPtr
-  -> Vector (Register 'Word)
-  -> Term (Match () Var)
-  -> Code ()
-buildTerm output vars term = go term
-  where
-  go term = case term of
-    Byte b -> outputByteImm (fromIntegral b) output
-    Nat n -> outputNatImm n output
-    String s ->
-      local $ \ptr end -> do
-        -- NOTE: We assume that the string has been validated during parsing.
-        loadLiteral (mangleString s) ptr end
-        outputBytes ptr end output
-    Array vs -> do
-      outputNatImm (fromIntegral (length vs)) output
-      mapM_ go vs
-    Tuple fields -> mapM_ go fields
-    Alt n term -> do outputNatImm n output; go term
-    Ref (MatchFid f) -> outputNatImm (fromIntegral (fromFid f)) output
-    Ref (MatchPrefix str rest) -> do
-      local $ \ptr end -> do
-        let
-          mangled = fromValue (String str)
-          withoutTerminator =
-            ByteString.take (ByteString.length mangled - 2) mangled
-        loadLiteral withoutTerminator ptr end
-        outputBytes ptr end output
-      go rest
-    Ref (MatchVar (Var ty var _))
-      | isWordTy ty -> outputNat (vars ! var) output
-      | otherwise ->
-        local $ \ptr end -> do
-          getOutput (castRegister (vars ! var)) ptr end
-          outputBytes ptr end output
-    other -> error $ "buildTerm: " <> show other
-
 
 -- | check that a value matches a pattern, and bind variables as
 -- necessary. The pattern is assumed to cover the *whole* of the

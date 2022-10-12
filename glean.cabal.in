@@ -488,7 +488,6 @@ library db
         Glean.Database.Repo
         Glean.Database.Schema
         Glean.Database.Schema.ComputeIds
-        Glean.Database.Schema.Transform
         Glean.Database.Schema.Types
         Glean.Database.Stats
         Glean.Database.Storage

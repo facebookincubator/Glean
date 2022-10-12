@@ -62,7 +62,12 @@ import Util.Log.Text
 import Glean.RTS.Foreign.Inventory as Inventory
 import Glean.Database.Config
 import Glean.Database.Schema.Types
-import Glean.Database.Schema.Transform (mkPredicateTransformation)
+import Glean.Query.Transform
+  ( transformPattern
+  , transformBytes
+  , transformFact
+  , transformTypecheckedQuery
+  )
 import Glean.Internal.Types as Internal (StoredSchema(..))
 import Glean.RTS.Traverse
 import Glean.RTS.Typecheck
@@ -74,7 +79,6 @@ import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Query.Codegen.Types (QueryWithInfo(..))
 import Glean.Query.Typecheck
 
-import Glean.Query.Transform (transformTypecheckedQuery)
 import Glean.Types as Thrift
 import Glean.Schema.Types
 import Glean.Database.Schema.ComputeIds
@@ -541,6 +545,27 @@ mkAutoTransformations (DbReadOnly stats) byPid stored added byId =
     predicateHasFactsInDb :: Pid -> Bool
     predicateHasFactsInDb id = factCount > 0
       where factCount = maybe 0 predicateStats_count (HashMap.lookup id stats)
+
+mkPredicateTransformation
+  :: (Pid -> PredicateDetails)
+  -> Pid
+  -> Pid
+  -> Maybe PredicateTransformation
+mkPredicateTransformation detailsFor requestedPid availablePid
+  | requestedPid == availablePid = Nothing
+  | otherwise = Just PredicateTransformation
+    { tRequested = pidRef requested
+    , tAvailable = pidRef available
+    , tTransformFactBack = fromMaybe id $ transformFact available requested
+    , transformPrefix = transformPattern (key requested) (key available)
+    , transformKey   = transformBytes (key available) (key requested)
+    , transformValue = transformBytes (val available) (val requested)
+    }
+  where
+      key = predicateKeyType
+      val = predicateValueType
+      available = detailsFor availablePid
+      requested = detailsFor requestedPid
 
 -- ^ Create a map of which should be transformed into which
 transformedPredicates
