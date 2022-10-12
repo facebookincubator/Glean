@@ -115,7 +115,9 @@ instance Plugin RestoreCommand where
       listWithBackups =
         Glean.listDatabasesResult_databases <$>
           Glean.listDatabases backend Glean.ListDatabases
-            { listDatabases_includeBackups = True }
+            { listDatabases_includeBackups = True
+            , listDatabases_client_info = Nothing
+            }
 
       restore targets = do
         forM_ targets $ \(locator, mrepo) -> do
@@ -127,8 +129,10 @@ instance Plugin RestoreCommand where
 
       wait locators = do
         localDatabases <- Glean.listDatabasesResult_databases <$>
-          Glean.listDatabases backend
-            Glean.ListDatabases { listDatabases_includeBackups = False }
+          Glean.listDatabases backend Glean.ListDatabases
+              { listDatabases_includeBackups = False
+              , listDatabases_client_info = Nothing
+              }
         dbs <- traverse (locatorDb localDatabases) locators
         let isRestoring = (DatabaseStatus_Restoring ==) . database_status
         if any isRestoring dbs

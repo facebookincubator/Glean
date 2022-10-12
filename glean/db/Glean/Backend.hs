@@ -200,8 +200,14 @@ instance Backend LoggingBackend where
       (deriveStored env (runLogDerivationResult env log repo q) repo q)
 
   listDatabases (LoggingBackend env) req =
-    loggingAction (runLogCmd "listDatabases" env) (const mempty) $
+    loggingAction runLogListDatabases (const mempty) $
       Database.listDatabases env req
+    where
+      runLogListDatabases log =
+        runLogCmd "listDatabases" env $ log
+          <> maybe mempty logQueryClientInfo
+              (Thrift.listDatabases_client_info req)
+
   getDatabase (LoggingBackend env) repo =
     loggingAction (runLogRepo "getDatabase" env repo) (const mempty) $
       getDatabase env repo

@@ -304,9 +304,12 @@ getDatabases
   -> String -- ^ Only display dbs with a repo name containing this string
   -> Eval [Thrift.Database]
 getDatabases all filterStr = do
+  state <- getState
   r <- withBackend $ \be ->
     liftIO $ Glean.listDatabases be
-      def { Thrift.listDatabases_includeBackups = all }
+      def { Thrift.listDatabases_includeBackups = all
+          , Thrift.listDatabases_client_info = Just (client_info state)
+          }
   let
     -- argument can be NAME or NAME/HASH
     repoFilter str db =

@@ -781,6 +781,8 @@ struct UserQueryFacts {
   7: optional SchemaId schema_id; // see UserQuery
 }
 
+typedef UserQueryClientInfo ClientInfo
+
 struct UserQueryClientInfo {
   1: string name;
   // Client identifier (eg. api-haskell, api-python, etc)
@@ -792,9 +794,10 @@ struct UserQueryClientInfo {
 
 struct ListDatabases {
   1: bool includeBackups = false;
-// If true, also queries the backup server for the databases that
-// are available to restore from backup. This will therefore take
-// longer than just listing the local databases.
+  // If true, also queries the backup server for the databases that
+  // are available to restore from backup. This will therefore take
+  // longer than just listing the local databases.
+  2: optional ClientInfo client_info;
 }
 
 struct ListDatabasesResult {

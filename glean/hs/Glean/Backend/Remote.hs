@@ -303,6 +303,10 @@ instance Backend ThriftBackend where
     GleanService.predicateStats repo $
       Thrift.PredicateStatsOpts{Thrift.predicateStatsOpts_excludeBase=opts==ExcludeBase}
   listDatabases t l = withoutShard t $ GleanService.listDatabases l
+    { Thrift.listDatabases_client_info = client }
+    where
+      client = Thrift.listDatabases_client_info l
+        <|> Just (thriftBackendClientInfo t)
   getDatabase t repo = withShard t repo $ GleanService.getDatabase repo
   userQueryFacts t repo q = withShard t repo $
     GleanService.userQueryFacts repo q
