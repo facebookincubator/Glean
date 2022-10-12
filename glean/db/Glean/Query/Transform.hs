@@ -202,7 +202,9 @@ skipTrusted input inputend ty = skip (repType ty)
             end <- label
             return ()
     TupleRep tys -> mapM_ skip tys
-    SumRep tys -> mdo
+    SumRep tys
+      | all isEmpty tys -> inputSkipNat input inputend
+      | otherwise -> mdo
       local $ \sel -> do
         inputNat input inputend sel
         let unknown = [end]
@@ -219,6 +221,10 @@ skipTrusted input inputend ty = skip (repType ty)
     StringRep -> inputSkipTrustedString input inputend
     PredicateRep _ -> inputSkipNat input inputend
 
+  -- Empty tuples and empty records do not take any bytes
+  isEmpty = \case
+    TupleRep fields -> all isEmpty fields
+    _ -> False
 
 -- | Serialize a term into the given output register.
 buildTerm
