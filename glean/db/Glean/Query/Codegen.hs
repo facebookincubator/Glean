@@ -20,6 +20,7 @@ module Glean.Query.Codegen
 import Control.Exception
 import Control.Monad.Extra (whenJust)
 import Control.Monad.State
+import Data.Bifunctor (bimap)
 import Data.ByteString (ByteString)
 import Data.Coerce
 import Data.Either.Extra (eitherToMaybe)
@@ -537,10 +538,7 @@ compileStatements
 
             patOutput
               :: forall a
-              .  Maybe
-                    ( Bytes
-                    -> (Register 'BinaryOutputPtr -> Code ())
-                    -> Code ())
+              .  Maybe (Bytes -> Register 'BinaryOutputPtr -> Code ())
               -> [QueryChunk Output]
               -> (  Register 'BinaryOutputPtr     -- load bytes here
                  -> (Label -> Code ()) -> Code a) -- test the loaded bytes
@@ -557,9 +555,11 @@ compileStatements
               | Just transform <- maybeTrans =
                   output $ \out ->
                   cont out $ \fail ->
+                    output $ \transformed -> do
+                    resetOutput transformed
                     local $ \begin end -> do
                     getOutput out begin end
-                    transform (Bytes begin end) $ \transformed -> do
+                    transform (Bytes begin end) transformed
                     getOutput transformed begin end
                     matchPat begin end fail chunks
               | otherwise =
@@ -927,16 +927,18 @@ withPatterns etrans vars kpat vpat f = do
     transValue = withTransformation $ transformValue  =<< mtrans
 
     withTransformation
-      :: Maybe (Bytes -> (Register 'BinaryOutputPtr -> Code a) -> Code a)
+      :: Maybe (Bytes -> Register 'BinaryOutputPtr -> Code ())
       -> Bytes
       -> (Bytes -> Code a)
       -> Code a
     withTransformation Nothing bytes act = act bytes
     withTransformation (Just transform) bytes act =
-      transform bytes $ \transformed ->
-      local $ \start end -> do
-        getOutput transformed start end
-        act (Bytes start end)
+      output $ \transformed -> do
+        resetOutput transformed
+        transform bytes transformed
+        local $ \start end -> do
+          getOutput transformed start end
+          act (Bytes start end)
 
 withTransformedPrefix
   :: Maybe PredicateTransformation
@@ -1069,7 +1071,7 @@ inlineVars
   :: Vector (Register 'Word)
   -> Term (Match () Var)
   -> Term (Match () Output)
-inlineVars vars term = fmap (fmap toOutput) term
+inlineVars vars term = fmap (bimap (error "inlineVars") toOutput) term
   where
     toOutput :: Var -> Output
     toOutput (Var ty v _) = Typed ty (castRegister (vars ! v))
@@ -1158,7 +1160,7 @@ preProcessPat pat = unsafePerformIO $
       Ref (MatchArrayPrefix ty prefix) -> do
         chunks <- getChunks $ mapM_ build prefix
         chunk $ QueryArrayPrefix (genericLength chunks) ty chunks
-      Ref MatchExt{} -> error "preProcessPat"
+      Ref (MatchExt ()) -> return ()
       Byte w -> do
         b <- builder
         lift $ FFI.call $ glean_push_value_byte b w

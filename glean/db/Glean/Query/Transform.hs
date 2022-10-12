@@ -623,23 +623,20 @@ transformExpression from to =
   where
     inner _ _ _ a f = f a
 
+type Matcher = Match () Output
+
 -- | Transform a matching pattern into a another type.
 -- All variable bindings are removed.
 -- Missing fields are filled with wildcards.
 transformPattern
   :: Type
   -> Type
-  -> Maybe
-      (Term (Match () Output)
-      -> (Term (Match () Output) -> Code a)
-      -> Code a)
+  -> Maybe (Term Matcher -> (Term Matcher -> Code a) -> Code a)
 transformPattern from to = do
   f <- transformTerm defaultForType transformMatch from to
   return $ \term -> runCont (f term)
   where
     defaultForType ty = Ref (MatchWild ty)
-
-type Matcher = Match () Output
 
 -- | Transform a Match which matches against a value of 'from' type into one
 -- that matches against a value of 'to' type.
@@ -658,16 +655,18 @@ transformMatch from to overTerm match = case match of
   MatchFid fid -> return $ MatchFid fid
   -- Convert value from 'to' type into 'from' before binding.
   -- If we get to this case it means that this conversion is required,
-  MatchBind _out -> error "" -- return $ MatchExt $ MatchTransformAndBind to out
-  MatchVar (Typed _ output) ->
+  MatchBind _ -> return $ MatchWild to
+  MatchVar (Typed _ var) ->
     case transformBytes from to of
-      Nothing -> return $ MatchVar $ Typed to output
+      Nothing -> return $ MatchVar $ Typed to var
       Just transform ->
         cont $ \r ->
+          output $ \result -> do
           local $ \start end -> do
-          getOutput output start end
-          transform (Bytes start end) $ \transformed -> do
-          r $ MatchVar $ Typed to transformed
+            getOutput var start end
+            resetOutput result
+            transform (Bytes start end) result
+          r $ MatchVar $ Typed to result
   MatchAnd left right -> do
     left' <- overTerm left
     right' <- overTerm right
@@ -813,15 +812,11 @@ defaultValue ty = case derefType ty of
 transformBytes
   :: Type
   -> Type
-  -> Maybe (Bytes -> (Register 'BinaryOutputPtr -> Code a) -> Code a)
+  -> Maybe (Bytes -> Register 'BinaryOutputPtr -> Code ())
 transformBytes src dst =
   case go src dst of
     Left _ -> Nothing
-    Right transform -> Just $ \bytes act ->
-      output $ \out -> do
-        resetOutput out
-        transform out bytes
-        act out
+    Right transform -> Just $ \bytes out -> transform out bytes
   where
   go :: Type
      -> Type

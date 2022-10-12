@@ -103,12 +103,8 @@ data PredicateTransformation = PredicateTransformation
     -- the available predicate. The resulting pattern cannot be used for
     -- variable binding.
 
-  , transformKey
-    :: forall a
-    . Maybe (Bytes -> (Register 'BinaryOutputPtr -> Code a) -> Code a)
-  , transformValue
-    :: forall a
-    . Maybe (Bytes -> (Register 'BinaryOutputPtr -> Code a) -> Code a)
+  , transformKey :: Maybe (Bytes -> Register 'BinaryOutputPtr -> Code ())
+  , transformValue :: Maybe (Bytes -> Register 'BinaryOutputPtr -> Code ())
     -- ^ available -> requested
   }
 
