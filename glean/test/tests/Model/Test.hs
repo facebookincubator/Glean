@@ -66,7 +66,7 @@ import Glean.Database.Backup.Backend (Backend (fromPath))
 import qualified Glean.Database.Backup.Backend as Site
 import Glean.Database.Backup.Mock (mockSite)
 import qualified Glean.Database.Backup.Mock as Backup.Mock
-import Glean.Database.Catalog (entriesRestoring, getEntries)
+import Glean.Database.Catalog (entriesEphemeral, entriesRestoring, getEntries)
 import Glean.Database.Config (
   Config (
     cfgDataStore,
@@ -404,10 +404,10 @@ mutateSystem MockedEnv {..} DBDownloaded = do
         Wait
           [ timeoutWithError 1 $
               atomically $ do
-                restorePending' <-
-                  entriesRestoring
-                    <$> getEntries (envCatalog mockedEnv)
+                entries <- getEntries (envCatalog mockedEnv)
+                let restorePending' = entriesRestoring entries
                 guard (length restorePending' == length restorePending - 1)
+                guard (null $ entriesEphemeral entries)
           , -- the download is only processed *after* the next Janitor run
             -- it can still lead to a deletion in the follow-up Janitor run
             waitForDeletions mockedEnv
