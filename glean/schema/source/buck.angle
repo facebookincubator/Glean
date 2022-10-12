@@ -267,6 +267,25 @@ predicate Owner :
     };
     File { source = Src } = Headers[..] | Exported[..] | Srcs [..];
 
+# Which targets mention a file in headers, exportedHeaders, or srcs.
+# This predicate is just like Owner but returns only the Locator of the owner
+# not the whole TargetSources.
+predicate FileToTarget :
+  {
+    source : src.File,
+    locator : Locator,
+  }
+  {Src, BuckLocator} where
+    Owner
+    {
+      source = Src,
+      owner = TargetSources  {
+        target = {
+          locator = BuckLocator
+        }
+      }
+    }
+
 # New predicate that depends on File
 
 # Which targets consume a (possibly named) output of another rule.
@@ -453,5 +472,5 @@ predicate DestinationUses:
   { Destination, File, Spans } where
     FileXRefs { File, XRefs };
     { Destination, Spans } = XRefs[..];
-  
+
 } # end schema buck.3
