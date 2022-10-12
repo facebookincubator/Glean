@@ -1,0 +1,45 @@
+[
+    "@generated",
+    {
+        "containsChildren": [],
+        "containsParents": [],
+        "extendsChildren": [],
+        "extendsParents": [],
+        "inheritedSymbols": [],
+        "symbolDetails": {
+            "test/cpp//h/t/.decl": {
+                "comments": [],
+                "kind": 15,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 16,
+                        "lineBegin": 54,
+                        "lineEnd": 54
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "h",
+                    "localName": "t"
+                },
+                "repo_hash": "testhash",
+                "signature": "foo::bar::T t",
+                "sym": "test/cpp//h/t/.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 16,
+                        "lineBegin": 54,
+                        "lineEnd": 54
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            }
+        }
+    }
+]

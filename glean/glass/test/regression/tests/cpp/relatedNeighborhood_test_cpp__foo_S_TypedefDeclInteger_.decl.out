@@ -1,0 +1,45 @@
+[
+    "@generated",
+    {
+        "containsChildren": [],
+        "containsParents": [],
+        "extendsChildren": [],
+        "extendsParents": [],
+        "inheritedSymbols": [],
+        "symbolDetails": {
+            "test/cpp//foo/S/TypedefDeclInteger/.decl": {
+                "comments": [],
+                "kind": 2,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 34,
+                        "lineBegin": 12,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "foo::S",
+                    "localName": "TypedefDeclInteger"
+                },
+                "repo_hash": "testhash",
+                "signature": "typedef long foo::S::TypedefDeclInteger",
+                "sym": "test/cpp//foo/S/TypedefDeclInteger/.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 34,
+                        "lineBegin": 12,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            }
+        }
+    }
+]

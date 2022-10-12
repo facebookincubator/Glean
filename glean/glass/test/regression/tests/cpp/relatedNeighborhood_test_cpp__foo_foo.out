@@ -1,0 +1,45 @@
+[
+    "@generated",
+    {
+        "containsChildren": [],
+        "containsParents": [],
+        "extendsChildren": [],
+        "extendsParents": [],
+        "inheritedSymbols": [],
+        "symbolDetails": {
+            "test/cpp//foo/foo": {
+                "comments": [],
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 22,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "foo",
+                    "localName": "foo"
+                },
+                "repo_hash": "testhash",
+                "signature": "void foo::foo()",
+                "sym": "test/cpp//foo/foo",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 22,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            }
+        }
+    }
+]

@@ -1,0 +1,45 @@
+[
+    "@generated",
+    {
+        "containsChildren": [],
+        "containsParents": [],
+        "extendsChildren": [],
+        "extendsParents": [],
+        "inheritedSymbols": [],
+        "symbolDetails": {
+            "test/cpp//maybe/Nothing/.ctor//.decl": {
+                "comments": [],
+                "kind": 15,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 30,
+                        "columnEnd": 37,
+                        "lineBegin": 69,
+                        "lineEnd": 69
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "maybe::Nothing::.ctor",
+                    "localName": ""
+                },
+                "repo_hash": "testhash",
+                "signature": "maybe::Nothing::_secret",
+                "sym": "test/cpp//maybe/Nothing/.ctor//.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 30,
+                        "columnEnd": 37,
+                        "lineBegin": 69,
+                        "lineEnd": 69
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            }
+        }
+    }
+]

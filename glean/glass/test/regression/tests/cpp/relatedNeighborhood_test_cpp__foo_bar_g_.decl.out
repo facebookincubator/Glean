@@ -1,0 +1,46 @@
+[
+    "@generated",
+    {
+        "containsChildren": [],
+        "containsParents": [],
+        "extendsChildren": [],
+        "extendsParents": [],
+        "inheritedSymbols": [],
+        "symbolDetails": {
+            "test/cpp//foo/bar/g/.decl": {
+                "annotations": [],
+                "comments": [],
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 9,
+                        "lineBegin": 38,
+                        "lineEnd": 38
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "foo::bar",
+                    "localName": "g"
+                },
+                "repo_hash": "testhash",
+                "signature": "void foo::bar::g()",
+                "sym": "test/cpp//foo/bar/g/.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 9,
+                        "lineBegin": 38,
+                        "lineEnd": 38
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            }
+        }
+    }
+]

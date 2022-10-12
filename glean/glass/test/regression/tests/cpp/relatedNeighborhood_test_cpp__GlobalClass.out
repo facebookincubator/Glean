@@ -1,0 +1,157 @@
+[
+    "@generated",
+    {
+        "containsChildren": [
+            {
+                "child": "test/cpp//GlobalClass/GCA",
+                "parent": "test/cpp//GlobalClass"
+            },
+            {
+                "child": "test/cpp//GlobalClass/GCB",
+                "parent": "test/cpp//GlobalClass"
+            },
+            {
+                "child": "test/cpp//GlobalClass/GCC",
+                "parent": "test/cpp//GlobalClass"
+            }
+        ],
+        "containsParents": [],
+        "extendsChildren": [],
+        "extendsParents": [],
+        "inheritedSymbols": [],
+        "symbolDetails": {
+            "test/cpp//GlobalClass": {
+                "comments": [],
+                "kind": 12,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 41,
+                        "lineBegin": 90,
+                        "lineEnd": 90
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "",
+                    "localName": "GlobalClass"
+                },
+                "repo_hash": "testhash",
+                "signature": "enum class ::GlobalClass",
+                "sym": "test/cpp//GlobalClass",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 41,
+                        "lineBegin": 90,
+                        "lineEnd": 90
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/cpp//GlobalClass/GCA": {
+                "comments": [],
+                "kind": 24,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 26,
+                        "columnEnd": 29,
+                        "lineBegin": 90,
+                        "lineEnd": 90
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "GlobalClass",
+                    "localName": "GCA"
+                },
+                "repo_hash": "testhash",
+                "signature": "GCA",
+                "sym": "test/cpp//GlobalClass/GCA",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 26,
+                        "columnEnd": 29,
+                        "lineBegin": 90,
+                        "lineEnd": 90
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/cpp//GlobalClass/GCB": {
+                "comments": [],
+                "kind": 24,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 31,
+                        "columnEnd": 34,
+                        "lineBegin": 90,
+                        "lineEnd": 90
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "GlobalClass",
+                    "localName": "GCB"
+                },
+                "repo_hash": "testhash",
+                "signature": "GCB",
+                "sym": "test/cpp//GlobalClass/GCB",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 31,
+                        "columnEnd": 34,
+                        "lineBegin": 90,
+                        "lineEnd": 90
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/cpp//GlobalClass/GCC": {
+                "comments": [],
+                "kind": 24,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 36,
+                        "columnEnd": 39,
+                        "lineBegin": 90,
+                        "lineEnd": 90
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "GlobalClass",
+                    "localName": "GCC"
+                },
+                "repo_hash": "testhash",
+                "signature": "GCC",
+                "sym": "test/cpp//GlobalClass/GCC",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 36,
+                        "columnEnd": 39,
+                        "lineBegin": 90,
+                        "lineEnd": 90
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            }
+        }
+    }
+]

@@ -1,0 +1,195 @@
+[
+    "@generated",
+    {
+        "containsChildren": [
+            {
+                "child": "test/cpp//foo/bar/T/.decl",
+                "parent": "test/cpp//foo/bar"
+            },
+            {
+                "child": "test/cpp//foo/bar/TypedefDeclShort/.decl",
+                "parent": "test/cpp//foo/bar"
+            },
+            {
+                "child": "test/cpp//foo/bar/UsingDeclShort/.decl",
+                "parent": "test/cpp//foo/bar"
+            },
+            {
+                "child": "test/cpp//foo/bar/g/.decl",
+                "parent": "test/cpp//foo/bar"
+            }
+        ],
+        "containsParents": [],
+        "extendsChildren": [],
+        "extendsParents": [],
+        "inheritedSymbols": [],
+        "symbolDetails": {
+            "test/cpp//foo/bar": {
+                "comments": [],
+                "kind": 6,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 30,
+                        "lineEnd": 40
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "foo",
+                    "localName": "bar"
+                },
+                "repo_hash": "testhash",
+                "signature": "namespace foo::bar",
+                "sym": "test/cpp//foo/bar",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 30,
+                        "lineEnd": 40
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/cpp//foo/bar/T/.decl": {
+                "comments": [],
+                "kind": 25,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 35,
+                        "lineEnd": 37
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "foo::bar",
+                    "localName": "T"
+                },
+                "repo_hash": "testhash",
+                "signature": "struct foo::bar::T",
+                "sym": "test/cpp//foo/bar/T/.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 35,
+                        "lineEnd": 37
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/cpp//foo/bar/TypedefDeclShort/.decl": {
+                "comments": [],
+                "kind": 2,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 31,
+                        "lineBegin": 32,
+                        "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "foo::bar",
+                    "localName": "TypedefDeclShort"
+                },
+                "repo_hash": "testhash",
+                "signature": "typedef short foo::bar::TypedefDeclShort",
+                "sym": "test/cpp//foo/bar/TypedefDeclShort/.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 31,
+                        "lineBegin": 32,
+                        "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/cpp//foo/bar/UsingDeclShort/.decl": {
+                "comments": [],
+                "kind": 2,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 29,
+                        "lineBegin": 33,
+                        "lineEnd": 33
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "foo::bar",
+                    "localName": "UsingDeclShort"
+                },
+                "repo_hash": "testhash",
+                "signature": "using foo::bar::UsingDeclShort = short",
+                "sym": "test/cpp//foo/bar/UsingDeclShort/.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 29,
+                        "lineBegin": 33,
+                        "lineEnd": 33
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/cpp//foo/bar/g/.decl": {
+                "annotations": [],
+                "comments": [],
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 9,
+                        "lineBegin": 38,
+                        "lineEnd": 38
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "foo::bar",
+                    "localName": "g"
+                },
+                "repo_hash": "testhash",
+                "signature": "void foo::bar::g()",
+                "sym": "test/cpp//foo/bar/g/.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 9,
+                        "lineBegin": 38,
+                        "lineEnd": 38
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            }
+        }
+    }
+]

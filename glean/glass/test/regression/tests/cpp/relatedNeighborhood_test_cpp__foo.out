@@ -1,0 +1,212 @@
+[
+    "@generated",
+    {
+        "containsChildren": [
+            {
+                "child": "test/cpp//foo/S/.decl",
+                "parent": "test/cpp//foo"
+            },
+            {
+                "child": "test/cpp//foo/f/.decl",
+                "parent": "test/cpp//foo"
+            },
+            {
+                "child": "test/cpp//foo/foo/.decl",
+                "parent": "test/cpp//foo"
+            },
+            {
+                "child": "test/cpp//foo/foo/.decl",
+                "parent": "test/cpp//foo"
+            },
+            {
+                "child": "test/cpp//foo/fooFn/.decl",
+                "parent": "test/cpp//foo"
+            }
+        ],
+        "containsParents": [],
+        "extendsChildren": [],
+        "extendsParents": [],
+        "inheritedSymbols": [],
+        "symbolDetails": {
+            "test/cpp//foo": {
+                "comments": [],
+                "kind": 6,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 9,
+                        "lineEnd": 46
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "",
+                    "localName": "foo"
+                },
+                "repo_hash": "testhash",
+                "signature": "namespace foo",
+                "sym": "test/cpp//foo",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 9,
+                        "lineEnd": 46
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/cpp//foo/S/.decl": {
+                "comments": [],
+                "kind": 25,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 11,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "foo",
+                    "localName": "S"
+                },
+                "repo_hash": "testhash",
+                "signature": "struct foo::S",
+                "sym": "test/cpp//foo/S/.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 11,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/cpp//foo/f/.decl": {
+                "annotations": [],
+                "comments": [
+                    {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 4,
+                            "lineBegin": 16,
+                            "lineEnd": 18
+                        },
+                        "repository": "test"
+                    }
+                ],
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 9,
+                        "lineBegin": 19,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "foo",
+                    "localName": "f"
+                },
+                "repo_hash": "testhash",
+                "signature": "void foo::f()",
+                "sym": "test/cpp//foo/f/.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 9,
+                        "lineBegin": 19,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/cpp//foo/foo/.decl": {
+                "annotations": [],
+                "comments": [],
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 22,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "foo",
+                    "localName": "foo"
+                },
+                "repo_hash": "testhash",
+                "signature": "void foo::foo()",
+                "sym": "test/cpp//foo/foo/.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 22,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/cpp//foo/fooFn/.decl": {
+                "annotations": [],
+                "comments": [],
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 42,
+                        "lineEnd": 44
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "foo",
+                    "localName": "fooFn"
+                },
+                "repo_hash": "testhash",
+                "signature": "int foo::fooFn(int fooI)",
+                "sym": "test/cpp//foo/fooFn/.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 42,
+                        "lineEnd": 44
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            }
+        }
+    }
+]

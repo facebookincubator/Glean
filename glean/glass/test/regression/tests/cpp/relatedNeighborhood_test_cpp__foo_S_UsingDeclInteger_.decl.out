@@ -1,0 +1,83 @@
+[
+    "@generated",
+    {
+        "containsChildren": [],
+        "containsParents": [
+            {
+                "child": "test/cpp//foo/S/UsingDeclInteger/.decl",
+                "parent": "test/cpp//foo/S"
+            }
+        ],
+        "extendsChildren": [],
+        "extendsParents": [],
+        "inheritedSymbols": [],
+        "symbolDetails": {
+            "test/cpp//foo/S": {
+                "comments": [],
+                "kind": 25,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 11,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "foo",
+                    "localName": "S"
+                },
+                "repo_hash": "testhash",
+                "signature": "struct foo::S",
+                "sym": "test/cpp//foo/S",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 11,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/cpp//foo/S/UsingDeclInteger/.decl": {
+                "comments": [],
+                "kind": 2,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 32,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "foo::S",
+                    "localName": "UsingDeclInteger"
+                },
+                "repo_hash": "testhash",
+                "signature": "using foo::S::UsingDeclInteger = long",
+                "sym": "test/cpp//foo/S/UsingDeclInteger/.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 32,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            }
+        }
+    }
+]

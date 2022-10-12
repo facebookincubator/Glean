@@ -1,0 +1,45 @@
+[
+    "@generated",
+    {
+        "containsChildren": [],
+        "containsParents": [],
+        "extendsChildren": [],
+        "extendsParents": [],
+        "inheritedSymbols": [],
+        "symbolDetails": {
+            "test/cpp//maybe/nothing/.decl": {
+                "comments": [],
+                "kind": 15,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 52,
+                        "lineBegin": 71,
+                        "lineEnd": 71
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "maybe",
+                    "localName": "nothing"
+                },
+                "repo_hash": "testhash",
+                "signature": "const maybe::Nothing maybe::nothing",
+                "sym": "test/cpp//maybe/nothing/.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 52,
+                        "lineBegin": 71,
+                        "lineEnd": 71
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            }
+        }
+    }
+]

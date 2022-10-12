@@ -1,0 +1,120 @@
+[
+    "@generated",
+    {
+        "containsChildren": [
+            {
+                "child": "test/cpp//baz/U/InU",
+                "parent": "test/cpp//baz/U"
+            },
+            {
+                "child": "test/cpp//baz/U/InUClass",
+                "parent": "test/cpp//baz/U"
+            }
+        ],
+        "containsParents": [],
+        "extendsChildren": [],
+        "extendsParents": [],
+        "inheritedSymbols": [],
+        "symbolDetails": {
+            "test/cpp//baz/U": {
+                "comments": [],
+                "kind": 25,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 82,
+                        "lineEnd": 85
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "baz",
+                    "localName": "U"
+                },
+                "repo_hash": "testhash",
+                "signature": "struct baz::U",
+                "sym": "test/cpp//baz/U",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 82,
+                        "lineEnd": 85
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/cpp//baz/U/InU": {
+                "comments": [],
+                "kind": 12,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 26,
+                        "lineBegin": 83,
+                        "lineEnd": 83
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "baz::U",
+                    "localName": "InU"
+                },
+                "repo_hash": "testhash",
+                "signature": "enum baz::U::InU",
+                "sym": "test/cpp//baz/U/InU",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 26,
+                        "lineBegin": 83,
+                        "lineEnd": 83
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/cpp//baz/U/InUClass": {
+                "comments": [],
+                "kind": 12,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 40,
+                        "lineBegin": 84,
+                        "lineEnd": 84
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "baz::U",
+                    "localName": "InUClass"
+                },
+                "repo_hash": "testhash",
+                "signature": "enum class baz::U::InUClass",
+                "sym": "test/cpp//baz/U/InUClass",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 40,
+                        "lineBegin": 84,
+                        "lineEnd": 84
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            }
+        }
+    }
+]

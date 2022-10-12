@@ -1,0 +1,157 @@
+[
+    "@generated",
+    {
+        "containsChildren": [
+            {
+                "child": "test/cpp//Global/GA",
+                "parent": "test/cpp//Global"
+            },
+            {
+                "child": "test/cpp//Global/GB",
+                "parent": "test/cpp//Global"
+            },
+            {
+                "child": "test/cpp//Global/GC",
+                "parent": "test/cpp//Global"
+            }
+        ],
+        "containsParents": [],
+        "extendsChildren": [],
+        "extendsParents": [],
+        "inheritedSymbols": [],
+        "symbolDetails": {
+            "test/cpp//Global": {
+                "comments": [],
+                "kind": 12,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 27,
+                        "lineBegin": 89,
+                        "lineEnd": 89
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "",
+                    "localName": "Global"
+                },
+                "repo_hash": "testhash",
+                "signature": "enum ::Global",
+                "sym": "test/cpp//Global",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 27,
+                        "lineBegin": 89,
+                        "lineEnd": 89
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/cpp//Global/GA": {
+                "comments": [],
+                "kind": 24,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 17,
+                        "lineBegin": 89,
+                        "lineEnd": 89
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "Global",
+                    "localName": "GA"
+                },
+                "repo_hash": "testhash",
+                "signature": "GA",
+                "sym": "test/cpp//Global/GA",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 17,
+                        "lineBegin": 89,
+                        "lineEnd": 89
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/cpp//Global/GB": {
+                "comments": [],
+                "kind": 24,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 19,
+                        "columnEnd": 21,
+                        "lineBegin": 89,
+                        "lineEnd": 89
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "Global",
+                    "localName": "GB"
+                },
+                "repo_hash": "testhash",
+                "signature": "GB",
+                "sym": "test/cpp//Global/GB",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 19,
+                        "columnEnd": 21,
+                        "lineBegin": 89,
+                        "lineEnd": 89
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/cpp//Global/GC": {
+                "comments": [],
+                "kind": 24,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 25,
+                        "lineBegin": 89,
+                        "lineEnd": 89
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "Global",
+                    "localName": "GC"
+                },
+                "repo_hash": "testhash",
+                "signature": "GC",
+                "sym": "test/cpp//Global/GC",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 25,
+                        "lineBegin": 89,
+                        "lineEnd": 89
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            }
+        }
+    }
+]
