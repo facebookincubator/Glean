@@ -23,7 +23,6 @@ import Control.Monad.State
 import Data.Bifunctor (bimap)
 import Data.ByteString (ByteString)
 import Data.Coerce
-import Data.Either.Extra (eitherToMaybe)
 import Data.IntMap (IntMap)
 import qualified Data.IntMap as IntMap
 import Data.IntSet (IntSet)
@@ -46,7 +45,8 @@ import Glean.Query.Transform
   , isWordTy
   , buildTerm
   , transformType
-  , transformBytes )
+  , transformBytes
+  , defaultValue )
 import Glean.Angle.Types (IsWild(..), tempPredicateId)
 import qualified Glean.Angle.Types as Angle
 import Glean.Bytecode.Types
@@ -368,7 +368,7 @@ cmpOutputPat
 cmpOutputPat reg pat fail =
   local $ \ptr begin -> do
     getOutput reg begin ptr
-    matchPat begin ptr fail pat
+    matchPat (Bytes begin ptr) fail pat
 
 compileTermGen
   :: Expr
@@ -538,62 +538,51 @@ compileStatements
         (pat, FactGenerator pref@(PidRef pid _) kpat vpat _)
           | Just load <- patIsExactFid vars pat -> mdo
           let
-            mtrans :: Maybe PredicateTransformation
-            mtrans = IntMap.lookup (fromIntegral $ fromPid pid) trans
-
             patOutput
               :: forall a
-              .  Maybe (Bytes -> Register 'BinaryOutputPtr -> Code ())
-              -> [QueryChunk Output]
+              .  [QueryChunk Output]
               -> (  Register 'BinaryOutputPtr     -- load bytes here
-                 -> (Label -> Code ()) -> Code a) -- test the loaded bytes
+                 -> (Label -> Code ())            -- test the loaded bytes
+                 -> Code a)
               -> Code a
-            patOutput maybeTrans chunks cont
+            patOutput chunks cont
               | all isWild chunks = do
                   reg <- constant 0  -- null means "don't copy the key/value"
                   cont (castRegister reg) (\_ -> return ())
               | [QueryBind (Typed ty out)] <- chunks
-              , not (isWordTy ty)
-              , Nothing <- maybeTrans =
+              , not (isWordTy ty) =
                   -- bind into the output directly
                   cont out (\_ -> return ())
-              | Just transform <- maybeTrans =
-                  output $ \out ->
-                  cont out $ \fail ->
-                    output $ \transformed -> do
-                    resetOutput transformed
-                    local $ \begin end -> do
-                    getOutput out begin end
-                    transform (Bytes begin end) transformed
-                    getOutput transformed begin end
-                    matchPat begin end fail chunks
               | otherwise =
                   output $ \reg ->
                   cont reg (\fail -> cmpOutputPat reg chunks fail)
 
+            mtrans :: Maybe PredicateTransformation
+            mtrans = IntMap.lookup (fromIntegral $ fromPid pid) trans
+
             -- The pid we expect to retrieve from the database
             PidRef expected _ = maybe pref tAvailable mtrans
-
-            mTransKey = transformKey =<< mtrans
-            mTransValue = transformValue =<< mtrans
-            kchunks = preProcessPat $ inlineVars vars kpat
-            vchunks = preProcessPat $ inlineVars vars vpat
-
-          patOutput mTransKey kchunks $ \kout kcmp ->
-            patOutput mTransValue vchunks $ \vout vcmp -> do
-              reg <- load fail
-              local $ \pidReg -> mdo
-                lookupKeyValue reg kout vout pidReg
-                -- TODO: if this is a trusted fact ID (i.e. not supplied by
-                -- the user) then we could skip this test.
-                expectedReg <- constant (fromIntegral (fromPid expected))
-                jumpIfEq pidReg expectedReg ok
-                raise "fact has the wrong type"
-                ok <- label
-                return ()
-              kcmp fail
-              vcmp fail
-          a <- continue
+            noTrans _ v f = f v
+            transKeyPat = fromMaybe noTrans $ transformKeyPattern =<< mtrans
+            transValPat = fromMaybe noTrans $ transformValuePattern =<< mtrans
+          a <-
+            transKeyPat (matchDef fail) (inlineVars vars kpat) $ \kpat' -> do
+            transValPat (matchDef fail) (inlineVars vars vpat) $ \vpat' -> do
+              patOutput (preProcessPat kpat') $ \kout kcmp -> do
+              patOutput (preProcessPat vpat') $ \vout vcmp -> do
+                reg <- load fail
+                local $ \pidReg -> mdo
+                  lookupKeyValue reg kout vout pidReg
+                  -- TODO: if this is a trusted fact ID (i.e. not supplied by
+                  -- the user) then we could skip this test.
+                  expectedReg <- constant (fromIntegral (fromPid expected))
+                  jumpIfEq pidReg expectedReg ok
+                  raise "fact has the wrong type"
+                  ok <- label
+                  return ()
+                kcmp fail
+                vcmp fail
+              continue
           fail <- label
           return a
 
@@ -806,6 +795,20 @@ compileStatements
           fail <- label
           return a
 
+-- | Match term against the default value for its type
+matchDef
+  :: Label
+  -> Type
+  -> Term (Match TransformAndBind Output)
+  -> Code ()
+matchDef fail ty pat =
+  output $ \out -> do
+  resetOutput out
+  buildTerm out mempty (defaultValue ty)
+  local $ \start end -> do
+  getOutput out start end
+  matchPat (Bytes start end) fail (preProcessPat pat)
+
 compileFactGenerator
   :: forall a s
   .  Maybe PredicateTransformation
@@ -820,7 +823,7 @@ compileFactGenerator
   -> Code a
   -> Code a
 compileFactGenerator mtrans bounds (QueryRegs{..} :: QueryRegs s)
-    vars pid kpat vpat section maybeReg inner = do
+    vars pid kpat vpat section maybeReg inner = mdo
   let etrans = maybe (Left pid) Right mtrans
   withPatterns etrans vars kpat vpat $
     \availablePid isPointQuery prefix matchKey matchValue -> do
@@ -887,10 +890,8 @@ compileFactGenerator mtrans bounds (QueryRegs{..} :: QueryRegs s)
 -- ^ Extract a prefix to be searched and create code to match on the key and
 -- value of facts searched.
 --
--- If a predicate transformation is available, the prefix will match on the
--- predicate available in the database and the matching code will transform the
--- key and value from the available predicate into the new one before
--- performing the matching.
+-- If the transformation determines that the modified pattern will never match
+-- the callback code will be skipped at runtime.
 withPatterns
   :: Either Pid PredicateTransformation
   -> Vector (Register 'Word)    -- ^ registers for variables
@@ -904,63 +905,34 @@ withPatterns
       -> Code a
     )
   -> Code a
-withPatterns etrans vars kpat vpat f = do
-  withTransformedPrefix mtrans vars kpat $ \isPointQuery prefix kchunks ->
-    let matchKey bytes fail =
-          transKey bytes $ \(Bytes s e) ->
-          matchPat s e fail kchunks
-
-        vchunks = preProcessPat $ inlineVars vars vpat
-        need_value = not $ all isWild vchunks
-        matchValue = if need_value
-          then Just $ \bytes fail ->
-                transValue bytes $ \(Bytes s e) ->
-                matchPat s e fail vchunks
-          else Nothing
-    in
-    f availablePid isPointQuery prefix matchKey matchValue
+withPatterns etrans vars kpat vpat act = mdo
+  a <-
+    transKeyPat (matchDef fail) (inlineVars vars kpat) $ \kpat' -> do
+    transValPat (matchDef fail) (inlineVars vars vpat) $ \vpat' -> do
+    let kchunks = preProcessPat kpat'
+        vchunks = preProcessPat vpat'
+    withPrefix kchunks $ \isPointQuery prefix remaining -> do
+    let matchKey bytes fail = matchPat bytes fail remaining
+        matchVal bytes fail = matchPat bytes fail vchunks
+        needs_value = not (all isWild vchunks)
+    act pid isPointQuery prefix matchKey
+      (if needs_value then Just matchVal else Nothing)
+  fail <- label
+  return a
   where
-    availablePid :: Pid
-    availablePid = case etrans of
-      Right PredicateTransformation{ tAvailable = PidRef pid _ } -> pid
-      Left pid -> pid
-
-    mtrans = eitherToMaybe etrans
-
-    transKey, transValue :: Bytes -> (Bytes -> Code a) -> Code a
-    transKey = withTransformation $ transformKey =<< mtrans
-    transValue = withTransformation $ transformValue  =<< mtrans
-
-    withTransformation
-      :: Maybe (Bytes -> Register 'BinaryOutputPtr -> Code ())
-      -> Bytes
-      -> (Bytes -> Code a)
-      -> Code a
-    withTransformation Nothing bytes act = act bytes
-    withTransformation (Just transform) bytes act =
-      output $ \transformed -> do
-        resetOutput transformed
-        transform bytes transformed
-        local $ \start end -> do
-          getOutput transformed start end
-          act (Bytes start end)
-
-withTransformedPrefix
-  :: Maybe PredicateTransformation
-  -> Vector (Register 'Word)
-  -> Pat
-  -> (Bool -> Bytes -> [QueryChunk Output] -> Code a)
-  -> Code a
-withTransformedPrefix mtrans vars kpat f = do
-  let pat = inlineVars vars kpat
-      kchunks = preProcessPat pat
-  case transformPrefix =<< mtrans of
-    Nothing -> withPrefix kchunks f
-    Just transform ->
-      transform pat $ \kpat' -> do
-        let transformedChunks = preProcessPat kpat'
-        withPrefix transformedChunks $ \isPointQuery prefix _ ->
-          f isPointQuery prefix kchunks
+    (pid, transKeyPat, transValPat) = case etrans of
+      Right PredicateTransformation{..} ->
+        let PidRef pid _ = tAvailable in
+        ( pid
+        , fromMaybe noTrans transformKeyPattern
+        , fromMaybe noTrans transformValuePattern
+        )
+      Left pid ->
+        ( pid
+        , noTrans
+        , noTrans
+        )
+    noTrans _ bytes f = f bytes
 
 -- Extract a query prefix and a pattern which should match the entire
 -- structure
@@ -1193,6 +1165,7 @@ emptyPrefix :: [QueryChunk var] -> Bool
 emptyPrefix (QueryPrefix{} : _) = False
 emptyPrefix (QueryVar{} : _) = False
 emptyPrefix [QueryAnd [QueryBind{}] x] = emptyPrefix x
+emptyPrefix [QueryAnd [QueryTransformAndBind{}] x] = emptyPrefix x
 emptyPrefix _ = True
 
 -- | Serialize the prefix of a query into an output register, and return
@@ -1265,13 +1238,8 @@ withTerm vars term action = do
 -- | check that a value matches a pattern, and bind variables as
 -- necessary. The pattern is assumed to cover the *whole* of the
 -- input.
-matchPat
-  :: Register 'DataPtr            -- ^ the input
-  -> Register 'DataPtr            -- ^ the input end
-  -> Label                        -- ^ jump to here on mismatch
-  -> [QueryChunk Output]          -- ^ pattern to match
-  -> Code ()
-matchPat input inputend fail chunks = match True chunks
+matchPat :: Bytes -> Label -> [QueryChunk Output] -> Code ()
+matchPat (Bytes input inputend) fail chunks = match True chunks
   where
   match
     :: Bool -- ^ whether the query chunks match until the end of the input.
@@ -1364,8 +1332,9 @@ matchPat input inputend fail chunks = match True chunks
           Nothing -> match tillEnd (QueryBind (Typed to out) : rest)
           Just transform -> do
             let bytes = Bytes input inputend
+            resetOutput out
             transform bytes out
-
+            match tillEnd rest
 
       QueryArrayPrefix npatterns ty patterns -> do
         local $ \size patternsLen -> do

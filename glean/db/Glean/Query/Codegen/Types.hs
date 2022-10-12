@@ -248,7 +248,8 @@ data Match ext var
 
 -- | Bind a value of one type into an output of a different type by first
 -- performing a type transformation.
-data TransformAndBind = TransformAndBind Type Output
+data TransformAndBind
+  = TransformAndBind Type Output
   deriving Show
 
 instance Bifunctor Match where

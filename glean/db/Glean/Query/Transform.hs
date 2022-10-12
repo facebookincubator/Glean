@@ -622,11 +622,12 @@ transformFact from to
 -- Missing fields are filled with their default value.
 transformExpression :: Type -> Type -> Maybe (Value -> Value)
 transformExpression from to =
-  case transformTerm defaultValue inner from to of
+  case transformTerm inner defaultValue from to of
     Nothing -> Nothing
-    Just f -> Just $ \ta -> f ta id
+    Just f -> Just $ \ta -> f discard ta id
   where
-    inner _ _ _ a f = f a
+    inner _ _ _ _ a f = f a
+    discard _ _ = return ()
 
 type Matcher = Match TransformAndBind Output
 
@@ -634,12 +635,24 @@ type Matcher = Match TransformAndBind Output
 -- All variable bindings are removed.
 -- Missing fields are filled with wildcards.
 transformPattern
-  :: Type
+  :: forall a. Type
   -> Type
-  -> Maybe (Term Matcher -> (Term Matcher -> Code a) -> Code a)
+  -> Maybe
+        (  (Type -> Term Matcher -> Code ())
+        -> Term Matcher
+        -> (Term Matcher -> Code a)
+        -> Code a
+        )
 transformPattern from to = do
-  f <- transformTerm defaultForType transformMatch from to
-  return $ \term -> runCont (f term)
+  f <- transformTerm transformMatch defaultForType from to
+  return $ \discard term ->
+    let
+        discard' :: Type -> Term Matcher -> Cont (Code a) ()
+        discard' a b = cont $ \r -> do
+          () <- discard a b
+          r ()
+    in
+    runCont (f discard' term)
   where
     defaultForType ty = Ref (MatchWild ty)
 
@@ -649,12 +662,13 @@ transformPattern from to = do
 -- NB. Type compatibility is not checked. Assumes that a transformation is
 -- possible and required.
 transformMatch
-  :: Type
+  :: (Type -> Matcher -> Cont (Code x) ())  -- ^ handle discarded record fields
+  -> Type
   -> Type
   -> (Term Matcher -> Cont (Code x) (Term Matcher))
   -> Matcher
   -> Cont (Code x) Matcher
-transformMatch from to overTerm match = case match of
+transformMatch discard from to overTerm match = case match of
   MatchWild _ -> return $ MatchWild to
   MatchNever _ -> return $ MatchNever to
   MatchFid fid -> return $ MatchFid fid
@@ -662,7 +676,7 @@ transformMatch from to overTerm match = case match of
   -- If we get to this case it means that this conversion is required,
   MatchBind out -> return $ MatchExt $ TransformAndBind to out
   MatchVar (Typed _ var) ->
-    case transformBytes from to of
+    case transformBytes' discard' from to of
       Nothing -> return $ MatchVar $ Typed to var
       Just transform ->
         cont $ \r ->
@@ -684,16 +698,39 @@ transformMatch from to overTerm match = case match of
       Array prefix' -> return $ MatchArrayPrefix to prefix'
       _ -> error "array transformation did not yield another array"
   MatchExt x -> return $ MatchExt x
+  where
+    discard' :: Type -> Bytes -> Code ()
+    discard' ty (Bytes start end) = do
+      output $ \out -> do
+        resetOutput out
+        outputBytes start end out
+        run $ discard ty (MatchVar $ Typed ty out)
+    run :: forall x. Cont (Code x) () -> Code ()
+    run m = void $ runCont m (\() -> return undefined)
 
--- | Create a transformation from a term into another term of a compatible type
+type TransformTerm m a b
+  = (Type -> Term a -> m ())   -- ^ discard term
+  -> Term a                    -- ^ source term
+  -> m (Term b)
+
+-- | Create a transformation from a term into another term of a compatible type.
+--
+-- This will be used for transforming patterns and expressions. In each of
+-- these two cases we will handle default values and discarded records fields
+-- differently so we take those handling functions as input.
 transformTerm
   :: forall a b m. (Coercible a b, Show a, Show b, Monad m)
-  => (Type -> Term b) -- default value for type
-  -> (Type -> Type -> (Term a -> m (Term b)) -> a -> m b)
-  -> Type
-  -> Type
-  -> Maybe (Term a -> m (Term b))
-transformTerm defaultForType inner src dst = go src dst
+  => ( (Type -> a -> m ())       --  discard inner value
+    -> Type                      --  from type
+    -> Type                      --  to type
+    -> (Term a -> m (Term b))    --  handle inner terms
+    -> a
+    -> m b)
+  -> (Type -> Term b)            -- ^ default value for type
+  -> Type                        -- ^ from type
+  -> Type                        -- ^ to type
+  -> Maybe (TransformTerm m a b)
+transformTerm inner defaultForType src dst = go src dst
   where
     -- Types are the same. No transformation is required
     id' :: Term a -> m (Term b)
@@ -705,7 +742,7 @@ transformTerm defaultForType inner src dst = go src dst
     transformationsFor
       :: [RTS.FieldDef]
       -> [RTS.FieldDef]
-      -> Map Text (Maybe (Word64, Term a -> m (Term b)))
+      -> Map Text (Maybe (Word64, TransformTerm m a b))
     transformationsFor from to =
       Map.intersectionWith trans fromFields toFields
       where
@@ -714,7 +751,7 @@ transformTerm defaultForType inner src dst = go src dst
             -- fields are identical
             Nothing | ixTo == ixFrom -> Nothing
             -- field order changed
-            Nothing -> Just (ixTo, id')
+            Nothing -> Just (ixTo, const id')
             -- field content changed
             Just f -> Just (ixTo, f)
 
@@ -726,7 +763,7 @@ transformTerm defaultForType inner src dst = go src dst
         toFields = Map.fromList $ flip map (zip to [0..])
           $ \(FieldDef name def, ix) -> (name, (ix, def))
 
-    go :: Type -> Type -> Maybe (Term a -> m (Term b))
+    go :: Type -> Type -> Maybe (TransformTerm m a b)
     go from@(NamedTy _) to = go (derefType from) to
     go from to@(NamedTy _) = go from (derefType to)
     go ByteTy ByteTy = Nothing
@@ -739,10 +776,15 @@ transformTerm defaultForType inner src dst = go src dst
       go (lowerEnum from) (lowerEnum to)
     go (ArrayTy from) (ArrayTy to) = do
       f <- go from to
-      return $ fix $ \recurse term ->
+      return $ fix $ \recurse discard term ->
         case term of
-          Array vs -> Array <$> traverse f vs
-          Ref a -> Ref <$> inner (ArrayTy from) (ArrayTy to) recurse a
+          Array vs -> Array <$> traverse (f discard) vs
+          Ref a -> Ref <$> inner
+            (\ty val -> discard ty (Ref val))
+            (ArrayTy from)
+            (ArrayTy to)
+            (recurse discard)
+            a
           _ -> error $ "expected Array, got " <> show term
 
     go (RecordTy from) (RecordTy to) =
@@ -754,21 +796,33 @@ transformTerm defaultForType inner src dst = go src dst
       in
       if noChange
       then Nothing
-      else Just $ fix $ \recurse term -> case term of
+      else Just $ fix $ \recurse discard term -> case term of
         Tuple contents -> do
           contents' <- sequence
             [ case Map.lookup name transMap of
                 -- 'to' field doesn't exist in 'from'
                 Nothing -> return $ defaultForType ty
                 Just (content, Nothing) -> id' content
-                Just (content, Just (_, transform)) -> transform content
+                Just (content, Just (_, transform)) -> transform discard content
             | FieldDef name ty <- to
             ]
+
+          sequence_
+            [ discard tyFrom term
+            | (FieldDef nameFrom tyFrom, term) <- zip from contents
+            , nameFrom `notElem` names to
+            ]
+
           return (Tuple contents')
           where
             transMap = Map.intersectionWith (,) contentsByName transformations
             contentsByName = Map.fromList $ zip (names from) contents
-        Ref a -> Ref <$> inner (RecordTy from) (RecordTy to) recurse a
+        Ref a -> Ref <$> inner
+          (\ty -> discard ty . Ref)
+          (RecordTy from)
+          (RecordTy to)
+          (recurse discard)
+          a
         _ -> error $ "expected Tuple, got " <> show term
 
     go (SumTy from) (SumTy to) =
@@ -785,15 +839,20 @@ transformTerm defaultForType inner src dst = go src dst
       in
       if noChange
         then Nothing
-        else Just $ fix $ \recurse term -> case term of
+        else Just $ fix $ \recurse discard term -> case term of
           Alt n content -> case Map.lookup n transformationsByIx of
             -- alternative in 'from' doesn't exist in 'to'
             Nothing -> return unknown
             Just Nothing -> id' term
             Just (Just (n', transform)) -> do
-              content' <- transform content
+              content' <- transform discard content
               return (Alt n' content')
-          Ref a -> Ref <$> inner (SumTy from) (SumTy to) recurse a
+          Ref a -> Ref <$> inner
+            (\ty -> discard ty . Ref)
+            (SumTy from)
+            (SumTy to)
+            (recurse discard)
+            a
           _ -> error $ "expected Alt, got " <> show term
     go from to =
       error $ "invalid type conversion: "
@@ -814,11 +873,23 @@ defaultValue ty = case derefType ty of
 
 -- | Transform a fact key or value contained in some binary input into another
 -- compatible type.
+--
+-- The transformation function will always leave the start pointer of `Bytes` at
+-- the end of the transformed input.
 transformBytes
   :: Type
   -> Type
   -> Maybe (Bytes -> Register 'BinaryOutputPtr -> Code ())
-transformBytes src dst =
+transformBytes = transformBytes' ignoreDiscarded
+  where
+    ignoreDiscarded _ _ = return ()
+
+transformBytes'
+  :: (Type -> Bytes -> Code ()) -- handle discarded record fields
+  -> Type
+  -> Type
+  -> Maybe (Bytes -> Register 'BinaryOutputPtr -> Code ())
+transformBytes' discard src dst =
   case go src dst of
     Left _ -> Nothing
     Right transform -> Just $ \bytes out -> transform out bytes
@@ -927,8 +998,11 @@ transformBytes src dst =
                 error $ "field unaccounted for: '" <> unpack nameTo <> "'"
               FieldDef nameFrom tyFrom : restFrom
                 | not (nameFrom `Set.member` fieldsTo) -> do
-                  -- origin field is not in target, skip it
-                  skipTrusted start end tyFrom
+                  -- origin field is not in target, discard it
+                  local $ \saved_start -> do
+                    move start saved_start
+                    skipTrusted start end tyFrom
+                    discard tyFrom (Bytes saved_start start)
                   step saved restFrom to'
                 | nameTo == nameFrom -> do
                   -- matching field, move it over

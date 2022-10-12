@@ -557,7 +557,8 @@ mkPredicateTransformation detailsFor requestedPid availablePid
     { tRequested = pidRef requested
     , tAvailable = pidRef available
     , tTransformFactBack = fromMaybe id $ transformFact available requested
-    , transformPrefix = transformPattern (key requested) (key available)
+    , transformKeyPattern   = transformPattern (key requested) (key available)
+    , transformValuePattern = transformPattern (val requested) (val available)
     , transformKey   = transformBytes (key available) (key requested)
     , transformValue = transformBytes (val available) (val requested)
     }

@@ -93,9 +93,14 @@ data PredicateTransformation = PredicateTransformation
     -- ^ transform a fact of the available predicate into a fact
     -- of the requested predicate.
 
-  , transformPrefix
-    :: forall a
-    . Maybe (  Term (Match TransformAndBind Output)
+  , transformKeyPattern :: forall a
+    . Maybe ( (Type -> Term (Match TransformAndBind Output) -> Code ())
+            -> Term (Match TransformAndBind Output)
+            -> (Term (Match TransformAndBind Output) -> Code a)
+            -> Code a)
+  , transformValuePattern :: forall a
+    . Maybe (  (Type -> Term (Match TransformAndBind Output) -> Code ())
+            -> Term (Match TransformAndBind Output)
             -> (Term (Match TransformAndBind Output) -> Code a)
             -> Code a)
     -- ^ requested -> available
