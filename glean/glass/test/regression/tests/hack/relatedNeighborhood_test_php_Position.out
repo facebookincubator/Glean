@@ -1,0 +1,232 @@
+[
+    "@generated",
+    {
+        "containsChildren": [
+            {
+                "child": "test/php/Position/Bottom",
+                "parent": "test/php/Position"
+            },
+            {
+                "child": "test/php/Position/Center",
+                "parent": "test/php/Position"
+            },
+            {
+                "child": "test/php/Position/Left",
+                "parent": "test/php/Position"
+            },
+            {
+                "child": "test/php/Position/Right",
+                "parent": "test/php/Position"
+            },
+            {
+                "child": "test/php/Position/Top",
+                "parent": "test/php/Position"
+            }
+        ],
+        "containsParents": [],
+        "extendsChildren": [],
+        "extendsParents": [],
+        "inheritedSymbols": [],
+        "symbolDetails": {
+            "test/php/Position": {
+                "annotations": [],
+                "comments": [],
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 16,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "",
+                    "localName": "Position"
+                },
+                "repo_hash": "testhash",
+                "signature": "enum Position",
+                "sym": "test/php/Position",
+                "sym_location": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 16,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/php/Position/Bottom": {
+                "comments": [],
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 9,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "Position",
+                    "localName": "Bottom"
+                },
+                "repo_hash": "testhash",
+                "signature": "Position::Bottom",
+                "sym": "test/php/Position/Bottom",
+                "sym_location": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 9,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/php/Position/Center": {
+                "comments": [],
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 9,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "Position",
+                    "localName": "Center"
+                },
+                "repo_hash": "testhash",
+                "signature": "Position::Center",
+                "sym": "test/php/Position/Center",
+                "sym_location": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 9,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/php/Position/Left": {
+                "comments": [],
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 7,
+                        "lineBegin": 19,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "Position",
+                    "localName": "Left"
+                },
+                "repo_hash": "testhash",
+                "signature": "Position::Left",
+                "sym": "test/php/Position/Left",
+                "sym_location": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 7,
+                        "lineBegin": 19,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/php/Position/Right": {
+                "comments": [],
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 8,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "Position",
+                    "localName": "Right"
+                },
+                "repo_hash": "testhash",
+                "signature": "Position::Right",
+                "sym": "test/php/Position/Right",
+                "sym_location": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 8,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/php/Position/Top": {
+                "comments": [],
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 6,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "Position",
+                    "localName": "Top"
+                },
+                "repo_hash": "testhash",
+                "signature": "Position::Top",
+                "sym": "test/php/Position/Top",
+                "sym_location": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 6,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            }
+        }
+    }
+]

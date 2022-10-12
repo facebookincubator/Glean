@@ -1,0 +1,86 @@
+[
+    "@generated",
+    {
+        "containsChildren": [],
+        "containsParents": [
+            {
+                "child": "test/php/SuperClass/superAdd",
+                "parent": "test/php/SuperClass"
+            }
+        ],
+        "extendsChildren": [],
+        "extendsParents": [],
+        "inheritedSymbols": [],
+        "symbolDetails": {
+            "test/php/SuperClass": {
+                "annotations": [],
+                "comments": [],
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SuperClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "",
+                    "localName": "SuperClass"
+                },
+                "repo_hash": "testhash",
+                "signature": "class SuperClass",
+                "sym": "test/php/SuperClass",
+                "sym_location": {
+                    "filepath": "www/SuperClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/php/SuperClass/superAdd": {
+                "annotations": [],
+                "comments": [],
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SuperClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 14,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "SuperClass",
+                    "localName": "superAdd"
+                },
+                "repo_hash": "testhash",
+                "signature": "public function superAdd(int $i, int $i): int",
+                "sym": "test/php/SuperClass/superAdd",
+                "sym_location": {
+                    "filepath": "www/SuperClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 14,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "visibility": 20
+            }
+        }
+    }
+]

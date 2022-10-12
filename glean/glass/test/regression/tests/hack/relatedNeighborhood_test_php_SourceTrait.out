@@ -1,0 +1,125 @@
+[
+    "@generated",
+    {
+        "containsChildren": [
+            {
+                "child": "test/php/SourceTrait/quux",
+                "parent": "test/php/SourceTrait"
+            }
+        ],
+        "containsParents": [],
+        "extendsChildren": [
+            {
+                "child": "test/php/RefClass",
+                "parent": "test/php/SourceTrait"
+            }
+        ],
+        "extendsParents": [],
+        "inheritedSymbols": [],
+        "symbolDetails": {
+            "test/php/RefClass": {
+                "annotations": [],
+                "comments": [],
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "",
+                    "localName": "RefClass"
+                },
+                "repo_hash": "testhash",
+                "signature": "class RefClass",
+                "sym": "test/php/RefClass",
+                "sym_location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/php/SourceTrait": {
+                "annotations": [],
+                "comments": [],
+                "kind": 31,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceTrait.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "",
+                    "localName": "SourceTrait"
+                },
+                "repo_hash": "testhash",
+                "signature": "trait SourceTrait",
+                "sym": "test/php/SourceTrait",
+                "sym_location": {
+                    "filepath": "www/SourceTrait.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/php/SourceTrait/quux": {
+                "annotations": [],
+                "comments": [],
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceTrait.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 11,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "SourceTrait",
+                    "localName": "quux"
+                },
+                "repo_hash": "testhash",
+                "signature": "public function quux(int $i): int",
+                "sym": "test/php/SourceTrait/quux",
+                "sym_location": {
+                    "filepath": "www/SourceTrait.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 11,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "visibility": 20
+            }
+        }
+    }
+]

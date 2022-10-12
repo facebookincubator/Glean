@@ -1,0 +1,162 @@
+[
+    "@generated",
+    {
+        "containsChildren": [
+            {
+                "child": "test/php/SourceInterface/JAZZ",
+                "parent": "test/php/SourceInterface"
+            },
+            {
+                "child": "test/php/SourceInterface/foo",
+                "parent": "test/php/SourceInterface"
+            }
+        ],
+        "containsParents": [],
+        "extendsChildren": [
+            {
+                "child": "test/php/RefClass",
+                "parent": "test/php/SourceInterface"
+            }
+        ],
+        "extendsParents": [],
+        "inheritedSymbols": [],
+        "symbolDetails": {
+            "test/php/RefClass": {
+                "annotations": [],
+                "comments": [],
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "",
+                    "localName": "RefClass"
+                },
+                "repo_hash": "testhash",
+                "signature": "class RefClass",
+                "sym": "test/php/RefClass",
+                "sym_location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/php/SourceInterface": {
+                "annotations": [],
+                "comments": [],
+                "kind": 13,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceInterface.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "",
+                    "localName": "SourceInterface"
+                },
+                "repo_hash": "testhash",
+                "signature": "interface SourceInterface",
+                "sym": "test/php/SourceInterface",
+                "sym_location": {
+                    "filepath": "www/SourceInterface.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/php/SourceInterface/JAZZ": {
+                "comments": [],
+                "kind": 16,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceInterface.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 27,
+                        "lineBegin": 12,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "SourceInterface",
+                    "localName": "JAZZ"
+                },
+                "repo_hash": "testhash",
+                "signature": "const JAZZ",
+                "sym": "test/php/SourceInterface/JAZZ",
+                "sym_location": {
+                    "filepath": "www/SourceInterface.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 27,
+                        "lineBegin": 12,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/php/SourceInterface/foo": {
+                "annotations": [],
+                "comments": [],
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceInterface.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 37,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "SourceInterface",
+                    "localName": "foo"
+                },
+                "repo_hash": "testhash",
+                "signature": "public static function foo(): int",
+                "sym": "test/php/SourceInterface/foo",
+                "sym_location": {
+                    "filepath": "www/SourceInterface.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 37,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "visibility": 20
+            }
+        }
+    }
+]

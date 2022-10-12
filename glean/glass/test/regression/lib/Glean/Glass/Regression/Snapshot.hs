@@ -173,6 +173,8 @@ evalQuery glassEnv qFile Query{..} oFile = case action of
     (Glass.searchBySymbolId glassEnv)
   "searchRelated" -> withObjectAndSymbolId qFile oFile args
     (Glass.searchRelated glassEnv)
+  "searchRelatedNeighborhood" -> withSymbolId oFile args
+    (\sym opts -> Glass.searchRelatedNeighborhood glassEnv sym opts def)
   "fileIncludeLocations" -> withObjectArgs qFile oFile args
     (Glass.fileIncludeLocations glassEnv)
 
@@ -274,8 +276,15 @@ instance SortedResponse LocationRange where sorted = id
 instance SortedResponse SearchRelatedResult where
   sorted (SearchRelatedResult xs ys) = -- to edit the desc hash
     SearchRelatedResult (sorted xs) (sorted ys)
+instance SortedResponse RelatedNeighborhoodResult where
+  sorted (RelatedNeighborhoodResult as bs cs ds es fs) = -- to edit the desc hash
+    RelatedNeighborhoodResult (sorted as) (sorted bs) (sorted cs) (sorted ds)
+      (sorted es) (sorted fs)
+
 instance SortedResponse RelatedSymbols where
   sorted = id
+instance SortedResponse InheritedSymbols where
+  sorted (InheritedSymbols a xs) = InheritedSymbols a (sorted xs)
 instance SortedResponse SymbolId where
   sorted = id
 instance SortedResponse DefinitionSymbolX where
