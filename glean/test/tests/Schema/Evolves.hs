@@ -12,6 +12,8 @@ module Schema.Evolves (main) where
 import Data.ByteString (ByteString)
 import Control.Exception
 import Data.Bifunctor (first)
+import Data.Default (def)
+import Data.Maybe (fromMaybe)
 import Data.List
 import qualified Data.Map as Map
 import Data.Text (pack, unpack)
@@ -732,6 +734,73 @@ schemaEvolvesTransformations =
         nested <- decodeNestedAs (SourceRef "x.Q" (Just 1)) byRef response
         assertEqual "nested count" 2 (length nested)
 
+  , TestLabel "transform nested record" $ TestCase $ do
+    withSchemaAndFacts []
+      [s|
+        schema x.1 {
+          type T = { a: string }
+          predicate P : { x: T, y: T  }
+        }
+        schema x.2 {
+          type T = { a: string, b: maybe nat }
+          predicate P : { x: T, y: T  }
+        }
+        schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
+      |]
+      [ mkBatch (PredicateRef "x.P" 1)
+          [ [s|{ "key": { "x": { "a": "A" }, "y": { "a": "B" }}}|]
+          , [s|{ "key": { "x": { "a": "B" }, "y": { "a": "A" }}}|]
+          ]
+      ]
+      [s| x.P.2 { X, Y };
+          x.P.2 { Y, X }
+      |]
+      -- should add the 'maybe nat` field when binding X and Y, and then remove
+      -- it again when matching X and Y against db values.
+      $ \byRef response _ -> do
+        facts <- decodeResultsAs (SourceRef "x.P" (Just 2)) byRef response
+        assertEqual "result"
+          [ RTS.Tuple
+              [ RTS.Tuple [RTS.String "A", RTS.Alt 0 (RTS.Tuple [])]
+              , RTS.Tuple [RTS.String "B", RTS.Alt 0 (RTS.Tuple [])]
+              ]
+          , RTS.Tuple
+              [ RTS.Tuple [RTS.String "B", RTS.Alt 0 (RTS.Tuple [])]
+              , RTS.Tuple [RTS.String "A", RTS.Alt 0 (RTS.Tuple [])]
+              ]
+          ] facts
+
+  , TestLabel "uses transformed record for prefix search" $ TestCase $ do
+    withSchemaAndFacts []
+      [s|
+        schema x.1 {
+          predicate P: {x: nat, y: { a: string, b: enum { One | Two | Three }}}
+        }
+        schema x.2 {
+          predicate P: {y: {  b: enum { Two | One }, a: string, }, x: nat }
+        }
+        schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
+      |]
+      [ mkBatch (PredicateRef "x.P" 1)
+          [ [s|{ "key": { "x": 1, "y": { "a": "A", "b": 0 }}}|]
+          , [s|{ "key": { "x": 1, "y": { "a": "A", "b": 1 }}}|]
+          , [s|{ "key": { "x": 1, "y": { "a": "A", "b": 2 }}}|]
+          ]
+      ]
+      [s| x.P.2 { { One, "A"}, 1 }
+      |]
+      $ \byRef response _ -> do
+        facts <- decodeResultsAs (SourceRef "x.P" (Just 2)) byRef response
+        assertEqual "result" 1 (length facts)
+        let searched =
+              sum $ Map.elems $ fromMaybe mempty $
+              userQueryStats_facts_searched $ fromMaybe def $
+              userQueryResults_stats $ either (error "request failure") id
+              response
+        assertEqual "facts searched" 1 searched
+
   , TestLabel "change within type" $ TestCase $ do
     withSchemaAndFacts []
       [s|
@@ -907,6 +976,67 @@ schemaEvolvesTransformations =
         assertEqual "result count" 2 (length facts)
         nested <- decodeNestedAs (SourceRef "x.P" (Just 1)) byRef response
         assertEqual "nested count" 2 (length nested)
+
+  , TestLabel "whole key assigned to variable - remove fields" $ TestCase $ do
+    withSchemaAndFacts []
+      [s|
+        schema x.1 {
+          predicate P : { a : string }
+        }
+        schema x.2 {
+          predicate P : { a: string, b: maybe nat }
+        }
+        schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
+      |]
+      [ mkBatch (PredicateRef "x.P" 2)
+          [ [s|{ "key": { "a": "A", "b": 1  }}|]
+          , [s|{ "key": { "a": "B", "b": 2  }}|]
+          ]
+      ]
+      [s| X where
+            X = x.P.1 Y;
+            { a = "A" } = Y;
+      |]
+      $ \byRef response _ -> do
+        facts <- decodeResultsAs (SourceRef "x.P" (Just 1)) byRef response
+        assertEqual "result" [RTS.Tuple [RTS.String "A"]] facts
+
+  , TestLabel "whole key assigned to variable - fill defaults" $ TestCase $ do
+    withSchemaAndFacts []
+      [s|
+        schema x.1 {
+          predicate P : { a : string }
+          predicate Q : { a: string, b: maybe nat }
+        }
+        schema x.2 {
+          predicate P : { a: string, b: maybe nat }
+          predicate Q : { a: string, b: maybe nat }
+        }
+        schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
+      |]
+      [ mkBatch (PredicateRef "x.P" 1)
+          [ [s|{ "key": { "a": "A" }}|]
+          , [s|{ "key": { "a": "B" }}|]
+          ]
+      , mkBatch (PredicateRef "x.Q" 1)
+          [ [s|{ "key": { "a": "A" }}|]
+          , [s|{ "key": { "a": "A", "b": 1  }}|]
+          , [s|{ "key": { "a": "B", "b": 2  }}|]
+          ]
+      ]
+      [s| x.P.2 X;
+          x.Q.2 X
+      |]
+      -- should bind 'nothing' as the default value of the second field of
+      -- x.P.2, causing values from x.Q.2 with a second value of 'just' to
+      -- not match.
+      $ \byRef response _ -> do
+        facts <- decodeResultsAs (SourceRef "x.Q" (Just 2)) byRef response
+        assertEqual "result"
+          [RTS.Tuple [RTS.String "A", RTS.Alt 0 (RTS.Tuple [])]]
+          facts
 
   , TestLabel "derived pred fields" $ TestCase $ do
     withSchemaAndFacts []

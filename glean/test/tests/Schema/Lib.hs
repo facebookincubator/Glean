@@ -103,6 +103,11 @@ withSchemaAndFacts customSettings schema facts query act =
       , userQuery_options = Just def
         { userQueryOptions_syntax = QuerySyntax_ANGLE
         , userQueryOptions_recursive = True
+        , userQueryOptions_collect_facts_searched = True
+        , userQueryOptions_debug = def
+          { queryDebugOptions_bytecode = False
+          , queryDebugOptions_ir = False
+          }
         }
       , userQuery_encodings = [ UserQueryEncoding_bin def ]
       }
