@@ -66,7 +66,6 @@ import Glean.Query.Transform
   ( transformPattern
   , transformBytes
   , transformFact
-  , transformTypecheckedQuery
   )
 import Glean.Internal.Types as Internal (StoredSchema(..))
 import Glean.RTS.Traverse
@@ -375,16 +374,15 @@ mkDbSchema validate knownPids dbContent
     vlog 2 $ "all." <> showt n <> " = " <> unSchemaId id
 
   let transformations = IntMap.union evolveTransformations autoTransformations
-      transformed =
-        transformDerivations dbContent transformations (tcEnvPredicates tcEnv)
+      pruned = prune dbContent transformations (tcEnvPredicates tcEnv)
 
   return $ DbSchema
-    { predicatesById = transformed
+    { predicatesById = pruned
     , typesById = tcEnvTypes tcEnv
     , schemaEnvs = schemaEnvMap
     , legacyAllVersions = legacyAllVersions
     , predicatesByPid =
-        IntMap.fromList [ (intPid p, p) | p <- HashMap.elems transformed ]
+        IntMap.fromList [ (intPid p, p) | p <- HashMap.elems pruned ]
     , predicatesTransformations = transformations
     , schemaInventory = inventory predicates
     , schemaSource = (source, hashedSchemaAllVersions stored)
@@ -394,38 +392,30 @@ mkDbSchema validate knownPids dbContent
 
 -- | Optimise derivation queries for fetching facts given the particular db's
 -- content.
-transformDerivations
+prune
   :: DbContent
   -> IntMap PredicateTransformation
   -> HashMap PredicateId PredicateDetails
   -> HashMap PredicateId PredicateDetails
-transformDerivations DbWritable _ pmap = pmap
+prune DbWritable _ pmap = pmap
   -- don't change derivations while db is still writable
-transformDerivations (DbReadOnly stats) transformations pmap =
-  prune $ transform pmap
+prune (DbReadOnly stats) transformations pmap = pruneDerivations hasFacts pmap
   where
-    prune
-      :: HashMap PredicateId PredicateDetails
-      -> HashMap PredicateId PredicateDetails
-    prune = pruneDerivations hasFacts
-
+    -- A predicate has facts in the db if it or the predicate it would be
+    -- transformed into has facts in the db.
     hasFacts predId = fromMaybe False $ do
       details <- HashMap.lookup predId pmap
-      pstats <- HashMap.lookup (predicatePid details) stats
+      let pid = predicatePid details
+          availablePid = fromMaybe pid $ transformationFor pid
+      pstats <- HashMap.lookup availablePid stats
       return $ predicateStats_count pstats > 0
 
-    transform
-      :: HashMap PredicateId PredicateDetails
-      -> HashMap PredicateId PredicateDetails
-    transform = fmap (overDerivationQuery transformQ)
+    transformationFor :: Pid -> Maybe Pid
+    transformationFor pid = do
+      trans <- IntMap.lookup (fromIntegral $ fromPid pid) transformations
+      PidRef pid _ <- return $ tAvailable trans
+      return pid
 
-    transformQ q = transformTypecheckedQuery pmap transformations q
-
-    overDerivationQuery f details = details { predicateDeriving = d }
-      where
-        d = case predicateDeriving details of
-          NoDeriving -> NoDeriving
-          Derive when q -> Derive when (f q)
 
 -- | Check that predicates with the same name/version have the same definitions.
 -- This is done by comparing Ids, which are hashes of the representation.
