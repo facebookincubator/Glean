@@ -188,7 +188,7 @@ compileQuery
      -- malformed query can cause a crash.
   -> IO CompiledQuery
 
-compileQuery trans bounds (QueryWithInfo query numVars ty) = do
+compileQuery tmap bounds (QueryWithInfo query numVars ty) = do
   vlog 2 $ show (pretty query)
 
   (idTerm, resultKey, resultValue, stmts) <- case query of
@@ -215,7 +215,7 @@ compileQuery trans bounds (QueryWithInfo query numVars ty) = do
 
     -- resultKeyReg/resultValueReg is where we build up result values
     output $ \resultKeyOutput resultValueOutput ->
-      compileStatements trans bounds regs stmts vars $ mdo
+      compileStatements tmap bounds regs stmts vars $ mdo
         -- If the result term is a variable, avoid unnecessarily
         -- copying it into resultOutput and just use it directly.
         resultKeyReg <- case resultKey of
@@ -276,8 +276,8 @@ compileQuery trans bounds (QueryWithInfo query numVars ty) = do
                 -- types available in the db and not the type requested in the
                 -- query. Therefore we must transform the type of those
                 -- references for the traversal.
-                (transformType trans $ Angle.fieldDefType key)
-                (transformType trans $ Angle.fieldDefType val)
+                (transformType tmap $ Angle.fieldDefType key)
+                (transformType tmap $ Angle.fieldDefType val)
           else
             return Nothing
         return (Just pid, traverse)
@@ -404,7 +404,7 @@ compileStatements
                                 -- the result is constructed.
   -> Code a
 compileStatements
-  trans
+  tmap
   bounds
   regs@(QueryRegs{..} :: QueryRegs s)
   stmts
@@ -418,7 +418,7 @@ compileStatements
         local $ \failed innerRet -> mdo
           let
             compileBranch stmts =
-              compileStatements trans bounds regs stmts vars $ mdo
+              compileStatements tmap bounds regs stmts vars $ mdo
                 site <- callSite
                 loadLabel ret innerRet
                 jump doInner
@@ -427,7 +427,7 @@ compileStatements
 
           -- if
           loadConst 1 failed
-          thenSite <- compileStatements trans bounds regs cond vars $ do
+          thenSite <- compileStatements tmap bounds regs cond vars $ do
           -- then
             loadConst 0 failed
             compileBranch then_
@@ -482,7 +482,7 @@ compileStatements
           matches p = foldMap pure p
 
       compile (CgNegation stmts : rest) = mdo
-        singleResult (compileStatements trans bounds regs stmts vars) $ jump fail
+        singleResult (compileStatements tmap bounds regs stmts vars) $ jump fail
         a <- compile rest
         fail <- label
         return a
@@ -511,7 +511,7 @@ compileStatements
       compile (CgDisjunction stmtss : rest) =
         local $ \innerRet -> mdo
         sites <- forM stmtss $ \stmts -> do
-          compileStatements trans bounds regs stmts vars $ mdo
+          compileStatements tmap bounds regs stmts vars $ mdo
             site <- callSite
             loadLabel ret_ innerRet
             jump doInner
@@ -558,7 +558,7 @@ compileStatements
                   cont reg (\fail -> cmpOutputPat reg chunks fail)
 
             mtrans :: Maybe PredicateTransformation
-            mtrans = IntMap.lookup (fromIntegral $ fromPid pid) trans
+            mtrans = IntMap.lookup (fromIntegral $ fromPid pid) tmap
 
             -- The pid we expect to retrieve from the database
             PidRef expected _ = maybe pref tAvailable mtrans
@@ -776,7 +776,7 @@ compileStatements
 
       compileGen
         (FactGenerator (PidRef pid _) kpat vpat range) maybeReg inner = do
-        let mtrans = IntMap.lookup (fromIntegral $ fromPid pid) trans
+        let mtrans = IntMap.lookup (fromIntegral $ fromPid pid) tmap
         compileFactGenerator
           mtrans bounds regs vars pid kpat vpat range maybeReg inner
 
