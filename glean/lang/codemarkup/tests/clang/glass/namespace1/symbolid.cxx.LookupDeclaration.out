@@ -57,9 +57,9 @@
             "kind": { "local": { "kind": 2, "attribute": 0 } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 69,
+              "lineBegin": 72,
               "columnBegin": 30,
-              "lineEnd": 69,
+              "lineEnd": 72,
               "columnEnd": 36
             }
           }
@@ -83,9 +83,9 @@
             "isScoped": false,
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 89,
+              "lineBegin": 92,
               "columnBegin": 1,
-              "lineEnd": 89,
+              "lineEnd": 92,
               "columnEnd": 26
             }
           }
@@ -109,9 +109,9 @@
             "isScoped": true,
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 90,
+              "lineBegin": 93,
               "columnBegin": 1,
-              "lineEnd": 90,
+              "lineEnd": 93,
               "columnEnd": 40
             }
           }
@@ -157,9 +157,9 @@
             "isScoped": false,
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 83,
+              "lineBegin": 86,
               "columnBegin": 3,
-              "lineEnd": 83,
+              "lineEnd": 86,
               "columnEnd": 25
             }
           }
@@ -205,9 +205,9 @@
             "isScoped": true,
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 84,
+              "lineBegin": 87,
               "columnBegin": 3,
-              "lineEnd": 84,
+              "lineEnd": 87,
               "columnEnd": 39
             }
           }
@@ -233,9 +233,9 @@
             "kind": { "struct_": { } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 66,
+              "lineBegin": 69,
               "columnBegin": 1,
-              "lineEnd": 70,
+              "lineEnd": 73,
               "columnEnd": 1
             }
           }
@@ -261,9 +261,9 @@
             "kind": { "struct_": { } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 11,
+              "lineBegin": 13,
               "columnBegin": 1,
-              "lineEnd": 14,
+              "lineEnd": 16,
               "columnEnd": 1
             }
           }
@@ -301,9 +301,9 @@
             "kind": { "struct_": { } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 35,
+              "lineBegin": 38,
               "columnBegin": 1,
-              "lineEnd": 37,
+              "lineEnd": 40,
               "columnEnd": 1
             }
           }
@@ -350,9 +350,9 @@
             "kind": 0,
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 12,
+              "lineBegin": 14,
               "columnBegin": 3,
-              "lineEnd": 12,
+              "lineEnd": 14,
               "columnEnd": 33
             }
           }
@@ -391,9 +391,9 @@
             "kind": 0,
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 32,
+              "lineBegin": 35,
               "columnBegin": 1,
-              "lineEnd": 32,
+              "lineEnd": 35,
               "columnEnd": 30
             }
           }
@@ -419,9 +419,9 @@
             "kind": { "struct_": { } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 82,
+              "lineBegin": 85,
               "columnBegin": 1,
-              "lineEnd": 85,
+              "lineEnd": 88,
               "columnEnd": 1
             }
           }
@@ -468,9 +468,9 @@
             "kind": 1,
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 13,
+              "lineBegin": 15,
               "columnBegin": 3,
-              "lineEnd": 13,
+              "lineEnd": 15,
               "columnEnd": 31
             }
           }
@@ -509,9 +509,9 @@
             "kind": 1,
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 33,
+              "lineBegin": 36,
               "columnBegin": 1,
-              "lineEnd": 33,
+              "lineEnd": 36,
               "columnEnd": 28
             }
           }
@@ -550,9 +550,9 @@
             "kind": { "local": { "kind": 2, "attribute": 0 } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 49,
+              "lineBegin": 52,
               "columnBegin": 8,
-              "lineEnd": 49,
+              "lineEnd": 52,
               "columnEnd": 13
             }
           }
@@ -602,9 +602,9 @@
             "isScoped": true,
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 67,
+              "lineBegin": 70,
               "columnBegin": 3,
-              "lineEnd": 67,
+              "lineEnd": 70,
               "columnEnd": 31
             }
           }
@@ -645,10 +645,53 @@
             "kind": { "local": { "kind": 2, "attribute": 0 } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 42,
+              "lineBegin": 45,
               "columnBegin": 11,
-              "lineEnd": 42,
+              "lineEnd": 45,
               "columnEnd": 18
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "four" },
+      "scope": {
+        "local": {
+          "key": {
+            "name": { "key": { "name": { "key": "foo" } } },
+            "scope": { "namespace_": { "key": { "name": { "key": "foo" } } } }
+          }
+        }
+      },
+      "decl": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "four" },
+                "scope": {
+                  "local": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "foo" } } },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "foo" } } }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "type": { "key": "int" },
+            "kind": { "local": { "kind": 0, "attribute": 0 } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 25,
+              "columnBegin": 3,
+              "lineEnd": 25,
+              "columnEnd": 22
             }
           }
         }
@@ -686,9 +729,9 @@
             "kind": { "local": { "kind": 2, "attribute": 0 } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 51,
+              "lineBegin": 54,
               "columnBegin": 8,
-              "lineEnd": 51,
+              "lineEnd": 54,
               "columnEnd": 12
             }
           }
@@ -747,9 +790,9 @@
             "kind": { "field": { "mutable_": false } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 36,
+              "lineBegin": 39,
               "columnBegin": 3,
-              "lineEnd": 36,
+              "lineEnd": 39,
               "columnEnd": 24
             }
           }
@@ -778,9 +821,9 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 71,
+              "lineBegin": 74,
               "columnBegin": 1,
-              "lineEnd": 71,
+              "lineEnd": 74,
               "columnEnd": 51
             }
           }
@@ -819,9 +862,9 @@
             "kind": { "local": { "kind": 0, "attribute": 0 } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 53,
+              "lineBegin": 56,
               "columnBegin": 3,
-              "lineEnd": 53,
+              "lineEnd": 56,
               "columnEnd": 10
             }
           }
@@ -860,9 +903,9 @@
             "kind": { "local": { "kind": 0, "attribute": 0 } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 54,
+              "lineBegin": 57,
               "columnBegin": 3,
-              "lineEnd": 54,
+              "lineEnd": 57,
               "columnEnd": 15
             }
           }

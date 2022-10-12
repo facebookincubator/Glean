@@ -6,10 +6,19 @@
                 "includes": [
                     {
                         "range": {
+                            "columnBegin": 2,
+                            "columnEnd": 19,
+                            "lineBegin": 9,
+                            "lineEnd": 9
+                        },
+                        "target": "test.h"
+                    },
+                    {
+                        "range": {
                             "columnBegin": 1,
                             "columnEnd": 18,
-                            "lineBegin": 75,
-                            "lineEnd": 75
+                            "lineBegin": 78,
+                            "lineEnd": 78
                         },
                         "target": "test.h"
                     }

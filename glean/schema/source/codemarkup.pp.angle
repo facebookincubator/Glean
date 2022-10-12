@@ -76,9 +76,14 @@ predicate PpEntityTraceXRefLocations:
   }
   { Trace, XRef, Entity } where
     { file = File } = Trace;
-    cxx1.FilePPTraceXRefs { File, Trace, SrcRange, Entity };
+    cxx1.FilePPTraceXRefs { File, Trace, SrcRange, Entity, SrcSpan };
     PPEntityLocation { Entity, Location };
-    { Location, { range = SrcRange } } = XRef;
+    ( { Location, { span = SrcSpan } } = XRef;
+      { define = _ } = Entity ) |
+    ( { Location, { range = SrcRange } } = XRef;
+      { include_ = _ } = Entity ) |
+    ( { Location, { range = SrcRange } } = XRef;
+      { undef = _ } = Entity; )
 
 #
 # Language-specific symbol info

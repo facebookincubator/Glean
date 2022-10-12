@@ -6,6 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+ #include "test.h"
+
 namespace foo {
 
 struct S {
@@ -20,6 +22,7 @@ void f();
 
 /* test/cpp/foo/foo */
 void foo() {
+  int four = FOO(2, 2);
   return;
 }
 

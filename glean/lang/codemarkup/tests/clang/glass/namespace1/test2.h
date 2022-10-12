@@ -7,3 +7,5 @@
  */
 
 #define D 234
+#define FOO(X, Y) \
+    (X + Y)
