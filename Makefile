@@ -114,6 +114,7 @@ $(BUILD_DIR)/mode: force
 # We have to regenerate glean.cabal if the mode (and hence the path to defs.m4)
 # changes even if the actual files are older.
 glean.cabal: glean.cabal.in $(BUILD_DIR)/mode $(CXX_DIR)/defs.m4
+	rm -f $@
 	m4 -E -E -P $(CXX_DIR)/defs.m4 glean.cabal.in \
 		| sed "/-- Copyright/a \\\n-- @""generated from glean.cabal.in\\n-- DO NO EDIT THIS FILE DIRECTLY" \
 		> $@
