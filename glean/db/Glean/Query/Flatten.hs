@@ -34,7 +34,6 @@ import Glean.Query.Codegen.Types
 import Glean.Query.Expand
 import Glean.Query.Flatten.Types
 import Glean.Query.Typecheck.Types
-import Glean.Query.Transform (transformQuery, transformType)
 import Glean.RTS.Types as RTS
 import Glean.RTS.Term as RTS hiding (Match(..))
 import Glean.Database.Schema.Types
@@ -49,32 +48,23 @@ flatten
   -> Bool -- ^ derive DerivedAndStored predicates
   -> TypecheckedQuery
   -> Except Text FlattenedQuery
-flatten dbSchema _ver deriveStored typechecked = do
-  let returnTy = derefType
-        $ transformType (predicatesTransformations dbSchema)
-        $ qiReturnType typechecked
+flatten dbSchema _ver deriveStored QueryWithInfo{..} =
+  fmap fst $ flip runStateT state $ do
+    (flattened, returnType) <- do
+      flat <- flattenQuery qiQuery `catchError` flattenFailure
+      captureKey dbSchema flat (case qiQuery of TcQuery ty _ _ _ -> ty)
+    nextVar <- gets flNextVar
+    return $ QueryWithInfo flattened nextVar returnType
+  where
+      state = initialFlattenState dbSchema qiNumVars deriveStoredPred
+
       deriveStoredPred =
-        case returnTy of
+        case derefType qiReturnType of
           Angle.PredicateTy (PidRef _ pref) | deriveStored -> Just pref
           _ -> Nothing
-      state = initialFlattenState
-        dbSchema
-        (qiNumVars typechecked)
-        deriveStoredPred
-  (qi,_) <- flip runStateT state $ do
-      query <- transform (qiQuery typechecked)
-      q <- flattenQuery query
-        `catchError` \e -> throwError $ e <> " in\n" <>
-           Text.pack (show (pretty query))
-      (q', ty) <- captureKey dbSchema q (case query of TcQuery ty _ _ _ -> ty)
-      nextVar <- gets flNextVar
-      return $ QueryWithInfo q' nextVar ty
-  return qi
 
-transform :: TcQuery -> F TcQuery
-transform query = do
-  dbSchema <- gets flDbSchema
-  return $ transformQuery (predicatesById dbSchema) (predicatesTransformations dbSchema) query
+      flattenFailure e = throwError $
+        e <> " in\n" <> Text.pack (show (pretty qiQuery))
 
 flattenQuery :: TcQuery -> F FlatQuery
 flattenQuery query = do
