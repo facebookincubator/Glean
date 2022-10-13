@@ -239,9 +239,16 @@ predicate HackExtendsChildEntity :
     child : code.hack.Entity
   }
   { { decl = Parent }, { decl = Child } } where
+  (
     { container = P } = Parent;
     hack.ContainerChild { container = P, child = C };
     { container = C } = Child;
+  ) |
+  (
+    {method=P}=Parent;
+    hack.MethodOverridden{base=P, derived=C};
+    {method=C}=Child
+  )
 
 # child extends parent
 predicate HackExtendsParentEntity :
@@ -250,9 +257,16 @@ predicate HackExtendsParentEntity :
     parent : code.hack.Entity
   }
   { { decl = Child }, { decl = Parent } } where
-    { container = C } = Child;
-    hack.ContainerParent { C, P };
-    { container = P } = Parent
+    (
+      { container = C } = Child;
+      hack.ContainerParent { C, P };
+      { container = P } = Parent
+    ) |
+    ({method=C}=Child; {method=P}=Parent;
+      (
+        hack.MethodOverrides{derived=C, base=P}
+      )
+    )
 
 # documentation spans
 predicate HackEntityDocumentation :

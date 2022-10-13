@@ -732,7 +732,7 @@
         "target": {
           "name": "TestAnnotation",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 724, "length": 14 } }
+          "location": { "span": { "start": 723, "length": 14 } }
         },
         "source": { "span": { "start": 255, "length": 14 } }
       },
@@ -780,9 +780,9 @@
         "target": {
           "name": "test",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 815, "length": 5 } }
+          "location": { "span": { "start": 814, "length": 5 } }
         },
-        "source": { "span": { "start": 815, "length": 5 } }
+        "source": { "span": { "start": 814, "length": 5 } }
       },
       "entity": {
         "hack": {

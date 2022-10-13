@@ -137,6 +137,7 @@ testHackSearchRelated get = TestLabel "searchRelated" $ TestList $ concat [
   "test/php/RefClass" `extends` "test/php/SourceTrait",
   "test/php/SubClass" `extends` "test/php/SourceClass",
   "test/php/SourceClass" `extends` "test/php/SuperClass",
+  "test/php/SubClass/pleaseOverride" `extends` "test/php/SourceClass/pleaseOverride",
   "test/php/SubClass" `extendsRec` "test/php/SuperClass",
   "test/php/SourceInterface" `contains` "test/php/SourceInterface/foo",
   "test/php/ns/NS" `contains` "test/php/NS/NamespaceClass",

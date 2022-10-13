@@ -34,7 +34,6 @@ class SubClass extends SourceClass {
   public static function pleaseOverride(): string {
     return 'override this';
   }
-
 }
 
 class TestAnnotation implements HH\ClassAttribute {

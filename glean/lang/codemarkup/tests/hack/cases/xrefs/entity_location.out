@@ -221,7 +221,7 @@
       },
       "location": {
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "length": 140, "start": 576 } },
+        "location": { "span": { "length": 139, "start": 576 } },
         "name": "SubClass"
       }
     }
@@ -265,7 +265,7 @@
       },
       "location": {
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "length": 108, "start": 718 } },
+        "location": { "span": { "length": 108, "start": 717 } },
         "name": "TestAnnotation"
       }
     }
@@ -842,7 +842,7 @@
       },
       "location": {
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "length": 52, "start": 772 } },
+        "location": { "span": { "length": 52, "start": 771 } },
         "name": "__construct"
       }
     }
@@ -1040,7 +1040,7 @@
       },
       "location": {
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "length": 5, "start": 815 } },
+        "location": { "span": { "length": 5, "start": 814 } },
         "name": "test"
       }
     }
