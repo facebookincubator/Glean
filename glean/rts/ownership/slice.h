@@ -68,11 +68,7 @@ struct Sliced : Lookup {
   }
 
   Pid typeById(Id id) override {
-    if (slice_->visible(ownership_->getOwner(id))) {
-      return base_->typeById(id);
-    } else {
-      return Pid::invalid();
-    }
+    return base_->typeById(id);
   }
 
   bool factById(
