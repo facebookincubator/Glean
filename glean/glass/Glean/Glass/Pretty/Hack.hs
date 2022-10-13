@@ -161,13 +161,15 @@ ppClassModifiers (ClassMod abstract final) =
 
 ppSignature :: Signature -> Doc ()
 ppSignature (Signature returnType typeParams params) =
-  cat
+  hcat
     [ ppTypeParams typeParams
-    , nest 4 $ cat
-      [ "("
-      , sep $ punctuate "," (map ppParameter params)
+    , cat
+      [ nest 4 $ cat
+        [ "("
+        , sep $ punctuate "," (map ppParameter params)
+        ]
+        , "):" <+> ppReturnType returnType
       ]
-    , "):" <+> ppReturnType returnType
     ]
 
 ppTypeParams :: [TypeParameter] -> Doc ()
