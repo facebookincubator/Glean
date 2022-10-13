@@ -46,10 +46,8 @@ module Glean.Glass.Handler
 
 import Control.Concurrent.STM ( TVar )
 import Control.Exception ( throwIO, SomeException )
-import Control.Monad ( forM )
 import Control.Monad.Catch ( throwM, try )
 import Data.Either.Extra (eitherToMaybe, partitionEithers)
-import Data.Foldable ( forM_ )
 import Data.List.NonEmpty (NonEmpty(..), toList, nonEmpty)
 import Data.List.Extra (nubOrd)
 import Data.Maybe
@@ -60,6 +58,7 @@ import qualified Data.List.Extra as List ( groupSortOn )
 import qualified Data.Map.Strict as Map
 import qualified Data.Text as Text
 
+import Haxl.Prelude (forM, forM_)
 import Logger.GleanGlass ( GleanGlassLogger )
 import Logger.GleanGlassErrors ( GleanGlassErrorsLogger )
 import Util.Logger ( loggingAction )
