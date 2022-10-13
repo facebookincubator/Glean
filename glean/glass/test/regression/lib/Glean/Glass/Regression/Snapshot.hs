@@ -187,7 +187,7 @@ decodeObjectAsThriftJson
   = Thrift.deserializeJSON . S.concat . B.toChunks. encode
 
 withSymbolId
-  :: (ToJSON a, SortedResponse a)
+  :: (ToJSON a, DeterministicResponse a)
   => FilePath -> Value -> (SymbolId -> RequestOptions -> IO a) -> IO ()
 withSymbolId oFile args f = do
   req <- case fromJSON args of
@@ -197,7 +197,7 @@ withSymbolId oFile args f = do
   writeResult oFile res
 
 withObjectArgs
- :: (Thrift.Protocol.ThriftStruct req, ToJSON req, ToJSON a, SortedResponse a)
+ :: (Thrift.Protocol.ThriftStruct req, ToJSON req, ToJSON a, DeterministicResponse a)
  => FilePath
  -> FilePath
  -> Value
@@ -208,7 +208,7 @@ withObjectArgs qFile oFile args f = do
   writeResult oFile res
 
 withObjectAndSymbolId
- :: (Thrift.Protocol.ThriftStruct req, ToJSON req, ToJSON a, SortedResponse a)
+ :: (Thrift.Protocol.ThriftStruct req, ToJSON req, ToJSON a, DeterministicResponse a)
  => FilePath
  -> FilePath
  -> Value
@@ -237,73 +237,96 @@ parseAsObject file args = case decodeObjectAsThriftJson args of
   Left str -> assertFailure $ "Invalid args in " <> file <> " : " <> str
   Right req -> pure req
 
-writeResult :: (ToJSON a, SortedResponse a) => FilePath -> a -> IO ()
+writeResult :: (ToJSON a, DeterministicResponse a) => FilePath -> a -> IO ()
 writeResult oFile res = B.writeFile oFile content
   where
     generatedTag = '@':"generated"
-    content = J.encodePretty' cfg (generatedTag,sorted res)
+    content = J.encodePretty' cfg (generatedTag,det res)
 
     cfg = J.defConfig {
       J.confCompare = compare
     }
 
-class SortedResponse a where
-  sorted :: a -> a
+class DeterministicResponse a where
+  det :: a -> a
 
-instance SortedResponse DocumentSymbolListXResult where
-  sorted (DocumentSymbolListXResult refs defs _rev) =
-    DocumentSymbolListXResult (sorted refs) (sorted defs) (Revision "testhash")
+instance DeterministicResponse DocumentSymbolListXResult where
+  det (DocumentSymbolListXResult refs defs _rev) =
+    DocumentSymbolListXResult (det refs) (det defs) (Revision "testhash")
       -- n.b. don't want to include any test group revision tags
 
-instance SortedResponse DocumentSymbolIndex where
-  sorted (DocumentSymbolIndex syms _rev size) =
+instance DeterministicResponse DocumentSymbolIndex where
+  det (DocumentSymbolIndex syms _rev size) =
     DocumentSymbolIndex (Map.map sort syms) (Revision "testhash") size
 
-instance SortedResponse SymbolSearchResult where
-  sorted (SymbolSearchResult syms deets) =
-    SymbolSearchResult (sorted syms) (sorted deets)
+instance DeterministicResponse SymbolSearchResult where
+  det (SymbolSearchResult syms deets) =
+    SymbolSearchResult (det syms) (det deets)
 
-instance SortedResponse SearchBySymbolIdResult where
-  sorted (SearchBySymbolIdResult syms) =
-    SearchBySymbolIdResult (sorted syms)
+instance DeterministicResponse SearchBySymbolIdResult where
+  det (SearchBySymbolIdResult syms) =
+    SearchBySymbolIdResult (det syms)
 
-instance (SortedResponse a, Ord a) => SortedResponse [a] where
-  sorted = sort . map sorted
+instance (DeterministicResponse a, Ord a) => DeterministicResponse [a] where
+  det = sort . map det
 
-instance SortedResponse Range where sorted = id
-instance SortedResponse Location where sorted = id
-instance SortedResponse LocationRange where sorted = id
-instance SortedResponse SearchRelatedResult where
-  sorted (SearchRelatedResult xs ys) = -- to edit the desc hash
-    SearchRelatedResult (sorted xs) (sorted ys)
-instance SortedResponse RelatedNeighborhoodResult where
-  sorted (RelatedNeighborhoodResult as bs cs ds es fs) = -- to edit the desc hash
-    RelatedNeighborhoodResult (sorted as) (sorted bs) (sorted cs) (sorted ds)
-      (sorted es) (sorted fs)
-
-instance SortedResponse RelatedSymbols where
-  sorted = id
-instance SortedResponse InheritedSymbols where
-  sorted (InheritedSymbols a xs) = InheritedSymbols a (sorted xs)
-instance SortedResponse SymbolId where
-  sorted = id
-instance SortedResponse DefinitionSymbolX where
-  sorted = id
-instance SortedResponse ReferenceRangeSymbolX where
-  sorted = id
-instance SortedResponse SymbolDescription where
-  sorted sd = sd { symbolDescription_repo_hash = "testhash" }
-instance SortedResponse (Map.Map Text SymbolDescription) where
-  sorted = Map.map sorted
-instance SortedResponse SymbolResult where
-  sorted = id
-instance SortedResponse FileIncludeLocationResults where
-  sorted (FileIncludeLocationResults _rev (XRefFileList refs)) =
+instance DeterministicResponse Range where det = id
+instance DeterministicResponse Location where det = id
+instance DeterministicResponse LocationRange where det = id
+instance DeterministicResponse SearchRelatedResult where
+  det (SearchRelatedResult xs ys) = -- to edit the desc hash
+    SearchRelatedResult (det xs) (det ys)
+instance DeterministicResponse RelatedNeighborhoodResult where
+  det (RelatedNeighborhoodResult as bs cs ds es fs) = -- to edit the desc hash
+    RelatedNeighborhoodResult (det as) (det bs) (det cs) (det ds)
+      (det es) (det fs)
+instance DeterministicResponse RelatedSymbols where
+  det = id
+instance DeterministicResponse InheritedSymbols where
+  det (InheritedSymbols a xs) = InheritedSymbols a (det xs)
+instance DeterministicResponse SymbolId where
+  det = id
+instance DeterministicResponse DefinitionSymbolX where
+  det = id
+instance DeterministicResponse ReferenceRangeSymbolX where
+  det = id
+instance DeterministicResponse SymbolDescription where
+  det sd = sd
+    { symbolDescription_repo_hash = "testhash"
+    , symbolDescription_contains_relation
+    = Glass.RelationDescription
+        { relationDescription_firstParent = Just $ SymbolId "nondeterministic"
+        , relationDescription_firstChild = Just $ SymbolId "nondeterministic"
+        , relationDescription_hasMoreChildren
+        = relationDescription_hasMoreChildren
+        $ symbolDescription_contains_relation sd
+        , relationDescription_hasMoreParents
+        = relationDescription_hasMoreParents
+        $ symbolDescription_contains_relation sd
+        }
+    , symbolDescription_extends_relation
+    = Glass.RelationDescription
+        { relationDescription_firstParent = Just $ SymbolId "nondeterministic"
+        , relationDescription_firstChild = Just $ SymbolId "nondeterministic"
+        , relationDescription_hasMoreChildren
+        = relationDescription_hasMoreChildren
+        $ symbolDescription_extends_relation sd
+        , relationDescription_hasMoreParents
+        = relationDescription_hasMoreParents
+        $ symbolDescription_extends_relation sd
+        }
+    }
+instance DeterministicResponse (Map.Map Text SymbolDescription) where
+  det = Map.map det
+instance DeterministicResponse SymbolResult where
+  det = id
+instance DeterministicResponse FileIncludeLocationResults where
+  det (FileIncludeLocationResults _rev (XRefFileList refs)) =
     FileIncludeLocationResults
      (Revision "testhash")
-     (XRefFileList (sort (map sorted refs)))
-instance SortedResponse FileIncludeXRef where
-  sorted (FileIncludeXRef path incs) =
+     (XRefFileList (sort (map det refs)))
+instance DeterministicResponse FileIncludeXRef where
+  det (FileIncludeXRef path incs) =
     FileIncludeXRef path (sort incs)
 
 diff :: FilePath -> FilePath -> IO ()

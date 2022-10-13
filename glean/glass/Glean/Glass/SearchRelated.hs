@@ -27,18 +27,17 @@ import qualified Data.HashSet as HashSet
 
 import qualified Glean
 import Glean.Angle as Angle
-import Glean.Haxl.Repos (RepoHaxl, ReposHaxl, withRepo)
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import qualified Glean.Schema.Codemarkup.Types as Code
 import qualified Glean.Schema.Code.Types as Code
 
-import qualified Glean.Glass.Search as Search
 import Glean.Glass.Search.Class
 import Glean.Glass.Base (GleanPath (..))
 import Glean.Glass.Path
 import Glean.Glass.SymbolId (entityToAngle, toSymbolId)
 import Glean.Glass.Types
 import Glean.Glass.Utils (searchRecursiveWithLimit)
+import Glean.Haxl.Repos (RepoHaxl)
 
 -- | Whether to expand relationships recursively
 data Recursive
@@ -70,12 +69,12 @@ searchRelatedEntities
   -> Recursive
   -> RelationDirection
   -> RelationType
-  -> Search.SearchEntity Code.Entity
+  -> Code.Entity
   -> RepoName
-  -> ReposHaxl u w [RelatedLocatedEntities]
-searchRelatedEntities limit recurse dir rel SearchEntity{..} repo =
-  withRepo entityRepo $ toSymbolIds repo =<<
-    searchRelation limit limit recurse rel dir repo [decl] HashSet.empty
+  -> RepoHaxl u w [RelatedLocatedEntities]
+searchRelatedEntities limit recurse dir rel entity repo =
+  toSymbolIds repo =<<
+    searchRelation limit limit recurse rel dir repo [entity] HashSet.empty
 
 -- | Lift entity search results into pairs of entities that we found,
 -- along with their location and symbol id

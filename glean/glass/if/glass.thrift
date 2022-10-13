@@ -274,6 +274,16 @@ struct SymbolDescription {
   10: optional string signature;
   11: LocationRange sym_location; // symbol have at least one defining location
   12: list<LocationRange> sym_other_locations; // and optionally extra locations
+  13: RelationDescription extends_relation;
+  14: RelationDescription contains_relation;
+}
+
+// summary of search related results
+struct RelationDescription {
+  1: optional SymbolId firstParent;
+  2: bool hasMoreParents;
+  3: optional SymbolId firstChild;
+  4: bool hasMoreChildren;
 }
 
 struct SearchContext {
