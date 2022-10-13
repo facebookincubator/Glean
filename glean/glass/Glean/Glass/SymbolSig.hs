@@ -32,7 +32,7 @@ toSymbolSignatureText x = do
   return $ docToText <$> maybeDoc
   where
     docToText =
-      renderStrict . layoutSmart (LayoutOptions (AvailablePerLine 120 1))
+      renderStrict . layoutSmart (LayoutOptions (AvailablePerLine 80 1))
 
 
 -- signature of symbols
