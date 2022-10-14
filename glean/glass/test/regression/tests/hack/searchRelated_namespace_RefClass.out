@@ -288,7 +288,7 @@
                     "localName": "raz"
                 },
                 "repo_hash": "testhash",
-                "signature": "raz",
+                "signature": "private int raz",
                 "sym": "test/php/RefClass/raz",
                 "sym_location": {
                     "filepath": "www/RefClass.php",

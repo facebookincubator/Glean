@@ -17,6 +17,7 @@ module Glean.Glass.Pretty.Hack
   , Qual(..)
   , QualName(..)
   , FunctionMod(..)
+  , PropertyMod(..)
   , ClassMod(..)
   , MethodMod(..)
   , Abstract(..)
@@ -66,6 +67,7 @@ newtype QualName = QualName ([Text], Text)
 newtype FunctionMod = FunctionMod Async
 data ClassMod    = ClassMod Abstract Final
 data MethodMod   = MethodMod Abstract Final Visibility Static Async
+data PropertyMod   = PropertyMod Abstract Final Visibility Static
 
 data Abstract = Abstract | NotAbstract deriving (Eq)
 data Final = Final | NotFinal deriving (Eq)
@@ -98,7 +100,7 @@ data Decl
   | GlobalConst QualName
   | Namespace Qual
   | Method MethodMod Container Name Signature
-  | Property Name
+  | Property PropertyMod Container Name HackType
   | TypeConst Name
   | Typedef QualName
   | Module Name
@@ -128,8 +130,8 @@ prettyDecl (Namespace name) =
 prettyDecl (Method modifiers container name sig) =
   ppMethodModifiers container modifiers <+> ppName name <>
   ppSignature sig
-prettyDecl (Property name) =
-  ppName name
+prettyDecl (Property modifiers container name mhacktype) =
+  ppPropertyModifiers container modifiers <+> ppType mhacktype <+> ppName name
 prettyDecl (TypeConst name) =
   "const" <+> ppName name
 prettyDecl (Typedef name) =
@@ -232,6 +234,20 @@ ppMethodModifiers container (MethodMod abstract final visibility static async) =
     when (async==Async) $ tell ["async"]
     tell ["function"]
 
+ppPropertyModifiers :: Container -> PropertyMod -> Doc ()
+ppPropertyModifiers container (PropertyMod abstract final visibility static) =
+  fillSep $ execWriter $ do
+    when
+      (  abstract == Abstract
+      && container /= InterfaceContainer
+      ) $ tell ["abstract"]
+    when (final==Final) $ tell ["final"]
+    when (visibility==Public) $ tell ["public"]
+    when (visibility==Protected) $ tell ["protected"]
+    when (visibility==Private) $ tell ["private"]
+    when (visibility==Internal) $ tell ["internal"]
+    when (static==Static) $ tell ["static"]
+
 decl :: Hack.Declaration -> Glean.MaybeTRepoHaxl u w Decl
 decl (Hack.Declaration_classConst Hack.ClassConstDeclaration{..}) = do
   Hack.ClassConstDeclaration_key{..} <- liftMaybe classConstDeclaration_key
@@ -292,10 +308,23 @@ decl (Hack.Declaration_method meth@Hack.MethodDeclaration{..}) = do
   let container = containerKind methodDeclaration_key_container
   pure $ Method (modifiersForMethod def) container (Name name)
     (toSignature typeParams sign)
-decl (Hack.Declaration_property_ Hack.PropertyDeclaration{..}) = do
+decl (Hack.Declaration_property_ prop@Hack.PropertyDeclaration{..}) = do
   Hack.PropertyDeclaration_key{..} <- liftMaybe propertyDeclaration_key
+  Hack.PropertyDefinition{..} <- maybeT $
+    Glean.getFirstResult $
+    Glean.recursive $
+    query @Hack.PropertyDefinition $
+    predicate @Hack.PropertyDefinition $
+      rec $
+        field @"declaration"
+          (Angle.asPredicate $ Angle.factId $ Glean.getId prop)
+      end
+  def <- liftMaybe propertyDefinition_key
+  let type_ = Hack.propertyDefinition_key_type def
   name <- liftMaybe $ Hack.name_key propertyDeclaration_key_name
-  pure $ Property $ Name name
+  let container = containerKind propertyDeclaration_key_container
+  pure $ Property (modifiersForProperty def) container (Name name)
+   (toType type_)
 decl (Hack.Declaration_typeConst Hack.TypeConstDeclaration{..}) = do
   Hack.TypeConstDeclaration_key{..} <- liftMaybe typeConstDeclaration_key
   name <- liftMaybe $ Hack.name_key typeConstDeclaration_key_name
@@ -408,6 +437,20 @@ modifiersForMethod Hack.MethodDefinition_key {..} =
   )
   (if methodDefinition_key_isStatic then Static else NotStatic)
   (if methodDefinition_key_isAsync then Async else NotAsync)
+
+modifiersForProperty :: Hack.PropertyDefinition_key -> PropertyMod
+modifiersForProperty Hack.PropertyDefinition_key {..} =
+  PropertyMod
+  (if propertyDefinition_key_isAbstract then Abstract else NotAbstract)
+  (if propertyDefinition_key_isFinal then Final else NotFinal)
+  (case propertyDefinition_key_visibility of
+    Hack.Visibility_Public -> Public
+    Hack.Visibility_Protected -> Protected
+    Hack.Visibility_Private -> Private
+    Hack.Visibility_Internal -> Internal
+    Hack.Visibility__UNKNOWN{} -> error "unexpected visibility"
+  )
+  (if propertyDefinition_key_isStatic then Static else NotStatic)
 
 toSignature :: [Hack.TypeParameter] -> Hack.Signature -> Signature
 toSignature typeParams Hack.Signature {..} =

@@ -157,7 +157,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "raz"
+                            "aString": "private int raz"
                         },
                         "key": "symbolSignature"
                     },
@@ -461,7 +461,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "raz"
+                            "aString": "private int raz"
                         },
                         "key": "symbolSignature"
                     },
@@ -734,7 +734,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "daz"
+                            "aString": "public int daz"
                         },
                         "key": "symbolSignature"
                     },

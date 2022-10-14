@@ -120,7 +120,7 @@
                             "aInteger": 3
                         },
                         "symbolSignature": {
-                            "aString": "raz"
+                            "aString": "private int raz"
                         }
                     },
                     "range": {
@@ -484,7 +484,7 @@
                             "aInteger": 3
                         },
                         "symbolSignature": {
-                            "aString": "daz"
+                            "aString": "public int daz"
                         }
                     },
                     "range": {
@@ -728,7 +728,7 @@
                             "aInteger": 3
                         },
                         "symbolSignature": {
-                            "aString": "raz"
+                            "aString": "private int raz"
                         }
                     },
                     "range": {
