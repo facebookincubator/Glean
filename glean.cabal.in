@@ -382,6 +382,7 @@ library core
         Glean.RTS.Bytecode.Disassemble
         Glean.RTS.Bytecode.Supply
         Glean.RTS.Constants
+        Glean.RTS.Foreign.Benchmarking
         Glean.RTS.Foreign.Bytecode
         Glean.RTS.Foreign.Define
         Glean.RTS.Foreign.FactSet
@@ -1355,6 +1356,23 @@ executable compile-bench
         criterion-measurement,
         statistics,
         vector-algorithms
+
+executable factset-bench
+    import: fb-haskell, deps, exe
+    if !flag(benchmarks)
+       buildable: False
+    hs-source-dirs: glean/bench
+    main-is: FactSetBench.hs
+    ghc-options: -main-is FactSetBench
+    build-depends:
+        glean:bench-util,
+        glean:client-hs,
+        glean:client-hs-local,
+        glean:core,
+        glean:db,
+        glean:schema,
+        glean:test-lib,
+        glean:util
 
 -- -----------------------------------------------------------------------------
 -- Tests

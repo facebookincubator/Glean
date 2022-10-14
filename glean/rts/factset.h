@@ -189,6 +189,11 @@ private:
       return fact_memory;
     }
 
+    /// Return (approximately) the total number of bytes allocated by the
+    /// FactSet. This currently does *not* include the memory allocated by seek
+    /// indices. 
+    size_t allocatedMemory() const noexcept;
+
   private:
     Id starting_id;
     std::vector<Fact::unique_ptr> facts;
@@ -243,6 +248,8 @@ public:
   size_t factMemory() const noexcept {
     return facts.factMemory();
   }
+
+  size_t allocatedMemory() const noexcept;
 
   PredicateStats predicateStats() const;
 

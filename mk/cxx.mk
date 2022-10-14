@@ -34,6 +34,9 @@ CXX_SOURCES_glean_cpp_if_internal = \
 
 CXX_SOURCES_glean_cpp_rts = \
     glean/rts/binary.cpp \
+    glean/rts/benchmarking/factblock.cpp \
+    glean/rts/benchmarking/ffi.cpp \
+    glean/rts/bytecode/subroutine.cpp \
     glean/rts/cache.cpp \
     glean/rts/define.cpp \
     glean/rts/error.cpp \
@@ -57,8 +60,7 @@ CXX_SOURCES_glean_cpp_rts = \
     glean/rts/substitution.cpp \
     glean/rts/thrift.cpp \
     glean/rts/timer.cpp \
-    glean/rts/validate.cpp \
-    glean/rts/bytecode/subroutine.cpp
+    glean/rts/validate.cpp
 CXX_FLAGS_glean_cpp_rts = -DOSS=1
 
 CXX_SOURCES_glean_cpp_rocksdb_stats = \

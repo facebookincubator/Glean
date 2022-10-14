@@ -461,8 +461,16 @@ void glean_factset_free(FactSet *facts) {
   ffi::free_(facts);
 }
 
+size_t glean_factset_fact_count(FactSet *facts) {
+  return facts->size();
+}
+
 size_t glean_factset_fact_memory(FactSet *facts) {
   return facts->factMemory();
+}
+
+size_t glean_factset_allocated_memory(FactSet *facts) {
+  return sizeof(FactSet) + facts->allocatedMemory();
 }
 
 const char *glean_factset_predicateStats(

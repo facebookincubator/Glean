@@ -291,7 +291,15 @@ void glean_factset_free(
   FactSet *facts
 );
 
+size_t glean_factset_fact_count(
+  FactSet *facts
+);
+
 size_t glean_factset_fact_memory(
+  FactSet *facts
+);
+
+size_t glean_factset_allocated_memory(
   FactSet *facts
 );
 

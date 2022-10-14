@@ -220,6 +220,10 @@ public:
     }
   }
 
+  size_t allocatedMemory() const noexcept {
+    return data.capacity() * sizeof(data[0]);
+  }
+
 private:
   // invariants:
   //

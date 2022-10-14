@@ -9,7 +9,9 @@
 module Glean.RTS.Foreign.FactSet
   ( FactSet
   , new
+  , factCount
   , factMemory
+  , allocatedMemory
   , predicateStats
   , firstFreeId
   , serialize
@@ -59,8 +61,15 @@ instance CanDefine FactSet where
 new :: Fid -> IO FactSet
 new next_id = construct $ invoke $ glean_factset_new next_id
 
+factCount :: FactSet -> IO Int
+factCount facts = fromIntegral <$> with facts glean_factset_fact_count
+
 factMemory :: FactSet -> IO Int
 factMemory facts = fromIntegral <$> with facts glean_factset_fact_memory
+
+allocatedMemory :: FactSet -> IO Int
+allocatedMemory facts =
+  fromIntegral <$> with facts glean_factset_allocated_memory
 
 predicateStats :: FactSet -> IO [(Pid, Thrift.PredicateStats)]
 predicateStats facts = with facts
@@ -132,7 +141,13 @@ foreign import ccall unsafe glean_factset_new
 foreign import ccall unsafe "&glean_factset_free" glean_factset_free
   :: FunPtr (Ptr FactSet -> IO ())
 
+foreign import ccall unsafe glean_factset_fact_count
+  :: Ptr FactSet -> IO CSize
+
 foreign import ccall unsafe glean_factset_fact_memory
+  :: Ptr FactSet -> IO CSize
+
+foreign import ccall unsafe glean_factset_allocated_memory
   :: Ptr FactSet -> IO CSize
 
 foreign import ccall safe glean_factset_predicateStats
