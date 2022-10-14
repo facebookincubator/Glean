@@ -330,6 +330,7 @@ doFinalize env@Env{..} repo =
       when (ServerConfig.config_compact_on_completion config) $ do
         say logInfo "optimising"
         Storage.optimize odbHandle
+        Storage.cacheOwnership odbHandle
 
     -- update and re-merge our internal representation of the schema
     schemaUpdated env (Just repo)

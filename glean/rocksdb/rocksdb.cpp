@@ -494,6 +494,11 @@ struct DatabaseImpl final : Database {
     if (container_.mode != Mode::ReadOnly) {
       usets_ = loadOwnershipSets();
     }
+
+    // Enable the fact owner cache when the DB is read-only
+    if (container_.mode == Mode::ReadOnly) {
+      factOwnerCache_.enable();
+    }
   }
 
   DatabaseImpl(const DatabaseImpl&) = delete;
@@ -1271,6 +1276,39 @@ struct DatabaseImpl final : Database {
     check(batch.Put(container_.family(Family::ownershipSets), slice(key),
                     slice(value)));
   }
+
+  // Cache for getOwner(Id). This is represented as a vector of pages
+  // indexed by the upper 48 bits of the fact ID. Each page is a table
+  // of intervals [(id1,set1), (id2,set2), ...], split into two arrays
+  // because the IDs are 16 bits and we want that array to be as
+  // compact as possible. We find the correct interval in getOwner()
+  // by binary search in the page on the low 16 bits of the fact ID.
+  // TODO: maybe it's worth optimizing very dense pages to be just a
+  // lookup, and conversely very sparse pages to a linear search?
+
+  struct FactOwnerCache {
+    UsetId getOwner(ContainerImpl& container, Id id);
+    void enable();
+
+  private:
+    struct Page {
+      std::vector<uint16_t> factIds;
+      std::vector<UsetId> setIds;
+    };
+    using Cache = std::vector<std::unique_ptr<Page>>;
+
+    const Page* getPage(ContainerImpl& container, uint64_t prefix);
+
+    // nullptr means the cache is disabled (while the DB is writable)
+    folly::Synchronized<std::unique_ptr<Cache>> cache_;
+    size_t size_;
+  };
+
+  FactOwnerCache factOwnerCache_;
+
+  /// Enable the fact owner cache. This should only be called when the
+  // DB is read-only.
+  void cacheOwnership() override;
 };
 
 void DatabaseImpl::storeOwnership(ComputedOwnership &ownership) {
@@ -1365,22 +1403,140 @@ struct StoredOwnership : Ownership {
   DatabaseImpl *db_;
 };
 
+const DatabaseImpl::FactOwnerCache::Page*
+DatabaseImpl::FactOwnerCache::getPage(ContainerImpl& container, uint64_t prefix) {
+  auto cachePtr = cache_.ulock();
+  auto cache = cachePtr->get();
+
+  if (!cache) {
+      return nullptr;
+  }
+
+  if (prefix >= cache->size() || !(*cache)[prefix]) {
+    auto page = std::make_unique<FactOwnerCache::Page>();
+    size_t size = 0;
+
+    std::unique_ptr<rocksdb::Iterator> iter(
+        container.db->NewIterator(
+            rocksdb::ReadOptions(),
+            container.family(Family::factOwners)));
+    EncodedNat key(prefix << 16);
+
+    iter->Seek(slice(key.byteRange()));
+
+    while (iter->Valid()) {
+      binary::Input key(byteRange(iter->key()));
+      rts::Id factId = Id::fromWord(key.trustedNat());
+      binary::Input val(byteRange(iter->value()));
+      UsetId usetId = val.trustedNat();
+      if ((factId.toWord() >> 16) != prefix) {
+        break;
+      }
+      page->factIds.push_back(factId.toWord() & 0xffff);
+      page->setIds.push_back(usetId);
+      iter->Next();
+      size += sizeof(uint16_t) + sizeof(UsetId);
+    }
+
+    size_ += size;
+
+    auto wlock = cachePtr.moveFromUpgradeToWrite();
+    auto wcache = wlock->get();
+    if (prefix >= wcache->size()) {
+      wcache->resize(prefix+1);
+    }
+    (*wcache)[prefix] = std::move(page);
+
+    VLOG(1) << "FactOwnerCache::getPage(" << prefix << ") size = " <<
+      folly::prettyPrint(size_, folly::PRETTY_BYTES_IEC);
+    return (*wcache)[prefix].get();
+  }
+
+
+  return (*cache)[prefix].get();
+}
+
 std::unique_ptr<rts::Ownership> DatabaseImpl::getOwnership() {
   container_.requireOpen();
   return std::make_unique<StoredOwnership>(this);
 }
 
 UsetId StoredOwnership::getOwner(Id id) {
-  EncodedNat key(id.toWord());
-  std::unique_ptr<rocksdb::Iterator> iter(db_->container_.db->NewIterator(
-    rocksdb::ReadOptions(), db_->container_.family(Family::factOwners)));
+  return db_->factOwnerCache_.getOwner(db_->container_, id);
+}
 
-  iter->SeekForPrev(slice(key.byteRange()));
-  if (!iter->Valid()) {
+void DatabaseImpl::FactOwnerCache::enable() {
+  auto cache = cache_.ulock();
+  if (*cache) return;
+
+  auto wcache = cache.moveFromUpgradeToWrite();
+  *wcache = std::make_unique<FactOwnerCache::Cache>();
+  size_ = 0;
+}
+
+UsetId DatabaseImpl::FactOwnerCache::getOwner(ContainerImpl& container, Id id) {
+  // first find the right page
+  auto prefix = id.toWord() >> 16;
+  const auto* page = getPage(container, prefix);
+
+  if (!page) {
+    // cache is not enabled; fall back to reading from the DB.
+    std::unique_ptr<rocksdb::Iterator> iter(
+        container.db->NewIterator(
+            rocksdb::ReadOptions(),
+            container.family(Family::factOwners)));
+
+    EncodedNat key(id.toWord());
+    iter->SeekForPrev(slice(key.byteRange()));
+    if (iter->Valid()) {
+      binary::Input val(byteRange(iter->value()));
+      return val.trustedNat();
+    } else {
+      return INVALID_USET;
+    }
+  }
+
+  // next binary-search on the content of the page to find the
+  // interval containing the desired fact ID.
+  uint32_t low, high, mid;
+  uint16_t ix = id.toWord() & 0xffff;
+
+  low = 0;
+  high = page->factIds.size();
+
+  // low is inclusive, high is exclusive
+  // low..high always contains an element that is <= id, if there is one
+  while (high - low > 1) {
+    mid = (high + low) / 2;
+    auto x = page->factIds[mid];
+    if (x == ix) {
+      return page->setIds[mid];
+    }
+    if (x < ix) {
+      low = mid;
+    } else {
+      high = mid;
+    }
+  }
+
+  if (page->factIds[low] <= ix) {
+    return page->setIds[low];
+  } else {
+    // we have to look in a previous page
+    auto prevPrefix = prefix;
+    while (prevPrefix > 0) {
+      prevPrefix--;
+      const auto& prevPage = getPage(container, prevPrefix);
+      if (prevPage->setIds.size() > 0) {
+        return prevPage->setIds[prevPage->setIds.size() - 1];
+      }
+    }
     return INVALID_USET;
   }
-  binary::Input val(byteRange(iter->value()));
-  return val.trustedNat();
+}
+
+void DatabaseImpl::cacheOwnership() {
+  factOwnerCache_.enable();
 }
 
 void DatabaseImpl::addDefineOwnership(DefineOwnership& def) {

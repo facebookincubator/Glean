@@ -174,6 +174,10 @@ const char *glean_rocksdb_get_derived_fact_ownership_iterator(
   DerivedFactOwnershipIterator **iter
 );
 
+const char *glean_rocksdb_database_cache_ownership(
+  Database *db
+);
+
 #ifdef __cplusplus
 }
 }

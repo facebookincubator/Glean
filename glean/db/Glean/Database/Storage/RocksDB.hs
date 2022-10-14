@@ -218,6 +218,9 @@ instance Storage RocksDB where
           (fromIntegral pid)) $
       Ownership.computeDerivedOwnership ownership
 
+  cacheOwnership db =
+    withForeignPtr (dbPtr db) $ \db_ptr ->
+      invoke $ glean_rocksdb_cache_ownership db_ptr
 
   getTotalCapacity = getDiskSize . rocksRoot
   getUsedCapacity = getUsedDiskSpace . rocksRoot
@@ -398,4 +401,8 @@ foreign import ccall unsafe glean_rocksdb_get_derived_fact_ownership_iterator
   :: Ptr (Database RocksDB)
   -> Word64
   -> Ptr Ownership.DerivedFactOwnershipIterator
+  -> IO CString
+
+foreign import ccall unsafe glean_rocksdb_cache_ownership
+  :: Ptr (Database RocksDB)
   -> IO CString

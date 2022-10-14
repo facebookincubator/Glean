@@ -143,6 +143,12 @@ class CanLookup (Database s) => Storage s where
     -> Pid
     -> IO ComputedOwnership
 
+  -- | After writing has finished, cache ownership data to support
+  -- faster getOwner() operations. Takes time to cache the data and
+  -- memory to retain the cache. Only useful if this DB will be used
+  -- in an incremental stack.
+  cacheOwnership :: Database s -> IO ()
+
   -- | Determine the total capacity of the storage medium (e.g., disk size).
   getTotalCapacity :: s -> IO Int
 

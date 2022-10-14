@@ -250,6 +250,13 @@ const char *glean_rocksdb_get_derived_fact_ownership_iterator(
   });
 }
 
+const char *glean_rocksdb_cache_ownership(
+  Database *db) {
+  return ffi::wrap([=] {
+    db->cacheOwnership();
+  });
+}
+
 }
 }
 }
