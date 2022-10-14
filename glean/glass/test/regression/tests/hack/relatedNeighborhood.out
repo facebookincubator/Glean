@@ -31,6 +31,18 @@
             "test/php/Position": {
                 "annotations": [],
                 "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": true,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
                 "kind": 12,
                 "language": 3,
                 "location": {
@@ -64,6 +76,18 @@
             },
             "test/php/Position/Bottom": {
                 "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
                 "kind": 12,
                 "language": 3,
                 "location": {
@@ -97,6 +121,18 @@
             },
             "test/php/Position/Center": {
                 "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
                 "kind": 12,
                 "language": 3,
                 "location": {
@@ -130,6 +166,18 @@
             },
             "test/php/Position/Left": {
                 "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
                 "kind": 12,
                 "language": 3,
                 "location": {
@@ -163,6 +211,18 @@
             },
             "test/php/Position/Right": {
                 "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
                 "kind": 12,
                 "language": 3,
                 "location": {
@@ -196,6 +256,18 @@
             },
             "test/php/Position/Top": {
                 "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
                 "kind": 12,
                 "language": 3,
                 "location": {

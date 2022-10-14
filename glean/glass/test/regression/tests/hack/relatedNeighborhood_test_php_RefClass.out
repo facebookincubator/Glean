@@ -54,6 +54,18 @@
             "test/php/RefClass": {
                 "annotations": [],
                 "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": true,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": true
+                },
                 "kind": 7,
                 "language": 3,
                 "location": {
@@ -87,6 +99,18 @@
             },
             "test/php/RefClass/JAZZ": {
                 "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
                 "kind": 16,
                 "language": 3,
                 "location": {
@@ -121,6 +145,18 @@
             "test/php/RefClass/bar": {
                 "annotations": [],
                 "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -156,6 +192,18 @@
             "test/php/RefClass/bazza": {
                 "annotations": [],
                 "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -191,6 +239,18 @@
             "test/php/RefClass/foo": {
                 "annotations": [],
                 "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -226,6 +286,18 @@
             "test/php/RefClass/raz": {
                 "annotations": [],
                 "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
                 "kind": 9,
                 "language": 3,
                 "location": {
@@ -261,6 +333,18 @@
             "test/php/SourceInterface": {
                 "annotations": [],
                 "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": true,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
                 "kind": 13,
                 "language": 3,
                 "location": {
@@ -294,6 +378,18 @@
             },
             "test/php/SourceInterface/JAZZ": {
                 "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
                 "kind": 16,
                 "language": 3,
                 "location": {
@@ -328,6 +424,18 @@
             "test/php/SourceInterface/foo": {
                 "annotations": [],
                 "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -363,6 +471,18 @@
             "test/php/SourceTrait": {
                 "annotations": [],
                 "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
                 "kind": 31,
                 "language": 3,
                 "location": {
@@ -397,6 +517,18 @@
             "test/php/SourceTrait/quux": {
                 "annotations": [],
                 "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {

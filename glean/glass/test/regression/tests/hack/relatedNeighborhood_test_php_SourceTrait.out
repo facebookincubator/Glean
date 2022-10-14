@@ -20,6 +20,18 @@
             "test/php/RefClass": {
                 "annotations": [],
                 "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": true,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": true
+                },
                 "kind": 7,
                 "language": 3,
                 "location": {
@@ -54,6 +66,18 @@
             "test/php/SourceTrait": {
                 "annotations": [],
                 "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
                 "kind": 31,
                 "language": 3,
                 "location": {
@@ -88,6 +112,18 @@
             "test/php/SourceTrait/quux": {
                 "annotations": [],
                 "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {

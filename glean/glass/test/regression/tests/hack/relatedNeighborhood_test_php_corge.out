@@ -9,6 +9,18 @@
         "symbolDetails": {
             "test/php/corge": {
                 "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
                 "kind": 14,
                 "language": 3,
                 "location": {
