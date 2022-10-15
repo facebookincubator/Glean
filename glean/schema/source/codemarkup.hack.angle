@@ -178,23 +178,34 @@ predicate HackVisibility :
 #
 
 # child `contained by` parent
+#
+# - classConst, method, property, typeConst -> container
+# - enumerator (field) -> enum
+# - direct member of any namespace -> namespace
+#
 predicate HackContainsParentEntity :
   {
     child: code.hack.Entity,
     parent: code.hack.Entity,
   }
   { { decl = Child }, { decl = Parent } } where
-    (
-      (
-        { method = { container = Container }} = Child;
-        Parent = hack.Declaration { container = Container }
-      )
-    ) |
-    (
+    ( ( { classConst = Decl } = Child;
+        hack.ClassConstDeclaration { container = Container } = Decl;
+      ) | (
+        { method = Decl } = Child;
+        hack.MethodDeclaration { container = Container } = Decl;
+      ) | (
+        { property_ = Decl } = Child;
+        hack.PropertyDeclaration { container = Container } = Decl;
+      ) | (
+        { typeConst = Decl } = Child;
+        hack.TypeConstDeclaration { container = Container } = Decl;
+      );
+      Parent = hack.Declaration { container = Container }
+    ) | (
       { enumerator = { enumeration = Enumeration } } = Child;
       Parent = hack.Declaration { container = {enum_ = Enumeration} }
-    ) |
-    (
+    ) | (
       hack.NamespaceMember { namespace_ = Name, decl = Child};
       Parent = hack.Declaration { namespace_ = {name = Name }}
     )
