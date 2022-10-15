@@ -67,6 +67,8 @@ CXX_SOURCES_glean_cpp_rocksdb_stats = \
     glean/rocksdb/stats.cpp
 
 CXX_SOURCES_glean_cpp_rocksdb = \
+    glean/rocksdb/container-impl.cpp \
+    glean/rocksdb/database-impl.cpp \
     glean/rocksdb/ffi.cpp \
     glean/rocksdb/rocksdb.cpp
 # -fno-rtti is needed because RocksDB is compiled with it, and we
