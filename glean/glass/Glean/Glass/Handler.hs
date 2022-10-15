@@ -1300,7 +1300,7 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
       Search.NotRecursive
       RelationDirection_Child
       RelationType_Contains
-      (baseEntity)
+      baseEntity
       repo
     childrenExtends1Level :: SearchRelatedQuery u w
     childrenExtends1Level baseEntity repo = Search.searchRelatedEntities
@@ -1308,7 +1308,7 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
       Search.NotRecursive
       RelationDirection_Child
       RelationType_Extends
-      (baseEntity)
+      baseEntity
       repo
     -- Direct inheritance parents
     parentExtends1Level :: SearchRelatedQuery u w
@@ -1316,7 +1316,7 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
       Search.NotRecursive
       RelationDirection_Parent
       RelationType_Extends
-      (baseEntity)
+      baseEntity
       repo
     -- N levels of container hierarchy
     parentContainsNLevel :: SearchRelatedQuery u w
@@ -1325,7 +1325,7 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
       Search.Recursive
       RelationDirection_Parent
       RelationType_Contains
-      (baseEntity)
+      baseEntity
       repo
 
     -- Inherited symbols: the contained children of N levels of extended parents
@@ -1337,7 +1337,7 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
         Search.Recursive
         RelationDirection_Parent
         RelationType_Extends
-        (baseEntity)
+        baseEntity
         repo
       -- for each parent, collect the inherited children by `contains`
       mapM (\parent -> do
