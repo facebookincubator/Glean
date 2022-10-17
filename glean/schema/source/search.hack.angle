@@ -59,6 +59,58 @@ predicate SearchInNamespace :
     hack.Declaration { typedef_ = { name = QN }}
   )
 
+# SearchXXXInNamespace are specialized versions of SearchInNamespace.
+# Used to restrict search to hack top-level namespaces
+
+predicate SearchTypeInNamespace :
+  {
+    name : hack.Name,
+    namespace_ : maybe hack.NamespaceQName,
+    decl : hack.Declaration
+  }
+  { N, NS, Decl } where
+  Decl = (
+    QN = hack.QName { name = N, namespace_ = NS };
+    hack.Declaration { container = { class_ = { name = QN }}} |
+    hack.Declaration { container = { interface_ = { name = QN }}} |
+    hack.Declaration { container = { trait = { name = QN }}} |
+    hack.Declaration { container = { enum_ = { name = QN }}} |
+    hack.Declaration { typedef_ = { name = QN }}
+  )
+
+predicate SearchFunctionInNamespace :
+  {
+    name : hack.Name,
+    namespace_ : maybe hack.NamespaceQName,
+    decl : hack.Declaration
+  }
+  { N, NS, Decl } where
+  Decl = (
+    QN = hack.QName { name = N, namespace_ = NS };
+    hack.Declaration { function_ = { name = QN }}
+  )
+
+predicate SearchGlobalConstInNamespace :
+  {
+    name : hack.Name,
+    namespace_ : maybe hack.NamespaceQName,
+    decl : hack.Declaration
+  }
+  { N, NS, Decl } where
+  Decl = (
+    QN = hack.QName { name = N, namespace_ = NS };
+    hack.Declaration { globalConst = { name = QN }}
+  )
+
+predicate SearchModule :
+{
+  name : hack.Name,
+  decl : hack.Declaration
+}
+{ Name, Decl } where
+  M = hack.ModuleDeclaration { name = Name };
+  hack.Declaration { module = M } = Decl
+
 predicate SearchNamespace :
 {
   name : hack.Name,
