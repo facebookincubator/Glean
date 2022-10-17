@@ -28,6 +28,7 @@ import Options.Applicative
 import Util.EventBase
 
 import qualified Glean
+import qualified Glean.Remote
 import Glean.Angle as Angle
 import Glean.Impl.ConfigProvider
 import Glean.Repo (getSCMrevisions)
@@ -49,22 +50,22 @@ options = info (helper <*> parser) fullDesc
   where
     parser :: Parser Config
     parser = do
-      cfgService <- Glean.options
+      cfgService <- Glean.Remote.options
       cfgFile <- strArgument (metavar "FILE")
       cfgOffset <- argument auto (metavar "OFFSET")
       return Config{..}
 
 main :: IO ()
-main = do
+main =
   withConfigOptions options $ \(cfg, cfgOpts) ->
-    withEventBaseDataplane $ \evb ->
-      withConfigProvider cfgOpts $ \(cfgAPI :: ConfigAPI) ->
-        Glean.withRemoteBackend evb cfgAPI (cfgService cfg) (Just schema_id)
-          $ \backend -> do
-            repo <- Glean.getLatestRepo backend "fbsource"
-            doQuery backend cfg repo
-            scmRevisions <- getSCMrevisions backend repo
-            putStrLn $ "SCM revisions: " <> show (toList scmRevisions)
+  withEventBaseDataplane $ \evb ->
+  withConfigProvider cfgOpts $ \(cfgAPI :: ConfigAPI) ->
+  Glean.Remote.withRemoteBackend evb cfgAPI (cfgService cfg) (Just schema_id)
+    $ \backend -> do
+      repo <- Glean.getLatestRepo backend "fbsource"
+      doQuery backend cfg repo
+      scmRevisions <- getSCMrevisions backend repo
+      putStrLn $ "SCM revisions: " <> show (toList scmRevisions)
 
 doQuery :: Glean.Backend b => b -> Config -> Glean.Repo -> IO ()
 doQuery backend Config{..} repo = do
@@ -79,8 +80,7 @@ doQuery backend Config{..} repo = do
   --   [+] Supports arbitrary Angle queries
   --   [-] Not typechecked at compile time
   --   [-] Hard to build queries programmatically
-  --   [?] May break if the schema changes (unless you use explicit
-  --       predicate versions)
+  --   [?] May break if the schema changes
   results <- Glean.runQuery_ backend repo $ Glean.angle $
     "cxx1.FileXRefs { xmap = { file = \"" <> fromString cfgFile <> "\" }}"
   printResults results

@@ -29,10 +29,9 @@ import qualified Data.Vector as Vector
 
 import Util.JSON.Pretty ()
 
-import Glean.Backend (Backend)
-import qualified Glean.Backend as Backend
-import Glean.Regression.Snapshot.Transform
+import qualified Glean
 import qualified Glean.Types as Thrift
+import Glean.Regression.Snapshot.Transform
 
 newtype TQ = TQ { fromTQ :: [(Text, Aeson.Value)] }
 
@@ -62,7 +61,7 @@ instance Aeson.FromJSON Query where
     return Query{..}
 
 runQuery
-  :: Backend e => e
+  :: Glean.Backend e => e
   -> Thrift.Repo
   -> Transforms
   -> FilePath
@@ -92,7 +91,7 @@ runQuery backend repo xforms qfile = do
             }
 
           collect acc perf k cont = do
-            res <- liftIO $ Backend.userQuery backend repo $ mkQuery k cont
+            res <- liftIO $ Glean.userQuery backend repo $ mkQuery k cont
             let facts = Thrift.userQueryResults_facts res
                 remaining = subtract (length facts) <$> k
                 stats = Thrift.userQueryResults_stats res >>=
@@ -108,7 +107,7 @@ runQuery backend repo xforms qfile = do
 
       perfString <- if queryPerf
         then do
-          Thrift.SchemaInfo{..} <- Backend.getSchemaInfo backend repo
+          Thrift.SchemaInfo{..} <- Glean.getSchemaInfo backend repo
             def { Thrift.getSchemaInfo_omit_source = True }
           return $ Just $ show $ pretty $ JSON.JSObject $ JSON.toJSObject $
             (generatedTag, JSON.JSNull) :

@@ -52,9 +52,8 @@ import Util.Control.Exception (catchAll)
 import Util.TimeSec
 import Util.Timing
 
-
+import Glean.Backend.Types (dbShard)
 import qualified Glean.Types as Thrift
-import Glean.Backend.Remote (dbShard)
 import Glean.Repo.Text (showRepo)
 
 data ShellPrintFormat

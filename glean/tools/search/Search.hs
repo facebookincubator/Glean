@@ -30,6 +30,7 @@ import Util.Log
 import Util.OptParse
 
 import qualified Glean
+import qualified Glean.Remote
 import Glean ( getFactKey, Nat(..) )
 import Glean.Impl.ConfigProvider
 import Glean.Pretty.Code ()
@@ -76,7 +77,7 @@ options = info (helper <*> parser) fullDesc
   where
     parser :: Parser Config
     parser = do
-      cfgService <- Glean.options
+      cfgService <- Glean.Remote.options
       cfgCommand <- asum
         [ findDeclarations
           -- there will not be more commands later
@@ -123,8 +124,8 @@ main = do
   withConfigOptions options $ \(cfg, cfgOpts) ->
     withEventBaseDataplane $ \evb ->
       withConfigProvider cfgOpts $ \(cfgAPI :: ConfigAPI) -> do
-        Glean.withRemoteBackend evb cfgAPI (cfgService cfg) (Just schema_id)
-            $ \be -> do
+        Glean.Remote.withRemoteBackend evb cfgAPI
+            (cfgService cfg) (Just schema_id) $ \be -> do
           doQuery (Some be) cfg
 
 doQuery :: Some Glean.Backend -> Config -> IO ()

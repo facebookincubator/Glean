@@ -10,7 +10,7 @@ module RenameBench (main) where
 
 import Criterion.Types
 
-import qualified Glean.Backend as Backend
+import Glean.Backend.Local (loadDbSchema)
 import Glean.Database.Test
 import qualified Glean.RTS.Foreign.FactSet as FactSet
 import Glean.RTS.Foreign.Lookup (withCanLookup)
@@ -23,7 +23,7 @@ import TestBatch
 main :: IO ()
 main = benchmarkMain $ \run ->
   withEmptyTestDB [] $ \env repo -> do
-  schema <- Backend.loadDbSchema env repo
+  schema <- loadDbSchema env repo
   batch <- testBatch 500000 env repo
   empty_facts <- FactSet.new lowestFid
   withCanLookup empty_facts $ \empty_lookup -> do

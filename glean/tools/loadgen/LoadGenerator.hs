@@ -57,8 +57,9 @@ import Util.Log
 import Util.OptParse
 import Util.Timing
 
-import Glean hiding (options)
-import qualified Glean
+import Glean
+import Glean.Remote hiding (options)
+import qualified Glean.Remote
 import Glean.Util.ConfigProvider
 import Glean.Impl.ConfigProvider
 import Glean.Types
@@ -90,7 +91,7 @@ options = info (helper <*> parser) fullDesc
   where
     parser :: Parser Config
     parser = do
-      cfgService <- Glean.options
+      cfgService <- Glean.Remote.options
       cfgQuery <- textOption
         (  long "query"
         <> help "query to hit the server with"

@@ -22,7 +22,6 @@ import Glean.Indexer.External
 import Glean.Write
 import Glean.LSIF.Driver as LSIF
 
-import Glean.Backend ( Backend )
 import qualified Glean
 import System.Directory (doesFileExist)
 import Util.OptParse (maybeStrOption)
@@ -61,7 +60,7 @@ indexer = Indexer {
     derive backend repo
   }
 
-derive :: Backend b => b -> Glean.Repo -> IO ()
+derive :: Glean.Backend b => b -> Glean.Repo -> IO ()
 derive backend repo = forM_ lsifDerivedPredicates $ \pred_ ->
   derivePredicate backend repo Nothing Nothing
     (parseRef pred_) Nothing

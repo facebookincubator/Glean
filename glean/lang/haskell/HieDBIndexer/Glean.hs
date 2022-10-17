@@ -21,7 +21,7 @@ import qualified Data.HashMap.Strict as Map
 import qualified Data.Map as AMap
 import qualified Data.Text as Text
 import Data.Typeable (Typeable)
-import qualified Glean hiding (options)
+import qualified Glean
 import Glean.Angle.Types (SourceRef (..))
 import Glean.BuildInfo (buildRevision, buildRule)
 import Glean.Derive (derivePredicate)

@@ -26,8 +26,9 @@ import Haxl.Core.Monad (WriteTree)
 import Haxl.DataSource.Glean (HasRepo(..))
 import qualified Haxl.DataSource.Glean
 import Data.List.NonEmpty
+
+import Glean.Backend.Types
 import Glean.Types
-import Glean.Backend.Remote (Backend)
 import qualified Glean.Haxl as Glean
 
 
@@ -87,9 +88,8 @@ queryAllRepos
 queryAllRepos act = concat <$> queryEachRepo act
 
 runHaxlAllRepos
-  :: (HasRepos u)
-  => Backend be
-  => be
+  :: (HasRepos u, Backend b)
+  => b
   -> u
   -> (forall u'. ReposHaxl u' w a)
   -> IO a

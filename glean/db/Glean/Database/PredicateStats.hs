@@ -18,7 +18,7 @@ import Glean.Database.Open (withOpenDatabaseStack, withOpenDatabase)
 import Glean.RTS.Types (Pid(..))
 import Glean.Database.Types (OpenDB(..), Env)
 import Glean.Types (Repo, PredicateStats(..), Id)
-import Glean.Backend.Remote (StackedDbOpts(..))
+import Glean.Backend.Types (StackedDbOpts(..))
 import qualified Glean.Database.Storage as Storage
 
 predicateStats

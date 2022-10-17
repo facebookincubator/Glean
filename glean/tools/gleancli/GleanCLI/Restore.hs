@@ -27,7 +27,7 @@ import Glean
   , DatabaseStatus(..)
   , Dependencies(..)
   , Pruned(..))
-import qualified Glean hiding (options)
+import qualified Glean
 
 import GleanCLI.Common
 import GleanCLI.Types

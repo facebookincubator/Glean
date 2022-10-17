@@ -24,7 +24,8 @@ import Test.HUnit
 import TestRunner
 import Util.EventBase
 
-import Glean.Backend
+import Glean.Backend.Local ()
+import Glean.Backend.Types
 import Glean.Database.Backup (Event(..))
 import qualified Glean.Database.Backup.Backend as Backup
 import qualified Glean.Database.Backup.Mock as Backup.Mock

@@ -17,6 +17,8 @@ import qualified Options.Applicative as O
 
 import Util.EventBase (withEventBaseDataplane)
 
+import qualified Glean
+import qualified Glean.LocalOrRemote as Backend
 import Glean.Impl.ConfigProvider (ConfigAPI)
 import Glean.Schema.Builtin.Types (schema_id)
 import Glean.Util.ConfigProvider
@@ -24,14 +26,13 @@ import Glean.Util.ConfigProvider
 import Derive.Env
 import Derive.Lib
 import Derive.Types
-import qualified Glean.Backend as Backend
 
 withNumCapabilities :: Maybe Int -> IO a -> IO a
 withNumCapabilities Nothing act = act
 withNumCapabilities (Just n) act = setNumCapabilities n >> act
 
 runDerive
-  :: Backend.Backend be => Config -> Set DerivePass -> be -> IO ()
+  :: Glean.Backend be => Config -> Set DerivePass -> be -> IO ()
 runDerive cfg passes be =
   withEnv cfg allPredicates be $
     forM_ (Set.toList passes) . dispatchDerive

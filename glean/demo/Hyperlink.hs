@@ -23,6 +23,7 @@ import qualified Glean.Schema.Codemarkup.Types as CodeMarkup
 import qualified Glean.Schema.CodemarkupTypes.Types as CodeMarkup
 
 import qualified Glean
+import qualified Glean.Remote
 import Glean.Impl.ConfigProvider
 import Glean.Angle as Angle
 import Glean.Util.ConfigProvider
@@ -75,7 +76,7 @@ options :: O.ParserInfo Config
 options = O.info (O.helper <*> parser) O.fullDesc
   where
     parser = Config
-      <$> Glean.options
+      <$> Glean.Remote.options
       <*> O.optional (O.option O.auto
             (O.long "http" <> O.metavar "PORT"))
       <*> O.strOption (O.long "http-iface" <> O.metavar "IFACE" <> O.value "*6")
@@ -531,8 +532,8 @@ main =
   withConfigOptions options $ \(cfg, cfgOpts) ->
   withEventBaseDataplane $ \evb ->
   withConfigProvider cfgOpts $ \(configAPI :: ConfigAPI) -> do
-    Glean.withRemoteBackend evb configAPI (cfgService cfg) (Just schema_id)
-      $ \backend -> do
+    Glean.Remote.withRemoteBackend evb configAPI
+      (cfgService cfg) (Just schema_id) $ \backend -> do
       repo <- case cfgRepoHash cfg of
         Nothing -> Glean.getLatestRepo backend (cfgRepoName cfg)
         Just hash -> return $ Glean.Repo

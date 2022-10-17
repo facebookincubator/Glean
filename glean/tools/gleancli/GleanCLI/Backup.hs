@@ -18,7 +18,7 @@ import Util.IO
 import Util.OptParse
 
 import Glean (Repo(..))
-import qualified Glean hiding (options)
+import qualified Glean
 import qualified Glean.LocalOrRemote as Glean
 import Glean.Database.Backup (backupDatabase)
 

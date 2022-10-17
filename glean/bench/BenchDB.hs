@@ -15,7 +15,7 @@ import Data.Default
 import qualified Data.Text as Text
 
 import Glean
-import qualified Glean.Backend as Backend
+import Glean.Backend.Types (loadPredicates)
 import Glean.Database.Test (withEmptyTestDB, completeTestDB)
 import Glean.Database.Open
 import Glean.Database.Write.Batch
@@ -32,7 +32,7 @@ withBenchDB num act = withEmptyTestDB [] $ \env repo -> do
   withOpenDatabase env repo $ \odb ->
     void $ return odb
 
-  predicates <- Backend.loadPredicates env repo
+  predicates <- loadPredicates env repo
     [ Sys.allPredicates
     , Cxx.allPredicates
     , Glean.Test.allPredicates

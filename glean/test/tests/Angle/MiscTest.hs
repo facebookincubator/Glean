@@ -24,7 +24,7 @@ import Test.HUnit
 import TestRunner
 import Util.String.Quasi
 
-import Glean.Backend as Backend
+import Glean.Backend.Types as Backend
 import Glean.Init
 import Glean.Query.Angle as Angle
 import Glean.Query.Thrift as Thrift

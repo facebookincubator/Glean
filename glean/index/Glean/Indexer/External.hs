@@ -43,7 +43,8 @@ import qualified Thrift.Server.Types as Thrift.Server
 
 import qualified Glean
 import qualified Glean.LocalOrRemote as LocalOrRemote
-import Glean.Backend (BackendKind(..), LocalOrRemote(..), ThriftBackend(..))
+import Glean.LocalOrRemote (BackendKind(..), LocalOrRemote(..))
+import Glean.Remote (ThriftBackend(..))
 import Glean.Derive
 import qualified Glean.Handler as GleanHandler
 import Glean.Indexer

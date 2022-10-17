@@ -72,7 +72,7 @@ import Thrift.Protocol ( fromThriftEnum )
 import Thrift.Api (Thrift)
 
 import Glean.Angle as Angle ( Angle )
-import Glean.Backend.Remote ( ThriftBackend(..), thriftServiceWithTimeout )
+import Glean.Remote ( ThriftBackend(..), thriftServiceWithTimeout )
 import qualified Glean
 import Glean.Haxl.Repos as Glean
 import qualified Glean.Repo as Glean

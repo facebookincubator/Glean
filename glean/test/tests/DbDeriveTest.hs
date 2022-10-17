@@ -27,9 +27,9 @@ import System.FilePath
 
 import TestRunner
 
-import qualified Glean
-import Glean hiding (deriveStored)
 import Glean.Angle.Types
+import Glean.Backend.Types hiding (deriveStored)
+import qualified Glean.Backend.Types as Backend
 import Glean.Init
 import Glean.Database.Open
 import Glean.Database.Schema.Types
@@ -37,9 +37,11 @@ import Glean.Database.Test
 import Glean.Database.Types
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Internal.Types hiding (Predicate)
+import Glean.Typed
 import Glean.Types as Thrift
 import Glean.Test.HUnit
 import qualified Glean.Schema.GleanTest.Types as Glean.Test
+import Glean.Query.Thrift
 import Glean.Write.JSON (syncWriteJsonBatch)
 
 import TestDB
@@ -513,7 +515,7 @@ deriveIncrementalTest = TestLabel "incremental" $ TestList
       where
         loop = do
           let query = derivePredicateQuery opts pref Nothing
-          res <- Glean.deriveStored env (const mempty) repo query
+          res <- Backend.deriveStored env (const mempty) repo query
           case res of
             DerivationStatus_complete complete ->
               return $ derivationComplete_stats complete
@@ -531,7 +533,7 @@ deriveIncrementalTest = TestLabel "incremental" $ TestList
 
 deriveSerial
   :: forall p. Predicate p
-  => Glean.LogDerivationResult
+  => LogDerivationResult
   -> Env
   -> Repo
   -> Proxy p
@@ -540,7 +542,7 @@ deriveSerial log env repo proxy = deriveStored log env repo proxy Nothing
 
 deriveParallel
   :: forall p. Predicate p
-  => Glean.LogDerivationResult
+  => LogDerivationResult
   -> Env
   -> Repo
   -> Proxy p
@@ -551,7 +553,7 @@ deriveParallel log env repo proxy par =
 
 deriveStored
   :: forall p. Predicate p
-  => Glean.LogDerivationResult
+  => LogDerivationResult
   -> Env
   -> Repo
   -> Proxy p
@@ -563,7 +565,7 @@ deriveStored log env repo proxy par = do
   where
     pred = getName proxy
     loop = do
-      res <- Glean.deriveStored env log repo
+      res <- Backend.deriveStored env log repo
         $ derivePredicateQuery def pred par
       case res of
         DerivationStatus_ongoing _ -> threadDelay (ceiling @Double 1e6) >> loop

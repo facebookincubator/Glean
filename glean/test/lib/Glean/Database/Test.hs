@@ -38,7 +38,8 @@ import Data.Text (Text)
 
 import Util.EventBase
 
-import Glean.Backend
+import Glean.Backend.Local ( {- instance Backend Env -} )
+import Glean.Backend.Types
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Config
 import Glean.Database.Env

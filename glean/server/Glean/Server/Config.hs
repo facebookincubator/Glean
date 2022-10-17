@@ -10,7 +10,7 @@ module Glean.Server.Config (
   Config(..), options
 ) where
 
-import qualified Glean.Database.Config as DBConfig
+import qualified Glean.Backend.Local as DBConfig
 
 import Control.Applicative
 import qualified Options.Applicative as O

@@ -16,9 +16,10 @@ import Data.Int
 import qualified Data.Text as Text
 
 import Glean.Angle.Types
+import Glean.Backend.Types as Glean
+import Glean.Repo.Text (showRepo)
 import Glean.Query.Thrift.Internal
 import Glean.Types
-import Glean
 import Glean.Schema.Util (showRef)
 import Util.Log
 
@@ -59,7 +60,7 @@ derivePredicate backend repo maxBytes maxResults s parallel = loop
 
     SourceRef name version = s
 
-    predicate = unwords [Glean.showRepo repo, Text.unpack $ showRef s]
+    predicate = unwords [showRepo repo, Text.unpack $ showRef s]
 
     report status stats = do
       putStrLn $ unwords

@@ -8,8 +8,7 @@
 
 
 module Glean.Handler
-  ( Write(..)
-  , State(..)
+  ( State(..)
   , handler
   ) where
 
@@ -17,11 +16,11 @@ import Data.Maybe
 
 import Facebook.Fb303
 
+import Glean as Backend
 import Glean.GleanService.Service as Service
-import Glean.Database.Types
-import qualified Glean.Backend as Backend
-import Glean.Backend (StackedDbOpts(..))
-import Glean.Types as Thrift
+import Glean.Backend.Local
+import Glean.Backend.Logging
+import qualified Glean.Types as Thrift
 
 data State = State
   { fb303State :: Fb303State
@@ -30,7 +29,7 @@ data State = State
 
 handler :: State -> GleanServiceCommand a -> IO a
 handler State{..} req =
-  let backend = Backend.LoggingBackend stEnv in -- log (most) requests
+  let backend = LoggingBackend stEnv in -- log (most) requests
   case req of
     Service.GetSchemaInfo repo req ->
       Backend.getSchemaInfo backend repo req
@@ -74,7 +73,7 @@ handler State{..} req =
       Backend.userQuery backend repo query
 
     Service.CompletePredicates repo ->
-      Backend.completePredicates backend repo
+      Backend.completePredicates_ backend repo
 
     Service.DeriveStored repo pred ->
       Backend.deriveStored backend (const mempty) repo pred

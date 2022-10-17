@@ -20,13 +20,15 @@ import TestRunner
 import Thrift.Protocol.JSON
 import Util.String.Quasi
 
-import Glean
-import Glean.Angle
 import Glean.Init
 import Glean.Database.Test
 import Glean.Write.JSON (syncWriteJsonBatch)
 import qualified Glean.Schema.GleanTest.Types as Glean.Test
 import qualified Glean.Schema.Sys.Types as Sys
+import Glean.Query.Angle
+import Glean.Query.Thrift
+import Glean.Typed hiding (end)
+import Glean.Types
 
 import TestData
 

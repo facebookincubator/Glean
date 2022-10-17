@@ -15,8 +15,6 @@ module Glean.Repo
   , getSCMrevisions
   , LatestRepos(..)
   , NoDatabase(..)
-    -- * Database util
-  , dbShard
   ) where
 
 import Control.Exception
@@ -34,8 +32,7 @@ import qualified Data.Text as T
 import Util.Log
 
 import Glean.Repo.Text
-import Glean.Backend.Remote hiding (dbShard)
-import qualified Glean.Backend.Remote as Backend
+import Glean.Backend.Types
 import Glean.Types
 
 
@@ -141,9 +138,6 @@ checkRestorableAvailable backend (Database{..}:dbs)
     if not avail
       then checkRestorableAvailable backend dbs
       else return (Just database_repo)
-
-dbShard :: Database -> Text
-dbShard = Backend.dbShard . database_repo
 
 -- | Returns a mapping (SCM name -> SCM revision)
 --   of the SCM repositories indexed by the DB.

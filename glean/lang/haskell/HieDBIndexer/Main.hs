@@ -10,7 +10,7 @@
 
 module HieDBIndexer.Main where
 
-import qualified Glean.Backend as Glean
+import qualified Glean.LocalOrRemote as Glean
 import Glean.Init (withOptions)
 import Glean.Schema.Builtin.Types (schema_id)
 import Glean.Impl.ConfigProvider (ConfigAPI)

@@ -31,7 +31,7 @@ import Util.List (chunk)
 import Facebook.Fb303
 import Facebook.Service
 import Glean (sendBatch, clientConfig_serv, showRepo)
-import Glean.Backend (thriftBackendClientConfig)
+import Glean.Remote (thriftBackendClientConfig)
 import Glean.Indexer
 import Glean.LocalOrRemote ( BackendKind(..),
   LocalOrRemote(..), serializeInventory )

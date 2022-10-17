@@ -13,8 +13,10 @@
 -- Client code should look like:
 --
 -- > import Glean
+-- > import Glean.Remote
 -- > import Glean.Util.ConfigProvider
 -- > import Glean.Impl.ConfigProvider
+-- > import Glean.Schema.Builtin.Types (schema_id)
 -- > import Util.EventBase
 -- >
 -- > main :: IO ()
@@ -22,23 +24,13 @@
 -- >   withConfigOptions options $ \(service, cfgOpts) ->
 -- >   withEventBaseDataplane $ \evb ->
 -- >   withConfigProvider cfgOpts $ \(cfgAPI :: ConfigAPI) ->
--- >   withRemoteBackend evb cfgAPI service $ \backend -> do
+-- >   withRemoteBackend evb cfgAPI service (Just schema_id) $ \backend -> do
 -- >     ...
 --
 module Glean
   (
-  -- * Connecting to a Glean server
-    options
-  , withRemoteBackend
-  , withRemoteBackendSettings
-  , Settings
-  , setService
-  , setNoShards
-  , setTimeout
-  , defaultClientConfigSource
-
-  -- * Backend, for raw interaction with the server
-  , Backend(..)
+  -- * Clients interact with Glean via a Backend
+    Backend(..)
   , UseShards(..)
   , ThriftSource
   , ClientConfig(..)
@@ -85,7 +77,6 @@ module Glean
   , parseRepo
   , parseRepoText
   , parseRepoTextSep
-  , dbShard
 
   -- * Queries
   , Query
@@ -133,8 +124,6 @@ module Glean
   , getKeyRecOfId
   , keyOf
   , getFirstResult
-  -- ** advanced Store
-  , initGlobalState
   -- ** Error handling
   , trySyncHaxl
 
@@ -191,7 +180,7 @@ module Glean
   , JsonFactBatch(..)
   ) where
 
-import Glean.Backend.Remote hiding (dbShard, completePredicates)
+import Glean.Backend.Types
 import Glean.Angle.Lexer
 
 import Glean.Impl.ConfigProvider ()
@@ -203,7 +192,6 @@ import Glean.Repo
 import Glean.Repo.Text
 import Glean.Typed
 import Glean.Types
-import Glean.Write
 import Glean.Write.Async
 import Glean.Write.Options
 import Glean.Write.SendBatch

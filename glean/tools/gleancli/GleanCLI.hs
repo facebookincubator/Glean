@@ -36,7 +36,7 @@ import Util.OptParse
 import Util.Timing (timeIt, showTime, showAllocs)
 import System.Exit (exitWith, ExitCode(..))
 
-import qualified Glean hiding (options)
+import qualified Glean
 import Glean.Init
 import qualified Glean.LocalOrRemote as Glean
 import qualified Glean.Database.Work as Database

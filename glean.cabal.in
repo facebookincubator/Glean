@@ -436,7 +436,7 @@ library core
         Glean.Schema.Types
         Glean.Schema.Util
 
-        Glean.Backend.Remote
+        Glean.Backend.Types
 
         Glean.Util.PredMap
         Glean.Util.PredSet
@@ -529,7 +529,8 @@ library db
         Glean.Query.UserQuery
         Glean.Query.Incremental
 
-        Glean.Backend
+        Glean.Backend.Local
+        Glean.Backend.Logging
         Glean.Dump
         Glean.Logger
 
@@ -538,6 +539,7 @@ library db
         glean:config,
         glean:core,
         glean:defaultconfigs,
+        glean:haxl-datasource,
         glean:util,
         glean:if-glean-hs,
         glean:if-internal-hs,
@@ -555,6 +557,7 @@ library client-hs
           Glean.Angle
           Glean.Write
           Glean.Haxl
+          Glean.Remote
           Glean.Repo
           Glean.Haxl.Repos
           Glean.Util.ShellPrint
@@ -565,8 +568,11 @@ library client-hs
         glean:util,
         glean:core,
         glean:config,
+        glean:defaultconfigs,
         glean:haxl-datasource,
-        prettyprinter-ansi-terminal
+        glean:stubs,
+        prettyprinter-ansi-terminal,
+        thrift-haxl
 
 library client-hs-local
     import: fb-haskell, fb-cpp, deps
@@ -579,6 +585,8 @@ library client-hs-local
         glean:core,
         glean:client-hs,
         glean:db,
+        glean:defaultconfigs,
+        glean:util,
 
 -- things needed by glean-clang
 library client-cpp
@@ -751,13 +759,10 @@ library haxl-datasource
     hs-source-dirs: glean/haxl
     exposed-modules:
         Haxl.DataSource.Glean
-        Haxl.DataSource.Glean.Backend
         Haxl.DataSource.Glean.Common
-        Haxl.DataSource.Glean.Remote
     build-depends:
         glean:config,
         glean:core,
-        glean:db,
         glean:if-glean-hs,
         glean:util,
         thrift-haxl
@@ -1967,6 +1972,7 @@ test-suite dbproperties
         glean:client-hs,
         glean:stubs,
         glean:core,
+        glean:if-glean-hs,
 
 test-suite parser
     import: test
@@ -2076,6 +2082,7 @@ test-suite incremental
         glean:client-hs,
         glean:core,
         glean:db,
+        glean:if-glean-hs,
         glean:lib,
         glean:schema
     if arch(x86_64)

@@ -22,8 +22,8 @@ import Control.Monad
 import Data.Default
 import Data.Maybe
 
-import Glean.Backend.Remote (Backend)
-import qualified Glean.Backend.Remote as Backend
+import Glean.Backend.Types (Backend)
+import qualified Glean.Backend.Types as Backend
 import Glean.RTS as RTS
 import Glean.Typed.BuildFact
 import Glean.Typed.Predicate

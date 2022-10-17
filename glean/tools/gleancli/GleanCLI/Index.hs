@@ -16,7 +16,7 @@ import System.IO.Temp
 import Util.IO
 import Util.OptParse
 
-import Glean hiding (options)
+import Glean
 import Glean.Indexer
 import Glean.Indexer.List
 import Glean.Util.Some

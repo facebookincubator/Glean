@@ -18,7 +18,7 @@ import Test.HUnit
 import Glean.Database.Storage (DBVersion(..), currentVersion, writableVersions)
 import Glean.Database.Test
 import Glean.Database.Types
-import Glean.Backend as Backend
+import Glean.Backend.Types as Backend
 import Glean.Typed
 import Glean.Schema.Resolve
 import qualified Glean.Types as Thrift

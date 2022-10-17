@@ -22,7 +22,7 @@ import Control.Exception
 import Data.Default
 import qualified Data.Text as Text
 
-import Glean.Backend.Remote
+import Glean.Backend.Types
 import qualified Glean.Types as Thrift
 
 

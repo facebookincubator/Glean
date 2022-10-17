@@ -24,8 +24,8 @@ import Data.Default
 
 import Util.Control.Exception (tryBracket)
 
-import Glean.Backend.Remote (Backend)
-import qualified Glean.Backend.Remote as Backend
+import Glean.Backend.Types (Backend)
+import qualified Glean.Backend.Types as Backend
 import qualified Glean.Types as Thrift
 import Glean.Write.SendBatch
 import Glean.Util.Time

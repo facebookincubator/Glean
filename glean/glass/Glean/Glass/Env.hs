@@ -27,7 +27,7 @@ import Control.Concurrent.STM ( TVar )
 import qualified Glean
 import qualified Glean.Repo as Glean
 import qualified Glean.LocalOrRemote as Glean
-import Glean.Backend.Remote (ThriftBackend)
+import Glean.Remote (ThriftBackend)
 import Glean.Util.Some ( Some )
 import Glean.Util.Time ( DiffTimePoints )
 
