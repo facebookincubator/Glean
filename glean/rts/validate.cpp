@@ -35,6 +35,15 @@ struct Fail {
 
 }
 
+std::string predicateRefName(const Inventory& inventory, Pid type) {
+  const Predicate *pred = inventory.lookupPredicate(type);
+  if (pred == nullptr) {
+    return "invalid Pid";
+  } else {
+    return pred->name + "." + std::to_string(pred->version);
+  }
+}
+
 // Validates facts from startingId until firstFreeId until all items have been
 // validated or the validation limit is reached.
 void validate(const Inventory& inventory, const Validate& val, Lookup& facts) {
@@ -69,7 +78,13 @@ void validate(const Inventory& inventory, const Validate& val, Lookup& facts) {
 
     auto real_type = types.at(ix);
     if (type != real_type) {
-      fail("fact type mismatch");
+      fail("fact type mismatch. Expected {} to be of type {} (Pid {}) but got {} (Pid {}).",
+          id,
+          predicateRefName(inventory, type),
+          type,
+          predicateRefName(inventory, real_type),
+          real_type
+      );
     }
 
     return id;
