@@ -16,6 +16,12 @@ changes, and exploring the data.
 
 <FbInternalOnly>
 
+The `glean` cli is installed by default in most Devservers and Ondemand flavours. To install it manually:
+
+```lang=shell
+sudo feature install glean_tools
+```
+
 To try queries interactively run the REPL with:
 
 ```lang=shell
