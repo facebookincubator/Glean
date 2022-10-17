@@ -1701,7 +1701,7 @@
                     "localName": "WALDO"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/WALDO",
+                "sym": "test/php/const/WALDO",
                 "sym_location": {
                     "filepath": "www/TopLevel.php",
                     "range": {
@@ -1745,7 +1745,7 @@
                     "localName": "corge"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/corge",
+                "sym": "test/php/fun/corge",
                 "sym_location": {
                     "filepath": "www/TopLevel.php",
                     "range": {
@@ -2350,7 +2350,7 @@
                     "repository": "test"
                 },
                 "name": "WALDO",
-                "symbol": "test/php/WALDO"
+                "symbol": "test/php/const/WALDO"
             },
             {
                 "kind": 14,
@@ -2366,7 +2366,7 @@
                     "repository": "test"
                 },
                 "name": "corge",
-                "symbol": "test/php/corge"
+                "symbol": "test/php/fun/corge"
             }
         ]
     }

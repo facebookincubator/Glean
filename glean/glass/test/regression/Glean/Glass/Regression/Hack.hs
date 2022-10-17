@@ -56,9 +56,9 @@ testSymbolIdLookup get = TestLabel "describeSymbol" $ TestList [
   -- trait method
   "test/php/SourceTrait/quux" --> "www/SourceTrait.php",
   -- global function
-  "test/php/corge" --> "www/TopLevel.php",
+  "test/php/fun/corge" --> "www/TopLevel.php",
   -- global constant
-  "test/php/WALDO" --> "www/TopLevel.php",
+  "test/php/const/WALDO" --> "www/TopLevel.php",
   -- enum decl
   "test/php/Position" --> "www/TopLevel.php",
   -- enum value
@@ -81,8 +81,8 @@ testHackFindReferences get = TestLabel "findReferences" $ TestList [
   "test/php/SourceTrait" --> [("www/RefClass.php", 1)],
   "test/php/SourceTrait/quux" --> [("www/RefClass.php", 1)],
   "test/php/SourceInterface" --> [("www/RefClass.php", 1)],
-  "test/php/corge" --> [("www/SourceClass.php",1),("www/RefClass.php", 4)],
-  "test/php/WALDO" --> [("www/RefClass.php", 2), ("www/TopLevel.php",1)],
+  "test/php/fun/corge" --> [("www/SourceClass.php",1),("www/RefClass.php", 4)],
+  "test/php/const/WALDO" --> [("www/RefClass.php", 2), ("www/TopLevel.php",1)],
   "test/php/Position" --> [("www/RefClass.php", 2)],
   "test/php/Position/Right" --> [("www/RefClass.php", 1)]
   ]

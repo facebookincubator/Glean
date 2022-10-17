@@ -7,7 +7,7 @@
         "extendsParents": [],
         "inheritedSymbols": [],
         "symbolDetails": {
-            "test/php/corge": {
+            "test/php/fun/corge": {
                 "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
@@ -39,7 +39,7 @@
                 },
                 "repo_hash": "testhash",
                 "signature": "function corge(): int",
-                "sym": "test/php/corge",
+                "sym": "test/php/fun/corge",
                 "sym_location": {
                     "filepath": "www/TopLevel.php",
                     "range": {

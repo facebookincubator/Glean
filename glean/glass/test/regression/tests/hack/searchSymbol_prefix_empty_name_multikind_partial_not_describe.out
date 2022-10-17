@@ -33,7 +33,7 @@
                     "localName": "corge"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/corge",
+                "sym": "test/php/fun/corge",
                 "sym_location": {
                     "filepath": "www/TopLevel.php",
                     "range": {
@@ -62,7 +62,7 @@
                     "repository": "test"
                 },
                 "name": "corge",
-                "symbol": "test/php/corge"
+                "symbol": "test/php/fun/corge"
             }
         ]
     }

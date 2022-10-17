@@ -50,7 +50,7 @@ instance Symbol Hack.MethodDeclaration_key where
   toSymbol (Hack.MethodDeclaration_key name container) = container <:> name
 
 instance Symbol Hack.ModuleDeclaration_key where
-  toSymbol (Hack.ModuleDeclaration_key name) = toSymbol name
+  toSymbol (Hack.ModuleDeclaration_key name) =  ("module" :) <$> toSymbol name
 
 instance Symbol Hack.EnumDeclaration_key where
   toSymbol (Hack.EnumDeclaration_key qn) = toSymbol qn
@@ -62,7 +62,7 @@ instance Symbol Hack.Enumerator_key where
   toSymbol (Hack.Enumerator_key name decl) = decl <:> name
 
 instance Symbol Hack.FunctionDeclaration_key where
-  toSymbol (Hack.FunctionDeclaration_key qn) = toSymbol qn
+  toSymbol (Hack.FunctionDeclaration_key qn) =  ("fun" :) <$> toSymbol qn
 
 instance Symbol Hack.ContainerDeclaration where
   toSymbol (Hack.ContainerDeclaration_class_ c) = toSymbolPredicate c
@@ -96,7 +96,7 @@ instance Symbol Hack.NamespaceQName_key where
   toSymbol (Hack.NamespaceQName_key name parent) = parent <:> name
 
 instance Symbol Hack.GlobalConstDeclaration_key where
-  toSymbol (Hack.GlobalConstDeclaration_key qn) = toSymbol qn
+  toSymbol (Hack.GlobalConstDeclaration_key qn) = ("const" :) <$> toSymbol qn
 
 instance Symbol Hack.QName where
   toSymbol k = Glean.keyOf k >>= toSymbol

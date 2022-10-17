@@ -946,7 +946,7 @@
                     "lineBegin": 18,
                     "lineEnd": 18
                 },
-                "sym": "test/php/WALDO",
+                "sym": "test/php/const/WALDO",
                 "target": {
                     "filepath": "www/TopLevel.php",
                     "range": {
@@ -985,7 +985,7 @@
                     "lineBegin": 27,
                     "lineEnd": 27
                 },
-                "sym": "test/php/WALDO",
+                "sym": "test/php/const/WALDO",
                 "target": {
                     "filepath": "www/TopLevel.php",
                     "range": {
@@ -1024,7 +1024,7 @@
                     "lineBegin": 18,
                     "lineEnd": 18
                 },
-                "sym": "test/php/corge",
+                "sym": "test/php/fun/corge",
                 "target": {
                     "filepath": "www/TopLevel.php",
                     "range": {
@@ -1063,7 +1063,7 @@
                     "lineBegin": 22,
                     "lineEnd": 22
                 },
-                "sym": "test/php/corge",
+                "sym": "test/php/fun/corge",
                 "target": {
                     "filepath": "www/TopLevel.php",
                     "range": {
@@ -1102,7 +1102,7 @@
                     "lineBegin": 27,
                     "lineEnd": 27
                 },
-                "sym": "test/php/corge",
+                "sym": "test/php/fun/corge",
                 "target": {
                     "filepath": "www/TopLevel.php",
                     "range": {
@@ -1141,7 +1141,7 @@
                     "lineBegin": 30,
                     "lineEnd": 30
                 },
-                "sym": "test/php/corge",
+                "sym": "test/php/fun/corge",
                 "target": {
                     "filepath": "www/TopLevel.php",
                     "range": {

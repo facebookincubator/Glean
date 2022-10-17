@@ -625,7 +625,7 @@
                     "repository": "test"
                 },
                 "name": "WALDO",
-                "symbol": "test/php/WALDO"
+                "symbol": "test/php/const/WALDO"
             },
             {
                 "kind": 14,
@@ -641,7 +641,7 @@
                     "repository": "test"
                 },
                 "name": "corge",
-                "symbol": "test/php/corge"
+                "symbol": "test/php/fun/corge"
             },
             {
                 "kind": 6,

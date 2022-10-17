@@ -7,7 +7,7 @@
         "extendsParents": [],
         "inheritedSymbols": [],
         "symbolDetails": {
-            "test/php/WALDO": {
+            "test/php/const/WALDO": {
                 "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
@@ -39,7 +39,7 @@
                 },
                 "repo_hash": "testhash",
                 "signature": "const WALDO",
-                "sym": "test/php/WALDO",
+                "sym": "test/php/const/WALDO",
                 "sym_location": {
                     "filepath": "www/TopLevel.php",
                     "range": {
