@@ -105,7 +105,7 @@ struct ContainerImpl final : Container {
   bool readData(folly::ByteRange key, std::function<void(folly::ByteRange)> f)
       override;
 
-  void optimize() override;
+  void optimize(bool compact) override;
 
   rocksdb::ColumnFamilyHandle* family(const Family& family) const;
 

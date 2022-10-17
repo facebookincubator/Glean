@@ -215,7 +215,7 @@ bool ContainerImpl::readData(
   }
 }
 
-void ContainerImpl::optimize() {
+void ContainerImpl::optimize(bool compact) {
   for (uint32_t i = 0; i < families.size(); i++) {
     auto family = Family::family(i);
     auto handle = families[i];
@@ -229,10 +229,14 @@ void ContainerImpl::optimize() {
         check(db->CreateColumnFamily(opts, family->name, &handle));
         families[i] = handle;
       }
-      const auto nlevels = db->NumberLevels(handle);
-      if (nlevels != 2) {
-        rocksdb::CompactRangeOptions copts;
-        check(db->CompactRange(copts, handle, nullptr, nullptr));
+      rocksdb::FlushOptions flush_options;
+      db->Flush(flush_options, handle);
+      if (compact) {
+        const auto nlevels = db->NumberLevels(handle);
+        if (nlevels != 2) {
+          rocksdb::CompactRangeOptions copts;
+          check(db->CompactRange(copts, handle, nullptr, nullptr));
+        }
       }
     }
   }

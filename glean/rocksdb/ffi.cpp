@@ -77,9 +77,10 @@ const char *glean_rocksdb_container_read_data(
 }
 
 const char *glean_rocksdb_container_optimize(
-    Container *container) {
+    Container *container,
+    bool compact) {
   return ffi::wrap([=] {
-    container->optimize();
+    container->optimize(compact);
   });
 }
 

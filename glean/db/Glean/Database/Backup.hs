@@ -327,10 +327,10 @@ doFinalize env@Env{..} repo =
 
     config <- Observed.get envServerConfig
     withOpenDatabase env repo $ \OpenDB{..} -> do
-      when (ServerConfig.config_compact_on_completion config) $ do
-        say logInfo "optimising"
-        Storage.optimize odbHandle
-        Storage.cacheOwnership odbHandle
+      let compact = ServerConfig.config_compact_on_completion config
+      say logInfo $ if compact then "optimizing(compacting)" else "optimizing"
+      Storage.optimize odbHandle compact
+      Storage.cacheOwnership odbHandle
 
     -- update and re-merge our internal representation of the schema
     schemaUpdated env (Just repo)

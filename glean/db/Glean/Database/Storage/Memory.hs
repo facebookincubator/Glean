@@ -78,7 +78,7 @@ instance Storage Memory where
   -- TODO: ownership
   commit db facts _ = FactSet.append (dbFacts db) facts
 
-  optimize _ = return ()
+  optimize _ _ = return ()
 
   -- TODO: ownership
   computeOwnership _ _ = return (error "unimplemented computeOwnership")

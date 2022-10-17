@@ -51,7 +51,7 @@ struct Container {
     folly::ByteRange key, std::function<void(folly::ByteRange)> f) = 0;
 
   /// Optimise the container for reading
-  virtual void optimize() = 0;
+  virtual void optimize(bool compact) = 0;
 
   /// Backup the Container to the specified directory.
   virtual void backup(const std::string& path) = 0;

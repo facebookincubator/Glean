@@ -69,7 +69,8 @@ const char *glean_rocksdb_container_read_data(
 );
 
 const char *glean_rocksdb_container_optimize(
-  Container *db
+  Container *db,
+  bool compact
 );
 
 const char *glean_rocksdb_container_backup(

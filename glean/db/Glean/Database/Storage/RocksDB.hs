@@ -173,7 +173,9 @@ instance Storage RocksDB where
         VS.unsafeWith facts $ \facts_ptr ->
         f (unit_ptr, unit_size, facts_ptr, fromIntegral $ VS.length facts)
 
-  optimize db = withContainer db $ invoke . glean_rocksdb_container_optimize
+  optimize db compact = withContainer db $ \s_ptr ->
+    invoke $ glean_rocksdb_container_optimize s_ptr
+      (fromIntegral (fromEnum compact))
 
   computeOwnership db inv =
     withForeignPtr (dbPtr db) $ \db_ptr ->
@@ -316,7 +318,7 @@ foreign import ccall unsafe glean_rocksdb_container_read_data
   -> IO CString
 
 foreign import ccall safe glean_rocksdb_container_optimize
-  :: Container -> IO CString
+  :: Container -> CBool -> IO CString
 
 foreign import ccall safe glean_rocksdb_container_backup
   :: Container -> CString -> IO CString
