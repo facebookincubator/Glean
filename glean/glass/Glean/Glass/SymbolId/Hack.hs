@@ -41,7 +41,10 @@ instance Symbol Hack.TypeConstDeclaration_key where
   toSymbol (Hack.TypeConstDeclaration_key name container) = container <:> name
 
 instance Symbol Hack.PropertyDeclaration_key where
-  toSymbol (Hack.PropertyDeclaration_key name container) = container <:> name
+  toSymbol (Hack.PropertyDeclaration_key name container) = do
+    xs <- toSymbol container
+    x <- (":prop" :) <$> toSymbol name
+    return $ xs ++ x
 
 instance Symbol Hack.ClassConstDeclaration_key where
   toSymbol (Hack.ClassConstDeclaration_key name container) = container <:> name

@@ -48,18 +48,23 @@ instance Search Hack.Declaration where
     searchSymbolId t $ searchGlobalConstInNamespace rest name
 
   symbolSearch t@[name] = searchSymbolId t $ searchTypeInNamespace [] name
-  symbolSearch t@(_:_) = do -- 2 or more path elements
-    let (name:rest@(context:ns)) = reverse t
+  symbolSearch t@(_:_) = -- 2 or more path elements
+    let (name:rest) = reverse t in
+    case rest of
+      ":prop":context:ns ->
+         searchSymbolId t $ searchPropertyInContainer ns context name
+      context:ns -> do
+        a <- searchSymbolId t $ searchTypeInNamespace rest name
+        b <- searchSymbolId t $
+          searchInContainerOrEnumNoProperty ns context name
 
-    a <- searchSymbolId t $ searchTypeInNamespace rest name
-    b <- searchSymbolId t $ searchInContainerOrEnum ns context name
-
-    return $ case (a,b) of
-      (x@One{}, _) -> x
-      (_, y@One{}) -> y
-      (x@Many{}, _) -> x
-      (_, y@Many{}) -> y
-      (x@None{}, None{}) -> x
+        return $ case (a,b) of
+          (x@One{}, _) -> x
+          (_, y@One{}) -> y
+          (x@Many{}, _) -> x
+          (_, y@Many{}) -> y
+          (x@None{}, None{}) -> x
+      [] -> fail "rest has at least one element"
 
   symbolSearch [] = return $ None "Hack.symbolSearch: empty path"
 
@@ -85,13 +90,19 @@ instance PrefixSearch Hack.Declaration where
     searchWithLimit (Just lim) $ prefixSearchGlobalConstInNamespace rest name
   prefixSearch lim [pName] = searchWithLimit (Just lim) $
     prefixSearchTypeInNamespace [] pName
-  prefixSearch lim toks = do
-    let (name:rest@(context:ns)) = reverse toks
-    a <- searchWithLimit (Just lim) $
-        prefixSearchTypeInNamespace rest name
-    b <- searchWithLimit (Just lim) $
-        prefixSearchInContainerOrEnum ns context name
-    return $ a ++ b
+  prefixSearch lim toks =
+   let (name:rest) = reverse toks in
+   case rest of
+      ":prop":context:ns ->
+        searchWithLimit (Just lim) $
+            prefixSearchPropertyInContainer ns context name
+      context:ns -> do
+        a <- searchWithLimit (Just lim) $
+            prefixSearchTypeInNamespace rest name
+        b <- searchWithLimit (Just lim) $
+            prefixSearchInContainerOrEnumNoProperty ns context name
+        return $ a ++ b
+      [] -> fail "rest has at least one element"
 
 searchTypeInNamespace
   :: [Text] -> Text -> Angle (ResultLocation Hack.Declaration)
@@ -124,13 +135,18 @@ prefixSearchGlobalConstInNamespace
   :: [Text] -> Text -> Angle (ResultLocation Hack.Declaration)
 prefixSearchGlobalConstInNamespace = searchGlobalConstInNamespace_ True
 
-searchInContainerOrEnum
+searchPropertyInContainer
   :: [Text] -> Text -> Text -> Angle (ResultLocation Hack.Declaration)
-searchInContainerOrEnum = searchInContainerOrEnum_ False
+searchPropertyInContainer = searchPropertyInContainer_ False
 
-prefixSearchInContainerOrEnum
+searchInContainerOrEnumNoProperty
   :: [Text] -> Text -> Text -> Angle (ResultLocation Hack.Declaration)
-prefixSearchInContainerOrEnum = searchInContainerOrEnum_ True
+searchInContainerOrEnumNoProperty = searchInContainerOrEnumNoProperty_ False
+
+prefixSearchInContainerOrEnumNoProperty
+  :: [Text] -> Text -> Text -> Angle (ResultLocation Hack.Declaration)
+prefixSearchInContainerOrEnumNoProperty =
+  searchInContainerOrEnumNoProperty_ True
 
 searchFunctionInNamespace_
   :: Bool -> [Text] -> Text -> Angle (ResultLocation Hack.Declaration)
@@ -191,6 +207,10 @@ searchTypeInNamespace_ isPrefix ns name =
       entityLocation (alt @"hack" (alt @"decl" decl)) file rangespan lname
     ]
 
+prefixSearchPropertyInContainer
+  :: [Text] -> Text -> Text -> Angle (ResultLocation Hack.Declaration)
+prefixSearchPropertyInContainer = searchPropertyInContainer_ True
+
 prefixSearchNamespace
   :: [Text] -> Text -> Angle (ResultLocation Hack.Declaration)
 prefixSearchNamespace = searchNamespace_ True
@@ -213,17 +233,33 @@ searchNamespace_ isPrefix ns name =
       entityLocation (alt @"hack" (alt @"decl" decl)) file rangespan lname
     ]
 
-searchInContainerOrEnum_
+searchInContainerOrEnumNoProperty_
   :: Bool -> [Text] -> Text -> Text -> Angle (ResultLocation Hack.Declaration)
-searchInContainerOrEnum_ isPrefix ns context name =
+searchInContainerOrEnumNoProperty_ isPrefix ns context name =
   vars $ \(decl :: Angle Hack.Declaration) (file :: Angle Src.File)
       (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
     tuple (decl, file, rangespan, lname) `where_` [
-      wild .= predicate @Hack.SearchInContainerOrEnum (
+      wild .= predicate @Hack.SearchInContainerOrEnumNoProperty (
         rec $
           field @"name" (stringOrPrefix isPrefix name) $
           field @"contextName" (string context) $
           field @"contextNamespace" (namespaceQName ns) $
+          field @"decl" decl
+        end),
+      entityLocation (alt @"hack" (alt @"decl" decl)) file rangespan lname
+    ]
+
+searchPropertyInContainer_
+  :: Bool -> [Text] -> Text -> Text -> Angle (ResultLocation Hack.Declaration)
+searchPropertyInContainer_ isPrefix ns container name =
+  vars $ \(decl :: Angle Hack.Declaration) (file :: Angle Src.File)
+      (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
+    tuple (decl, file, rangespan, lname) `where_` [
+      wild .= predicate @Hack.SearchPropertyInContainer (
+        rec $
+          field @"name" (stringOrPrefix isPrefix name) $
+          field @"containerName" (string container) $
+          field @"containerNamespace" (namespaceQName ns) $
           field @"decl" decl
         end),
       entityLocation (alt @"hack" (alt @"decl" decl)) file rangespan lname

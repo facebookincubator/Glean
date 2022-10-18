@@ -44,7 +44,7 @@ testSymbolIdLookup get = TestLabel "describeSymbol" $ TestList [
   -- class constant
   "test/php/SuperClass/BAZ" --> "www/SuperClass.php",
   -- property
-  "test/php/SourceClass/daz" --> "www/SourceClass.php",
+  "test/php/SourceClass/:prop/daz" --> "www/SourceClass.php",
   -- class typedef
   "test/php/SourceClass/T" --> "www/SourceClass.php",
   -- interface
@@ -76,7 +76,7 @@ testHackFindReferences :: Getter -> Test
 testHackFindReferences get = TestLabel "findReferences" $ TestList [
   "test/php/SourceClass" --> [("www/RefClass.php", 4),("www/SourceClass.php", 1)],
   "test/php/SuperClass/BAZ" --> [],
-  "test/php/SourceClass/daz" --> [("www/RefClass.php",1)],
+  "test/php/SourceClass/:prop/daz" --> [("www/RefClass.php",1)],
   "test/php/SourceClass/T" --> [("www/RefClass.php",1)],
   "test/php/SourceTrait" --> [("www/RefClass.php", 1)],
   "test/php/SourceTrait/quux" --> [("www/RefClass.php", 1)],
@@ -121,7 +121,7 @@ testHackAnnotations get = TestLabel "annotations" $ TestList [
 
 testHackVisibility :: Getter -> Test
 testHackVisibility get = TestLabel "visibility" $ TestList [
-  "test/php/SourceClass/daz" --> Visibility_Public
+  "test/php/SourceClass/:prop/daz" --> Visibility_Public
   ]
   where
     (-->) :: Text -> Visibility -> Test

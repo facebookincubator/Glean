@@ -4,7 +4,7 @@
         "containsChildren": [],
         "containsParents": [
             {
-                "child": "test/php/SourceClass/daz",
+                "child": "test/php/SourceClass/:prop/daz",
                 "parent": "test/php/SourceClass"
             }
         ],
@@ -75,7 +75,7 @@
                 },
                 "sym_other_locations": []
             },
-            "test/php/SourceClass/daz": {
+            "test/php/SourceClass/:prop/daz": {
                 "annotations": [],
                 "comments": [],
                 "contains_relation": {
@@ -108,7 +108,7 @@
                 },
                 "repo_hash": "testhash",
                 "signature": "public int daz",
-                "sym": "test/php/SourceClass/daz",
+                "sym": "test/php/SourceClass/:prop/daz",
                 "sym_location": {
                     "filepath": "www/SourceClass.php",
                     "range": {

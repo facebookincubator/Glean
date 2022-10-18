@@ -3,6 +3,10 @@
     {
         "containsChildren": [
             {
+                "child": "test/php/SourceClass/:prop/daz",
+                "parent": "test/php/SourceClass"
+            },
+            {
                 "child": "test/php/SourceClass/BAZ",
                 "parent": "test/php/SourceClass"
             },
@@ -12,10 +16,6 @@
             },
             {
                 "child": "test/php/SourceClass/bar",
-                "parent": "test/php/SourceClass"
-            },
-            {
-                "child": "test/php/SourceClass/daz",
                 "parent": "test/php/SourceClass"
             },
             {
@@ -108,6 +108,53 @@
                     "repository": "test"
                 },
                 "sym_other_locations": []
+            },
+            "test/php/SourceClass/:prop/daz": {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 9,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 23,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "SourceClass",
+                    "localName": "daz"
+                },
+                "repo_hash": "testhash",
+                "signature": "public int daz",
+                "sym": "test/php/SourceClass/:prop/daz",
+                "sym_location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 23,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "visibility": 20
             },
             "test/php/SourceClass/BAZ": {
                 "comments": [],
@@ -241,53 +288,6 @@
                         "columnEnd": 4,
                         "lineBegin": 22,
                         "lineEnd": 24
-                    },
-                    "repository": "test"
-                },
-                "sym_other_locations": [],
-                "visibility": 20
-            },
-            "test/php/SourceClass/daz": {
-                "annotations": [],
-                "comments": [],
-                "contains_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "extends_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "kind": 9,
-                "language": 3,
-                "location": {
-                    "filepath": "www/SourceClass.php",
-                    "range": {
-                        "columnBegin": 14,
-                        "columnEnd": 23,
-                        "lineBegin": 20,
-                        "lineEnd": 20
-                    },
-                    "repository": "test"
-                },
-                "name": {
-                    "container": "SourceClass",
-                    "localName": "daz"
-                },
-                "repo_hash": "testhash",
-                "signature": "public int daz",
-                "sym": "test/php/SourceClass/daz",
-                "sym_location": {
-                    "filepath": "www/SourceClass.php",
-                    "range": {
-                        "columnBegin": 14,
-                        "columnEnd": 23,
-                        "lineBegin": 20,
-                        "lineEnd": 20
                     },
                     "repository": "test"
                 },

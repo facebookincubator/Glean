@@ -3,6 +3,10 @@
     {
         "containsChildren": [
             {
+                "child": "test/php/RefClass/:prop/raz",
+                "parent": "test/php/RefClass"
+            },
+            {
                 "child": "test/php/RefClass/JAZZ",
                 "parent": "test/php/RefClass"
             },
@@ -16,10 +20,6 @@
             },
             {
                 "child": "test/php/RefClass/foo",
-                "parent": "test/php/RefClass"
-            },
-            {
-                "child": "test/php/RefClass/raz",
                 "parent": "test/php/RefClass"
             }
         ],
@@ -96,6 +96,53 @@
                     "repository": "test"
                 },
                 "sym_other_locations": []
+            },
+            "test/php/RefClass/:prop/raz": {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 9,
+                "language": 3,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 25,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "RefClass",
+                    "localName": "raz"
+                },
+                "repo_hash": "testhash",
+                "signature": "private int raz",
+                "sym": "test/php/RefClass/:prop/raz",
+                "sym_location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 25,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "visibility": 40
             },
             "test/php/RefClass/JAZZ": {
                 "comments": [],
@@ -282,53 +329,6 @@
                 },
                 "sym_other_locations": [],
                 "visibility": 20
-            },
-            "test/php/RefClass/raz": {
-                "annotations": [],
-                "comments": [],
-                "contains_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "extends_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "kind": 9,
-                "language": 3,
-                "location": {
-                    "filepath": "www/RefClass.php",
-                    "range": {
-                        "columnBegin": 15,
-                        "columnEnd": 25,
-                        "lineBegin": 15,
-                        "lineEnd": 15
-                    },
-                    "repository": "test"
-                },
-                "name": {
-                    "container": "RefClass",
-                    "localName": "raz"
-                },
-                "repo_hash": "testhash",
-                "signature": "private int raz",
-                "sym": "test/php/RefClass/raz",
-                "sym_location": {
-                    "filepath": "www/RefClass.php",
-                    "range": {
-                        "columnBegin": 15,
-                        "columnEnd": 25,
-                        "lineBegin": 15,
-                        "lineEnd": 15
-                    },
-                    "repository": "test"
-                },
-                "sym_other_locations": [],
-                "visibility": 40
             },
             "test/php/SourceInterface": {
                 "annotations": [],

@@ -35,6 +35,35 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 9
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "private int raz"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 15,
+                    "columnEnd": 25,
+                    "lineBegin": 15,
+                    "lineEnd": 15
+                },
+                "sym": "test/php/RefClass/:prop/raz"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
                             "aInteger": 16
                         },
                         "key": "symbolKind"
@@ -146,35 +175,6 @@
                     "lineEnd": 19
                 },
                 "sym": "test/php/RefClass/foo"
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aInteger": 9
-                        },
-                        "key": "symbolKind"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "private int raz"
-                        },
-                        "key": "symbolSignature"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 3
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 15,
-                    "columnEnd": 25,
-                    "lineBegin": 15,
-                    "lineEnd": 15
-                },
-                "sym": "test/php/RefClass/raz"
             }
         ],
         "references": [
@@ -338,6 +338,45 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 9
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "private int raz"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 23,
+                    "columnEnd": 26,
+                    "lineBegin": 29,
+                    "lineEnd": 29
+                },
+                "sym": "test/php/RefClass/:prop/raz",
+                "target": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 19,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
                             "aInteger": 16
                         },
                         "key": "symbolKind"
@@ -447,45 +486,6 @@
                         "columnEnd": 29,
                         "lineBegin": 17,
                         "lineEnd": 17
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aInteger": 9
-                        },
-                        "key": "symbolKind"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "private int raz"
-                        },
-                        "key": "symbolSignature"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 3
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 23,
-                    "columnEnd": 26,
-                    "lineBegin": 29,
-                    "lineEnd": 29
-                },
-                "sym": "test/php/RefClass/raz",
-                "target": {
-                    "filepath": "www/RefClass.php",
-                    "range": {
-                        "columnBegin": 15,
-                        "columnEnd": 19,
-                        "lineBegin": 15,
-                        "lineEnd": 15
                     },
                     "repository": "test"
                 }
@@ -650,6 +650,45 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 9
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "public int daz"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 54,
+                    "columnEnd": 57,
+                    "lineBegin": 27,
+                    "lineEnd": 27
+                },
+                "sym": "test/php/SourceClass/:prop/daz",
+                "target": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 18,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
                             "aInteger": 16
                         },
                         "key": "symbolKind"
@@ -720,45 +759,6 @@
                         "columnEnd": 15,
                         "lineBegin": 18,
                         "lineEnd": 18
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aInteger": 9
-                        },
-                        "key": "symbolKind"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "public int daz"
-                        },
-                        "key": "symbolSignature"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 3
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 54,
-                    "columnEnd": 57,
-                    "lineBegin": 27,
-                    "lineEnd": 27
-                },
-                "sym": "test/php/SourceClass/daz",
-                "target": {
-                    "filepath": "www/SourceClass.php",
-                    "range": {
-                        "columnBegin": 14,
-                        "columnEnd": 18,
-                        "lineBegin": 20,
-                        "lineEnd": 20
                     },
                     "repository": "test"
                 }

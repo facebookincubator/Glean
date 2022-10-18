@@ -1,2 +1,2 @@
 action: searchRelatedNeighborhood
-args: "test/php/SourceClass/daz"
+args: "test/php/SourceClass/:prop/daz"

@@ -180,6 +180,22 @@
                 "symbol": "test/php/RefClass"
             },
             {
+                "kind": 9,
+                "language": 3,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 25,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "name": "raz",
+                "symbol": "test/php/RefClass/:prop/raz"
+            },
+            {
                 "kind": 16,
                 "language": 3,
                 "location": {
@@ -244,22 +260,6 @@
                 "symbol": "test/php/RefClass/foo"
             },
             {
-                "kind": 9,
-                "language": 3,
-                "location": {
-                    "filepath": "www/RefClass.php",
-                    "range": {
-                        "columnBegin": 15,
-                        "columnEnd": 25,
-                        "lineBegin": 15,
-                        "lineEnd": 15
-                    },
-                    "repository": "test"
-                },
-                "name": "raz",
-                "symbol": "test/php/RefClass/raz"
-            },
-            {
                 "kind": 7,
                 "language": 3,
                 "location": {
@@ -274,6 +274,22 @@
                 },
                 "name": "SourceClass",
                 "symbol": "test/php/SourceClass"
+            },
+            {
+                "kind": 9,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 23,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "name": "daz",
+                "symbol": "test/php/SourceClass/:prop/daz"
             },
             {
                 "kind": 16,
@@ -322,22 +338,6 @@
                 },
                 "name": "bar",
                 "symbol": "test/php/SourceClass/bar"
-            },
-            {
-                "kind": 9,
-                "language": 3,
-                "location": {
-                    "filepath": "www/SourceClass.php",
-                    "range": {
-                        "columnBegin": 14,
-                        "columnEnd": 23,
-                        "lineBegin": 20,
-                        "lineEnd": 20
-                    },
-                    "repository": "test"
-                },
-                "name": "daz",
-                "symbol": "test/php/SourceClass/daz"
             },
             {
                 "kind": 8,
@@ -548,6 +548,22 @@
                 "symbol": "test/php/TestAnnotation"
             },
             {
+                "kind": 9,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 46,
+                        "columnEnd": 51,
+                        "lineBegin": 40,
+                        "lineEnd": 40
+                    },
+                    "repository": "test"
+                },
+                "name": "test",
+                "symbol": "test/php/TestAnnotation/:prop/test"
+            },
+            {
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -562,22 +578,6 @@
                 },
                 "name": "__construct",
                 "symbol": "test/php/TestAnnotation/__construct"
-            },
-            {
-                "kind": 9,
-                "language": 3,
-                "location": {
-                    "filepath": "www/SourceClass.php",
-                    "range": {
-                        "columnBegin": 46,
-                        "columnEnd": 51,
-                        "lineBegin": 40,
-                        "lineEnd": 40
-                    },
-                    "repository": "test"
-                },
-                "name": "test",
-                "symbol": "test/php/TestAnnotation/test"
             },
             {
                 "kind": 16,

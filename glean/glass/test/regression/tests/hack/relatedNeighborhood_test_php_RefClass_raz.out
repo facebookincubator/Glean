@@ -4,7 +4,7 @@
         "containsChildren": [],
         "containsParents": [
             {
-                "child": "test/php/RefClass/raz",
+                "child": "test/php/RefClass/:prop/raz",
                 "parent": "test/php/RefClass"
             }
         ],
@@ -58,7 +58,7 @@
                 },
                 "sym_other_locations": []
             },
-            "test/php/RefClass/raz": {
+            "test/php/RefClass/:prop/raz": {
                 "annotations": [],
                 "comments": [],
                 "contains_relation": {
@@ -91,7 +91,7 @@
                 },
                 "repo_hash": "testhash",
                 "signature": "private int raz",
-                "sym": "test/php/RefClass/raz",
+                "sym": "test/php/RefClass/:prop/raz",
                 "sym_location": {
                     "filepath": "www/RefClass.php",
                     "range": {

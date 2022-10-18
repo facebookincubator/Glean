@@ -108,10 +108,13 @@ toSymbolId path entity = do
   eqname <- try $ toSymbolWithPath entity (symbolPath path)
   return $ case eqname of
     Left (SymbolError _e) -> symbol [repo, langCode, "SYMBOL_ID_MISSING"]
-    Right spec -> symbol $ repo : langCode : map URI.encodeText spec
+    Right spec -> symbol $
+      repo : langCode : map (URI.encodeTextWith isAllowed) spec
   where
     symbol = SymbolId . Text.intercalate "/"
     Glass.RepoName repo = symbolRepo path
+    isAllowed ':' = True
+    isAllowed c = URI.isAllowed c
 
 --
 -- For entity descriptions, we use toQualifiedName to extract some info
