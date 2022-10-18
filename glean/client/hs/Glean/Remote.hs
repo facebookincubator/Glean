@@ -37,14 +37,17 @@ module Glean.Remote
   ) where
 
 import Control.Applicative
+import Control.Concurrent.STM
 import Control.Exception
 import Control.Monad
 import Data.Default
+import Data.Foldable(for_)
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
 import Data.Typeable
 import qualified Haxl.Core as Haxl
 import Options.Applicative as Options
+import System.Environment (lookupEnv)
 
 import Thrift.Channel
 import Thrift.Api
@@ -320,17 +323,33 @@ optionsLong self = do
 -- -----------------------------------------------------------------------------
 -- Haxl
 
+-- | Maximum number of requests fired concurrently
+defaultMaxConcurrentRequests :: Int
+defaultMaxConcurrentRequests = 10000
+
+-- | Initialize with the default number of maximum concurrent requests.
 initRemoteGlobalState
   :: ThriftBackend
   -> IO (Haxl.State GleanGet, Haxl.State GleanQuery)
 initRemoteGlobalState backend =  do
-  return
-    ( GleanGetState (remoteFetch backend)
-    , GleanQueryState (remoteQuery backend)
+  maxConcurrency <- maybe defaultMaxConcurrentRequests read <$>
+    lookupEnv "GLEAN_MAX_CONCURRENT_REQUESTS"
+  s <- case maxConcurrency of
+    0 -> pure noSemaphore
+    n -> newSemaphore n
+  initRemoteGlobalStateWithSemaphore s backend
+
+initRemoteGlobalStateWithSemaphore
+  :: Semaphore
+  -> ThriftBackend
+  -> IO (Haxl.State GleanGet, Haxl.State GleanQuery)
+initRemoteGlobalStateWithSemaphore semaphore backend = return
+    ( GleanGetState (remoteFetch backend semaphore)
+    , GleanQueryState (remoteQuery backend semaphore)
     )
 
-remoteFetch :: ThriftBackend -> Haxl.PerformFetch GleanGet
-remoteFetch (ThriftBackend config evb ts clientInfo schema) =
+remoteFetch :: ThriftBackend -> Semaphore -> Haxl.PerformFetch GleanGet
+remoteFetch (ThriftBackend config evb ts clientInfo schema) sem =
   Haxl.BackgroundFetch $ \requests -> do
   let
     ts' repo = case clientConfig_use_shards config of
@@ -340,6 +359,7 @@ remoteFetch (ThriftBackend config evb ts clientInfo schema) =
         thriftServiceWithDbShard ts (Just (dbShard repo)) -- TODO
 
   forM_ (HashMap.toList $ requestByRepo requests) $ \(repo, requests) -> do
+    acquireSemaphore sem
     runThrift evb (ts' repo) $ do
       let
         sendCob :: Maybe ChannelException -> IO ()
@@ -358,8 +378,10 @@ remoteFetch (ThriftBackend config evb ts clientInfo schema) =
       dispatchCommon
         (\p c ct s r o x ->
           GleanService.send_userQueryFacts p c ct s r o repo x)
-        sendCob
-        (recvCob . GleanService.recv_userQueryFacts)
+        (\x -> for_ x (const $ releaseSemaphore sem) >> sendCob x)
+        (\x y -> do
+          releaseSemaphore sem
+          recvCob (GleanService.recv_userQueryFacts x) y)
         (mkRequest (Just clientInfo) schema requests)
 
 putException :: SomeException -> [Haxl.BlockedFetch a] -> IO ()
@@ -367,8 +389,8 @@ putException ex requests =
   forM_ requests $ \(Haxl.BlockedFetch _ rvar) -> Haxl.putFailure rvar ex
 
 
-remoteQuery :: ThriftBackend -> Haxl.PerformFetch GleanQuery
-remoteQuery (ThriftBackend config evb ts clientInfo schema) =
+remoteQuery :: ThriftBackend -> Semaphore -> Haxl.PerformFetch GleanQuery
+remoteQuery (ThriftBackend config evb ts clientInfo schema) sem =
   Haxl.BackgroundFetch $ mapM_ fetch
   where
   ts' repo = case clientConfig_use_shards config of
@@ -379,7 +401,7 @@ remoteQuery (ThriftBackend config evb ts clientInfo schema) =
 
   fetch :: Haxl.BlockedFetch GleanQuery -> IO ()
   fetch (Haxl.BlockedFetch (QueryReq q repo stream) rvar) =
-    runRemoteQuery evb repo q' (ts' repo) acc rvar
+    runRemoteQuery evb sem repo q' (ts' repo) acc rvar
     where
       q' = withClientInfo clientInfo q
       acc = if stream then Just id else Nothing
@@ -396,13 +418,15 @@ remoteQuery (ThriftBackend config evb ts clientInfo schema) =
 runRemoteQuery
   :: forall q. (Show q, Typeable q)
   => EventBaseDataplane
+  -> Semaphore
   -> Repo
   -> Query q
   -> ThriftService GleanService
   -> Maybe ([q] -> [q]) -- results so far
   -> Haxl.ResultVar ([q], Bool)
   -> IO ()
-runRemoteQuery evb repo q@(Query req) ts acc rvar =
+runRemoteQuery evb sem repo q@(Query req) ts acc rvar = do
+  acquireSemaphore sem
   runThrift evb ts $ do
     let
       recvCob
@@ -413,10 +437,32 @@ runRemoteQuery evb repo q@(Query req) ts acc rvar =
         case deserialize response of
           Left err -> Haxl.putFailure rvar err
           Right res -> putQueryResults q res acc rvar $
-            \(q :: Query q) acc -> runRemoteQuery evb repo q ts acc rvar
+            \(q :: Query q) acc -> runRemoteQuery evb sem repo q ts acc rvar
 
     dispatchCommon
       (\p c ct s r o x -> GleanService.send_userQuery p c ct s r o repo x)
-      (sendCobSingle rvar)
-      (recvCob . GleanService.recv_userQuery)
+      (\x -> for_ x (const $ releaseSemaphore sem) >> sendCobSingle rvar x)
+      (\x y -> do
+        releaseSemaphore sem
+        recvCob (GleanService.recv_userQuery x) y)
       req
+
+--------------------------------------------------------------------------------
+-- A simple STM semaphore used to limit the request concurrency
+
+data Semaphore = Semaphore
+  { acquireSemaphore :: IO ()
+  , releaseSemaphore :: IO ()}
+
+newSemaphore :: Int -> IO Semaphore
+newSemaphore size = do
+  s <- newTVarIO size
+  let acquireSemaphore = atomically $ do
+        v <- readTVar s
+        guard (v > 0)
+        writeTVar s $! v-1
+      releaseSemaphore = atomically $ modifyTVar s succ
+  return Semaphore{..}
+
+noSemaphore :: Semaphore
+noSemaphore = Semaphore (return ()) (return ())
