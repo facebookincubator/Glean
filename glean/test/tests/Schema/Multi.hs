@@ -12,6 +12,7 @@ module Schema.Multi (main) where
 import Control.Exception
 import Control.Monad
 import Data.Either
+import Data.Default (def)
 import qualified Data.Map as Map
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
@@ -24,13 +25,17 @@ import TestRunner
 import Thrift.Util
 import Util.String.Quasi
 
+import Glean.Angle.Types (Type_(..), FieldDef_(..))
+import Glean.Backend.Types (userQueryFacts, userQuery)
 import Glean.Database.Config
 import Glean.Database.Schema
 import Glean.Database.Test
 import Glean.Init
+import qualified Glean.RTS.Term as RTS
 import Glean.Types as Thrift
 import qualified Glean.Internal.Types as Internal
 import Glean.Write.JSON
+
 
 import Schema.Lib
 
@@ -140,12 +145,16 @@ multiSchemaTest = TestCase $
           completeTestDB env repo
           return repo
 
-      testQuery name repo schema schema_id query result =
-        withTestEnv [
-            setRoot dbRoot,
+      testEnv schema schema_id act =
+        withTestEnv
+          [ setRoot dbRoot,
             setSchemaIndex schema,
             enableSchemaId,
-            maybe id (setSchemaId . SchemaId) schema_id ] $ \env -> do
+            maybe id (setSchemaId . SchemaId) schema_id ]
+          act
+
+      testQuery name repo schema schema_id query result =
+        testEnv schema schema_id $ \env -> do
           r <- try $ angleQuery env repo query
           case result of
             Just n -> case r :: Either BadQuery UserQueryResults of
@@ -155,6 +164,33 @@ multiSchemaTest = TestCase $
             Nothing -> assertBool name $ case r of
               Left{} -> True
               _ -> False
+
+      testQueryFacts name repo schema schema_id query ty results =
+        testEnv schema schema_id $ \env -> do
+          -- get fids
+          fids <- do
+            UserQueryResults{..} <- userQuery env repo def
+              { userQuery_query = query
+              , userQuery_options = Just def
+                { userQueryOptions_syntax = QuerySyntax_ANGLE
+                }
+              , userQuery_encodings = [ UserQueryEncoding_bin def ]
+              }
+            UserQueryEncodedResults_bin b <- return userQueryResults_results
+            return $ Map.keys (userQueryResultsBin_facts b)
+
+          -- ask for facts
+          r <- try $ userQueryFacts env repo def
+            { userQueryFacts_facts =
+                [ def { factQuery_id = fromIntegral fid } | fid <- fids ]
+            , userQueryFacts_encodings = [ UserQueryEncoding_bin def ]
+            }
+
+          -- check that the result is as expected
+          decoded <- decodeResults ty userQueryResultsBin_facts r
+          case decoded of
+            Left err -> assertFailure err
+            Right values -> assertEqual name values results
 
       v0_facts =
         [ mkBatch (PredicateRef "z.R" 1)
@@ -214,6 +250,10 @@ multiSchemaTest = TestCase $
     testQuery "multi 3d" repo1 schema_index_file_1 (Just "v0")
       "derived.D _" (Just 1)
       -- this should be a type error, P doesn't have the b field
+    -- check that the results gets transformed according to the schema_id.
+    testQueryFacts "multi 3d" repo1 schema_index_file_1 (Just "v0") "x.P _"
+      (RecordTy [FieldDef "a" StringTy])
+      [RTS.Tuple [RTS.String "xyz"]]
 
     -- query repo1 with index 1, don't ask for v0
     testQuery "multi 4a" repo1 schema_index_file_1 Nothing "x.P _" (Just 1)
@@ -222,6 +262,9 @@ multiSchemaTest = TestCase $
       "y.Q { p = { b = 3 }}" (Just 1)
     testQuery "multi 4d" repo1 schema_index_file_1 Nothing
       "derived.D _" (Just 1)
+    testQueryFacts "multi 4e" repo1 schema_index_file_1 Nothing "x.P _"
+      (RecordTy [FieldDef "a" StringTy, FieldDef "b" NatTy ])
+      [RTS.Tuple [RTS.String "xyz", RTS.Nat 3]]
 
     -- query repo1 with index 1, explicitly ask for schema v1
     testQuery "multi 5a" repo1 schema_index_file_1 (Just "v1") "x.P _" (Just 1)
@@ -230,6 +273,9 @@ multiSchemaTest = TestCase $
       "y.Q { p = { b = 3 }}" (Just 1)
     testQuery "multi 5d" repo1 schema_index_file_1 (Just "v1")
       "derived.D _" (Just 1)
+    testQueryFacts "multi 4e" repo1 schema_index_file_1 (Just "v1") "x.P _"
+      (RecordTy [FieldDef "a" StringTy, FieldDef "b" NatTy ])
+      [RTS.Tuple [RTS.String "xyz", RTS.Nat 3]]
 
     -- if we downgraded the schema, so the repo has a later version
     -- than the global schema, these queries should still work

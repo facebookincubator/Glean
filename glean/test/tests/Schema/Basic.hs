@@ -340,8 +340,16 @@ schemaTypeShadowing = TestCase $ do
         , [s|{ "key": 2 }|]
         ]
     ]
-    [s| x.P (x.Q _) |]
-    $ \_ response _ ->
+    $ \env repo _ -> do
+      let
+        runQuery env repo q = userQuery env repo $ def
+          { userQuery_query = q
+          , userQuery_options = Just def
+            { userQueryOptions_syntax = QuerySyntax_ANGLE }
+          }
+
+      response <- try $ runQuery env repo [s| x.P (x.Q _) |]
+      print (response :: Either BadQuery UserQueryResults)
       -- This used to silently default to the latest version, but now
       -- we give an ambiguity error.  It's your responsibility to make
       -- sure there are no overlapping names exposed by the "all"

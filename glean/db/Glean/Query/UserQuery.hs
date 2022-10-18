@@ -59,8 +59,9 @@ import qualified Glean.Angle.Parser as Angle
 import Glean.Angle.Types hiding (Type, FieldDef, SourcePat_(..))
 import qualified Glean.Angle.Types as Angle
 import qualified Glean.Internal.Types as Thrift
-import Glean.Schema.Types (ResolvedType)
 import qualified Glean.Backend.Types as Backend
+import Glean.Schema.Types
+  (ResolvedType, RefTarget(..), LookupResult(..), NameEnv, resolveRef)
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Schema.Types
 import Glean.Database.Open
@@ -157,7 +158,7 @@ genericUserQueryFacts env repo query enc = do
   config <- Observed.get (envServerConfig env)
   readDatabase env repo $ \odb lookup ->
     performUserQuery enc (odbSchema odb) $
-      userQueryFactsImpl (odbSchema odb) config lookup query
+      userQueryFactsImpl env (odbSchema odb) config lookup query
 
 -- | Results returned from a query, parametrised of the types of facts and
 -- statistics
@@ -405,7 +406,8 @@ pidDetails schema ty = do
     Just d -> return d
 
 userQueryFactsImpl
-  :: DbSchema
+  :: Database.Env
+  -> DbSchema
   -> ServerConfig.Config
   -> Lookup
   -> Thrift.UserQueryFacts
@@ -413,12 +415,17 @@ userQueryFactsImpl
      -- The length of the result list is guaranteed to be the same
      -- as the userQueryFacts_facts list in the input.
 userQueryFactsImpl
-    DbSchema{..}
+    env
+    schema@DbSchema{..}
     config
     lookup
-    Thrift.UserQueryFacts{..} = do
+    query@Thrift.UserQueryFacts{..} = do
   let opts = fromMaybe def userQueryFacts_options
       limits = mkQueryRuntimeOptions opts config
+
+  schemaSelector <- schemaVersionForQuery env schema config Nothing
+      userQueryFacts_schema_version
+      userQueryFacts_schema_id
 
   vlog 2 $ "userQueryFactsImpl: " <> show (length userQueryFacts_facts)
   qResults@QueryResults{..} <- do
@@ -428,8 +435,12 @@ userQueryFactsImpl
     let stack = stacked lookup derived
     bracket
       (compileQueryFacts userQueryFacts_facts)
-      (release . compiledQuerySub) $ \sub ->
-        executeCompiled schemaInventory Nothing stack sub limits
+      (release . compiledQuerySub) $ \sub -> do
+        results <- executeCompiled schemaInventory Nothing stack sub limits
+        appliedTrans <- either (throwIO . Thrift.BadQuery) return $
+          userQueryFactsTransformations schemaSelector schema query results
+        -- use Pids in result facts to apply a suitable transformation if neded.
+        return $ transformResultsBack appliedTrans results
 
   stats <- getStats qResults
 
@@ -452,6 +463,53 @@ userQueryFactsImpl
   return $ if Thrift.userQueryOptions_omit_results opts
      then withoutFacts results
      else results
+
+userQueryFactsTransformations
+  :: SchemaSelector
+  -> DbSchema
+  -> Thrift.UserQueryFacts
+  -> QueryResults
+  -> Either Text Transformations
+userQueryFactsTransformations selector schema query results = do
+  nameEnv <-  maybe (Left "invalid schema_id") return $ do
+    schemaNameEnv schema selector
+
+  let predRefs :: [PidRef]
+      predRefs = mapMaybe (toPidRef nameEnv) sourceRefs
+
+      -- a type containing all types in the response
+      allTypes :: Type
+      allTypes = Angle.RecordTy
+        [ Angle.FieldDef "" (PredicateTy predId) | predId <- predRefs ]
+
+  -- errors if multiple versions of the same predicate are requested.
+  transformationsFor schema allTypes
+  where
+    sourceRefs :: [SourceRef]
+    sourceRefs = mapMaybe toRef $ Set.toList vset
+      where
+        vset :: Set (Pid, Maybe Version)
+        vset = Vector.foldr insert mempty zipped
+        zipped = Vector.zip (queryResultsFacts results) versions
+        insert ((_, fact), version) acc =
+          Set.insert (Pid $ Thrift.fact_type fact, version) acc
+
+        versions :: Vector (Maybe Version)
+        versions = Vector.fromList $
+          Thrift.factQuery_predicate_version <$>
+            Thrift.userQueryFacts_facts query
+
+        toRef :: (Pid, Maybe Version) -> Maybe SourceRef
+        toRef (pid, mversion) = do
+          details <- lookupPid pid schema
+          let PredicateRef name _ = predicateRef details
+          return $ SourceRef name mversion
+
+    toPidRef :: NameEnv RefTargetId -> SourceRef -> Maybe PidRef
+    toPidRef nameEnv ref = do
+      ResolvesTo (RefPred predId) <- return $ resolveRef nameEnv ref
+      details <- lookupPredicateId predId schema
+      return (pidRef details)
 
 -- | A version of userQuery where we only care about the resulting writes
 -- caused by the query. Used for stored predicate derivation.
@@ -814,7 +872,7 @@ userQueryImpl
       Nothing -> do
         let
           oops = throwIO . Thrift.BadQuery . ("invalid JSON query: " <>)
-          get_facts ids = userQueryFactsImpl schema config lookup def
+          get_facts ids = userQueryFactsImpl env schema config lookup def
             { Thrift.userQueryFacts_facts =
               [ def { Thrift.factQuery_id = i
                     , Thrift.factQuery_predicate_version =

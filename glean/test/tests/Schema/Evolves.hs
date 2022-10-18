@@ -9,14 +9,13 @@
 {-# LANGUAGE QuasiQuotes #-}
 module Schema.Evolves (main) where
 
-import Data.ByteString (ByteString)
 import Control.Exception
-import Data.Bifunctor (first)
 import Data.Default (def)
 import Data.Maybe (fromMaybe)
 import Data.List
 import qualified Data.Map as Map
-import Data.Text (pack, unpack)
+import Data.Text (Text, pack, unpack)
+import Data.Text.Encoding (encodeUtf8)
 import Test.HUnit
 
 import TestRunner
@@ -25,7 +24,7 @@ import Util.String.Quasi
 import Glean.Angle.Types (latestAngleVersion, Type_(..))
 import Glean.Database.Schema.Types
 import Glean.Init
-import qualified Glean.RTS as RTS
+import Glean (userQuery, userQueryFacts)
 import qualified Glean.RTS.Term as RTS
 import qualified Glean.RTS.Types as RTS
 import Glean.Schema.Util
@@ -451,7 +450,7 @@ schemaEvolvesTransformations =
   in
   TestList
   [ TestLabel "backcompat - remove optional field" $ TestCase $ do
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate P: { a : nat }
@@ -471,7 +470,7 @@ schemaEvolvesTransformations =
         assertEqual "result count" 1 (length facts)
 
   , TestLabel "backcompat - fill optional field's default value" $ TestCase $ do
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate P: { a : nat, b: maybe string }
@@ -492,7 +491,7 @@ schemaEvolvesTransformations =
 
   , TestLabel "forwardcompat - maps new optional field to default value" $
     TestCase $
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate P : { a : string }
@@ -514,7 +513,7 @@ schemaEvolvesTransformations =
 
   , TestLabel "forwardcompat - matches new field against default value" $
     TestCase $
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate P : { a : string }
@@ -540,7 +539,7 @@ schemaEvolvesTransformations =
 
   , TestLabel "forwardcompat - binds new field's default value" $
     TestCase $
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate P : { a : string }
@@ -561,7 +560,7 @@ schemaEvolvesTransformations =
         assertEqual "result content" [nothing] facts
 
   , TestLabel "backcompat - change field order" $ TestCase $ do
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate P: { a : string, b: nat }
@@ -583,7 +582,7 @@ schemaEvolvesTransformations =
         assertEqual "result count" 2 (length facts)
 
   , TestLabel "forwardcompat - change field order" $ TestCase $ do
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate P: { a : string, b: nat }
@@ -605,7 +604,7 @@ schemaEvolvesTransformations =
         assertEqual "result count" 2 (length facts)
 
   , TestLabel "backcompat - change alternative order" $ TestCase $ do
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate P: { a : string | b: nat }
@@ -627,7 +626,7 @@ schemaEvolvesTransformations =
         assertEqual "result count" 2 (length facts)
 
   , TestLabel "forwardcompat - change alternative order" $ TestCase $ do
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate P: { a : string | b: nat }
@@ -650,7 +649,7 @@ schemaEvolvesTransformations =
 
   , TestLabel "backcompat - maps new sum alternatives to unknown values" $
     TestCase $ do
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate P : { b : string | }
@@ -678,7 +677,7 @@ schemaEvolvesTransformations =
 
   , TestLabel "backcompat - maps new enum alternatives to unknown values" $
     TestCase $ do
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate P : { b | }
@@ -705,7 +704,7 @@ schemaEvolvesTransformations =
           [unknown, RTS.Alt 0 (RTS.Tuple []), unknown] facts
 
   , TestLabel "transform nested facts" $ TestCase $ do
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate P: { a : Q }
@@ -734,8 +733,58 @@ schemaEvolvesTransformations =
         nested <- decodeNestedAs (SourceRef "x.Q" (Just 1)) byRef response
         assertEqual "nested count" 2 (length nested)
 
-  , TestLabel "transform nested record" $ TestCase $ do
+  , TestLabel "transform nested facts in userQueryFacts" $ TestCase $ do
     withSchemaAndFacts []
+      [s|
+        schema x.1 {
+          predicate P: { a : Q }
+          predicate Q: { x: string }
+        }
+        schema x.2 {
+          predicate P: { a: Q, b: maybe string }
+          predicate Q: { x: string, y: maybe nat }
+        }
+        schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
+      |]
+      [ mkBatch (PredicateRef "x.Q" 2)
+          [ [s|{ "id": 1, "key": { "x": "A", "y": 1 } }|]
+          , [s|{ "id": 2, "key": { "x": "B", "y": 2 } }|]
+          ]
+      , mkBatch (PredicateRef "x.P" 2)
+          [ [s|{ "key": { "a": 1, "b": "A" } }|]
+          , [s|{ "key": { "a": 2, "b": "B" } }|]
+          ]
+      ]
+      $ \env repo schema -> do
+        -- get all P.2 facts
+        response <- userQuery env repo $ def
+          { userQuery_query = "x.P.2 _"
+          , userQuery_options = Just def
+            { userQueryOptions_syntax = QuerySyntax_ANGLE }
+          , userQuery_encodings = [ UserQueryEncoding_bin def ]
+          }
+        fids <- factIds response
+
+        -- ask for P.2 facts by Id as P.1
+        response <- try $ userQueryFacts env repo $ def
+          { userQueryFacts_facts =
+              [ def
+                  { factQuery_id = fromIntegral fid
+                  , factQuery_predicate_version = Just 1
+                  , factQuery_recursive = True
+                  }
+              | fid <- fids ]
+          , userQueryFacts_encodings = [ UserQueryEncoding_bin def ]
+          }
+
+        facts <- decodeResultsAs (SourceRef "x.P" (Just 1)) schema response
+        assertEqual "result count" 2 (length facts)
+        nested <- decodeNestedAs (SourceRef "x.Q" (Just 1)) schema response
+        assertEqual "nested count" 2 (length nested)
+
+  , TestLabel "transform nested record" $ TestCase $ do
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           type T = { a: string }
@@ -772,7 +821,7 @@ schemaEvolvesTransformations =
           ] facts
 
   , TestLabel "uses transformed record for prefix search" $ TestCase $ do
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate P: {x: nat, y: { a: string, b: enum { One | Two | Three }}}
@@ -802,7 +851,7 @@ schemaEvolvesTransformations =
         assertEqual "facts searched" 1 searched
 
   , TestLabel "change within type" $ TestCase $ do
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate P: T
@@ -829,7 +878,7 @@ schemaEvolvesTransformations =
         assertEqual "result count" 3 (length facts)
 
   , TestLabel "no mapping when schema has facts" $ TestCase $ do
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate P : { a : nat }
@@ -854,7 +903,7 @@ schemaEvolvesTransformations =
         assertEqual "result count" 1 (length facts)
 
   , TestLabel "non-evolved derived predicate with imports" $ TestCase $ do
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate P : { a : nat }
@@ -882,7 +931,7 @@ schemaEvolvesTransformations =
         assertEqual "nested count" 1 (length nested)
 
   , TestLabel "non-evolved derived predicate with inheritance" $ TestCase $ do
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate P : { a : nat }
@@ -910,7 +959,7 @@ schemaEvolvesTransformations =
         assertEqual "nested count" 1 (length nested)
 
   , TestLabel "query matching order" $ TestCase $ do
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema base.1 {
           predicate N : nat
@@ -945,7 +994,7 @@ schemaEvolvesTransformations =
         assertEqual "result count" 1 (length facts)
 
   , TestLabel "query variable" $ TestCase $ do
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate P : nat
@@ -978,7 +1027,7 @@ schemaEvolvesTransformations =
         assertEqual "nested count" 2 (length nested)
 
   , TestLabel "whole key assigned to variable - remove fields" $ TestCase $ do
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate P : { a : string }
@@ -1003,7 +1052,7 @@ schemaEvolvesTransformations =
         assertEqual "result" [RTS.Tuple [RTS.String "A"]] facts
 
   , TestLabel "whole key assigned to variable - fill defaults" $ TestCase $ do
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate P : { a : string }
@@ -1039,7 +1088,7 @@ schemaEvolvesTransformations =
           facts
 
   , TestLabel "derived pred fields" $ TestCase $ do
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate P : { x : nat, y : string }
@@ -1065,7 +1114,7 @@ schemaEvolvesTransformations =
         assertEqual "result count" 2 (length facts)
 
   , TestLabel "predicate derivation" $ TestCase $ do
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate P : nat
@@ -1096,7 +1145,7 @@ schemaEvolvesTransformations =
         assertEqual "result count" 1 (length facts)
 
   , TestLabel "predicate value" $ TestCase $ do
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate P : { x : nat, y : string }
@@ -1123,7 +1172,7 @@ schemaEvolvesTransformations =
         assertEqual "result count" 1 (length facts)
 
   , TestLabel "derived predicate value" $ TestCase $ do
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate P : { x : nat, y : string }
@@ -1149,7 +1198,7 @@ schemaEvolvesTransformations =
         assertEqual "result count" 2 (length facts)
 
   , TestLabel "subquery in primcall" $ TestCase $ do
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate P : { x : nat, y : string }
@@ -1173,7 +1222,7 @@ schemaEvolvesTransformations =
         assertEqual "result count" 1 (length facts)
 
   , TestLabel "array elements" $ TestCase $ do
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate P : { x : nat, y : string }
@@ -1201,7 +1250,7 @@ schemaEvolvesTransformations =
         assertEqual "result count" 2 (length facts)
 
   , TestLabel "named type inside alts" $ TestCase $ do
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           type T = { a: string, b: nat }
@@ -1225,7 +1274,7 @@ schemaEvolvesTransformations =
         assertEqual "result count" 2 (length facts)
 
   , TestLabel "negation" $ TestCase $ do
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate P : { x : nat, y : string }
@@ -1250,7 +1299,7 @@ schemaEvolvesTransformations =
         assertEqual "result count" 1 (length facts)
 
   , TestLabel "multiple evolved, same pred" $ TestCase $ do
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate N : nat
@@ -1282,7 +1331,7 @@ schemaEvolvesTransformations =
               `isInfixOf` show badQuery)
 
   , TestLabel "explicit fact id" $ TestCase $ do
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate P : { x: nat }
@@ -1299,15 +1348,15 @@ schemaEvolvesTransformations =
       ]
       [s| x.P.1 _ |]
       $ \byRef (Right results) runQuery -> do
-        bin <- binResults results
-        let factId = head $ Map.keys $ userQueryResultsBin_facts bin
+        fids <- factIds results
+        let factId = head fids
 
         response <- runQuery $ "$" <> pack (show factId) <> " : x.P.1"
         facts <- decodeResultsAs (SourceRef "x.P" (Just 1)) byRef response
         assertEqual "result count" 1 (length facts)
 
   , TestLabel "correct return type" $ TestCase $ do
-    withSchemaAndFacts []
+    withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate P : { x: nat }
@@ -1328,33 +1377,65 @@ schemaEvolvesTransformations =
         assertEqual "result type" "x.P.1" ty
   ]
   where
-    decodeResultsAs _ _ (Left err) = assertFailure $ "BadQuery: " <> show err
-    decodeResultsAs ref byRef (Right results) =  do
-      decodeResultFacts userQueryResultsBin_facts (keyType ref byRef) results
+    -- run a userQuery using the given schemas and facts
+    withSchemaAndFactsQ
+      :: String                  -- ^ schema
+      -> [JsonFactBatch]         -- ^ db contents
+      -> Text                    -- ^ initial query
+      -> ( DbSchema
+        -> Either BadQuery UserQueryResults                -- query response
+        -> (Text -> IO (Either BadQuery UserQueryResults)) -- run more queries
+        -> IO a )
+      -> IO a
+    withSchemaAndFactsQ schema facts query act =
+      withSchemaAndFacts [] schema facts $ \env repo dbSchema -> do
+      let run q = do
+            response <- try $ runQuery env repo (encodeUtf8 q)
+            print (response :: Either BadQuery UserQueryResults)
+            return response
+      res <- run query
+      act dbSchema res run
+      where
+        runQuery env repo q = userQuery env repo $ def
+          { userQuery_query = q
+          , userQuery_options = Just def
+            { userQueryOptions_syntax = QuerySyntax_ANGLE
+            , userQueryOptions_recursive = True
+            , userQueryOptions_collect_facts_searched = True
+            , userQueryOptions_debug = def
+              { queryDebugOptions_bytecode = False
+              , queryDebugOptions_ir = False
+              }
+            }
+          , userQuery_encodings = [ UserQueryEncoding_bin def ]
+          }
 
-    decodeResultsAsTy _ (Left err) = assertFailure $ "BadQuery: " <> show err
-    decodeResultsAsTy ty (Right results) =  do
-      decodeResultFacts userQueryResultsBin_facts ty results
+    factIds :: UserQueryResults -> IO [Id]
+    factIds results =
+      case userQueryResults_results results of
+        UserQueryEncodedResults_bin bin ->
+          return $ Map.keys $ userQueryResultsBin_facts bin
+        _ ->
+          assertFailure "wrong encoding"
 
-    decodeNestedAs _ _ (Left err) = assertFailure $ "BadQuery: " <> show err
-    decodeNestedAs ref byRef (Right results) = do
-      decodeResultFacts userQueryResultsBin_nestedFacts
-        (keyType ref byRef) results
+    decodeResultsAs
+      :: SourceRef
+      -> DbSchema
+      -> Either BadQuery UserQueryResults
+      -> IO [RTS.Value]
+    decodeResultsAs ref schema eresults = do
+      res <- decodeResults
+        (keyType ref schema) userQueryResultsBin_facts eresults
+      either assertFailure return res
 
-    decodeResultFacts f ty results = do
-      bin <- binResults results
-      let keys = fmap fact_key $ Map.elems $ f bin
-      decoded <- sequence <$> mapM (decodeAs ty) keys
-      case decoded of
-        Right values -> return values
-        Left err ->
-          assertFailure $ "unable to decode : " <> show err
+    decodeNestedAs ref schema eresults = do
+      res <- decodeResults
+        (keyType ref schema) userQueryResultsBin_nestedFacts eresults
+      either assertFailure return res
 
-    binResults :: UserQueryResults -> IO UserQueryResultsBin
-    binResults UserQueryResults{..} =
-      case userQueryResults_results of
-        UserQueryEncodedResults_bin b -> return b
-        _ -> assertFailure "wrong encoding"
+    decodeResultsAsTy ty eresults =  do
+      res <- decodeResults ty userQueryResultsBin_facts eresults
+      either assertFailure return res
 
     keyType
       :: SourceRef
@@ -1365,25 +1446,6 @@ schemaEvolvesTransformations =
         Left err -> error $ "can't find predicate: " <>
           unpack (showRef ref) <> ": " <> unpack err
         Right details -> predicateKeyType details
-
-    decodeAs :: RTS.Type -> ByteString -> IO (Either String RTS.Value)
-    decodeAs ty bs = do
-      print bs
-      fmap (first showException) $ try $ evaluate
-        $ RTS.toValue (withUnknown $ RTS.repType ty) bs
-      where
-        showException (RTS.DecodingException e) = e
-        -- we want to decode binary values that contain the unknown alternative
-        withUnknown rep = case rep of
-          RTS.ByteRep -> rep
-          RTS.NatRep -> rep
-          RTS.ArrayRep elty -> RTS.ArrayRep $ withUnknown elty
-          RTS.TupleRep tys -> RTS.TupleRep $ fmap withUnknown tys
-          RTS.SumRep tys ->
-            let unknown = RTS.TupleRep [] in
-            RTS.SumRep $ fmap withUnknown tys ++ [unknown]
-          RTS.StringRep -> rep
-          RTS.PredicateRep _ -> rep
 
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList $

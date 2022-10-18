@@ -13,14 +13,18 @@ module Schema.Lib
   , angleQuery
   , mkBatch
   , mkAngleQuery
+  , decodeResults
   ) where
 
+import Control.Monad.IO.Class (liftIO)
+import Control.Monad.Trans.Except
 import Data.ByteString (ByteString)
+import Data.Map (Map)
 import Control.Exception
 import Control.Monad
 import Data.Default
 import qualified Data.Map as Map
-import Data.Text (Text, pack)
+import Data.Text (pack)
 import Data.Text.Encoding (encodeUtf8)
 import System.FilePath
 import System.IO.Temp
@@ -37,6 +41,10 @@ import Glean.Database.Schema.Types
 import Glean.Database.Schema
 import Glean.Types as Thrift
 import Glean.Write.JSON
+
+import qualified Glean.RTS as RTS
+import qualified Glean.RTS.Term as RTS
+import qualified Glean.RTS.Types as RTS
 
 angleQuery :: Env -> Repo -> ByteString -> IO UserQueryResults
 angleQuery env repo q = userQuery env repo $ mkAngleQuery q
@@ -57,17 +65,57 @@ mkAngleQuery q = def
     }
   }
 
+decodeResults
+  :: RTS.Type
+  -> (UserQueryResultsBin -> Map Id Fact) -- facts/nested
+  -> Either BadQuery UserQueryResults
+  -> IO (Either String [RTS.Value])
+decodeResults ty getFacts eitherRes = runExceptT $ do
+  results <- case eitherRes of
+    Left err -> fail $ "BadQuery: " <> show err
+    Right r -> return r
+  bin <- binResults results
+  let keys = fmap fact_key $ Map.elems $ getFacts bin
+  mapM (decodeAs ty) keys
+  where
+    binResults :: UserQueryResults -> ExceptT String IO UserQueryResultsBin
+    binResults UserQueryResults{..} =
+      case userQueryResults_results of
+        UserQueryEncodedResults_bin b -> return b
+        _ -> fail "wrong encoding"
+
+    decodeAs :: RTS.Type -> ByteString -> ExceptT String IO RTS.Value
+    decodeAs ty bs = do
+      res <- liftIO $ try $ do
+        print bs
+        evaluate $ RTS.toValue (withUnknown $ RTS.repType ty) bs
+      case res of
+        Left e -> fail $ "unable to decode : " <> showException e
+        Right val -> return val
+      where
+        showException (RTS.DecodingException e) = e
+        -- we want to decode binary values that contain the unknown alternative
+        withUnknown rep = case rep of
+          RTS.ByteRep -> rep
+          RTS.NatRep -> rep
+          RTS.ArrayRep elty -> RTS.ArrayRep $ withUnknown elty
+          RTS.TupleRep tys -> RTS.TupleRep $ fmap withUnknown tys
+          RTS.SumRep tys ->
+            let unknown = RTS.TupleRep [] in
+            RTS.SumRep $ fmap withUnknown tys ++ [unknown]
+          RTS.StringRep -> rep
+          RTS.PredicateRep _ -> rep
+
+-- | Used to test schema transformations
+-- Runs the callback on a read-only version of a db with the
+-- given schema and facts.
 withSchemaAndFacts
   :: [Setting]
-  -> String                    -- ^ schema
-  -> [JsonFactBatch]           -- ^ db contents
-  -> Text                    -- ^ initial query
-  -> ( DbSchema
-    -> Either BadQuery UserQueryResults                  -- query response
-    -> (Text -> IO (Either BadQuery UserQueryResults)) -- run more queries
-    -> IO a )
+  -> String                  -- ^ schema
+  -> [JsonFactBatch]         -- ^ db contents
+  -> ( Env -> Repo -> DbSchema -> IO a)
   -> IO a
-withSchemaAndFacts customSettings schema facts query act =
+withSchemaAndFacts customSettings schema facts act =
   withSchemaFile latestAngleVersion schema $ \root file -> do
   let settings =
         [ setRoot root
@@ -86,31 +134,11 @@ withSchemaAndFacts customSettings schema facts query act =
       $ processOneSchema Map.empty $ encodeUtf8 $ pack schema
     newDbSchema schema LatestSchemaAll readWriteContent
 
-  let run q = do
-        -- open db for querying
-        -- We need to open the db again because schema evolutions are
-        -- only triggered when the db is read-only
-        response <- withTestEnv settings $ \env ->
-          try $ runQuery env repo (encodeUtf8 q)
-        print (response :: Either BadQuery UserQueryResults)
-        return response
-
-  res <- run query
-  act dbSchema res run
-  where
-    runQuery env repo q = userQuery env repo $ def
-      { userQuery_query = q
-      , userQuery_options = Just def
-        { userQueryOptions_syntax = QuerySyntax_ANGLE
-        , userQueryOptions_recursive = True
-        , userQueryOptions_collect_facts_searched = True
-        , userQueryOptions_debug = def
-          { queryDebugOptions_bytecode = False
-          , queryDebugOptions_ir = False
-          }
-        }
-      , userQuery_encodings = [ UserQueryEncoding_bin def ]
-      }
+  -- open db for querying
+  -- We need to open the db again because schema evolutions are
+  -- only triggered when the db is read-only
+  withTestEnv settings $ \env ->
+    act env repo dbSchema
 
 withSchemaFile :: Int -> String -> (FilePath -> FilePath -> IO a) -> IO a
 withSchemaFile version str action = do
