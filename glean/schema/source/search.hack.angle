@@ -122,6 +122,56 @@ predicate SearchNamespace :
   NS = hack.NamespaceDeclaration { name = NSQ };
   hack.Declaration { namespace_ = NS } = Decl
 
+# Find property in a parent container (class or trait)
+#
+predicate SearchPropertyInContainer :
+  {
+    name : hack.Name,
+    containerName : hack.Name,
+    containerNamespace : maybe hack.NamespaceQName,
+    decl : hack.Declaration
+  }
+  { N, ParentName, ParentNamespace, D } where
+  ParentQName = hack.QName {name = ParentName, namespace_ = ParentNamespace};
+  hack.ClassDefinition { declaration = { name = ParentQName }, members = Mems} |
+  hack.TraitDefinition { declaration = { name = ParentQName }, members = Mems};
+  D = Mems[..];
+  D = { property_ = { name = N }} : hack.Declaration;
+
+# Find classConst, method, and typeConst in any parent container
+# (class, interface, or trait)
+predicate SearchInContainerNoProperty :
+  {
+    name : hack.Name,
+    containerName : hack.Name,
+    containerNamespace : maybe hack.NamespaceQName,
+    decl : hack.Declaration
+  }
+  { N, ParentName, ParentNamespace, D } where
+  ParentQName = hack.QName {name = ParentName, namespace_ = ParentNamespace};
+  hack.ClassDefinition { declaration = { name = ParentQName }, members = Mems} |
+  hack.InterfaceDefinition { declaration = { name = ParentQName }, members = Mems} |
+  hack.TraitDefinition { declaration = { name = ParentQName }, members = Mems};
+  D = Mems[..];
+  D = (
+    { classConst = { name = N }} |
+    { method = {name = N}} |
+    {typeConst = {name = N}}
+  ) : hack.Declaration;
+
+predicate SearchInContainerOrEnumNoProperty :
+  {
+    name : hack.Name,
+    contextName : hack.Name,
+    contextNamespace : maybe hack.NamespaceQName,
+    decl : hack.Declaration
+  }
+  { N, ParentName, ParentNamespace, Decl } where
+    Decl = (
+      hack.QName { name = ParentName, namespace_ = ParentNamespace};
+      ( SearchInContainerNoProperty { N, ParentName, ParentNamespace, D }; D) |
+      ( SearchInEnum { N, ParentName, ParentNamespace, D}; D)
+    )
 
 # Either a namespace or a decl in a namespace
 predicate SearchNamespacedDecl :
