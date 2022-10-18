@@ -59,6 +59,9 @@ instance LogRequest DocumentSymbolsRequest where
 instance LogRequest SymbolId where
   logRequest = logSymbolSG Logger.setSymbol
 
+instance LogRequest USR where
+  logRequest (USR hash) = logSymbolSG Logger.setSymbol (SymbolId hash)
+
 instance LogRequest SymbolPath where
   logRequest = logSymbolPathSG Logger.setFilepath Logger.setRepo
 
@@ -156,6 +159,11 @@ instance LogResult RelatedNeighborhoodResult where
             )
       )
 
+instance LogResult USRSymbolDefinition where
+  logResult (USRSymbolDefinition{..}, log) = log <>
+    logResult (uSRSymbolDefinition_location, log) <>
+    Logger.setItemCount 1
+
 instance LogResult [RelatedSymbols] where
   logResult (edges, log) = log <> Logger.setItemCount (length edges)
 
@@ -231,6 +239,9 @@ instance LogError ErrorTy where
 
 instance LogError Glean.Repo where
   logError = logRepoSG Errors.setRepoName Errors.setRepoHash
+
+instance LogError USR where
+  logError (USR hash) = Errors.setSymbol hash
 
 instance LogError (NonEmpty (a, Glean.Repo)) where
   logError = logError . NE.map snd

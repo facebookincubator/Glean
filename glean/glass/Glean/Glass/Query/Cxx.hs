@@ -13,6 +13,7 @@ module Glean.Glass.Query.Cxx
   (
     documentSymbolsForCxx,
     fileIncludeLocationsForCxx,
+    usrHashToDeclaration
   ) where
 
 import Data.Maybe ( catMaybes )
@@ -546,6 +547,31 @@ fileIncludeLocations mlimit fileId = do
     -- don't overwhelm things. c.f PPTrace { file = folly/Optional.h }
     -- also the query gets quite large
     traceMaxLimit = 10
+
+usrHashToDeclaration
+  :: Text -> Glean.RepoHaxl u w (Maybe (Code.Location, Code.Entity))
+usrHashToDeclaration usrhash = fetchDataRecursive (usrToDeclaration usrhash)
+
+-- | Resolve USR hash to possibly is definition site
+-- Returns nothing if the usr is a definition site already
+usrToDeclaration :: Text -> Angle (Code.Location, Code.Entity)
+usrToDeclaration usrhash =
+  vars $ \(decl :: Angle Cxx.Declaration) (entity :: Angle Cxx.Entity)
+      (loc :: Angle Code.Location) ->
+    tuple (loc, sig (alt @"cxx" entity) :: Angle Code.Entity) `where_` [
+      wild .= predicate @Cxx.USRToDeclaration (
+        rec $
+          field @"hash" (string usrhash) $
+          field @"declaration" decl
+        end),
+      wild .= predicate @Code.CxxDeclToDefXRefTargetLocation (
+        rec $
+          field @"decl" decl $
+          field @"entity" entity $
+          field @"location" loc
+        end
+      )
+    ]
 
 --
 -- #include resolution acceleration. We can quickly return target filepaths

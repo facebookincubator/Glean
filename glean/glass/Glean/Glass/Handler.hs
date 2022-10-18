@@ -41,6 +41,7 @@ module Glean.Glass.Handler
 
   -- * C++ specific methods
   , fileIncludeLocations
+  , clangUSRToDefinition
 
   ) where
 
@@ -144,6 +145,8 @@ import Glean.Glass.Types
       Attributes,
       FileIncludeLocationRequest(..),
       FileIncludeLocationResults(..),
+      USRSymbolDefinition(..),
+      USR(..),
       DefinitionSymbolX(DefinitionSymbolX),
       ReferenceRangeSymbolX(ReferenceRangeSymbolX),
       SearchBySymbolIdResult(SearchBySymbolIdResult),
@@ -388,6 +391,39 @@ fileIncludeLocations env@Glass.Env{..} req opts =
     depth | depth_ <= 0 = 1
           | otherwise = fromIntegral depth_
     mlimit = fromIntegral <$> requestOptions_limit opts
+
+-- | Lookup the USR in Glean to yield and entity,
+-- compute entity declToDef, return the pairs and other info.
+clangUSRToDefinition
+  :: Glass.Env
+  -> USR
+  -> RequestOptions
+  -> IO USRSymbolDefinition
+clangUSRToDefinition env@Glass.Env{..} usr@(USR hash) _opts = withRepoLanguage
+  "clangUSRToDefinition" env usr repo mlang $ \gleanDBs _ -> do
+    backendRunHaxl GleanBackend{..} $ do
+      result <- firstOrErrors $ queryEachRepo $ do
+        rev <- getRepoHash <$> Glean.haxlRepo
+        mdefn <- Cxx.usrHashToDeclaration hash
+        case mdefn of
+          Nothing -> -- either hash is unknown or decl is already defn
+            pure (Left (EntitySearchFail "No definition result for hash"))
+          Just (Code.Location{..},_entity) -> do
+            range <- rangeSpanToLocationRange repo location_file
+              location_location
+            nameRange <- forM location_span
+              (memoRangeSpanToRange location_file . Code.RangeSpan_span)
+            pure (Right (USRSymbolDefinition {
+              uSRSymbolDefinition_location = range,
+              uSRSymbolDefinition_nameRange = nameRange,
+              uSRSymbolDefinition_revision = rev
+            }))
+      case result of
+        Left err -> throwM $ ServerException $ errorText err
+        Right defn -> return (defn, Nothing)
+  where
+    repo = RepoName "fbsource"
+    mlang = Just Language_Cpp
 
 -- | Scrub all glean types for export to the client
 -- And flatten to lists for GraphQL.

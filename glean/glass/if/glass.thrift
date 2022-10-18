@@ -31,6 +31,9 @@ typedef string Path (hs.newtype)
 // Unique revision identifier (repo-wide unique id)
 typedef string Revision (hs.newtype)
 
+// USR hash (Symbol string from ClangD hashed)
+typedef string USR (hs.newtype)
+
 // A line range in the file to restrict the query. start should be <= end, and
 // range is inclusive of end.
 struct LineRange {
@@ -498,6 +501,16 @@ struct FileIncludeLocationResults {
   3: XRefFileList references;
 }
 
+# Response to ClangD for what we know about a USR and its target definition
+struct USRSymbolDefinition {
+  // location of the definition (or fallback to decl)
+  2: LocationRange location;
+  // just the name target of the definition in same file as location
+  4: optional Range nameRange;
+  // actual revision used for results
+  5: Revision revision;
+}
+
 // Glass symbol service
 service GlassService extends fb303.FacebookService {
   // Return a list of symbols in the given file, with attributes
@@ -580,6 +593,12 @@ service GlassService extends fb303.FacebookService {
   // Resolve #include file paths to depth N
   FileIncludeLocationResults fileIncludeLocations(
     1: FileIncludeLocationRequest request,
+    2: RequestOptions options,
+  ) throws (1: ServerException e);
+
+  // Resolve declaration USR from ClangD to definition sites
+  USRSymbolDefinition clangUSRToDefinition(
+    1: USR hash,
     2: RequestOptions options,
   ) throws (1: ServerException e);
 }
