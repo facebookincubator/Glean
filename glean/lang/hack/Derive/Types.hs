@@ -19,6 +19,7 @@ import Data.Default
 import qualified Options.Applicative as O
 
 import qualified Glean
+import qualified Glean.Remote
 import qualified Glean.Types as Thrift (Repo)-- gen
 import Glean.Write.Async (SendQueueSettings(..), WriterSettings(..))
 import Glean.Write.Options (sendQueueOptions, writerOptions)
@@ -69,7 +70,7 @@ options = O.info (O.helper <*> (parserDerive O.<|> parserSchemaId)) O.fullDesc
         O.flag' SchemaId (O.long "schema-id" <> O.help "display schema-id")
 
     parserDerive :: O.Parser Command
-    parserDerive = Derive <$> ((,) <$> config <*> Glean.options)
+    parserDerive = Derive <$> ((,) <$> config <*> Glean.Remote.options)
 
     config  :: O.Parser Config
     config = do

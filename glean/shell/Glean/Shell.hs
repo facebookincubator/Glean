@@ -64,10 +64,10 @@ import Util.String
 import Util.Text
 import Util.TimeSec
 
-import qualified Glean hiding (options)
+import qualified Glean
 import qualified Glean.BuildInfo as BuildInfo
 import Glean.Angle.Types as SchemaTypes
-import Glean.Backend.Remote (clientInfo, StackedDbOpts(..))
+import Glean.Remote (clientInfo)
 import Glean.Database.Ownership
 import Glean.Database.Open
 import Glean.Database.Schema.ComputeIds (
@@ -77,7 +77,7 @@ import Glean.Database.Config (parseSchemaDir, SchemaIndex(..),
 import qualified Glean.Database.Config as DB (Config(..))
 import Glean.Indexer
 import Glean.Indexer.List
-import Glean.LocalOrRemote as Glean hiding (options)
+import Glean.LocalOrRemote as Glean hiding (options, withBackend)
 import Glean.RTS.Types (Pid(..), Fid(..))
 import Glean.RTS.Foreign.Query (interruptRunningQueries)
 import Glean.Schema.Types
@@ -277,7 +277,7 @@ displayStatistics :: String -> Eval ()
 displayStatistics arg =
   withRepo $ \repo ->
   withBackend $ \backend -> do
-  xs <- liftIO $ Glean.predicateStats backend repo ExcludeBase
+  xs <- liftIO $ Glean.predicateStats backend repo Glean.ExcludeBase
   preds <- forM (Map.toList xs) $ \(id,stats) -> do
     ref <- maybe (Left id) Right <$> lookupPid (Pid id)
     return (ref,stats)

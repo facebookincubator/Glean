@@ -19,16 +19,19 @@ import System.Exit
 
 import TestRunner
 
-import Glean
-import Glean.Write (parseRef)
-import Glean.Angle
+import Glean.Backend.Types (completePredicates)
 import Glean.Init
 import Glean.Database.Types
 import Glean.Database.Ownership
 import Glean.Database.Test
 import Glean.Derive
+import Glean.Schema.Util (parseRef)
 import qualified Glean.Schema.GleanTest as Glean.Test
 import qualified Glean.Schema.GleanTest.Types as Glean.Test
+import Glean.Query.Angle
+import Glean.Query.Thrift
+import Glean.Typed hiding (end)
+import Glean.Types
 
 
 {-

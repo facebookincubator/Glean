@@ -29,7 +29,7 @@ module Glean.Haxl
   , trySyncHaxl
   , getFirstResult
     -- * re-export
-  , Backend.initGlobalState
+  , initGlobalState
   ) where
 
 import Control.Arrow
@@ -40,10 +40,9 @@ import Data.Typeable
 import qualified Haxl.Core as Haxl
 import Haxl.Core.Monad
 import Haxl.DataSource.Glean
-import Haxl.DataSource.Glean.Backend as Backend
 import Util.Control.Exception ( isSyncException )
 
-import Glean.Backend.Remote
+import Glean.Backend.Types
 import Glean.Query.Thrift
 import Glean.Types
 import Glean.Typed
@@ -65,20 +64,20 @@ flatten = id
 type Haxl w = GenHaxl Repo (HaxlWrite w)
 
 -- | Initialize for Glean queries
-initHaxlEnv :: Backend be => be -> u -> IO (Haxl.Env u (HaxlWrite w))
+initHaxlEnv :: Backend b => b -> u -> IO (Haxl.Env u (HaxlWrite w))
 initHaxlEnv backend e = do
   (state1,state2) <- initGlobalState backend
   let st = Haxl.stateSet state1 $ Haxl.stateSet state2 Haxl.stateEmpty
   Haxl.initEnv st e
 
-runHaxl :: Backend be => be -> u -> GenHaxl u (HaxlWrite w) a -> IO a
+runHaxl :: Backend b => b -> u -> GenHaxl u (HaxlWrite w) a -> IO a
 runHaxl backend u h = do
   e <- initHaxlEnv backend u
   Haxl.runHaxl e h
 
 runHaxlWithWrites
-  :: Backend be
-  => be
+  :: Backend b
+  => b
   -> u
   -> GenHaxl u (HaxlWrite w) a
   -> IO (a, [w])

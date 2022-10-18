@@ -26,7 +26,6 @@ import Control.Monad
 import Control.Monad.IO.Class
 import Data.Coerce
 import Data.Default
-import Data.Hashable
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.IntMap as IntMap
@@ -39,58 +38,15 @@ import TextShow
 import Haxl.Core
 import Unsafe.Coerce
 
+import Glean.Backend.Types
 import Glean.Query.Thrift.Internal
 import Glean.Types
 import Glean.Typed as Typed
 
 
-data GleanGet p where
-  Get
-    :: (Typeable p, Show p, Predicate p)
-    => {-# UNPACK #-} !(IdOf p)
-    -> Bool
-    -> Repo
-    -> GleanGet p
-  GetKey
-    :: (Typeable p, Show p, Predicate p)
-    => {-# UNPACK #-} !(IdOf p)
-    -> Bool
-    -> Repo
-    -> GleanGet (KeyType p)
-
-deriving instance Show (GleanGet a)
-instance ShowP GleanGet where showp = show
-
-instance Eq (GleanGet p) where
-  (Get p rec repo) == (Get q rec' repo') =
-    p == q && rec == rec' && repo == repo'
-  (GetKey (p :: IdOf a) rec repo) == (GetKey (q :: IdOf b) rec' repo')
-    | Just Refl <- eqT @a @b = p == q && rec == rec' && repo == repo'
-    -- the KeyTypes being equal doesn't tell us that the predicates are
-    -- equal, so we need to check that with eqT here.
-  _ == _ = False
-
-instance Hashable (GleanGet a) where
-  hashWithSalt salt (Get p rec repo) =
-    hashWithSalt salt (0::Int, typeOf p, p, rec, repo)
-  hashWithSalt salt (GetKey p rec repo) =
-    hashWithSalt salt (1::Int, typeOf p, p, rec, repo)
-
-instance DataSourceName GleanGet where
-  dataSourceName _ = "GleanGet"
-
-type GleanFetcher = PerformFetch GleanGet
-
-instance StateKey GleanGet where
-  data State GleanGet = GleanGetState GleanFetcher
-
-instance DataSource u GleanGet where
-  fetch (GleanGetState fetcher) _ _ = fetcher
-
 {-# INLINE intId #-}
 intId :: IdOf p -> Id
 intId id = fromIntegral (fromFid (idOf id))
-
 
 mkRequest
   :: Maybe UserQueryClientInfo
@@ -167,45 +123,6 @@ putResults UserQueryResults{..} requests = do
 expectBinResults :: UserQueryEncodedResults -> IO UserQueryResultsBin
 expectBinResults (UserQueryEncodedResults_bin r) = return r
 expectBinResults _ = throwIO $ Exception "server returned the wrong encoding"
-
-
-{-
-Why is streaming handled behind the datasource abstraction instead of
-exposing resumable queries as a request?  Because exposing resumable
-queries as a Haxl data fetch would mean hashing the continuation and
-keeping it in the Haxl cache.
--}
-
-data GleanQuery r where
-  QueryReq
-    :: (Show q, Typeable q)
-    => Query q   -- The query
-    -> Repo
-    -> Bool -- stream all results?
-    -> GleanQuery ([q], Bool)
-
-deriving instance Show (GleanQuery q)
-instance ShowP GleanQuery where showp = show
-
-instance Eq (GleanQuery r) where
-  QueryReq (q1 :: Query a) repo1 s1 == QueryReq (q2 :: Query b) repo2 s2
-    | Just Refl <- eqT @a @b = q1 == q2 && repo1 == repo2 && s1 == s2
-  _ == _ = False
-
-instance Hashable (GleanQuery q) where
-  hashWithSalt salt (QueryReq q s repo) = hashWithSalt salt (q,s,repo)
-
-
-instance DataSourceName GleanQuery where
-  dataSourceName _ = "GleanQuery"
-
-type GleanQueryer = PerformFetch GleanQuery
-
-instance StateKey GleanQuery where
-  data State GleanQuery = GleanQueryState GleanQueryer
-
-instance DataSource u GleanQuery where
-  fetch (GleanQueryState queryer) _ _ = queryer
 
 
 putQueryResults

@@ -29,8 +29,8 @@ import Util.Control.Exception
 import Util.IO
 import Util.OptParse
 
-import Glean hiding (options)
-import Glean.Backend (loadDbSchema)
+import Glean
+import Glean.LocalOrRemote (loadDbSchema)
 import qualified Glean.LocalOrRemote as LocalOrRemote
 import Glean.Database.Schema
 import Glean.Datasource.Scribe.Write

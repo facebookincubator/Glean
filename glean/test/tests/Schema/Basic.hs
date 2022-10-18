@@ -31,7 +31,7 @@ import Util.EventBase
 import Util.String.Quasi
 
 import Glean.Angle.Types (latestAngleVersion)
-import Glean.Backend
+import Glean.Backend.Types
 import Glean.Database.Config
 import Glean.Database.Env
 import Glean.Database.Test

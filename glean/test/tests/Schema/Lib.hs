@@ -28,7 +28,7 @@ import System.IO.Temp
 import Util.Control.Exception
 
 import Glean.Angle.Types (latestAngleVersion)
-import Glean.Backend
+import Glean.Backend.Types
 import Glean.Database.Open
 import Glean.Database.Config
 import Glean.Database.Test

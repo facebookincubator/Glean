@@ -25,7 +25,7 @@ import Data.List (sort)
 import Data.Maybe
 #endif
 import qualified Data.Set as Set
-import Glean.Backend.Remote (DbShard, dbShard)
+import Glean.Backend.Types (dbShard)
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Catalog.Filter as Catalog
 import Glean.Database.Types ( Env(..) )
@@ -40,6 +40,7 @@ import Glean.Util.Observed (Observed)
 import qualified Glean.Util.Observed as Observed
 import Glean.Util.Periodic ( doPeriodically )
 import Glean.Util.ShardManager
+import Glean.Util.ThriftService (DbShard)
 import Glean.Util.Time ( seconds )
 import System.Exit (die)
 import System.Time.Extra ( showDuration, sleep, Seconds )

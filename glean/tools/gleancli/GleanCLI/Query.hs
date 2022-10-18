@@ -24,7 +24,7 @@ import Thrift.Protocol.JSON (serializeJSON)
 import Util.IO
 import Util.OptParse
 
-import Glean hiding (options)
+import Glean
 import Glean.Types as Thrift
 
 import GleanCLI.Common

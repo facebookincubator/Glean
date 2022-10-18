@@ -18,18 +18,19 @@ import Text.Printf
 import Util.Control.Exception (catchAll)
 import Util.Log
 
-import Glean.Types as Thrift
+import Glean.Backend.Types
+import Glean.Backend.Local
 import Glean.Database.Schema
-import Glean.RTS as RTS
-import Glean.Backend (Backend(..), loadDbSchema, factIdRange)
 import Glean.Query.JSON
+import Glean.RTS.Types
+import Glean.Types
 
 dump :: Backend b => b -> Repo -> (JsonFactBatch -> IO ()) -> IO ()
 dump backend repo withBatch = doDump =<< loadDbSchema backend repo
   where
     doDump dbSchema = do
-      Thrift.FactIdRange{..} <- factIdRange backend repo
-      go Thrift.iNVALID_ID [] 0 factIdRange_start factIdRange_finish
+      FactIdRange{..} <- factIdRange backend repo
+      go iNVALID_ID [] 0 factIdRange_start factIdRange_finish
       where
 
       doneBatch :: Id -> [(Id,Fact)] -> IO ()
@@ -59,7 +60,7 @@ dump backend repo withBatch = doDump =<< loadDbSchema backend repo
       maxBatchSize :: Id
       maxBatchSize = 10000
 
-      go :: Thrift.Id -> [(Id,Fact)] -> Int64 -> Id -> Id ->  IO ()
+      go :: Id -> [(Id,Fact)] -> Int64 -> Id -> Id ->  IO ()
       go !currentPid facts !batchSize !nextId !finalId
         | nextId < finalId = do
             r <- queryFact backend repo nextId

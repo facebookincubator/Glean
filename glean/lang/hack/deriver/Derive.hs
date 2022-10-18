@@ -15,7 +15,7 @@ import Control.Concurrent (setNumCapabilities)
 import Util.EventBase (withEventBaseDataplane)
 
 import Glean.Init ( withOptions )
-import qualified Glean
+import qualified Glean.Remote
 import Glean.Util.ConfigProvider
 import Glean.Impl.ConfigProvider
 import Glean.Schema.Builtin.Types (schema_id)
@@ -41,5 +41,6 @@ main = withOptions options $ \cmd ->
       withNumCapabilities (cfgNumCapabilities cfg) $
       withEventBaseDataplane $ \evb ->
       withConfigProvider defaultConfigOptions $ \cfgAPI ->
-      Glean.withRemoteBackend evb (cfgAPI::ConfigAPI) service Nothing $ \be ->
-      Derive.All.derive be cfg
+      Glean.Remote.withRemoteBackend evb (cfgAPI::ConfigAPI)
+        service Nothing $ \be ->
+          Derive.All.derive be cfg

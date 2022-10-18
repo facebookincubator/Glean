@@ -12,8 +12,8 @@ module TestBatch (testBatch) where
 import Data.Default
 import qualified Data.Text as Text
 
-import Glean.Backend (Backend)
-import qualified Glean.Backend as Backend
+import Glean.Backend.Types (Backend)
+import qualified Glean.Backend.Types as Backend
 import qualified Glean.Schema.Cxx1 as Cxx
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import qualified Glean.Schema.Src as Src

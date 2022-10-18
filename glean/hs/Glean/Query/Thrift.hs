@@ -41,7 +41,7 @@ import Util.Log.Text
 
 import Glean.Typed.Binary
 import Glean.Types as Thrift
-import Glean.Backend.Remote (Backend(..))
+import Glean.Backend.Types (Backend(..))
 import Glean.Query.Thrift.Internal
 import Glean.Write.SendBatch
 

@@ -15,9 +15,10 @@ import Test.HUnit
 
 import TestRunner
 
-import Glean
+import Glean.Backend.Types
 import Glean.Init
 import Glean.Database.Test
+import Glean.Types
 
 repo1 :: Repo
 repo1 = Repo "dbtest-repo" "f00001"

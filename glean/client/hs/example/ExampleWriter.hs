@@ -21,6 +21,7 @@ import Options.Applicative
 import Util.EventBase
 
 import qualified Glean
+import qualified Glean.Remote
 import Glean.BuildInfo
 import Glean.Impl.ConfigProvider
 import Glean.Schema.Builtin.Types (schema_id)
@@ -39,7 +40,7 @@ options = info (helper <*> parser) fullDesc
   where
     parser :: Parser Config
     parser = do
-      cfgService <- Glean.options
+      cfgService <- Glean.Remote.options
       return Config{..}
 
 main :: IO ()
@@ -47,7 +48,7 @@ main =
   withConfigOptions options $ \(cfg, cfgOpts) ->
   withEventBaseDataplane $ \evb ->
   withConfigProvider cfgOpts $ \(cfgAPI :: ConfigAPI) ->
-  Glean.withRemoteBackend evb cfgAPI (cfgService cfg) (Just schema_id)
+  Glean.Remote.withRemoteBackend evb cfgAPI (cfgService cfg) (Just schema_id)
     create
 
 

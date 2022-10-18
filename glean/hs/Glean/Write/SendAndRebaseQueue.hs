@@ -19,7 +19,7 @@ import Control.Monad
 
 import Util.Log
 
-import Glean.Backend.Remote (Backend)
+import Glean.Backend.Types (Backend)
 import qualified Glean.Write.SendQueue as SendQueue
 import Glean.Write.SendQueue (SendQueue)
 import Glean.RTS.Foreign.Define

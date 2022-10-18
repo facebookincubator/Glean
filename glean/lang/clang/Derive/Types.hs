@@ -24,7 +24,7 @@ import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Options.Applicative as O
 
-import Glean hiding (options)
+import Glean
 import qualified Glean.LocalOrRemote as Glean
 
 -- | Options for 'DeriveFunctionCalls' pass for benchmarking algorithms

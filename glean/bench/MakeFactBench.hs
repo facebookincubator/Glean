@@ -14,7 +14,7 @@ import qualified Data.Text as Text
 
 import Glean
 import Glean.Database.Test (withEmptyTestDB)
-import Glean.Backend.Remote as Backend (loadPredicates)
+import Glean.Remote as Backend (loadPredicates)
 import qualified Glean.Schema.Cxx1 as Cxx
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import Glean.Util.Benchmark

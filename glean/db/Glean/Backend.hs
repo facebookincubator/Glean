@@ -82,8 +82,8 @@ import Glean.Util.ThriftSource as ThriftSource
 import Glean.Util.Some
 import Glean.Util.Time
 
-import Glean.Backend.Remote hiding (options, optionsLong)
-import qualified Glean.Backend.Remote as Remote
+import Glean.Remote hiding (options, optionsLong)
+import qualified Glean.Remote as Remote
 
 
 data Logging = EnableLogging | DisableLogging

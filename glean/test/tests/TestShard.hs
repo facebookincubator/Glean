@@ -12,7 +12,7 @@ import Test.HUnit
 
 import TestRunner
 
-import Glean.Backend.Remote
+import Glean.Backend.Types
 import Glean.Types
 
 main :: IO ()

@@ -60,7 +60,7 @@ import Glean.Angle.Types hiding (Type, FieldDef, SourcePat_(..))
 import qualified Glean.Angle.Types as Angle
 import qualified Glean.Internal.Types as Thrift
 import Glean.Schema.Types (ResolvedType)
-import qualified Glean.Backend.Remote as Backend
+import qualified Glean.Backend.Types as Backend
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Schema.Types
 import Glean.Database.Open

@@ -7,12 +7,9 @@
 -}
 
 {-# LANGUAGE ApplicativeDo #-}
-module Glean.Backend.Remote
-  ( Backend(..)
-  , StackedDbOpts(..)
-
-    -- * Command-line options
-  , options
+module Glean.Remote
+  ( -- * Command-line options
+    options
   , optionsLong
 
     -- * Construction
@@ -36,138 +33,43 @@ module Glean.Backend.Remote
   , loadPredicates
   , databases
   , localDatabases
-  , usingShards
   , clientInfo
-
-  , LogDerivationResult
   ) where
 
 import Control.Applicative
 import Control.Exception
-import Data.Bits
-import qualified Data.ByteString.Unsafe as B
+import Control.Monad
 import Data.Default
-import Data.Map (Map)
-import Data.Text (Text)
+import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
-import qualified Data.Text.Encoding as Text
-import Foreign
-import GHC.Fingerprint
+import Data.Typeable
+import qualified Haxl.Core as Haxl
 import Options.Applicative as Options
-import System.IO.Unsafe
 
 import Thrift.Channel
 import Thrift.Api
 import Util.EventBase (EventBaseDataplane)
 import Util.Log
 
+import Glean.Backend.Types
 import Glean.BuildInfo (buildRule)
 import Glean.ClientConfig.Types (UseShards(..), ClientConfig(..))
 import Glean.DefaultConfigs
 import Glean.GleanService.Client (GleanService)
 import qualified Glean.GleanService.Client as GleanService
-import Glean.Typed.Predicate (makePredicates, Predicates, SchemaPredicates)
 import qualified Glean.Types as Thrift
+import Glean.Query.Thrift
+import Glean.Query.Thrift.Internal
 import Glean.Util.ConfigProvider
 import Glean.Util.Service
-import Glean.Util.Some
 import Glean.Username (getUsername)
 import Glean.Util.ThriftSource as ThriftSource
 import Glean.Util.ThriftService
-import Glean.Util.Time (DiffTimePoints)
 import Glean.Impl.ThriftService
+import Glean.Types
 
-data StackedDbOpts
-  = IncludeBase
-  | ExcludeBase
-  deriving (Eq, Show)
-
--- |
--- An abstraction over Glean's Thrift API. This allows client code
--- to work with either a local or remote backend, chosen at runtime.
---
-class Backend a where
-  queryFact :: a -> Thrift.Repo -> Thrift.Id -> IO (Maybe Thrift.Fact)
-  firstFreeId :: a -> Thrift.Repo -> IO Thrift.Id
-  factIdRange :: a -> Thrift.Repo -> IO Thrift.FactIdRange
-  getSchemaInfo :: a -> Thrift.Repo -> Thrift.GetSchemaInfo
-    -> IO Thrift.SchemaInfo
-  validateSchema :: a -> Thrift.ValidateSchema -> IO ()
-  predicateStats :: a -> Thrift.Repo -> StackedDbOpts
-    -> IO (Map Thrift.Id Thrift.PredicateStats)
-  listDatabases :: a -> Thrift.ListDatabases -> IO Thrift.ListDatabasesResult
-  getDatabase :: a -> Thrift.Repo -> IO Thrift.GetDatabaseResult
-
-  userQueryFacts :: a -> Thrift.Repo -> Thrift.UserQueryFacts
-    -> IO Thrift.UserQueryResults
-  userQuery :: a -> Thrift.Repo -> Thrift.UserQuery
-    -> IO Thrift.UserQueryResults
-
-  deriveStored :: a -> LogDerivationResult -> Thrift.Repo
-    -> Thrift.DerivePredicateQuery -> IO Thrift.DerivationStatus
-
-  kickOffDatabase :: a -> Thrift.KickOff -> IO Thrift.KickOffResponse
-  finalizeDatabase :: a -> Thrift.Repo -> IO Thrift.FinalizeResponse
-
-  updateProperties
-    :: a
-    -> Thrift.Repo
-    -> Thrift.DatabaseProperties
-    -> [Text]
-    -> IO Thrift.UpdatePropertiesResponse
-
-  getWork :: a -> Thrift.GetWork -> IO Thrift.GetWorkResponse
-  workCancelled :: a -> Thrift.WorkCancelled -> IO ()
-  workHeartbeat :: a -> Thrift.WorkHeartbeat -> IO ()
-  workFinished :: a -> Thrift.WorkFinished -> IO ()
-
-  completePredicates
-    :: a
-    -> Thrift.Repo
-    -> IO Thrift.CompletePredicatesResponse
-
-  -- | Request a backed up database (specified via its backup locator) to be
-  -- made available. This call doesn't wait until the database actually becomes
-  -- available, it only issues the request.
-  --
-  -- This might (for local databases) or might not (for databases on a Thrift
-  -- server) return an STM action that waits for the restore operation.
-  restoreDatabase :: a -> Text -> IO ()
-
-  -- For a local database this will delete the specified repo
-  deleteDatabase :: a -> Thrift.Repo -> IO Thrift.DeleteDatabaseResult
-
-  -- Enqueue a batch for writing
-  enqueueBatch :: a -> Thrift.ComputedBatch -> IO Thrift.SendResponse
-
-  -- Enqueue a JSON batch for writing
-  enqueueJsonBatch
-    :: a
-    -> Thrift.Repo
-    -> Thrift.SendJsonBatch
-    -> IO Thrift.SendJsonBatchResponse
-
-  -- Poll the status of a write batch
-  pollBatch :: a -> Thrift.Handle -> IO Thrift.FinishResponse
-
-  -- | Render for debugging
-  displayBackend :: a -> String
-
-  -- | For a given 'Repo', check whether any servers have the DB.  If
-  -- the backend is remote and using shards, this should check whether
-  -- any servers are advertising the appropriate shard.
-  hasDatabase :: a -> Thrift.Repo -> IO Bool
-
-  -- | If this is a remote backend, get its ThriftBackend.
-  maybeRemote :: a -> Maybe ThriftBackend
-
-  -- | The schema version the client wants to use. This is sent along
-  -- with queries.
-  schemaId :: a -> Maybe Thrift.SchemaId
-
--- | The exception includes the length of time from start to error
-type LogDerivationResult =
-  Either (DiffTimePoints, SomeException) Thrift.UserQueryStats -> IO ()
+import Haxl.DataSource.Thrift
+import Haxl.DataSource.Glean.Common
 
 -- | A remote Glean service, supports the operations of 'Backend'.
 data ThriftBackend = ThriftBackend
@@ -186,39 +88,6 @@ instance Show ThriftBackend where
     "), thriftBackendSchemaId: (" <> show (thriftBackendSchemaId tb),
     ")}"]
 
-
-instance Backend (Some Backend) where
-  queryFact (Some backend) = queryFact backend
-  firstFreeId (Some backend) = firstFreeId backend
-  factIdRange (Some backend) = factIdRange backend
-  getSchemaInfo (Some backend) = getSchemaInfo backend
-  validateSchema (Some backend) = validateSchema backend
-  predicateStats (Some backend) = predicateStats backend
-  listDatabases (Some backend) = listDatabases backend
-  getDatabase (Some backend) = getDatabase backend
-  userQueryFacts (Some backend) = userQueryFacts backend
-  userQuery (Some backend) = userQuery backend
-  deriveStored (Some backend) = deriveStored backend
-
-  kickOffDatabase (Some backend) = kickOffDatabase backend
-  finalizeDatabase (Some backend) = finalizeDatabase backend
-  updateProperties (Some backend) = updateProperties backend
-  getWork (Some backend) = getWork backend
-  workCancelled (Some backend) = workCancelled backend
-  workHeartbeat (Some backend) = workHeartbeat backend
-  workFinished (Some backend) = workFinished backend
-  completePredicates (Some backend) = completePredicates backend
-
-  restoreDatabase (Some backend) = restoreDatabase backend
-  deleteDatabase (Some backend) = deleteDatabase backend
-
-  enqueueBatch (Some backend) = enqueueBatch backend
-  enqueueJsonBatch (Some backend) = enqueueJsonBatch backend
-  pollBatch (Some backend) = pollBatch backend
-  displayBackend (Some backend) = displayBackend backend
-  hasDatabase (Some backend) = hasDatabase backend
-  maybeRemote (Some backend) = maybeRemote backend
-  schemaId (Some backend) = schemaId backend
 
 type Settings
   = (ClientConfig,ThriftServiceOptions)
@@ -242,7 +111,7 @@ withRemoteBackend
   -> cfg
   -> ThriftSource ClientConfig
   -> Maybe Thrift.SchemaId
-  -> (forall b . Backend b => b -> IO a)
+  -> (ThriftBackend -> IO a)
   -> IO a
 withRemoteBackend evb cfg configSource schema inner =
   withRemoteBackendSettings evb cfg configSource schema id inner
@@ -256,7 +125,7 @@ withRemoteBackendSettings
   -> ThriftSource ClientConfig
   -> Maybe Thrift.SchemaId
   -> Settings
-  -> (forall b . Backend b => b -> IO a)
+  -> (ThriftBackend -> IO a)
   -> IO a
 withRemoteBackendSettings evb configAPI configSource schema settings inner = do
   config <- ThriftSource.loadDefault configAPI configSource
@@ -346,7 +215,7 @@ instance Backend ThriftBackend where
     withShard t (Thrift.work_repo $ Thrift.workFinished_work rq)
       $ GleanService.workFinished rq
 
-  completePredicates t repo = withShard t repo $
+  completePredicates_ t repo = withShard t repo $
     GleanService.completePredicates repo
 
   restoreDatabase t loc =
@@ -365,13 +234,18 @@ instance Backend ThriftBackend where
   displayBackend = show
 
   hasDatabase ThriftBackend{..} repo = do
-    let serv = thriftServiceWithDbShard thriftBackendService (Just (dbShard repo))
+    let serv = thriftServiceWithDbShard thriftBackendService
+          (Just (dbShard repo))
     hosts <- getSelection thriftBackendEventBase serv 1
     return (not (null hosts))
 
-  maybeRemote = Just
+  usingShards (ThriftBackend ClientConfig{..} _ _ _ _) =
+    clientConfig_use_shards /= NO_SHARDS
 
   schemaId ThriftBackend{..} = thriftBackendSchemaId
+
+  initGlobalState = initRemoteGlobalState
+
 
 withShard
   :: ThriftBackend
@@ -402,51 +276,6 @@ withoutShard
   -> Thrift GleanService a
   -> IO a
 withoutShard (ThriftBackend _ evb serv _ _) req = runThrift evb serv req
-
-dbShard :: Thrift.Repo -> DbShard
-dbShard = Text.pack . show . dbShardWord
-
-dbShardWord :: Thrift.Repo -> Word64
-dbShardWord Thrift.Repo{..} =
-  unsafeDupablePerformIO $ B.unsafeUseAsCStringLen repo $ \(ptr,len) -> do
-      -- Use GHC's md5 binding. If this ever changes then the test in
-      -- hs/tests/TestShard.hs will detect it.
-    Fingerprint w _ <- fingerprintData (castPtr ptr) len
-    return (w `shiftR` 1)
-       -- SR doesn't like shards >= 0x8000000000000000
-  where
-  repo = Text.encodeUtf8 repo_name <> "/" <> Text.encodeUtf8 repo_hash
-
-
--- -----------------------------------------------------------------------------
--- Functionality built on Backend
-
-loadPredicates
-  :: Backend a
-  => a
-  -> Thrift.Repo
-  -> [SchemaPredicates]
-  -> IO Predicates
-loadPredicates backend repo refs =
-  makePredicates refs <$>
-    getSchemaInfo backend repo def { Thrift.getSchemaInfo_omit_source = True }
-
-databases :: Backend a => a -> IO [Thrift.Database]
-databases be =
-  Thrift.listDatabasesResult_databases <$>
-    listDatabases be def { Thrift.listDatabases_includeBackups = True }
-
-localDatabases :: Backend a => a -> IO [Thrift.Database]
-localDatabases be =
-  Thrift.listDatabasesResult_databases <$>
-    listDatabases be def { Thrift.listDatabases_includeBackups = False }
-
-usingShards :: Backend b => b -> Bool
-usingShards backend =
-  case maybeRemote backend of
-    Just (ThriftBackend { thriftBackendClientConfig = ClientConfig{..} }) ->
-      clientConfig_use_shards /= NO_SHARDS
-    _otherwise -> False
 
 clientInfo :: IO Thrift.UserQueryClientInfo
 clientInfo = do
@@ -487,3 +316,107 @@ optionsLong self = do
       "no" -> Just NO_SHARDS
       "fallback" -> Just USE_SHARDS_AND_FALLBACK
       _ -> Nothing
+
+-- -----------------------------------------------------------------------------
+-- Haxl
+
+initRemoteGlobalState
+  :: ThriftBackend
+  -> IO (Haxl.State GleanGet, Haxl.State GleanQuery)
+initRemoteGlobalState backend =  do
+  return
+    ( GleanGetState (remoteFetch backend)
+    , GleanQueryState (remoteQuery backend)
+    )
+
+remoteFetch :: ThriftBackend -> Haxl.PerformFetch GleanGet
+remoteFetch (ThriftBackend config evb ts clientInfo schema) =
+  Haxl.BackgroundFetch $ \requests -> do
+  let
+    ts' repo = case clientConfig_use_shards config of
+      NO_SHARDS -> ts
+      USE_SHARDS -> thriftServiceWithDbShard ts (Just (dbShard repo))
+      USE_SHARDS_AND_FALLBACK ->
+        thriftServiceWithDbShard ts (Just (dbShard repo)) -- TODO
+
+  forM_ (HashMap.toList $ requestByRepo requests) $ \(repo, requests) -> do
+    runThrift evb (ts' repo) $ do
+      let
+        sendCob :: Maybe ChannelException -> IO ()
+        sendCob Nothing = return ()
+        sendCob (Just ex) = putException (toException ex) requests
+
+        recvCob
+          :: (Response -> Either SomeException UserQueryResults)
+          -> RecvCallback
+        recvCob _ (Left ex) = putException (toException ex) requests
+        recvCob deserialize (Right response) =
+          case deserialize response of
+            Left err -> putException err requests
+            Right res -> putResults res requests
+
+      dispatchCommon
+        (\p c ct s r o x ->
+          GleanService.send_userQueryFacts p c ct s r o repo x)
+        sendCob
+        (recvCob . GleanService.recv_userQueryFacts)
+        (mkRequest (Just clientInfo) schema requests)
+
+putException :: SomeException -> [Haxl.BlockedFetch a] -> IO ()
+putException ex requests =
+  forM_ requests $ \(Haxl.BlockedFetch _ rvar) -> Haxl.putFailure rvar ex
+
+
+remoteQuery :: ThriftBackend -> Haxl.PerformFetch GleanQuery
+remoteQuery (ThriftBackend config evb ts clientInfo schema) =
+  Haxl.BackgroundFetch $ mapM_ fetch
+  where
+  ts' repo = case clientConfig_use_shards config of
+    NO_SHARDS -> ts
+    USE_SHARDS -> thriftServiceWithDbShard ts (Just (dbShard repo))
+    USE_SHARDS_AND_FALLBACK ->
+      thriftServiceWithDbShard ts (Just (dbShard repo)) -- TODO
+
+  fetch :: Haxl.BlockedFetch GleanQuery -> IO ()
+  fetch (Haxl.BlockedFetch (QueryReq q repo stream) rvar) =
+    runRemoteQuery evb repo q' (ts' repo) acc rvar
+    where
+      q' = withClientInfo clientInfo q
+      acc = if stream then Just id else Nothing
+
+  withClientInfo :: UserQueryClientInfo -> Query q -> Query q
+  withClientInfo info (Query q) = Query q'
+    where
+      q' = q {
+        userQuery_client_info = Just info,
+        userQuery_schema_id = schema
+      }
+
+
+runRemoteQuery
+  :: forall q. (Show q, Typeable q)
+  => EventBaseDataplane
+  -> Repo
+  -> Query q
+  -> ThriftService GleanService
+  -> Maybe ([q] -> [q]) -- results so far
+  -> Haxl.ResultVar ([q], Bool)
+  -> IO ()
+runRemoteQuery evb repo q@(Query req) ts acc rvar =
+  runThrift evb ts $ do
+    let
+      recvCob
+        :: (Response -> Either SomeException UserQueryResults)
+        -> RecvCallback
+      recvCob _ (Left ex) = Haxl.putFailure rvar (toException ex)
+      recvCob deserialize (Right response) =
+        case deserialize response of
+          Left err -> Haxl.putFailure rvar err
+          Right res -> putQueryResults q res acc rvar $
+            \(q :: Query q) acc -> runRemoteQuery evb repo q ts acc rvar
+
+    dispatchCommon
+      (\p c ct s r o x -> GleanService.send_userQuery p c ct s r o repo x)
+      (sendCobSingle rvar)
+      (recvCob . GleanService.recv_userQuery)
+      req

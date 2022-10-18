@@ -30,7 +30,7 @@ import Facebook.Process
 import Util.Defer
 import Util.Log
 
-import Glean.Backend.Remote (StackedDbOpts(..))
+import Glean.Backend.Types (StackedDbOpts(..))
 import Glean.BuildInfo
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Config

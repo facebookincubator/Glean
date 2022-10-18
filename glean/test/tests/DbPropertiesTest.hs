@@ -15,9 +15,10 @@ import Test.HUnit
 
 import TestRunner
 
-import Glean
+import Glean.Backend.Types
 import Glean.Init
 import Glean.Database.Test
+import Glean.Types
 
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList

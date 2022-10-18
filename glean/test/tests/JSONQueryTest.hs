@@ -32,8 +32,7 @@ import Thrift.Protocol.Compact
 
 import Util.String.Quasi
 
-import qualified Glean.Backend as Backend
-import Glean.Backend (userQuery, Backend)
+import Glean.Backend.Types
 import Glean.Init
 import Glean.Query.Thrift
 import Glean.Query.Thrift.Internal
@@ -143,7 +142,7 @@ userQueryFactTest = dbTestCase $ \env repo -> do
       [ def { factQuery_id = id } | id <- factIds ]
 
   UserQueryResults{..} <-
-    Backend.userQueryFacts env repo def { userQueryFacts_facts = factQuery }
+    userQueryFacts env repo def { userQueryFacts_facts = factQuery }
   assertEqual "userQueryFacts" 3 (length userQueryResults_facts)
   let testPred = deserializeJSON $ head userQueryResults_facts
   assertEqual "userQueryFacts decode" (Right (Just (ignorePredK kitchenSink1)))
@@ -151,7 +150,7 @@ userQueryFactTest = dbTestCase $ \env repo -> do
 
   -- Test userQueryFacts and decode the binary result
   UserQueryResults{..} <-
-    Backend.userQueryFacts env repo def
+    userQueryFacts env repo def
       { userQueryFacts_facts = factQuery
       , userQueryFacts_encodings = [UserQueryEncoding_bin def] }
   results <- case userQueryResults_results of
@@ -166,7 +165,7 @@ userQueryFactTest = dbTestCase $ \env repo -> do
 
   -- Check that querying for the same fact twice works
   UserQueryResults{..} <-
-    Backend.userQueryFacts env repo def
+    userQueryFacts env repo def
       { userQueryFacts_facts = case factQuery of
          (one : two : _) -> [ one, one, two, two ]
          _ -> error "factQuery"
@@ -271,7 +270,7 @@ jsonQueryErrorCases = dbTestCase $ \env repo -> do
 type QueryFun =
    forall p b .
     ( ThriftSerializable p
-    , Backend.Backend b
+    , Backend b
     , Typed.Predicate p
     )
   => b
@@ -608,7 +607,7 @@ jsonRecQueryTest queryFun = dbTestCase $ \env repo -> do
 type QueryFunLimited =
    forall q b .
     ( ThriftSerializable q
-    , Backend.Backend b
+    , Backend b
     , Typed.Predicate q
     )
   => b
