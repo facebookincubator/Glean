@@ -53,10 +53,13 @@ import Control.Monad.Extra
 import Control.Monad.Trans (MonadTrans(lift))
 import Control.Monad.Trans.Writer.Strict
 
-prettyHackSignature :: Hack.Entity -> Glean.RepoHaxl u w (Maybe (Doc ()))
-prettyHackSignature (Hack.Entity_decl d) =
-  runMaybeT $ prettyDecl <$> decl d
-prettyHackSignature Hack.Entity_EMPTY = return Nothing
+prettyHackSignature
+  :: LayoutOptions
+  -> Hack.Entity
+  -> Glean.RepoHaxl u w (Maybe (SimpleDocStream ()))
+prettyHackSignature opts (Hack.Entity_decl d) =
+  runMaybeT $ layoutSmart opts . prettyDecl <$> decl d
+prettyHackSignature _ Hack.Entity_EMPTY = return Nothing
 
 newtype Name = Name Text
 newtype Qual = Qual [Text]
