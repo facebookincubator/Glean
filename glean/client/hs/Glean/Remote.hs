@@ -325,7 +325,7 @@ optionsLong self = do
 
 -- | Maximum number of requests fired concurrently
 defaultMaxConcurrentRequests :: Int
-defaultMaxConcurrentRequests = 10000
+defaultMaxConcurrentRequests = 1000
 
 -- | Initialize with the default number of maximum concurrent requests.
 initRemoteGlobalState
