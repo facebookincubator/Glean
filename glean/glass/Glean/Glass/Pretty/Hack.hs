@@ -46,7 +46,9 @@ import qualified Glean.Schema.Hack.Types as Hack
 import Glean.Schema.CodeHack.Types as Hack ( Entity(..) )
 import Data.Maybe (fromMaybe)
 import Data.Text.Prettyprint.Doc
+import Data.Text.Prettyprint.Doc.Render.Text (renderStrict)
 import Data.Text (Text)
+import qualified Data.Text as Text
 import Control.Monad.Trans.Maybe (MaybeT (..))
 import Control.Monad
 import Control.Monad.Extra
@@ -58,7 +60,7 @@ prettyHackSignature
   -> Hack.Entity
   -> Glean.RepoHaxl u w (Maybe (SimpleDocStream ()))
 prettyHackSignature opts (Hack.Entity_decl d) =
-  runMaybeT $ layoutSmart opts . prettyDecl <$> decl d
+  runMaybeT $ layoutSmart opts . prettyDecl opts <$> decl d
 prettyHackSignature _ Hack.Entity_EMPTY = return Nothing
 
 newtype Name = Name Text
@@ -108,36 +110,36 @@ data Decl
   | Typedef QualName
   | Module Name
 
-prettyDecl :: Decl -> Doc ()
-prettyDecl (ClassConst name) =
+prettyDecl :: LayoutOptions -> Decl -> Doc ()
+prettyDecl _ (ClassConst name) =
   "const" <+> ppName name
-prettyDecl (Module name) =
+prettyDecl _ (Module name) =
   "module" <+> ppName name
-prettyDecl (Enum name) =
+prettyDecl _ (Enum name) =
   "enum" <+> ppQualName name
-prettyDecl (Trait name) =
+prettyDecl _ (Trait name) =
   "trait" <+> ppQualName name
-prettyDecl (Class modifiers name) =
+prettyDecl _ (Class modifiers name) =
   ppClassModifiers modifiers <+> ppQualName name
-prettyDecl (Interface name) =
+prettyDecl _ (Interface name) =
   "interface" <+> ppQualName name
-prettyDecl (Enumerator enum name) =
+prettyDecl _ (Enumerator enum name) =
   ppQualName enum <> "::" <> ppName name
-prettyDecl (Function modifiers name sig) =
+prettyDecl opts (Function modifiers name sig) =
   ppFunctionModifiers modifiers <+> ppQualName name <>
-  ppSignature sig
-prettyDecl (GlobalConst name) =
+  ppSignature opts sig
+prettyDecl _ (GlobalConst name) =
   "const" <+> ppQualName name
-prettyDecl (Namespace name) =
+prettyDecl _ (Namespace name) =
   "namespace" <+> ppQual name
-prettyDecl (Method modifiers container name sig) =
+prettyDecl opts (Method modifiers container name sig) =
   ppMethodModifiers container modifiers <+> ppName name <>
-  ppSignature sig
-prettyDecl (Property modifiers container name mhacktype) =
+  ppSignature opts sig
+prettyDecl _ (Property modifiers container name mhacktype) =
   ppPropertyModifiers container modifiers <+> ppType mhacktype <+> ppName name
-prettyDecl (TypeConst name) =
+prettyDecl _ (TypeConst name) =
   "const" <+> ppName name
-prettyDecl (Typedef name) =
+prettyDecl _ (Typedef name) =
   "type" <+> ppQualName name
 
 ppName :: Name -> Doc ()
@@ -164,18 +166,32 @@ ppClassModifiers (ClassMod abstract final) =
     when (final==Final) $ tell ["final"]
     tell ["class"]
 
-ppSignature :: Signature -> Doc ()
-ppSignature (Signature returnType typeParams params) =
-  hcat
-    [ ppTypeParams typeParams
-    , cat
-      [ nest 4 $ cat
-        [ "("
-        , sep $ punctuate "," (map ppParameter params)
+ppSignature :: LayoutOptions -> Signature -> Doc ()
+ppSignature opts (Signature returnType typeParams params) =
+    if fitsOnOneLine then
+      hcat
+        [ onelineDoc
+        , nest 4 (":" <+> ppReturnType returnType)
         ]
-        , "):" <+> ppReturnType returnType
+    else
+      typeParamsDoc
+      <> vcat
+      [ nest 4 $ vcat
+        [ "("
+        , vcat $ map ((<> ",") . ppParameter) params
+        ]
+      , nest 4 $ "):" <+> ppReturnType returnType
       ]
-    ]
+  where
+    typeParamsDoc = ppTypeParams typeParams
+    onelineDoc = cat
+      [ typeParamsDoc
+      , parens (hsep $ punctuate comma (map ppParameter params))
+      ]
+    paramsText = renderStrict $ layoutSmart opts onelineDoc
+    fitsOnOneLine = not containsNewline
+    containsNewline = Text.any (== '\n') paramsText
+
 
 ppTypeParams :: [TypeParameter] -> Doc ()
 ppTypeParams typeParams | null typeParams = ""
