@@ -375,20 +375,36 @@ mkDbSchema validate knownPids dbContent
 
   let transformations = IntMap.union evolveTransformations autoTransformations
       pruned = prune dbContent transformations (tcEnvPredicates tcEnv)
-
+      byPid = IntMap.fromList [ (intPid p, p) | p <- HashMap.elems pruned ]
   return $ DbSchema
     { predicatesById = pruned
     , typesById = tcEnvTypes tcEnv
     , schemaEnvs = schemaEnvMap
     , legacyAllVersions = legacyAllVersions
-    , predicatesByPid =
-        IntMap.fromList [ (intPid p, p) | p <- HashMap.elems pruned ]
-    , predicatesTransformations = transformations
+    , predicatesByPid = byPid
+    , predicatesTransformations = transDetails transformations byPid
     , schemaInventory = inventory predicates
     , schemaSource = (source, hashedSchemaAllVersions stored)
     , schemaMaxPid = maxPid
     , schemaLatestVersion = latestSchemaId
     }
+
+transDetails
+  :: IntMap PredicateTransformation
+  -> IntMap PredicateDetails
+  -> IntMap TransDetails
+transDetails tmap pmap =
+  flip IntMap.mapMaybeWithKey pmap $ \pid _ ->
+  case IntMap.lookup pid tmap of
+    Just trans -> Just $ HasTransformation trans
+    Nothing ->
+      if any hasTransformation (deps $ Pid $ fromIntegral pid)
+      then Just DependenciesHaveTransformations
+      else Nothing
+  where
+    detailsFor (Pid pid) = pmap IntMap.! fromIntegral pid
+    hasTransformation (Pid pid) = IntMap.member (fromIntegral pid) tmap
+    deps pid = transitiveDeps detailsFor mempty pid
 
 -- | Optimise derivation queries for fetching facts given the particular db's
 -- content.

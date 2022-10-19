@@ -21,6 +21,7 @@ module Glean.Query.Transform
   , buildTerm
   , isWordTy
   , defaultValue
+  , lookupTransformation
   ) where
 
 import Control.Monad.Cont
@@ -82,12 +83,20 @@ transformationsFor schema ty =
       Just details -> details
 
     inType :: [Pid]
-    inType = getPids ty
+    inType = filter needsTrans (getPids ty)
       where getPids = bifoldMap (pure . pid) (getPids . expandType)
             expandType (ExpandedType _ t) = t
+            -- either the type or one of its transitive dependencies
+            -- needs to be transformed.
+            needsTrans (Pid pid) =
+              isJust (IntMap.lookup (fromIntegral pid) tmap)
 
     withDeps :: [Pid]
-    withDeps = Set.toList $ foldr (transitiveDeps detailsFor) mempty inType
+    withDeps = Set.toList $ foldr addDeps mempty inType
+      where
+      addDeps :: Pid -> Set Pid -> Set Pid
+      addDeps pid seen = foldr Set.insert seen deps
+        where deps = transitiveDeps detailsFor seen pid
 
     -- predicates available are mapped to the predicates requested
     mappings :: Map Pid (Set Pid)
@@ -115,36 +124,6 @@ transformationsFor schema ty =
       showPid to <> " evolves "
       <> Text.intercalate " and " (showPid <$> Set.toList froms)
       where showPid = showRef . predicateRef . detailsFor
-
-transitiveDeps :: (Pid -> PredicateDetails) -> Pid -> Set Pid -> Set Pid
-transitiveDeps = transitive . predicateDeps
-  where
-    -- All predicates mentioned in a predicate's type.
-    -- Does not include predicates from the derivation query.
-    predicateDeps :: (Pid -> PredicateDetails) -> Pid -> [Pid]
-    predicateDeps detailsFor pred =
-      typeDeps (predicateKeyType details) $
-        typeDeps (predicateValueType details) []
-      where
-        details = detailsFor pred
-        typeDeps ty r = bifoldr' overPidRef overExpanded r ty
-        overExpanded (ExpandedType _ ty) r = typeDeps ty r
-        overPidRef (PidRef pid _) r = pid : r
-
-    transitive :: Ord a => (a -> [a]) -> a -> Set a -> Set a
-    transitive next root initial = go [root] initial
-      where
-        go [] visited = visited
-        go (x:xs) visited
-          | x `Set.member`visited = go xs visited
-          | otherwise = go xs $ go (next x) $ Set.insert x visited
-
-lookupTransformation
-  :: Pid
-  -> IntMap PredicateTransformation
-  -> Maybe PredicateTransformation
-lookupTransformation pid tmap =
-  IntMap.lookup (fromIntegral $ fromPid pid) tmap
 
 pid :: PidRef -> Pid
 pid (PidRef x _) = x
@@ -281,7 +260,7 @@ isWordTy = isWordRep . repType
   isWordRep _ = False
 
 -- | Transform predicates inside the type but keep its structure.
-transformType :: IntMap PredicateTransformation -> Type -> Type
+transformType :: IntMap TransDetails -> Type -> Type
 transformType tmap ty = transform ty
   where
     transform ty = bimap overPidRef overExpandedType ty

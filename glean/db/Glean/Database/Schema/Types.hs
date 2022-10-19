@@ -12,6 +12,7 @@ module Glean.Database.Schema.Types
   , PredicateDetails(..)
   , predicateRef
   , PredicateTransformation(..)
+  , TransDetails(..)
   , Bytes(..)
   , IsPointQuery
   , SchemaSelector(..)
@@ -21,6 +22,7 @@ module Glean.Database.Schema.Types
   , lookupPredicateSourceRef
   , lookupPredicateId
   , lookupPid
+  , lookupTransformation
   , TypeDetails(..)
   , lookupTypeId
   , dbSchemaRtsType
@@ -28,8 +30,10 @@ module Glean.Database.Schema.Types
   , tempPredicateId
   , tempPid
   , pidRef
+  , transitiveDeps
   ) where
 
+import Data.Bifoldable (bifoldr')
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.IntMap (IntMap)
@@ -37,6 +41,7 @@ import qualified Data.IntMap as IntMap
 import Data.Map (Map)
 import qualified Data.Map as Map
 import qualified Data.Set as Set
+import Data.Set (Set)
 import Data.Text (Text)
 import Data.Text.Prettyprint.Doc hiding ((<>))
 
@@ -69,7 +74,7 @@ data DbSchema = DbSchema
      -- ^ Maps all.N schema versions to SchemaIds
 
   , predicatesByPid :: IntMap PredicateDetails
-  , predicatesTransformations  :: IntMap PredicateTransformation
+  , predicatesTransformations  :: IntMap TransDetails
      -- ^ keyed by predicate requested
 
   , schemaInventory :: Inventory
@@ -79,6 +84,10 @@ data DbSchema = DbSchema
   , schemaSource :: (SourceSchemas, IntMap SchemaId)
     -- ^ This is for toStoredSchema
   }
+
+data TransDetails
+  = HasTransformation PredicateTransformation
+  | DependenciesHaveTransformations -- transitive deps
 
 -- | Data required to transform a predicate that was requested in a query into
 -- one that we have available in the database, and then to transform the facts
@@ -209,6 +218,39 @@ lookupPid (Pid pid) = IntMap.lookup (fromIntegral pid) . predicatesByPid
 
 lookupTypeId :: TypeId -> DbSchema -> Maybe TypeDetails
 lookupTypeId ref  = HashMap.lookup ref . typesById
+
+lookupTransformation
+  :: Pid
+  -> IntMap TransDetails
+  -> Maybe PredicateTransformation
+lookupTransformation pid tmap = do
+  dets <- IntMap.lookup (fromIntegral $ fromPid pid) tmap
+  case dets of
+    HasTransformation trans -> Just trans
+    DependenciesHaveTransformations -> Nothing
+
+transitiveDeps :: (Pid -> PredicateDetails) -> Set Pid -> Pid -> [Pid]
+transitiveDeps = transitive . predicateDeps
+  where
+    -- All predicates mentioned in a predicate's type.
+    -- Does not include predicates from the derivation query.
+    predicateDeps :: (Pid -> PredicateDetails) -> Pid -> [Pid]
+    predicateDeps detailsFor pred =
+      typeDeps (predicateKeyType details) $
+        typeDeps (predicateValueType details) []
+      where
+        details = detailsFor pred
+        typeDeps ty r = bifoldr' overPidRef overExpanded r ty
+        overExpanded (ExpandedType _ ty) r = typeDeps ty r
+        overPidRef (PidRef pid _) r = pid : r
+
+    transitive :: Ord a => (a -> [a]) -> Set a -> a ->  [a]
+    transitive next initial root = go [root] initial
+      where
+        go [] _ = []
+        go (x:xs) visited
+          | x `Set.member`visited = go xs visited
+          | otherwise = x : go (next x <> xs) (Set.insert x visited)
 
 tempPid :: DbSchema -> Pid
 tempPid = succ . schemaMaxPid

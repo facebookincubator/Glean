@@ -24,7 +24,6 @@ import Data.Bifunctor (bimap)
 import Data.ByteString (ByteString)
 import Data.Coerce
 import Data.IntMap (IntMap)
-import qualified Data.IntMap as IntMap
 import Data.IntSet (IntSet)
 import qualified Data.IntSet as IntSet
 import Data.List (genericLength)
@@ -46,14 +45,18 @@ import Glean.Query.Transform
   , buildTerm
   , transformType
   , transformBytes
-  , defaultValue )
+  , defaultValue)
 import Glean.Angle.Types (IsWild(..), tempPredicateId)
 import qualified Glean.Angle.Types as Angle
 import Glean.Bytecode.Types
 import qualified Glean.FFI as FFI
 import Glean.Query.Codegen.Types
 import Glean.Database.Schema.Types
-  (Bytes(..), PredicateTransformation(..), IsPointQuery)
+  ( Bytes(..)
+  , PredicateTransformation(..)
+  , IsPointQuery
+  , TransDetails
+  , lookupTransformation)
 import Glean.RTS
 import Glean.RTS.Builder
 import Glean.RTS.Bytecode.Code
@@ -180,7 +183,7 @@ sectionBounds lookup = SectionBoundaries
   <*> firstFreeId lookup
 
 compileQuery
-  :: IntMap PredicateTransformation
+  :: IntMap TransDetails
   -> Boundaries
   -> CodegenQuery
      -- ^ The query to compile. NB. no type checking or validation is
@@ -395,7 +398,7 @@ compileTermGen term vars maybeReg andThen = do
 
 compileStatements
   :: forall a s
-  .  IntMap PredicateTransformation
+  .  IntMap TransDetails
   -> Boundaries
   -> QueryRegs s
   -> [CgStatement]
@@ -558,7 +561,7 @@ compileStatements
                   cont reg (\fail -> cmpOutputPat reg chunks fail)
 
             mtrans :: Maybe PredicateTransformation
-            mtrans = IntMap.lookup (fromIntegral $ fromPid pid) tmap
+            mtrans = lookupTransformation pid tmap
 
             -- The pid we expect to retrieve from the database
             PidRef expected _ = maybe pref tAvailable mtrans
@@ -776,7 +779,7 @@ compileStatements
 
       compileGen
         (FactGenerator (PidRef pid _) kpat vpat range) maybeReg inner = do
-        let mtrans = IntMap.lookup (fromIntegral $ fromPid pid) tmap
+        let mtrans = lookupTransformation pid tmap
         compileFactGenerator
           mtrans bounds regs vars pid kpat vpat range maybeReg inner
 
