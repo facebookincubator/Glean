@@ -641,7 +641,7 @@ std::unique_ptr<QueryResults> executeQuery (
     for (auto& savedIter : *restart->iters()) {
       std::unique_ptr<FactIterator> iter;
       Id id;
-      const size_t prefixSize = savedIter.get_prefix_size();
+      const size_t prefixSize = savedIter.prefix_size().value();
       if (const auto type = Pid::fromThrift(*savedIter.type())) {
         std::string keyBuf;
         bool found = facts.factById(

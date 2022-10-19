@@ -95,10 +95,10 @@ thrift::Subst Substitution::serialize() const {
 }
 
 Substitution Substitution::deserialize(const thrift::Subst& subst) {
-  Substitution s(Id::fromThrift(subst.get_firstId()), subst.get_ids().size());
+  Substitution s(Id::fromThrift(subst.firstId().value()), subst.ids().value().size());
   std::transform(
-    subst.get_ids().begin(),
-    subst.get_ids().end(),
+    subst.ids().value().begin(),
+    subst.ids().value().end(),
     s.items.begin(),
     Id::fromThrift
   );

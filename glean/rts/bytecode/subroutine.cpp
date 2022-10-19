@@ -366,10 +366,10 @@ thrift::internal::SubroutineState Subroutine::Activation::toThrift()
 std::shared_ptr<Subroutine>
 Subroutine::fromThrift(const thrift::internal::Subroutine &ser) {
   return std::make_shared<Subroutine>(Subroutine{
-      copy_as<uint64_t>(ser.get_code()), static_cast<size_t>(ser.get_inputs()),
-      static_cast<size_t>(ser.get_outputs()),
-      static_cast<size_t>(ser.get_locals()),
-      copy_as<uint64_t>(ser.get_constants()), ser.get_literals()});
+      copy_as<uint64_t>(ser.code().value()), static_cast<size_t>(ser.inputs().value()),
+      static_cast<size_t>(ser.outputs().value()),
+      static_cast<size_t>(ser.locals().value()),
+      copy_as<uint64_t>(ser.constants().value()), ser.literals().value()});
 }
 
 thrift::internal::Subroutine Subroutine::toThrift(const Subroutine &sub) {

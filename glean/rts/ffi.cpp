@@ -422,9 +422,9 @@ const char *glean_serialize_subst(
     int64_t **ids) {
   return ffi::wrap([=]() {
     thrift::Subst s = subst->serialize();
-    *firstId = s.get_firstId();
-    *count = s.get_ids().size();
-    *ids = ffi::clone_array(s.get_ids().data(), *count).release();
+    *firstId = s.firstId().value();
+    *count = s.ids().value().size();
+    *ids = ffi::clone_array(s.ids().value().data(), *count).release();
   });
 }
 
@@ -504,9 +504,9 @@ const char *glean_factset_serialize(
     size_t *facts_size) {
   return ffi::wrap([=] {
     auto batch = facts->serialize();
-    *first_id = batch.get_firstId();
-    *count = batch.get_count();
-    ffi::clone_bytes(batch.get_facts()).release_to(facts_data, facts_size);
+    *first_id = batch.firstId().value();
+    *count = batch.count().value();
+    ffi::clone_bytes(batch.facts().value()).release_to(facts_data, facts_size);
   });
 }
 
@@ -521,9 +521,9 @@ const char *glean_factset_serializeReorder(
   return ffi::wrap([=] {
     auto batch = facts->serializeReorder(
         folly::Range<const uint64_t*>(order,order_size));
-    *first_id = batch.get_firstId();
-    *count = batch.get_count();
-    ffi::clone_bytes(batch.get_facts()).release_to(facts_data, facts_size);
+    *first_id = batch.firstId().value();
+    *count = batch.count().value();
+    ffi::clone_bytes(batch.facts().value()).release_to(facts_data, facts_size);
   });
 }
 

@@ -108,7 +108,7 @@ private:
     const auto duration =
       std::chrono::duration_cast<std::chrono::milliseconds>(
         std::chrono::duration<double>(
-          std::max(retry.get_seconds(), config.min_retry_delay)));
+          std::max(retry.seconds().value(), config.min_retry_delay)));
     return folly::futures::sleep(duration).deferValue(
         [f = std::move(f)](auto&&) { return std::move(f)(); });
   }

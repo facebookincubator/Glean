@@ -89,13 +89,13 @@ Inventory Inventory::deserialize(folly::ByteRange bytes) {
     apache::thrift::CompactSerializer::deserialize<thrift::internal::Inventory>(
       bytes);
   std::vector<Predicate> preds;
-  for (auto& ser : inv.get_predicates()) {
+  for (auto& ser : inv.predicates().value()) {
     preds.push_back(Predicate{
-      Pid::fromThrift(ser.get_id()),
-      ser.get_ref().get_name(),
-      ser.get_ref().get_version(),
-      Subroutine::fromThrift(ser.get_typechecker()),
-      Subroutine::fromThrift(ser.get_traverser())
+      Pid::fromThrift(ser.id().value()),
+      ser.ref().value().get_name(),
+      ser.ref().value().get_version(),
+      Subroutine::fromThrift(ser.typechecker().value()),
+      Subroutine::fromThrift(ser.traverser().value())
       });
   };
   return Inventory(std::move(preds));
