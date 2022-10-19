@@ -364,18 +364,18 @@ instance Bifunctor Type_ where
     BooleanTy -> BooleanTy
 
 instance Bifoldable Type_ where
-  bifoldMap f g = \case
-    ByteTy -> mempty
-    NatTy -> mempty
-    StringTy -> mempty
-    ArrayTy ty -> bifoldMap f g ty
-    RecordTy xs -> foldMap (bifoldMap f g) xs
-    SumTy xs -> foldMap (bifoldMap f g) xs
-    PredicateTy pref -> f pref
-    NamedTy tref -> g tref
-    MaybeTy ty -> bifoldMap f g ty
-    EnumeratedTy _ -> mempty
-    BooleanTy -> mempty
+  bifoldr f g r = \case
+    ByteTy -> r
+    NatTy -> r
+    StringTy -> r
+    ArrayTy ty -> bifoldr f g r ty
+    RecordTy xs -> foldr (flip $ bifoldr f g) r xs
+    SumTy xs -> foldr (flip $ bifoldr f g) r xs
+    PredicateTy pref -> f pref r
+    NamedTy tref -> g tref r
+    MaybeTy ty -> bifoldr f g r ty
+    EnumeratedTy _ -> r
+    BooleanTy -> r
 
 {- Note [Types]
 

@@ -31,7 +31,6 @@ import Data.Coerce (Coercible, coerce)
 import Data.Either (isLeft)
 import Data.Either.Extra (fromEither)
 import Data.Function (fix)
-import Data.List.Extra (nubOrd)
 import qualified Data.Map.Strict as Map
 import Data.Map.Strict (Map)
 import Data.Maybe (fromMaybe, mapMaybe, isJust)
@@ -62,8 +61,8 @@ import Glean.RTS.Types as RTS
 import Glean.RTS.Term (Term(..), Value)
 import qualified Glean.Types as Thrift
 
--- | A map of predicate transformations applied to a query
--- Keyed by the predicate available in the database
+-- | Predicate transformations to be applied to a query
+-- Keyed by the predicate available in the database (available -> required)
 newtype Transformations = Transformations (IntMap PredicateTransformation)
   deriving newtype (Semigroup, Monoid)
 
@@ -88,8 +87,7 @@ transformationsFor schema ty =
             expandType (ExpandedType _ t) = t
 
     withDeps :: [Pid]
-    withDeps = nubOrd
-      inType <> concatMap (transitiveDeps detailsFor) inType
+    withDeps = Set.toList $ foldr (transitiveDeps detailsFor) mempty inType
 
     -- predicates available are mapped to the predicates requested
     mappings :: Map Pid (Set Pid)
@@ -118,23 +116,23 @@ transformationsFor schema ty =
       <> Text.intercalate " and " (showPid <$> Set.toList froms)
       where showPid = showRef . predicateRef . detailsFor
 
-transitiveDeps :: (Pid -> PredicateDetails) -> Pid -> [Pid]
+transitiveDeps :: (Pid -> PredicateDetails) -> Pid -> Set Pid -> Set Pid
 transitiveDeps = transitive . predicateDeps
   where
     -- All predicates mentioned in a predicate's type.
     -- Does not include predicates from the derivation query.
     predicateDeps :: (Pid -> PredicateDetails) -> Pid -> [Pid]
     predicateDeps detailsFor pred =
-      typeDeps (predicateKeyType details) <>
-        typeDeps (predicateValueType details)
+      typeDeps (predicateKeyType details) $
+        typeDeps (predicateValueType details) []
       where
         details = detailsFor pred
-        typeDeps = bifoldMap overPidRef overExpanded
-        overExpanded (ExpandedType _ ty) = typeDeps ty
-        overPidRef (PidRef pid _) = [pid]
+        typeDeps ty r = bifoldr' overPidRef overExpanded r ty
+        overExpanded (ExpandedType _ ty) r = typeDeps ty r
+        overPidRef (PidRef pid _) r = pid : r
 
-    transitive :: Ord a => (a -> [a]) -> a -> [a]
-    transitive next root = Set.elems $ go (next root) mempty
+    transitive :: Ord a => (a -> [a]) -> a -> Set a -> Set a
+    transitive next root initial = go [root] initial
       where
         go [] visited = visited
         go (x:xs) visited
