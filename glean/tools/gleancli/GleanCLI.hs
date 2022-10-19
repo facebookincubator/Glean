@@ -83,6 +83,7 @@ plugins =
   , plugin @FinishCommand
   , plugin @UnfinishCommand
   , plugin @ListCommand
+  , plugin @LatestDbCommand
   , plugin @StatusCommand
   , plugin @DumpCommand
   , plugin @DeleteCommand
@@ -305,6 +306,22 @@ instance Plugin ListCommand where
       dbs = filter f xs
       f db = null listDbNames || any (repoFilter db) listDbNames
     putShellPrintLn listFormat $ dbs `withFormatOpts` listVerbosity
+
+newtype LatestDbCommand
+  = LatestDb { dbName :: String }
+
+instance Plugin LatestDbCommand where
+  parseCommand =
+    commandParser "db-latest"
+      (progDesc "Return latest DBNAME instance available")
+      $ do
+      dbName <- strArgument (metavar "DBNAME")
+      return LatestDb{..}
+
+  runCommand _ _ backend LatestDb{..} = do
+    repoHash <- Thrift.repo_hash
+      <$> Glean.getLatestRepo backend (Text.pack dbName)
+    putStrLn $ Text.unpack repoHash
 
 data StatusCommand
   = Status
