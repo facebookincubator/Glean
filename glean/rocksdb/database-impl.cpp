@@ -1056,8 +1056,22 @@ UsetId DatabaseImpl::FactOwnerCache::getOwner(ContainerImpl& container, Id id) {
   low = 0;
   high = page->factIds.size();
 
-  if (high == 0) {
+  // if this page has no mapping for this fact Id, we have to look in
+  // a previous page.
+  auto prevPage = [&, prefix]() {
+    auto prevPrefix = prefix;
+    while (prevPrefix > 0) {
+      prevPrefix--;
+      const auto& prevPage = getPage(container, prevPrefix);
+      if (prevPage->setIds.size() > 0) {
+        return prevPage->setIds[prevPage->setIds.size() - 1];
+      }
+    }
     return INVALID_USET;
+  };
+
+  if (high == 0) {
+    return prevPage();
   }
 
   // low is inclusive, high is exclusive
@@ -1078,16 +1092,7 @@ UsetId DatabaseImpl::FactOwnerCache::getOwner(ContainerImpl& container, Id id) {
   if (page->factIds[low] <= ix) {
     return page->setIds[low];
   } else {
-    // we have to look in a previous page
-    auto prevPrefix = prefix;
-    while (prevPrefix > 0) {
-      prevPrefix--;
-      const auto& prevPage = getPage(container, prevPrefix);
-      if (prevPage->setIds.size() > 0) {
-        return prevPage->setIds[prevPage->setIds.size() - 1];
-      }
-    }
-    return INVALID_USET;
+    return prevPage();
   }
 }
 
