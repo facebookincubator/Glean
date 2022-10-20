@@ -238,6 +238,39 @@
       "child": {
         "hack": {
           "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "lotsofkeywords" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "RefClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
             "property_": {
               "key": {
                 "name": { "key": "raz" },

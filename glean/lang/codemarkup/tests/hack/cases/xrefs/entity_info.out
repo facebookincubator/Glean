@@ -674,6 +674,29 @@
           "decl": {
             "method": {
               "key": {
+                "name": { "key": "lotsofkeywords" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "RefClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 7, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
                 "name": { "key": "pleaseOverride" },
                 "container": {
                   "class_": {

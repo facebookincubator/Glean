@@ -377,13 +377,24 @@ predicate CxxVisibility:
     entity: code.cxx.Entity,
     visibility: codemarkup.types.Visibility,
   }
-  { {decl=Decl}, Access } where
+  { {decl=Decl}, Visibility } where
     (
       ({ function_ = {name={scope=Scope} } } = Decl) |
       ({ enum_ = {name={scope=Scope} } } = Decl) |
       ({ record_ = {name={scope=Scope} } } = Decl)
     );
-    ({recordWithAccess={access=Access}}=Scope;{}:{})
+    ({recordWithAccess={access=Access}}=Scope;{}:{});
+    FromCxxVisibility { Access, Visibility }
+
+# helper from C++ visibility to the codemarkup.types version
+predicate FromCxxVisibility:
+  { cxx : cxx1.Access,
+    out : codemarkup.types.Visibility
+  }
+  { In, Out } where
+    ( Public = In; Public ) |
+    ( Private = In; Private ) |
+    ( Protected = In; Protected ) = Out;
 
 #
 # Relations

@@ -27,7 +27,7 @@
                     "columnBegin": 1,
                     "columnEnd": 2,
                     "lineBegin": 10,
-                    "lineEnd": 32
+                    "lineEnd": 36
                 },
                 "sym": "test/php/RefClass"
             },
@@ -113,8 +113,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 4,
-                    "lineBegin": 25,
-                    "lineEnd": 31
+                    "lineBegin": 29,
+                    "lineEnd": 35
                 },
                 "sym": "test/php/RefClass/bar"
             },
@@ -175,6 +175,35 @@
                     "lineEnd": 19
                 },
                 "sym": "test/php/RefClass/foo"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "final internal static async function lotsofkeywords(): int"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 4,
+                    "lineBegin": 25,
+                    "lineEnd": 27
+                },
+                "sym": "test/php/RefClass/lotsofkeywords"
             }
         ],
         "references": [
@@ -202,8 +231,8 @@
                 "range": {
                     "columnBegin": 40,
                     "columnEnd": 48,
-                    "lineBegin": 28,
-                    "lineEnd": 28
+                    "lineBegin": 32,
+                    "lineEnd": 32
                 },
                 "sym": "test/php/Position",
                 "target": {
@@ -241,8 +270,8 @@
                 "range": {
                     "columnBegin": 46,
                     "columnEnd": 54,
-                    "lineBegin": 30,
-                    "lineEnd": 30
+                    "lineBegin": 34,
+                    "lineEnd": 34
                 },
                 "sym": "test/php/Position",
                 "target": {
@@ -280,8 +309,8 @@
                 "range": {
                     "columnBegin": 56,
                     "columnEnd": 62,
-                    "lineBegin": 30,
-                    "lineEnd": 30
+                    "lineBegin": 34,
+                    "lineEnd": 34
                 },
                 "sym": "test/php/Position/Center",
                 "target": {
@@ -319,8 +348,8 @@
                 "range": {
                     "columnBegin": 50,
                     "columnEnd": 55,
-                    "lineBegin": 28,
-                    "lineEnd": 28
+                    "lineBegin": 32,
+                    "lineEnd": 32
                 },
                 "sym": "test/php/Position/Right",
                 "target": {
@@ -358,8 +387,8 @@
                 "range": {
                     "columnBegin": 23,
                     "columnEnd": 26,
-                    "lineBegin": 29,
-                    "lineEnd": 29
+                    "lineBegin": 33,
+                    "lineEnd": 33
                 },
                 "sym": "test/php/RefClass/:prop/raz",
                 "target": {
@@ -397,8 +426,8 @@
                 "range": {
                     "columnBegin": 67,
                     "columnEnd": 71,
-                    "lineBegin": 27,
-                    "lineEnd": 27
+                    "lineBegin": 31,
+                    "lineEnd": 31
                 },
                 "sym": "test/php/RefClass/JAZZ",
                 "target": {
@@ -436,8 +465,8 @@
                 "range": {
                     "columnBegin": 36,
                     "columnEnd": 41,
-                    "lineBegin": 29,
-                    "lineEnd": 29
+                    "lineBegin": 33,
+                    "lineEnd": 33
                 },
                 "sym": "test/php/RefClass/bazza",
                 "target": {
@@ -475,8 +504,8 @@
                 "range": {
                     "columnBegin": 65,
                     "columnEnd": 68,
-                    "lineBegin": 28,
-                    "lineEnd": 28
+                    "lineBegin": 32,
+                    "lineEnd": 32
                 },
                 "sym": "test/php/RefClass/foo",
                 "target": {
@@ -514,8 +543,8 @@
                 "range": {
                     "columnBegin": 23,
                     "columnEnd": 34,
-                    "lineBegin": 25,
-                    "lineEnd": 25
+                    "lineBegin": 29,
+                    "lineEnd": 29
                 },
                 "sym": "test/php/SourceClass",
                 "target": {
@@ -553,8 +582,8 @@
                 "range": {
                     "columnBegin": 19,
                     "columnEnd": 30,
-                    "lineBegin": 26,
-                    "lineEnd": 26
+                    "lineBegin": 30,
+                    "lineEnd": 30
                 },
                 "sym": "test/php/SourceClass",
                 "target": {
@@ -592,8 +621,8 @@
                 "range": {
                     "columnBegin": 26,
                     "columnEnd": 37,
-                    "lineBegin": 27,
-                    "lineEnd": 27
+                    "lineBegin": 31,
+                    "lineEnd": 31
                 },
                 "sym": "test/php/SourceClass",
                 "target": {
@@ -631,8 +660,8 @@
                 "range": {
                     "columnBegin": 46,
                     "columnEnd": 57,
-                    "lineBegin": 29,
-                    "lineEnd": 29
+                    "lineBegin": 33,
+                    "lineEnd": 33
                 },
                 "sym": "test/php/SourceClass",
                 "target": {
@@ -670,8 +699,8 @@
                 "range": {
                     "columnBegin": 54,
                     "columnEnd": 57,
-                    "lineBegin": 27,
-                    "lineEnd": 27
+                    "lineBegin": 31,
+                    "lineEnd": 31
                 },
                 "sym": "test/php/SourceClass/:prop/daz",
                 "target": {
@@ -709,8 +738,8 @@
                 "range": {
                     "columnBegin": 39,
                     "columnEnd": 42,
-                    "lineBegin": 27,
-                    "lineEnd": 27
+                    "lineBegin": 31,
+                    "lineEnd": 31
                 },
                 "sym": "test/php/SourceClass/BAZ",
                 "target": {
@@ -748,8 +777,8 @@
                 "range": {
                     "columnBegin": 36,
                     "columnEnd": 37,
-                    "lineBegin": 25,
-                    "lineEnd": 25
+                    "lineBegin": 29,
+                    "lineEnd": 29
                 },
                 "sym": "test/php/SourceClass/T",
                 "target": {
@@ -865,8 +894,8 @@
                 "range": {
                     "columnBegin": 23,
                     "columnEnd": 27,
-                    "lineBegin": 28,
-                    "lineEnd": 28
+                    "lineBegin": 32,
+                    "lineEnd": 32
                 },
                 "sym": "test/php/SourceTrait/quux",
                 "target": {
@@ -904,8 +933,8 @@
                 "range": {
                     "columnBegin": 59,
                     "columnEnd": 67,
-                    "lineBegin": 29,
-                    "lineEnd": 29
+                    "lineBegin": 33,
+                    "lineEnd": 33
                 },
                 "sym": "test/php/SuperClass/superAdd",
                 "target": {
@@ -982,8 +1011,8 @@
                 "range": {
                     "columnBegin": 74,
                     "columnEnd": 79,
-                    "lineBegin": 27,
-                    "lineEnd": 27
+                    "lineBegin": 31,
+                    "lineEnd": 31
                 },
                 "sym": "test/php/const/WALDO",
                 "target": {
@@ -1099,8 +1128,8 @@
                 "range": {
                     "columnBegin": 16,
                     "columnEnd": 21,
-                    "lineBegin": 27,
-                    "lineEnd": 27
+                    "lineBegin": 31,
+                    "lineEnd": 31
                 },
                 "sym": "test/php/fun/corge",
                 "target": {
@@ -1138,8 +1167,8 @@
                 "range": {
                     "columnBegin": 66,
                     "columnEnd": 71,
-                    "lineBegin": 30,
-                    "lineEnd": 30
+                    "lineBegin": 34,
+                    "lineEnd": 34
                 },
                 "sym": "test/php/fun/corge",
                 "target": {

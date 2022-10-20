@@ -155,6 +155,7 @@ predicate HackAnnotation :
 # Visibility
 #
 
+# (deprecated), just the visibility attributes
 predicate HackVisibility :
   {
     entity: code.hack.Entity,
@@ -165,13 +166,18 @@ predicate HackVisibility :
       ({decl={ method = Decl }} = D; hack.MethodDefinition{declaration=Decl, visibility=Vis}) |
       ({decl={ property_ = Decl }} = D; hack.PropertyDefinition{declaration=Decl, visibility=Vis})
     );
-    (
-      Vis=(
-        (V=(Public:codemarkup.types.Visibility);(Public:hack.Visibility))|
-        (V=(Protected:codemarkup.types.Visibility);(Protected:hack.Visibility))|
-        (V=(Private:codemarkup.types.Visibility);(Private:hack.Visibility))
-      )
-    )
+    FromHackVisibility { Vis, V };
+
+# helper from Hack visibility to the codemarkup.types version
+predicate FromHackVisibility:
+  { hack : hack.Visibility,
+    out : codemarkup.types.Visibility
+  }
+  { In, Out } where
+    ( Public = In; Public ) |
+    ( Private = In; Private ) |
+    ( Protected = In; Protected ) |
+    ( Internal = In; Internal ) = Out;
 
 #
 # Relations

@@ -22,6 +22,10 @@ class RefClass implements SourceInterface {
     return 5 * corge();
   }
 
+  final internal static async function lotsofkeywords() : int {
+    throw("Don't do this");
+  }
+
   public function bar(SourceClass::T $param): int {
     $source = new SourceClass();
     $result1 = corge() + SourceClass::BAZ + $source->daz + $this::JAZZ + WALDO;

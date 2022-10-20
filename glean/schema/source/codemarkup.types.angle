@@ -47,6 +47,7 @@ type Location =
     span: maybe src.ByteSpan,
   }
 
-type Visibility = enum { Public | Protected | Private }
+# Symbols have visibility attributes
+type Visibility = enum { Public | Protected | Private | Internal }
 
 }

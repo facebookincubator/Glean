@@ -179,7 +179,7 @@
       },
       "location": {
         "file": { "key": "www/RefClass.php" },
-        "location": { "span": { "length": 643, "start": 226 } },
+        "location": { "span": { "length": 740, "start": 226 } },
         "name": "RefClass"
       }
     }
@@ -653,7 +653,7 @@
       },
       "location": {
         "file": { "key": "www/RefClass.php" },
-        "location": { "span": { "length": 390, "start": 477 } },
+        "location": { "span": { "length": 390, "start": 574 } },
         "name": "bar"
       }
     }
@@ -709,6 +709,33 @@
         "file": { "key": "www/RefClass.php" },
         "location": { "span": { "length": 67, "start": 343 } },
         "name": "foo"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "RefClass" } } }
+                    }
+                  }
+                },
+                "name": { "key": "lotsofkeywords" }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/RefClass.php" },
+        "location": { "span": { "length": 93, "start": 477 } },
+        "name": "lotsofkeywords"
       }
     }
   },

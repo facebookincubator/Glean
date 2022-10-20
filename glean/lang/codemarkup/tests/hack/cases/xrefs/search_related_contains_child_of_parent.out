@@ -140,7 +140,7 @@
         "location": {
           "name": "RefClass",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 226, "length": 643 } }
+          "location": { "span": { "start": 226, "length": 740 } }
         }
       },
       "child": {
@@ -190,7 +190,7 @@
         "location": {
           "name": "RefClass",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 226, "length": 643 } }
+          "location": { "span": { "start": 226, "length": 740 } }
         }
       },
       "child": {
@@ -215,7 +215,7 @@
         "location": {
           "name": "bar",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 477, "length": 390 } }
+          "location": { "span": { "start": 574, "length": 390 } }
         }
       }
     }
@@ -240,7 +240,7 @@
         "location": {
           "name": "RefClass",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 226, "length": 643 } }
+          "location": { "span": { "start": 226, "length": 740 } }
         }
       },
       "child": {
@@ -290,7 +290,7 @@
         "location": {
           "name": "RefClass",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 226, "length": 643 } }
+          "location": { "span": { "start": 226, "length": 740 } }
         }
       },
       "child": {
@@ -340,7 +340,57 @@
         "location": {
           "name": "RefClass",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 226, "length": 643 } }
+          "location": { "span": { "start": 226, "length": 740 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "method": {
+                "key": {
+                  "name": { "key": "lotsofkeywords" },
+                  "container": {
+                    "class_": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "RefClass" } } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "lotsofkeywords",
+          "file": { "key": "www/RefClass.php" },
+          "location": { "span": { "start": 477, "length": 93 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "RefClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "RefClass",
+          "file": { "key": "www/RefClass.php" },
+          "location": { "span": { "start": 226, "length": 740 } }
         }
       },
       "child": {

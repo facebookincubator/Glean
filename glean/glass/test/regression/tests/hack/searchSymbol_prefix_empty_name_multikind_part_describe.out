@@ -472,7 +472,7 @@
                         "columnBegin": 1,
                         "columnEnd": 2,
                         "lineBegin": 10,
-                        "lineEnd": 32
+                        "lineEnd": 36
                     },
                     "repository": "test"
                 },
@@ -488,7 +488,7 @@
                         "columnBegin": 1,
                         "columnEnd": 2,
                         "lineBegin": 10,
-                        "lineEnd": 32
+                        "lineEnd": 36
                     },
                     "repository": "test"
                 },
@@ -562,8 +562,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 4,
-                        "lineBegin": 25,
-                        "lineEnd": 31
+                        "lineBegin": 29,
+                        "lineEnd": 35
                     },
                     "repository": "test"
                 },
@@ -578,8 +578,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 4,
-                        "lineBegin": 25,
-                        "lineEnd": 31
+                        "lineBegin": 29,
+                        "lineEnd": 35
                     },
                     "repository": "test"
                 },
@@ -677,6 +677,52 @@
                 },
                 "sym_other_locations": [],
                 "visibility": 20
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 25,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "RefClass",
+                    "localName": "lotsofkeywords"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/RefClass/lotsofkeywords",
+                "sym_location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 25,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "visibility": 50
             },
             {
                 "annotations": [
@@ -1664,7 +1710,7 @@
                         "columnBegin": 1,
                         "columnEnd": 2,
                         "lineBegin": 10,
-                        "lineEnd": 32
+                        "lineEnd": 36
                     },
                     "repository": "test"
                 },
@@ -1695,8 +1741,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 4,
-                        "lineBegin": 25,
-                        "lineEnd": 31
+                        "lineBegin": 29,
+                        "lineEnd": 35
                     },
                     "repository": "test"
                 },
@@ -1734,6 +1780,22 @@
                 },
                 "name": "foo",
                 "symbol": "test/php/RefClass/foo"
+            },
+            {
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 25,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "name": "lotsofkeywords",
+                "symbol": "test/php/RefClass/lotsofkeywords"
             },
             {
                 "kind": 7,

@@ -255,10 +255,12 @@ struct Annotation {
   3: string name;
 }
 
+// Visibility attributes
 enum Visibility {
   Public = 20,
   Protected = 30,
   Private = 40,
+  Internal = 50,
 } (
   hack.attributes = "\GraphQLEnum('GlassVisibility'), \SelfDescriptive, \Oncalls('code_indexing')",
 )

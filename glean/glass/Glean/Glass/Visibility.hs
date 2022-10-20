@@ -40,4 +40,5 @@ getVisibilityForEntity entity = case entityToAngle entity of
         Code.Visibility_Public -> Visibility_Public
         Code.Visibility_Protected -> Visibility_Protected
         Code.Visibility_Private -> Visibility_Private
+        Code.Visibility_Internal -> Visibility_Internal
         Code.Visibility__UNKNOWN i -> Visibility__UNKNOWN i

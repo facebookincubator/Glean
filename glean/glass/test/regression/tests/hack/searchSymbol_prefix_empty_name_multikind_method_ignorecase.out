@@ -43,8 +43,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 4,
-                        "lineBegin": 25,
-                        "lineEnd": 31
+                        "lineBegin": 29,
+                        "lineEnd": 35
                     },
                     "repository": "test"
                 },
@@ -82,6 +82,22 @@
                 },
                 "name": "foo",
                 "symbol": "test/php/RefClass/foo"
+            },
+            {
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 25,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "name": "lotsofkeywords",
+                "symbol": "test/php/RefClass/lotsofkeywords"
             },
             {
                 "kind": 8,
