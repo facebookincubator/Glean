@@ -1,0 +1,731 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "f1" } } },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "signature": {
+                  "key": {
+                    "returns": { "key": "void" },
+                    "parameters": [
+                      { "name": { "key": "" }, "type": { "key": "T" } }
+                    ]
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 20,
+                  "columnBegin": 1,
+                  "lineEnd": 24,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "f2" } } },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 27,
+                  "columnBegin": 1,
+                  "lineEnd": 31,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "f1" } } },
+                          "scope": { "global_": { } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "T" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 20,
+                  "columnBegin": 9,
+                  "lineEnd": 20,
+                  "columnEnd": 9
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "x" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "Local" },
+                            "scope": {
+                              "local": {
+                                "key": {
+                                  "name": {
+                                    "key": { "name": { "key": "f1" } }
+                                  },
+                                  "scope": { "global_": { } }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "unsigned int" },
+                "kind": { "field": { "mutable_": false, "bitsize": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 22,
+                  "columnBegin": 5,
+                  "lineEnd": 22,
+                  "columnEnd": 26
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "x" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "Local" },
+                            "scope": {
+                              "local": {
+                                "key": {
+                                  "name": {
+                                    "key": { "name": { "key": "f2" } }
+                                  },
+                                  "scope": { "global_": { } }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "unsigned int" },
+                "kind": { "field": { "mutable_": false, "bitsize": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 29,
+                  "columnBegin": 5,
+                  "lineEnd": 29,
+                  "columnEnd": 18
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "x" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "U1" },
+                            "scope": { "global_": { } }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "unsigned int" },
+                "kind": { "field": { "mutable_": false, "bitsize": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 11,
+                  "columnBegin": 3,
+                  "lineEnd": 11,
+                  "columnEnd": 24
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "x" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "U2" },
+                            "scope": { "global_": { } }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "unsigned int" },
+                "kind": { "field": { "mutable_": false, "bitsize": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 16,
+                  "columnBegin": 3,
+                  "lineEnd": 16,
+                  "columnEnd": 16
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "f1" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": {
+                        "returns": { "key": "void" },
+                        "parameters": [
+                          { "name": { "key": "" }, "type": { "key": "T" } }
+                        ]
+                      }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 20,
+                      "columnBegin": 1,
+                      "lineEnd": 24,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "f2" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 27,
+                      "columnBegin": 1,
+                      "lineEnd": 31,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "f1" } } },
+                          "scope": { "global_": { } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "T" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 20,
+                  "columnBegin": 9,
+                  "lineEnd": 20,
+                  "columnEnd": 9
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "x" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "Local" },
+                            "scope": {
+                              "local": {
+                                "key": {
+                                  "name": {
+                                    "key": { "name": { "key": "f1" } }
+                                  },
+                                  "scope": { "global_": { } }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "unsigned int" },
+                "kind": { "field": { "mutable_": false, "bitsize": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 22,
+                  "columnBegin": 5,
+                  "lineEnd": 22,
+                  "columnEnd": 26
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "x" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "Local" },
+                            "scope": {
+                              "local": {
+                                "key": {
+                                  "name": {
+                                    "key": { "name": { "key": "f2" } }
+                                  },
+                                  "scope": { "global_": { } }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "unsigned int" },
+                "kind": { "field": { "mutable_": false, "bitsize": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 29,
+                  "columnBegin": 5,
+                  "lineEnd": 29,
+                  "columnEnd": 18
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "x" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "U1" },
+                            "scope": { "global_": { } }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "unsigned int" },
+                "kind": { "field": { "mutable_": false, "bitsize": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 11,
+                  "columnBegin": 3,
+                  "lineEnd": 11,
+                  "columnEnd": 24
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "x" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "U2" },
+                            "scope": { "global_": { } }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "unsigned int" },
+                "kind": { "field": { "mutable_": false, "bitsize": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 16,
+                  "columnBegin": 3,
+                  "lineEnd": 16,
+                  "columnEnd": 16
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  }
+]

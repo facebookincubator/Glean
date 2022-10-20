@@ -179,6 +179,37 @@ predicate FromHackVisibility:
     ( Protected = In; Protected ) |
     ( Internal = In; Internal ) = Out;
 
+# Sets of modifier keywords on a symbol
+predicate HackModifiers:
+  {
+    entity: code.hack.Entity,
+    modifiers: codemarkup.types.Modifiers
+  }
+  { { decl = Decl }, Modifiers } where
+    ( { method = Method } = Decl;
+      hack.MethodDefinition { declaration = Method,
+        isAbstract = Abstract, isFinal = Final,
+        isAsync = Async, isStatic = Static };
+        Readonly = false;
+    ) | (
+      { property_ = Property } = Decl;
+      hack.PropertyDefinition { declaration = Property,
+        isAbstract = Abstract, isFinal = Final, isStatic = Static };
+      Async = false; Readonly = false;
+    ) | ( { function_ = Func } = Decl;
+      hack.FunctionDefinition { declaration = Func, isAsync = Async };
+        Abstract = false; Final = false; Static = false; Readonly = false;
+    ) | (
+      { container = { class_ = Class } } = Decl;
+      hack.ClassDefinition { declaration = Class,
+        isAbstract = Abstract, isFinal = Final };
+      Async = false; Static = false; Readonly = false;
+    );
+    Const = false; Volatile = false; Virtual = false; Inline = false;
+     Readonly = false; Mutable = false;
+    { Abstract, Final, Async, Static, Readonly, Const, Mutable,
+       Volatile, Virtual, Inline } = Modifiers;
+
 #
 # Relations
 #

@@ -1,0 +1,383 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": { "name": { "key": "x" }, "scope": { "global_": { } } }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 12,
+                  "columnBegin": 12,
+                  "lineEnd": 12,
+                  "columnEnd": 17
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": { "name": { "key": "x" }, "scope": { "global_": { } } }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 13,
+                  "columnBegin": 13,
+                  "lineEnd": 13,
+                  "columnEnd": 18
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": { "name": { "key": "x" }, "scope": { "global_": { } } }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 14,
+                  "columnBegin": 13,
+                  "lineEnd": 14,
+                  "columnEnd": 18
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": { "name": { "key": "y" }, "scope": { "global_": { } } }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 13,
+                  "columnBegin": 26,
+                  "lineEnd": 13,
+                  "columnEnd": 31
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": { "name": { "key": "y" }, "scope": { "global_": { } } }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 14,
+                  "columnBegin": 23,
+                  "lineEnd": 14,
+                  "columnEnd": 28
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": { "name": { "key": "x" }, "scope": { "global_": { } } }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 12,
+                  "columnBegin": 12,
+                  "lineEnd": 12,
+                  "columnEnd": 17
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": { "name": { "key": "x" }, "scope": { "global_": { } } }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 13,
+                  "columnBegin": 13,
+                  "lineEnd": 13,
+                  "columnEnd": 18
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": { "name": { "key": "x" }, "scope": { "global_": { } } }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 14,
+                  "columnBegin": 13,
+                  "lineEnd": 14,
+                  "columnEnd": 18
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": { "name": { "key": "y" }, "scope": { "global_": { } } }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 13,
+                  "columnBegin": 26,
+                  "lineEnd": 13,
+                  "columnEnd": 31
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": { "name": { "key": "y" }, "scope": { "global_": { } } }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 14,
+                  "columnBegin": 23,
+                  "lineEnd": 14,
+                  "columnEnd": 28
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  }
+]

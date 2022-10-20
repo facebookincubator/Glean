@@ -1,0 +1,43 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "objcProperty": {
+              "key": {
+                "name": { "key": "i" },
+                "container": { "interface_": { "key": "A" } },
+                "type": { "key": "int" },
+                "isInstance": true,
+                "isOptional": false,
+                "isReadOnly": false,
+                "isAtomic": false,
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 13,
+                  "columnBegin": 1,
+                  "lineEnd": 13,
+                  "columnEnd": 35
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  }
+]

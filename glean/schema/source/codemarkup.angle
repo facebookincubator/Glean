@@ -283,6 +283,7 @@ predicate EntityReferences:
 # Annotations
 #
 
+# (deprecated, buggy, use EntityToAnnotations)
 predicate EntityAnnotations : code.Entity -> code.Annotations
   E -> A where
     ( codemarkup.cxx.CxxAnnotation { Ent, Anns };
@@ -302,7 +303,7 @@ predicate EntityToAnnotations :
      { hack = Ent } = E; { hack = Anns } = A );
 
 #
-# Visibility
+# Visibility and other keywords
 #
 
 predicate EntityVisibility : code.Entity -> codemarkup.types.Visibility
@@ -310,6 +311,18 @@ predicate EntityVisibility : code.Entity -> codemarkup.types.Visibility
     ({cxx=Entity}=E;codemarkup.cxx.CxxVisibility{entity=Entity, visibility=V}) |
     ({hack=Entity}=E;codemarkup.hack.HackVisibility{entity=Entity, visibility=V})
 
+# Language keywords like `static` or `final`, or `mutable` ..
+predicate EntityModifiers:
+  {
+    entity: code.Entity,
+    modifiers: codemarkup.types.Modifiers
+  } { Entity, Modifiers } where
+    ( { hack = E } = Entity;
+      codemarkup.hack.HackModifiers { E, Modifiers }
+    ) | (
+      { cxx = E } = Entity;
+      codemarkup.cxx.CxxModifiers { E, Modifiers }
+    );
 
 #
 # Relations todo to code.search.*

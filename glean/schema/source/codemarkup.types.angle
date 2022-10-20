@@ -50,4 +50,39 @@ type Location =
 # Symbols have visibility attributes
 type Visibility = enum { Public | Protected | Private | Internal }
 
+# Set of language-generic modifiers that distinguish flavors of symbol kinds
+# While there are many modifiers, this is a common set significant enough
+# to be worth filtering on or searching by, across 1 or more languages
+#
+# e.g. public static method foo() or unsafe bar()
+#
+# For arbitrary string decorations on symbols use the Annotations type
+#
+
+# Modifiers on symbols, to partition symbol kinds with additional attributes
+# These are intended to capture well known, common modifiers rather than all
+# possible modifiers in all languages.
+type Modifier =
+  enum {
+    Abstract | Final | Async | Static | Readonly | Const | Mutable | Volatile |
+    Virtual | Inline
+  }
+
+# Bit set of which modifiers are present on a symbol
+# (n.b. we use an exhaustive set here, as its very hard at the moment to build
+# set or list facts dynamcially)
+type Modifiers =
+  {
+    isAbstract: bool,
+    isFinal: bool,
+    isAsync: bool,
+    isStatic: bool,
+    isReadonly: bool,
+    isConst: bool,
+    isMutable: bool,
+    isVolatile: bool,
+    isVirtual: bool,
+    isInline: bool,
+  }
+
 }

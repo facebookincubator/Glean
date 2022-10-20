@@ -369,7 +369,7 @@ predicate CxxAnnotation:
     (!cxx1.FunctionDeclAttribute { F, _ }; As=[]:[cxx1.Attribute]);
 
 #
-# Visibility
+# Visibility and modifiers
 #
 
 predicate CxxVisibility:
@@ -395,6 +395,71 @@ predicate FromCxxVisibility:
     ( Public = In; Public ) |
     ( Private = In; Private ) |
     ( Protected = In; Protected ) = Out;
+
+# Sets of modifier keywords on a symbol
+predicate CxxModifiers:
+  {
+    entity: code.cxx.Entity,
+    keywords: codemarkup.types.Modifiers
+  }
+  { Entity, Modifiers } where
+    ( { defn = Defn } = Entity; CxxDefinitionModifiers { Defn, Modifiers }) |
+    ( { decl = Decl } = Entity; CxxDeclarationModifiers { Decl, Modifiers });
+
+predicate CxxDefinitionModifiers:
+  {
+    entity: code.cxx.Definition,
+    keywords: codemarkup.types.Modifiers
+  }
+  { Defn, Modifiers } where
+    ( { function_ = FunDefn } = Defn;
+      { declaration = FunDecl, isInline = Inline } = FunDefn;
+      CxxDeclarationModifiers { { function_ = FunDecl } , ModifiersBase };
+      { _, _, _, _, _, Const, _, Volatile, Virtual, _ } = ModifiersBase;
+      { false, false, false, false, false,
+        Const, false, Volatile, Virtual, Inline } = Modifiers;
+    ) | (
+      { variable = VarDecl } = Defn;
+      CxxDeclarationModifiers { { variable = VarDecl } , Modifiers };
+    );
+
+predicate CxxDeclarationModifiers:
+  {
+    entity: cxx1.Declaration,
+    keywords: codemarkup.types.Modifiers
+  }
+  { Decl, Modifiers } where
+    ( { function_ = { method = MSig } } = Decl;
+      if ( { just = { isVirtual = V, isConst = C, isVolatile = Vol } } = MSig )
+        then ( Virtual = V; Const = C; Volatile = Vol )
+        else ( Virtual = false; Const = false; Volatile = false);
+      Inline = false; Readonly = false; Static = false; Mutable = false;
+    ) | (
+      { objcProperty = { isReadOnly = Readonly } } = Decl;
+      Const = false; Volatile = false; Virtual = false; Inline = false;
+      Static = false; Mutable = false;
+    ) | (
+      { variable = { kind = Kind } } = Decl;
+      ( { global_ = { VKind, Attr, _ } } = Kind;
+        Static = if ( StaticVariable | StaticMember = VKind )
+          then ( true ) else ( false );
+        Inline = if ( Inline = Attr ) then ( true ) else ( false );
+        Const = if ( Constexpr = Attr ) then ( true ) else ( false );
+        Volatile = false; Virtual = false; Readonly = false; Mutable = false;
+      ) | (
+        { local = { LKind, Attr } } = Kind;
+        Static = if ( StaticVariable = LKind ) then ( true ) else ( false );
+        Const = if ( Constexpr = Attr ) then ( true ) else ( false );
+        Volatile = false; Virtual = false; Readonly = false; Inline = false;
+        Mutable = false;
+      ) | (
+        { field = { mutable_ = Mutable } } = Kind;
+        Static = false; Readonly = false; Const = false;
+        Volatile = false; Virtual = false; Readonly = false; Inline = false;
+      );
+    );
+    { false, false, false, Static, Readonly, Const, Mutable,
+        Volatile, Virtual, Inline } = Modifiers;
 
 #
 # Relations

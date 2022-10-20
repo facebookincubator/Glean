@@ -1,0 +1,3 @@
+query: codemarkup.EntityModifiers { entity = { hack = _ } }
+perf: true
+transform: [gensort, []]
