@@ -24,9 +24,11 @@ module Glean.Backend.Local
   , serializeInventory
   ) where
 
-import Data.ByteString (ByteString)
-import Control.Monad (forM_)
+import Control.Concurrent (getNumCapabilities)
+import Control.Concurrent.Stream (stream)
 import Control.Concurrent.STM (atomically)
+import Control.Monad (forM_)
+import Data.ByteString (ByteString)
 import Data.Default
 import qualified Data.HashMap.Strict as HashMap
 import Data.Typeable
@@ -133,30 +135,38 @@ instance Backend Database.Env where
 
   usingShards _ = False
 
-  initGlobalState backend = return
-    ( GleanGetState (syncGet backend)
-    , GleanQueryState(syncQuery backend)
-    )
+  initGlobalState backend = do
+    capabilities <- getNumCapabilities
+    let streamMapM_ :: (a -> IO ()) -> [a] -> IO ()
+        streamMapM_ f xx = stream capabilities (forM_ xx) f
+    if capabilities == 1
+      then return
+        ( GleanGetState $ Haxl.SyncFetch $
+            mapM_ (syncGetOne backend) . HashMap.toList . requestByRepo
+        , GleanQueryState $ Haxl.SyncFetch $
+            mapM_ (syncQueryOne backend)
+        )
+      else return
+        ( GleanGetState $ Haxl.BackgroundFetch $
+            streamMapM_ (syncGetOne backend) . HashMap.toList . requestByRepo
+        , GleanQueryState $ Haxl.BackgroundFetch $
+            streamMapM_ (syncQueryOne backend)
+        )
+
 
 -- -----------------------------------------------------------------------------
 -- Haxl
 
-syncGet
-  :: Backend b
-  => b
-  -> Haxl.PerformFetch GleanGet
-syncGet env = Haxl.SyncFetch $ \requests -> do
-  forM_ (HashMap.toList $ requestByRepo requests) $ \(repo, requests) -> do
-    let schema = schemaId env
-    results <- userQueryFacts env repo (mkRequest Nothing schema requests)
-    putResults results requests
+syncGetOne
+  :: Backend b => b -> (Thrift.Repo, [Haxl.BlockedFetch GleanGet]) -> IO ()
+syncGetOne env (repo, requests) = do
+  let schema = schemaId env
+  results <- userQueryFacts env repo (mkRequest Nothing schema requests)
+  putResults results requests
 
-syncQuery :: Backend b => b -> Haxl.PerformFetch GleanQuery
-syncQuery env = Haxl.SyncFetch $ mapM_ fetch
-  where
-    fetch :: Haxl.BlockedFetch GleanQuery -> IO ()
-    fetch (Haxl.BlockedFetch (QueryReq q repo stream) rvar) =
-      runSyncQuery repo env q (if stream then Just id else Nothing) rvar
+syncQueryOne :: Backend b => b -> Haxl.BlockedFetch GleanQuery -> IO ()
+syncQueryOne env (Haxl.BlockedFetch (QueryReq q repo stream) rvar) =
+    runSyncQuery repo env q (if stream then Just id else Nothing) rvar
 
 runSyncQuery
   :: forall q b. (Show q, Typeable q, Backend b)
