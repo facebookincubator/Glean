@@ -9,15 +9,13 @@
 {-# LANGUAGE ApplicativeDo #-}
 {-# LANGUAGE TypeApplications #-}
 
-module Glean.Glass.Visibility
-  ( getVisibilityForEntity
-  ) where
+module Glean.Glass.Visibility ( getVisibilityForEntity) where
 
 import Data.Text
 
-import qualified Glean
 import Glean.Angle as Angle
-import Glean.Glass.SymbolId (entityToAngle)
+import Glean.Glass.SymbolId ( entityToAngle )
+import Glean.Glass.Utils
 import qualified Glean.Haxl.Repos as Glean
 
 import Glean.Glass.Types as Glass
@@ -30,15 +28,24 @@ getVisibilityForEntity
   -> Glean.RepoHaxl u w (Either Text (Maybe Visibility))
 getVisibilityForEntity entity = case entityToAngle entity of
   Left t -> return $ Left t
-  Right entityAngle -> Right <$> do
-    maybeResult <- Glean.getFirstResult $ Glean.recursive $ Angle.query $
-      Angle.predicate @Code.EntityVisibility (entityAngle .-> wild)
-    return $ do
-      result <- maybeResult
-      value <- Glean.getFactValue result
-      return $ case value of
-        Code.Visibility_Public -> Visibility_Public
-        Code.Visibility_Protected -> Visibility_Protected
-        Code.Visibility_Private -> Visibility_Private
-        Code.Visibility_Internal -> Visibility_Internal
-        Code.Visibility__UNKNOWN i -> Visibility__UNKNOWN i
+  Right ent -> do
+    mResult <- fetchData $ angleVisibility ent
+    return $ Right (visibilityToGlassType <$> mResult)
+
+-- | Avoid recursively expanding the entity, just return the tag
+angleVisibility :: Angle Code.Entity -> Angle Code.Visibility
+angleVisibility entity = var $ \visibility ->
+  visibility `where_` [
+    wild .= Angle.predicate @Code.EntityVisibility (
+        entity .-> visibility
+      )
+  ]
+
+-- | Left Glean type to Glass external type
+visibilityToGlassType :: Code.Visibility -> Visibility
+visibilityToGlassType x = case x of
+  Code.Visibility_Public -> Visibility_Public
+  Code.Visibility_Protected -> Visibility_Protected
+  Code.Visibility_Private -> Visibility_Private
+  Code.Visibility_Internal -> Visibility_Internal
+  Code.Visibility__UNKNOWN i -> Visibility__UNKNOWN i
