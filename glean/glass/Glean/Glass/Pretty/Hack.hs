@@ -44,6 +44,7 @@ import Glean.Angle as Angle
 import qualified Glean.Haxl.Repos as Glean
 import qualified Glean.Schema.Hack.Types as Hack
 import Glean.Schema.CodeHack.Types as Hack ( Entity(..) )
+import Glean.Glass.Utils
 import Data.Maybe (fromMaybe)
 import Data.Text.Prettyprint.Doc
 import Data.Text.Prettyprint.Doc.Render.Text (renderStrict)
@@ -281,10 +282,7 @@ decl (Hack.Declaration_enumerator Hack.Enumerator{..}) = do
   pure $ Enumerator (QualName enum) $ Name name
 decl (Hack.Declaration_function_ fun@Hack.FunctionDeclaration{..}) = do
   Hack.FunctionDeclaration_key{..} <- liftMaybe functionDeclaration_key
-  Hack.FunctionDefinition{..} <- maybeT $
-    Glean.getFirstResult $
-    Glean.recursive $
-    query @Hack.FunctionDefinition $
+  Hack.FunctionDefinition{..} <- maybeT $ fetchDataRecursive $
     predicate @Hack.FunctionDefinition $
       rec $
         field @"declaration"
@@ -310,10 +308,7 @@ decl (Hack.Declaration_namespace_ Hack.NamespaceDeclaration{..}) = do
   pure $ Namespace $ Qual name
 decl (Hack.Declaration_method meth@Hack.MethodDeclaration{..}) = do
   Hack.MethodDeclaration_key{..} <- liftMaybe methodDeclaration_key
-  Hack.MethodDefinition{..} <- maybeT $
-    Glean.getFirstResult $
-    Glean.recursive $
-    query @Hack.MethodDefinition $
+  Hack.MethodDefinition{..} <- maybeT $ fetchDataRecursive $
     predicate @Hack.MethodDefinition $
       rec $
         field @"declaration"
@@ -328,10 +323,7 @@ decl (Hack.Declaration_method meth@Hack.MethodDeclaration{..}) = do
     (toSignature typeParams sign)
 decl (Hack.Declaration_property_ prop@Hack.PropertyDeclaration{..}) = do
   Hack.PropertyDeclaration_key{..} <- liftMaybe propertyDeclaration_key
-  Hack.PropertyDefinition{..} <- maybeT $
-    Glean.getFirstResult $
-    Glean.recursive $
-    query @Hack.PropertyDefinition $
+  Hack.PropertyDefinition{..} <- maybeT $ fetchDataRecursive $
     predicate @Hack.PropertyDefinition $
       rec $
         field @"declaration"
@@ -367,13 +359,12 @@ containerDecl
 containerDecl
   (Hack.ContainerDeclaration_class_ clas@Hack.ClassDeclaration{..}) = do
     Hack.ClassDeclaration_key{..} <- liftMaybe classDeclaration_key
-    Hack.ClassDefinition{..} <- maybeT $
-      Glean.getFirstResult $ Glean.recursive $ query @Hack.ClassDefinition $
-        predicate @Hack.ClassDefinition $
-          rec $
-            field @"declaration"
-              (Angle.asPredicate $ Angle.factId $ Glean.getId clas)
-          end
+    Hack.ClassDefinition{..} <- maybeT $ fetchDataRecursive $
+      predicate @Hack.ClassDefinition $
+        rec $
+          field @"declaration"
+            (Angle.asPredicate $ Angle.factId $ Glean.getId clas)
+        end
     def <- liftMaybe classDefinition_key
     name <- qName classDeclaration_key_name
     let typeParams = map toTypeParameter
@@ -405,10 +396,7 @@ namespaceQName :: Maybe Hack.NamespaceQName -> Glean.MaybeTRepoHaxl u w [Text]
 namespaceQName Nothing = return []
 namespaceQName (Just name) = do
   let Hack.NamespaceDeclaration_key{..} = Hack.NamespaceDeclaration_key name
-  alias <- lift $ Glean.getFirstResult $
-    Glean.recursive $
-    query @Hack.GlobalNamespaceAlias $
-    predicate @Hack.GlobalNamespaceAlias $
+  alias <- lift $ fetchDataRecursive $ predicate @Hack.GlobalNamespaceAlias $
       rec $
         field @"to"
           (Angle.asPredicate $ Angle.factId
