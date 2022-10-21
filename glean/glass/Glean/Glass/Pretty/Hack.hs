@@ -359,17 +359,12 @@ containerDecl
 containerDecl
   (Hack.ContainerDeclaration_class_ clas@Hack.ClassDeclaration{..}) = do
     Hack.ClassDeclaration_key{..} <- liftMaybe classDeclaration_key
-    Hack.ClassDefinition{..} <- maybeT $ fetchDataRecursive $
-      predicate @Hack.ClassDefinition $
-        rec $
-          field @"declaration"
-            (Angle.asPredicate $ Angle.factId $ Glean.getId clas)
-        end
-    def <- liftMaybe classDefinition_key
+    (isAbstract, isFinal, classTypeParams) <- maybeT $ fetchDataRecursive $
+      angleClassDefinition (Angle.factId (Glean.getId clas))
     name <- qName classDeclaration_key_name
-    let typeParams = map toTypeParameter
-          (Hack.classDefinition_key_typeParams def)
-    pure $ Class (modifiersForClass def) (QualName name) typeParams
+    let typeParams = map toTypeParameter classTypeParams
+    pure $ Class (modifiersForClass isAbstract isFinal) (QualName name)
+      typeParams
 containerDecl
   (Hack.ContainerDeclaration_interface_ Hack.InterfaceDeclaration{..}) = do
     Hack.InterfaceDeclaration_key{..} <- liftMaybe interfaceDeclaration_key
@@ -424,11 +419,12 @@ modifiersForFunction :: Hack.FunctionDefinition_key -> FunctionMod
 modifiersForFunction Hack.FunctionDefinition_key {..} =
   FunctionMod
     (if functionDefinition_key_isAsync then Async else NotAsync)
-modifiersForClass :: Hack.ClassDefinition_key -> ClassMod
-modifiersForClass Hack.ClassDefinition_key {..} =
+
+modifiersForClass :: Bool -> Bool -> ClassMod
+modifiersForClass isAbstract isFinal =
   ClassMod
-    (if classDefinition_key_isAbstract then Abstract else NotAbstract)
-    (if classDefinition_key_isFinal then Final else NotFinal)
+    (if isAbstract then Abstract else NotAbstract)
+    (if isFinal then Final else NotFinal)
 
 modifiersForMethod :: Hack.MethodDefinition_key -> MethodMod
 modifiersForMethod Hack.MethodDefinition_key {..} =
@@ -526,3 +522,18 @@ liftMaybe = maybe mzero return
 
 maybeT :: (MonadTrans t, Monad m, MonadPlus (t m)) => m (Maybe b) -> t m b
 maybeT act = lift act >>= liftMaybe
+
+angleClassDefinition
+  :: Angle Hack.ClassDeclaration -> Angle (Bool, Bool, [Hack.TypeParameter])
+angleClassDefinition clas =
+  vars $ \(isAbstract :: Angle Bool) (isFinal :: Angle Bool)
+      (typeParams :: Angle [Hack.TypeParameter]) ->
+    tuple (isAbstract, isFinal, typeParams) `where_` [
+      wild .= predicate @Hack.ClassDefinition (
+        rec $
+          field @"declaration" (Angle.asPredicate clas) $
+          field @"isAbstract" isAbstract $
+          field @"isFinal" isFinal $
+          field @"typeParams" typeParams
+        end)
+    ]
