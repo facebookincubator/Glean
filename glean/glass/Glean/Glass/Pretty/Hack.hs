@@ -108,7 +108,7 @@ data Decl
   | Method MethodMod Container Name Signature
   | Property PropertyMod Container Name HackType
   | TypeConst Name
-  | Typedef QualName
+  | Typedef QualName [TypeParameter]
   | Module Name
 
 prettyDecl :: LayoutOptions -> Decl -> Doc ()
@@ -140,8 +140,8 @@ prettyDecl _ (Property modifiers container name mhacktype) =
   ppPropertyModifiers container modifiers <+> ppType mhacktype <+> ppName name
 prettyDecl _ (TypeConst name) =
   "const" <+> ppName name
-prettyDecl _ (Typedef name) =
-  "type" <+> ppQualName name
+prettyDecl _ (Typedef name typeParams) =
+  "type" <+> ppQualName name <> ppTypeParams typeParams
 
 ppName :: Name -> Doc ()
 ppName (Name n) = pretty n
@@ -276,18 +276,14 @@ decl (Hack.Declaration_container container) = containerDecl container
 decl (Hack.Declaration_enumerator Hack.Enumerator{..}) = do
   Hack.Enumerator_key{..} <- liftMaybe $enumerator_key
   Hack.EnumDeclaration{..} <- pure enumerator_key_enumeration
-  Hack.EnumDeclaration_key{..} <- liftMaybe $enumDeclaration_key
+  Hack.EnumDeclaration_key{..} <- liftMaybe $ enumDeclaration_key
   enum <- qName enumDeclaration_key_name
   name <- liftMaybe $ Hack.name_key enumerator_key_name
   pure $ Enumerator (QualName enum) $ Name name
-decl (Hack.Declaration_function_ fun@Hack.FunctionDeclaration{..}) = do
+decl (Hack.Declaration_function_ decl@Hack.FunctionDeclaration{..}) = do
   Hack.FunctionDeclaration_key{..} <- liftMaybe functionDeclaration_key
   Hack.FunctionDefinition{..} <- maybeT $ fetchDataRecursive $
-    predicate @Hack.FunctionDefinition $
-      rec $
-        field @"declaration"
-          (Angle.asPredicate $ Angle.factId $ Glean.getId fun)
-      end
+    angleFunctionDefinition (Angle.factId (Glean.getId decl))
   name <- qName functionDeclaration_key_name
   def <- liftMaybe functionDefinition_key
   let typeParams = Hack.functionDefinition_key_typeParams def
@@ -306,21 +302,17 @@ decl (Hack.Declaration_namespace_ Hack.NamespaceDeclaration{..}) = do
   Hack.NamespaceDeclaration_key{..} <- liftMaybe namespaceDeclaration_key
   name <- namespaceQName $ Just namespaceDeclaration_key_name
   pure $ Namespace $ Qual name
-decl (Hack.Declaration_method meth@Hack.MethodDeclaration{..}) = do
+decl (Hack.Declaration_method decl@Hack.MethodDeclaration{..}) = do
   Hack.MethodDeclaration_key{..} <- liftMaybe methodDeclaration_key
   Hack.MethodDefinition{..} <- maybeT $ fetchDataRecursive $
-    predicate @Hack.MethodDefinition $
-      rec $
-        field @"declaration"
-          (Angle.asPredicate $ Angle.factId $ Glean.getId meth)
-      end
+    angleMethodDefinition (Angle.factId (Glean.getId decl))
   name <- liftMaybe $ Hack.name_key methodDeclaration_key_name
   def <- liftMaybe methodDefinition_key
   let typeParams = Hack.methodDefinition_key_typeParams def
-  let sign = Hack.methodDefinition_key_signature def
+  let sig = Hack.methodDefinition_key_signature def
   let container = containerKind methodDeclaration_key_container
   pure $ Method (modifiersForMethod def) container (Name name)
-    (toSignature typeParams sign)
+    (toSignature typeParams sig)
 decl (Hack.Declaration_property_ prop@Hack.PropertyDeclaration{..}) = do
   Hack.PropertyDeclaration_key{..} <- liftMaybe propertyDeclaration_key
   Hack.PropertyDefinition{..} <- maybeT $ fetchDataRecursive $
@@ -339,10 +331,13 @@ decl (Hack.Declaration_typeConst Hack.TypeConstDeclaration{..}) = do
   Hack.TypeConstDeclaration_key{..} <- liftMaybe typeConstDeclaration_key
   name <- liftMaybe $ Hack.name_key typeConstDeclaration_key_name
   pure $ TypeConst $ Name name
-decl (Hack.Declaration_typedef_ Hack.TypedefDeclaration{..}) = do
+decl (Hack.Declaration_typedef_ decl@Hack.TypedefDeclaration{..}) = do
   Hack.TypedefDeclaration_key{..} <- liftMaybe typedefDeclaration_key
+  typedefTypeParams <- maybeT $ fetchDataRecursive $
+    angleTypedefDefinition (Angle.factId (Glean.getId decl))
   name <- qName typedefDeclaration_key_name
-  pure $ Typedef $ QualName name
+  let typeParams = map toTypeParameter typedefTypeParams
+  pure $ Typedef (QualName name) typeParams
 decl Hack.Declaration_EMPTY = MaybeT (return Nothing)
 
 containerDecl :: Hack.ContainerDeclaration -> Glean.MaybeTRepoHaxl u w Decl
@@ -563,3 +558,28 @@ angleInterfaceDefinition decl = var $ \typeParams ->
         field @"typeParams" typeParams
       end)
   ]
+
+angleTypedefDefinition
+  :: Angle Hack.TypedefDeclaration -> Angle [Hack.TypeParameter]
+angleTypedefDefinition decl = var $ \typeParams ->
+  typeParams `where_` [
+    wild .= predicate @Hack.TypedefDefinition (
+      rec $
+        field @"declaration" (Angle.asPredicate decl) $
+        field @"typeParams" typeParams
+      end)
+  ]
+
+angleMethodDefinition
+  :: Angle Hack.MethodDeclaration -> Angle Hack.MethodDefinition
+angleMethodDefinition decl = predicate @Hack.MethodDefinition $
+  rec $
+    field @"declaration" (Angle.asPredicate decl)
+  end
+
+angleFunctionDefinition
+  :: Angle Hack.FunctionDeclaration -> Angle Hack.FunctionDefinition
+angleFunctionDefinition decl = predicate @Hack.FunctionDefinition $
+  rec $
+    field @"declaration" (Angle.asPredicate decl)
+  end
