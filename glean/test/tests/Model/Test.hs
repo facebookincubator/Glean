@@ -6,6 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# LANGUAGE TypeApplications #-}
 {- This module implements state machine / lockstep testing
    for the Glean server, in particular the Janitor.
 
@@ -49,15 +50,17 @@ import Control.Concurrent.STM (
   retry,
   writeTVar,
  )
-import Control.Monad (guard, void, when)
+import Control.Exception (SomeException, throwIO, try)
+import Control.Monad (guard, unless, void, when)
 import Control.Monad.IO.Class (MonadIO (liftIO))
 import Data.Aeson (encode)
 import qualified Data.ByteString.Lazy.Char8 as LBS
 import Data.Default (def)
+import Data.Either.Combinators (whenLeft)
 import qualified Data.HashMap.Strict as HM
 import Data.HashSet (HashSet)
 import qualified Data.HashSet as Set
-import Data.IORef (IORef, modifyIORef, newIORef, readIORef)
+import Data.IORef (IORef, modifyIORef, newIORef, readIORef, writeIORef)
 import qualified Data.Map.Strict as Map
 import Data.Text (Text, pack)
 import qualified Data.Text.Lazy.IO as Text
@@ -148,18 +151,31 @@ import Model.Mock
 import Model.Model (Model, addTime, initialModel, numberOfShards, zeroTime)
 import Model.System (SystemState, modelState, readSystemState)
 import Model.Update (stepModel)
+import System.Exit (ExitCode (ExitSuccess))
 import System.FilePath ((</>))
-import System.IO (BufferMode (LineBuffering), hSetBuffering, stderr)
+import System.IO (
+  BufferMode (LineBuffering),
+  hPutStr,
+  hPutStrLn,
+  hSetBuffering,
+  stderr,
+ )
+import System.IO.Silently (hCapture)
 import System.IO.Temp (withSystemTempDirectory)
-import System.Process (callProcess)
+import System.Process (proc, readCreateProcessWithExitCode)
 import System.Time.Extra (Seconds, timeout)
-import Test.HUnit (Test (TestCase, TestLabel, TestList), assertFailure, (@?=))
+import Test.HUnit (
+  Test (TestCase, TestLabel, TestList),
+  assertFailure,
+  (@?=),
+ )
 import Test.QuickCheck (
   Arbitrary (arbitrary, shrink),
   forAllShrink,
   ioProperty,
   suchThat,
   tabulate,
+  whenFail,
  )
 import TestRunner (testRunner)
 import Text.Pretty.Simple (pShow)
@@ -169,7 +185,6 @@ import Util.Testing (assertProperty)
 
 main :: IO ()
 main = do
-  hSetBuffering stderr LineBuffering
   withUnitTest $
     testRunner $
       TestList
@@ -286,21 +301,28 @@ modelTest :: String -> Test
 modelTest name = TestLabel name $
   TestCase $ do
     dbConf <- dbConfig
+    outputRef <- newIORef mempty
     assertProperty "model" $
       -- generate many random sequences of valid commands
       forAllShrink
         (arbitrary `suchThat` good)
         (filter good . shrink)
         $ \rawCmds ->
-          tabulate "Commands" (map commandType rawCmds) $
-            tabulate "Sequence length" [show (length rawCmds)] $
-              -- for each sequence
-              ioProperty $ do
-                -- manipulate the raw command sequence to make it realistic
-                let realCommands =
-                      fixCreationTimes zeroTime $
-                        insertTimeLapses rawCmds
-                runModelTest dbConf realCommands
+          whenFail (hPutStr stderr . ("\n" <>) =<< readIORef outputRef) $
+            tabulate "Commands" (map commandType rawCmds) $
+              tabulate "Sequence length" [show (length rawCmds)] $
+                -- for each sequence
+                ioProperty $ do
+                  -- manipulate the raw command sequence to make it realistic
+                  let realCommands =
+                        fixCreationTimes zeroTime $
+                          insertTimeLapses rawCmds
+                  (output, res) <-
+                    hCapture [stderr] $ do
+                      try @SomeException $
+                        runModelTest dbConf realCommands
+                  whenLeft res $ \_ -> writeIORef outputRef output
+                  either throwIO pure res
 
 runModelTest ::
   (FilePath -> (Glean.Database.Config.Config, MockDataStore Memory)) ->
@@ -317,6 +339,7 @@ runModelTest dbConf commands =
           loop _ _ [] = return ()
           loop prevSideEffects model (command : cc) = do
             -- apply the command to both the model and the system
+            hPutStrLn stderr $ "Applying " <> show command
             let model' = stepModel model command
             sideEffects <- liftIO $ mutateSystem tEnv command
             -- run the system
@@ -324,25 +347,32 @@ runModelTest dbConf commands =
             -- wait for side effects to settle down
             moreSideEffects <-
               liftIO $ wait $ sideEffects <> prevSideEffects
-
             -- assert that the system and model change in lockstep
             let expected = modelState model'
             obtained <- readSystemState (mockedEnv tEnv)
-            diffSystemState expected obtained
+            diffSystemState command expected obtained
             -- continue with the updated model
             loop moreSideEffects model' cc
 
+      hSetBuffering stderr LineBuffering
       loop noWait (initialModel backupDir) commands
 
 --------------------------------------------------------------------------------
 
-diffSystemState :: SystemState -> SystemState -> IO ()
-diffSystemState expect obtain = withSystemTempDirectory "diff" $ \dir -> do
+diffSystemState :: Command -> SystemState -> SystemState -> IO ()
+diffSystemState cmd expect obtain = withSystemTempDirectory "diff" $ \dir -> do
   let expectPath = dir </> "expect"
       obtainPath = dir </> "obtain"
   Text.writeFile expectPath (pShow expect)
   Text.writeFile obtainPath (pShow obtain)
-  callProcess "diff" ["-U", "1000", expectPath, obtainPath]
+  let cp = proc "diff" ["-U", "1000", expectPath, obtainPath]
+  (ec, out, _err) <- readCreateProcessWithExitCode cp ""
+  unless (ExitSuccess == ec) $ do
+    errorWithoutStackTrace $
+      "The observed state of the system and the model don't match after "
+        <> show cmd
+        <> ":\n"
+        <> out
 
 --------------------------------------------------------------------------------
 
@@ -403,7 +433,7 @@ mutateSystem MockedEnv {..} DBDownloaded = do
       mockedCompleteRestore
       return $
         Wait
-          [ timeoutWithError 1 $
+          [ timeoutWithError "waitForDownloadCompleted" 1 $
               atomically $ do
                 entries <- getEntries (envCatalog mockedEnv)
                 let restorePending' = entriesRestoring entries
@@ -415,18 +445,19 @@ mutateSystem MockedEnv {..} DBDownloaded = do
           ]
 
 waitForDeletions :: HasCallStack => Env -> IO ()
-waitForDeletions env = timeoutWithError 1 $
-  atomically $ do
-    done <- null <$> readTVar (envDeleting env)
-    when (not done) retry
+waitForDeletions env =
+  timeoutWithError "waitForDeletions" 1 $
+    atomically $ do
+      done <- null <$> readTVar (envDeleting env)
+      when (not done) retry
 
-timeoutWithError :: HasCallStack => Seconds -> IO () -> IO ()
-timeoutWithError seconds action = do
+timeoutWithError :: HasCallStack => String -> Seconds -> IO () -> IO ()
+timeoutWithError msg seconds action = do
   res <- timeout seconds action
   case res of
     Nothing -> do
-      logError "timeout"
-      error "timeout"
+      logError $ "timeout: " <> msg
+      error $ "timeout: " <> msg
     _ -> return ()
 
 --------------------------------------------------------------------------------
