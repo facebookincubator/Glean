@@ -97,9 +97,9 @@ data Container
 data Decl
   = ClassConst Name
   | Enum QualName
-  | Trait QualName
-  | Class ClassMod QualName
-  | Interface QualName
+  | Trait QualName {- [TypeParameter] -}
+  | Class ClassMod QualName [TypeParameter]
+  | Interface QualName {- [TypeParameter] -}
   | Enumerator QualName Name
   | Function FunctionMod QualName Signature
   | GlobalConst QualName
@@ -119,8 +119,8 @@ prettyDecl _ (Enum name) =
   "enum" <+> ppQualName name
 prettyDecl _ (Trait name) =
   "trait" <+> ppQualName name
-prettyDecl _ (Class modifiers name) =
-  ppClassModifiers modifiers <+> ppQualName name
+prettyDecl _ (Class modifiers name typeParams) =
+  ppClassModifiers modifiers <+> ppQualName name <> ppTypeParams typeParams
 prettyDecl _ (Interface name) =
   "interface" <+> ppQualName name
 prettyDecl _ (Enumerator enum name) =
@@ -191,7 +191,6 @@ ppSignature opts (Signature returnType typeParams params) =
     paramsText = renderStrict $ layoutSmart opts onelineDoc
     fitsOnOneLine = not containsNewline
     containsNewline = Text.any (== '\n') paramsText
-
 
 ppTypeParams :: [TypeParameter] -> Doc ()
 ppTypeParams typeParams | null typeParams = ""
@@ -364,26 +363,27 @@ containerDecl
   (Hack.ContainerDeclaration_trait Hack.TraitDeclaration{..}) = do
     Hack.TraitDeclaration_key{..} <- liftMaybe traitDeclaration_key
     name <- qName traitDeclaration_key_name
-    pure $ Trait $ QualName name
+    pure $ Trait (QualName name)
 containerDecl
   (Hack.ContainerDeclaration_class_ clas@Hack.ClassDeclaration{..}) = do
     Hack.ClassDeclaration_key{..} <- liftMaybe classDeclaration_key
     Hack.ClassDefinition{..} <- maybeT $
-      Glean.getFirstResult $
-      query @Hack.ClassDefinition $
-      predicate @Hack.ClassDefinition $
-        rec $
-          field @"declaration"
-            (Angle.asPredicate $ Angle.factId $ Glean.getId clas)
-        end
+      Glean.getFirstResult $ Glean.recursive $ query @Hack.ClassDefinition $
+        predicate @Hack.ClassDefinition $
+          rec $
+            field @"declaration"
+              (Angle.asPredicate $ Angle.factId $ Glean.getId clas)
+          end
     def <- liftMaybe classDefinition_key
     name <- qName classDeclaration_key_name
-    pure $ Class (modifiersForClass def) $ QualName name
+    let typeParams = map toTypeParameter
+          (Hack.classDefinition_key_typeParams def)
+    pure $ Class (modifiersForClass def) (QualName name) typeParams
 containerDecl
   (Hack.ContainerDeclaration_interface_ Hack.InterfaceDeclaration{..}) = do
     Hack.InterfaceDeclaration_key{..} <- liftMaybe interfaceDeclaration_key
     name <- qName interfaceDeclaration_key_name
-    pure $ Interface $ QualName name
+    pure $ Interface (QualName name)
 containerDecl Hack.ContainerDeclaration_EMPTY = MaybeT (return Nothing)
 
 containerKind
