@@ -98,7 +98,7 @@ data Container
 data Decl
   = ClassConst Name
   | Enum QualName
-  | Trait QualName {- [TypeParameter] -}
+  | Trait QualName [TypeParameter]
   | Class ClassMod QualName [TypeParameter]
   | Interface QualName {- [TypeParameter] -}
   | Enumerator QualName Name
@@ -118,8 +118,8 @@ prettyDecl _ (Module name) =
   "module" <+> ppName name
 prettyDecl _ (Enum name) =
   "enum" <+> ppQualName name
-prettyDecl _ (Trait name) =
-  "trait" <+> ppQualName name
+prettyDecl _ (Trait name typeParams) =
+  "trait" <+> ppQualName name <> ppTypeParams typeParams
 prettyDecl _ (Class modifiers name typeParams) =
   ppClassModifiers modifiers <+> ppQualName name <> ppTypeParams typeParams
 prettyDecl _ (Interface name) =
@@ -352,10 +352,13 @@ containerDecl
     name <- qName enumDeclaration_key_name
     pure $ Enum $ QualName name
 containerDecl
-  (Hack.ContainerDeclaration_trait Hack.TraitDeclaration{..}) = do
+  (Hack.ContainerDeclaration_trait trait@Hack.TraitDeclaration{..}) = do
     Hack.TraitDeclaration_key{..} <- liftMaybe traitDeclaration_key
+    traitTypeParams <- maybeT $ fetchDataRecursive $
+      angleTraitDefinition (Angle.factId (Glean.getId trait))
     name <- qName traitDeclaration_key_name
-    pure $ Trait (QualName name)
+    let typeParams = map toTypeParameter traitTypeParams
+    pure $ Trait (QualName name) typeParams
 containerDecl
   (Hack.ContainerDeclaration_class_ clas@Hack.ClassDeclaration{..}) = do
     Hack.ClassDeclaration_key{..} <- liftMaybe classDeclaration_key
@@ -534,6 +537,18 @@ angleClassDefinition clas =
           field @"declaration" (Angle.asPredicate clas) $
           field @"isAbstract" isAbstract $
           field @"isFinal" isFinal $
+          field @"typeParams" typeParams
+        end)
+    ]
+
+angleTraitDefinition
+  :: Angle Hack.TraitDeclaration -> Angle [Hack.TypeParameter]
+angleTraitDefinition trait =
+  var $ \ (typeParams :: Angle [Hack.TypeParameter]) ->
+    typeParams `where_` [
+      wild .= predicate @Hack.TraitDefinition (
+        rec $
+          field @"declaration" (Angle.asPredicate trait) $
           field @"typeParams" typeParams
         end)
     ]
