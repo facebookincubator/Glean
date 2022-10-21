@@ -39,6 +39,7 @@
  -}
 module Model.Test (main) where
 
+import Control.Concurrent (newEmptyMVar, putMVar, takeMVar)
 import Control.Concurrent.STM (
   atomically,
   modifyTVar,
@@ -60,7 +61,6 @@ import Data.IORef (IORef, modifyIORef, newIORef, readIORef)
 import qualified Data.Map.Strict as Map
 import Data.Text (Text, pack)
 import qualified Data.Text.Lazy.IO as Text
-import Debug.Trace (traceShowM)
 import GHC.Stack (HasCallStack)
 import Glean.Database.Backup.Backend (Backend (fromPath))
 import qualified Glean.Database.Backup.Backend as Site
@@ -148,14 +148,8 @@ import Model.Mock
 import Model.Model (Model, addTime, initialModel, numberOfShards, zeroTime)
 import Model.System (SystemState, modelState, readSystemState)
 import Model.Update (stepModel)
-import System.Directory.Internal.Prelude (
-  newEmptyMVar,
-  putMVar,
-  stderr,
-  takeMVar,
- )
 import System.FilePath ((</>))
-import System.IO (BufferMode (LineBuffering), hSetBuffering)
+import System.IO (BufferMode (LineBuffering), hSetBuffering, stderr)
 import System.IO.Temp (withSystemTempDirectory)
 import System.Process (callProcess)
 import System.Time.Extra (Seconds, timeout)
@@ -301,37 +295,44 @@ modelTest name = TestLabel name $
           tabulate "Commands" (map commandType rawCmds) $
             tabulate "Sequence length" [show (length rawCmds)] $
               -- for each sequence
-              ioProperty $
-                withSystemTempDirectory "glean-dbtest-backup" $ \backupDir ->
-                  -- start a server
-                  withTEnv backupDir (dbConf backupDir) $ \TEnv {..} -> do
-                    -- a helper to traverse the commands list applying each one
-                    -- to both the server and a pure model,
-                    -- checking that the intermediate states match in every step
-                    let loop :: Wait -> Model -> [Command] -> IO ()
-                        loop _ _ [] = return ()
-                        loop prevSideEffects model (command : cc) = do
-                          -- apply the command to both the model and the system
-                          let model' = stepModel model command
-                          sideEffects <- liftIO $ mutateSystem tEnv command
-                          -- run the system
-                          runDatabaseJanitor (mockedEnv tEnv)
-                          -- wait for side effects to settle down
-                          moreSideEffects <-
-                            liftIO $ wait $ sideEffects <> prevSideEffects
+              ioProperty $ do
+                -- manipulate the raw command sequence to make it realistic
+                let realCommands =
+                      fixCreationTimes zeroTime $
+                        insertTimeLapses rawCmds
+                runModelTest dbConf realCommands
 
-                          -- assert that the system and model change in lockstep
-                          let expected = modelState model'
-                          obtained <- readSystemState (mockedEnv tEnv)
-                          diffSystemState expected obtained
-                          -- continue with the updated model
-                          loop moreSideEffects model' cc
+runModelTest ::
+  (FilePath -> (Glean.Database.Config.Config, MockDataStore Memory)) ->
+  [Command] ->
+  IO ()
+runModelTest dbConf commands =
+  withSystemTempDirectory "glean-dbtest-backup" $ \backupDir ->
+    -- start a server
+    withTEnv backupDir (dbConf backupDir) $ \TEnv {..} -> do
+      -- a helper to traverse the commands list applying each one
+      -- to both the server and a pure model,
+      -- checking that the intermediate states match in every step
+      let loop :: Wait -> Model -> [Command] -> IO ()
+          loop _ _ [] = return ()
+          loop prevSideEffects model (command : cc) = do
+            -- apply the command to both the model and the system
+            let model' = stepModel model command
+            sideEffects <- liftIO $ mutateSystem tEnv command
+            -- run the system
+            runDatabaseJanitor (mockedEnv tEnv)
+            -- wait for side effects to settle down
+            moreSideEffects <-
+              liftIO $ wait $ sideEffects <> prevSideEffects
 
-                    -- manipulate the raw command sequence to make it realistic
-                    let realCommands =
-                          fixCreationTimes zeroTime $
-                            insertTimeLapses rawCmds
-                    loop noWait (initialModel backupDir) realCommands
+            -- assert that the system and model change in lockstep
+            let expected = modelState model'
+            obtained <- readSystemState (mockedEnv tEnv)
+            diffSystemState expected obtained
+            -- continue with the updated model
+            loop moreSideEffects model' cc
+
+      loop noWait (initialModel backupDir) commands
 
 --------------------------------------------------------------------------------
 
@@ -478,7 +479,6 @@ openTest :: IO ()
 openTest = withSystemTempDirectory "backupdir" $ \backupDir -> do
   dbConf <- dbConfig
   withTEnv backupDir (dbConf backupDir) $ \TEnv {..} -> do
-    traceShowM ("backupDir" :: String, backupDir)
     let r = Repo "repo" "1"
         m = defMeta
     w1 <- mutateSystem tEnv (NewRemoteDB r m)
