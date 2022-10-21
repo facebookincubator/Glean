@@ -29,6 +29,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "NS",
                     "localName": "AnotherNamespaceClass"
@@ -74,6 +75,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "NS/AnotherNamespaceClass",
                     "localName": "another_class_function"
@@ -120,6 +122,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "NS",
                     "localName": "NamespaceClass"
@@ -165,6 +168,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "NS/NamespaceClass",
                     "localName": "class_function"
@@ -211,6 +215,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "",
                     "localName": "Position"
@@ -255,6 +260,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "Position",
                     "localName": "Bottom"
@@ -299,6 +305,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "Position",
                     "localName": "Center"
@@ -343,6 +350,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "Position",
                     "localName": "Left"
@@ -387,6 +395,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "Position",
                     "localName": "Right"
@@ -431,6 +440,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "Position",
                     "localName": "Top"
@@ -476,6 +486,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "",
                     "localName": "RefClass"
@@ -521,6 +532,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "RefClass",
                     "localName": "raz"
@@ -567,6 +579,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "RefClass",
                     "localName": "bar"
@@ -613,6 +626,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "RefClass",
                     "localName": "bazza"
@@ -659,6 +673,9 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [
+                    4
+                ],
                 "name": {
                     "container": "RefClass",
                     "localName": "foo"
@@ -705,6 +722,11 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [
+                    2,
+                    3,
+                    4
+                ],
                 "name": {
                     "container": "RefClass",
                     "localName": "lotsofkeywords"
@@ -768,6 +790,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "",
                     "localName": "SourceClass"
@@ -813,6 +836,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "SourceClass",
                     "localName": "daz"
@@ -859,6 +883,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "SourceClass",
                     "localName": "bar"
@@ -916,6 +941,10 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [
+                    1,
+                    4
+                ],
                 "name": {
                     "container": "SourceClass",
                     "localName": "pleaseOverride"
@@ -962,6 +991,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "",
                     "localName": "SourceEnum"
@@ -1006,6 +1036,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "SourceEnum",
                     "localName": "A"
@@ -1050,6 +1081,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "SourceEnum",
                     "localName": "B"
@@ -1095,6 +1127,10 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [
+                    1,
+                    4
+                ],
                 "name": {
                     "container": "SourceInterface",
                     "localName": "foo"
@@ -1141,6 +1177,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "SourceTrait",
                     "localName": "quux"
@@ -1187,6 +1224,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "",
                     "localName": "SubClass"
@@ -1248,6 +1286,9 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [
+                    4
+                ],
                 "name": {
                     "container": "SubClass",
                     "localName": "pleaseOverride"
@@ -1294,6 +1335,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "",
                     "localName": "SuperClass"
@@ -1339,6 +1381,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "SuperClass",
                     "localName": "superAdd"
@@ -1385,6 +1428,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "",
                     "localName": "TestAnnotation"
@@ -1430,6 +1474,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "TestAnnotation",
                     "localName": "test"
@@ -1476,6 +1521,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "TestAnnotation",
                     "localName": "__construct"
@@ -1521,6 +1567,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "",
                     "localName": "corge"

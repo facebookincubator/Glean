@@ -48,6 +48,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "",
                     "localName": "RefClass"
@@ -94,6 +95,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "",
                     "localName": "SourceInterface"
@@ -139,6 +141,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "SourceInterface",
                     "localName": "JAZZ"
@@ -185,6 +188,10 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [
+                    1,
+                    4
+                ],
                 "name": {
                     "container": "SourceInterface",
                     "localName": "foo"

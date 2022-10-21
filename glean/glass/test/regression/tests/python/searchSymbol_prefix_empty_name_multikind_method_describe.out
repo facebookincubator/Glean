@@ -28,6 +28,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "all.LocalClass",
                     "localName": "meth"
@@ -72,6 +73,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "lib.HelperClass",
                     "localName": "another_method"
@@ -116,6 +118,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "lib.HelperClass",
                     "localName": "method"

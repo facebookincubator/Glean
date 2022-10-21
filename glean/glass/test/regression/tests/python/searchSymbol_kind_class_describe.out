@@ -28,6 +28,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "all",
                     "localName": "LocalClass"
@@ -72,6 +73,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "lib",
                     "localName": "HelperClass"
@@ -116,6 +118,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "shadow",
                     "localName": "ShadowClass"

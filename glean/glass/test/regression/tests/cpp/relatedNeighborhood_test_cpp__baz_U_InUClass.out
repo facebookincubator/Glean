@@ -51,6 +51,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "baz",
                     "localName": "U"
@@ -96,6 +97,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "baz::U",
                     "localName": "InUClass"
@@ -141,6 +143,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "baz::U::InUClass",
                     "localName": "UCA"
@@ -186,6 +189,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "baz::U::InUClass",
                     "localName": "UCB"
@@ -231,6 +235,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "baz::U::InUClass",
                     "localName": "UCC"

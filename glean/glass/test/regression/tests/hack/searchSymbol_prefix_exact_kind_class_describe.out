@@ -29,6 +29,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "NS/AnotherNamespaceClass",
                     "localName": "another_class_function"
@@ -75,6 +76,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "NS/NamespaceClass",
                     "localName": "class_function"
@@ -121,6 +123,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "RefClass",
                     "localName": "bar"
@@ -167,6 +170,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "RefClass",
                     "localName": "bazza"
@@ -213,6 +217,9 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [
+                    4
+                ],
                 "name": {
                     "container": "RefClass",
                     "localName": "foo"
@@ -259,6 +266,11 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [
+                    2,
+                    3,
+                    4
+                ],
                 "name": {
                     "container": "RefClass",
                     "localName": "lotsofkeywords"
@@ -305,6 +317,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "SourceClass",
                     "localName": "bar"
@@ -362,6 +375,10 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [
+                    1,
+                    4
+                ],
                 "name": {
                     "container": "SourceClass",
                     "localName": "pleaseOverride"
@@ -408,6 +425,10 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [
+                    1,
+                    4
+                ],
                 "name": {
                     "container": "SourceInterface",
                     "localName": "foo"
@@ -454,6 +475,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "SourceTrait",
                     "localName": "quux"
@@ -516,6 +538,9 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [
+                    4
+                ],
                 "name": {
                     "container": "SubClass",
                     "localName": "pleaseOverride"
@@ -562,6 +587,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "SuperClass",
                     "localName": "superAdd"
@@ -608,6 +634,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "TestAnnotation",
                     "localName": "__construct"

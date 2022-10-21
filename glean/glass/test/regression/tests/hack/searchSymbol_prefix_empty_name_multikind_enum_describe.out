@@ -29,6 +29,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "",
                     "localName": "Position"
@@ -73,6 +74,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "Position",
                     "localName": "Bottom"
@@ -117,6 +119,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "Position",
                     "localName": "Center"
@@ -161,6 +164,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "Position",
                     "localName": "Left"
@@ -205,6 +209,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "Position",
                     "localName": "Right"
@@ -249,6 +254,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "Position",
                     "localName": "Top"
@@ -294,6 +300,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "",
                     "localName": "SourceEnum"
@@ -338,6 +345,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "SourceEnum",
                     "localName": "A"
@@ -382,6 +390,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "SourceEnum",
                     "localName": "B"

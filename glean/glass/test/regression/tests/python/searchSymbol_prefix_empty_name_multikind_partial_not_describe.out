@@ -28,6 +28,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "all",
                     "localName": "fn"
@@ -72,6 +73,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "as",
                     "localName": "fn"
@@ -116,6 +118,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "big_lib",
                     "localName": "big_func"
@@ -160,6 +163,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "lib",
                     "localName": "helper_func"
@@ -204,6 +208,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "main",
                     "localName": "f"
@@ -248,6 +253,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "main",
                     "localName": "g"
@@ -292,6 +298,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "main.g.<locals>",
                     "localName": "h"
@@ -336,6 +343,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "shadow",
                     "localName": "shadow_func"

@@ -55,6 +55,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "",
                     "localName": "RefClass"
@@ -101,6 +102,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "RefClass",
                     "localName": "raz"
@@ -147,6 +149,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "RefClass",
                     "localName": "JAZZ"
@@ -193,6 +196,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "RefClass",
                     "localName": "bar"
@@ -240,6 +244,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "RefClass",
                     "localName": "bazza"
@@ -287,6 +292,9 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [
+                    4
+                ],
                 "name": {
                     "container": "RefClass",
                     "localName": "foo"
@@ -334,6 +342,11 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [
+                    2,
+                    3,
+                    4
+                ],
                 "name": {
                     "container": "RefClass",
                     "localName": "lotsofkeywords"

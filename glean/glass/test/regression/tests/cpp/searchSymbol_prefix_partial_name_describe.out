@@ -28,6 +28,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "foo",
                     "localName": "foo"
@@ -72,6 +73,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "foo",
                     "localName": "fooFn"

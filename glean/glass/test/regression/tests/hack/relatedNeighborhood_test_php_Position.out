@@ -55,6 +55,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "",
                     "localName": "Position"
@@ -100,6 +101,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "Position",
                     "localName": "Bottom"
@@ -145,6 +147,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "Position",
                     "localName": "Center"
@@ -190,6 +193,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "Position",
                     "localName": "Left"
@@ -235,6 +239,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "Position",
                     "localName": "Right"
@@ -280,6 +285,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "Position",
                     "localName": "Top"

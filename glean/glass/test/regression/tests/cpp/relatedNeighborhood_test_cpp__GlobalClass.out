@@ -46,6 +46,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "",
                     "localName": "GlobalClass"
@@ -91,6 +92,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "GlobalClass",
                     "localName": "GCA"
@@ -136,6 +138,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "GlobalClass",
                     "localName": "GCB"
@@ -181,6 +184,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "GlobalClass",
                     "localName": "GCC"

@@ -42,6 +42,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "",
                     "localName": "maybe"
@@ -98,6 +99,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "maybe",
                     "localName": "Nothing"
@@ -143,6 +145,9 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [
+                    6
+                ],
                 "name": {
                     "container": "maybe",
                     "localName": "nothing"

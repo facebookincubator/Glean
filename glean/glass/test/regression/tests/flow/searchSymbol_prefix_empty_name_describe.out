@@ -27,6 +27,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "cjs_exports",
                     "localName": "plus"
@@ -70,6 +71,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "cjs_exports",
                     "localName": "x"
@@ -113,6 +115,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "es_exports",
                     "localName": "C"
@@ -156,6 +159,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "es_exports",
                     "localName": "bar"
@@ -199,6 +203,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "es_exports",
                     "localName": "baz"
@@ -253,6 +258,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "es_exports",
                     "localName": "bor"
@@ -296,6 +302,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "es_exports",
                     "localName": "d"
@@ -339,6 +346,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "es_exports",
                     "localName": "foo"
@@ -382,6 +390,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "es_exports",
                     "localName": "num"
@@ -425,6 +434,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "es_exports",
                     "localName": "x"
@@ -468,6 +478,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "imports",
                     "localName": "C"
@@ -511,6 +522,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "imports",
                     "localName": "D"
@@ -554,6 +566,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "imports",
                     "localName": "a"
@@ -597,6 +610,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "imports",
                     "localName": "b"
@@ -640,6 +654,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "imports",
                     "localName": "bar"
@@ -683,6 +698,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "imports",
                     "localName": "baz"
@@ -726,6 +742,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "imports",
                     "localName": "c"
@@ -769,6 +786,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "imports",
                     "localName": "caz"
@@ -812,6 +830,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "imports",
                     "localName": "d"
@@ -855,6 +874,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "imports",
                     "localName": "e"
@@ -898,6 +918,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "imports",
                     "localName": "fn"
@@ -941,6 +962,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "imports",
                     "localName": "foo"
@@ -984,6 +1006,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "imports",
                     "localName": "num"
@@ -1027,6 +1050,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "imports",
                     "localName": "qux"
@@ -1070,6 +1094,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "imports",
                     "localName": "s"
@@ -1113,6 +1138,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "imports",
                     "localName": "str"
@@ -1156,6 +1182,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "imports",
                     "localName": "x"
@@ -1199,6 +1226,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "imports",
                     "localName": "y"
@@ -1242,6 +1270,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "imports",
                     "localName": "z"

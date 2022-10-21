@@ -28,6 +28,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "",
                     "localName": "Global"
@@ -72,6 +73,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "Global",
                     "localName": "GA"
@@ -116,6 +118,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "Global",
                     "localName": "GB"
@@ -160,6 +163,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "Global",
                     "localName": "GC"
@@ -204,6 +208,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "",
                     "localName": "GlobalClass"
@@ -248,6 +253,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "GlobalClass",
                     "localName": "GCA"
@@ -292,6 +298,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "GlobalClass",
                     "localName": "GCB"
@@ -336,6 +343,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "GlobalClass",
                     "localName": "GCC"
@@ -380,6 +388,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "baz",
                     "localName": "U"
@@ -424,6 +433,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "baz::U",
                     "localName": "InU"
@@ -468,6 +478,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "baz::U::InU",
                     "localName": "UA"
@@ -512,6 +523,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "baz::U::InU",
                     "localName": "UB"
@@ -556,6 +568,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "baz::U::InU",
                     "localName": "UC"
@@ -600,6 +613,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "baz::U",
                     "localName": "InUClass"
@@ -644,6 +658,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "baz::U::InUClass",
                     "localName": "UCA"
@@ -688,6 +703,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "baz::U::InUClass",
                     "localName": "UCB"
@@ -732,6 +748,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "baz::U::InUClass",
                     "localName": "UCC"
@@ -776,6 +793,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "foo",
                     "localName": "S"
@@ -820,6 +838,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "foo::bar",
                     "localName": "T"
@@ -864,6 +883,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "foo",
                     "localName": "foo"
@@ -908,6 +928,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "foo",
                     "localName": "fooFn"
@@ -952,6 +973,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "",
                     "localName": "h"
@@ -1007,6 +1029,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "maybe",
                     "localName": "Nothing"
@@ -1051,6 +1074,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "maybe::Nothing",
                     "localName": "_secret"
@@ -1095,6 +1119,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "maybe::Nothing::_secret",
                     "localName": "_magic"
@@ -1139,6 +1164,9 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [
+                    6
+                ],
                 "name": {
                     "container": "maybe",
                     "localName": "nothing"

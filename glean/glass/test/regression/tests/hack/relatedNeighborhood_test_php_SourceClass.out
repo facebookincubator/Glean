@@ -90,6 +90,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "",
                     "localName": "SourceClass"
@@ -136,6 +137,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "SourceClass",
                     "localName": "daz"
@@ -182,6 +184,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "SourceClass",
                     "localName": "BAZ"
@@ -228,6 +231,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "SourceClass",
                     "localName": "T"
@@ -274,6 +278,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "SourceClass",
                     "localName": "bar"
@@ -332,6 +337,10 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [
+                    1,
+                    4
+                ],
                 "name": {
                     "container": "SourceClass",
                     "localName": "pleaseOverride"
@@ -379,6 +388,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "",
                     "localName": "SubClass"
@@ -425,6 +435,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "",
                     "localName": "SuperClass"
@@ -470,6 +481,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "SuperClass",
                     "localName": "BAZ"
@@ -516,6 +528,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "SuperClass",
                     "localName": "superAdd"

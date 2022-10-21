@@ -207,7 +207,7 @@ import Glean.Glass.Attributes.SymbolKind
 import Glean.Glass.Annotations (getAnnotationsForEntity)
 import Glean.Glass.Comments (getCommentsForEntity)
 import qualified Glean.Glass.SearchRelated as Search
-import Glean.Glass.Visibility (getVisibilityForEntity)
+import Glean.Glass.Visibility (getInfoForEntity)
 import Glean.Glass.SearchRelated (Recursive(NotRecursive))
 
 -- | Runner for methods that are keyed by a file path
@@ -1154,7 +1154,8 @@ describeEntity ent SymbolResult{..} = do
   symbolDescription_name <- eThrow =<< toQualifiedName ent
   symbolDescription_annotations <- eThrow =<< getAnnotationsForEntity repo ent
   symbolDescription_comments <- eThrow =<< getCommentsForEntity repo ent
-  symbolDescription_visibility <- eThrow =<< getVisibilityForEntity ent
+  (symbolDescription_visibility, symbolDescription_modifiers)
+     <- eThrow =<< getInfoForEntity ent
   symbolDescription_signature <- toSymbolSignatureText ent
   symbolDescription_extends_relation <-
     relationDescription RelationType_Extends

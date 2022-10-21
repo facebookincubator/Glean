@@ -38,6 +38,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "foo::bar",
                     "localName": "T"
@@ -83,6 +84,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "foo::bar::T",
                     "localName": "memberVariableDecl"

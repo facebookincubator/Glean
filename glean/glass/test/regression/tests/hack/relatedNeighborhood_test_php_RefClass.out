@@ -82,6 +82,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "",
                     "localName": "RefClass"
@@ -128,6 +129,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "RefClass",
                     "localName": "raz"
@@ -174,6 +176,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "RefClass",
                     "localName": "JAZZ"
@@ -220,6 +223,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "RefClass",
                     "localName": "bar"
@@ -267,6 +271,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "RefClass",
                     "localName": "bazza"
@@ -314,6 +319,9 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [
+                    4
+                ],
                 "name": {
                     "container": "RefClass",
                     "localName": "foo"
@@ -361,6 +369,11 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [
+                    2,
+                    3,
+                    4
+                ],
                 "name": {
                     "container": "RefClass",
                     "localName": "lotsofkeywords"
@@ -408,6 +421,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "",
                     "localName": "SourceInterface"
@@ -453,6 +467,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "SourceInterface",
                     "localName": "JAZZ"
@@ -499,6 +514,10 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [
+                    1,
+                    4
+                ],
                 "name": {
                     "container": "SourceInterface",
                     "localName": "foo"
@@ -546,6 +565,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "",
                     "localName": "SourceTrait"
@@ -592,6 +612,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "SourceTrait",
                     "localName": "quux"

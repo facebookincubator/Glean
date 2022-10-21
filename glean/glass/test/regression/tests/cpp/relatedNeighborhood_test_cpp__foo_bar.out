@@ -50,6 +50,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "foo",
                     "localName": "bar"
@@ -95,6 +96,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "foo::bar",
                     "localName": "T"
@@ -140,6 +142,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "foo::bar",
                     "localName": "TypedefDeclShort"
@@ -185,6 +188,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "foo::bar",
                     "localName": "UsingDeclShort"
@@ -231,6 +235,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "foo::bar",
                     "localName": "g"

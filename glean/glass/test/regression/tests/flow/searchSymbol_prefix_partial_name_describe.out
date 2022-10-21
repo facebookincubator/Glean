@@ -27,6 +27,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "es_exports",
                     "localName": "foo"
@@ -70,6 +71,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "imports",
                     "localName": "foo"

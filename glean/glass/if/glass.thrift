@@ -265,6 +265,23 @@ enum Visibility {
   hack.attributes = "\GraphQLEnum('GlassVisibility'), \SelfDescriptive, \Oncalls('code_indexing')",
 )
 
+// Symbol modifiers (see codmearkup.types.Modifiers for those in Glean)
+// nb. upper case for thrift to graphql happiness
+enum Modifier {
+  ABSTRACT = 1,
+  FINAL = 2,
+  ASYNC = 3,
+  STATIC = 4,
+  READONLY = 5,
+  CONST = 6,
+  MUTABLE = 7,
+  VOLATILE = 8,
+  VIRTUAL = 9,
+  INLINE = 10,
+} (
+  hack.attributes = "\GraphQLEnum('GlassModifiers'), \SelfDescriptive, \Oncalls('code_indexing')",
+)
+
 // A symbol description extends the symbol id with additional attributes
 struct SymbolDescription {
   1: SymbolId sym;
@@ -281,6 +298,7 @@ struct SymbolDescription {
   12: list<LocationRange> sym_other_locations; // and optionally extra locations
   13: RelationDescription extends_relation;
   14: RelationDescription contains_relation;
+  15: set<Modifier> modifiers;
 }
 
 // summary of search related results

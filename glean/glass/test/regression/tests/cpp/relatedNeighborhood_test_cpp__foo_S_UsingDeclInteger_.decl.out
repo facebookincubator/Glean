@@ -38,6 +38,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "foo",
                     "localName": "S"
@@ -83,6 +84,7 @@
                     },
                     "repository": "test"
                 },
+                "modifiers": [],
                 "name": {
                     "container": "foo::S",
                     "localName": "UsingDeclInteger"
