@@ -100,7 +100,7 @@ data Decl
   | Enum QualName
   | Trait QualName [TypeParameter]
   | Class ClassMod QualName [TypeParameter]
-  | Interface QualName {- [TypeParameter] -}
+  | Interface QualName [TypeParameter]
   | Enumerator QualName Name
   | Function FunctionMod QualName Signature
   | GlobalConst QualName
@@ -122,8 +122,8 @@ prettyDecl _ (Trait name typeParams) =
   "trait" <+> ppQualName name <> ppTypeParams typeParams
 prettyDecl _ (Class modifiers name typeParams) =
   ppClassModifiers modifiers <+> ppQualName name <> ppTypeParams typeParams
-prettyDecl _ (Interface name) =
-  "interface" <+> ppQualName name
+prettyDecl _ (Interface name typeParams) =
+  "interface" <+> ppQualName name <> ppTypeParams typeParams
 prettyDecl _ (Enumerator enum name) =
   ppQualName enum <> "::" <> ppName name
 prettyDecl opts (Function modifiers name sig) =
@@ -352,27 +352,30 @@ containerDecl
     name <- qName enumDeclaration_key_name
     pure $ Enum $ QualName name
 containerDecl
-  (Hack.ContainerDeclaration_trait trait@Hack.TraitDeclaration{..}) = do
+  (Hack.ContainerDeclaration_trait decl@Hack.TraitDeclaration{..}) = do
     Hack.TraitDeclaration_key{..} <- liftMaybe traitDeclaration_key
     traitTypeParams <- maybeT $ fetchDataRecursive $
-      angleTraitDefinition (Angle.factId (Glean.getId trait))
+      angleTraitDefinition (Angle.factId (Glean.getId decl))
     name <- qName traitDeclaration_key_name
     let typeParams = map toTypeParameter traitTypeParams
     pure $ Trait (QualName name) typeParams
 containerDecl
-  (Hack.ContainerDeclaration_class_ clas@Hack.ClassDeclaration{..}) = do
+  (Hack.ContainerDeclaration_class_ decl@Hack.ClassDeclaration{..}) = do
     Hack.ClassDeclaration_key{..} <- liftMaybe classDeclaration_key
     (isAbstract, isFinal, classTypeParams) <- maybeT $ fetchDataRecursive $
-      angleClassDefinition (Angle.factId (Glean.getId clas))
+      angleClassDefinition (Angle.factId (Glean.getId decl))
     name <- qName classDeclaration_key_name
     let typeParams = map toTypeParameter classTypeParams
     pure $ Class (modifiersForClass isAbstract isFinal) (QualName name)
       typeParams
 containerDecl
-  (Hack.ContainerDeclaration_interface_ Hack.InterfaceDeclaration{..}) = do
+  (Hack.ContainerDeclaration_interface_ decl@Hack.InterfaceDeclaration{..}) = do
     Hack.InterfaceDeclaration_key{..} <- liftMaybe interfaceDeclaration_key
+    interTypeParams <- maybeT $ fetchDataRecursive $
+      angleInterfaceDefinition (Angle.factId (Glean.getId decl))
     name <- qName interfaceDeclaration_key_name
-    pure $ Interface (QualName name)
+    let typeParams = map toTypeParameter interTypeParams
+    pure $ Interface (QualName name) typeParams
 containerDecl Hack.ContainerDeclaration_EMPTY = MaybeT (return Nothing)
 
 containerKind
@@ -528,27 +531,35 @@ maybeT act = lift act >>= liftMaybe
 
 angleClassDefinition
   :: Angle Hack.ClassDeclaration -> Angle (Bool, Bool, [Hack.TypeParameter])
-angleClassDefinition clas =
-  vars $ \(isAbstract :: Angle Bool) (isFinal :: Angle Bool)
-      (typeParams :: Angle [Hack.TypeParameter]) ->
-    tuple (isAbstract, isFinal, typeParams) `where_` [
-      wild .= predicate @Hack.ClassDefinition (
-        rec $
-          field @"declaration" (Angle.asPredicate clas) $
-          field @"isAbstract" isAbstract $
-          field @"isFinal" isFinal $
-          field @"typeParams" typeParams
-        end)
-    ]
+angleClassDefinition decl = vars $ \isAbstract isFinal typeParams ->
+  tuple (isAbstract, isFinal, typeParams) `where_` [
+    wild .= predicate @Hack.ClassDefinition (
+      rec $
+        field @"declaration" (Angle.asPredicate decl) $
+        field @"isAbstract" isAbstract $
+        field @"isFinal" isFinal $
+        field @"typeParams" typeParams
+      end)
+  ]
 
 angleTraitDefinition
   :: Angle Hack.TraitDeclaration -> Angle [Hack.TypeParameter]
-angleTraitDefinition trait =
-  var $ \ (typeParams :: Angle [Hack.TypeParameter]) ->
-    typeParams `where_` [
-      wild .= predicate @Hack.TraitDefinition (
-        rec $
-          field @"declaration" (Angle.asPredicate trait) $
-          field @"typeParams" typeParams
-        end)
-    ]
+angleTraitDefinition decl = var $ \typeParams ->
+  typeParams `where_` [
+    wild .= predicate @Hack.TraitDefinition (
+      rec $
+        field @"declaration" (Angle.asPredicate decl) $
+        field @"typeParams" typeParams
+      end)
+  ]
+
+angleInterfaceDefinition
+  :: Angle Hack.InterfaceDeclaration -> Angle [Hack.TypeParameter]
+angleInterfaceDefinition decl = var $ \typeParams ->
+  typeParams `where_` [
+    wild .= predicate @Hack.InterfaceDefinition (
+      rec $
+        field @"declaration" (Angle.asPredicate decl) $
+        field @"typeParams" typeParams
+      end)
+  ]
