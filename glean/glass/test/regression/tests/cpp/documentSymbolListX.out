@@ -6,6 +6,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "Global"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "enum ::Global"
                         },
                         "key": "symbolSignature"
@@ -45,6 +57,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "GlobalClass"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "enum class ::GlobalClass"
@@ -88,6 +112,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "baz"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "namespace baz"
                         },
                         "key": "symbolSignature"
@@ -127,6 +163,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "U"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "baz"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "struct baz::U"
@@ -170,6 +218,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "InU"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "baz::U"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "enum baz::U::InU"
                         },
                         "key": "symbolSignature"
@@ -209,6 +269,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "InUClass"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "baz::U"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "enum class baz::U::InUClass"
@@ -252,6 +324,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "namespace foo"
                         },
                         "key": "symbolSignature"
@@ -291,6 +375,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "S"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "foo"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "struct foo::S"
@@ -334,7 +430,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "S"
+                            "aString": "TypedefDeclInteger"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "foo::S"
                         },
                         "key": "symbolParent"
                     },
@@ -381,7 +483,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "S"
+                            "aString": "UsingDeclInteger"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "foo::S"
                         },
                         "key": "symbolParent"
                     },
@@ -428,6 +536,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "bar"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "foo"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "namespace foo::bar"
                         },
                         "key": "symbolSignature"
@@ -467,6 +587,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "T"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "foo::bar"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "struct foo::bar::T"
@@ -510,7 +642,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "T"
+                            "aString": "memberVariableDecl"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "foo::bar::T"
                         },
                         "key": "symbolParent"
                     },
@@ -557,7 +695,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "bar"
+                            "aString": "TypedefDeclShort"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "foo::bar"
                         },
                         "key": "symbolParent"
                     },
@@ -604,7 +748,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "bar"
+                            "aString": "UsingDeclShort"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "foo::bar"
                         },
                         "key": "symbolParent"
                     },
@@ -651,7 +801,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "bar"
+                            "aString": "g"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "foo::bar"
                         },
                         "key": "symbolParent"
                     },
@@ -696,6 +852,12 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "f"
+                        },
+                        "key": "symbolName"
+                    },
                     {
                         "attribute": {
                             "aString": "foo"
@@ -745,6 +907,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "foo"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "void foo::foo()"
                         },
                         "key": "symbolSignature"
@@ -784,6 +958,12 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "foo"
+                        },
+                        "key": "symbolName"
+                    },
                     {
                         "attribute": {
                             "aString": "foo"
@@ -833,6 +1013,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "four"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "foo::foo"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "int four"
                         },
                         "key": "symbolSignature"
@@ -872,6 +1064,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "fooFn"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "foo"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "int foo::fooFn(int fooI)"
@@ -915,6 +1119,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "fooI"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "foo::fooFn"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "int fooI"
                         },
                         "key": "symbolSignature"
@@ -954,6 +1170,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "h"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "void ::h(int i)"
@@ -997,6 +1225,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "h"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "void ::h(int _i)"
                         },
                         "key": "symbolSignature"
@@ -1036,6 +1276,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "_i"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "h"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "int _i"
@@ -1079,6 +1331,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "i"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "h"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "int i"
                         },
                         "key": "symbolSignature"
@@ -1118,6 +1382,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "s"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "h"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "foo::S s"
@@ -1161,6 +1437,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "t"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "h"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "foo::bar::T t"
                         },
                         "key": "symbolSignature"
@@ -1200,6 +1488,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "maybe"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "namespace maybe"
@@ -1243,6 +1543,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "Nothing"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "maybe"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "struct maybe::Nothing"
                         },
                         "key": "symbolSignature"
@@ -1282,6 +1594,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "Nothing"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "maybe"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "maybe::Nothing::Nothing(maybe::Nothing::_secret)"
@@ -1325,6 +1649,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "maybe::Nothing::.ctor"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "maybe::Nothing::_secret"
                         },
                         "key": "symbolSignature"
@@ -1366,6 +1702,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "_secret"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "maybe::Nothing"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "enum class maybe::Nothing::_secret"
                         },
                         "key": "symbolSignature"
@@ -1405,6 +1753,12 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "nothing"
+                        },
+                        "key": "symbolName"
+                    },
                     {
                         "attribute": {
                             "aString": "maybe"
@@ -1514,6 +1868,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "namespace foo"
                         },
                         "key": "symbolSignature"
@@ -1565,6 +1931,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "namespace foo"
                         },
                         "key": "symbolSignature"
@@ -1614,6 +1992,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "namespace foo"
@@ -1667,6 +2057,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "namespace foo"
                         },
                         "key": "symbolSignature"
@@ -1718,6 +2120,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "namespace foo"
                         },
                         "key": "symbolSignature"
@@ -1767,6 +2181,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "S"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "foo"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "struct foo::S"
@@ -1820,6 +2246,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "bar"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "foo"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "namespace foo::bar"
                         },
                         "key": "symbolSignature"
@@ -1869,6 +2307,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "bar"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "foo"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "namespace foo::bar"
@@ -1922,6 +2372,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "T"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "foo::bar"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "struct foo::bar::T"
                         },
                         "key": "symbolSignature"
@@ -1973,7 +2435,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "bar"
+                            "aString": "g"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "foo::bar"
                         },
                         "key": "symbolParent"
                     },
@@ -2028,6 +2496,12 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "f"
+                        },
+                        "key": "symbolName"
+                    },
                     {
                         "attribute": {
                             "aString": "foo"
@@ -2087,6 +2561,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "foo"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "void foo::foo()"
                         },
                         "key": "symbolSignature"
@@ -2138,6 +2624,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "foo"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "void foo::foo()"
                         },
                         "key": "symbolSignature"
@@ -2187,6 +2685,12 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "foo"
+                        },
+                        "key": "symbolName"
+                    },
                     {
                         "attribute": {
                             "aString": "foo"
@@ -2248,6 +2752,12 @@
                         "attribute": {
                             "aString": "foo"
                         },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "foo"
+                        },
                         "key": "symbolParent"
                     },
                     {
@@ -2305,6 +2815,12 @@
                         "attribute": {
                             "aString": "foo"
                         },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "foo"
+                        },
                         "key": "symbolParent"
                     },
                     {
@@ -2358,6 +2874,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "fooI"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "foo::fooFn"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "int fooI"
@@ -2411,6 +2939,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "h"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "void ::h(int i)"
                         },
                         "key": "symbolSignature"
@@ -2460,6 +3000,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "h"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "void ::h(int i)"
@@ -2513,6 +3065,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "h"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "void ::h(int i)"
                         },
                         "key": "symbolSignature"
@@ -2562,6 +3126,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "h"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "void ::h(int _i)"
@@ -2615,6 +3191,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "i"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "h"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "int i"
                         },
                         "key": "symbolSignature"
@@ -2664,6 +3252,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "i"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "h"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "int i"
@@ -2717,6 +3317,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "Nothing"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "maybe"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "struct maybe::Nothing"
                         },
                         "key": "symbolSignature"
@@ -2766,6 +3378,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "Nothing"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "maybe"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "struct maybe::Nothing"
@@ -2819,6 +3443,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "_secret"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "maybe::Nothing"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "enum class maybe::Nothing::_secret"
                         },
                         "key": "symbolSignature"
@@ -2868,6 +3504,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "_secret"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "maybe::Nothing"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "enum class maybe::Nothing::_secret"
@@ -2921,7 +3569,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "Nothing"
+                            "aString": "_magic"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "maybe::Nothing::_secret"
                         },
                         "key": "symbolParent"
                     },

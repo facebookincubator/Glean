@@ -13,6 +13,12 @@
                         "symbolLanguage": {
                             "aInteger": 3
                         },
+                        "symbolName": {
+                            "aString": "RefClass"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "class RefClass"
                         }
@@ -32,6 +38,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "SourceInterface"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "interface SourceInterface"
@@ -65,6 +77,12 @@
                         "symbolLanguage": {
                             "aInteger": 3
                         },
+                        "symbolName": {
+                            "aString": "SourceTrait"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "trait SourceTrait"
                         }
@@ -97,6 +115,12 @@
                         "symbolLanguage": {
                             "aInteger": 3
                         },
+                        "symbolName": {
+                            "aString": "JAZZ"
+                        },
+                        "symbolParent": {
+                            "aString": "RefClass"
+                        },
                         "symbolSignature": {
                             "aString": "const JAZZ"
                         }
@@ -118,6 +142,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "raz"
+                        },
+                        "symbolParent": {
+                            "aString": "RefClass"
                         },
                         "symbolSignature": {
                             "aString": "private int raz"
@@ -141,6 +171,12 @@
                         "symbolLanguage": {
                             "aInteger": 3
                         },
+                        "symbolName": {
+                            "aString": "foo"
+                        },
+                        "symbolParent": {
+                            "aString": "RefClass"
+                        },
                         "symbolSignature": {
                             "aString": "public static function foo(): int"
                         }
@@ -162,6 +198,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "WALDO"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "const WALDO"
@@ -192,6 +234,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "corge"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "function corge(): int"
@@ -225,6 +273,12 @@
                         "symbolLanguage": {
                             "aInteger": 3
                         },
+                        "symbolName": {
+                            "aString": "bazza"
+                        },
+                        "symbolParent": {
+                            "aString": "RefClass"
+                        },
                         "symbolSignature": {
                             "aString": "public function bazza(): int"
                         }
@@ -246,6 +300,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "corge"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "function corge(): int"
@@ -279,6 +339,12 @@
                         "symbolLanguage": {
                             "aInteger": 3
                         },
+                        "symbolName": {
+                            "aString": "lotsofkeywords"
+                        },
+                        "symbolParent": {
+                            "aString": "RefClass"
+                        },
                         "symbolSignature": {
                             "aString": "final internal static async function lotsofkeywords(): int"
                         }
@@ -301,6 +367,12 @@
                         "symbolLanguage": {
                             "aInteger": 3
                         },
+                        "symbolName": {
+                            "aString": "bar"
+                        },
+                        "symbolParent": {
+                            "aString": "RefClass"
+                        },
                         "symbolSignature": {
                             "aString": "public function bar(SourceClass::T $param): int"
                         }
@@ -320,6 +392,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "SourceClass"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "class SourceClass"
@@ -350,6 +428,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "T"
+                        },
+                        "symbolParent": {
+                            "aString": "SourceClass"
                         },
                         "symbolSignature": {
                             "aString": "const T"
@@ -383,6 +467,12 @@
                         "symbolLanguage": {
                             "aInteger": 3
                         },
+                        "symbolName": {
+                            "aString": "SourceClass"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "class SourceClass"
                         }
@@ -415,6 +505,12 @@
                         "symbolLanguage": {
                             "aInteger": 3
                         },
+                        "symbolName": {
+                            "aString": "JAZZ"
+                        },
+                        "symbolParent": {
+                            "aString": "RefClass"
+                        },
                         "symbolSignature": {
                             "aString": "const JAZZ"
                         }
@@ -444,6 +540,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "SourceClass"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "class SourceClass"
@@ -475,6 +577,12 @@
                         "symbolLanguage": {
                             "aInteger": 3
                         },
+                        "symbolName": {
+                            "aString": "daz"
+                        },
+                        "symbolParent": {
+                            "aString": "SourceClass"
+                        },
                         "symbolSignature": {
                             "aString": "public int daz"
                         }
@@ -504,6 +612,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "BAZ"
+                        },
+                        "symbolParent": {
+                            "aString": "SourceClass"
                         },
                         "symbolSignature": {
                             "aString": "const BAZ"
@@ -535,6 +649,12 @@
                         "symbolLanguage": {
                             "aInteger": 3
                         },
+                        "symbolName": {
+                            "aString": "WALDO"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "const WALDO"
                         }
@@ -564,6 +684,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "corge"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "function corge(): int"
@@ -597,6 +723,12 @@
                         "symbolLanguage": {
                             "aInteger": 3
                         },
+                        "symbolName": {
+                            "aString": "Position"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "enum Position"
                         }
@@ -626,6 +758,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "Right"
+                        },
+                        "symbolParent": {
+                            "aString": "Position"
                         },
                         "symbolSignature": {
                             "aString": "Position::Right"
@@ -657,6 +795,12 @@
                         "symbolLanguage": {
                             "aInteger": 3
                         },
+                        "symbolName": {
+                            "aString": "foo"
+                        },
+                        "symbolParent": {
+                            "aString": "RefClass"
+                        },
                         "symbolSignature": {
                             "aString": "public static function foo(): int"
                         }
@@ -686,6 +830,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "quux"
+                        },
+                        "symbolParent": {
+                            "aString": "SourceTrait"
                         },
                         "symbolSignature": {
                             "aString": "public function quux(int $i): int"
@@ -719,6 +869,12 @@
                         "symbolLanguage": {
                             "aInteger": 3
                         },
+                        "symbolName": {
+                            "aString": "raz"
+                        },
+                        "symbolParent": {
+                            "aString": "RefClass"
+                        },
                         "symbolSignature": {
                             "aString": "private int raz"
                         }
@@ -748,6 +904,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "bazza"
+                        },
+                        "symbolParent": {
+                            "aString": "RefClass"
                         },
                         "symbolSignature": {
                             "aString": "public function bazza(): int"
@@ -779,6 +941,12 @@
                         "symbolLanguage": {
                             "aInteger": 3
                         },
+                        "symbolName": {
+                            "aString": "SourceClass"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "class SourceClass"
                         }
@@ -808,6 +976,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "superAdd"
+                        },
+                        "symbolParent": {
+                            "aString": "SuperClass"
                         },
                         "symbolSignature": {
                             "aString": "public function superAdd(int $i, int $i): int"
@@ -841,6 +1015,12 @@
                         "symbolLanguage": {
                             "aInteger": 3
                         },
+                        "symbolName": {
+                            "aString": "Position"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "enum Position"
                         }
@@ -871,6 +1051,12 @@
                         "symbolLanguage": {
                             "aInteger": 3
                         },
+                        "symbolName": {
+                            "aString": "Center"
+                        },
+                        "symbolParent": {
+                            "aString": "Position"
+                        },
                         "symbolSignature": {
                             "aString": "Position::Center"
                         }
@@ -900,6 +1086,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "corge"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "function corge(): int"

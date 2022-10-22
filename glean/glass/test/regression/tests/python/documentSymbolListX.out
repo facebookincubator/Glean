@@ -12,6 +12,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "all"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -32,6 +44,18 @@
                             "aInteger": 7
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Helper"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "all"
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -58,6 +82,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "LocalClass"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "all"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -78,6 +114,18 @@
                             "aInteger": 8
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "meth"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "all.LocalClass"
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -104,6 +152,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "__all__"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "all"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -124,6 +184,18 @@
                             "aInteger": 14
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "big_func"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "all"
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -150,6 +222,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "big_var"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "all"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -170,6 +254,18 @@
                             "aInteger": 14
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "fn"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "all"
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -196,6 +292,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "local_var"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "all.fn.<locals>"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -216,6 +324,18 @@
                             "aInteger": 5
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "lib"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "all"
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -242,6 +362,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "var"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "all"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -264,6 +396,18 @@
                             "aInteger": 7
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Helper"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "all"
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -297,6 +441,18 @@
                             "aInteger": 7
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Helper"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "all"
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -333,6 +489,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "LocalClass"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "all"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -363,6 +531,18 @@
                             "aInteger": 14
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "big_func"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "all"
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -399,6 +579,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "big_var"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "all"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -432,6 +624,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "big_var"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "all"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -462,6 +666,18 @@
                             "aInteger": 14
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "fn"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "all"
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -498,6 +714,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "fn"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "all"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -528,6 +756,18 @@
                             "aInteger": 15
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "local_var"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "all.fn.<locals>"
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -564,6 +804,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "lib"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "all"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -594,6 +846,18 @@
                             "aInteger": 15
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "var"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "all"
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -630,6 +894,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "big_lib"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -660,6 +936,18 @@
                             "aInteger": 14
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "big_func"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "big_lib"
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -696,6 +984,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "big_func"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "big_lib"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -726,6 +1026,18 @@
                             "aInteger": 15
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "big_var"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "big_lib"
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -762,6 +1074,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "big_var"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "big_lib"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -792,6 +1116,18 @@
                             "aInteger": 15
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "big_var"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "big_lib"
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -828,6 +1164,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "lib"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -858,6 +1206,18 @@
                             "aInteger": 5
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "lib"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -894,6 +1254,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "lib"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -924,6 +1296,18 @@
                             "aInteger": 7
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "HelperClass"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "lib"
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -960,6 +1344,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "HelperClass"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "lib"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -990,6 +1386,18 @@
                             "aInteger": 7
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "HelperClass"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "lib"
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -1026,6 +1434,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "HelperClass"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "lib"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -1056,6 +1476,18 @@
                             "aInteger": 7
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "HelperClass"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "lib"
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {

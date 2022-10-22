@@ -122,6 +122,8 @@ import Glean.Glass.SymbolId
     ( entityToAngle,
       symbolTokens,
       toQualifiedName,
+      toSymbolLocalName,
+      toSymbolQualifiedContainer,
       toShortCode,
       toSymbolId,
       entityDefinitionType,
@@ -130,8 +132,6 @@ import Glean.Glass.SymbolId
       fromShortCode,
       languageToCodeLang
     )
-import Glean.Glass.SymbolId.Class
-    ( ToSymbolParent(toSymbolParent) )
 import Glean.Glass.SymbolSig
     ( toSymbolSignatureText )
 import Glean.Glass.SymbolKind ( findSymbolKind )
@@ -978,17 +978,20 @@ toDefinitionSymbol repoName file offsets (Code.Location {..}, entity) = do
 -- They're expected to be cheap, as we call these once per entity in a file
 getStaticAttributes :: Code.Entity -> Glean.RepoHaxl u w AttributeList
 getStaticAttributes e = do
-  mParent <- toSymbolParent e -- the "parent" of the symbol
+  mLocalName <- toSymbolLocalName e
+  mParent <- toSymbolQualifiedContainer e -- the "parent" of the symbol
   mSignature <- toSymbolSignatureText e -- optional type signature
   mKind <- entityKind e -- optional glass-side symbol kind labels
   return $ AttributeList $ map (\(a,b) -> KeyedAttribute a b) $ catMaybes
-    [ asParentAttr <$> mParent
+    [ asLocalName <$> mLocalName
+    , asParentAttr <$> mParent
     , asSignature  <$> mSignature
     , asKind <$> mKind
     , Just $ asLanguage (entityLanguage e)
     , asDefinitionType <$> entityDefinitionType e
     ]
   where
+    asLocalName (Name local) = ("symbolName", Attribute_aString local)
     asParentAttr (Name x) = ("symbolParent", Attribute_aString x)
     asSignature sig = ("symbolSignature", Attribute_aString sig)
     asKind kind = ("symbolKind",

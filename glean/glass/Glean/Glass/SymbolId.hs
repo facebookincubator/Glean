@@ -33,6 +33,8 @@ module Glean.Glass.SymbolId
 
   -- * Qualified names
   , toQualifiedName
+  , toSymbolLocalName
+  , toSymbolQualifiedContainer
 
   -- reexports
   , SymbolRepoPath(..)
@@ -54,7 +56,8 @@ import Glean.Glass.Types as Glass
       QualifiedName(..),
       Language(..),
       SymbolId(SymbolId),
-      RepoName(..) )
+      RepoName(..),
+      Name, )
 
 import Glean.Angle ( alt, Angle )
 import qualified Glean.Haxl.Repos as Glean
@@ -127,6 +130,20 @@ toQualifiedName entity = do
     Right (qualifiedName_localName, qualifiedName_container) ->
       Right QualifiedName {..}
     Left e -> Left $ "QualifiedName: " <> e
+
+toSymbolLocalName :: Code.Entity -> Glean.RepoHaxl u w (Maybe Name)
+toSymbolLocalName entity = do
+  qname <- toQName entity
+  return $ case qname of
+    Right (qualifiedName_localName, _) -> Just qualifiedName_localName
+    Left _ -> Nothing
+
+toSymbolQualifiedContainer :: Code.Entity -> Glean.RepoHaxl u w (Maybe Name)
+toSymbolQualifiedContainer entity = do
+  qname <- toQName entity
+  return $ case qname of
+    Right (_, qualifiedName_container) -> Just qualifiedName_container
+    Left _ -> Nothing
 
 -- | Tokenize a symbol (inverse of the intercalate "/")
 -- Leaves the path/qname/syms for further search.

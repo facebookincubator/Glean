@@ -16,6 +16,12 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "foo"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "namespace foo"
                         }
@@ -46,6 +52,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "S"
+                        },
+                        "symbolParent": {
+                            "aString": "foo"
                         },
                         "symbolSignature": {
                             "aString": "struct foo::S"
@@ -78,8 +90,11 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "TypedefDeclInteger"
+                        },
                         "symbolParent": {
-                            "aString": "S"
+                            "aString": "foo::S"
                         },
                         "symbolSignature": {
                             "aString": "typedef long foo::S::TypedefDeclInteger"
@@ -112,8 +127,11 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "UsingDeclInteger"
+                        },
                         "symbolParent": {
-                            "aString": "S"
+                            "aString": "foo::S"
                         },
                         "symbolSignature": {
                             "aString": "using foo::S::UsingDeclInteger = long"
@@ -145,6 +163,9 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "f"
                         },
                         "symbolParent": {
                             "aString": "foo"
@@ -180,6 +201,12 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "foo"
+                        },
+                        "symbolParent": {
+                            "aString": "foo"
+                        },
                         "symbolSignature": {
                             "aString": "void foo::foo()"
                         }
@@ -208,6 +235,9 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "foo"
                         },
                         "symbolParent": {
                             "aString": "foo"
@@ -252,6 +282,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "four"
+                        },
+                        "symbolParent": {
+                            "aString": "foo::foo"
                         },
                         "symbolSignature": {
                             "aString": "int four"
@@ -314,6 +350,12 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "foo"
+                        },
+                        "symbolParent": {
+                            "aString": "foo"
+                        },
                         "symbolSignature": {
                             "aString": "void foo::foo()"
                         }
@@ -353,6 +395,9 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "foo"
+                        },
                         "symbolParent": {
                             "aString": "foo"
                         },
@@ -384,6 +429,9 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "foo"
                         },
                         "symbolParent": {
                             "aString": "foo"
@@ -429,6 +477,12 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "bar"
+                        },
+                        "symbolParent": {
+                            "aString": "foo"
+                        },
                         "symbolSignature": {
                             "aString": "namespace foo::bar"
                         }
@@ -460,8 +514,11 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "TypedefDeclShort"
+                        },
                         "symbolParent": {
-                            "aString": "bar"
+                            "aString": "foo::bar"
                         },
                         "symbolSignature": {
                             "aString": "typedef short foo::bar::TypedefDeclShort"
@@ -494,8 +551,11 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "UsingDeclShort"
+                        },
                         "symbolParent": {
-                            "aString": "bar"
+                            "aString": "foo::bar"
                         },
                         "symbolSignature": {
                             "aString": "using foo::bar::UsingDeclShort = short"
@@ -528,6 +588,12 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "T"
+                        },
+                        "symbolParent": {
+                            "aString": "foo::bar"
+                        },
                         "symbolSignature": {
                             "aString": "struct foo::bar::T"
                         }
@@ -559,8 +625,11 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "memberVariableDecl"
+                        },
                         "symbolParent": {
-                            "aString": "T"
+                            "aString": "foo::bar::T"
                         },
                         "symbolSignature": {
                             "aString": "int foo::bar::T::memberVariableDecl"
@@ -593,8 +662,11 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "g"
+                        },
                         "symbolParent": {
-                            "aString": "bar"
+                            "aString": "foo::bar"
                         },
                         "symbolSignature": {
                             "aString": "void foo::bar::g()"
@@ -627,6 +699,12 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "fooFn"
+                        },
+                        "symbolParent": {
+                            "aString": "foo"
+                        },
                         "symbolSignature": {
                             "aString": "int foo::fooFn(int fooI)"
                         }
@@ -655,6 +733,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "fooI"
+                        },
+                        "symbolParent": {
+                            "aString": "foo::fooFn"
                         },
                         "symbolSignature": {
                             "aString": "int fooI"
@@ -686,6 +770,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "fooI"
+                        },
+                        "symbolParent": {
+                            "aString": "foo::fooFn"
                         },
                         "symbolSignature": {
                             "aString": "int fooI"
@@ -728,6 +818,12 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "h"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "void ::h(int i)"
                         }
@@ -767,6 +863,12 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "h"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "void ::h(int _i)"
                         }
@@ -795,6 +897,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "h"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "void ::h(int i)"
@@ -835,6 +943,12 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "_i"
+                        },
+                        "symbolParent": {
+                            "aString": "h"
+                        },
                         "symbolSignature": {
                             "aString": "int _i"
                         }
@@ -866,6 +980,12 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "h"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "void ::h(int i)"
                         }
@@ -894,6 +1014,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "h"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "void ::h(int _i)"
@@ -934,6 +1060,12 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "i"
+                        },
+                        "symbolParent": {
+                            "aString": "h"
+                        },
                         "symbolSignature": {
                             "aString": "int i"
                         }
@@ -964,6 +1096,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "h"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "void ::h(int i)"
@@ -1003,6 +1141,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "i"
+                        },
+                        "symbolParent": {
+                            "aString": "h"
                         },
                         "symbolSignature": {
                             "aString": "int i"
@@ -1045,6 +1189,12 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "foo"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "namespace foo"
                         }
@@ -1083,6 +1233,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "S"
+                        },
+                        "symbolParent": {
+                            "aString": "foo"
                         },
                         "symbolSignature": {
                             "aString": "struct foo::S"
@@ -1123,6 +1279,12 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "s"
+                        },
+                        "symbolParent": {
+                            "aString": "h"
+                        },
                         "symbolSignature": {
                             "aString": "foo::S s"
                         }
@@ -1153,6 +1315,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "foo"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "namespace foo"
@@ -1192,6 +1360,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "bar"
+                        },
+                        "symbolParent": {
+                            "aString": "foo"
                         },
                         "symbolSignature": {
                             "aString": "namespace foo::bar"
@@ -1232,6 +1406,12 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "T"
+                        },
+                        "symbolParent": {
+                            "aString": "foo::bar"
+                        },
                         "symbolSignature": {
                             "aString": "struct foo::bar::T"
                         }
@@ -1271,6 +1451,12 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "t"
+                        },
+                        "symbolParent": {
+                            "aString": "h"
+                        },
                         "symbolSignature": {
                             "aString": "foo::bar::T t"
                         }
@@ -1301,6 +1487,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "foo"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "namespace foo"
@@ -1340,6 +1532,9 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "f"
                         },
                         "symbolParent": {
                             "aString": "foo"
@@ -1385,6 +1580,12 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "foo"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "namespace foo"
                         }
@@ -1424,6 +1625,12 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "foo"
+                        },
+                        "symbolParent": {
+                            "aString": "foo"
+                        },
                         "symbolSignature": {
                             "aString": "void foo::foo()"
                         }
@@ -1462,6 +1669,9 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "foo"
                         },
                         "symbolParent": {
                             "aString": "foo"
@@ -1507,6 +1717,12 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "foo"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "namespace foo"
                         }
@@ -1545,6 +1761,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "bar"
+                        },
+                        "symbolParent": {
+                            "aString": "foo"
                         },
                         "symbolSignature": {
                             "aString": "namespace foo::bar"
@@ -1585,8 +1807,11 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "g"
+                        },
                         "symbolParent": {
-                            "aString": "bar"
+                            "aString": "foo::bar"
                         },
                         "symbolSignature": {
                             "aString": "void foo::bar::g()"
@@ -1629,6 +1854,12 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "i"
+                        },
+                        "symbolParent": {
+                            "aString": "h"
+                        },
                         "symbolSignature": {
                             "aString": "int i"
                         }
@@ -1670,6 +1901,12 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "maybe"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "namespace maybe"
                         }
@@ -1700,6 +1937,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "Nothing"
+                        },
+                        "symbolParent": {
+                            "aString": "maybe"
                         },
                         "symbolSignature": {
                             "aString": "struct maybe::Nothing"
@@ -1732,6 +1975,12 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "_secret"
+                        },
+                        "symbolParent": {
+                            "aString": "maybe::Nothing"
+                        },
                         "symbolSignature": {
                             "aString": "enum class maybe::Nothing::_secret"
                         }
@@ -1763,6 +2012,12 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "Nothing"
+                        },
+                        "symbolParent": {
+                            "aString": "maybe"
+                        },
                         "symbolSignature": {
                             "aString": "maybe::Nothing::Nothing(maybe::Nothing::_secret)"
                         }
@@ -1792,6 +2047,12 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "maybe::Nothing::.ctor"
+                        },
                         "symbolSignature": {
                             "aString": "maybe::Nothing::_secret"
                         }
@@ -1820,6 +2081,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "_secret"
+                        },
+                        "symbolParent": {
+                            "aString": "maybe::Nothing"
                         },
                         "symbolSignature": {
                             "aString": "enum class maybe::Nothing::_secret"
@@ -1862,6 +2129,12 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "Nothing"
+                        },
+                        "symbolParent": {
+                            "aString": "maybe"
+                        },
                         "symbolSignature": {
                             "aString": "struct maybe::Nothing"
                         }
@@ -1900,6 +2173,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "Nothing"
+                        },
+                        "symbolParent": {
+                            "aString": "maybe"
                         },
                         "symbolSignature": {
                             "aString": "struct maybe::Nothing"
@@ -1940,6 +2219,12 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "_secret"
+                        },
+                        "symbolParent": {
+                            "aString": "maybe::Nothing"
+                        },
                         "symbolSignature": {
                             "aString": "enum class maybe::Nothing::_secret"
                         }
@@ -1979,8 +2264,11 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "_magic"
+                        },
                         "symbolParent": {
-                            "aString": "Nothing"
+                            "aString": "maybe::Nothing::_secret"
                         },
                         "symbolSignature": {
                             "aString": "_magic"
@@ -2014,6 +2302,9 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "nothing"
                         },
                         "symbolParent": {
                             "aString": "maybe"
@@ -2125,6 +2416,12 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "baz"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "namespace baz"
                         }
@@ -2155,6 +2452,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "U"
+                        },
+                        "symbolParent": {
+                            "aString": "baz"
                         },
                         "symbolSignature": {
                             "aString": "struct baz::U"
@@ -2187,6 +2490,12 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "InU"
+                        },
+                        "symbolParent": {
+                            "aString": "baz::U"
+                        },
                         "symbolSignature": {
                             "aString": "enum baz::U::InU"
                         }
@@ -2217,6 +2526,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "InUClass"
+                        },
+                        "symbolParent": {
+                            "aString": "baz::U"
                         },
                         "symbolSignature": {
                             "aString": "enum class baz::U::InUClass"
@@ -2281,6 +2596,12 @@
                         "symbolLanguage": {
                             "aInteger": 1
                         },
+                        "symbolName": {
+                            "aString": "Global"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "enum ::Global"
                         }
@@ -2311,6 +2632,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "GlobalClass"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "enum class ::GlobalClass"

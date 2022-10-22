@@ -12,6 +12,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "all"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         }
                     },
                     "range": {
@@ -31,6 +37,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "fn"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
                         }
                     },
                     "range": {
@@ -50,6 +62,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "big_var"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
                         }
                     },
                     "range": {
@@ -77,6 +95,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "local_var"
+                        },
+                        "symbolParent": {
+                            "aString": "all.fn.<locals>"
                         }
                     },
                     "range": {
@@ -94,6 +118,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "lib"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
                         }
                     },
                     "range": {
@@ -121,6 +151,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "big_var"
+                        },
+                        "symbolParent": {
+                            "aString": "big_lib"
                         }
                     },
                     "range": {
@@ -148,6 +184,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "lib"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         }
                     },
                     "range": {
@@ -175,6 +217,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "HelperClass"
+                        },
+                        "symbolParent": {
+                            "aString": "lib"
                         }
                     },
                     "range": {
@@ -204,6 +252,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "local_var"
+                        },
+                        "symbolParent": {
+                            "aString": "all.fn.<locals>"
                         }
                     },
                     "range": {
@@ -233,6 +287,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "LocalClass"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
                         }
                     },
                     "range": {
@@ -252,6 +312,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "meth"
+                        },
+                        "symbolParent": {
+                            "aString": "all.LocalClass"
                         }
                     },
                     "range": {
@@ -269,6 +335,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "HelperClass"
+                        },
+                        "symbolParent": {
+                            "aString": "lib"
                         }
                     },
                     "range": {
@@ -298,6 +370,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "fn"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
                         }
                     },
                     "range": {
@@ -327,6 +405,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "Helper"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
                         }
                     },
                     "range": {
@@ -354,6 +438,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "Helper"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
                         }
                     },
                     "range": {
@@ -381,6 +471,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "LocalClass"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
                         }
                     },
                     "range": {
@@ -408,6 +504,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "__all__"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
                         }
                     },
                     "range": {
@@ -425,6 +527,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "big_func"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
                         }
                     },
                     "range": {
@@ -452,6 +560,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "big_var"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
                         }
                     },
                     "range": {
@@ -479,6 +593,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "fn"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
                         }
                     },
                     "range": {
@@ -506,6 +626,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "var"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
                         }
                     },
                     "range": {
@@ -533,6 +659,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "big_func"
+                        },
+                        "symbolParent": {
+                            "aString": "big_lib"
                         }
                     },
                     "range": {
@@ -560,6 +692,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "big_var"
+                        },
+                        "symbolParent": {
+                            "aString": "big_lib"
                         }
                     },
                     "range": {
@@ -587,6 +725,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "HelperClass"
+                        },
+                        "symbolParent": {
+                            "aString": "lib"
                         }
                     },
                     "range": {
@@ -614,6 +758,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "HelperClass"
+                        },
+                        "symbolParent": {
+                            "aString": "lib"
                         }
                     },
                     "range": {
@@ -643,6 +793,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "lib"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
                         }
                     },
                     "range": {
@@ -660,6 +816,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "lib"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         }
                     },
                     "range": {
@@ -689,6 +851,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "big_func"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
                         }
                     },
                     "range": {
@@ -706,6 +874,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "big_var"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
                         }
                     },
                     "range": {
@@ -723,6 +897,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "big_lib"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         }
                     },
                     "range": {
@@ -750,6 +930,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "big_func"
+                        },
+                        "symbolParent": {
+                            "aString": "big_lib"
                         }
                     },
                     "range": {
@@ -777,6 +963,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "big_var"
+                        },
+                        "symbolParent": {
+                            "aString": "big_lib"
                         }
                     },
                     "range": {
@@ -806,6 +998,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "Helper"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
                         }
                     },
                     "range": {
@@ -823,6 +1021,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "lib"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         }
                     },
                     "range": {
@@ -850,6 +1054,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "HelperClass"
+                        },
+                        "symbolParent": {
+                            "aString": "lib"
                         }
                     },
                     "range": {
@@ -879,6 +1089,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "var"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
                         }
                     },
                     "range": {

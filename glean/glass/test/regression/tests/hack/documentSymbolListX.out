@@ -12,6 +12,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "RefClass"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "class RefClass"
                         },
                         "key": "symbolSignature"
@@ -38,6 +50,18 @@
                             "aInteger": 9
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "raz"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "RefClass"
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -70,6 +94,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "JAZZ"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "RefClass"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "const JAZZ"
                         },
                         "key": "symbolSignature"
@@ -96,6 +132,18 @@
                             "aInteger": 8
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "bar"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "RefClass"
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -128,6 +176,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "bazza"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "RefClass"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "public function bazza(): int"
                         },
                         "key": "symbolSignature"
@@ -154,6 +214,18 @@
                             "aInteger": 8
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "RefClass"
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -186,6 +258,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "lotsofkeywords"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "RefClass"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "final internal static async function lotsofkeywords(): int"
                         },
                         "key": "symbolSignature"
@@ -214,6 +298,18 @@
                             "aInteger": 12
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Position"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -256,6 +352,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "Position"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "enum Position"
                         },
                         "key": "symbolSignature"
@@ -292,6 +400,18 @@
                             "aInteger": 12
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Center"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Position"
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -334,6 +454,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "Right"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Position"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "Position::Right"
                         },
                         "key": "symbolSignature"
@@ -370,6 +502,18 @@
                             "aInteger": 9
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "raz"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "RefClass"
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -412,6 +556,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "JAZZ"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "RefClass"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "const JAZZ"
                         },
                         "key": "symbolSignature"
@@ -448,6 +604,18 @@
                             "aInteger": 8
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "bazza"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "RefClass"
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -490,6 +658,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "RefClass"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "public static function foo(): int"
                         },
                         "key": "symbolSignature"
@@ -526,6 +706,18 @@
                             "aInteger": 7
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "SourceClass"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -568,6 +760,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "SourceClass"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "class SourceClass"
                         },
                         "key": "symbolSignature"
@@ -604,6 +808,18 @@
                             "aInteger": 7
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "SourceClass"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -646,6 +862,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "SourceClass"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "class SourceClass"
                         },
                         "key": "symbolSignature"
@@ -682,6 +910,18 @@
                             "aInteger": 9
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "daz"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "SourceClass"
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -724,6 +964,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "BAZ"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "SourceClass"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "const BAZ"
                         },
                         "key": "symbolSignature"
@@ -760,6 +1012,18 @@
                             "aInteger": 2
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "T"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "SourceClass"
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -802,6 +1066,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "SourceInterface"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "interface SourceInterface"
                         },
                         "key": "symbolSignature"
@@ -838,6 +1114,18 @@
                             "aInteger": 31
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "SourceTrait"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -880,6 +1168,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "quux"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "SourceTrait"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "public function quux(int $i): int"
                         },
                         "key": "symbolSignature"
@@ -916,6 +1216,18 @@
                             "aInteger": 8
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "superAdd"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "SuperClass"
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -958,6 +1270,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "WALDO"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "const WALDO"
                         },
                         "key": "symbolSignature"
@@ -994,6 +1318,18 @@
                             "aInteger": 16
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "WALDO"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -1036,6 +1372,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "corge"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "function corge(): int"
                         },
                         "key": "symbolSignature"
@@ -1072,6 +1420,18 @@
                             "aInteger": 14
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "corge"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -1114,6 +1474,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "corge"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "function corge(): int"
                         },
                         "key": "symbolSignature"
@@ -1150,6 +1522,18 @@
                             "aInteger": 14
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "corge"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {

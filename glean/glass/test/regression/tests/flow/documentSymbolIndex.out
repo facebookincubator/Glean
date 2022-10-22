@@ -9,6 +9,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "a"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -23,6 +29,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "b"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -37,6 +49,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "c"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -53,6 +71,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "baz"
+                        },
+                        "symbolParent": {
+                            "aString": "es_exports"
                         }
                     },
                     "range": {
@@ -77,6 +101,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "bor"
+                        },
+                        "symbolParent": {
+                            "aString": "es_exports"
                         }
                     },
                     "range": {
@@ -101,6 +131,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "d"
+                        },
+                        "symbolParent": {
+                            "aString": "es_exports"
                         }
                     },
                     "range": {
@@ -125,6 +161,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "foo"
+                        },
+                        "symbolParent": {
+                            "aString": "es_exports"
                         }
                     },
                     "range": {
@@ -149,6 +191,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "bar"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -163,6 +211,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "baz"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -177,6 +231,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "d"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -191,6 +251,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "foo"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -207,6 +273,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "es_exports"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         }
                     },
                     "range": {
@@ -231,6 +303,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "qux"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -247,6 +325,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "plus"
+                        },
+                        "symbolParent": {
+                            "aString": "cjs_exports"
                         }
                     },
                     "range": {
@@ -271,6 +355,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "fn"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -287,6 +377,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "num"
+                        },
+                        "symbolParent": {
+                            "aString": "es_exports"
                         }
                     },
                     "range": {
@@ -311,6 +407,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "num"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -327,6 +429,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "d"
+                        },
+                        "symbolParent": {
+                            "aString": "es_exports"
                         }
                     },
                     "range": {
@@ -351,6 +459,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "d"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -375,6 +489,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "e"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -391,6 +511,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "bor"
+                        },
+                        "symbolParent": {
+                            "aString": "es_exports"
                         }
                     },
                     "range": {
@@ -415,6 +541,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "num"
+                        },
+                        "symbolParent": {
+                            "aString": "es_exports"
                         }
                     },
                     "range": {
@@ -439,6 +571,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "a"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -463,6 +601,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "bar"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -487,6 +631,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "num"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -511,6 +661,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "x"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -527,6 +683,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "es_exports"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         }
                     },
                     "range": {
@@ -551,6 +713,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "bar"
+                        },
+                        "symbolParent": {
+                            "aString": "es_exports"
                         }
                     },
                     "range": {
@@ -575,6 +743,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "foo"
+                        },
+                        "symbolParent": {
+                            "aString": "es_exports"
                         }
                     },
                     "range": {
@@ -599,6 +773,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "num"
+                        },
+                        "symbolParent": {
+                            "aString": "es_exports"
                         }
                     },
                     "range": {
@@ -623,6 +803,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "foo"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -647,6 +833,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "num"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -671,6 +863,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "qux"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -695,6 +893,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "y"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -711,6 +915,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "plus"
+                        },
+                        "symbolParent": {
+                            "aString": "cjs_exports"
                         }
                     },
                     "range": {
@@ -735,6 +945,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "num"
+                        },
+                        "symbolParent": {
+                            "aString": "es_exports"
                         }
                     },
                     "range": {
@@ -759,6 +975,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "fn"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -783,6 +1005,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "num"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -807,6 +1035,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "z"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -823,6 +1057,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "baz"
+                        },
+                        "symbolParent": {
+                            "aString": "es_exports"
                         }
                     },
                     "range": {
@@ -847,6 +1087,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "baz"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -871,6 +1117,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "caz"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -885,6 +1137,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "caz"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -901,6 +1159,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "C"
+                        },
+                        "symbolParent": {
+                            "aString": "es_exports"
                         }
                     },
                     "range": {
@@ -925,6 +1189,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "d"
+                        },
+                        "symbolParent": {
+                            "aString": "es_exports"
                         }
                     },
                     "range": {
@@ -949,6 +1219,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "C"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -963,6 +1239,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "str"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -979,6 +1261,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "C"
+                        },
+                        "symbolParent": {
+                            "aString": "es_exports"
                         }
                     },
                     "range": {
@@ -1003,6 +1291,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "C"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -1027,6 +1321,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "D"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -1043,6 +1343,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "d"
+                        },
+                        "symbolParent": {
+                            "aString": "es_exports"
                         }
                     },
                     "range": {
@@ -1067,6 +1373,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "s"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
@@ -1081,6 +1393,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "str"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
                         }
                     },
                     "range": {
