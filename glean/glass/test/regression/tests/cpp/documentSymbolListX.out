@@ -18,7 +18,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum ::Global"
+                            "aString": "enum Global"
                         },
                         "key": "symbolSignature"
                     },
@@ -71,7 +71,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum class ::GlobalClass"
+                            "aString": "enum class GlobalClass"
                         },
                         "key": "symbolSignature"
                     },
@@ -177,7 +177,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct baz::U"
+                            "aString": "struct U"
                         },
                         "key": "symbolSignature"
                     },
@@ -230,7 +230,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum baz::U::InU"
+                            "aString": "enum InU"
                         },
                         "key": "symbolSignature"
                     },
@@ -283,7 +283,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum class baz::U::InUClass"
+                            "aString": "enum class InUClass"
                         },
                         "key": "symbolSignature"
                     },
@@ -389,7 +389,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct foo::S"
+                            "aString": "struct S"
                         },
                         "key": "symbolSignature"
                     },
@@ -442,7 +442,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef long foo::S::TypedefDeclInteger"
+                            "aString": "typedef long TypedefDeclInteger"
                         },
                         "key": "symbolSignature"
                     },
@@ -495,7 +495,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "using foo::S::UsingDeclInteger = long"
+                            "aString": "using UsingDeclInteger = long"
                         },
                         "key": "symbolSignature"
                     },
@@ -548,7 +548,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "namespace foo::bar"
+                            "aString": "namespace bar"
                         },
                         "key": "symbolSignature"
                     },
@@ -601,7 +601,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct foo::bar::T"
+                            "aString": "struct T"
                         },
                         "key": "symbolSignature"
                     },
@@ -654,7 +654,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "int foo::bar::T::memberVariableDecl"
+                            "aString": "int memberVariableDecl"
                         },
                         "key": "symbolSignature"
                     },
@@ -707,7 +707,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef short foo::bar::TypedefDeclShort"
+                            "aString": "typedef short TypedefDeclShort"
                         },
                         "key": "symbolSignature"
                     },
@@ -760,7 +760,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "using foo::bar::UsingDeclShort = short"
+                            "aString": "using UsingDeclShort = short"
                         },
                         "key": "symbolSignature"
                     },
@@ -813,7 +813,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "void foo::bar::g()"
+                            "aString": "void g()"
                         },
                         "key": "symbolSignature"
                     },
@@ -866,7 +866,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "void foo::f()"
+                            "aString": "void f()"
                         },
                         "key": "symbolSignature"
                     },
@@ -919,7 +919,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "void foo::foo()"
+                            "aString": "void foo()"
                         },
                         "key": "symbolSignature"
                     },
@@ -972,7 +972,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "void foo::foo()"
+                            "aString": "void foo()"
                         },
                         "key": "symbolSignature"
                     },
@@ -1078,7 +1078,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "int foo::fooFn(int fooI)"
+                            "aString": "int fooFn(int fooI)"
                         },
                         "key": "symbolSignature"
                     },
@@ -1184,7 +1184,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "void ::h(int i)"
+                            "aString": "void h(int i)"
                         },
                         "key": "symbolSignature"
                     },
@@ -1237,7 +1237,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "void ::h(int _i)"
+                            "aString": "void h(int _i)"
                         },
                         "key": "symbolSignature"
                     },
@@ -1555,7 +1555,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct maybe::Nothing"
+                            "aString": "struct Nothing"
                         },
                         "key": "symbolSignature"
                     },
@@ -1608,7 +1608,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "maybe::Nothing::Nothing(maybe::Nothing::_secret)"
+                            "aString": "Nothing(maybe::Nothing::_secret)"
                         },
                         "key": "symbolSignature"
                     },
@@ -1714,7 +1714,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum class maybe::Nothing::_secret"
+                            "aString": "enum class _secret"
                         },
                         "key": "symbolSignature"
                     },
@@ -1767,7 +1767,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "const maybe::Nothing maybe::nothing"
+                            "aString": "const maybe::Nothing nothing"
                         },
                         "key": "symbolSignature"
                     },
@@ -2195,7 +2195,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct foo::S"
+                            "aString": "struct S"
                         },
                         "key": "symbolSignature"
                     },
@@ -2258,7 +2258,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "namespace foo::bar"
+                            "aString": "namespace bar"
                         },
                         "key": "symbolSignature"
                     },
@@ -2321,7 +2321,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "namespace foo::bar"
+                            "aString": "namespace bar"
                         },
                         "key": "symbolSignature"
                     },
@@ -2384,7 +2384,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct foo::bar::T"
+                            "aString": "struct T"
                         },
                         "key": "symbolSignature"
                     },
@@ -2447,7 +2447,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "void foo::bar::g()"
+                            "aString": "void g()"
                         },
                         "key": "symbolSignature"
                     },
@@ -2510,7 +2510,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "void foo::f()"
+                            "aString": "void f()"
                         },
                         "key": "symbolSignature"
                     },
@@ -2573,7 +2573,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "void foo::foo()"
+                            "aString": "void foo()"
                         },
                         "key": "symbolSignature"
                     },
@@ -2636,7 +2636,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "void foo::foo()"
+                            "aString": "void foo()"
                         },
                         "key": "symbolSignature"
                     },
@@ -2699,7 +2699,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "void foo::foo()"
+                            "aString": "void foo()"
                         },
                         "key": "symbolSignature"
                     },
@@ -2762,7 +2762,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "void foo::foo()"
+                            "aString": "void foo()"
                         },
                         "key": "symbolSignature"
                     },
@@ -2825,7 +2825,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "void foo::foo()"
+                            "aString": "void foo()"
                         },
                         "key": "symbolSignature"
                     },
@@ -2951,7 +2951,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "void ::h(int i)"
+                            "aString": "void h(int i)"
                         },
                         "key": "symbolSignature"
                     },
@@ -3014,7 +3014,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "void ::h(int i)"
+                            "aString": "void h(int i)"
                         },
                         "key": "symbolSignature"
                     },
@@ -3077,7 +3077,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "void ::h(int i)"
+                            "aString": "void h(int i)"
                         },
                         "key": "symbolSignature"
                     },
@@ -3140,7 +3140,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "void ::h(int _i)"
+                            "aString": "void h(int _i)"
                         },
                         "key": "symbolSignature"
                     },
@@ -3329,7 +3329,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct maybe::Nothing"
+                            "aString": "struct Nothing"
                         },
                         "key": "symbolSignature"
                     },
@@ -3392,7 +3392,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct maybe::Nothing"
+                            "aString": "struct Nothing"
                         },
                         "key": "symbolSignature"
                     },
@@ -3455,7 +3455,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum class maybe::Nothing::_secret"
+                            "aString": "enum class _secret"
                         },
                         "key": "symbolSignature"
                     },
@@ -3518,7 +3518,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum class maybe::Nothing::_secret"
+                            "aString": "enum class _secret"
                         },
                         "key": "symbolSignature"
                     },

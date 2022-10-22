@@ -21,27 +21,38 @@ import qualified Glean.Haxl.Repos as Glean
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Schema.CodeLsif.Types as Lsif
 
-import Glean.Glass.Pretty.Cxx as Cxx ( prettyCxxSignature )
+import Glean.Glass.Pretty.Cxx as Cxx ( prettyCxxSignature, Qualified(..) )
 import Glean.Glass.Pretty.Hack as Hack ( prettyHackSignature )
 import Glean.Glass.Pretty.LSIF as LSIF ( prettyLsifSignature )
 
 toSymbolSignatureText
-  :: ToSymbolSignature a => a -> Glean.RepoHaxl u w (Maybe Text)
-toSymbolSignatureText x = do
-  maybeDoc <- toSymbolSignature (LayoutOptions (AvailablePerLine 80 1)) x
+  :: ToSymbolSignature a
+  => a
+  -> Cxx.Qualified
+  -> Glean.RepoHaxl u w (Maybe Text)
+toSymbolSignatureText x qualified = do
+  maybeDoc <- toSymbolSignature
+    (LayoutOptions (AvailablePerLine 80 1)) x qualified
   return $ renderStrict <$> maybeDoc
 
 
 -- signature of symbols
 class ToSymbolSignature a where
   toSymbolSignature
-    :: LayoutOptions -> a -> Glean.RepoHaxl u w (Maybe (SimpleDocStream ()))
+    :: LayoutOptions
+    -> a
+    -> Cxx.Qualified
+    -> Glean.RepoHaxl u w (Maybe (SimpleDocStream ()))
 
 
+-- signature of symbols
+-- for supported languages (c++), qualified indicates whether to
+-- fully qualify the name of the code entity in question. Other
+-- symbols in the signature will always remain fully qualified.
 instance ToSymbolSignature Code.Entity where
-  toSymbolSignature opts e = case e of
+  toSymbolSignature opts e qualified = case e of
     -- cxx pretty signatures
-    Code.Entity_cxx x -> pure $ Cxx.prettyCxxSignature opts x
+    Code.Entity_cxx x -> pure $ Cxx.prettyCxxSignature opts x qualified
     Code.Entity_pp{} -> pure Nothing
     -- hack pretty signatures
     Code.Entity_hack x -> Hack.prettyHackSignature opts x

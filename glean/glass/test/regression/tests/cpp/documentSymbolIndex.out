@@ -60,7 +60,7 @@
                             "aString": "foo"
                         },
                         "symbolSignature": {
-                            "aString": "struct foo::S"
+                            "aString": "struct S"
                         }
                     },
                     "nameRange": {
@@ -97,7 +97,7 @@
                             "aString": "foo::S"
                         },
                         "symbolSignature": {
-                            "aString": "typedef long foo::S::TypedefDeclInteger"
+                            "aString": "typedef long TypedefDeclInteger"
                         }
                     },
                     "nameRange": {
@@ -134,7 +134,7 @@
                             "aString": "foo::S"
                         },
                         "symbolSignature": {
-                            "aString": "using foo::S::UsingDeclInteger = long"
+                            "aString": "using UsingDeclInteger = long"
                         }
                     },
                     "nameRange": {
@@ -171,7 +171,7 @@
                             "aString": "foo"
                         },
                         "symbolSignature": {
-                            "aString": "void foo::f()"
+                            "aString": "void f()"
                         }
                     },
                     "nameRange": {
@@ -208,7 +208,7 @@
                             "aString": "foo"
                         },
                         "symbolSignature": {
-                            "aString": "void foo::foo()"
+                            "aString": "void foo()"
                         }
                     },
                     "nameRange": {
@@ -243,7 +243,7 @@
                             "aString": "foo"
                         },
                         "symbolSignature": {
-                            "aString": "void foo::foo()"
+                            "aString": "void foo()"
                         }
                     },
                     "range": {
@@ -357,7 +357,7 @@
                             "aString": "foo"
                         },
                         "symbolSignature": {
-                            "aString": "void foo::foo()"
+                            "aString": "void foo()"
                         }
                     },
                     "range": {
@@ -402,7 +402,7 @@
                             "aString": "foo"
                         },
                         "symbolSignature": {
-                            "aString": "void foo::foo()"
+                            "aString": "void foo()"
                         }
                     },
                     "nameRange": {
@@ -437,7 +437,7 @@
                             "aString": "foo"
                         },
                         "symbolSignature": {
-                            "aString": "void foo::foo()"
+                            "aString": "void foo()"
                         }
                     },
                     "range": {
@@ -484,7 +484,7 @@
                             "aString": "foo"
                         },
                         "symbolSignature": {
-                            "aString": "namespace foo::bar"
+                            "aString": "namespace bar"
                         }
                     },
                     "nameRange": {
@@ -521,7 +521,7 @@
                             "aString": "foo::bar"
                         },
                         "symbolSignature": {
-                            "aString": "typedef short foo::bar::TypedefDeclShort"
+                            "aString": "typedef short TypedefDeclShort"
                         }
                     },
                     "nameRange": {
@@ -558,7 +558,7 @@
                             "aString": "foo::bar"
                         },
                         "symbolSignature": {
-                            "aString": "using foo::bar::UsingDeclShort = short"
+                            "aString": "using UsingDeclShort = short"
                         }
                     },
                     "nameRange": {
@@ -595,7 +595,7 @@
                             "aString": "foo::bar"
                         },
                         "symbolSignature": {
-                            "aString": "struct foo::bar::T"
+                            "aString": "struct T"
                         }
                     },
                     "nameRange": {
@@ -632,7 +632,7 @@
                             "aString": "foo::bar::T"
                         },
                         "symbolSignature": {
-                            "aString": "int foo::bar::T::memberVariableDecl"
+                            "aString": "int memberVariableDecl"
                         }
                     },
                     "nameRange": {
@@ -669,7 +669,7 @@
                             "aString": "foo::bar"
                         },
                         "symbolSignature": {
-                            "aString": "void foo::bar::g()"
+                            "aString": "void g()"
                         }
                     },
                     "nameRange": {
@@ -706,7 +706,7 @@
                             "aString": "foo"
                         },
                         "symbolSignature": {
-                            "aString": "int foo::fooFn(int fooI)"
+                            "aString": "int fooFn(int fooI)"
                         }
                     },
                     "nameRange": {
@@ -825,7 +825,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "void ::h(int i)"
+                            "aString": "void h(int i)"
                         }
                     },
                     "range": {
@@ -870,7 +870,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "void ::h(int _i)"
+                            "aString": "void h(int _i)"
                         }
                     },
                     "nameRange": {
@@ -905,7 +905,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "void ::h(int i)"
+                            "aString": "void h(int i)"
                         }
                     },
                     "range": {
@@ -987,7 +987,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "void ::h(int i)"
+                            "aString": "void h(int i)"
                         }
                     },
                     "nameRange": {
@@ -1022,7 +1022,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "void ::h(int _i)"
+                            "aString": "void h(int _i)"
                         }
                     },
                     "range": {
@@ -1104,7 +1104,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "void ::h(int i)"
+                            "aString": "void h(int i)"
                         }
                     },
                     "range": {
@@ -1241,7 +1241,7 @@
                             "aString": "foo"
                         },
                         "symbolSignature": {
-                            "aString": "struct foo::S"
+                            "aString": "struct S"
                         }
                     },
                     "range": {
@@ -1368,7 +1368,7 @@
                             "aString": "foo"
                         },
                         "symbolSignature": {
-                            "aString": "namespace foo::bar"
+                            "aString": "namespace bar"
                         }
                     },
                     "range": {
@@ -1413,7 +1413,7 @@
                             "aString": "foo::bar"
                         },
                         "symbolSignature": {
-                            "aString": "struct foo::bar::T"
+                            "aString": "struct T"
                         }
                     },
                     "range": {
@@ -1540,7 +1540,7 @@
                             "aString": "foo"
                         },
                         "symbolSignature": {
-                            "aString": "void foo::f()"
+                            "aString": "void f()"
                         }
                     },
                     "range": {
@@ -1632,7 +1632,7 @@
                             "aString": "foo"
                         },
                         "symbolSignature": {
-                            "aString": "void foo::foo()"
+                            "aString": "void foo()"
                         }
                     },
                     "range": {
@@ -1677,7 +1677,7 @@
                             "aString": "foo"
                         },
                         "symbolSignature": {
-                            "aString": "void foo::foo()"
+                            "aString": "void foo()"
                         }
                     },
                     "range": {
@@ -1769,7 +1769,7 @@
                             "aString": "foo"
                         },
                         "symbolSignature": {
-                            "aString": "namespace foo::bar"
+                            "aString": "namespace bar"
                         }
                     },
                     "range": {
@@ -1814,7 +1814,7 @@
                             "aString": "foo::bar"
                         },
                         "symbolSignature": {
-                            "aString": "void foo::bar::g()"
+                            "aString": "void g()"
                         }
                     },
                     "range": {
@@ -1945,7 +1945,7 @@
                             "aString": "maybe"
                         },
                         "symbolSignature": {
-                            "aString": "struct maybe::Nothing"
+                            "aString": "struct Nothing"
                         }
                     },
                     "nameRange": {
@@ -1982,7 +1982,7 @@
                             "aString": "maybe::Nothing"
                         },
                         "symbolSignature": {
-                            "aString": "enum class maybe::Nothing::_secret"
+                            "aString": "enum class _secret"
                         }
                     },
                     "nameRange": {
@@ -2019,7 +2019,7 @@
                             "aString": "maybe"
                         },
                         "symbolSignature": {
-                            "aString": "maybe::Nothing::Nothing(maybe::Nothing::_secret)"
+                            "aString": "Nothing(maybe::Nothing::_secret)"
                         }
                     },
                     "nameRange": {
@@ -2089,7 +2089,7 @@
                             "aString": "maybe::Nothing"
                         },
                         "symbolSignature": {
-                            "aString": "enum class maybe::Nothing::_secret"
+                            "aString": "enum class _secret"
                         }
                     },
                     "range": {
@@ -2136,7 +2136,7 @@
                             "aString": "maybe"
                         },
                         "symbolSignature": {
-                            "aString": "struct maybe::Nothing"
+                            "aString": "struct Nothing"
                         }
                     },
                     "range": {
@@ -2181,7 +2181,7 @@
                             "aString": "maybe"
                         },
                         "symbolSignature": {
-                            "aString": "struct maybe::Nothing"
+                            "aString": "struct Nothing"
                         }
                     },
                     "range": {
@@ -2226,7 +2226,7 @@
                             "aString": "maybe::Nothing"
                         },
                         "symbolSignature": {
-                            "aString": "enum class maybe::Nothing::_secret"
+                            "aString": "enum class _secret"
                         }
                     },
                     "range": {
@@ -2310,7 +2310,7 @@
                             "aString": "maybe"
                         },
                         "symbolSignature": {
-                            "aString": "const maybe::Nothing maybe::nothing"
+                            "aString": "const maybe::Nothing nothing"
                         }
                     },
                     "nameRange": {
@@ -2460,7 +2460,7 @@
                             "aString": "baz"
                         },
                         "symbolSignature": {
-                            "aString": "struct baz::U"
+                            "aString": "struct U"
                         }
                     },
                     "nameRange": {
@@ -2497,7 +2497,7 @@
                             "aString": "baz::U"
                         },
                         "symbolSignature": {
-                            "aString": "enum baz::U::InU"
+                            "aString": "enum InU"
                         }
                     },
                     "nameRange": {
@@ -2534,7 +2534,7 @@
                             "aString": "baz::U"
                         },
                         "symbolSignature": {
-                            "aString": "enum class baz::U::InUClass"
+                            "aString": "enum class InUClass"
                         }
                     },
                     "nameRange": {
@@ -2603,7 +2603,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "enum ::Global"
+                            "aString": "enum Global"
                         }
                     },
                     "nameRange": {
@@ -2640,7 +2640,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "enum class ::GlobalClass"
+                            "aString": "enum class GlobalClass"
                         }
                     },
                     "nameRange": {

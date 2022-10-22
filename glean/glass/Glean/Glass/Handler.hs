@@ -134,6 +134,7 @@ import Glean.Glass.SymbolId
     )
 import Glean.Glass.SymbolSig
     ( toSymbolSignatureText )
+import Glean.Glass.Pretty.Cxx as Cxx (Qualified(..))
 import Glean.Glass.SymbolKind ( findSymbolKind )
 import Glean.Glass.Types
     ( SymbolPath(SymbolPath, symbolPath_range, symbolPath_repository,
@@ -980,7 +981,8 @@ getStaticAttributes :: Code.Entity -> Glean.RepoHaxl u w AttributeList
 getStaticAttributes e = do
   mLocalName <- toSymbolLocalName e
   mParent <- toSymbolQualifiedContainer e -- the "parent" of the symbol
-  mSignature <- toSymbolSignatureText e -- optional type signature
+  mSignature <-
+        toSymbolSignatureText e Cxx.Unqualified -- optional type signature
   mKind <- entityKind e -- optional glass-side symbol kind labels
   return $ AttributeList $ map (\(a,b) -> KeyedAttribute a b) $ catMaybes
     [ asLocalName <$> mLocalName
@@ -1159,7 +1161,7 @@ describeEntity ent SymbolResult{..} = do
   symbolDescription_comments <- eThrow =<< getCommentsForEntity repo ent
   (symbolDescription_visibility, symbolDescription_modifiers)
      <- eThrow =<< getInfoForEntity ent
-  symbolDescription_signature <- toSymbolSignatureText ent
+  symbolDescription_signature <- toSymbolSignatureText ent Cxx.Qualified
   symbolDescription_extends_relation <-
     relationDescription RelationType_Extends
   symbolDescription_contains_relation <-
