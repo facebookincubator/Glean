@@ -1,6 +1,7 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
 schema code.24 {
+import src.1
 import code.buck.1
 import code.cxx.4
 import code.erlang.1
@@ -13,6 +14,7 @@ import code.pp.1
 import code.python.1
 import code.rust.1
 import code.thrift.4
+import codemarkup.types.1
 
 type Entity =
   {
@@ -88,5 +90,17 @@ type Annotations =
     python : code.python.Annotations |
     hack : code.hack.Annotations |
     thrift : code.thrift.Annotations |
+  }
+
+type Argument =
+  {
+    lit: string |
+    xref: Entity
+  }
+
+type CallArgument =
+  { label : maybe string
+  , span : src.ByteSpan
+  , argument : maybe Argument
   }
 }

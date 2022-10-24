@@ -2,6 +2,7 @@
 
 schema codemarkup.python.2 {
 import src.1
+import code.24
 import code.python.1
 import codemarkup.types.1
 import python.3
@@ -162,4 +163,158 @@ predicate PythonContainsChildEntity :
       }
     )
 
+predicate PythonFileCall :
+  {
+    file: src.File,
+    callee_span: src.ByteSpan,
+    call_args: [code.CallArgument],
+  } {File, Span, CodeArgs} where
+  (
+    python.FileCall { File, Span, PythonArgs};
+    ConvertCallArguments { PythonArgs, CodeArgs};
+  )
+
+# (internal) helper predicate for CallArgument
+# Manually unrolled to lists of <=6 arguments
+predicate ConvertCallArguments :
+  { pythonCallArguments: [python.CallArgument],
+    codeCallArguments: [code.CallArgument]
+  } {PythonArgs, CodeArgs} where
+  (
+    (
+      [python.CallArgument{Label, Span, Argument}] = PythonArgs;
+      ConvertArgument{Argument, CodeArgument};
+      ConvertLabel{Label, CodeLabel};
+      CodeArgs = [code.CallArgument{CodeLabel, Span, CodeArgument}]
+    ) |
+    (
+      [
+        python.CallArgument{Label, Span, Argument},
+        python.CallArgument{Label2, Span2, Argument2}
+      ] = PythonArgs;
+      ConvertArgument{Argument, CodeArgument};
+      ConvertArgument{Argument2, CodeArgument2};
+      ConvertLabel{Label, CodeLabel};
+      ConvertLabel{Label2, CodeLabel2};
+      CodeArgs = [
+        code.CallArgument{CodeLabel, Span, CodeArgument},
+        code.CallArgument{CodeLabel2, Span2, CodeArgument2}
+        ]
+    ) |
+    (
+      [
+        python.CallArgument{Label, Span, Argument},
+        python.CallArgument{Label2, Span2, Argument2},
+        python.CallArgument{Label3, Span3, Argument3}
+      ] = PythonArgs;
+      ConvertArgument{Argument, CodeArgument};
+      ConvertArgument{Argument2, CodeArgument2};
+      ConvertArgument{Argument3, CodeArgument3};
+      ConvertLabel{Label, CodeLabel};
+      ConvertLabel{Label2, CodeLabel2};
+      ConvertLabel{Label3, CodeLabel3};
+      CodeArgs = [
+        code.CallArgument{CodeLabel, Span, CodeArgument},
+        code.CallArgument{CodeLabel2, Span2, CodeArgument2},
+        code.CallArgument{CodeLabel3, Span3, CodeArgument3}
+        ]
+    ) |
+    (
+      [
+        python.CallArgument{Label, Span, Argument},
+        python.CallArgument{Label2, Span2, Argument2},
+        python.CallArgument{Label3, Span3, Argument3},
+        python.CallArgument{Label4, Span4, Argument4}
+      ] = PythonArgs;
+      ConvertArgument{Argument, CodeArgument};
+      ConvertArgument{Argument2, CodeArgument2};
+      ConvertArgument{Argument3, CodeArgument3};
+      ConvertArgument{Argument4, CodeArgument4};
+      ConvertLabel{Label, CodeLabel};
+      ConvertLabel{Label2, CodeLabel2};
+      ConvertLabel{Label3, CodeLabel3};
+      ConvertLabel{Label4, CodeLabel4};
+      CodeArgs = [
+        code.CallArgument{CodeLabel, Span, CodeArgument},
+        code.CallArgument{CodeLabel2, Span2, CodeArgument2},
+        code.CallArgument{CodeLabel3, Span3, CodeArgument3},
+        code.CallArgument{CodeLabel4, Span4, CodeArgument4}
+        ]
+    ) |
+    (
+      [
+        python.CallArgument{Label, Span, Argument},
+        python.CallArgument{Label2, Span2, Argument2},
+        python.CallArgument{Label3, Span3, Argument3},
+        python.CallArgument{Label4, Span4, Argument4},
+        python.CallArgument{Label5, Span5, Argument5}
+      ] = PythonArgs;
+      ConvertArgument{Argument, CodeArgument};
+      ConvertArgument{Argument2, CodeArgument2};
+      ConvertArgument{Argument3, CodeArgument3};
+      ConvertArgument{Argument4, CodeArgument4};
+      ConvertArgument{Argument5, CodeArgument5};
+      ConvertLabel{Label, CodeLabel};
+      ConvertLabel{Label2, CodeLabel2};
+      ConvertLabel{Label3, CodeLabel3};
+      ConvertLabel{Label4, CodeLabel4};
+      ConvertLabel{Label5, CodeLabel5};
+      CodeArgs = [
+        code.CallArgument{CodeLabel, Span, CodeArgument},
+        code.CallArgument{CodeLabel2, Span2, CodeArgument2},
+        code.CallArgument{CodeLabel3, Span3, CodeArgument3},
+        code.CallArgument{CodeLabel4, Span4, CodeArgument4},
+        code.CallArgument{CodeLabel5, Span5, CodeArgument5}
+        ]
+    ) |
+    (
+      [
+        python.CallArgument{Label, Span, Argument},
+        python.CallArgument{Label2, Span2, Argument2},
+        python.CallArgument{Label3, Span3, Argument3},
+        python.CallArgument{Label4, Span4, Argument4},
+        python.CallArgument{Label5, Span5, Argument5},
+        python.CallArgument{Label6, Span6, Argument6}
+      ] = PythonArgs;
+      ConvertArgument{Argument, CodeArgument};
+      ConvertArgument{Argument2, CodeArgument2};
+      ConvertArgument{Argument3, CodeArgument3};
+      ConvertArgument{Argument4, CodeArgument4};
+      ConvertArgument{Argument5, CodeArgument5};
+      ConvertArgument{Argument6, CodeArgument6};
+      ConvertLabel{Label, CodeLabel};
+      ConvertLabel{Label2, CodeLabel2};
+      ConvertLabel{Label3, CodeLabel3};
+      ConvertLabel{Label4, CodeLabel4};
+      ConvertLabel{Label5, CodeLabel5};
+      ConvertLabel{Label6, CodeLabel6};
+      CodeArgs = [
+        code.CallArgument{CodeLabel, Span, CodeArgument},
+        code.CallArgument{CodeLabel2, Span2, CodeArgument2},
+        code.CallArgument{CodeLabel3, Span3, CodeArgument3},
+        code.CallArgument{CodeLabel4, Span4, CodeArgument4},
+        code.CallArgument{CodeLabel5, Span5, CodeArgument5},
+        code.CallArgument{CodeLabel6, Span6, CodeArgument6}
+        ]
+    )
+  )
+
+
+predicate ConvertArgument :
+  { pythonArgument : maybe python.Argument
+  , codeArgument : maybe code.Argument
+  } {Python, Code} where
+  (
+    { just = { lit = python.StringLiteral L } } = Python;
+    { just = { lit = L } } = Code;
+  ) | (
+    nothing = Python ; nothing = Code;
+  )
+
+predicate ConvertLabel :
+  { python : maybe python.Name
+  , code : maybe string
+  } {Python, Code} where
+  ( nothing = Python; nothing = Code)
+  | (Python = {just = python.Name N}; Code = {just = N})
 }

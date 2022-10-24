@@ -13,4 +13,5 @@ type Annotations =
     attributes: [hack.UserAttribute] |
   }
 
+type CallArgument = hack.CallArgument
 }

@@ -2,6 +2,7 @@
 
 schema codemarkup.hack.2 {
 import src.1
+import code.24
 import code.hack.4
 import hack.6
 import codemarkup.types.1
@@ -332,4 +333,130 @@ predicate HackEntityDocumentation :
       hack.DeclarationComment { { method = Base }, F, S }
     )
 
+predicate HackFileCall :
+  {
+    file: src.File,
+    callee_span: src.ByteSpan,
+    call_args: [code.CallArgument],
+  } {File, Span, CodeArgs} where
+  (
+    hack.FileCall { File, Span, HackArgs};
+    ConvertCallArguments { HackArgs, CodeArgs};
+  )
+
+# (internal) helper predicate for CallArgument
+# Manually unrolled to lists of <=6 arguments
+predicate ConvertCallArguments :
+  { hackCallArguments: [hack.CallArgument],
+    codeCallArguments: [code.CallArgument]
+  } {HackArgs, CodeArgs} where
+  (
+    (
+      [hack.CallArgument{Span, Argument}] = HackArgs;
+      ConvertArgument{Argument, CodeArgument};
+      CodeArgs = [code.CallArgument{nothing, Span, CodeArgument}]
+    ) |
+    (
+      [
+        hack.CallArgument{Span, Argument},
+        hack.CallArgument{Span2, Argument2}
+      ] = HackArgs;
+      ConvertArgument{Argument, CodeArgument};
+      ConvertArgument{Argument2, CodeArgument2};
+      CodeArgs = [
+        code.CallArgument{nothing, Span, CodeArgument},
+        code.CallArgument{nothing, Span2, CodeArgument2}
+        ]
+    ) |
+    (
+      [
+        hack.CallArgument{Span, Argument},
+        hack.CallArgument{Span2, Argument2},
+        hack.CallArgument{Span3, Argument3}
+      ] = HackArgs;
+      ConvertArgument{Argument, CodeArgument};
+      ConvertArgument{Argument2, CodeArgument2};
+      ConvertArgument{Argument3, CodeArgument3};
+      CodeArgs = [
+        code.CallArgument{nothing, Span, CodeArgument},
+        code.CallArgument{nothing, Span2, CodeArgument2},
+        code.CallArgument{nothing, Span3, CodeArgument3}
+        ]
+    ) |
+    (
+      [
+        hack.CallArgument{Span, Argument},
+        hack.CallArgument{Span2, Argument2},
+        hack.CallArgument{Span3, Argument3},
+        hack.CallArgument{Span4, Argument4}
+      ] = HackArgs;
+      ConvertArgument{Argument, CodeArgument};
+      ConvertArgument{Argument2, CodeArgument2};
+      ConvertArgument{Argument3, CodeArgument3};
+      ConvertArgument{Argument4, CodeArgument4};
+      CodeArgs = [
+        code.CallArgument{nothing, Span, CodeArgument},
+        code.CallArgument{nothing, Span2, CodeArgument2},
+        code.CallArgument{nothing, Span3, CodeArgument3},
+        code.CallArgument{nothing, Span4, CodeArgument4}
+        ]
+    ) |
+    (
+      [
+        hack.CallArgument{Span, Argument},
+        hack.CallArgument{Span2, Argument2},
+        hack.CallArgument{Span3, Argument3},
+        hack.CallArgument{Span4, Argument4},
+        hack.CallArgument{Span5, Argument5}
+      ] = HackArgs;
+      ConvertArgument{Argument, CodeArgument};
+      ConvertArgument{Argument2, CodeArgument2};
+      ConvertArgument{Argument3, CodeArgument3};
+      ConvertArgument{Argument4, CodeArgument4};
+      ConvertArgument{Argument5, CodeArgument5};
+      CodeArgs = [
+        code.CallArgument{nothing, Span, CodeArgument},
+        code.CallArgument{nothing, Span2, CodeArgument2},
+        code.CallArgument{nothing, Span3, CodeArgument3},
+        code.CallArgument{nothing, Span4, CodeArgument4},
+        code.CallArgument{nothing, Span5, CodeArgument5}
+        ]
+    ) |
+    (
+      [
+        hack.CallArgument{Span, Argument},
+        hack.CallArgument{Span2, Argument2},
+        hack.CallArgument{Span3, Argument3},
+        hack.CallArgument{Span4, Argument4},
+        hack.CallArgument{Span5, Argument5},
+        hack.CallArgument{Span6, Argument6}
+      ] = HackArgs;
+      ConvertArgument{Argument, CodeArgument};
+      ConvertArgument{Argument2, CodeArgument2};
+      ConvertArgument{Argument3, CodeArgument3};
+      ConvertArgument{Argument4, CodeArgument4};
+      ConvertArgument{Argument5, CodeArgument5};
+      ConvertArgument{Argument6, CodeArgument6};
+      CodeArgs = [
+        code.CallArgument{nothing, Span, CodeArgument},
+        code.CallArgument{nothing, Span2, CodeArgument2},
+        code.CallArgument{nothing, Span3, CodeArgument3},
+        code.CallArgument{nothing, Span4, CodeArgument4},
+        code.CallArgument{nothing, Span5, CodeArgument5},
+        code.CallArgument{nothing, Span6, CodeArgument6}
+        ]
+    )
+  )
+
+
+predicate ConvertArgument :
+  { hackArgument : maybe hack.Argument
+  , codeArgument : maybe code.Argument
+  } {Hack, Code} where
+  (
+    { just = { lit = hack.StringLiteral L } } = Hack;
+    { just = { lit = L } } = Code;
+  ) | (
+    nothing = Hack ; nothing = Code;
+  )
 }

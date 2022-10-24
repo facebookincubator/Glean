@@ -13,4 +13,6 @@ type Annotations =
     decorators : [python.Decorator] |
   }
 
+type CallArgument = python.CallArgument
+
 }
