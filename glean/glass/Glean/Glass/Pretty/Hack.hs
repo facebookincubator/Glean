@@ -98,7 +98,7 @@ data Container
   = ClassContainer | InterfaceContainer | TraitContainer | EnumContainer
   deriving Eq
 data EnumKind = IsClass | Regular
-data EnumConstraint = Unconstrained | Constrained HackType HackType
+data EnumConstraint = EnumBase HackType | Constrained HackType HackType
 
 data Decl
   = ClassConst Name
@@ -121,8 +121,8 @@ prettyDecl _ (ClassConst name) =
   "const" <+> ppName name
 prettyDecl _ (Module name) =
   "module" <+> ppName name
-prettyDecl _ (Enum name Regular Unconstrained) =
-  "enum" <+> ppQualName name
+prettyDecl _ (Enum name Regular (EnumBase ty1)) =
+  "enum" <+> ppQualName name <+> ":" <+> ppType ty1
 prettyDecl _ (Enum name Regular (Constrained ty1 ty2)) =
   "enum" <+> ppQualName name <+> ":" <+> ppConstraintTypes ty1 ty2
 prettyDecl _ (Enum name IsClass _) =
@@ -359,7 +359,7 @@ containerDecl (Hack.ContainerDeclaration_enum_
       angleEnumDefinition (Angle.factId (Glean.getId decl))
     let enumKind = if isClass then IsClass else Regular
     let constraint =  case enumConstraint of
-          Nothing -> Unconstrained
+          Nothing -> EnumBase (toType1 enumBase)
           Just ty -> Constrained (toType1 enumBase) (toType1 ty)
     name <- qName enumDeclaration_key_name
     pure $ Enum (QualName name) enumKind constraint
