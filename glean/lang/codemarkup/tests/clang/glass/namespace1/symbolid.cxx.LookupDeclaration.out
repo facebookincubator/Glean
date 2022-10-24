@@ -83,9 +83,9 @@
             "isScoped": false,
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 92,
+              "lineBegin": 99,
               "columnBegin": 1,
-              "lineEnd": 92,
+              "lineEnd": 99,
               "columnEnd": 26
             }
           }
@@ -109,9 +109,9 @@
             "isScoped": true,
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 93,
+              "lineBegin": 100,
               "columnBegin": 1,
-              "lineEnd": 93,
+              "lineEnd": 100,
               "columnEnd": 40
             }
           }
@@ -157,9 +157,9 @@
             "isScoped": false,
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 86,
+              "lineBegin": 93,
               "columnBegin": 3,
-              "lineEnd": 86,
+              "lineEnd": 93,
               "columnEnd": 25
             }
           }
@@ -205,9 +205,9 @@
             "isScoped": true,
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 87,
+              "lineBegin": 94,
               "columnBegin": 3,
-              "lineEnd": 87,
+              "lineEnd": 94,
               "columnEnd": 39
             }
           }
@@ -264,6 +264,34 @@
               "lineBegin": 13,
               "columnBegin": 1,
               "lineEnd": 16,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "Something" },
+      "scope": { "namespace_": { "key": { "name": { "key": "maybe" } } } },
+      "decl": {
+        "record_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "Something" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "maybe" } } }
+                }
+              }
+            },
+            "kind": { "struct_": { } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 76,
+              "columnBegin": 1,
+              "lineEnd": 80,
               "columnEnd": 1
             }
           }
@@ -419,9 +447,9 @@
             "kind": { "struct_": { } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 85,
+              "lineBegin": 92,
               "columnBegin": 1,
-              "lineEnd": 88,
+              "lineEnd": 95,
               "columnEnd": 1
             }
           }
@@ -606,6 +634,126 @@
               "columnBegin": 3,
               "lineEnd": 70,
               "columnEnd": 31
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "a" },
+      "scope": {
+        "local": {
+          "key": {
+            "name": { "key": { "constructor": { } } },
+            "scope": {
+              "recordWithAccess": {
+                "record": {
+                  "key": {
+                    "name": { "key": "Something" },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "maybe" } } }
+                    }
+                  }
+                },
+                "access": 0
+              }
+            }
+          }
+        }
+      },
+      "decl": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "a" },
+                "scope": {
+                  "local": {
+                    "key": {
+                      "name": { "key": { "constructor": { } } },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "Something" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "maybe" } }
+                                }
+                              }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "type": { "key": "int" },
+            "kind": { "local": { "kind": 2, "attribute": 0 } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 78,
+              "columnBegin": 13,
+              "lineEnd": 78,
+              "columnEnd": 17
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "a_" },
+      "scope": {
+        "recordWithAccess": {
+          "record": {
+            "key": {
+              "name": { "key": "Something" },
+              "scope": {
+                "namespace_": { "key": { "name": { "key": "maybe" } } }
+              }
+            }
+          },
+          "access": 0
+        }
+      },
+      "decl": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "a_" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "Something" },
+                        "scope": {
+                          "namespace_": {
+                            "key": { "name": { "key": "maybe" } }
+                          }
+                        }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "type": { "key": "int" },
+            "kind": { "field": { "mutable_": false } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 77,
+              "columnBegin": 3,
+              "lineEnd": 77,
+              "columnEnd": 8
             }
           }
         }

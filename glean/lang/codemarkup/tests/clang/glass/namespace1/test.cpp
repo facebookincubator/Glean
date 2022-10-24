@@ -73,6 +73,13 @@ struct Nothing {
 };
 constexpr Nothing nothing{Nothing::_secret::_magic};
 
+struct Something {
+  int a_;
+  Something(int a): a_(a){}
+  ~Something() {}
+};
+
+
 }
 
 #include "test.h"

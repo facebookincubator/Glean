@@ -268,7 +268,7 @@ predicate CxxEntityUses:
     Spans = prim.relToAbsByteSpans Uses;
     Span = Spans[..]) |
   ({ { defn = Defn }, File, Span } where
-    cxx1.DefToBaseDecl { Defn, DeclBase };
+    CxxEntityDefinitionBase { Defn, DeclBase };
     cxx1.DeclFamilyOf { DeclBase, D };
     cxx1.TargetUses { { declaration = D }, File, Uses };
     Spans = prim.relToAbsByteSpans Uses;
@@ -277,6 +277,26 @@ predicate CxxEntityUses:
     cxx1.TargetUses { { enumerator = E }, File, Uses };
     Spans = prim.relToAbsByteSpans Uses;
     Span = Spans[..])
+
+# For definitions, we find uses of the underlying declaration
+# For classes and anything else with ctors and dtors we also include uses
+# of the ctor and dtors
+predicate CxxEntityDefinitionBase:
+  {
+    target : code.cxx.Definition,
+    base: cxx1.Declaration
+  }
+  { Defn, Decl } where
+    # case 1: the base decl
+    cxx1.DefToBaseDecl { Defn, Decl } |
+    # case 2: for records, their ctors and dtors, a subset of functions
+    ( cxx1.DefinitionEntity Defn;
+      { record_ = RecordDefn } = Defn;
+      cxx1.RecordDefinition { members = cxx1.Declarations Decls } = RecordDefn;
+      Decl = Decls[..];
+      { function_ = { name = FQName } } = Decl;
+      { name = { constructor = _ } | { destructor = _ } } = FQName;
+    )
 
 #
 # Language-specific symbol info

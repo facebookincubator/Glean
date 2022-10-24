@@ -23,8 +23,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 27,
-                        "lineBegin": 92,
-                        "lineEnd": 92
+                        "lineBegin": 99,
+                        "lineEnd": 99
                     },
                     "repository": "test"
                 },
@@ -40,8 +40,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 27,
-                        "lineBegin": 92,
-                        "lineEnd": 92
+                        "lineBegin": 99,
+                        "lineEnd": 99
                     },
                     "repository": "test"
                 },
@@ -68,8 +68,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 41,
-                        "lineBegin": 93,
-                        "lineEnd": 93
+                        "lineBegin": 100,
+                        "lineEnd": 100
                     },
                     "repository": "test"
                 },
@@ -85,6 +85,51 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 41,
+                        "lineBegin": 100,
+                        "lineEnd": 100
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": true,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 12,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 26,
+                        "lineBegin": 93,
+                        "lineEnd": 93
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "baz::U",
+                    "localName": "InU"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/cpp//baz/U/InU",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 26,
                         "lineBegin": 93,
                         "lineEnd": 93
                     },
@@ -112,54 +157,9 @@
                     "filepath": "test.cpp",
                     "range": {
                         "columnBegin": 3,
-                        "columnEnd": 26,
-                        "lineBegin": 86,
-                        "lineEnd": 86
-                    },
-                    "repository": "test"
-                },
-                "modifiers": [],
-                "name": {
-                    "container": "baz::U",
-                    "localName": "InU"
-                },
-                "repo_hash": "testhash",
-                "sym": "test/cpp//baz/U/InU",
-                "sym_location": {
-                    "filepath": "test.cpp",
-                    "range": {
-                        "columnBegin": 3,
-                        "columnEnd": 26,
-                        "lineBegin": 86,
-                        "lineEnd": 86
-                    },
-                    "repository": "test"
-                },
-                "sym_other_locations": []
-            },
-            {
-                "comments": [],
-                "contains_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": true,
-                    "hasMoreParents": false
-                },
-                "extends_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "kind": 12,
-                "language": 1,
-                "location": {
-                    "filepath": "test.cpp",
-                    "range": {
-                        "columnBegin": 3,
                         "columnEnd": 40,
-                        "lineBegin": 87,
-                        "lineEnd": 87
+                        "lineBegin": 94,
+                        "lineEnd": 94
                     },
                     "repository": "test"
                 },
@@ -175,8 +175,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 40,
-                        "lineBegin": 87,
-                        "lineEnd": 87
+                        "lineBegin": 94,
+                        "lineEnd": 94
                     },
                     "repository": "test"
                 },
@@ -237,8 +237,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 27,
-                        "lineBegin": 92,
-                        "lineEnd": 92
+                        "lineBegin": 99,
+                        "lineEnd": 99
                     },
                     "repository": "test"
                 },
@@ -253,8 +253,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 41,
-                        "lineBegin": 93,
-                        "lineEnd": 93
+                        "lineBegin": 100,
+                        "lineEnd": 100
                     },
                     "repository": "test"
                 },
@@ -269,8 +269,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 26,
-                        "lineBegin": 86,
-                        "lineEnd": 86
+                        "lineBegin": 93,
+                        "lineEnd": 93
                     },
                     "repository": "test"
                 },
@@ -285,8 +285,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 40,
-                        "lineBegin": 87,
-                        "lineEnd": 87
+                        "lineBegin": 94,
+                        "lineEnd": 94
                     },
                     "repository": "test"
                 },

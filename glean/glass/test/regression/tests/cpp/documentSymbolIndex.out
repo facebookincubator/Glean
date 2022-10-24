@@ -2,8 +2,45 @@
     "@generated",
     {
         "revision": "testhash",
-        "size": 67,
+        "size": 75,
         "symbols": {
+            "100": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 12
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "GlobalClass"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "enum class GlobalClass"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 12,
+                        "columnEnd": 23,
+                        "lineBegin": 100,
+                        "lineEnd": 100
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 41,
+                        "lineBegin": 100,
+                        "lineEnd": 100
+                    },
+                    "sym": "test/cpp//GlobalClass"
+                }
+            ],
             "11": [
                 {
                     "attributes": {
@@ -1921,7 +1958,7 @@
                         "columnBegin": 1,
                         "columnEnd": 2,
                         "lineBegin": 64,
-                        "lineEnd": 76
+                        "lineEnd": 83
                     },
                     "sym": "test/cpp//maybe"
                 }
@@ -2328,7 +2365,325 @@
                     "sym": "test/cpp//maybe/nothing/.decl"
                 }
             ],
+            "76": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 25
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "Something"
+                        },
+                        "symbolParent": {
+                            "aString": "maybe"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct Something"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 8,
+                        "columnEnd": 17,
+                        "lineBegin": 76,
+                        "lineEnd": 76
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 76,
+                        "lineEnd": 80
+                    },
+                    "sym": "test/cpp//maybe/Something"
+                }
+            ],
+            "77": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "a_"
+                        },
+                        "symbolParent": {
+                            "aString": "maybe::Something"
+                        },
+                        "symbolSignature": {
+                            "aString": "int a_"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 7,
+                        "columnEnd": 9,
+                        "lineBegin": 77,
+                        "lineEnd": 77
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 9,
+                        "lineBegin": 77,
+                        "lineEnd": 77
+                    },
+                    "sym": "test/cpp//maybe/Something/a_/.decl"
+                }
+            ],
             "78": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 14
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "Something"
+                        },
+                        "symbolParent": {
+                            "aString": "maybe"
+                        },
+                        "symbolSignature": {
+                            "aString": "Something(int a)"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 3,
+                        "columnEnd": 12,
+                        "lineBegin": 78,
+                        "lineEnd": 78
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 28,
+                        "lineBegin": 78,
+                        "lineEnd": 78
+                    },
+                    "sym": "test/cpp//maybe/Something/.ctor"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "a"
+                        },
+                        "symbolParent": {
+                            "aString": "maybe::Something::.ctor"
+                        },
+                        "symbolSignature": {
+                            "aString": "int a"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 17,
+                        "columnEnd": 18,
+                        "lineBegin": 78,
+                        "lineEnd": 78
+                    },
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 18,
+                        "lineBegin": 78,
+                        "lineEnd": 78
+                    },
+                    "sym": "test/cpp//maybe/Something/.ctor/a/.decl"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "a"
+                        },
+                        "symbolParent": {
+                            "aString": "maybe::Something::.ctor"
+                        },
+                        "symbolSignature": {
+                            "aString": "int a"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 24,
+                        "columnEnd": 25,
+                        "lineBegin": 78,
+                        "lineEnd": 78
+                    },
+                    "sym": "test/cpp//maybe/Something/.ctor/a/.decl",
+                    "target": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 13,
+                            "columnEnd": 18,
+                            "lineBegin": 78,
+                            "lineEnd": 78
+                        },
+                        "repository": "test"
+                    },
+                    "targetName": {
+                        "columnBegin": 17,
+                        "columnEnd": 18,
+                        "lineBegin": 78,
+                        "lineEnd": 78
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "a_"
+                        },
+                        "symbolParent": {
+                            "aString": "maybe::Something"
+                        },
+                        "symbolSignature": {
+                            "aString": "int a_"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 21,
+                        "columnEnd": 23,
+                        "lineBegin": 78,
+                        "lineEnd": 78
+                    },
+                    "sym": "test/cpp//maybe/Something/a_/.decl",
+                    "target": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 3,
+                            "columnEnd": 9,
+                            "lineBegin": 77,
+                            "lineEnd": 77
+                        },
+                        "repository": "test"
+                    },
+                    "targetName": {
+                        "columnBegin": 7,
+                        "columnEnd": 9,
+                        "lineBegin": 77,
+                        "lineEnd": 77
+                    }
+                }
+            ],
+            "79": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 25
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "Something"
+                        },
+                        "symbolParent": {
+                            "aString": "maybe"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct Something"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 4,
+                        "columnEnd": 13,
+                        "lineBegin": 79,
+                        "lineEnd": 79
+                    },
+                    "sym": "test/cpp//maybe/Something",
+                    "target": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 76,
+                            "lineEnd": 80
+                        },
+                        "repository": "test"
+                    },
+                    "targetName": {
+                        "columnBegin": 8,
+                        "columnEnd": 17,
+                        "lineBegin": 76,
+                        "lineEnd": 76
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 14
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "Something"
+                        },
+                        "symbolParent": {
+                            "aString": "maybe"
+                        },
+                        "symbolSignature": {
+                            "aString": "~Something()"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 79,
+                        "lineEnd": 79
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 18,
+                        "lineBegin": 79,
+                        "lineEnd": 79
+                    },
+                    "sym": "test/cpp//maybe/Something/.dtor"
+                }
+            ],
+            "85": [
                 {
                     "attributes": {
                         "symbolDefinitionType": {
@@ -2344,8 +2699,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 18,
-                        "lineBegin": 78,
-                        "lineEnd": 78
+                        "lineBegin": 85,
+                        "lineEnd": 85
                     },
                     "sym": "test/pp/test.h",
                     "target": {
@@ -2360,161 +2715,6 @@
                     }
                 }
             ],
-            "80": [
-                {
-                    "attributes": {
-                        "symbolDefinitionType": {
-                            "aInteger": 1
-                        },
-                        "symbolKind": {
-                            "aInteger": 30
-                        },
-                        "symbolLanguage": {
-                            "aInteger": 8
-                        }
-                    },
-                    "range": {
-                        "columnBegin": 9,
-                        "columnEnd": 10,
-                        "lineBegin": 80,
-                        "lineEnd": 80
-                    },
-                    "sym": "test/pp/test.cpp/A"
-                }
-            ],
-            "81": [
-                {
-                    "attributes": {
-                        "symbolDefinitionType": {
-                            "aInteger": 1
-                        },
-                        "symbolKind": {
-                            "aInteger": 30
-                        },
-                        "symbolLanguage": {
-                            "aInteger": 8
-                        }
-                    },
-                    "range": {
-                        "columnBegin": 9,
-                        "columnEnd": 10,
-                        "lineBegin": 81,
-                        "lineEnd": 81
-                    },
-                    "sym": "test/pp/test.cpp/B"
-                }
-            ],
-            "83": [
-                {
-                    "attributes": {
-                        "symbolDefinitionType": {
-                            "aInteger": 1
-                        },
-                        "symbolKind": {
-                            "aInteger": 6
-                        },
-                        "symbolLanguage": {
-                            "aInteger": 1
-                        },
-                        "symbolName": {
-                            "aString": "baz"
-                        },
-                        "symbolParent": {
-                            "aString": ""
-                        },
-                        "symbolSignature": {
-                            "aString": "namespace baz"
-                        }
-                    },
-                    "nameRange": {
-                        "columnBegin": 11,
-                        "columnEnd": 14,
-                        "lineBegin": 83,
-                        "lineEnd": 83
-                    },
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 83,
-                        "lineEnd": 90
-                    },
-                    "sym": "test/cpp//baz"
-                }
-            ],
-            "85": [
-                {
-                    "attributes": {
-                        "symbolDefinitionType": {
-                            "aInteger": 1
-                        },
-                        "symbolKind": {
-                            "aInteger": 25
-                        },
-                        "symbolLanguage": {
-                            "aInteger": 1
-                        },
-                        "symbolName": {
-                            "aString": "U"
-                        },
-                        "symbolParent": {
-                            "aString": "baz"
-                        },
-                        "symbolSignature": {
-                            "aString": "struct U"
-                        }
-                    },
-                    "nameRange": {
-                        "columnBegin": 8,
-                        "columnEnd": 9,
-                        "lineBegin": 85,
-                        "lineEnd": 85
-                    },
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 85,
-                        "lineEnd": 88
-                    },
-                    "sym": "test/cpp//baz/U"
-                }
-            ],
-            "86": [
-                {
-                    "attributes": {
-                        "symbolDefinitionType": {
-                            "aInteger": 1
-                        },
-                        "symbolKind": {
-                            "aInteger": 12
-                        },
-                        "symbolLanguage": {
-                            "aInteger": 1
-                        },
-                        "symbolName": {
-                            "aString": "InU"
-                        },
-                        "symbolParent": {
-                            "aString": "baz::U"
-                        },
-                        "symbolSignature": {
-                            "aString": "enum InU"
-                        }
-                    },
-                    "nameRange": {
-                        "columnBegin": 8,
-                        "columnEnd": 11,
-                        "lineBegin": 86,
-                        "lineEnd": 86
-                    },
-                    "range": {
-                        "columnBegin": 3,
-                        "columnEnd": 26,
-                        "lineBegin": 86,
-                        "lineEnd": 86
-                    },
-                    "sym": "test/cpp//baz/U/InU"
-                }
-            ],
             "87": [
                 {
                     "attributes": {
@@ -2522,34 +2722,41 @@
                             "aInteger": 1
                         },
                         "symbolKind": {
-                            "aInteger": 12
+                            "aInteger": 30
                         },
                         "symbolLanguage": {
-                            "aInteger": 1
-                        },
-                        "symbolName": {
-                            "aString": "InUClass"
-                        },
-                        "symbolParent": {
-                            "aString": "baz::U"
-                        },
-                        "symbolSignature": {
-                            "aString": "enum class InUClass"
+                            "aInteger": 8
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 14,
-                        "columnEnd": 22,
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 10,
                         "lineBegin": 87,
                         "lineEnd": 87
+                    },
+                    "sym": "test/pp/test.cpp/A"
+                }
+            ],
+            "88": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 30
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 8
+                        }
                     },
                     "range": {
-                        "columnBegin": 3,
-                        "columnEnd": 40,
-                        "lineBegin": 87,
-                        "lineEnd": 87
+                        "columnBegin": 9,
+                        "columnEnd": 10,
+                        "lineBegin": 88,
+                        "lineEnd": 88
                     },
-                    "sym": "test/cpp//baz/U/InUClass"
+                    "sym": "test/pp/test.cpp/B"
                 }
             ],
             "9": [
@@ -2584,7 +2791,155 @@
                     }
                 }
             ],
+            "90": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 6
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "baz"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "namespace baz"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 11,
+                        "columnEnd": 14,
+                        "lineBegin": 90,
+                        "lineEnd": 90
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 90,
+                        "lineEnd": 97
+                    },
+                    "sym": "test/cpp//baz"
+                }
+            ],
             "92": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 25
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "U"
+                        },
+                        "symbolParent": {
+                            "aString": "baz"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct U"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 8,
+                        "columnEnd": 9,
+                        "lineBegin": 92,
+                        "lineEnd": 92
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 92,
+                        "lineEnd": 95
+                    },
+                    "sym": "test/cpp//baz/U"
+                }
+            ],
+            "93": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 12
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "InU"
+                        },
+                        "symbolParent": {
+                            "aString": "baz::U"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum InU"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 8,
+                        "columnEnd": 11,
+                        "lineBegin": 93,
+                        "lineEnd": 93
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 26,
+                        "lineBegin": 93,
+                        "lineEnd": 93
+                    },
+                    "sym": "test/cpp//baz/U/InU"
+                }
+            ],
+            "94": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 12
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "InUClass"
+                        },
+                        "symbolParent": {
+                            "aString": "baz::U"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum class InUClass"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 14,
+                        "columnEnd": 22,
+                        "lineBegin": 94,
+                        "lineEnd": 94
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 40,
+                        "lineBegin": 94,
+                        "lineEnd": 94
+                    },
+                    "sym": "test/cpp//baz/U/InUClass"
+                }
+            ],
+            "99": [
                 {
                     "attributes": {
                         "symbolDefinitionType": {
@@ -2609,53 +2964,16 @@
                     "nameRange": {
                         "columnBegin": 6,
                         "columnEnd": 12,
-                        "lineBegin": 92,
-                        "lineEnd": 92
+                        "lineBegin": 99,
+                        "lineEnd": 99
                     },
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 27,
-                        "lineBegin": 92,
-                        "lineEnd": 92
+                        "lineBegin": 99,
+                        "lineEnd": 99
                     },
                     "sym": "test/cpp//Global"
-                }
-            ],
-            "93": [
-                {
-                    "attributes": {
-                        "symbolDefinitionType": {
-                            "aInteger": 1
-                        },
-                        "symbolKind": {
-                            "aInteger": 12
-                        },
-                        "symbolLanguage": {
-                            "aInteger": 1
-                        },
-                        "symbolName": {
-                            "aString": "GlobalClass"
-                        },
-                        "symbolParent": {
-                            "aString": ""
-                        },
-                        "symbolSignature": {
-                            "aString": "enum class GlobalClass"
-                        }
-                    },
-                    "nameRange": {
-                        "columnBegin": 12,
-                        "columnEnd": 23,
-                        "lineBegin": 93,
-                        "lineEnd": 93
-                    },
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 41,
-                        "lineBegin": 93,
-                        "lineEnd": 93
-                    },
-                    "sym": "test/cpp//GlobalClass"
                 }
             ]
         }

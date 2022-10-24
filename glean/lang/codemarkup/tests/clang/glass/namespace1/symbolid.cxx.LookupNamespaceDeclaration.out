@@ -34,9 +34,9 @@
             "name": { "key": { "name": { "key": "baz" } } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 83,
+              "lineBegin": 90,
               "columnBegin": 1,
-              "lineEnd": 90,
+              "lineEnd": 97,
               "columnEnd": 1
             }
           }
@@ -74,7 +74,7 @@
               "file": { "key": "test.cpp" },
               "lineBegin": 64,
               "columnBegin": 1,
-              "lineEnd": 76,
+              "lineEnd": 83,
               "columnEnd": 1
             }
           }

@@ -1,0 +1,407 @@
+[
+  "@generated",
+  {
+    "key": {
+      "target": {
+        "function_": {
+          "key": {
+            "declaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "f" } } },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "a.h" },
+                  "lineBegin": 10,
+                  "columnBegin": 1,
+                  "lineEnd": 10,
+                  "columnEnd": 11
+                }
+              }
+            },
+            "isInline": false
+          }
+        }
+      },
+      "base": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "f" } } },
+                "scope": { "global_": { } }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "void" }, "parameters": [ ] }
+            },
+            "source": {
+              "file": { "key": "a.h" },
+              "lineBegin": 10,
+              "columnBegin": 1,
+              "lineEnd": 10,
+              "columnEnd": 11
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "function_": {
+          "key": {
+            "declaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "g" } } },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "a.h" },
+                  "lineBegin": 12,
+                  "columnBegin": 1,
+                  "lineEnd": 15,
+                  "columnEnd": 1
+                }
+              }
+            },
+            "isInline": false
+          }
+        }
+      },
+      "base": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "g" } } },
+                "scope": { "global_": { } }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "void" }, "parameters": [ ] }
+            },
+            "source": {
+              "file": { "key": "a.h" },
+              "lineBegin": 12,
+              "columnBegin": 1,
+              "lineEnd": 15,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "function_": {
+          "key": {
+            "declaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "h" } } },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "b.h" },
+                  "lineBegin": 11,
+                  "columnBegin": 1,
+                  "lineEnd": 14,
+                  "columnEnd": 1
+                }
+              }
+            },
+            "isInline": false
+          }
+        }
+      },
+      "base": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "h" } } },
+                "scope": { "global_": { } }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "void" }, "parameters": [ ] }
+            },
+            "source": {
+              "file": { "key": "b.h" },
+              "lineBegin": 11,
+              "columnBegin": 1,
+              "lineEnd": 14,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "namespace_": {
+          "key": {
+            "declaration": {
+              "key": {
+                "name": { "key": { } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 12,
+                  "columnBegin": 1,
+                  "lineEnd": 12,
+                  "columnEnd": 12
+                }
+              }
+            },
+            "members": { "key": [ ] }
+          }
+        }
+      },
+      "base": {
+        "namespace_": {
+          "key": {
+            "name": { "key": { } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 12,
+              "columnBegin": 1,
+              "lineEnd": 12,
+              "columnEnd": 12
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "record_": {
+          "key": {
+            "declaration": {
+              "key": {
+                "name": {
+                  "key": { "name": { "key": "R" }, "scope": { "global_": { } } }
+                },
+                "kind": { "struct_": { } },
+                "source": {
+                  "file": { "key": "b.h" },
+                  "lineBegin": 9,
+                  "columnBegin": 1,
+                  "lineEnd": 9,
+                  "columnEnd": 11
+                }
+              }
+            },
+            "bases": [ ],
+            "members": { "key": [ ] }
+          }
+        }
+      },
+      "base": {
+        "record_": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "R" }, "scope": { "global_": { } } }
+            },
+            "kind": { "struct_": { } },
+            "source": {
+              "file": { "key": "b.h" },
+              "lineBegin": 9,
+              "columnBegin": 1,
+              "lineEnd": 9,
+              "columnEnd": 11
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "record_": {
+          "key": {
+            "declaration": {
+              "key": {
+                "name": {
+                  "key": { "name": { "key": "T" }, "scope": { "global_": { } } }
+                },
+                "kind": { "struct_": { } },
+                "source": {
+                  "file": { "key": "a.h" },
+                  "lineBegin": 9,
+                  "columnBegin": 1,
+                  "lineEnd": 9,
+                  "columnEnd": 11
+                }
+              }
+            },
+            "bases": [ ],
+            "members": { "key": [ ] }
+          }
+        }
+      },
+      "base": {
+        "record_": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "T" }, "scope": { "global_": { } } }
+            },
+            "kind": { "struct_": { } },
+            "source": {
+              "file": { "key": "a.h" },
+              "lineBegin": 9,
+              "columnBegin": 1,
+              "lineEnd": 9,
+              "columnEnd": 11
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "x" },
+                "scope": {
+                  "local": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "g" } } },
+                      "scope": { "global_": { } }
+                    }
+                  }
+                }
+              }
+            },
+            "type": { "key": "T" },
+            "kind": { "local": { "kind": 0, "attribute": 0 } },
+            "source": {
+              "file": { "key": "a.h" },
+              "lineBegin": 13,
+              "columnBegin": 3,
+              "lineEnd": 13,
+              "columnEnd": 5
+            }
+          }
+        }
+      },
+      "base": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "x" },
+                "scope": {
+                  "local": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "g" } } },
+                      "scope": { "global_": { } }
+                    }
+                  }
+                }
+              }
+            },
+            "type": { "key": "T" },
+            "kind": { "local": { "kind": 0, "attribute": 0 } },
+            "source": {
+              "file": { "key": "a.h" },
+              "lineBegin": 13,
+              "columnBegin": 3,
+              "lineEnd": 13,
+              "columnEnd": 5
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "x" },
+                "scope": {
+                  "local": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "h" } } },
+                      "scope": { "global_": { } }
+                    }
+                  }
+                }
+              }
+            },
+            "type": { "key": "R" },
+            "kind": { "local": { "kind": 0, "attribute": 0 } },
+            "source": {
+              "file": { "key": "b.h" },
+              "lineBegin": 12,
+              "columnBegin": 3,
+              "lineEnd": 12,
+              "columnEnd": 5
+            }
+          }
+        }
+      },
+      "base": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "x" },
+                "scope": {
+                  "local": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "h" } } },
+                      "scope": { "global_": { } }
+                    }
+                  }
+                }
+              }
+            },
+            "type": { "key": "R" },
+            "kind": { "local": { "kind": 0, "attribute": 0 } },
+            "source": {
+              "file": { "key": "b.h" },
+              "lineBegin": 12,
+              "columnBegin": 3,
+              "lineEnd": 12,
+              "columnEnd": 5
+            }
+          }
+        }
+      }
+    }
+  }
+]

@@ -41,6 +41,9 @@ testCppFindReferences get = TestLabel "findReferences" $ TestList [
   "test/cpp//foo/bar/T/.decl" --> [("test.cpp", 1)],
   "test/cpp//foo/f/.decl" --> [("test.cpp", 1)],
   "test/cpp//foo/bar/g/.decl" --> [("test.cpp", 1)],
+  -- struct/class includes destructors
+  "test/cpp//maybe/Something/.decl" --> [("test.cpp", 1)],
+
   -- a definition occurrence is find-refereable now
   "test/cpp//h" --> [("test.cpp", 1)]
   ]

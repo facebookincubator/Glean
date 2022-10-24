@@ -44,14 +44,14 @@
                 "nameRange": {
                     "columnBegin": 6,
                     "columnEnd": 12,
-                    "lineBegin": 92,
-                    "lineEnd": 92
+                    "lineBegin": 99,
+                    "lineEnd": 99
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 27,
-                    "lineBegin": 92,
-                    "lineEnd": 92
+                    "lineBegin": 99,
+                    "lineEnd": 99
                 },
                 "sym": "test/cpp//Global"
             },
@@ -97,14 +97,14 @@
                 "nameRange": {
                     "columnBegin": 12,
                     "columnEnd": 23,
-                    "lineBegin": 93,
-                    "lineEnd": 93
+                    "lineBegin": 100,
+                    "lineEnd": 100
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 41,
-                    "lineBegin": 93,
-                    "lineEnd": 93
+                    "lineBegin": 100,
+                    "lineEnd": 100
                 },
                 "sym": "test/cpp//GlobalClass"
             },
@@ -150,14 +150,14 @@
                 "nameRange": {
                     "columnBegin": 11,
                     "columnEnd": 14,
-                    "lineBegin": 83,
-                    "lineEnd": 83
+                    "lineBegin": 90,
+                    "lineEnd": 90
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 83,
-                    "lineEnd": 90
+                    "lineBegin": 90,
+                    "lineEnd": 97
                 },
                 "sym": "test/cpp//baz"
             },
@@ -203,14 +203,14 @@
                 "nameRange": {
                     "columnBegin": 8,
                     "columnEnd": 9,
-                    "lineBegin": 85,
-                    "lineEnd": 85
+                    "lineBegin": 92,
+                    "lineEnd": 92
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 85,
-                    "lineEnd": 88
+                    "lineBegin": 92,
+                    "lineEnd": 95
                 },
                 "sym": "test/cpp//baz/U"
             },
@@ -256,14 +256,14 @@
                 "nameRange": {
                     "columnBegin": 8,
                     "columnEnd": 11,
-                    "lineBegin": 86,
-                    "lineEnd": 86
+                    "lineBegin": 93,
+                    "lineEnd": 93
                 },
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 26,
-                    "lineBegin": 86,
-                    "lineEnd": 86
+                    "lineBegin": 93,
+                    "lineEnd": 93
                 },
                 "sym": "test/cpp//baz/U/InU"
             },
@@ -309,14 +309,14 @@
                 "nameRange": {
                     "columnBegin": 14,
                     "columnEnd": 22,
-                    "lineBegin": 87,
-                    "lineEnd": 87
+                    "lineBegin": 94,
+                    "lineEnd": 94
                 },
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 40,
-                    "lineBegin": 87,
-                    "lineEnd": 87
+                    "lineBegin": 94,
+                    "lineEnd": 94
                 },
                 "sym": "test/cpp//baz/U/InUClass"
             },
@@ -1535,7 +1535,7 @@
                     "columnBegin": 1,
                     "columnEnd": 2,
                     "lineBegin": 64,
-                    "lineEnd": 76
+                    "lineEnd": 83
                 },
                 "sym": "test/cpp//maybe"
             },
@@ -1755,6 +1755,271 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "Something"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "maybe"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct Something"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "nameRange": {
+                    "columnBegin": 8,
+                    "columnEnd": 17,
+                    "lineBegin": 76,
+                    "lineEnd": 76
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 76,
+                    "lineEnd": 80
+                },
+                "sym": "test/cpp//maybe/Something"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "Something"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "maybe"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Something(int a)"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "nameRange": {
+                    "columnBegin": 3,
+                    "columnEnd": 12,
+                    "lineBegin": 78,
+                    "lineEnd": 78
+                },
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 28,
+                    "lineBegin": 78,
+                    "lineEnd": 78
+                },
+                "sym": "test/cpp//maybe/Something/.ctor"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "a"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "maybe::Something::.ctor"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "int a"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "nameRange": {
+                    "columnBegin": 17,
+                    "columnEnd": 18,
+                    "lineBegin": 78,
+                    "lineEnd": 78
+                },
+                "range": {
+                    "columnBegin": 13,
+                    "columnEnd": 18,
+                    "lineBegin": 78,
+                    "lineEnd": 78
+                },
+                "sym": "test/cpp//maybe/Something/.ctor/a/.decl"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "Something"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "maybe"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "~Something()"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "nameRange": {
+                    "columnBegin": 3,
+                    "columnEnd": 4,
+                    "lineBegin": 79,
+                    "lineEnd": 79
+                },
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 18,
+                    "lineBegin": 79,
+                    "lineEnd": 79
+                },
+                "sym": "test/cpp//maybe/Something/.dtor"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "a_"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "maybe::Something"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "int a_"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "nameRange": {
+                    "columnBegin": 7,
+                    "columnEnd": 9,
+                    "lineBegin": 77,
+                    "lineEnd": 77
+                },
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 9,
+                    "lineBegin": 77,
+                    "lineEnd": 77
+                },
+                "sym": "test/cpp//maybe/Something/a_/.decl"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
                             "aString": "nothing"
                         },
                         "key": "symbolName"
@@ -1828,8 +2093,8 @@
                 "range": {
                     "columnBegin": 9,
                     "columnEnd": 10,
-                    "lineBegin": 80,
-                    "lineEnd": 80
+                    "lineBegin": 87,
+                    "lineEnd": 87
                 },
                 "sym": "test/pp/test.cpp/A"
             },
@@ -1857,8 +2122,8 @@
                 "range": {
                     "columnBegin": 9,
                     "columnEnd": 10,
-                    "lineBegin": 81,
-                    "lineEnd": 81
+                    "lineBegin": 88,
+                    "lineEnd": 88
                 },
                 "sym": "test/pp/test.cpp/B"
             }
@@ -3626,6 +3891,195 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "Something"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "maybe"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct Something"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 4,
+                    "columnEnd": 13,
+                    "lineBegin": 79,
+                    "lineEnd": 79
+                },
+                "sym": "test/cpp//maybe/Something",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 76,
+                        "lineEnd": 80
+                    },
+                    "repository": "test"
+                },
+                "targetName": {
+                    "columnBegin": 8,
+                    "columnEnd": 17,
+                    "lineBegin": 76,
+                    "lineEnd": 76
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "a"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "maybe::Something::.ctor"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "int a"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 24,
+                    "columnEnd": 25,
+                    "lineBegin": 78,
+                    "lineEnd": 78
+                },
+                "sym": "test/cpp//maybe/Something/.ctor/a/.decl",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 18,
+                        "lineBegin": 78,
+                        "lineEnd": 78
+                    },
+                    "repository": "test"
+                },
+                "targetName": {
+                    "columnBegin": 17,
+                    "columnEnd": 18,
+                    "lineBegin": 78,
+                    "lineEnd": 78
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "a_"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "maybe::Something"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "int a_"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 21,
+                    "columnEnd": 23,
+                    "lineBegin": 78,
+                    "lineEnd": 78
+                },
+                "sym": "test/cpp//maybe/Something/a_/.decl",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 9,
+                        "lineBegin": 77,
+                        "lineEnd": 77
+                    },
+                    "repository": "test"
+                },
+                "targetName": {
+                    "columnBegin": 7,
+                    "columnEnd": 9,
+                    "lineBegin": 77,
+                    "lineEnd": 77
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
                             "aInteger": 4
                         },
                         "key": "symbolKind"
@@ -3685,8 +4139,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 18,
-                    "lineBegin": 78,
-                    "lineEnd": 78
+                    "lineBegin": 85,
+                    "lineEnd": 85
                 },
                 "sym": "test/pp/test.h",
                 "target": {

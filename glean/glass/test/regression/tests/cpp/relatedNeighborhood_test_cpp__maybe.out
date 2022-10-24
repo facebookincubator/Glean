@@ -7,6 +7,10 @@
                 "parent": "test/cpp//maybe"
             },
             {
+                "child": "test/cpp//maybe/Something/.decl",
+                "parent": "test/cpp//maybe"
+            },
+            {
                 "child": "test/cpp//maybe/nothing/.decl",
                 "parent": "test/cpp//maybe"
             }
@@ -38,7 +42,7 @@
                         "columnBegin": 1,
                         "columnEnd": 2,
                         "lineBegin": 64,
-                        "lineEnd": 76
+                        "lineEnd": 83
                     },
                     "repository": "test"
                 },
@@ -56,7 +60,7 @@
                         "columnBegin": 1,
                         "columnEnd": 2,
                         "lineBegin": 64,
-                        "lineEnd": 76
+                        "lineEnd": 83
                     },
                     "repository": "test"
                 },
@@ -114,6 +118,52 @@
                         "columnEnd": 2,
                         "lineBegin": 69,
                         "lineEnd": 73
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/cpp//maybe/Something/.decl": {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": true,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 25,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 76,
+                        "lineEnd": 80
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "maybe",
+                    "localName": "Something"
+                },
+                "repo_hash": "testhash",
+                "signature": "struct maybe::Something",
+                "sym": "test/cpp//maybe/Something/.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 76,
+                        "lineEnd": 80
                     },
                     "repository": "test"
                 },
