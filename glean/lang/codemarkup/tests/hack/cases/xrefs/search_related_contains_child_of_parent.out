@@ -1268,6 +1268,150 @@
           "hack": {
             "decl": {
               "container": {
+                "enum_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceEnum2" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "SourceEnum2",
+          "file": { "key": "www/SourceEnum.php" },
+          "location": { "span": { "start": 278, "length": 72 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "enumerator": {
+                "key": {
+                  "name": { "key": "A_TAG" },
+                  "enumeration": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceEnum2" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "A_TAG",
+          "file": { "key": "www/SourceEnum.php" },
+          "location": { "span": { "start": 312, "length": 5 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "enum_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceEnum2" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "SourceEnum2",
+          "file": { "key": "www/SourceEnum.php" },
+          "location": { "span": { "start": 278, "length": 72 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "enumerator": {
+                "key": {
+                  "name": { "key": "B_TAG" },
+                  "enumeration": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceEnum2" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "B_TAG",
+          "file": { "key": "www/SourceEnum.php" },
+          "location": { "span": { "start": 325, "length": 5 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "enum_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceEnum2" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "SourceEnum2",
+          "file": { "key": "www/SourceEnum.php" },
+          "location": { "span": { "start": 278, "length": 72 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "enumerator": {
+                "key": {
+                  "name": { "key": "C_TAG" },
+                  "enumeration": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceEnum2" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "C_TAG",
+          "file": { "key": "www/SourceEnum.php" },
+          "location": { "span": { "start": 338, "length": 5 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
                 "interface_": {
                   "key": {
                     "name": { "key": { "name": { "key": "SourceInterface" } } }

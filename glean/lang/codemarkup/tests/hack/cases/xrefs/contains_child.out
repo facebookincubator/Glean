@@ -863,6 +863,105 @@
         "hack": {
           "decl": {
             "container": {
+              "enum_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceEnum2" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "enumerator": {
+              "key": {
+                "name": { "key": "A_TAG" },
+                "enumeration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceEnum2" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "enum_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceEnum2" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "enumerator": {
+              "key": {
+                "name": { "key": "B_TAG" },
+                "enumeration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceEnum2" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "enum_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceEnum2" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "enumerator": {
+              "key": {
+                "name": { "key": "C_TAG" },
+                "enumeration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceEnum2" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
               "interface_": {
                 "key": {
                   "name": { "key": { "name": { "key": "SourceInterface" } } }

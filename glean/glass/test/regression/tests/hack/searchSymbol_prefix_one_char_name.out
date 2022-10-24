@@ -36,6 +36,38 @@
                 "symbol": "test/php/SourceEnum"
             },
             {
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceEnum.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 15,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "name": "SourceEnum2",
+                "symbol": "test/php/SourceEnum2"
+            },
+            {
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceEnum.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 44,
+                        "lineBegin": 23,
+                        "lineEnd": 23
+                    },
+                    "repository": "test"
+                },
+                "name": "SourceEnumClass3",
+                "symbol": "test/php/SourceEnumClass3"
+            },
+            {
                 "kind": 13,
                 "language": 3,
                 "location": {

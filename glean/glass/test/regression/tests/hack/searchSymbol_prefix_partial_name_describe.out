@@ -126,6 +126,103 @@
                     "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceEnum.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 15,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "SourceEnum2"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/SourceEnum2",
+                "sym_location": {
+                    "filepath": "www/SourceEnum.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 15,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            {
+                "annotations": [
+                    {
+                        "name": "__EnumClass",
+                        "source": "__EnumClass"
+                    }
+                ],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceEnum.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 44,
+                        "lineBegin": 23,
+                        "lineEnd": 23
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "SourceEnumClass3"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/SourceEnumClass3",
+                "sym_location": {
+                    "filepath": "www/SourceEnum.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 44,
+                        "lineBegin": 23,
+                        "lineEnd": 23
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": true,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
                 "kind": 13,
                 "language": 3,
                 "location": {
@@ -236,6 +333,38 @@
                 },
                 "name": "SourceEnum",
                 "symbol": "test/php/SourceEnum"
+            },
+            {
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceEnum.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 15,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "name": "SourceEnum2",
+                "symbol": "test/php/SourceEnum2"
+            },
+            {
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceEnum.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 44,
+                        "lineBegin": 23,
+                        "lineEnd": 23
+                    },
+                    "repository": "test"
+                },
+                "name": "SourceEnumClass3",
+                "symbol": "test/php/SourceEnumClass3"
             },
             {
                 "kind": 13,

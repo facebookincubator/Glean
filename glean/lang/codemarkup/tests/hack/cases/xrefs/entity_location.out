@@ -318,6 +318,72 @@
         "hack": {
           "decl": {
             "container": {
+              "enum_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceEnum2" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/SourceEnum.php" },
+        "location": { "span": { "length": 72, "start": 278 } },
+        "name": "SourceEnum2"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "enum_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceEnumClass3" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/SourceEnum.php" },
+        "location": { "span": { "length": 43, "start": 378 } },
+        "name": "SourceEnumClass3"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "IAInterface" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/SourceEnum.php" },
+        "location": { "span": { "length": 24, "start": 352 } },
+        "name": "IAInterface"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
               "interface_": {
                 "key": {
                   "name": { "key": { "name": { "key": "SourceInterface" } } }
@@ -528,6 +594,81 @@
         "file": { "key": "www/SourceEnum.php" },
         "location": { "span": { "length": 1, "start": 266 } },
         "name": "B"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "enumerator": {
+              "key": {
+                "enumeration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceEnum2" } } }
+                  }
+                },
+                "name": { "key": "A_TAG" }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/SourceEnum.php" },
+        "location": { "span": { "length": 5, "start": 312 } },
+        "name": "A_TAG"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "enumerator": {
+              "key": {
+                "enumeration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceEnum2" } } }
+                  }
+                },
+                "name": { "key": "B_TAG" }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/SourceEnum.php" },
+        "location": { "span": { "length": 5, "start": 325 } },
+        "name": "B_TAG"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "enumerator": {
+              "key": {
+                "enumeration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceEnum2" } } }
+                  }
+                },
+                "name": { "key": "C_TAG" }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/SourceEnum.php" },
+        "location": { "span": { "length": 5, "start": 338 } },
+        "name": "C_TAG"
       }
     }
   },

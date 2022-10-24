@@ -4,6 +4,22 @@
         "symbolDetails": [],
         "symbols": [
             {
+                "kind": 13,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceEnum.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 25,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "name": "IAInterface",
+                "symbol": "test/php/IAInterface"
+            },
+            {
                 "kind": 7,
                 "language": 3,
                 "location": {

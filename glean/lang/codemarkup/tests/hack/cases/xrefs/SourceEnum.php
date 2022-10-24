@@ -11,3 +11,13 @@ enum SourceEnum : string {
   A = 'a';
   B = 'b';
 }
+
+enum SourceEnum2 : int as int {
+  A_TAG = 0;
+  B_TAG = 1;
+  C_TAG = 3;
+}
+
+interface IAInterface {}
+
+enum class SourceEnumClass3: IAInterface {}

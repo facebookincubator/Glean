@@ -247,6 +247,25 @@
             "container": {
               "interface_": {
                 "key": {
+                  "name": { "key": { "name": { "key": "IAInterface" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/SourceEnum.php" },
+      "span": { "start": 407, "length": 11 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
+                "key": {
                   "name": { "key": { "name": { "key": "SourceInterface" } } }
                 }
               }

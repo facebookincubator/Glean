@@ -806,6 +806,32 @@
   },
   {
     "key": {
+      "file": { "key": "www/SourceEnum.php" },
+      "xref": {
+        "target": {
+          "name": "IAInterface",
+          "file": { "key": "www/SourceEnum.php" },
+          "location": { "span": { "start": 362, "length": 11 } }
+        },
+        "source": { "span": { "start": 407, "length": 11 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "IAInterface" } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "file": { "key": "www/TopLevel.php" },
       "xref": {
         "target": {

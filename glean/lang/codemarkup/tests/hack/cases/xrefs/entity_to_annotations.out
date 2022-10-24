@@ -183,6 +183,66 @@
         "hack": {
           "decl": {
             "container": {
+              "enum_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceEnum2" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "enum_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceEnumClass3" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": {
+        "hack": {
+          "attributes": [
+            { "key": { "name": { "key": "__EnumClass" }, "parameters": [ ] } }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "IAInterface" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
               "interface_": {
                 "key": {
                   "name": { "key": { "name": { "key": "SourceInterface" } } }

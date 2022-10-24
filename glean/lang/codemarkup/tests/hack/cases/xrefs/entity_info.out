@@ -266,6 +266,60 @@
         "hack": {
           "decl": {
             "container": {
+              "enum_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceEnum2" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 11, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "enum_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceEnumClass3" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 11, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "IAInterface" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 12, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
               "interface_": {
                 "key": {
                   "name": { "key": { "name": { "key": "SourceInterface" } } }
@@ -324,6 +378,27 @@
           "decl": {
             "enumerator": {
               "key": {
+                "name": { "key": "A_TAG" },
+                "enumeration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceEnum2" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 11, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "enumerator": {
+              "key": {
                 "name": { "key": "B" },
                 "enumeration": {
                   "key": {
@@ -345,10 +420,52 @@
           "decl": {
             "enumerator": {
               "key": {
+                "name": { "key": "B_TAG" },
+                "enumeration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceEnum2" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 11, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "enumerator": {
+              "key": {
                 "name": { "key": "Bottom" },
                 "enumeration": {
                   "key": {
                     "name": { "key": { "name": { "key": "Position" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 11, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "enumerator": {
+              "key": {
+                "name": { "key": "C_TAG" },
+                "enumeration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceEnum2" } } }
                   }
                 }
               }

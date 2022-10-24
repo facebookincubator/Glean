@@ -146,6 +146,86 @@
                 },
                 "name": "B",
                 "symbol": "test/php/SourceEnum/B"
+            },
+            {
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceEnum.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 15,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "name": "SourceEnum2",
+                "symbol": "test/php/SourceEnum2"
+            },
+            {
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceEnum.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 8,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": "A_TAG",
+                "symbol": "test/php/SourceEnum2/A_TAG"
+            },
+            {
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceEnum.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 8,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "name": "B_TAG",
+                "symbol": "test/php/SourceEnum2/B_TAG"
+            },
+            {
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceEnum.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 8,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "repository": "test"
+                },
+                "name": "C_TAG",
+                "symbol": "test/php/SourceEnum2/C_TAG"
+            },
+            {
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceEnum.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 44,
+                        "lineBegin": 23,
+                        "lineEnd": 23
+                    },
+                    "repository": "test"
+                },
+                "name": "SourceEnumClass3",
+                "symbol": "test/php/SourceEnumClass3"
             }
         ]
     }
