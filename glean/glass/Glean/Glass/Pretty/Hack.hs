@@ -148,7 +148,7 @@ prettyDecl opts (Method modifiers container name sig) =
 prettyDecl _ (Property modifiers container name mhacktype) =
   ppPropertyModifiers container modifiers <+> ppType mhacktype <+> ppName name
 prettyDecl _ (TypeConst name) =
-  "const" <+> ppName name
+  "const" <+> "type" <+> ppName name
 prettyDecl _ (Typedef name typeParams) =
   "type" <+> ppQualName name <> ppTypeParams typeParams
 

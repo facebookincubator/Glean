@@ -237,7 +237,7 @@
                     "localName": "T"
                 },
                 "repo_hash": "testhash",
-                "signature": "const T",
+                "signature": "const type T",
                 "sym": "test/php/SourceClass/T",
                 "sym_location": {
                     "filepath": "www/SourceClass.php",
