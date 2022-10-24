@@ -39,6 +39,7 @@ module Glean.Glass.Pretty.Hack
   , Container(..)
   , EnumKind(..)
   , EnumConstraint(..)
+  , TypeConstKind(..)
   ) where
 
 import qualified Glean
@@ -99,6 +100,7 @@ data Container
   deriving Eq
 data EnumKind = IsClass | Regular
 data EnumConstraint = EnumBase HackType | Constrained HackType HackType
+data TypeConstKind = IsAbstract | Concrete | PartiallyAbstract
 
 data Decl
   = ClassConst Name
@@ -112,7 +114,7 @@ data Decl
   | Namespace Qual
   | Method MethodMod Container Name Signature
   | Property PropertyMod Container Name HackType
-  | TypeConst Name
+  | TypeConst Name TypeConstKind
   | Typedef QualName [TypeParameter]
   | Module Name
 
@@ -147,7 +149,9 @@ prettyDecl opts (Method modifiers container name sig) =
   ppSignature opts sig
 prettyDecl _ (Property modifiers container name mhacktype) =
   ppPropertyModifiers container modifiers <+> ppType mhacktype <+> ppName name
-prettyDecl _ (TypeConst name) =
+prettyDecl _ (TypeConst name IsAbstract) =
+  "abstract" <+> "const" <+> "type" <+> ppName name
+prettyDecl _ (TypeConst name _) =
   "const" <+> "type" <+> ppName name
 prettyDecl _ (Typedef name typeParams) =
   "type" <+> ppQualName name <> ppTypeParams typeParams
@@ -256,10 +260,11 @@ ppMethodModifiers container (MethodMod abstract final visibility static async) =
       && container /= InterfaceContainer
       ) $ tell ["abstract"]
     when (final==Final) $ tell ["final"]
-    when (visibility==Public) $ tell ["public"]
-    when (visibility==Protected) $ tell ["protected"]
-    when (visibility==Private) $ tell ["private"]
-    when (visibility==Internal) $ tell ["internal"]
+    tell $ pure $ case visibility of
+      Public -> "public"
+      Protected -> "protected"
+      Private -> "private"
+      Internal -> "internal"
     when (static==Static) $ tell ["static"]
     when (async==Async) $ tell ["async"]
     tell ["function"]
@@ -272,10 +277,11 @@ ppPropertyModifiers container (PropertyMod abstract final visibility static) =
       && container /= InterfaceContainer
       ) $ tell ["abstract"]
     when (final==Final) $ tell ["final"]
-    when (visibility==Public) $ tell ["public"]
-    when (visibility==Protected) $ tell ["protected"]
-    when (visibility==Private) $ tell ["private"]
-    when (visibility==Internal) $ tell ["internal"]
+    tell $ pure $ case visibility of
+      Public -> "public"
+      Protected -> "protected"
+      Private -> "private"
+      Internal -> "internal"
     when (static==Static) $ tell ["static"]
 
 decl :: Hack.Declaration -> Glean.MaybeTRepoHaxl u w Decl
@@ -338,10 +344,17 @@ decl (Hack.Declaration_property_ prop@Hack.PropertyDeclaration{..}) = do
   let container = containerKind propertyDeclaration_key_container
   pure $ Property (modifiersForProperty def) container (Name name)
    (toType type_)
-decl (Hack.Declaration_typeConst Hack.TypeConstDeclaration{..}) = do
+decl (Hack.Declaration_typeConst decl@Hack.TypeConstDeclaration{..}) = do
   Hack.TypeConstDeclaration_key{..} <- liftMaybe typeConstDeclaration_key
+  hackTypeConstKind <- maybeT $ fetchData $
+    angleTypeConstDefinition (Angle.factId (Glean.getId decl))
+  let typeConstKind = case hackTypeConstKind of
+        Hack.TypeConstKind_Abstract -> IsAbstract
+        Hack.TypeConstKind_Concrete -> Concrete
+        Hack.TypeConstKind_PartiallyAbstract -> PartiallyAbstract
+        Hack.TypeConstKind__UNKNOWN{} -> error "unexpected typeconst kind"
   name <- liftMaybe $ Hack.name_key typeConstDeclaration_key_name
-  pure $ TypeConst $ Name name
+  pure $ TypeConst (Name name) typeConstKind
 decl (Hack.Declaration_typedef_ decl@Hack.TypedefDeclaration{..}) = do
   Hack.TypedefDeclaration_key{..} <- liftMaybe typedefDeclaration_key
   typedefTypeParams <- maybeT $ fetchDataRecursive $
@@ -587,6 +600,17 @@ angleTypedefDefinition decl = var $ \typeParams ->
       rec $
         field @"declaration" (Angle.asPredicate decl) $
         field @"typeParams" typeParams
+      end)
+  ]
+
+angleTypeConstDefinition
+  :: Angle Hack.TypeConstDeclaration -> Angle Hack.TypeConstKind
+angleTypeConstDefinition decl = var $ \typeConstKind ->
+  typeConstKind `where_` [
+    wild .= predicate @Hack.TypeConstDefinition (
+      rec $
+        field @"declaration" (Angle.asPredicate decl) $
+        field @"kind" typeConstKind
       end)
   ]
 
