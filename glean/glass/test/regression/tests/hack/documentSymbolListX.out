@@ -313,7 +313,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum Position"
+                            "aString": "enum Position : int as int"
                         },
                         "key": "symbolSignature"
                     },
@@ -364,7 +364,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum Position"
+                            "aString": "enum Position : int as int"
                         },
                         "key": "symbolSignature"
                     },

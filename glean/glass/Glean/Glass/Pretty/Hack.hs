@@ -38,6 +38,7 @@ module Glean.Glass.Pretty.Hack
   , ConstraintKind(..)
   , Container(..)
   , EnumKind(..)
+  , EnumConstraint(..)
   ) where
 
 import qualified Glean
@@ -97,11 +98,11 @@ data Container
   = ClassContainer | InterfaceContainer | TraitContainer | EnumContainer
   deriving Eq
 data EnumKind = IsClass | Regular
-  deriving Eq
+data EnumConstraint = Unconstrained | Constrained HackType HackType
 
 data Decl
   = ClassConst Name
-  | Enum QualName EnumKind
+  | Enum QualName EnumKind EnumConstraint
   | Trait QualName [TypeParameter]
   | Class ClassMod QualName [TypeParameter]
   | Interface QualName [TypeParameter]
@@ -120,9 +121,11 @@ prettyDecl _ (ClassConst name) =
   "const" <+> ppName name
 prettyDecl _ (Module name) =
   "module" <+> ppName name
-prettyDecl _ (Enum name Regular) =
+prettyDecl _ (Enum name Regular Unconstrained) =
   "enum" <+> ppQualName name
-prettyDecl _ (Enum name IsClass) =
+prettyDecl _ (Enum name Regular (Constrained ty1 ty2)) =
+  "enum" <+> ppQualName name <+> ":" <+> ppConstraintTypes ty1 ty2
+prettyDecl _ (Enum name IsClass _) =
   "enum" <+> "class" <+> ppQualName name
 prettyDecl _ (Trait name typeParams) =
   "trait" <+> ppQualName name <> ppTypeParams typeParams
@@ -221,7 +224,6 @@ ppTypeParam (TypeParameter name variance reify constraints) =
       when (kind==Super) $ tell [" super "]
       tell [ppType ty]
 
-
 ppType :: HackType -> Doc ()
 ppType (HackType t) = pretty t
 
@@ -242,6 +244,9 @@ ppDefaultValue (DefaultValue defaultValue) =
 
 ppInout :: Inout -> [Doc ()]
 ppInout Inout = ["inout"]
+
+ppConstraintTypes :: HackType -> HackType -> Doc ()
+ppConstraintTypes ty1 ty2 = ppType ty1 <+> "as" <+> ppType ty2
 
 ppMethodModifiers :: Container -> MethodMod -> Doc ()
 ppMethodModifiers container (MethodMod abstract final visibility static async) =
@@ -350,10 +355,14 @@ containerDecl :: Hack.ContainerDeclaration -> Glean.MaybeTRepoHaxl u w Decl
 containerDecl (Hack.ContainerDeclaration_enum_
       decl@Hack.EnumDeclaration{..}) = do
     Hack.EnumDeclaration_key{..} <- liftMaybe enumDeclaration_key
-    (_enumBase,_enumConstraint,isClass) <- maybeT $ fetchDataRecursive $
+    (enumBase,enumConstraint,isClass) <- maybeT $ fetchDataRecursive $
       angleEnumDefinition (Angle.factId (Glean.getId decl))
+    let enumKind = if isClass then IsClass else Regular
+    let constraint =  case enumConstraint of
+          Nothing -> Unconstrained
+          Just ty -> Constrained (toType1 enumBase) (toType1 ty)
     name <- qName enumDeclaration_key_name
-    pure $ Enum (QualName name) (if isClass then IsClass else Regular)
+    pure $ Enum (QualName name) enumKind constraint
 containerDecl
   (Hack.ContainerDeclaration_trait decl@Hack.TraitDeclaration{..}) = do
     Hack.TraitDeclaration_key{..} <- liftMaybe traitDeclaration_key
@@ -480,6 +489,9 @@ toSignature typeParams Hack.Signature {..} =
 toType :: Maybe Hack.Type -> HackType
 toType Nothing = HackType unknownType
 toType (Just (Hack.Type _ mkey)) = HackType $ fromMaybe unknownType mkey
+
+toType1 :: Hack.Type -> HackType
+toType1 (Hack.Type _ mkey) = HackType $ fromMaybe unknownType mkey
 
 toTypeParameter :: Hack.TypeParameter -> TypeParameter
 toTypeParameter

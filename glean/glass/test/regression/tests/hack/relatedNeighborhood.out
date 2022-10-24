@@ -61,7 +61,7 @@
                     "localName": "Position"
                 },
                 "repo_hash": "testhash",
-                "signature": "enum Position",
+                "signature": "enum Position : int as int",
                 "sym": "test/php/Position",
                 "sym_location": {
                     "filepath": "www/TopLevel.php",

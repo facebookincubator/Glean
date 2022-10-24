@@ -730,7 +730,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "enum Position"
+                            "aString": "enum Position : int as int"
                         }
                     },
                     "range": {
@@ -1022,7 +1022,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "enum Position"
+                            "aString": "enum Position : int as int"
                         }
                     },
                     "range": {
