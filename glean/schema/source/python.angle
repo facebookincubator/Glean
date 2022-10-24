@@ -210,6 +210,33 @@ type DirectXRef =
     source: src.ByteSpan,
   }
 
+# String literals that occur in expression context, rather than as the
+# definition of a top-level or class constant.  These must be escaped
+# if they are not valid UTF-8.
+predicate StringLiteral : string
+
+# Context-free information about an expression argument
+type Argument =
+  {
+    lit: StringLiteral |
+    # xrefs: [XRefViaName]  # FUTURE WORK
+  }
+
+# An argument to a particular call.
+type CallArgument =
+  {
+    label: maybe Name,
+    span: src.ByteSpan,
+    argument: maybe Argument,
+  }
+
+# Information for all calls, organized by file and callee_span
+predicate FileCall :
+  {
+    file: src.File,
+    callee_span: src.ByteSpan,
+    call_args: [CallArgument],
+  }
 
 predicate DeclarationToName: Declaration -> Name
   D -> N where
