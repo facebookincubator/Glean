@@ -2006,6 +2006,7 @@ test-suite schemaevolves
     ghc-options: -main-is Schema.Evolves
     build-depends:
         glean:stubs,
+        glean:client-hs,
         glean:core,
         glean:db,
         glean:config,
