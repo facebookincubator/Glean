@@ -37,6 +37,7 @@ module Glean.Glass.Pretty.Hack
   , Constraint(..)
   , ConstraintKind(..)
   , Container(..)
+  , EnumKind(..)
   ) where
 
 import qualified Glean
@@ -94,10 +95,13 @@ data TypeParameter = TypeParameter Name Variance Reify [Constraint]
 data Signature = Signature ReturnType [TypeParameter] [Parameter]
 data Container
   = ClassContainer | InterfaceContainer | TraitContainer | EnumContainer
-  deriving (Eq)
+  deriving Eq
+data EnumKind = IsClass | Regular
+  deriving Eq
+
 data Decl
   = ClassConst Name
-  | Enum QualName
+  | Enum QualName EnumKind
   | Trait QualName [TypeParameter]
   | Class ClassMod QualName [TypeParameter]
   | Interface QualName [TypeParameter]
@@ -116,8 +120,10 @@ prettyDecl _ (ClassConst name) =
   "const" <+> ppName name
 prettyDecl _ (Module name) =
   "module" <+> ppName name
-prettyDecl _ (Enum name) =
+prettyDecl _ (Enum name Regular) =
   "enum" <+> ppQualName name
+prettyDecl _ (Enum name IsClass) =
+  "enum" <+> "class" <+> ppQualName name
 prettyDecl _ (Trait name typeParams) =
   "trait" <+> ppQualName name <> ppTypeParams typeParams
 prettyDecl _ (Class modifiers name typeParams) =
@@ -274,9 +280,9 @@ decl (Hack.Declaration_classConst Hack.ClassConstDeclaration{..}) = do
   pure $ ClassConst $ Name name
 decl (Hack.Declaration_container container) = containerDecl container
 decl (Hack.Declaration_enumerator Hack.Enumerator{..}) = do
-  Hack.Enumerator_key{..} <- liftMaybe $enumerator_key
+  Hack.Enumerator_key{..} <- liftMaybe enumerator_key
   Hack.EnumDeclaration{..} <- pure enumerator_key_enumeration
-  Hack.EnumDeclaration_key{..} <- liftMaybe $ enumDeclaration_key
+  Hack.EnumDeclaration_key{..} <- liftMaybe enumDeclaration_key
   enum <- qName enumDeclaration_key_name
   name <- liftMaybe $ Hack.name_key enumerator_key_name
   pure $ Enumerator (QualName enum) $ Name name
@@ -341,11 +347,13 @@ decl (Hack.Declaration_typedef_ decl@Hack.TypedefDeclaration{..}) = do
 decl Hack.Declaration_EMPTY = MaybeT (return Nothing)
 
 containerDecl :: Hack.ContainerDeclaration -> Glean.MaybeTRepoHaxl u w Decl
-containerDecl
-  (Hack.ContainerDeclaration_enum_ Hack.EnumDeclaration{..}) = do
+containerDecl (Hack.ContainerDeclaration_enum_
+      decl@Hack.EnumDeclaration{..}) = do
     Hack.EnumDeclaration_key{..} <- liftMaybe enumDeclaration_key
+    (_enumBase,_enumConstraint,isClass) <- maybeT $ fetchDataRecursive $
+      angleEnumDefinition (Angle.factId (Glean.getId decl))
     name <- qName enumDeclaration_key_name
-    pure $ Enum $ QualName name
+    pure $ Enum (QualName name) (if isClass then IsClass else Regular)
 containerDecl
   (Hack.ContainerDeclaration_trait decl@Hack.TraitDeclaration{..}) = do
     Hack.TraitDeclaration_key{..} <- liftMaybe traitDeclaration_key
@@ -567,6 +575,21 @@ angleTypedefDefinition decl = var $ \typeParams ->
       rec $
         field @"declaration" (Angle.asPredicate decl) $
         field @"typeParams" typeParams
+      end)
+  ]
+
+-- hack enums: need to distinguish `enum T : Z` , or `enum class T : X as Y`
+angleEnumDefinition
+  :: Angle Hack.EnumDeclaration -> Angle (Hack.Type, Maybe Hack.Type, Bool)
+angleEnumDefinition decl = vars $ \(baseType :: Angle Hack.Type)
+    (asType :: Angle (Maybe Hack.Type)) (isEnumClass :: Angle Bool) ->
+  tuple (baseType, asType, isEnumClass) `where_` [
+    wild .= predicate @Hack.EnumDefinition (
+      rec $
+        field @"declaration" (Angle.asPredicate decl) $
+        field @"enumBase" (Angle.asPredicate baseType) $
+        field @"enumConstraint" asType $
+        field @"isEnumClass" isEnumClass
       end)
   ]
 
