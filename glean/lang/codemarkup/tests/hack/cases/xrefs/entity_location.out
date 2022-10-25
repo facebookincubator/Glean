@@ -265,7 +265,7 @@
       },
       "location": {
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "length": 108, "start": 717 } },
+        "location": { "span": { "length": 221, "start": 717 } },
         "name": "TestAnnotation"
       }
     }
@@ -1012,6 +1012,33 @@
         "file": { "key": "www/SourceClass.php" },
         "location": { "span": { "length": 52, "start": 771 } },
         "name": "__construct"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "TestAnnotation" } } }
+                    }
+                  }
+                },
+                "name": { "key": "io_good" }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/SourceClass.php" },
+        "location": { "span": { "length": 74, "start": 862 } },
+        "name": "io_good"
       }
     }
   },

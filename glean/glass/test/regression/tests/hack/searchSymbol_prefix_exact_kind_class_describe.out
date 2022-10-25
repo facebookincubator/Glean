@@ -653,6 +653,53 @@
                 },
                 "sym_other_locations": [],
                 "visibility": 20
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 43,
+                        "lineEnd": 45
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "TestAnnotation",
+                    "localName": "io_good"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/TestAnnotation/io_good",
+                "sym_location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 43,
+                        "lineEnd": 45
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "visibility": 40
             }
         ],
         "symbols": [
@@ -863,6 +910,22 @@
                 },
                 "name": "__construct",
                 "symbol": "test/php/TestAnnotation/__construct"
+            },
+            {
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 43,
+                        "lineEnd": 45
+                    },
+                    "repository": "test"
+                },
+                "name": "io_good",
+                "symbol": "test/php/TestAnnotation/io_good"
             }
         ]
     }

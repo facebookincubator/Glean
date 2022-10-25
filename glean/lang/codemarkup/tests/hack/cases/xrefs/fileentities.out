@@ -106,7 +106,7 @@
       "location": {
         "name": "TestAnnotation",
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "start": 717, "length": 108 } }
+        "location": { "span": { "start": 717, "length": 221 } }
       },
       "entity": {
         "hack": {
@@ -197,6 +197,34 @@
                   "class_": {
                     "key": {
                       "name": { "key": { "name": { "key": "SourceClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/SourceClass.php" },
+      "location": {
+        "name": "io_good",
+        "file": { "key": "www/SourceClass.php" },
+        "location": { "span": { "start": 862, "length": 74 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "io_good" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "TestAnnotation" } } }
                     }
                   }
                 }

@@ -94,7 +94,9 @@ data Reify = Erased | Reified | SoftReified deriving (Eq)
 data ConstraintKind = As | Equal | Super deriving (Eq)
 data Constraint = Constraint ConstraintKind HackType
 data TypeParameter = TypeParameter Name Variance Reify [Constraint]
+newtype Context = Context { _unContext :: Text }
 data Signature = Signature ReturnType [TypeParameter] [Parameter]
+  (Maybe [Context])
 data Container
   = ClassContainer | InterfaceContainer | TraitContainer | EnumContainer
   deriving Eq
@@ -181,7 +183,7 @@ ppClassModifiers (ClassMod abstract final) =
     tell ["class"]
 
 ppSignature :: LayoutOptions -> Signature -> Doc ()
-ppSignature opts (Signature returnType typeParams params) =
+ppSignature opts (Signature returnType typeParams params ctxs) =
     if fitsOnOneLine then
       hcat
         [ onelineDoc
@@ -190,24 +192,25 @@ ppSignature opts (Signature returnType typeParams params) =
     else
       typeParamsDoc
       <> vcat
-      [ nest 4 $ vcat
-        [ "("
-        , vcat $ map ((<> ",") . ppParameter) params
+        [ nest 4 $ vcat
+          [ "("
+          , vcat $ map ((<> ",") . ppParameter) params
+          ]
+        , nest 4 $ ")" <> ppContexts ctxs <> ":" <+> ppReturnType returnType
         ]
-      , nest 4 $ "):" <+> ppReturnType returnType
-      ]
   where
     typeParamsDoc = ppTypeParams typeParams
     onelineDoc = cat
       [ typeParamsDoc
       , parens (hsep $ punctuate comma (map ppParameter params))
+      , ppContexts ctxs
       ]
     paramsText = renderStrict $ layoutSmart opts onelineDoc
     fitsOnOneLine = not containsNewline
     containsNewline = Text.any (== '\n') paramsText
 
 ppTypeParams :: [TypeParameter] -> Doc ()
-ppTypeParams typeParams | null typeParams = ""
+ppTypeParams typeParams | null typeParams = emptyDoc
 ppTypeParams typeParams = cat
   [ nest 4 $ cat
     [ "<", sep $ punctuate "," (map ppTypeParam typeParams)]
@@ -241,6 +244,16 @@ ppParameter (Parameter name typeName inout defaultValue) =
     tell [ppType typeName]
     tell [ppName name]
     whenJust defaultValue $ tell . ppDefaultValue
+
+-- Contexts can be parameterised, empty, missing. or a simple list
+-- https://docs.hhvm.com/hack/contexts-and-capabilities/introduction
+ppContexts :: Maybe [Context] -> Doc ()
+ppContexts Nothing = emptyDoc
+ppContexts (Just []) = brackets emptyDoc
+ppContexts (Just ctxs) = brackets $ hsep (punctuate comma (map ppContext ctxs))
+
+ppContext :: Context -> Doc ()
+ppContext (Context ctx) = pretty ctx
 
 ppDefaultValue :: DefaultValue -> [Doc ()]
 ppDefaultValue (DefaultValue defaultValue) =
@@ -487,17 +500,14 @@ modifiersForProperty Hack.PropertyDefinition_key {..} =
   (if propertyDefinition_key_isStatic then Static else NotStatic)
 
 toSignature :: [Hack.TypeParameter] -> Hack.Signature -> Signature
-toSignature typeParams Hack.Signature {..} =
-  Signature
-  (ReturnType $ case signature_key of
-    Nothing -> unknownType
-    Just (Hack.Signature_key mtype _ _) -> unHackType $ toType mtype
-  )
-  (map toTypeParameter typeParams)
-  (case signature_key of
-    Nothing -> []
-    Just (Hack.Signature_key _ params _) -> map toParameter params
-  )
+toSignature typeParams Hack.Signature{..} = case signature_key of
+  Nothing -> Signature (ReturnType unknownType) [] [] Nothing
+  Just (Hack.Signature_key retType params mctxs) -> Signature
+    (ReturnType (unHackType (toType retType)))
+    (map toTypeParameter typeParams)
+    (map toParameter params)
+    (map toContext <$> mctxs)
+    -- Maybe [] is used to distinguish default context from literal "[]"
 
 toType :: Maybe Hack.Type -> HackType
 toType Nothing = HackType unknownType
@@ -514,6 +524,20 @@ toTypeParameter
     (toVariance variance)
     (toReifyKind reifyKind)
     (map toConstraint constraints)
+
+toContext :: Hack.Context_ -> Context
+toContext (Hack.Context_ _ Nothing) = Context unknownType
+toContext (Hack.Context_ _ (Just ctx)) = Context ctx'
+  where
+    -- There are only a few dozen contexts in use.
+    -- Gronky auto-imported handling hack to get a short name
+    --
+    -- > [\HH\Contexts\leak_safe] -> [leak_safe]
+    --
+    -- If we switch to proper declarations and auto-import tables we can avoid
+    -- the string handling here.
+    ctx' | Just tidy <- Text.stripPrefix "\\HH\\Contexts\\" ctx = tidy
+         | otherwise = ctx
 
 toVariance :: Hack.Variance -> Variance
 toVariance Hack.Variance_Invariant = Invariant

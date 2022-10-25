@@ -184,6 +184,27 @@
         "decl": {
           "method": {
             "key": {
+              "name": { "key": "io_good" },
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "TestAnnotation" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": 2
+  },
+  {
+    "key": {
+      "hack": {
+        "decl": {
+          "method": {
+            "key": {
               "name": { "key": "lotsofkeywords" },
               "container": {
                 "class_": {
