@@ -279,6 +279,16 @@ predicate SearchInContext :
       (NS = hack.NamespaceQName { ParentName, ParentNamespace };
       SearchNamespacedDecl { N, { just = NS }, D}; D )
 
+# (deprecated, use QueryToScopeCase)
+predicate QueryToScope:
+  {
+    query : [string],
+    scopeName : hack.Name,
+    scopeNamespace : maybe hack.NamespaceQName
+  }
+  { Query, Name, QName } where
+    QueryToScopeCase { Query, false, Name, QName } # backwards compat
+
 #
 # Generating qnames and namespace qnames. We don't have recursion but we'd
 # like to compile the namespace tokens into a recursive QName type so we unroll
@@ -289,99 +299,123 @@ predicate SearchInContext :
 # SearchByName for the global namespace search or wild cards. So
 # these won't match global constants or un-namespaced symbols.
 #
-predicate QueryToScope:
+# This doesn't check that the names are valid QNames or NamespaceQNames,
+# that's done on the query side (e.g. SearchInContext). We don't permit
+# wild card parents. so "Dict","fb" won't match "Readonly","Dict","fb"
+#
+predicate QueryToScopeCase:
   {
     query : [string],
+    insensitive : bool, # if true , search insensitive
     scopeName : hack.Name,
     scopeNamespace : maybe hack.NamespaceQName
   }
-  { Query, Name, QName } where
+  { Query, Case, Name, QName } where
     # zero tuple, can't do much with it. We don't have empty scopes
-    ( [] = Query; never = Name; QName = nothing : maybe hack.NamespaceQName ) |
+    ( [] = Query; never = Case; never = Name;
+      QName = nothing : maybe hack.NamespaceQName ) |
     # one tuple, could be global alias
     ( [A] = Query;
-      AName = hack.Name A;
+      HackNameCase { Case, A, AName };
       if hack.GlobalNamespaceAlias { AName, { AliasName, AliasQName }}
         then ( Name = AliasName; QName = AliasQName )
         else ( Name = AName; nothing = QName ) ) |
     # two tuple
     ( [B,A] = Query;
-      Name = hack.Name A;
-      BName = hack.Name B;
+      HackNameCase { Case, A, Name };
+      HackNameCase { Case, B, BName };
       if hack.GlobalNamespaceAlias { BName, AliasQName }
         then ( { just = AliasQName } = QName )
-        else ( { just = { name = BName } } = QName ) ) | # parent wild
+        else ( { just = { name = BName,
+                 parent = nothing } } = QName ) ) | # parent wild
     # three tuple
     ( [C,B,A] = Query;
-      Name = hack.Name A;
-      BName = hack.Name B;
-      CName = hack.Name C;
-      { just = { name = BName,
-        parent = { just = { name = CName }} } }  = QName ) |
-    # four tuple
-    ( [D,C,B,A] = Query;
-      Name = hack.Name A;
-      BName = hack.Name B;
-      CName = hack.Name C;
-      DName = hack.Name D;
+      HackNameCase { Case, A, Name };
+      HackNameCase { Case, B, BName };
+      HackNameCase { Case, C, CName };
       { just = { name = BName,
         parent = { just = { name = CName,
-        parent = { just = { name = DName }} }} } }  = QName ) |
-    # five tuple, are there any? yes there are many
-    ( [E,D,C,B,A] = Query;
-      Name = hack.Name A;
-      BName = hack.Name B;
-      CName = hack.Name C;
-      DName = hack.Name D;
-      EName = hack.Name E;
+        parent = nothing }} } }  = QName ) |
+    # four tuple
+    ( [D,C,B,A] = Query;
+      HackNameCase { Case, A, Name };
+      HackNameCase { Case, B, BName };
+      HackNameCase { Case, C, CName };
+      HackNameCase { Case, D, DName };
       { just = { name = BName,
         parent = { just = { name = CName,
         parent = { just = { name = DName,
-        parent = { just = { name = EName }} }} }} } }  = QName ) |
-    # six tuple
-    ( [F,E,D,C,B,A] = Query;
-      Name = hack.Name A;
-      BName = hack.Name B;
-      CName = hack.Name C;
-      DName = hack.Name D;
-      EName = hack.Name E;
-      FName = hack.Name F;
+        parent = nothing }} }} } }  = QName ) |
+    # five tuple, are there any? yes there are many
+    ( [E,D,C,B,A] = Query;
+      HackNameCase { Case, A, Name };
+      HackNameCase { Case, B, BName };
+      HackNameCase { Case, C, CName };
+      HackNameCase { Case, D, DName };
+      HackNameCase { Case, E, EName };
       { just = { name = BName,
         parent = { just = { name = CName,
         parent = { just = { name = DName,
         parent = { just = { name = EName,
-        parent = { just = { name = FName }} }} }} }} } }  = QName ) |
-    # seven tuple
-    ( [G,F,E,D,C,B,A] = Query;
-      Name = hack.Name A;
-      BName = hack.Name B;
-      CName = hack.Name C;
-      DName = hack.Name D;
-      EName = hack.Name E;
-      FName = hack.Name F;
-      GName = hack.Name G;
+        parent = nothing }} }} }} } }  = QName ) |
+    # six tuple
+    ( [F,E,D,C,B,A] = Query;
+      HackNameCase { Case, A, Name };
+      HackNameCase { Case, B, BName };
+      HackNameCase { Case, C, CName };
+      HackNameCase { Case, D, DName };
+      HackNameCase { Case, E, EName };
+      HackNameCase { Case, F, FName };
       { just = { name = BName,
         parent = { just = { name = CName,
         parent = { just = { name = DName,
         parent = { just = { name = EName,
         parent = { just = { name = FName,
-        parent = { just = { name = GName }} }} }} }} }} } }  = QName ) |
-    # eight tuple
-    ( [H,G,F,E,D,C,B,A] = Query;
-      Name = hack.Name A;
-      BName = hack.Name B;
-      CName = hack.Name C;
-      DName = hack.Name D;
-      EName = hack.Name E;
-      FName = hack.Name F;
-      GName = hack.Name G;
-      HName = hack.Name H;
+        parent = nothing }} }} }} }} } }  = QName ) |
+    # seven tuple
+    ( [G,F,E,D,C,B,A] = Query;
+      HackNameCase { Case, A, Name };
+      HackNameCase { Case, B, BName };
+      HackNameCase { Case, C, CName };
+      HackNameCase { Case, D, DName };
+      HackNameCase { Case, E, EName };
+      HackNameCase { Case, F, FName };
+      HackNameCase { Case, G, GName };
       { just = { name = BName,
         parent = { just = { name = CName,
         parent = { just = { name = DName,
         parent = { just = { name = EName,
         parent = { just = { name = FName,
         parent = { just = { name = GName,
-        parent = { just = { name = HName }} }} }} }} }} }} } }  = QName )
+        parent = nothing }} }} }} }} }} } }  = QName ) |
+    # eight tuple
+    ( [H,G,F,E,D,C,B,A] = Query;
+      HackNameCase { Case, A, Name };
+      HackNameCase { Case, B, BName };
+      HackNameCase { Case, C, CName };
+      HackNameCase { Case, D, DName };
+      HackNameCase { Case, E, EName };
+      HackNameCase { Case, F, FName };
+      HackNameCase { Case, G, GName };
+      HackNameCase { Case, H, HName };
+      { just = { name = BName,
+        parent = { just = { name = CName,
+        parent = { just = { name = DName,
+        parent = { just = { name = EName,
+        parent = { just = { name = FName,
+        parent = { just = { name = GName,
+        parent = { just = { name = HName,
+        parent = nothing }} }} }} }} }} }} } }  = QName );
+
+# Helper to lookup hack.Name based on case sensitivity
+predicate HackNameCase:
+  {
+    insensitive: bool,
+    namestr : string,
+    name : hack.Name
+  }
+  { Insensitive, NameStr, Name } where
+    ( true = Insensitive; hack.NameLowerCase { NameStr, Name } ) |
+    ( false = Insensitive; hack.Name NameStr = Name );
 
 }

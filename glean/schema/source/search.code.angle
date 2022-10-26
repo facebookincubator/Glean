@@ -129,8 +129,9 @@ predicate HackSearchByName:
     name: string,
     entity: code.Entity,
   }
-  { Name, { hack = { decl = D }}} where
-  search.hack.SearchByName { name = hack.Name Name, decl = D };
+  { NameStr, Entity } where
+    Name = hack.Name NameStr;
+    HackSearchByNameWithName { Name, Entity };
 
 predicate HackSearchByLowerCaseName:
   {
@@ -138,8 +139,17 @@ predicate HackSearchByLowerCaseName:
     entity: code.Entity,
   }
   { Name, Entity } where
-  hack.NameLowerCase { Name, hack.Name NameCase };
-  HackSearchByName { NameCase, Entity };
+    hack.NameLowerCase { Name, NameCase };
+    HackSearchByNameWithName { NameCase, Entity };
+
+# Helper to reuse the Name fact found previously
+predicate HackSearchByNameWithName:
+  {
+    name : hack.Name,
+    entity : code.Entity
+  }
+  { Name, { hack = { decl = Decl }}} where
+    search.hack.SearchByName { name = Name, decl = Decl };
 
 predicate HackSearchByScope:
   {
@@ -149,7 +159,8 @@ predicate HackSearchByScope:
   }
   { NameStr, Query, Entity } where
     Name = hack.Name NameStr;
-    HackSearchByScopeWithName { Name, Query, Entity }
+    Insensitive = false;
+    HackSearchByScopeWithName { Name, Insensitive, Query, Entity }
 
 predicate HackSearchByLowerCaseScope:
   {
@@ -159,17 +170,19 @@ predicate HackSearchByLowerCaseScope:
   }
   { NameStr, Query, Entity} where
     hack.NameLowerCase { NameStr, Name };
-    HackSearchByScopeWithName { Name, Query, Entity }
+    Insensitive = true;
+    HackSearchByScopeWithName { Name, Insensitive, Query, Entity }
 
 # private helper to share name facts between the calsl
 predicate HackSearchByScopeWithName:
   {
     name: hack.Name,
+    insenstive : bool,
     scope: [string],
     entity: code.Entity,
   }
-  { Name, Query, { hack = { decl = Decl }}} where
-    search.hack.QueryToScope { Query, ScopeName, ScopeNamespace };
+  { Name, Insensitive, Query, { hack = { decl = Decl }}} where
+    search.hack.QueryToScopeCase { Query, Insensitive, ScopeName, ScopeNamespace };
     if (nothing = ScopeNamespace) # don't try to match empty names
       then search.hack.SearchInContext { Name, ScopeName, _ , Decl } # wild card
       else search.hack.SearchInContext { Name, ScopeName, ScopeNamespace, Decl };
