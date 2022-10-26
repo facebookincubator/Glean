@@ -40,6 +40,7 @@ module Glean.Glass.Pretty.Hack
   , EnumKind(..)
   , EnumConstraint(..)
   , TypeConstKind(..)
+  , Transparency(..)
   ) where
 
 import qualified Glean
@@ -103,6 +104,7 @@ data Container
 data EnumKind = IsClass | Regular
 data EnumConstraint = EnumBase HackType | Constrained HackType HackType
 data TypeConstKind = IsAbstract | Concrete | PartiallyAbstract
+data Transparency = Newtype_ | Type_
 
 data Decl
   = ClassConst Name
@@ -117,7 +119,7 @@ data Decl
   | Method MethodMod Container Name Signature
   | Property PropertyMod Container Name HackType
   | TypeConst Name TypeConstKind
-  | Typedef QualName [TypeParameter]
+  | Typedef QualName [TypeParameter] Transparency
   | Module Name
 
 prettyDecl :: LayoutOptions -> Decl -> Doc ()
@@ -155,8 +157,10 @@ prettyDecl _ (TypeConst name IsAbstract) =
   "abstract" <+> "const" <+> "type" <+> ppName name
 prettyDecl _ (TypeConst name _) =
   "const" <+> "type" <+> ppName name
-prettyDecl _ (Typedef name typeParams) =
+prettyDecl _ (Typedef name typeParams Type_) =
   "type" <+> ppQualName name <> ppTypeParams typeParams
+prettyDecl _ (Typedef name typeParams Newtype_) =
+  "newtype" <+> ppQualName name <> ppTypeParams typeParams
 
 ppName :: Name -> Doc ()
 ppName (Name n) = pretty n
@@ -370,11 +374,12 @@ decl (Hack.Declaration_typeConst decl@Hack.TypeConstDeclaration{..}) = do
   pure $ TypeConst (Name name) typeConstKind
 decl (Hack.Declaration_typedef_ decl@Hack.TypedefDeclaration{..}) = do
   Hack.TypedefDeclaration_key{..} <- liftMaybe typedefDeclaration_key
-  typedefTypeParams <- maybeT $ fetchDataRecursive $
+  (typedefTypeParams, isTransparent) <- maybeT $ fetchDataRecursive $
     angleTypedefDefinition (Angle.factId (Glean.getId decl))
   name <- qName typedefDeclaration_key_name
   let typeParams = map toTypeParameter typedefTypeParams
-  pure $ Typedef (QualName name) typeParams
+      isNewtype = if isTransparent then Type_ else Newtype_
+  pure $ Typedef (QualName name) typeParams isNewtype
 decl Hack.Declaration_EMPTY = MaybeT (return Nothing)
 
 containerDecl :: Hack.ContainerDeclaration -> Glean.MaybeTRepoHaxl u w Decl
@@ -617,13 +622,14 @@ angleInterfaceDefinition decl = var $ \typeParams ->
   ]
 
 angleTypedefDefinition
-  :: Angle Hack.TypedefDeclaration -> Angle [Hack.TypeParameter]
-angleTypedefDefinition decl = var $ \typeParams ->
-  typeParams `where_` [
+  :: Angle Hack.TypedefDeclaration -> Angle ([Hack.TypeParameter], Bool)
+angleTypedefDefinition decl = vars $ \typeParams transparency ->
+  tuple (typeParams, transparency) `where_` [
     wild .= predicate @Hack.TypedefDefinition (
       rec $
         field @"declaration" (Angle.asPredicate decl) $
-        field @"typeParams" typeParams
+        field @"typeParams" typeParams $
+        field @"isTransparent" transparency
       end)
   ]
 
