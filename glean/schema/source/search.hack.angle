@@ -298,14 +298,19 @@ predicate QueryToScope:
   { Query, Name, QName } where
     # zero tuple, can't do much with it. We don't have empty scopes
     ( [] = Query; never = Name; QName = nothing : maybe hack.NamespaceQName ) |
-    # one tuple
+    # one tuple, could be global alias
     ( [A] = Query;
-      Name = hack.Name A; nothing = QName ) | #
+      AName = hack.Name A;
+      if hack.GlobalNamespaceAlias { AName, { AliasName, AliasQName }}
+        then ( Name = AliasName; QName = AliasQName )
+        else ( Name = AName; nothing = QName ) ) |
     # two tuple
     ( [B,A] = Query;
       Name = hack.Name A;
       BName = hack.Name B;
-      { just = { name = BName } } = QName ) | # parent wild
+      if hack.GlobalNamespaceAlias { BName, AliasQName }
+        then ( { just = AliasQName } = QName )
+        else ( { just = { name = BName } } = QName ) ) | # parent wild
     # three tuple
     ( [C,B,A] = Query;
       Name = hack.Name A;

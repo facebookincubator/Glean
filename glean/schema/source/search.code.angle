@@ -171,7 +171,7 @@ predicate HackSearchByScopeWithName:
   { Name, Query, { hack = { decl = Decl }}} where
     search.hack.QueryToScope { Query, ScopeName, ScopeNamespace };
     if (nothing = ScopeNamespace) # don't try to match empty names
-      then search.hack.SearchInContext { Name, ScopeName, _ , Decl }
+      then search.hack.SearchInContext { Name, ScopeName, _ , Decl } # wild card
       else search.hack.SearchInContext { Name, ScopeName, ScopeNamespace, Decl };
 
 predicate PythonSearchByName:
