@@ -481,6 +481,9 @@ searchSymbol env@Glass.Env{..} req@SymbolSearchRequest{..} RequestOptions{..} =
     sorted = symbolSearchOptions_sortResults
     mlimit = fromIntegral <$> requestOptions_limit
 
+    -- inner limit can be higher if we are sampling/sorting
+    mlimitInner = if sorted then fmap (*10) mlimit else mlimit
+
     sCase = if symbolSearchOptions_ignoreCase then Insensitive else Sensitive
     sType = if symbolSearchOptions_exactMatch then Exact else Prefix
     sScope = if symbolSearchOptions_namespaceSearch then Scope else NoScope
@@ -496,7 +499,7 @@ searchSymbol env@Glass.Env{..} req@SymbolSearchRequest{..} RequestOptions{..} =
       Nothing -> pure (Query.RepoSearchResult [])
       Just names -> withGleanDBs method env req names $ \gleanDBs -> do
         res <- backendRunHaxl GleanBackend{..} $ Glean.queryAllRepos $ do
-          res <- mapM (runSearch repo mlimit terse) searchQs -- concurrently
+          res <- mapM (runSearch repo mlimitInner terse) searchQs -- concurrent
           return (nubOrd (concat res)) -- remove latter duplicates in n*log n
         pure (Query.RepoSearchResult res, Nothing)
 
@@ -552,8 +555,11 @@ joinSearchResults mlimit terse sorted xs = SymbolSearchResult syms $
       (Just n, False) -> take n flattened
       (Nothing, _) -> flattened
       (Just n, True) -> takeFairN n
-        $ concatMap (List.groupSortOn (symbolResult_language . fst) .
+        $ concatMap (List.groupSortOn characteristics .
             Query.unRepoSearchResult) xs
+
+    characteristics (result,_desc) =
+      (symbolResult_language result, symbolResult_kind result)
 
     flattened = concatMap Query.unRepoSearchResult xs
 
