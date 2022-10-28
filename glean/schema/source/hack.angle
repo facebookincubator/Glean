@@ -80,6 +80,24 @@ predicate QName :
 # Hack type (textual representation)
 predicate Type : string
 
+# More readable version of the type, uses auto-import
+predicate Type_pretty : string
+
+# Represents a XRef within a type. Offset is
+# relative to the beginning of the `type_pp`
+# string
+type HintXRef =
+  {
+    target : QName,
+    ranges : src.ByteSpans
+  }
+
+predicate TypeXRefs : {
+  type_ :  Type,
+  type_pp : Type_pretty,
+  xrefs : [HintXRef],
+}
+
 predicate Context_ : string
 
 # Named parameter
