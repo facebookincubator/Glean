@@ -92,8 +92,8 @@ Inventory Inventory::deserialize(folly::ByteRange bytes) {
   for (auto& ser : inv.predicates().value()) {
     preds.push_back(Predicate{
       Pid::fromThrift(ser.id().value()),
-      ser.ref().value().get_name(),
-      ser.ref().value().get_version(),
+      ser.ref().value().name().value(),
+      ser.ref().value().version().value(),
       Subroutine::fromThrift(ser.typechecker().value()),
       Subroutine::fromThrift(ser.traverser().value())
       });
