@@ -293,27 +293,29 @@ instance DeterministicResponse ReferenceRangeSymbolX where
 instance DeterministicResponse SymbolDescription where
   det sd = sd
     { symbolDescription_repo_hash = "testhash"
-    , symbolDescription_contains_relation
-    = Glass.RelationDescription
+    , symbolDescription_contains_relation = Glass.RelationDescription
         { relationDescription_firstParent = Just $ SymbolId "nondeterministic"
         , relationDescription_firstChild = Just $ SymbolId "nondeterministic"
-        , relationDescription_hasMoreChildren
-        = relationDescription_hasMoreChildren
-        $ symbolDescription_contains_relation sd
-        , relationDescription_hasMoreParents
-        = relationDescription_hasMoreParents
-        $ symbolDescription_contains_relation sd
+        , relationDescription_hasMoreChildren =
+            relationDescription_hasMoreChildren $
+              symbolDescription_contains_relation sd
+        , relationDescription_hasMoreParents =
+            relationDescription_hasMoreParents $
+              symbolDescription_contains_relation sd
+        , relationDescription_firstParentName = Nothing
+        , relationDescription_firstChildName = Nothing
         }
-    , symbolDescription_extends_relation
-    = Glass.RelationDescription
+    , symbolDescription_extends_relation = Glass.RelationDescription
         { relationDescription_firstParent = Just $ SymbolId "nondeterministic"
         , relationDescription_firstChild = Just $ SymbolId "nondeterministic"
-        , relationDescription_hasMoreChildren
-        = relationDescription_hasMoreChildren
-        $ symbolDescription_extends_relation sd
-        , relationDescription_hasMoreParents
-        = relationDescription_hasMoreParents
-        $ symbolDescription_extends_relation sd
+        , relationDescription_hasMoreChildren =
+           relationDescription_hasMoreChildren $
+            symbolDescription_extends_relation sd
+        , relationDescription_hasMoreParents =
+           relationDescription_hasMoreParents $
+            symbolDescription_extends_relation sd
+        , relationDescription_firstParentName = Nothing
+        , relationDescription_firstChildName = Nothing
         }
     }
 instance DeterministicResponse (Map.Map Text SymbolDescription) where

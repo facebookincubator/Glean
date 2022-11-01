@@ -1183,7 +1183,7 @@ describeEntity ent SymbolResult{..} = do
 
     repo = locationRange_repository symbolResult_location
 
-    -- deprecated. we already have sym_locatoin
+    -- deprecated. we already have sym_location
     symbolDescription_location = SymbolPath {
       symbolPath_range = locationRange_range symbolResult_location,
       symbolPath_repository = locationRange_repository symbolResult_location,
@@ -1193,15 +1193,22 @@ describeEntity ent SymbolResult{..} = do
     relationDescription relatedBy = do
       parents <- describeRelation RelationDirection_Parent
       children <- describeRelation RelationDirection_Child
-      let
-        relationDescription_firstParent = snd .
-          Search.parentRL <$> listToMaybe parents
-        relationDescription_firstChild = snd .
-          Search.childRL <$> listToMaybe children
-        relationDescription_hasMoreParents =  length parents > 1
-        relationDescription_hasMoreChildren = length children > 1
-        in
-          pure RelationDescription{..}
+
+      let firstParent = Search.parentRL <$> listToMaybe parents
+          firstChild = Search.childRL <$> listToMaybe children
+          relationDescription_firstParent = snd <$> firstParent
+          relationDescription_firstChild = snd <$> firstChild
+          relationDescription_hasMoreParents =  length parents > 1
+          relationDescription_hasMoreChildren = length children > 1
+
+      relationDescription_firstParentName <- case firstParent of
+        Nothing -> pure Nothing
+        Just (p,_) -> eitherToMaybe <$> toQualifiedName (fst4 p)
+      relationDescription_firstChildName <- case firstChild of
+        Nothing -> pure Nothing
+        Just (p,_) -> eitherToMaybe <$> toQualifiedName (fst4 p)
+
+      pure RelationDescription{..}
       where
         describeRelation relation =
           Search.searchRelatedEntities 2
@@ -1213,6 +1220,8 @@ describeEntity ent SymbolResult{..} = do
 
     eThrow (Right x) = pure x
     eThrow (Left err) = throwM $ ServerException err
+
+    fst4 (x,_,_,_) = x
 
 partialSymbolTokens
   :: SymbolId

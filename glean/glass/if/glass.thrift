@@ -307,6 +307,8 @@ struct RelationDescription {
   2: bool hasMoreParents;
   3: optional SymbolId firstChild;
   4: bool hasMoreChildren;
+  5: optional QualifiedName firstParentName;
+  6: optional QualifiedName firstChildName;
 }
 
 struct SearchContext {
