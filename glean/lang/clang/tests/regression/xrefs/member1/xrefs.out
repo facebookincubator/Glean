@@ -5,7 +5,7 @@
       "file": { "key": "test.cpp" },
       "xrefs": [
         {
-          "range": { "begin": 276, "end": 281 },
+          "range": { "begin": 304, "end": 309 },
           "target": {
             "declaration": {
               "variable": {
@@ -30,9 +30,9 @@
                   "kind": { "field": { "mutable_": false } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 10,
+                    "lineBegin": 11,
                     "columnBegin": 3,
-                    "lineEnd": 10,
+                    "lineEnd": 11,
                     "columnEnd": 13
                   }
                 }
@@ -41,7 +41,7 @@
           }
         },
         {
-          "range": { "begin": 351, "end": 354 },
+          "range": { "begin": 379, "end": 382 },
           "target": {
             "declaration": {
               "record_": {
@@ -57,7 +57,7 @@
                     "file": { "key": "test.cpp" },
                     "lineBegin": 9,
                     "columnBegin": 1,
-                    "lineEnd": 13,
+                    "lineEnd": 14,
                     "columnEnd": 1
                   }
                 }
@@ -66,7 +66,7 @@
           }
         },
         {
-          "range": { "begin": 380, "end": 383 },
+          "range": { "begin": 408, "end": 411 },
           "target": {
             "declaration": {
               "variable": {
@@ -91,9 +91,9 @@
                   "kind": { "field": { "mutable_": false } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 18,
+                    "lineBegin": 19,
                     "columnBegin": 3,
-                    "lineEnd": 18,
+                    "lineEnd": 19,
                     "columnEnd": 9
                   }
                 }
@@ -102,7 +102,7 @@
           }
         },
         {
-          "range": { "begin": 389, "end": 392 },
+          "range": { "begin": 417, "end": 420 },
           "target": {
             "declaration": {
               "function_": {
@@ -123,9 +123,9 @@
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 15,
+                    "lineBegin": 16,
                     "columnBegin": 1,
-                    "lineEnd": 15,
+                    "lineEnd": 16,
                     "columnEnd": 13
                   }
                 }
@@ -134,7 +134,7 @@
           }
         },
         {
-          "range": { "begin": 393, "end": 396 },
+          "range": { "begin": 421, "end": 424 },
           "target": {
             "declaration": {
               "function_": {
@@ -168,9 +168,9 @@
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 12,
+                    "lineBegin": 13,
                     "columnBegin": 3,
-                    "lineEnd": 12,
+                    "lineEnd": 13,
                     "columnEnd": 30
                   }
                 }
@@ -179,7 +179,7 @@
           }
         },
         {
-          "range": { "begin": 393, "end": 396 },
+          "range": { "begin": 421, "end": 424 },
           "target": {
             "declaration": {
               "variable": {
@@ -204,9 +204,9 @@
                   "kind": { "field": { "mutable_": false } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 18,
+                    "lineBegin": 19,
                     "columnBegin": 3,
-                    "lineEnd": 18,
+                    "lineEnd": 19,
                     "columnEnd": 9
                   }
                 }
@@ -215,7 +215,7 @@
           }
         },
         {
-          "range": { "begin": 407, "end": 410 },
+          "range": { "begin": 435, "end": 438 },
           "target": {
             "declaration": {
               "function_": {
@@ -249,9 +249,9 @@
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 11,
+                    "lineBegin": 12,
                     "columnBegin": 3,
-                    "lineEnd": 11,
+                    "lineEnd": 12,
                     "columnEnd": 35
                   }
                 }
@@ -260,7 +260,7 @@
           }
         },
         {
-          "range": { "begin": 407, "end": 410 },
+          "range": { "begin": 435, "end": 438 },
           "target": {
             "declaration": {
               "variable": {
@@ -285,9 +285,9 @@
                   "kind": { "field": { "mutable_": false } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 18,
+                    "lineBegin": 19,
                     "columnBegin": 3,
-                    "lineEnd": 18,
+                    "lineEnd": 19,
                     "columnEnd": 9
                   }
                 }
@@ -296,7 +296,7 @@
           }
         },
         {
-          "range": { "begin": 432, "end": 435 },
+          "range": { "begin": 460, "end": 463 },
           "target": {
             "declaration": {
               "record_": {
@@ -310,9 +310,9 @@
                   "kind": { "struct_": { } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 17,
+                    "lineBegin": 18,
                     "columnBegin": 1,
-                    "lineEnd": 25,
+                    "lineEnd": 26,
                     "columnEnd": 1
                   }
                 }
@@ -321,7 +321,7 @@
           }
         },
         {
-          "range": { "begin": 443, "end": 444 },
+          "range": { "begin": 471, "end": 472 },
           "target": {
             "declaration": {
               "variable": {
@@ -343,9 +343,9 @@
                   "kind": { "local": { "kind": 2, "attribute": 0 } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 27,
+                    "lineBegin": 28,
                     "columnBegin": 10,
-                    "lineEnd": 27,
+                    "lineEnd": 28,
                     "columnEnd": 14
                   }
                 }
@@ -354,7 +354,7 @@
           }
         },
         {
-          "range": { "begin": 445, "end": 448 },
+          "range": { "begin": 473, "end": 476 },
           "target": {
             "declaration": {
               "variable": {
@@ -379,9 +379,9 @@
                   "kind": { "field": { "mutable_": false } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 18,
+                    "lineBegin": 19,
                     "columnBegin": 3,
-                    "lineEnd": 18,
+                    "lineEnd": 19,
                     "columnEnd": 9
                   }
                 }
@@ -390,7 +390,32 @@
           }
         },
         {
-          "range": { "begin": 452, "end": 455 },
+          "range": { "begin": 480, "end": 483 },
+          "target": {
+            "declaration": {
+              "record_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "Ptr" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "kind": { "struct_": { } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 9,
+                    "columnBegin": 1,
+                    "lineEnd": 14,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 491, "end": 494 },
           "target": {
             "declaration": {
               "function_": {
@@ -411,9 +436,9 @@
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 15,
+                    "lineBegin": 16,
                     "columnBegin": 1,
-                    "lineEnd": 15,
+                    "lineEnd": 16,
                     "columnEnd": 13
                   }
                 }
@@ -422,7 +447,7 @@
           }
         },
         {
-          "range": { "begin": 456, "end": 461 },
+          "range": { "begin": 495, "end": 500 },
           "target": {
             "declaration": {
               "function_": {
@@ -456,9 +481,9 @@
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 12,
+                    "lineBegin": 13,
                     "columnBegin": 3,
-                    "lineEnd": 12,
+                    "lineEnd": 13,
                     "columnEnd": 30
                   }
                 }
@@ -467,7 +492,7 @@
           }
         },
         {
-          "range": { "begin": 456, "end": 457 },
+          "range": { "begin": 495, "end": 496 },
           "target": {
             "declaration": {
               "variable": {
@@ -489,9 +514,9 @@
                   "kind": { "local": { "kind": 2, "attribute": 0 } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 27,
+                    "lineBegin": 28,
                     "columnBegin": 10,
-                    "lineEnd": 27,
+                    "lineEnd": 28,
                     "columnEnd": 14
                   }
                 }
@@ -500,7 +525,7 @@
           }
         },
         {
-          "range": { "begin": 458, "end": 461 },
+          "range": { "begin": 497, "end": 500 },
           "target": {
             "declaration": {
               "variable": {
@@ -525,9 +550,9 @@
                   "kind": { "field": { "mutable_": false } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 18,
+                    "lineBegin": 19,
                     "columnBegin": 3,
-                    "lineEnd": 18,
+                    "lineEnd": 19,
                     "columnEnd": 9
                   }
                 }
@@ -536,7 +561,7 @@
           }
         },
         {
-          "range": { "begin": 470, "end": 475 },
+          "range": { "begin": 509, "end": 514 },
           "target": {
             "declaration": {
               "function_": {
@@ -570,9 +595,9 @@
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 11,
+                    "lineBegin": 12,
                     "columnBegin": 3,
-                    "lineEnd": 11,
+                    "lineEnd": 12,
                     "columnEnd": 35
                   }
                 }
@@ -581,7 +606,7 @@
           }
         },
         {
-          "range": { "begin": 470, "end": 471 },
+          "range": { "begin": 509, "end": 510 },
           "target": {
             "declaration": {
               "variable": {
@@ -603,9 +628,9 @@
                   "kind": { "local": { "kind": 2, "attribute": 0 } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 27,
+                    "lineBegin": 28,
                     "columnBegin": 10,
-                    "lineEnd": 27,
+                    "lineEnd": 28,
                     "columnEnd": 14
                   }
                 }
@@ -614,7 +639,7 @@
           }
         },
         {
-          "range": { "begin": 472, "end": 475 },
+          "range": { "begin": 511, "end": 514 },
           "target": {
             "declaration": {
               "variable": {
@@ -639,9 +664,9 @@
                   "kind": { "field": { "mutable_": false } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 18,
+                    "lineBegin": 19,
                     "columnBegin": 3,
-                    "lineEnd": 18,
+                    "lineEnd": 19,
                     "columnEnd": 9
                   }
                 }

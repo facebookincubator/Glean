@@ -7,6 +7,7 @@
  */
 
 struct Ptr {
+  explicit Ptr() = default;
   void *value;
   operator bool() { return value; }
   operator int() { return 1; }
@@ -26,6 +27,7 @@ struct Foo {
 
 void baz(Foo x) {
   x.ptr;
+  Ptr ptr;
   bar(x.ptr);
   if (x.ptr) {}
 }
