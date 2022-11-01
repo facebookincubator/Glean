@@ -2367,6 +2367,13 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     return srcMgr.getSpellingLoc(loc);
   }
 
+  bool VisitCXXConstructExpr(const clang::CXXConstructExpr* expr) {
+    xrefTarget(
+        db.rangeOfToken(expr->getLocation()),
+        XRef::toTemplatableDecl(funDecls, expr->getConstructor()));
+    return true;
+  }
+
   bool VisitDeclRefExpr(const clang::DeclRefExpr* expr) {
     auto const beginLoc = expr->getNameInfo().getSourceRange().getBegin();
     auto const endLoc = expr->getNameInfo().getSourceRange().getEnd();

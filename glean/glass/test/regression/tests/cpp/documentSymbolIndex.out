@@ -2,7 +2,7 @@
     "@generated",
     {
         "revision": "testhash",
-        "size": 75,
+        "size": 76,
         "symbols": {
             "100": [
                 {
@@ -2243,6 +2243,51 @@
                         "columnEnd": 15,
                         "lineBegin": 69,
                         "lineEnd": 69
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 14
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "Nothing"
+                        },
+                        "symbolParent": {
+                            "aString": "maybe"
+                        },
+                        "symbolSignature": {
+                            "aString": "Nothing(maybe::Nothing::_secret)"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 19,
+                        "columnEnd": 26,
+                        "lineBegin": 74,
+                        "lineEnd": 74
+                    },
+                    "sym": "test/cpp//maybe/Nothing/.ctor",
+                    "target": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 3,
+                            "columnEnd": 41,
+                            "lineBegin": 72,
+                            "lineEnd": 72
+                        },
+                        "repository": "test"
+                    },
+                    "targetName": {
+                        "columnBegin": 22,
+                        "columnEnd": 29,
+                        "lineBegin": 72,
+                        "lineEnd": 72
                     }
                 },
                 {

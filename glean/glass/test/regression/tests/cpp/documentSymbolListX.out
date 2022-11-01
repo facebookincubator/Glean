@@ -3708,6 +3708,69 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "Nothing"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "maybe"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Nothing(maybe::Nothing::_secret)"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 19,
+                    "columnEnd": 26,
+                    "lineBegin": 74,
+                    "lineEnd": 74
+                },
+                "sym": "test/cpp//maybe/Nothing/.ctor",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 41,
+                        "lineBegin": 72,
+                        "lineEnd": 72
+                    },
+                    "repository": "test"
+                },
+                "targetName": {
+                    "columnBegin": 22,
+                    "columnEnd": 29,
+                    "lineBegin": 72,
+                    "lineEnd": 72
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
                             "aString": "_secret"
                         },
                         "key": "symbolName"
