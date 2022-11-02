@@ -153,6 +153,104 @@
                 "key": {
                   "name": {
                     "key": {
+                      "name": { "key": "baz" },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "A" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "X<T, U>" },
+                  "kind": {
+                    "global_": { "kind": 2, "attribute": 0, "definition": true }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 34,
+                    "columnBegin": 1,
+                    "lineEnd": 34,
+                    "columnEnd": 58
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "baz",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 34,
+              "columnBegin": 1,
+              "lineEnd": 34,
+              "columnEnd": 58
+            }
+          },
+          "span": { "start": 726, "length": 3 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "cxx": {
+            "decl": {
+              "record_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "A" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "kind": { "struct_": { } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 11,
+                    "columnBegin": 22,
+                    "lineEnd": 15,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "A",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 11,
+              "columnBegin": 22,
+              "lineEnd": 15,
+              "columnEnd": 1
+            }
+          },
+          "span": { "start": 296, "length": 1 }
+        }
+      },
+      "child": {
+        "child": {
+          "cxx": {
+            "decl": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
                       "name": { "key": "foo" },
                       "scope": {
                         "recordWithAccess": {

@@ -787,6 +787,41 @@
                       "key": {
                         "name": {
                           "key": {
+                            "name": { "key": "TypedefDeclInteger" },
+                            "scope": {
+                              "recordWithAccess": {
+                                "record": {
+                                  "key": {
+                                    "name": { "key": "S" },
+                                    "scope": {
+                                      "namespace_": {
+                                        "key": { "name": { "key": "foo" } }
+                                      }
+                                    }
+                                  }
+                                },
+                                "access": 0
+                              }
+                            }
+                          }
+                        },
+                        "type": { "key": "long" },
+                        "kind": 0,
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 14,
+                          "columnBegin": 3,
+                          "lineEnd": 14,
+                          "columnEnd": 33
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "typeAlias": {
+                      "key": {
+                        "name": {
+                          "key": {
                             "name": { "key": "UsingDeclInteger" },
                             "scope": {
                               "recordWithAccess": {

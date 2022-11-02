@@ -1210,40 +1210,8 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         }
       }
 
-      std::vector<Cxx::Declaration> members;
-      for (const auto& mem : d->decls()) {
-        if (auto record = clang::dyn_cast<clang::CXXRecordDecl>(mem)) {
-          if (!record->isInjectedClassName()) {
-            if (auto m = visitor.classDecls(record)) {
-              members.push_back(m->declaration());
-            }
-          }
-        } else if (auto fun = clang::dyn_cast<clang::FunctionDecl>(mem)) {
-          if (auto m = visitor.funDecls(fun)) {
-            members.push_back(Cxx::Declaration::function_(m->decl));
-          }
-        } else if (auto ed = clang::dyn_cast<clang::EnumDecl>(mem)) {
-          if (auto m = visitor.enumDecls(ed)) {
-            members.push_back(Cxx::Declaration::enum_(m->decl));
-          }
-        } else if (auto vd = clang::dyn_cast<clang::VarDecl>(mem)) {
-          if (auto m = visitor.varDecls(vd)) {
-            members.push_back(Cxx::Declaration::variable(m->decl));
-          }
-        } else if (auto fd = clang::dyn_cast<clang::FieldDecl>(mem)) {
-          if (auto m = visitor.varDecls(fd)) {
-            members.push_back(Cxx::Declaration::variable(m->decl));
-          }
-        } else if (auto tad = clang::dyn_cast<clang::TypeAliasDecl>(mem)) {
-          if (auto m = visitor.typeAliasDecls(tad)) {
-            members.push_back(Cxx::Declaration::typeAlias(m->decl));
-          }
-        }
-      }
       visitor.db.fact<Cxx::RecordDefinition>(
-        decl,
-        bases,
-        visitor.db.fact<Cxx::Declarations>(members));
+          decl, bases, visitor.db.fact<Cxx::Declarations>(members(visitor, d)));
     }
 
     struct GetTemplatableDecl {

@@ -307,7 +307,47 @@
                 }
               },
               "bases": [ ],
-              "members": { "key": [ ] }
+              "members": {
+                "key": [
+                  {
+                    "function_": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "f" } } },
+                            "scope": {
+                              "recordWithAccess": {
+                                "record": {
+                                  "key": {
+                                    "name": { "key": "A" },
+                                    "scope": { "global_": { } }
+                                  }
+                                },
+                                "access": 0
+                              }
+                            }
+                          }
+                        },
+                        "signature": {
+                          "key": {
+                            "returns": { "key": "void" },
+                            "parameters": [
+                              { "name": { "key": "" }, "type": { "key": "U" } }
+                            ]
+                          }
+                        },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 10,
+                          "columnBegin": 24,
+                          "lineEnd": 10,
+                          "columnEnd": 39
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
             }
           }
         }

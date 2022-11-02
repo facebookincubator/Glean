@@ -3,6 +3,10 @@
     {
         "containsChildren": [
             {
+                "child": "test/cpp//foo/S/TypedefDeclInteger/.decl",
+                "parent": "test/cpp//foo/S"
+            },
+            {
                 "child": "test/cpp//foo/S/UsingDeclInteger/.decl",
                 "parent": "test/cpp//foo/S"
             }
@@ -17,7 +21,7 @@
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
+                    "hasMoreChildren": true,
                     "hasMoreParents": false
                 },
                 "extends_relation": {
@@ -53,6 +57,52 @@
                         "columnEnd": 2,
                         "lineBegin": 13,
                         "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            "test/cpp//foo/S/TypedefDeclInteger/.decl": {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 2,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 34,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "foo::S",
+                    "localName": "TypedefDeclInteger"
+                },
+                "repo_hash": "testhash",
+                "signature": "typedef long foo::S::TypedefDeclInteger",
+                "sym": "test/cpp//foo/S/TypedefDeclInteger/.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 34,
+                        "lineBegin": 14,
+                        "lineEnd": 14
                     },
                     "repository": "test"
                 },

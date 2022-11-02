@@ -101,6 +101,43 @@
                           }
                         }
                       }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "baz" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "X<T, U>" },
+                          "kind": {
+                            "global_": {
+                              "kind": 2,
+                              "attribute": 0,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 34,
+                            "columnBegin": 1,
+                            "lineEnd": 34,
+                            "columnEnd": 58
+                          }
+                        }
+                      }
                     }
                   ]
                 }
@@ -211,6 +248,43 @@
                             "columnBegin": 3,
                             "lineEnd": 13,
                             "columnEnd": 14
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "baz" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "X<T, U>" },
+                          "kind": {
+                            "global_": {
+                              "kind": 2,
+                              "attribute": 0,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 34,
+                            "columnBegin": 1,
+                            "lineEnd": 34,
+                            "columnEnd": 58
                           }
                         }
                       }
@@ -327,6 +401,43 @@
                           }
                         }
                       }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "baz" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "X<T, U>" },
+                          "kind": {
+                            "global_": {
+                              "kind": 2,
+                              "attribute": 0,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 34,
+                            "columnBegin": 1,
+                            "lineEnd": 34,
+                            "columnEnd": 58
+                          }
+                        }
+                      }
                     }
                   ]
                 }
@@ -437,6 +548,43 @@
                             "columnBegin": 3,
                             "lineEnd": 13,
                             "columnEnd": 14
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "baz" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "X<T, U>" },
+                          "kind": {
+                            "global_": {
+                              "kind": 2,
+                              "attribute": 0,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 34,
+                            "columnBegin": 1,
+                            "lineEnd": 34,
+                            "columnEnd": 58
                           }
                         }
                       }
@@ -553,6 +701,43 @@
                           }
                         }
                       }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "baz" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "X<T, U>" },
+                          "kind": {
+                            "global_": {
+                              "kind": 2,
+                              "attribute": 0,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 34,
+                            "columnBegin": 1,
+                            "lineEnd": 34,
+                            "columnEnd": 58
+                          }
+                        }
+                      }
                     }
                   ]
                 }
@@ -663,6 +848,43 @@
                             "columnBegin": 3,
                             "lineEnd": 13,
                             "columnEnd": 14
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "baz" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "X<T, U>" },
+                          "kind": {
+                            "global_": {
+                              "kind": 2,
+                              "attribute": 0,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 34,
+                            "columnBegin": 1,
+                            "lineEnd": 34,
+                            "columnEnd": 58
                           }
                         }
                       }
@@ -779,6 +1001,43 @@
                           }
                         }
                       }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "baz" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "X<T, U>" },
+                          "kind": {
+                            "global_": {
+                              "kind": 2,
+                              "attribute": 0,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 34,
+                            "columnBegin": 1,
+                            "lineEnd": 34,
+                            "columnEnd": 58
+                          }
+                        }
+                      }
                     }
                   ]
                 }
@@ -889,6 +1148,43 @@
                             "columnBegin": 3,
                             "lineEnd": 13,
                             "columnEnd": 14
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "baz" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "X<T, U>" },
+                          "kind": {
+                            "global_": {
+                              "kind": 2,
+                              "attribute": 0,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 34,
+                            "columnBegin": 1,
+                            "lineEnd": 34,
+                            "columnEnd": 58
                           }
                         }
                       }
@@ -1005,6 +1301,43 @@
                           }
                         }
                       }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "baz" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "X<T, U>" },
+                          "kind": {
+                            "global_": {
+                              "kind": 2,
+                              "attribute": 0,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 34,
+                            "columnBegin": 1,
+                            "lineEnd": 34,
+                            "columnEnd": 58
+                          }
+                        }
+                      }
                     }
                   ]
                 }
@@ -1115,6 +1448,43 @@
                             "columnBegin": 3,
                             "lineEnd": 13,
                             "columnEnd": 14
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "baz" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "X<T, U>" },
+                          "kind": {
+                            "global_": {
+                              "kind": 2,
+                              "attribute": 0,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 34,
+                            "columnBegin": 1,
+                            "lineEnd": 34,
+                            "columnEnd": 58
                           }
                         }
                       }
@@ -1231,6 +1601,43 @@
                           }
                         }
                       }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "baz" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "X<T, U>" },
+                          "kind": {
+                            "global_": {
+                              "kind": 2,
+                              "attribute": 0,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 34,
+                            "columnBegin": 1,
+                            "lineEnd": 34,
+                            "columnEnd": 58
+                          }
+                        }
+                      }
                     }
                   ]
                 }
@@ -1341,6 +1748,43 @@
                             "columnBegin": 3,
                             "lineEnd": 13,
                             "columnEnd": 14
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "baz" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "X<T, U>" },
+                          "kind": {
+                            "global_": {
+                              "kind": 2,
+                              "attribute": 0,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 34,
+                            "columnBegin": 1,
+                            "lineEnd": 34,
+                            "columnEnd": 58
                           }
                         }
                       }
@@ -1457,6 +1901,43 @@
                           }
                         }
                       }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "baz" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "X<T, U>" },
+                          "kind": {
+                            "global_": {
+                              "kind": 2,
+                              "attribute": 0,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 34,
+                            "columnBegin": 1,
+                            "lineEnd": 34,
+                            "columnEnd": 58
+                          }
+                        }
+                      }
                     }
                   ]
                 }
@@ -1567,6 +2048,43 @@
                             "columnBegin": 3,
                             "lineEnd": 13,
                             "columnEnd": 14
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "baz" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "X<T, U>" },
+                          "kind": {
+                            "global_": {
+                              "kind": 2,
+                              "attribute": 0,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 34,
+                            "columnBegin": 1,
+                            "lineEnd": 34,
+                            "columnEnd": 58
                           }
                         }
                       }
@@ -1683,6 +2201,43 @@
                           }
                         }
                       }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "baz" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "X<T, U>" },
+                          "kind": {
+                            "global_": {
+                              "kind": 2,
+                              "attribute": 0,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 34,
+                            "columnBegin": 1,
+                            "lineEnd": 34,
+                            "columnEnd": 58
+                          }
+                        }
+                      }
                     }
                   ]
                 }
@@ -1793,6 +2348,43 @@
                             "columnBegin": 3,
                             "lineEnd": 13,
                             "columnEnd": 14
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "baz" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "X<T, U>" },
+                          "kind": {
+                            "global_": {
+                              "kind": 2,
+                              "attribute": 0,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 34,
+                            "columnBegin": 1,
+                            "lineEnd": 34,
+                            "columnEnd": 58
                           }
                         }
                       }
@@ -1909,6 +2501,43 @@
                           }
                         }
                       }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "baz" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "X<T, U>" },
+                          "kind": {
+                            "global_": {
+                              "kind": 2,
+                              "attribute": 0,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 34,
+                            "columnBegin": 1,
+                            "lineEnd": 34,
+                            "columnEnd": 58
+                          }
+                        }
+                      }
                     }
                   ]
                 }
@@ -2019,6 +2648,43 @@
                             "columnBegin": 3,
                             "lineEnd": 13,
                             "columnEnd": 14
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "baz" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "X<T, U>" },
+                          "kind": {
+                            "global_": {
+                              "kind": 2,
+                              "attribute": 0,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 34,
+                            "columnBegin": 1,
+                            "lineEnd": 34,
+                            "columnEnd": 58
                           }
                         }
                       }
@@ -2135,6 +2801,43 @@
                           }
                         }
                       }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "baz" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "X<T, U>" },
+                          "kind": {
+                            "global_": {
+                              "kind": 2,
+                              "attribute": 0,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 34,
+                            "columnBegin": 1,
+                            "lineEnd": 34,
+                            "columnEnd": 58
+                          }
+                        }
+                      }
                     }
                   ]
                 }
@@ -2245,6 +2948,43 @@
                             "columnBegin": 3,
                             "lineEnd": 13,
                             "columnEnd": 14
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "baz" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "X<T, U>" },
+                          "kind": {
+                            "global_": {
+                              "kind": 2,
+                              "attribute": 0,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 34,
+                            "columnBegin": 1,
+                            "lineEnd": 34,
+                            "columnEnd": 58
                           }
                         }
                       }
@@ -2361,6 +3101,43 @@
                           }
                         }
                       }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "baz" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "X<T, U>" },
+                          "kind": {
+                            "global_": {
+                              "kind": 2,
+                              "attribute": 0,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 34,
+                            "columnBegin": 1,
+                            "lineEnd": 34,
+                            "columnEnd": 58
+                          }
+                        }
+                      }
                     }
                   ]
                 }
@@ -2471,6 +3248,43 @@
                             "columnBegin": 3,
                             "lineEnd": 13,
                             "columnEnd": 14
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "baz" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "X<T, U>" },
+                          "kind": {
+                            "global_": {
+                              "kind": 2,
+                              "attribute": 0,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 34,
+                            "columnBegin": 1,
+                            "lineEnd": 34,
+                            "columnEnd": 58
                           }
                         }
                       }
@@ -2587,6 +3401,43 @@
                           }
                         }
                       }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "baz" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "X<T, U>" },
+                          "kind": {
+                            "global_": {
+                              "kind": 2,
+                              "attribute": 0,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 34,
+                            "columnBegin": 1,
+                            "lineEnd": 34,
+                            "columnEnd": 58
+                          }
+                        }
+                      }
                     }
                   ]
                 }
@@ -2697,6 +3548,43 @@
                             "columnBegin": 3,
                             "lineEnd": 13,
                             "columnEnd": 14
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "baz" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "X<T, U>" },
+                          "kind": {
+                            "global_": {
+                              "kind": 2,
+                              "attribute": 0,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 34,
+                            "columnBegin": 1,
+                            "lineEnd": 34,
+                            "columnEnd": 58
                           }
                         }
                       }
