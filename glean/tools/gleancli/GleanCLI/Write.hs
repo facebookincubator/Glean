@@ -46,6 +46,7 @@ import Data.Time.Clock (UTCTime)
 import Glean.Database.Meta (utcTimeToPosixEpochTime)
 import Data.Int (Int32)
 import Data.ByteString (ByteString)
+import Glean.Util.ThriftService (queueTimeout)
 
 data ScribeOptions = ScribeOptions
   { writeFromScribe :: WriteFromScribe
@@ -440,3 +441,11 @@ instance Plugin WriteCommand where
 
     resultToFailure Right{} = Nothing
     resultToFailure (Left err) = Just (show err)
+
+  withService evb cfgAPI svc c =
+    -- Ensure the queue timeout is short to avoid OOMing the server
+    LocalOrRemote.withBackend evb cfgAPI svc Nothing settings $ \backend ->
+      runCommand evb cfgAPI backend c
+    where
+      settings (clientConf, serviceOpts) =
+        (clientConf, serviceOpts{queueTimeout = Just 0.1})

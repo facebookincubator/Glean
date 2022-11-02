@@ -49,6 +49,7 @@ import Control.Concurrent.STM ( TVar )
 import Control.Exception ( throwIO, SomeException )
 import Control.Monad.Catch ( throwM, try )
 import Data.Either.Extra (eitherToMaybe, partitionEithers)
+import Data.Default (def)
 import Data.List.NonEmpty (NonEmpty(..), toList, nonEmpty)
 import Data.List.Extra (nubOrd)
 import Data.Maybe
@@ -1462,6 +1463,6 @@ withIndexingService env act =
       runThrift evb service act `catchAll` onErr
   where
     Glass.IndexBackend mThriftBackend = Glass.gleanIndexBackend env
-    opts = ThriftServiceOptions $ Just timeout
+    opts = def { processingTimeout = Just timeout }
     err e = throwIO $ ServerException e
     timeout = 60 -- seconds
