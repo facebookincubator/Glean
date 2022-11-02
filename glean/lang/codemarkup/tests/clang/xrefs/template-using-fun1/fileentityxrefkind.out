@@ -20,7 +20,78 @@
                     }
                   }
                 },
-                "members": { "key": [ ] }
+                "members": {
+                  "key": [
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "f" } } },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N1" } }
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "T" }
+                                }
+                              ]
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 11,
+                            "columnBegin": 22,
+                            "lineEnd": 11,
+                            "columnEnd": 33
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "f" } } },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N1" } }
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "int" }
+                                }
+                              ]
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 12,
+                            "columnBegin": 1,
+                            "lineEnd": 12,
+                            "columnEnd": 30
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           }

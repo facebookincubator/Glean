@@ -394,7 +394,34 @@
                     }
                   }
                 },
-                "members": { "key": [ ] }
+                "members": {
+                  "key": [
+                    {
+                      "enum_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "E" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N1" } }
+                                }
+                              }
+                            }
+                          },
+                          "isScoped": false,
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 11,
+                            "columnBegin": 1,
+                            "lineEnd": 11,
+                            "columnEnd": 18
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           }
@@ -423,7 +450,39 @@
                     }
                   }
                 },
-                "members": { "key": [ ] }
+                "members": {
+                  "key": [
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "foo" } } },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N21" } }
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [ ]
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 20,
+                            "columnBegin": 1,
+                            "lineEnd": 22,
+                            "columnEnd": 1
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           }
@@ -452,7 +511,39 @@
                     }
                   }
                 },
-                "members": { "key": [ ] }
+                "members": {
+                  "key": [
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "foo" } } },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N22" } }
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [ ]
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 31,
+                            "columnBegin": 1,
+                            "lineEnd": 33,
+                            "columnEnd": 1
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           }
@@ -481,7 +572,39 @@
                     }
                   }
                 },
-                "members": { "key": [ ] }
+                "members": {
+                  "key": [
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "foo" } } },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N31" } }
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [ ]
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 42,
+                            "columnBegin": 1,
+                            "lineEnd": 44,
+                            "columnEnd": 1
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           }
@@ -510,7 +633,39 @@
                     }
                   }
                 },
-                "members": { "key": [ ] }
+                "members": {
+                  "key": [
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "foo" } } },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N32" } }
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [ ]
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 53,
+                            "columnBegin": 1,
+                            "lineEnd": 55,
+                            "columnEnd": 1
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           }
@@ -539,7 +694,39 @@
                     }
                   }
                 },
-                "members": { "key": [ ] }
+                "members": {
+                  "key": [
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "bar" } } },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N41" } }
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [ ]
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 64,
+                            "columnBegin": 1,
+                            "lineEnd": 66,
+                            "columnEnd": 1
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           }
@@ -568,7 +755,39 @@
                     }
                   }
                 },
-                "members": { "key": [ ] }
+                "members": {
+                  "key": [
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "bar" } } },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N42" } }
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [ ]
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 75,
+                            "columnBegin": 1,
+                            "lineEnd": 77,
+                            "columnEnd": 1
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           }

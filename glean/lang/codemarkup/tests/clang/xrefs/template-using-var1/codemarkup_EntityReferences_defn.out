@@ -19,7 +19,196 @@
                     }
                   }
                 },
-                "members": { "key": [ ] }
+                "members": {
+                  "key": [
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "foo" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N1" } }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "const int" },
+                          "kind": {
+                            "global_": {
+                              "kind": 0,
+                              "attribute": 2,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 11,
+                            "columnBegin": 22,
+                            "lineEnd": 11,
+                            "columnEnd": 42
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "foo" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N1" } }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "const int" },
+                          "kind": {
+                            "global_": {
+                              "kind": 0,
+                              "attribute": 2,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 12,
+                            "columnBegin": 1,
+                            "lineEnd": 12,
+                            "columnEnd": 46
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "foo" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N1" } }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "const int" },
+                          "kind": {
+                            "global_": {
+                              "kind": 0,
+                              "attribute": 2,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 13,
+                            "columnBegin": 1,
+                            "lineEnd": 13,
+                            "columnEnd": 38
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "foo" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N1" } }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "const int" },
+                          "kind": {
+                            "global_": {
+                              "kind": 0,
+                              "attribute": 2,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 11,
+                            "columnBegin": 22,
+                            "lineEnd": 11,
+                            "columnEnd": 42
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "foo" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N1" } }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "const int" },
+                          "kind": {
+                            "global_": {
+                              "kind": 0,
+                              "attribute": 2,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 11,
+                            "columnBegin": 22,
+                            "lineEnd": 11,
+                            "columnEnd": 42
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "foo" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N1" } }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "const int" },
+                          "kind": {
+                            "global_": {
+                              "kind": 0,
+                              "attribute": 2,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 12,
+                            "columnBegin": 1,
+                            "lineEnd": 12,
+                            "columnEnd": 46
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           }
@@ -48,7 +237,196 @@
                     }
                   }
                 },
-                "members": { "key": [ ] }
+                "members": {
+                  "key": [
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "foo" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N1" } }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "const int" },
+                          "kind": {
+                            "global_": {
+                              "kind": 0,
+                              "attribute": 2,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 11,
+                            "columnBegin": 22,
+                            "lineEnd": 11,
+                            "columnEnd": 42
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "foo" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N1" } }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "const int" },
+                          "kind": {
+                            "global_": {
+                              "kind": 0,
+                              "attribute": 2,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 12,
+                            "columnBegin": 1,
+                            "lineEnd": 12,
+                            "columnEnd": 46
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "foo" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N1" } }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "const int" },
+                          "kind": {
+                            "global_": {
+                              "kind": 0,
+                              "attribute": 2,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 13,
+                            "columnBegin": 1,
+                            "lineEnd": 13,
+                            "columnEnd": 38
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "foo" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N1" } }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "const int" },
+                          "kind": {
+                            "global_": {
+                              "kind": 0,
+                              "attribute": 2,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 11,
+                            "columnBegin": 22,
+                            "lineEnd": 11,
+                            "columnEnd": 42
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "foo" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N1" } }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "const int" },
+                          "kind": {
+                            "global_": {
+                              "kind": 0,
+                              "attribute": 2,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 11,
+                            "columnBegin": 22,
+                            "lineEnd": 11,
+                            "columnEnd": 42
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "foo" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N1" } }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "const int" },
+                          "kind": {
+                            "global_": {
+                              "kind": 0,
+                              "attribute": 2,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 12,
+                            "columnBegin": 1,
+                            "lineEnd": 12,
+                            "columnEnd": 46
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           }

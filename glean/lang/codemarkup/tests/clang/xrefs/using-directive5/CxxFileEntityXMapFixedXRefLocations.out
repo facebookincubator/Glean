@@ -142,7 +142,34 @@
                   }
                 }
               },
-              "members": { "key": [ ] }
+              "members": {
+                "key": [
+                  {
+                    "record_": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": { "key": "T" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "N1" } }
+                              }
+                            }
+                          }
+                        },
+                        "kind": { "struct_": { } },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 11,
+                          "columnBegin": 1,
+                          "lineEnd": 11,
+                          "columnEnd": 11
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
             }
           }
         }
@@ -291,7 +318,29 @@
                   }
                 }
               },
-              "members": { "key": [ ] }
+              "members": {
+                "key": [
+                  {
+                    "namespace_": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": { "key": "N21" },
+                            "parent": { "key": { "name": { "key": "N2" } } }
+                          }
+                        },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 18,
+                          "columnBegin": 1,
+                          "lineEnd": 26,
+                          "columnEnd": 1
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
             }
           }
         }

@@ -33,7 +33,63 @@
                     }
                   }
                 },
-                "members": { "key": [ ] }
+                "members": {
+                  "key": [
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "f1" } } },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N1" } }
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "int" },
+                              "parameters": [ ]
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 11,
+                            "columnBegin": 1,
+                            "lineEnd": 11,
+                            "columnEnd": 8
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "T1" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N1" } }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 13,
+                            "columnBegin": 1,
+                            "lineEnd": 13,
+                            "columnEnd": 12
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           }
@@ -156,7 +212,72 @@
                     }
                   }
                 },
-                "members": { "key": [ ] }
+                "members": {
+                  "key": [
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "x" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N4" } }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "N1::T1" },
+                          "kind": {
+                            "global_": {
+                              "kind": 0,
+                              "attribute": 0,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 34,
+                            "columnBegin": 1,
+                            "lineEnd": 34,
+                            "columnEnd": 4
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "y" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N4" } }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": {
+                            "global_": {
+                              "kind": 0,
+                              "attribute": 0,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 35,
+                            "columnBegin": 1,
+                            "lineEnd": 35,
+                            "columnEnd": 12
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           }

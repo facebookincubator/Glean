@@ -613,8 +613,8 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     }
 
     static const clang::NamespaceDecl * FOLLY_NULLABLE getDefinition(
-        const clang::NamespaceDecl *) {
-      return nullptr;
+        const clang::NamespaceDecl *decl) {
+      return decl;
     }
 
     static const clang::TypedefNameDecl * FOLLY_NULLABLE getDefinition(
@@ -824,6 +824,49 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     }
   }
 
+  static std::vector<Cxx::Declaration> members(
+      ASTVisitor& visitor,
+      const clang::DeclContext* d) {
+    std::vector<Cxx::Declaration> members;
+    auto add = [&members](auto& memo, const auto* decl) {
+      if (auto m = memo(decl)) {
+        members.push_back(m->declaration());
+      }
+    };
+    for (const auto& mem : d->decls()) {
+      if (auto record = clang::dyn_cast<clang::CXXRecordDecl>(mem)) {
+        if (!record->isInjectedClassName()) {
+          add(visitor.classDecls, record);
+        }
+      } else if (auto ctd = clang::dyn_cast<clang::ClassTemplateDecl>(mem)) {
+        auto rec = ctd->getTemplatedDecl();
+        if (rec && !rec->isInjectedClassName()) {
+          add(visitor.classDecls, rec);
+        }
+      } else if (auto fun = clang::dyn_cast<clang::FunctionDecl>(mem)) {
+        add(visitor.funDecls, fun);
+      } else if (auto ftd = clang::dyn_cast<clang::FunctionTemplateDecl>(mem)) {
+        add(visitor.funDecls, ftd->getTemplatedDecl());
+      } else if (auto ed = clang::dyn_cast<clang::EnumDecl>(mem)) {
+        add(visitor.enumDecls, ed);
+      } else if (auto fd = clang::dyn_cast<clang::FieldDecl>(mem)) {
+        add(visitor.varDecls, fd);
+      } else if (auto vd = clang::dyn_cast<clang::VarDecl>(mem)) {
+        add(visitor.varDecls, vd);
+      } else if (auto vtd = clang::dyn_cast<clang::VarTemplateDecl>(mem)) {
+        add(visitor.varDecls, vtd->getTemplatedDecl());
+      } else if (auto tnd = clang::dyn_cast<clang::TypedefNameDecl>(mem)) {
+        add(visitor.typeAliasDecls, tnd);
+      } else if (
+          auto tatd = clang::dyn_cast<clang::TypeAliasTemplateDecl>(mem)) {
+        add(visitor.typeAliasDecls, tatd->getTemplatedDecl());
+      } else if (auto ns = clang::dyn_cast<clang::NamespaceDecl>(mem)) {
+        add(visitor.namespaces, ns);
+      }
+    }
+    return members;
+  }
+
   /**************
    * Namespaces *
    **************/
@@ -872,18 +915,17 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         , visitor.db.fact<Cxx::NamespaceDeclaration>(qname, range)
         };
     }
+
+    void define(ASTVisitor& visitor, const clang::NamespaceDecl *d) const {
+      visitor.db.fact<Cxx::NamespaceDefinition>(
+          decl, visitor.db.fact<Cxx::Declarations>(members(visitor, d)));
+    }
   };
 
   // Clang namespace visitor
   bool VisitNamespaceDecl(clang::NamespaceDecl *decl) {
-    if (auto r = namespaces(decl)) {
-      // FIXME: complete
-      db.fact<Cxx::NamespaceDefinition>(
-        r->decl,
-        db.fact<Cxx::Declarations>(
-          std::vector<Cxx::Declaration>()));
-    }
     usingTracker.addNamespace(decl);
+    visitDeclaration(namespaces, decl);
     return true;
   }
 

@@ -205,7 +205,34 @@
                     }
                   }
                 },
-                "members": { "key": [ ] }
+                "members": {
+                  "key": [
+                    {
+                      "enum_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Foo" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N1" } }
+                                }
+                              }
+                            }
+                          },
+                          "isScoped": false,
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 10,
+                            "columnBegin": 1,
+                            "lineEnd": 10,
+                            "columnEnd": 12
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           }
@@ -234,7 +261,63 @@
                     }
                   }
                 },
-                "members": { "key": [ ] }
+                "members": {
+                  "key": [
+                    {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Bar" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N2" } }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 14,
+                            "columnBegin": 22,
+                            "lineEnd": 14,
+                            "columnEnd": 34
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "bar" } } },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N2" } }
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [ ]
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 15,
+                            "columnBegin": 22,
+                            "lineEnd": 15,
+                            "columnEnd": 34
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           }
@@ -263,7 +346,70 @@
                     }
                   }
                 },
-                "members": { "key": [ ] }
+                "members": {
+                  "key": [
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "x" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N3" } }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "N2::Bar<Foo>" },
+                          "kind": {
+                            "global_": {
+                              "kind": 0,
+                              "attribute": 0,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 20,
+                            "columnBegin": 1,
+                            "lineEnd": 20,
+                            "columnEnd": 14
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "f" } } },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N3" } }
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [ ]
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 21,
+                            "columnBegin": 1,
+                            "lineEnd": 23,
+                            "columnEnd": 1
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           }

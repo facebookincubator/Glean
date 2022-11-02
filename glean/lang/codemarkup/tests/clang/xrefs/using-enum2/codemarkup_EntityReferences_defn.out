@@ -24,7 +24,36 @@
                     }
                   }
                 },
-                "members": { "key": [ ] }
+                "members": {
+                  "key": [
+                    {
+                      "namespace_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "N3" },
+                              "parent": {
+                                "key": {
+                                  "name": { "key": "N2" },
+                                  "parent": {
+                                    "key": { "name": { "key": "N1" } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 13,
+                            "columnBegin": 1,
+                            "lineEnd": 14,
+                            "columnEnd": 1
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           }

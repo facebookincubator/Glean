@@ -17,7 +17,29 @@
                 }
               }
             },
-            "members": { "key": [ ] }
+            "members": {
+              "key": [
+                {
+                  "namespace_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "N1" },
+                          "parent": { "key": { "name": { "key": "N0" } } }
+                        }
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 10,
+                        "columnBegin": 1,
+                        "lineEnd": 12,
+                        "columnEnd": 1
+                      }
+                    }
+                  }
+                }
+              ]
+            }
           }
         }
       },
@@ -59,7 +81,34 @@
                 }
               }
             },
-            "members": { "key": [ ] }
+            "members": {
+              "key": [
+                {
+                  "namespace_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "N2" },
+                          "parent": {
+                            "key": {
+                              "name": { "key": "N1" },
+                              "parent": { "key": { "name": { "key": "N0" } } }
+                            }
+                          }
+                        }
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 11,
+                        "columnBegin": 1,
+                        "lineEnd": 11,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                }
+              ]
+            }
           }
         }
       },
