@@ -22,14 +22,6 @@ predicate VariableDeclaration: { name: Name }
 # Records that a Python module exists with a given fully qualified name.
 predicate Module: { name: Name }
 
-# Maps lower-case strings to Name, for case-insensitive search
-predicate NameLowerCase:
-  {
-    nameLowerCase: string,
-    name: Name,
-  }
-  stored { prim.toLower Str, N } where N = Name Str
-
 } # python.1
 
 schema python.2 : python.1 {
@@ -116,7 +108,7 @@ type Parameter =
 # Decorators can be arbitrary expressions, this just records their string
 # representation.
 type Decorator = string
-predicate DocstringContent: string
+
 type Docstring =
   {
     location: src.ByteSpan,
@@ -183,15 +175,6 @@ predicate DeclarationUses:
   XRefsViaNameByFile { File, XRefs };
   { target = Name, source = Span } = XRefs[..];
   DeclarationByName Name -> Decl;
-
-# This is a variant of TargetUses, but it allows efficient queries per file.
-# It's useful for finding all outgoing references from a file
-# (e.g. for click-to-definition).
-predicate FileDirectXRefs:
-  {
-    file: src.File,
-    xrefs: [DirectXRef],
-  }
 
 predicate DirectXRefsByFile:
   {
