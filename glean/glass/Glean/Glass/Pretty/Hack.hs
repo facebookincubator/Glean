@@ -507,7 +507,7 @@ modifiersForProperty Hack.PropertyDefinition_key {..} =
 toSignature :: [Hack.TypeParameter] -> Hack.Signature -> Signature
 toSignature typeParams Hack.Signature{..} = case signature_key of
   Nothing -> Signature (ReturnType unknownType) [] [] Nothing
-  Just (Hack.Signature_key retType params mctxs) -> Signature
+  Just (Hack.Signature_key retType params mctxs _) -> Signature
     (ReturnType (unHackType (toType retType)))
     (map toTypeParameter typeParams)
     (map toParameter params)
@@ -567,7 +567,7 @@ toConstraintKind Hack.ConstraintKind_Super = Super
 toConstraintKind (Hack.ConstraintKind__UNKNOWN _) = Equal
 
 toParameter :: Hack.Parameter -> Parameter
-toParameter (Hack.Parameter name mtype inout _ mdefaultValue _) =
+toParameter (Hack.Parameter name mtype inout _ mdefaultValue _ _) =
   Parameter
   (toName name)
   (toType mtype)

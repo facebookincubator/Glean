@@ -82,23 +82,30 @@ predicate Type : string
 
 predicate Context_ : string
 
+predicate TypeInfo : {
+  displayType : Type, # human friendly textual representation
+  xrefs : [XRef], # spans are relative to the "displayType" field content
+}
+
 # Named parameter
 type Parameter =
   {
     name : Name,
-    type : maybe Type,
+    type : maybe Type, # deprecated, replaced by TypeInfo
     isInout : bool,
     isVariadic : bool,
     defaultValue : maybe string,
     attributes : [UserAttribute],
+    typeInfo : maybe TypeInfo,
   }
 
 # Type signature of function or method
 predicate Signature :
   {
-    returns : maybe Type,
+    returns : maybe Type, # deprecated, replaced by returnsTypeInfo
     parameters : [Parameter],
     contexts : maybe [Context_],
+    returnsTypeInfo : maybe TypeInfo,
   }
 
 # Visibility scope of declaration
