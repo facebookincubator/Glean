@@ -23,3 +23,32 @@ struct B : A {
 
   int varB;
 };
+
+struct C {
+  struct S {};
+
+  template <typename>
+  struct ST {};
+
+  void f() {}
+
+  template <typename>
+  void ft() {}
+
+  enum E { EA, EB, EC };
+  enum class EC { ECA, ECB, ECC };
+
+  static constexpr int v = 42;
+
+  template <typename T>
+  static constexpr T vt = 42;
+
+  int m;
+
+  using U = T;
+
+  template <typename X>
+  using UT = X;
+
+  typedef S TD;
+};

@@ -65,6 +65,66 @@
                     { "offset": 319, "length": 1 },
                     { "offset": 24, "length": 1 }
                   ]
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "T" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 9,
+                            "columnBegin": 1,
+                            "lineEnd": 9,
+                            "columnEnd": 11
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 689, "length": 1 } ]
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "S" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "C" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 28,
+                            "columnBegin": 3,
+                            "lineEnd": 28,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 744, "length": 1 } ]
                 }
               ],
               "variable": [ ]
@@ -229,6 +289,66 @@
                     { "offset": 319, "length": 1 },
                     { "offset": 24, "length": 1 }
                   ]
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "T" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 9,
+                            "columnBegin": 1,
+                            "lineEnd": 9,
+                            "columnEnd": 11
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 689, "length": 1 } ]
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "S" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "C" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 28,
+                            "columnBegin": 3,
+                            "lineEnd": 28,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 744, "length": 1 } ]
                 }
               ],
               "variable": [ ]
@@ -393,6 +513,436 @@
                     { "offset": 319, "length": 1 },
                     { "offset": 24, "length": 1 }
                   ]
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "T" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 9,
+                            "columnBegin": 1,
+                            "lineEnd": 9,
+                            "columnEnd": 11
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 689, "length": 1 } ]
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "S" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "C" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 28,
+                            "columnBegin": 3,
+                            "lineEnd": 28,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 744, "length": 1 } ]
+                }
+              ],
+              "variable": [ ]
+            }
+          },
+          "externals": [ ]
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "S",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 28,
+              "columnBegin": 3,
+              "lineEnd": 28,
+              "columnEnd": 13
+            }
+          },
+          "span": { "start": 420, "length": 1 }
+        },
+        "source": { "span": { "start": 744, "length": 1 } }
+      },
+      "entity": {
+        "defn": {
+          "record_": {
+            "key": {
+              "declaration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "S" },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "C" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  },
+                  "kind": { "struct_": { } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 28,
+                    "columnBegin": 3,
+                    "lineEnd": 28,
+                    "columnEnd": 13
+                  }
+                }
+              },
+              "bases": [ ],
+              "members": { "key": [ ] }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "xmap": {
+            "key": {
+              "file": { "key": "test.cpp" },
+              "fixed": [
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "U" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 10,
+                            "columnBegin": 1,
+                            "lineEnd": 14,
+                            "columnEnd": 1
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [
+                    { "offset": 262, "length": 1 },
+                    { "offset": 7, "length": 1 },
+                    { "offset": 19, "length": 1 },
+                    { "offset": 61, "length": 1 }
+                  ]
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "A" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 16,
+                            "columnBegin": 1,
+                            "lineEnd": 18,
+                            "columnEnd": 1
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [
+                    { "offset": 319, "length": 1 },
+                    { "offset": 24, "length": 1 }
+                  ]
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "T" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 9,
+                            "columnBegin": 1,
+                            "lineEnd": 9,
+                            "columnEnd": 11
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 689, "length": 1 } ]
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "S" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "C" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 28,
+                            "columnBegin": 3,
+                            "lineEnd": 28,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 744, "length": 1 } ]
+                }
+              ],
+              "variable": [ ]
+            }
+          },
+          "externals": [ ]
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "T",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 9,
+              "columnBegin": 1,
+              "lineEnd": 9,
+              "columnEnd": 11
+            }
+          },
+          "span": { "start": 228, "length": 1 }
+        },
+        "source": { "span": { "start": 689, "length": 1 } }
+      },
+      "entity": {
+        "defn": {
+          "record_": {
+            "key": {
+              "declaration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "T" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "kind": { "struct_": { } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 9,
+                    "columnBegin": 1,
+                    "lineEnd": 9,
+                    "columnEnd": 11
+                  }
+                }
+              },
+              "bases": [ ],
+              "members": { "key": [ ] }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "xmap": {
+            "key": {
+              "file": { "key": "test.cpp" },
+              "fixed": [
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "U" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 10,
+                            "columnBegin": 1,
+                            "lineEnd": 14,
+                            "columnEnd": 1
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [
+                    { "offset": 262, "length": 1 },
+                    { "offset": 7, "length": 1 },
+                    { "offset": 19, "length": 1 },
+                    { "offset": 61, "length": 1 }
+                  ]
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "A" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 16,
+                            "columnBegin": 1,
+                            "lineEnd": 18,
+                            "columnEnd": 1
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [
+                    { "offset": 319, "length": 1 },
+                    { "offset": 24, "length": 1 }
+                  ]
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "T" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 9,
+                            "columnBegin": 1,
+                            "lineEnd": 9,
+                            "columnEnd": 11
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 689, "length": 1 } ]
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "S" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "C" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 28,
+                            "columnBegin": 3,
+                            "lineEnd": 28,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 744, "length": 1 } ]
                 }
               ],
               "variable": [ ]
@@ -649,6 +1199,66 @@
                     { "offset": 319, "length": 1 },
                     { "offset": 24, "length": 1 }
                   ]
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "T" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 9,
+                            "columnBegin": 1,
+                            "lineEnd": 9,
+                            "columnEnd": 11
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 689, "length": 1 } ]
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "S" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "C" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 28,
+                            "columnBegin": 3,
+                            "lineEnd": 28,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 744, "length": 1 } ]
                 }
               ],
               "variable": [ ]
@@ -905,6 +1515,66 @@
                     { "offset": 319, "length": 1 },
                     { "offset": 24, "length": 1 }
                   ]
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "T" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 9,
+                            "columnBegin": 1,
+                            "lineEnd": 9,
+                            "columnEnd": 11
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 689, "length": 1 } ]
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "S" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "C" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 28,
+                            "columnBegin": 3,
+                            "lineEnd": 28,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 744, "length": 1 } ]
                 }
               ],
               "variable": [ ]
@@ -1161,6 +1831,66 @@
                     { "offset": 319, "length": 1 },
                     { "offset": 24, "length": 1 }
                   ]
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "T" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 9,
+                            "columnBegin": 1,
+                            "lineEnd": 9,
+                            "columnEnd": 11
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 689, "length": 1 } ]
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "S" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "C" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 28,
+                            "columnBegin": 3,
+                            "lineEnd": 28,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 744, "length": 1 } ]
                 }
               ],
               "variable": [ ]
