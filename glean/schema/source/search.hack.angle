@@ -318,7 +318,9 @@ predicate QueryToScopeCase:
     ( [A] = Query;
       HackNameCase { Case, A, AName };
       if hack.GlobalNamespaceAlias { AName, { AliasName, AliasQName }}
-        then ( Name = AliasName; QName = AliasQName )
+        # two cases: either a global alias or its a top level class. e.g. Str
+        then ( ( Name = AliasName; QName = AliasQName ) |
+               ( Name = AName; nothing = QName ) )
         else ( Name = AName; nothing = QName ) ) |
     # two tuple
     ( [B,A] = Query;

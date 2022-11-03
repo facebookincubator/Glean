@@ -183,9 +183,10 @@ predicate HackSearchByScopeWithName:
   }
   { Name, Insensitive, Query, { hack = { decl = Decl }}} where
     search.hack.QueryToScopeCase { Query, Insensitive, ScopeName, ScopeNamespace };
-    if (nothing = ScopeNamespace) # don't try to match empty names
-      then search.hack.SearchInContext { Name, ScopeName, _ , Decl } # wild card
-      else search.hack.SearchInContext { Name, ScopeName, ScopeNamespace, Decl };
+    # by always using the matched namespace we make prevent scope wildcards
+    # e.g. C\count won't match Test\C\count
+    # we could try to interpret prefix mode this way though
+    search.hack.SearchInContext { Name, ScopeName, ScopeNamespace, Decl };
 
 predicate PythonSearchByName:
   {
