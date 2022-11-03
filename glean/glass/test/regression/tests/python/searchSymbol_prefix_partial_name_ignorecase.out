@@ -17,6 +17,9 @@
                     "repository": "test"
                 },
                 "name": "lib.HelperClass",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/py/lib.py/lib.HelperClass"
             },
             {
@@ -33,6 +36,9 @@
                     "repository": "test"
                 },
                 "name": "lib.helper_func",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/py/lib.py/lib.helper_func"
             }
         ]

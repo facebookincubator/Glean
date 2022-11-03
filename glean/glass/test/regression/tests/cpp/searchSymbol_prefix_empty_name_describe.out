@@ -1246,6 +1246,9 @@
                     "repository": "test"
                 },
                 "name": "Global",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//Global"
             },
             {
@@ -1262,6 +1265,9 @@
                     "repository": "test"
                 },
                 "name": "GA",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//Global/GA"
             },
             {
@@ -1278,6 +1284,9 @@
                     "repository": "test"
                 },
                 "name": "GB",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//Global/GB"
             },
             {
@@ -1294,6 +1303,9 @@
                     "repository": "test"
                 },
                 "name": "GC",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//Global/GC"
             },
             {
@@ -1310,6 +1322,9 @@
                     "repository": "test"
                 },
                 "name": "GlobalClass",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//GlobalClass"
             },
             {
@@ -1326,6 +1341,9 @@
                     "repository": "test"
                 },
                 "name": "GCA",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//GlobalClass/GCA"
             },
             {
@@ -1342,6 +1360,9 @@
                     "repository": "test"
                 },
                 "name": "GCB",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//GlobalClass/GCB"
             },
             {
@@ -1358,6 +1379,9 @@
                     "repository": "test"
                 },
                 "name": "GCC",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//GlobalClass/GCC"
             },
             {
@@ -1374,6 +1398,9 @@
                     "repository": "test"
                 },
                 "name": "U",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//baz/U"
             },
             {
@@ -1390,6 +1417,9 @@
                     "repository": "test"
                 },
                 "name": "InU",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//baz/U/InU"
             },
             {
@@ -1406,6 +1436,9 @@
                     "repository": "test"
                 },
                 "name": "UA",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//baz/U/InU/UA"
             },
             {
@@ -1422,6 +1455,9 @@
                     "repository": "test"
                 },
                 "name": "UB",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//baz/U/InU/UB"
             },
             {
@@ -1438,6 +1474,9 @@
                     "repository": "test"
                 },
                 "name": "UC",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//baz/U/InU/UC"
             },
             {
@@ -1454,6 +1493,9 @@
                     "repository": "test"
                 },
                 "name": "InUClass",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//baz/U/InUClass"
             },
             {
@@ -1470,6 +1512,9 @@
                     "repository": "test"
                 },
                 "name": "UCA",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//baz/U/InUClass/UCA"
             },
             {
@@ -1486,6 +1531,9 @@
                     "repository": "test"
                 },
                 "name": "UCB",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//baz/U/InUClass/UCB"
             },
             {
@@ -1502,6 +1550,9 @@
                     "repository": "test"
                 },
                 "name": "UCC",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//baz/U/InUClass/UCC"
             },
             {
@@ -1518,6 +1569,9 @@
                     "repository": "test"
                 },
                 "name": "S",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//foo/S"
             },
             {
@@ -1534,6 +1588,9 @@
                     "repository": "test"
                 },
                 "name": "T",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//foo/bar/T"
             },
             {
@@ -1550,6 +1607,9 @@
                     "repository": "test"
                 },
                 "name": "foo",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//foo/foo"
             },
             {
@@ -1566,6 +1626,9 @@
                     "repository": "test"
                 },
                 "name": "fooFn",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//foo/fooFn"
             },
             {
@@ -1582,6 +1645,9 @@
                     "repository": "test"
                 },
                 "name": "h",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//h"
             },
             {
@@ -1598,6 +1664,9 @@
                     "repository": "test"
                 },
                 "name": "Nothing",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//maybe/Nothing"
             },
             {
@@ -1614,6 +1683,9 @@
                     "repository": "test"
                 },
                 "name": "_secret",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//maybe/Nothing/_secret"
             },
             {
@@ -1630,6 +1702,9 @@
                     "repository": "test"
                 },
                 "name": "_magic",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//maybe/Nothing/_secret/_magic"
             },
             {
@@ -1646,6 +1721,9 @@
                     "repository": "test"
                 },
                 "name": "Something",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//maybe/Something"
             },
             {
@@ -1662,6 +1740,9 @@
                     "repository": "test"
                 },
                 "name": "nothing",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//maybe/nothing"
             }
         ]

@@ -17,6 +17,9 @@
                     "repository": "test"
                 },
                 "name": "BAZ",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceClass/BAZ"
             }
         ]

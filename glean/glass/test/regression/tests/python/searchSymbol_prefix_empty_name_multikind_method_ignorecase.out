@@ -17,6 +17,9 @@
                     "repository": "test"
                 },
                 "name": "all.LocalClass.meth",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/py/all.py/all.LocalClass.meth"
             },
             {
@@ -33,6 +36,9 @@
                     "repository": "test"
                 },
                 "name": "lib.HelperClass.another_method",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/py/lib.py/lib.HelperClass.another_method"
             },
             {
@@ -49,6 +55,9 @@
                     "repository": "test"
                 },
                 "name": "lib.HelperClass.method",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/py/lib.py/lib.HelperClass.method"
             }
         ]

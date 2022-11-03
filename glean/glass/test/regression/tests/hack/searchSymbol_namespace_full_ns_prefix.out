@@ -17,6 +17,9 @@
                     "repository": "test"
                 },
                 "name": "NamespaceClass",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/NS/NamespaceClass"
             }
         ]

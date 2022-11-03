@@ -17,6 +17,9 @@
                     "repository": "test"
                 },
                 "name": "class_function",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/NS/NamespaceClass/class_function"
             }
         ]

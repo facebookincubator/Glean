@@ -50,13 +50,13 @@ import Control.Exception ( throwIO, SomeException )
 import Control.Monad.Catch ( throwM, try )
 import Data.Either.Extra (eitherToMaybe, partitionEithers)
 import Data.Default (def)
+import Data.List as List ( sortOn )
+import Data.List.Extra ( nubOrd, groupOn )
 import Data.List.NonEmpty (NonEmpty(..), toList, nonEmpty)
-import Data.List.Extra (nubOrd)
 import Data.Maybe
 import Data.Ord
 import Data.Text ( Text )
 import qualified Control.Concurrent.Async as Async
-import qualified Data.List.Extra as List ( groupSortOn )
 import qualified Data.Map.Strict as Map
 import qualified Data.Text as Text
 
@@ -140,6 +140,7 @@ import Glean.Glass.SymbolKind ( findSymbolKind )
 import Glean.Glass.Types
     ( SymbolPath(SymbolPath, symbolPath_range, symbolPath_repository,
                  symbolPath_filepath),
+      SymbolKind,
       Attribute(Attribute_aInteger, Attribute_aString),
       KeyedAttribute(KeyedAttribute),
       Name(Name),
@@ -460,7 +461,8 @@ mkSymbolDescription symbolId repo CodeEntityLocation{..} = do
   range <- rangeSpanToLocationRange repo entityFile entityRange
   kind <- eitherToMaybe <$> findSymbolKind entity
   let lang = entityLanguage entity
-  describeEntity entity $ SymbolResult symbolId range lang kind entityName
+      score = mempty
+  describeEntity entity $ SymbolResult symbolId range lang kind entityName score
 
 -- | Search for entities by string name with kind and language filters
 searchSymbol
@@ -471,8 +473,8 @@ searchSymbol
 searchSymbol env@Glass.Env{..} req@SymbolSearchRequest{..} RequestOptions{..} =
   case selectGleanDBs scmRepo languageSet of
     Left err -> throwIO $ ServerException err
-    Right rs -> joinSearchResults mlimit terse sorted <$> Async.mapConcurrently
-      (uncurry searchSymbolsIn) (Map.toList rs)
+    Right rs -> joinSearchResults mlimit terse sorted <$>
+      Async.mapConcurrently (uncurry searchSymbolsIn) (Map.toList rs)
   where
     method = "searchSymbol"
     scmRepo = symbolSearchRequest_repo_name
@@ -500,7 +502,7 @@ searchSymbol env@Glass.Env{..} req@SymbolSearchRequest{..} RequestOptions{..} =
       Nothing -> pure (Query.RepoSearchResult [])
       Just names -> withGleanDBs method env req names $ \gleanDBs -> do
         res <- backendRunHaxl GleanBackend{..} $ Glean.queryAllRepos $ do
-          res <- mapM (runSearch repo mlimitInner terse) searchQs -- concurrent
+          res <- mapM (runSearch repo mlimitInner terse sString) searchQs
           return (nubOrd (concat res)) -- remove latter duplicates in n*log n
         pure (Query.RepoSearchResult res, Nothing)
 
@@ -509,13 +511,14 @@ runSearch
   :: RepoName
   -> Maybe Int
   -> Bool
+  -> Text
   -> Query.AngleSearch
   -> RepoHaxl u w [(SymbolResult, Maybe SymbolDescription)]
-runSearch repo mlimit terse (Query.Search query) = do
+runSearch repo mlimit terse sString (Query.Search query) = do
   names <- case query of
     Query.Fast q -> searchWithLimit mlimit q
     Query.Slow q -> searchWithTimeLimit mlimit queryTimeLimit q
-  mapM (processSymbolResult terse repo) names
+  mapM (processSymbolResult terse sString repo) names
   where
     queryTimeLimit = 5000 -- milliseconds, make this a flag?
 
@@ -523,10 +526,11 @@ runSearch repo mlimit terse (Query.Search query) = do
 processSymbolResult
   :: Query.ToSearchResult a
   => Bool
+  -> Text
   -> RepoName
   -> a
   -> RepoHaxl u w (SymbolResult, Maybe SymbolDescription)
-processSymbolResult terse repo result = do
+processSymbolResult terse sString repo result = do
   Query.SymbolSearchData{..} <- Query.toSearchResult result
   let Code.Location{..} = srLocation
   symbolResult_location <- rangeSpanToLocationRange
@@ -536,12 +540,18 @@ processSymbolResult terse repo result = do
   let symbolResult_kind = symbolKindToSymbolKind <$> srKind
       symbolResult_language = entityLanguage srEntity
       symbolResult_name = location_name
+      symbolResult_score = Map.singleton
+        "exactness"
+        (fromIntegral (fromEnum (scoreResult sString location_name)))
       basics = SymbolResult{..} -- just sym id, kind, lang, location
   (basics,) <$>
     if terse then pure Nothing else Just <$> describeEntity srEntity basics
 
 -- this takes first N results. We could try other strategies (such as
 -- selecting evenly by language, first n in alpha order by sym or file, ..
+--
+-- This is also where we sort the groups (kinds) so that the top N
+-- search results appear sampled and ranked.
 --
 joinSearchResults
   :: Maybe Int
@@ -553,16 +563,55 @@ joinSearchResults mlimit terse sorted xs = SymbolSearchResult syms $
     if terse then [] else catMaybes descs
   where
     (syms,descs) = unzip $ nubOrd $ case (mlimit, sorted) of
-      (Just n, False) -> take n flattened
       (Nothing, _) -> flattened
-      (Just n, True) -> takeFairN n
-        $ concatMap (List.groupSortOn characteristics .
-            Query.unRepoSearchResult) xs
-
-    characteristics (result,_desc) =
-      (symbolResult_language result, symbolResult_kind result)
+      (Just n, False) -> take n flattened
+      -- codehub/aka "sorted" mode grouping, ranking and sampling
+      (Just n, True) -> takeFairN n (concatMap sortResults xs)
 
     flattened = concatMap Query.unRepoSearchResult xs
+
+-- | Sort the results of one query set
+sortResults
+  :: Query.RepoSearchResult
+  -> [[(SymbolResult, Maybe SymbolDescription)]]
+sortResults (Query.RepoSearchResult xs) =
+    map (List.sortOn relevance) (groupOn features xs)
+  where
+    -- we group on the language/kind to produce result sets
+    -- then sort those results by score and alpha (note: not groupSortOn which
+    -- would create too many classes to select from)
+    features (SymbolResult{..},_desc) = Feature
+      symbolResult_language
+      symbolResult_kind
+
+    relevance (SymbolResult{..},_desc) =
+      (symbolResult_score, symbolResult_name)
+
+-- | We do some light ranking of the results
+scoreResult :: Text -> Text -> MatchType
+scoreResult query result
+  | result == query = ExactMatch
+  | Text.toLower result == queryLC = ExactInsensitiveMatch
+  | otherwise = Otherwise
+  where
+    queryLC = Text.toLower query
+
+-- A projection from the search result to features for fair sampling groups
+--
+-- todo: we might want to have fewer symbolkind groups (e.g. combine class-like
+-- things)
+--
+data Feature = Feature !Language !(Maybe SymbolKind)
+  deriving Eq
+
+-- | Glass needs to mark results by how good they are
+-- For scope searches we don't care so much as the scope will filter
+-- results. But for bare string searches we need to do a bit of work
+data MatchType
+  = ExactMatch             -- "FBID"
+  | ExactInsensitiveMatch  -- "fbid" ~ "FBID"
+  | Otherwise
+  deriving (Eq, Ord, Bounded, Enum)
 
 -- | Search for entities by symbol id prefix
 -- (deprecated)

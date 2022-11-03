@@ -17,6 +17,9 @@
                     "repository": "test"
                 },
                 "name": "NS",
+                "score": {
+                    "exactness": 0
+                },
                 "symbol": "test/php/ns/NS"
             },
             {
@@ -33,6 +36,9 @@
                     "repository": "test"
                 },
                 "name": "NS",
+                "score": {
+                    "exactness": 0
+                },
                 "symbol": "test/php/ns/NS"
             }
         ]

@@ -17,6 +17,9 @@
                     "repository": "test"
                 },
                 "name": "Position",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/Position"
             },
             {
@@ -33,6 +36,9 @@
                     "repository": "test"
                 },
                 "name": "Bottom",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/Position/Bottom"
             },
             {
@@ -49,6 +55,9 @@
                     "repository": "test"
                 },
                 "name": "Center",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/Position/Center"
             },
             {
@@ -65,6 +74,9 @@
                     "repository": "test"
                 },
                 "name": "Left",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/Position/Left"
             },
             {
@@ -81,6 +93,9 @@
                     "repository": "test"
                 },
                 "name": "Right",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/Position/Right"
             },
             {
@@ -97,6 +112,9 @@
                     "repository": "test"
                 },
                 "name": "Top",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/Position/Top"
             },
             {
@@ -113,6 +131,9 @@
                     "repository": "test"
                 },
                 "name": "SourceEnum",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceEnum"
             },
             {
@@ -129,6 +150,9 @@
                     "repository": "test"
                 },
                 "name": "A",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceEnum/A"
             },
             {
@@ -145,6 +169,9 @@
                     "repository": "test"
                 },
                 "name": "B",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceEnum/B"
             },
             {
@@ -161,6 +188,9 @@
                     "repository": "test"
                 },
                 "name": "SourceEnum2",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceEnum2"
             },
             {
@@ -177,6 +207,9 @@
                     "repository": "test"
                 },
                 "name": "A_TAG",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceEnum2/A_TAG"
             },
             {
@@ -193,6 +226,9 @@
                     "repository": "test"
                 },
                 "name": "B_TAG",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceEnum2/B_TAG"
             },
             {
@@ -209,6 +245,9 @@
                     "repository": "test"
                 },
                 "name": "C_TAG",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceEnum2/C_TAG"
             },
             {
@@ -225,6 +264,9 @@
                     "repository": "test"
                 },
                 "name": "SourceEnumClass3",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceEnumClass3"
             }
         ]

@@ -316,6 +316,9 @@
                     "repository": "test"
                 },
                 "name": "SourceClass",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceClass"
             },
             {
@@ -332,6 +335,9 @@
                     "repository": "test"
                 },
                 "name": "SourceEnum",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceEnum"
             },
             {
@@ -348,6 +354,9 @@
                     "repository": "test"
                 },
                 "name": "SourceEnum2",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceEnum2"
             },
             {
@@ -364,6 +373,9 @@
                     "repository": "test"
                 },
                 "name": "SourceEnumClass3",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceEnumClass3"
             },
             {
@@ -380,6 +392,9 @@
                     "repository": "test"
                 },
                 "name": "SourceInterface",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceInterface"
             },
             {
@@ -396,6 +411,9 @@
                     "repository": "test"
                 },
                 "name": "SourceTrait",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceTrait"
             }
         ]

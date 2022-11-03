@@ -2425,6 +2425,9 @@
                     "repository": "test"
                 },
                 "name": "IAInterface",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/IAInterface"
             },
             {
@@ -2441,6 +2444,9 @@
                     "repository": "test"
                 },
                 "name": "AnotherNamespaceClass",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/NS/AnotherNamespaceClass"
             },
             {
@@ -2457,6 +2463,9 @@
                     "repository": "test"
                 },
                 "name": "another_class_function",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/NS/AnotherNamespaceClass/another_class_function"
             },
             {
@@ -2473,6 +2482,9 @@
                     "repository": "test"
                 },
                 "name": "NamespaceClass",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/NS/NamespaceClass"
             },
             {
@@ -2489,6 +2501,9 @@
                     "repository": "test"
                 },
                 "name": "class_function",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/NS/NamespaceClass/class_function"
             },
             {
@@ -2505,6 +2520,9 @@
                     "repository": "test"
                 },
                 "name": "Position",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/Position"
             },
             {
@@ -2521,6 +2539,9 @@
                     "repository": "test"
                 },
                 "name": "Bottom",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/Position/Bottom"
             },
             {
@@ -2537,6 +2558,9 @@
                     "repository": "test"
                 },
                 "name": "Center",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/Position/Center"
             },
             {
@@ -2553,6 +2577,9 @@
                     "repository": "test"
                 },
                 "name": "Left",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/Position/Left"
             },
             {
@@ -2569,6 +2596,9 @@
                     "repository": "test"
                 },
                 "name": "Right",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/Position/Right"
             },
             {
@@ -2585,6 +2615,9 @@
                     "repository": "test"
                 },
                 "name": "Top",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/Position/Top"
             },
             {
@@ -2601,6 +2634,9 @@
                     "repository": "test"
                 },
                 "name": "RefClass",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/RefClass"
             },
             {
@@ -2617,6 +2653,9 @@
                     "repository": "test"
                 },
                 "name": "raz",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/RefClass/:prop/raz"
             },
             {
@@ -2633,6 +2672,9 @@
                     "repository": "test"
                 },
                 "name": "JAZZ",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/RefClass/JAZZ"
             },
             {
@@ -2649,6 +2691,9 @@
                     "repository": "test"
                 },
                 "name": "bar",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/RefClass/bar"
             },
             {
@@ -2665,6 +2710,9 @@
                     "repository": "test"
                 },
                 "name": "bazza",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/RefClass/bazza"
             },
             {
@@ -2681,6 +2729,9 @@
                     "repository": "test"
                 },
                 "name": "foo",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/RefClass/foo"
             },
             {
@@ -2697,6 +2748,9 @@
                     "repository": "test"
                 },
                 "name": "lotsofkeywords",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/RefClass/lotsofkeywords"
             },
             {
@@ -2713,6 +2767,9 @@
                     "repository": "test"
                 },
                 "name": "SourceClass",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceClass"
             },
             {
@@ -2729,6 +2786,9 @@
                     "repository": "test"
                 },
                 "name": "daz",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceClass/:prop/daz"
             },
             {
@@ -2745,6 +2805,9 @@
                     "repository": "test"
                 },
                 "name": "BAZ",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceClass/BAZ"
             },
             {
@@ -2761,6 +2824,9 @@
                     "repository": "test"
                 },
                 "name": "T",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceClass/T"
             },
             {
@@ -2777,6 +2843,9 @@
                     "repository": "test"
                 },
                 "name": "bar",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceClass/bar"
             },
             {
@@ -2793,6 +2862,9 @@
                     "repository": "test"
                 },
                 "name": "pleaseOverride",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceClass/pleaseOverride"
             },
             {
@@ -2809,6 +2881,9 @@
                     "repository": "test"
                 },
                 "name": "SourceEnum",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceEnum"
             },
             {
@@ -2825,6 +2900,9 @@
                     "repository": "test"
                 },
                 "name": "A",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceEnum/A"
             },
             {
@@ -2841,6 +2919,9 @@
                     "repository": "test"
                 },
                 "name": "B",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceEnum/B"
             },
             {
@@ -2857,6 +2938,9 @@
                     "repository": "test"
                 },
                 "name": "SourceEnum2",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceEnum2"
             },
             {
@@ -2873,6 +2957,9 @@
                     "repository": "test"
                 },
                 "name": "A_TAG",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceEnum2/A_TAG"
             },
             {
@@ -2889,6 +2976,9 @@
                     "repository": "test"
                 },
                 "name": "B_TAG",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceEnum2/B_TAG"
             },
             {
@@ -2905,6 +2995,9 @@
                     "repository": "test"
                 },
                 "name": "C_TAG",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceEnum2/C_TAG"
             },
             {
@@ -2921,6 +3014,9 @@
                     "repository": "test"
                 },
                 "name": "SourceEnumClass3",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceEnumClass3"
             },
             {
@@ -2937,6 +3033,9 @@
                     "repository": "test"
                 },
                 "name": "SourceInterface",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceInterface"
             },
             {
@@ -2953,6 +3052,9 @@
                     "repository": "test"
                 },
                 "name": "JAZZ",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceInterface/JAZZ"
             },
             {
@@ -2969,6 +3071,9 @@
                     "repository": "test"
                 },
                 "name": "foo",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceInterface/foo"
             },
             {
@@ -2985,6 +3090,9 @@
                     "repository": "test"
                 },
                 "name": "SourceTrait",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceTrait"
             },
             {
@@ -3001,6 +3109,9 @@
                     "repository": "test"
                 },
                 "name": "quux",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceTrait/quux"
             },
             {
@@ -3017,6 +3128,9 @@
                     "repository": "test"
                 },
                 "name": "SubClass",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SubClass"
             },
             {
@@ -3033,6 +3147,9 @@
                     "repository": "test"
                 },
                 "name": "pleaseOverride",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SubClass/pleaseOverride"
             },
             {
@@ -3049,6 +3166,9 @@
                     "repository": "test"
                 },
                 "name": "SuperClass",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SuperClass"
             },
             {
@@ -3065,6 +3185,9 @@
                     "repository": "test"
                 },
                 "name": "BAZ",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SuperClass/BAZ"
             },
             {
@@ -3081,6 +3204,9 @@
                     "repository": "test"
                 },
                 "name": "superAdd",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SuperClass/superAdd"
             },
             {
@@ -3097,6 +3223,9 @@
                     "repository": "test"
                 },
                 "name": "TestAnnotation",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/TestAnnotation"
             },
             {
@@ -3113,6 +3242,9 @@
                     "repository": "test"
                 },
                 "name": "test",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/TestAnnotation/:prop/test"
             },
             {
@@ -3129,6 +3261,9 @@
                     "repository": "test"
                 },
                 "name": "__construct",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/TestAnnotation/__construct"
             },
             {
@@ -3145,6 +3280,9 @@
                     "repository": "test"
                 },
                 "name": "io_good",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/TestAnnotation/io_good"
             },
             {
@@ -3161,6 +3299,9 @@
                     "repository": "test"
                 },
                 "name": "WALDO",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/const/WALDO"
             },
             {
@@ -3177,6 +3318,9 @@
                     "repository": "test"
                 },
                 "name": "corge",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/fun/corge"
             },
             {
@@ -3193,6 +3337,9 @@
                     "repository": "test"
                 },
                 "name": "NS",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/ns/NS"
             },
             {
@@ -3209,6 +3356,9 @@
                     "repository": "test"
                 },
                 "name": "NS",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/ns/NS"
             },
             {
@@ -3225,6 +3375,9 @@
                     "repository": "test"
                 },
                 "name": "InnerNS",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/ns/NS/InnerNS"
             }
         ]

@@ -63,6 +63,9 @@
                     "repository": "test"
                 },
                 "name": "corge",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/fun/corge"
             }
         ]

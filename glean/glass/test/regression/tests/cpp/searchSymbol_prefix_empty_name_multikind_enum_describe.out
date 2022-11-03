@@ -243,6 +243,9 @@
                     "repository": "test"
                 },
                 "name": "Global",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//Global"
             },
             {
@@ -259,6 +262,9 @@
                     "repository": "test"
                 },
                 "name": "GlobalClass",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//GlobalClass"
             },
             {
@@ -275,6 +281,9 @@
                     "repository": "test"
                 },
                 "name": "InU",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//baz/U/InU"
             },
             {
@@ -291,6 +300,9 @@
                     "repository": "test"
                 },
                 "name": "InUClass",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//baz/U/InUClass"
             },
             {
@@ -307,6 +319,9 @@
                     "repository": "test"
                 },
                 "name": "_secret",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/cpp//maybe/Nothing/_secret"
             }
         ]

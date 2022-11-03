@@ -717,6 +717,9 @@
                     "repository": "test"
                 },
                 "name": "another_class_function",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/NS/AnotherNamespaceClass/another_class_function"
             },
             {
@@ -733,6 +736,9 @@
                     "repository": "test"
                 },
                 "name": "class_function",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/NS/NamespaceClass/class_function"
             },
             {
@@ -749,6 +755,9 @@
                     "repository": "test"
                 },
                 "name": "bar",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/RefClass/bar"
             },
             {
@@ -765,6 +774,9 @@
                     "repository": "test"
                 },
                 "name": "bazza",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/RefClass/bazza"
             },
             {
@@ -781,6 +793,9 @@
                     "repository": "test"
                 },
                 "name": "foo",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/RefClass/foo"
             },
             {
@@ -797,6 +812,9 @@
                     "repository": "test"
                 },
                 "name": "lotsofkeywords",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/RefClass/lotsofkeywords"
             },
             {
@@ -813,6 +831,9 @@
                     "repository": "test"
                 },
                 "name": "bar",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceClass/bar"
             },
             {
@@ -829,6 +850,9 @@
                     "repository": "test"
                 },
                 "name": "pleaseOverride",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceClass/pleaseOverride"
             },
             {
@@ -845,6 +869,9 @@
                     "repository": "test"
                 },
                 "name": "foo",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceInterface/foo"
             },
             {
@@ -861,6 +888,9 @@
                     "repository": "test"
                 },
                 "name": "quux",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceTrait/quux"
             },
             {
@@ -877,6 +907,9 @@
                     "repository": "test"
                 },
                 "name": "pleaseOverride",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SubClass/pleaseOverride"
             },
             {
@@ -893,6 +926,9 @@
                     "repository": "test"
                 },
                 "name": "superAdd",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SuperClass/superAdd"
             },
             {
@@ -909,6 +945,9 @@
                     "repository": "test"
                 },
                 "name": "__construct",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/TestAnnotation/__construct"
             },
             {
@@ -925,6 +964,9 @@
                     "repository": "test"
                 },
                 "name": "io_good",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/TestAnnotation/io_good"
             }
         ]

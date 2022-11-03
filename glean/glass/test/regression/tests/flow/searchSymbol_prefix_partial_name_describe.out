@@ -105,6 +105,9 @@
                     "repository": "test"
                 },
                 "name": "foo",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/es_exports/foo"
             },
             {
@@ -120,6 +123,9 @@
                     "repository": "test"
                 },
                 "name": "foo",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/imports/foo"
             }
         ]

@@ -1304,6 +1304,9 @@
                     "repository": "test"
                 },
                 "name": "plus",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/cjs_exports/plus"
             },
             {
@@ -1319,6 +1322,9 @@
                     "repository": "test"
                 },
                 "name": "x",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/cjs_exports/x"
             },
             {
@@ -1334,6 +1340,9 @@
                     "repository": "test"
                 },
                 "name": "C",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/es_exports/C"
             },
             {
@@ -1349,6 +1358,9 @@
                     "repository": "test"
                 },
                 "name": "bar",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/es_exports/bar"
             },
             {
@@ -1364,6 +1376,9 @@
                     "repository": "test"
                 },
                 "name": "baz",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/es_exports/baz"
             },
             {
@@ -1379,6 +1394,9 @@
                     "repository": "test"
                 },
                 "name": "bor",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/es_exports/bor"
             },
             {
@@ -1394,6 +1412,9 @@
                     "repository": "test"
                 },
                 "name": "d",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/es_exports/d"
             },
             {
@@ -1409,6 +1430,9 @@
                     "repository": "test"
                 },
                 "name": "foo",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/es_exports/foo"
             },
             {
@@ -1424,6 +1448,9 @@
                     "repository": "test"
                 },
                 "name": "num",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/es_exports/num"
             },
             {
@@ -1439,6 +1466,9 @@
                     "repository": "test"
                 },
                 "name": "x",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/es_exports/x"
             },
             {
@@ -1454,6 +1484,9 @@
                     "repository": "test"
                 },
                 "name": "C",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/imports/C"
             },
             {
@@ -1469,6 +1502,9 @@
                     "repository": "test"
                 },
                 "name": "D",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/imports/D"
             },
             {
@@ -1484,6 +1520,9 @@
                     "repository": "test"
                 },
                 "name": "a",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/imports/a"
             },
             {
@@ -1499,6 +1538,9 @@
                     "repository": "test"
                 },
                 "name": "b",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/imports/b"
             },
             {
@@ -1514,6 +1556,9 @@
                     "repository": "test"
                 },
                 "name": "bar",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/imports/bar"
             },
             {
@@ -1529,6 +1574,9 @@
                     "repository": "test"
                 },
                 "name": "baz",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/imports/baz"
             },
             {
@@ -1544,6 +1592,9 @@
                     "repository": "test"
                 },
                 "name": "c",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/imports/c"
             },
             {
@@ -1559,6 +1610,9 @@
                     "repository": "test"
                 },
                 "name": "caz",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/imports/caz"
             },
             {
@@ -1574,6 +1628,9 @@
                     "repository": "test"
                 },
                 "name": "d",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/imports/d"
             },
             {
@@ -1589,6 +1646,9 @@
                     "repository": "test"
                 },
                 "name": "e",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/imports/e"
             },
             {
@@ -1604,6 +1664,9 @@
                     "repository": "test"
                 },
                 "name": "fn",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/imports/fn"
             },
             {
@@ -1619,6 +1682,9 @@
                     "repository": "test"
                 },
                 "name": "foo",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/imports/foo"
             },
             {
@@ -1634,6 +1700,9 @@
                     "repository": "test"
                 },
                 "name": "num",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/imports/num"
             },
             {
@@ -1649,6 +1718,9 @@
                     "repository": "test"
                 },
                 "name": "qux",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/imports/qux"
             },
             {
@@ -1664,6 +1736,9 @@
                     "repository": "test"
                 },
                 "name": "s",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/imports/s"
             },
             {
@@ -1679,6 +1754,9 @@
                     "repository": "test"
                 },
                 "name": "str",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/imports/str"
             },
             {
@@ -1694,6 +1772,9 @@
                     "repository": "test"
                 },
                 "name": "x",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/imports/x"
             },
             {
@@ -1709,6 +1790,9 @@
                     "repository": "test"
                 },
                 "name": "y",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/imports/y"
             },
             {
@@ -1724,6 +1808,9 @@
                     "repository": "test"
                 },
                 "name": "z",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/imports/z"
             }
         ]

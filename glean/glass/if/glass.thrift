@@ -406,6 +406,7 @@ struct SymbolResult {
   3: Language language;
   4: optional SymbolKind kind;
   5: string name;
+  6: map<string, double> score; // extensible ranking scores
 }
 
 // String search, either core symbol data or with full metadata per symbol

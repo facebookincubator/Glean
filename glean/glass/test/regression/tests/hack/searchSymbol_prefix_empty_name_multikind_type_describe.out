@@ -64,6 +64,9 @@
                     "repository": "test"
                 },
                 "name": "T",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceClass/T"
             }
         ]

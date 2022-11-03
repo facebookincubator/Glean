@@ -17,6 +17,9 @@
                     "repository": "test"
                 },
                 "name": "foo",
+                "score": {
+                    "exactness": 0
+                },
                 "symbol": "test/cpp//foo/foo"
             }
         ]

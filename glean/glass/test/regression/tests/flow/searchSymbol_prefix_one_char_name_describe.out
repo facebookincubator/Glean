@@ -149,6 +149,9 @@
                     "repository": "test"
                 },
                 "name": "foo",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/es_exports/foo"
             },
             {
@@ -164,6 +167,9 @@
                     "repository": "test"
                 },
                 "name": "fn",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/imports/fn"
             },
             {
@@ -179,6 +185,9 @@
                     "repository": "test"
                 },
                 "name": "foo",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/js/imports/foo"
             }
         ]

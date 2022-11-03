@@ -153,6 +153,9 @@
                     "repository": "test"
                 },
                 "name": "all.LocalClass",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/py/all.py/all.LocalClass"
             },
             {
@@ -169,6 +172,9 @@
                     "repository": "test"
                 },
                 "name": "lib.HelperClass",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/py/lib.py/lib.HelperClass"
             },
             {
@@ -185,6 +191,9 @@
                     "repository": "test"
                 },
                 "name": "shadow.ShadowClass",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/py/shadow.py/shadow.ShadowClass"
             }
         ]

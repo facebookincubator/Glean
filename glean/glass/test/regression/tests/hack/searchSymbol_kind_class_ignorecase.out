@@ -17,6 +17,9 @@
                     "repository": "test"
                 },
                 "name": "AnotherNamespaceClass",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/NS/AnotherNamespaceClass"
             },
             {
@@ -33,6 +36,9 @@
                     "repository": "test"
                 },
                 "name": "NamespaceClass",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/NS/NamespaceClass"
             },
             {
@@ -49,6 +55,9 @@
                     "repository": "test"
                 },
                 "name": "RefClass",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/RefClass"
             },
             {
@@ -65,6 +74,9 @@
                     "repository": "test"
                 },
                 "name": "SourceClass",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceClass"
             },
             {
@@ -81,6 +93,9 @@
                     "repository": "test"
                 },
                 "name": "SubClass",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SubClass"
             },
             {
@@ -97,6 +112,9 @@
                     "repository": "test"
                 },
                 "name": "SuperClass",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SuperClass"
             },
             {
@@ -113,6 +131,9 @@
                     "repository": "test"
                 },
                 "name": "TestAnnotation",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/TestAnnotation"
             }
         ]

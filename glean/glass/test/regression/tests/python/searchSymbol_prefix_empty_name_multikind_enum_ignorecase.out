@@ -17,6 +17,9 @@
                     "repository": "test"
                 },
                 "name": "all",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/py/all.py/all"
             },
             {
@@ -33,6 +36,9 @@
                     "repository": "test"
                 },
                 "name": "all.fn",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/py/all.py/all.fn"
             },
             {
@@ -49,6 +55,9 @@
                     "repository": "test"
                 },
                 "name": "as",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/py/as.py/as"
             },
             {
@@ -65,6 +74,9 @@
                     "repository": "test"
                 },
                 "name": "as.fn",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/py/as.py/as.fn"
             },
             {
@@ -81,6 +93,9 @@
                     "repository": "test"
                 },
                 "name": "big_lib",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/py/big_lib/big_lib"
             },
             {
@@ -97,6 +112,9 @@
                     "repository": "test"
                 },
                 "name": "big_lib.big_func",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/py/big_lib/big_lib.big_func"
             },
             {
@@ -113,6 +131,9 @@
                     "repository": "test"
                 },
                 "name": "big_lib.relative",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/py/big_lib/big_lib.relative"
             },
             {
@@ -129,6 +150,9 @@
                     "repository": "test"
                 },
                 "name": "lib",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/py/lib.py/lib"
             },
             {
@@ -145,6 +169,9 @@
                     "repository": "test"
                 },
                 "name": "lib.helper_func",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/py/lib.py/lib.helper_func"
             },
             {
@@ -161,6 +188,9 @@
                     "repository": "test"
                 },
                 "name": "main",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/py/main.py/main"
             },
             {
@@ -177,6 +207,9 @@
                     "repository": "test"
                 },
                 "name": "main.f",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/py/main.py/main.f"
             },
             {
@@ -193,6 +226,9 @@
                     "repository": "test"
                 },
                 "name": "main.g",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/py/main.py/main.g"
             },
             {
@@ -209,6 +245,9 @@
                     "repository": "test"
                 },
                 "name": "main.g.<locals>.h",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/py/main.py/main.g.%3Clocals%3E.h"
             },
             {
@@ -225,6 +264,9 @@
                     "repository": "test"
                 },
                 "name": "shadow",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/py/shadow.py/shadow"
             },
             {
@@ -241,6 +283,9 @@
                     "repository": "test"
                 },
                 "name": "shadow.shadow_func",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/py/shadow.py/shadow.shadow_func"
             }
         ]

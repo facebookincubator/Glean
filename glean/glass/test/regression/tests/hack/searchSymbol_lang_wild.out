@@ -17,6 +17,9 @@
                     "repository": "test"
                 },
                 "name": "SourceClass",
+                "score": {
+                    "exactness": 0
+                },
                 "symbol": "test/php/SourceClass"
             }
         ]

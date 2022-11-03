@@ -173,6 +173,9 @@
                     "repository": "test"
                 },
                 "name": "SourceClass",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SourceClass"
             },
             {
@@ -189,6 +192,9 @@
                     "repository": "test"
                 },
                 "name": "SubClass",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SubClass"
             },
             {
@@ -205,6 +211,9 @@
                     "repository": "test"
                 },
                 "name": "SuperClass",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/SuperClass"
             }
         ]

@@ -17,6 +17,9 @@
                     "repository": "test"
                 },
                 "name": "InnerNS",
+                "score": {
+                    "exactness": 2
+                },
                 "symbol": "test/php/ns/NS/InnerNS"
             }
         ]
