@@ -1,0 +1,6 @@
+schema indexer.1 {
+
+# Records configuration metadata for the indexer(s) that produced a DB
+predicate Config: string -> string
+
+}
