@@ -174,6 +174,11 @@ predicate HackSearchByLowerCaseScope:
     HackSearchByScopeWithName { Name, Insensitive, Query, Entity }
 
 # private helper to share name facts between the calsl
+#
+# by always using the matched namespace we make prevent scope wildcards
+# e.g. C\count won't match Test\C\count
+# we could try to interpret prefix mode this way though
+#
 predicate HackSearchByScopeWithName:
   {
     name: hack.Name,
@@ -181,12 +186,17 @@ predicate HackSearchByScopeWithName:
     scope: [string],
     entity: code.Entity,
   }
-  { Name, Insensitive, Query, { hack = { decl = Decl }}} where
-    search.hack.QueryToScopeCase { Query, Insensitive, ScopeName, ScopeNamespace };
-    # by always using the matched namespace we make prevent scope wildcards
-    # e.g. C\count won't match Test\C\count
-    # we could try to interpret prefix mode this way though
-    search.hack.SearchInContext { Name, ScopeName, ScopeNamespace, Decl };
+  { Name, Insensitive, Scope, { hack = { decl = Decl }}} where
+    if ( [] = Scope; true | false = Insensitive )
+      then (
+        # global declarations only
+        search.hack.SearchInNamespace { Name, nothing, Decl }
+      )
+      else (
+        # search within specific context
+        search.hack.QueryToScopeCase { Scope, Insensitive, ScopeName, ScopeNamespace };
+        search.hack.SearchInContext { Name, ScopeName, ScopeNamespace, Decl }
+      );
 
 predicate PythonSearchByName:
   {

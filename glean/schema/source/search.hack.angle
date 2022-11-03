@@ -37,7 +37,7 @@ predicate SearchByName :
 # enum_, function_, globalConst, and typedef_ in a NamespaceQName
 #
 # With namespace_ of nothing, this searches for top-level declarations (global
-# items without a context).
+# items without a context)
 #
 # Also helps SearchInContext to find declarations in non-empty namespace
 # contexts.
