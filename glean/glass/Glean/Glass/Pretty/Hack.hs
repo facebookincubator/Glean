@@ -142,15 +142,13 @@ prettyDecl _ (Interface name typeParams) =
 prettyDecl _ (Enumerator enum name) =
   ppQualName enum <> "::" <> ppName name
 prettyDecl opts (Function modifiers name sig) =
-  ppFunctionModifiers modifiers <+> ppQualName name <>
-  ppSignature opts sig
+  ppSignature opts (ppFunctionModifiers modifiers <+> ppQualName name) sig
 prettyDecl _ (GlobalConst name) =
   "const" <+> ppQualName name
 prettyDecl _ (Namespace name) =
   "namespace" <+> ppQual name
 prettyDecl opts (Method modifiers container name sig) =
-  ppMethodModifiers container modifiers <+> ppName name <>
-  ppSignature opts sig
+  ppSignature opts (ppMethodModifiers container modifiers <+> ppName name) sig
 prettyDecl _ (Property modifiers container name mhacktype) =
   ppPropertyModifiers container modifiers <+> ppType mhacktype <+> ppName name
 prettyDecl _ (TypeConst name IsAbstract) =
@@ -186,15 +184,23 @@ ppClassModifiers (ClassMod abstract final) =
     when (final==Final) $ tell ["final"]
     tell ["class"]
 
-ppSignature :: LayoutOptions -> Signature -> Doc ()
-ppSignature opts (Signature returnType typeParams params ctxs) =
+ppSignature :: LayoutOptions -> Doc () -> Signature -> Doc ()
+ppSignature opts head (Signature returnType typeParams params ctxs) =
     if fitsOnOneLine then
       hcat
         [ onelineDoc
         , nest 4 (":" <+> ppReturnType returnType)
         ]
     else
-      typeParamsDoc
+      multilineDoc
+  where
+    typeParamsDoc = ppTypeParams typeParams
+    onelineDoc = head <> cat
+      [ typeParamsDoc
+      , parens (hsep $ punctuate comma (map ppParameter params))
+      , ppContexts ctxs
+      ]
+    multilineDoc = head <> typeParamsDoc
       <> vcat
         [ nest 4 $ vcat
           [ "("
@@ -202,13 +208,6 @@ ppSignature opts (Signature returnType typeParams params ctxs) =
           ]
         , nest 4 $ ")" <> ppContexts ctxs <> ":" <+> ppReturnType returnType
         ]
-  where
-    typeParamsDoc = ppTypeParams typeParams
-    onelineDoc = cat
-      [ typeParamsDoc
-      , parens (hsep $ punctuate comma (map ppParameter params))
-      , ppContexts ctxs
-      ]
     paramsText = renderStrict $ layoutSmart opts onelineDoc
     fitsOnOneLine = not containsNewline
     containsNewline = Text.any (== '\n') paramsText
