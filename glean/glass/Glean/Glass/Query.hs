@@ -247,14 +247,18 @@ compileQuery sKinds sLangs e = case e of
     -- then we'd find "C" in global
     ContainerLiteral sCase name -> slow $ -- the namespace filter can be slow
       nameQ Exact sCase name (if null sKinds then containerishKinds else sKinds)
+    GlobalScoped sCase name -> fast $
+      scopeQ Exact sCase Nothing name
+    GlobalScopedPrefixly sCase name -> slow $
+      scopeQ Prefix sCase Nothing name
     Literal sCase name -> fast $
       nameQ Exact sCase name sKinds
     Prefixly sCase name -> slow $
       nameQ Prefix sCase name sKinds
     Scoped sCase scope name -> slow $ -- this is only fast if repo/lang matches
-      scopeQ Exact sCase scope name
+      scopeQ Exact sCase (Just scope) name
     ScopedPrefixly sCase scope name -> slow $
-      scopeQ Prefix sCase scope name
+      scopeQ Prefix sCase (Just scope) name
   where
     fast = Search . Fast
     slow = Search . Slow
@@ -263,7 +267,7 @@ compileQuery sKinds sLangs e = case e of
     nameQ sTy sCa name kinds = codeSearchByName $
       compileSearchQ sTy sCa (Just name) Nothing kinds sLangs
     scopeQ sTy sCa scopes name = codeSearchByScope $
-      compileSearchQ sTy sCa (Just name) (Just scopes) sKinds sLangs
+      compileSearchQ sTy sCa (Just name) scopes sKinds sLangs
 
 -- | Common "API"-level things, you could reasonably expect to be ranked highly
 containerishKinds :: [Code.SymbolKind]
@@ -280,9 +284,11 @@ containerishKinds =
 data SearchExpr
   -- literal name searches
   = ContainerLiteral SearchCase Text -- exactly "Vec" or "vec" of kind:namespace
+  | GlobalScoped SearchCase Text -- exactly "genmk" in the global scope
+  | GlobalScopedPrefixly SearchCase Text -- prefix e.g. "genm".. in global scope
   | Literal SearchCase Text  -- exactly "Vec" or "C" (or "vec" or "VEC" or "Vec"
   | Prefixly SearchCase Text   -- "vec".. or "Vec".. etc any case
-  -- scope searches
+  -- scope searches (ignoring globals)
   | Scoped SearchCase (NonEmpty Text) Text -- "Vec\sort"
   | ScopedPrefixly SearchCase (NonEmpty Text) Text   -- "Vec\so"..
 
@@ -293,6 +299,18 @@ searchContainer sName sKinds sCase
   = [ContainerLiteral sCase sName]
   | otherwise
   = []
+
+-- for global literal searches, case-sensitive matches beat insensitive matches
+searchGlobal :: Text -> SearchCase -> [SearchExpr]
+searchGlobal sName sCase = case sCase of
+  Sensitive -> [GlobalScoped Sensitive sName]
+  Insensitive -> [GlobalScoped Sensitive sName, GlobalScoped Insensitive sName]
+
+-- Prefix search requested (default in codehub)
+searchGlobalPrefix :: Text -> SearchType -> SearchCase -> [SearchExpr]
+searchGlobalPrefix sName sType sCase = case sType of
+  Prefix -> [GlobalScopedPrefixly sCase sName]
+  Exact -> []
 
 -- for literal searches, case-sensitive matches beat insensitive matches
 searchLiteral :: Text -> SearchCase -> [SearchExpr]
@@ -323,7 +341,6 @@ searchScope scope name sType sCase = case sType of
 --
 toRankedSearchQuery :: SearchQuery -> [SearchExpr]
 toRankedSearchQuery query@SearchQuery{..} = case sScope of
-
   -- scope search. glass search -s  , and default on codehub
   Scope -> case toScopeTokens sString of
     Just scopeQ -> searchScopes scopeQ query
@@ -331,8 +348,10 @@ toRankedSearchQuery query@SearchQuery{..} = case sScope of
 
   -- not a scope search. i.e. glass cli default
   -- we will try to match strictly against the local name of the identifier
-  NoScope -> searchContainer sString sKinds sCase
+  NoScope -> searchGlobal sString sCase
+     <> searchContainer sString sKinds sCase
      <> searchLiteral sString sCase
+     <> searchGlobalPrefix sString sType sCase
      <> searchPrefix sString sType sCase
 
 searchScopes :: ScopeQuery -> SearchQuery -> [SearchExpr]
@@ -385,10 +404,14 @@ feelingLuckyQuery query@SearchQuery{..} = case sScope of
   -- not a scope search. i.e. glass cli default
   -- we will try to match strictly against the local name of the identifier
   NoScope ->
-    [ ContainerLiteral Sensitive sString
-    , ContainerLiteral Insensitive sString
+    [ GlobalScoped Sensitive sString -- "genmk", global "C"
+    , GlobalScoped Insensitive sString
+    , ContainerLiteral Sensitive sString -- "C"
+    , ContainerLiteral Insensitive sString -- e.g. "vec" lands here
     , Literal Sensitive sString
     , Literal Insensitive sString
+    , GlobalScopedPrefixly Sensitive sString
+    , GlobalScopedPrefixly Insensitive sString
     , Prefixly Sensitive sString  -- any sensitive prefix
     , Prefixly Insensitive sString  -- any insensitive prefix, broadest possible
     ]
@@ -509,7 +532,7 @@ codeSearchByScope SearchQ{..} =
       field @"language" languagePat -- optional language filters
     end
   where
-    scopePat = fromMaybe (array []) scopeQ
+    scopePat = fromMaybe (array []) scopeQ -- Nothing == global scope
     kindPat = maybe wild just mKindQ
     languagePat = fromMaybe wild mLangQ
 
