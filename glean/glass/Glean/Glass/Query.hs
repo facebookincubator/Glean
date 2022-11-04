@@ -235,8 +235,8 @@ buildSearchQuery query = map (compileQuery (sKinds query) (sLangs query))
 compileQuery
   :: [Code.SymbolKind] -> [Code.Language] -> SearchExpr -> AngleSearch
 compileQuery sKinds sLangs e = case e of
-    NamespaceLiteral sCase name -> slow $ -- the namespace filter can be slow
-      nameQ Exact sCase name [Code.SymbolKind_Namespace]
+    ContainerLiteral sCase name -> slow $ -- the namespace filter can be slow
+      nameQ Exact sCase name (if null sKinds then containerishKinds else sKinds)
     Literal sCase name -> fast $
       nameQ Exact sCase name sKinds
     Prefixly sCase name -> slow $
@@ -255,23 +255,32 @@ compileQuery sKinds sLangs e = case e of
     scopeQ sTy sCa scopes name = codeSearchByScope $
       compileSearchQ sTy sCa (Just name) (Just scopes) sKinds sLangs
 
+-- | Common "API"-level things, you could reasonably expect to be ranked highly
+containerishKinds :: [Code.SymbolKind]
+containerishKinds =
+  [ Code.SymbolKind_Namespace
+  , Code.SymbolKind_Class_
+  , Code.SymbolKind_Trait
+  , Code.SymbolKind_Interface
+  ]
+
 --
 -- The major search styles, in policy "accuracy" order
 --
 data SearchExpr
   -- literal name searches
-  = NamespaceLiteral SearchCase Text -- exactly "Vec" or "vec" of kind:namespace
+  = ContainerLiteral SearchCase Text -- exactly "Vec" or "vec" of kind:namespace
   | Literal SearchCase Text  -- exactly "Vec" or "C" (or "vec" or "VEC" or "Vec"
   | Prefixly SearchCase Text   -- "vec".. or "Vec".. etc any case
   -- scope searches
   | Scoped SearchCase (NonEmpty Text) Text -- "Vec\sort"
   | ScopedPrefixly SearchCase (NonEmpty Text) Text   -- "Vec\so"..
 
--- we do namespace (or class?) first if no kind filter, or kinds include
-searchNamespace :: Text -> [Code.SymbolKind] -> SearchCase -> [SearchExpr]
-searchNamespace sName sKinds sCase
-  | null sKinds || Code.SymbolKind_Namespace `elem` sKinds
-  = [NamespaceLiteral sCase sName]
+-- we do namespace (or class?) first if no kind filter, or kinds included
+searchContainer :: Text -> [Code.SymbolKind] -> SearchCase -> [SearchExpr]
+searchContainer sName sKinds sCase
+  | null sKinds
+  = [ContainerLiteral sCase sName]
   | otherwise
   = []
 
@@ -304,15 +313,17 @@ searchScope scope name sType sCase = case sType of
 --
 toRankedSearchQuery :: SearchQuery -> [SearchExpr]
 toRankedSearchQuery query@SearchQuery{..} = case sScope of
-  -- not a scope search. i.e. glass cli default
-  -- we will try to match the local name of the identifier
-  NoScope -> searchNamespace sString sKinds sCase
-     <> searchLiteral sString sCase
-     <> searchPrefix sString sType sCase
+
   -- scope search. glass search -s  , and default on codehub
   Scope -> case toScopeTokens sString of
-    Nothing -> toRankedSearchQuery (query { sScope = NoScope })
     Just scopeQ -> searchScopes scopeQ query
+    Nothing -> toRankedSearchQuery (query { sScope = NoScope })
+
+  -- not a scope search. i.e. glass cli default
+  -- we will try to match strictly against the local name of the identifier
+  NoScope -> searchContainer sString sKinds sCase
+     <> searchLiteral sString sCase
+     <> searchPrefix sString sType sCase
 
 searchScopes :: ScopeQuery -> SearchQuery -> [SearchExpr]
 searchScopes scopeQ SearchQuery{..} = case scopeQ of
@@ -323,7 +334,7 @@ searchScopes scopeQ SearchQuery{..} = case scopeQ of
     <> searchLiteral sString sCase
   -- could be a container as well
   ScopeOnly scope ->
-       searchNamespace (NonEmpty.last scope) sKinds sCase
+       searchContainer (NonEmpty.last scope) sKinds sCase
     <> searchLiteral (NonEmpty.last scope) sCase
     <> searchLiteral sString sCase
     <> searchPrefix sString sType sCase
