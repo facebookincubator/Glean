@@ -190,7 +190,12 @@ predicate HackSearchByScopeWithName:
     if ( [] = Scope; true | false = Insensitive )
       then (
         # global declarations only
-        search.hack.SearchInNamespace { Name, nothing, Decl }
+        search.hack.SearchInNamespace { Name, nothing, Decl } |
+        # but we also need to expand out any aliases so that "Str" or "C" work
+        ( hack.GlobalNamespaceAlias { Name, NSQName };
+          NSDecl = hack.NamespaceDeclaration { name = NSQName };
+          { namespace_ = NSDecl } = Decl;
+        )
       )
       else (
         # search within specific context
