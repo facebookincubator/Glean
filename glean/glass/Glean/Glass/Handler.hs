@@ -51,7 +51,7 @@ import Control.Monad.Catch ( throwM, try )
 import Data.Either.Extra (eitherToMaybe, partitionEithers)
 import Data.Default (def)
 import Data.List as List ( sortOn )
-import Data.List.Extra ( nubOrd, groupOn )
+import Data.List.Extra ( nubOrd, nubOrdOn, groupOn )
 import Data.List.NonEmpty (NonEmpty(..), toList, nonEmpty)
 import Data.Maybe
 import Data.Ord
@@ -197,7 +197,11 @@ import Glean.Impl.ThriftService ( ThriftService )
 import qualified Glean.Glass.Env as Glass
 
 import qualified Glean.Glass.Query as Query
-import Glean.Glass.Query ( SearchCase(..), SearchType(..), SearchScope(..) )
+import Glean.Glass.Query (
+    SearchCase(..), SearchType(..),
+    SearchScope(..), SearchMode(..),
+    SingleSymbol, FeelingLuckyResult(..)
+  )
 import qualified Glean.Glass.Query.Cxx as Cxx
 
 import Glean.Glass.SymbolMap ( toSymbolIndex )
@@ -473,10 +477,13 @@ searchSymbol
 searchSymbol env@Glass.Env{..} req@SymbolSearchRequest{..} RequestOptions{..} =
   case selectGleanDBs scmRepo languageSet of
     Left err -> throwIO $ ServerException err
-    Right rs -> joinSearchResults mlimit terse sorted <$>
-      Async.mapConcurrently (uncurry searchSymbolsIn) (Map.toList rs)
+    Right rs -> case sFeelingLucky of
+      Normal -> joinSearchResults mlimit terse sorted <$> Async.mapConcurrently
+        (uncurry searchSymbolsIn) (Map.toList rs)
+      -- lucky mode is quite different, as it has to make priority choices
+      FeelingLucky -> joinLuckyResults <$> Async.mapConcurrently
+        (uncurry searchLuckySymbolsIn) (Map.toList rs)
   where
-    method = "searchSymbol"
     scmRepo = symbolSearchRequest_repo_name
     languageSet = symbolSearchRequest_language
     SymbolSearchOptions{..} = symbolSearchRequest_options
@@ -493,18 +500,37 @@ searchSymbol env@Glass.Env{..} req@SymbolSearchRequest{..} RequestOptions{..} =
     sString = Text.strip symbolSearchRequest_name -- drop leading whitespace
     sKinds = map symbolKindFromSymbolKind (Set.elems symbolSearchRequest_kinds)
     sLangs = mapMaybe languageToCodeLang (Set.elems languageSet)
+    sFeelingLucky =
+      if symbolSearchOptions_feelingLucky then FeelingLucky else Normal
 
-    searchQs = Query.buildSearchQuery Query.SearchQuery {..}
+    searchQs = Query.buildSearchQuery sFeelingLucky Query.SearchQuery{..}
 
     -- run the same query across more than one glean db
     searchSymbolsIn :: RepoName -> Set GleanDBName -> IO Query.RepoSearchResult
     searchSymbolsIn repo dbs = case nonEmpty (Set.toList dbs) of
       Nothing -> pure (Query.RepoSearchResult [])
-      Just names -> withGleanDBs method env req names $ \gleanDBs -> do
+      Just names -> withGleanDBs "searchSymbol" env req names $ \gleanDBs -> do
         res <- backendRunHaxl GleanBackend{..} $ Glean.queryAllRepos $ do
           res <- mapM (runSearch repo mlimitInner terse sString) searchQs
           return (nubOrd (concat res)) -- remove latter duplicates in n*log n
         pure (Query.RepoSearchResult res, Nothing)
+
+    -- In lucky mode, we avoid flattening, instead selecting from the first
+    -- unique result found in priority order. We don't de-dup as we go.
+    searchLuckySymbolsIn
+      :: RepoName -> Set GleanDBName -> IO FeelingLuckyResult
+    searchLuckySymbolsIn repo dbs = case nonEmpty (Set.toList dbs) of
+      Nothing -> pure (FeelingLuckyResult [])
+      Just names -> withGleanDBs "feelingLucky" env req names $ \gleanDBs -> do
+        res <- backendRunHaxl GleanBackend{..} $ Glean.queryEachRepo $ do
+          -- we can conveniently limit to 2 matches per inner search
+          rs <- mapM (runSearch repo (Just 2) terse sString) searchQs
+          return (map (Query.RepoSearchResult . nubOrdOn symbolIdOrder) rs)
+        pure (FeelingLuckyResult res, Nothing)
+
+-- cheap way to fix up entities with non-unique locations: uniq on symbol id
+symbolIdOrder :: (SymbolResult, a) -> SymbolId
+symbolIdOrder = symbolResult_symbol . fst
 
 -- Run a specific Query.AngleSearch query, with optional time boxing
 runSearch
@@ -569,6 +595,55 @@ joinSearchResults mlimit terse sorted xs = SymbolSearchResult syms $
       (Just n, True) -> takeFairN n (concatMap sortResults xs)
 
     flattened = concatMap Query.unRepoSearchResult xs
+
+--
+-- DFS to first singleton result.
+--
+-- Search matrix for feeling lucky
+-- - scm repo
+-- - dbs within repo
+-- - queries in order within db
+--
+joinLuckyResults :: [FeelingLuckyResult] -> SymbolSearchResult
+joinLuckyResults allResults = case findLucky allResults of
+    Nothing -> SymbolSearchResult [] []
+    Just (result, desc) -> SymbolSearchResult [result] (catMaybes [desc])
+  where
+    -- little state machine across logical scm repos (e.g. "fbsource")
+    findLucky :: [FeelingLuckyResult] -> Maybe SingleSymbol
+    findLucky [] = Nothing
+    findLucky (FeelingLuckyResult scmRepo : rest) = case findInner scmRepo of
+      Continue -> findLucky rest
+      Stop -> Nothing
+      Found result -> Just result
+
+    -- across a particular scm repo's glean dbs (e.g. arvr.cxx, fbcode.cxx)
+    findInner :: [[Query.RepoSearchResult]] -> MaybeResult SingleSymbol
+    findInner [] = Continue
+    findInner (db : dbs) = case findUnique db of
+      Continue -> findInner dbs
+      Stop -> Stop -- could try to be smart and merge duplicates
+      Found x -> Found x
+
+    -- results across each underlying glean query.
+    -- if we see a unique result that's our winner
+    findUnique :: [Query.RepoSearchResult] -> MaybeResult SingleSymbol
+    findUnique [] = Continue
+    findUnique (q : qs) = case hasUniqueResult q of
+      Continue -> findUnique qs -- continue in priority order
+      Stop -> Stop -- can't proceed
+      Found x -> Found x -- got it!
+
+    hasUniqueResult :: Query.RepoSearchResult -> MaybeResult SingleSymbol
+    hasUniqueResult (Query.RepoSearchResult results) = case results of
+      [] -> Continue
+      [unique] -> Found unique
+      _ -> Stop -- more than 1 result, terminate
+
+data MaybeResult a
+  = Continue -- so far, no results, keep going
+  | Found a -- one perfect result
+  | Stop -- yikes, too many results. abandon ship
 
 -- | Sort the results of one query set
 sortResults

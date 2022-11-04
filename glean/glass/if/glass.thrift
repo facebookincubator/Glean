@@ -388,6 +388,7 @@ struct SymbolSearchOptions {
   3: bool ignoreCase = false;
   4: bool namespaceSearch = false; // treat query as namespace-delimited search
   5: bool sortResults = false; // attempt to select results evenly across langs
+  6: bool feelingLucky = false; // return a unique result or nothing
 }
 
 // Search for symbols by string

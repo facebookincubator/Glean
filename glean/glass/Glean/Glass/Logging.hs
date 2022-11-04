@@ -36,7 +36,7 @@ import Util.Text ( textShow )
 import Glean ( Repo(..) )
 
 import Glean.Glass.Types
-import Glean.Glass.Query (RepoSearchResult(..))
+import Glean.Glass.Query (RepoSearchResult(..), FeelingLuckyResult(..))
 import qualified Data.Text as Text
 import Data.List.NonEmpty ( NonEmpty(..), toList )
 import qualified Data.List.NonEmpty as NE
@@ -139,6 +139,11 @@ instance LogResult SymbolSearchResult where
 instance LogResult RepoSearchResult where
   logResult (RepoSearchResult rs, log) =
     log <> Logger.setItemCount (length rs)
+
+instance LogResult FeelingLuckyResult where
+  logResult (FeelingLuckyResult rs, log) =
+    log <> Logger.setItemCount
+      (sum (map (sum . map (length . unRepoSearchResult)) rs))
 
 instance LogResult SearchBySymbolIdResult where
   logResult (SearchBySymbolIdResult symids, log) = logResult (symids, log)

@@ -28,6 +28,8 @@ module Glean.Glass.Query
   , SymbolSearchData(..)
   , ToSearchResult(..)
   , RepoSearchResult(..)
+  , FeelingLuckyResult(..)
+  , SingleSymbol
 
   -- * Search
   -- ** Search flags
@@ -35,6 +37,7 @@ module Glean.Glass.Query
   , SearchType(..)
   , SearchQuery(..)
   , SearchScope(..)
+  , SearchMode(..)
   , AngleSearch(..)
   , CostTag(..)
   -- ** Search query builder
@@ -169,6 +172,9 @@ data SearchCase = Sensitive | Insensitive
 -- | Whether to parse the string at all
 data SearchScope = NoScope | Scope
 
+-- | Search modes: unique/feeling lucky or full search
+data SearchMode = Normal | FeelingLucky
+
 -- | Abstract over search predicates
 data AngleSearch = forall p . ( QueryType p, ToSearchResult p) =>
   Search (CostTag (Angle p))
@@ -228,13 +234,17 @@ data SearchQuery = SearchQuery {
 -- We go to some effort to rank query results so that "C" or "Vec" apear
 -- early (i.e. namesspaces), and in qnames, exact matches win.
 --
-buildSearchQuery :: SearchQuery -> [AngleSearch]
-buildSearchQuery query = map (compileQuery (sKinds query) (sLangs query))
-  (toRankedSearchQuery query)
+buildSearchQuery :: SearchMode -> SearchQuery -> [AngleSearch]
+buildSearchQuery Normal query =
+  map (compileQuery (sKinds query) (sLangs query)) (toRankedSearchQuery query)
+buildSearchQuery FeelingLucky query =
+  map (compileQuery (sKinds query) (sLangs query)) (feelingLuckyQuery query)
 
 compileQuery
   :: [Code.SymbolKind] -> [Code.Language] -> SearchExpr -> AngleSearch
 compileQuery sKinds sLangs e = case e of
+    -- todo: this could perhaps be a scope search for global scope only?
+    -- then we'd find "C" in global
     ContainerLiteral sCase name -> slow $ -- the namespace filter can be slow
       nameQ Exact sCase name (if null sKinds then containerishKinds else sKinds)
     Literal sCase name -> fast $
@@ -341,6 +351,48 @@ searchScopes scopeQ SearchQuery{..} = case scopeQ of
 
   NameOnly name -> searchLiteral name sCase <> searchPrefix name sType sCase
 
+-- | In feeling lucky mode, we do concurrent precise searches
+-- then return the first of the exact matches we hit in priority order
+-- We only need to search with limit=2 for these, so they can be fast and we
+-- can do more of them
+feelingLuckyQuery :: SearchQuery -> [SearchExpr]
+feelingLuckyQuery query@SearchQuery{..} = case sScope of
+  -- try to parse as a scope query first
+  Scope ->
+    case toScopeTokens sString of
+      -- valid qname
+      Just (ScopeAndName scope name) ->
+        [ Scoped Sensitive scope name
+        , Scoped Insensitive scope name
+        , ScopedPrefixly Sensitive scope name
+        , ScopedPrefixly Insensitive scope name
+        ]
+        ++ feelingLuckyQuery (query { sScope = NoScope }) -- plus try as literal
+
+      -- prefix part (e.g. `Foo::`)
+      Just (ScopeOnly scope) ->
+        feelingLuckyQuery (query {
+          sScope = NoScope,
+          sString = NonEmpty.last scope }
+        )
+      -- suffix part (e.g. `::bar`)
+      Just (NameOnly name) ->
+        feelingLuckyQuery (query { sScope = NoScope, sString = name })
+
+      -- doesn't parse, just usual literal search
+      Nothing -> feelingLuckyQuery (query { sScope = NoScope })
+
+  -- not a scope search. i.e. glass cli default
+  -- we will try to match strictly against the local name of the identifier
+  NoScope ->
+    [ ContainerLiteral Sensitive sString
+    , ContainerLiteral Insensitive sString
+    , Literal Sensitive sString
+    , Literal Insensitive sString
+    , Prefixly Sensitive sString  -- any sensitive prefix
+    , Prefixly Insensitive sString  -- any insensitive prefix, broadest possible
+    ]
+
 -- | Search params compiled to Angle expressions
 data SearchQ = SearchQ {
     nameQ :: Angle Text,
@@ -364,10 +416,19 @@ compileSearchQ
 compileSearchQ sType sCase name scope kinds langs = SearchQ{..}
   where
     nameQ = toNameQuery sType sCase name
-    scopeQ = array . map string . toList <$> scope
+    scopeQ = toScopeQuery sCase scope
     caseQ = toCaseQuery sCase
     mKindQ = toEnumSet kinds
     mLangQ = toEnumSet langs
+
+-- We support scope insensitive queries, so check that
+toScopeQuery :: SearchCase -> Maybe (NonEmpty Text) -> Maybe (Angle [Text])
+toScopeQuery _ Nothing = Nothing
+toScopeQuery sCase (Just scope) = Just (array (map string scopeLits))
+  where
+    scopeLits = case sCase of
+      Sensitive -> toList scope
+      Insensitive -> map toLower (toList scope)
 
 toNameQuery :: SearchType -> SearchCase -> Maybe Text -> Angle Text
 toNameQuery _ _ Nothing = wild
@@ -496,8 +557,14 @@ instance ToSearchResult CodeSearch.SearchByScope where
 -- | Type of processed search results from a single scm repo
 newtype RepoSearchResult =
   RepoSearchResult {
-    unRepoSearchResult :: [(SymbolResult,Maybe SymbolDescription)]
+    unRepoSearchResult :: [SingleSymbol]
   }
+
+-- An un-concatenated set of query results to search for unique hits in
+-- within one scm repo, across dbs, across queries, a set of result symbols.
+newtype FeelingLuckyResult = FeelingLuckyResult [[RepoSearchResult]]
+
+type SingleSymbol = (SymbolResult,Maybe SymbolDescription)
 
 -- | Given an entity find the kind associated with it
 symbolKind :: Angle Code.Entity -> Angle Code.SymbolKind

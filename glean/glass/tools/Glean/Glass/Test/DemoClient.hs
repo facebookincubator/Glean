@@ -204,7 +204,7 @@ runSearch repoName strName = do
         (Just repoName)
         def -- language
         def -- kinds
-        (SymbolSearchOptions False False False True False)
+        def -- default search options
 
 runResolve :: Protocol p => SymbolId -> GlassM p [Text]
 runResolve sym = do

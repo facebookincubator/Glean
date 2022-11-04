@@ -4,23 +4,23 @@
         "symbolDetails": [],
         "symbols": [
             {
-                "kind": 2,
+                "kind": 7,
                 "language": 3,
                 "location": {
-                    "filepath": "www/SourceClass.php",
+                    "filepath": "www/RefClass.php",
                     "range": {
-                        "columnBegin": 3,
-                        "columnEnd": 22,
-                        "lineBegin": 18,
-                        "lineEnd": 18
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 36
                     },
                     "repository": "test"
                 },
-                "name": "T",
+                "name": "RefClass",
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/php/SourceClass/T"
+                "symbol": "test/php/RefClass"
             }
         ]
     }
