@@ -503,11 +503,18 @@ modifiersForProperty Hack.PropertyDefinition_key {..} =
   )
   (if propertyDefinition_key_isStatic then Static else NotStatic)
 
+toPrettyType :: Maybe Hack.Type -> Maybe Hack.TypeInfo -> Maybe Hack.Type
+toPrettyType _mtype
+  (Just (Hack.TypeInfo _ (Just (Hack.TypeInfo_key displayType _)))) =
+    Just displayType
+toPrettyType mtype _ = mtype
+
 toSignature :: [Hack.TypeParameter] -> Hack.Signature -> Signature
 toSignature typeParams Hack.Signature{..} = case signature_key of
   Nothing -> Signature (ReturnType unknownType) [] [] Nothing
-  Just (Hack.Signature_key retType params mctxs _) -> Signature
-    (ReturnType (unHackType (toType retType)))
+  Just (Hack.Signature_key retType params mctxs retTypeInfo) ->
+   Signature
+    (ReturnType (unHackType (toType (toPrettyType retType retTypeInfo))))
     (map toTypeParameter typeParams)
     (map toParameter params)
     (map toContext <$> mctxs)
@@ -566,10 +573,10 @@ toConstraintKind Hack.ConstraintKind_Super = Super
 toConstraintKind (Hack.ConstraintKind__UNKNOWN _) = Equal
 
 toParameter :: Hack.Parameter -> Parameter
-toParameter (Hack.Parameter name mtype inout _ mdefaultValue _ _) =
+toParameter (Hack.Parameter name mtype inout _ mdefaultValue _ typeInfo) =
   Parameter
   (toName name)
-  (toType mtype)
+  (toType $ toPrettyType mtype typeInfo)
   (if inout then Just Inout else Nothing)
   (DefaultValue <$> mdefaultValue)
 
