@@ -405,9 +405,9 @@ feelingLuckyQuery query@SearchQuery{..} = case sScope of
   -- we will try to match strictly against the local name of the identifier
   NoScope ->
     [ GlobalScoped Sensitive sString -- "genmk", global "C"
-    , GlobalScoped Insensitive sString
-    , ContainerLiteral Sensitive sString -- "C"
-    , ContainerLiteral Insensitive sString -- e.g. "vec" lands here
+    , ContainerLiteral Sensitive sString -- "C" or "vec"
+    , GlobalScoped Insensitive sString -- "Vec" vs "vec"
+    , ContainerLiteral Insensitive sString
     , Literal Sensitive sString
     , Literal Insensitive sString
     , GlobalScopedPrefixly Sensitive sString
