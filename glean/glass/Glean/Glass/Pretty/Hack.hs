@@ -188,27 +188,47 @@ ppSignature :: LayoutOptions -> Doc () -> Signature -> Doc ()
 ppSignature opts head (Signature returnType typeParams params ctxs) =
     if fitsOnOneLine then
       hcat
-        [ onelineDoc
+        [ onelineSig
         , nest 4 (":" <+> ppReturnType returnType)
         ]
     else
-      multilineDoc
+      multilineSig
   where
-    typeParamsDoc = ppTypeParams typeParams
-    onelineDoc = head <> cat
-      [ typeParamsDoc
-      , parens (hsep $ punctuate comma (map ppParameter params))
+    onelineTypeParams = if null typeParams then emptyDoc else cat
+      [ "<"
+      , sep $ punctuate "," (map ppTypeParam typeParams)
+      , ">"
+      ]
+    onelineArgs = if null params then "()" else
+      parens (hsep $ punctuate comma (map ppParameter params))
+    onelineSig = head <> cat
+      [ onelineTypeParams
+      , onelineArgs
       , ppContexts ctxs
       ]
-    multilineDoc = head <> typeParamsDoc
-      <> vcat
+    multilineTypeParams = if null typeParams then emptyDoc else vcat
         [ nest 4 $ vcat
-          [ "("
-          , vcat $ map ((<> ",") . ppParameter) params
+          [ "<"
+          , vcat $ map ((<> ",") . ppTypeParam) typeParams
           ]
-        , nest 4 $ ")" <> ppContexts ctxs <> ":" <+> ppReturnType returnType
+        , ">"
         ]
-    paramsText = renderStrict $ layoutSmart opts onelineDoc
+    multilineArgs = vcat
+      [ nest 4 (vcat $
+        "("
+        : map ((<> ",") . ppParameter) params
+        )
+      , ")"
+      ]
+    multilineSig = head
+      <> multilineTypeParams
+      <> multilineArgs
+      <> nest 4 (
+        ppContexts ctxs
+        <> ":"
+        <+> ppReturnType returnType
+      )
+    paramsText = renderStrict $ layoutSmart opts onelineSig
     fitsOnOneLine = not containsNewline
     containsNewline = Text.any (== '\n') paramsText
 
