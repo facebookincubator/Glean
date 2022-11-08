@@ -42,7 +42,7 @@ predicate SNameToName: SName -> Name
 
 # Allows efficient queries for modules by structured name.
 predicate ModuleBySName: SName -> Module
-  stored SN -> M where SNameToName SN -> N; Module {name = N} = M
+  stored SN -> M where Module {name = N} = M; NameToSName N -> SN
 
 predicate ModuleDefinition:
   {
@@ -52,7 +52,7 @@ predicate ModuleDefinition:
 
 # Allows efficient queries for classes by structured name
 predicate ClassBySName: SName -> ClassDeclaration
-  stored SN -> C where SNameToName SN -> N; ClassDeclaration {name = N} = C
+  stored SN -> C where ClassDeclaration {name = N} = C; NameToSName N -> SN
 
 # Represents details about a class with a particular name.
 predicate ClassDefinition:
@@ -67,7 +67,7 @@ predicate ClassDefinition:
 
 # Allows efficient queries for functions by structured name.
 predicate FunctionBySName: SName -> FunctionDeclaration
-  stored SN -> F where SNameToName SN -> N; FunctionDeclaration {name = N} = F
+  stored SN -> F where FunctionDeclaration {name = N} = F; NameToSName N -> SN
 
 # Represents details about a function with a particular name.
 predicate FunctionDefinition:
@@ -87,7 +87,7 @@ predicate FunctionDefinition:
 
 # Allows efficient queries for variables by structured name.
 predicate VariableBySName: SName -> VariableDeclaration
-  stored SN -> V where SNameToName SN -> N; VariableDeclaration {name = N} = V
+  stored SN -> V where VariableDeclaration {name = N} = V; NameToSName N -> SN;
 
 # Represents details about a variable.
 predicate VariableDefinition:
@@ -444,7 +444,6 @@ predicate DeclarationDefinition:
     definition: Definition,
   }
   stored { Decl, Def } where
-  python.Definition Def;
   python.DefinitionDeclaration { Def, Decl };
 
 # Quickly find definitions defined at the module level
@@ -503,7 +502,8 @@ predicate SearchByLocalName:
     decl : Declaration
   }
   stored { python.LocalName NameStr , Decl } where
-    python.NameToSName Name -> { local_name = python.Name NameStr };
+    python.LocalName NameStr;
+    python.SNameToName { local_name = python.Name NameStr } -> Name;
     python.DeclarationWithName { Name, Decl };
 
 } # python.3
