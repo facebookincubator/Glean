@@ -10,6 +10,12 @@
                         "symbolLanguage": {
                             "aInteger": 14
                         },
+                        "symbolName": {
+                            "aString": "<unknown>"
+                        },
+                        "symbolParent": {
+                            "aString": "github.com/facebook/time"
+                        },
                         "symbolSignature": {
                             "aString": "```go\npackage leaphash\n```"
                         }
@@ -29,6 +35,12 @@
                         "symbolLanguage": {
                             "aInteger": 14
                         },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
+                        },
                         "symbolSignature": {
                             "aString": "```go\nvar data string\n```"
                         }
@@ -46,6 +58,12 @@
                         "symbolLanguage": {
                             "aInteger": 14
                         },
+                        "symbolName": {
+                            "aString": "<unknown>"
+                        },
+                        "symbolParent": {
+                            "aString": "github.com/facebook/time:Compute"
+                        },
                         "symbolSignature": {
                             "aString": "```go\nfunc Compute(data string) string\n```\n\n---\n\nCompute returns the sha1 sum of all non whitespace characters in data excluding comments. Since it includes logic for special lines specific to the leap-second.list format its not a general purpose function and should be only used to verify the integrity of an official leap-second.list document. \n\n"
                         }
@@ -56,7 +74,7 @@
                         "lineBegin": 24,
                         "lineEnd": 24
                     },
-                    "sym": "test/go/lsif/github.com/facebook/time%3ACompute"
+                    "sym": "test/go/lsif/github.com/facebook/time:Compute"
                 }
             ],
             "25": [
@@ -64,6 +82,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
                         },
                         "symbolSignature": {
                             "aString": "```go\nvar data string\n```"
@@ -92,6 +116,12 @@
                         "symbolLanguage": {
                             "aInteger": 14
                         },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
+                        },
                         "symbolSignature": {
                             "aString": "```go\nvar lines []string\n```"
                         }
@@ -110,6 +140,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
                         },
                         "symbolSignature": {
                             "aString": "```go\nvar filtered string\n```"
@@ -130,6 +166,12 @@
                         "symbolLanguage": {
                             "aInteger": 14
                         },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
+                        },
                         "symbolSignature": {
                             "aString": "```go\nvar filterBlanks func(r rune) rune\n```"
                         }
@@ -146,6 +188,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
                         },
                         "symbolSignature": {
                             "aString": "```go\nvar r rune\n```"
@@ -165,6 +213,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
                         },
                         "symbolSignature": {
                             "aString": "```go\nvar r rune\n```"
@@ -192,6 +246,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
                         },
                         "symbolSignature": {
                             "aString": "```go\nvar r rune\n```"
@@ -222,6 +282,12 @@
                         "symbolLanguage": {
                             "aInteger": 14
                         },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
+                        },
                         "symbolSignature": {
                             "aString": "```go\nvar r rune\n```"
                         }
@@ -251,6 +317,12 @@
                         "symbolLanguage": {
                             "aInteger": 14
                         },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
+                        },
                         "symbolSignature": {
                             "aString": "```go\nvar lines []string\n```"
                         }
@@ -278,6 +350,12 @@
                         "symbolLanguage": {
                             "aInteger": 14
                         },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
+                        },
                         "symbolSignature": {
                             "aString": "```go\nvar i int\n```"
                         }
@@ -294,6 +372,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
                         },
                         "symbolSignature": {
                             "aString": "```go\nvar i int\n```"
@@ -321,6 +405,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
                         },
                         "symbolSignature": {
                             "aString": "```go\nvar i int\n```"
@@ -351,6 +441,12 @@
                         "symbolLanguage": {
                             "aInteger": 14
                         },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
+                        },
                         "symbolSignature": {
                             "aString": "```go\nvar lines []string\n```"
                         }
@@ -377,6 +473,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
                         },
                         "symbolSignature": {
                             "aString": "```go\nvar lines []string\n```"
@@ -405,6 +507,12 @@
                         "symbolLanguage": {
                             "aInteger": 14
                         },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
+                        },
                         "symbolSignature": {
                             "aString": "```go\nvar i int\n```"
                         }
@@ -431,6 +539,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
                         },
                         "symbolSignature": {
                             "aString": "```go\nvar i int\n```"
@@ -461,6 +575,12 @@
                         "symbolLanguage": {
                             "aInteger": 14
                         },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
+                        },
                         "symbolSignature": {
                             "aString": "```go\nvar lines []string\n```"
                         }
@@ -487,6 +607,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
                         },
                         "symbolSignature": {
                             "aString": "```go\nvar lines []string\n```"
@@ -515,6 +641,12 @@
                         "symbolLanguage": {
                             "aInteger": 14
                         },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
+                        },
                         "symbolSignature": {
                             "aString": "```go\nvar filtered string\n```"
                         }
@@ -541,6 +673,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
                         },
                         "symbolSignature": {
                             "aString": "```go\nvar filterBlanks func(r rune) rune\n```"
@@ -569,6 +707,12 @@
                         "symbolLanguage": {
                             "aInteger": 14
                         },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
+                        },
                         "symbolSignature": {
                             "aString": "```go\nvar i int\n```"
                         }
@@ -595,6 +739,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
                         },
                         "symbolSignature": {
                             "aString": "```go\nvar i int\n```"
@@ -625,6 +775,12 @@
                         "symbolLanguage": {
                             "aInteger": 14
                         },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
+                        },
                         "symbolSignature": {
                             "aString": "```go\nvar lines []string\n```"
                         }
@@ -651,6 +807,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
                         },
                         "symbolSignature": {
                             "aString": "```go\nvar i int\n```"
@@ -681,6 +843,12 @@
                         "symbolLanguage": {
                             "aInteger": 14
                         },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
+                        },
                         "symbolSignature": {
                             "aString": "```go\nvar lines []string\n```"
                         }
@@ -707,6 +875,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
                         },
                         "symbolSignature": {
                             "aString": "```go\nvar i int\n```"
@@ -735,6 +909,12 @@
                         "symbolLanguage": {
                             "aInteger": 14
                         },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
+                        },
                         "symbolSignature": {
                             "aString": "```go\nvar line string\n```"
                         }
@@ -753,6 +933,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
                         },
                         "symbolSignature": {
                             "aString": "```go\nvar line string\n```"
@@ -781,6 +967,12 @@
                         "symbolLanguage": {
                             "aInteger": 14
                         },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
+                        },
                         "symbolSignature": {
                             "aString": "```go\nvar commentPos int\n```"
                         }
@@ -799,6 +991,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
                         },
                         "symbolSignature": {
                             "aString": "```go\nvar commentPos int\n```"
@@ -829,6 +1027,12 @@
                         "symbolLanguage": {
                             "aInteger": 14
                         },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
+                        },
                         "symbolSignature": {
                             "aString": "```go\nvar line string\n```"
                         }
@@ -856,6 +1060,12 @@
                         "symbolLanguage": {
                             "aInteger": 14
                         },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
+                        },
                         "symbolSignature": {
                             "aString": "```go\nvar line string\n```"
                         }
@@ -882,6 +1092,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
                         },
                         "symbolSignature": {
                             "aString": "```go\nvar commentPos int\n```"
@@ -912,6 +1128,12 @@
                         "symbolLanguage": {
                             "aInteger": 14
                         },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
+                        },
                         "symbolSignature": {
                             "aString": "```go\nvar filtered string\n```"
                         }
@@ -939,6 +1161,12 @@
                         "symbolLanguage": {
                             "aInteger": 14
                         },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
+                        },
                         "symbolSignature": {
                             "aString": "```go\nvar filterBlanks func(r rune) rune\n```"
                         }
@@ -965,6 +1193,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
                         },
                         "symbolSignature": {
                             "aString": "```go\nvar line string\n```"
@@ -995,6 +1229,12 @@
                         "symbolLanguage": {
                             "aInteger": 14
                         },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
+                        },
                         "symbolSignature": {
                             "aString": "```go\nvar filtered string\n```"
                         }
@@ -1022,6 +1262,12 @@
                         "symbolLanguage": {
                             "aInteger": 14
                         },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
+                        },
                         "symbolSignature": {
                             "aString": "```go\nvar hash string\n```"
                         }
@@ -1040,6 +1286,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
                         },
                         "symbolSignature": {
                             "aString": "```go\nvar groupedHash string\n```"
@@ -1060,6 +1312,12 @@
                         "symbolLanguage": {
                             "aInteger": 14
                         },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
+                        },
                         "symbolSignature": {
                             "aString": "```go\nvar i int\n```"
                         }
@@ -1076,6 +1334,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
                         },
                         "symbolSignature": {
                             "aString": "```go\nvar i int\n```"
@@ -1103,6 +1367,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
                         },
                         "symbolSignature": {
                             "aString": "```go\nvar i int\n```"
@@ -1133,6 +1403,12 @@
                         "symbolLanguage": {
                             "aInteger": 14
                         },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
+                        },
                         "symbolSignature": {
                             "aString": "```go\nvar groupedHash string\n```"
                         }
@@ -1161,6 +1437,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
                         },
                         "symbolSignature": {
                             "aString": "```go\nvar groupedHash string\n```"
@@ -1191,6 +1473,12 @@
                         "symbolLanguage": {
                             "aInteger": 14
                         },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
+                        },
                         "symbolSignature": {
                             "aString": "```go\nvar hash string\n```"
                         }
@@ -1217,6 +1505,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
                         },
                         "symbolSignature": {
                             "aString": "```go\nvar groupedHash string\n```"
@@ -1245,6 +1539,12 @@
                         "symbolLanguage": {
                             "aInteger": 14
                         },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
+                        },
                         "symbolSignature": {
                             "aString": "```go\nvar i int\n```"
                         }
@@ -1271,6 +1571,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
                         },
                         "symbolSignature": {
                             "aString": "```go\nvar i int\n```"
@@ -1300,6 +1606,12 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "<unknown>"
                         },
                         "symbolSignature": {
                             "aString": "```go\nvar groupedHash string\n```"

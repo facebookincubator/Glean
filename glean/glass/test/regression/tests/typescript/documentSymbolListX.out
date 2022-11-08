@@ -12,6 +12,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "Git"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "class Git"
                         },
                         "key": "symbolSignature"
@@ -38,6 +50,18 @@
                             "aInteger": 9
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "addRes"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -70,6 +94,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "author"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "(parameter) author: string"
                         },
                         "key": "symbolSignature"
@@ -96,6 +132,18 @@
                             "aInteger": 8
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "commit"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -128,6 +176,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "cwd"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "(property) cwd: string"
                         },
                         "key": "symbolSignature"
@@ -154,6 +214,18 @@
                             "aInteger": 9
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "cwd"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -186,6 +258,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "cwd"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "(property) cwd: string"
                         },
                         "key": "symbolSignature"
@@ -212,6 +296,18 @@
                             "aInteger": 9
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "cwd"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -244,6 +340,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "cwd"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "(property) cwd: string"
                         },
                         "key": "symbolSignature"
@@ -270,6 +378,18 @@
                             "aInteger": 9
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "date"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -302,6 +422,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "dir"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "(property) Git.dir: string"
                         },
                         "key": "symbolSignature"
@@ -328,6 +460,18 @@
                             "aInteger": 9
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "fs"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -360,6 +504,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "git"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "(property) git: Git"
                         },
                         "key": "symbolSignature"
@@ -386,6 +542,18 @@
                             "aInteger": 9
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "git"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -418,6 +586,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "git"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "(property) git: Git"
                         },
                         "key": "symbolSignature"
@@ -444,6 +624,18 @@
                             "aInteger": 9
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "msg"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -476,6 +668,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "os"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "import os"
                         },
                         "key": "symbolSignature"
@@ -502,6 +706,18 @@
                             "aInteger": 9
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "path"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -534,6 +750,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "repoDir"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "(property) repoDir: string"
                         },
                         "key": "symbolSignature"
@@ -560,6 +788,18 @@
                             "aInteger": 9
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "repoDir"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -592,6 +832,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "repoDir"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "(property) repoDir: string"
                         },
                         "key": "symbolSignature"
@@ -618,6 +870,18 @@
                             "aInteger": 9
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "res"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -650,6 +914,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "shell"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "import shell"
                         },
                         "key": "symbolSignature"
@@ -676,6 +952,18 @@
                             "aInteger": 9
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "silent"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -708,6 +996,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "silent"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "(property) silent: boolean"
                         },
                         "key": "symbolSignature"
@@ -734,6 +1034,18 @@
                             "aInteger": 9
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "silent"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -766,6 +1078,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "silent"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "(property) silent: boolean"
                         },
                         "key": "symbolSignature"
@@ -792,6 +1116,18 @@
                             "aInteger": 9
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "silent"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -824,6 +1160,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "example:"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 13
                         },
                         "key": "symbolLanguage"
@@ -835,7 +1183,7 @@
                     "lineBegin": 1,
                     "lineEnd": 1
                 },
-                "sym": "test/ts/lsif/example%3A"
+                "sym": "test/ts/lsif/example:"
             },
             {
                 "attributes": [
@@ -844,6 +1192,18 @@
                             "aInteger": 14
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "createTempRepo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "example"
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -864,7 +1224,7 @@
                     "lineBegin": 46,
                     "lineEnd": 46
                 },
-                "sym": "test/ts/lsif/example%3AcreateTempRepo"
+                "sym": "test/ts/lsif/example:createTempRepo"
             }
         ],
         "references": [
@@ -875,6 +1235,18 @@
                             "aInteger": 7
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Git"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -917,6 +1289,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "Git"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "class Git"
                         },
                         "key": "symbolSignature"
@@ -953,6 +1337,18 @@
                             "aInteger": 9
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "addRes"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -995,6 +1391,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "addRes"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "const addRes: any"
                         },
                         "key": "symbolSignature"
@@ -1031,6 +1439,18 @@
                             "aInteger": 9
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "addRes"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -1073,6 +1493,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "addRes"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "const addRes: any"
                         },
                         "key": "symbolSignature"
@@ -1109,6 +1541,18 @@
                             "aInteger": 9
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "dir"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -1151,6 +1595,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "dir"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "(property) Git.dir: string"
                         },
                         "key": "symbolSignature"
@@ -1187,6 +1643,18 @@
                             "aInteger": 9
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "dir"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -1229,6 +1697,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "dir"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "(property) Git.dir: string"
                         },
                         "key": "symbolSignature"
@@ -1265,6 +1745,18 @@
                             "aInteger": 9
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "dir"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -1307,6 +1799,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "fs"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "import fs"
                         },
                         "key": "symbolSignature"
@@ -1343,6 +1847,18 @@
                             "aInteger": 9
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "os"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -1385,6 +1901,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "path"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "import path"
                         },
                         "key": "symbolSignature"
@@ -1421,6 +1949,18 @@
                             "aInteger": 9
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "repoDir"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -1463,6 +2003,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "res"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "const res: any"
                         },
                         "key": "symbolSignature"
@@ -1499,6 +2051,18 @@
                             "aInteger": 9
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "res"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -1541,6 +2105,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "res"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "const res: any"
                         },
                         "key": "symbolSignature"
@@ -1577,6 +2153,18 @@
                             "aInteger": 9
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "res"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -1619,6 +2207,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "shell"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "import shell"
                         },
                         "key": "symbolSignature"
@@ -1655,6 +2255,18 @@
                             "aInteger": 9
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "shell"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -1697,6 +2309,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "shell"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "import shell"
                         },
                         "key": "symbolSignature"
@@ -1733,6 +2357,18 @@
                             "aInteger": 9
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "shell"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -1775,6 +2411,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "shell"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "import shell"
                         },
                         "key": "symbolSignature"
@@ -1814,6 +2462,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "Error"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Error"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "interface Error"
                         },
                         "key": "symbolSignature"
@@ -1850,6 +2510,18 @@
                             "aInteger": 9
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Error"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Error"
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -1892,6 +2564,18 @@
                     },
                     {
                         "attribute": {
+                            "aString": "Error"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Error"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "interface Error"
                         },
                         "key": "symbolSignature"
@@ -1928,6 +2612,18 @@
                             "aInteger": 9
                         },
                         "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Error"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Error"
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {

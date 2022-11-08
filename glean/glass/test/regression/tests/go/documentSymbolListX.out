@@ -6,6 +6,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "```go\nvar data string\n```"
                         },
                         "key": "symbolSignature"
@@ -27,6 +39,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "```go\nvar lines []string\n```"
@@ -52,6 +76,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "```go\nvar filtered string\n```"
                         },
                         "key": "symbolSignature"
@@ -73,6 +109,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "```go\nvar filterBlanks func(r rune) rune\n```"
@@ -98,6 +146,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "```go\nvar r rune\n```"
                         },
                         "key": "symbolSignature"
@@ -119,6 +179,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "```go\nvar i int\n```"
@@ -144,6 +216,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "```go\nvar line string\n```"
                         },
                         "key": "symbolSignature"
@@ -165,6 +249,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "```go\nvar commentPos int\n```"
@@ -190,6 +286,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "```go\nvar hash string\n```"
                         },
                         "key": "symbolSignature"
@@ -211,6 +319,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "```go\nvar groupedHash string\n```"
@@ -236,6 +356,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "```go\nvar i int\n```"
                         },
                         "key": "symbolSignature"
@@ -257,6 +389,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "github.com/facebook/time"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "```go\npackage leaphash\n```"
@@ -282,6 +426,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "github.com/facebook/time:Compute"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "```go\nfunc Compute(data string) string\n```\n\n---\n\nCompute returns the sha1 sum of all non whitespace characters in data excluding comments. Since it includes logic for special lines specific to the leap-second.list format its not a general purpose function and should be only used to verify the integrity of an official leap-second.list document. \n\n"
                         },
                         "key": "symbolSignature"
@@ -299,12 +455,24 @@
                     "lineBegin": 24,
                     "lineEnd": 24
                 },
-                "sym": "test/go/lsif/github.com/facebook/time%3ACompute"
+                "sym": "test/go/lsif/github.com/facebook/time:Compute"
             }
         ],
         "references": [
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "```go\nvar data string\n```"
@@ -340,6 +508,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "```go\nvar lines []string\n```"
                         },
                         "key": "symbolSignature"
@@ -371,6 +551,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "```go\nvar lines []string\n```"
@@ -406,6 +598,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "```go\nvar lines []string\n```"
                         },
                         "key": "symbolSignature"
@@ -437,6 +641,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "```go\nvar lines []string\n```"
@@ -472,6 +688,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "```go\nvar lines []string\n```"
                         },
                         "key": "symbolSignature"
@@ -503,6 +731,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "```go\nvar lines []string\n```"
@@ -538,6 +778,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "```go\nvar lines []string\n```"
                         },
                         "key": "symbolSignature"
@@ -569,6 +821,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "```go\nvar filtered string\n```"
@@ -604,6 +868,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "```go\nvar filtered string\n```"
                         },
                         "key": "symbolSignature"
@@ -635,6 +911,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "```go\nvar filtered string\n```"
@@ -670,6 +958,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "```go\nvar filterBlanks func(r rune) rune\n```"
                         },
                         "key": "symbolSignature"
@@ -703,6 +1003,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "```go\nvar filterBlanks func(r rune) rune\n```"
                         },
                         "key": "symbolSignature"
@@ -734,6 +1046,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "```go\nvar r rune\n```"
@@ -769,6 +1093,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "```go\nvar r rune\n```"
                         },
                         "key": "symbolSignature"
@@ -800,6 +1136,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "```go\nvar r rune\n```"
@@ -835,6 +1183,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "```go\nvar i int\n```"
                         },
                         "key": "symbolSignature"
@@ -868,6 +1228,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "```go\nvar i int\n```"
                         },
                         "key": "symbolSignature"
@@ -901,6 +1273,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "```go\nvar i int\n```"
                         },
                         "key": "symbolSignature"
@@ -932,6 +1316,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "```go\nvar i int\n```"
@@ -967,6 +1363,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "```go\nvar i int\n```"
                         },
                         "key": "symbolSignature"
@@ -998,6 +1406,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "```go\nvar i int\n```"
@@ -1033,6 +1453,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "```go\nvar i int\n```"
                         },
                         "key": "symbolSignature"
@@ -1064,6 +1496,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "```go\nvar i int\n```"
@@ -1099,6 +1543,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "```go\nvar line string\n```"
                         },
                         "key": "symbolSignature"
@@ -1130,6 +1586,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "```go\nvar line string\n```"
@@ -1165,6 +1633,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "```go\nvar line string\n```"
                         },
                         "key": "symbolSignature"
@@ -1196,6 +1676,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "```go\nvar line string\n```"
@@ -1231,6 +1723,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "```go\nvar commentPos int\n```"
                         },
                         "key": "symbolSignature"
@@ -1262,6 +1766,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "```go\nvar commentPos int\n```"
@@ -1297,6 +1813,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "```go\nvar hash string\n```"
                         },
                         "key": "symbolSignature"
@@ -1328,6 +1856,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "```go\nvar groupedHash string\n```"
@@ -1363,6 +1903,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "```go\nvar groupedHash string\n```"
                         },
                         "key": "symbolSignature"
@@ -1394,6 +1946,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "```go\nvar groupedHash string\n```"
@@ -1429,6 +1993,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "```go\nvar groupedHash string\n```"
                         },
                         "key": "symbolSignature"
@@ -1460,6 +2036,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "```go\nvar i int\n```"
@@ -1495,6 +2083,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "```go\nvar i int\n```"
                         },
                         "key": "symbolSignature"
@@ -1528,6 +2128,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aString": "```go\nvar i int\n```"
                         },
                         "key": "symbolSignature"
@@ -1559,6 +2171,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<unknown>"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aString": "```go\nvar i int\n```"

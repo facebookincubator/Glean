@@ -12,6 +12,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "<unknown>"
+                        },
+                        "symbolParent": {
+                            "aString": "example:"
                         }
                     },
                     "range": {
@@ -20,7 +26,7 @@
                         "lineBegin": 1,
                         "lineEnd": 1
                     },
-                    "sym": "test/ts/lsif/example%3A"
+                    "sym": "test/ts/lsif/example:"
                 }
             ],
             "10": [
@@ -31,6 +37,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "os"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "import os"
@@ -54,6 +66,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "path"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "import path"
                         }
@@ -75,6 +93,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "shell"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "import shell"
@@ -98,6 +122,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "Git"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "class Git"
                         }
@@ -119,6 +149,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "dir"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "(property) Git.dir: string"
@@ -142,6 +178,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "cwd"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "(property) cwd: string"
                         }
@@ -161,6 +203,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "dir"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "(property) Git.dir: string"
@@ -192,6 +240,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "res"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "const res: any"
                         }
@@ -211,6 +265,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "shell"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "import shell"
@@ -242,6 +302,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "silent"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "(property) silent: boolean"
                         }
@@ -263,6 +329,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "res"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "const res: any"
@@ -296,6 +368,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "res"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "const res: any"
                         }
@@ -326,6 +404,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "Error"
+                        },
+                        "symbolParent": {
+                            "aString": "Error"
+                        },
                         "symbolSignature": {
                             "aString": "interface Error"
                         }
@@ -355,6 +439,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "Error"
+                        },
+                        "symbolParent": {
+                            "aString": "Error"
                         },
                         "symbolSignature": {
                             "aString": "interface Error"
@@ -388,6 +478,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "res"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "const res: any"
                         }
@@ -419,6 +515,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "res"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "const res: any"
@@ -452,6 +554,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "shell"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "import shell"
                         }
@@ -484,6 +592,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "cwd"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "(property) cwd: string"
                         }
@@ -503,6 +617,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "dir"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "(property) Git.dir: string"
@@ -536,6 +656,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "silent"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "(property) silent: boolean"
                         }
@@ -558,6 +684,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "cwd"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "(property) cwd: string"
                         }
@@ -577,6 +709,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "dir"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "(property) Git.dir: string"
@@ -608,6 +746,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "shell"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "import shell"
                         }
@@ -638,6 +782,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "silent"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "(property) silent: boolean"
                         }
@@ -659,6 +809,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "shell"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "import shell"
@@ -692,6 +848,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "cwd"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "(property) cwd: string"
                         }
@@ -711,6 +873,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "dir"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "(property) Git.dir: string"
@@ -744,6 +912,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "silent"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "(property) silent: boolean"
                         }
@@ -766,6 +940,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "author"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "(parameter) author: string"
                         }
@@ -785,6 +965,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "commit"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "(method) Git.commit(msg: string, date: string, author: string): void"
@@ -806,6 +992,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "date"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "(parameter) date: string"
                         }
@@ -825,6 +1017,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "msg"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "(parameter) msg: string"
@@ -848,6 +1046,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "addRes"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "const addRes: any"
                         }
@@ -868,6 +1072,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "cwd"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "(property) cwd: string"
                         }
@@ -887,6 +1097,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "dir"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "(property) Git.dir: string"
@@ -918,6 +1134,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "shell"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "import shell"
                         }
@@ -948,6 +1170,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "silent"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "(property) silent: boolean"
                         }
@@ -969,6 +1197,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "addRes"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "const addRes: any"
@@ -1002,6 +1236,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "addRes"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "const addRes: any"
                         }
@@ -1032,6 +1272,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "Error"
+                        },
+                        "symbolParent": {
+                            "aString": "Error"
+                        },
                         "symbolSignature": {
                             "aString": "interface Error"
                         }
@@ -1061,6 +1307,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "Error"
+                        },
+                        "symbolParent": {
+                            "aString": "Error"
                         },
                         "symbolSignature": {
                             "aString": "interface Error"
@@ -1094,6 +1346,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "addRes"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "const addRes: any"
                         }
@@ -1125,6 +1383,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "addRes"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "const addRes: any"
@@ -1158,6 +1422,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "Git"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "class Git"
                         }
@@ -1188,6 +1458,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "git"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "(property) git: Git"
                         }
@@ -1207,6 +1483,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "repoDir"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "(property) repoDir: string"
@@ -1228,6 +1510,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "createTempRepo"
+                        },
+                        "symbolParent": {
+                            "aString": "example"
+                        },
                         "symbolSignature": {
                             "aString": "function createTempRepo(): {\n    repoDir: string;\n    git: Git;\n}"
                         }
@@ -1238,7 +1526,7 @@
                         "lineBegin": 46,
                         "lineEnd": 46
                     },
-                    "sym": "test/ts/lsif/example%3AcreateTempRepo"
+                    "sym": "test/ts/lsif/example:createTempRepo"
                 }
             ],
             "47": [
@@ -1249,6 +1537,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "fs"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "import fs"
@@ -1280,6 +1574,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "os"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "import os"
                         }
@@ -1309,6 +1609,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "path"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "import path"
@@ -1340,6 +1646,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "repoDir"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "const repoDir: any"
                         }
@@ -1361,6 +1673,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "Git"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "class Git"
@@ -1392,6 +1710,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "git"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "const git: Git"
                         }
@@ -1411,6 +1735,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "repoDir"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "const repoDir: any"
@@ -1444,6 +1774,12 @@
                         "symbolLanguage": {
                             "aInteger": 13
                         },
+                        "symbolName": {
+                            "aString": "git"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
                         "symbolSignature": {
                             "aString": "(property) git: Git"
                         }
@@ -1463,6 +1799,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "repoDir"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "(property) repoDir: string"
@@ -1485,6 +1827,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "fs"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         },
                         "symbolSignature": {
                             "aString": "import fs"
