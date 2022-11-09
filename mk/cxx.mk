@@ -69,6 +69,7 @@ CXX_SOURCES_glean_cpp_rocksdb_stats = \
 CXX_SOURCES_glean_cpp_rocksdb = \
     glean/rocksdb/container-impl.cpp \
     glean/rocksdb/database-impl.cpp \
+    glean/rocksdb/ownership.cpp \
     glean/rocksdb/ffi.cpp \
     glean/rocksdb/rocksdb.cpp
 # -fno-rtti is needed because RocksDB is compiled with it, and we
@@ -107,7 +108,7 @@ cxx-libraries:
 #
 # CXX_EXTRA_SOURCE_FILES - extra-source-files: ...
 #   Additional files to track for Cabal (typically .a files)
-#   
+#
 # CXX_EXTRA_LIB_DIRS - extra-lib-dirs: ...
 #   Additional library directories, MUST be absolute (Cabal doesn't support
 #   relative ones)
@@ -115,7 +116,7 @@ cxx-libraries:
 # CXX_LIB_xxx
 #   Dependencies for library xxx - either cxx-sources and cxx-options (if
 #   compiled via Cabal) or extra-libraries (if compiled via make)
-# 
+#
 ifeq ($(CXX_MODE),make)
 include mk/cxx-make.mk
 else
