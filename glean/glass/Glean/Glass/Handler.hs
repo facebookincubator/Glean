@@ -1483,9 +1483,12 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
       RelationType_Contains
       baseEntity
       repo
+    -- children by `extends`. typically a list. this includes method overrides
+    -- note that some methods have a lot of overrides (50k+) so be careful with
+    -- the limit values
     childrenExtends1Level :: SearchRelatedQuery u w
     childrenExtends1Level baseEntity repo = Search.searchRelatedEntities
-      (fromIntegral relatedNeighborhoodRequest_children_limit)
+      (fromIntegral relatedNeighborhoodRequest_inherited_limit)
       Search.NotRecursive
       RelationDirection_Child
       RelationType_Extends
