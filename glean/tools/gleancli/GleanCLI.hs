@@ -16,6 +16,7 @@ import qualified Data.Bifunctor
 import qualified Data.ByteString as B
 import Data.Char (isSpace)
 import Data.Default
+import Data.Either
 import Data.Foldable
 import qualified Data.HashMap.Strict as HashMap
 import Data.List (isInfixOf)
@@ -553,24 +554,28 @@ instance Plugin OwnershipCommand where
 data SetPropertyCommand
   = SetProperty
       { setPropRepo :: Repo
-      , properties :: [(Text,Text)]
+      , properties :: [Either Text (Text,Text)]
+          -- Left: remove, Right: update/add
       }
 
 instance Plugin SetPropertyCommand where
   parseCommand =
     commandParser "set-property" (progDesc "") $ do
       setPropRepo <- dbOpts
-      properties <- many $ argument readOption (metavar "NAME=VALUE")
+      properties <- many $ argument readOption (metavar "NAME=VALUE or -NAME")
       return SetProperty{..}
     where
     readOption = maybeReader $ \s ->
-      case splitOn "=" s of
-        [name, value] -> Just (Text.pack name, Text.pack value)
-        _ -> Nothing
+      case s of
+        '-':name -> Just (Left (Text.pack name))
+        _ | [name, value] <- splitOn "=" s ->
+            Just (Right (Text.pack name, Text.pack value))
+          | otherwise -> Nothing
 
   runCommand _ _ backend SetProperty{..} =
     void $ Glean.updateProperties backend setPropRepo
-      (HashMap.fromList properties) []
+      (HashMap.fromList (rights properties)) (lefts properties)
+
 
 data WriteSerializedInventoryCommand
   = WriteSerializedInventory
