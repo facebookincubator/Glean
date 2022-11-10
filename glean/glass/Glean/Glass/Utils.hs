@@ -29,12 +29,15 @@ module Glean.Glass.Utils
   , takeFairN
   , splitOnAny
 
+  -- Str utils
+  , splitString
+
   -- Types
   , QueryType
   ) where
 
 import Data.Maybe (fromMaybe)
-import Data.Text ( Text )
+import Data.Text ( Text, length )
 import qualified Data.Text as Text
 import System.FilePath ( splitDirectories, joinPath )
 import qualified Data.List as List
@@ -138,3 +141,32 @@ takeFairN n xs = take n (concat (List.transpose xs))
 splitOnAny :: [Text] -> Text -> [Text]
 splitOnAny pats src =
   List.foldl' (\acc p -> concatMap (Text.splitOn p) acc) [src] pats
+
+subString :: Int -> Int -> Text -> Text
+subString start len = Text.take len . Text.drop start
+
+-- Split a type string along reference spans. Annotate
+-- extracted fragments. (annotation, start, length)
+splitString :: Text -> [(ann, Int, Int)] -> [(Text, Maybe ann)]
+splitString s xrefs =
+  reverse $ splitStringAux 0 xrefs []
+  where
+    splitStringAux pos xrefs res =
+      let n = Data.Text.length s in
+      case xrefs of
+        [] ->
+          if pos == n then
+            res
+          else
+            (subString pos (n - pos) s, Nothing) : res
+        (ann, start, length) : xrefs' ->
+          if pos == start then
+            splitStringAux
+              (pos + length)
+              xrefs'
+              ((subString pos length s, Just ann) : res)
+          else
+            splitStringAux
+              start
+              xrefs
+              ((subString pos (start - pos) s, Nothing) : res)

@@ -12,6 +12,7 @@ module Glean.Glass.Pretty.Hack
   ( prettyHackSignature
     -- for testing
   , prettyDecl
+  , ByteSpan(..)
   , Decl(..)
   , Name(..)
   , Qual(..)
@@ -67,8 +68,10 @@ prettyHackSignature
   -> Hack.Entity
   -> Glean.RepoHaxl u w (Maybe (SimpleDocStream ()))
 prettyHackSignature opts (Hack.Entity_decl d) =
-  runMaybeT $ layoutSmart opts . prettyDecl opts <$> decl d
+  runMaybeT $ layoutSmart opts . unAnnotate . prettyDecl opts <$> decl d
 prettyHackSignature _ Hack.Entity_EMPTY = return Nothing
+
+type Ann = Maybe Hack.Declaration
 
 newtype Name = Name Text
 newtype Qual = Qual [Text]
@@ -88,8 +91,8 @@ data Static = Static | NotStatic deriving (Eq)
 data Async = Async | NotAsync deriving (Eq)
 
 data ByteSpan = ByteSpan
-  { _start :: {-# UNPACK #-}!Int
-  , _length :: {-# UNPACK #-}!Int
+  { start :: {-# UNPACK #-}!Int
+  , length :: {-# UNPACK #-}!Int
   }
 type XRefs = [(Hack.Declaration, ByteSpan)]
 newtype HackType = HackType { unHackType :: Text }
@@ -130,7 +133,7 @@ data Decl
   | Typedef QualName [TypeParameter] Transparency
   | Module Name
 
-prettyDecl :: LayoutOptions -> Decl -> Doc ()
+prettyDecl :: LayoutOptions -> Decl -> Doc Ann
 prettyDecl _ (ClassConst name) =
   "const" <+> ppName name
 prettyDecl _ (Module name) =
@@ -168,36 +171,36 @@ prettyDecl _ (Typedef name typeParams Type_) =
 prettyDecl _ (Typedef name typeParams Newtype_) =
   "newtype" <+> ppQualName name <> ppTypeParams typeParams
 
-ppName :: Name -> Doc ()
+ppName :: Name -> Doc Ann
 ppName (Name n) = pretty n
-ppQualName :: QualName -> Doc ()
+ppQualName :: QualName -> Doc Ann
 ppQualName (QualName ([], name)) =
   pretty name
 ppQualName (QualName (namespace, name)) =
   surround "\\" (ppQual (Qual namespace)) (pretty name)
-ppQual :: Qual -> Doc ()
+ppQual :: Qual -> Doc Ann
 ppQual (Qual namespace) =
   concatWith (surround "\\") (pretty <$> namespace)
 
-ppFunctionModifiers :: FunctionMod -> Doc ()
+ppFunctionModifiers :: FunctionMod -> Doc Ann
 ppFunctionModifiers (FunctionMod async) =
   fillSep $ execWriter $ do
     when (async==Async) $ tell ["async"]
     tell ["function"]
 
-ppClassModifiers :: ClassMod -> Doc ()
+ppClassModifiers :: ClassMod -> Doc Ann
 ppClassModifiers (ClassMod abstract final) =
   fillSep $ execWriter $ do
     when (abstract==Abstract) $ tell ["abstract"]
     when (final==Final) $ tell ["final"]
     tell ["class"]
 
-ppSignature :: LayoutOptions -> Doc () -> Signature -> Doc ()
-ppSignature opts head (Signature returnType typeParams params ctxs _xrefs) =
+ppSignature :: LayoutOptions -> Doc Ann -> Signature -> Doc Ann
+ppSignature opts head (Signature returnType typeParams params ctxs xrefs) =
     if fitsOnOneLine then
       hcat
         [ onelineSig
-        , nest 4 (":" <+> ppReturnType returnType)
+        , nest 4 (":" <+> ppReturnType returnType xrefs)
         ]
     else
       multilineSig
@@ -234,13 +237,13 @@ ppSignature opts head (Signature returnType typeParams params ctxs _xrefs) =
       <> nest 4 (
         ppContexts ctxs
         <> ":"
-        <+> ppReturnType returnType
+        <+> ppReturnType returnType xrefs
       )
     paramsText = renderStrict $ layoutSmart opts onelineSig
     fitsOnOneLine = not containsNewline
     containsNewline = Text.any (== '\n') paramsText
 
-ppTypeParams :: [TypeParameter] -> Doc ()
+ppTypeParams :: [TypeParameter] -> Doc Ann
 ppTypeParams typeParams | null typeParams = emptyDoc
 ppTypeParams typeParams = cat
   [ nest 4 $ cat
@@ -248,7 +251,7 @@ ppTypeParams typeParams = cat
   , ">"
   ]
 
-ppTypeParam :: TypeParameter -> Doc ()
+ppTypeParam :: TypeParameter -> Doc Ann
 ppTypeParam (TypeParameter name variance reify constraints) =
   hcat $ execWriter $ do
     when (reify==SoftReified) $ tell ["<<__Soft>> reify "]
@@ -262,41 +265,47 @@ ppTypeParam (TypeParameter name variance reify constraints) =
       when (kind==Super) $ tell [" super "]
       tell [ppType ty]
 
-ppType :: HackType -> Doc ()
+ppTypeXRefs :: HackType -> XRefs -> Doc Ann
+ppTypeXRefs (HackType t) xrefs =
+  let spans = fmap (\(ann, ByteSpan{..}) -> (ann, start, length)) xrefs
+      fragments = splitString t spans in
+  mconcat $ (\(frag, ann) -> annotate ann $ pretty frag) <$> fragments
+
+ppType :: HackType -> Doc Ann
 ppType (HackType t) = pretty t
 
-ppReturnType :: ReturnType -> Doc ()
-ppReturnType (ReturnType t) = ppType $ HackType t
+ppReturnType :: ReturnType -> XRefs -> Doc Ann
+ppReturnType (ReturnType t) xrefs = ppTypeXRefs (HackType t) xrefs
 
-ppParameter :: Parameter -> Doc ()
-ppParameter (Parameter name typeName inout defaultValue _) =
+ppParameter :: Parameter -> Doc Ann
+ppParameter (Parameter name typeName inout defaultValue xrefs) =
   nest 4 $ sep $ execWriter $ do
     whenJust inout $ tell . ppInout
-    tell [ppType typeName]
+    tell [ppTypeXRefs typeName xrefs]
     tell [ppName name]
     whenJust defaultValue $ tell . ppDefaultValue
 
 -- Contexts can be parameterised, empty, missing. or a simple list
 -- https://docs.hhvm.com/hack/contexts-and-capabilities/introduction
-ppContexts :: Maybe [Context] -> Doc ()
+ppContexts :: Maybe [Context] -> Doc Ann
 ppContexts Nothing = emptyDoc
 ppContexts (Just []) = brackets emptyDoc
 ppContexts (Just ctxs) = brackets $ hsep (punctuate comma (map ppContext ctxs))
 
-ppContext :: Context -> Doc ()
+ppContext :: Context -> Doc Ann
 ppContext (Context ctx) = pretty ctx
 
-ppDefaultValue :: DefaultValue -> [Doc ()]
+ppDefaultValue :: DefaultValue -> [Doc Ann]
 ppDefaultValue (DefaultValue defaultValue) =
   ["=" <+> squotes (pretty defaultValue)]
 
-ppInout :: Inout -> [Doc ()]
+ppInout :: Inout -> [Doc Ann]
 ppInout Inout = ["inout"]
 
-ppConstraintTypes :: HackType -> HackType -> Doc ()
+ppConstraintTypes :: HackType -> HackType -> Doc Ann
 ppConstraintTypes ty1 ty2 = ppType ty1 <+> "as" <+> ppType ty2
 
-ppMethodModifiers :: Container -> MethodMod -> Doc ()
+ppMethodModifiers :: Container -> MethodMod -> Doc Ann
 ppMethodModifiers container (MethodMod abstract final visibility static async) =
   fillSep $ execWriter $ do
     when
@@ -313,7 +322,7 @@ ppMethodModifiers container (MethodMod abstract final visibility static async) =
     when (async==Async) $ tell ["async"]
     tell ["function"]
 
-ppPropertyModifiers :: Container -> PropertyMod -> Doc ()
+ppPropertyModifiers :: Container -> PropertyMod -> Doc Ann
 ppPropertyModifiers container (PropertyMod abstract final visibility static) =
   fillSep $ execWriter $ do
     when
