@@ -297,7 +297,8 @@ predicate QueryToScope:
 #
 # We specifically only search in non-empty namespaces, relying on
 # SearchByName for the global namespace search or wild cards. So
-# these won't match global constants or un-namespaced symbols.
+# these won't match global constants or un-namespaced symbols. This might be
+# too restrictive.
 #
 # This doesn't check that the names are valid QNames or NamespaceQNames,
 # that's done on the query side (e.g. SearchInContext). We don't permit
@@ -317,19 +318,31 @@ predicate QueryToScopeCase:
     # one tuple, could be global alias
     ( [A] = Query;
       HackNameCase { Case, A, AName };
+      # three cases: either
+      # - a global alias
+      # - or its a top level class. e.g. Str
+      # - or its a class imported from an auto-imported ns (like HH)
       if hack.GlobalNamespaceAlias { AName, { AliasName, AliasQName }}
-        # two cases: either a global alias or its a top level class. e.g. Str
-        then ( ( Name = AliasName; QName = AliasQName ) |
-               ( Name = AName; nothing = QName ) )
-        else ( Name = AName; nothing = QName ) ) |
+      then ( ( Name = AliasName; QName = AliasQName ) |
+              ( Name = AName; nothing = QName ) )
+      # else maybe its from HH
+      else if ( HackInAutoImportedNamespace { AName, AQName } )
+      then ( ( Name = AName; AQName = QName ) |
+             ( Name = AName; nothing = QName ) )
+      # global name, parent is nothing.
+      else ( Name = AName; nothing = QName ) ) |
     # two tuple
     ( [B,A] = Query;
       HackNameCase { Case, A, Name };
       HackNameCase { Case, B, BName };
       if hack.GlobalNamespaceAlias { BName, AliasQName }
-        then ( { just = AliasQName } = QName )
-        else ( { just = { name = BName,
-                 parent = nothing } } = QName ) ) | # parent wild
+      then ( { just = AliasQName } = QName )
+      # e.g Readonly\Shapes::idx -> HH\Readonly\Shapes::idx
+      else if ( HackInAutoImportedNamespace { BName, BQName } )
+      then ( ( { just = { name = BName, parent = BQName } } = QName ) |
+             ( { just = { name = BName, parent = nothing } } = QName ) )
+      else ( { just = { name = BName,
+                parent = nothing } } = QName ) ) |
     # three tuple
     ( [C,B,A] = Query;
       HackNameCase { Case, A, Name };
@@ -419,5 +432,29 @@ predicate HackNameCase:
   { Insensitive, NameStr, Name } where
     ( true = Insensitive; hack.NameLowerCase { NameStr, Name } ) |
     ( false = Insensitive; hack.Name NameStr = Name );
+
+# Handle auto-imported namespace rules (turn things like Shapes into HH\Shapes)
+# See fbsource/fbcode/hphp/hack/src/parser/hh_autoimport.rs
+#
+# We need to check this so that things like Shapes::idx or Vector::shuffle work
+# even though the parent of Vector and Shapes is not "nothing".
+#
+# Readonly\Shapes => HH\Readonly\Shapes
+#
+# name might be either a container-scope or a namespace itself
+predicate HackInAutoImportedNamespace:
+  {
+    name: hack.Name, # name of something that might be in an auto-imported ns
+    parent: maybe hack.NamespaceQName
+  }
+  { Name, Namespace } where
+    # Exactly the "HH" namespace.
+    # This is a hack to simulate indexing the auto-import list
+    HH = hack.NamespaceQName { name = hack.Name "HH", parent = nothing };
+    # Then we have auto-imported this Name from HH
+    { just = HH } = Namespace;
+    # Check that HH\Name is true (either class or namespace)
+    hack.QName { name = Name, namespace_ = Namespace } |
+      hack.NamespaceQName { name = Name, parent = Namespace };
 
 }
