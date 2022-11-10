@@ -57,7 +57,8 @@
                     },
                     "repository": "test"
                 },
-                "sym_other_locations": []
+                "sym_other_locations": [],
+                "type_xrefs": []
             },
             "test/php/Position/Center": {
                 "comments": [],
@@ -103,7 +104,8 @@
                     },
                     "repository": "test"
                 },
-                "sym_other_locations": []
+                "sym_other_locations": [],
+                "type_xrefs": []
             }
         }
     }

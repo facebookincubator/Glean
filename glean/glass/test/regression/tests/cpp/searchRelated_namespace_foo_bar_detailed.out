@@ -64,7 +64,8 @@
                     },
                     "repository": "test"
                 },
-                "sym_other_locations": []
+                "sym_other_locations": [],
+                "type_xrefs": []
             },
             "test/cpp//foo/bar/T/.decl": {
                 "comments": [],
@@ -110,7 +111,8 @@
                     },
                     "repository": "test"
                 },
-                "sym_other_locations": []
+                "sym_other_locations": [],
+                "type_xrefs": []
             },
             "test/cpp//foo/bar/TypedefDeclShort/.decl": {
                 "comments": [],
@@ -156,7 +158,8 @@
                     },
                     "repository": "test"
                 },
-                "sym_other_locations": []
+                "sym_other_locations": [],
+                "type_xrefs": []
             },
             "test/cpp//foo/bar/UsingDeclShort/.decl": {
                 "comments": [],
@@ -202,7 +205,8 @@
                     },
                     "repository": "test"
                 },
-                "sym_other_locations": []
+                "sym_other_locations": [],
+                "type_xrefs": []
             },
             "test/cpp//foo/bar/g/.decl": {
                 "annotations": [],
@@ -249,7 +253,8 @@
                     },
                     "repository": "test"
                 },
-                "sym_other_locations": []
+                "sym_other_locations": [],
+                "type_xrefs": []
             }
         }
     }

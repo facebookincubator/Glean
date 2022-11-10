@@ -57,7 +57,8 @@
                     },
                     "repository": "test"
                 },
-                "sym_other_locations": []
+                "sym_other_locations": [],
+                "type_xrefs": []
             },
             "test/php/RefClass/foo": {
                 "annotations": [],
@@ -107,6 +108,7 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
+                "type_xrefs": [],
                 "visibility": 20
             }
         }

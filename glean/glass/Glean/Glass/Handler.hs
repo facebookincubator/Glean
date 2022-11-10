@@ -1298,6 +1298,7 @@ describeEntity ent SymbolResult{..} = do
     relationDescription RelationType_Contains
   pure SymbolDescription{..}
   where
+    symbolDescription_type_xrefs = []
     symbolDescription_sym = symbolResult_symbol
     symbolDescription_kind = symbolResult_kind
     symbolDescription_language = symbolResult_language

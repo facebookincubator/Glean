@@ -100,7 +100,8 @@
                     },
                     "repository": "test"
                 },
-                "sym_other_locations": []
+                "sym_other_locations": [],
+                "type_xrefs": []
             },
             "test/php/RefClass/:prop/raz": {
                 "annotations": [],
@@ -148,6 +149,7 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
+                "type_xrefs": [],
                 "visibility": 40
             },
             "test/php/RefClass/JAZZ": {
@@ -194,7 +196,8 @@
                     },
                     "repository": "test"
                 },
-                "sym_other_locations": []
+                "sym_other_locations": [],
+                "type_xrefs": []
             },
             "test/php/RefClass/bar": {
                 "annotations": [],
@@ -242,6 +245,7 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
+                "type_xrefs": [],
                 "visibility": 20
             },
             "test/php/RefClass/bazza": {
@@ -290,6 +294,7 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
+                "type_xrefs": [],
                 "visibility": 20
             },
             "test/php/RefClass/foo": {
@@ -340,6 +345,7 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
+                "type_xrefs": [],
                 "visibility": 20
             },
             "test/php/RefClass/lotsofkeywords": {
@@ -392,6 +398,7 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
+                "type_xrefs": [],
                 "visibility": 50
             },
             "test/php/SourceInterface": {
@@ -439,7 +446,8 @@
                     },
                     "repository": "test"
                 },
-                "sym_other_locations": []
+                "sym_other_locations": [],
+                "type_xrefs": []
             },
             "test/php/SourceInterface/JAZZ": {
                 "comments": [],
@@ -485,7 +493,8 @@
                     },
                     "repository": "test"
                 },
-                "sym_other_locations": []
+                "sym_other_locations": [],
+                "type_xrefs": []
             },
             "test/php/SourceInterface/foo": {
                 "annotations": [],
@@ -536,6 +545,7 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
+                "type_xrefs": [],
                 "visibility": 20
             },
             "test/php/SourceTrait": {
@@ -583,7 +593,8 @@
                     },
                     "repository": "test"
                 },
-                "sym_other_locations": []
+                "sym_other_locations": [],
+                "type_xrefs": []
             },
             "test/php/SourceTrait/quux": {
                 "annotations": [],
@@ -631,6 +642,7 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
+                "type_xrefs": [],
                 "visibility": 20
             }
         }

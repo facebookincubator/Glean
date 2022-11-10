@@ -60,7 +60,8 @@
                     },
                     "repository": "test"
                 },
-                "sym_other_locations": []
+                "sym_other_locations": [],
+                "type_xrefs": []
             },
             "test/cpp//foo/S/TypedefDeclInteger/.decl": {
                 "comments": [],
@@ -106,7 +107,8 @@
                     },
                     "repository": "test"
                 },
-                "sym_other_locations": []
+                "sym_other_locations": [],
+                "type_xrefs": []
             },
             "test/cpp//foo/S/UsingDeclInteger/.decl": {
                 "comments": [],
@@ -152,7 +154,8 @@
                     },
                     "repository": "test"
                 },
-                "sym_other_locations": []
+                "sym_other_locations": [],
+                "type_xrefs": []
             }
         }
     }

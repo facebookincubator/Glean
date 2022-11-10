@@ -282,6 +282,13 @@ enum Modifier {
   hack.attributes = "\GraphQLEnum('GlassModifiers'), \SelfDescriptive, \Oncalls('code_indexing')",
 )
 
+// A symbol occuring in a type, together with its
+// span relative to the signature field
+struct TypeSymSpan {
+  1: SymbolId type;
+  2: ByteSpan span;
+}
+
 // A symbol description extends the symbol id with additional attributes
 struct SymbolDescription {
   1: SymbolId sym;
@@ -299,6 +306,7 @@ struct SymbolDescription {
   13: RelationDescription extends_relation;
   14: RelationDescription contains_relation;
   15: set<Modifier> modifiers;
+  16: list<TypeSymSpan> type_xrefs;
 }
 
 // summary of search related results

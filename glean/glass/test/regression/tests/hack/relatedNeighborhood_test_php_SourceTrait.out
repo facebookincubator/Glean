@@ -62,7 +62,8 @@
                     },
                     "repository": "test"
                 },
-                "sym_other_locations": []
+                "sym_other_locations": [],
+                "type_xrefs": []
             },
             "test/php/SourceTrait": {
                 "annotations": [],
@@ -109,7 +110,8 @@
                     },
                     "repository": "test"
                 },
-                "sym_other_locations": []
+                "sym_other_locations": [],
+                "type_xrefs": []
             },
             "test/php/SourceTrait/quux": {
                 "annotations": [],
@@ -157,6 +159,7 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
+                "type_xrefs": [],
                 "visibility": 20
             }
         }

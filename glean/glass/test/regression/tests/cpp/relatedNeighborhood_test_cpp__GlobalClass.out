@@ -64,7 +64,8 @@
                     },
                     "repository": "test"
                 },
-                "sym_other_locations": []
+                "sym_other_locations": [],
+                "type_xrefs": []
             },
             "test/cpp//GlobalClass/GCA": {
                 "comments": [],
@@ -110,7 +111,8 @@
                     },
                     "repository": "test"
                 },
-                "sym_other_locations": []
+                "sym_other_locations": [],
+                "type_xrefs": []
             },
             "test/cpp//GlobalClass/GCB": {
                 "comments": [],
@@ -156,7 +158,8 @@
                     },
                     "repository": "test"
                 },
-                "sym_other_locations": []
+                "sym_other_locations": [],
+                "type_xrefs": []
             },
             "test/cpp//GlobalClass/GCC": {
                 "comments": [],
@@ -202,7 +205,8 @@
                     },
                     "repository": "test"
                 },
-                "sym_other_locations": []
+                "sym_other_locations": [],
+                "type_xrefs": []
             }
         }
     }

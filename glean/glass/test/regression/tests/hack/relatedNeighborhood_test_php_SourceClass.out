@@ -108,7 +108,8 @@
                     },
                     "repository": "test"
                 },
-                "sym_other_locations": []
+                "sym_other_locations": [],
+                "type_xrefs": []
             },
             "test/php/SourceClass/:prop/daz": {
                 "annotations": [],
@@ -156,6 +157,7 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
+                "type_xrefs": [],
                 "visibility": 20
             },
             "test/php/SourceClass/BAZ": {
@@ -202,7 +204,8 @@
                     },
                     "repository": "test"
                 },
-                "sym_other_locations": []
+                "sym_other_locations": [],
+                "type_xrefs": []
             },
             "test/php/SourceClass/T": {
                 "annotations": [],
@@ -249,7 +252,8 @@
                     },
                     "repository": "test"
                 },
-                "sym_other_locations": []
+                "sym_other_locations": [],
+                "type_xrefs": []
             },
             "test/php/SourceClass/bar": {
                 "annotations": [],
@@ -297,6 +301,7 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
+                "type_xrefs": [],
                 "visibility": 20
             },
             "test/php/SourceClass/pleaseOverride": {
@@ -359,6 +364,7 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
+                "type_xrefs": [],
                 "visibility": 20
             },
             "test/php/SubClass": {
@@ -406,7 +412,8 @@
                     },
                     "repository": "test"
                 },
-                "sym_other_locations": []
+                "sym_other_locations": [],
+                "type_xrefs": []
             },
             "test/php/SuperClass": {
                 "annotations": [],
@@ -453,7 +460,8 @@
                     },
                     "repository": "test"
                 },
-                "sym_other_locations": []
+                "sym_other_locations": [],
+                "type_xrefs": []
             },
             "test/php/SuperClass/BAZ": {
                 "comments": [],
@@ -499,7 +507,8 @@
                     },
                     "repository": "test"
                 },
-                "sym_other_locations": []
+                "sym_other_locations": [],
+                "type_xrefs": []
             },
             "test/php/SuperClass/superAdd": {
                 "annotations": [],
@@ -547,6 +556,7 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
+                "type_xrefs": [],
                 "visibility": 20
             }
         }
