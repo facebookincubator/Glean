@@ -47,9 +47,10 @@ import qualified Glean
 import Glean.Angle as Angle
 import qualified Glean.Haxl.Repos as Glean
 import qualified Glean.Schema.Hack.Types as Hack
+import qualified Glean.Schema.Src.Types as Src
 import Glean.Schema.CodeHack.Types as Hack ( Entity(..) )
 import Glean.Glass.Utils
-import Data.Maybe (fromMaybe)
+import Data.Maybe (fromMaybe, mapMaybe)
 import Data.Text.Prettyprint.Doc
 import Data.Text.Prettyprint.Doc.Render.Text (renderStrict)
 import Data.Text (Text)
@@ -59,6 +60,7 @@ import Control.Monad
 import Control.Monad.Extra
 import Control.Monad.Trans (MonadTrans(lift))
 import Control.Monad.Trans.Writer.Strict
+import Data.List as List
 
 prettyHackSignature
   :: LayoutOptions
@@ -85,11 +87,17 @@ data Visibility = Public | Protected | Private | Internal deriving (Eq)
 data Static = Static | NotStatic deriving (Eq)
 data Async = Async | NotAsync deriving (Eq)
 
+data ByteSpan = ByteSpan
+  { _start :: {-# UNPACK #-}!Int
+  , _length :: {-# UNPACK #-}!Int
+  }
+type XRefs = [(Hack.Declaration, ByteSpan)]
 newtype HackType = HackType { unHackType :: Text }
 newtype ReturnType = ReturnType { unReturnType :: Text }
 newtype DefaultValue = DefaultValue Text
 data Inout = Inout
-data Parameter = Parameter Name HackType (Maybe Inout) (Maybe DefaultValue)
+data Parameter
+  = Parameter Name HackType (Maybe Inout) (Maybe DefaultValue) XRefs
 data Variance = Contravariant | Covariant | Invariant deriving (Eq)
 data Reify = Erased | Reified | SoftReified deriving (Eq)
 data ConstraintKind = As | Equal | Super deriving (Eq)
@@ -97,7 +105,7 @@ data Constraint = Constraint ConstraintKind HackType
 data TypeParameter = TypeParameter Name Variance Reify [Constraint]
 newtype Context = Context { _unContext :: Text }
 data Signature = Signature ReturnType [TypeParameter] [Parameter]
-  (Maybe [Context])
+  (Maybe [Context]) XRefs
 data Container
   = ClassContainer | InterfaceContainer | TraitContainer | EnumContainer
   deriving Eq
@@ -185,7 +193,7 @@ ppClassModifiers (ClassMod abstract final) =
     tell ["class"]
 
 ppSignature :: LayoutOptions -> Doc () -> Signature -> Doc ()
-ppSignature opts head (Signature returnType typeParams params ctxs) =
+ppSignature opts head (Signature returnType typeParams params ctxs _xrefs) =
     if fitsOnOneLine then
       hcat
         [ onelineSig
@@ -261,7 +269,7 @@ ppReturnType :: ReturnType -> Doc ()
 ppReturnType (ReturnType t) = ppType $ HackType t
 
 ppParameter :: Parameter -> Doc ()
-ppParameter (Parameter name typeName inout defaultValue) =
+ppParameter (Parameter name typeName inout defaultValue _) =
   nest 4 $ sep $ execWriter $ do
     whenJust inout $ tell . ppInout
     tell [ppType typeName]
@@ -523,22 +531,46 @@ modifiersForProperty Hack.PropertyDefinition_key {..} =
   )
   (if propertyDefinition_key_isStatic then Static else NotStatic)
 
-toPrettyType :: Maybe Hack.Type -> Maybe Hack.TypeInfo -> Maybe Hack.Type
-toPrettyType _mtype
-  (Just (Hack.TypeInfo _ (Just (Hack.TypeInfo_key displayType _)))) =
-    Just displayType
-toPrettyType mtype _ = mtype
+
+-- Glass-side implementation of fbcode/glean/rts/prim.cpp:relSpansToAbs
+relSpansToAbs :: [Src.RelByteSpan] -> [ByteSpan]
+relSpansToAbs byteSpans = snd $ List.foldl' f (0, []) byteSpans
+  where
+    f (!start, acc) (Src.RelByteSpan offset length) =
+      let off = fromIntegral (Glean.fromNat offset)
+          len = fromIntegral (Glean.fromNat length)
+          start' = start + off
+      in (start', ByteSpan start' len : acc)
+
+-- Extracts type and xrefs from a TypeInfo
+-- XRefs are converted from relative spans (Glean representation)
+-- to absolute (Glass representation)
+-- If TypeInfo doesn't exist, returned type is overridden by provided
+-- default.
+toTypeAndXRefs :: Maybe Hack.Type -> Maybe Hack.TypeInfo -> (HackType, XRefs)
+toTypeAndXRefs type_ typeInfo = case typeInfo of
+  (Just (Hack.TypeInfo _ (Just (Hack.TypeInfo_key displayType hackXRefs)))) ->
+    let f (Hack.XRef declaration ranges) = case declaration of
+          Hack.XRefTarget_declaration decl ->
+            Just ((\x -> (decl, x)) <$> relSpansToAbs ranges)
+          _ -> Nothing
+        xrefs = concat (mapMaybe f hackXRefs)
+    in (toType $ Just displayType, xrefs)
+
+  _ -> (toType type_, [])
 
 toSignature :: [Hack.TypeParameter] -> Hack.Signature -> Signature
 toSignature typeParams Hack.Signature{..} = case signature_key of
-  Nothing -> Signature (ReturnType unknownType) [] [] Nothing
+  Nothing -> Signature (ReturnType unknownType) [] [] Nothing []
   Just (Hack.Signature_key retType params mctxs retTypeInfo) ->
-   Signature
-    (ReturnType (unHackType (toType (toPrettyType retType retTypeInfo))))
-    (map toTypeParameter typeParams)
-    (map toParameter params)
-    (map toContext <$> mctxs)
-    -- Maybe [] is used to distinguish default context from literal "[]"
+   let (type_, xrefs) = toTypeAndXRefs retType retTypeInfo
+   in Signature
+        (ReturnType (unHackType type_))
+        (map toTypeParameter typeParams)
+        (map toParameter params)
+        (map toContext <$> mctxs)
+        -- Maybe [] is used to distinguish default context from literal "[]"
+        xrefs
 
 toType :: Maybe Hack.Type -> HackType
 toType Nothing = HackType unknownType
@@ -594,11 +626,13 @@ toConstraintKind (Hack.ConstraintKind__UNKNOWN _) = Equal
 
 toParameter :: Hack.Parameter -> Parameter
 toParameter (Hack.Parameter name mtype inout _ mdefaultValue _ typeInfo) =
-  Parameter
-  (toName name)
-  (toType $ toPrettyType mtype typeInfo)
-  (if inout then Just Inout else Nothing)
-  (DefaultValue <$> mdefaultValue)
+  let (type_, xrefs) = toTypeAndXRefs mtype typeInfo
+  in Parameter
+      (toName name)
+      (HackType (unHackType type_))
+      (if inout then Just Inout else Nothing)
+      (DefaultValue <$> mdefaultValue)
+      xrefs
 
 toName :: Hack.Name -> Name
 toName (Hack.Name _ mkey) = Name $ fromMaybe "(anonymous)" mkey
