@@ -136,7 +136,8 @@ data Variance = Contravariant | Covariant | Invariant deriving (Eq)
 data Reify = Erased | Reified | SoftReified deriving (Eq)
 data ConstraintKind = As | Equal | Super deriving (Eq)
 data Constraint = Constraint ConstraintKind HackType
-data TypeParameter = TypeParameter Name Variance Reify [Constraint]
+data TypeParameter = TypeParameter Name Variance Reify [Constraint] [UserAttr]
+data UserAttr = UserAttr Name [Text]
 newtype Context = Context { _unContext :: Text }
 data Signature = Signature ReturnType [TypeParameter] [Parameter]
   (Maybe [Context]) XRefs
@@ -283,17 +284,23 @@ ppTypeParams typeParams = cat
   ]
 
 ppTypeParam :: TypeParameter -> Doc Ann
-ppTypeParam (TypeParameter name variance reify constraints) =
+ppTypeParam (TypeParameter name variance reify constraints userAttrs) =
   hcat $ execWriter $ do
-    when (reify==SoftReified) $ tell ["<<__Soft>> reify "]
-    when (reify==Reified) $ tell ["reify "]
-    when (variance==Covariant) $ tell ["+"]
-    when (variance==Contravariant) $ tell ["-"]
+    case reify of
+      SoftReified -> tell ["<<__Soft>> reify "]
+      Reified -> tell ["reify "]
+      _ -> pure ()
+    case variance of
+      Covariant -> tell ["+"]
+      Contravariant -> tell ["-"]
+      _ -> pure ()
+    mapM_ (tell . pure . ppAttr) userAttrs
     tell [ppName name]
     forM_ constraints $ \(Constraint kind ty) -> do
-      when (kind==Equal) $ tell [" = "]
-      when (kind==As) $ tell [" as "]
-      when (kind==Super) $ tell [" super "]
+      tell $ case kind of
+        Equal -> [" = "]
+        As -> [" as "]
+        Super -> [" super "]
       tell [ppType ty]
 
 ppTypeXRefs :: HackType -> XRefs -> Doc Ann
@@ -301,6 +308,10 @@ ppTypeXRefs (HackType t) xrefs =
   let spans = fmap (\(ann, ByteSpan{..}) -> (ann, start, length)) xrefs
       fragments = splitString t spans in
   mconcat $ (\(frag, ann) -> annotate ann $ pretty frag) <$> fragments
+
+ppAttr :: UserAttr -> Doc Ann
+ppAttr (UserAttr name []) = hcat [ "<<", ppName name, ">> "]
+ppAttr (UserAttr name _) = hcat [ "<<", ppName name, ">> "]
 
 ppType :: HackType -> Doc Ann
 ppType (HackType t) = pretty t
@@ -621,12 +632,19 @@ toType1 (Hack.Type _ mkey) = HackType $ fromMaybe unknownType mkey
 
 toTypeParameter :: Hack.TypeParameter -> TypeParameter
 toTypeParameter
-  (Hack.TypeParameter name variance reifyKind constraints _attributes) =
+  (Hack.TypeParameter name variance reifyKind constraints attributes) =
     TypeParameter
     (toName name)
     (toVariance variance)
     (toReifyKind reifyKind)
     (map toConstraint constraints)
+    (mapMaybe toAttribute attributes)
+
+toAttribute :: Hack.UserAttribute -> Maybe UserAttr
+toAttribute (Hack.UserAttribute _ Nothing) = Nothing
+toAttribute (Hack.UserAttribute _ (Just
+    (Hack.UserAttribute_key name params _))) =
+  Just $ UserAttr (toName name) params
 
 toContext :: Hack.Context_ -> Context
 toContext (Hack.Context_ _ Nothing) = Context unknownType
