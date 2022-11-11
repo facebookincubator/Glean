@@ -16,18 +16,25 @@ import qualified Glean
 import Glean.Angle as Angle
 import Glean.Haxl.Repos as Glean ( RepoHaxl )
 import Glean.Glass.Utils ( fetchData )
-import Data.Text.Prettyprint.Doc (pretty, layoutSmart, LayoutOptions, SimpleDocStream)
+import Data.Text.Prettyprint.Doc
+  (pretty,
+   layoutSmart,
+   LayoutOptions,
+   SimpleDocStream,
+   reAnnotateS)
 
 import qualified Glean.Schema.Lsif.Types as LSIF
+import Glean.Glass.Types ( SymbolId(..) )
 
 prettyLsifSignature
   :: LayoutOptions
   -> LSIF.SomeEntity
-  -> Glean.RepoHaxl u w (Maybe (SimpleDocStream ()))
+  -> Glean.RepoHaxl u w (Maybe (SimpleDocStream (Maybe SymbolId)))
 prettyLsifSignature opts (LSIF.SomeEntity_defn dm) = do
   LSIF.DefinitionMoniker_key{..} <- Glean.keyOf dm
   text <- fetchData (definitionHover (Glean.getId definitionMoniker_key_defn))
-  return $ layoutSmart opts . pretty <$> text
+  let docStream = layoutSmart opts . pretty <$> text
+  return $ reAnnotateS (const Nothing) <$> docStream
 prettyLsifSignature _ _ = pure Nothing
 
 definitionHover :: Glean.IdOf LSIF.Definition -> Angle Text

@@ -21,10 +21,11 @@ import qualified Glean.Schema.Cxx1.Types as Cxx
 
 import Data.Text ( Text, intercalate )
 import Data.Text.Prettyprint.Doc
-  (pretty, layoutSmart, LayoutOptions, SimpleDocStream)
+  (pretty, layoutSmart, LayoutOptions, SimpleDocStream, reAnnotateS)
 import Data.Maybe ( fromMaybe )
 import qualified Data.Text as Text
 import Util.Text (textShow)
+import Glean.Glass.Types ( SymbolId(..) )
 
 (<+>) :: Text -> Text -> Text
 "" <+> b = b
@@ -57,10 +58,10 @@ prettyCxxSignature
   :: LayoutOptions
   -> Cxx.Entity
   -> Qualified
-  -> Maybe (SimpleDocStream ())
+  -> Maybe (SimpleDocStream (Maybe SymbolId))
 prettyCxxSignature opts e qualified = case text of
     "" -> Nothing
-    _ ->  Just $ layoutSmart opts $ pretty text
+    _ ->  Just $ reAnnotateS (const Nothing) $ layoutSmart opts $ pretty text
   where
     text = case e of
       Cxx.Entity_decl decl -> prettyDecl decl qualified

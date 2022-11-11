@@ -50,6 +50,9 @@ import qualified Glean.Haxl.Repos as Glean
 import qualified Glean.Schema.Hack.Types as Hack
 import qualified Glean.Schema.Src.Types as Src
 import Glean.Schema.CodeHack.Types as Hack ( Entity(..) )
+import qualified Glean.Schema.Code.Types as Code
+import qualified Glean.Schema.CodemarkupTypes.Types as Code
+import qualified Glean.Schema.Codemarkup.Types as Code
 import Glean.Glass.Utils
 import Data.Maybe (fromMaybe, mapMaybe)
 import Data.Text.Prettyprint.Doc
@@ -62,16 +65,44 @@ import Control.Monad.Extra
 import Control.Monad.Trans (MonadTrans(lift))
 import Control.Monad.Trans.Writer.Strict
 import Data.List as List
+import Glean.Glass.SymbolId ( toSymbolId )
+import Glean.Glass.Types ( SymbolId(..), RepoName(..) )
+import Glean.Glass.Base ( GleanPath(..) )
+import Glean.Glass.Path ( fromGleanPath )
+import Glean.Util.ToAngle ( ToAngle(toAngle) )
+
+-- Pretty-printer annotations for Doc or SimpleDocStream
+-- Used to collect xrefs bytespan in pretty-printed signatures
+type Ann = Maybe Hack.Declaration
 
 prettyHackSignature
   :: LayoutOptions
+  -> RepoName
   -> Hack.Entity
-  -> Glean.RepoHaxl u w (Maybe (SimpleDocStream ()))
-prettyHackSignature opts (Hack.Entity_decl d) =
-  runMaybeT $ layoutSmart opts . unAnnotate . prettyDecl opts <$> decl d
-prettyHackSignature _ Hack.Entity_EMPTY = return Nothing
+  -> Glean.RepoHaxl u w (Maybe (SimpleDocStream (Maybe SymbolId)))
+prettyHackSignature opts repo (Hack.Entity_decl d) = runMaybeT $ do
+  docStream <- layoutSmart opts . prettyDecl opts <$> decl d
+  let docStreamSymbol = sequence $ reAnnotateS (declToSymbolId repo) docStream
+  MaybeT $ Just <$> docStreamSymbol
+prettyHackSignature _ _ Hack.Entity_EMPTY = return Nothing
 
-type Ann = Maybe Hack.Declaration
+-- Turn declaration to symbol ids
+-- This requires a query to Code.EntityLocation to gather
+-- the path to an entity, needed for constructing a SymbolId
+declToSymbolId
+  :: RepoName
+  -> Ann
+  -> Glean.RepoHaxl u w (Maybe SymbolId)
+declToSymbolId _repo Nothing = return Nothing
+declToSymbolId repo (Just decl) = runMaybeT $ do
+  let entity = Code.Entity_hack (Hack.Entity_decl decl)
+  let entityAngle = alt @"hack" (alt @"decl" (toAngle decl))
+  Code.EntityLocation{..} <- maybeT $ fetchDataRecursive $
+    angleEntityLocation entityAngle
+  Code.EntityLocation_key{..} <- liftMaybe entityLocation_key
+  let Code.Location{..} = entityLocation_key_location
+  path <- MaybeT (Just . GleanPath <$> Glean.keyOf location_file)
+  MaybeT $ Just <$> toSymbolId (fromGleanPath repo path) entity
 
 newtype Name = Name Text
 newtype Qual = Qual [Text]
@@ -741,3 +772,11 @@ angleFunctionDefinition decl = predicate @Hack.FunctionDefinition $
   rec $
     field @"declaration" (Angle.asPredicate decl)
   end
+
+angleEntityLocation
+  :: Angle Code.Entity -> Angle Code.EntityLocation
+angleEntityLocation ent =
+  predicate @Code.EntityLocation $
+    rec $
+      field @"entity" ent
+    end

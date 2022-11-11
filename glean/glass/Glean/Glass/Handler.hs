@@ -185,7 +185,8 @@ import Glean.Glass.Types
       RelationDirection (..),
       RelationType (..),
       rELATED_SYMBOLS_MAX_LIMIT,
-      mAXIMUM_SYMBOLS_QUERY_LIMIT )
+      mAXIMUM_SYMBOLS_QUERY_LIMIT,
+      Path (..) )
 import Glean.Index.Types
   ( IndexRequest,
     IndexResponse)
@@ -489,7 +490,6 @@ searchSymbol env@Glass.Env{..} req@SymbolSearchRequest{..} RequestOptions{..} =
     terse = not symbolSearchOptions_detailedResults
     sorted = symbolSearchOptions_sortResults
     mlimit = fromIntegral <$> requestOptions_limit
-
     -- inner limit can be higher if we are sampling/sorting
     mlimitInner = if sorted then fmap (*10) mlimit else mlimit
 
@@ -1070,7 +1070,7 @@ toReferenceSymbol
 toReferenceSymbol repoName file srcOffsets (Code.XRefLocation {..}, entity) = do
   path <- GleanPath <$> Glean.keyOf file
   sym <- toSymbolId (fromGleanPath repoName path) entity
-  attributes <- getStaticAttributes entity
+  attributes <- getStaticAttributes entity repoName
 
   target <- rangeSpanToLocationRange repoName location_file
     location_location
@@ -1096,7 +1096,7 @@ toDefinitionSymbol
 toDefinitionSymbol repoName file offsets (Code.Location {..}, entity) = do
   path <- GleanPath <$> Glean.keyOf file
   sym <- toSymbolId (fromGleanPath repoName path) entity
-  attributes <- getStaticAttributes entity
+  attributes <- getStaticAttributes entity repoName
   return $ (entity,) $ DefinitionSymbolX sym range attributes nameRange
   where
     range = rangeSpanToRange offsets location_location
@@ -1107,12 +1107,12 @@ toDefinitionSymbol repoName file offsets (Code.Location {..}, entity) = do
 -- These are static in that they are derivable from the entity and
 -- schema information alone, without additional repos.
 -- They're expected to be cheap, as we call these once per entity in a file
-getStaticAttributes :: Code.Entity -> Glean.RepoHaxl u w AttributeList
-getStaticAttributes e = do
+getStaticAttributes
+  :: Code.Entity -> RepoName -> Glean.RepoHaxl u w AttributeList
+getStaticAttributes e repo = do
   mLocalName <- toSymbolLocalName e
   mParent <- toSymbolQualifiedContainer e -- the "parent" of the symbol
-  mSignature <-
-        toSymbolSignatureText e Cxx.Unqualified -- optional type signature
+  (mSignature, _xrefs) <- toSymbolSignatureText e repo Cxx.Unqualified
   mKind <- entityKind e -- optional glass-side symbol kind labels
   return $ AttributeList $ map (\(a,b) -> KeyedAttribute a b) $ catMaybes
     [ asLocalName <$> mLocalName
@@ -1291,14 +1291,14 @@ describeEntity ent SymbolResult{..} = do
   symbolDescription_comments <- eThrow =<< getCommentsForEntity repo ent
   (symbolDescription_visibility, symbolDescription_modifiers)
      <- eThrow =<< getInfoForEntity ent
-  symbolDescription_signature <- toSymbolSignatureText ent Cxx.Qualified
+  (symbolDescription_signature, symbolDescription_type_xrefs)
+    <- toSymbolSignatureText ent repo Cxx.Qualified
   symbolDescription_extends_relation <-
     relationDescription RelationType_Extends
   symbolDescription_contains_relation <-
     relationDescription RelationType_Contains
   pure SymbolDescription{..}
   where
-    symbolDescription_type_xrefs = []
     symbolDescription_sym = symbolResult_symbol
     symbolDescription_kind = symbolResult_kind
     symbolDescription_language = symbolResult_language
