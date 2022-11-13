@@ -243,31 +243,35 @@ buildSearchQuery FeelingLucky query =
 compileQuery
   :: [Code.SymbolKind] -> [Code.Language] -> SearchExpr -> AngleSearch
 compileQuery sKinds sLangs e = case e of
-    -- todo: this could perhaps be a scope search for global scope only?
-    -- then we'd find "C" in global
-    ContainerLiteral sCase name -> slow $ -- the namespace filter can be slow
-      nameQ Exact sCase name (if null sKinds then containerishKinds else sKinds)
+  -- most precise
+    GlobalScopedContainerish sCase name -> fast $
+      scopeQ Exact sCase Nothing name containerKinds
     GlobalScoped sCase name -> fast $
-      scopeQ Exact sCase Nothing name
+      scopeQ Exact sCase Nothing name sKinds
+  -- becoming more imprecise
+    ContainerLiteral sCase name -> slow $ -- the namespace filter can be slow
+      nameQ Exact sCase name containerKinds
     GlobalScopedPrefixly sCase name -> slow $
-      scopeQ Prefix sCase Nothing name
+      scopeQ Prefix sCase Nothing name sKinds
     Literal sCase name -> fast $
       nameQ Exact sCase name sKinds
     Prefixly sCase name -> slow $
       nameQ Prefix sCase name sKinds
     Scoped sCase scope name -> slow $ -- this is only fast if repo/lang matches
-      scopeQ Exact sCase (Just scope) name
+      scopeQ Exact sCase (Just scope) name sKinds
     ScopedPrefixly sCase scope name -> slow $
-      scopeQ Prefix sCase (Just scope) name
+      scopeQ Prefix sCase (Just scope) name sKinds
   where
     fast = Search . Fast
     slow = Search . Slow
 
+    containerKinds = if null sKinds then containerishKinds else sKinds
+
     -- two main search predicates: by name or by name and scope
     nameQ sTy sCa name kinds = codeSearchByName $
       compileSearchQ sTy sCa (Just name) Nothing kinds sLangs
-    scopeQ sTy sCa scopes name = codeSearchByScope $
-      compileSearchQ sTy sCa (Just name) scopes sKinds sLangs
+    scopeQ sTy sCa scopes name kinds = codeSearchByScope $
+      compileSearchQ sTy sCa (Just name) scopes kinds sLangs
 
 -- | Common "API"-level things, you could reasonably expect to be ranked highly
 containerishKinds :: [Code.SymbolKind]
@@ -284,6 +288,7 @@ containerishKinds =
 data SearchExpr
   -- literal name searches
   = ContainerLiteral SearchCase Text -- exactly "Vec" or "vec" of kind:namespace
+  | GlobalScopedContainerish SearchCase Text -- exactly "vec" the class in HH
   | GlobalScoped SearchCase Text -- exactly "genmk" in the global scope
   | GlobalScopedPrefixly SearchCase Text -- prefix e.g. "genm".. in global scope
   | Literal SearchCase Text  -- exactly "Vec" or "C" (or "vec" or "VEC" or "Vec"
@@ -404,7 +409,8 @@ feelingLuckyQuery query@SearchQuery{..} = case sScope of
   -- not a scope search. i.e. glass cli default
   -- we will try to match strictly against the local name of the identifier
   NoScope ->
-    [ GlobalScoped Sensitive sString -- "genmk", global "C"
+    [ GlobalScopedContainerish Sensitive sString -- "vec" the class
+    , GlobalScoped Sensitive sString -- "genmk", global "C"
     , ContainerLiteral Sensitive sString -- "C" or "vec"
     , GlobalScoped Insensitive sString -- "Vec" vs "vec"
     , ContainerLiteral Insensitive sString
