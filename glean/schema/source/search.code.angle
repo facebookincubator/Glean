@@ -189,12 +189,17 @@ predicate HackSearchByScopeWithName:
   { Name, Insensitive, Scope, { hack = { decl = Decl }}} where
     if ( [] = Scope; true | false = Insensitive )
       then (
-        # global declarations only
-        search.hack.SearchInNamespace { Name, nothing, Decl } |
-        # but we also need to expand out any aliases so that "Str" or "C" work
-        ( hack.GlobalNamespaceAlias { Name, NSQName };
+        ( # exactly global declarations
+          search.hack.SearchInNamespace { Name, nothing, Decl }
+        ) | (
+          # or global namespace alias children ("FlibSL\Vec" or "C" work)
+          hack.GlobalNamespaceAlias { Name, NSQName };
           NSDecl = hack.NamespaceDeclaration { name = NSQName };
-          { namespace_ = NSDecl } = Decl;
+          { namespace_ = NSDecl } = Decl
+        ) | (
+          # or children of auto-imported namespaces (just HH for now)
+          search.hack.HackInAutoImportedNamespace { Name, HHNSQName };
+          search.hack.SearchInNamespace { Name, HHNSQName, Decl }
         )
       )
       else (
