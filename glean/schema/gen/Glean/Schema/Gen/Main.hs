@@ -319,7 +319,7 @@ predicateGraph dbschema = Map.fromList
         deps = showRef <$> Set.toList (dependencies details)
   ]
   where
-    dependencies details = keyValueDeps <> derivationDeps
+    dependencies details = asRefs $ keyValueDeps <> derivationDeps
       where
         keyValueDeps =
           typeDeps (predicateKeyType details) <>
@@ -331,6 +331,8 @@ predicateGraph dbschema = Map.fromList
       where
         overExpanded (ExpandedType _ ty) = typeDeps ty
         overPidRef (PidRef _ ref) = Set.singleton ref
+
+    asRefs = Set.fromList . fmap predicateIdRef . Set.toList
 
 drawGraph :: GraphOptions -> Map Text [Text] -> [Text] -> Text
 drawGraph GraphOptions{..} deps' roots =
