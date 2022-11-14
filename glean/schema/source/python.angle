@@ -502,7 +502,7 @@ predicate SearchByLocalName:
     decl : Declaration
   }
   stored { python.LocalName NameStr , Decl } where
-    python.NameToSName Name -> { local_name = python.Name NameStr };
     python.DeclarationWithName { Name, Decl };
+    python.NameToSName Name -> { local_name = python.Name NameStr };
 
 } # python.3
