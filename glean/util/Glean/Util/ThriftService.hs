@@ -24,9 +24,13 @@ import Glean.Util.Service
 
 
 -- | Options for creating a Thrift service
-newtype ThriftServiceOptions = ThriftServiceOptions
+data ThriftServiceOptions = ThriftServiceOptions
   { processingTimeout :: Maybe Double   -- in seconds
-  } deriving (Default, Show)
+  , queueTimeout :: Maybe Double  -- in seconds
+  } deriving Show
+
+instance Default ThriftServiceOptions where
+  def = ThriftServiceOptions def def
 
 -- | Used by the Glean client to request a node containing a specific db
 type DbShard = Text -- should be a number, I think
