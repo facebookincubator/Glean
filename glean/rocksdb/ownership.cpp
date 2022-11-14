@@ -448,15 +448,25 @@ struct StoredOwnership : Ownership {
   }
 
   OwnershipStats getStats() override {
+    rocksdb::Range range(toSlice(""), toSlice("\xff"));
+    uint64_t units_size, owners_size;
+    auto& db = db_->container_.db;
+    check(db->GetApproximateSizes(
+              db_->container_.family(Family::ownershipUnits),
+              &range, 1, &units_size));
+    check(db->GetApproximateSizes(
+              db_->container_.family(Family::factOwners),
+              &range, 1, &owners_size));
+
     OwnershipStats stats;
     stats.num_units = db_->ownership_unit_counters.size();
-    stats.units_size = 0; // TODO
+    stats.units_size = units_size;
     if (db_->usets_) {
       stats.num_sets = db_->usets_->size();
       stats.sets_size = db_->usets_->statistics().bytes;
     }
     stats.num_owner_entries = 0; // TODO
-    stats.owners_size = 0; // TODO
+    stats.owners_size = owners_size;
 
     return stats;
   }
