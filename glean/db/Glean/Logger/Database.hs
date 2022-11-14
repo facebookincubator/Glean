@@ -27,6 +27,9 @@ data GleanDatabaseLog
   | SetPredicateName Text
   | SetPredicateVersion Int
   | SetPredicateSize Int
+  | SetMetric Text
+  | SetCount Int
+  | SetSize Int
 
 instance Semigroup GleanDatabaseLog where
   a <> b = GleanDatabaseLogAnd a b

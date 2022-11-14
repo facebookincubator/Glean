@@ -1022,6 +1022,15 @@ const char *glean_derived_ownership_compute(
   });
 }
 
+const char *glean_get_ownership_stats(
+  Ownership *own,
+  OwnershipStats *result
+) {
+  return ffi::wrap([=] {
+    *result = own->getStats();
+  });
+}
+
 }
 }
 }

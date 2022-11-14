@@ -26,6 +26,8 @@ module Glean.RTS.Foreign.Ownership
   , getFactOwner
   , SetOp(..)
   , getOwnershipSet
+  , OwnershipStats(..)
+  , getOwnershipStats
   ) where
 
 import Control.Exception
@@ -166,6 +168,7 @@ defineOwnershipSortByOwner define count =
     hsArrayStorable <$> peek (castPtr arr_ptr)
 
 #include <glean/rts/ownership/uset.h>
+#include <glean/rts/ownership.h>
 
 getFactOwner :: Ownership -> Fid -> IO (Maybe UsetId)
 getFactOwner ownership (Fid fid) =
@@ -194,6 +197,38 @@ getOwnershipSet ownership usetid =
                  | otherwise = error "unkonwn SetOp"
           return $ Just (op, coerce (vec :: VS.Vector Word32))
     )
+
+data OwnershipStats = OwnershipStats
+  { numUnits :: Word64
+  , unitsSize :: Word64
+  , numSets :: Word64
+  , setsSize :: Word64
+  , numOwnerEntries :: Word64
+  , ownersSize :: Word64
+  }
+
+instance Storable OwnershipStats where
+  peek p = do
+    numUnits <- (# peek facebook::glean::rts::OwnershipStats, num_units) p
+    unitsSize <- (# peek facebook::glean::rts::OwnershipStats, units_size) p
+    numSets <- (# peek facebook::glean::rts::OwnershipStats, num_sets) p
+    setsSize <- (# peek facebook::glean::rts::OwnershipStats, sets_size) p
+    numOwnerEntries <- (# peek facebook::glean::rts::OwnershipStats, num_owner_entries) p
+    ownersSize <- (# peek facebook::glean::rts::OwnershipStats, owners_size) p
+    return OwnershipStats{..}
+  sizeOf _ = (# size facebook::glean::rts::OwnershipStats)
+  alignment _ = (# alignment facebook::glean::rts::OwnershipStats)
+  poke _ = error "Storable OwnershipStats"
+
+getOwnershipStats :: Ownership -> IO OwnershipStats
+getOwnershipStats ownership =
+  with ownership $ \ownership_ptr -> do
+    invoke $ glean_get_ownership_stats ownership_ptr
+
+foreign import ccall unsafe glean_get_ownership_stats
+  :: Ptr Ownership
+  -> Ptr OwnershipStats
+  -> IO CString
 
 foreign import ccall unsafe glean_new_define_ownership
   :: Ptr Ownership

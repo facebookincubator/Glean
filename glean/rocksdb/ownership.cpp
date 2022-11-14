@@ -447,6 +447,20 @@ struct StoredOwnership : Ownership {
     return impl::getSetIterator(db_->container_);
   }
 
+  OwnershipStats getStats() override {
+    OwnershipStats stats;
+    stats.num_units = db_->ownership_unit_counters.size();
+    stats.units_size = 0; // TODO
+    if (db_->usets_) {
+      stats.num_sets = db_->usets_->size();
+      stats.sets_size = db_->usets_->statistics().bytes;
+    }
+    stats.num_owner_entries = 0; // TODO
+    stats.owners_size = 0; // TODO
+
+    return stats;
+  }
+
  private:
   DatabaseImpl* db_;
 };
@@ -692,6 +706,8 @@ void DatabaseImpl::addDefineOwnership(DefineOwnership& def) {
           << def.ids_.size() + def.new_ids_.size() << " entries for pid "
           << def.pid_.toWord();
 }
+
+
 
 }
 }

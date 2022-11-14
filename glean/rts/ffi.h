@@ -48,6 +48,7 @@ typedef struct QueryResults QueryResults;
 typedef struct OwnershipUnitIterator OwnershipUnitIterator;
 typedef struct DerivedFactOwnershipIterator DerivedFactOwnershipIterator;
 typedef struct Ownership Ownership;
+typedef struct OwnershipStats OwnershipStats;
 typedef struct DefineOwnership DefineOwnership;
 typedef struct ComputedOwnership ComputedOwnership;
 typedef struct Slice Slice;
@@ -591,6 +592,11 @@ const char *glean_derived_ownership_compute(
   Ownership *own,
   DerivedFactOwnershipIterator *iter,
   ComputedOwnership **result
+);
+
+const char *glean_get_ownership_stats(
+  Ownership *own,
+  OwnershipStats *result
 );
 
 #ifdef __cplusplus

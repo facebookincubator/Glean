@@ -30,6 +30,17 @@ struct OwnershipSetIterator {
   virtual folly::Optional<std::pair<UsetId,SetExpr<const OwnerSet*>>> get() = 0;
 };
 
+struct OwnershipStats {
+  uint64_t num_units;
+  size_t units_size;
+
+  uint64_t num_sets;
+  size_t sets_size;
+
+  uint64_t num_owner_entries;
+  size_t owners_size;
+};
+
 ///
 // Interface for reading ownership data.
 //
@@ -51,6 +62,9 @@ struct Ownership {
   // Fetch the set corresponding to a UsetId. This is used for
   // introspection only.
   virtual folly::Optional<SetExpr<SetU32>> getUset(UsetId) = 0;
+
+  // Return stats about the ownership data
+  virtual OwnershipStats getStats() = 0;
 };
 
 ///

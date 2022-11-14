@@ -57,6 +57,7 @@ import Glean.Database.Open (withOpenDatabase, schemaUpdated)
 import Glean.Database.Types
 import Glean.Database.Schema
 import Glean.Logger
+import Glean.RTS.Foreign.Ownership (getOwnershipStats)
 import Glean.ServerConfig.Types (DatabaseBackupPolicy(..))
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Internal.Types as Thrift
@@ -202,6 +203,9 @@ doBackup env@Env{..} repo prefix site =
     stats <- mapMaybe
       (\(pid,stats) -> (,stats) . predicateRef <$> lookupPid pid odbSchema)
       <$> Storage.predicateStats odbHandle
+    ownershipStats <- do
+      maybeOwnership <- readTVarIO odbOwnership
+      mapM getOwnershipStats maybeOwnership
     Backend.Data{..} <- withScratchDirectory envStorage repo $ \scratch ->
       Storage.backup odbHandle scratch $ \bytes Data{dataSize} -> do
         say logInfo "uploading"
@@ -221,11 +225,12 @@ doBackup env@Env{..} repo prefix site =
                 _ -> metaCompleteness meta
         }
         Backend.backup site repo (metaToProps metaWithBytes) ttl bytes
-    Logger.logDBStatistics env repo stats dataSize
+    let locator = toRepoLocator prefix site repo
+    Logger.logDBStatistics env repo stats ownershipStats dataSize locator
     say logInfo "finished"
     atomically $ do
       void $ Catalog.modifyMeta envCatalog repo $ \meta -> return meta
-        { metaBackup = Just $ toRepoLocator prefix site repo
+        { metaBackup = Just locator
         , metaCompleteness = case metaCompleteness meta of
           Complete DatabaseComplete{..} ->
             Complete DatabaseComplete

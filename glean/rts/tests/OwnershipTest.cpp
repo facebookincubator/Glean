@@ -50,6 +50,10 @@ struct TestOwnership final : Ownership {
     LOG(FATAL) << "unimplemented: getUset";
   }
 
+  OwnershipStats getStats() override {
+    LOG(FATAL) << "unimplemented: getStats";
+  }
+
   UsetId firstId_;
   std::vector<SetExpr<MutableOwnerSet>> sets_; // Sets, indexed by UsetId
   std::vector<UsetId> facts_; // Owner set for each fact

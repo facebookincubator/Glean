@@ -11,21 +11,25 @@ module Glean.Database.Logger (
   logDBStatistics
 ) where
 
+import Data.Text (Text)
+
 import qualified Glean.Database.Types as Database
 import qualified Glean.Types as Thrift
 import Glean.Logger.Database as Logger
+import Glean.RTS.Foreign.Ownership (OwnershipStats(..))
 import Glean.Types
 import Glean.Util.Some
-
 
 logDBStatistics
   :: Database.Env -- ^ Environment
   -> Thrift.Repo  -- ^ Repo of interest
   -> [(PredicateRef, Thrift.PredicateStats)]
                   -- ^ Digested stats per query in database
+  -> Maybe OwnershipStats
   -> Int          -- ^ Number of bytes backed up
+  -> Text         -- ^ Backup locator
   -> IO ()
-logDBStatistics env Thrift.Repo{..} preds size = do
+logDBStatistics env Thrift.Repo{..} preds maybeOwnershipStats size locator = do
   let preamble = mconcat
         [ Logger.SetRepoName repo_name
         , Logger.SetRepoHash repo_hash
@@ -35,8 +39,7 @@ logDBStatistics env Thrift.Repo{..} preds size = do
   let summary  = mconcat
         [ Logger.SetPredicateCount $ length preds -- # queries
         , Logger.SetPredicateSize size            -- # bytes uploaded
-        , Logger.SetUploadDestination "<TBD>"     -- TODO: not sure how to
-                                                  -- determine this yet
+        , Logger.SetUploadDestination locator
         ]
 
   let queries  =
@@ -50,9 +53,30 @@ logDBStatistics env Thrift.Repo{..} preds size = do
         | (PredicateRef{..}, Thrift.PredicateStats{..}) <- preds
         ]
 
+  let ownership
+        | Just OwnershipStats{..} <- maybeOwnershipStats =
+          [
+            mconcat
+              [ Logger.SetMetric "ownership_units"
+              , Logger.SetCount $ fromIntegral numUnits
+              , Logger.SetSize $ fromIntegral unitsSize
+              ],
+            mconcat
+              [ Logger.SetMetric "ownership_sets"
+              , Logger.SetCount $ fromIntegral numSets
+              , Logger.SetSize $ fromIntegral setsSize
+              ],
+            mconcat
+              [ Logger.SetMetric "ownership_fact_owners"
+              , Logger.SetCount $ fromIntegral numOwnerEntries
+              , Logger.SetSize $ fromIntegral ownersSize
+              ]
+          ]
+        | otherwise = []
+
   let logStats log = case Database.envDatabaseLogger env of
         Some logger -> Logger.runLog logger $ preamble <> log
 
   -- We want a new row in the log table for the summary, and a new row
   -- for each query
-  mapM_ logStats (summary:queries)
+  mapM_ logStats (summary:queries <> ownership)
