@@ -21,9 +21,13 @@ import Control.Concurrent (threadDelay)
 import Control.Exception
 import Data.Default
 import qualified Data.Text as Text
+import System.Random
+import System.Time.Extra
 
 import Glean.Backend.Types
 import qualified Glean.Types as Thrift
+import Glean.Util.RetryRecvTimeout
+import Util.Log.Text (logWarning)
 
 
 sendBatch
@@ -39,7 +43,8 @@ sendBatch backend repo batch = do
 sendBatchAsync
   :: Backend be => be -> Thrift.Repo -> Thrift.Batch -> IO Thrift.Handle
 sendBatchAsync backend repo batch = do
-  r <- enqueueBatch backend $ Thrift.ComputedBatch repo True batch
+  r <- retryServerQueueTimeout logWarningAndBackoff 4 $
+    enqueueBatch backend $ Thrift.ComputedBatch repo True batch
   case r of
     Thrift.SendResponse_handle h -> return h
     Thrift.SendResponse_retry (Thrift.BatchRetry r) ->
@@ -61,7 +66,8 @@ sendJsonBatch backend repo batches opts = do
     else waitBatch backend handle
   where
     send = do
-      r <- try $ enqueueJsonBatch backend repo
+      r <- try $ retryServerQueueTimeout logWarningAndBackoff 4 $
+        enqueueJsonBatch backend repo
         Thrift.SendJsonBatch
           { Thrift.sendJsonBatch_batches = batches
           , Thrift.sendJsonBatch_options = opts
@@ -86,3 +92,14 @@ waitBatch backend handle = do
       Thrift.FinishResponse_subst subst -> return subst
       Thrift.FinishResponse_retry (Thrift.BatchRetry r) ->
         retry r $ waitBatch backend handle
+
+maxBackOffSeconds :: Seconds
+maxBackOffSeconds = 10
+
+-- | Logs a warning message and sleeps
+--   a random amount of time between 1 and 'maxBackOffSeconds'
+logWarningAndBackoff :: Text.Text -> IO ()
+logWarningAndBackoff msg = do
+  logWarning msg
+  randomBackoff <- randomRIO (1, maxBackOffSeconds)
+  sleep randomBackoff
