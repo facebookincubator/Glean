@@ -93,6 +93,7 @@ data GraphOptions = GraphOptions
   , reverseDeps :: Bool
   , topologicalSort :: Bool
   , graphType :: GraphType
+  , ignoreDerivations :: Bool
   }
 
 data GraphType = SchemaGraph | PredicateGraph
@@ -156,6 +157,11 @@ options = do
         graphType <- flag SchemaGraph PredicateGraph
           (  long "predicates"
           <> help "show a graph of predicates rather than of schemas"
+          )
+        ignoreDerivations <- switch
+          ( long "ignore-derivations"
+          <> help "in a predicate graph ignore dependencies \
+              \from derivation queries."
           )
 
         return GraphOptions{..}
@@ -296,7 +302,7 @@ graph opts dbschema sourceSchemas versions =
   where
     (roots, graph) = case graphType opts of
       PredicateGraph ->
-        let graph = predicateGraph dbschema
+        let graph = predicateGraph (ignoreDerivations opts) dbschema
             roots = maybe (Map.keys graph) pure (target opts)
         in (roots, graph)
       SchemaGraph ->
@@ -311,8 +317,8 @@ schemaGraph sourceSchemas = Map.fromList
     dependencies SourceSchema{..} =
       schemaInherits ++ [ name | SourceImport name <- schemaDecls ]
 
-predicateGraph :: DbSchema -> Map Text [Text]
-predicateGraph dbschema = Map.fromList
+predicateGraph :: Bool -> DbSchema -> Map Text [Text]
+predicateGraph ignoreDerivations dbschema = Map.fromList
   [ (ref, deps)
   | details <- IntMap.elems (predicatesByPid dbschema)
   , let ref = showRef (predicateRef details)
@@ -324,9 +330,12 @@ predicateGraph dbschema = Map.fromList
         keyValueDeps =
           typeDeps (predicateKeyType details) <>
           typeDeps (predicateValueType details)
-        derivationDeps = case predicateDeriving details of
-          Derive _ (QueryWithInfo query _ _) -> tcQueryDeps query
-          _ -> mempty
+        derivationDeps
+          | not ignoreDerivations
+          , Derive _ (QueryWithInfo query _ _) <- predicateDeriving details
+          = tcQueryDeps query
+          | otherwise
+          = mempty
     typeDeps = bifoldMap overPidRef overExpanded
       where
         overExpanded (ExpandedType _ ty) = typeDeps ty
