@@ -33,7 +33,7 @@ struct DatabaseImpl final : Database {
   ContainerImpl container_;
   Id starting_id;
   Id next_id;
-  rts::UnitId first_unit_id;
+  rts::Ownership* base_ownership;
   rts::UnitId next_unit_id;
   AtomicPredicateStats stats_;
   std::vector<size_t> ownership_unit_counters;
@@ -46,7 +46,7 @@ struct DatabaseImpl final : Database {
   explicit DatabaseImpl(
       ContainerImpl c,
       Id start,
-      rts::UnitId nextUnitId,
+      rts::Ownership* baseOwnership,
       int64_t version);
 
   DatabaseImpl(const DatabaseImpl&) = delete;
@@ -105,6 +105,10 @@ struct DatabaseImpl final : Database {
 
   /// Ownership
 
+  rts::UnitId firstUnitId() {
+    return base_ownership ? base_ownership->nextUnitId() : 0;
+  }
+
   folly::Optional<uint32_t> getUnitId(folly::ByteRange unit) override;
   folly::Optional<std::string> getUnit(uint32_t unit_id) override;
 
@@ -125,10 +129,6 @@ struct DatabaseImpl final : Database {
   /// Enable the fact owner cache. This should only be called when the
   // DB is read-only.
   void cacheOwnership() override;
-
-  rts::UnitId nextUnitId() override {
-    return next_unit_id;
-  }
 
   // Cache for getOwner(Id). This is represented as a vector of pages
   // indexed by the upper 48 bits of the fact ID. Each page is a table

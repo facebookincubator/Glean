@@ -28,7 +28,6 @@ import Glean.Repo.Text
 import Glean.RTS.Foreign.FactSet (FactSet)
 import qualified Glean.RTS.Foreign.FactSet as FactSet
 import Glean.RTS.Foreign.Lookup
-import Glean.RTS.Foreign.Ownership (UnitId(..))
 import Glean.Types (Repo)
 
 newtype Memory = Memory (TVar (HashMap Repo (Database Memory)))
@@ -85,7 +84,6 @@ instance Storage Memory where
   computeOwnership _ _ = return (error "unimplemented computeOwnership")
   getUnitId _ _ = return (error "unimplemented getUnitId")
   getUnit _ _ = return (error "unimplemented getUnit")
-  nextUnitId _ = return (UnitId 0)
   storeOwnership _ _ = return ()  -- can't fail, otherwise we fail tests
   getOwnership _ = return Nothing
   addDefineOwnership _ _ =

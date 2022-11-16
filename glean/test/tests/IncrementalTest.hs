@@ -191,6 +191,50 @@ incrementalTest = TestCase $
     r <- edgesFrom "b"
     assertEqual "inc 6" ["a"] r
 
+stackedIncrementalTest :: Test
+stackedIncrementalTest = TestCase $
+  withTestEnv [] $ \env -> do
+    let base = Repo "base" "0"
+    kickOffTestDB env base id
+    mkGraph env base
+    completeTestDB env base
+
+    {-
+    base:
+         a
+        / \
+       b   c
+        \ /
+         d
+    -}
+    inc <- incrementalDB env base (Repo "base-inc" "1") ["A","B"]
+    writeFactsIntoDB env inc [ Glean.Test.allPredicates ] $ do
+      d <- withUnit "D" $ do
+        makeFact @Glean.Test.Node (Glean.Test.Node_key "d")
+      a <- withUnit "A" $ do
+        a <- makeFact @Glean.Test.Node (Glean.Test.Node_key "a")
+        makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key a d)
+        return a
+      withUnit "B" $ do
+        b <- makeFact @Glean.Test.Node (Glean.Test.Node_key "b")
+        makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key b a)
+    completeTestDB env inc
+
+    {-
+    inc:
+         b
+         |
+         a   c
+          \ /
+           d
+    -}
+
+    -- stacking another DB and excluding C, which is in the base DB
+    inc2 <- incrementalDB env inc (Repo "base-inc" "2") ["C"]
+    -- node "c" does not exist
+    results <- runQuery_ env inc2 $ query $
+      predicate @Glean.Test.Node (rec $ field @"label" (string "c") end)
+    assertEqual "stacked inc 0" [] results
 
 -- tickled a bug in the storage of ownership information
 dupSetTest :: Test
@@ -356,4 +400,5 @@ main_ = withUnitTest $ testRunner $ TestList
   , TestLabel "dupSetTest" dupSetTest
   , TestLabel "orphanTest" orphanTest
   , TestLabel "deriveTest" deriveTest
+  , TestLabel "stackedIncrementalTest" stackedIncrementalTest
   ]

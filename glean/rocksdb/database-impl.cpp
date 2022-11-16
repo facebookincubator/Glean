@@ -74,9 +74,9 @@ T getAdminValue(
 DatabaseImpl::DatabaseImpl(
     ContainerImpl c,
     Id start,
-    UnitId nextUnitId,
+    rts::Ownership* baseOwnership,
     int64_t version)
-    : container_(std::move(c)) {
+    : container_(std::move(c)), base_ownership(baseOwnership) {
   starting_id = Id::fromWord(getAdminValue(
       container_,
       AdminId::STARTING_ID,
@@ -95,20 +95,10 @@ DatabaseImpl::DatabaseImpl(
         }
       }));
 
-  first_unit_id = getAdminValue(
-      container_,
-      AdminId::FIRST_UNIT_ID,
-      nextUnitId,
-      container_.mode == Mode::Create,
-      [mode = container_.mode] {
-        // TODO: later this should be an error, for now we have to be
-        // able to open old DBs.
-      });
-
   next_unit_id = getAdminValue(
       container_,
       AdminId::NEXT_UNIT_ID,
-      nextUnitId,
+      firstUnitId(),
       container_.mode == Mode::Create,
       [mode = container_.mode] {
         // TODO: later this should be an error, for now we have to be

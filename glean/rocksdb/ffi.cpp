@@ -119,12 +119,12 @@ void glean_rocksdb_container_free(Container* container) {
 const char *glean_rocksdb_container_open_database(
     Container *container,
     glean_fact_id_t start,
-    uint64_t first_unit_id,
+    Ownership *ownership,
     int64_t version,
     Database **database) {
   return ffi::wrap([=] {
     *database = std::move(*container)
-      .openDatabase(Id::fromThrift(start), first_unit_id, version)
+      .openDatabase(Id::fromThrift(start), ownership, version)
       .release();
   });
 }
@@ -199,15 +199,6 @@ const char *glean_rocksdb_get_unit(Database *db, uint32_t unit_id, void **unit,
       *unit = nullptr;
       *unit_size = 0;
     }
-  });
-}
-
-const char *glean_rocksdb_next_unit_id(
-  Database *db,
-  uint64_t *unit_id
-) {
-  return ffi::wrap([=] {
-    *unit_id = db->nextUnitId();
   });
 }
 

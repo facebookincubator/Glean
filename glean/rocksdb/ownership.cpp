@@ -18,7 +18,7 @@ using namespace rts;
 
 std::vector<size_t> DatabaseImpl::loadOwnershipUnitCounters() {
   container_.requireOpen();
-  std::vector<size_t> result(first_unit_id);
+  std::vector<size_t> result(firstUnitId());
 
   std::unique_ptr<rocksdb::Iterator> iter(container_.db->NewIterator(
       rocksdb::ReadOptions(), container_.family(Family::ownershipRaw)));
@@ -206,7 +206,7 @@ folly::Optional<uint32_t> DatabaseImpl::getUnitId(folly::ByteRange unit) {
     assert(val.size() == sizeof(uint32_t));
     return folly::loadUnaligned<uint32_t>(val.data());
   } else {
-    return folly::none;
+    return base_ownership ? base_ownership->getUnitId(unit) : folly::none;
   }
 }
 
@@ -456,6 +456,14 @@ struct StoredOwnership : Ownership {
     return impl::getSetIterator(db_->container_);
   }
 
+  folly::Optional<UnitId> getUnitId(folly::ByteRange unit) override {
+    return db_->getUnitId(unit);
+  }
+
+  UnitId nextUnitId() override {
+    return db_->next_unit_id;
+  }
+
   OwnershipStats getStats() override {
     rocksdb::Range range(toSlice(""), toSlice("\xff"));
     uint64_t units_size, owners_size;
@@ -468,7 +476,7 @@ struct StoredOwnership : Ownership {
               &range, 1, &owners_size));
 
     OwnershipStats stats;
-    stats.num_units = db_->next_unit_id - db_->first_unit_id;
+    stats.num_units = db_->next_unit_id - db_->firstUnitId(),
     stats.units_size = units_size;
     if (db_->usets_) {
       stats.num_sets = db_->usets_->size();

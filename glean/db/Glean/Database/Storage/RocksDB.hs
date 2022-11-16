@@ -97,12 +97,12 @@ instance Storage RocksDB where
   describe rocks = "rocksdb:" <> rocksRoot rocks
 
   open rocks repo mode (DBVersion version) = do
-    (cmode, start, unit) <- case mode of
-      ReadOnly -> return (0, invalidFid, 0)
-      ReadWrite -> return (1, invalidFid, 0)
-      Create start (UnitId unit) _ -> do
+    (cmode, start, ownership) <- case mode of
+      ReadOnly -> return (0, invalidFid, Nothing)
+      ReadWrite -> return (1, invalidFid, Nothing)
+      Create start ownership _ -> do
         createDirectoryIfMissing True path
-        return (2, start, fromIntegral unit)
+        return (2, start, ownership)
     withCString path $ \cpath ->
       withCache (rocksCache rocks) $ \cache_ptr ->
       using (invoke $
@@ -111,10 +111,12 @@ instance Storage RocksDB where
             (fromIntegral (fromEnum (rocksCacheIndexAndFilterBlocks rocks)))
             cache_ptr)
         $ \container -> do
-      fp <- mask_ $ do
-        p <- invoke $
-          glean_rocksdb_container_open_database container start unit version
-        newForeignPtr glean_rocksdb_database_free p
+      fp <- mask_ $
+        maybe ($ nullPtr) with ownership $ \ownership_ptr -> do
+          p <- invoke $
+            glean_rocksdb_container_open_database container start
+              ownership_ptr version
+          newForeignPtr glean_rocksdb_database_free p
       return (Database fp repo)
     where
       path = containerPath rocks repo
@@ -204,10 +206,6 @@ instance Storage RocksDB where
       if unit_size /= 0
         then Just <$> unsafeMallocedByteString unit_ptr unit_size
         else return Nothing
-
-  nextUnitId db =
-    withForeignPtr (dbPtr db) $ \db_ptr ->
-      fmap (UnitId . fromIntegral) $ invoke $ glean_rocksdb_next_unit_id db_ptr
 
   addDefineOwnership db define =
     withForeignPtr (dbPtr db) $ \db_ptr ->
@@ -329,7 +327,7 @@ foreign import ccall safe glean_rocksdb_container_backup
 foreign import ccall unsafe glean_rocksdb_container_open_database
   :: Container
   -> Fid
-  -> Word64
+  -> Ptr Ownership
   -> Int64
   -> Ptr (Ptr (Database RocksDB))
   -> IO CString
@@ -378,11 +376,6 @@ foreign import ccall unsafe glean_rocksdb_get_unit_id
   :: Ptr (Database RocksDB)
   -> Ptr ()
   -> CSize
-  -> Ptr Word64
-  -> IO CString
-
-foreign import ccall unsafe glean_rocksdb_next_unit_id
-  :: Ptr (Database RocksDB)
   -> Ptr Word64
   -> IO CString
 

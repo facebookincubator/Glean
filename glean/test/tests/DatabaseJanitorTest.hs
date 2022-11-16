@@ -57,7 +57,6 @@ import Glean.Database.Types
 import Glean.Database.Schema
 import Glean.Database.Schema.Types
 import Glean.Init
-import Glean.RTS.Foreign.Ownership (UnitId(..))
 import Glean.RTS.Types (lowestFid)
 import Glean.ServerConfig.Types as ServerTypes
 import Glean.Internal.Types
@@ -153,7 +152,7 @@ makeFakeDB schema root repo dbtime completeness stacked = do
     (Storage.open
       storage
       repo
-      (Storage.Create lowestFid (UnitId 0) Storage.UseDefaultSchema)
+      (Storage.Create lowestFid Nothing Storage.UseDefaultSchema)
       Storage.currentVersion)
     Storage.close
     (\hdl -> storeSchema hdl $ toStoredSchema schema)

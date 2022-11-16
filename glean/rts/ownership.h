@@ -63,6 +63,12 @@ struct Ownership {
   // introspection only.
   virtual folly::Optional<SetExpr<SetU32>> getUset(UsetId) = 0;
 
+  // Look up the UnitId for a unit
+  virtual folly::Optional<UnitId> getUnitId(folly::ByteRange unit) = 0;
+
+  // Next unused UnitId
+  virtual rts::UnitId nextUnitId() = 0;
+
   // Return stats about the ownership data
   virtual OwnershipStats getStats() = 0;
 };

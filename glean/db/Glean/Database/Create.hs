@@ -49,7 +49,6 @@ import Glean.Database.Schema.Types
 import Glean.Internal.Types
 import qualified Glean.Recipes.Types as Recipes
 import Glean.RTS.Foreign.Lookup (firstFreeId)
-import Glean.RTS.Foreign.Ownership (UnitId(..))
 import Glean.Schema.Types (schemasHighestVersion)
 import Glean.RTS.Types (lowestFid, fromPid)
 import qualified Glean.ServerConfig.Types as ServerConfig
@@ -86,9 +85,9 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
 
             let storedSchema = toStoredSchema odbSchema
 
-            unit <- Storage.nextUnitId odbHandle
+            ownership <- readTVarIO odbOwnership
             if not kickOff_update_schema_for_stacked
-              then return $ Storage.Create start unit
+              then return $ Storage.Create start ownership
                 (Storage.UseThisSchema storedSchema)
               else do
 
@@ -133,10 +132,10 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
                   "update_schema_for_stacked specified, but schemas are " <>
                   "incompatible: " <> Text.intercalate ", " errors
 
-            return $ Storage.Create start unit chooseSchema
+            return $ Storage.Create start ownership chooseSchema
 
       mode <- case kickOff_dependencies of
-        Nothing -> return $ Storage.Create lowestFid (UnitId 0) schemaToUse
+        Nothing -> return $ Storage.Create lowestFid Nothing schemaToUse
         Just (Dependencies_stacked repo) -> stackedCreate repo
         Just (Dependencies_pruned update) -> stackedCreate (pruned_base update)
 
