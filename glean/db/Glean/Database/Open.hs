@@ -30,7 +30,6 @@ import Data.IORef
 import Data.Maybe
 import Data.Set (Set)
 import qualified Data.Set as Set
-import qualified Data.Text as Text
 import GHC.Stack (HasCallStack)
 
 import qualified Util.Control.Exception.CallStack as CallStack
@@ -501,12 +500,9 @@ baseSlices env deps = case deps of
       slice <- if exclude && Set.null units
         then return Nothing
         else do
-          unitIds <- forM (Set.toList units) $ \unit -> do
-            r <- Storage.getUnitId odbHandle unit
-            case r of
-              Nothing -> throwIO $ Thrift.BadQuery $
-                "unknown unit: " <> Text.pack (show unit)
-              Just uid -> return uid
+          unitIds <- fmap catMaybes $
+            forM (Set.toList units) $
+              Storage.getUnitId odbHandle
           maybeOwnership <- readTVarIO odbOwnership
           forM maybeOwnership $ \ownership ->
             Ownership.slice ownership unitIds exclude
