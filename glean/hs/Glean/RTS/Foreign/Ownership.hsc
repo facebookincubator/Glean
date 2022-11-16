@@ -55,7 +55,7 @@ instance Static UnitIterator where
 
 -- | Id of a unit
 newtype UnitId = UnitId Word32
-  deriving (Storable)
+  deriving (Storable, Show)
 
 -- | Id of an ownership set
 newtype UsetId = UsetId Word32

@@ -96,14 +96,13 @@ instance Storage RocksDB where
 
   describe rocks = "rocksdb:" <> rocksRoot rocks
 
-
   open rocks repo mode (DBVersion version) = do
-    (cmode, start) <- case mode of
-      ReadOnly -> return (0, invalidFid)
-      ReadWrite -> return (1, invalidFid)
-      Create start _ -> do
+    (cmode, start, unit) <- case mode of
+      ReadOnly -> return (0, invalidFid, 0)
+      ReadWrite -> return (1, invalidFid, 0)
+      Create start (UnitId unit) _ -> do
         createDirectoryIfMissing True path
-        return (2, start)
+        return (2, start, fromIntegral unit)
     withCString path $ \cpath ->
       withCache (rocksCache rocks) $ \cache_ptr ->
       using (invoke $
@@ -114,7 +113,7 @@ instance Storage RocksDB where
         $ \container -> do
       fp <- mask_ $ do
         p <- invoke $
-          glean_rocksdb_container_open_database container start version
+          glean_rocksdb_container_open_database container start unit version
         newForeignPtr glean_rocksdb_database_free p
       return (Database fp repo)
     where
@@ -205,6 +204,10 @@ instance Storage RocksDB where
       if unit_size /= 0
         then Just <$> unsafeMallocedByteString unit_ptr unit_size
         else return Nothing
+
+  nextUnitId db =
+    withForeignPtr (dbPtr db) $ \db_ptr ->
+      fmap (UnitId . fromIntegral) $ invoke $ glean_rocksdb_next_unit_id db_ptr
 
   addDefineOwnership db define =
     withForeignPtr (dbPtr db) $ \db_ptr ->
@@ -326,6 +329,7 @@ foreign import ccall safe glean_rocksdb_container_backup
 foreign import ccall unsafe glean_rocksdb_container_open_database
   :: Container
   -> Fid
+  -> Word64
   -> Int64
   -> Ptr (Ptr (Database RocksDB))
   -> IO CString
@@ -374,6 +378,11 @@ foreign import ccall unsafe glean_rocksdb_get_unit_id
   :: Ptr (Database RocksDB)
   -> Ptr ()
   -> CSize
+  -> Ptr Word64
+  -> IO CString
+
+foreign import ccall unsafe glean_rocksdb_next_unit_id
+  :: Ptr (Database RocksDB)
   -> Ptr Word64
   -> IO CString
 

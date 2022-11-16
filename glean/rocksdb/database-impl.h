@@ -23,7 +23,9 @@ namespace impl {
 enum class AdminId : uint32_t {
   NEXT_ID,
   VERSION,
-  STARTING_ID
+  STARTING_ID,
+  FIRST_UNIT_ID,
+  NEXT_UNIT_ID
 };
 
 struct DatabaseImpl final : Database {
@@ -31,6 +33,8 @@ struct DatabaseImpl final : Database {
   ContainerImpl container_;
   Id starting_id;
   Id next_id;
+  rts::UnitId first_unit_id;
+  rts::UnitId next_unit_id;
   AtomicPredicateStats stats_;
   std::vector<size_t> ownership_unit_counters;
   folly::F14FastMap<uint64_t, size_t> ownership_derived_counters;
@@ -39,7 +43,11 @@ struct DatabaseImpl final : Database {
   // TODO: initialize this lazily
   std::unique_ptr<rts::Usets> usets_;
 
-  explicit DatabaseImpl(ContainerImpl c, Id start, int64_t version);
+  explicit DatabaseImpl(
+      ContainerImpl c,
+      Id start,
+      rts::UnitId nextUnitId,
+      int64_t version);
 
   DatabaseImpl(const DatabaseImpl&) = delete;
   DatabaseImpl& operator=(const DatabaseImpl&) = delete;
@@ -117,6 +125,10 @@ struct DatabaseImpl final : Database {
   /// Enable the fact owner cache. This should only be called when the
   // DB is read-only.
   void cacheOwnership() override;
+
+  rts::UnitId nextUnitId() override {
+    return next_unit_id;
+  }
 
   // Cache for getOwner(Id). This is represented as a vector of pages
   // indexed by the upper 48 bits of the fact ID. Each page is a table

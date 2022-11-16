@@ -66,6 +66,7 @@ data Mode
   | ReadWrite
   | Create
       Fid  -- starting fact id
+      UnitId  -- starting UnitId
       CreateSchema
   deriving (Show)
 
@@ -134,6 +135,10 @@ class CanLookup (Database s) => Storage s where
 
   getUnitId :: Database s -> ByteString -> IO (Maybe UnitId)
   getUnit :: Database s -> UnitId -> IO (Maybe ByteString)
+
+  -- | The last UnitId allocated in this DB plus one, so that we know
+  -- where to start allocating UnitIds in a stacked DB.
+  nextUnitId :: Database s -> IO UnitId
 
   addDefineOwnership :: Database s -> DefineOwnership -> IO ()
 

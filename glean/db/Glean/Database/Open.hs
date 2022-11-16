@@ -243,7 +243,7 @@ updateLookupCacheStats env =
   =<< LookupCache.readStatsAndResetCounters (envLookupCacheStats env)
 
 setupSchema :: Storage s => Env -> Repo -> Database s -> Mode -> IO DbSchema
-setupSchema Env{..} _ handle (Create _ initial) = do
+setupSchema Env{..} _ handle (Create _ _ initial) = do
   schema <- Observed.get envSchemaSource
   dbSchema <- case initial of
     UseDefaultSchema -> newDbSchema schema LatestSchemaAll readWriteContent

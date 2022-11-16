@@ -98,7 +98,8 @@ struct ContainerImpl final : Container {
   void requireOpen() const;
 
   void backup(const std::string& path) override;
-  std::unique_ptr<Database> openDatabase(Id start, int32_t version) && override;
+  std::unique_ptr<Database> openDatabase(
+      Id start, rts::UnitId nextUnitId, int32_t version) && override;
 
   void writeData(folly::ByteRange key, folly::ByteRange value) override;
 

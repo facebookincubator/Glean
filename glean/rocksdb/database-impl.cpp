@@ -23,7 +23,9 @@ namespace {
 const char *admin_names[] = {
   "NEXT_ID",
   "VERSION",
-  "STARTING_ID"
+  "STARTING_ID",
+  "FIRST_UNIT_ID",
+  "NEXT_UNIT_ID"
 };
 
 template <typename T, typename F>
@@ -69,7 +71,11 @@ T getAdminValue(
 
 } // namespace
 
-DatabaseImpl::DatabaseImpl(ContainerImpl c, Id start, int64_t version)
+DatabaseImpl::DatabaseImpl(
+    ContainerImpl c,
+    Id start,
+    UnitId nextUnitId,
+    int64_t version)
     : container_(std::move(c)) {
   starting_id = Id::fromWord(getAdminValue(
       container_,
@@ -89,6 +95,26 @@ DatabaseImpl::DatabaseImpl(ContainerImpl c, Id start, int64_t version)
         }
       }));
 
+  first_unit_id = getAdminValue(
+      container_,
+      AdminId::FIRST_UNIT_ID,
+      nextUnitId,
+      container_.mode == Mode::Create,
+      [mode = container_.mode] {
+        // TODO: later this should be an error, for now we have to be
+        // able to open old DBs.
+      });
+
+  next_unit_id = getAdminValue(
+      container_,
+      AdminId::NEXT_UNIT_ID,
+      nextUnitId,
+      container_.mode == Mode::Create,
+      [mode = container_.mode] {
+        // TODO: later this should be an error, for now we have to be
+        // able to open old DBs.
+      });
+
   db_version = getAdminValue(
       container_,
       AdminId::VERSION,
@@ -101,12 +127,14 @@ DatabaseImpl::DatabaseImpl(ContainerImpl c, Id start, int64_t version)
   }
 
   stats_.set(loadStats());
-  ownership_unit_counters = loadOwnershipUnitCounters();
-  ownership_derived_counters = loadOwnershipDerivedCounters();
 
-  // We only need usets_ for writable DBs, and it takes time and
-  // memory to load them so omit this for ReadOnly DBs.
   if (container_.mode != Mode::ReadOnly) {
+    // These are only used when writing
+    ownership_unit_counters = loadOwnershipUnitCounters();
+    ownership_derived_counters = loadOwnershipDerivedCounters();
+
+    // We only need usets_ for writable DBs, and it takes time and
+    // memory to load them so omit this for ReadOnly DBs.
     usets_ = loadOwnershipSets();
   }
 

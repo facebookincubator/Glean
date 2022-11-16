@@ -59,8 +59,8 @@ struct Container {
   /// Convert the Container to a full fact Database with the given
   /// representation version - accessing the original Container afterwards isn't
   /// allowed. If the database is being created, start is the starting fact id.
-  virtual
-    std::unique_ptr<Database> openDatabase(Id start, int32_t version) && = 0;
+  virtual std::unique_ptr<Database>
+  openDatabase(Id start, rts::UnitId nextUnitId, int32_t version) && = 0;
 };
 
 enum class Mode {
@@ -105,6 +105,8 @@ struct Database : rts::Lookup {
   virtual std::unique_ptr<rts::Ownership> getOwnership() = 0;
 
   virtual void cacheOwnership() = 0;
+
+  virtual rts::UnitId nextUnitId() = 0;
 };
 
 void restore(const std::string& target, const std::string& source);

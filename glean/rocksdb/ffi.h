@@ -93,6 +93,7 @@ void glean_rocksdb_container_free(
 const char *glean_rocksdb_container_open_database(
   Container *container,
   glean_fact_id_t start,
+  uint64_t first_unit_id,
   int64_t version,
   Database **db
 );
@@ -139,6 +140,11 @@ const char *glean_rocksdb_get_unit(
   uint32_t unit_id,
   void **unit,
   size_t *unit_size
+);
+
+const char *glean_rocksdb_next_unit_id(
+  Database *db,
+  uint64_t *unit_id
 );
 
 const char *glean_rocksdb_database_predicateStats(

@@ -49,6 +49,7 @@ import Glean.Database.Schema.Types
 import Glean.Internal.Types
 import qualified Glean.Recipes.Types as Recipes
 import Glean.RTS.Foreign.Lookup (firstFreeId)
+import Glean.RTS.Foreign.Ownership (UnitId(..))
 import Glean.Schema.Types (schemasHighestVersion)
 import Glean.RTS.Types (lowestFid, fromPid)
 import qualified Glean.ServerConfig.Types as ServerConfig
@@ -74,7 +75,7 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
               Nothing -> Storage.UseDefaultSchema
 
         stackedCreate repo =
-          readDatabase env repo $ \odb lookup -> do
+          readDatabase env repo $ \OpenDB{..} lookup -> do
             atomically $ do
               meta <- Catalog.readMeta envCatalog repo
               case metaCompleteness meta of
@@ -83,10 +84,11 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
                   "database is " <> showCompleteness c
             start <- firstFreeId lookup
 
-            let storedSchema = toStoredSchema (odbSchema odb)
+            let storedSchema = toStoredSchema odbSchema
 
+            unit <- Storage.nextUnitId odbHandle
             if not kickOff_update_schema_for_stacked
-              then return $ Storage.Create start
+              then return $ Storage.Create start unit
                 (Storage.UseThisSchema storedSchema)
               else do
 
@@ -100,7 +102,7 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
             -- differences.
             index <- Observed.get envSchemaSource
             let
-              DbSchema{..} = odbSchema odb
+              DbSchema{..} = odbSchema
 
               proc = case schemaToUse of
                 Storage.UseSpecificSchema id
@@ -131,10 +133,10 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
                   "update_schema_for_stacked specified, but schemas are " <>
                   "incompatible: " <> Text.intercalate ", " errors
 
-            return $ Storage.Create start chooseSchema
+            return $ Storage.Create start unit chooseSchema
 
       mode <- case kickOff_dependencies of
-        Nothing -> return $ Storage.Create lowestFid schemaToUse
+        Nothing -> return $ Storage.Create lowestFid (UnitId 0) schemaToUse
         Just (Dependencies_stacked repo) -> stackedCreate repo
         Just (Dependencies_pruned update) -> stackedCreate (pruned_base update)
 

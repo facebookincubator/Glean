@@ -18,7 +18,7 @@ using namespace rts;
 
 std::vector<size_t> DatabaseImpl::loadOwnershipUnitCounters() {
   container_.requireOpen();
-  std::vector<size_t> result;
+  std::vector<size_t> result(first_unit_id);
 
   std::unique_ptr<rocksdb::Iterator> iter(container_.db->NewIterator(
       rocksdb::ReadOptions(), container_.family(Family::ownershipRaw)));
@@ -272,6 +272,14 @@ void DatabaseImpl::addOwnership(const std::vector<OwnershipSet>& ownership) {
             set.ids.size() * sizeof(int64_t))));
   }
 
+  if (new_count > 0) {
+    next_unit_id += new_count;
+    check(batch.Put(
+      container_.family(Family::admin),
+      toSlice(AdminId::NEXT_UNIT_ID),
+      toSlice(next_unit_id)));
+  }
+
   check(container_.db->Write(container_.writeOptions, &batch));
 
   for (auto i : touched) {
@@ -279,6 +287,7 @@ void DatabaseImpl::addOwnership(const std::vector<OwnershipSet>& ownership) {
     ++ownership_unit_counters[i];
   }
   ownership_unit_counters.insert(ownership_unit_counters.end(), new_count, 1);
+  assert(next_unit_id == ownership_unit_counters.size());
 }
 
 std::unique_ptr<rts::DerivedFactOwnershipIterator>
@@ -459,7 +468,7 @@ struct StoredOwnership : Ownership {
               &range, 1, &owners_size));
 
     OwnershipStats stats;
-    stats.num_units = db_->ownership_unit_counters.size();
+    stats.num_units = db_->next_unit_id - db_->first_unit_id;
     stats.units_size = units_size;
     if (db_->usets_) {
       stats.num_sets = db_->usets_->size();
