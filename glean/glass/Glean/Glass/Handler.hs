@@ -1525,12 +1525,11 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
         baseEntity
         repo
       -- for each parent, collect the inherited children by `contains`
-      mapM (\parent -> do
-          children <- childrenContains1Level
-                (toEntity parent)
-                repo
-          return (parent, map Search.childRL children)
-        ) parents
+      mapM (childrenOf repo) parents
+
+    childrenOf repo parent = do
+      children <- childrenContains1Level (toEntity parent) repo
+      return (parent, map Search.childRL children)
 
     symbolIdPairs = map (\Search.RelatedLocatedEntities{..} ->
       RelatedSymbols (snd parentRL) (snd childRL))
