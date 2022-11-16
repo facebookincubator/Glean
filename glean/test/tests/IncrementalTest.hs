@@ -207,6 +207,7 @@ stackedIncrementalTest = TestCase $
         \ /
          d
     -}
+
     inc <- incrementalDB env base (Repo "base-inc" "1") ["A","B"]
     writeFactsIntoDB env inc [ Glean.Test.allPredicates ] $ do
       d <- withUnit "D" $ do
@@ -229,12 +230,38 @@ stackedIncrementalTest = TestCase $
            d
     -}
 
+    -- nodes are a,b,c,d
+    results <- runQuery_ env inc $ query $ predicate @Glean.Test.Node wild
+    assertEqual "stacked inc 0" ["a", "b", "c", "d"]
+      (sort [ x | Glean.Test.Node _ (Just (Glean.Test.Node_key x)) <- results ])
+
     -- stacking another DB and excluding C, which is in the base DB
     inc2 <- incrementalDB env inc (Repo "base-inc" "2") ["C"]
-    -- node "c" does not exist
-    results <- runQuery_ env inc2 $ query $
-      predicate @Glean.Test.Node (rec $ field @"label" (string "c") end)
-    assertEqual "stacked inc 0" [] results
+
+    {-
+    inc2:
+         b
+         |
+         a
+          \
+           d
+    -}
+
+    -- nodes are a,b,d
+    results <- runQuery_ env inc2 $ query $ predicate @Glean.Test.Node wild
+    print results
+    assertEqual "stacked inc 1" ["a", "b", "d"]
+      (sort [ x | Glean.Test.Node _ (Just (Glean.Test.Node_key x)) <- results ])
+    edges <- runQuery_ env inc2 $ recursive $ query $
+      predicate @Glean.Test.Edge wild
+    print edges
+    -- nodes are a->d b->a
+    assertEqual "stacked inc 2" [("a","d"),("b","a")]
+      (sort [ (x,y) | Glean.Test.Edge _ (Just (
+                        Glean.Test.Edge_key
+                         (Glean.Test.Node _ (Just (Glean.Test.Node_key x)))
+                         (Glean.Test.Node _ (Just (Glean.Test.Node_key y)))))
+        <- edges ])
 
 -- tickled a bug in the storage of ownership information
 dupSetTest :: Test

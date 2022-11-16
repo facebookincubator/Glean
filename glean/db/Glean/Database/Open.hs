@@ -23,10 +23,13 @@ import Control.Concurrent.STM
 import Control.Exception hiding(try)
 import Control.Monad.Catch (try)
 import Control.Monad.Extra
+import Data.ByteString (ByteString)
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.IORef
 import Data.Maybe
+import Data.Set (Set)
+import qualified Data.Set as Set
 import qualified Data.Text as Text
 import GHC.Stack (HasCallStack)
 
@@ -128,35 +131,45 @@ withOpenDBLookup
   -> OpenDB
   -> (Boundaries -> Lookup -> IO a)
   -> IO a
-withOpenDBLookup env@Env{..} repo
-    OpenDB{ odbHandle = handle, odbBaseSlice = baseSlice } f = do
+withOpenDBLookup env repo OpenDB{ odbBaseSlices = baseSlices, .. } f =
+  Lookup.withCanLookup odbHandle $ \lookup ->
+    withOpenDBStackLookup env repo lookup baseSlices f
+
+withOpenDBStackLookup
+  :: Env
+  -> Repo  -- Stacked DB
+  -> Lookup  -- Stacked DB
+  -> [Maybe Ownership.Slice]  -- Slices for the stack, starting at the base
+  -> (Boundaries -> Lookup -> IO a)
+  -> IO a
+withOpenDBStackLookup env@Env{..} repo lookup slices f = do
   deps <- atomically $ metaDependencies <$> Catalog.readMeta envCatalog repo
   case deps of
-    Nothing -> Lookup.withCanLookup handle $ \lookup -> do
+    Nothing -> do
       bounds <- flatBoundaries lookup
       f bounds lookup
     Just (Thrift.Dependencies_stacked base_repo) ->
-      readDatabase env base_repo $ \_ base ->
-      Lookup.withCanLookup handle $ \lookup -> do
+      stackedOn base_repo slices
+    Just (Thrift.Dependencies_pruned Thrift.Pruned{..}) ->
+      stackedOn pruned_base slices
+  where
+  stackedOn baseRepo [] = throwIO $ Thrift.Exception $
+    "missing slice for " <> repoToText baseRepo
+  stackedOn baseRepo (maybeSlice : slices) = do
+    withOpenDatabase env baseRepo $ \OpenDB{..} -> do
+      withBaseLookup <- case maybeSlice of
+        Nothing -> return (Lookup.withCanLookup odbHandle)
+        Just slice -> do
+          maybeOwn <- readTVarIO odbOwnership
+          own <- case maybeOwn of
+            Nothing -> throwIO $ Thrift.Exception $
+              "missing ownership for " <> repoToText baseRepo
+            Just own -> return own
+          return (Lookup.withCanLookup (Ownership.sliced own slice odbHandle))
+      withBaseLookup $ \baseLookup -> do
+      withOpenDBStackLookup env baseRepo baseLookup slices $ \_ base -> do
         bounds <- stackedBoundaries base lookup
         Lookup.withCanLookup (Stacked.stacked base lookup) (f bounds)
-    Just (Thrift.Dependencies_pruned update) -> do
-      let base_repo = Thrift.pruned_base update
-      case baseSlice of
-        Nothing -> throwIO $ Thrift.Exception $
-          repoToText repo <> ": missing base slice"
-        Just slice ->
-          readDatabase env base_repo $ \baseOdb base -> do
-          maybeOwn <- readTVarIO (odbOwnership baseOdb)
-          case maybeOwn of
-            Nothing -> throwIO $ Thrift.Exception $
-              repoToText repo <> ": missing ownership"
-            Just own -> do
-              let baseLookup = Ownership.sliced own slice base
-              Lookup.withCanLookup baseLookup $ \sliced ->
-                Lookup.withCanLookup handle $ \lookup -> do
-                bounds <- stackedBoundaries sliced lookup
-                Lookup.withCanLookup (Stacked.stacked sliced lookup) (f bounds)
 
 withWritableDatabase :: Env -> Repo -> (WriteQueue -> IO a) -> IO a
 withWritableDatabase env repo action =
@@ -400,7 +413,7 @@ asyncOpenDB env@Env{..} db@DB{..} version mode deps on_success on_failure =
             writing <- case mode of
               ReadOnly -> return Nothing
               _ -> Just <$> setupWriting env handle
-            maybeSlice <- baseSlice env deps
+            maybeSlices <- baseSlices env deps
             idle <- newTVarIO =<< getTimePoint
             ownership <- newTVarIO =<< Storage.getOwnership handle
             on_success
@@ -409,7 +422,7 @@ asyncOpenDB env@Env{..} db@DB{..} version mode deps on_success on_failure =
               , odbWriting = writing
               , odbSchema = dbSchema
               , odbIdleSince = idle
-              , odbBaseSlice = maybeSlice
+              , odbBaseSlices = maybeSlices
               , odbOwnership = ownership
               }
           atomically $ writeTVar dbState $ Open odb
@@ -442,25 +455,99 @@ getDbSchemaVersion env repo = do
       _otherwise -> Nothing
   return (ver, id)
 
+type Unit = ByteString
+  -- why is pruned_units a list<binary> instead of list<UnitName>?
 
--- TODO: later we will store the slice in the stacked DB, and read it
+-- | Create the slices for a DB stack.
+--
+-- A stack has a set of units that are pruned, so we need to create a
+-- slice for each DB in the stack that hides those units. As we go
+-- down the stack, we pick up more units to exclude.
+--
+-- For each sub-stack we already have a set of slices for it
+-- (odbBaseSlices in OpenDB), and this will be sufficient for the
+-- current stack if we are excluding a subset of the units already
+-- excluded by the stack.
+--
+-- Complicating this all somewhat is that a stack may specify the
+-- units to *include* rather than *exclude*.
+--
+-- TODO: later we will store the slices in the stacked DB, and read it
 -- back directly from there.
-baseSlice :: Env -> Maybe Thrift.Dependencies -> IO (Maybe Ownership.Slice)
-baseSlice env (Just (Thrift.Dependencies_pruned update)) = do
-  let base_repo = Thrift.pruned_base update
-  withOpenDatabase env base_repo $ \OpenDB{..} -> do
-    unitIds <- forM (Thrift.pruned_units update) $ \unit -> do
-      r <- Storage.getUnitId odbHandle unit
-      case r of
-        Nothing -> throwIO $ Thrift.BadQuery $
-          "unknown unit: " <> Text.pack (show unit)
-        Just uid -> return uid
-    maybeOwnership <- readTVarIO odbOwnership
-    forM maybeOwnership $ \ownership ->
-      Ownership.slice ownership unitIds (Thrift.pruned_exclude update)
-baseSlice _ _ =
-  return Nothing
+--
+baseSlices
+  :: Env
+  -> Maybe Thrift.Dependencies
+  -> IO [Maybe Ownership.Slice]
+baseSlices env deps = case deps of
+  Nothing -> return []
+  Just (Thrift.Dependencies_stacked repo) ->
+    dbSlices repo Set.empty True
+  Just (Thrift.Dependencies_pruned Thrift.Pruned{..}) ->
+    dbSlices pruned_base (Set.fromList pruned_units) pruned_exclude
+ where
+  dbSlices
+    :: Repo
+       -- ^ DB (stack) to slice
+    -> Set Unit
+       -- ^ Pruned units
+    -> Bool
+       -- ^ True <=> exclude, False <=> include
+    -> IO [Maybe Ownership.Slice]
+  dbSlices repo units exclude = do
+    vlog 1 $ "computing slice for " <> showRepo repo <> " with " <>
+      show (Set.toList units) <> if exclude then " excluded" else " included"
+    withOpenDatabase env repo $ \OpenDB{..} -> do
+      slice <- if exclude && Set.null units
+        then return Nothing
+        else do
+          unitIds <- forM (Set.toList units) $ \unit -> do
+            r <- Storage.getUnitId odbHandle unit
+            case r of
+              Nothing -> throwIO $ Thrift.BadQuery $
+                "unknown unit: " <> Text.pack (show unit)
+              Just uid -> return uid
+          maybeOwnership <- readTVarIO odbOwnership
+          forM maybeOwnership $ \ownership ->
+            Ownership.slice ownership unitIds exclude
+      baseDeps <- atomically $ metaDependencies <$>
+        Catalog.readMeta (envCatalog env) repo
+      rest <- depSlices baseDeps units exclude odbBaseSlices
+      return (slice : rest)
 
+  -- | Create the slices for a stack of dependencies
+  depSlices
+    :: Maybe Thrift.Dependencies
+    -> Set Unit
+    -> Bool
+    -> [Maybe Ownership.Slice]
+       -- ^ slices for this dependency, if we already have them
+    -> IO [Maybe Ownership.Slice]
+  depSlices dep units exclude slices = do
+    case dep of
+      Nothing -> return []
+      Just (Thrift.Dependencies_stacked base_repo) ->
+        dbSlices base_repo units exclude
+      Just (Thrift.Dependencies_pruned Thrift.Pruned{..})
+        -- optimisation: check if the slices for the stack will be the
+        -- same as the slices we already have for this repo. TODO:
+        -- could handle more of the exclude/pruned_exclude combos here
+        | exclude && pruned_exclude,
+          units `Set.isSubsetOf` depUnits ->
+          return slices
+        | otherwise ->
+          dbSlices pruned_base newUnits (exclude && pruned_exclude)
+        where
+        depUnits = Set.fromList pruned_units
+        newUnits
+          | exclude && pruned_exclude =
+            units `Set.union` depUnits
+          | not exclude && pruned_exclude =
+            units `Set.difference` depUnits
+          | exclude && not pruned_exclude =
+            depUnits `Set.difference` units
+          | otherwise {- not exclude && not pruned_exclude -} =
+            units `Set.intersection` depUnits
 
 isDatabaseClosed :: Env -> Repo -> STM Bool
 isDatabaseClosed env repo = do

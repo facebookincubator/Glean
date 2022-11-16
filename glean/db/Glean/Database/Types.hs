@@ -90,8 +90,9 @@ data OpenDB = forall storage. Storage storage => OpenDB
     -- When was the database last used
   , odbIdleSince :: TVar TimePoint
 
-    -- for a stacked update DB, keep track of the slice of the base DB
-  , odbBaseSlice :: Maybe Slice
+    -- For a stacked DB, keep track of the slices of the base DBs.
+    -- The list starts with this DB's base, then the base's base etc.
+  , odbBaseSlices :: [Maybe Slice]
 
     -- ownership data from the DB
   , odbOwnership :: TVar (Maybe Ownership)
