@@ -334,7 +334,18 @@ searchScope
   :: NonEmpty Text -> Text -> SearchType -> SearchCase -> [SearchExpr]
 searchScope scope name sType sCase = case sType of
   Exact -> [ Scoped sCase scope name ]
-  Prefix -> [ Scoped sCase scope name, ScopedPrefixly sCase scope name ]
+  -- CodeHub default: lets always make sure to do an exact case search
+  Prefix -> case sCase of
+    Sensitive ->
+      [ Scoped Sensitive scope name
+      , ScopedPrefixly Sensitive scope name
+      ]
+    -- CodeHub default symbol search is prefixly, case insensitive
+    Insensitive ->
+      [ Scoped Sensitive scope name -- always aim for exact matches to appear
+      , Scoped Insensitive scope name -- even if there's a lot of matches
+      , ScopedPrefixly sCase scope name
+      ]
 
 -- | Ranked symbol search types.
 -- Refine the query flags to ranking policy.
