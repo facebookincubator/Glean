@@ -292,7 +292,7 @@ instance DeterministicResponse ReferenceRangeSymbolX where
   det = id
 instance DeterministicResponse SymbolDescription where
   det sd = sd
-    { symbolDescription_repo_hash = "testhash"
+    { symbolDescription_repo_hash = Revision "testhash"
     , symbolDescription_contains_relation = Glass.RelationDescription
         { relationDescription_firstParent = Just $ SymbolId "nondeterministic"
         , relationDescription_firstChild = Just $ SymbolId "nondeterministic"

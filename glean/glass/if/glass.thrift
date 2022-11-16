@@ -298,7 +298,7 @@ struct SymbolDescription {
   5: optional list<Annotation> annotations;
   6: list<LocationRange> comments;
   7: optional Visibility visibility;
-  8: string repo_hash;
+  8: Revision repo_hash;
   9: Language language;
   10: optional string signature;
   11: LocationRange sym_location; // symbol have at least one defining location
