@@ -412,7 +412,16 @@ asyncOpenDB env@Env{..} db@DB{..} version mode deps on_success on_failure =
             writing <- case mode of
               ReadOnly -> return Nothing
               _ -> Just <$> setupWriting env handle
-            maybeSlices <- baseSlices env deps
+            stored_units <- case mode of
+              Create{} -> do
+                let units = case deps of
+                      Just (Thrift.Dependencies_pruned Thrift.Pruned{..}) ->
+                        pruned_units
+                      _ -> []
+                storeUnits handle units
+                return (Just units)
+              _ -> retrieveUnits dbRepo handle
+            maybeSlices <- baseSlices env deps stored_units
             idle <- newTVarIO =<< getTimePoint
             ownership <- newTVarIO =<< Storage.getOwnership handle
             on_success
@@ -477,13 +486,15 @@ type Unit = ByteString
 baseSlices
   :: Env
   -> Maybe Thrift.Dependencies
+  -> Maybe [Unit] -- ^ units stored in the DB
   -> IO [Maybe Ownership.Slice]
-baseSlices env deps = case deps of
+baseSlices env deps stored_units = case deps of
   Nothing -> return []
   Just (Thrift.Dependencies_stacked repo) ->
     dbSlices repo Set.empty True
-  Just (Thrift.Dependencies_pruned Thrift.Pruned{..}) ->
-    dbSlices pruned_base (Set.fromList pruned_units) pruned_exclude
+  Just (Thrift.Dependencies_pruned Thrift.Pruned{..}) -> do
+    let real_units = fromMaybe pruned_units stored_units
+    dbSlices pruned_base (Set.fromList real_units) pruned_exclude
  where
   dbSlices
     :: Repo
@@ -508,18 +519,20 @@ baseSlices env deps = case deps of
             Ownership.slice ownership unitIds exclude
       baseDeps <- atomically $ metaDependencies <$>
         Catalog.readMeta (envCatalog env) repo
-      rest <- depSlices baseDeps units exclude odbBaseSlices
+      baseUnits <- retrieveUnits repo odbHandle
+      rest <- depSlices baseDeps baseUnits units exclude odbBaseSlices
       return (slice : rest)
 
   -- | Create the slices for a stack of dependencies
   depSlices
     :: Maybe Thrift.Dependencies
+    -> Maybe [Unit] -- ^ units stored in the DB
     -> Set Unit
     -> Bool
     -> [Maybe Ownership.Slice]
        -- ^ slices for this dependency, if we already have them
     -> IO [Maybe Ownership.Slice]
-  depSlices dep units exclude slices = do
+  depSlices dep dep_units units exclude slices = do
     case dep of
       Nothing -> return []
       Just (Thrift.Dependencies_stacked base_repo) ->
@@ -534,7 +547,8 @@ baseSlices env deps = case deps of
         | otherwise ->
           dbSlices pruned_base newUnits (exclude && pruned_exclude)
         where
-        depUnits = Set.fromList pruned_units
+        depUnits = Set.fromList $ fromMaybe pruned_units dep_units
+          -- prefer the units stored in the DB
         newUnits
           | exclude && pruned_exclude =
             units `Set.union` depUnits

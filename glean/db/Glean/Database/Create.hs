@@ -180,14 +180,16 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
           (Catalog.create
             envCatalog
             kickOff_repo
-            (newMeta version time state allProps kickOff_dependencies) $ do
+            (newMeta version time state allProps lightDeps) $ do
               modifyTVar' envActive $ HashMap.insert kickOff_repo db
               writeTVar (dbState db) Opening
               acquireDB db)
           (atomically $ releaseDB env db) $
           do
-            -- Open the new db in Create mode which will create the physical
-            -- storage. This might fail - in that case, we mark the db as failed
+            -- Open the new db in Create mode which will create the
+            -- physical storage. This might fail - in that case, we
+            -- mark the db as failed. NB. pass the full dependencies
+            -- here, not lightDeps.
             opener <- asyncOpenDB env db version mode kickOff_dependencies
               (do
                 -- On success, schedule the db's tasks. If this throws,
@@ -245,6 +247,15 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
           return recipes
         Nothing -> dbError kickOff_repo $
           "unknown recipe set '" ++ Text.unpack name ++ "'"
+
+    -- The dependencies that we keep in the Meta have the units
+    -- removed, because the units can be large and the Meta has a size
+    -- limit. The units are stored separately in the DB; see
+    -- Glean.Database.Data.storeUnits.
+    lightDeps = case kickOff_dependencies of
+      Just (Thrift.Dependencies_pruned pruned) ->
+        Just (Thrift.Dependencies_pruned pruned { pruned_units = [] })
+      _other -> _other
 
 serverProperties :: IO DatabaseProperties
 serverProperties = return (HashMap.fromList rev)
