@@ -16,6 +16,7 @@ module Glean.Glass.SearchRelated
   , Recursive(..)
   , RelatedLocatedEntities(..)
   , LocatedEntity
+  , InheritedContainer
   ) where
 
 import Control.Monad (forM)
@@ -60,6 +61,9 @@ data RelatedLocatedEntities = RelatedLocatedEntities
   } deriving (Eq,Generic,Hashable)
 
 type LocatedEntity = (ResultLocation Code.Entity, SymbolId)
+
+-- Convenience type for a parent with a set of contained children
+type InheritedContainer = (LocatedEntity, [LocatedEntity])
 
 --
 -- Given some search parameters, find entities by relation

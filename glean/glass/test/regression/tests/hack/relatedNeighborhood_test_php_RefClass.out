@@ -42,10 +42,7 @@
         "inheritedSymbols": [
             {
                 "base": "test/php/SourceInterface",
-                "provides": [
-                    "test/php/SourceInterface/JAZZ",
-                    "test/php/SourceInterface/foo"
-                ]
+                "provides": []
             },
             {
                 "base": "test/php/SourceTrait",

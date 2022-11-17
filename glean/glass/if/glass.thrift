@@ -492,7 +492,8 @@ struct InheritedSymbols {
 
 // Report of neighborhoood of a symbol in all directions (for API discovery)
 // Even if there are no parents or children we guarantee to return details
-// of the base symbol
+// of the base symbol. the contains and extends 1st level children redundantly
+// track the parent symbol id (even though its known from context)
 struct RelatedNeighborhoodResult {
   1: list<RelatedSymbols> containsChildren; // 1st level children, contained
   2: list<RelatedSymbols> extendsChildren; // 1st level children, extends

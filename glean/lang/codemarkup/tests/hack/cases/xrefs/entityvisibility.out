@@ -226,6 +226,48 @@
         "decl": {
           "method": {
             "key": {
+              "name": { "key": "overrideMe" },
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "hack": {
+        "decl": {
+          "method": {
+            "key": {
+              "name": { "key": "overrideMe" },
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SuperClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "hack": {
+        "decl": {
+          "method": {
+            "key": {
               "name": { "key": "pleaseOverride" },
               "container": {
                 "class_": {

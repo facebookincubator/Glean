@@ -522,6 +522,52 @@
           "decl": {
             "method": {
               "key": {
+                "name": { "key": "overrideMe" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "overrideMe" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SuperClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
                 "name": { "key": "pleaseOverride" },
                 "container": {
                   "class_": {

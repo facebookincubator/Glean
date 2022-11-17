@@ -77,6 +77,20 @@
               }
             }
           }
+        },
+        {
+          "method": {
+            "key": {
+              "name": { "key": "overrideMe" },
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceClass" } } }
+                  }
+                }
+              }
+            }
+          }
         }
       ],
       "extends_": {
@@ -121,6 +135,20 @@
           "method": {
             "key": {
               "name": { "key": "superAdd" },
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SuperClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "method": {
+            "key": {
+              "name": { "key": "overrideMe" },
               "container": {
                 "class_": {
                   "key": {

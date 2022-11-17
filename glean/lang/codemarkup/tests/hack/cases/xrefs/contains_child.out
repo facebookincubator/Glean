@@ -378,6 +378,41 @@
           "decl": {
             "method": {
               "key": {
+                "name": { "key": "overrideMe" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceClass" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
                 "name": { "key": "pleaseOverride" },
                 "container": {
                   "class_": {
@@ -517,6 +552,41 @@
             "classConst": {
               "key": {
                 "name": { "key": "BAZ" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SuperClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SuperClass" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "overrideMe" },
                 "container": {
                   "class_": {
                     "key": {

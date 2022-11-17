@@ -20,7 +20,7 @@
         "location": {
           "name": "SourceClass",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 253, "length": 321 } }
+          "location": { "span": { "start": 253, "length": 451 } }
         }
       },
       "child": {
@@ -40,7 +40,7 @@
         "location": {
           "name": "SubClass",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 576, "length": 139 } }
+          "location": { "span": { "start": 706, "length": 139 } }
         }
       }
     }
@@ -65,7 +65,7 @@
         "location": {
           "name": "SuperClass",
           "file": { "key": "www/SuperClass.php" },
-          "location": { "span": { "start": 226, "length": 124 } }
+          "location": { "span": { "start": 226, "length": 188 } }
         }
       },
       "child": {
@@ -85,7 +85,7 @@
         "location": {
           "name": "SourceClass",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 253, "length": 321 } }
+          "location": { "span": { "start": 253, "length": 451 } }
         }
       }
     }
@@ -205,7 +205,7 @@
         "location": {
           "name": "pleaseOverride",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 515, "length": 57 } }
+          "location": { "span": { "start": 645, "length": 57 } }
         }
       },
       "child": {
@@ -230,7 +230,7 @@
         "location": {
           "name": "pleaseOverride",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 615, "length": 98 } }
+          "location": { "span": { "start": 745, "length": 98 } }
         }
       }
     }

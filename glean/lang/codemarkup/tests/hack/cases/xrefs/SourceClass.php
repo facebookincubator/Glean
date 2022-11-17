@@ -24,6 +24,14 @@ class SourceClass extends SuperClass {
   }
 
   /**
+   * this thing overrides
+   * @param $i is a param
+   */
+  public function overrideMe(int $i): int {
+    return $i*2;
+  }
+
+  /**
    * A thing that can be overridden
    */
   public abstract static function pleaseOverride(): string;

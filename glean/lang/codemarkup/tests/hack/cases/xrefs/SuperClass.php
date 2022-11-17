@@ -14,4 +14,8 @@ class SuperClass {
   public function superAdd(int $i, int $i): int {
     return $i + $i + 55;
   }
+
+  public function overrideMe(int $i): int {
+    return $i;
+  }
 }

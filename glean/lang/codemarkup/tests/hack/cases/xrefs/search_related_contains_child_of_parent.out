@@ -440,7 +440,7 @@
         "location": {
           "name": "SourceClass",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 253, "length": 321 } }
+          "location": { "span": { "start": 253, "length": 451 } }
         }
       },
       "child": {
@@ -490,7 +490,7 @@
         "location": {
           "name": "SourceClass",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 253, "length": 321 } }
+          "location": { "span": { "start": 253, "length": 451 } }
         }
       },
       "child": {
@@ -540,7 +540,7 @@
         "location": {
           "name": "SourceClass",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 253, "length": 321 } }
+          "location": { "span": { "start": 253, "length": 451 } }
         }
       },
       "child": {
@@ -549,7 +549,7 @@
             "decl": {
               "method": {
                 "key": {
-                  "name": { "key": "pleaseOverride" },
+                  "name": { "key": "overrideMe" },
                   "container": {
                     "class_": {
                       "key": {
@@ -563,9 +563,9 @@
           }
         },
         "location": {
-          "name": "pleaseOverride",
+          "name": "overrideMe",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 515, "length": 57 } }
+          "location": { "span": { "start": 531, "length": 62 } }
         }
       }
     }
@@ -590,7 +590,57 @@
         "location": {
           "name": "SourceClass",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 253, "length": 321 } }
+          "location": { "span": { "start": 253, "length": 451 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "method": {
+                "key": {
+                  "name": { "key": "pleaseOverride" },
+                  "container": {
+                    "class_": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "SourceClass" } } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "pleaseOverride",
+          "file": { "key": "www/SourceClass.php" },
+          "location": { "span": { "start": 645, "length": 57 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "SourceClass",
+          "file": { "key": "www/SourceClass.php" },
+          "location": { "span": { "start": 253, "length": 451 } }
         }
       },
       "child": {
@@ -640,7 +690,7 @@
         "location": {
           "name": "SourceClass",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 253, "length": 321 } }
+          "location": { "span": { "start": 253, "length": 451 } }
         }
       },
       "child": {
@@ -690,7 +740,7 @@
         "location": {
           "name": "SubClass",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 576, "length": 139 } }
+          "location": { "span": { "start": 706, "length": 139 } }
         }
       },
       "child": {
@@ -715,7 +765,7 @@
         "location": {
           "name": "pleaseOverride",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 615, "length": 98 } }
+          "location": { "span": { "start": 745, "length": 98 } }
         }
       }
     }
@@ -740,7 +790,7 @@
         "location": {
           "name": "SuperClass",
           "file": { "key": "www/SuperClass.php" },
-          "location": { "span": { "start": 226, "length": 124 } }
+          "location": { "span": { "start": 226, "length": 188 } }
         }
       },
       "child": {
@@ -790,7 +840,57 @@
         "location": {
           "name": "SuperClass",
           "file": { "key": "www/SuperClass.php" },
-          "location": { "span": { "start": 226, "length": 124 } }
+          "location": { "span": { "start": 226, "length": 188 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "method": {
+                "key": {
+                  "name": { "key": "overrideMe" },
+                  "container": {
+                    "class_": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "SuperClass" } } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "overrideMe",
+          "file": { "key": "www/SuperClass.php" },
+          "location": { "span": { "start": 352, "length": 60 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SuperClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "SuperClass",
+          "file": { "key": "www/SuperClass.php" },
+          "location": { "span": { "start": 226, "length": 188 } }
         }
       },
       "child": {
@@ -840,7 +940,7 @@
         "location": {
           "name": "TestAnnotation",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 717, "length": 221 } }
+          "location": { "span": { "start": 847, "length": 221 } }
         }
       },
       "child": {
@@ -867,7 +967,7 @@
         "location": {
           "name": "__construct",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 771, "length": 52 } }
+          "location": { "span": { "start": 901, "length": 52 } }
         }
       }
     }
@@ -892,7 +992,7 @@
         "location": {
           "name": "TestAnnotation",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 717, "length": 221 } }
+          "location": { "span": { "start": 847, "length": 221 } }
         }
       },
       "child": {
@@ -919,7 +1019,7 @@
         "location": {
           "name": "io_good",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 862, "length": 74 } }
+          "location": { "span": { "start": 992, "length": 74 } }
         }
       }
     }
@@ -944,7 +1044,7 @@
         "location": {
           "name": "TestAnnotation",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 717, "length": 221 } }
+          "location": { "span": { "start": 847, "length": 221 } }
         }
       },
       "child": {
@@ -971,7 +1071,7 @@
         "location": {
           "name": "test",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 814, "length": 5 } }
+          "location": { "span": { "start": 944, "length": 5 } }
         }
       }
     }

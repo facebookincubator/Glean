@@ -143,9 +143,28 @@
                     "filepath": "www/SourceClass.php",
                     "range": {
                         "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 30,
+                        "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "name": "overrideMe",
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SourceClass/overrideMe"
+            },
+            {
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 3,
                         "columnEnd": 60,
-                        "lineBegin": 29,
-                        "lineEnd": 29
+                        "lineBegin": 37,
+                        "lineEnd": 37
                     },
                     "repository": "test"
                 },
@@ -201,8 +220,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 4,
-                        "lineBegin": 33,
-                        "lineEnd": 36
+                        "lineBegin": 41,
+                        "lineEnd": 44
                     },
                     "repository": "test"
                 },
@@ -211,6 +230,25 @@
                     "exactness": 2
                 },
                 "symbol": "test/php/SubClass/pleaseOverride"
+            },
+            {
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SuperClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 18,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "name": "overrideMe",
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SuperClass/overrideMe"
             },
             {
                 "kind": 8,
@@ -239,8 +277,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 55,
-                        "lineBegin": 40,
-                        "lineEnd": 40
+                        "lineBegin": 48,
+                        "lineEnd": 48
                     },
                     "repository": "test"
                 },
@@ -258,8 +296,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 4,
-                        "lineBegin": 43,
-                        "lineEnd": 45
+                        "lineBegin": 51,
+                        "lineEnd": 53
                     },
                     "repository": "test"
                 },
