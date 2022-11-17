@@ -142,6 +142,27 @@
         "decl": {
           "method": {
             "key": {
+              "name": { "key": "flatten" },
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "FancyTypes" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "hack": {
+        "decl": {
+          "method": {
+            "key": {
               "name": { "key": "foo" },
               "container": {
                 "class_": {

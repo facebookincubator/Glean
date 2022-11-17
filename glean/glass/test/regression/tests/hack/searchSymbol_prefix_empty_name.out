@@ -4,6 +4,44 @@
         "symbolDetails": [],
         "symbols": [
             {
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 56,
+                        "lineEnd": 58
+                    },
+                    "repository": "test"
+                },
+                "name": "FancyTypes",
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/FancyTypes"
+            },
+            {
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 85,
+                        "lineBegin": 57,
+                        "lineEnd": 57
+                    },
+                    "repository": "test"
+                },
+                "name": "flatten",
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/FancyTypes/flatten"
+            },
+            {
                 "kind": 13,
                 "language": 3,
                 "location": {

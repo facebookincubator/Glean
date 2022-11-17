@@ -32,6 +32,29 @@
     "key": {
       "file": { "key": "www/SourceClass.php" },
       "location": {
+        "name": "FancyTypes",
+        "file": { "key": "www/SourceClass.php" },
+        "location": { "span": { "start": 1070, "length": 167 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "FancyTypes" } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/SourceClass.php" },
+      "location": {
         "name": "SourceClass",
         "file": { "key": "www/SourceClass.php" },
         "location": { "span": { "start": 253, "length": 451 } }
@@ -197,6 +220,34 @@
                   "class_": {
                     "key": {
                       "name": { "key": { "name": { "key": "SourceClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/SourceClass.php" },
+      "location": {
+        "name": "flatten",
+        "file": { "key": "www/SourceClass.php" },
+        "location": { "span": { "start": 1155, "length": 80 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "flatten" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "FancyTypes" } } }
                     }
                   }
                 }

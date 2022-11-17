@@ -53,6 +53,41 @@
             "container": {
               "class_": {
                 "key": {
+                  "name": { "key": { "name": { "key": "FancyTypes" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "flatten" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "FancyTypes" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
                   "name": {
                     "key": {
                       "name": { "key": "NamespaceClass" },

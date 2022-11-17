@@ -678,6 +678,32 @@
       "file": { "key": "www/SourceClass.php" },
       "xref": {
         "target": {
+          "name": "FancyTypes",
+          "file": { "key": "www/SourceClass.php" },
+          "location": { "span": { "start": 1076, "length": 10 } }
+        },
+        "source": { "span": { "start": 1218, "length": 10 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "FancyTypes" } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/SourceClass.php" },
+      "xref": {
+        "target": {
           "name": "SourceClass",
           "file": { "key": "www/SourceClass.php" },
           "location": { "span": { "start": 286, "length": 11 } }

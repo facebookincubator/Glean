@@ -4,6 +4,25 @@
         "symbolDetails": [],
         "symbols": [
             {
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 56,
+                        "lineEnd": 58
+                    },
+                    "repository": "test"
+                },
+                "name": "FancyTypes",
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/FancyTypes"
+            },
+            {
                 "kind": 13,
                 "language": 3,
                 "location": {

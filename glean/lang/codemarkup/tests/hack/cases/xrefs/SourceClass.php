@@ -52,3 +52,7 @@ class TestAnnotation implements HH\ClassAttribute {
     print "also ok"; // also ok
   }
 }
+
+class FancyTypes<<<__Memoize, __Deprecated("Use something else instead")>> +T> {
+    public function flatten<<<__Soft>> reify Tu>(): void where T = FancyTypes<Tu> {}
+}

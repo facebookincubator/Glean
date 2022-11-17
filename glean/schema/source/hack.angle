@@ -115,6 +115,11 @@ type Visibility = enum { Private | Protected | Public | Internal }
 type Variance = enum { Contravariant | Covariant | Invariant }
 
 # Reification kinds
+#
+# c.f. https://docs.hhvm.com/hack/reified-generics
+#
+# N.B. Missing __Warn T138109774
+#
 type ReifyKind = enum { Erased | Reified | SoftReified }
 
 # Contrant kinds

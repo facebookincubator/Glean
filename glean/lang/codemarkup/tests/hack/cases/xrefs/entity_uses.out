@@ -56,6 +56,25 @@
             "container": {
               "class_": {
                 "key": {
+                  "name": { "key": { "name": { "key": "FancyTypes" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/SourceClass.php" },
+      "span": { "start": 1218, "length": 10 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
                   "name": { "key": { "name": { "key": "SourceClass" } } }
                 }
               }

@@ -132,9 +132,9 @@ newtype DefaultValue = DefaultValue Text
 data Inout = Inout
 data Parameter
   = Parameter Name HackType (Maybe Inout) (Maybe DefaultValue) XRefs
-data Variance = Contravariant | Covariant | Invariant deriving (Eq)
-data Reify = Erased | Reified | SoftReified deriving (Eq)
-data ConstraintKind = As | Equal | Super deriving (Eq)
+data Variance = Contravariant | Covariant | Invariant
+data Reify = Erased | Reified | SoftReified
+data ConstraintKind = As | Equal | Super
 data Constraint = Constraint ConstraintKind HackType
 data TypeParameter = TypeParameter Name Variance Reify [Constraint] [UserAttr]
 data UserAttr = UserAttr Name [Text]
@@ -283,35 +283,69 @@ ppTypeParams typeParams = cat
   , ">"
   ]
 
+--
+-- Lots of interesting syntax for type parameters
+-- https://docs.hhvm.com/hack/generics/introduction
+--
 ppTypeParam :: TypeParameter -> Doc Ann
-ppTypeParam (TypeParameter name variance reify constraints userAttrs) =
-  hcat $ execWriter $ do
-    case reify of
-      SoftReified -> tell ["<<__Soft>> reify "]
-      Reified -> tell ["reify "]
-      _ -> pure ()
-    case variance of
-      Covariant -> tell ["+"]
-      Contravariant -> tell ["-"]
-      _ -> pure ()
-    mapM_ (tell . pure . ppAttr) userAttrs
-    tell [ppName name]
-    forM_ constraints $ \(Constraint kind ty) -> do
-      tell $ case kind of
-        Equal -> [" = "]
-        As -> [" as "]
-        Super -> [" super "]
-      tell [ppType ty]
+ppTypeParam (TypeParameter name variance reify constraints userAttrs) = hcat
+  [ ppAttrs userAttrs -- attributes
+  , ppReified reify -- reify keyword
+  , ppVariance variance -- then the variance markers
+  , ppName name -- then the type param name
+  , hsep (map ppConstraint constraints) -- and any constraints
+  ]
+
+-- User attributes on type parameters, including the reification attributes
+ppAttrs :: [UserAttr] -> Doc Ann
+ppAttrs attrs = case attrs of
+  [] -> emptyDoc
+  _ -> hcat ["<<", hsep (punctuate comma (map ppAttr attrs)), ">> "]
+
+-- https://docs.hhvm.com/hack/attributes/introduction
+ppAttr :: UserAttr -> Doc Ann
+-- e.g. __Memoize
+ppAttr (UserAttr name []) = ppName name
+-- __Deprecated("foo")
+-- <<Contributors("John Doe", keyset["ORM Team", "Core Library Team"])>>
+ppAttr (UserAttr name args)
+  = ppName name <>
+      parens (hsep (punctuate comma (map pretty args)))
+
+-- Reified generics
+-- https://docs.hhvm.com/hack/reified-generics/reified-generics
+ppReified :: Reify -> Doc Ann
+ppReified SoftReified = "reify "
+ppReified Reified = "reify "
+ppReified _ = emptyDoc
+
+--
+-- Variance markers on type parameters
+-- See https://docs.hhvm.com/hack/generics/variance
+--
+ppVariance :: Variance -> Doc Ann
+ppVariance Covariant = "+"
+ppVariance Contravariant = "-"
+ppVariance _ = emptyDoc
+
+--
+-- Generic type parameter constraint syntax
+-- See https://docs.hhvm.com/hack/generics/type-constraints
+--
+ppConstraint :: Constraint -> Doc Ann
+ppConstraint (Constraint kind ty) = hcat
+  [ case kind of
+      Equal -> " = "
+      As -> " as "
+      Super -> " super "
+  , ppType ty
+  ]
 
 ppTypeXRefs :: HackType -> XRefs -> Doc Ann
 ppTypeXRefs (HackType t) xrefs =
   let spans = fmap (\(ann, ByteSpan{..}) -> (ann, start, length)) xrefs
       fragments = splitString t spans in
   mconcat $ (\(frag, ann) -> annotate ann $ pretty frag) <$> fragments
-
-ppAttr :: UserAttr -> Doc Ann
-ppAttr (UserAttr name []) = hcat [ "<<", ppName name, ">> "]
-ppAttr (UserAttr name _) = hcat [ "<<", ppName name, ">> "]
 
 ppType :: HackType -> Doc Ann
 ppType (HackType t) = pretty t

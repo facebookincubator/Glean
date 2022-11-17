@@ -145,6 +145,28 @@
             "container": {
               "class_": {
                 "key": {
+                  "name": { "key": { "name": { "key": "FancyTypes" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/SourceClass.php" },
+        "location": { "span": { "length": 167, "start": 1070 } },
+        "name": "FancyTypes"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
                   "name": {
                     "key": {
                       "name": { "key": "NamespaceClass" },
@@ -737,6 +759,33 @@
         "file": { "key": "www/Namespace2.php" },
         "location": { "span": { "length": 54, "start": 312 } },
         "name": "another_class_function"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "FancyTypes" } } }
+                    }
+                  }
+                },
+                "name": { "key": "flatten" }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/SourceClass.php" },
+        "location": { "span": { "length": 80, "start": 1155 } },
+        "name": "flatten"
       }
     }
   },
