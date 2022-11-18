@@ -674,6 +674,7 @@ int main(int argc, char **argv) {
     if (!FLAGS_dry_run) {
       const bool wait =
         FLAGS_fact_buffer != 0 && buf_stats.memory >= FLAGS_fact_buffer;
+      const auto start = std::chrono::steady_clock::now();
       if (wait) {
         LOG_CFG(INFO,config)
           << "fact buffer size " << buf_stats.memory << ", waiting";
@@ -681,6 +682,12 @@ int main(int argc, char **argv) {
       config.logger(wait ? "clang/wait" : "clang/send").log([&]() {
         config.sender->rebaseAndSend(indexer.batch.base(), wait);
       });
+      if (wait) {
+        const auto wait_time = std::chrono::steady_clock::now() - start;
+        LOG_CFG(INFO,config)
+          << "rebaseAndSend wait time in milliseconds="
+          << std::chrono::duration_cast<std::chrono::milliseconds>(wait_time).count();
+      }
     }
     prev_stats = indexer.batch.bufferStats();
     ++lifetime_files;
