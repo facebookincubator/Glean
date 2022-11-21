@@ -112,6 +112,7 @@ common deps
         optparse-applicative,
         ansi-terminal,
         json,
+        random,
         regex-base,
         regex-pcre,
         base >=4.11.1 && <4.15,
