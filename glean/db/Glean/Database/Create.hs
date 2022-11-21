@@ -22,6 +22,8 @@ import qualified Data.Map as Map
 import Data.Maybe
 import Data.Text (Text)
 import qualified Data.Text as Text
+import qualified Data.UUID as Guid ( toText )
+import qualified Data.UUID.V4 as Guid ( nextRandom )
 import TextShow
 
 #ifdef FACEBOOK
@@ -146,12 +148,14 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
       serverProps <- serverProperties
       fbServerProps <- facebookServerProperties
       schemaProps <- schemaProperties
+      guidProps <- guidProperties
       let
         allProps = mconcat
           [ kickOff_properties
           , serverProps
           , fbServerProps
           , schemaProps
+          , guidProps
           , scribeProperties kickOff_fill
           ]
         time = DBTimestamp
@@ -237,6 +241,10 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
         Nothing -> dbError kickOff_repo "missing 'all' schema"
       let version = Text.pack $ show currentVersion
       return $ HashMap.fromList [ ("glean.schema_version", version) ]
+
+    guidProperties = do
+      guid <- Guid.toText <$> Guid.nextRandom
+      return $ HashMap.fromList [("glean.guid", guid)]
 
     get_recipes name = do
       rcfg <- Recipes.config_recipes <$> Observed.get envRecipeConfig
