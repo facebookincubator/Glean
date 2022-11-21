@@ -2,7 +2,6 @@
 
 schema search.buck.1 {
   import code.buck.1
-  import buck.1
   import src.1
 
   predicate SearchByFQN:

@@ -474,3 +474,409 @@ predicate DestinationUses:
     { Destination, Spans } = XRefs[..];
 
 } # end schema buck.3
+
+schema buck.4 {
+import src.1
+
+# Buck target type (cxx_libary, cxx_binary, ...)
+predicate Type : string
+
+# Buck platform (a target or execution platform)
+predicate Platform : string
+
+# Buck label
+predicate Label : string
+
+# A set of Buck labels
+predicate Labels : [Label]
+
+# A target locator (subdir//path:name), subdir can be empty
+predicate Locator :
+  {
+    subdir : maybe string,
+    path : string,
+    name : string,
+  }
+
+# Buck target
+predicate Target :
+  {
+    locator : Locator,
+    type_ : Type,
+    defaultPlatform : maybe Platform,
+    labels : Labels,
+  }
+
+# Buck dependency (buck.direct_deps)
+type Dependency =
+  {
+    target : Locator,
+    explicit_ : bool,  # is it in deps in fbsource?
+    exported : bool,  # is it in exported_deps in fbsource?
+  }
+
+# Buck target dependencies
+predicate TargetDependencies :
+  {
+    target : Target,
+    dependencies : [Dependency],
+  }
+
+# A translation unit (source file and target)
+predicate TranslationUnit :
+  {
+    file : src.File,
+    target : Locator,
+    platform : maybe Platform,
+  }
+
+# Buck target link_whole flag
+predicate TargetLinkWhole : Target
+
+# Buck target output, indexed by target
+predicate TargetOut :
+  {
+    target : Target,
+    file : src.File,
+  }
+
+# Buck target output, indexed by file
+predicate OutTarget :
+  {
+    file : src.File,
+    target : Target,
+  }
+  stored {F,T} where TargetOut {T,F}
+# Named output use OutputLabel as the key, the 'baz' in the form:
+# //foo:bar[baz]
+predicate OutputLabel : string
+
+# The named output use locators that end with an extra optional key, e.g.
+# 'baz' in //foo:bar[baz]
+predicate LocatorWithLabel :
+  {
+    locator : Locator,
+    label : OutputLabel
+  }
+
+# Buck target output, indexed by target. These are present if the named outputs
+# (the "outs" in buck query) are present.
+#
+# The "default_outs" attribute is represented by Nothing as the outputLabel.
+# If TargetOuts exists for a Target then there ought to be
+# an outputLabel = nothing as well.
+# The file with (outputLabel = nothing) may or may not
+# be present with (outputLabel = just _), the default file can be distinct from
+# the files of all labeled outputs.
+#
+# The target and outputLabel *should* uniquely determine the file,
+# but that invariant isn't enforced by the Buck output which returns
+# the file as a singleton list, so to be on the safe side this
+# predicate allows for the possibility of multiple files per
+# (target,outputLabel).
+
+predicate TargetOuts :
+  {
+    target : Target,
+    outputLabel : maybe OutputLabel,  # Nothing means the default_output
+    file : src.File
+  }
+
+# derived predicate, reverse of TargetOuts. The same file may have duplicate
+# OutsTarget facts. In particular the outputLabel of nothing
+# ("default_outs" attribute) may overlap with a just value.
+predicate OutsTarget :
+  {
+    file : src.File,
+    target: Target,
+    outputLabel : maybe OutputLabel
+  }
+  stored
+  {SF, T, OL} where TargetOuts {T, OL, SF}
+
+# A source file reference (either from the repo or generated during build)
+predicate File :
+  {
+    source : src.File |
+    generated : Locator |
+    generatedLabel : LocatorWithLabel
+  }
+
+# Resolve source and generated files to the src.File itself.
+predicate FileResolved :
+  {
+    buckFile : File,
+    srcFile : src.File
+  }
+  {BF, SF} where
+  SF =
+    (SF1 where File { source = SF1 } = BF) ++
+    (SF2 where
+      File { generated = Loc } = BF;
+      buck.TargetOuts{target = {locator = Loc},
+        outputLabel = nothing, file = SF2}) ++
+    (SF3 where
+      File {generatedLabel = LocatorWithLabel{locator = Loc, label = Lab}} = BF;
+      buck.TargetOuts{target = {locator = Loc},
+        outputLabel = {just = Lab}, file = SF3});
+
+# New versions of predicates that now depend on File
+
+# Buck target sources
+predicate TargetSources :
+  {
+    target : Target,
+    headers : [File],
+    exportedHeaders : [File],
+    srcs : [File],
+  }
+
+# Which targets mention a file in headers, exportedHeaders, or srcs.
+# (Making the TargetSources a direct owner of the file).
+#
+# For indirect mentions, via locators, see the Consumer predicate.
+predicate Owner :
+  {
+    source : src.File,  # unique key
+    owner : TargetSources,
+  }
+  stored
+  {Src, Owner} where
+    Owner = TargetSources
+    {
+      headers = Headers,
+      exportedHeaders = Exported,
+      srcs = Srcs
+    };
+    File { source = Src } = Headers[..] | Exported[..] | Srcs [..];
+
+# Which targets mention a file in headers, exportedHeaders, or srcs.
+# This predicate is just like Owner but returns only the Locator of the owner
+# not the whole TargetSources.
+predicate FileToTarget :
+  {
+    source : src.File,
+    locator : Locator,
+  }
+  {Src, BuckLocator} where
+    Owner
+    {
+      source = Src,
+      owner = TargetSources  {
+        target = {
+          locator = BuckLocator
+        }
+      }
+    }
+
+# New predicate that depends on File
+
+# Which targets consume a (possibly named) output of another rule.
+# (Making the TargetSources a consumer of the file).
+predicate Consumer :
+  {
+    source : src.File,  # unique key
+    consumer : TargetSources,
+  }
+  stored
+  {Src, Consumer} where
+    Consumer = TargetSources
+    {
+      headers = Headers,
+      exportedHeaders = Exported,
+      srcs = Srcs
+    };
+    BF = Headers[..] | Exported[..] | Srcs [..];
+    FileResolved{buckFile = BF, srcFile= Src}
+
+# Name for TargetIndexer, indicating which indexing pass created the target
+predicate TargetIndexerName : string
+
+# Associate a Target with a group, useful for identifying which indexing
+# pass is planned
+predicate TargetIndexer :
+  {
+    name : TargetIndexerName,
+    target : Target
+  }
+
+# The name of an attribute. Allows for enumerating all supported attributes
+predicate AttributeName : string
+
+# Represents a single key -> value mapping in a dictionary-like attribute.
+# {"a": "b"} is represented with
+# AttributeMapping { "a", {str = "b"} }
+# {"a": ["b", "c"]} maps to
+# AttributeMapping { "a", {sequence = [{str = "b"}, {str = "c"}] }
+# {"a": {"b": "c"}} maps to
+# AttributeMapping { "a", {mapping = {"b", {str = "c"}}} }
+type AttributeMapping =
+  {
+    key : string,
+    value : AttributeValue,
+  }
+
+predicate AttributeValue :
+  {
+    str : string |
+    sequence : [AttributeValue] |
+    mapping : [AttributeMapping] |
+  }
+
+# Maps a target and an attribute name to its value
+predicate TargetAttribute :
+  {
+    target : Target,
+    attribute : AttributeName,
+    value : AttributeValue,
+  }
+
+# Returns all sources and their base_module in a target.
+predicate TargetSourcesBaseModule:
+  {
+    locator: Target,
+    srcs: [File],
+    baseModule: maybe AttributeValue,
+  }
+  { Tgt, Srcs, BM } where
+    TargetSources { target = Tgt, srcs = Srcs };
+    Attr = AttributeName "base_module";
+    (
+      TargetAttribute { Tgt, Attr, V };
+      BM = {just = V};
+    ) | (
+      ! TargetAttribute { target = Tgt, attribute = Attr };
+      BM = (nothing : maybe AttributeValue);
+    )
+
+# The following predicates and types, add locations
+# to Targets and define cross references.
+#
+# The terminology is a bit inconsistent w.r.t the buck doc.
+# A Target is called a "build rule" in the doc, and a
+# a Locator is called a "build target".
+#
+# To be clear, the following is a Target.
+#
+# cpp_library(
+#     name = "cpp",
+#     srcs = [
+#         "glean.cpp",
+#         "sender.cpp",
+#     ],
+# )
+#
+# The span goes from `c` to `)`
+#
+
+predicate Definition : {
+  module : src.File,
+  name : string,
+}
+
+predicate DefinitionLocation:
+{
+  definition : Definition,
+  file: src.File,  # redundant with Definition.module
+  span: src.ByteSpan,
+}
+
+predicate TargetLocation:
+{
+  locator : Locator,
+  file: src.File,
+  span: src.ByteSpan,
+}
+
+predicate SourceFileLocation:
+{
+  file: src.File,
+  span: src.ByteSpan,
+}
+
+# Locators of targets defined in a file
+# Deprecated: replaced by more general FileEntity
+predicate FileTarget:
+{
+    file : src.File,
+    locator : Locator,
+}
+
+predicate FileEntity:
+{
+    file : src.File,
+    entity : XRefDestination,
+}
+
+predicate FileDefinition:
+{
+    file : src.File,
+    definition : Definition,
+}
+
+# Entities which can be referenced elsewhere
+type XRefDestination = {
+  locator : Locator |
+  file : src.File |
+  definition : Definition |
+}
+
+type XRef =
+  {
+    destination : XRefDestination,
+    ranges : [src.ByteSpan],
+  }
+
+# Cross-references to a target within a file.
+predicate FileXRefs:
+  {
+    file : src.File,
+    xrefs : [XRef],
+  }
+
+# Uses of a Buck target (inverse of xrefs)
+# deprecated, replaced by DestinationUses
+predicate TargetUses:
+  {
+    locator: Locator,
+    file: src.File,
+    spans: [src.ByteSpan],
+  } stored
+  { Locator, File, Spans } where
+    FileXRefs { File, XRefs };
+    { { locator = Locator }, Spans } = XRefs[..];
+
+predicate DestinationUses:
+  {
+    destination: XRefDestination,
+    file: src.File,
+    spans: [src.ByteSpan],
+  } stored
+  { Destination, File, Spans } where
+    FileXRefs { File, XRefs };
+    { Destination, Spans } = XRefs[..];
+
+# Reverse locator dependencies derived from buck.TargetDependencies
+predicate LocatorReverseDeps :
+  {
+    locator : Locator,  # unique key
+    rdeps : [Locator],
+  }
+
+# From buck targets --show-target-hash
+predicate TargetHash :
+  {
+    locator : Locator,  # unique key
+    targetHash : string,
+  }
+
+# From buck targets --show-rulekey
+predicate RuleKey :
+  {
+    locator : Locator,  # unique key
+    ruleKey : string,
+  }
+
+} # end schema buck.4
+
+schema buck.4 evolves buck.3
