@@ -15,6 +15,7 @@ module Glean.Glass.Repos
   Language(..)
   , GleanDBName(..)
   , GleanDBAttrName(..)
+  , ScmRevisions(..)
 
   -- * Mappings
   , fromSCSRepo
@@ -35,13 +36,15 @@ module Glean.Glass.Repos
 
 import qualified Data.Text as Text
 import qualified Data.Set as Set
-import Control.Concurrent.Async ( withAsync )
+import Control.Concurrent.Async ( withAsync, forConcurrently )
 import Control.Concurrent.STM
-    ( readTVarIO, writeTVar, atomically, newTVarIO, TVar )
+    ( readTVar, writeTVar, atomically, newTVarIO, TVar, STM )
 import Control.Exception ( uninterruptibleMask_ )
 import Data.Maybe ( catMaybes )
 import Data.Set ( Set )
 import qualified Data.Map.Strict as Map
+import Data.HashMap.Strict (HashMap)
+import qualified Data.HashMap.Strict as HashMap
 import Data.Text ( Text, intercalate )
 
 import Glean.Util.Periodic ( doPeriodically )
@@ -60,6 +63,11 @@ import Glean.Glass.Types
       unRepoName,
     )
 import Glean.Glass.RepoMapping  -- site-specific
+
+-- mapping from scm repo to hash for each db
+newtype ScmRevisions = ScmRevisions
+  { scmRevisions :: HashMap Glean.Repo (HashMap Text Text)
+  }
 
 -- return a RepoName if indexed by glean
 toRepoName :: Text -> Maybe RepoName
@@ -222,9 +230,16 @@ filetype (Path file)
 
 -- | Fetch all latest dbs we care for
 getLatestRepos
-  :: Glean.Backend b => b -> Set GleanDBName  -> IO Glean.LatestRepos
+  :: Glean.Backend b => b -> Set GleanDBName -> IO Glean.LatestRepos
 getLatestRepos backend repoNames = Glean.getLatestRepos backend $ \name ->
   GleanDBName name `Set.member` repoNames
+
+getScmRevisions :: Glean.Backend b => b -> Glean.LatestRepos -> IO ScmRevisions
+getScmRevisions backend repos = ScmRevisions . HashMap.fromList <$>
+    forConcurrently repoList getScmRevision
+  where
+    repoList = Map.elems $ Glean.latestRepos repos
+    getScmRevision repo = (repo,) <$> Glean.getSCMrevisions backend repo
 
 -- | Introduce a latest repo cache.
 -- TODO: this should pass the configured repo list through
@@ -232,35 +247,41 @@ withLatestRepos
   :: Glean.Backend b
    => b
    -> DiffTimePoints
-   -> (TVar Glean.LatestRepos -> IO a)
+   -> (TVar Glean.LatestRepos -> TVar ScmRevisions -> IO a)
    -> IO a
 withLatestRepos backend freq f = do
   repos <- getLatestRepos backend allGleanRepos
-  tv <- newTVarIO repos
-  withAsync (worker tv) $ \_async -> f tv
+  scmRevisions <- getScmRevisions backend repos
+  tvRepos <- newTVarIO repos
+  tvRevs <- newTVarIO scmRevisions
+  withAsync (worker tvRepos tvRevs) $ \_async -> f tvRepos tvRevs
   where
-    worker tv =
+    worker tvRepos tvRevs =
       doPeriodically freq $
       uninterruptibleMask_ $
         -- prevents the update from being cancelled while in progress
         -- which can cause memory leaks if the process exits
         -- immediately. This is benign, but can lead to ASAN test
         -- failures.
-      updateLatestRepos backend tv
+      updateLatestRepos backend tvRepos tvRevs
 
 -- | Update a TVar with the latest repos
 -- TODO: should take latest configuration repo list
 updateLatestRepos
-  :: Glean.Backend b => b -> TVar Glean.LatestRepos -> IO ()
-updateLatestRepos backend tv = do
+  :: Glean.Backend b
+  => b -> TVar Glean.LatestRepos -> TVar ScmRevisions -> IO ()
+updateLatestRepos backend tvRepos tvRevs = do
   repos <- getLatestRepos backend allGleanRepos
-  atomically $ writeTVar tv repos
+  revs <- getScmRevisions backend repos
+  atomically $ do
+    writeTVar tvRepos repos
+    writeTVar tvRevs revs
 
 -- | Lookup latest repo in the cache
 lookupLatestRepos
-  :: TVar Glean.LatestRepos -> [GleanDBName] -> IO [(GleanDBName, Glean.Repo)]
+  :: TVar Glean.LatestRepos -> [GleanDBName] -> STM [(GleanDBName, Glean.Repo)]
 lookupLatestRepos tv repoNames = do
-  repos <- Glean.latestRepos <$> readTVarIO tv
+  repos <- Glean.latestRepos <$> readTVar tv
   return $ catMaybes
     [ (dbName,) <$> mrepo
     | dbName@(GleanDBName name) <- repoNames

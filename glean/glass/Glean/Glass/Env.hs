@@ -31,6 +31,8 @@ import Glean.Remote (ThriftBackend)
 import Glean.Util.Some ( Some )
 import Glean.Util.Time ( DiffTimePoints )
 
+import Glean.Glass.Repos (ScmRevisions)
+
 -- | Init-time configuration
 data Config = Config
   { listenPort :: Int
@@ -49,6 +51,7 @@ data Env = Env
   , gleanBackend :: Some Glean.Backend
   , fb303 :: Fb303State
   , latestGleanRepos :: TVar Glean.LatestRepos
+  , repoScmRevisions :: TVar ScmRevisions
   , gleanIndexBackend :: IndexBackend
   }
 

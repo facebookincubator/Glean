@@ -71,7 +71,7 @@ withEnv name service _ refreshFreq f =
   withFb303 name $ \fb303 ->
   withBackendWithDefaultOptions evp cfgapi service (Just schema_id)
     $ \backend ->
-  withLatestRepos backend refreshFreq $ \latestGleanRepos ->
+  withLatestRepos backend refreshFreq $ \latestGleanRepos repoScmRevisions ->
     f Glass.Env
       { gleanBackend = Some backend
       , gleanIndexBackend = indexBackend backend

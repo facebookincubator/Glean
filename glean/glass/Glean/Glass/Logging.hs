@@ -187,6 +187,9 @@ instance LogRepo (a,Glean.Repo) where
 instance {-# OVERLAPPABLE #-} LogRepo a => LogRepo (a,b) where
   logRepo (repo,_) = logRepo repo
 
+instance {-# OVERLAPPABLE #-} LogRepo a => LogRepo (a,b,c) where
+  logRepo (repo,_,_) = logRepo repo
+
 -- For queries that search multiple repos, better log the set of dbs we touch
 instance LogRepo (NonEmpty (a, Glean.Repo)) where
   logRepo = logRepo . NE.map snd
@@ -266,6 +269,9 @@ instance LogError (Glean.Repo,a) where
 
 instance {-# OVERLAPPABLE #-} LogError a => LogError (a,b) where
   logError (repo,_) = logError repo
+
+instance {-# OVERLAPPABLE #-} LogError a => LogError (a,b,c) where
+  logError (repo,_,_) = logError repo
 
 instance LogError DocumentSymbolsRequest where
   logError = logDocumentSymbolsRequestSG Errors.setFilepath Errors.setRepo
