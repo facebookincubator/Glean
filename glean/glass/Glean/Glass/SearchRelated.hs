@@ -13,8 +13,10 @@
 
 module Glean.Glass.SearchRelated
   ( searchRelatedEntities
+  , searchRecursiveEntities
   , Recursive(..)
   , RelatedLocatedEntities(..)
+  , RelatedEntities(..)
   , LocatedEntity
   , InheritedContainer
   ) where
@@ -78,7 +80,7 @@ searchRelatedEntities
   -> RepoHaxl u w [RelatedLocatedEntities]
 searchRelatedEntities limit recurse dir rel entity repo =
   toSymbolIds repo =<<
-    searchRelation limit limit recurse rel dir repo [entity] HashSet.empty
+    searchRelation limit limit recurse rel dir [entity] HashSet.empty
 
 -- | Lift entity search results into pairs of entities that we found,
 -- along with their location and symbol id
@@ -96,6 +98,14 @@ toSymbolIds repo edges = mapM locatePairs edges
       path <- GleanPath <$> Glean.keyOf file
       toSymbolId (fromGleanPath repo path) entity
 
+-- | For internal searches ,we don't need the symbol id. So we can be slightly
+-- more efficient.
+searchRecursiveEntities
+  :: Int -> RelationDirection -> RelationType -> Code.Entity
+  -> RepoHaxl u w [RelatedEntities]
+searchRecursiveEntities limit dir rel entity = do
+  searchRelation limit limit Recursive rel dir [entity] HashSet.empty
+
 --
 -- Search driver, expand search until done, returning pairs of edges
 -- of entity relationships.
@@ -106,12 +116,11 @@ searchRelation
   -> Recursive
   -> RelationType
   -> RelationDirection
-  -> RepoName
   -> [Code.Entity]
   -> HashSet RelatedEntities
   -> RepoHaxl u w [RelatedEntities]
 searchRelation
-  totalLimit limit recursive relation direction repo toVisit visited = do
+  totalLimit limit recursive relation direction toVisit visited = do
     angle <- forM toVisit $ \entity ->
       case entityToAngle entity of
         Right angle -> return angle
@@ -141,7 +150,7 @@ searchRelation
       not (null toVisit)
     then
       searchRelation
-        totalLimit recLimit recursive relation direction repo toVisit visited'
+        totalLimit recLimit recursive relation direction toVisit visited'
     else
       pure $ HashSet.toList visited'
 

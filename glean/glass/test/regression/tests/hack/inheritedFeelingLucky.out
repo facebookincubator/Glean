@@ -1,0 +1,27 @@
+[
+    "@generated",
+    {
+        "symbolDetails": [],
+        "symbols": [
+            {
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SuperClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 14,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": "superAdd",
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SuperClass/superAdd"
+            }
+        ]
+    }
+]

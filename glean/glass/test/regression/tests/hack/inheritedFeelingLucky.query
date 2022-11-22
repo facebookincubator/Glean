@@ -1,0 +1,2 @@
+action: searchSymbol
+args: {"name": "SourceClass::superAdd", "repo_name": "test", "language": [3], "kinds": [], "options": {"detailedResults": false, "exactMatch": true, "ignoreCase": false, "namespaceSearch": true, "feelingLucky": true } }

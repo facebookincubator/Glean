@@ -45,6 +45,7 @@ module Glean.Glass.Handler
 
   ) where
 
+import Control.Monad ((<=<))
 import Control.Concurrent.STM ( TVar, atomically, readTVar )
 import Control.Exception ( throwIO, SomeException )
 import Control.Monad.Catch ( throwM, try )
@@ -143,6 +144,8 @@ import Glean.Glass.Types
     ( SymbolPath(SymbolPath, symbolPath_range, symbolPath_repository,
                  symbolPath_filepath),
       SymbolKind,
+      QualifiedName(..),
+      Name(..),
       Attribute(Attribute_aInteger, Attribute_aString),
       KeyedAttribute(KeyedAttribute),
       Name(Name),
@@ -558,18 +561,37 @@ runSearch
 runSearch querySpec repo scmRevs mlimit terse sString (Query.Search query) = do
   names <- case query of
     Complete q -> searchWithTimeLimit mlimit queryTimeLimit q
-    InheritedScope _sCase term _fn -> do
-      let parentQs = Query.buildLuckyContainerQuery querySpec term
-      parentSet <- mapM (luckyParentSearch queryTimeLimit) parentQs
-      return $ case findUnique parentSet of
-        Found _entity -> []
-        _ -> [] -- nothing sufficiently unique. can't proceed
+    InheritedScope sCase term searchFn -> do
+      names <- luckyParentSearch queryTimeLimit querySpec term
+      case names of
+        [] -> pure []
+        _ -> searchWithTimeLimit mlimit queryTimeLimit (searchFn sCase names)
   mapM (processSymbolResult terse sString repo scmRevs) names
   where
     queryTimeLimit = 5000 -- milliseconds, make this a flag?
 
-luckyParentSearch :: Int -> Query.AngleSearch -> RepoHaxl u w [Code.Entity]
-luckyParentSearch timeLimit (Query.Search query) = do
+luckyParentSearch
+  :: Int -> Query.SearchQuery -> NonEmpty Text -> RepoHaxl u w [NonEmpty Text]
+luckyParentSearch queryTimeLimit querySpec term = do
+    parentSet <- mapM (runLuckyParentSearch queryTimeLimit) parentQs
+    case findUnique parentSet of
+      Found base -> do -- now search parents via extends
+        parents <- map Search.parentEntity <$> Search.searchRecursiveEntities
+          maxInheritedDepth RelationDirection_Parent RelationType_Extends base
+        forM parents $ fmap flattenScope . eThrow <=< toQualifiedName
+      _ -> pure [] -- nothing sufficiently unique. can't proceed
+
+  where
+    parentQs = Query.buildLuckyContainerQuery querySpec term
+    maxInheritedDepth = 1000
+
+    -- this isn't the full scope (i.e. nested container parents) , but 2 levels
+    flattenScope qn = case unName (qualifiedName_container qn) of
+      "" -> unName (qualifiedName_localName qn) :| []
+      parent -> parent :| [unName (qualifiedName_localName qn)]
+
+runLuckyParentSearch :: Int -> Query.AngleSearch -> RepoHaxl u w [Code.Entity]
+runLuckyParentSearch timeLimit (Query.Search query) = do
   result <- case query of
     Complete q -> searchWithTimeLimit (Just 2) timeLimit q
     InheritedScope{} -> return [] -- no inner recursion please
@@ -1390,10 +1412,11 @@ describeEntity scmRevs ent SymbolResult{..} = do
               ent
               repo
 
-    eThrow (Right x) = pure x
-    eThrow (Left err) = throwM $ ServerException err
-
     fst4 (x,_,_,_) = x
+
+eThrow :: Either Text a -> RepoHaxl u w a
+eThrow (Right x) = pure x
+eThrow (Left err) = throwM $ ServerException err
 
 partialSymbolTokens
   :: SymbolId
