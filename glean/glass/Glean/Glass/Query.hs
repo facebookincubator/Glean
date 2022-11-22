@@ -257,10 +257,13 @@ compileQuery sKinds sLangs e = case e of
       nameQ Exact sCase name sKinds
     Prefixly sCase name -> slow $
       nameQ Prefix sCase name sKinds
+
+    -- quite precise but different
     Scoped sCase scope name -> slow $ -- this is only fast if repo/lang matches
       scopeQ Exact sCase (Just scope) name sKinds
     ScopedPrefixly sCase scope name -> slow $
       scopeQ Prefix sCase (Just scope) name sKinds
+    -- meta-query
   where
     fast = Search . Fast
     slow = Search . Slow
@@ -272,6 +275,11 @@ compileQuery sKinds sLangs e = case e of
       compileSearchQ sTy sCa (Just name) Nothing kinds sLangs
     scopeQ sTy sCa scopes name kinds = codeSearchByScope $
       compileSearchQ sTy sCa (Just name) scopes kinds sLangs
+
+    -- for inherited scope queries:
+    -- the scope term becomes a literal feelingLuck search to find an entity
+    -- then expanded into parent scope terms
+    -- then compiled back to a disjoint scope query
 
 -- | Common "API"-level things, you could reasonably expect to be ranked highly
 containerishKinds :: [Code.SymbolKind]
@@ -333,17 +341,23 @@ searchPrefix sName sType sCase = case sType of
 searchScope
   :: NonEmpty Text -> Text -> SearchType -> SearchCase -> [SearchExpr]
 searchScope scope name sType sCase = case sType of
-  Exact -> [ Scoped sCase scope name ]
+  Exact ->
+      [ Scoped sCase scope name
+ --     , InheritedScope sCase scope name
+      ]
   -- CodeHub default: lets always make sure to do an exact case search
   Prefix -> case sCase of
     Sensitive ->
       [ Scoped Sensitive scope name
+ --     , InheritedScope Sensitive scope name
       , ScopedPrefixly Sensitive scope name
       ]
     -- CodeHub default symbol search is prefixly, case insensitive
     Insensitive ->
       [ Scoped Sensitive scope name -- always aim for exact matches to appear
       , Scoped Insensitive scope name -- even if there's a lot of matches
+ --     , InheritedScope Sensitive scope name
+ --     , InheritedScope Insensitive scope name
       , ScopedPrefixly sCase scope name
       ]
 
@@ -399,6 +413,8 @@ feelingLuckyQuery query@SearchQuery{..} = case sScope of
       Just (ScopeAndName scope name) ->
         [ Scoped Sensitive scope name
         , Scoped Insensitive scope name
+   --   , InheritedScope Sensitive scope name
+   --   , InheritedScope Insensitive scope name
         , ScopedPrefixly Sensitive scope name
         , ScopedPrefixly Insensitive scope name
         ]
@@ -434,13 +450,16 @@ feelingLuckyQuery query@SearchQuery{..} = case sScope of
     ]
 
 -- | Search params compiled to Angle expressions
-data SearchQ = SearchQ {
+data SearchQ q = SearchQ {
     nameQ :: Angle Text,
     caseQ  :: Angle CodeSearch.SearchCase,
-    scopeQ :: Maybe (Angle [Text]),
+    scopeQ :: q,
     mKindQ :: Maybe (Angle Code.SymbolKind),
     mLangQ :: Maybe (Angle Code.Language)
   }
+
+-- | Regular searches compile into search terms directly
+newtype Direct = Direct { scopeTerm :: Maybe (Angle [Text]) }
 
 --
 -- Translate our structured search values into Angle expressions
@@ -452,11 +471,11 @@ compileSearchQ
    -> Maybe (NonEmpty Text)
    -> [Code.SymbolKind]
    -> [Code.Language]
-   -> SearchQ
+   -> SearchQ Direct
 compileSearchQ sType sCase name scope kinds langs = SearchQ{..}
   where
     nameQ = toNameQuery sType sCase name
-    scopeQ = toScopeQuery sCase scope
+    scopeQ = Direct (toScopeQuery sCase scope)
     caseQ = toCaseQuery sCase
     mKindQ = toEnumSet kinds
     mLangQ = toEnumSet langs
@@ -522,7 +541,7 @@ toScopeTokens str = go (splitOnAny delimiters str)
 --
 -- Find entities by strings, with an optional kind expression filter
 --
-codeSearchByName :: SearchQ -> Angle CodeSearch.SearchByName
+codeSearchByName :: SearchQ Direct -> Angle CodeSearch.SearchByName
 codeSearchByName SearchQ{..} =
   predicate @CodeSearch.SearchByName $
     rec $
@@ -538,7 +557,7 @@ codeSearchByName SearchQ{..} =
 --
 -- Find entities by name in tokenized namespace
 --
-codeSearchByScope :: SearchQ -> Angle CodeSearch.SearchByScope
+codeSearchByScope :: SearchQ Direct -> Angle CodeSearch.SearchByScope
 codeSearchByScope SearchQ{..} =
   predicate @CodeSearch.SearchByScope $
     rec $
@@ -549,7 +568,7 @@ codeSearchByScope SearchQ{..} =
       field @"language" languagePat -- optional language filters
     end
   where
-    scopePat = fromMaybe (array []) scopeQ -- Nothing == global scope
+    scopePat = fromMaybe (array []) (scopeTerm scopeQ) -- Nothing ==global scope
     kindPat = maybe wild just mKindQ
     languagePat = fromMaybe wild mLangQ
 
