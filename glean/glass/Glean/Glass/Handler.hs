@@ -565,7 +565,7 @@ runSearch querySpec repo scmRevs mlimit terse sString (Query.Search query) = do
       names <- luckyParentSearch queryTimeLimit querySpec term
       case names of
         [] -> pure []
-        _ -> searchWithTimeLimit mlimit queryTimeLimit (searchFn sCase names)
+        _ -> searchWithTimeLimit mlimit queryTimeLimit(searchFn sCase names)
   mapM (processSymbolResult terse sString repo scmRevs) names
   where
     queryTimeLimit = 5000 -- milliseconds, make this a flag?
@@ -576,8 +576,9 @@ luckyParentSearch queryTimeLimit querySpec term = do
     parentSet <- mapM (runLuckyParentSearch queryTimeLimit) parentQs
     case findUnique parentSet of
       Found base -> do -- now search parents via extends
-        parents <- map Search.parentEntity <$> Search.searchRecursiveEntities
-          maxInheritedDepth RelationDirection_Parent RelationType_Extends base
+        parents <- uniq . map Search.parentEntity <$>
+          Search.searchRecursiveEntities maxInheritedDepth
+            RelationDirection_Parent RelationType_Extends base
         forM parents $ fmap flattenScope . eThrow <=< toQualifiedName
       _ -> pure [] -- nothing sufficiently unique. can't proceed
 

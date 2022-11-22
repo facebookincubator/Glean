@@ -656,14 +656,19 @@ codeSearchByInheritedScope SearchQ{..} = (scopeQ, queryFn)
       let
         scopePat = fromMaybe (array []) (toScopeSetQuery caseTerm scopeTerm)
       in
-      predicate @CodeSearch.SearchByScope $
-        rec $
-          field @"name" nameQ $
-          field @"scope" scopePat $
-          field @"searchcase" caseQ $
-          field @"kind" kindPat $ -- specific kinds only
-          field @"language" languagePat -- optional language filters
-        end
+        vars $ \p (s :: Angle [Text]) ->
+          p `where_` [
+            s .= scopePat,
+            p .= predicate @CodeSearch.SearchByScope (
+              rec $
+                field @"name" nameQ $
+                field @"scope" s $
+                field @"searchcase" caseQ $
+                field @"kind" kindPat $ -- specific kinds only
+                field @"language" languagePat -- optional language filters
+              end
+            )
+          ]
 
 -- | Scope terms expanded into set of names, then compiled to disjoint query
 --
