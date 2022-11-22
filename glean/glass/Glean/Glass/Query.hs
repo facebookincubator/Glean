@@ -472,8 +472,9 @@ feelingLuckyContainer sCase scopes = case scopes of
     [ GlobalScopedContainerish Sensitive container
     , ContainerLiteral Sensitive container
     , GlobalScoped Sensitive container
-    , GlobalScoped Insensitive container -- if sCase == Sensitive we can skip
+    , GlobalScopedContainerish Insensitive container
     , ContainerLiteral Insensitive container
+    , GlobalScoped Insensitive container -- if sCase == Sensitive we can skip
     , Literal Sensitive container
     , Literal Insensitive container
     ]
@@ -609,13 +610,17 @@ toScopeTokens str = go (splitOnAny delimiters str)
 --
 codeSearchByName :: SearchQ Direct -> Angle CodeSearch.SearchByName
 codeSearchByName SearchQ{..} =
-  predicate @CodeSearch.SearchByName $
-    rec $
-      field @"name" nameQ $ -- may be prefix
-      field @"searchcase" caseQ $
-      field @"kind" kindPat $ -- specific kinds only
-      field @"language" languagePat -- optional language filters
-    end
+  vars $ \p (k :: Angle (Maybe Code.SymbolKind)) ->
+    p `where_` [
+      k .= sig kindPat,
+      p .= predicate @CodeSearch.SearchByName (
+        rec $
+          field @"name" nameQ $ -- may be prefix
+          field @"searchcase" caseQ $
+          field @"kind" k $ -- specific kinds only
+          field @"language" languagePat -- optional language filters
+        end)
+    ]
   where
     kindPat = maybe wild just mKindQ
     languagePat = fromMaybe wild mLangQ
@@ -625,14 +630,18 @@ codeSearchByName SearchQ{..} =
 --
 codeSearchByScope :: SearchQ Direct -> Angle CodeSearch.SearchByScope
 codeSearchByScope SearchQ{..} =
-  predicate @CodeSearch.SearchByScope $
-    rec $
-      field @"name" nameQ $
-      field @"scope" scopePat $
-      field @"searchcase" caseQ $
-      field @"kind" kindPat $ -- specific kinds only
-      field @"language" languagePat -- optional language filters
-    end
+  vars $ \p (k :: Angle (Maybe Code.SymbolKind)) ->
+    p `where_` [
+      k .= sig kindPat,
+      p .= predicate @CodeSearch.SearchByScope (
+        rec $
+          field @"name" nameQ $
+          field @"scope" scopePat $
+          field @"searchcase" caseQ $
+          field @"kind" k $ -- specific kinds only
+          field @"language" languagePat -- optional language filters
+        end)
+    ]
   where
     scopePat = fromMaybe (array []) (scopeTerm scopeQ) -- Nothing ==global scope
     kindPat = maybe wild just mKindQ
