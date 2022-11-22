@@ -185,7 +185,7 @@ data QueryExpr p
   = Complete (Angle p)
   | InheritedScope {
       _scopeCase :: SearchCase,
-      _baseScopeTerm :: Maybe (NonEmpty Text),
+      _baseScopeTerm :: NonEmpty Text,
       _searchFun :: SearchCase -> [NonEmpty Text] -> Angle p
   }
 
@@ -282,8 +282,7 @@ compileQuery sKinds sLangs e = case e of
       compileSearchQ sTy sCa (Just name) scopes kinds sLangs
     inheritedQ sTy sCa scopes name kinds =
       let (Inherited term, searchFn) = codeSearchByInheritedScope $
-            compileInheritedSearchQ sTy sCa
-              (Just name) (Just scopes) kinds sLangs
+            compileInheritedSearchQ sTy sCa name scopes kinds sLangs
       in Search $ InheritedScope sCa term searchFn
 
 -- | Common "API"-level things, you could reasonably expect to be ranked highly
@@ -456,6 +455,11 @@ feelingLuckyQuery query@SearchQuery{..} = case sScope of
     , Prefixly Insensitive sString  -- any insensitive prefix, broadest possible
     ]
 
+-- | For inherited scope terms we need to a (nested) guess as to the parent
+-- scope to seed the search. It's like feelingLucky, but we know it has to be
+-- a container-ish thing
+-- feelingLuckyContainer :: Maybe (NonEmpty Text) -> [SearchExpr]
+
 -- | Search params compiled to Angle expressions
 data SearchQ q = SearchQ {
     nameQ :: Angle Text,
@@ -474,7 +478,7 @@ newtype Direct = Direct { scopeTerm :: Maybe (Angle [Text]) }
 -- We won't try to support prefix versions of this
 --
 newtype Inherited = Inherited {
-    _scopeTerm :: Maybe (NonEmpty Text) -- base entity of the search
+    _scopeTerm :: NonEmpty Text -- base entity of the search
   }
 
 --
@@ -484,28 +488,30 @@ compileSearchQ
   :: SearchType -> SearchCase -> Maybe Text
   -> Maybe (NonEmpty Text)
   -> [Code.SymbolKind] -> [Code.Language] -> SearchQ Direct
-compileSearchQ = compileAnySearchQ (\a b -> Direct (toScopeQuery a b))
+compileSearchQ = compileAnySearchQ id (\a b -> Direct (toScopeQuery a b))
 
 --
--- Translate our structured search values into Angle expressions
+-- Inherited searches: the scope term is non-empty and never Nothing/wild/global
 --
 compileInheritedSearchQ
-  :: SearchType -> SearchCase -> Maybe Text
-  -> Maybe (NonEmpty Text) -- no reason for this to be Nothing tho?
+  :: SearchType -> SearchCase -> Text -> NonEmpty Text
   -> [Code.SymbolKind] -> [Code.Language] -> SearchQ Inherited
-compileInheritedSearchQ = compileAnySearchQ (const Inherited)
+compileInheritedSearchQ = compileAnySearchQ Just (const Inherited)
 
 --
 -- Or translate into a suspended computation
 --
 compileAnySearchQ
-  :: (SearchCase -> Maybe (NonEmpty Text) -> t)
-  -> SearchType -> SearchCase -> Maybe Text
-  -> Maybe (NonEmpty Text)
-  -> [Code.SymbolKind] -> [Code.Language] -> SearchQ t
-compileAnySearchQ scopeFn sType sCase name scope kinds langs = SearchQ{..}
+  :: (name -> Maybe Text)
+  -> (SearchCase -> scope -> scopeTerm)
+  -> SearchType -> SearchCase
+  -> name
+  -> scope
+  -> [Code.SymbolKind] -> [Code.Language] -> SearchQ scopeTerm
+compileAnySearchQ nameFn scopeFn sType sCase name scope kinds langs =
+    SearchQ{..}
   where
-    nameQ = toNameQuery sType sCase name
+    nameQ = toNameQuery sType sCase (nameFn name)
     scopeQ = scopeFn sCase scope
     caseQ = toCaseQuery sCase
     mKindQ = toEnumSet kinds
