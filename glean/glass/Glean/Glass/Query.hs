@@ -461,28 +461,50 @@ data SearchQ q = SearchQ {
 -- | Regular searches compile into search terms directly
 newtype Direct = Direct { scopeTerm :: Maybe (Angle [Text]) }
 
+-- | Inherited scope terms are suspended into a staged computation
+-- that produces terms for a new direct query
+data Inherited = Inherited {
+    _caseTerm :: SearchCase, -- search case to use
+    _lazyScopeTerm :: Maybe (NonEmpty Text) -- base entity of the search
+  }
+
 --
 -- Translate our structured search values into Angle expressions
 --
 compileSearchQ
-   :: SearchType
-   -> SearchCase
-   -> Maybe Text
-   -> Maybe (NonEmpty Text)
-   -> [Code.SymbolKind]
-   -> [Code.Language]
-   -> SearchQ Direct
-compileSearchQ sType sCase name scope kinds langs = SearchQ{..}
+  :: SearchType -> SearchCase -> Maybe Text
+  -> Maybe (NonEmpty Text)
+  -> [Code.SymbolKind] -> [Code.Language] -> SearchQ Direct
+compileSearchQ = compileAnySearchQ (\a b -> Direct (toScopeQuery a b))
+
+--
+-- Translate our structured search values into Angle expressions
+--
+_compileInheritedSearchQ
+  :: SearchType -> SearchCase -> Maybe Text
+  -> Maybe (NonEmpty Text)
+  -> [Code.SymbolKind] -> [Code.Language] -> SearchQ Inherited
+_compileInheritedSearchQ = compileAnySearchQ Inherited
+
+--
+-- Or translate into a suspended computation
+--
+compileAnySearchQ
+  :: (SearchCase -> Maybe (NonEmpty Text) -> t)
+  -> SearchType -> SearchCase -> Maybe Text
+  -> Maybe (NonEmpty Text)
+  -> [Code.SymbolKind] -> [Code.Language] -> SearchQ t
+compileAnySearchQ scopeFn sType sCase name scope kinds langs = SearchQ{..}
   where
     nameQ = toNameQuery sType sCase name
-    scopeQ = Direct (toScopeQuery sCase scope)
+    scopeQ = scopeFn sCase scope
     caseQ = toCaseQuery sCase
     mKindQ = toEnumSet kinds
     mLangQ = toEnumSet langs
 
 -- We support scope insensitive queries, so check that
 toScopeQuery :: SearchCase -> Maybe (NonEmpty Text) -> Maybe (Angle [Text])
-toScopeQuery _ Nothing = Nothing
+toScopeQuery _ Nothing = Nothing -- corresponds to a global scoped search
 toScopeQuery sCase (Just scope) = Just (array (map string scopeLits))
   where
     scopeLits = case sCase of
