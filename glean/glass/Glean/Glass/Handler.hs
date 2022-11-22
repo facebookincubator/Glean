@@ -508,8 +508,8 @@ searchSymbol env@Glass.Env{..} req@SymbolSearchRequest{..} RequestOptions{..} =
     sLangs = mapMaybe languageToCodeLang (Set.elems languageSet)
     sFeelingLucky =
       if symbolSearchOptions_feelingLucky then FeelingLucky else Normal
-
-    searchQs = Query.buildSearchQuery sFeelingLucky Query.SearchQuery{..}
+    querySpec = Query.SearchQuery{..}
+    searchQs = Query.buildSearchQuery sFeelingLucky querySpec
 
     -- run the same query across more than one glean db
     searchSymbolsIn
@@ -517,14 +517,14 @@ searchSymbol env@Glass.Env{..} req@SymbolSearchRequest{..} RequestOptions{..} =
       -> Set GleanDBName
       -> IO Query.RepoSearchResult
     searchSymbolsIn repo dbs = case nonEmpty (Set.toList dbs) of
-      Nothing -> pure (Query.RepoSearchResult [])
+      Nothing -> pure []
       Just names -> withGleanDBs "searchSymbol" env req names $
         \gleanDBs scmRevs -> do
           res <- backendRunHaxl GleanBackend{..} $ Glean.queryAllRepos $ do
-            res <- mapM (runSearch repo scmRevs mlimitInner terse sString)
-                      searchQs
+            res <- mapM (runSearch querySpec
+                          repo scmRevs mlimitInner terse sString) searchQs
             return (nubOrd (concat res)) -- remove latter duplicates in n*log n
-          pure (Query.RepoSearchResult res, Nothing)
+          pure (res, Nothing)
 
     -- In lucky mode, we avoid flattening, instead selecting from the first
     -- unique result found in priority order. We don't de-dup as we go.
@@ -536,8 +536,9 @@ searchSymbol env@Glass.Env{..} req@SymbolSearchRequest{..} RequestOptions{..} =
         withGleanDBs "feelingLucky" env req names $ \gleanDBs scmRevs -> do
           res <- backendRunHaxl GleanBackend{..} $ Glean.queryEachRepo $ do
             -- we can conveniently limit to 2 matches per inner search
-            rs <- mapM (runSearch repo scmRevs (Just 2) terse sString) searchQs
-            return (map (Query.RepoSearchResult . nubOrdOn symbolIdOrder) rs)
+            rs <- mapM (runSearch querySpec repo scmRevs (Just 2) terse sString)
+              searchQs
+            return (map (nubOrdOn symbolIdOrder) rs)
           pure (FeelingLuckyResult res, Nothing)
 
 -- cheap way to fix up entities with non-unique locations: uniq on symbol id
@@ -546,20 +547,33 @@ symbolIdOrder = symbolResult_symbol . fst
 
 -- Run a specific Query.AngleSearch query, with optional time boxing
 runSearch
-  :: RepoName
+  :: Query.SearchQuery
+  -> RepoName
   -> ScmRevisions
   -> Maybe Int
   -> Bool
   -> Text
   -> Query.AngleSearch
   -> RepoHaxl u w [(SymbolResult, Maybe SymbolDescription)]
-runSearch repo scmRevs mlimit terse sString (Query.Search query) = do
+runSearch querySpec repo scmRevs mlimit terse sString (Query.Search query) = do
   names <- case query of
     Complete q -> searchWithTimeLimit mlimit queryTimeLimit q
-    InheritedScope _ _term _fn -> pure [] -- unimplemented
+    InheritedScope _sCase term _fn -> do
+      let parentQs = Query.buildLuckyContainerQuery querySpec term
+      parentSet <- mapM (luckyParentSearch queryTimeLimit) parentQs
+      return $ case findUnique parentSet of
+        Found _entity -> []
+        _ -> [] -- nothing sufficiently unique. can't proceed
   mapM (processSymbolResult terse sString repo scmRevs) names
   where
     queryTimeLimit = 5000 -- milliseconds, make this a flag?
+
+luckyParentSearch :: Int -> Query.AngleSearch -> RepoHaxl u w [Code.Entity]
+luckyParentSearch timeLimit (Query.Search query) = do
+  result <- case query of
+    Complete q -> searchWithTimeLimit (Just 2) timeLimit q
+    InheritedScope{} -> return [] -- no inner recursion please
+  mapM (fmap Query.srEntity . Query.toSearchResult) result
 
 -- n.b. we need the RepoName (i.e. "fbsource" to construct symbol ids)
 processSymbolResult
@@ -609,7 +623,7 @@ joinSearchResults mlimit terse sorted xs = SymbolSearchResult syms $
       -- codehub/aka "sorted" mode grouping, ranking and sampling
       (Just n, True) -> takeFairN n (concatMap sortResults xs)
 
-    flattened = concatMap Query.unRepoSearchResult xs
+    flattened = concat xs
 
 --
 -- DFS to first singleton result.
@@ -627,33 +641,34 @@ joinLuckyResults allResults = case findLucky allResults of
     -- little state machine across logical scm repos (e.g. "fbsource")
     findLucky :: [FeelingLuckyResult] -> Maybe SingleSymbol
     findLucky [] = Nothing
-    findLucky (FeelingLuckyResult scmRepo : rest) = case findInner scmRepo of
-      Continue -> findLucky rest
-      Stop -> Nothing
-      Found result -> Just result
+    findLucky (FeelingLuckyResult scmRepo : rest) =
+      case findUniqueInner scmRepo of
+        Continue -> findLucky rest
+        Stop -> Nothing
+        Found result -> Just result
 
     -- across a particular scm repo's glean dbs (e.g. arvr.cxx, fbcode.cxx)
-    findInner :: [[Query.RepoSearchResult]] -> MaybeResult SingleSymbol
-    findInner [] = Continue
-    findInner (db : dbs) = case findUnique db of
-      Continue -> findInner dbs
+    findUniqueInner :: [[[a]]] -> MaybeResult a
+    findUniqueInner [] = Continue
+    findUniqueInner (db : dbs) = case findUnique db of
+      Continue -> findUniqueInner dbs
       Stop -> Stop -- could try to be smart and merge duplicates
       Found x -> Found x
 
-    -- results across each underlying glean query.
-    -- if we see a unique result that's our winner
-    findUnique :: [Query.RepoSearchResult] -> MaybeResult SingleSymbol
-    findUnique [] = Continue
-    findUnique (q : qs) = case hasUniqueResult q of
-      Continue -> findUnique qs -- continue in priority order
-      Stop -> Stop -- can't proceed
-      Found x -> Found x -- got it!
+-- results across each underlying glean query.
+-- if we see a unique result that's our winner
+findUnique :: [[a]] -> MaybeResult a
+findUnique [] = Continue
+findUnique (q : qs) = case hasUniqueResult q of
+  Continue -> findUnique qs -- continue in priority order
+  Stop -> Stop -- can't proceed
+  Found x -> Found x -- got it!
 
-    hasUniqueResult :: Query.RepoSearchResult -> MaybeResult SingleSymbol
-    hasUniqueResult (Query.RepoSearchResult results) = case results of
-      [] -> Continue
-      [unique] -> Found unique
-      _ -> Stop -- more than 1 result, terminate
+hasUniqueResult :: [a] -> MaybeResult a
+hasUniqueResult results = case results of
+  [] -> Continue
+  [unique] -> Found unique
+  _ -> Stop -- more than 1 result, terminate
 
 data MaybeResult a
   = Continue -- so far, no results, keep going
@@ -664,8 +679,7 @@ data MaybeResult a
 sortResults
   :: Query.RepoSearchResult
   -> [[(SymbolResult, Maybe SymbolDescription)]]
-sortResults (Query.RepoSearchResult xs) =
-    map (List.sortOn relevance) (groupOn features xs)
+sortResults xs = map (List.sortOn relevance) (groupOn features xs)
   where
     -- we group on the language/kind to produce result sets
     -- then sort those results by score and alpha (note: not groupSortOn which

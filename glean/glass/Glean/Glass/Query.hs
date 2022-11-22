@@ -27,7 +27,7 @@ module Glean.Glass.Query
   , SearchFn
   , SymbolSearchData(..)
   , ToSearchResult(..)
-  , RepoSearchResult(..)
+  , RepoSearchResult
   , FeelingLuckyResult(..)
   , SingleSymbol
 
@@ -43,6 +43,7 @@ module Glean.Glass.Query
 
   -- ** Search query builder
   , buildSearchQuery
+  , buildLuckyContainerQuery
 
   -- ** scoped search
 
@@ -62,7 +63,7 @@ import Data.Text (Text, toLower)
 import qualified Data.Text as Text
 import Data.Maybe
 import Data.List.NonEmpty as NonEmpty (NonEmpty(..), toList)
-import qualified Data.List.NonEmpty as NonEmpty (last)
+import qualified Data.List.NonEmpty as NonEmpty
 
 import qualified Glean
 import Glean.Angle as Angle
@@ -246,6 +247,12 @@ buildSearchQuery Normal query =
   map (compileQuery (sKinds query) (sLangs query)) (toRankedSearchQuery query)
 buildSearchQuery FeelingLucky query =
   map (compileQuery (sKinds query) (sLangs query)) (feelingLuckyQuery query)
+
+-- | For nested inherited queries, we have to do an inner container search
+buildLuckyContainerQuery :: SearchQuery -> NonEmpty Text -> [AngleSearch]
+buildLuckyContainerQuery query scope =
+  map (compileQuery (sKinds query) (sLangs query))
+    (feelingLuckyContainer (sCase query) scope)
 
 compileQuery
   :: [Code.SymbolKind] -> [Code.Language] -> SearchExpr -> AngleSearch
@@ -441,6 +448,7 @@ feelingLuckyQuery query@SearchQuery{..} = case sScope of
 
   -- not a scope search. i.e. glass cli default
   -- we will try to match strictly against the local name of the identifier
+  -- I think we should be respecting the 'case sensitive flag here?
   NoScope ->
     [ GlobalScopedContainerish Sensitive sString -- "vec" the class
     , GlobalScoped Sensitive sString -- "genmk", global "C"
@@ -458,7 +466,28 @@ feelingLuckyQuery query@SearchQuery{..} = case sScope of
 -- | For inherited scope terms we need to a (nested) guess as to the parent
 -- scope to seed the search. It's like feelingLucky, but we know it has to be
 -- a container-ish thing
--- feelingLuckyContainer :: Maybe (NonEmpty Text) -> [SearchExpr]
+feelingLuckyContainer :: SearchCase -> NonEmpty Text -> [SearchExpr]
+feelingLuckyContainer sCase scopes = case scopes of
+  container :| [] ->
+    [ GlobalScopedContainerish Sensitive container
+    , ContainerLiteral Sensitive container
+    , GlobalScoped Sensitive container
+    , GlobalScoped Insensitive container -- if sCase == Sensitive we can skip
+    , ContainerLiteral Insensitive container
+    , Literal Sensitive container
+    , Literal Insensitive container
+    ]
+  -- "a::b::c" -> ([a,b], c)
+  _ :| _ -> case (NonEmpty.init scopes, NonEmpty.last scopes) of
+    (path, container) -> case path of
+      [] -> feelingLuckyContainer sCase (container :| [])
+      (p:ps) ->
+        let nonEmptyPath = p :| ps
+        in
+          [ Scoped Sensitive nonEmptyPath container
+          , Scoped Insensitive nonEmptyPath container
+          ] -- or assume the path is wrong and try to find container?
+          ++ feelingLuckyContainer sCase (container :| [])
 
 -- | Search params compiled to Angle expressions
 data SearchQ q = SearchQ {
@@ -688,10 +717,7 @@ instance ToSearchResult CodeSearch.SearchByScope where
       searchByScope_key_kind
 
 -- | Type of processed search results from a single scm repo
-newtype RepoSearchResult =
-  RepoSearchResult {
-    unRepoSearchResult :: [SingleSymbol]
-  }
+type RepoSearchResult = [SingleSymbol]
 
 -- An un-concatenated set of query results to search for unique hits in
 -- within one scm repo, across dbs, across queries, a set of result symbols.
