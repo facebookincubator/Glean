@@ -359,7 +359,7 @@ ppParameter (Parameter name typeName inout defaultValue xrefs) =
     whenJust inout $ tell . ppInout
     tell [ppTypeXRefs typeName xrefs]
     tell [ppName name]
-    whenJust defaultValue $ tell . ppDefaultValue
+    whenJust defaultValue $ tell . pure . ppDefaultValue typeName
 
 -- Contexts can be parameterised, empty, missing. or a simple list
 -- https://docs.hhvm.com/hack/contexts-and-capabilities/introduction
@@ -371,9 +371,12 @@ ppContexts (Just ctxs) = brackets $ hsep (punctuate comma (map ppContext ctxs))
 ppContext :: Context -> Doc Ann
 ppContext (Context ctx) = pretty ctx
 
-ppDefaultValue :: DefaultValue -> [Doc Ann]
-ppDefaultValue (DefaultValue defaultValue) =
-  ["=" <+> squotes (pretty defaultValue)]
+ppDefaultValue :: HackType -> DefaultValue -> Doc Ann
+ppDefaultValue typeName (DefaultValue v) = "=" <+>
+  case typeName of -- work around for type-sensitive quoting
+    HackType ty
+      | ty `elem` ["string", "?string"], v /= "null" -> squotes (pretty v)
+    _ -> pretty v
 
 ppInout :: Inout -> [Doc Ann]
 ppInout Inout = ["inout"]
