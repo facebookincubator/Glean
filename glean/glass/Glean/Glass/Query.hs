@@ -39,7 +39,8 @@ module Glean.Glass.Query
   , SearchScope(..)
   , SearchMode(..)
   , AngleSearch(..)
-  , CostTag(..)
+  , QueryExpr(..)
+
   -- ** Search query builder
   , buildSearchQuery
 
@@ -177,10 +178,16 @@ data SearchMode = Normal | FeelingLucky
 
 -- | Abstract over search predicates
 data AngleSearch = forall p . ( QueryType p, ToSearchResult p) =>
-  Search (CostTag (Angle p))
+  Search (QueryExpr p)
 
--- | Tag whether its a cheap or expensive query, which modifies the time limit
-data CostTag a = Fast a | Slow a
+-- | Either a fully evaluated angle query
+data QueryExpr p
+  = Complete (Angle p)
+  | InheritedScope {
+      _scopeCase :: SearchCase,
+      _baseScopeTerm :: Maybe (NonEmpty Text),
+      _searchFun :: SearchCase -> [NonEmpty Text] -> Angle p
+  }
 
 -- | Named arguments to the search query builder. These come from the client
 data SearchQuery = SearchQuery {
@@ -244,42 +251,40 @@ compileQuery
   :: [Code.SymbolKind] -> [Code.Language] -> SearchExpr -> AngleSearch
 compileQuery sKinds sLangs e = case e of
   -- most precise
-    GlobalScopedContainerish sCase name -> fast $
+    GlobalScopedContainerish sCase name ->
       scopeQ Exact sCase Nothing name containerKinds
-    GlobalScoped sCase name -> fast $
+    GlobalScoped sCase name ->
       scopeQ Exact sCase Nothing name sKinds
   -- becoming more imprecise
-    ContainerLiteral sCase name -> slow $ -- the namespace filter can be slow
+    ContainerLiteral sCase name ->
       nameQ Exact sCase name containerKinds
-    GlobalScopedPrefixly sCase name -> slow $
+    GlobalScopedPrefixly sCase name ->
       scopeQ Prefix sCase Nothing name sKinds
-    Literal sCase name -> fast $
+    Literal sCase name ->
       nameQ Exact sCase name sKinds
-    Prefixly sCase name -> slow $
+    Prefixly sCase name ->
       nameQ Prefix sCase name sKinds
-
     -- quite precise but different
-    Scoped sCase scope name -> slow $ -- this is only fast if repo/lang matches
+    Scoped sCase scope name ->
       scopeQ Exact sCase (Just scope) name sKinds
-    ScopedPrefixly sCase scope name -> slow $
+    ScopedPrefixly sCase scope name ->
       scopeQ Prefix sCase (Just scope) name sKinds
     -- meta-query
+    InheritedScoped sCase scope name ->
+      inheritedQ Exact sCase scope name sKinds
   where
-    fast = Search . Fast
-    slow = Search . Slow
-
     containerKinds = if null sKinds then containerishKinds else sKinds
 
     -- two main search predicates: by name or by name and scope
-    nameQ sTy sCa name kinds = codeSearchByName $
+    nameQ sTy sCa name kinds = Search $ Complete $ codeSearchByName $
       compileSearchQ sTy sCa (Just name) Nothing kinds sLangs
-    scopeQ sTy sCa scopes name kinds = codeSearchByScope $
+    scopeQ sTy sCa scopes name kinds = Search $ Complete $ codeSearchByScope $
       compileSearchQ sTy sCa (Just name) scopes kinds sLangs
-
-    -- for inherited scope queries:
-    -- the scope term becomes a literal feelingLuck search to find an entity
-    -- then expanded into parent scope terms
-    -- then compiled back to a disjoint scope query
+    inheritedQ sTy sCa scopes name kinds =
+      let (Inherited term, searchFn) = codeSearchByInheritedScope $
+            compileInheritedSearchQ sTy sCa
+              (Just name) (Just scopes) kinds sLangs
+      in Search $ InheritedScope sCa term searchFn
 
 -- | Common "API"-level things, you could reasonably expect to be ranked highly
 containerishKinds :: [Code.SymbolKind]
@@ -304,6 +309,8 @@ data SearchExpr
   -- scope searches (ignoring globals)
   | Scoped SearchCase (NonEmpty Text) Text -- "Vec\sort"
   | ScopedPrefixly SearchCase (NonEmpty Text) Text   -- "Vec\so"..
+  -- More interesting: inherited scope terms, anchored to a base scope
+  | InheritedScoped SearchCase (NonEmpty Text) Text -- "Vec\sort"
 
 -- we do namespace (or class?) first if no kind filter, or kinds included
 searchContainer :: Text -> [Code.SymbolKind] -> SearchCase -> [SearchExpr]
@@ -343,21 +350,21 @@ searchScope
 searchScope scope name sType sCase = case sType of
   Exact ->
       [ Scoped sCase scope name
- --     , InheritedScope sCase scope name
+      , InheritedScoped sCase scope name
       ]
   -- CodeHub default: lets always make sure to do an exact case search
   Prefix -> case sCase of
     Sensitive ->
       [ Scoped Sensitive scope name
- --     , InheritedScope Sensitive scope name
+      , InheritedScoped Sensitive scope name
       , ScopedPrefixly Sensitive scope name
       ]
     -- CodeHub default symbol search is prefixly, case insensitive
     Insensitive ->
       [ Scoped Sensitive scope name -- always aim for exact matches to appear
       , Scoped Insensitive scope name -- even if there's a lot of matches
- --     , InheritedScope Sensitive scope name
- --     , InheritedScope Insensitive scope name
+      , InheritedScoped Sensitive scope name
+      , InheritedScoped Insensitive scope name
       , ScopedPrefixly sCase scope name
       ]
 
@@ -413,8 +420,8 @@ feelingLuckyQuery query@SearchQuery{..} = case sScope of
       Just (ScopeAndName scope name) ->
         [ Scoped Sensitive scope name
         , Scoped Insensitive scope name
-   --   , InheritedScope Sensitive scope name
-   --   , InheritedScope Insensitive scope name
+        , InheritedScoped Sensitive scope name
+        , InheritedScoped Insensitive scope name
         , ScopedPrefixly Sensitive scope name
         , ScopedPrefixly Insensitive scope name
         ]
@@ -463,9 +470,11 @@ newtype Direct = Direct { scopeTerm :: Maybe (Angle [Text]) }
 
 -- | Inherited scope terms are suspended into a staged computation
 -- that produces terms for a new direct query
-data Inherited = Inherited {
-    _caseTerm :: SearchCase, -- search case to use
-    _lazyScopeTerm :: Maybe (NonEmpty Text) -- base entity of the search
+--
+-- We won't try to support prefix versions of this
+--
+newtype Inherited = Inherited {
+    _scopeTerm :: Maybe (NonEmpty Text) -- base entity of the search
   }
 
 --
@@ -480,11 +489,11 @@ compileSearchQ = compileAnySearchQ (\a b -> Direct (toScopeQuery a b))
 --
 -- Translate our structured search values into Angle expressions
 --
-_compileInheritedSearchQ
+compileInheritedSearchQ
   :: SearchType -> SearchCase -> Maybe Text
-  -> Maybe (NonEmpty Text)
+  -> Maybe (NonEmpty Text) -- no reason for this to be Nothing tho?
   -> [Code.SymbolKind] -> [Code.Language] -> SearchQ Inherited
-_compileInheritedSearchQ = compileAnySearchQ Inherited
+compileInheritedSearchQ = compileAnySearchQ (const Inherited)
 
 --
 -- Or translate into a suspended computation
@@ -593,6 +602,43 @@ codeSearchByScope SearchQ{..} =
     scopePat = fromMaybe (array []) (scopeTerm scopeQ) -- Nothing ==global scope
     kindPat = maybe wild just mKindQ
     languagePat = fromMaybe wild mLangQ
+
+--
+-- A suspended code search by scope with disjoint scope terms
+-- It's like a regular codeSearchByScope, but we evaluate the scope term
+-- to a set externally first, then subsitute into the angle query
+--
+codeSearchByInheritedScope
+  :: SearchQ Inherited
+  -> (Inherited,
+      SearchCase -> [NonEmpty Text] -> Angle CodeSearch.SearchByScope)
+codeSearchByInheritedScope SearchQ{..} = (scopeQ, queryFn)
+  where
+    kindPat = maybe wild just mKindQ
+    languagePat = fromMaybe wild mLangQ
+
+    queryFn = \caseTerm scopeTerm ->
+      let
+        scopePat = fromMaybe (array []) (toScopeSetQuery caseTerm scopeTerm)
+      in
+      predicate @CodeSearch.SearchByScope $
+        rec $
+          field @"name" nameQ $
+          field @"scope" scopePat $
+          field @"searchcase" caseQ $
+          field @"kind" kindPat $ -- specific kinds only
+          field @"language" languagePat -- optional language filters
+        end
+
+-- | Scope terms expanded into set of names, then compiled to disjoint query
+--
+-- Compile set of terms to regular scope queries, then compose them with .|
+--
+toScopeSetQuery :: SearchCase -> [NonEmpty Text] -> Maybe (Angle [Text])
+toScopeSetQuery _ [] = Nothing
+toScopeSetQuery sCase ts =  Just $ foldr1 (.|) (catMaybes scopeQs)
+  where
+    scopeQs = map (toScopeQuery sCase . Just) ts
 
 --
 -- A class for converting the different search predicates to a standard format

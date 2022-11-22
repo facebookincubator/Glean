@@ -203,7 +203,8 @@ import qualified Glean.Glass.Query as Query
 import Glean.Glass.Query (
     SearchCase(..), SearchType(..),
     SearchScope(..), SearchMode(..),
-    SingleSymbol, FeelingLuckyResult(..)
+    SingleSymbol, FeelingLuckyResult(..),
+    QueryExpr(..)
   )
 import qualified Glean.Glass.Query.Cxx as Cxx
 
@@ -554,8 +555,8 @@ runSearch
   -> RepoHaxl u w [(SymbolResult, Maybe SymbolDescription)]
 runSearch repo scmRevs mlimit terse sString (Query.Search query) = do
   names <- case query of
-    Query.Fast q -> searchWithLimit mlimit q
-    Query.Slow q -> searchWithTimeLimit mlimit queryTimeLimit q
+    Complete q -> searchWithTimeLimit mlimit queryTimeLimit q
+    InheritedScope _ _term _fn -> pure [] -- unimplemented
   mapM (processSymbolResult terse sString repo scmRevs) names
   where
     queryTimeLimit = 5000 -- milliseconds, make this a flag?
