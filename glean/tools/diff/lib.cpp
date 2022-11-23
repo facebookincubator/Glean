@@ -40,6 +40,9 @@ const char *glean_diff(Inventory *inventory, Lookup *first, Lookup *second) {
 
   size_t kept = 0;
 
+  size_t percent = second_size / 100;
+  size_t announce = percent; // announce every one percent
+
   // For each fact in second, subtitute it and define it in the Extension.
   // Accumulate new fact ids in the substitution.
   for (auto i = second->enumerate(); auto ref = i->get(); i->next()) {
@@ -48,9 +51,10 @@ const char *glean_diff(Inventory *inventory, Lookup *first, Lookup *second) {
     binary::Output out;
     uint64_t key_size;
     pred->substitute(substitute, ref.clause, out, key_size);
-    Fact::Clause clause = Fact::Clause::from(out.bytes(), key_size);
 
+    Fact::Clause clause = Fact::Clause::from(out.bytes(), key_size);
     Id id = first->idByKey(ref.type, clause.key());
+
     if (id != Id::invalid()) {
       if (clause.value_size == 0) {
         ++kept;
@@ -64,6 +68,12 @@ const char *glean_diff(Inventory *inventory, Lookup *first, Lookup *second) {
     }
 
     subst.set(ref.id, id);
+
+    if (--announce == 0) {
+      announce = percent;
+      auto percentage = (ref.id.toWord() - second_starting.toWord()) / percent;
+      std::cerr << percentage << "%" << std::endl << std::flush;
+    }
   }
 
 
