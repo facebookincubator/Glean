@@ -29,10 +29,9 @@ const char *glean_diff(Inventory *inventory, Lookup *first, Lookup *second) {
   return ffi::wrap([=] {
   const auto first_starting = first->startingId();
   const auto first_boundary = first->firstFreeId();
-  FactSet additional(first_boundary);
-  Stacked<Define> ext(first, &additional);
 
   const auto second_starting = second->startingId();
+  const auto second_boundary = second->firstFreeId();
   const auto second_size = distance(second_starting, second->firstFreeId());
   Substitution subst(second_starting, second_size);
   const auto substitute = syscall([&subst](Id id, Pid) {
@@ -40,7 +39,6 @@ const char *glean_diff(Inventory *inventory, Lookup *first, Lookup *second) {
   });
 
   size_t kept = 0;
-  size_t added = 0;
 
   // For each fact in second, subtitute it and define it in the Extension.
   // Accumulate new fact ids in the substitution.
@@ -50,21 +48,28 @@ const char *glean_diff(Inventory *inventory, Lookup *first, Lookup *second) {
     binary::Output out;
     uint64_t key_size;
     pred->substitute(substitute, ref.clause, out, key_size);
+    Fact::Clause clause = Fact::Clause::from(out.bytes(), key_size);
 
-    auto id = ext.define(ref.type, Fact::Clause::from(out.bytes(), key_size));
-
-    if (id < first_boundary) {
-      ++kept;
-    } else {
-      ++added;
+    Id id = first->idByKey(ref.type, clause.key());
+    if (id != Id::invalid()) {
+      if (clause.value_size == 0) {
+        ++kept;
+      } else {
+        first->factById(id, [&](Pid, Fact::Clause found) {
+          if (clause.value() == found.value()) {
+            ++kept;
+          }
+        });
+      }
     }
 
     subst.set(ref.id, id);
   }
 
+
   std::cout
     << "kept " << kept
-    << ", added " << added
+    << ", added " << distance(second_starting, second_boundary) - kept
     << ", removed " << distance(first_starting, first_boundary) - kept
     << std::endl;
   });
