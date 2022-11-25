@@ -244,7 +244,7 @@ ppSignature opts head (Signature returnType typeParams params ctxs xrefs) =
       ]
     onelineArgs = if null params then "()" else
       parens (hsep $ punctuate comma (map ppParameter params))
-    onelineSig = head <> cat
+    onelineSig = nest 4 $ head <> fillCat
       [ onelineTypeParams
       , onelineArgs
       , ppContexts ctxs
