@@ -31,6 +31,7 @@ module Glean.Glass.Pretty.Hack
   , ReturnType(..)
   , DefaultValue(..)
   , Inout(..)
+  , Variadic(..)
   , Parameter(..)
   , Variance(..)
   , Reify(..)
@@ -130,8 +131,10 @@ newtype HackType = HackType { unHackType :: Text }
 newtype ReturnType = ReturnType { unReturnType :: Text }
 newtype DefaultValue = DefaultValue Text
 data Inout = Inout
+data Variadic = Variadic
 data Parameter
-  = Parameter Name HackType (Maybe Inout) (Maybe DefaultValue) XRefs
+  = Parameter Name HackType (Maybe Inout)
+      (Maybe Variadic) (Maybe DefaultValue) XRefs
 data Variance = Contravariant | Covariant | Invariant
 data Reify = Erased | Reified | SoftReified
 data ConstraintKind = As | Equal | Super
@@ -354,11 +357,13 @@ ppReturnType :: ReturnType -> XRefs -> Doc Ann
 ppReturnType (ReturnType t) xrefs = ppTypeXRefs (HackType t) xrefs
 
 ppParameter :: Parameter -> Doc Ann
-ppParameter (Parameter name typeName inout defaultValue xrefs) =
+ppParameter (Parameter name typeName inout variadic defaultValue xrefs) =
   nest 4 $ sep $ execWriter $ do
     whenJust inout $ tell . ppInout
     tell [ppTypeXRefs typeName xrefs]
-    tell [ppName name]
+    case variadic of
+      Just Variadic -> tell [hcat ["...", ppName name]]
+      Nothing ->  tell [ppName name]
     whenJust defaultValue $ tell . pure . ppDefaultValue typeName
 
 -- Contexts can be parameterised, empty, missing. or a simple list
@@ -720,12 +725,13 @@ toConstraintKind Hack.ConstraintKind_Super = Super
 toConstraintKind (Hack.ConstraintKind__UNKNOWN _) = Equal
 
 toParameter :: Hack.Parameter -> Parameter
-toParameter (Hack.Parameter name mtype inout _ mdefaultValue _ typeInfo) =
+toParameter (Hack.Parameter name mtype inout variadic mdefaultValue _ typeInfo) =
   let (type_, xrefs) = toTypeAndXRefs mtype typeInfo
   in Parameter
       (toName name)
       (HackType (unHackType type_))
       (if inout then Just Inout else Nothing)
+      (if variadic then Just Variadic else Nothing)
       (DefaultValue <$> mdefaultValue)
       xrefs
 
