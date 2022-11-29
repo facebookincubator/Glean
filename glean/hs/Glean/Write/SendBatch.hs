@@ -17,7 +17,6 @@ module Glean.Write.SendBatch
   , waitBatch
   ) where
 
-import Control.Concurrent (threadDelay)
 import Control.Exception
 import Data.Default
 import qualified Data.Text as Text
@@ -29,6 +28,8 @@ import qualified Glean.Types as Thrift
 import Glean.Util.RetryRecvTimeout
 import Util.Log.Text (logWarning)
 
+numRetries :: Word
+numRetries = 5
 
 sendBatch
   :: Backend be
@@ -43,7 +44,7 @@ sendBatch backend repo batch = do
 sendBatchAsync
   :: Backend be => be -> Thrift.Repo -> Thrift.Batch -> IO Thrift.Handle
 sendBatchAsync backend repo batch = do
-  r <- retryServerQueueTimeout logWarningAndBackoff 4 $
+  r <- retryServerQueueTimeout logWarningAndBackoff numRetries $
     enqueueBatch backend $ Thrift.ComputedBatch repo True batch
   case r of
     Thrift.SendResponse_handle h -> return h
@@ -66,7 +67,7 @@ sendJsonBatch backend repo batches opts = do
     else waitBatch backend handle
   where
     send = do
-      r <- try $ retryServerQueueTimeout logWarningAndBackoff 4 $
+      r <- try $ retryServerQueueTimeout logWarningAndBackoff numRetries $
         enqueueJsonBatch backend repo
         Thrift.SendJsonBatch
           { Thrift.sendJsonBatch_batches = batches
@@ -80,12 +81,14 @@ sendJsonBatch backend repo batches opts = do
 
 retry :: Double -> IO a -> IO a
 retry secs action = do
-  threadDelay $ round $ max secs 1 * 1000000
+  sleep $ max secs 1
   action
 
 waitBatch :: Backend be => be -> Thrift.Handle -> IO Thrift.Subst
 waitBatch backend handle = do
-  e <- try $ pollBatch backend handle
+  e <- try $
+    retryServerQueueTimeout logWarningAndBackoff numRetries $
+    pollBatch backend handle
   case e of
     Left Thrift.Retry{..} -> retry retry_seconds $ waitBatch backend handle
     Right r -> case r of
