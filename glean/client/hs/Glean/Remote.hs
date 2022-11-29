@@ -398,16 +398,10 @@ putException :: SomeException -> [Haxl.BlockedFetch a] -> IO ()
 putException ex requests =
   forM_ requests $ \(Haxl.BlockedFetch _ rvar) -> Haxl.putFailure rvar ex
 
--- | maximum number of queries to include in a batch request
---   the current value matches the number of cores available in query servers
---   we could add a parameter to change this, but it would be expensive to
---   expose it through all the clients and there's little to be gained
-maxBatchSize :: Int
-maxBatchSize = 16
-
 remoteQuery :: ThriftBackend -> Semaphore -> Haxl.PerformFetch GleanQuery
-remoteQuery (ThriftBackend config evb ts clientInfo schema) sem =
-  Haxl.BackgroundFetch $ \batch -> do
+remoteQuery (ThriftBackend config evb ts clientInfo schema) sem
+  | maxBatchSize > 1
+  = Haxl.BackgroundFetch $ \batch -> do
     let batches
           :: HashMap.HashMap
               (Repo, UserQuery)
@@ -422,6 +416,8 @@ remoteQuery (ThriftBackend config evb ts clientInfo schema) sem =
     mapM_
       (\((template, repo), batch) -> fetchBatch template repo batch)
       (HashMap.toList batches)
+  | otherwise
+  = Haxl.BackgroundFetch $ mapM_ fetch
   where
   ts' repo = case clientConfig_use_shards config of
     NO_SHARDS -> ts
@@ -429,10 +425,19 @@ remoteQuery (ThriftBackend config evb ts clientInfo schema) sem =
     USE_SHARDS_AND_FALLBACK ->
       thriftServiceWithDbShard ts (Just (dbShard repo)) -- TODO
 
+  maxBatchSize = fromIntegral $ clientConfig_max_batch_size config
+
+  fetch :: Haxl.BlockedFetch GleanQuery -> IO ()
+  fetch (Haxl.BlockedFetch (QueryReq (Query q) repo stream) rvar) =
+    runRemoteQuery evb sem repo (Query q') (ts' repo) acc rvar
+    where
+      q' = withClientInfo clientInfo q
+      acc = if stream then Just id else Nothing
+
   fetchBatch repo predicate reqs =
     -- avoid overwhelming a single query server with a large batch
     -- chunking can be removed whenever query servers learn to fuse batches
-    forM_ (chunksOf maxBatchSize reqs) $ \chunk ->
+    forM_ (chunksOf (max 1 maxBatchSize) reqs) $ \chunk ->
       runRemoteBatchQuery evb sem repo predicate chunk (ts' repo)
 
   withClientInfo :: UserQueryClientInfo -> UserQuery -> UserQuery
