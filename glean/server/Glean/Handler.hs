@@ -72,6 +72,9 @@ handler State{..} req =
     Service.UserQuery repo query ->
       Backend.userQuery backend repo query
 
+    Service.UserQueryBatch repo queries -> do
+      Backend.userQueryBatch backend repo queries
+
     Service.CompletePredicates repo ->
       Backend.completePredicates_ backend repo
 

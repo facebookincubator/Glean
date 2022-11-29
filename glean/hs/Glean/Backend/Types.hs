@@ -92,6 +92,8 @@ class Backend a where
     -> IO Thrift.UserQueryResults
   userQuery :: a -> Thrift.Repo -> Thrift.UserQuery
     -> IO Thrift.UserQueryResults
+  userQueryBatch :: a -> Thrift.Repo -> Thrift.UserQueryBatch
+    -> IO [Thrift.UserQueryResultsOrException]
 
   deriveStored :: a -> LogDerivationResult -> Thrift.Repo
     -> Thrift.DerivePredicateQuery -> IO Thrift.DerivationStatus
@@ -176,6 +178,7 @@ instance Backend (Some Backend) where
   getDatabase (Some backend) = getDatabase backend
   userQueryFacts (Some backend) = userQueryFacts backend
   userQuery (Some backend) = userQuery backend
+  userQueryBatch (Some backend) = userQueryBatch backend
   deriveStored (Some backend) = deriveStored backend
 
   kickOffDatabase (Some backend) = kickOffDatabase backend

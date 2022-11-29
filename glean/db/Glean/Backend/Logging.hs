@@ -14,9 +14,12 @@ import Control.Exception
 import qualified Data.ByteString as ByteString
 import qualified Data.Map as Map
 import Data.Maybe
+import Data.Monoid (Sum(getSum, Sum))
 import Data.Text (Text)
+import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import qualified Data.Text.Encoding.Error as Text
+import TextShow (showt)
 
 import Util.Logger
 
@@ -64,6 +67,11 @@ instance Backend LoggingBackend where
   userQuery (LoggingBackend env) repo req =
     loggingAction (runLogQuery "userQuery" env repo req) logQueryResults $
       userQuery env repo req
+  userQueryBatch (LoggingBackend env) repo reqBatch =
+    loggingAction
+      (runLogQueryBatch "userQueryBatch" env repo reqBatch)
+      logQueryResultsOrException
+      (userQueryBatch env repo reqBatch)
 
   deriveStored (LoggingBackend env) log repo q =
     loggingAction
@@ -184,6 +192,35 @@ runLogQuery cmd env repo Thrift.UserQuery{..} log = do
     , maybe mempty logQueryClientInfo userQuery_client_info
     ]
 
+runLogQueryBatch
+  :: Text
+  -> Database.Env
+  -> Thrift.Repo
+  -> Thrift.UserQueryBatch
+  -> GleanServerLog
+  -> IO ()
+runLogQueryBatch cmd env repo Thrift.UserQueryBatch{..} log =
+  runLogRepo cmd env repo $ mconcat
+    [ log
+    , Logger.SetQuery $ case userQueryBatch_queries of
+        [] -> "0 batched queries"
+        q:rest -> Text.unlines $
+          Text.decodeUtf8With Text.lenientDecode q :
+          [" + " <> showt n <> " batched queries"
+          | let n = length rest
+          , n > 1
+          ]
+    , Logger.SetPredicate userQueryBatch_predicate
+    , maybe mempty (Logger.SetPredicateVersion . fromIntegral)
+        userQueryBatch_predicate_version
+    , maybe mempty (Logger.SetSchemaVersion . fromIntegral)
+        userQueryBatch_schema_version
+    , maybe mempty (Logger.SetSchemaId . Thrift.unSchemaId)
+        userQueryBatch_schema_id
+    , maybe mempty logQueryOptions userQueryBatch_options
+    , maybe mempty logQueryClientInfo userQueryBatch_client_info
+    ]
+
 logQueryOptions :: Thrift.UserQueryOptions -> GleanServerLog
 logQueryOptions Thrift.UserQueryOptions{..} = mconcat
   [ Logger.SetNoBase64Binary userQueryOptions_no_base64_binary
@@ -209,17 +246,17 @@ logQueryClientInfo Thrift.UserQueryClientInfo{..} = mconcat
   , Logger.SetClientName userQueryClientInfo_name
   ]
 
+logQueryResultsOrException
+  :: [Thrift.UserQueryResultsOrException] -> GleanServerLog
+logQueryResultsOrException results = mconcat
+  [
+    Logger.SetResults $ getSum $ foldMap (Sum . countQueryResults)
+      [ r | Thrift.UserQueryResultsOrException_results r <- results]
+  ]
+
 logQueryResults :: Thrift.UserQueryResults -> GleanServerLog
-logQueryResults Thrift.UserQueryResults{..} = mconcat
-  [ Logger.SetResults $ case userQueryResults_results of
-      Thrift.UserQueryEncodedResults_bin bin ->
-        Map.size (Thrift.userQueryResultsBin_facts bin)
-      Thrift.UserQueryEncodedResults_json json ->
-        length (Thrift.userQueryResultsJSON_facts json)
-      Thrift.UserQueryEncodedResults_compact compact ->
-        length (Thrift.userQueryResultsCompact_facts compact)
-      _ ->
-        length userQueryResults_facts
+logQueryResults it@Thrift.UserQueryResults{..} = mconcat
+  [ Logger.SetResults $ countQueryResults it
   , Logger.SetTruncated (isJust userQueryResults_continuation)
   , maybe mempty logQueryStats userQueryResults_stats
   , maybe mempty Logger.SetType userQueryResults_type
@@ -230,6 +267,18 @@ logQueryResults Thrift.UserQueryResults{..} = mconcat
       )
       userQueryResults_continuation
   ]
+
+countQueryResults :: Thrift.UserQueryResults -> Int
+countQueryResults Thrift.UserQueryResults{..} =
+  case userQueryResults_results of
+    Thrift.UserQueryEncodedResults_bin bin ->
+      Map.size (Thrift.userQueryResultsBin_facts bin)
+    Thrift.UserQueryEncodedResults_json json ->
+      length (Thrift.userQueryResultsJSON_facts json)
+    Thrift.UserQueryEncodedResults_compact compact ->
+      length (Thrift.userQueryResultsCompact_facts compact)
+    _ ->
+      length userQueryResults_facts
 
 logQueryStats :: Thrift.UserQueryStats -> GleanServerLog
 logQueryStats Thrift.UserQueryStats{..} = mconcat

@@ -193,6 +193,13 @@ instance Backend ThriftBackend where
       client = Thrift.userQuery_client_info q
         <|> Just (thriftBackendClientInfo t)
 
+  userQueryBatch t repo q = withShard t repo $
+    GleanService.userQueryBatch repo q
+      { Thrift.userQueryBatch_client_info = client }
+    where
+      client = Thrift.userQueryBatch_client_info q
+        <|> Just (thriftBackendClientInfo t)
+
   deriveStored t _ repo pred = withShard t repo $
     GleanService.deriveStored repo pred
       { Thrift.derivePredicateQuery_client_info = client }

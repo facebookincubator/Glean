@@ -27,6 +27,7 @@ module Glean.Backend.Local
 import Control.Concurrent (getNumCapabilities)
 import Control.Concurrent.Stream (stream)
 import Control.Concurrent.STM (atomically)
+import Control.Exception (catches, Handler (Handler))
 import Control.Monad (forM_)
 import Data.ByteString (ByteString)
 import Data.Default
@@ -93,6 +94,29 @@ instance Backend Database.Env where
 
   userQueryFacts = UserQuery.userQueryFacts
   userQuery = UserQuery.userQuery
+  userQueryBatch env repo Thrift.UserQueryBatch{..} =
+      mapM runOne
+        [ Thrift.UserQuery
+          { userQuery_predicate = userQueryBatch_predicate
+          , userQuery_predicate_version = userQueryBatch_predicate_version
+          , userQuery_schema_version  = userQueryBatch_schema_version
+          , userQuery_encodings  = userQueryBatch_encodings
+          , userQuery_client_info = userQueryBatch_client_info
+          , userQuery_schema_id = userQueryBatch_schema_id
+          , userQuery_options = userQueryBatch_options
+          , userQuery_query = q
+          }
+        | q <- userQueryBatch_queries
+        ]
+      where
+        runOne query =
+          (Thrift.UserQueryResultsOrException_results
+            <$> userQuery env repo query)
+          `catches`
+          [ Handler $ return . Thrift.UserQueryResultsOrException_retry
+          , Handler $ return . Thrift.UserQueryResultsOrException_badQuery
+          ]
+
 
   deriveStored = Derive.deriveStored
 

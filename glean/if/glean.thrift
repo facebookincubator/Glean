@@ -680,6 +680,38 @@ struct UserQuery {
   8: optional SchemaId schema_id;
 }
 
+struct UserQueryBatch {
+  1: string predicate;
+  // Name of the predicate to query
+  // (only necessary when using JSON query syntax)
+  2: list<string (hs.type = "ByteString")> queries;
+  // Query strings; syntax specified by UserQueryOptions.syntax
+  // The list of returned UserQueryResults is guaranteed to be
+  // the same length as this list
+  3: optional Version predicate_version;
+  // If provided, and if the version requested is different from
+  // the predicate version in the DB, the server will attempt to
+  // translate the results into the desired format. If this isn't
+  // possible, an Exception will be thrown.
+  // If omitted, defaults to the latest version of this predicate
+  // in the schema version.
+  4: optional Version schema_version;
+  // If supplied, then any unversioned predicates in the query are
+  // resolved using this version of the "all" schema. Otherwise, they
+  // are resolved to the latest version of the "all" schema.
+  5: optional UserQueryOptions options;
+
+  6: list<UserQueryEncoding> encodings = [];
+  // Acceptable encodings for the results in order of preference. The server
+  // guarantees to return one of these encodings or fail.
+  7: optional UserQueryClientInfo client_info;
+  // Information about who is making the call
+
+  // Specifies the version of the schema used to resolve the query. If
+  // omitted, use the schema specified by the DB.
+  8: optional SchemaId schema_id;
+}
+
 struct UserQueryStats {
   // 1: deprecated
   2: i64 num_facts;
@@ -759,6 +791,13 @@ struct UserQueryResults {
 
   9: optional string type;
 // The inferred type of the query
+}
+
+union UserQueryResultsOrException {
+  1: UserQueryResults results;
+  2: BadQuery badQuery;
+  3: Retry retry;
+  4: Exception other;
 }
 
 struct FactQuery {
@@ -1139,6 +1178,11 @@ service GleanService extends fb303.FacebookService {
     4: Retry r,
     5: UnknownDatabase u,
   );
+
+  list<UserQueryResultsOrException> userQueryBatch(
+    1: Repo repo,
+    2: UserQueryBatch q,
+  ) throws (1: Exception e, 4: UnknownDatabase u);
 
   DerivationStatus deriveStored(
     1: Repo repo,

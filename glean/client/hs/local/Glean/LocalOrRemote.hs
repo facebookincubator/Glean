@@ -202,6 +202,7 @@ instance Backend (Some LocalOrRemote) where
   getDatabase (Some backend) = getDatabase backend
   userQueryFacts (Some backend) = userQueryFacts backend
   userQuery (Some backend) = userQuery backend
+  userQueryBatch (Some backend) = userQueryBatch backend
   deriveStored (Some backend) = deriveStored backend
 
   kickOffDatabase (Some backend) = kickOffDatabase backend
