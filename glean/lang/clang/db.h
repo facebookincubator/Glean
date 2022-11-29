@@ -25,6 +25,7 @@ namespace facebook {
 namespace glean {
 namespace clangx {
 
+using namespace facebook::glean::cpp;
 namespace Buck = schema::Buck;
 namespace Cxx = schema::Cxx1;
 namespace Pp = schema::Pp1;

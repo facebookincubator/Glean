@@ -61,7 +61,7 @@ leading = Text.unlines
   ,""
   ,"#include <tuple>"
   ,"#include <boost/variant.hpp>"
-  ,"#include \"glean/lang/clang/common.h\""
+  ,"#include \"glean/cpp/glean.h\""
   ,""
   ]
 
