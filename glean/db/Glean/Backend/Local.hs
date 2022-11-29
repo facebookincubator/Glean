@@ -31,7 +31,9 @@ import Control.Exception (catches, Handler (Handler))
 import Control.Monad (forM_)
 import Data.ByteString (ByteString)
 import Data.Default
+import Data.IORef.Extra
 import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Map.Strict as Map
 import Data.Typeable
 import qualified Haxl.Core as Haxl
 
@@ -94,21 +96,28 @@ instance Backend Database.Env where
 
   userQueryFacts = UserQuery.userQueryFacts
   userQuery = UserQuery.userQuery
-  userQueryBatch env repo Thrift.UserQueryBatch{..} =
-      mapM runOne
-        [ Thrift.UserQuery
-          { userQuery_predicate = userQueryBatch_predicate
-          , userQuery_predicate_version = userQueryBatch_predicate_version
-          , userQuery_schema_version  = userQueryBatch_schema_version
-          , userQuery_encodings  = userQueryBatch_encodings
-          , userQuery_client_info = userQueryBatch_client_info
-          , userQuery_schema_id = userQueryBatch_schema_id
-          , userQuery_options = userQueryBatch_options
-          , userQuery_query = q
-          }
-        | q <- userQueryBatch_queries
-        ]
+  userQueryBatch env repo Thrift.UserQueryBatch{..} = do
+      resultsRef <- newIORef mempty
+      numCaps <- getNumCapabilities
+      stream numCaps (forM_ queries) $ \q -> do
+        res <- runOne q
+        atomicModifyIORef'_ resultsRef $ Map.insert q res
+      results <- readIORef resultsRef
+      return $ map (results Map.!) queries
       where
+        queries =
+          [ Thrift.UserQuery
+            { userQuery_predicate = userQueryBatch_predicate
+            , userQuery_predicate_version = userQueryBatch_predicate_version
+            , userQuery_schema_version  = userQueryBatch_schema_version
+            , userQuery_encodings  = userQueryBatch_encodings
+            , userQuery_client_info = userQueryBatch_client_info
+            , userQuery_schema_id = userQueryBatch_schema_id
+            , userQuery_options = userQueryBatch_options
+            , userQuery_query = q
+            }
+          | q <- userQueryBatch_queries
+          ]
         runOne query =
           (Thrift.UserQueryResultsOrException_results
             <$> userQuery env repo query)
