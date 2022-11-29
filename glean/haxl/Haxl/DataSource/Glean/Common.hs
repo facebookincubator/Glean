@@ -17,6 +17,7 @@ module Haxl.DataSource.Glean.Common
   , GleanQuery(..)
   , GleanQueryer
   , putQueryResults
+  , putQueryResultsOrException
   , State(GleanGetState, GleanQueryState)
   , intId
   ) where
@@ -42,6 +43,7 @@ import Glean.Backend.Types
 import Glean.Query.Thrift.Internal
 import Glean.Types
 import Glean.Typed as Typed
+import qualified Haxl.Core.DataSource as Haxl
 
 
 {-# INLINE intId #-}
@@ -158,3 +160,24 @@ putQueryResults (Query q) UserQueryResults{..} maybeAcc rvar more = do
     | otherwise -> do
       let allResults = fromMaybe id maybeAcc results
       putSuccess rvar (allResults, isJust userQueryResults_continuation)
+
+
+putQueryResultsOrException
+  :: Query q
+  -> UserQueryResultsOrException
+  -> Maybe ([q] -> [q]) -- results so far
+  -> ResultVar ([q], Bool)
+  -> (Query q -> Maybe ([q] -> [q]) -> IO ())
+     -- ^ How to resume if we're streaming
+  -> IO ()
+putQueryResultsOrException q r maybeAcc rvar more =
+  case r of
+    UserQueryResultsOrException_results r ->
+      putQueryResults q r maybeAcc rvar more
+    UserQueryResultsOrException_badQuery ex ->
+      Haxl.putFailure rvar (toException ex)
+    UserQueryResultsOrException_retry ex ->
+      Haxl.putFailure rvar (toException ex)
+    UserQueryResultsOrException_other ex ->
+      Haxl.putFailure rvar (toException ex)
+    _ -> error "TODO"

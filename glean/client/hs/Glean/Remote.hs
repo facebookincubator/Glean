@@ -7,6 +7,7 @@
 -}
 
 {-# LANGUAGE ApplicativeDo #-}
+{-# LANGUAGE PartialTypeSignatures #-}
 module Glean.Remote
   ( -- * Command-line options
     options
@@ -40,6 +41,7 @@ import Control.Applicative
 import Control.Concurrent.STM
 import Control.Exception
 import Control.Monad
+import Data.ByteString (ByteString)
 import Data.Default
 import Data.Foldable(for_)
 import qualified Data.HashMap.Strict as HashMap
@@ -398,7 +400,21 @@ putException ex requests =
 
 remoteQuery :: ThriftBackend -> Semaphore -> Haxl.PerformFetch GleanQuery
 remoteQuery (ThriftBackend config evb ts clientInfo schema) sem =
-  Haxl.BackgroundFetch $ mapM_ fetch
+  Haxl.BackgroundFetch $ \batch -> do
+    let batches
+          :: HashMap.HashMap
+              (Repo, UserQuery)
+              [(Haxl.BlockedFetch GleanQuery, Bool)]
+        batches = HashMap.fromListWith (++)
+          -- group by repo and query details minus the query itself
+          [( (repo, withClientInfo clientInfo q{userQuery_query = mempty})
+           , [(b, stream)]
+           )
+          | b@(Haxl.BlockedFetch (QueryReq (Query q) repo stream) _) <- batch
+          ]
+    mapM_
+      (\((template, repo), batch) -> fetchBatch template repo batch)
+      (HashMap.toList batches)
   where
   ts' repo = case clientConfig_use_shards config of
     NO_SHARDS -> ts
@@ -406,21 +422,69 @@ remoteQuery (ThriftBackend config evb ts clientInfo schema) sem =
     USE_SHARDS_AND_FALLBACK ->
       thriftServiceWithDbShard ts (Just (dbShard repo)) -- TODO
 
-  fetch :: Haxl.BlockedFetch GleanQuery -> IO ()
-  fetch (Haxl.BlockedFetch (QueryReq q repo stream) rvar) =
-    runRemoteQuery evb sem repo q' (ts' repo) acc rvar
-    where
-      q' = withClientInfo clientInfo q
-      acc = if stream then Just id else Nothing
+  fetchBatch repo predicate reqs =
+    runRemoteBatchQuery evb sem repo predicate reqs (ts' repo)
 
-  withClientInfo :: UserQueryClientInfo -> Query q -> Query q
-  withClientInfo info (Query q) = Query q'
-    where
-      q' = q {
+  withClientInfo :: UserQueryClientInfo -> UserQuery -> UserQuery
+  withClientInfo info q = q {
         userQuery_client_info = Just info,
         userQuery_schema_id = schema
       }
 
+runRemoteBatchQuery
+  :: EventBaseDataplane
+  -> Semaphore
+  -> Repo
+  -> UserQuery
+  -> [(Haxl.BlockedFetch GleanQuery, Bool)]
+  -> ThriftService GleanService
+  -> IO ()
+runRemoteBatchQuery _ _ _ _ [] _ = pure ()
+runRemoteBatchQuery evb sem repo template batch ts = do
+  acquireSemaphore sem
+  let batchRequest :: UserQueryBatch
+      batchRequest = case template of
+        UserQuery{..} ->
+          UserQueryBatch
+            { userQueryBatch_predicate=userQuery_predicate
+            , userQueryBatch_queries=queries
+            , userQueryBatch_predicate_version=userQuery_predicate_version
+            , userQueryBatch_schema_version=userQuery_schema_version
+            , userQueryBatch_options=userQuery_options
+            , userQueryBatch_encodings=userQuery_encodings
+            , userQueryBatch_client_info=userQuery_client_info
+            , userQueryBatch_schema_id=userQuery_schema_id}
+      queries :: [ByteString]
+      queries = [ userQuery_query uq
+                | (Haxl.BlockedFetch (QueryReq (Query uq) _ _) _, _stream)
+                    <- batch
+                ]
+      sendCob x = forM_ batch $ \(Haxl.BlockedFetch _ rvar, _stream) ->
+                    sendCobSingle rvar x
+      recvCob _ (Left ex) =
+        forM_ batch $ \(Haxl.BlockedFetch _ rvar, _stream) ->
+          Haxl.putFailure rvar (toException ex)
+      recvCob deserialize (Right response) =
+        case deserialize response of
+          Left ex ->
+            forM_ batch $ \(Haxl.BlockedFetch _ rvar, _stream) ->
+              Haxl.putFailure rvar (toException ex)
+          Right ress -> zipWithM_ f batch ress
+      f :: (Haxl.BlockedFetch GleanQuery, Bool)
+        -> UserQueryResultsOrException
+        -> IO ()
+      f (Haxl.BlockedFetch (QueryReq q _ _) rvar, stream) res = do
+        let acc = if stream then Just id else Nothing
+        putQueryResultsOrException q res acc rvar $
+          \(q :: Query q) acc -> runRemoteQuery evb sem repo q ts acc rvar
+  runThrift evb ts $
+    dispatchCommon
+      (\p c ct s r o x -> GleanService.send_userQueryBatch p c ct s r o repo x)
+      (\x -> for_ x (const $ releaseSemaphore sem) >> sendCob x)
+      (\x y -> do
+        releaseSemaphore sem
+        recvCob (GleanService.recv_userQueryBatch x) y)
+      batchRequest
 
 runRemoteQuery
   :: forall q. (Show q, Typeable q)
