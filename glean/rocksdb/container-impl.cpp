@@ -220,6 +220,8 @@ void ContainerImpl::optimize(bool compact) {
     auto family = Family::family(i);
     auto handle = families[i];
     if (handle && family) {
+      rocksdb::FlushOptions flush_options;
+      db->Flush(flush_options, handle);
       if (!family->keep) {
         // delete the contents of this column family
         check(db->DropColumnFamily(handle));
@@ -229,8 +231,6 @@ void ContainerImpl::optimize(bool compact) {
         check(db->CreateColumnFamily(opts, family->name, &handle));
         families[i] = handle;
       }
-      rocksdb::FlushOptions flush_options;
-      db->Flush(flush_options, handle);
       if (compact) {
         const auto nlevels = db->NumberLevels(handle);
         if (nlevels != 2) {
