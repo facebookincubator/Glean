@@ -201,6 +201,7 @@ predicate StringLiteral : string
 # Context-free information about an expression argument
 type Argument =
   {
+    # the indexer may choose to include only a prefix of the string literal
     lit: StringLiteral |
     # xrefs: [XRefViaName]  # FUTURE WORK
   }
