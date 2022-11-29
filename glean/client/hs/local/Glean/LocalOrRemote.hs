@@ -45,7 +45,6 @@ module Glean.LocalOrRemote
   -- * Misc
   , validate
   , Validate(..)
-  , computeOwnership
   , dumpJsonToFile
   , finalize
   , sendJsonBatch

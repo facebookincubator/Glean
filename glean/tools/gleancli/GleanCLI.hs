@@ -96,7 +96,6 @@ plugins =
   , plugin @ValidateSchemaCommand
   , plugin @StatsCommand
   , plugin @PropertiesCommand
-  , plugin @OwnershipCommand
   , plugin @SetPropertyCommand
   , plugin @WriteSerializedInventoryCommand
   , plugin @ShellCommand
@@ -535,21 +534,6 @@ instance Plugin StatsCommand where
       predicateMatches PredicateRef{..} SourceRef{..} =
           predicateRef_name == sourceRefName &&
           maybe True (== predicateRef_version) sourceRefVersion
-
-newtype OwnershipCommand
-  = Ownership
-      { ownershipRepo :: Repo
-      }
-
-instance Plugin OwnershipCommand where
-  parseCommand =
-    commandParser "ownership" (progDesc "") $ do
-      ownershipRepo <- dbOpts
-      return Ownership{..}
-
-  runCommand _ _ backend Ownership{..} = case Glean.backendKind backend of
-    Glean.BackendEnv env -> Glean.computeOwnership env ownershipRepo
-    _ -> die 2 "Need local database to compute ownership"
 
 data SetPropertyCommand
   = SetProperty
