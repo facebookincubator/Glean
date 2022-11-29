@@ -136,15 +136,19 @@ writeDatabase env repo (WriteContent factBatch maybeOwn) latency =
               -- release the FactSet now that we're done with it, don't wait for
               -- the GC to free it.
             (\(deduped_facts, dsubst) -> do
-              deduped_batch <- FactSet.serialize deduped_facts
-              let !is = coerce . Subst.substIntervals dsubst . coerce
-                    <$> Thrift.batch_owned factBatch
-              forM_ maybeOwn $ \ownBatch ->
-                Ownership.substDefineOwnership ownBatch dsubst
-              -- And now write it do the DB, deduplicating again
-              wsubst <- withMutex (wrLock writing) $ const $
-                do_write True deduped_batch { Thrift.batch_owned = is }
-              return $ dsubst <> wsubst
+              factCount <- FactSet.factCount deduped_facts
+              if factCount == 0 then
+                return dsubst
+              else do
+                deduped_batch <- FactSet.serialize deduped_facts
+                let !is = coerce . Subst.substIntervals dsubst . coerce
+                      <$> Thrift.batch_owned factBatch
+                forM_ maybeOwn $ \ownBatch ->
+                  Ownership.substDefineOwnership ownBatch dsubst
+                -- And now write it do the DB, deduplicating again
+                wsubst <- withMutex (wrLock writing) $ const $
+                  do_write True deduped_batch { Thrift.batch_owned = is }
+                return $ dsubst <> wsubst
             )
     Nothing -> dbError repo "can't write to a read only database (1)"
   where
