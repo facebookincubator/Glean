@@ -45,6 +45,7 @@ import Data.ByteString (ByteString)
 import Data.Default
 import Data.Foldable(for_)
 import qualified Data.HashMap.Strict as HashMap
+import Data.List.Extra (chunksOf)
 import qualified Data.Text as Text
 import Data.Typeable
 import qualified Haxl.Core as Haxl
@@ -397,6 +398,12 @@ putException :: SomeException -> [Haxl.BlockedFetch a] -> IO ()
 putException ex requests =
   forM_ requests $ \(Haxl.BlockedFetch _ rvar) -> Haxl.putFailure rvar ex
 
+-- | maximum number of queries to include in a batch request
+--   the current value matches the number of cores available in query servers
+--   we could add a parameter to change this, but it would be expensive to
+--   expose it through all the clients and there's little to be gained
+maxBatchSize :: Int
+maxBatchSize = 16
 
 remoteQuery :: ThriftBackend -> Semaphore -> Haxl.PerformFetch GleanQuery
 remoteQuery (ThriftBackend config evb ts clientInfo schema) sem =
@@ -423,7 +430,10 @@ remoteQuery (ThriftBackend config evb ts clientInfo schema) sem =
       thriftServiceWithDbShard ts (Just (dbShard repo)) -- TODO
 
   fetchBatch repo predicate reqs =
-    runRemoteBatchQuery evb sem repo predicate reqs (ts' repo)
+    -- avoid overwhelming a single query server with a large batch
+    -- chunking can be removed whenever query servers learn to fuse batches
+    forM_ (chunksOf maxBatchSize reqs) $ \chunk ->
+      runRemoteBatchQuery evb sem repo predicate chunk (ts' repo)
 
   withClientInfo :: UserQueryClientInfo -> UserQuery -> UserQuery
   withClientInfo info q = q {
