@@ -24,8 +24,9 @@ module Glean.Glass.SearchRelated
 
 import Control.Monad (forM)
 import Control.Monad.Catch (MonadThrow(throwM))
-import Data.Hashable (Hashable(..))
-import Data.HashSet (HashSet)
+import Data.Hashable ( Hashable(..) )
+import Data.HashSet ( HashSet )
+import Data.HashMap.Strict ( HashMap )
 import qualified Data.HashMap.Strict as HM
 import GHC.Generics (Generic)
 import qualified Data.HashSet as HashSet
@@ -71,9 +72,10 @@ type InheritedContainer = (LocatedEntity, [LocatedEntity])
 
 -- | Flatten results into the container-level topological ordering
 -- from child to set of parents it inherits from.
-edgesToTopoMap :: [RelatedLocatedEntities] -> HM.HashMap SymbolId [SymbolId]
-edgesToTopoMap edges = HM.fromListWith (<>)
-  [ (snd (childRL e) , [snd (parentRL e)]) | e <- edges ]
+edgesToTopoMap
+  :: [RelatedLocatedEntities] -> HashMap SymbolId (HashSet SymbolId)
+edgesToTopoMap edges = HM.fromListWith HashSet.union
+  [ (snd (childRL e), HashSet.singleton (snd (parentRL e))) | e <- edges ]
 
 --
 -- Given some search parameters, find entities by relation

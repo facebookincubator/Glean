@@ -11,13 +11,17 @@ module Glean.Glass.Relations.Hack (
   , patchDescriptions
   ) where
 
-import Data.Maybe ( fromMaybe )
+import Control.Monad.State.Strict
+import Data.Maybe
 import Data.Text ( Text )
-import Data.Map.Strict ( Map )
 import Data.HashMap.Strict ( HashMap )
+import Data.HashSet ( HashSet )
+import Data.Map.Strict ( Map )
 import qualified Data.HashMap.Strict as HashMap
-import Glean.Glass.Types
+import qualified Data.HashSet as HashSet
 import qualified Data.Map.Strict as Map
+
+import Glean.Glass.Types
 import Glean.Glass.SearchRelated
 
 --
@@ -34,49 +38,121 @@ import Glean.Glass.SearchRelated
 --
 -- We need to recursively choose a winner.
 --
+
+-- | Traversal state. Record unique local names we've seen, which
+-- containers we've visited. Return mappings and a final, updated index
+data Env = Env {
+    seenNames :: !(HashMap Text SymbolId), -- names we've seen and where
+    seenContainers :: !(HashSet SymbolId), -- containers we have processed
+    mappings :: !(HashMap SymbolId SymbolId), -- accumulated overrides
+    indexedParents :: !ContainerIndex -- each container
+  }
+
+type ContainerIndex = HashMap SymbolId InheritedContainer
+
+type TopoMap = HashMap SymbolId (HashSet SymbolId)
+
+-- children of a container flattend to a name -> symid table
+toNameMap :: [LocatedEntity] -> HashMap Text SymbolId
+toNameMap = HashMap.fromList . map (\sym -> (localNameOf sym, symIdOf sym))
+
+type S a = State Env a
+
+-- initial state
+newEnv :: SymbolId -> [RelatedLocatedEntities] -> ContainerIndex -> Env
+newEnv baseContainerSym baseSyms allParents =
+  Env {
+    seenNames = toNameMap (map childRL baseSyms),
+    seenContainers = HashSet.singleton baseContainerSym,
+    mappings = mempty,
+    indexedParents = allParents
+  }
+
+getSeenNames :: S (HashMap Text SymbolId)
+getSeenNames = gets seenNames
+
+getSeenContainers :: S (HashSet SymbolId)
+getSeenContainers = gets seenContainers
+
+getContainer :: SymbolId -> S (Maybe InheritedContainer)
+getContainer sym = gets (HashMap.lookup sym . indexedParents)
+
+updateSeenNames :: HashMap Text SymbolId  -> S ()
+updateSeenNames seen = modify' $ \e@Env{..} ->
+  e { seenNames = HashMap.union seenNames seen }
+
+updateMappings :: HashMap SymbolId SymbolId -> S ()
+updateMappings more = modify' $ \e@Env{..} ->
+  e { mappings = HashMap.union mappings more }
+
+updateContainer :: SymbolId -> InheritedContainer -> S ()
+updateContainer sym contents = modify' $ \e@Env{..} ->
+  e { indexedParents = HashMap.insert sym contents indexedParents }
+
+addVisitedContainer :: SymbolId -> S ()
+addVisitedContainer sym = modify' $ \e@Env{..} ->
+  e { seenContainers = HashSet.insert sym seenContainers }
+
 difference
-  :: HashMap SymbolId [SymbolId]
+  :: TopoMap
   -> SymbolId
   -> [RelatedLocatedEntities]
   -> [InheritedContainer]
   -> ([InheritedContainer], HashMap SymbolId SymbolId)
-difference _edges _sym0 base inherited0 = partitionOverrides seen inherited0
+difference topoEdges baseSym baseChildrenSyms allParents =
+  let state0 = newEnv baseSym  baseChildrenSyms initIndex
+      final = execState (partitionOverrides topoEdges [baseSym]) state0
+  in
+    (HashMap.elems (indexedParents final), mappings final)
   where
-    seen = HashMap.fromList
-      [ (localNameOf sym, symIdOf sym)
-      | sym <- map childRL base
-      ]
+    -- index parents by sym id to quickly look up their children
+    initIndex :: HashMap SymbolId InheritedContainer
+    initIndex = HashMap.fromList
+      [ (symIdOf parent,p) | p@(parent, _) <- allParents ]
 
+-- | Breadth first reverse-topological filtering in one pass
 --
--- find all syms with multiple names (i.e. one pass, record duplicates
--- container).  in topo order, check duplicates, look up where it is defined
--- elsewhere remove from main map and shift to re-mapped.
---
-
--- | Knowing what is locally defined and what is inherited
 -- Remove overridden inherited methods, and note the relationship
 -- as a synthetic searchRelated `extends` result
-partitionOverrides
-  :: HashMap Text SymbolId -- those that have been seen
-  -> [InheritedContainer]
-  -> ([InheritedContainer], HashMap SymbolId SymbolId)
-partitionOverrides seen inherited =
-    (map fst results, HashMap.unions (map snd results))
+--
+partitionOverrides :: TopoMap -> [SymbolId] -> S ()
+partitionOverrides _ [] = pure ()
+partitionOverrides topoMap (sym:rest) = do
+  next <- case HashMap.lookup sym topoMap of -- topoographical direct parents
+    Nothing -> pure []  -- sym has no parents, done with it
+    Just parentsSet -> do
+      seen <- getSeenContainers
+      let toVisit = HashSet.toList (parentsSet `HashSet.difference` seen)
+      catMaybes <$> mapM filterOneParent toVisit
+  addVisitedContainer sym -- note this sym is done
+  partitionOverrides topoMap (rest ++ next) -- and continue
+
+--
+-- with the current environment, filter the contents of just one container
+-- (i.e. drop override mappings for anything here that's already been seen)
+-- once done, these names are now 'seen' too and locked in.
+--
+filterOneParent :: SymbolId -> S (Maybe SymbolId)
+filterOneParent parentSym = do
+  mParent <- getContainer parentSym
+  case mParent of
+    Nothing -> return Nothing -- no more to visit
+    Just (parent, children) -> do
+      seen <- getSeenNames
+      let (children', overrides) = go seen [] mempty children
+      updateSeenNames (toNameMap children')
+      updateContainer parentSym (parent, children')
+      updateMappings overrides
+      return (Just parentSym)
   where
-    results = map filterParent inherited
-
-    filterParent (parent, children) = ((parent, children'), overrides)
-      where
-        (children', overrides) = go [] HashMap.empty children
-
     -- paritiion inherited symbols into those that are and are not overridden
-    go children overrides [] = (children, overrides)
-    go children overrides (ent : ents) =
+    go _ children overrides [] = (children, overrides)
+    go seen children overrides (ent : ents) =
       case HashMap.lookup (localNameOf ent) seen of
         Just this -> -- exact name locally! shadows the inherited symbol
           let !mapping = HashMap.insert this (symIdOf ent) overrides
-          in go children mapping ents
-        Nothing -> go (ent : children) overrides ents
+          in go seen children mapping ents
+        Nothing -> go seen (ent : children) overrides ents
           -- no override, retain `ent` as an inherited child
 
 -- the raw marshalled tuple from the search result queries is a bit annoying

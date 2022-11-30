@@ -60,6 +60,7 @@ import Data.Text ( Text )
 import qualified Control.Concurrent.Async as Async
 import qualified Data.Map.Strict as Map
 import Data.HashMap.Strict ( HashMap )
+import Data.HashSet ( HashSet )
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
 
@@ -1596,7 +1597,8 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
       repo
     -- Inherited symbols: the contained children of N levels of extended parents
     inheritedNLevel :: Code.Entity -> RepoName
-        -> RepoHaxl u w ([InheritedContainer], HashMap SymbolId [SymbolId])
+        -> RepoHaxl u w
+            ([InheritedContainer], HashMap SymbolId (HashSet SymbolId))
     inheritedNLevel baseEntity repo = do
       topoEdges <- Search.searchRelatedEntities
         (fromIntegral relatedNeighborhoodRequest_inherited_limit)
@@ -1643,7 +1645,7 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
 partitionInheritedScopes
   :: Language
   -> SymbolId
-  -> HashMap SymbolId [SymbolId]
+  -> HashMap SymbolId (HashSet SymbolId)
   -> [Search.RelatedLocatedEntities]
   -> [InheritedContainer]
   -> ([InheritedContainer], HashMap SymbolId SymbolId)
