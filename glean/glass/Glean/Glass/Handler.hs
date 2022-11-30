@@ -59,6 +59,7 @@ import Data.Ord
 import Data.Text ( Text )
 import qualified Control.Concurrent.Async as Async
 import qualified Data.Map.Strict as Map
+import Data.HashMap.Strict ( HashMap )
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
 
@@ -1540,8 +1541,8 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
         b <- childrenExtends1Level (decl baseEntity) repo
         c <- parentContainsNLevel (decl baseEntity) repo
         d <- parentExtends1Level (decl baseEntity) repo
-        e0 <- inheritedNLevel (decl baseEntity) repo
-        let (e,overrides) = partitionInheritedScopes lang a e0
+        (e0, edges) <- inheritedNLevel (decl baseEntity) repo
+        let (e,overrides) = partitionInheritedScopes lang sym edges a e0
         let syms = uniqBy (comparing snd) $
               fromSearchEntity sym baseEntity :
                 concatMap flattenEdges [a,b,c,d] ++
@@ -1557,7 +1558,6 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
 
     describe repo scmRevs ((entity, entityFile, entityRange, entityName), symId)
       = mkSymbolDescription symId scmRevs repo $ CodeEntityLocation{..}
-
     childrenContains1Level :: SearchRelatedQuery u w
     childrenContains1Level baseEntity repo = Search.searchRelatedEntities
       (fromIntegral relatedNeighborhoodRequest_children_limit)
@@ -1594,24 +1594,30 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
       RelationType_Contains
       baseEntity
       repo
-
     -- Inherited symbols: the contained children of N levels of extended parents
     inheritedNLevel :: Code.Entity -> RepoName
-       -> RepoHaxl u w [InheritedContainer]
+        -> RepoHaxl u w ([InheritedContainer], HashMap SymbolId [SymbolId])
     inheritedNLevel baseEntity repo = do
-      parents <- uniq . map Search.parentRL <$> Search.searchRelatedEntities
+      topoEdges <- Search.searchRelatedEntities
         (fromIntegral relatedNeighborhoodRequest_inherited_limit)
         Search.Recursive
         RelationDirection_Parent
         RelationType_Extends
         baseEntity
         repo
-      -- for each parent, collect the inherited children by `contains`
-      mapM (childrenOf repo) parents
+      -- keep topological ordering handy
+      let symTable = Search.edgesToTopoMap topoEdges
+      -- reduce to just the unique parent symbols
+      let parents = uniq (map Search.parentRL topoEdges)
+      -- and fetch their children concurrently
+      inherited <- mapM (childrenOf repo) parents
+      return (inherited,symTable)
 
     childrenOf repo parent = do
       children <- childrenContains1Level (toEntity parent) repo
       return (parent, map Search.childRL children)
+
+    toEntity ((entity, _file, _rangespan, _name), _symId) = entity
 
     symbolIdPairs = map (\Search.RelatedLocatedEntities{..} ->
       RelatedSymbols (snd parentRL) (snd childRL))
@@ -1622,7 +1628,6 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
         inheritedSymbols_provides = map snd children
       }
 
-    toEntity ((decl, _file, _rangespan, _name), _symId) = decl
     fromSearchEntity symId SearchEntity{..} =
       ((decl, file, rangespan, name), symId)
 
@@ -1637,11 +1642,13 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
 -- according to language rules
 partitionInheritedScopes
   :: Language
+  -> SymbolId
+  -> HashMap SymbolId [SymbolId]
   -> [Search.RelatedLocatedEntities]
   -> [InheritedContainer]
   -> ([InheritedContainer], Map.Map SymbolId SymbolId)
-partitionInheritedScopes lang locals inherited = case lang of
-  Language_Hack -> Hack.difference locals inherited
+partitionInheritedScopes lang symId edges locals inherited = case lang of
+  Language_Hack -> Hack.difference edges symId locals inherited
   _ -> (inherited, mempty)
 
 -- | And once we filter out hidden inherited things, infer any missing

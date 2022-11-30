@@ -14,6 +14,7 @@ module Glean.Glass.Relations.Hack (
 import Data.Maybe ( fromMaybe )
 import Data.Text ( Text )
 import Data.Map.Strict ( Map )
+import Data.HashMap.Strict ( HashMap )
 import Glean.Glass.Types
 import qualified Data.Map.Strict as Map
 import Glean.Glass.SearchRelated
@@ -30,13 +31,24 @@ import Glean.Glass.SearchRelated
 -- This is cumbersome to do in Glass. Idealy we index the sym -> sym
 -- implict override relation, and do join in glass to remove those filtered
 --
+-- We need to recursively choose a winner.
+--
 difference
-  :: [RelatedLocatedEntities]
+  :: HashMap SymbolId [SymbolId]
+  -> SymbolId
+  -> [RelatedLocatedEntities]
   -> [InheritedContainer]
   -> ([InheritedContainer], Map SymbolId SymbolId)
-difference locals inherited = partitionOverrides localNames inherited
+difference _edges _sym0 base inherited0 =
+    partitionOverrides baseNames inherited0
   where
-    localNames = Map.fromList [ (nameOf ent, ent) | ent <- map childRL locals ]
+    baseNames = Map.fromList [ (nameOf ent, ent) | ent <- map childRL base ]
+
+--
+-- find all syms with multiple names (i.e. one pass, record duplicates
+-- container).  in topo order, check duplicates, look up where it is defined
+-- elsewhere remove from main map and shift to re-mapped.
+--
 
 -- | Knowing what is locally defined and what is inherited
 -- Remove overridden inherited methods, and note the relationship
