@@ -28,18 +28,22 @@ module Glean.RTS.Foreign.Ownership
   , getOwnershipSet
   , OwnershipStats(..)
   , getOwnershipStats
+  , showOwnershipStats
   ) where
 
 import Control.Exception
 import Control.Monad
 import Data.Coerce
 import qualified Data.Vector.Storable as VS
+import Data.Text (Text)
 import Foreign hiding (with)
 import Foreign.C
+import TextShow
 
 import Foreign.CPP.HsStruct
 import Foreign.CPP.Marshallable
 import Util.FFI
+import Util.PrettyPrint
 
 import Glean.FFI
 import Glean.RTS.Foreign.Inventory (Inventory)
@@ -205,6 +209,15 @@ data OwnershipStats = OwnershipStats
   , numOwnerEntries :: Word64
   , ownersSize :: Word64
   }
+
+showOwnershipStats :: OwnershipStats -> Text
+showOwnershipStats OwnershipStats{..} =
+  showt numUnits <> " units (" <>
+    renderBytes (fromIntegral unitsSize) <> "), " <>
+  showt numSets <> " sets (" <>
+    renderBytes (fromIntegral setsSize) <> "), " <>
+  showt numOwnerEntries <> " owners (" <>
+    renderBytes (fromIntegral ownersSize) <> ")"
 
 instance Storable OwnershipStats where
   peek p = do

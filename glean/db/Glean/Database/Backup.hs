@@ -31,6 +31,7 @@ import qualified Data.Map as Map
 import Data.Maybe
 import Data.Ord
 import Data.Text (Text)
+import qualified Data.Text as Text
 import Data.Typeable (Typeable)
 import GHC.Generics hiding (Meta)
 import System.Directory
@@ -57,7 +58,7 @@ import Glean.Database.Open (withOpenDatabase, schemaUpdated)
 import Glean.Database.Types
 import Glean.Database.Schema
 import Glean.Logger
-import Glean.RTS.Foreign.Ownership (getOwnershipStats)
+import Glean.RTS.Foreign.Ownership (getOwnershipStats, showOwnershipStats)
 import Glean.ServerConfig.Types (DatabaseBackupPolicy(..))
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Internal.Types as Thrift
@@ -332,6 +333,10 @@ doFinalize env@Env{..} repo =
 
     config <- Observed.get envServerConfig
     withOpenDatabase env repo $ \OpenDB{..} -> do
+      maybeOwnership <- readTVarIO odbOwnership
+      forM_ maybeOwnership $ \ownership -> do
+        stats <- getOwnershipStats ownership
+        logInfo $ "final ownership: " <> Text.unpack (showOwnershipStats stats)
       let compact = ServerConfig.config_compact_on_completion config
       say logInfo $ if compact then "optimizing(compacting)" else "optimizing"
       Storage.optimize odbHandle compact

@@ -21,6 +21,7 @@ import System.Timeout
 
 import Util.Control.Exception
 import Util.Defer
+import Util.Log.Text
 
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Open
@@ -28,6 +29,7 @@ import Glean.Database.Schema
 import qualified Glean.Database.Storage as Storage
 import Glean.Database.Types
 import Glean.Internal.Types as Thrift
+import Glean.RTS.Foreign.Ownership
 import Glean.Types as Thrift
 import qualified Glean.Util.Warden as Warden
 import Glean.Util.Mutex
@@ -39,6 +41,10 @@ syncCompletePredicates env repo =
     own <- Storage.computeOwnership odbHandle
       (schemaInventory odbSchema)
     withWriteLock odbWriting $ Storage.storeOwnership odbHandle own
+    maybeOwnership <- readTVarIO odbOwnership
+    forM_ maybeOwnership $ \ownership -> do
+      stats <- getOwnershipStats ownership
+      logInfo $ "ownership propagation complete: " <> showOwnershipStats stats
   where
   withWriteLock Nothing f = f
     -- if there's no write lock, we must be in the finalization
