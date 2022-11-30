@@ -12,8 +12,10 @@ module Glean.Glass.Relations.Hack (
   ) where
 
 import Control.Monad.State.Strict
+import Control.Monad.Extra (whenJust)
 import Data.Maybe
 import Data.Text ( Text )
+import Data.List ( sortOn )
 import Data.HashMap.Strict ( HashMap )
 import Data.HashSet ( HashSet )
 import Data.Map.Strict ( Map )
@@ -43,7 +45,7 @@ import Glean.Glass.SearchRelated
 -- containers we've visited. Return mappings and a final, updated index
 data Env = Env {
     seenNames :: !(HashMap Text SymbolId), -- names we've seen and where
-    seenContainers :: !(HashSet SymbolId), -- containers we have processed
+    visitedContainers :: !(HashSet SymbolId), -- containers we have processed
     mappings :: !(HashMap SymbolId SymbolId), -- accumulated overrides
     indexedParents :: !ContainerIndex -- each container
   }
@@ -51,6 +53,7 @@ data Env = Env {
 type ContainerIndex = HashMap SymbolId InheritedContainer
 
 type TopoMap = HashMap SymbolId (HashSet SymbolId)
+type TopoKinds = HashMap SymbolId SymbolKind
 
 -- children of a container flattend to a name -> symid table
 toNameMap :: [LocatedEntity] -> HashMap Text SymbolId
@@ -59,11 +62,11 @@ toNameMap = HashMap.fromList . map (\sym -> (localNameOf sym, symIdOf sym))
 type S a = State Env a
 
 -- initial state
-newEnv :: SymbolId -> [RelatedLocatedEntities] -> ContainerIndex -> Env
-newEnv baseContainerSym baseSyms allParents =
+newEnv :: HashMap Text SymbolId -> ContainerIndex -> Env
+newEnv baseNames allParents =
   Env {
-    seenNames = toNameMap (map childRL baseSyms),
-    seenContainers = HashSet.singleton baseContainerSym,
+    seenNames = baseNames,
+    visitedContainers = mempty,
     mappings = mempty,
     indexedParents = allParents
   }
@@ -71,11 +74,8 @@ newEnv baseContainerSym baseSyms allParents =
 getSeenNames :: S (HashMap Text SymbolId)
 getSeenNames = gets seenNames
 
-getSeenContainers :: S (HashSet SymbolId)
-getSeenContainers = gets seenContainers
-
-getContainer :: SymbolId -> S (Maybe InheritedContainer)
-getContainer sym = gets (HashMap.lookup sym . indexedParents)
+getContainerContents :: SymbolId -> S (Maybe InheritedContainer)
+getContainerContents sym = gets (HashMap.lookup sym . indexedParents)
 
 updateSeenNames :: HashMap Text SymbolId  -> S ()
 updateSeenNames seen = modify' $ \e@Env{..} ->
@@ -85,24 +85,27 @@ updateMappings :: HashMap SymbolId SymbolId -> S ()
 updateMappings more = modify' $ \e@Env{..} ->
   e { mappings = HashMap.union mappings more }
 
-updateContainer :: SymbolId -> InheritedContainer -> S ()
-updateContainer sym contents = modify' $ \e@Env{..} ->
+updateContainerContents :: SymbolId -> InheritedContainer -> S ()
+updateContainerContents sym contents = modify' $ \e@Env{..} ->
   e { indexedParents = HashMap.insert sym contents indexedParents }
 
-addVisitedContainer :: SymbolId -> S ()
-addVisitedContainer sym = modify' $ \e@Env{..} ->
-  e { seenContainers = HashSet.insert sym seenContainers }
+getVisitedContainers :: S (HashSet SymbolId)
+getVisitedContainers = gets visitedContainers
+
+updateVisitedContainers :: SymbolId -> S ()
+updateVisitedContainers sym = modify' $ \e@Env{..} ->
+  e { visitedContainers = HashSet.insert sym visitedContainers }
 
 difference
   :: TopoMap
-  -> HashMap SymbolId SymbolKind
+  -> TopoKinds
   -> SymbolId
   -> [RelatedLocatedEntities]
   -> [InheritedContainer]
   -> ([InheritedContainer], HashMap SymbolId SymbolId)
-difference topoEdges _topoKinds baseSym baseChildrenSyms allParents =
-  let state0 = newEnv baseSym  baseChildrenSyms initIndex
-      final = execState (partitionOverrides topoEdges [baseSym]) state0
+difference topoEdges topoKinds baseSym baseSymNames allParents =
+  let zero = newEnv (toNameMap (map childRL baseSymNames)) initIndex
+      final = execState (partitionOverrides topoEdges topoKinds [baseSym]) zero
   in
     (HashMap.elems (indexedParents final), mappings final)
   where
@@ -116,17 +119,25 @@ difference topoEdges _topoKinds baseSym baseChildrenSyms allParents =
 -- Remove overridden inherited methods, and note the relationship
 -- as a synthetic searchRelated `extends` result
 --
-partitionOverrides :: TopoMap -> [SymbolId] -> S ()
-partitionOverrides _ [] = pure ()
-partitionOverrides topoMap (sym:rest) = do
-  next <- case HashMap.lookup sym topoMap of -- topoographical direct parents
-    Nothing -> pure []  -- sym has no parents, done with it
-    Just parentsSet -> do
-      seen <- getSeenContainers
-      let toVisit = HashSet.toList (parentsSet `HashSet.difference` seen)
-      catMaybes <$> mapM filterOneParent toVisit
-  addVisitedContainer sym -- note this sym is done
-  partitionOverrides topoMap (rest ++ next) -- and continue
+partitionOverrides :: TopoMap -> TopoKinds -> [SymbolId] -> S ()
+partitionOverrides _ _ [] = pure ()
+partitionOverrides topoMap kinds syms = go syms
+  where
+    go [] = pure () -- done
+    go (sym:rest) = do
+      -- add these symbols to confirmed names
+      visited <- (sym `HashSet.member`) <$> getVisitedContainers
+      when (not visited) $ do -- guarded for base case
+        mContents <- getContainerContents sym
+        whenJust (snd <$> mContents) $ updateSeenNames . toNameMap
+      -- then visit parents and filter
+      next <- case HashMap.lookup sym topoMap of -- first level of parents
+        Nothing -> pure []  -- sym has no parents, done with it
+        Just parentsSet -> do
+          let toVisit = sortOn (kindOrder kinds) (HashSet.toList parentsSet)
+          catMaybes <$> mapM filterOneParent toVisit -- then filter each parent
+      updateVisitedContainers sym -- note this sym is done
+      go (next ++ rest) -- and continue dfs
 
 --
 -- with the current environment, filter the contents of just one container
@@ -135,26 +146,35 @@ partitionOverrides topoMap (sym:rest) = do
 --
 filterOneParent :: SymbolId -> S (Maybe SymbolId)
 filterOneParent parentSym = do
-  mParent <- getContainer parentSym
-  case mParent of
+  mContents <- getContainerContents parentSym
+  case mContents of
     Nothing -> return Nothing -- no more to visit
     Just (parent, children) -> do
       seen <- getSeenNames
       let (children', overrides) = go seen [] mempty children
-      updateSeenNames (toNameMap children')
-      updateContainer parentSym (parent, children')
+      updateContainerContents parentSym (parent, children')
       updateMappings overrides
-      return (Just parentSym)
+      return (Just parentSym) -- to visit next
   where
-    -- paritiion inherited symbols into those that are and are not overridden
+    -- partition inherited symbols into those that are and are not overridden
     go _ children overrides [] = (children, overrides)
     go seen children overrides (ent : ents) =
       case HashMap.lookup (localNameOf ent) seen of
-        Just this -> -- exact name locally! shadows the inherited symbol
-          let !mapping = HashMap.insert this (symIdOf ent) overrides
+        -- both seen already and not seen in a prior visit to this symbol
+        Just thisSymId | thisSymId /= symIdOf ent ->
+          let !mapping = HashMap.insert thisSymId (symIdOf ent) overrides
           in go seen children mapping ents
-        Nothing -> go seen (ent : children) overrides ents
-          -- no override, retain `ent` as an inherited child
+        _ -> go seen (ent : children) overrides ents
+          -- no override, retain `ent` as a visible symbol
+
+-- | We need to visit classes before traits (and traits before interfaces)
+kindOrder :: TopoKinds -> SymbolId -> Int
+kindOrder kinds sym = case HashMap.lookup sym kinds of
+  Just SymbolKind_Class_ -> 0
+  Just SymbolKind_Trait -> 1
+  Just SymbolKind_Interface -> 2
+  Just{} -> 3
+  Nothing -> 100
 
 -- the raw marshalled tuple from the search result queries is a bit annoying
 localNameOf :: LocatedEntity -> Text
