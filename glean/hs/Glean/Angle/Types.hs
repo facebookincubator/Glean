@@ -719,7 +719,7 @@ instance (Pretty p, Pretty t) => Pretty (SourcePat_ s p t) where
   pretty (ByteArray _ b) = pretty (show b)
   pretty (Array _ pats) = brackets $ hsep (punctuate "," (map pretty pats))
   pretty (ArrayPrefix _ pats) =
-    encloseSep "[" "..]" "," (map pretty $ toList pats)
+    encloseSep "[" ", ..]" "," (map pretty $ toList pats)
   pretty (Tuple _ pats) = braces $ hsep (punctuate "," (map pretty pats))
   pretty (Struct _ fs) = cat [ nest 2 $ cat [ "{", fields fs], "}"]
     where
