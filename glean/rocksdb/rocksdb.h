@@ -63,7 +63,7 @@ struct Container {
   /// The base Ownership passed in (if any) must not be destructed before the
   /// Database.
   virtual std::unique_ptr<Database>
-  openDatabase(Id start, rts::Ownership *baseOwnership, int32_t version) && = 0;
+  openDatabase(Id start, rts::UsetId first_unit_id, int32_t version) && = 0;
 };
 
 enum class Mode {

@@ -18,7 +18,7 @@ using namespace rts;
 
 std::vector<size_t> DatabaseImpl::loadOwnershipUnitCounters() {
   container_.requireOpen();
-  std::vector<size_t> result(firstUnitId());
+  std::vector<size_t> result;
 
   std::unique_ptr<rocksdb::Iterator> iter(container_.db->NewIterator(
       rocksdb::ReadOptions(), container_.family(Family::ownershipRaw)));
@@ -39,6 +39,7 @@ std::vector<size_t> DatabaseImpl::loadOwnershipUnitCounters() {
     }
   }
 
+  assert(result.size() == next_uset_id - first_unit_id);
   return result;
 }
 
@@ -206,7 +207,7 @@ folly::Optional<uint32_t> DatabaseImpl::getUnitId(folly::ByteRange unit) {
     assert(val.size() == sizeof(uint32_t));
     return folly::loadUnaligned<uint32_t>(val.data());
   } else {
-    return base_ownership ? base_ownership->getUnitId(unit) : folly::none;
+    return folly::none;
   }
 }
 
@@ -241,12 +242,12 @@ void DatabaseImpl::addOwnership(const std::vector<OwnershipSet>& ownership) {
     auto res = getUnitId(set.unit);
     if (res.hasValue()) {
       unit_id = *res;
-      if (unit_id >= ownership_unit_counters.size()) {
+      if (unit_id >= first_unit_id + ownership_unit_counters.size()) {
         rts::error("inconsistent unit id {}", unit_id);
       }
       touched.push_back(unit_id);
     } else {
-      unit_id = ownership_unit_counters.size() + new_count;
+      unit_id = first_unit_id + ownership_unit_counters.size() + new_count;
       check(batch.Put(
           container_.family(Family::ownershipUnits),
           slice(set.unit),
@@ -261,8 +262,8 @@ void DatabaseImpl::addOwnership(const std::vector<OwnershipSet>& ownership) {
     binary::Output key;
     key.nat(unit_id);
     key.nat(
-        unit_id < ownership_unit_counters.size()
-            ? ownership_unit_counters[unit_id]
+        unit_id < first_unit_id + ownership_unit_counters.size()
+            ? ownership_unit_counters[unit_id - first_unit_id]
             : 0);
     check(batch.Put(
         container_.family(Family::ownershipRaw),
@@ -273,21 +274,21 @@ void DatabaseImpl::addOwnership(const std::vector<OwnershipSet>& ownership) {
   }
 
   if (new_count > 0) {
-    next_unit_id += new_count;
+    next_uset_id += new_count;
     check(batch.Put(
       container_.family(Family::admin),
       toSlice(AdminId::NEXT_UNIT_ID),
-      toSlice(next_unit_id)));
+      toSlice(next_uset_id)));
   }
 
   check(container_.db->Write(container_.writeOptions, &batch));
 
   for (auto i : touched) {
-    assert(i < ownership_unit_counters.size());
-    ++ownership_unit_counters[i];
+    assert(i < first_unit_id + ownership_unit_counters.size());
+    ++ownership_unit_counters[i - first_unit_id];
   }
   ownership_unit_counters.insert(ownership_unit_counters.end(), new_count, 1);
-  assert(next_unit_id == ownership_unit_counters.size());
+  assert(next_uset_id == ownership_unit_counters.size() + first_unit_id);
 }
 
 std::unique_ptr<rts::DerivedFactOwnershipIterator>
@@ -373,6 +374,8 @@ void DatabaseImpl::storeOwnership(ComputedOwnership& ownership) {
     rocksdb::WriteBatch batch;
 
     uint32_t id = ownership.firstId_;
+    assert(id >= next_uset_id);
+
     for (auto& exp : ownership.sets_) {
       if ((id % 1000000) == 0) {
         VLOG(1) << "storeOwnership: " << id;
@@ -383,10 +386,18 @@ void DatabaseImpl::storeOwnership(ComputedOwnership& ownership) {
     VLOG(1) << "storeOwnership: writing sets (" << ownership.sets_.size()
             << ")";
     check(container_.db->Write(container_.writeOptions, &batch));
+
+    next_uset_id = ownership.firstId_ + ownership.sets_.size();
+    check(batch.Put(
+      container_.family(Family::admin),
+      toSlice(AdminId::NEXT_UNIT_ID),
+      toSlice(next_uset_id)));
   }
 
   // ToDo: just update usets_, don't load the whole thing
   usets_ = loadOwnershipSets();
+  assert(usets_->size() == 0 || usets_->getNextId() == next_uset_id);
+  // TODO: better not add new units after storing sets, we should fail if that happens
 
   if (ownership.facts_.size() > 0) {
     auto t = makeAutoTimer("storeOwnership(facts)");
@@ -413,7 +424,7 @@ struct StoredOwnership : Ownership {
   explicit StoredOwnership(DatabaseImpl* db) : db_(db) {}
 
   UsetId nextSetId() override {
-    return db_->usets_->getNextId();
+    return db_->next_uset_id;
   }
 
   UsetId lookupSet(Uset* uset) override {
@@ -459,7 +470,7 @@ struct StoredOwnership : Ownership {
   }
 
   UnitId nextUnitId() override {
-    return db_->next_unit_id;
+    return db_->next_uset_id;
   }
 
   OwnershipStats getStats() override {
@@ -474,7 +485,7 @@ struct StoredOwnership : Ownership {
               &range, 1, &owners_size));
 
     OwnershipStats stats;
-    stats.num_units = db_->next_unit_id - db_->firstUnitId(),
+    stats.num_units = db_->next_uset_id - db_->first_unit_id,
     stats.units_size = units_size;
     if (db_->usets_) {
       stats.num_sets = db_->usets_->size();
@@ -669,6 +680,8 @@ void DatabaseImpl::addDefineOwnership(DefineOwnership& def) {
       auto q = usets_->add(std::move(newUset));
       if (p == q) {
         usets_->promote(p);
+        assert(next_uset_id == p->id);
+        next_uset_id++;
         auto ownerset = p->toEliasFano();
         putOwnerSet(container_, batch, p->id, ownerset.op, ownerset.set);
         ownerset.set.free();

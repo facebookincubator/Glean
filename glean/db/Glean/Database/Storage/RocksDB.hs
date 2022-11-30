@@ -111,12 +111,12 @@ instance Storage RocksDB where
             (fromIntegral (fromEnum (rocksCacheIndexAndFilterBlocks rocks)))
             cache_ptr)
         $ \container -> do
-      fp <- mask_ $
-        maybe ($ nullPtr) with ownership $ \ownership_ptr -> do
-          p <- invoke $
-            glean_rocksdb_container_open_database container start
-              ownership_ptr version
-          newForeignPtr glean_rocksdb_database_free p
+      fp <- mask_ $ do
+        first_unit_id <- maybe (return firstUsetId) nextUsetId ownership
+        p <- invoke $
+          glean_rocksdb_container_open_database container start
+            first_unit_id version
+        newForeignPtr glean_rocksdb_database_free p
       return (Database fp repo)
     where
       path = containerPath rocks repo
@@ -327,7 +327,7 @@ foreign import ccall safe glean_rocksdb_container_backup
 foreign import ccall unsafe glean_rocksdb_container_open_database
   :: Container
   -> Fid
-  -> Ptr Ownership
+  -> UsetId
   -> Int64
   -> Ptr (Ptr (Database RocksDB))
   -> IO CString

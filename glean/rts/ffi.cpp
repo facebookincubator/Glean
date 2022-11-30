@@ -919,6 +919,12 @@ void glean_computed_ownership_free(ComputedOwnership *own) {
   ffi::free_(own);
 }
 
+const char* glean_ownership_next_set_id(
+    Ownership* ownership,
+    uint32_t* result) {
+  return ffi::wrap([=] { *result = ownership->nextSetId(); });
+}
+
 const char *glean_get_fact_owner(
   Lookup *lookup,
   glean_fact_id_t fact,

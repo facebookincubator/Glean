@@ -74,9 +74,9 @@ T getAdminValue(
 DatabaseImpl::DatabaseImpl(
     ContainerImpl c,
     Id start,
-    rts::Ownership* baseOwnership,
+    UsetId first_unit_id_,
     int64_t version)
-    : container_(std::move(c)), base_ownership(baseOwnership) {
+    : container_(std::move(c)) {
   starting_id = Id::fromWord(getAdminValue(
       container_,
       AdminId::STARTING_ID,
@@ -95,10 +95,21 @@ DatabaseImpl::DatabaseImpl(
         }
       }));
 
-  next_unit_id = getAdminValue(
+  first_unit_id = getAdminValue(
+      container_,
+      AdminId::FIRST_UNIT_ID,
+      first_unit_id_,
+      container_.mode == Mode::Create,
+      [] {
+        // TODO: later this should be an error, for now we have to be
+        // able to open old DBs.
+      });
+  VLOG(1) << folly::sformat("first_unit_id: {}", first_unit_id);
+
+  next_uset_id = getAdminValue(
       container_,
       AdminId::NEXT_UNIT_ID,
-      firstUnitId(),
+      first_unit_id,
       container_.mode == Mode::Create,
       [mode = container_.mode] {
         // TODO: later this should be an error, for now we have to be

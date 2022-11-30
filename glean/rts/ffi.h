@@ -536,6 +536,11 @@ void glean_ownership_free(Ownership *own);
 
 void glean_computed_ownership_free(ComputedOwnership *own);
 
+const char *glean_ownership_next_set_id(
+  Ownership *ownership,
+  uint32_t *result
+);
+
 const char *glean_get_ownership_set(
   Ownership *ownership,
   uint32_t uset_id,

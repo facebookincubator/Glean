@@ -33,8 +33,8 @@ struct DatabaseImpl final : Database {
   ContainerImpl container_;
   Id starting_id;
   Id next_id;
-  rts::Ownership* base_ownership;
-  rts::UnitId next_unit_id;
+  rts::UnitId first_unit_id;
+  rts::UsetId next_uset_id; // also next UnitId, since they share a namespace
   AtomicPredicateStats stats_;
   std::vector<size_t> ownership_unit_counters;
   folly::F14FastMap<uint64_t, size_t> ownership_derived_counters;
@@ -46,7 +46,7 @@ struct DatabaseImpl final : Database {
   explicit DatabaseImpl(
       ContainerImpl c,
       Id start,
-      rts::Ownership* baseOwnership,
+      rts::UsetId first_unit_id,
       int64_t version);
 
   DatabaseImpl(const DatabaseImpl&) = delete;
@@ -106,10 +106,6 @@ struct DatabaseImpl final : Database {
   std::unique_ptr<rts::Usets> loadOwnershipSets();
 
   /// Ownership
-
-  rts::UnitId firstUnitId() {
-    return base_ownership ? base_ownership->nextUnitId() : 0;
-  }
 
   folly::Optional<uint32_t> getUnitId(folly::ByteRange unit) override;
   folly::Optional<std::string> getUnit(uint32_t unit_id) override;

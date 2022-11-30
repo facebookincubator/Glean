@@ -99,7 +99,7 @@ struct ContainerImpl final : Container {
 
   void backup(const std::string& path) override;
   std::unique_ptr<Database> openDatabase(
-      Id start, rts::Ownership *baseOwnership, int32_t version) && override;
+      Id start, rts::UsetId first_unit_id, int32_t version) && override;
 
   void writeData(folly::ByteRange key, folly::ByteRange value) override;
 

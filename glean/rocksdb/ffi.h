@@ -93,7 +93,7 @@ void glean_rocksdb_container_free(
 const char *glean_rocksdb_container_open_database(
   Container *container,
   glean_fact_id_t start,
-  Ownership *ownership,
+  uint32_t first_unit_id,
   int64_t version,
   Database **db
 );

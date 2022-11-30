@@ -11,6 +11,7 @@ module Glean.RTS.Foreign.Ownership
   , compute
   , UnitId(..)
   , UsetId(..)
+  , firstUsetId
   , Ownership
   , ComputedOwnership
   , Slice
@@ -29,6 +30,7 @@ module Glean.RTS.Foreign.Ownership
   , OwnershipStats(..)
   , getOwnershipStats
   , showOwnershipStats
+  , nextUsetId
   ) where
 
 import Control.Exception
@@ -64,6 +66,9 @@ newtype UnitId = UnitId Word32
 -- | Id of an ownership set
 newtype UsetId = UsetId Word32
   deriving (Storable)
+
+firstUsetId :: UsetId
+firstUsetId = UsetId 0
 
 newtype Ownership = Ownership (ForeignPtr Ownership)
 
@@ -237,6 +242,11 @@ getOwnershipStats ownership =
   with ownership $ \ownership_ptr -> do
     invoke $ glean_get_ownership_stats ownership_ptr
 
+nextUsetId :: Ownership -> IO UsetId
+nextUsetId ownership =
+  with ownership $ \ownership_ptr -> do
+    invoke $ glean_ownership_next_set_id ownership_ptr
+
 foreign import ccall unsafe glean_get_ownership_stats
   :: Ptr Ownership
   -> Ptr OwnershipStats
@@ -320,3 +330,6 @@ foreign import ccall unsafe glean_make_sliced
 
 foreign import ccall unsafe
    glean_sliced_free :: Ptr Lookup -> IO ()
+
+foreign import ccall unsafe
+   glean_ownership_next_set_id :: Ptr Ownership -> Ptr UsetId -> IO CString

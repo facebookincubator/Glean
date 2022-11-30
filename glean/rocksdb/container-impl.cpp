@@ -244,10 +244,10 @@ void ContainerImpl::optimize(bool compact) {
 
 std::unique_ptr<Database> ContainerImpl::openDatabase(
     Id start,
-    rts::Ownership *baseOwnership,
+    rts::UsetId first_unit_id,
     int32_t version) && {
   return std::make_unique<DatabaseImpl>(
-      std::move(*this), start, baseOwnership, version);
+      std::move(*this), start, first_unit_id, version);
 }
 
 namespace {
