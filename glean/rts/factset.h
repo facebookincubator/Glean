@@ -191,7 +191,7 @@ private:
 
     /// Return (approximately) the total number of bytes allocated by the
     /// FactSet. This currently does *not* include the memory allocated by seek
-    /// indices. 
+    /// indices.
     size_t allocatedMemory() const noexcept;
 
   private:
@@ -295,6 +295,8 @@ public:
     size_t prefix_size,
     Id from,
     Id to) override;
+
+  UsetId getOwner(Id) override { return INVALID_USET; }
 
   // Define implementation
 

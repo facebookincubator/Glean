@@ -28,10 +28,6 @@ struct DefineOwnership {
   // record that a fact was derived from some other facts
   void derivedFrom(Id id, const std::set<UsetId>& deps);
 
-  UsetId getOwner(Id id) {
-    return ownership_->getOwner(id);
-  }
-
   // Apply a substitution to the Ids
   void subst(const Substitution& subst);
 

@@ -47,9 +47,6 @@ struct OwnershipStats {
 struct Ownership {
   virtual ~Ownership() {}
 
-  // Return the ownership expression for a fact Id
-  virtual UsetId getOwner(Id id) = 0;
-
   // Iterate through all the ownership expressions
   virtual std::unique_ptr<OwnershipSetIterator> getSetIterator() = 0;
 

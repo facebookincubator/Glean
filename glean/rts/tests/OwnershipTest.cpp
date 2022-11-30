@@ -33,7 +33,7 @@ struct TestOwnership final : Ownership {
     return firstId_ + sets_.size();
   }
 
-  UsetId getOwner(Id id) override {
+  UsetId getOwner(Id id) {
     // facts_.size() might be smaller than the total number of facts
     // if there were some unowned facts at the end, so we need a
     // bounds check.

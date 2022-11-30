@@ -110,6 +110,18 @@ struct StackedBase : Iface {
     }
   }
 
+  UsetId getOwner(Id id) {
+    // The stacked DB may specify the owner for a fact in the base DB
+    // due to propagation of ownership from facts in the stacked DB,
+    // so we have to check the stacked DB first.
+    auto set = stacked->getOwner(id);
+    if (set != INVALID_USET) {
+      return set;
+    } else {
+      return base->getOwner(id);
+    }
+  }
+
 protected:
   Lookup *base;
   Iface *stacked;

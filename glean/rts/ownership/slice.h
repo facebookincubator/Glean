@@ -55,12 +55,12 @@ std::unique_ptr<Slice> slice(
 struct Sliced : Lookup {
   ~Sliced() override {}
 
-  Sliced(Lookup *base, Ownership *ownership, Slice *slice)
-      : base_(base), slice_(slice), ownership_(ownership) {}
+  Sliced(Lookup *base, Slice *slice)
+      : base_(base), slice_(slice) {}
 
   Id idByKey(Pid type, folly::ByteRange key) override {
     if (auto id = base_->idByKey(type, key)) {
-      if (slice_->visible(ownership_->getOwner(id))) {
+      if (slice_->visible(base_->getOwner(id))) {
         return id;
       }
     }
@@ -96,7 +96,7 @@ struct Sliced : Lookup {
     return FactIterator::filter(
         base_->enumerate(from,upto),
         [&](Id id) {
-          return slice_->visible(ownership_->getOwner(id));
+          return slice_->visible(base_->getOwner(id));
         });
   }
 
@@ -106,7 +106,7 @@ struct Sliced : Lookup {
     return FactIterator::filter(
         base_->enumerate(from,downto),
         [&](Id id) {
-          return slice_->visible(ownership_->getOwner(id));
+          return slice_->visible(base_->getOwner(id));
         });
   }
 
@@ -117,7 +117,7 @@ struct Sliced : Lookup {
     return FactIterator::filter(
         base_->seek(type, start, prefix_size),
         [&](Id id) {
-          return slice_->visible(ownership_->getOwner(id));
+          return slice_->visible(base_->getOwner(id));
         });
   }
 
@@ -130,14 +130,19 @@ struct Sliced : Lookup {
     return FactIterator::filter(
         base_->seekWithinSection(type, start, prefix_size, from, to),
         [&](Id id) {
-          return slice_->visible(ownership_->getOwner(id));
+          return slice_->visible(base_->getOwner(id));
         });
+  }
+
+  UsetId getOwner(Id id) override {
+    // Like factById(), we can assume that if the caller has an Id then the Id
+    // is visible, so we don't have to check
+    return base_->getOwner(id);
   }
 
  private:
   Lookup *base_;
   Slice *slice_;
-  Ownership *ownership_;
 };
 
 }

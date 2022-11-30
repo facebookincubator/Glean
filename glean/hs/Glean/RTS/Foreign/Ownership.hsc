@@ -104,19 +104,18 @@ slice ownership units exclude =
     (fromIntegral unit_arr_size)
     (fromIntegral (fromEnum exclude))
 
-data Sliced base = Sliced Ownership Slice base
+data Sliced base = Sliced Slice base
 
-sliced :: CanLookup base => Ownership -> Slice -> base -> Sliced base
+sliced :: CanLookup base => Slice -> base -> Sliced base
 sliced = Sliced
 
 instance CanLookup base => CanLookup (Sliced base) where
-  lookupName (Sliced _ _ base) = "sliced:" <> lookupName base
-  withLookup (Sliced ownership slice base) f =
+  lookupName (Sliced _ base) = "sliced:" <> lookupName base
+  withLookup (Sliced slice base) f =
     withLookup base $ \p_base ->
-    with ownership $ \ownership_ptr ->
     with slice $ \slice_ptr ->
     bracket
-      (invoke $ glean_make_sliced p_base ownership_ptr slice_ptr)
+      (invoke $ glean_make_sliced p_base slice_ptr)
       glean_sliced_free
       f
 
@@ -170,10 +169,10 @@ defineOwnershipSortByOwner define count =
 #include <glean/rts/ownership/uset.h>
 #include <glean/rts/ownership.h>
 
-getFactOwner :: Ownership -> Fid -> IO (Maybe UsetId)
-getFactOwner ownership (Fid fid) =
-  with ownership $ \ownership_ptr -> do
-    usetId <- invoke $ glean_get_fact_owner ownership_ptr (fromIntegral fid)
+getFactOwner :: CanLookup a => a -> Fid -> IO (Maybe UsetId)
+getFactOwner lookup (Fid fid) =
+  withLookup lookup $ \p_lookup -> do
+    usetId <- invoke $ glean_get_fact_owner p_lookup (fromIntegral fid)
     if usetId == (#const facebook::glean::rts::INVALID_USET)
       then return Nothing
       else return (Just (UsetId usetId))
@@ -265,7 +264,7 @@ foreign import ccall safe glean_ownership_compute
   -> IO CString
 
 foreign import ccall unsafe glean_get_fact_owner
-  :: Ptr Ownership
+  :: Ptr Lookup
   -> Word64
   -> Ptr Word32
   -> IO CString
@@ -302,7 +301,6 @@ foreign import ccall unsafe "&glean_slice_free"
 
 foreign import ccall unsafe glean_make_sliced
   :: Ptr Lookup
-  -> Ptr Ownership
   -> Ptr Slice
   -> Ptr (Ptr Lookup)
   -> IO CString

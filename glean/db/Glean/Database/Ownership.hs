@@ -39,7 +39,7 @@ factOwnership
   -> Fid
   -> IO (Maybe OwnerExpr)
 factOwnership env repo fid =
-  withOpenDatabase env repo $ \OpenDB{..} -> do
+  readDatabase env repo $ \OpenDB{..} lookup -> do
     maybeOwnership <- readTVarIO odbOwnership
     flip (maybe (return Nothing)) maybeOwnership $ \ownership -> do
       let
@@ -60,5 +60,5 @@ factOwnership env repo fid =
                     And -> return (AndOwners contents)
                     Or -> return (OrOwners contents)
 
-      maybeSet <- getFactOwner ownership fid
+      maybeSet <- getFactOwner lookup fid
       mapM unpackSet maybeSet

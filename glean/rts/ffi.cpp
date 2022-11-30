@@ -920,11 +920,11 @@ void glean_computed_ownership_free(ComputedOwnership *own) {
 }
 
 const char *glean_get_fact_owner(
-  Ownership *ownership,
+  Lookup *lookup,
   glean_fact_id_t fact,
   uint32_t *uset_id) {
   return ffi::wrap([=] {
-    *uset_id = ownership->getOwner(Id::fromWord(fact));
+    *uset_id = lookup->getOwner(Id::fromWord(fact));
   });
 }
 
@@ -968,11 +968,10 @@ void glean_slice_free(Slice *slice) {
 
 const char *glean_make_sliced(
   Lookup *lookup,
-  Ownership *ownership,
   Slice *slice,
   Sliced **sliced) {
   return ffi::wrap([=] {
-    *sliced = new Sliced(lookup, ownership, slice);
+    *sliced = new Sliced(lookup, slice);
   });
 }
 

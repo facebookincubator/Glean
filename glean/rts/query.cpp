@@ -373,7 +373,7 @@ Id QueryExecutor::newDerivedFact(
     // The Ids can only be facts that we already have computed owners for.
     for (const auto& iter : iters) {
       if (iter.id != Id::invalid()) {
-        auto owner = ownership->getOwner(iter.id);
+        auto owner = facts.getOwner(iter.id);
         if (owner == INVALID_USET) {
           VLOG(1) << "fact " << iter.id.toWord() << " has no owner";
         } else {

@@ -11,6 +11,7 @@
 #include "glean/rts/fact.h"
 #include "glean/rts/id.h"
 #include "glean/rts/stats.h"
+#include "glean/rts/ownership/uset.h"
 
 #include <vector>
 
@@ -146,6 +147,8 @@ struct Lookup {
     Id from,
     Id to
   ) = 0;
+
+  virtual UsetId getOwner(Id id) = 0;
 };
 
 /**
@@ -186,6 +189,8 @@ struct EmptyLookup final : Lookup {
       Pid, folly::ByteRange, size_t, Id, Id) override {
     return std::make_unique<EmptyIterator>();
   }
+
+  UsetId getOwner(Id) override { return INVALID_USET; }
 
   static EmptyLookup& instance();
 };
@@ -239,6 +244,10 @@ struct Section : Lookup {
     size_t prefix_size,
     Id from,
     Id to) override;
+
+  UsetId getOwner(Id id) override {
+    return isWithinBounds(id) ? base()->getOwner(id) : INVALID_USET;
+  }
 
   Lookup *base() const {
     return base_;

@@ -89,6 +89,8 @@ struct DatabaseImpl final : Database {
       Id from,
       Id upto) override;
 
+  rts::UsetId getOwner(Id id) override;
+
   /// stats
 
   rts::PredicateStats loadStats();

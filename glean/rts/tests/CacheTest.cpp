@@ -48,6 +48,10 @@ struct ConstantLookup : public Lookup {
       Pid, folly::ByteRange, size_t, Id, Id) override {
     throw std::runtime_error("ConstantLookup::seekWithinSection not implemented");
   }
+
+  UsetId getOwner(Id) override {
+    throw std::runtime_error("ConstantLookup::getOwner not implemented");
+  }
 };
 
 struct CacheTest : testing::Test {

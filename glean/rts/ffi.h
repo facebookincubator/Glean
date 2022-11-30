@@ -544,7 +544,7 @@ const char *glean_get_ownership_set(
 );
 
 const char *glean_get_fact_owner(
-  Ownership *ownership,
+  Lookup *lookup,
   glean_fact_id_t fact,
   uint32_t *uset_id
 );
@@ -561,7 +561,6 @@ void glean_slice_free(Slice *slice);
 
 const char *glean_make_sliced(
   Lookup *lookup,
-  Ownership *ownership,
   Slice *slice,
   Sliced **sliced
 );

@@ -148,6 +148,8 @@ public:
       Id from,
       Id to) override;
 
+    UsetId getOwner(Id id) override { return base->getOwner(id); }
+
     Lookup *base;
     LookupCache *cache;
   };

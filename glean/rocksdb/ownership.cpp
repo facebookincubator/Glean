@@ -412,8 +412,6 @@ namespace {
 struct StoredOwnership : Ownership {
   explicit StoredOwnership(DatabaseImpl* db) : db_(db) {}
 
-  UsetId getOwner(Id id) override;
-
   UsetId nextSetId() override {
     return db_->usets_->getNextId();
   }
@@ -551,8 +549,8 @@ std::unique_ptr<rts::Ownership> DatabaseImpl::getOwnership() {
   return std::make_unique<StoredOwnership>(this);
 }
 
-UsetId StoredOwnership::getOwner(Id id) {
-  return db_->factOwnerCache_.getOwner(db_->container_, id);
+UsetId DatabaseImpl::getOwner(Id id) {
+  return factOwnerCache_.getOwner(container_, id);
 }
 
 void DatabaseImpl::FactOwnerCache::enable() {

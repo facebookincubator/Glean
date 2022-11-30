@@ -158,13 +158,8 @@ withOpenDBStackLookup env@Env{..} repo lookup slices f = do
     withOpenDatabase env baseRepo $ \OpenDB{..} -> do
       withBaseLookup <- case maybeSlice of
         Nothing -> return (Lookup.withCanLookup odbHandle)
-        Just slice -> do
-          maybeOwn <- readTVarIO odbOwnership
-          own <- case maybeOwn of
-            Nothing -> throwIO $ Thrift.Exception $
-              "missing ownership for " <> repoToText baseRepo
-            Just own -> return own
-          return (Lookup.withCanLookup (Ownership.sliced own slice odbHandle))
+        Just slice ->
+          return (Lookup.withCanLookup (Ownership.sliced slice odbHandle))
       withBaseLookup $ \baseLookup -> do
       withOpenDBStackLookup env baseRepo baseLookup slices $ \_ base -> do
         bounds <- stackedBoundaries base lookup
