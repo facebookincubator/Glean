@@ -15,7 +15,8 @@ module Glean.Database.Open (
   isDatabaseClosed,
   schemaUpdated,
   getDbSchemaVersion,
-  updateLookupCacheStats
+  updateLookupCacheStats,
+  repoParent
 ) where
 
 import Control.Concurrent.Async (Async, wait)
@@ -117,12 +118,18 @@ repoParents Env{..} repo = go repo
     deps <- atomically $ metaDependencies <$> Catalog.readMeta envCatalog repo
     case deps of
       Nothing -> return []
-      Just (Thrift.Dependencies_pruned pruned)
-        | Thrift.Pruned{Thrift.pruned_base=baseRepo} <- pruned ->
-            (baseRepo :) <$> go baseRepo
-      Just (Thrift.Dependencies_stacked baseRepo) ->
-        (baseRepo :) <$> go baseRepo
+      Just dep -> (parent :) <$> go parent
+        where parent = depParent dep
 
+repoParent :: Env -> Repo -> IO (Maybe Repo)
+repoParent Env{..} repo = do
+  deps <- atomically $ metaDependencies <$> Catalog.readMeta envCatalog repo
+  return (fmap depParent deps)
+
+depParent :: Thrift.Dependencies -> Repo
+depParent deps = case deps of
+  Thrift.Dependencies_pruned Thrift.Pruned{..} -> pruned_base
+  Thrift.Dependencies_stacked baseRepo -> baseRepo
 
 withOpenDBLookup
   :: Env
