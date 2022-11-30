@@ -233,10 +233,7 @@ ppClassModifiers (ClassMod abstract final) =
 ppSignature :: LayoutOptions -> Doc Ann -> Signature -> Doc Ann
 ppSignature opts head (Signature returnType typeParams params ctxs xrefs) =
     if fitsOnOneLine then
-      hcat
-        [ onelineSig
-        , nest 4 (":" <+> ppReturnType returnType xrefs)
-        ]
+      onelineSig
     else
       multilineSig
   where
@@ -251,6 +248,7 @@ ppSignature opts head (Signature returnType typeParams params ctxs xrefs) =
       [ onelineTypeParams
       , onelineArgs
       , ppContexts ctxs
+      , ":" <+> ppReturnType returnType xrefs
       ]
     multilineTypeParams = if null typeParams then emptyDoc else vcat
         [ nest 4 $ vcat
