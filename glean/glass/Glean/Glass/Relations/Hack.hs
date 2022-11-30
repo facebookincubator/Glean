@@ -15,6 +15,7 @@ import Data.Maybe ( fromMaybe )
 import Data.Text ( Text )
 import Data.Map.Strict ( Map )
 import Data.HashMap.Strict ( HashMap )
+import qualified Data.HashMap.Strict as HashMap
 import Glean.Glass.Types
 import qualified Data.Map.Strict as Map
 import Glean.Glass.SearchRelated
@@ -38,11 +39,13 @@ difference
   -> SymbolId
   -> [RelatedLocatedEntities]
   -> [InheritedContainer]
-  -> ([InheritedContainer], Map SymbolId SymbolId)
-difference _edges _sym0 base inherited0 =
-    partitionOverrides baseNames inherited0
+  -> ([InheritedContainer], HashMap SymbolId SymbolId)
+difference _edges _sym0 base inherited0 = partitionOverrides seen inherited0
   where
-    baseNames = Map.fromList [ (nameOf ent, ent) | ent <- map childRL base ]
+    seen = HashMap.fromList
+      [ (localNameOf sym, symIdOf sym)
+      | sym <- map childRL base
+      ]
 
 --
 -- find all syms with multiple names (i.e. one pass, record duplicates
@@ -54,29 +57,31 @@ difference _edges _sym0 base inherited0 =
 -- Remove overridden inherited methods, and note the relationship
 -- as a synthetic searchRelated `extends` result
 partitionOverrides
-  :: Map.Map Text LocatedEntity
+  :: HashMap Text SymbolId -- those that have been seen
   -> [InheritedContainer]
-  -> ([InheritedContainer], Map SymbolId SymbolId)
-partitionOverrides locals inherited =
-    (map fst results, Map.unions (map snd results))
+  -> ([InheritedContainer], HashMap SymbolId SymbolId)
+partitionOverrides seen inherited =
+    (map fst results, HashMap.unions (map snd results))
   where
     results = map filterParent inherited
 
     filterParent (parent, children) = ((parent, children'), overrides)
       where
-        (children', overrides) = go [] Map.empty children
+        (children', overrides) = go [] HashMap.empty children
 
     -- paritiion inherited symbols into those that are and are not overridden
     go children overrides [] = (children, overrides)
-    go children overrides (ent : ents) = case Map.lookup (nameOf ent) locals of
-      Just this -> -- exact name locally! shadows the inherited symbol
-        go children (Map.insert (symIdOf this) (symIdOf ent) overrides) ents
-      Nothing -> go (ent : children) overrides ents
-        -- no override, retain `ent` as an inherited child
+    go children overrides (ent : ents) =
+      case HashMap.lookup (localNameOf ent) seen of
+        Just this -> -- exact name locally! shadows the inherited symbol
+          let !mapping = HashMap.insert this (symIdOf ent) overrides
+          in go children mapping ents
+        Nothing -> go (ent : children) overrides ents
+          -- no override, retain `ent` as an inherited child
 
 -- the raw marshalled tuple from the search result queries is a bit annoying
-nameOf :: LocatedEntity -> Text
-nameOf ((_ent, _file, _span, name), _sym) = name
+localNameOf :: LocatedEntity -> Text
+localNameOf ((_ent, _file, _span, name), _sym) = name
 
 symIdOf :: LocatedEntity -> SymbolId
 symIdOf (_, sym) = sym
@@ -88,9 +93,9 @@ symIdOf (_, sym) = sym
 --
 patchDescriptions
   :: Map Text SymbolDescription
-  -> Map SymbolId SymbolId
+  -> HashMap SymbolId SymbolId
   -> Map Text SymbolDescription
-patchDescriptions allsyms overrides = Map.foldlWithKey go allsyms overrides
+patchDescriptions allsyms overrides = HashMap.foldlWithKey go allsyms overrides
   where
     go syms (SymbolId child) parent@(SymbolId p) = fromMaybe syms $ do
       desc <- Map.lookup child syms

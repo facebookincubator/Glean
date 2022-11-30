@@ -1646,7 +1646,7 @@ partitionInheritedScopes
   -> HashMap SymbolId [SymbolId]
   -> [Search.RelatedLocatedEntities]
   -> [InheritedContainer]
-  -> ([InheritedContainer], Map.Map SymbolId SymbolId)
+  -> ([InheritedContainer], HashMap SymbolId SymbolId)
 partitionInheritedScopes lang symId edges locals inherited = case lang of
   Language_Hack -> Hack.difference edges symId locals inherited
   _ -> (inherited, mempty)
@@ -1656,7 +1656,7 @@ partitionInheritedScopes lang symId edges locals inherited = case lang of
 patchDescriptions
   :: Language
   -> Map.Map Text SymbolDescription
-  -> Map.Map SymbolId SymbolId
+  -> HashMap SymbolId SymbolId
   -> Map.Map Text SymbolDescription
 patchDescriptions lang descs overrides = case lang of
   Language_Hack -> Hack.patchDescriptions descs overrides
