@@ -18,6 +18,8 @@ module Glean.Database.Janitor
   ) where
 
 import Control.Concurrent.STM
+import Control.Concurrent.Stream (stream)
+import Control.Concurrent (getNumCapabilities)
 import Control.Exception
 import Control.Monad.Extra
 import Control.Monad.IO.Class (liftIO)
@@ -82,17 +84,24 @@ runDatabaseJanitor env = do
   runDatabaseJanitorPureish env >>= executeJanitorSideEffects env
 
 executeJanitorSideEffects :: Env -> [JanitorSideEffect] -> IO ()
-executeJanitorSideEffects Env{envDatabaseJanitorPublishedCounters} sideEffects =
+executeJanitorSideEffects env sideEffects =
   do
   forM_ sideEffects $ \case
     PublishCounter n v -> void $ Stats.setCounter n v
+    _ -> pure ()
+  numCaps <- getNumCapabilities
+  stream numCaps (forM_ sideEffects) $ \case
+    PreOpenDB repo ->
+      void $ tryAll $ logExceptions (inRepo repo) $
+        withOpenDatabaseStack env repo (\_ -> return ())
+    _ -> pure ()
 
   -- Record the published counters and clear stale ones
   let countersPublished =
         HashSet.fromList [n | PublishCounter n _ <- sideEffects]
   lastPublishedCounters <- atomically $ do
-    last <- readTVar envDatabaseJanitorPublishedCounters
-    writeTVar envDatabaseJanitorPublishedCounters countersPublished
+    last <- readTVar (envDatabaseJanitorPublishedCounters env)
+    writeTVar (envDatabaseJanitorPublishedCounters env) countersPublished
     return last
   forM_ (HashSet.difference lastPublishedCounters countersPublished)
     clearCounter
@@ -100,10 +109,14 @@ executeJanitorSideEffects Env{envDatabaseJanitorPublishedCounters} sideEffects =
 
 data JanitorSideEffect
   = PublishCounter !ByteString !Int
+  | PreOpenDB !Repo
   deriving (Eq, Show)
 
 publishCounter :: ByteString -> Int -> WriterT [JanitorSideEffect] IO ()
 publishCounter name value = tell [PublishCounter name value]
+
+preOpenDB :: Monad m => Repo -> WriterT [JanitorSideEffect] m ()
+preOpenDB repo = tell [PreOpenDB repo]
 
 -- WIP making the Janitor more testable by returning the list of side effects
 runDatabaseJanitorPureish :: Env -> IO [JanitorSideEffect]
@@ -258,13 +271,10 @@ runWithShards env myShards sm = do
       let isMostRecentDbAndLocal =
             itemRepo newestDb `elem` mostRecent
             && itemLocality newestDb == Local
-      liftIO $ when isMostRecentDbAndLocal $
-        whenM (atomically $ isDatabaseClosed env $ itemRepo newestDb) $
+      when isMostRecentDbAndLocal $
+        whenM (liftIO $ atomically $ isDatabaseClosed env $ itemRepo newestDb) $
         unlessM isDeletingNewestDb
-          $ void
-          $ tryAll
-          $ logExceptions (inRepo $ itemRepo newestDb)
-          $ withOpenDatabaseStack env (itemRepo newestDb) (\_ -> return ())
+          $ preOpenDB (itemRepo newestDb)
       -- upsert counters
       publishCounter (prefix <> ".all") $ length repoKeep
       publishCounter (prefix <> ".available") $ length $ filter
