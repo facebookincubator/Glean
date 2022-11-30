@@ -95,11 +95,12 @@ addVisitedContainer sym = modify' $ \e@Env{..} ->
 
 difference
   :: TopoMap
+  -> HashMap SymbolId SymbolKind
   -> SymbolId
   -> [RelatedLocatedEntities]
   -> [InheritedContainer]
   -> ([InheritedContainer], HashMap SymbolId SymbolId)
-difference topoEdges baseSym baseChildrenSyms allParents =
+difference topoEdges _topoKinds baseSym baseChildrenSyms allParents =
   let state0 = newEnv baseSym  baseChildrenSyms initIndex
       final = execState (partitionOverrides topoEdges [baseSym]) state0
   in

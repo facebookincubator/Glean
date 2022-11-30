@@ -1542,8 +1542,8 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
         b <- childrenExtends1Level (decl baseEntity) repo
         c <- parentContainsNLevel (decl baseEntity) repo
         d <- parentExtends1Level (decl baseEntity) repo
-        (e0, edges) <- inheritedNLevel (decl baseEntity) repo
-        let (e,overrides) = partitionInheritedScopes lang sym edges a e0
+        (e0, edges, kinds) <- inheritedNLevel (decl baseEntity) repo
+        let (e,overrides) = partitionInheritedScopes lang sym edges kinds a e0
         let syms = uniqBy (comparing snd) $
               fromSearchEntity sym baseEntity :
                 concatMap flattenEdges [a,b,c,d] ++
@@ -1598,7 +1598,10 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
     -- Inherited symbols: the contained children of N levels of extended parents
     inheritedNLevel :: Code.Entity -> RepoName
         -> RepoHaxl u w
-            ([InheritedContainer], HashMap SymbolId (HashSet SymbolId))
+            ([InheritedContainer]
+             ,HashMap SymbolId (HashSet SymbolId)
+             ,HashMap SymbolId SymbolKind
+             )
     inheritedNLevel baseEntity repo = do
       topoEdges <- Search.searchRelatedEntities
         (fromIntegral relatedNeighborhoodRequest_inherited_limit)
@@ -1611,9 +1614,11 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
       let symTable = Search.edgesToTopoMap topoEdges
       -- reduce to just the unique parent symbols
       let parents = uniq (map Search.parentRL topoEdges)
+      -- fetch the parent kinds (class, trait etc)
+      kinds <- mapM (\e -> (snd e,) <$> findSymbolKind (toEntity e)) parents
       -- and fetch their children concurrently
       inherited <- mapM (childrenOf repo) parents
-      return (inherited,symTable)
+      return (inherited,symTable,toKindTable kinds)
 
     childrenOf repo parent = do
       children <- childrenContains1Level (toEntity parent) repo
@@ -1640,17 +1645,21 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
       Just x | x < rELATED_SYMBOLS_MAX_LIMIT -> x
       _ -> rELATED_SYMBOLS_MAX_LIMIT
 
+toKindTable :: [(SymbolId,Either Text SymbolKind)] ->HashMap SymbolId SymbolKind
+toKindTable xs = HashMap.fromList [ (symId, kind) | (symId, Right kind) <- xs ]
+
 -- | Apply any additional client-side filtering of what is in scope,
 -- according to language rules
 partitionInheritedScopes
   :: Language
   -> SymbolId
   -> HashMap SymbolId (HashSet SymbolId)
+  -> HashMap SymbolId SymbolKind
   -> [Search.RelatedLocatedEntities]
   -> [InheritedContainer]
   -> ([InheritedContainer], HashMap SymbolId SymbolId)
-partitionInheritedScopes lang symId edges locals inherited = case lang of
-  Language_Hack -> Hack.difference edges symId locals inherited
+partitionInheritedScopes lang symId edges kinds locals inherited = case lang of
+  Language_Hack -> Hack.difference edges kinds symId locals inherited
   _ -> (inherited, mempty)
 
 -- | And once we filter out hidden inherited things, infer any missing
