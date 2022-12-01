@@ -1626,7 +1626,7 @@
         "location": {
           "name": "SourceInterface",
           "file": { "key": "www/SourceInterface.php" },
-          "location": { "span": { "start": 226, "length": 96 } }
+          "location": { "span": { "start": 226, "length": 134 } }
         }
       },
       "child": {
@@ -1678,7 +1678,7 @@
         "location": {
           "name": "SourceInterface",
           "file": { "key": "www/SourceInterface.php" },
-          "location": { "span": { "start": 226, "length": 96 } }
+          "location": { "span": { "start": 226, "length": 134 } }
         }
       },
       "child": {
@@ -1706,6 +1706,58 @@
           "name": "foo",
           "file": { "key": "www/SourceInterface.php" },
           "location": { "span": { "start": 285, "length": 34 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "interface_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceInterface" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "SourceInterface",
+          "file": { "key": "www/SourceInterface.php" },
+          "location": { "span": { "start": 226, "length": 134 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "method": {
+                "key": {
+                  "name": { "key": "quux" },
+                  "container": {
+                    "interface_": {
+                      "key": {
+                        "name": {
+                          "key": { "name": { "key": "SourceInterface" } }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "quux",
+          "file": { "key": "www/SourceInterface.php" },
+          "location": { "span": { "start": 323, "length": 34 } }
         }
       }
     }

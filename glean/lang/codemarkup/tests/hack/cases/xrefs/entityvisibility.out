@@ -333,6 +333,27 @@
             "key": {
               "name": { "key": "quux" },
               "container": {
+                "interface_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceInterface" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "hack": {
+        "decl": {
+          "method": {
+            "key": {
+              "name": { "key": "quux" },
+              "container": {
                 "trait": {
                   "key": {
                     "name": { "key": { "name": { "key": "SourceTrait" } } }

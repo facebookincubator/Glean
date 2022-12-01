@@ -972,6 +972,31 @@
               "key": {
                 "name": { "key": "quux" },
                 "container": {
+                  "interface_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "SourceInterface" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 7, "isAbstract": true }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "quux" },
+                "container": {
                   "trait": {
                     "key": {
                       "name": { "key": { "name": { "key": "SourceTrait" } } }

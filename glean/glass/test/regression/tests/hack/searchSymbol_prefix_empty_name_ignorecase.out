@@ -677,7 +677,7 @@
                         "columnBegin": 1,
                         "columnEnd": 2,
                         "lineBegin": 10,
-                        "lineEnd": 16
+                        "lineEnd": 18
                     },
                     "repository": "test"
                 },
@@ -724,6 +724,25 @@
                     "exactness": 2
                 },
                 "symbol": "test/php/SourceInterface/foo"
+            },
+            {
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceInterface.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 37,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": "quux",
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SourceInterface/quux"
             },
             {
                 "kind": 31,

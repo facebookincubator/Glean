@@ -417,7 +417,7 @@
       },
       "location": {
         "file": { "key": "www/SourceInterface.php" },
-        "location": { "span": { "length": 96, "start": 226 } },
+        "location": { "span": { "length": 134, "start": 226 } },
         "name": "SourceInterface"
       }
     }
@@ -1171,6 +1171,35 @@
         "file": { "key": "www/SourceInterface.php" },
         "location": { "span": { "length": 34, "start": 285 } },
         "name": "foo"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "container": {
+                  "interface_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "SourceInterface" } }
+                      }
+                    }
+                  }
+                },
+                "name": { "key": "quux" }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/SourceInterface.php" },
+        "location": { "span": { "length": 34, "start": 323 } },
+        "name": "quux"
       }
     }
   },

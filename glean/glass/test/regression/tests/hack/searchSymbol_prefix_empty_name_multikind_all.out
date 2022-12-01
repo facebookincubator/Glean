@@ -691,6 +691,25 @@
                 "kind": 8,
                 "language": 3,
                 "location": {
+                    "filepath": "www/SourceInterface.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 37,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": "quux",
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SourceInterface/quux"
+            },
+            {
+                "kind": 8,
+                "language": 3,
+                "location": {
                     "filepath": "www/SourceTrait.php",
                     "range": {
                         "columnBegin": 3,

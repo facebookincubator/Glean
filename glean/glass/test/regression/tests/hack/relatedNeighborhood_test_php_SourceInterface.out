@@ -9,6 +9,10 @@
             {
                 "child": "test/php/SourceInterface/foo",
                 "parent": "test/php/SourceInterface"
+            },
+            {
+                "child": "test/php/SourceInterface/quux",
+                "parent": "test/php/SourceInterface"
             }
         ],
         "containsParents": [],
@@ -92,7 +96,7 @@
                         "columnBegin": 1,
                         "columnEnd": 2,
                         "lineBegin": 10,
-                        "lineEnd": 16
+                        "lineEnd": 18
                     },
                     "repository": "test"
                 },
@@ -110,7 +114,7 @@
                         "columnBegin": 1,
                         "columnEnd": 2,
                         "lineBegin": 10,
-                        "lineEnd": 16
+                        "lineEnd": 18
                     },
                     "repository": "test"
                 },
@@ -209,6 +213,57 @@
                         "columnEnd": 37,
                         "lineBegin": 14,
                         "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 20
+            },
+            "test/php/SourceInterface/quux": {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceInterface.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 37,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [
+                    1
+                ],
+                "name": {
+                    "container": "SourceInterface",
+                    "localName": "quux"
+                },
+                "repo_hash": "testhash",
+                "signature": "public function quux(int $i): int",
+                "sym": "test/php/SourceInterface/quux",
+                "sym_location": {
+                    "filepath": "www/SourceInterface.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 37,
+                        "lineBegin": 16,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 },

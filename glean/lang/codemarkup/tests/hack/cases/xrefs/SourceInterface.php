@@ -13,4 +13,6 @@ interface SourceInterface {
 
   public static function foo(): int;
 
+  public function quux(int $i): int;
+
 }
