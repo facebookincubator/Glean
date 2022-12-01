@@ -63,9 +63,6 @@ struct Ownership {
   // Look up the UnitId for a unit
   virtual folly::Optional<UnitId> getUnitId(folly::ByteRange unit) = 0;
 
-  // Next unused UnitId
-  virtual rts::UnitId nextUnitId() = 0;
-
   // Return stats about the ownership data
   virtual OwnershipStats getStats() = 0;
 };
@@ -135,6 +132,7 @@ struct Lookup;
 std::unique_ptr<ComputedOwnership> computeOwnership(
   const Inventory& inventory,
   Lookup& lookup,
+  Lookup *base_lookup,
   OwnershipUnitIterator *iter);
 
 }

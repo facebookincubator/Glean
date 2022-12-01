@@ -250,6 +250,9 @@ predicate RevEdge : { child : Node, parent : Node }
 predicate SkipRevEdge : { child : Node, grandparent : Node }
   stored { A, C } where RevEdge { A, B }; RevEdge { B, C }
 
+predicate NodePair : { fst : Node, snd : Node }
+  stored { X, Y } where X = Node _; Y = Node _; X != Y
+
 # Recursive binary tree (DAG) type
 predicate Tree :
   {

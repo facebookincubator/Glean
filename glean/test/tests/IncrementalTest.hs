@@ -194,18 +194,22 @@ incrementalTest = TestCase $
 stackedIncrementalTest :: Test
 stackedIncrementalTest = TestCase $
   withTestEnv [] $ \env -> do
-    let base = Repo "base" "0"
-    kickOffTestDB env base id
-    mkGraph env base
-    completeTestDB env base
-
     let
+      deriveAndFinish :: Env -> Repo -> IO ()
+      deriveAndFinish env repo = do
+        void $ completePredicates env repo
+        derivePredicate env repo Nothing Nothing
+          (parseRef "glean.test.RevEdge") Nothing
+        derivePredicate env repo Nothing Nothing
+          (parseRef "glean.test.SkipRevEdge") Nothing
+        completeTestDB env repo
+
       nodesAre test db ns = do
         results <- runQuery_ env db $ query $ predicate @Glean.Test.Node wild
+        print results
         assertEqual test ns
           (sort [ x | Glean.Test.Node _ (Just (
                         Glean.Test.Node_key x)) <- results ])
-
       edgesAre test db es = do
         edges <- runQuery_ env db $ recursive $ query $
           predicate @Glean.Test.Edge wild
@@ -215,6 +219,32 @@ stackedIncrementalTest = TestCase $
                       (Glean.Test.Node _ (Just (Glean.Test.Node_key x)))
                       (Glean.Test.Node _ (Just (Glean.Test.Node_key y)))))
             <- edges ])
+
+
+      revEdgesAre test db es = do
+        edges <- runQuery_ env db $ recursive $ query $
+          predicate @Glean.Test.RevEdge wild
+        assertEqual test es
+          (sort [ (x,y) | Glean.Test.RevEdge _ (Just (
+                    Glean.Test.RevEdge_key
+                      (Glean.Test.Node _ (Just (Glean.Test.Node_key x)))
+                      (Glean.Test.Node _ (Just (Glean.Test.Node_key y)))))
+            <- edges ])
+
+      skipRevEdgesAre test db es = do
+        edges <- runQuery_ env db $ recursive $ query $
+          predicate @Glean.Test.SkipRevEdge wild
+        assertEqual test es
+          (sort [ (x,y) | Glean.Test.SkipRevEdge _ (Just (
+                    Glean.Test.SkipRevEdge_key
+                      (Glean.Test.Node _ (Just (Glean.Test.Node_key x)))
+                      (Glean.Test.Node _ (Just (Glean.Test.Node_key y)))))
+            <- edges ])
+
+    let base = Repo "base" "0"
+    kickOffTestDB env base id
+    mkGraph env base
+    deriveAndFinish env base
 
     {-
     base:
@@ -236,7 +266,7 @@ stackedIncrementalTest = TestCase $
       withUnit "B" $ do
         b <- makeFact @Glean.Test.Node (Glean.Test.Node_key "b")
         makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key b a)
-    completeTestDB env inc
+    deriveAndFinish env inc
 
     {-
     inc:
@@ -250,34 +280,20 @@ stackedIncrementalTest = TestCase $
     -- nodes are a,b,c,d
     nodesAre "stacked inc 0n" inc ["a", "b", "c", "d"]
     edgesAre "stacked inc 0e" inc [("a","d"),("b","a"),("c","d")]
+    revEdgesAre "stacked inc 0r" inc [("a","b"),("d","a"),("d","c")]
+    skipRevEdgesAre "stacked inc 0s" inc [("d","b")]
 
-    -- stacking another DB and excluding C, which is in the base DB
+    -- exclude C, and add a new unit E
     inc2 <- incrementalDB env inc (Repo "base-inc" "2") ["C"]
-    completeTestDB env inc2
-
-    {-
-    inc2:
-         b
-         |
-         a
-          \
-           d
-    -}
-
-    nodesAre "stacked inc 1n" inc2 ["a", "b", "d"]
-    edgesAre "stacked inc 1e" inc2 [("a","d"),("b","a")]
-
-    -- adding a new unit E
-    inc3 <- incrementalDB env inc (Repo "base-inc" "3") ["C"]
-    writeFactsIntoDB env inc3 [ Glean.Test.allPredicates ] $ do
+    writeFactsIntoDB env inc2 [ Glean.Test.allPredicates ] $ do
       withUnit "E" $ do
         a <- makeFact @Glean.Test.Node (Glean.Test.Node_key "a")
         e <- makeFact @Glean.Test.Node (Glean.Test.Node_key "e")
         makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key e a)
-    completeTestDB env inc3
+    deriveAndFinish env inc2
 
     {-
-    inc3:
+    inc2:
          b e
          |/
          a
@@ -285,14 +301,17 @@ stackedIncrementalTest = TestCase $
            d
     -}
 
-    nodesAre "stacked inc 1n" inc3 ["a", "b", "d", "e"]
-    edgesAre "stacked inc 1e" inc3 [("a","d"),("b","a"),("e","a")]
+    nodesAre "stacked inc 2n" inc2 ["a", "b", "d", "e"]
+    edgesAre "stacked inc 2e" inc2 [("a","d"),("b","a"),("e","a")]
+    revEdgesAre "stacked inc 2r" inc2 [("a","b"),("a","e"),("d","a")]
+    skipRevEdgesAre "stacked inc 2s" inc2 [("d","b"),("d","e")]
 
     -- now exclude E
-    inc4 <- incrementalDB env inc3 (Repo "base-inc" "4") ["E"]
+    inc3 <- incrementalDB env inc2 (Repo "base-inc" "3") ["E"]
+    deriveAndFinish env inc3
 
     {-
-    inc4:
+    inc3:
          b
          |
          a
@@ -300,8 +319,118 @@ stackedIncrementalTest = TestCase $
            d
     -}
 
-    nodesAre "stacked inc 1n" inc4 ["a", "b", "d"]
-    edgesAre "stacked inc 1e" inc4 [("a","d"),("b","a")]
+    nodesAre "stacked inc 3n" inc3 ["a", "b", "d"]
+    edgesAre "stacked inc 3e" inc3 [("a","d"),("b","a")]
+    revEdgesAre "stacked inc 3r" inc3 [("a","b"),("d","a")]
+    skipRevEdgesAre "stacked inc 3s" inc3 [("d","b")]
+
+    -- The new edge E-A should induce retention of A, even if we exclude unit A
+    inc4 <- incrementalDB env inc2 (Repo "base-inc" "4") ["A","B","D"]
+    deriveAndFinish env inc4
+
+    {-
+    inc4:
+           e
+          /
+         a
+    -}
+
+    nodesAre "stacked inc 4n" inc4 ["a", "e"]
+    edgesAre "stacked inc 4e" inc4 [("e","a")]
+    revEdgesAre "stacked inc 4r" inc4 [("a","e")]
+    skipRevEdgesAre "stacked inc 4s" inc4 []
+
+
+stackedIncrementalTest2 :: Test
+stackedIncrementalTest2 = TestCase $
+  withTestEnv [] $ \env -> do
+    let
+      deriveAndFinish :: Env -> Repo -> IO ()
+      deriveAndFinish env repo = do
+        void $ completePredicates env repo
+        derivePredicate env repo Nothing Nothing
+          (parseRef "glean.test.NodePair") Nothing
+        completeTestDB env repo
+
+      nodesAre test db ns = do
+        results <- runQuery_ env db $ query $ predicate @Glean.Test.Node wild
+        print results
+        assertEqual test ns
+          (sort [ x | Glean.Test.Node _ (Just (
+                        Glean.Test.Node_key x)) <- results ])
+      pairsAre test db es = do
+        edges <- runQuery_ env db $ recursive $ query $
+          predicate @Glean.Test.NodePair wild
+        assertEqual test es
+          (sort [ (x,y) | Glean.Test.NodePair _ (Just (
+                    Glean.Test.NodePair_key
+                      (Glean.Test.Node _ (Just (Glean.Test.Node_key x)))
+                      (Glean.Test.Node _ (Just (Glean.Test.Node_key y)))))
+            <- edges ])
+
+    let base = Repo "base" "0"
+    kickOffTestDB env base id
+    writeFactsIntoDB env base [ Glean.Test.allPredicates ] $ do
+      withUnit "X" $ do
+        makeFact_ @Glean.Test.Node (Glean.Test.Node_key "a")
+      withUnit "Y" $ do
+        makeFact_ @Glean.Test.Node (Glean.Test.Node_key "c")
+    deriveAndFinish env base
+
+    {-
+    base:
+         a{X}<--->b{Y}
+    -}
+
+    inc <- incrementalDB env base (Repo "base-inc" "1") ["Y"]
+    writeFactsIntoDB env inc [ Glean.Test.allPredicates ] $ do
+      a <- withUnit "X" $
+        makeFact @Glean.Test.Node (Glean.Test.Node_key "a")
+      withUnit "Z" $ do
+        makeFact_ @Glean.Test.Node (Glean.Test.Node_key "c")
+        makeFact_ @Glean.Test.Node (Glean.Test.Node_key "d")
+      withUnit "E" $
+        makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key a a)
+    deriveAndFinish env inc
+
+    {-
+    inc:
+
+    c{Z}-----d{Z}
+       \    /
+        \  /
+         a{X} <--- Edge{Z}
+    -}
+    nodesAre "0n" inc ["a","c","d"]
+    pairsAre "0p" inc [
+      ("a","c"),("a","d"),("c","a"),("c","d"),("d","a"),("d","c") ]
+
+    inc2 <- incrementalDB env inc (Repo "base-inc" "2") ["X"]
+    deriveAndFinish env inc2
+    -- exclude X, but node "a" should be kept alive by Edge{Z}
+    -- and hence the pairs should all still be alive
+    {-
+    inc2:
+
+    c{Z}-----d{Z}
+       \    /
+        \  /
+         a{X} <--- Edge{Z}
+    -}
+    nodesAre "1n" inc2 ["a","c","d"]
+    pairsAre "1p" inc2 [
+      ("a","c"),("a","d"),("c","a"),("c","d"),("d","a"),("d","c") ]
+
+    -- excluding "E" should make "a" and its derived pairs go away
+    inc3 <- incrementalDB env inc2 (Repo "base-inc" "3") ["E"]
+    deriveAndFinish env inc3
+    {-
+    inc3:
+
+    c{Z}-----d{Z}
+    -}
+    nodesAre "1n" inc3 ["c","d"]
+    pairsAre "1p" inc3 [("c","d"),("d","c")]
 
 -- tickled a bug in the storage of ownership information
 dupSetTest :: Test
@@ -468,4 +597,5 @@ main_ = withUnitTest $ testRunner $ TestList
   , TestLabel "orphanTest" orphanTest
   , TestLabel "deriveTest" deriveTest
   , TestLabel "stackedIncrementalTest" stackedIncrementalTest
+  , TestLabel "stackedIncrementalTest2" stackedIncrementalTest2
   ]

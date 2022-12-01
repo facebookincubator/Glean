@@ -26,7 +26,7 @@ import Glean.Database.Backup.Backend (Data)
 import Glean.Internal.Types (StoredSchema)
 import Glean.RTS.Foreign.FactSet (FactSet)
 import Glean.RTS.Foreign.Inventory (Inventory)
-import Glean.RTS.Foreign.Lookup (CanLookup)
+import Glean.RTS.Foreign.Lookup (CanLookup, Lookup)
 import Glean.RTS.Foreign.Ownership
 import Glean.RTS.Types (Fid, Pid)
 import Glean.ServerConfig.Types (DBVersion(..))
@@ -120,7 +120,13 @@ class CanLookup (Database s) => Storage s where
   -- | Optimise a database for reading. This is typically done before backup.
   optimize :: Database s -> Bool {- compact -} -> IO ()
 
-  computeOwnership :: Database s -> Inventory -> IO ComputedOwnership
+  computeOwnership
+    :: Database s
+    -> Maybe Lookup
+       -- ^ Base DB lookup if this is a stacked DB, because ownership may
+       -- need to propagate ownership through facts in the base DB.
+    -> Inventory
+    -> IO ComputedOwnership
 
   storeOwnership :: Database s -> ComputedOwnership -> IO ()
 

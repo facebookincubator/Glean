@@ -48,7 +48,7 @@ namespace {
  */
 FOLLY_NOINLINE TrieArray<Uset> fillOwnership(
     OwnershipUnitIterator* iter,
-    uint32_t& numUnits) {
+    uint32_t& firstSetId) {
   struct Stats {
     size_t units = 0;
     size_t intervals = 0;
@@ -109,13 +109,13 @@ FOLLY_NOINLINE TrieArray<Uset> fillOwnership(
 
   stats.dump();
 
-  numUnits = max_unit + 1;
+  firstSetId = max_unit + 1;
   return utrie;
 }
 
 /** Move the sets from the trie to `Usets`. */
-FOLLY_NOINLINE Usets collectUsets(uint32_t numUnits, TrieArray<Uset>& utrie) {
-  Usets usets(numUnits);
+FOLLY_NOINLINE Usets collectUsets(uint32_t firstUsetId, TrieArray<Uset>& utrie) {
+  Usets usets(firstUsetId);
   size_t visits = 0;
   utrie.foreach([&](Uset *entry) -> Uset* {
     ++visits;
@@ -154,16 +154,26 @@ FOLLY_NOINLINE Usets collectUsets(uint32_t numUnits, TrieArray<Uset>& utrie) {
  * The resulting `Usets` will contain exactly those sets (the "promoted" ones)
  * which describe the ownership of at least one fact.
  */
-FOLLY_NOINLINE void completeOwnership(std::vector<Uset *> &facts, Usets& usets,
-                                      const Inventory &inventory,
-                                      Lookup &lookup) {
+FOLLY_NOINLINE void completeOwnership(
+    std::vector<Uset*>& facts,
+    folly::F14FastMap<uint64_t, Uset*>& sparse,
+    Usets& usets,
+    const Inventory& inventory,
+    Lookup& lookup,
+    Lookup* base_lookup) {
+
   struct Stats {
     Usets& usets;
-    size_t total_facts = 0;
+    size_t local_facts = 0;
+    size_t base_facts = 0;
     size_t owned_facts = 0;
 
-    void bumpTotal() {
-      ++total_facts;
+    void bumpLocal() {
+      ++local_facts;
+    }
+
+    void bumpBase() {
+      ++base_facts;
     }
 
     void bumpOwned() {
@@ -175,13 +185,16 @@ FOLLY_NOINLINE void completeOwnership(std::vector<Uset *> &facts, Usets& usets,
 
     void dump() {
       auto ustats = usets.statistics();
-      LOG(INFO)
-        << owned_facts << " of " << total_facts << " facts, "
-        << usets.size() << " usets, "
-        << ustats.promoted << " promoted, "
-        << ustats.bytes << " bytes, "
-        << ustats.adds << " adds, "
-        << ustats.dups << " dups";
+      LOG(INFO) << folly::sformat(
+          "{} of {} facts ({} visited in base DBs), {} usets, {} promoted, {} bytes, {} adds, {} dups",
+          owned_facts,
+          local_facts + base_facts,
+          base_facts,
+          usets.size(),
+          ustats.promoted,
+          ustats.bytes,
+          ustats.adds,
+          ustats.dups);
     }
   };
 
@@ -197,16 +210,32 @@ FOLLY_NOINLINE void completeOwnership(std::vector<Uset *> &facts, Usets& usets,
   }
 
   // Iterate over facts backwards - this ensures that we get all dependencies.
-  const auto max_id = Id::fromWord(facts.size());
-  for (auto iter = lookup.enumerateBack(max_id);
-      auto fact = iter->get();
-      iter->next()) {
-    stats.bumpTotal();
+  const auto min_id = lookup.startingId();
+  const auto max_id = lookup.firstFreeId();
+  const auto owner = [&](Id id) -> Uset*& {
+    if (id < min_id) {
+      return sparse[id.toWord()];
+    } else {
+      return facts[id.toWord() - min_id.toWord()];
+    }
+  };
 
+  auto processFact = [&, min_id, max_id](Fact::Ref fact) {
     // `set == nullptr` means that the fact doesn't have an ownership set - we
     // might want to make that an error eventually?
-    if (auto set = facts[fact.id.toWord()]) {
-      // TODO: Store the set in the DB and assign it to the current fact.
+    if (auto set = owner(fact.id)) {
+      // If the fact is in a base DB, then we record its owner as (set || X)
+      // where X is the existing owner of the fact. We only propagate `set`,
+      // not `X`, to the facts it refers to.
+      if (fact.id < min_id) {
+        auto base_owner = base_lookup->getOwner(fact.id);
+        if (base_owner != INVALID_USET) {
+          auto merged = usets.merge(SetU32::from({base_owner}), set);
+          usets.promote(merged);
+          owner(fact.id) = merged;
+        }
+      }
+
       usets.promote(set);
 
       // Collect all references to facts
@@ -221,7 +250,7 @@ FOLLY_NOINLINE void completeOwnership(std::vector<Uset *> &facts, Usets& usets,
       // TODO: Try adding a fixed-size LRU (or LFU?) cache for set unions?
       std::vector<Uset *> touched;
       for (const auto id : refs) {
-        auto& me = facts[id.toWord()];
+        auto& me = owner(id);
         if (me == nullptr) {
           // The fact didn't have ownership info before, assign the set to it.
           me = set;
@@ -250,46 +279,149 @@ FOLLY_NOINLINE void completeOwnership(std::vector<Uset *> &facts, Usets& usets,
       }
 
       touched.clear();
-      refs.clear();
       // TODO: We can drop the current's fact ownership info here - could shrink
       // the vector.
       // facts.shrink(fact.id);
       stats.bumpOwned();
     }
+  };
+
+  for (auto iter = lookup.enumerateBack(max_id);
+      auto fact = iter->get();
+      iter->next()) {
+    stats.bumpLocal();
+    processFact(fact);
+    refs.clear();
+  }
+
+  stats.dump();
+
+  // Propagate ownership sets through facts in the base DB(s), using a priority
+  // queue to process facts in descending order. Note there might be multiple
+  // entries in the queue for a given fact ID.
+  std::priority_queue<Id> order;
+  for (auto [id, uset] : sparse) {
+    order.push(Id::fromWord(id));
+  }
+  Id prev = Id::invalid();
+  for (; !order.empty(); order.pop()) {
+    auto id = order.top();
+    if (id == prev) {
+      continue;
+    } else {
+      prev = id;
+    }
+    base_lookup->factById(id, [&](Pid type, Fact::Clause clause) {
+      stats.bumpBase();
+      processFact({id,type,clause});
+      for (const auto ref : refs) {
+        order.push(ref);
+      }
+      refs.clear();
+    });
   }
 
   stats.dump();
 }
-
 }
+
+/* Note [stacked incremental DBs]
+
+A stacked DB might induce changes to the ownership of facts in DBs
+below it in the stack. So we have to propagate ownership from facts in
+the stacked DB to facts in the base DB(s).  The basic approach is
+
+  * Each DB stores ownership information about its own facts and
+    potentially facts in base DB(s).
+
+  * getOwner() in a stacked DB traverses the stack downwards,
+    returning the first owner found.
+
+  * Therefore, if a fact F has owner A in the base DB and a new owner B
+    in the stacked DB, we have to assign it owner A || B.
+
+  * Thus, an owner set in a stacked DB (A || B) may refer to owner
+    sets in a base DB (A).
+
+  * A derived fact in the stacked DB will be given the correct owner,
+    because its ownership is determined by calling getOwner() on each of
+    the facts that it was derived from, even if some of those are in
+    a base DB.
+*/
 
 std::unique_ptr<ComputedOwnership> computeOwnership(
     const Inventory& inventory,
-    Lookup& lookup,
+    Lookup& lookup, // the current DB, *not* stacked
+    Lookup* base_lookup, // the base DB stack, if this is a stack
     OwnershipUnitIterator *iter) {
-  uint32_t numUnits;
+  uint32_t firstUsetId;
   auto t = makeAutoTimer("computeOwnership");
   VLOG(1) << "computing ownership";
-  auto utrie = fillOwnership(iter,numUnits);
+  auto utrie = fillOwnership(iter,firstUsetId);
   t.log("fillOwnership");
-  auto usets = collectUsets(numUnits,utrie);
+  auto usets = collectUsets(firstUsetId,utrie);
   t.log("collectUsets");
   // TODO: Should `completeOwnership` work with the trie rather than a
   // flat vector?
-  auto facts = utrie.flatten();
 
-  LOG(INFO) << "completing ownership: " << facts.size() << " facts";
-  completeOwnership(facts, usets, inventory, lookup);
+  const auto min_id = lookup.startingId();
+  const auto max_id = lookup.firstFreeId();
+  auto flattened = utrie.flatten(min_id.toWord(), max_id.toWord());
+  const auto owner = [&](Id id) -> Uset*& {
+    return flattened.dense[id.toWord() - min_id.toWord()];
+  };
+
+  completeOwnership(
+      flattened.dense, flattened.sparse, usets, inventory, lookup, base_lookup);
   t.log("completeOwnership");
 
   std::vector<std::pair<Id,UsetId>> factOwners;
+
+  // Collect fact ownership for facts in the base DB(s). This data is sparse,
+  // but we currently store it as intervals in factOwners because that's the
+  // only way to store fact ownership currently. This is a terrible
+  // representation since there are typically almost no adjacent facts with the
+  // same owner in this dataset.
+  //
+  // TODO: use a more suitable representation for the sparse ownership
+  std::vector<std::pair<uint64_t, Uset*>> order;
+  for (auto &pr : flattened.sparse) {
+    order.push_back(pr);
+  }
+  std::sort(order.begin(),order.end());
+  Id prev = Id::lowest() - 1;
   UsetId current = INVALID_USET;
-  for (uint32_t i = Id::lowest().toWord(); i < facts.size(); i++) {
-    auto usetid = facts[i] ? facts[i]->id : INVALID_USET;
-    if (usetid != current) {
-      factOwners.push_back(std::make_pair(Id::fromWord(i), usetid));
+  for (auto& pr : order) {
+    auto id = Id::fromWord(pr.first);
+    auto usetid = pr.second->id;
+    VLOG(5) << folly::sformat("sparse owner: {} -> {}", id.toWord(), usetid);
+    if (id != prev + 1 || current != usetid) {
+      if (id != prev + 1) {
+        factOwners.emplace_back(prev + 1, INVALID_USET);
+      }
+      factOwners.emplace_back(id, usetid);
       current = usetid;
     }
+    prev = id;
+  }
+  // fill the gap between the sparse and dense mappings with INVALID_USET
+  if (prev + 1 < min_id) {
+    factOwners.emplace_back(prev + 1, INVALID_USET);
+    current = INVALID_USET;
+  }
+
+  Id id = min_id;
+  for (; id < min_id + flattened.dense.size(); id++) {
+    auto& set = owner(id);
+    auto usetid = set ? set->id : INVALID_USET;
+    if (usetid != current) {
+      factOwners.emplace_back(id, usetid);
+      current = usetid;
+    }
+  }
+  // if dense didn't cover the whole Id range, add a final interval of INVALID_USET
+  if (id < max_id-1 && current != INVALID_USET) {
+    factOwners.emplace_back(id, INVALID_USET);
   }
 
   auto sets = usets.toEliasFano();

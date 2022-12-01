@@ -16,8 +16,8 @@ module Glean.RTS.Foreign.Ownership
   , ComputedOwnership
   , Slice
   , slice
-  , sliced
-  , Sliced
+  , slicedStack
+  , SlicedStack
   , newDefineOwnership
   , DefineOwnership
   , substDefineOwnership
@@ -47,7 +47,7 @@ import Foreign.CPP.Marshallable
 import Util.FFI
 import Util.PrettyPrint
 
-import Glean.FFI
+import Glean.FFI hiding (withMany)
 import Glean.RTS.Foreign.Inventory (Inventory)
 import Glean.RTS.Foreign.Lookup
 import Glean.RTS.Foreign.Subst
@@ -85,15 +85,19 @@ instance Object ComputedOwnership where
   destroy = glean_computed_ownership_free
 
 compute
-  :: CanLookup a
+  :: (CanLookup db, CanLookup base)
   => Inventory
-  -> a
+  -> db
+  -> Maybe base
+     -- ^ base DB if there is one
   -> UnitIterator
   -> IO ComputedOwnership
-compute inv l iter =
+compute inv l base iter =
   with inv $ \inv_ptr ->
   withLookup l $ \lookup ->
-  construct $ invoke $ glean_ownership_compute inv_ptr lookup iter
+  maybe ($ nullPtr) withLookup base $ \base_lookup_ptr ->
+  construct $ invoke $
+    glean_ownership_compute inv_ptr lookup iter base_lookup_ptr
 
 newtype Slice = Slice (ForeignPtr Slice)
 
@@ -103,29 +107,39 @@ instance Object Slice where
   destroy = glean_slice_free
 
 -- | Construct a slice view of a DB from a set of UnitIds
-slice :: Ownership -> [UnitId] -> Bool -> IO Slice
-slice ownership units exclude =
+slice :: Ownership -> [Slice] -> [UnitId] -> Bool -> IO Slice
+slice ownership bases units exclude =
   with ownership $ \ownership_ptr ->
   withArrayLen (coerce units) $ \unit_arr_size unit_arr ->
+  withMany with bases $ \bases_ptrs ->
+  withArrayLen bases_ptrs $ \bases_arr_size bases_arr ->
   construct $ invoke $ glean_slice_compute
     ownership_ptr
     unit_arr
     (fromIntegral unit_arr_size)
     (fromIntegral (fromEnum exclude))
+    bases_arr
+    (fromIntegral bases_arr_size)
 
-data Sliced base = Sliced Slice base
+data SlicedStack base = SlicedStack [Slice] base
 
-sliced :: CanLookup base => Slice -> base -> Sliced base
-sliced = Sliced
+slicedStack
+  :: CanLookup base
+  => [Slice]
+  -> base
+  -> SlicedStack base
+slicedStack = SlicedStack
 
-instance CanLookup base => CanLookup (Sliced base) where
-  lookupName (Sliced _ base) = "sliced:" <> lookupName base
-  withLookup (Sliced slice base) f =
+instance CanLookup base => CanLookup (SlicedStack base) where
+  lookupName (SlicedStack _ base) = "slicedstack:" <> lookupName base
+  withLookup (SlicedStack list base) f =
     withLookup base $ \p_base ->
-    with slice $ \slice_ptr ->
+    withMany with list $ \slices ->
+    withArray slices $ \slices_arr ->
     bracket
-      (invoke $ glean_make_sliced p_base slice_ptr)
-      glean_sliced_free
+      (invoke $ glean_make_sliced_stack
+        p_base (fromIntegral (length list)) slices_arr)
+      glean_sliced_stack_free
       f
 
 newtype DefineOwnership = DefineOwnership (ForeignPtr DefineOwnership)
@@ -283,6 +297,7 @@ foreign import ccall safe glean_ownership_compute
   :: Ptr Inventory
   -> Ptr Lookup
   -> UnitIterator
+  -> Ptr Lookup
   -> Ptr (Ptr ComputedOwnership)
   -> IO CString
 
@@ -317,19 +332,22 @@ foreign import ccall safe glean_slice_compute
   -> CSize
   -> CInt
   -> Ptr (Ptr Slice)
+  -> CSize
+  -> Ptr (Ptr Slice)
   -> IO CString
 
 foreign import ccall unsafe "&glean_slice_free"
    glean_slice_free :: FunPtr (Ptr Slice -> IO ())
 
-foreign import ccall unsafe glean_make_sliced
+foreign import ccall unsafe glean_make_sliced_stack
   :: Ptr Lookup
-  -> Ptr Slice
+  -> CSize
+  -> Ptr (Ptr Slice)
   -> Ptr (Ptr Lookup)
   -> IO CString
 
 foreign import ccall unsafe
-   glean_sliced_free :: Ptr Lookup -> IO ()
+   glean_sliced_stack_free :: Ptr Lookup -> IO ()
 
 foreign import ccall unsafe
    glean_ownership_next_set_id :: Ptr Ownership -> Ptr UsetId -> IO CString

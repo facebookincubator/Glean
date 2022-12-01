@@ -111,10 +111,11 @@ DatabaseImpl::DatabaseImpl(
       AdminId::NEXT_UNIT_ID,
       first_unit_id,
       container_.mode == Mode::Create,
-      [mode = container_.mode] {
+      [] {
         // TODO: later this should be an error, for now we have to be
         // able to open old DBs.
       });
+  VLOG(1) << folly::sformat("next_uset_id: {}", next_uset_id);
 
   db_version = getAdminValue(
       container_,

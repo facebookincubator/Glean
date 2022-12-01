@@ -138,39 +138,43 @@ withOpenDBLookup
   -> (Boundaries -> Lookup -> IO a)
   -> IO a
 withOpenDBLookup env repo OpenDB{ odbBaseSlices = baseSlices, .. } f =
-  Lookup.withCanLookup odbHandle $ \lookup ->
-    withOpenDBStackLookup env repo lookup baseSlices f
-
-withOpenDBStackLookup
-  :: Env
-  -> Repo  -- Stacked DB
-  -> Lookup  -- Stacked DB
-  -> [Maybe Ownership.Slice]  -- Slices for the stack, starting at the base
-  -> (Boundaries -> Lookup -> IO a)
-  -> IO a
-withOpenDBStackLookup env@Env{..} repo lookup slices f = do
-  deps <- atomically $ metaDependencies <$> Catalog.readMeta envCatalog repo
-  case deps of
+  Lookup.withCanLookup odbHandle $ \lookup -> do
+  parent <- repoParent env repo
+  case parent of
     Nothing -> do
       bounds <- flatBoundaries lookup
       f bounds lookup
-    Just (Thrift.Dependencies_stacked base_repo) ->
-      stackedOn base_repo slices
-    Just (Thrift.Dependencies_pruned Thrift.Pruned{..}) ->
-      stackedOn pruned_base slices
-  where
-  stackedOn baseRepo [] = throwIO $ Thrift.Exception $
-    "missing slice for " <> repoToText baseRepo
-  stackedOn baseRepo (maybeSlice : slices) = do
-    withOpenDatabase env baseRepo $ \OpenDB{..} -> do
-      withBaseLookup <- case maybeSlice of
-        Nothing -> return (Lookup.withCanLookup odbHandle)
-        Just slice ->
-          return (Lookup.withCanLookup (Ownership.sliced slice odbHandle))
-      withBaseLookup $ \baseLookup -> do
-      withOpenDBStackLookup env baseRepo baseLookup slices $ \_ base -> do
-        bounds <- stackedBoundaries base lookup
-        Lookup.withCanLookup (Stacked.stacked base lookup) (f bounds)
+    Just baseRepo ->
+      withOpenDatabase env baseRepo $ \OpenDB{..} -> do
+        -- stacked (sliced base lookup)
+        Lookup.withCanLookup odbHandle $ \baseLookup -> do
+          withOpenDBStack env baseRepo baseLookup $ \base -> do
+            bounds <- stackedBoundaries base lookup
+            let slices = catMaybes baseSlices
+            if null slices
+              then Lookup.withCanLookup (Stacked.stacked base lookup)
+                (f bounds)
+              else
+                Lookup.withCanLookup
+                  (Ownership.slicedStack slices base) $ \sliced ->
+                Lookup.withCanLookup (Stacked.stacked sliced lookup)
+                  (f bounds)
+
+withOpenDBStack
+  :: Env
+  -> Repo  -- Stacked DB
+  -> Lookup  -- Stacked DB
+  -> (Lookup -> IO a)
+  -> IO a
+withOpenDBStack env@Env{..} repo lookup f = do
+  parent <- repoParent env repo
+  case parent of
+    Nothing -> f lookup
+    Just baseRepo ->
+      withOpenDatabase env baseRepo $ \OpenDB{..} ->
+        Lookup.withCanLookup odbHandle $ \baseLookup ->
+        withOpenDBStack env baseRepo baseLookup $ \base -> do
+          Lookup.withCanLookup (Stacked.stacked base lookup) f
 
 withWritableDatabase :: Env -> Repo -> (WriteQueue -> IO a) -> IO a
 withWritableDatabase env repo action =
@@ -507,22 +511,25 @@ baseSlices env deps stored_units = case deps of
        -- ^ True <=> exclude, False <=> include
     -> IO [Maybe Ownership.Slice]
   dbSlices repo units exclude = do
-    vlog 1 $ "computing slice for " <> showRepo repo <> " with " <>
-      show (Set.toList units) <> if exclude then " excluded" else " included"
     withOpenDatabase env repo $ \OpenDB{..} -> do
-      slice <- if exclude && Set.null units
-        then return Nothing
-        else do
-          unitIds <- fmap catMaybes $
-            forM (Set.toList units) $
-              Storage.getUnitId odbHandle
-          maybeOwnership <- readTVarIO odbOwnership
-          forM maybeOwnership $ \ownership ->
-            Ownership.slice ownership unitIds exclude
       baseDeps <- atomically $ metaDependencies <$>
         Catalog.readMeta (envCatalog env) repo
       baseUnits <- retrieveUnits repo odbHandle
       rest <- depSlices baseDeps baseUnits units exclude odbBaseSlices
+      slice <- if exclude && Set.null units
+        then return Nothing
+        else do
+          vlog 1 $ "computing slice for " <> showRepo repo <> " with " <>
+            show (Set.toList units) <>
+            if exclude then " excluded" else " included"
+          unitIds <- fmap catMaybes $
+            forM (Set.toList units) $ \name -> do
+              id <- Storage.getUnitId odbHandle name
+              vlog 2 $ "unit: " <> show name <> " = " <> show id
+              return id
+          maybeOwnership <- readTVarIO odbOwnership
+          forM maybeOwnership $ \ownership ->
+            Ownership.slice ownership (catMaybes rest) unitIds exclude
       return (slice : rest)
 
   -- | Create the slices for a stack of dependencies

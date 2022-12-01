@@ -81,7 +81,7 @@ instance Storage Memory where
   optimize _ _ = return ()
 
   -- TODO: ownership
-  computeOwnership _ _ = return (error "unimplemented computeOwnership")
+  computeOwnership _ _ _ = return (error "unimplemented computeOwnership")
   getUnitId _ _ = return (error "unimplemented getUnitId")
   getUnit _ _ = return (error "unimplemented getUnit")
   storeOwnership _ _ = return ()  -- can't fail, otherwise we fail tests

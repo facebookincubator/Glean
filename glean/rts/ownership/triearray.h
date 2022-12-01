@@ -8,10 +8,14 @@
 
 #pragma once
 
+#include <glog/logging.h>
+#include "glean/rts/error.h"
 #include "glean/rts/ownership/pool.h"
+#include "glean/rts/ownership.h"
 
 #include <cstdint>
 #include <vector>
+#include <queue>
 
 namespace facebook {
 namespace glean {
@@ -126,7 +130,7 @@ public:
 
   template<typename F>
   void foreach(F&& f) {
-    traverse([&](Tree& tree, uint64_t key, uint64_t size, uint64_t block) {
+    traverse([&](Tree& tree, uint64_t key, uint64_t size, uint64_t /* block */) {
       if (auto *value = tree.value()) {
         if (auto new_value = f(value)) {
           tree = Tree::value(new_value);
@@ -135,19 +139,51 @@ public:
     });
   }
 
-  std::vector<T*> flatten() {
-    if (maxkey_ < minkey_) {
-      return std::vector<T*>(0);
+  struct Flattened {
+    folly::F14FastMap<uint64_t,T*> sparse;
+    std::vector<T*> dense;
+  };
+
+  /// Flatten the trie into:
+  ///    - a dense array between start-end (end > maxkey_)
+  ///    - a sparse mapping for elements less than start
+  Flattened flatten(uint64_t start, uint64_t end) {
+    if (end <= maxkey_) {
+      error("flatten: invalid bounds ({},{}) ({},{})",
+        start, end, minkey_, maxkey_);
     }
-    std::vector<T*> vec(maxkey_+1, nullptr);
-    traverse([&](const Tree& tree, uint64_t key, uint64_t size, uint64_t block) {
-      auto *value = tree.value();
-      std::fill(vec.begin() + key, vec.begin() + key + size, value);
-      if (value) {
-        value->use(size-1);
-      }
-    });
-    return vec;
+    VLOG(1) << folly::sformat("flatten: ({},{}) ({},{})",
+        start, end, minkey_, maxkey_);
+
+    // If there's no data in the tree, just return an empty result instead of
+    // allocating an array of nullptr.
+    if (maxkey_ <= minkey_) {
+      return {};
+    }
+
+    folly::F14FastMap<uint64_t,T*> sparse;
+    std::vector<T*> vec(end-start, nullptr);
+
+    traverse(
+        [&, start](
+            const Tree& tree, uint64_t key, uint64_t size, uint64_t block) {
+          auto* value = tree.value();
+          if (value) {
+            for (uint64_t i = key; i < std::min(key + size, start); i++) {
+              sparse.insert({i, value});
+            }
+          }
+          if (key + size > start) {
+            const uint64_t left = key >= start ? key - start : 0;
+            const uint64_t right = (key + size) - start;
+            std::fill(vec.begin() + left, vec.begin() + right, value);
+          }
+          if (value) {
+            value->use(size - 1);
+          }
+        });
+
+    return { std::move(sparse), std::move(vec) };
   }
 
 private:

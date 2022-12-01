@@ -178,10 +178,10 @@ instance Storage RocksDB where
     invoke $ glean_rocksdb_container_optimize s_ptr
       (fromIntegral (fromEnum compact))
 
-  computeOwnership db inv =
+  computeOwnership db base inv =
     withForeignPtr (dbPtr db) $ \db_ptr ->
     using (invoke $ glean_rocksdb_get_ownership_unit_iterator db_ptr) $
-    Ownership.compute inv db
+    Ownership.compute inv db base
 
   storeOwnership db own =
     withForeignPtr (dbPtr db) $ \db_ptr ->

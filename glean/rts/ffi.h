@@ -52,7 +52,14 @@ typedef struct OwnershipStats OwnershipStats;
 typedef struct DefineOwnership DefineOwnership;
 typedef struct ComputedOwnership ComputedOwnership;
 typedef struct Slice Slice;
-typedef struct Sliced Sliced;
+typedef struct Slices Slices;
+
+#ifdef __cplusplus
+template<typename Slice> struct Sliced;
+using SlicedStack = Sliced<Slices>;
+#else
+typedef void SlicedStack;
+#endif
 
 #ifdef __cplusplus
 }
@@ -529,6 +536,7 @@ const char *glean_ownership_compute(
   Inventory *inventory,
   Lookup *lookup,
   OwnershipUnitIterator *iter,
+  Lookup *base_lookup,
   ComputedOwnership **ownership
 );
 
@@ -554,23 +562,25 @@ const char *glean_get_fact_owner(
   uint32_t *uset_id
 );
 
-const char *glean_slice_compute(
-  Ownership *ownership,
-  uint32_t *unit_ids,
-  size_t unit_ids_size,
-  int exclude,
-  Slice **slice
-);
+const char* glean_slice_compute(
+    Ownership* ownership,
+    uint32_t* unit_ids,
+    size_t unit_ids_size,
+    int exclude,
+    Slice** bases,
+    size_t num_bases,
+    Slice** result);
 
 void glean_slice_free(Slice *slice);
 
-const char *glean_make_sliced(
+const char *glean_make_sliced_stack(
   Lookup *lookup,
-  Slice *slice,
-  Sliced **sliced
+  size_t count,
+  Slice **slices,
+  SlicedStack **sliced
 );
 
-void glean_sliced_free(Sliced *sliced);
+void glean_sliced_stack_free(SlicedStack *sliced);
 
 const char *glean_new_define_ownership(
   Ownership *own,

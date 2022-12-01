@@ -383,6 +383,7 @@ void DatabaseImpl::storeOwnership(ComputedOwnership& ownership) {
       putOwnerSet(container_, batch, id, exp.op, exp.set);
       id++;
     }
+
     VLOG(1) << "storeOwnership: writing sets (" << ownership.sets_.size()
             << ")";
     check(container_.db->Write(container_.writeOptions, &batch));
@@ -469,31 +470,58 @@ struct StoredOwnership : Ownership {
     return db_->getUnitId(unit);
   }
 
-  UnitId nextUnitId() override {
-    return db_->next_uset_id;
+  UnitId nextUnitId() {
+    std::unique_ptr<rocksdb::Iterator> iter(db_->container_.db->NewIterator(
+        rocksdb::ReadOptions(),
+        db_->container_.family(Family::ownershipUnits)));
+
+    if (!iter) {
+      rts::error("rocksdb: couldn't allocate ownershipUnits iterator");
+    }
+
+    size_t max_unit_id;
+
+    iter->SeekToLast();
+    if (!iter->Valid()) {
+      max_unit_id = db_->first_unit_id;
+    } else {
+      binary::Input key(byteRange(iter->key()));
+      max_unit_id = key.trustedNat();
+    }
+
+    return max_unit_id;
   }
 
   OwnershipStats getStats() override {
     rocksdb::Range range(toSlice(""), toSlice("\xff"));
-    uint64_t units_size, owners_size;
+    uint64_t units_size, sets_size, owners_size, num_owners;
     auto& db = db_->container_.db;
+    rocksdb::FlushOptions opts;
+    db->Flush(opts, {
+        db_->container_.family(Family::ownershipUnits),
+        db_->container_.family(Family::ownershipSets),
+        db_->container_.family(Family::factOwners)
+    });
     check(db->GetApproximateSizes(
               db_->container_.family(Family::ownershipUnits),
               &range, 1, &units_size));
     check(db->GetApproximateSizes(
-              db_->container_.family(Family::factOwners),
-              &range, 1, &owners_size));
+              db_->container_.family(Family::ownershipSets),
+              &range, 1, &sets_size));
+    db->GetIntProperty(
+        db_->container_.family(Family::factOwners),
+        "rocksdb.estimate-num-keys",
+        &num_owners);
+    check(db->GetApproximateSizes(
+        db_->container_.family(Family::factOwners), &range, 1, &owners_size));
 
     OwnershipStats stats;
-    stats.num_units = db_->next_uset_id - db_->first_unit_id,
-    stats.units_size = units_size;
-    if (db_->usets_) {
-      stats.num_sets = db_->usets_->size();
-      stats.sets_size = db_->usets_->statistics().bytes;
-    }
-    stats.num_owner_entries = 0; // TODO
-    stats.owners_size = owners_size;
-
+    stats.num_units = nextUnitId() - db_->first_unit_id; // accurate
+    stats.units_size = units_size; // estimate
+    stats.num_sets = db_->next_uset_id - stats.num_units; // accurate
+    stats.sets_size = sets_size; // estimate
+    stats.num_owner_entries = num_owners; // estimate
+    stats.owners_size = owners_size; // estimate
     return stats;
   }
 
@@ -547,7 +575,7 @@ DatabaseImpl::FactOwnerCache::getPage(
     }
     (*wcache)[prefix] = std::move(page);
 
-    VLOG(1) << "FactOwnerCache::getPage(" << prefix << ") size = "
+    VLOG(2) << "FactOwnerCache::getPage(" << prefix << ") size = "
             << folly::prettyPrint(size_, folly::PRETTY_BYTES_IEC);
     return (*wcache)[prefix].get();
   }

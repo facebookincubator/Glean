@@ -202,6 +202,23 @@ struct Usets {
     }
   }
 
+  // merge a SetU32 directly. Op is assumed to be Or.
+  Uset *merge(SetU32 left, Uset *right) {
+    SetU32 set;
+    assert(right->exp.op == Or);
+    auto res = SetU32::merge(set, left, right->exp.set);
+    if (res == &set) {
+      return add(std::move(set), 1);
+    } else {
+      if (res == &right->exp.set) {
+        use(right, 1);
+        return right;
+      } else {
+        return add(std::move(left), 1);
+      }
+    }
+  }
+
   void use(Uset *set, uint32_t refs = 1) {
     set->refs += refs;
   }

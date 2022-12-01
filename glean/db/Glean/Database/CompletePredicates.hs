@@ -36,9 +36,13 @@ import Glean.Util.Mutex
 
 -- For internal use: actually perform completion for a DB
 syncCompletePredicates :: Env -> Repo -> IO ()
-syncCompletePredicates env repo =
+syncCompletePredicates env repo = do
+  maybeBase <- repoParent env repo
+  let withBase repo f =
+        readDatabase env repo $ \_ lookup -> f (Just lookup)
+  maybe ($ Nothing) withBase maybeBase $ \base -> do
   withOpenDatabase env repo $ \OpenDB{..} -> do
-    own <- Storage.computeOwnership odbHandle
+    own <- Storage.computeOwnership odbHandle base
       (schemaInventory odbSchema)
     withWriteLock odbWriting $ Storage.storeOwnership odbHandle own
     maybeOwnership <- readTVarIO odbOwnership

@@ -54,10 +54,6 @@ struct TestOwnership final : Ownership {
     LOG(FATAL) << "unimplemented: getUnitId";
   }
 
-  UnitId nextUnitId() override {
-    LOG(FATAL) << "unimplemented: nextUnitId";
-  }
-
   OwnershipStats getStats() override {
     LOG(FATAL) << "unimplemented: getStats";
   }
@@ -107,7 +103,8 @@ void checkVisibility(
     bool exclude) {
   std::set set(units.begin(), units.end());
 
-  auto sl = slice(ownership, units, exclude);
+  Slices base { {} };
+  auto sl = slice(ownership, base, units, exclude);
 
   using Reader = folly::compression::EliasFanoReader<
       folly::compression::EliasFanoEncoder<uint32_t, uint32_t>>;

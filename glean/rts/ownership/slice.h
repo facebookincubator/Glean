@@ -26,17 +26,66 @@ struct Slice {
   explicit Slice(UsetId first, std::vector<bool> set) :
       first_(first), set_(std::move(set)) {}
 
-  bool visible(UsetId uset) {
-    if (uset == INVALID_USET) {
-      return false;
-    }
-    assert(uset >= first_ && uset - first_ < set_.size());
+  bool visible(UsetId uset) const {
+    assert(
+        uset != INVALID_USET && uset >= first_ && uset - first_ < set_.size());
     return set_[uset - first_];
   }
 
+  bool inRange(UsetId usetid) const {
+    return usetid >= first() && usetid < end();
+  }
+
+  UsetId first() const { return first_; }
+  UsetId end() const { return first_ + set_.size(); }
+  bool empty() const { return set_.empty(); }
+
  private:
-  UsetId first_;
-  std::vector<bool> set_;
+  const UsetId first_;
+  const std::vector<bool> set_;
+};
+
+///
+// A set of slices that can be treated as a single Slice
+//
+struct Slices {
+  explicit Slices(std::vector<const Slice*> slices) : slices_(std::move(slices)) {
+    UsetId first = 0, end = 0;
+    for (auto slice : slices_) {
+      if (first == 0 || slice->first() < first) {
+        first = slice->first();
+        end = std::max(end, slice->end());
+      }
+    }
+    first_ = first;
+    end_ = end;
+  }
+
+  bool visible(UsetId usetid) const {
+    if (usetid == INVALID_USET) {
+      return false;
+    }
+    for (auto slice : slices_) {
+      if (slice->inRange(usetid)) {
+        auto visible = slice->visible(usetid);
+        return visible;
+      }
+    }
+    return false;
+  }
+
+  UsetId first() const { return first_; }
+  UsetId end() const { return end_; }
+  bool empty() const { return first_ == end_; }
+
+  bool inRange(UsetId usetid) const {
+    return usetid >= first_ && usetid < end_;
+  }
+
+  private:
+    UsetId first_;
+    UsetId end_;
+    const std::vector<const Slice*> slices_;
 };
 
 ///
@@ -45,26 +94,31 @@ struct Slice {
 //
 std::unique_ptr<Slice> slice(
     Ownership& ownership,
+    const Slices& base,
     const std::vector<UnitId>& units, // must be sorted
     bool exclude);
 
 ///
 // A "slice" of a Lookup, restricted to returning only those facts
-// visible in the given (Ownership, Slice).
+// visible in the given Slice. When the Lookup is a stack, the
+// Slice should cover all the UsetIds used in the stack, which
+// means it will probably be a Slices containing a Slice for
+// each Lookup in the stack.
 //
+template<typename Slice>
 struct Sliced : Lookup {
   ~Sliced() override {}
 
-  Sliced(Lookup *base, Slice *slice)
-      : base_(base), slice_(slice) {}
+  Sliced(Lookup *base, Slice slice)
+      : base_(base), slice_(std::move(slice)) {}
 
   Id idByKey(Pid type, folly::ByteRange key) override {
-    if (auto id = base_->idByKey(type, key)) {
-      if (slice_->visible(base_->getOwner(id))) {
-        return id;
-      }
+    auto id = base_->idByKey(type, key);
+    if (id && slice_.visible(base_->getOwner(id))) {
+      return id;
+    } else {
+      return Id::invalid();
     }
-    return Id::invalid();
   }
 
   Pid typeById(Id id) override {
@@ -96,7 +150,7 @@ struct Sliced : Lookup {
     return FactIterator::filter(
         base_->enumerate(from,upto),
         [&](Id id) {
-          return slice_->visible(base_->getOwner(id));
+          return slice_.visible(base_->getOwner(id));
         });
   }
 
@@ -106,7 +160,7 @@ struct Sliced : Lookup {
     return FactIterator::filter(
         base_->enumerate(from,downto),
         [&](Id id) {
-          return slice_->visible(base_->getOwner(id));
+          return slice_.visible(base_->getOwner(id));
         });
   }
 
@@ -117,7 +171,7 @@ struct Sliced : Lookup {
     return FactIterator::filter(
         base_->seek(type, start, prefix_size),
         [&](Id id) {
-          return slice_->visible(base_->getOwner(id));
+          return slice_.visible(base_->getOwner(id));
         });
   }
 
@@ -130,7 +184,7 @@ struct Sliced : Lookup {
     return FactIterator::filter(
         base_->seekWithinSection(type, start, prefix_size, from, to),
         [&](Id id) {
-          return slice_->visible(base_->getOwner(id));
+          return slice_.visible(base_->getOwner(id));
         });
   }
 
@@ -142,8 +196,9 @@ struct Sliced : Lookup {
 
  private:
   Lookup *base_;
-  Slice *slice_;
+  Slice slice_;
 };
+
 
 }
 }

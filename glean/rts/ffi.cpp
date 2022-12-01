@@ -904,10 +904,13 @@ const char *glean_ownership_compute(
     Inventory *inventory,
     Lookup *lookup,
     OwnershipUnitIterator *iter,
+    Lookup *base_lookup,
     ComputedOwnership **result
 ) {
   return ffi::wrap([=] {
-    *result = computeOwnership(*inventory, *lookup, iter).release();
+    *result =
+        computeOwnership(*inventory, *lookup, base_lookup, iter)
+            .release();
   });
 }
 
@@ -959,11 +962,14 @@ const char *glean_slice_compute(
   uint32_t *unit_ids,
   size_t unit_ids_size,
   int exclude,
+  Slice **bases,
+  size_t num_bases,
   Slice **result) {
   return ffi::wrap([=] {
     auto vec = std::vector<uint32_t>(unit_ids, unit_ids + unit_ids_size);
     std::sort(vec.begin(), vec.end());
-    *result = slice(*ownership, vec, exclude != 0).release();
+    std::vector<const Slice*> slices(bases, bases + num_bases);
+    *result = slice(*ownership, Slices(std::move(slices)), vec, exclude != 0).release();
   });
 }
 
@@ -971,19 +977,20 @@ void glean_slice_free(Slice *slice) {
   ffi::free_(slice);
 }
 
-
-const char *glean_make_sliced(
-  Lookup *lookup,
-  Slice *slice,
-  Sliced **sliced) {
+const char* glean_make_sliced_stack(
+    Lookup* lookup,
+    size_t count,
+    Slice** slices,
+    SlicedStack** sliced) {
   return ffi::wrap([=] {
-    *sliced = new Sliced(lookup, slice);
+    std::vector<const Slice*> list(slices, slices + count);
+    *sliced = new Sliced<Slices>(lookup, Slices(std::move(list)));
   });
 }
 
-void glean_sliced_free(Sliced *sliced) {
+void glean_sliced_stack_free(SlicedStack* sliced) {
   ffi::free_(sliced);
-}
+};
 
 const char *glean_new_define_ownership(
   Ownership *own,
