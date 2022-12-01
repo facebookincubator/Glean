@@ -16,6 +16,10 @@
                     "repository": "test"
                 },
                 "name": "foo",
+                "qname": {
+                    "container": "es_exports",
+                    "localName": "foo"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -34,6 +38,10 @@
                     "repository": "test"
                 },
                 "name": "foo",
+                "qname": {
+                    "container": "imports",
+                    "localName": "foo"
+                },
                 "score": {
                     "exactness": 2
                 },

@@ -156,6 +156,10 @@
                     "repository": "test"
                 },
                 "name": "all.LocalClass",
+                "qname": {
+                    "container": "all",
+                    "localName": "LocalClass"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -175,6 +179,10 @@
                     "repository": "test"
                 },
                 "name": "lib.HelperClass",
+                "qname": {
+                    "container": "lib",
+                    "localName": "HelperClass"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -194,6 +202,10 @@
                     "repository": "test"
                 },
                 "name": "shadow.ShadowClass",
+                "qname": {
+                    "container": "shadow",
+                    "localName": "ShadowClass"
+                },
                 "score": {
                     "exactness": 2
                 },

@@ -17,6 +17,10 @@
                     "repository": "test"
                 },
                 "name": "lib.HelperClass",
+                "qname": {
+                    "container": "lib",
+                    "localName": "HelperClass"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -36,6 +40,10 @@
                     "repository": "test"
                 },
                 "name": "lib.helper_func",
+                "qname": {
+                    "container": "lib",
+                    "localName": "helper_func"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -55,6 +63,10 @@
                     "repository": "test"
                 },
                 "name": "main.g.<locals>.h",
+                "qname": {
+                    "container": "main.g.<locals>",
+                    "localName": "h"
+                },
                 "score": {
                     "exactness": 2
                 },

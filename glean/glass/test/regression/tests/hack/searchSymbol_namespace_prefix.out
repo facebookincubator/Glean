@@ -17,6 +17,10 @@
                     "repository": "test"
                 },
                 "name": "BAZ",
+                "qname": {
+                    "container": "SourceClass",
+                    "localName": "BAZ"
+                },
                 "score": {
                     "exactness": 2
                 },

@@ -17,6 +17,10 @@
                     "repository": "test"
                 },
                 "name": "InnerNS",
+                "qname": {
+                    "container": "NS",
+                    "localName": "InnerNS"
+                },
                 "score": {
                     "exactness": 2
                 },

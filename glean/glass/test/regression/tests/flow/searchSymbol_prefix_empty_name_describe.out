@@ -1333,6 +1333,10 @@
                     "repository": "test"
                 },
                 "name": "plus",
+                "qname": {
+                    "container": "cjs_exports",
+                    "localName": "plus"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1351,6 +1355,10 @@
                     "repository": "test"
                 },
                 "name": "x",
+                "qname": {
+                    "container": "cjs_exports",
+                    "localName": "x"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1369,6 +1377,10 @@
                     "repository": "test"
                 },
                 "name": "C",
+                "qname": {
+                    "container": "es_exports",
+                    "localName": "C"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1387,6 +1399,10 @@
                     "repository": "test"
                 },
                 "name": "bar",
+                "qname": {
+                    "container": "es_exports",
+                    "localName": "bar"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1405,6 +1421,10 @@
                     "repository": "test"
                 },
                 "name": "baz",
+                "qname": {
+                    "container": "es_exports",
+                    "localName": "baz"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1423,6 +1443,10 @@
                     "repository": "test"
                 },
                 "name": "bor",
+                "qname": {
+                    "container": "es_exports",
+                    "localName": "bor"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1441,6 +1465,10 @@
                     "repository": "test"
                 },
                 "name": "d",
+                "qname": {
+                    "container": "es_exports",
+                    "localName": "d"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1459,6 +1487,10 @@
                     "repository": "test"
                 },
                 "name": "foo",
+                "qname": {
+                    "container": "es_exports",
+                    "localName": "foo"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1477,6 +1509,10 @@
                     "repository": "test"
                 },
                 "name": "num",
+                "qname": {
+                    "container": "es_exports",
+                    "localName": "num"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1495,6 +1531,10 @@
                     "repository": "test"
                 },
                 "name": "x",
+                "qname": {
+                    "container": "es_exports",
+                    "localName": "x"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1513,6 +1553,10 @@
                     "repository": "test"
                 },
                 "name": "C",
+                "qname": {
+                    "container": "imports",
+                    "localName": "C"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1531,6 +1575,10 @@
                     "repository": "test"
                 },
                 "name": "D",
+                "qname": {
+                    "container": "imports",
+                    "localName": "D"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1549,6 +1597,10 @@
                     "repository": "test"
                 },
                 "name": "a",
+                "qname": {
+                    "container": "imports",
+                    "localName": "a"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1567,6 +1619,10 @@
                     "repository": "test"
                 },
                 "name": "b",
+                "qname": {
+                    "container": "imports",
+                    "localName": "b"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1585,6 +1641,10 @@
                     "repository": "test"
                 },
                 "name": "bar",
+                "qname": {
+                    "container": "imports",
+                    "localName": "bar"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1603,6 +1663,10 @@
                     "repository": "test"
                 },
                 "name": "baz",
+                "qname": {
+                    "container": "imports",
+                    "localName": "baz"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1621,6 +1685,10 @@
                     "repository": "test"
                 },
                 "name": "c",
+                "qname": {
+                    "container": "imports",
+                    "localName": "c"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1639,6 +1707,10 @@
                     "repository": "test"
                 },
                 "name": "caz",
+                "qname": {
+                    "container": "imports",
+                    "localName": "caz"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1657,6 +1729,10 @@
                     "repository": "test"
                 },
                 "name": "d",
+                "qname": {
+                    "container": "imports",
+                    "localName": "d"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1675,6 +1751,10 @@
                     "repository": "test"
                 },
                 "name": "e",
+                "qname": {
+                    "container": "imports",
+                    "localName": "e"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1693,6 +1773,10 @@
                     "repository": "test"
                 },
                 "name": "fn",
+                "qname": {
+                    "container": "imports",
+                    "localName": "fn"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1711,6 +1795,10 @@
                     "repository": "test"
                 },
                 "name": "foo",
+                "qname": {
+                    "container": "imports",
+                    "localName": "foo"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1729,6 +1817,10 @@
                     "repository": "test"
                 },
                 "name": "num",
+                "qname": {
+                    "container": "imports",
+                    "localName": "num"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1747,6 +1839,10 @@
                     "repository": "test"
                 },
                 "name": "qux",
+                "qname": {
+                    "container": "imports",
+                    "localName": "qux"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1765,6 +1861,10 @@
                     "repository": "test"
                 },
                 "name": "s",
+                "qname": {
+                    "container": "imports",
+                    "localName": "s"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1783,6 +1883,10 @@
                     "repository": "test"
                 },
                 "name": "str",
+                "qname": {
+                    "container": "imports",
+                    "localName": "str"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1801,6 +1905,10 @@
                     "repository": "test"
                 },
                 "name": "x",
+                "qname": {
+                    "container": "imports",
+                    "localName": "x"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1819,6 +1927,10 @@
                     "repository": "test"
                 },
                 "name": "y",
+                "qname": {
+                    "container": "imports",
+                    "localName": "y"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1837,6 +1949,10 @@
                     "repository": "test"
                 },
                 "name": "z",
+                "qname": {
+                    "container": "imports",
+                    "localName": "z"
+                },
                 "score": {
                     "exactness": 2
                 },

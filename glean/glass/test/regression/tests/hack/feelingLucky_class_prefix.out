@@ -17,6 +17,10 @@
                     "repository": "test"
                 },
                 "name": "RefClass",
+                "qname": {
+                    "container": "",
+                    "localName": "RefClass"
+                },
                 "score": {
                     "exactness": 2
                 },

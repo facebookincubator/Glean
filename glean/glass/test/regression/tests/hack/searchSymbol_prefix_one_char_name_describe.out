@@ -416,6 +416,10 @@
                     "repository": "test"
                 },
                 "name": "SourceClass",
+                "qname": {
+                    "container": "",
+                    "localName": "SourceClass"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -435,6 +439,10 @@
                     "repository": "test"
                 },
                 "name": "SourceEnum",
+                "qname": {
+                    "container": "",
+                    "localName": "SourceEnum"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -454,6 +462,10 @@
                     "repository": "test"
                 },
                 "name": "SourceEnum2",
+                "qname": {
+                    "container": "",
+                    "localName": "SourceEnum2"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -473,6 +485,10 @@
                     "repository": "test"
                 },
                 "name": "SourceEnumClass3",
+                "qname": {
+                    "container": "",
+                    "localName": "SourceEnumClass3"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -492,6 +508,10 @@
                     "repository": "test"
                 },
                 "name": "SourceInterface",
+                "qname": {
+                    "container": "",
+                    "localName": "SourceInterface"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -511,6 +531,10 @@
                     "repository": "test"
                 },
                 "name": "SourceTrait",
+                "qname": {
+                    "container": "",
+                    "localName": "SourceTrait"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -530,6 +554,10 @@
                     "repository": "test"
                 },
                 "name": "SubClass",
+                "qname": {
+                    "container": "",
+                    "localName": "SubClass"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -549,6 +577,10 @@
                     "repository": "test"
                 },
                 "name": "SuperClass",
+                "qname": {
+                    "container": "",
+                    "localName": "SuperClass"
+                },
                 "score": {
                     "exactness": 2
                 },

@@ -416,6 +416,7 @@ struct SymbolResult {
   4: optional SymbolKind kind;
   5: string name;
   6: map<string, double> score; // extensible ranking scores
+  7: QualifiedName qname;
 }
 
 // String search, either core symbol data or with full metadata per symbol

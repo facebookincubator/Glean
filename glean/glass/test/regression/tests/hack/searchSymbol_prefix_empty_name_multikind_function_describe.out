@@ -64,6 +64,10 @@
                     "repository": "test"
                 },
                 "name": "corge",
+                "qname": {
+                    "container": "",
+                    "localName": "corge"
+                },
                 "score": {
                     "exactness": 2
                 },

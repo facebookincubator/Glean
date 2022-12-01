@@ -17,6 +17,10 @@
                     "repository": "test"
                 },
                 "name": "superAdd",
+                "qname": {
+                    "container": "SuperClass",
+                    "localName": "superAdd"
+                },
                 "score": {
                     "exactness": 2
                 },

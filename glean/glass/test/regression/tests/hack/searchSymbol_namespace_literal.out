@@ -17,6 +17,10 @@
                     "repository": "test"
                 },
                 "name": "NS",
+                "qname": {
+                    "container": "",
+                    "localName": "NS"
+                },
                 "score": {
                     "exactness": 0
                 },
@@ -36,6 +40,10 @@
                     "repository": "test"
                 },
                 "name": "NS",
+                "qname": {
+                    "container": "",
+                    "localName": "NS"
+                },
                 "score": {
                     "exactness": 0
                 },

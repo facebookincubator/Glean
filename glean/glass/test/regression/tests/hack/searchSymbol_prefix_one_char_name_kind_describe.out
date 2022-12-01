@@ -176,6 +176,10 @@
                     "repository": "test"
                 },
                 "name": "SourceClass",
+                "qname": {
+                    "container": "",
+                    "localName": "SourceClass"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -195,6 +199,10 @@
                     "repository": "test"
                 },
                 "name": "SubClass",
+                "qname": {
+                    "container": "",
+                    "localName": "SubClass"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -214,6 +222,10 @@
                     "repository": "test"
                 },
                 "name": "SuperClass",
+                "qname": {
+                    "container": "",
+                    "localName": "SuperClass"
+                },
                 "score": {
                     "exactness": 2
                 },

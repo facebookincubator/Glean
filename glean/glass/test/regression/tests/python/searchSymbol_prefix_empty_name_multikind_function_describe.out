@@ -386,6 +386,10 @@
                     "repository": "test"
                 },
                 "name": "all.fn",
+                "qname": {
+                    "container": "all",
+                    "localName": "fn"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -405,6 +409,10 @@
                     "repository": "test"
                 },
                 "name": "as.fn",
+                "qname": {
+                    "container": "as",
+                    "localName": "fn"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -424,6 +432,10 @@
                     "repository": "test"
                 },
                 "name": "big_lib.big_func",
+                "qname": {
+                    "container": "big_lib",
+                    "localName": "big_func"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -443,6 +455,10 @@
                     "repository": "test"
                 },
                 "name": "lib.helper_func",
+                "qname": {
+                    "container": "lib",
+                    "localName": "helper_func"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -462,6 +478,10 @@
                     "repository": "test"
                 },
                 "name": "main.f",
+                "qname": {
+                    "container": "main",
+                    "localName": "f"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -481,6 +501,10 @@
                     "repository": "test"
                 },
                 "name": "main.g",
+                "qname": {
+                    "container": "main",
+                    "localName": "g"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -500,6 +524,10 @@
                     "repository": "test"
                 },
                 "name": "main.g.<locals>.h",
+                "qname": {
+                    "container": "main.g.<locals>",
+                    "localName": "h"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -519,6 +547,10 @@
                     "repository": "test"
                 },
                 "name": "shadow.shadow_func",
+                "qname": {
+                    "container": "shadow",
+                    "localName": "shadow_func"
+                },
                 "score": {
                     "exactness": 2
                 },

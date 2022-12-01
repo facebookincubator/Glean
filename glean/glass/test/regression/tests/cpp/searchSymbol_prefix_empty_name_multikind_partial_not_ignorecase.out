@@ -17,6 +17,10 @@
                     "repository": "test"
                 },
                 "name": "foo",
+                "qname": {
+                    "container": "foo",
+                    "localName": "foo"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -36,6 +40,10 @@
                     "repository": "test"
                 },
                 "name": "fooFn",
+                "qname": {
+                    "container": "foo",
+                    "localName": "fooFn"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -55,6 +63,10 @@
                     "repository": "test"
                 },
                 "name": "h",
+                "qname": {
+                    "container": "",
+                    "localName": "h"
+                },
                 "score": {
                     "exactness": 2
                 },

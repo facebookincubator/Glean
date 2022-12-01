@@ -17,6 +17,10 @@
                     "repository": "test"
                 },
                 "name": "Global",
+                "qname": {
+                    "container": "",
+                    "localName": "Global"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -36,6 +40,10 @@
                     "repository": "test"
                 },
                 "name": "GlobalClass",
+                "qname": {
+                    "container": "",
+                    "localName": "GlobalClass"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -55,6 +63,10 @@
                     "repository": "test"
                 },
                 "name": "InU",
+                "qname": {
+                    "container": "baz::U",
+                    "localName": "InU"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -74,6 +86,10 @@
                     "repository": "test"
                 },
                 "name": "InUClass",
+                "qname": {
+                    "container": "baz::U",
+                    "localName": "InUClass"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -93,6 +109,10 @@
                     "repository": "test"
                 },
                 "name": "_secret",
+                "qname": {
+                    "container": "maybe::Nothing",
+                    "localName": "_secret"
+                },
                 "score": {
                     "exactness": 2
                 },

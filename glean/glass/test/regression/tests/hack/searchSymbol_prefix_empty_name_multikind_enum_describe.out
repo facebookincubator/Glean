@@ -671,6 +671,10 @@
                     "repository": "test"
                 },
                 "name": "Position",
+                "qname": {
+                    "container": "",
+                    "localName": "Position"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -690,6 +694,10 @@
                     "repository": "test"
                 },
                 "name": "Bottom",
+                "qname": {
+                    "container": "Position",
+                    "localName": "Bottom"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -709,6 +717,10 @@
                     "repository": "test"
                 },
                 "name": "Center",
+                "qname": {
+                    "container": "Position",
+                    "localName": "Center"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -728,6 +740,10 @@
                     "repository": "test"
                 },
                 "name": "Left",
+                "qname": {
+                    "container": "Position",
+                    "localName": "Left"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -747,6 +763,10 @@
                     "repository": "test"
                 },
                 "name": "Right",
+                "qname": {
+                    "container": "Position",
+                    "localName": "Right"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -766,6 +786,10 @@
                     "repository": "test"
                 },
                 "name": "Top",
+                "qname": {
+                    "container": "Position",
+                    "localName": "Top"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -785,6 +809,10 @@
                     "repository": "test"
                 },
                 "name": "SourceEnum",
+                "qname": {
+                    "container": "",
+                    "localName": "SourceEnum"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -804,6 +832,10 @@
                     "repository": "test"
                 },
                 "name": "A",
+                "qname": {
+                    "container": "SourceEnum",
+                    "localName": "A"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -823,6 +855,10 @@
                     "repository": "test"
                 },
                 "name": "B",
+                "qname": {
+                    "container": "SourceEnum",
+                    "localName": "B"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -842,6 +878,10 @@
                     "repository": "test"
                 },
                 "name": "SourceEnum2",
+                "qname": {
+                    "container": "",
+                    "localName": "SourceEnum2"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -861,6 +901,10 @@
                     "repository": "test"
                 },
                 "name": "A_TAG",
+                "qname": {
+                    "container": "SourceEnum2",
+                    "localName": "A_TAG"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -880,6 +924,10 @@
                     "repository": "test"
                 },
                 "name": "B_TAG",
+                "qname": {
+                    "container": "SourceEnum2",
+                    "localName": "B_TAG"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -899,6 +947,10 @@
                     "repository": "test"
                 },
                 "name": "C_TAG",
+                "qname": {
+                    "container": "SourceEnum2",
+                    "localName": "C_TAG"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -918,6 +970,10 @@
                     "repository": "test"
                 },
                 "name": "SourceEnumClass3",
+                "qname": {
+                    "container": "",
+                    "localName": "SourceEnumClass3"
+                },
                 "score": {
                     "exactness": 2
                 },

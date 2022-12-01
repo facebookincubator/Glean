@@ -17,6 +17,10 @@
                     "repository": "test"
                 },
                 "name": "all",
+                "qname": {
+                    "container": "",
+                    "localName": "all"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -36,6 +40,10 @@
                     "repository": "test"
                 },
                 "name": "all.LocalClass",
+                "qname": {
+                    "container": "all",
+                    "localName": "LocalClass"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -55,6 +63,10 @@
                     "repository": "test"
                 },
                 "name": "all.LocalClass.meth",
+                "qname": {
+                    "container": "all.LocalClass",
+                    "localName": "meth"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -74,6 +86,10 @@
                     "repository": "test"
                 },
                 "name": "all.__all__",
+                "qname": {
+                    "container": "all",
+                    "localName": "__all__"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -93,6 +109,10 @@
                     "repository": "test"
                 },
                 "name": "all.fn",
+                "qname": {
+                    "container": "all",
+                    "localName": "fn"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -112,6 +132,10 @@
                     "repository": "test"
                 },
                 "name": "all.fn.<locals>.local_var",
+                "qname": {
+                    "container": "all.fn.<locals>",
+                    "localName": "local_var"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -131,6 +155,10 @@
                     "repository": "test"
                 },
                 "name": "all.var",
+                "qname": {
+                    "container": "all",
+                    "localName": "var"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -150,6 +178,10 @@
                     "repository": "test"
                 },
                 "name": "as",
+                "qname": {
+                    "container": "",
+                    "localName": "as"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -169,6 +201,10 @@
                     "repository": "test"
                 },
                 "name": "as.fn",
+                "qname": {
+                    "container": "as",
+                    "localName": "fn"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -188,6 +224,10 @@
                     "repository": "test"
                 },
                 "name": "as.fn.<locals>.local_var",
+                "qname": {
+                    "container": "as.fn.<locals>",
+                    "localName": "local_var"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -207,6 +247,10 @@
                     "repository": "test"
                 },
                 "name": "big_lib",
+                "qname": {
+                    "container": "",
+                    "localName": "big_lib"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -226,6 +270,10 @@
                     "repository": "test"
                 },
                 "name": "big_lib.big_func",
+                "qname": {
+                    "container": "big_lib",
+                    "localName": "big_func"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -245,6 +293,10 @@
                     "repository": "test"
                 },
                 "name": "big_lib.big_var",
+                "qname": {
+                    "container": "big_lib",
+                    "localName": "big_var"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -264,6 +316,10 @@
                     "repository": "test"
                 },
                 "name": "big_lib.relative",
+                "qname": {
+                    "container": "big_lib",
+                    "localName": "relative"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -283,6 +339,10 @@
                     "repository": "test"
                 },
                 "name": "lib",
+                "qname": {
+                    "container": "",
+                    "localName": "lib"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -302,6 +362,10 @@
                     "repository": "test"
                 },
                 "name": "lib.HelperClass",
+                "qname": {
+                    "container": "lib",
+                    "localName": "HelperClass"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -321,6 +385,10 @@
                     "repository": "test"
                 },
                 "name": "lib.HelperClass.another_method",
+                "qname": {
+                    "container": "lib.HelperClass",
+                    "localName": "another_method"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -340,6 +408,10 @@
                     "repository": "test"
                 },
                 "name": "lib.HelperClass.method",
+                "qname": {
+                    "container": "lib.HelperClass",
+                    "localName": "method"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -359,6 +431,10 @@
                     "repository": "test"
                 },
                 "name": "lib.HelperClass.value",
+                "qname": {
+                    "container": "lib.HelperClass",
+                    "localName": "value"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -378,6 +454,10 @@
                     "repository": "test"
                 },
                 "name": "lib.helper_func",
+                "qname": {
+                    "container": "lib",
+                    "localName": "helper_func"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -397,6 +477,10 @@
                     "repository": "test"
                 },
                 "name": "main",
+                "qname": {
+                    "container": "",
+                    "localName": "main"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -416,6 +500,10 @@
                     "repository": "test"
                 },
                 "name": "main.f",
+                "qname": {
+                    "container": "main",
+                    "localName": "f"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -435,6 +523,10 @@
                     "repository": "test"
                 },
                 "name": "main.f.<locals>.c",
+                "qname": {
+                    "container": "main.f.<locals>",
+                    "localName": "c"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -454,6 +546,10 @@
                     "repository": "test"
                 },
                 "name": "main.g",
+                "qname": {
+                    "container": "main",
+                    "localName": "g"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -473,6 +569,10 @@
                     "repository": "test"
                 },
                 "name": "main.g.<locals>.h",
+                "qname": {
+                    "container": "main.g.<locals>",
+                    "localName": "h"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -492,6 +592,10 @@
                     "repository": "test"
                 },
                 "name": "shadow",
+                "qname": {
+                    "container": "",
+                    "localName": "shadow"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -511,6 +615,10 @@
                     "repository": "test"
                 },
                 "name": "shadow.ShadowClass",
+                "qname": {
+                    "container": "shadow",
+                    "localName": "ShadowClass"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -530,6 +638,10 @@
                     "repository": "test"
                 },
                 "name": "shadow.ShadowClass.big_func",
+                "qname": {
+                    "container": "shadow.ShadowClass",
+                    "localName": "big_func"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -549,6 +661,10 @@
                     "repository": "test"
                 },
                 "name": "shadow.ShadowClass.local_var",
+                "qname": {
+                    "container": "shadow.ShadowClass",
+                    "localName": "local_var"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -568,6 +684,10 @@
                     "repository": "test"
                 },
                 "name": "shadow.ShadowClass.other_var",
+                "qname": {
+                    "container": "shadow.ShadowClass",
+                    "localName": "other_var"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -587,6 +707,10 @@
                     "repository": "test"
                 },
                 "name": "shadow.big_func",
+                "qname": {
+                    "container": "shadow",
+                    "localName": "big_func"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -606,6 +730,10 @@
                     "repository": "test"
                 },
                 "name": "shadow.local_var",
+                "qname": {
+                    "container": "shadow",
+                    "localName": "local_var"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -625,6 +753,10 @@
                     "repository": "test"
                 },
                 "name": "shadow.local_var",
+                "qname": {
+                    "container": "shadow",
+                    "localName": "local_var"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -644,6 +776,10 @@
                     "repository": "test"
                 },
                 "name": "shadow.other_var",
+                "qname": {
+                    "container": "shadow",
+                    "localName": "other_var"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -663,6 +799,10 @@
                     "repository": "test"
                 },
                 "name": "shadow.shadow_func",
+                "qname": {
+                    "container": "shadow",
+                    "localName": "shadow_func"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -682,6 +822,10 @@
                     "repository": "test"
                 },
                 "name": "shadow.shadow_func.<locals>.big_func",
+                "qname": {
+                    "container": "shadow.shadow_func.<locals>",
+                    "localName": "big_func"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -701,6 +845,10 @@
                     "repository": "test"
                 },
                 "name": "shadow.shadow_func.<locals>.local_var",
+                "qname": {
+                    "container": "shadow.shadow_func.<locals>",
+                    "localName": "local_var"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -720,6 +868,10 @@
                     "repository": "test"
                 },
                 "name": "shadow.shadow_func.<locals>.other_var",
+                "qname": {
+                    "container": "shadow.shadow_func.<locals>",
+                    "localName": "other_var"
+                },
                 "score": {
                     "exactness": 2
                 },

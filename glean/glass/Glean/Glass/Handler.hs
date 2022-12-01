@@ -476,10 +476,11 @@ mkSymbolDescription
 mkSymbolDescription symbolId scmRevs repo CodeEntityLocation{..} = do
   range <- rangeSpanToLocationRange repo entityFile entityRange
   kind <- eitherToMaybe <$> findSymbolKind entity
+  qname <- eThrow =<< toQualifiedName entity -- non-optional now
   let lang = entityLanguage entity
       score = mempty
   describeEntity scmRevs entity $
-    SymbolResult symbolId range lang kind entityName score
+    SymbolResult symbolId range lang kind entityName score qname
 
 -- | Search for entities by string name with kind and language filters
 searchSymbol
@@ -617,6 +618,7 @@ processSymbolResult terse sString repo scmRevs result = do
     repo location_file location_location
   path <- GleanPath <$> Glean.keyOf location_file
   symbolResult_symbol <- toSymbolId (fromGleanPath repo path) srEntity
+  symbolResult_qname <- eThrow =<< toQualifiedName srEntity
   let symbolResult_kind = symbolKindToSymbolKind <$> srKind
       symbolResult_language = entityLanguage srEntity
       symbolResult_name = location_name
@@ -1359,7 +1361,7 @@ describeEntity
 describeEntity scmRevs ent SymbolResult{..} = do
   symbolDescription_repo_hash <-
     getRepoHashForLocation symbolResult_location scmRevs <$> Glean.haxlRepo
-  symbolDescription_name <- eThrow =<< toQualifiedName ent
+  let symbolDescription_name = symbolResult_qname
   symbolDescription_annotations <- eThrow =<< getAnnotationsForEntity repo ent
   symbolDescription_comments <- eThrow =<< getCommentsForEntity repo ent
   (symbolDescription_visibility, symbolDescription_modifiers)

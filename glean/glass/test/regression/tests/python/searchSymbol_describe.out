@@ -64,6 +64,10 @@
                     "repository": "test"
                 },
                 "name": "lib.HelperClass",
+                "qname": {
+                    "container": "lib",
+                    "localName": "HelperClass"
+                },
                 "score": {
                     "exactness": 2
                 },

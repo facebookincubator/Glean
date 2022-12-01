@@ -17,6 +17,10 @@
                     "repository": "test"
                 },
                 "name": "NamespaceClass",
+                "qname": {
+                    "container": "NS",
+                    "localName": "NamespaceClass"
+                },
                 "score": {
                     "exactness": 2
                 },

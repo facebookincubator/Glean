@@ -17,6 +17,10 @@
                     "repository": "test"
                 },
                 "name": "class_function",
+                "qname": {
+                    "container": "NS/NamespaceClass",
+                    "localName": "class_function"
+                },
                 "score": {
                     "exactness": 2
                 },

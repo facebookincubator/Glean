@@ -17,6 +17,10 @@
                     "repository": "test"
                 },
                 "name": "S",
+                "qname": {
+                    "container": "foo",
+                    "localName": "S"
+                },
                 "score": {
                     "exactness": 2
                 },

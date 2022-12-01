@@ -936,6 +936,10 @@
                     "repository": "test"
                 },
                 "name": "flatten",
+                "qname": {
+                    "container": "FancyTypes",
+                    "localName": "flatten"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -955,6 +959,10 @@
                     "repository": "test"
                 },
                 "name": "another_class_function",
+                "qname": {
+                    "container": "NS/AnotherNamespaceClass",
+                    "localName": "another_class_function"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -974,6 +982,10 @@
                     "repository": "test"
                 },
                 "name": "class_function",
+                "qname": {
+                    "container": "NS/NamespaceClass",
+                    "localName": "class_function"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -993,6 +1005,10 @@
                     "repository": "test"
                 },
                 "name": "bar",
+                "qname": {
+                    "container": "RefClass",
+                    "localName": "bar"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1012,6 +1028,10 @@
                     "repository": "test"
                 },
                 "name": "bazza",
+                "qname": {
+                    "container": "RefClass",
+                    "localName": "bazza"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1031,6 +1051,10 @@
                     "repository": "test"
                 },
                 "name": "foo",
+                "qname": {
+                    "container": "RefClass",
+                    "localName": "foo"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1050,6 +1074,10 @@
                     "repository": "test"
                 },
                 "name": "lotsofkeywords",
+                "qname": {
+                    "container": "RefClass",
+                    "localName": "lotsofkeywords"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1069,6 +1097,10 @@
                     "repository": "test"
                 },
                 "name": "bar",
+                "qname": {
+                    "container": "SourceClass",
+                    "localName": "bar"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1088,6 +1120,10 @@
                     "repository": "test"
                 },
                 "name": "overrideMe",
+                "qname": {
+                    "container": "SourceClass",
+                    "localName": "overrideMe"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1107,6 +1143,10 @@
                     "repository": "test"
                 },
                 "name": "pleaseOverride",
+                "qname": {
+                    "container": "SourceClass",
+                    "localName": "pleaseOverride"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1126,6 +1166,10 @@
                     "repository": "test"
                 },
                 "name": "foo",
+                "qname": {
+                    "container": "SourceInterface",
+                    "localName": "foo"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1145,6 +1189,10 @@
                     "repository": "test"
                 },
                 "name": "quux",
+                "qname": {
+                    "container": "SourceInterface",
+                    "localName": "quux"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1164,6 +1212,10 @@
                     "repository": "test"
                 },
                 "name": "quux",
+                "qname": {
+                    "container": "SourceTrait",
+                    "localName": "quux"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1183,6 +1235,10 @@
                     "repository": "test"
                 },
                 "name": "pleaseOverride",
+                "qname": {
+                    "container": "SubClass",
+                    "localName": "pleaseOverride"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1202,6 +1258,10 @@
                     "repository": "test"
                 },
                 "name": "overrideMe",
+                "qname": {
+                    "container": "SuperClass",
+                    "localName": "overrideMe"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1221,6 +1281,10 @@
                     "repository": "test"
                 },
                 "name": "superAdd",
+                "qname": {
+                    "container": "SuperClass",
+                    "localName": "superAdd"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1240,6 +1304,10 @@
                     "repository": "test"
                 },
                 "name": "__construct",
+                "qname": {
+                    "container": "TestAnnotation",
+                    "localName": "__construct"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -1259,6 +1327,10 @@
                     "repository": "test"
                 },
                 "name": "io_good",
+                "qname": {
+                    "container": "TestAnnotation",
+                    "localName": "io_good"
+                },
                 "score": {
                     "exactness": 2
                 },

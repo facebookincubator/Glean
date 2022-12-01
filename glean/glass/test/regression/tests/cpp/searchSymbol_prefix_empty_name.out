@@ -17,6 +17,10 @@
                     "repository": "test"
                 },
                 "name": "Global",
+                "qname": {
+                    "container": "",
+                    "localName": "Global"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -36,6 +40,10 @@
                     "repository": "test"
                 },
                 "name": "GA",
+                "qname": {
+                    "container": "Global",
+                    "localName": "GA"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -55,6 +63,10 @@
                     "repository": "test"
                 },
                 "name": "GB",
+                "qname": {
+                    "container": "Global",
+                    "localName": "GB"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -74,6 +86,10 @@
                     "repository": "test"
                 },
                 "name": "GC",
+                "qname": {
+                    "container": "Global",
+                    "localName": "GC"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -93,6 +109,10 @@
                     "repository": "test"
                 },
                 "name": "GlobalClass",
+                "qname": {
+                    "container": "",
+                    "localName": "GlobalClass"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -112,6 +132,10 @@
                     "repository": "test"
                 },
                 "name": "GCA",
+                "qname": {
+                    "container": "GlobalClass",
+                    "localName": "GCA"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -131,6 +155,10 @@
                     "repository": "test"
                 },
                 "name": "GCB",
+                "qname": {
+                    "container": "GlobalClass",
+                    "localName": "GCB"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -150,6 +178,10 @@
                     "repository": "test"
                 },
                 "name": "GCC",
+                "qname": {
+                    "container": "GlobalClass",
+                    "localName": "GCC"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -169,6 +201,10 @@
                     "repository": "test"
                 },
                 "name": "U",
+                "qname": {
+                    "container": "baz",
+                    "localName": "U"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -188,6 +224,10 @@
                     "repository": "test"
                 },
                 "name": "InU",
+                "qname": {
+                    "container": "baz::U",
+                    "localName": "InU"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -207,6 +247,10 @@
                     "repository": "test"
                 },
                 "name": "UA",
+                "qname": {
+                    "container": "baz::U::InU",
+                    "localName": "UA"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -226,6 +270,10 @@
                     "repository": "test"
                 },
                 "name": "UB",
+                "qname": {
+                    "container": "baz::U::InU",
+                    "localName": "UB"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -245,6 +293,10 @@
                     "repository": "test"
                 },
                 "name": "UC",
+                "qname": {
+                    "container": "baz::U::InU",
+                    "localName": "UC"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -264,6 +316,10 @@
                     "repository": "test"
                 },
                 "name": "InUClass",
+                "qname": {
+                    "container": "baz::U",
+                    "localName": "InUClass"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -283,6 +339,10 @@
                     "repository": "test"
                 },
                 "name": "UCA",
+                "qname": {
+                    "container": "baz::U::InUClass",
+                    "localName": "UCA"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -302,6 +362,10 @@
                     "repository": "test"
                 },
                 "name": "UCB",
+                "qname": {
+                    "container": "baz::U::InUClass",
+                    "localName": "UCB"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -321,6 +385,10 @@
                     "repository": "test"
                 },
                 "name": "UCC",
+                "qname": {
+                    "container": "baz::U::InUClass",
+                    "localName": "UCC"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -340,6 +408,10 @@
                     "repository": "test"
                 },
                 "name": "S",
+                "qname": {
+                    "container": "foo",
+                    "localName": "S"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -359,6 +431,10 @@
                     "repository": "test"
                 },
                 "name": "T",
+                "qname": {
+                    "container": "foo::bar",
+                    "localName": "T"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -378,6 +454,10 @@
                     "repository": "test"
                 },
                 "name": "foo",
+                "qname": {
+                    "container": "foo",
+                    "localName": "foo"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -397,6 +477,10 @@
                     "repository": "test"
                 },
                 "name": "fooFn",
+                "qname": {
+                    "container": "foo",
+                    "localName": "fooFn"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -416,6 +500,10 @@
                     "repository": "test"
                 },
                 "name": "h",
+                "qname": {
+                    "container": "",
+                    "localName": "h"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -435,6 +523,10 @@
                     "repository": "test"
                 },
                 "name": "Nothing",
+                "qname": {
+                    "container": "maybe",
+                    "localName": "Nothing"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -454,6 +546,10 @@
                     "repository": "test"
                 },
                 "name": "_secret",
+                "qname": {
+                    "container": "maybe::Nothing",
+                    "localName": "_secret"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -473,6 +569,10 @@
                     "repository": "test"
                 },
                 "name": "_magic",
+                "qname": {
+                    "container": "maybe::Nothing::_secret",
+                    "localName": "_magic"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -492,6 +592,10 @@
                     "repository": "test"
                 },
                 "name": "Something",
+                "qname": {
+                    "container": "maybe",
+                    "localName": "Something"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -511,6 +615,10 @@
                     "repository": "test"
                 },
                 "name": "nothing",
+                "qname": {
+                    "container": "maybe",
+                    "localName": "nothing"
+                },
                 "score": {
                     "exactness": 2
                 },

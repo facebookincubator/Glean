@@ -17,6 +17,10 @@
                     "repository": "test"
                 },
                 "name": "all.LocalClass.meth",
+                "qname": {
+                    "container": "all.LocalClass",
+                    "localName": "meth"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -36,6 +40,10 @@
                     "repository": "test"
                 },
                 "name": "lib.HelperClass.another_method",
+                "qname": {
+                    "container": "lib.HelperClass",
+                    "localName": "another_method"
+                },
                 "score": {
                     "exactness": 2
                 },
@@ -55,6 +63,10 @@
                     "repository": "test"
                 },
                 "name": "lib.HelperClass.method",
+                "qname": {
+                    "container": "lib.HelperClass",
+                    "localName": "method"
+                },
                 "score": {
                     "exactness": 2
                 },
