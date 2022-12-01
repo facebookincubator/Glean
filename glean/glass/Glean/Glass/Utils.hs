@@ -37,6 +37,7 @@ module Glean.Glass.Utils
   ) where
 
 import Data.Maybe (fromMaybe)
+import Data.Tuple.Extra ( snd3 )
 import Data.Text ( Text, length )
 import qualified Data.Text as Text
 import System.FilePath ( splitDirectories, joinPath )
@@ -147,18 +148,18 @@ subString start len = Text.take len . Text.drop start
 
 -- Split a type string along reference spans. Annotate
 -- extracted fragments. (annotation, start, length)
+-- if spans are inconsistent, don't fragment
 splitString :: Text -> [(ann, Int, Int)] -> [(Text, Maybe ann)]
 splitString s xrefs =
-  reverse $ splitStringAux 0 xrefs []
+  let res = reverse $ splitStringAux 0 (List.sortOn snd3 xrefs) []
+      check = Text.concat $ fmap fst res
+  in if check == s then res else [(s, Nothing)]
   where
     splitStringAux pos xrefs res =
       let n = Data.Text.length s in
       case xrefs of
-        [] ->
-          if pos == n then
-            res
-          else
-            (subString pos (n - pos) s, Nothing) : res
+        [] | pos == n -> res
+           | otherwise -> (subString pos (n - pos) s, Nothing) : res
         (ann, start, length) : xrefs' ->
           if pos == start then
             splitStringAux
