@@ -130,7 +130,7 @@ withBackend evb cfgapi service schema settings inner = case service of
     let (config', opts) = settings (config, def)
     client <- Remote.clientInfo
     inner $ Remote.ThriftBackend
-      config
+      config'
       evb
       (Remote.thriftServiceWithTimeout config' opts)
       client

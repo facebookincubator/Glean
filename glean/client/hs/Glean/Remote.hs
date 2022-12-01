@@ -20,6 +20,7 @@ module Glean.Remote
   , setService
   , setNoShards
   , setTimeout
+  , setBatchSize
   , thriftServiceWithTimeout
   , ThriftBackend(..)
   , defaultClientConfigSource
@@ -45,6 +46,7 @@ import Data.ByteString (ByteString)
 import Data.Default
 import Data.Foldable(for_)
 import qualified Data.HashMap.Strict as HashMap
+import Data.Int (Int32)
 import Data.List.Extra (chunksOf)
 import qualified Data.Text as Text
 import Data.Typeable
@@ -109,6 +111,11 @@ setNoShards (conf, opts) = (conf { clientConfig_use_shards = NO_SHARDS }, opts)
 -- service and the host_timeout_ms set in the ClientConfig.
 setTimeout :: Double -> Settings
 setTimeout t (conf, opts) = (conf, opts { processingTimeout = Just t })
+
+-- | Set the query batching size for remote services (size 1 disables batching)
+setBatchSize :: Int32 -> Settings
+setBatchSize batchSize (conf, opts) =
+  (conf{clientConfig_max_batch_size = batchSize}, opts)
 
 -- | Construct a 'Backend' for interacting with a Glean server.
 withRemoteBackend
