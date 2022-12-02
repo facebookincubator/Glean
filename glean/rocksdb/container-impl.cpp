@@ -220,6 +220,10 @@ void ContainerImpl::optimize(bool compact) {
     auto family = Family::family(i);
     auto handle = families[i];
     if (handle && family) {
+      // For some reason backup doesn't always flush all the WAL logs, but
+      // flushing here seems to fix it. If we backup the DB with WAL logs (which
+      // may be many GB in size), every time the DB is opened the logs have to
+      // be replayed, which takes a long time and consumes memory.
       rocksdb::FlushOptions flush_options;
       db->Flush(flush_options, handle);
       if (!family->keep) {
