@@ -16,7 +16,8 @@ module Glean.Database.Open (
   schemaUpdated,
   getDbSchemaVersion,
   updateLookupCacheStats,
-  repoParent
+  repoParent,
+  repoParents
 ) where
 
 import Control.Concurrent.Async (Async, wait)

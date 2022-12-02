@@ -405,6 +405,22 @@ stackedIncrementalTest2 = TestCase $
     pairsAre "0p" inc [
       ("a","c"),("a","d"),("c","a"),("c","d"),("d","a"),("d","c") ]
 
+    -- check the owner of node "a"
+    results <- runQuery_ env inc $ query $
+      predicate @Glean.Test.Node $ rec $ field @"label" "a" end
+    case results of
+      [Glean.Test.Node id _] -> do
+        ownerExpr <- factOwnership env inc (Fid id)
+        print ownerExpr
+        assertBool "owners" $
+          case ownerExpr of
+            -- {X} is the original owner, {{X},X,E} is the propagated
+            -- ownership from the stacked DB.
+            Just (OrOwners [OrOwners [Unit "X"], Unit x, Unit e]) ->
+              sort [x,e] == ["E", "X"]
+            _otherwise -> False
+      _ -> assertFailure "query failed"
+
     inc2 <- incrementalDB env inc (Repo "base-inc" "2") ["X"]
     deriveAndFinish env inc2
     -- exclude X, but node "a" should be kept alive by Edge{Z}

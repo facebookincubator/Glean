@@ -15,8 +15,10 @@ import Control.Concurrent.STM
 import Control.Exception
 import Data.ByteString (ByteString)
 import Data.Coerce
+import Data.Maybe
 import qualified Data.Vector.Storable as Vector
 import Data.Word
+import Foreign.Marshal.Utils (withMany)
 
 import Glean.Database.Open
 import Glean.Database.Storage as Storage
@@ -38,27 +40,32 @@ factOwnership
   -> Repo
   -> Fid
   -> IO (Maybe OwnerExpr)
-factOwnership env repo fid =
-  readDatabase env repo $ \OpenDB{..} lookup -> do
-    maybeOwnership <- readTVarIO odbOwnership
-    flip (maybe (return Nothing)) maybeOwnership $ \ownership -> do
-      let
-        unpackSet :: UsetId -> IO OwnerExpr
-        unpackSet usetId = do
-          maybeUnit <- Storage.getUnit odbHandle (coerce usetId)
-          -- TODO: try the other layers when this is a stack
-          case maybeUnit of
-            Just unit -> return (Unit unit)
-            Nothing -> do
-              maybeExpr <- getOwnershipSet ownership usetId
-              case maybeExpr of
-                Nothing -> throwIO $ ErrorCall $
-                  "unknown UsetId: " <> show (coerce usetId :: Word32)
-                Just (op, vec) -> do
-                  contents <- mapM unpackSet (Vector.toList vec)
-                  case op of
-                    And -> return (AndOwners contents)
-                    Or -> return (OrOwners contents)
+factOwnership env repo fid = do
+  maybeSet <- readDatabase env repo $ \_ lookup -> getFactOwner lookup fid
+  parents <- repoParents env repo
+  withMany (withOpenDatabase env) (repo:parents) $ \odbs -> do
+    ownerships <- catMaybes <$> mapM (readTVarIO . odbOwnership) odbs
+    let
+      getUnit unitId [] = getUset (coerce unitId) ownerships
+      getUnit unitId (OpenDB{..} : odbs) = do
+        maybeUnit <- Storage.getUnit odbHandle unitId
+        case maybeUnit of
+          Just unit -> return (Unit unit)
+          Nothing -> getUnit unitId odbs
 
-      maybeSet <- getFactOwner lookup fid
-      mapM unpackSet maybeSet
+      getUset usetId [] = throwIO $ ErrorCall $
+        "unknown UsetId: " <> show (coerce usetId :: Word32)
+      getUset usetId (own : owns) = do
+        maybeExpr <- getOwnershipSet own usetId
+        case maybeExpr of
+          Nothing -> getUset usetId owns
+          Just (op, vec) -> do
+            contents <- mapM unpackSet (Vector.toList vec)
+            case op of
+              And -> return (AndOwners contents)
+              Or -> return (OrOwners contents)
+
+      unpackSet :: UsetId -> IO OwnerExpr
+      unpackSet usetId = getUnit (coerce usetId) odbs
+
+    mapM unpackSet maybeSet
