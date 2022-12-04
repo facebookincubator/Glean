@@ -86,7 +86,7 @@ predicate HackEntityKind:
       ({ interface_ = _ } = C; Interface = Kind) |
       ({ trait = _ } = C; Trait = Kind)
     ) |
-    ({ enumerator = _ } = Decl; Enum_ = Kind) |
+    ({ enumerator = _ } = Decl; Field = Kind) |
     ({ function_ = _ } = Decl; Function = Kind) |
     ({ globalConst = _ } = Decl; Constant = Kind) |
     ({ method = _ } = Decl; Method = Kind) |
