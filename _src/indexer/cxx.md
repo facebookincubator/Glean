@@ -71,7 +71,7 @@ PATH variable for this to succeed, or in the build tree.
 
 ## Schema
 
-The schema is in <SrcFile file="glean/schema/source/cxx1.angle" />
+The schema is in <SrcFile file="glean/schema/source/cxx.angle" />
 
 The schema is quite rich and captures C++, C, Objective-C and C pre-processor
 symbols, the semantic structure of C++ symbols, and is precise enough to do

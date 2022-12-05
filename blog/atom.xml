@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://glean.software/blog</id>
+    <title>Glean Blog</title>
+    <updated>2022-12-01T00:00:00.000Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://glean.software/blog"/>
+    <subtitle>Glean Blog</subtitle>
+    <icon>https://glean.software/img/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[Incremental indexing with Glean]]></title>
+        <id>incremental</id>
+        <link href="https://glean.software/blog/incremental"/>
+        <updated>2022-12-01T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[This post describes how Glean supports incremental indexing of]]></summary>
+        <content type="html"><![CDATA[<p>  This post describes how Glean supports <em>incremental indexing</em> of
+source code, to maintain an up-to-date index of a large repository
+using minimal resources. This is an overview of the problems and
+some aspects of how we solved them; for the technical details of the
+implementation see <a href="/docs/implementation/incrementality/">Implementation Notes:
+Incrementality</a>.</p><h2 class="anchor anchorWithStickyNavbar_LWe7" id="background">Background<a class="hash-link" href="#background" title="Direct link to heading">​</a></h2><p>Indexing a large amount of source code can take a long time. It's not
+uncommon for very large indexing jobs to take multple
+hours. Furthermore, a monolithic indexing job produces a large DB that
+can be slow to ship around, for example to replicate across a fleet of
+Glean servers.</p><p>Source code changes often, and we would like to keep the index up to
+date, but redoing the monolithic indexing job for every change is out
+of the question. Instead what we would like to do is to update a
+monolithic index with the <em>changes</em> between the base revision and the
+current revision, which should hopefully be faster than a full
+repository indexing job because we only have to look at the things
+that have changed. The goal is to be able to index the changes in
+<em>O(changes)</em> rather than <em>O(repository)</em>, or as close to that as we
+can get.</p><h2 class="anchor anchorWithStickyNavbar_LWe7" id="how-incrementality-works">How incrementality works<a class="hash-link" href="#how-incrementality-works" title="Direct link to heading">​</a></h2><p>To produce a modified DB, we hide a portion of the data in the
+original DB, and then stack a DB with the new data on top. Like this:</p><p><img loading="lazy" alt="Incremental stack" src="/assets/images/stack-f1841961d75a1c2d4d1338f3d18f0179.jpg" width="569" height="458" class="img_ev3q"></p><p>The user asks for the DB "new", and they can then work with the data
+in exactly the same way as they would for a single DB. The fact that
+the DB is a stack is invisible to a user making queries. Furthermore,
+the DB "old" still exists and can be used simultaneously, giving us
+access to multiple versions of the DB at the same time. We can even
+have many different versions of "new", each replacing a different
+portion of "old".</p><p>All of the interesting stuff is in how we hide part of the data in the
+old DB.  How do we hide part of the data?</p><p>When facts are added to a Glean DB, the producer of the facts can
+label facts with a <em>unit</em>. A unit is just a string; Glean doesn't impose
+any particular meaning on units so the indexer can use whatever
+convention it likes, but typically a unit might be a filename or
+module name. For example, when indexing a file F, the indexer would
+label all the facts it produces with the unit F.</p><p>To hide some of the data in a DB, we specify which units to exclude
+from the base DB, like this:</p><div class="codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#bfc7d5"><span class="token plain">glean create --repo &lt;new&gt; --incremental &lt;old&gt; --exclude A,B,C</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg class="copyButtonIcon_y97N" viewBox="0 0 24 24"><path d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg class="copyButtonSuccessIcon_LjdS" viewBox="0 0 24 24"><path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div><p>would create a DB <code>&lt;new&gt;</code> that stacks on top of <code>&lt;old&gt;</code>, hiding units A, B
+and C.</p><p>So to index some code incrementally, we would first decide which files
+need to be reindexed, create an incremental DB that hides those files
+from the base DB and then add the new facts.</p><p>To implement hiding correctly, Glean has to remember which facts are
+owned by which units. But it's not quite that simple, because facts
+can refer to each other, and the DB contents must be valid (which has
+a formal definition but informally means "no dangling
+references"). For example, if we have facts <strong>x</strong> and <strong>y</strong>, where <strong>x</strong> refers to
+<strong>y</strong>:</p><p><img loading="lazy" alt="Fact dependency" src="/assets/images/factdep1-59c2c6ff2bb70cadfffaa8ed1c3c725c.jpg" width="380" height="229" class="img_ev3q"></p><p>and we hide unit B, then <strong>y</strong> must still be visible, otherwise the
+reference from <strong>x</strong> would be dangling and the DB would not be valid.</p><p>So after the indexer has finished producing facts, Glean propagates
+all the units through the graph of facts, resulting in a mapping from
+facts to <strong>ownership sets</strong>.</p><p><img loading="lazy" alt="Fact dependency with ownership sets" src="/assets/images/factdep2-ee89a8cde4e367c8d2e99fde1b9553a0.jpg" width="389" height="227" class="img_ev3q"></p><p>It turns out that while there are lots of facts, there are relatively
+few distinct ownership sets. Furthermore, facts produced together tend
+to have the same ownership set, and we can use this to store the
+mapping from facts to ownership sets efficiently. To summarise:</p><ul><li>Ownership sets are assigned unique IDs and stored in the DB using <a href="https://github.com/facebook/folly/blob/main/folly/experimental/EliasFanoCoding.h" target="_blank" rel="noopener noreferrer">Elias Fano Coding</a></li><li>The mapping from facts to ownership sets is
+stored as an interval map</li></ul><p>As a result, keeping all this information only adds about 7% to the DB
+size.</p><h3 class="anchor anchorWithStickyNavbar_LWe7" id="what-about-derived-facts">What about derived facts?<a class="hash-link" href="#what-about-derived-facts" title="Direct link to heading">​</a></h3><p>Derived facts must also have ownership sets, because we have to know
+which derived facts to hide. When is a derived fact visible? When all
+of the facts that it was derived from are visible.</p><p>For example, if we have a fact <strong>r</strong> that was derived from <strong>p</strong> and <strong>q</strong>:</p><p><img loading="lazy" alt="Derived fact" src="/assets/images/derived-e46b2a6e3925959133e37b75619495a6.jpg" width="881" height="268" class="img_ev3q"></p><p>The ownership set of <strong>r</strong> is <code>{ P } &amp; { Q }</code>, indicating that it should be
+visible if both P and Q are visible. Note that facts might be derived
+from other derived facts, so these ownership expressions can get
+arbitrarily large. Normalising them to disjunctive normal form would
+be possible, but we haven't found that to be necessary so far.</p><h3 class="anchor anchorWithStickyNavbar_LWe7" id="performance">Performance<a class="hash-link" href="#performance" title="Direct link to heading">​</a></h3><p>There are three aspects to performance:</p><ul><li><strong>Indexing performance</strong>. We measured the impact of computing
+ownership at indexing time to be 2-3% for Python, for Hack it was in
+the noise, and we don't
+expect other languages to be significantly different.</li><li><strong>Query performance</strong>. Initially query performance for an
+incremental stack was much slower because we have to calculate the visibility of every fact discovered during a query. However, with some <a href="/docs/implementation/incrementality/#caching-fact-ownership">caching optimisations</a> we were able to get the overhead to less than 10% for "typical" queries, of the kind that Glass does. Queries that do a lot of searching may be impacted by around 3x, but these are not typically found in production use cases.</li><li><strong>Incremental derivation performance</strong>. We would like derivation in the incremental DB to take time proportional to the number of facts in the increment. We implemented incremental derivation for some kinds of query; optimising queries to achieve this in general is a hard problem that we'll return to probably next year.</li></ul><h3 class="anchor anchorWithStickyNavbar_LWe7" id="stacked-incremental-dbs">Stacked incremental DBs<a class="hash-link" href="#stacked-incremental-dbs" title="Direct link to heading">​</a></h3><p>So far we have only been considering how to stack a single increment
+on top of a base DB. What if we want to create deeper stacks?</p><p><img loading="lazy" alt="Stacked incremental database" src="/assets/images/stacked-incremental-a591470e7df3a05595e75f76fad1a7ac.jpg" width="564" height="633" class="img_ev3q"></p><p>The DB "newer" stacks on top of "new", and hides some more units. So
+there are now portions of both "new" and "old" that need to be hidden
+(the darker grey boxes), in addition to the original portion of "old"
+that we hid (light grey box).</p><p>As before, we might have multiple versions of "newer" stacked on top
+of the same "new", and in general these DB stacks form a tree. All the
+intermediate nodes of the tree are usable simultaneously: no data is
+being modified, only shared and viewed differently depending on which
+node we choose as the top of our stack.</p><p>One interesting aspect that arises when we consider how to track
+ownership of facts in this model is fact dependencies across the
+boundaries between DBs.  For instance, suppose we have</p><p><img loading="lazy" alt="Stacked dependency" src="/assets/images/stacked-dependency-37bdf977436a2c7f69570eff127cb537.jpg" width="612" height="323" class="img_ev3q"></p><p>If we hide B, then considering the ownership data for "old" alone
+would tell us that y is invisible. But we must make it visible,
+because x depends on it. So when computing the ownership data for
+"new", we have to transitively propagate ownership to facts in the
+base DB(s), store that in "new", and consult it when deciding which
+facts in "old" are visible.</p><h3 class="anchor anchorWithStickyNavbar_LWe7" id="derived-facts-in-stacked-incremental-dbs">Derived facts in stacked incremental DBs<a class="hash-link" href="#derived-facts-in-stacked-incremental-dbs" title="Direct link to heading">​</a></h3><p>A fact might be derived from multiple facts in different DBs in the
+stack, and we have to represent its ownership correctly. Therefore</p><ul><li>There must be a single namespace of ownership sets for the whole DB stack. That is, stacked DBs add more sets. (or else we copy ownership sets from the base DB, which doesn't seem attractive).</li><li>Since a fact may be owned multiple different ways (see previous section) we have to take this into account when computing the ownership expression for a derived fact.</li></ul><p>This is the most complex diagram in the post (phew!):</p><p><img loading="lazy" alt="Stacked derived" src="/assets/images/stacked-derived-fc2ba3ed856040135fc526e8a7ff6391.jpg" width="804" height="446" class="img_ev3q"></p><p>Here the dashed arrow means "derived from" and the solid arrow means
+"refers to".</p><p>The fact <strong>d</strong> should be visible if both <strong>x</strong> and <strong>y</strong> are visible. The
+ownership of <strong>x</strong> is <code>{A}</code> and <strong>y</strong> is <code>{B,C}</code> (because it is referred to from <strong>z</strong>
+which has owner B), so the final owner of <strong>d</strong> is <code>{A} &amp;&amp; {B,C}</code>.</p><p>Tracking all this shouldn't be too expensive, but it's tricky to get
+right!</p>]]></content>
+        <author>
+            <name>Simon Marlow</name>
+            <uri>https://simonmar.github.io/</uri>
+        </author>
+        <category label="glean" term="glean"/>
+        <category label="incremental" term="incremental"/>
+    </entry>
+</feed>
