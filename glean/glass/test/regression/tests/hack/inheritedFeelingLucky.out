@@ -4,6 +4,14 @@
         "symbolDetails": [],
         "symbols": [
             {
+                "context": {
+                    "kind": 7,
+                    "qname": {
+                        "container": "",
+                        "localName": "SourceClass"
+                    },
+                    "symbol": "test/php/SourceClass"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {

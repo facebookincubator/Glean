@@ -414,9 +414,19 @@ struct SymbolResult {
   2: LocationRange location; // assumes a single location for this entity
   3: Language language;
   4: optional SymbolKind kind;
-  5: string name;
+  5: string name; // local name of identifier
   6: map<string, double> score; // extensible ranking scores
-  7: QualifiedName qname;
+  7: QualifiedName qname; // full name and parent
+  8: optional SymbolContext context; // sym from which this symbol is viewed
+}
+
+// Search context for a symbol. Usually the containing parent, or nothing if it
+// is a global symbol. For inherited searches this will be a sub-class from
+// which the symbol is viewed. I.e. viewed in this context
+struct SymbolContext {
+  1: SymbolId symbol;
+  2: QualifiedName qname;
+  3: optional SymbolKind kind;
 }
 
 // String search, either core symbol data or with full metadata per symbol

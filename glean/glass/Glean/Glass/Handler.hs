@@ -147,6 +147,7 @@ import Glean.Glass.Types
     ( SymbolPath(SymbolPath, symbolPath_range, symbolPath_repository,
                  symbolPath_filepath),
       SymbolKind,
+      SymbolContext(..),
       QualifiedName(..),
       Name(..),
       Attribute(Attribute_aInteger, Attribute_aString),
@@ -351,13 +352,14 @@ describeSymbol env@Glass.Env{..} symId _opts =
           None t -> throwM (ServerException t)
           One e -> return (e :| [], Nothing)
           Many { initial = e, rest = es } -> return (e :| es, Nothing) -- log?
-        desc0 <- withRepo (entityRepo first) $
-          mkSymbolDescription symId scmRevs scmRepo (toCodeEntityLoc first)
+        desc0 <- withRepo (entityRepo first) $ mkSymbolDescription symId scmRevs
+                  scmRepo (toCodeEntityLoc first) Nothing
         -- now combine with up to N additional results, possibly across repos
         -- we have e.g. Optional across fbsource.arvr and fbsource.*
         -- but typical case is Hack namespaces
         descN <- forM rest $ \this -> withRepo (entityRepo this) $
-            mkSymbolDescription symId scmRevs scmRepo (toCodeEntityLoc this)
+            mkSymbolDescription symId scmRevs
+              scmRepo (toCodeEntityLoc this) Nothing
         let !desc = foldr combineDescriptions desc0 descN
         pure (desc, err)
 
@@ -472,15 +474,16 @@ mkSymbolDescription
   -> ScmRevisions
   -> RepoName
   -> CodeEntityLocation
+  -> Maybe SymbolContext
   -> Glean.RepoHaxl u w SymbolDescription
-mkSymbolDescription symbolId scmRevs repo CodeEntityLocation{..} = do
+mkSymbolDescription symbolId scmRevs repo CodeEntityLocation{..} ctx = do
   range <- rangeSpanToLocationRange repo entityFile entityRange
   kind <- eitherToMaybe <$> findSymbolKind entity
   qname <- eThrow =<< toQualifiedName entity -- non-optional now
   let lang = entityLanguage entity
       score = mempty
   describeEntity scmRevs entity $
-    SymbolResult symbolId range lang kind entityName score qname
+    SymbolResult symbolId range lang kind entityName score qname ctx
 
 -- | Search for entities by string name with kind and language filters
 searchSymbol
@@ -563,15 +566,17 @@ runSearch
   -> Query.AngleSearch
   -> RepoHaxl u w [(SymbolResult, Maybe SymbolDescription)]
 runSearch querySpec repo scmRevs mlimit terse sString (Query.Search query) = do
-  names <- case query of
-    Complete q -> searchWithTimeLimit mlimit queryTimeLimit q
+  (ctx,names) <- case query of
+    Complete q -> (Nothing,) <$> searchWithTimeLimit mlimit queryTimeLimit q
     InheritedScope sCase term searchFn -> do
       names <- luckyParentSearch queryTimeLimit querySpec term
       case names of
-        (_,[]) -> pure []
-        (_baseEntity,parentNames) -> searchWithTimeLimit mlimit queryTimeLimit
-           (searchFn sCase parentNames)
-  mapM (processSymbolResult terse sString repo scmRevs) names
+        (_,[]) -> pure (Nothing,[])
+        (baseEntity,parentNames) -> do
+          syms <- searchWithTimeLimit mlimit queryTimeLimit
+                   (searchFn sCase parentNames)
+          return (baseEntity, syms)
+  mapM (processSymbolResult terse sString repo scmRevs ctx) names
   where
     queryTimeLimit = 5000 -- milliseconds, make this a flag?
 
@@ -617,9 +622,10 @@ processSymbolResult
   -> Text
   -> RepoName
   -> ScmRevisions
+  -> Maybe Query.SymbolSearchData
   -> a
   -> RepoHaxl u w (SymbolResult, Maybe SymbolDescription)
-processSymbolResult terse sString repo scmRevs result = do
+processSymbolResult terse sString repo scmRevs mContext result = do
   Query.SymbolSearchData{..} <- Query.toSearchResult result
   let Code.Location{..} = srLocation
   symbolResult_location <- rangeSpanToLocationRange
@@ -627,6 +633,9 @@ processSymbolResult terse sString repo scmRevs result = do
   path <- GleanPath <$> Glean.keyOf location_file
   symbolResult_symbol <- toSymbolId (fromGleanPath repo path) srEntity
   symbolResult_qname <- eThrow =<< toQualifiedName srEntity
+  symbolResult_context <- case mContext of
+        Nothing -> pure Nothing
+        Just ctx -> Just <$> processContext repo ctx
   let symbolResult_kind = symbolKindToSymbolKind <$> srKind
       symbolResult_language = entityLanguage srEntity
       symbolResult_name = location_name
@@ -637,6 +646,17 @@ processSymbolResult terse sString repo scmRevs result = do
   (basics,) <$>
     if terse then pure Nothing else
       Just <$> describeEntity scmRevs srEntity basics
+
+-- | A little bit of processing for the related symbol context
+processContext
+  :: RepoName -> Query.SymbolSearchData -> Glean.RepoHaxl u w SymbolContext
+processContext repo Query.SymbolSearchData{..} = do
+  let Code.Location{..} = srLocation
+  path <- GleanPath <$> Glean.keyOf location_file
+  symbolContext_symbol <- toSymbolId (fromGleanPath repo path) srEntity
+  symbolContext_qname <- eThrow =<< toQualifiedName srEntity
+  let symbolContext_kind = symbolKindToSymbolKind <$> srKind
+  return SymbolContext{..}
 
 -- this takes first N results. We could try other strategies (such as
 -- selecting evenly by language, first n in alpha order by sym or file, ..
@@ -1505,7 +1525,7 @@ searchRelated env@Glass.Env{..}
       describe repo scmRevs e
 
     describe repo scmRevs ((entity, entityFile, entityRange, entityName), symId)
-      = mkSymbolDescription symId scmRevs repo $ CodeEntityLocation{..}
+      = mkSymbolDescription symId scmRevs repo CodeEntityLocation{..} Nothing
 
     searchRecursively
       | searchRelatedRequest_recursive = Search.Recursive
@@ -1570,7 +1590,7 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
       (rawSymId,) <$> describe repo scmRevs e
 
     describe repo scmRevs ((entity, entityFile, entityRange, entityName), symId)
-      = mkSymbolDescription symId scmRevs repo $ CodeEntityLocation{..}
+      = mkSymbolDescription symId scmRevs repo CodeEntityLocation{..} Nothing
     childrenContains1Level :: SearchRelatedQuery u w
     childrenContains1Level baseEntity repo = Search.searchRelatedEntities
       (fromIntegral relatedNeighborhoodRequest_children_limit)
