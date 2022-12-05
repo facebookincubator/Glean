@@ -225,6 +225,13 @@
                             "start": 20
                         },
                         "type": "test/php/SourceClass"
+                    },
+                    {
+                        "span": {
+                            "length": 1,
+                            "start": 33
+                        },
+                        "type": "test/php/SourceClass/T"
                     }
                 ],
                 "visibility": 20
