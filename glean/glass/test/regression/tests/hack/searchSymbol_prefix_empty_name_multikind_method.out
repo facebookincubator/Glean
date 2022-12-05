@@ -4,6 +4,13 @@
         "symbolDetails": [],
         "symbols": [
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "FancyTypes"
+                    },
+                    "symbol": "test/php/FancyTypes"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -27,6 +34,13 @@
                 "symbol": "test/php/FancyTypes/flatten"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "NS",
+                        "localName": "AnotherNamespaceClass"
+                    },
+                    "symbol": "test/php/NS/AnotherNamespaceClass"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -50,6 +64,13 @@
                 "symbol": "test/php/NS/AnotherNamespaceClass/another_class_function"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "NS",
+                        "localName": "NamespaceClass"
+                    },
+                    "symbol": "test/php/NS/NamespaceClass"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -73,6 +94,13 @@
                 "symbol": "test/php/NS/NamespaceClass/class_function"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "RefClass"
+                    },
+                    "symbol": "test/php/RefClass"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -96,6 +124,13 @@
                 "symbol": "test/php/RefClass/bar"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "RefClass"
+                    },
+                    "symbol": "test/php/RefClass"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -119,6 +154,13 @@
                 "symbol": "test/php/RefClass/bazza"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "RefClass"
+                    },
+                    "symbol": "test/php/RefClass"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -142,6 +184,13 @@
                 "symbol": "test/php/RefClass/foo"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "RefClass"
+                    },
+                    "symbol": "test/php/RefClass"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -165,6 +214,13 @@
                 "symbol": "test/php/RefClass/lotsofkeywords"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SourceClass"
+                    },
+                    "symbol": "test/php/SourceClass"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -188,6 +244,13 @@
                 "symbol": "test/php/SourceClass/bar"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SourceClass"
+                    },
+                    "symbol": "test/php/SourceClass"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -211,6 +274,13 @@
                 "symbol": "test/php/SourceClass/overrideMe"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SourceClass"
+                    },
+                    "symbol": "test/php/SourceClass"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -234,6 +304,13 @@
                 "symbol": "test/php/SourceClass/pleaseOverride"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SourceInterface"
+                    },
+                    "symbol": "test/php/SourceInterface"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -257,6 +334,13 @@
                 "symbol": "test/php/SourceInterface/foo"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SourceInterface"
+                    },
+                    "symbol": "test/php/SourceInterface"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -280,6 +364,13 @@
                 "symbol": "test/php/SourceInterface/quux"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SourceTrait"
+                    },
+                    "symbol": "test/php/SourceTrait"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -303,6 +394,13 @@
                 "symbol": "test/php/SourceTrait/quux"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SubClass"
+                    },
+                    "symbol": "test/php/SubClass"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -326,6 +424,13 @@
                 "symbol": "test/php/SubClass/pleaseOverride"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SuperClass"
+                    },
+                    "symbol": "test/php/SuperClass"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -349,6 +454,13 @@
                 "symbol": "test/php/SuperClass/overrideMe"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SuperClass"
+                    },
+                    "symbol": "test/php/SuperClass"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -372,6 +484,13 @@
                 "symbol": "test/php/SuperClass/superAdd"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "TestAnnotation"
+                    },
+                    "symbol": "test/php/TestAnnotation"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -395,6 +514,13 @@
                 "symbol": "test/php/TestAnnotation/__construct"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "TestAnnotation"
+                    },
+                    "symbol": "test/php/TestAnnotation"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {

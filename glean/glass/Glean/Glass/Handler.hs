@@ -146,7 +146,7 @@ import Glean.Glass.SymbolKind ( findSymbolKind )
 import Glean.Glass.Types
     ( SymbolPath(SymbolPath, symbolPath_range, symbolPath_repository,
                  symbolPath_filepath),
-      SymbolKind,
+      SymbolKind(..),
       SymbolContext(..),
       QualifiedName(..),
       Name(..),
@@ -633,11 +633,15 @@ processSymbolResult terse sString repo scmRevs mContext result = do
   path <- GleanPath <$> Glean.keyOf location_file
   symbolResult_symbol <- toSymbolId (fromGleanPath repo path) srEntity
   symbolResult_qname <- eThrow =<< toQualifiedName srEntity
-  symbolResult_context <- case mContext of
-        Nothing -> pure Nothing
-        Just ctx -> Just <$> processContext repo ctx
   let symbolResult_kind = symbolKindToSymbolKind <$> srKind
-      symbolResult_language = entityLanguage srEntity
+  symbolResult_context <- case mContext of
+    Just ctx -> Just <$> processContext repo ctx
+    Nothing -> case symbolResult_kind of
+      Just kind
+        | kind `Set.member` atomicKinds -- use parent container
+        -> parentContainer repo srEntity
+      _ -> pure Nothing
+  let symbolResult_language = entityLanguage srEntity
       symbolResult_name = location_name
       symbolResult_score = Map.singleton
         "exactness"
@@ -646,6 +650,21 @@ processSymbolResult terse sString repo scmRevs mContext result = do
   (basics,) <$>
     if terse then pure Nothing else
       Just <$> describeEntity scmRevs srEntity basics
+
+-- | Leaf kinds, those that don't contain other symbols. We will try to
+-- put in parent context
+atomicKinds :: Set SymbolKind
+atomicKinds = Set.fromList
+  [ SymbolKind_Method
+  , SymbolKind_Field
+  , SymbolKind_Constant
+  , SymbolKind_Type
+  , SymbolKind_Value
+  , SymbolKind_Function
+  , SymbolKind_Variable
+  , SymbolKind_Enumerator
+  , SymbolKind_Operator
+  ]
 
 -- | A little bit of processing for the related symbol context
 processContext
@@ -1440,19 +1459,30 @@ describeEntity scmRevs ent SymbolResult{..} = do
 
       pure RelationDescription{..}
       where
-        describeRelation relation =
-          Search.searchRelatedEntities 2
-              NotRecursive
-              relation
-              relatedBy
-              ent
-              repo
+        describeRelation relation = Search.searchRelatedEntities 2
+          NotRecursive relation relatedBy ent repo
 
-    fst4 (x,_,_,_) = x
+parentContainer
+  :: RepoName -> Code.Entity -> Glean.RepoHaxl u w (Maybe SymbolContext)
+parentContainer repo ent = do
+  parents <- Search.searchRelatedEntities 2 NotRecursive
+    RelationDirection_Parent RelationType_Contains ent repo
+  let mParent = Search.parentRL <$> listToMaybe parents
+  case mParent of
+    Nothing -> return Nothing
+    Just (p, symbolContext_symbol) -> do
+      mQName <- eitherToMaybe <$> toQualifiedName (fst4 p)
+      return $ do -- :: Maybe
+        symbolContext_qname <- mQName
+        let symbolContext_kind = Nothing
+        pure SymbolContext{..}
 
 eThrow :: Either Text a -> RepoHaxl u w a
 eThrow (Right x) = pure x
 eThrow (Left err) = throwM $ ServerException err
+
+fst4 :: (a,b,c,d) -> a
+fst4 (x,_,_,_) = x
 
 partialSymbolTokens
   :: SymbolId

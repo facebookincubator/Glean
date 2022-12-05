@@ -4,6 +4,13 @@
         "symbolDetails": [],
         "symbols": [
             {
+                "context": {
+                    "qname": {
+                        "container": "NS",
+                        "localName": "NamespaceClass"
+                    },
+                    "symbol": "test/php/NS/NamespaceClass"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {

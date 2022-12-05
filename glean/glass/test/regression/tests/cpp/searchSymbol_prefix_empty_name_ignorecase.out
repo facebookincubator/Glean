@@ -27,6 +27,13 @@
                 "symbol": "test/cpp//Global"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "Global"
+                    },
+                    "symbol": "test/cpp//Global"
+                },
                 "kind": 24,
                 "language": 1,
                 "location": {
@@ -50,6 +57,13 @@
                 "symbol": "test/cpp//Global/GA"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "Global"
+                    },
+                    "symbol": "test/cpp//Global"
+                },
                 "kind": 24,
                 "language": 1,
                 "location": {
@@ -73,6 +87,13 @@
                 "symbol": "test/cpp//Global/GB"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "Global"
+                    },
+                    "symbol": "test/cpp//Global"
+                },
                 "kind": 24,
                 "language": 1,
                 "location": {
@@ -119,6 +140,13 @@
                 "symbol": "test/cpp//GlobalClass"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "GlobalClass"
+                    },
+                    "symbol": "test/cpp//GlobalClass"
+                },
                 "kind": 24,
                 "language": 1,
                 "location": {
@@ -142,6 +170,13 @@
                 "symbol": "test/cpp//GlobalClass/GCA"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "GlobalClass"
+                    },
+                    "symbol": "test/cpp//GlobalClass"
+                },
                 "kind": 24,
                 "language": 1,
                 "location": {
@@ -165,6 +200,13 @@
                 "symbol": "test/cpp//GlobalClass/GCB"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "GlobalClass"
+                    },
+                    "symbol": "test/cpp//GlobalClass"
+                },
                 "kind": 24,
                 "language": 1,
                 "location": {
@@ -234,6 +276,13 @@
                 "symbol": "test/cpp//baz/U/InU"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "baz::U",
+                        "localName": "InU"
+                    },
+                    "symbol": "test/cpp//baz/U/InU"
+                },
                 "kind": 24,
                 "language": 1,
                 "location": {
@@ -257,6 +306,13 @@
                 "symbol": "test/cpp//baz/U/InU/UA"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "baz::U",
+                        "localName": "InU"
+                    },
+                    "symbol": "test/cpp//baz/U/InU"
+                },
                 "kind": 24,
                 "language": 1,
                 "location": {
@@ -280,6 +336,13 @@
                 "symbol": "test/cpp//baz/U/InU/UB"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "baz::U",
+                        "localName": "InU"
+                    },
+                    "symbol": "test/cpp//baz/U/InU"
+                },
                 "kind": 24,
                 "language": 1,
                 "location": {
@@ -326,6 +389,13 @@
                 "symbol": "test/cpp//baz/U/InUClass"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "baz::U",
+                        "localName": "InUClass"
+                    },
+                    "symbol": "test/cpp//baz/U/InUClass"
+                },
                 "kind": 24,
                 "language": 1,
                 "location": {
@@ -349,6 +419,13 @@
                 "symbol": "test/cpp//baz/U/InUClass/UCA"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "baz::U",
+                        "localName": "InUClass"
+                    },
+                    "symbol": "test/cpp//baz/U/InUClass"
+                },
                 "kind": 24,
                 "language": 1,
                 "location": {
@@ -372,6 +449,13 @@
                 "symbol": "test/cpp//baz/U/InUClass/UCB"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "baz::U",
+                        "localName": "InUClass"
+                    },
+                    "symbol": "test/cpp//baz/U/InUClass"
+                },
                 "kind": 24,
                 "language": 1,
                 "location": {
@@ -556,6 +640,13 @@
                 "symbol": "test/cpp//maybe/Nothing/_secret"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "maybe::Nothing",
+                        "localName": "_secret"
+                    },
+                    "symbol": "test/cpp//maybe/Nothing/_secret"
+                },
                 "kind": 24,
                 "language": 1,
                 "location": {

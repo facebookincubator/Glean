@@ -142,6 +142,13 @@
                 "symbol": "test/php/SourceClass"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SourceClass"
+                    },
+                    "symbol": "test/php/SourceClass"
+                },
                 "kind": 2,
                 "language": 3,
                 "location": {

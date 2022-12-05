@@ -188,6 +188,13 @@
                 "symbol": "test/php/SuperClass"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SuperClass"
+                    },
+                    "symbol": "test/php/SuperClass"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {

@@ -27,6 +27,13 @@
                 "symbol": "test/php/FancyTypes"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "FancyTypes"
+                    },
+                    "symbol": "test/php/FancyTypes"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -73,6 +80,13 @@
                 "symbol": "test/php/NS/AnotherNamespaceClass"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "NS",
+                        "localName": "AnotherNamespaceClass"
+                    },
+                    "symbol": "test/php/NS/AnotherNamespaceClass"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -119,6 +133,13 @@
                 "symbol": "test/php/NS/NamespaceClass"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "NS",
+                        "localName": "NamespaceClass"
+                    },
+                    "symbol": "test/php/NS/NamespaceClass"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -211,6 +232,13 @@
                 "symbol": "test/php/RefClass/:prop/raz"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "RefClass"
+                    },
+                    "symbol": "test/php/RefClass"
+                },
                 "kind": 16,
                 "language": 3,
                 "location": {
@@ -234,6 +262,13 @@
                 "symbol": "test/php/RefClass/JAZZ"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "RefClass"
+                    },
+                    "symbol": "test/php/RefClass"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -257,6 +292,13 @@
                 "symbol": "test/php/RefClass/bar"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "RefClass"
+                    },
+                    "symbol": "test/php/RefClass"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -280,6 +322,13 @@
                 "symbol": "test/php/RefClass/bazza"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "RefClass"
+                    },
+                    "symbol": "test/php/RefClass"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -303,6 +352,13 @@
                 "symbol": "test/php/RefClass/foo"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "RefClass"
+                    },
+                    "symbol": "test/php/RefClass"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -372,6 +428,13 @@
                 "symbol": "test/php/SourceClass/:prop/daz"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SourceClass"
+                    },
+                    "symbol": "test/php/SourceClass"
+                },
                 "kind": 16,
                 "language": 3,
                 "location": {
@@ -395,6 +458,13 @@
                 "symbol": "test/php/SourceClass/BAZ"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SourceClass"
+                    },
+                    "symbol": "test/php/SourceClass"
+                },
                 "kind": 2,
                 "language": 3,
                 "location": {
@@ -418,6 +488,13 @@
                 "symbol": "test/php/SourceClass/T"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SourceClass"
+                    },
+                    "symbol": "test/php/SourceClass"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -441,6 +518,13 @@
                 "symbol": "test/php/SourceClass/bar"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SourceClass"
+                    },
+                    "symbol": "test/php/SourceClass"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -464,6 +548,13 @@
                 "symbol": "test/php/SourceClass/overrideMe"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SourceClass"
+                    },
+                    "symbol": "test/php/SourceClass"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -556,6 +647,13 @@
                 "symbol": "test/php/SourceEnumClass3"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SourceInterface"
+                    },
+                    "symbol": "test/php/SourceInterface"
+                },
                 "kind": 16,
                 "language": 3,
                 "location": {
@@ -579,6 +677,13 @@
                 "symbol": "test/php/SourceInterface/JAZZ"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SourceInterface"
+                    },
+                    "symbol": "test/php/SourceInterface"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -602,6 +707,13 @@
                 "symbol": "test/php/SourceInterface/foo"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SourceInterface"
+                    },
+                    "symbol": "test/php/SourceInterface"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -625,6 +737,13 @@
                 "symbol": "test/php/SourceInterface/quux"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SourceTrait"
+                    },
+                    "symbol": "test/php/SourceTrait"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -671,6 +790,13 @@
                 "symbol": "test/php/SubClass"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SubClass"
+                    },
+                    "symbol": "test/php/SubClass"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -717,6 +843,13 @@
                 "symbol": "test/php/SuperClass"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SuperClass"
+                    },
+                    "symbol": "test/php/SuperClass"
+                },
                 "kind": 16,
                 "language": 3,
                 "location": {
@@ -740,6 +873,13 @@
                 "symbol": "test/php/SuperClass/BAZ"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SuperClass"
+                    },
+                    "symbol": "test/php/SuperClass"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -763,6 +903,13 @@
                 "symbol": "test/php/SuperClass/overrideMe"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SuperClass"
+                    },
+                    "symbol": "test/php/SuperClass"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -832,6 +979,13 @@
                 "symbol": "test/php/TestAnnotation/:prop/test"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "TestAnnotation"
+                    },
+                    "symbol": "test/php/TestAnnotation"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
@@ -855,6 +1009,13 @@
                 "symbol": "test/php/TestAnnotation/__construct"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "TestAnnotation"
+                    },
+                    "symbol": "test/php/TestAnnotation"
+                },
                 "kind": 8,
                 "language": 3,
                 "location": {
