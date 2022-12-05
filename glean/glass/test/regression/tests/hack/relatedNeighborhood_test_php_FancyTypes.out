@@ -45,7 +45,7 @@
                     "localName": "FancyTypes"
                 },
                 "repo_hash": "testhash",
-                "signature": "class FancyTypes<<<__Deprecated(Use something else instead), __Memoize>> +T>",
+                "signature": "class FancyTypes<<<__Memoize, __Deprecated(Use something else instead)>> +T>",
                 "sym": "test/php/FancyTypes",
                 "sym_location": {
                     "filepath": "www/SourceClass.php",
