@@ -568,24 +568,31 @@ runSearch querySpec repo scmRevs mlimit terse sString (Query.Search query) = do
     InheritedScope sCase term searchFn -> do
       names <- luckyParentSearch queryTimeLimit querySpec term
       case names of
-        [] -> pure []
-        _ -> searchWithTimeLimit mlimit queryTimeLimit(searchFn sCase names)
+        (_,[]) -> pure []
+        (_baseEntity,parentNames) -> searchWithTimeLimit mlimit queryTimeLimit
+           (searchFn sCase parentNames)
   mapM (processSymbolResult terse sString repo scmRevs) names
   where
     queryTimeLimit = 5000 -- milliseconds, make this a flag?
 
+-- | Do a lucky search for the parent entity and return it. It will anchor
+-- our later search, and we can generate a link to it later.
 luckyParentSearch
-  :: Int -> Query.SearchQuery -> NonEmpty Text -> RepoHaxl u w [NonEmpty Text]
+  :: Int
+  -> Query.SearchQuery
+  -> NonEmpty Text
+  -> RepoHaxl u w (Maybe Query.SymbolSearchData, [NonEmpty Text])
 luckyParentSearch queryTimeLimit querySpec term = do
     parentSet <- mapM (runLuckyParentSearch queryTimeLimit) parentQs
     case findUnique parentSet of
-      Found base -> do -- now search parents via extends
+      Found baseEntity -> do -- this is the anchor container, now search parents
         parents <- uniq . map Search.parentEntity <$>
           Search.searchRecursiveEntities maxInheritedDepth
-            RelationDirection_Parent RelationType_Extends base
-        forM parents $ fmap flattenScope . eThrow <=< toQualifiedName
-      _ -> pure [] -- nothing sufficiently unique. can't proceed
-
+            RelationDirection_Parent RelationType_Extends
+              (Query.srEntity baseEntity)
+        xs <- forM parents $ fmap flattenScope . eThrow <=< toQualifiedName
+        return (Just baseEntity, xs)
+      _ -> pure (Nothing, []) -- not sufficiently unique. can't proceed
   where
     parentQs = Query.buildLuckyContainerQuery querySpec term
     maxInheritedDepth = 1000
@@ -595,12 +602,13 @@ luckyParentSearch queryTimeLimit querySpec term = do
       "" -> unName (qualifiedName_localName qn) :| []
       parent -> parent :| [unName (qualifiedName_localName qn)]
 
-runLuckyParentSearch :: Int -> Query.AngleSearch -> RepoHaxl u w [Code.Entity]
+runLuckyParentSearch
+  :: Int -> Query.AngleSearch -> RepoHaxl u w [Query.SymbolSearchData]
 runLuckyParentSearch timeLimit (Query.Search query) = do
   result <- case query of
     Complete q -> searchWithTimeLimit (Just 2) timeLimit q
     InheritedScope{} -> return [] -- no inner recursion please
-  mapM (fmap Query.srEntity . Query.toSearchResult) result
+  mapM Query.toSearchResult result
 
 -- n.b. we need the RepoName (i.e. "fbsource" to construct symbol ids)
 processSymbolResult
@@ -660,6 +668,8 @@ joinSearchResults mlimit terse sorted xs = SymbolSearchResult syms $
 -- - scm repo
 -- - dbs within repo
 -- - queries in order within db
+--
+-- Second result will be the anchor container if it was an inherited search
 --
 joinLuckyResults :: [FeelingLuckyResult] -> SymbolSearchResult
 joinLuckyResults allResults = case findLucky allResults of
