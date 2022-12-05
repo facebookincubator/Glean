@@ -244,7 +244,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 11,
+                            "start": 20
+                        },
+                        "type": "test/php/SourceClass"
+                    }
+                ],
                 "visibility": 20
             },
             "test/php/RefClass/bazza": {
