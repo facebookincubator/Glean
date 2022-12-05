@@ -40,6 +40,7 @@ module.exports = {
           label: 'Documentation',
           position: 'left',
         },
+        {to: 'blog', label: 'Blog', position: 'left'},
         // Please keep GitHub link to the right for consistency.
         {
           href: 'https://github.com/facebookincubator/glean',
@@ -72,6 +73,10 @@ module.exports = {
         {
           title: 'More',
           items: [
+            {
+              label: 'Blog',
+              to: 'blog',
+            },
             {
               label: 'GitHub',
               href: 'https://github.com/facebookincubator/glean',
