@@ -1188,6 +1188,7 @@ library glass-lib
         Glean.Glass.Query
         Glean.Glass.Query.Cxx
         Glean.Glass.Range
+        Glean.Glass.Relations.Hack
         Glean.Glass.RepoMapping
         Glean.Glass.Repos
         Glean.Glass.Search
