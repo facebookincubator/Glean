@@ -473,10 +473,10 @@ struct StoredOwnership : Ownership {
   UnitId nextUnitId() {
     std::unique_ptr<rocksdb::Iterator> iter(db_->container_.db->NewIterator(
         rocksdb::ReadOptions(),
-        db_->container_.family(Family::ownershipUnits)));
+        db_->container_.family(Family::ownershipUnitIds)));
 
     if (!iter) {
-      rts::error("rocksdb: couldn't allocate ownershipUnits iterator");
+      rts::error("rocksdb: couldn't allocate ownershipUnitIds iterator");
     }
 
     size_t max_unit_id;
@@ -494,17 +494,21 @@ struct StoredOwnership : Ownership {
 
   OwnershipStats getStats() override {
     rocksdb::Range range(toSlice(""), toSlice("\xff"));
-    uint64_t units_size, sets_size, owners_size, num_owners;
+    uint64_t units_size, unit_ids_size, sets_size, owners_size, num_owners;
     auto& db = db_->container_.db;
     rocksdb::FlushOptions opts;
     db->Flush(opts, {
         db_->container_.family(Family::ownershipUnits),
+        db_->container_.family(Family::ownershipUnitIds),
         db_->container_.family(Family::ownershipSets),
         db_->container_.family(Family::factOwners)
     });
     check(db->GetApproximateSizes(
               db_->container_.family(Family::ownershipUnits),
               &range, 1, &units_size));
+    check(db->GetApproximateSizes(
+              db_->container_.family(Family::ownershipUnitIds),
+              &range, 1, &unit_ids_size));
     check(db->GetApproximateSizes(
               db_->container_.family(Family::ownershipSets),
               &range, 1, &sets_size));
@@ -517,7 +521,7 @@ struct StoredOwnership : Ownership {
 
     OwnershipStats stats;
     stats.num_units = nextUnitId() - db_->first_unit_id; // accurate
-    stats.units_size = units_size; // estimate
+    stats.units_size = units_size + unit_ids_size; // estimate
     stats.num_sets = db_->next_uset_id - stats.num_units; // accurate
     stats.sets_size = sets_size; // estimate
     stats.num_owner_entries = num_owners; // estimate
