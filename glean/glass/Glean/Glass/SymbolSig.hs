@@ -75,6 +75,9 @@ renderTest :: SimpleDocStream ann  -> Text
 renderTest stream =
   fst $ render $ reAnnotateS (const Nothing) stream
 
+sIGNATURE_LINEWRAP :: Int
+sIGNATURE_LINEWRAP = 120
+
 toSymbolSignatureText
   :: ToSymbolSignature a
   => a
@@ -83,7 +86,7 @@ toSymbolSignatureText
   -> Glean.RepoHaxl u w (Maybe Text, [TypeSymSpan])
 toSymbolSignatureText x repo qualified = do
   maybeDoc <- toSymbolSignature
-    (LayoutOptions (AvailablePerLine 80 1)) x repo qualified
+    (LayoutOptions (AvailablePerLine sIGNATURE_LINEWRAP 1)) x repo qualified
   case maybeDoc of
     Nothing -> return (Nothing, [])
     Just doc ->
