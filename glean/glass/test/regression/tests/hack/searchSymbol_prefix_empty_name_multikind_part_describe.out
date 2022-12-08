@@ -656,7 +656,7 @@
                 "extends_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
+                    "hasMoreChildren": true,
                     "hasMoreParents": false
                 },
                 "kind": 7,
@@ -1196,6 +1196,54 @@
                         "columnEnd": 4,
                         "lineBegin": 11,
                         "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 20
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceTrait.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 15,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "SourceTrait",
+                    "localName": "superAdd"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/SourceTrait/superAdd",
+                "sym_location": {
+                    "filepath": "www/SourceTrait.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 15,
+                        "lineEnd": 17
                     },
                     "repository": "test"
                 },
@@ -2340,6 +2388,36 @@
                     "exactness": 2
                 },
                 "symbol": "test/php/SourceTrait/quux"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SourceTrait"
+                    },
+                    "symbol": "test/php/SourceTrait"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceTrait.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 15,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "name": "superAdd",
+                "qname": {
+                    "container": "SourceTrait",
+                    "localName": "superAdd"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SourceTrait/superAdd"
             },
             {
                 "kind": 7,

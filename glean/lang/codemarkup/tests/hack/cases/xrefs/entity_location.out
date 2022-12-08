@@ -22,7 +22,7 @@
       },
       "location": {
         "file": { "key": "www/RefClass.php" },
-        "location": { "span": { "length": 20, "start": 292 } },
+        "location": { "span": { "length": 20, "start": 312 } },
         "name": "JAZZ"
       }
     }
@@ -201,7 +201,7 @@
       },
       "location": {
         "file": { "key": "www/RefClass.php" },
-        "location": { "span": { "length": 740, "start": 226 } },
+        "location": { "span": { "length": 760, "start": 226 } },
         "name": "RefClass"
       }
     }
@@ -439,7 +439,7 @@
       },
       "location": {
         "file": { "key": "www/SourceTrait.php" },
-        "location": { "span": { "length": 82, "start": 226 } },
+        "location": { "span": { "length": 232, "start": 226 } },
         "name": "SourceTrait"
       }
     }
@@ -843,7 +843,7 @@
       },
       "location": {
         "file": { "key": "www/RefClass.php" },
-        "location": { "span": { "length": 390, "start": 574 } },
+        "location": { "span": { "length": 390, "start": 594 } },
         "name": "bar"
       }
     }
@@ -870,7 +870,7 @@
       },
       "location": {
         "file": { "key": "www/RefClass.php" },
-        "location": { "span": { "length": 59, "start": 414 } },
+        "location": { "span": { "length": 59, "start": 434 } },
         "name": "bazza"
       }
     }
@@ -897,7 +897,7 @@
       },
       "location": {
         "file": { "key": "www/RefClass.php" },
-        "location": { "span": { "length": 67, "start": 343 } },
+        "location": { "span": { "length": 67, "start": 363 } },
         "name": "foo"
       }
     }
@@ -924,7 +924,7 @@
       },
       "location": {
         "file": { "key": "www/RefClass.php" },
-        "location": { "span": { "length": 93, "start": 477 } },
+        "location": { "span": { "length": 93, "start": 497 } },
         "name": "lotsofkeywords"
       }
     }
@@ -1235,6 +1235,33 @@
       "entity": {
         "hack": {
           "decl": {
+            "method": {
+              "key": {
+                "container": {
+                  "trait": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceTrait" } } }
+                    }
+                  }
+                },
+                "name": { "key": "superAdd" }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/SourceTrait.php" },
+        "location": { "span": { "length": 75, "start": 381 } },
+        "name": "superAdd"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
             "namespace_": {
               "key": {
                 "name": {
@@ -1313,7 +1340,7 @@
       },
       "location": {
         "file": { "key": "www/RefClass.php" },
-        "location": { "span": { "length": 10, "start": 328 } },
+        "location": { "span": { "length": 10, "start": 348 } },
         "name": "raz"
       }
     }

@@ -2,7 +2,7 @@
     "@generated",
     {
         "revision": "testhash",
-        "size": 32,
+        "size": 33,
         "symbols": {
             "10": [
                 {
@@ -34,6 +34,42 @@
                 {
                     "attributes": {
                         "symbolKind": {
+                            "aInteger": 7
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "SourceClass"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "class SourceClass"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 24,
+                        "columnEnd": 35,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "sym": "test/php/SourceClass",
+                    "target": {
+                        "filepath": "www/SourceClass.php",
+                        "range": {
+                            "columnBegin": 7,
+                            "columnEnd": 18,
+                            "lineBegin": 14,
+                            "lineEnd": 14
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
                             "aInteger": 13
                         },
                         "symbolLanguage": {
@@ -50,8 +86,8 @@
                         }
                     },
                     "range": {
-                        "columnBegin": 27,
-                        "columnEnd": 42,
+                        "columnBegin": 47,
+                        "columnEnd": 62,
                         "lineBegin": 10,
                         "lineEnd": 10
                     },

@@ -18,7 +18,7 @@
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
+                    "hasMoreChildren": true,
                     "hasMoreParents": false
                 },
                 "extends_relation": {
@@ -35,7 +35,7 @@
                         "columnBegin": 1,
                         "columnEnd": 2,
                         "lineBegin": 10,
-                        "lineEnd": 14
+                        "lineEnd": 18
                     },
                     "repository": "test"
                 },
@@ -53,7 +53,7 @@
                         "columnBegin": 1,
                         "columnEnd": 2,
                         "lineBegin": 10,
-                        "lineEnd": 14
+                        "lineEnd": 18
                     },
                     "repository": "test"
                 },

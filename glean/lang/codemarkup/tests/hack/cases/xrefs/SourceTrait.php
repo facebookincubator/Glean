@@ -11,4 +11,8 @@ trait SourceTrait {
   public function quux(int $i): int {
     return $i * 2;
   }
+  /* trait function to override indirectly inherited class functions */
+  public function superAdd(int $i, int $i): int {
+    return $i + $i + 7;
+  }
 }

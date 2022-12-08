@@ -21,7 +21,7 @@
         }
       },
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 695, "length": 3 }
+      "span": { "start": 715, "length": 3 }
     }
   },
   {
@@ -45,7 +45,7 @@
         }
       },
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 723, "length": 4 }
+      "span": { "start": 743, "length": 4 }
     }
   },
   {
@@ -83,7 +83,7 @@
         }
       },
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 594, "length": 11 }
+      "span": { "start": 249, "length": 11 }
     }
   },
   {
@@ -102,7 +102,7 @@
         }
       },
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 642, "length": 11 }
+      "span": { "start": 614, "length": 11 }
     }
   },
   {
@@ -121,7 +121,7 @@
         }
       },
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 682, "length": 11 }
+      "span": { "start": 662, "length": 11 }
     }
   },
   {
@@ -140,7 +140,26 @@
         }
       },
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 853, "length": 11 }
+      "span": { "start": 702, "length": 11 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceClass" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/RefClass.php" },
+      "span": { "start": 873, "length": 11 }
     }
   },
   {
@@ -214,7 +233,7 @@
         }
       },
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 776, "length": 8 }
+      "span": { "start": 796, "length": 8 }
     }
   },
   {
@@ -231,7 +250,7 @@
         }
       },
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 932, "length": 8 }
+      "span": { "start": 952, "length": 8 }
     }
   },
   {
@@ -293,7 +312,7 @@
         }
       },
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 252, "length": 15 }
+      "span": { "start": 272, "length": 15 }
     }
   },
   {
@@ -312,7 +331,7 @@
         }
       },
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 276, "length": 11 }
+      "span": { "start": 296, "length": 11 }
     }
   },
   {
@@ -334,7 +353,7 @@
         }
       },
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 942, "length": 6 }
+      "span": { "start": 962, "length": 6 }
     }
   },
   {
@@ -356,7 +375,7 @@
         }
       },
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 786, "length": 5 }
+      "span": { "start": 806, "length": 5 }
     }
   },
   {
@@ -371,7 +390,7 @@
         }
       },
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 390, "length": 5 }
+      "span": { "start": 410, "length": 5 }
     }
   },
   {
@@ -386,7 +405,7 @@
         }
       },
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 461, "length": 5 }
+      "span": { "start": 481, "length": 5 }
     }
   },
   {
@@ -401,7 +420,7 @@
         }
       },
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 672, "length": 5 }
+      "span": { "start": 692, "length": 5 }
     }
   },
   {
@@ -416,7 +435,7 @@
         }
       },
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 952, "length": 5 }
+      "span": { "start": 972, "length": 5 }
     }
   },
   {
@@ -446,7 +465,7 @@
         }
       },
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 400, "length": 5 }
+      "span": { "start": 420, "length": 5 }
     }
   },
   {
@@ -461,7 +480,7 @@
         }
       },
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 730, "length": 5 }
+      "span": { "start": 750, "length": 5 }
     }
   },
   {
@@ -500,7 +519,7 @@
         }
       },
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 843, "length": 5 }
+      "span": { "start": 863, "length": 5 }
     }
   },
   {
@@ -524,7 +543,7 @@
         }
       },
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 801, "length": 3 }
+      "span": { "start": 821, "length": 3 }
     }
   },
   {
@@ -548,7 +567,7 @@
         }
       },
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 759, "length": 4 }
+      "span": { "start": 779, "length": 4 }
     }
   },
   {
@@ -572,7 +591,7 @@
         }
       },
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 866, "length": 8 }
+      "span": { "start": 886, "length": 8 }
     }
   },
   {
@@ -596,7 +615,7 @@
         }
       },
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 710, "length": 3 }
+      "span": { "start": 730, "length": 3 }
     }
   },
   {
@@ -620,7 +639,7 @@
         }
       },
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 830, "length": 3 }
+      "span": { "start": 850, "length": 3 }
     }
   },
   {
@@ -668,7 +687,7 @@
         }
       },
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 607, "length": 1 }
+      "span": { "start": 627, "length": 1 }
     }
   }
 ]

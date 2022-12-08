@@ -733,6 +733,57 @@
                     }
                 ],
                 "range": {
+                    "columnBegin": 24,
+                    "columnEnd": 35,
+                    "lineBegin": 10,
+                    "lineEnd": 10
+                },
+                "sym": "test/php/SourceClass",
+                "target": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 18,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 7
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "SourceClass"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "class SourceClass"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
                     "columnBegin": 23,
                     "columnEnd": 34,
                     "lineBegin": 29,
@@ -1090,8 +1141,8 @@
                     }
                 ],
                 "range": {
-                    "columnBegin": 27,
-                    "columnEnd": 42,
+                    "columnBegin": 47,
+                    "columnEnd": 62,
                     "lineBegin": 10,
                     "lineEnd": 10
                 },

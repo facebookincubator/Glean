@@ -29,7 +29,7 @@
         "extends_relation": {
             "firstChild": "nondeterministic",
             "firstParent": "nondeterministic",
-            "hasMoreChildren": false,
+            "hasMoreChildren": true,
             "hasMoreParents": false
         },
         "kind": 7,

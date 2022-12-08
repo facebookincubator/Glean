@@ -190,7 +190,7 @@
         "location": {
           "name": "RefClass",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 226, "length": 740 } }
+          "location": { "span": { "start": 226, "length": 760 } }
         }
       },
       "child": {
@@ -215,7 +215,7 @@
         "location": {
           "name": "JAZZ",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 292, "length": 20 } }
+          "location": { "span": { "start": 312, "length": 20 } }
         }
       }
     }
@@ -240,7 +240,7 @@
         "location": {
           "name": "RefClass",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 226, "length": 740 } }
+          "location": { "span": { "start": 226, "length": 760 } }
         }
       },
       "child": {
@@ -265,7 +265,7 @@
         "location": {
           "name": "bar",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 574, "length": 390 } }
+          "location": { "span": { "start": 594, "length": 390 } }
         }
       }
     }
@@ -290,7 +290,7 @@
         "location": {
           "name": "RefClass",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 226, "length": 740 } }
+          "location": { "span": { "start": 226, "length": 760 } }
         }
       },
       "child": {
@@ -315,7 +315,7 @@
         "location": {
           "name": "bazza",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 414, "length": 59 } }
+          "location": { "span": { "start": 434, "length": 59 } }
         }
       }
     }
@@ -340,7 +340,7 @@
         "location": {
           "name": "RefClass",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 226, "length": 740 } }
+          "location": { "span": { "start": 226, "length": 760 } }
         }
       },
       "child": {
@@ -365,7 +365,7 @@
         "location": {
           "name": "foo",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 343, "length": 67 } }
+          "location": { "span": { "start": 363, "length": 67 } }
         }
       }
     }
@@ -390,7 +390,7 @@
         "location": {
           "name": "RefClass",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 226, "length": 740 } }
+          "location": { "span": { "start": 226, "length": 760 } }
         }
       },
       "child": {
@@ -415,7 +415,7 @@
         "location": {
           "name": "lotsofkeywords",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 477, "length": 93 } }
+          "location": { "span": { "start": 497, "length": 93 } }
         }
       }
     }
@@ -440,7 +440,7 @@
         "location": {
           "name": "RefClass",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 226, "length": 740 } }
+          "location": { "span": { "start": 226, "length": 760 } }
         }
       },
       "child": {
@@ -465,7 +465,7 @@
         "location": {
           "name": "raz",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 328, "length": 10 } }
+          "location": { "span": { "start": 348, "length": 10 } }
         }
       }
     }
@@ -1782,7 +1782,7 @@
         "location": {
           "name": "SourceTrait",
           "file": { "key": "www/SourceTrait.php" },
-          "location": { "span": { "start": 226, "length": 82 } }
+          "location": { "span": { "start": 226, "length": 232 } }
         }
       },
       "child": {
@@ -1808,6 +1808,56 @@
           "name": "quux",
           "file": { "key": "www/SourceTrait.php" },
           "location": { "span": { "start": 248, "length": 58 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "trait": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceTrait" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "SourceTrait",
+          "file": { "key": "www/SourceTrait.php" },
+          "location": { "span": { "start": 226, "length": 232 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "method": {
+                "key": {
+                  "name": { "key": "superAdd" },
+                  "container": {
+                    "trait": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "SourceTrait" } } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "superAdd",
+          "file": { "key": "www/SourceTrait.php" },
+          "location": { "span": { "start": 381, "length": 75 } }
         }
       }
     }

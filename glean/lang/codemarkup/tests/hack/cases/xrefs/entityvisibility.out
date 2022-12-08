@@ -392,6 +392,27 @@
     "key": {
       "hack": {
         "decl": {
+          "method": {
+            "key": {
+              "name": { "key": "superAdd" },
+              "container": {
+                "trait": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceTrait" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "hack": {
+        "decl": {
           "property_": {
             "key": {
               "name": { "key": "daz" },

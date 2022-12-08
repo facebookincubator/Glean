@@ -30,6 +30,51 @@
               "container": {
                 "class_": {
                   "key": {
+                    "name": { "key": { "name": { "key": "RefClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "RefClass",
+          "file": { "key": "www/RefClass.php" },
+          "location": { "span": { "start": 226, "length": 760 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 0,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "SourceClass",
+          "file": { "key": "www/SourceClass.php" },
+          "location": { "span": { "start": 253, "length": 451 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "container": {
+                "class_": {
+                  "key": {
                     "name": { "key": { "name": { "key": "SubClass" } } }
                   }
                 }
@@ -130,7 +175,7 @@
         "location": {
           "name": "RefClass",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 226, "length": 740 } }
+          "location": { "span": { "start": 226, "length": 760 } }
         }
       }
     }
@@ -155,7 +200,7 @@
         "location": {
           "name": "SourceTrait",
           "file": { "key": "www/SourceTrait.php" },
-          "location": { "span": { "start": 226, "length": 82 } }
+          "location": { "span": { "start": 226, "length": 232 } }
         }
       },
       "child": {
@@ -175,7 +220,7 @@
         "location": {
           "name": "RefClass",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 226, "length": 740 } }
+          "location": { "span": { "start": 226, "length": 760 } }
         }
       }
     }

@@ -7,7 +7,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-class RefClass implements SourceInterface {
+class RefClass extends SourceClass implements SourceInterface {
   use SourceTrait;
 
   const int JAZZ = 39;

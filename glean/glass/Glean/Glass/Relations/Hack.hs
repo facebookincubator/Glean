@@ -167,11 +167,12 @@ filterOneParent parentSym = do
         _ -> go seen (ent : children) overrides ents
           -- no override, retain `ent` as a visible symbol
 
--- | We need to visit classes before traits (and traits before interfaces)
+-- | Traits are "copy/paste" semantics, and are directly included into the child
+-- before resolving inherited class symbols.
 kindOrder :: TopoKinds -> SymbolId -> Int
 kindOrder kinds sym = case HashMap.lookup sym kinds of
-  Just SymbolKind_Class_ -> 0
-  Just SymbolKind_Trait -> 1
+  Just SymbolKind_Trait -> 0
+  Just SymbolKind_Class_ -> 1
   Just SymbolKind_Interface -> 2
   Just{} -> 3
   Nothing -> 100
