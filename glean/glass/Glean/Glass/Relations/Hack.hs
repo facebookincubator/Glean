@@ -14,6 +14,7 @@ module Glean.Glass.Relations.Hack (
   , TopoMap
   , TopoKinds
   , ContainerIndex
+  , NamedSymbol(..)
   ) where
 
 import Control.Monad.State.Strict
