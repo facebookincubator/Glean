@@ -9,6 +9,11 @@
 module Glean.Glass.Relations.Hack (
     difference
   , patchDescriptions
+
+  -- * for testing
+  , TopoMap
+  , TopoKinds
+  , ContainerIndex
   ) where
 
 import Control.Monad.State.Strict
@@ -41,28 +46,46 @@ import Glean.Glass.SearchRelated
 -- We need to recursively choose a winner.
 --
 
+--
+-- Abstract out the representation to just these required operations, so
+-- things are testable without a full Glean entity
+--
+class NamedSymbol a where
+  symIdOf :: a -> SymbolId
+  localNameOf :: a -> Text
+
+-- the raw marshalled tuple from the search result queries is a bit annoying
+-- but we get them from the Glean data queries automatically so shrug
+instance NamedSymbol LocatedEntity where
+  symIdOf (_, sym) = sym
+  localNameOf ((_ent, _file, _span, name), _sym) = name
+
 -- | Traversal state. Record unique local names we've seen, which
 -- containers we've visited. Return mappings and a final, updated index
-data Env = Env {
+data Env a = Env {
     seenNames :: !(HashMap Text SymbolId), -- names we've seen and where
     visitedContainers :: !(HashSet SymbolId), -- containers we have processed
     mappings :: !(HashMap SymbolId SymbolId), -- accumulated overrides
-    indexedParents :: !ContainerIndex -- each container
+    indexedParents :: !(ContainerIndex a) -- each container
   }
 
-type ContainerIndex = HashMap SymbolId InheritedContainer
+-- Convenience type for a parent with a list of contained children
+type ContainerLike a = (a,[a])
+
+-- And indexed containers of named/symbol-like things
+type ContainerIndex a = HashMap SymbolId (ContainerLike a)
 
 type TopoMap = HashMap SymbolId (HashSet SymbolId)
 type TopoKinds = HashMap SymbolId SymbolKind
 
 -- children of a container flattend to a name -> symid table
-toNameMap :: [LocatedEntity] -> HashMap Text SymbolId
+toNameMap :: NamedSymbol e => [e] -> HashMap Text SymbolId
 toNameMap = HashMap.fromList . map (\sym -> (localNameOf sym, symIdOf sym))
 
-type S a = State Env a
+type S a r = State (Env a) r
 
 -- initial state
-newEnv :: HashMap Text SymbolId -> ContainerIndex -> Env
+newEnv :: NamedSymbol a => HashMap Text SymbolId -> ContainerIndex a -> Env a
 newEnv baseNames allParents =
   Env {
     seenNames = baseNames,
@@ -71,55 +94,56 @@ newEnv baseNames allParents =
     indexedParents = allParents
   }
 
-getSeenNames :: S (HashMap Text SymbolId)
+getSeenNames :: S a (HashMap Text SymbolId)
 getSeenNames = gets seenNames
 
-getContainerContents :: SymbolId -> S (Maybe InheritedContainer)
+getContainerContents :: SymbolId -> S a (Maybe (ContainerLike a))
 getContainerContents sym = gets (HashMap.lookup sym . indexedParents)
 
-updateSeenNames :: HashMap Text SymbolId  -> S ()
+updateSeenNames :: HashMap Text SymbolId -> S a ()
 updateSeenNames seen = modify' $ \e@Env{..} ->
   e { seenNames = HashMap.union seenNames seen }
 
-updateMappings :: HashMap SymbolId SymbolId -> S ()
+updateMappings :: HashMap SymbolId SymbolId -> S a ()
 updateMappings more = modify' $ \e@Env{..} ->
   e { mappings = HashMap.union mappings more }
 
-updateContainerContents :: SymbolId -> InheritedContainer -> S ()
+updateContainerContents :: SymbolId -> ContainerLike a -> S a ()
 updateContainerContents sym contents = modify' $ \e@Env{..} ->
   e { indexedParents = HashMap.insert sym contents indexedParents }
 
-getVisitedContainers :: S (HashSet SymbolId)
+getVisitedContainers :: S a (HashSet SymbolId)
 getVisitedContainers = gets visitedContainers
 
-updateVisitedContainers :: SymbolId -> S ()
+updateVisitedContainers :: SymbolId -> S a ()
 updateVisitedContainers sym = modify' $ \e@Env{..} ->
   e { visitedContainers = HashSet.insert sym visitedContainers }
 
 difference
-  :: TopoMap
+  :: NamedSymbol e
+  => TopoMap
   -> TopoKinds
   -> SymbolId
-  -> [RelatedLocatedEntities]
-  -> [InheritedContainer]
-  -> ([InheritedContainer], HashMap SymbolId SymbolId)
+  -> [e]
+  -> [(e, [e])]
+  -> ([(e, [e])], HashMap SymbolId SymbolId)
 difference topoEdges topoKinds baseSym baseSymNames allParents =
-  let zero = newEnv (toNameMap (map childRL baseSymNames)) initIndex
+  let zero = newEnv (toNameMap baseSymNames) initIndex
       final = execState (partitionOverrides topoEdges topoKinds [baseSym]) zero
   in
     (HashMap.elems (indexedParents final), mappings final)
   where
     -- index parents by sym id to quickly look up their children
-    initIndex :: HashMap SymbolId InheritedContainer
     initIndex = HashMap.fromList
-      [ (symIdOf parent,p) | p@(parent, _) <- allParents ]
+      [ (symIdOf parent, p) | p@(parent, _) <- allParents ]
 
 -- | Breadth first reverse-topological filtering in one pass
 --
 -- Remove overridden inherited methods, and note the relationship
 -- as a synthetic searchRelated `extends` result
 --
-partitionOverrides :: TopoMap -> TopoKinds -> [SymbolId] -> S ()
+partitionOverrides
+  :: NamedSymbol a => TopoMap -> TopoKinds -> [SymbolId] -> S a ()
 partitionOverrides _ _ [] = pure ()
 partitionOverrides topoMap kinds syms = go syms
   where
@@ -144,7 +168,7 @@ partitionOverrides topoMap kinds syms = go syms
 -- (i.e. drop override mappings for anything here that's already been seen)
 -- once done, these names are now 'seen' too and locked in.
 --
-filterOneParent :: SymbolId -> S (Maybe SymbolId)
+filterOneParent :: NamedSymbol a => SymbolId -> S a (Maybe SymbolId)
 filterOneParent parentSym = do
   mContents <- getContainerContents parentSym
   case mContents of
@@ -176,13 +200,6 @@ kindOrder kinds sym = case HashMap.lookup sym kinds of
   Just SymbolKind_Interface -> 2
   Just{} -> 3
   Nothing -> 100
-
--- the raw marshalled tuple from the search result queries is a bit annoying
-localNameOf :: LocatedEntity -> Text
-localNameOf ((_ent, _file, _span, name), _sym) = name
-
-symIdOf :: LocatedEntity -> SymbolId
-symIdOf (_, sym) = sym
 
 --
 -- We then need to create synthetic `extends` facts for method overrides

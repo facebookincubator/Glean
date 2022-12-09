@@ -53,17 +53,17 @@ data Recursive
 
 -- | Pairs of edges of related entities
 data RelatedEntities = RelatedEntities
-  { parentEntity :: Code.Entity
-  , parentLocation :: Code.Location
-  , childEntity :: Code.Entity
-  , childLocation :: Code.Location
+  { parentEntity :: !Code.Entity
+  , parentLocation :: {-# UNPACK #-}!Code.Location
+  , childEntity :: !Code.Entity
+  , childLocation :: {-# UNPACK #-}!Code.Location
   } deriving (Eq,Generic,Hashable)
 
 -- | Pairs of edges of related entities, with all metadata
 data RelatedLocatedEntities = RelatedLocatedEntities
   { parentRL :: LocatedEntity
   , childRL :: LocatedEntity
-  } deriving (Eq,Generic,Hashable)
+  } deriving (Generic,Hashable)
 
 type LocatedEntity = (ResultLocation Code.Entity, SymbolId)
 

@@ -1605,7 +1605,8 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
         c <- parentContainsNLevel (decl baseEntity) repo
         d <- parentExtends1Level (decl baseEntity) repo
         (e0, edges, kinds) <- inheritedNLevel (decl baseEntity) repo
-        let (e,overrides) = partitionInheritedScopes lang sym edges kinds a e0
+        let (e,overrides) = partitionInheritedScopes lang sym edges
+                              kinds (map Search.childRL a) e0
         let syms = uniqBy (comparing snd) $
               fromSearchEntity sym baseEntity :
                 concatMap flattenEdges [a,b,c,d] ++
@@ -1717,7 +1718,7 @@ partitionInheritedScopes
   -> SymbolId
   -> HashMap SymbolId (HashSet SymbolId)
   -> HashMap SymbolId SymbolKind
-  -> [Search.RelatedLocatedEntities]
+  -> [Search.LocatedEntity]
   -> [InheritedContainer]
   -> ([InheritedContainer], HashMap SymbolId SymbolId)
 partitionInheritedScopes lang symId edges kinds locals inherited = case lang of
