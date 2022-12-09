@@ -22,6 +22,7 @@ import System.Timeout
 import Util.Control.Exception
 import Util.Defer
 import Util.Log.Text
+import Util.Logger
 
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Open
@@ -29,6 +30,7 @@ import Glean.Database.Schema
 import qualified Glean.Database.Storage as Storage
 import Glean.Database.Types
 import Glean.Internal.Types as Thrift
+import Glean.Logger
 import Glean.RTS.Foreign.Ownership
 import Glean.Types as Thrift
 import qualified Glean.Util.Warden as Warden
@@ -36,7 +38,11 @@ import Glean.Util.Mutex
 
 -- For internal use: actually perform completion for a DB
 syncCompletePredicates :: Env -> Repo -> IO ()
-syncCompletePredicates env repo = do
+syncCompletePredicates env repo =
+  -- log this, because the completePredicates request itself is async
+  -- and doesn't record the total time spent.
+  loggingAction
+    (runLogRepo "completePredicates(server)" env repo) (const mempty) $ do
   maybeBase <- repoParent env repo
   let withBase repo f =
         readDatabase env repo $ \_ lookup -> f (Just lookup)
