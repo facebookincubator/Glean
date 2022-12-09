@@ -63,7 +63,7 @@ FOLLY_NOINLINE TrieArray<Uset> fillOwnership(
     }
 
     void dump() {
-      LOG(INFO)
+      VLOG(1)
         << units << " units, "
         << intervals << " intervals";
     }
@@ -142,7 +142,7 @@ FOLLY_NOINLINE Usets collectUsets(uint32_t firstUsetId, TrieArray<Uset>& utrie) 
     entry->link(nullptr);
   });
 
-  LOG(INFO)
+  VLOG(1)
     << visits << " visits, "
     << usets.size() << " usets";
   return usets;
@@ -185,7 +185,7 @@ FOLLY_NOINLINE void completeOwnership(
 
     void dump() {
       auto ustats = usets.statistics();
-      LOG(INFO) << folly::sformat(
+      VLOG(1) << folly::sformat(
           "{} of {} facts ({} visited in base DBs), {} usets, {} promoted, {} bytes, {} adds, {} dups",
           owned_facts,
           local_facts + base_facts,
