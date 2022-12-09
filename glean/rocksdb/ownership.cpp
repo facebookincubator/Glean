@@ -6,6 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+#include <glean/rts/ownership/uset.h>
 #include "glean/rocksdb/database-impl.h"
 #include "glean/rts/timer.h"
 
@@ -554,14 +555,32 @@ DatabaseImpl::FactOwnerCache::getPage(
         rocksdb::ReadOptions(), container.family(Family::factOwners)));
     EncodedNat prefixKey(prefix << 16);
 
-    iter->Seek(slice(prefixKey.byteRange()));
+    // Start with the first interval <= the prefix, so that we can always find
+    // the desired interval by looking at the appropriate page.
+    iter->SeekForPrev(slice(prefixKey.byteRange()));
+
+    // The first interval must start at 0
+    page->factIds.push_back(0);
+    size += sizeof(uint16_t) + sizeof(UsetId);
+
+    if (!iter->Valid()) {
+      // no interval <= the beginning of the page
+      page->setIds.push_back(INVALID_USET);
+      // better check for later intervals though
+      iter->Seek(slice(prefixKey.byteRange()));
+    } else {
+      binary::Input val(byteRange(iter->value()));
+      UsetId usetId = val.trustedNat();
+      page->setIds.push_back(usetId);
+      iter->Next();
+    }
 
     while (iter->Valid()) {
       binary::Input key(byteRange(iter->key()));
       rts::Id factId = Id::fromWord(key.trustedNat());
       binary::Input val(byteRange(iter->value()));
       UsetId usetId = val.trustedNat();
-      if ((factId.toWord() >> 16) != prefix) {
+      if ((factId.toWord() >> 16) > prefix) {
         break;
       }
       page->factIds.push_back(factId.toWord() & 0xffff);
@@ -570,7 +589,7 @@ DatabaseImpl::FactOwnerCache::getPage(
       size += sizeof(uint16_t) + sizeof(UsetId);
     }
 
-    size_ += size;
+    size_ += size + sizeof(struct Page);
 
     auto wlock = cachePtr.moveFromUpgradeToWrite();
     auto wcache = wlock->get();
@@ -635,22 +654,8 @@ UsetId DatabaseImpl::FactOwnerCache::getOwner(ContainerImpl& container, Id id) {
   low = 0;
   high = page->factIds.size();
 
-  // if this page has no mapping for this fact Id, we have to look in
-  // a previous page.
-  auto prevPage = [&, prefix]() {
-    auto prevPrefix = prefix;
-    while (prevPrefix > 0) {
-      prevPrefix--;
-      const auto& prevPage = getPage(container, prevPrefix);
-      if (prevPage->setIds.size() > 0) {
-        return prevPage->setIds[prevPage->setIds.size() - 1];
-      }
-    }
-    return INVALID_USET;
-  };
-
   if (high == 0) {
-    return prevPage();
+    rts::error("empty page");
   }
 
   // low is inclusive, high is exclusive
@@ -671,7 +676,7 @@ UsetId DatabaseImpl::FactOwnerCache::getOwner(ContainerImpl& container, Id id) {
   if (page->factIds[low] <= ix) {
     return page->setIds[low];
   } else {
-    return prevPage();
+    rts::error("missing lower bound, ix={} low={} prefix={}", ix, low, prefix);
   }
 }
 
