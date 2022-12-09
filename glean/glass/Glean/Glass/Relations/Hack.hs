@@ -107,7 +107,7 @@ updateSeenNames seen = modify' $ \e@Env{..} ->
 
 updateMappings :: HashMap SymbolId SymbolId -> S a ()
 updateMappings more = modify' $ \e@Env{..} ->
-  e { mappings = HashMap.union mappings more }
+  e { mappings = HashMap.union mappings more } -- early mappings win over later
 
 updateContainerContents :: SymbolId -> ContainerLike a -> S a ()
 updateContainerContents sym contents = modify' $ \e@Env{..} ->

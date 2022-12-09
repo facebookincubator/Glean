@@ -32,7 +32,16 @@ import qualified Glean.Glass.Relations.Hack as S
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
   [ TestLabel "no-conflict-is-identity" (mkTest test1)
+  , TestLabel "no-conflict-is-identity-empty" (mkTest test2)
+  , TestLabel "one-shadow" (mkTest test3)
+  , TestLabel "full-shadow" (mkTest test4)
+  , TestLabel "duplicate-full-shadow" (mkTest test5)
   ]
+
+classA, traitB, interfaceC :: SymAndKind
+classA = sym "ClassA" `kind` SymbolKind_Class_
+traitB = sym "TraitB" `kind` SymbolKind_Trait
+interfaceC = sym "InterfaceC" `kind` SymbolKind_Interface
 
 test1 :: TestSpec
 test1 = TestSpec contents graph (NE.tail contents) mempty
@@ -44,10 +53,61 @@ test1 = TestSpec contents graph (NE.tail contents) mempty
         ]
     graph = (classA , [ traitB, interfaceC]) :| []
 
-classA, traitB, interfaceC :: SymAndKind
-classA = sym "ClassA" `kind` SymbolKind_Class_
-traitB = sym "TraitB" `kind` SymbolKind_Trait
-interfaceC = sym "InterfaceC" `kind` SymbolKind_Interface
+test2 :: TestSpec
+test2 = TestSpec contents graph (NE.tail contents) mempty
+  where
+    contents =
+      (classA, []) :| -- empty, still works
+        [ (traitB, ["f"])
+        , (interfaceC, ["g"])
+        ]
+    graph = (classA , [ traitB, interfaceC]) :| []
+
+test3 :: TestSpec
+test3 = TestSpec contents graph expected
+    [(sym "f", qsym traitB "f")]
+  where
+    contents =
+      (classA, ["f"]) :| -- partial shadow
+        [ (traitB, ["f"])
+        , (interfaceC, ["g"])
+        ]
+    graph = (classA , [ traitB, interfaceC]) :| []
+    expected =
+        [ (traitB, []) -- "f" is removed
+        , (interfaceC, ["g"])
+        ]
+
+test4 :: TestSpec
+test4 = TestSpec contents graph expected
+    [(sym "f", qsym traitB "f")
+    ,(sym "g", qsym interfaceC "g")]
+  where
+    contents =
+      (classA, ["f", "g"]) :| -- shadows all
+        [ (traitB, ["f"])
+        , (interfaceC, ["g"])
+        ]
+    graph = (classA , [ traitB, interfaceC]) :| []
+    expected =
+        [ (traitB, []) -- "f" is removed
+        , (interfaceC, []) -- and g"
+        ]
+
+test5 :: TestSpec
+test5 = TestSpec contents graph expected
+    [(sym "f", qsym traitB "f")] -- first occurrence is the override
+  where
+    contents =
+      (classA, ["f"]) :| -- shadows all
+        [ (traitB, ["f"])
+        , (interfaceC, ["f"])
+        ]
+    graph = (classA , [ traitB, interfaceC]) :| []
+    expected =
+        [ (traitB, []) -- "f" is removed
+        , (interfaceC, []) -- and g"
+        ]
 
 ------------------------------------------------------------------------
 
@@ -76,6 +136,9 @@ data TestSpec =
   }
 
 type SymAndKind = (SymbolId, SymbolKind)
+
+qsym :: SymAndKind -> Text -> SymbolId
+qsym p t = case fst p of SymbolId parent -> sym (parent <> "/" <> t)
 
 sym :: Text -> SymbolId
 sym x = SymbolId x
