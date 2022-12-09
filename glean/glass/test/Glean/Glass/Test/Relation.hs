@@ -6,8 +6,6 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# OPTIONS_GHC -Wno-orphans #-}
-
 --
 -- Test inheritance-based name resolution logic for Hack
 --
@@ -20,14 +18,12 @@ import qualified Data.List.NonEmpty as NE
 import Data.Text ( Text )
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.HashSet as HashSet
--- import qualified Data.Map.Strict as Map
 
 import TestRunner ( testRunner )
 import Glean.Init ( withUnitTest )
 
 import Glean.Glass.Types
 import qualified Glean.Glass.Relations.Hack as S
--- import qualified Glean.Glass.SearchRelated as S
 
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
@@ -36,11 +32,17 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "one-shadow" (mkTest test3)
   , TestLabel "full-shadow" (mkTest test4)
   , TestLabel "duplicate-full-shadow" (mkTest test5)
+  , TestLabel "traits-beat-classes" (mkTest test6)
+  , TestLabel "traits-recursive-order" (mkTest test7)
+  , TestLabel "traits-independent" (mkTest test8)
   ]
 
-classA, traitB, interfaceC :: SymAndKind
+classA, classB, classC, traitB, traitC, interfaceC :: SymAndKind
 classA = sym "ClassA" `kind` SymbolKind_Class_
+classB = sym "ClassB" `kind` SymbolKind_Class_
+classC = sym "ClassC" `kind` SymbolKind_Class_
 traitB = sym "TraitB" `kind` SymbolKind_Trait
+traitC = sym "TraitC" `kind` SymbolKind_Trait
 interfaceC = sym "InterfaceC" `kind` SymbolKind_Interface
 
 test1 :: TestSpec
@@ -107,6 +109,66 @@ test5 = TestSpec contents graph expected
     expected =
         [ (traitB, []) -- "f" is removed
         , (interfaceC, []) -- and g"
+        ]
+
+test6 :: TestSpec
+test6 = TestSpec contents graph expected [(qsym traitB "f", qsym classB "f")]
+  where
+    contents =
+      (classA, []) :|
+        [ (classB, ["f"])
+        , (traitB, ["f"]) -- trait should win
+        ]
+    graph = (classA , [ classB, traitB ]) :| []
+    expected =
+        [ (traitB, ["f"])
+        , (classB, []) -- "f" is removed and remapped to trait
+        ]
+
+test7 :: TestSpec
+test7 = TestSpec contents graph expected remappings
+  where
+    contents =
+      (classA, []) :|
+        [ (classB, ["f"])
+        , (traitB, ["f"]) -- trait B should win
+        , (traitC, ["f"])
+        ]
+    graph = (classA , [ classB, traitB ]) :|
+            [ (traitB , [ traitC ]) ]
+
+    expected =
+        [ (traitB, ["f"])
+        , (traitC, []) -- "f" is removed
+        , (classB, []) -- "f" is removed and remapped to trait
+        ]
+    remappings =
+        [(qsym traitB "f", qsym classB "f")
+           -- ordering, traitB hides f in sibling classB
+           -- if we inline traits recurisvely first, this would be traitC
+        ]
+
+test8 :: TestSpec
+test8 = TestSpec contents graph expected remappings
+  where
+    contents =
+      (classA, []) :|
+        [ (classB, [])
+        , (classC, [])
+        , (traitB, ["f"])
+        , (traitC, ["f"]) -- these are independently imported
+        ]
+    graph = (classA , [ classB, classC ]) :|
+             [ (classB , [ traitB ])
+             , (classC , [ traitC ]) ]
+    expected =
+        [ (traitB, ["f"])
+        , (traitC, []) -- "f" is removed
+        , (classB, [])
+        , (classC, [])
+        ]
+    remappings =
+        [(qsym traitB "f", qsym traitC "f")
         ]
 
 ------------------------------------------------------------------------

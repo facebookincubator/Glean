@@ -56,9 +56,7 @@
             },
             {
                 "base": "test/php/SourceInterface",
-                "provides": [
-                    "test/php/SourceInterface/quux"
-                ]
+                "provides": []
             },
             {
                 "base": "test/php/SourceTrait",

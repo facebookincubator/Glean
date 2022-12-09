@@ -145,7 +145,6 @@ difference topoEdges topoKinds baseSym baseSymNames allParents =
 --
 partitionOverrides
   :: NamedSymbol a => TopoMap -> TopoKinds -> [SymbolId] -> S a ()
-partitionOverrides _ _ [] = pure ()
 partitionOverrides topoMap kinds syms = go syms
   where
     go [] = pure () -- done
@@ -154,7 +153,9 @@ partitionOverrides topoMap kinds syms = go syms
       visited <- (sym `HashSet.member`) <$> getVisitedContainers
       when (not visited) $ do -- guarded for base case
         mContents <- getContainerContents sym
-        whenJust (snd <$> mContents) $ updateSeenNames . toNameMap
+        whenJust (snd <$> mContents) $ \contents -> do
+          updateSeenNames (toNameMap contents)
+          mapM_ filterOneParent rest -- and fold this update over siblings
       -- then visit parents and filter
       next <- case HashMap.lookup sym topoMap of -- first level of parents
         Nothing -> pure []  -- sym has no parents, done with it
