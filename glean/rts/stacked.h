@@ -118,7 +118,7 @@ struct StackedBase : Iface {
     if (set != INVALID_USET) {
       return set;
     } else {
-      return base->getOwner(id);
+      return id < mid ? base->getOwner(id) : INVALID_USET;
     }
   }
 
