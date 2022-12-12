@@ -645,7 +645,8 @@ processSymbolResult terse sString repo scmRevs mContext result = do
       symbolResult_name = location_name
       symbolResult_score = Map.singleton
         "exactness"
-        (fromIntegral (fromEnum (scoreResult sString location_name)))
+        (fromIntegral (fromEnum
+            (scoreResult sString location_name)))
       basics = SymbolResult{..} -- just sym id, kind, lang, location
   (basics,) <$>
     if terse then pure Nothing else
@@ -766,7 +767,8 @@ sortResults xs = map (List.sortOn relevance) (groupOn features xs)
       symbolResult_kind
 
     relevance (SymbolResult{..},_desc) =
-      (symbolResult_score, symbolResult_name)
+      (symbolResult_score, symbolResult_name,
+        qualifiedName_container symbolResult_qname)
 
 -- | We do some light ranking of the results
 scoreResult :: Text -> Text -> MatchType
