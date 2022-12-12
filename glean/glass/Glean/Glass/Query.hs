@@ -258,8 +258,10 @@ compileQuery
   :: [Code.SymbolKind] -> [Code.Language] -> SearchExpr -> AngleSearch
 compileQuery sKinds sLangs e = case e of
   -- most precise
-    GlobalScopedContainerish sCase name ->
-      scopeQ Exact sCase Nothing name containerKinds
+  -- in feeling lucky mode, free functions in the global scoped are
+  -- considered as important as classes.
+    GlobalScopedPriorityKinds sCase name -> scopeQ Exact sCase Nothing name
+      (Code.SymbolKind_Function : containerishKinds)
     GlobalScoped sCase name ->
       scopeQ Exact sCase Nothing name sKinds
   -- becoming more imprecise
@@ -307,7 +309,7 @@ containerishKinds =
 data SearchExpr
   -- literal name searches
   = ContainerLiteral SearchCase Text -- exactly "Vec" or "vec" of kind:namespace
-  | GlobalScopedContainerish SearchCase Text -- exactly "vec" the class in HH
+  | GlobalScopedPriorityKinds SearchCase Text -- exactly "vec" the class in HH
   | GlobalScoped SearchCase Text -- exactly "genmk" in the global scope
   | GlobalScopedPrefixly SearchCase Text -- prefix e.g. "genm".. in global scope
   | Literal SearchCase Text  -- exactly "Vec" or "C" (or "vec" or "VEC" or "Vec"
@@ -450,7 +452,7 @@ feelingLuckyQuery query@SearchQuery{..} = case sScope of
   -- we will try to match strictly against the local name of the identifier
   -- I think we should be respecting the 'case sensitive flag here?
   NoScope ->
-    [ GlobalScopedContainerish Sensitive sString -- "vec" the class
+    [ GlobalScopedPriorityKinds Sensitive sString -- "vec" the class
     , GlobalScoped Sensitive sString -- "genmk", global "C"
     , ContainerLiteral Sensitive sString -- "C" or "vec"
     , GlobalScoped Insensitive sString -- "Vec" vs "vec"
@@ -469,10 +471,10 @@ feelingLuckyQuery query@SearchQuery{..} = case sScope of
 feelingLuckyContainer :: SearchCase -> NonEmpty Text -> [SearchExpr]
 feelingLuckyContainer sCase scopes = case scopes of
   container :| [] ->
-    [ GlobalScopedContainerish Sensitive container
+    [ GlobalScopedPriorityKinds Sensitive container
     , ContainerLiteral Sensitive container
     , GlobalScoped Sensitive container
-    , GlobalScopedContainerish Insensitive container
+    , GlobalScopedPriorityKinds Insensitive container
     , ContainerLiteral Insensitive container
     , GlobalScoped Insensitive container -- if sCase == Sensitive we can skip
     , Literal Sensitive container
