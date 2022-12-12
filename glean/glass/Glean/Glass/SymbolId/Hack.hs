@@ -11,7 +11,6 @@
 module Glean.Glass.SymbolId.Hack ( {- instances -} ) where
 
 import qualified Glean
-import qualified Glean.Haxl.Repos as Glean
 
 import Glean.Glass.SymbolId.Class
 import qualified Glean.Schema.Hack.Types as Hack
@@ -133,7 +132,8 @@ instance ToQName Hack.Declaration where
     Hack.Declaration_EMPTY -> return $ Left "unknown Declaration"
 
 instance ToQName Hack.ClassConstDeclaration_key where
-  toQName (Hack.ClassConstDeclaration_key name con) = pairToQName name con
+  toQName (Hack.ClassConstDeclaration_key name container) =
+    Right <$> symbolPairToQName "\\" name container
 
 instance ToQName Hack.ModuleDeclaration_key where
   toQName (Hack.ModuleDeclaration_key name) =
@@ -151,19 +151,23 @@ instance ToQName Hack.EnumDeclaration_key where
   toQName (Hack.EnumDeclaration_key qn) = toQName qn
 
 instance ToQName Hack.Enumerator_key where
-  toQName (Hack.Enumerator_key name con) = pairToQName name con
+  toQName (Hack.Enumerator_key name container) =
+    Right <$> symbolPairToQName "\\" name container
 
 instance ToQName Hack.TypeConstDeclaration_key where
-  toQName (Hack.TypeConstDeclaration_key name con) = pairToQName name con
+  toQName (Hack.TypeConstDeclaration_key name container) =
+    Right <$> symbolPairToQName "\\" name container
 
 instance ToQName Hack.GlobalConstDeclaration_key where
   toQName (Hack.GlobalConstDeclaration_key qn) = toQName qn
 
 instance ToQName Hack.PropertyDeclaration_key where
-  toQName (Hack.PropertyDeclaration_key name con) = pairToQName name con
+  toQName (Hack.PropertyDeclaration_key name container) =
+    Right <$> symbolPairToQName "\\" name container
 
 instance ToQName Hack.MethodDeclaration_key where
-  toQName (Hack.MethodDeclaration_key name con) = pairToQName name con
+  toQName (Hack.MethodDeclaration_key name container) =
+    Right <$> symbolPairToQName "\\" name container
 
 instance ToQName Hack.FunctionDeclaration_key where
   toQName (Hack.FunctionDeclaration_key qname) = toQName qname
@@ -184,19 +188,15 @@ instance ToQName Hack.NamespaceDeclaration_key where
   toQName (Hack.NamespaceDeclaration_key qn) = Glean.keyOf qn >>= toQName
 
 instance ToQName Hack.NamespaceQName_key where
-  toQName (Hack.NamespaceQName_key name parent) = pairToQName name parent
+  toQName (Hack.NamespaceQName_key name parent) = do
+    Right <$> symbolPairToQName "\\" name parent
 
 instance ToQName Hack.QName where
   toQName x = Glean.keyOf x >>= toQName
 
 instance ToQName Hack.QName_key where
-  toQName (Hack.QName_key name (Just ns)) = pairToQName name ns
-  toQName (Hack.QName_key name Nothing) =
-    Right . (, Name "") . Name . intercalate "/" <$> toSymbol name
-
-pairToQName
-  :: (Symbol name, Symbol container)
-  => name
-  -> container
-  -> Glean.RepoHaxl u w (Either a (Name, Name))
-pairToQName a b = Right <$> symbolPairToQName "/" a b
+  toQName (Hack.QName_key name (Just ns)) =
+    Right <$> symbolPairToQName "\\" name ns
+  toQName (Hack.QName_key name Nothing) = do
+    nameStr <- Glean.keyOf name
+    return $ Right (Name nameStr, Name "")

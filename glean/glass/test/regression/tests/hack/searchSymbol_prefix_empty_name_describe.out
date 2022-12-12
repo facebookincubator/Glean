@@ -220,7 +220,7 @@
                 },
                 "modifiers": [],
                 "name": {
-                    "container": "NS/AnotherNamespaceClass",
+                    "container": "NS\\AnotherNamespaceClass",
                     "localName": "another_class_function"
                 },
                 "repo_hash": "testhash",
@@ -315,7 +315,7 @@
                 },
                 "modifiers": [],
                 "name": {
-                    "container": "NS/NamespaceClass",
+                    "container": "NS\\NamespaceClass",
                     "localName": "class_function"
                 },
                 "repo_hash": "testhash",
@@ -2883,7 +2883,7 @@
                 },
                 "name": "another_class_function",
                 "qname": {
-                    "container": "NS/AnotherNamespaceClass",
+                    "container": "NS\\AnotherNamespaceClass",
                     "localName": "another_class_function"
                 },
                 "score": {
@@ -2936,7 +2936,7 @@
                 },
                 "name": "class_function",
                 "qname": {
-                    "container": "NS/NamespaceClass",
+                    "container": "NS\\NamespaceClass",
                     "localName": "class_function"
                 },
                 "score": {
