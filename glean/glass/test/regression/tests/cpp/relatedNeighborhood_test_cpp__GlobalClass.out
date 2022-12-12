@@ -52,7 +52,7 @@
                     "localName": "GlobalClass"
                 },
                 "repo_hash": "testhash",
-                "signature": "enum class ::GlobalClass",
+                "signature": "enum class ::GlobalClass : int",
                 "sym": "test/cpp//GlobalClass",
                 "sym_location": {
                     "filepath": "test.cpp",

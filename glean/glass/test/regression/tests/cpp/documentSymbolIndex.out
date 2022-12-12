@@ -23,7 +23,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "enum class GlobalClass"
+                            "aString": "enum class GlobalClass : int"
                         }
                     },
                     "nameRange": {
@@ -2019,7 +2019,7 @@
                             "aString": "maybe::Nothing"
                         },
                         "symbolSignature": {
-                            "aString": "enum class _secret"
+                            "aString": "enum class _secret : int"
                         }
                     },
                     "nameRange": {
@@ -2126,7 +2126,7 @@
                             "aString": "maybe::Nothing"
                         },
                         "symbolSignature": {
-                            "aString": "enum class _secret"
+                            "aString": "enum class _secret : int"
                         }
                     },
                     "range": {
@@ -2308,7 +2308,7 @@
                             "aString": "maybe::Nothing"
                         },
                         "symbolSignature": {
-                            "aString": "enum class _secret"
+                            "aString": "enum class _secret : int"
                         }
                     },
                     "range": {
@@ -2929,7 +2929,7 @@
                             "aString": "baz::U"
                         },
                         "symbolSignature": {
-                            "aString": "enum InU"
+                            "aString": "enum InU : int"
                         }
                     },
                     "nameRange": {
@@ -2966,7 +2966,7 @@
                             "aString": "baz::U"
                         },
                         "symbolSignature": {
-                            "aString": "enum class InUClass"
+                            "aString": "enum class InUClass : int"
                         }
                     },
                     "nameRange": {
@@ -3003,7 +3003,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "enum Global"
+                            "aString": "enum Global : int"
                         }
                     },
                     "nameRange": {

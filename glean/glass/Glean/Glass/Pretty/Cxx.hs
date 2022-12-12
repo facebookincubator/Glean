@@ -86,6 +86,9 @@ missingKey = ""
 anonymousNamespace :: Text
 anonymousNamespace = "(anonymous)"
 
+implicitUnderlyingEnumType :: Text
+implicitUnderlyingEnumType = "int"
+
 prettyEnumerator :: Cxx.Enumerator -> Text
 prettyEnumerator (Cxx.Enumerator _ mkey) = case mkey of
   Nothing -> missingKey
@@ -129,8 +132,11 @@ prettyEnum (Cxx.EnumDeclaration _ mkey) qualified = case mkey of
   Nothing -> missingKey
 
 prettyEnumType :: Maybe Cxx.Type -> Text
-prettyEnumType Nothing = intentionallyEmpty
-prettyEnumType (Just ttype) = ":" <+> prettyType ttype
+prettyEnumType maybeType = ":" <+> fillImplicitUnderlyingType maybeType
+  where
+    fillImplicitUnderlyingType Nothing = implicitUnderlyingEnumType
+    fillImplicitUnderlyingType (Just ttype) = prettyType ttype
+
 -- Notes:
 -- * "kind = { global_ = {definition = true}" doesn't guarantee that this
 --   variable has an 'extern' key

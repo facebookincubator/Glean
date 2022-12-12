@@ -18,7 +18,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum Global"
+                            "aString": "enum Global : int"
                         },
                         "key": "symbolSignature"
                     },
@@ -71,7 +71,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum class GlobalClass"
+                            "aString": "enum class GlobalClass : int"
                         },
                         "key": "symbolSignature"
                     },
@@ -230,7 +230,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum InU"
+                            "aString": "enum InU : int"
                         },
                         "key": "symbolSignature"
                     },
@@ -283,7 +283,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum class InUClass"
+                            "aString": "enum class InUClass : int"
                         },
                         "key": "symbolSignature"
                     },
@@ -1714,7 +1714,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum class _secret"
+                            "aString": "enum class _secret : int"
                         },
                         "key": "symbolSignature"
                     },
@@ -3783,7 +3783,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum class _secret"
+                            "aString": "enum class _secret : int"
                         },
                         "key": "symbolSignature"
                     },
@@ -3846,7 +3846,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum class _secret"
+                            "aString": "enum class _secret : int"
                         },
                         "key": "symbolSignature"
                     },

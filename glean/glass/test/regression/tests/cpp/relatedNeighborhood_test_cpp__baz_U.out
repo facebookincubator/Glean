@@ -95,7 +95,7 @@
                     "localName": "InU"
                 },
                 "repo_hash": "testhash",
-                "signature": "enum baz::U::InU",
+                "signature": "enum baz::U::InU : int",
                 "sym": "test/cpp//baz/U/InU",
                 "sym_location": {
                     "filepath": "test.cpp",
@@ -142,7 +142,7 @@
                     "localName": "InUClass"
                 },
                 "repo_hash": "testhash",
-                "signature": "enum class baz::U::InUClass",
+                "signature": "enum class baz::U::InUClass : int",
                 "sym": "test/cpp//baz/U/InUClass",
                 "sym_location": {
                     "filepath": "test.cpp",
