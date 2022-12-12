@@ -6,17 +6,24 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# LANGUAGE TypeApplications #-}
 {-# OPTIONS_GHC -Wno-orphans #-}
 
 module Glean.Glass.SymbolId.Hack ( {- instances -} ) where
 
+import Control.Monad (forM)
+import qualified Data.Map.Strict as Map
+import Data.Text (Text, intercalate)
+
 import qualified Glean
 
+import Glean.Angle
 import Glean.Glass.SymbolId.Class
-import qualified Glean.Schema.Hack.Types as Hack
 import Glean.Glass.Types (Name(..))
-
-import Data.Text (intercalate)
+import Glean.Haxl.Repos (RepoHaxl)
+import qualified Glean.Glass.Utils as Utils
+import qualified Glean.Schema.Hack.Types as Hack
+import qualified Haxl.Core.Memo as Haxl
 
 --
 -- Hack language name boilerplate
@@ -185,18 +192,54 @@ instance ToQName Hack.TypedefDeclaration_key where
   toQName (Hack.TypedefDeclaration_key qn) = toQName qn
 
 instance ToQName Hack.NamespaceDeclaration_key where
-  toQName (Hack.NamespaceDeclaration_key qn) = Glean.keyOf qn >>= toQName
+  toQName (Hack.NamespaceDeclaration_key qn) = toQName qn
+
+instance ToQName Hack.NamespaceQName where
+  toQName nsqname@Hack.NamespaceQName{} = do
+    mShort <- Map.lookup (Glean.getId nsqname) <$> hackGlobalNamespaceAliases
+    case mShort of -- exact key is an alias (e.g. FlibSL\Vec)
+      Just name -> return $ Right (Name name, Name "")
+      Nothing -> Glean.keyOf nsqname >>= toQName -- break it apart and try again
 
 instance ToQName Hack.NamespaceQName_key where
-  toQName (Hack.NamespaceQName_key name parent) = do
-    Right <$> symbolPairToQName "\\" name parent
+  toQName (Hack.NamespaceQName_key name Nothing) = do
+    nameStr <- Name <$> Glean.keyOf name
+    return $ Right (nameStr, Name "")
+  toQName (Hack.NamespaceQName_key name (Just parent)) = do
+    nameStr <- Name <$> Glean.keyOf name
+    mParent <- toQName parent -- might need to shorten
+    return $ case mParent of
+      Right (parentName, Name "") -> Right (nameStr, parentName)
+      Right (Name p, Name ps) -> Right (nameStr, Name (ps <> "\\" <> p))
+      Left e -> Left e
 
 instance ToQName Hack.QName where
   toQName x = Glean.keyOf x >>= toQName
 
 instance ToQName Hack.QName_key where
-  toQName (Hack.QName_key name (Just ns)) =
-    Right <$> symbolPairToQName "\\" name ns
   toQName (Hack.QName_key name Nothing) = do
-    nameStr <- Glean.keyOf name
-    return $ Right (Name nameStr, Name "")
+    nameStr <- Name <$> Glean.keyOf name
+    return $ Right (nameStr, Name "")
+  toQName (Hack.QName_key name (Just nsqname)) = do
+    nameStr <- Name <$> Glean.keyOf name
+    mParent <- toQName nsqname
+    return $ case mParent of
+      Right (parentName, Name "") -> Right (nameStr, parentName)
+      Right (Name p, Name ps) -> Right (nameStr, Name (ps <> "\\" <> p))
+      Left e -> Left e
+
+hackGlobalNamespaceAliases
+  :: RepoHaxl u w (Map.Map (Glean.IdOf Hack.NamespaceQName) Text)
+hackGlobalNamespaceAliases = do
+  repo <- Glean.haxlRepo -- use repo as memo hash as we store Ids
+  Haxl.memo (repo, "Glean.Glass.SymbolId.Hack"::Text) $ do
+    pairs <- Utils.searchRecursiveWithLimit (Just maxMappings) query
+    Map.fromList <$> forM pairs (\alias -> do
+        Hack.GlobalNamespaceAlias_key{..} <- Glean.keyOf alias
+        let nsQName = Glean.getId globalNamespaceAlias_key_to
+        shortName <- Glean.keyOf globalNamespaceAlias_key_from
+        return (nsQName, shortName)
+      )
+  where
+    query = predicate @Hack.GlobalNamespaceAlias wild
+    maxMappings = 100 -- there's only about 15 actually
