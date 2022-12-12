@@ -262,7 +262,15 @@ prettyParameter (Cxx.Parameter name mtype) =
   prettyType mtype <+> prettyName name
 
 prettyType :: Cxx.Type -> Text
-prettyType (Cxx.Type _ mkey) = fromMaybe "<unknown-type>" mkey
+prettyType (Cxx.Type _ mkey) = alignRefOrPtrQualifier
+  $ fromMaybe "<unknown-type>" mkey
+
+alignRefOrPtrQualifier :: Text -> Text
+alignRefOrPtrQualifier ttype =
+  Text.stripEnd (Text.dropWhileEnd isRefOrPtrQualifier ttype)
+  <> Text.takeWhileEnd isRefOrPtrQualifier ttype
+  where
+    isRefOrPtrQualifier x = x == '&' || x == '*'
 
 prettyFuncQName :: Cxx.FunctionQName -> Qualified -> Text
 prettyFuncQName (Cxx.FunctionQName _ mkey) qualified = case mkey of
