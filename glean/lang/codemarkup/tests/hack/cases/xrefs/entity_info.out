@@ -387,6 +387,32 @@
       "entity": {
         "hack": {
           "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "deep_function" },
+                    "namespace_": {
+                      "key": {
+                        "name": { "key": "InnerNS" },
+                        "parent": { "key": { "name": { "key": "NS" } } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 13, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
             "globalConst": {
               "key": { "name": { "key": { "name": { "key": "WALDO" } } } }
             }

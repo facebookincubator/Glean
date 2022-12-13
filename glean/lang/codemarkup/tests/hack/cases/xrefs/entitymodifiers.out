@@ -268,6 +268,43 @@
       "entity": {
         "hack": {
           "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "deep_function" },
+                    "namespace_": {
+                      "key": {
+                        "name": { "key": "InnerNS" },
+                        "parent": { "key": { "name": { "key": "NS" } } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
             "method": {
               "key": {
                 "name": { "key": "__construct" },

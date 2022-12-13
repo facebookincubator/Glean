@@ -2593,6 +2593,52 @@
                 "kind": 14,
                 "language": 3,
                 "location": {
+                    "filepath": "www/Namespace.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 42,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "NS\\InnerNS",
+                    "localName": "deep_function"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/fun/NS/InnerNS/deep_function",
+                "sym_location": {
+                    "filepath": "www/Namespace.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 42,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 3,
+                "location": {
                     "filepath": "www/TopLevel.php",
                     "range": {
                         "columnBegin": 1,
@@ -4218,6 +4264,36 @@
                     "exactness": 2
                 },
                 "symbol": "test/php/const/WALDO"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "NS",
+                        "localName": "InnerNS"
+                    },
+                    "symbol": "test/php/ns/NS/InnerNS"
+                },
+                "kind": 14,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Namespace.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 42,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "name": "deep_function",
+                "qname": {
+                    "container": "NS\\InnerNS",
+                    "localName": "deep_function"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/fun/NS/InnerNS/deep_function"
             },
             {
                 "kind": 14,

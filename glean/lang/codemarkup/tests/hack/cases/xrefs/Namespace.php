@@ -15,4 +15,8 @@ class NamespaceClass {
     }
 }
 
-namespace NS\InnerNS;
+namespace NS\InnerNS {
+
+public function deep_function(): void { }
+
+}

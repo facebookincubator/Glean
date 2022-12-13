@@ -1,0 +1,149 @@
+[
+    "@generated",
+    {
+        "revision": "testhash",
+        "size": 5,
+        "symbols": {
+            "10": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 6
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "NS"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "namespace NS"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 13,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "sym": "test/php/ns/NS"
+                }
+            ],
+            "12": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 7
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "NamespaceClass"
+                        },
+                        "symbolParent": {
+                            "aString": "NS"
+                        },
+                        "symbolSignature": {
+                            "aString": "class NS\\NamespaceClass"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 12,
+                        "lineEnd": 16
+                    },
+                    "sym": "test/php/NS/NamespaceClass"
+                }
+            ],
+            "13": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "class_function"
+                        },
+                        "symbolParent": {
+                            "aString": "NS\\NamespaceClass"
+                        },
+                        "symbolSignature": {
+                            "aString": "public function class_function(): void"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 13,
+                        "lineEnd": 15
+                    },
+                    "sym": "test/php/NS/NamespaceClass/class_function"
+                }
+            ],
+            "18": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 6
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "InnerNS"
+                        },
+                        "symbolParent": {
+                            "aString": "NS"
+                        },
+                        "symbolSignature": {
+                            "aString": "namespace NS\\InnerNS"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 21,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "sym": "test/php/ns/NS/InnerNS"
+                }
+            ],
+            "20": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 14
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "deep_function"
+                        },
+                        "symbolParent": {
+                            "aString": "NS\\InnerNS"
+                        },
+                        "symbolSignature": {
+                            "aString": "function NS\\InnerNS\\deep_function(): void"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 42,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "sym": "test/php/fun/NS/InnerNS/deep_function"
+                }
+            ]
+        }
+    }
+]

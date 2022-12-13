@@ -717,6 +717,36 @@
       "entity": {
         "hack": {
           "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "deep_function" },
+                    "namespace_": {
+                      "key": {
+                        "name": { "key": "InnerNS" },
+                        "parent": { "key": { "name": { "key": "NS" } } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/Namespace.php" },
+        "location": { "span": { "length": 41, "start": 343 } },
+        "name": "deep_function"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
             "globalConst": {
               "key": { "name": { "key": { "name": { "key": "WALDO" } } } }
             }

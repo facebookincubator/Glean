@@ -1870,6 +1870,62 @@
           "hack": {
             "decl": {
               "namespace_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "InnerNS" },
+                      "parent": { "key": { "name": { "key": "NS" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "InnerNS",
+          "file": { "key": "www/Namespace.php" },
+          "location": { "span": { "start": 329, "length": 10 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "deep_function" },
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "InnerNS" },
+                          "parent": { "key": { "name": { "key": "NS" } } }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "deep_function",
+          "file": { "key": "www/Namespace.php" },
+          "location": { "span": { "start": 343, "length": 41 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "namespace_": {
                 "key": { "name": { "key": { "name": { "key": "NS" } } } }
               }
             }

@@ -406,10 +406,15 @@ searchScopes scopeQ SearchQuery{..} = case scopeQ of
   ScopeAndName scope name ->
        searchScope scope name sType sCase
     <> searchLiteral sString sCase
-  -- could be a container as well
-  ScopeOnly scope ->
-       searchContainer (NonEmpty.last scope) sKinds sCase
-    <> searchLiteral (NonEmpty.last scope) sCase
+  -- could be a container as well or a sub-namespace
+  ScopeOnly scope@(_ :| (_ : _)) -> -- i.e length > 1
+      searchScope (NonEmpty.fromList (NonEmpty.init scope))
+         (NonEmpty.last scope) sType sCase
+      <> searchLiteral sString sCase
+    -- singleton scope term (like 'foo::')
+  ScopeOnly (name :| []) ->
+        searchContainer name sKinds sCase
+    <> searchLiteral name sCase
     <> searchLiteral sString sCase
     <> searchPrefix sString sType sCase
 
@@ -426,20 +431,22 @@ feelingLuckyQuery query@SearchQuery{..} = case sScope of
     case toScopeTokens sString of
       -- valid qname
       Just (ScopeAndName scope name) ->
-        [ Scoped Sensitive scope name
-        , Scoped Insensitive scope name
-        , InheritedScoped Sensitive scope name
-        , InheritedScoped Insensitive scope name
-        , ScopedPrefixly Sensitive scope name
-        , ScopedPrefixly Insensitive scope name
-        ]
-        ++ feelingLuckyQuery (query { sScope = NoScope }) -- plus try as literal
+        luckyScope scope name ++
+        feelingLuckyQuery (query { sScope = NoScope }) -- plus try as literal
+
+      -- qname prefix, non-singleton
+      Just (ScopeOnly scopeOnly@(_ :| (_ : _))) ->
+        let scope = NonEmpty.fromList (NonEmpty.init scopeOnly)
+            name = NonEmpty.last scopeOnly
+        in
+          luckyScope scope name ++
+          feelingLuckyQuery (query { sScope = NoScope }) -- plus try as literal
 
       -- prefix part (e.g. `Foo::`)
-      Just (ScopeOnly scope) ->
+      Just (ScopeOnly (name :| [])) ->
         feelingLuckyQuery (query {
           sScope = NoScope,
-          sString = NonEmpty.last scope }
+          sString = name }
         )
       -- suffix part (e.g. `::bar`)
       Just (NameOnly name) ->
@@ -464,6 +471,15 @@ feelingLuckyQuery query@SearchQuery{..} = case sScope of
     , Prefixly Sensitive sString  -- any sensitive prefix
     , Prefixly Insensitive sString  -- any insensitive prefix, broadest possible
     ]
+  where
+    luckyScope scope name =
+      [ Scoped Sensitive scope name
+      , Scoped Insensitive scope name
+      , InheritedScoped Sensitive scope name
+      , InheritedScoped Insensitive scope name
+      , ScopedPrefixly Sensitive scope name
+      , ScopedPrefixly Insensitive scope name
+      ]
 
 -- | For inherited scope terms we need to a (nested) guess as to the parent
 -- scope to seed the search. It's like feelingLucky, but we know it has to be

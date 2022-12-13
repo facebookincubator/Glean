@@ -32,29 +32,6 @@
                     "exactness": 2
                 },
                 "symbol": "test/php/fun/NS/InnerNS/deep_function"
-            },
-            {
-                "kind": 14,
-                "language": 3,
-                "location": {
-                    "filepath": "www/TopLevel.php",
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 12,
-                        "lineEnd": 14
-                    },
-                    "repository": "test"
-                },
-                "name": "corge",
-                "qname": {
-                    "container": "",
-                    "localName": "corge"
-                },
-                "score": {
-                    "exactness": 2
-                },
-                "symbol": "test/php/fun/corge"
             }
         ]
     }
