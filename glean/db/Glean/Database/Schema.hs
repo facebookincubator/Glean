@@ -906,6 +906,10 @@ validateNewSchema ServerConfig.Config{..} newSrc current = do
 -- | Check that the current schema in the SchemaIndex is compatible
 -- with each of the older schema instances. This is the validity check
 -- when adding a new schema instance.
+--
+-- We currently don't allow mixing evolves annotations with automatic schema
+-- evolutions over different schema instances. This could be supported in the
+-- future but given it isn't implemented it is forbidden.
 validateNewSchemaInstance :: SchemaIndex -> IO ()
 validateNewSchemaInstance schema = do
   let hashedNew = procSchemaHashed (schemaIndexCurrent schema)
@@ -916,7 +920,11 @@ validateNewSchemaInstance schema = do
       newDefs = VisiblePredicates (hashedPreds hashedNew) HashMap.empty
       oldDefs = VisiblePredicates (hashedPreds hashedOld) HashMap.empty
     case evolveOneSchema types predicateIdRef mempty (newDefs, oldDefs) of
-      Left err -> throwIO $ ErrorCall $ Text.unpack err
+      Left err -> throwIO $ ErrorCall $ unlines
+        [ Text.unpack err
+        , ""
+        , "NB: evolves annotations are not considered when checking\
+          \ schema compatibility." ]
       Right{} -> return ()
 
 -- | Interrogate the schema associated with a DB
