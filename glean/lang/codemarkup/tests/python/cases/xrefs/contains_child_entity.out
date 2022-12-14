@@ -169,20 +169,6 @@
       },
       "child": {
         "python": {
-          "decl": { "module": { "key": { "name": { "key": "all" } } } }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "parent": {
-        "python": {
-          "decl": { "module": { "key": { "name": { "key": "all" } } } }
-        }
-      },
-      "child": {
-        "python": {
           "decl": {
             "variable": { "key": { "name": { "key": "all.__all__" } } }
           }
@@ -229,20 +215,6 @@
       },
       "child": {
         "python": {
-          "decl": { "module": { "key": { "name": { "key": "big_lib" } } } }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "parent": {
-        "python": {
-          "decl": { "module": { "key": { "name": { "key": "big_lib" } } } }
-        }
-      },
-      "child": {
-        "python": {
           "decl": {
             "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
           }
@@ -268,24 +240,6 @@
                 "as_name": { "key": "big_lib.relative.big_func" }
               }
             }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "parent": {
-        "python": {
-          "decl": {
-            "module": { "key": { "name": { "key": "big_lib.relative" } } }
-          }
-        }
-      },
-      "child": {
-        "python": {
-          "decl": {
-            "module": { "key": { "name": { "key": "big_lib.relative" } } }
           }
         }
       }
@@ -380,20 +334,6 @@
               }
             }
           }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "parent": {
-        "python": {
-          "decl": { "module": { "key": { "name": { "key": "lib" } } } }
-        }
-      },
-      "child": {
-        "python": {
-          "decl": { "module": { "key": { "name": { "key": "lib" } } } }
         }
       }
     }
@@ -506,20 +446,6 @@
               }
             }
           }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "parent": {
-        "python": {
-          "decl": { "module": { "key": { "name": { "key": "main" } } } }
-        }
-      },
-      "child": {
-        "python": {
-          "decl": { "module": { "key": { "name": { "key": "main" } } } }
         }
       }
     }

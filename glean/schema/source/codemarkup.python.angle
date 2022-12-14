@@ -150,18 +150,25 @@ predicate PythonEntityInfo:
 # Relations
 #
 
+# Parent contains child by scope
 predicate PythonContainsChildEntity :
   {
     parent: code.python.Entity,
     child: code.python.Entity
   }
   { { decl = Container }, { decl = Member } } where
-    ( python.ContainedByTopLevelDeclaration
-      {
-        container = Container,
-        declaration = Member
-      }
-    )
+    python.ContainedByTopLevelDeclaration { Container, Member };
+    Member != Container; # work around T140038357
+
+# Child is contained in scope of parent
+predicate PythonContainsParentEntity :
+  {
+    child: code.python.Entity,
+    parent: code.python.Entity
+  }
+  { { decl = Member }, { decl = Container } } where
+    python.ContainingTopLevelDeclaration { Member, Container };
+    Member != Container; # work around T140038357
 
 predicate PythonFileCall :
   {
@@ -174,6 +181,7 @@ predicate PythonFileCall :
     ConvertCallArguments { PythonArgs, CodeArgs};
   )
 
+# Child extends parent by an inheritance relationship
 predicate PythonExtendsParentEntity :
   {
     child : code.python.Entity,
@@ -184,6 +192,8 @@ predicate PythonExtendsParentEntity :
     python.DeclarationDefinition { ChildDecl, {cls = ChildClassDef} };
     { bases = { just = Bases } } = ChildClassDef;
     { decl = { cls = Bases[..] } } = Parent;
+
+# TODO : parent extends child
 
 # (internal) helper predicate for CallArgument
 # Manually unrolled to lists of <=6 arguments

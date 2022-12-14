@@ -672,6 +672,13 @@
                 "symbol": "test/py/all.py/all.LocalClass"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "all",
+                        "localName": "LocalClass"
+                    },
+                    "symbol": "test/py/all.py/all.LocalClass"
+                },
                 "kind": 8,
                 "language": 7,
                 "location": {
@@ -695,6 +702,13 @@
                 "symbol": "test/py/all.py/all.LocalClass.meth"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "all"
+                    },
+                    "symbol": "test/py/all.py/all"
+                },
                 "kind": 14,
                 "language": 7,
                 "location": {
@@ -718,6 +732,13 @@
                 "symbol": "test/py/all.py/all.fn"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "as"
+                    },
+                    "symbol": "test/py/as.py/as"
+                },
                 "kind": 14,
                 "language": 7,
                 "location": {
@@ -741,6 +762,13 @@
                 "symbol": "test/py/as.py/as.fn"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "big_lib"
+                    },
+                    "symbol": "test/py/big_lib/big_lib"
+                },
                 "kind": 14,
                 "language": 7,
                 "location": {
@@ -787,6 +815,13 @@
                 "symbol": "test/py/lib.py/lib.HelperClass"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "lib",
+                        "localName": "HelperClass"
+                    },
+                    "symbol": "test/py/lib.py/lib.HelperClass"
+                },
                 "kind": 8,
                 "language": 7,
                 "location": {
@@ -810,6 +845,13 @@
                 "symbol": "test/py/lib.py/lib.HelperClass.another_method"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "lib",
+                        "localName": "HelperClass"
+                    },
+                    "symbol": "test/py/lib.py/lib.HelperClass"
+                },
                 "kind": 8,
                 "language": 7,
                 "location": {
@@ -833,6 +875,13 @@
                 "symbol": "test/py/lib.py/lib.HelperClass.method"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "lib"
+                    },
+                    "symbol": "test/py/lib.py/lib"
+                },
                 "kind": 14,
                 "language": 7,
                 "location": {
@@ -856,6 +905,13 @@
                 "symbol": "test/py/lib.py/lib.helper_func"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "main"
+                    },
+                    "symbol": "test/py/main.py/main"
+                },
                 "kind": 14,
                 "language": 7,
                 "location": {
@@ -879,6 +935,13 @@
                 "symbol": "test/py/main.py/main.f"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "main"
+                    },
+                    "symbol": "test/py/main.py/main"
+                },
                 "kind": 14,
                 "language": 7,
                 "location": {
@@ -902,6 +965,13 @@
                 "symbol": "test/py/main.py/main.g"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "main",
+                        "localName": "g"
+                    },
+                    "symbol": "test/py/main.py/main.g"
+                },
                 "kind": 14,
                 "language": 7,
                 "location": {
@@ -948,6 +1018,13 @@
                 "symbol": "test/py/shadow.py/shadow.ShadowClass"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "shadow"
+                    },
+                    "symbol": "test/py/shadow.py/shadow"
+                },
                 "kind": 14,
                 "language": 7,
                 "location": {

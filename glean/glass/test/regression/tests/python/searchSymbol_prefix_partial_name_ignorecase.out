@@ -27,6 +27,13 @@
                 "symbol": "test/py/lib.py/lib.HelperClass"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "lib"
+                    },
+                    "symbol": "test/py/lib.py/lib"
+                },
                 "kind": 14,
                 "language": 7,
                 "location": {

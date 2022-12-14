@@ -373,6 +373,13 @@
         ],
         "symbols": [
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "all"
+                    },
+                    "symbol": "test/py/all.py/all"
+                },
                 "kind": 14,
                 "language": 7,
                 "location": {
@@ -396,6 +403,13 @@
                 "symbol": "test/py/all.py/all.fn"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "as"
+                    },
+                    "symbol": "test/py/as.py/as"
+                },
                 "kind": 14,
                 "language": 7,
                 "location": {
@@ -419,6 +433,13 @@
                 "symbol": "test/py/as.py/as.fn"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "big_lib"
+                    },
+                    "symbol": "test/py/big_lib/big_lib"
+                },
                 "kind": 14,
                 "language": 7,
                 "location": {
@@ -442,6 +463,13 @@
                 "symbol": "test/py/big_lib/big_lib.big_func"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "lib"
+                    },
+                    "symbol": "test/py/lib.py/lib"
+                },
                 "kind": 14,
                 "language": 7,
                 "location": {
@@ -465,6 +493,13 @@
                 "symbol": "test/py/lib.py/lib.helper_func"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "main"
+                    },
+                    "symbol": "test/py/main.py/main"
+                },
                 "kind": 14,
                 "language": 7,
                 "location": {
@@ -488,6 +523,13 @@
                 "symbol": "test/py/main.py/main.f"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "main"
+                    },
+                    "symbol": "test/py/main.py/main"
+                },
                 "kind": 14,
                 "language": 7,
                 "location": {
@@ -511,6 +553,13 @@
                 "symbol": "test/py/main.py/main.g"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "main",
+                        "localName": "g"
+                    },
+                    "symbol": "test/py/main.py/main.g"
+                },
                 "kind": 14,
                 "language": 7,
                 "location": {
@@ -534,6 +583,13 @@
                 "symbol": "test/py/main.py/main.g.%3Clocals%3E.h"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "shadow"
+                    },
+                    "symbol": "test/py/shadow.py/shadow"
+                },
                 "kind": 14,
                 "language": 7,
                 "location": {

@@ -391,6 +391,10 @@ predicate ContainsParentEntity :
       { cxx = C } = Child;
       codemarkup.cxx.CxxContainsParentEntity { C, P };
       { cxx = P } = Parent
+    ) | (
+      { python = C } = Child;
+      codemarkup.python.PythonContainsParentEntity { C, P };
+      { python = P } = Parent
     )
 
 # A parent `contains` a child

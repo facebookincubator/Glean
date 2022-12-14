@@ -143,6 +143,13 @@
         ],
         "symbols": [
             {
+                "context": {
+                    "qname": {
+                        "container": "all",
+                        "localName": "LocalClass"
+                    },
+                    "symbol": "test/py/all.py/all.LocalClass"
+                },
                 "kind": 8,
                 "language": 7,
                 "location": {
@@ -166,6 +173,13 @@
                 "symbol": "test/py/all.py/all.LocalClass.meth"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "lib",
+                        "localName": "HelperClass"
+                    },
+                    "symbol": "test/py/lib.py/lib.HelperClass"
+                },
                 "kind": 8,
                 "language": 7,
                 "location": {
@@ -189,6 +203,13 @@
                 "symbol": "test/py/lib.py/lib.HelperClass.another_method"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "lib",
+                        "localName": "HelperClass"
+                    },
+                    "symbol": "test/py/lib.py/lib.HelperClass"
+                },
                 "kind": 8,
                 "language": 7,
                 "location": {
