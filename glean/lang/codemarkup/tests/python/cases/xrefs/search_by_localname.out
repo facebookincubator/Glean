@@ -2,6 +2,12 @@
   "@generated",
   {
     "key": {
+      "name": { "key": "Child" },
+      "decl": { "cls": { "key": { "name": { "key": "lib.Child" } } } }
+    }
+  },
+  {
+    "key": {
       "name": { "key": "Helper" },
       "decl": {
         "imp": {
@@ -49,6 +55,18 @@
           }
         }
       }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "Parent1" },
+      "decl": { "cls": { "key": { "name": { "key": "lib.Parent1" } } } }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "Parent2" },
+      "decl": { "cls": { "key": { "name": { "key": "lib.Parent2" } } } }
     }
   },
   {

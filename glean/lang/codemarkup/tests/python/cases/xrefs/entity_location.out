@@ -18,6 +18,20 @@
     "key": {
       "entity": {
         "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.Child" } } } }
+        }
+      },
+      "location": {
+        "file": { "key": "lib.py" },
+        "location": { "span": { "length": 39, "start": 443 } },
+        "name": "lib.Child"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
           "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
         }
       },
@@ -25,6 +39,34 @@
         "file": { "key": "lib.py" },
         "location": { "span": { "length": 70, "start": 272 } },
         "name": "lib.HelperClass"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.Parent1" } } } }
+        }
+      },
+      "location": {
+        "file": { "key": "lib.py" },
+        "location": { "span": { "length": 23, "start": 391 } },
+        "name": "lib.Parent1"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.Parent2" } } } }
+        }
+      },
+      "location": {
+        "file": { "key": "lib.py" },
+        "location": { "span": { "length": 23, "start": 417 } },
+        "name": "lib.Parent2"
       }
     }
   },
@@ -397,7 +439,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 389, "start": 0 } },
+        "location": { "span": { "length": 483, "start": 0 } },
         "name": "lib"
       }
     }

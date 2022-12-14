@@ -47,6 +47,28 @@
   {
     "key": {
       "file": { "key": "lib.py" },
+      "span": { "length": 7, "start": 455 },
+      "target": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.Parent1" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "lib.py" },
+      "span": { "length": 7, "start": 464 },
+      "target": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.Parent2" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "lib.py" },
       "span": { "length": 11, "start": 375 },
       "target": {
         "python": {

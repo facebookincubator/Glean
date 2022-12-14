@@ -16,3 +16,15 @@ class HelperClass:
 
 def helper_func():
     return HelperClass()
+
+
+class Parent1:
+    pass
+
+
+class Parent2:
+    pass
+
+
+class Child(Parent1, Parent2):
+    pass

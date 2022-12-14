@@ -1,9 +1,12 @@
 [
   "@generated",
+  { "key": "Child" },
   { "key": "Helper" },
   { "key": "HelperClass" },
   { "key": "LocalClass" },
   { "key": "OtherHelper" },
+  { "key": "Parent1" },
+  { "key": "Parent2" },
   { "key": "__all__" },
   { "key": "all" },
   { "key": "big_func" },

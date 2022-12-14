@@ -43,9 +43,27 @@
   {
     "key": {
       "tuplefield0": { "isAbstract": false, "kind": 6 },
+      "tuplefield1": { "cls": { "key": { "name": { "key": "lib.Child" } } } }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 6 },
       "tuplefield1": {
         "cls": { "key": { "name": { "key": "lib.HelperClass" } } }
       }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 6 },
+      "tuplefield1": { "cls": { "key": { "name": { "key": "lib.Parent1" } } } }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 6 },
+      "tuplefield1": { "cls": { "key": { "name": { "key": "lib.Parent2" } } } }
     }
   },
   {
