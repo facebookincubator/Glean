@@ -17,12 +17,27 @@ module Glean.Write.SendQueue
 
 import qualified Control.Concurrent.Async as Async
 import Control.Concurrent.STM
+    ( STM,
+      newTVarIO,
+      readTVar,
+      retry,
+      throwSTM,
+      writeTVar,
+      TVar,
+      TQueue,
+      flushTQueue,
+      isEmptyTQueue,
+      newTQueueIO,
+      readTQueue,
+      writeTQueue,
+      modifyTVar' )
 import Control.Exception
 import Control.Monad
 import qualified Data.ByteString as BS
 import Data.Default
 
 import Util.Control.Exception (tryBracket)
+import Util.STM (atomically)
 
 import Glean.Backend.Types (Backend)
 import qualified Glean.Backend.Types as Backend
