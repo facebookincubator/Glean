@@ -42,6 +42,18 @@ module Glean.Database.Writes
 
 import Control.Concurrent
 import Control.Concurrent.STM
+    ( readTQueue,
+      tryReadTQueue,
+      writeTQueue,
+      flushTQueue,
+      STM,
+      readTVar,
+      readTVarIO,
+      writeTVar,
+      TVar,
+      isEmptyTQueue,
+      unGetTQueue,
+      modifyTVar' )
 import Control.Exception
 import Control.Monad
 import Control.Monad.Extra (whenM)
@@ -62,7 +74,7 @@ import ServiceData.Types
 import Util.Control.Exception
 import Util.Defer
 import Util.Log
-import Util.STM
+import Util.STM (atomically, updateTVar)
 
 import Glean.Database.Open
 import Glean.Database.Write.Batch
