@@ -262,6 +262,7 @@ predicate DeclarationWithName:
     Declaration { module = { name = N }}
   )
 
+# Used to filter out imp decls when looking for definition occurences
 predicate NonImportDeclaration: Declaration
   D where
   { cls = _ } |
