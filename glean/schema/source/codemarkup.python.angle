@@ -159,6 +159,7 @@ predicate PythonContainsChildEntity :
   { { decl = Container }, { decl = Member } } where
     python.ContainedByTopLevelDeclaration { Container, Member };
     Member != Container; # work around T140038357
+    python.DeclarationDefinition { declaration = Member }; # no import decls
 
 # Child is contained in scope of parent
 predicate PythonContainsParentEntity :

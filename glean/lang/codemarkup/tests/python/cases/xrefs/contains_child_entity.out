@@ -52,27 +52,6 @@
     "key": {
       "parent": {
         "python": {
-          "decl": { "func": { "key": { "name": { "key": "main.g" } } } }
-        }
-      },
-      "child": {
-        "python": {
-          "decl": {
-            "imp": {
-              "key": {
-                "from_name": { "key": "lib.HelperClass" },
-                "as_name": { "key": "main.OtherHelper" }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "parent": {
-        "python": {
           "decl": { "module": { "key": { "name": { "key": "all" } } } }
         }
       },
@@ -93,69 +72,6 @@
       "child": {
         "python": {
           "decl": { "func": { "key": { "name": { "key": "all.fn" } } } }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "parent": {
-        "python": {
-          "decl": { "module": { "key": { "name": { "key": "all" } } } }
-        }
-      },
-      "child": {
-        "python": {
-          "decl": {
-            "imp": {
-              "key": {
-                "from_name": { "key": "big_lib.big_func" },
-                "as_name": { "key": "all.big_func" }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "parent": {
-        "python": {
-          "decl": { "module": { "key": { "name": { "key": "all" } } } }
-        }
-      },
-      "child": {
-        "python": {
-          "decl": {
-            "imp": {
-              "key": {
-                "from_name": { "key": "big_lib.big_var" },
-                "as_name": { "key": "all.big_var" }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "parent": {
-        "python": {
-          "decl": { "module": { "key": { "name": { "key": "all" } } } }
-        }
-      },
-      "child": {
-        "python": {
-          "decl": {
-            "imp": {
-              "key": {
-                "from_name": { "key": "lib.HelperClass" },
-                "as_name": { "key": "all.Helper" }
-              }
-            }
-          }
         }
       }
     }
@@ -217,29 +133,6 @@
         "python": {
           "decl": {
             "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "parent": {
-        "python": {
-          "decl": {
-            "module": { "key": { "name": { "key": "big_lib.relative" } } }
-          }
-        }
-      },
-      "child": {
-        "python": {
-          "decl": {
-            "imp": {
-              "key": {
-                "from_name": { "key": "big_lib.big_func" },
-                "as_name": { "key": "big_lib.relative.big_func" }
-              }
-            }
           }
         }
       }
@@ -321,27 +214,6 @@
     "key": {
       "parent": {
         "python": {
-          "decl": { "module": { "key": { "name": { "key": "lib" } } } }
-        }
-      },
-      "child": {
-        "python": {
-          "decl": {
-            "imp": {
-              "key": {
-                "from_name": { "key": "big_lib.big_func" },
-                "as_name": { "key": "lib.func" }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "parent": {
-        "python": {
           "decl": { "module": { "key": { "name": { "key": "main" } } } }
         }
       },
@@ -362,90 +234,6 @@
       "child": {
         "python": {
           "decl": { "func": { "key": { "name": { "key": "main.g" } } } }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "parent": {
-        "python": {
-          "decl": { "module": { "key": { "name": { "key": "main" } } } }
-        }
-      },
-      "child": {
-        "python": {
-          "decl": {
-            "imp": {
-              "key": {
-                "from_name": { "key": "big_lib.big_func" },
-                "as_name": { "key": "main.big_func" }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "parent": {
-        "python": {
-          "decl": { "module": { "key": { "name": { "key": "main" } } } }
-        }
-      },
-      "child": {
-        "python": {
-          "decl": {
-            "imp": {
-              "key": {
-                "from_name": { "key": "lib.HelperClass" },
-                "as_name": { "key": "main.Helper" }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "parent": {
-        "python": {
-          "decl": { "module": { "key": { "name": { "key": "main" } } } }
-        }
-      },
-      "child": {
-        "python": {
-          "decl": {
-            "imp": {
-              "key": {
-                "from_name": { "key": "lib.func" },
-                "as_name": { "key": "main.func" }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "parent": {
-        "python": {
-          "decl": { "module": { "key": { "name": { "key": "main" } } } }
-        }
-      },
-      "child": {
-        "python": {
-          "decl": {
-            "imp": {
-              "key": {
-                "from_name": { "key": "lib.helper_func" },
-                "as_name": { "key": "main.helper_func" }
-              }
-            }
-          }
         }
       }
     }
