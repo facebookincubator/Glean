@@ -13,24 +13,11 @@ module Glean.Write.SendAndRebaseQueue
   ) where
 
 import Control.Concurrent
-import Control.Concurrent.STM
-    ( newTMVarIO,
-      readTQueue,
-      tryReadTQueue,
-      writeTQueue,
-      tryTakeTMVar,
-      takeTMVar,
-      putTMVar,
-      flushTQueue,
-      newTQueueIO,
-      STM,
-      TQueue,
-      TMVar )
 import Control.Exception
 import Control.Monad
 
 import Util.Log
-import Util.STM (atomically)
+import Util.STM
 
 import Glean.Backend.Types (Backend)
 import qualified Glean.Write.SendQueue as SendQueue
