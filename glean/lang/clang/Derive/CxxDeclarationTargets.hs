@@ -34,7 +34,7 @@ import qualified Data.Vector.Unboxed as VU
 import Data.Word (Word64)
 import GHC.Compact as Compact
 
-import Util.Log (logInfo)
+import Util.Log (logInfo, logWarning)
 import Util.STM
 
 import Glean
@@ -470,7 +470,9 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
                   count <- generateCalls writer file targetss
                   modifyIORef' localCount (+ count)
                   loop
-        loop
+        loop `catch` \e@SomeException{} -> do
+          logWarning ("Thread killed: " <> show e)
+          throw e
 
   -- ---------------------------------------------------------------------------
 

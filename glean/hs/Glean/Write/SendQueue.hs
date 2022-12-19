@@ -20,8 +20,11 @@ import Control.Exception
 import Control.Monad
 import qualified Data.ByteString as BS
 import Data.Default
+import System.Time.Extra (sleep)
+import Text.Printf (printf)
 
 import Util.Control.Exception (tryBracket)
+import Util.Log (logWarning, logInfo)
 import Util.STM
 
 import Glean.Backend.Types (Backend)
@@ -168,6 +171,7 @@ pollFromWaitQueue backend settings sq = do
     (atomically $ readWaitQueue sq)
     (\r ex -> case (ex,r) of
       (Left exc, Just wait) -> do
+        logWarning $ "Thread killed: " <> show exc
         atomically $ do
           waitCallback wait $ Left exc
           failSendQueue sq exc
@@ -200,6 +204,7 @@ sendFromQueue backend repo settings sq = do
     (atomically $ readSendQueue sq)
     (\r ex -> case (ex,r) of
       (Left exc, Just (_, callback)) -> do
+        logWarning $ "Thread killed: " <> show exc
         atomically $ do
           callback $ Left exc
           failSendQueue sq exc
@@ -259,11 +264,18 @@ withSendQueue
 withSendQueue backend repo settings@SendQueueSettings{..} action =
   mask $ \restore -> do
     q <- newSendQueue sendQueueMaxMemory sendQueueMaxBatches
-    snd <$> Async.concurrently
-      (Async.mapConcurrently_ id
-        $ restore (pollFromWaitQueue backend settings q)
-        : replicate
-            sendQueueThreads
-            (restore (sendFromQueue backend repo settings q)))
-      (restore (action q)
-        `finally` atomically (closeSendQueue q))
+    Async.withAsync (forever $ logQueueStats q >> sleep 10) $ \_ -> do
+      snd <$> Async.concurrently
+        (Async.mapConcurrently_ id
+          $ restore (pollFromWaitQueue backend settings q)
+          : replicate
+              sendQueueThreads
+              (restore (sendFromQueue backend repo settings q)))
+        (restore (action q)
+          `finally` atomically (closeSendQueue q))
+
+logQueueStats :: SendQueue -> IO ()
+logQueueStats SendQueue{..} = do
+  count <- readTVarIO sqCount
+  memory <- readTVarIO sqMemory
+  logInfo $ printf "count:%d/%d memory:%d/%d" count sqMaxCount memory sqMaxMemory
