@@ -1,0 +1,163 @@
+[
+    "@generated",
+    {
+        "symbolDetails": [
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "big_lib/__init__.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 19,
+                        "lineBegin": 8,
+                        "lineEnd": 9
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "big_lib",
+                    "localName": "big_func"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/big_lib/big_lib.big_func",
+                "sym_location": {
+                    "filepath": "big_lib/__init__.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 19,
+                        "lineBegin": 8,
+                        "lineEnd": 9
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 20
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "big_lib/__init__.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 12,
+                        "lineBegin": 5,
+                        "lineEnd": 5
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "big_lib",
+                    "localName": "big_var"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/big_lib/big_lib.big_var",
+                "sym_location": {
+                    "filepath": "big_lib/__init__.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 12,
+                        "lineBegin": 5,
+                        "lineEnd": 5
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 20
+            }
+        ],
+        "symbols": [
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "big_lib"
+                    },
+                    "symbol": "test/py/big_lib/big_lib"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "big_lib/__init__.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 19,
+                        "lineBegin": 8,
+                        "lineEnd": 9
+                    },
+                    "repository": "test"
+                },
+                "name": "big_lib.big_func",
+                "qname": {
+                    "container": "big_lib",
+                    "localName": "big_func"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/big_lib/big_lib.big_func"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "big_lib"
+                    },
+                    "symbol": "test/py/big_lib/big_lib"
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "big_lib/__init__.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 12,
+                        "lineBegin": 5,
+                        "lineEnd": 5
+                    },
+                    "repository": "test"
+                },
+                "name": "big_lib.big_var",
+                "qname": {
+                    "container": "big_lib",
+                    "localName": "big_var"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/big_lib/big_lib.big_var"
+            }
+        ]
+    }
+]

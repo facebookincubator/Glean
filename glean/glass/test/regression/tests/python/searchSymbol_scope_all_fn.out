@@ -1,0 +1,86 @@
+[
+    "@generated",
+    {
+        "symbolDetails": [
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 21,
+                        "lineBegin": 10,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "all",
+                    "localName": "fn"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/all.py/all.fn",
+                "sym_location": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 21,
+                        "lineBegin": 10,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 20
+            }
+        ],
+        "symbols": [
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "all"
+                    },
+                    "symbol": "test/py/all.py/all"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 21,
+                        "lineBegin": 10,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "name": "all.fn",
+                "qname": {
+                    "container": "all",
+                    "localName": "fn"
+                },
+                "score": {
+                    "exactness": 0
+                },
+                "symbol": "test/py/all.py/all.fn"
+            }
+        ]
+    }
+]

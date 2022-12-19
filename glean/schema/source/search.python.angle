@@ -1,0 +1,168 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema search.python.1 {
+import python.3
+
+#
+# Generating SNames from an array of string fragments
+#
+predicate QueryToScopeCase:
+  {
+    query : [string],
+    insensitive : bool, # if true , search insensitive
+    scopeName : maybe python.SName,
+  }
+  { Query, Case, SName } where
+     ( [] = Query; true | false = Case;
+       SName = nothing : maybe python.SName) |
+     # one tuple
+     ( [A] = Query;
+       PythonNameCase { Case, A, AName };
+       { just = python.SName { AName, nothing } } = SName) |
+     # two tuple
+     ( [B,A] = Query;
+       PythonNameCase { Case, A, AName };
+       PythonNameCase { Case, B, BName };
+       { just = python.SName { AName, {
+         just = python.SName { BName, nothing }} }} = SName ) |
+     # three tuple
+     ( [C,B,A] = Query;
+       PythonNameCase { Case, A, AName };
+       PythonNameCase { Case, B, BName };
+       PythonNameCase { Case, C, CName };
+       { just = python.SName { AName, {
+         just = python.SName { BName, {
+         just = python.SName { CName, nothing }} }} }} = SName ) |
+     # four tuple
+     ( [D,C,B,A] = Query;
+       PythonNameCase { Case, A, AName };
+       PythonNameCase { Case, B, BName };
+       PythonNameCase { Case, C, CName };
+       PythonNameCase { Case, D, DName };
+       { just = python.SName { AName, {
+         just = python.SName { BName, {
+         just = python.SName { CName, {
+         just = python.SName { DName, nothing }} }} }} }} = SName ) |
+     # five tuple, are there any? yes there are many
+     ( [E,D,C,B,A] = Query;
+       PythonNameCase { Case, A, AName };
+       PythonNameCase { Case, B, BName };
+       PythonNameCase { Case, C, CName };
+       PythonNameCase { Case, D, DName };
+       PythonNameCase { Case, E, EName };
+       { just = python.SName { AName, {
+         just = python.SName { BName, {
+         just = python.SName { CName, {
+         just = python.SName { DName, {
+         just = python.SName { EName, nothing }} }} }} }} }} = SName ) |
+      # six tuple
+     ( [F,E,D,C,B,A] = Query;
+       PythonNameCase { Case, A, AName };
+       PythonNameCase { Case, B, BName };
+       PythonNameCase { Case, C, CName };
+       PythonNameCase { Case, D, DName };
+       PythonNameCase { Case, E, EName };
+       PythonNameCase { Case, F, FName };
+       { just = python.SName { AName, {
+         just = python.SName { BName, {
+         just = python.SName { CName, {
+         just = python.SName { DName, {
+         just = python.SName { EName, {
+         just = python.SName { FName, nothing }} }} }} }} }} }} = SName ) |
+     # seven tuple
+     ( [G,F,E,D,C,B,A] = Query;
+       PythonNameCase { Case, A, AName };
+       PythonNameCase { Case, B, BName };
+       PythonNameCase { Case, C, CName };
+       PythonNameCase { Case, D, DName };
+       PythonNameCase { Case, E, EName };
+       PythonNameCase { Case, F, FName };
+       PythonNameCase { Case, G, GName };
+       { just = python.SName { AName, {
+         just = python.SName { BName, {
+         just = python.SName { CName, {
+         just = python.SName { DName, {
+         just = python.SName { EName, {
+         just = python.SName { FName, {
+         just = python.SName { GName, nothing }} }} }} }} }} }} }} = SName ) |
+     # eight tuple
+     ( [H,G,F,E,D,C,B,A] = Query;
+       PythonNameCase { Case, A, AName };
+       PythonNameCase { Case, B, BName };
+       PythonNameCase { Case, C, CName };
+       PythonNameCase { Case, D, DName };
+       PythonNameCase { Case, E, EName };
+       PythonNameCase { Case, F, FName };
+       PythonNameCase { Case, G, GName };
+       PythonNameCase { Case, H, HName };
+       { just = python.SName { AName, {
+         just = python.SName { BName, {
+         just = python.SName { CName, {
+         just = python.SName { DName, {
+         just = python.SName { EName, {
+         just = python.SName { FName, {
+         just = python.SName { GName, {
+         just = python.SName { HName, nothing }} }} }} }} }} }} }} }} = SName) |
+     # nine tuple
+     ( [I,H,G,F,E,D,C,B,A] = Query;
+       PythonNameCase { Case, A, AName };
+       PythonNameCase { Case, B, BName };
+       PythonNameCase { Case, C, CName };
+       PythonNameCase { Case, D, DName };
+       PythonNameCase { Case, E, EName };
+       PythonNameCase { Case, F, FName };
+       PythonNameCase { Case, G, GName };
+       PythonNameCase { Case, H, HName };
+       PythonNameCase { Case, I, IName };
+       { just = python.SName { AName, {
+         just = python.SName { BName, {
+         just = python.SName { CName, {
+         just = python.SName { DName, {
+         just = python.SName { EName, {
+         just = python.SName { FName, {
+         just = python.SName { GName, {
+         just = python.SName { HName, {
+         just = python.SName { IName, nothing
+           }} }} }} }} }} }} }} }} }} = SName ) |
+     # ten tuple
+     ( [J,I,H,G,F,E,D,C,B,A] = Query;
+       PythonNameCase { Case, A, AName };
+       PythonNameCase { Case, B, BName };
+       PythonNameCase { Case, C, CName };
+       PythonNameCase { Case, D, DName };
+       PythonNameCase { Case, E, EName };
+       PythonNameCase { Case, F, FName };
+       PythonNameCase { Case, G, GName };
+       PythonNameCase { Case, H, HName };
+       PythonNameCase { Case, I, IName };
+       PythonNameCase { Case, J, JName };
+       { just = python.SName { AName, {
+         just = python.SName { BName, {
+         just = python.SName { CName, {
+         just = python.SName { DName, {
+         just = python.SName { EName, {
+         just = python.SName { FName, {
+         just = python.SName { GName, {
+         just = python.SName { HName, {
+         just = python.SName { IName, {
+         just = python.SName { JName, nothing
+          }} }} }} }} }} }} }} }} }} }} = SName );
+
+# Helper to lookup python.Name based on case sensitivity
+predicate PythonNameCase:
+  {
+    insensitive: bool,
+    namestr : string,
+    name : python.Name
+  }
+  { Insensitive, NameStr, Name } where
+    ( true = Insensitive;
+      python.LocalNameLowerCase { NameStr, python.LocalName LocalNameStr };
+      python.Name LocalNameStr = Name
+    ) | (
+      false = Insensitive;
+      python.LocalName NameStr; # check quickly
+      python.Name NameStr = Name
+    )
+
+}

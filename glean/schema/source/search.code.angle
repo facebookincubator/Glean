@@ -18,6 +18,7 @@ import search.cxx.5
 import search.erlang.4
 import search.hack.7
 import search.hs.9
+import search.python.1
 import thrift.7
 
 #
@@ -69,10 +70,11 @@ predicate SearchByScope:
   }
   { Name, Scope, Language, Entity } where
     ( Cpp = Language; CxxSearchByScope { Name, Scope, Entity } ) |
-    ( Hack = Language; HackSearchByScope { Name, Scope, Entity } );
+    ( Hack = Language; HackSearchByScope { Name, Scope, Entity } ) |
+    ( Python = Language; PythonSearchByScope { Name, Scope, Entity } );
     code.EntityLanguage { Entity, Language };
 
-# lower case by scope (experimental!)
+# lower case by scope
 predicate SearchByLowerCaseScope:
   {
     name: string,
@@ -82,7 +84,8 @@ predicate SearchByLowerCaseScope:
   }
   { Name, Scope, Language, Entity } where
     ( Cpp = Language; CxxSearchByLowerCaseScope { Name, Scope, Entity } ) |
-    ( Hack = Language; HackSearchByLowerCaseScope { Name, Scope, Entity } );
+    ( Hack = Language; HackSearchByLowerCaseScope { Name, Scope, Entity } ) |
+    ( Python = Language; PythonSearchByLowerCaseScope { Name, Scope, Entity } );
     code.EntityLanguage { Entity, Language };
 
 # global entity search by identifier name (or prefix)
@@ -236,15 +239,41 @@ predicate PythonSearchByLocalNameFact:
     python.SearchByLocalName { LocalName, Decl };
     python.NonImportDeclaration Decl;
 
-# helper to avoid repeatedly doing string search
-# (deprecated)
-predicate PythonSearchByNameFact:
+predicate PythonSearchByScope:
   {
-    name: python.Name,
+    name: string,
+    scope: [string],
     entity: code.Entity,
   }
-  { Name, { python = { decl = Decl }}} where
-    python.DeclarationWithLocalName { Name, Decl };
+  { NameStr, Query, Entity } where
+    LocalName = python.LocalName NameStr;
+    Insensitive = false;
+    PythonSearchByScopeWithName { LocalName, Insensitive, Query, Entity }
+
+predicate PythonSearchByLowerCaseScope:
+  {
+    name: string,
+    scope: [string],
+    entity: code.Entity,
+  }
+  { NameStr, Query, Entity} where
+    python.LocalNameLowerCase { NameStr, LocalName };
+    Insensitive = true;
+    PythonSearchByScopeWithName { LocalName, Insensitive, Query, Entity }
+
+# Private: search by scope anchored on a local_name fact
+predicate PythonSearchByScopeWithName:
+  {
+    name: python.LocalName,
+    insensitive : bool,
+    scope: [string],
+    entity: code.Entity,
+  }
+  { LocalName, Insensitive, Scope, { python = { decl = Decl }}} where
+    LocalName = python.LocalName NameStr;
+    search.python.QueryToScopeCase { Scope, Insensitive, MSName };
+    SName = python.SName { python.Name NameStr, MSName };
+    python.DeclarationWithSName { SName, Decl };
     python.NonImportDeclaration Decl;
 
 predicate FlowSearchByName:

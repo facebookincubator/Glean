@@ -279,16 +279,6 @@ predicate SearchInContext :
       (NS = hack.NamespaceQName { ParentName, ParentNamespace };
       SearchNamespacedDecl { N, { just = NS }, D}; D )
 
-# (deprecated, use QueryToScopeCase)
-predicate QueryToScope:
-  {
-    query : [string],
-    scopeName : hack.Name,
-    scopeNamespace : maybe hack.NamespaceQName
-  }
-  { Query, Name, QName } where
-    QueryToScopeCase { Query, false, Name, QName } # backwards compat
-
 #
 # Generating qnames and namespace qnames. We don't have recursion but we'd
 # like to compile the namespace tokens into a recursive QName type so we unroll
