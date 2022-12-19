@@ -69,7 +69,8 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": []
+                "type_xrefs": [],
+                "visibility": 20
             },
             "test/py/lib.py/lib.HelperClass": {
                 "comments": [],
@@ -115,7 +116,8 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": []
+                "type_xrefs": [],
+                "visibility": 20
             },
             "test/py/lib.py/lib.HelperClass.another_method": {
                 "comments": [],
@@ -161,7 +163,8 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": []
+                "type_xrefs": [],
+                "visibility": 20
             },
             "test/py/lib.py/lib.HelperClass.method": {
                 "comments": [],
@@ -207,7 +210,8 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": []
+                "type_xrefs": [],
+                "visibility": 20
             },
             "test/py/lib.py/lib.HelperClass.value": {
                 "comments": [],
@@ -253,7 +257,8 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": []
+                "type_xrefs": [],
+                "visibility": 20
             }
         }
     }

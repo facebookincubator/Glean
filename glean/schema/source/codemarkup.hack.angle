@@ -156,16 +156,18 @@ predicate HackAnnotation :
 # Visibility
 #
 
-# (deprecated), just the visibility attributes
+# just the visibility attributes
 predicate HackVisibility :
   {
     entity: code.hack.Entity,
     visibility: codemarkup.types.Visibility,
   }
-  {D, V} where
-    (
-      ({decl={ method = Decl }} = D; hack.MethodDefinition{declaration=Decl, visibility=Vis}) |
-      ({decl={ property_ = Decl }} = D; hack.PropertyDefinition{declaration=Decl, visibility=Vis})
+  { D, V } where
+    ( { decl = { method = Decl }} = D;
+      hack.MethodDefinition { declaration = Decl, visibility = Vis}
+    ) | (
+      { decl = { property_ = Decl }} = D;
+      hack.PropertyDefinition { declaration = Decl, visibility = Vis}
     );
     FromHackVisibility { Vis, V };
 

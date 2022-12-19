@@ -1,0 +1,5 @@
+query: |
+    python.DeclarationLocation { declaration = Decl };
+    codemarkup.EntityVisibility { python = { decl = Decl }}
+perf: true
+transform: [normord, []]

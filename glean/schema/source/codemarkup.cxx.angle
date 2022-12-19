@@ -397,7 +397,7 @@ predicate CxxVisibility:
     entity: code.cxx.Entity,
     visibility: codemarkup.types.Visibility,
   }
-  { {decl=Decl}, Visibility } where
+  { { decl = Decl }, Visibility } where
     (
       ({ function_ = {name={scope=Scope} } } = Decl) |
       ({ enum_ = {name={scope=Scope} } } = Decl) |

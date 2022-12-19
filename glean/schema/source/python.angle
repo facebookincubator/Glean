@@ -36,7 +36,9 @@ predicate SName:
     parent: maybe SName,
   }
 
+# Unstructured dotted qualified names to structured names
 predicate NameToSName: Name -> SName
+
 predicate SNameToName: SName -> Name
   stored SN -> N where NameToSName N -> SN
 
@@ -349,8 +351,8 @@ predicate DeclarationWithSName:
     declaration: Declaration,
   }
   {SN, D} where
-  SNameToName SN -> N;
-  DeclarationWithName {N, D};
+    SNameToName SN -> N;
+    DeclarationWithName { N, D };
 
 # map from a declaration to the closest top level declaration
 # useful as we operate a lot of analysis on the top level declarations

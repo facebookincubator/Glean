@@ -1,0 +1,331 @@
+[
+  "@generated",
+  {
+    "key": {
+      "python": {
+        "decl": { "cls": { "key": { "name": { "key": "all.LocalClass" } } } }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": { "cls": { "key": { "name": { "key": "lib.Child" } } } }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": { "cls": { "key": { "name": { "key": "lib.Parent1" } } } }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": { "cls": { "key": { "name": { "key": "lib.Parent2" } } } }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": { "func": { "key": { "name": { "key": "all.fn" } } } }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": { "func": { "key": { "name": { "key": "big_lib.big_func" } } } }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "func": { "key": { "name": { "key": "lib.HelperClass.method" } } }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": { "func": { "key": { "name": { "key": "lib.helper_func" } } } }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": { "func": { "key": { "name": { "key": "main.f" } } } }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": { "func": { "key": { "name": { "key": "main.g" } } } }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "func": { "key": { "name": { "key": "main.g.<locals>.h" } } }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "imp": {
+            "key": {
+              "as_name": { "key": "all.Helper" },
+              "from_name": { "key": "lib.HelperClass" }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "imp": {
+            "key": {
+              "as_name": { "key": "all.big_func" },
+              "from_name": { "key": "big_lib.big_func" }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "imp": {
+            "key": {
+              "as_name": { "key": "all.big_var" },
+              "from_name": { "key": "big_lib.big_var" }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "imp": {
+            "key": {
+              "as_name": { "key": "big_lib.relative.big_func" },
+              "from_name": { "key": "big_lib.big_func" }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "imp": {
+            "key": {
+              "as_name": { "key": "lib.func" },
+              "from_name": { "key": "big_lib.big_func" }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "imp": {
+            "key": {
+              "as_name": { "key": "main.Helper" },
+              "from_name": { "key": "lib.HelperClass" }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "imp": {
+            "key": {
+              "as_name": { "key": "main.OtherHelper" },
+              "from_name": { "key": "lib.HelperClass" }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "imp": {
+            "key": {
+              "as_name": { "key": "main.big_func" },
+              "from_name": { "key": "big_lib.big_func" }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "imp": {
+            "key": {
+              "as_name": { "key": "main.func" },
+              "from_name": { "key": "lib.func" }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "imp": {
+            "key": {
+              "as_name": { "key": "main.helper_func" },
+              "from_name": { "key": "lib.helper_func" }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": { "module": { "key": { "name": { "key": "all" } } } }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": { "module": { "key": { "name": { "key": "big_lib" } } } }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "module": { "key": { "name": { "key": "big_lib.relative" } } }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": { "module": { "key": { "name": { "key": "lib" } } } }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": { "module": { "key": { "name": { "key": "main" } } } }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": { "variable": { "key": { "name": { "key": "all.__all__" } } } }
+      }
+    },
+    "value": 2
+  },
+  {
+    "key": {
+      "python": {
+        "decl": { "variable": { "key": { "name": { "key": "all.var" } } } }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "variable": { "key": { "name": { "key": "main.f.<locals>.c" } } }
+        }
+      }
+    },
+    "value": 0
+  }
+]

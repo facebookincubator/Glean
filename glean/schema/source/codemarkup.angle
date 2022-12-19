@@ -320,9 +320,16 @@ predicate EntityToAnnotations :
 #
 
 predicate EntityVisibility : code.Entity -> codemarkup.types.Visibility
-  E -> V where
-    ({cxx=Entity}=E;codemarkup.cxx.CxxVisibility{entity=Entity, visibility=V}) |
-    ({hack=Entity}=E;codemarkup.hack.HackVisibility{entity=Entity, visibility=V})
+  Entity -> Visibility where
+    ( { cxx = E } = Entity;
+      codemarkup.cxx.CxxVisibility { E, Visibility }
+    ) | (
+      { hack = E } = Entity;
+      codemarkup.hack.HackVisibility { E, Visibility }
+    ) | (
+      { python = E } = Entity;
+      codemarkup.python.PythonVisibility { E, Visibility }
+    )
 
 # Language keywords like `static` or `final`, or `mutable` ..
 predicate EntityModifiers:

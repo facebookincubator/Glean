@@ -137,6 +137,20 @@ predicate PythonEntityKind:
       NonImportPythonDeclarationKind { Imported, Kind }
     )
 
+# Just the visibility attributes
+# A single underscore indicates the intent that the symbol should be private
+predicate PythonVisibility :
+  {
+    entity: code.python.Entity,
+    visibility: codemarkup.types.Visibility,
+  }
+  { { decl = Decl }, Visibility } where
+    python.DeclarationToName Decl -> Name;
+    python.NameToSName Name -> { local_name = python.Name NameStr };
+    ( if ( NameStr = "_".. )
+      then ( Private )
+      else ( Public ) ) = Visibility;
+
 # For backward compatibility:
 predicate PythonEntityInfo:
   {
