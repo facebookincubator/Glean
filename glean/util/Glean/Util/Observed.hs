@@ -15,9 +15,10 @@ module Glean.Util.Observed
   , doOnUpdate
   ) where
 
-import Control.Concurrent.STM
 import Control.Monad
 import Data.IORef
+
+import Util.STM
 
 -- | A value that may change over time, and that we can observe efficiently.
 data Observed a = Observed

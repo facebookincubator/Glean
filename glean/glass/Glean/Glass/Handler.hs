@@ -46,7 +46,6 @@ module Glean.Glass.Handler
   ) where
 
 import Control.Monad ((<=<))
-import Control.Concurrent.STM ( TVar, atomically, readTVar )
 import Control.Exception ( throwIO, SomeException )
 import Control.Monad.Catch ( throwM, try )
 import Data.Either.Extra (eitherToMaybe, partitionEithers)
@@ -71,6 +70,7 @@ import Util.Logger ( loggingAction )
 import Util.Text ( textShow )
 import Util.List ( uniq, uniqBy )
 import Util.Control.Exception (catchAll)
+import Util.STM ( TVar, atomically, readTVar )
 import qualified Logger.GleanGlass as Logger
 import qualified Logger.GleanGlassErrors as ErrorsLogger
 

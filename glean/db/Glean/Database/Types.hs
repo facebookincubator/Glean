@@ -17,7 +17,6 @@ module Glean.Database.Types (
 import Control.DeepSeq
 import Control.Concurrent.Async
 import Control.Concurrent.MVar (MVar)
-import Control.Concurrent.STM
 import Control.Exception
 import Data.ByteString (ByteString)
 import Data.HashMap.Strict (HashMap)
@@ -29,6 +28,7 @@ import System.Clock
 
 import Data.RateLimiterMap
 import Util.EventBase (EventBaseDataplane)
+import Util.STM
 
 import Glean.Angle.Types
 import qualified Glean.Database.Backup.Backend as Backup

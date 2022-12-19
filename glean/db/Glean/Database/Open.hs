@@ -21,7 +21,6 @@ module Glean.Database.Open (
 ) where
 
 import Control.Concurrent.Async (Async, wait)
-import Control.Concurrent.STM
 import Control.Exception hiding(try)
 import Control.Monad.Catch (try)
 import Control.Monad.Extra
@@ -37,6 +36,7 @@ import GHC.Stack (HasCallStack)
 import qualified Util.Control.Exception.CallStack as CallStack
 import Util.Log
 import Util.Logger
+import Util.STM
 import Util.Text
 
 import qualified Glean.Database.Catalog as Catalog

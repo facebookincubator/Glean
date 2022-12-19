@@ -14,10 +14,11 @@ module Glean.Database.Work.Heartbeat (
   checkHeartbeats
 ) where
 
-import Control.Concurrent.STM
 import Control.Monad
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
+
+import Util.STM
 
 import qualified Glean.Types as Thrift
 import Glean.Util.Time

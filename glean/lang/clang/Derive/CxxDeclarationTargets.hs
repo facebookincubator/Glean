@@ -13,7 +13,6 @@ module Derive.CxxDeclarationTargets
 
 import Control.Concurrent.Async (Concurrently(..), runConcurrently)
 import qualified Control.Concurrent.Async as Async (withAsync, wait)
-import Control.Concurrent.STM
 import Control.DeepSeq
 import Control.Exception
 import Control.Monad
@@ -36,6 +35,7 @@ import Data.Word (Word64)
 import GHC.Compact as Compact
 
 import Util.Log (logInfo)
+import Util.STM
 
 import Glean
 import Glean.FFI (withMany)

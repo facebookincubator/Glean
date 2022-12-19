@@ -15,13 +15,13 @@ module Glean.Database.Close (
 ) where
 
 import qualified Control.Concurrent.Async as Async
-import Control.Concurrent.STM
 import Control.Exception hiding(handle)
 import Control.Monad.Extra
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text.Encoding as Text
 
 import ServiceData.GlobalStats as Stats
+import Util.STM
 
 import Glean.Database.Open
 import qualified Glean.Database.Storage as Storage

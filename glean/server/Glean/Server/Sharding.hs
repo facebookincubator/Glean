@@ -16,7 +16,6 @@ module Glean.Server.Sharding (
 
 import Control.Concurrent ( modifyMVar_, newMVar, MVar )
 import Control.Concurrent.Async ( withAsync )
-import Control.Concurrent.STM ( retry, atomically )
 import Control.Monad ( when )
 import Data.HashSet (HashSet)
 import qualified Data.HashSet as HashSet
@@ -47,6 +46,7 @@ import System.Time.Extra ( showDuration, sleep, Seconds )
 import Util.Control.Exception ( swallow )
 import Util.EventBase ( EventBaseDataplane )
 import Util.Log
+import Util.STM ( retry, atomically )
 
 type PortNumber = Int
 

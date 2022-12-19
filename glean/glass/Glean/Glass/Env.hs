@@ -16,15 +16,15 @@ module Glean.Glass.Env
     IndexBackend(..),
   ) where
 
-import Util.EventBase (EventBaseDataplane)
+import Data.Text (Text)
+
 import Facebook.Fb303 (Fb303State)
 import Logger.IO (Logger)
-import Glean.Impl.ConfigProvider (ConfigAPI)
-
-import Data.Text (Text)
-import Control.Concurrent.STM ( TVar )
+import Util.EventBase (EventBaseDataplane)
+import Util.STM ( TVar )
 
 import qualified Glean
+import Glean.Impl.ConfigProvider (ConfigAPI)
 import qualified Glean.Repo as Glean
 import qualified Glean.LocalOrRemote as Glean
 import Glean.Remote (ThriftBackend)

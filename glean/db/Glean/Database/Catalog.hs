@@ -46,7 +46,6 @@ module Glean.Database.Catalog
   ) where
 
 import Control.Concurrent.Async
-import Control.Concurrent.STM
 import Control.Exception
     ( Exception,
       SomeException,
@@ -70,6 +69,7 @@ import System.IO (fixIO)
 import Util.Control.Exception (tryBracket)
 import qualified Util.Control.Exception.CallStack as CallStack
 import Util.Log
+import Util.STM
 
 import Glean.Database.Catalog.Filter
 import Glean.Database.Catalog.Store (Store)

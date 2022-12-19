@@ -16,11 +16,12 @@ module Glean.Write.Async (
 
 import Control.Applicative
 import Control.Concurrent.MVar
-import Control.Concurrent.STM
 import Control.Exception
 import Control.Monad
 import Data.Default
 import Data.Maybe
+
+import Util.STM
 
 import Glean.Backend.Types (Backend)
 import qualified Glean.Backend.Types as Backend

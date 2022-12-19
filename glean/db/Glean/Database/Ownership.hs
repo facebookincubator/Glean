@@ -11,7 +11,6 @@ module Glean.Database.Ownership
   , OwnerExpr(..)
   ) where
 
-import Control.Concurrent.STM
 import Control.Exception
 import Data.ByteString (ByteString)
 import Data.Coerce
@@ -19,6 +18,8 @@ import Data.Maybe
 import qualified Data.Vector.Storable as Vector
 import Data.Word
 import Foreign.Marshal.Utils (withMany)
+
+import Util.STM
 
 import Glean.Database.Open
 import Glean.Database.Storage as Storage

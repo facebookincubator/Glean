@@ -26,12 +26,13 @@ module Glean.Util.Trace
   )
 where
 
-import Control.Concurrent.STM
 import Control.Monad
 import Data.HashMap.Lazy (HashMap)
 import qualified Data.HashMap.Lazy as HashMap
 import Data.Hashable (Hashable)
 import Data.Typeable
+
+import Util.STM
 
 -- | A 'Listener' can be notified of 'Typeable' events. Listeners can be
 -- combined via the 'Semigroup'/'Monoid' interface.

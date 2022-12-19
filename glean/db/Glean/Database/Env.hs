@@ -9,7 +9,6 @@
 {-# LANGUAGE CPP #-}
 module Glean.Database.Env ( withDatabases ) where
 
-import Control.Concurrent.STM
 import Control.Exception
 import Control.Monad.Extra
 import Data.Default
@@ -23,6 +22,7 @@ import Data.RateLimiterMap
 import ServiceData.GlobalStats
 import Util.EventBase
 import Util.Log
+import Util.STM
 
 import qualified Glean.RTS.Foreign.LookupCache as LookupCache
 import Glean.Database.Backup (backuper)

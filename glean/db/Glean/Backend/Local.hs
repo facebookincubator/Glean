@@ -26,7 +26,6 @@ module Glean.Backend.Local
 
 import Control.Concurrent (getNumCapabilities)
 import Control.Concurrent.Stream (stream)
-import Control.Concurrent.STM (atomically)
 import Control.Exception (catches, Handler (Handler))
 import Control.Monad (forM_)
 import Data.ByteString (ByteString)
@@ -39,6 +38,7 @@ import qualified Haxl.Core as Haxl
 
 import Util.Control.Exception
 import qualified Util.Control.Exception.CallStack as CallStack
+import Util.STM
 
 import Glean.Backend.Types
 import qualified Glean.Database.Catalog as Catalog

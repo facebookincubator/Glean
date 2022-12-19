@@ -13,7 +13,6 @@ module Glean.Database.Work.Controller
   , controller
   ) where
 
-import Control.Concurrent.STM
 import Control.Exception
 import Control.Monad
 import Data.Char (isAlphaNum)
@@ -30,6 +29,7 @@ import TextShow
 
 import Util.Control.Exception (handleAll)
 import Util.Defer
+import Util.STM
 
 import Glean.Database.Tailer
 import Glean.Database.Types

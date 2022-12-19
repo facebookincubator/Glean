@@ -14,7 +14,6 @@ module Glean.Database.Work.Queue (
 import qualified Glean.Types as Thrift
 
 import Control.Applicative
-import Control.Concurrent.STM
 import Control.Exception (assert)
 import Data.Foldable (asum)
 import Data.HashMap.Strict (HashMap)
@@ -27,6 +26,8 @@ import Data.Text (Text)
 import qualified Data.Text.Encoding as Text
 import qualified Text.Regex.Base as RE
 import qualified Text.Regex.PCRE.ByteString as RE
+
+import Util.STM
 
 -- | An available work parcel
 data Parcel = Parcel

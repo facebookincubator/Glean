@@ -8,8 +8,6 @@
 
 module Glean.Server (main) where
 
-import Control.Concurrent.STM.TVar
-import Control.Concurrent.STM
 import Control.Monad
 import Data.IORef
 import Data.Maybe
@@ -23,6 +21,7 @@ import qualified Thrift.Server.CppServer as CppServer
 import Thrift.Server.Types
 import Util.EventBase
 import Util.Log
+import Util.STM
 
 #if FACEBOOK
 import Logger.IO

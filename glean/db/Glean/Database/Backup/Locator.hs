@@ -15,13 +15,14 @@ module Glean.Database.Backup.Locator
   , getAllSites
   ) where
 
-import Control.Concurrent.STM
 import Data.Functor
 import qualified Data.Map as Map
 import qualified Data.HashMap.Strict as HashMap
 import Data.Maybe (maybeToList, mapMaybe)
 import Data.Text (Text)
 import qualified Data.Text as Text
+
+import Util.STM
 
 import Glean.Database.Backup.Backend as Backend
 import Glean.Database.Types

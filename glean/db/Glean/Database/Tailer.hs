@@ -16,7 +16,6 @@ module Glean.Database.Tailer
 import Control.Applicative
 import Control.Concurrent
 import Control.Concurrent.Async
-import Control.Concurrent.STM
 import Control.Exception
 import Control.Monad
 import qualified Data.ByteString.Char8 as BS
@@ -41,6 +40,7 @@ import ServiceData.GlobalStats
 import ServiceData.Types
 import Util.Control.Exception
 import Util.Log
+import Util.STM
 import Util.Text
 
 import qualified Glean.Database.Catalog as Catalog

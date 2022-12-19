@@ -37,8 +37,6 @@ module Glean.Glass.Repos
 import qualified Data.Text as Text
 import qualified Data.Set as Set
 import Control.Concurrent.Async ( withAsync, forConcurrently )
-import Control.Concurrent.STM
-    ( readTVar, writeTVar, atomically, newTVarIO, TVar, STM )
 import Control.Exception ( uninterruptibleMask_ )
 import Data.Maybe ( catMaybes )
 import Data.Set ( Set )
@@ -51,6 +49,7 @@ import Glean.Util.Periodic ( doPeriodically )
 import Glean.Util.Time ( DiffTimePoints )
 import qualified Glean
 import Util.List ( uniq )
+import Util.STM ( readTVar, writeTVar, atomically, newTVarIO, TVar, STM )
 import qualified Glean.Repo as Glean
 
 import Glean.Glass.Base

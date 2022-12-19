@@ -14,7 +14,6 @@ import System.Timeout
 import Control.DeepSeq
 import Control.Exception
 import Control.Concurrent
-import Control.Concurrent.STM
 import Control.Applicative
 import Control.Monad
 import Data.Default
@@ -36,6 +35,7 @@ import TextShow
 import Control.Concurrent.Stream (stream)
 import Util.Control.Exception
 import Util.Log
+import Util.STM
 
 import Glean.Angle.Types as A
 import qualified Glean.Database.Catalog as Catalog

@@ -19,7 +19,6 @@ module Glean.Database.Backup
 
 import Control.Applicative
 import Control.Concurrent.Async
-import Control.Concurrent.STM
 import Control.Exception
 import Control.Monad
 import qualified Data.HashMap.Strict as HashMap
@@ -44,6 +43,7 @@ import Util.Graph
 import Util.IO (safeRemovePathForcibly)
 import Util.Log
 import Util.Logger
+import Util.STM
 
 import Glean.Database.Backup.Backend as Backend
 import Glean.Database.Backup.Locator

@@ -12,11 +12,12 @@ module Glean.Database.Restore (
   forRestoreSitesM, ifRestoreRepo,
 ) where
 
-import Control.Concurrent.STM
 import Control.Exception hiding(handle)
 import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
+
+import Util.STM
 
 import qualified Glean.Database.Backup.Backend as Backup
 import qualified Glean.Database.Backup.Locator as Backup

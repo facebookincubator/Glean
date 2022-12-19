@@ -12,7 +12,6 @@ module Glean.Database.Write.Batch
   , writeDatabase
   ) where
 
-import Control.Concurrent.STM
 import Control.Exception
 import Control.Monad.Extra
 import qualified Data.ByteString as BS
@@ -21,6 +20,7 @@ import Data.IORef
 import qualified Data.Text as Text
 
 import Util.Control.Exception
+import Util.STM
 
 import Glean.Database.Open
 import Glean.Database.Exception

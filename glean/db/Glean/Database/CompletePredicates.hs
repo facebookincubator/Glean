@@ -12,7 +12,6 @@ module Glean.Database.CompletePredicates
   ) where
 
 import Control.Concurrent.Async
-import Control.Concurrent.STM
 import Control.Exception
 import Control.Monad
 import qualified Data.HashMap.Strict as HashMap
@@ -23,6 +22,7 @@ import Util.Control.Exception
 import Util.Defer
 import Util.Log.Text
 import Util.Logger
+import Util.STM
 
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Open

@@ -11,7 +11,6 @@ module Glean.Database.List (
   listRestorable,
 ) where
 
-import Control.Concurrent.STM
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.Maybe
@@ -19,6 +18,7 @@ import Data.Text (Text)
 
 import Util.Control.Exception
 import Util.Log
+import Util.STM
 
 import qualified Glean.Database.Backup.Backend as Backup
 import qualified Glean.Database.Backup.Locator as Backup

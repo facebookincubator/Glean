@@ -24,7 +24,6 @@ module Glean.Database.Work
 import Control.Applicative
 import Control.Concurrent (threadDelay)
 import qualified Control.Concurrent.Async as Async
-import Control.Concurrent.STM
 import Control.Monad
 import Control.Monad.Catch
 import Data.Default
@@ -45,6 +44,7 @@ import TextShow
 import Util.Control.Exception (tryAll)
 import Util.Defer
 import Util.Log
+import Util.STM
 
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Catalog.Filter

@@ -14,7 +14,6 @@ module Glean.Query.UserQuery
   ) where
 
 import Control.Applicative
-import Control.Concurrent.STM
 import Control.DeepSeq
 import Control.Exception
 import Control.Monad
@@ -54,6 +53,7 @@ import Thrift.Protocol.JSON.Base64
 import Util.AllocLimit
 import Util.Timing
 import Util.Log
+import Util.STM
 
 import qualified Glean.Angle.Parser as Angle
 import Glean.Angle.Types hiding (Type, FieldDef, SourcePat_(..))

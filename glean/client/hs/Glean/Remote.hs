@@ -39,7 +39,6 @@ module Glean.Remote
   ) where
 
 import Control.Applicative
-import Control.Concurrent.STM
 import Control.Exception
 import Control.Monad
 import Data.ByteString (ByteString)
@@ -58,6 +57,7 @@ import Thrift.Channel
 import Thrift.Api
 import Util.EventBase (EventBaseDataplane)
 import Util.Log
+import Util.STM
 
 import Glean.Backend.Types
 import Glean.BuildInfo (buildRule)

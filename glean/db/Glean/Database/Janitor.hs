@@ -17,7 +17,6 @@ module Glean.Database.Janitor
   , ComputedRetentionSet(..)
   ) where
 
-import Control.Concurrent.STM
 import Control.Concurrent.Stream (stream)
 import Control.Concurrent (getNumCapabilities)
 import Control.Exception
@@ -46,6 +45,7 @@ import Util.Control.Exception
 import Util.List
 import Util.Log
 import Util.Logger
+import Util.STM
 import Util.TimeSec (timeDiff)
 
 import qualified Glean.Database.Catalog as Catalog

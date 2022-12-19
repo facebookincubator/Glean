@@ -13,7 +13,6 @@ module Glean.Database.Create (
 ) where
 
 import qualified Control.Concurrent.Async as Async
-import Control.Concurrent.STM
 import Control.Exception hiding(handle)
 import Control.Monad.Catch (handle)
 import Control.Monad.Extra
@@ -31,6 +30,7 @@ import Facebook.Process
 #endif
 import Util.Defer
 import Util.Log
+import Util.STM
 
 import Glean.Backend.Types (StackedDbOpts(..))
 import Glean.BuildInfo

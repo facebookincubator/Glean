@@ -16,11 +16,12 @@ module Glean.Database.Storage.Memory
   , Database(..)
   ) where
 
-import Control.Concurrent.STM
 import Data.ByteString (ByteString)
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import System.IO.Temp (withSystemTempDirectory)
+
+import Util.STM
 
 import Glean.Database.Exception
 import Glean.Database.Storage

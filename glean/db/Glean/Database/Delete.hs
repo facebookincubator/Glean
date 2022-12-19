@@ -14,7 +14,6 @@ module Glean.Database.Delete (
 
 import Control.Concurrent.Async (Async)
 import qualified Control.Concurrent.Async as Async
-import Control.Concurrent.STM
 import Control.Exception hiding(handle)
 import Control.Monad.Extra
 import qualified Data.HashMap.Strict as HashMap
@@ -27,6 +26,7 @@ import Util.Control.Exception
 import qualified Util.Control.Exception.CallStack as CallStack
 import Util.Defer
 import Util.Log
+import Util.STM
 
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Catalog.Filter
