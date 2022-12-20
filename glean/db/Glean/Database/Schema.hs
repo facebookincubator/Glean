@@ -923,8 +923,8 @@ validateNewSchemaInstance schema = do
       Left err -> throwIO $ ErrorCall $ unlines
         [ Text.unpack err
         , ""
-        , "NB: evolves annotations are not considered when checking\
-          \ schema compatibility." ]
+        , "NB: evolves annotations are not considered when checking" ++
+          " schema compatibility." ]
       Right{} -> return ()
 
 -- | Interrogate the schema associated with a DB
