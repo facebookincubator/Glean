@@ -34,7 +34,8 @@ import qualified Data.Vector.Unboxed as VU
 import Data.Word (Word64)
 import GHC.Compact as Compact
 
-import Util.Log (logInfo, logWarning)
+import Util.Control.Exception (catchAll)
+import Util.Log (logError, logInfo)
 import Util.STM
 
 import Glean
@@ -50,6 +51,7 @@ import Glean.Util.Time
 
 import Derive.Common
 import Derive.Types
+import Text.Printf
 
 
 -- -----------------------------------------------------------------------------
@@ -463,16 +465,25 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
               case m of
                 Nothing -> readIORef localCount
                 Just (file, fileXRefMaps) -> do
-                  targetss <- forM fileXRefMaps $ \ fileXRefMap -> do
-                    let newTargets = oneFileXRefMap fileXRefMap
-                    _ <- evaluate (force (length newTargets))
-                    return newTargets
-                  count <- generateCalls writer file targetss
-                  modifyIORef' localCount (+ count)
+                  logExceptions file $ do
+                    targetss <- forM fileXRefMaps $ \ fileXRefMap -> do
+                      let newTargets = oneFileXRefMap fileXRefMap
+                      _ <- evaluate (force (length newTargets))
+                      return newTargets
+                    count <- generateCalls writer file targetss
+                    modifyIORef' localCount (+ count)
+                  -- continue with the next incoming item ignoring errors
+                  -- we'd rather get a DB with missing derived facts
+                  -- than no DB at all
                   loop
-        loop `catch` \e@SomeException{} -> do
-          logWarning ("Thread killed: " <> show e)
-          throw e
+
+            logExceptions (Src.File fid file) action =
+              action `catchAll` \e ->
+                logError $ printf
+                  "Unhandled exception deriving predicates for file %s:\n%s\n"
+                  (maybe (show fid) Text.unpack file) (show e)
+
+        loop
 
   -- ---------------------------------------------------------------------------
 
