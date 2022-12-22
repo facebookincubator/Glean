@@ -296,6 +296,46 @@
       "entity": {
         "hack": {
           "decl": {
+            "function_": {
+              "key": { "name": { "key": { "name": { "key": "corge" } } } }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "deep_function" },
+                    "namespace_": {
+                      "key": {
+                        "name": { "key": "InnerNS" },
+                        "parent": { "key": { "name": { "key": "NS" } } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
             "method": {
               "key": {
                 "name": { "key": "__construct" },
@@ -530,7 +570,13 @@
           }
         }
       },
-      "annotations": { "hack": { "attributes": [ ] } }
+      "annotations": {
+        "hack": {
+          "attributes": [
+            { "key": { "name": { "key": "__Deprecated" }, "parameters": [ ] } }
+          ]
+        }
+      }
     }
   },
   {

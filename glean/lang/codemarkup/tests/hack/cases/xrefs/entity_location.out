@@ -154,7 +154,7 @@
       },
       "location": {
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "length": 167, "start": 1070 } },
+        "location": { "span": { "length": 167, "start": 1089 } },
         "name": "FancyTypes"
       }
     }
@@ -287,7 +287,7 @@
       },
       "location": {
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "length": 221, "start": 847 } },
+        "location": { "span": { "length": 240, "start": 847 } },
         "name": "TestAnnotation"
       }
     }
@@ -814,7 +814,7 @@
       },
       "location": {
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "length": 80, "start": 1155 } },
+        "location": { "span": { "length": 80, "start": 1174 } },
         "name": "flatten"
       }
     }
@@ -1170,7 +1170,7 @@
       },
       "location": {
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "length": 74, "start": 992 } },
+        "location": { "span": { "length": 93, "start": 992 } },
         "name": "io_good"
       }
     }

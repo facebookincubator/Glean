@@ -142,15 +142,39 @@ predicate HackAnnotation :
     entity: code.hack.Entity,
     anns: code.hack.Annotations,
   }
-  {{decl=D}, {attributes=A}} where
-    ({ container = { class_ = Decl } } = D; hack.ClassDefinition{declaration=Decl, attributes=A}) |
-    ({ container = { enum_ = Decl } } = D; hack.EnumDefinition{declaration=Decl, attributes=A}) |
-    ({ container = { interface_ = Decl } } = D; hack.InterfaceDefinition{declaration=Decl, attributes=A}) |
-    ({ container = { trait = Decl } } = D; hack.TraitDefinition{declaration=Decl, attributes=A}) |
-    ({ method = Decl } = D; hack.MethodDefinition{declaration=Decl, attributes=A}) |
-    ({ property_ = Decl } = D; hack.PropertyDefinition{declaration=Decl, attributes=A}) |
-    ({ typeConst = Decl } = D; hack.TypeConstDefinition{declaration=Decl, attributes=A}) |
-    ({ typedef_ = Decl } = D; hack.TypedefDefinition{declaration=Decl, attributes=A})
+  { { decl = D }, { attributes = A }} where
+    ( { container = C } = D;
+      ( { class_ = Decl } = C;
+        hack.ClassDefinition { declaration = Decl, attributes = A }
+      ) | (
+        { enum_ = Decl } = C;
+        hack.EnumDefinition { declaration = Decl, attributes = A }
+      ) | (
+        { interface_ = Decl } = C;
+        hack.InterfaceDefinition { declaration = Decl, attributes = A }
+      ) | (
+        { trait = Decl } = C;
+        hack.TraitDefinition { declaration = Decl, attributes = A }
+      )
+    ) | (
+      { method = Decl } = D;
+      hack.MethodDefinition { declaration = Decl, attributes = A }
+    ) | (
+      { function_ = Decl } = D;
+      hack.FunctionDefinition { declaration = Decl, attributes = A }
+    ) | (
+      { property_ = Decl } = D;
+      hack.PropertyDefinition  {declaration = Decl, attributes = A }
+    ) | (
+      { typeConst = Decl } = D;
+      hack.TypeConstDefinition { declaration = Decl, attributes=A }
+    ) | (
+      { typedef_ = Decl } = D;
+      hack.TypedefDefinition { declaration = Decl, attributes = A }
+    ) | (
+      { module = Decl } = D;
+      hack.ModuleDefinition { declaration = Decl, attributes = A }
+    )
 
 #
 # Visibility

@@ -34,7 +34,7 @@
       "location": {
         "name": "FancyTypes",
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "start": 1070, "length": 167 } }
+        "location": { "span": { "start": 1089, "length": 167 } }
       },
       "entity": {
         "hack": {
@@ -129,7 +129,7 @@
       "location": {
         "name": "TestAnnotation",
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "start": 847, "length": 221 } }
+        "location": { "span": { "start": 847, "length": 240 } }
       },
       "entity": {
         "hack": {
@@ -236,7 +236,7 @@
       "location": {
         "name": "flatten",
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "start": 1155, "length": 80 } }
+        "location": { "span": { "start": 1174, "length": 80 } }
       },
       "entity": {
         "hack": {
@@ -264,7 +264,7 @@
       "location": {
         "name": "io_good",
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "start": 992, "length": 74 } }
+        "location": { "span": { "start": 992, "length": 93 } }
       },
       "entity": {
         "hack": {

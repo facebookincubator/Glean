@@ -1,7 +1,12 @@
 [
     "@generated",
     {
-        "annotations": [],
+        "annotations": [
+            {
+                "name": "__Deprecated",
+                "source": "__Deprecated"
+            }
+        ],
         "comments": [],
         "contains_relation": {
             "firstChild": "nondeterministic",
@@ -23,7 +28,7 @@
                 "columnBegin": 3,
                 "columnEnd": 4,
                 "lineBegin": 51,
-                "lineEnd": 53
+                "lineEnd": 54
             },
             "repository": "test"
         },
@@ -41,7 +46,7 @@
                 "columnBegin": 3,
                 "columnEnd": 4,
                 "lineBegin": 51,
-                "lineEnd": 53
+                "lineEnd": 54
             },
             "repository": "test"
         },

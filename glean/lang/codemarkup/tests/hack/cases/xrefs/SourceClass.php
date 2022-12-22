@@ -48,6 +48,7 @@ class TestAnnotation implements HH\ClassAttribute {
   public function __construct(private string $test) {}
 
   // declares that "io" is allowed
+  <<__Deprecated>>
   private function io_good()[io]: void {
     print "also ok"; // also ok
   }

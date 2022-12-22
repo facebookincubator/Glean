@@ -706,9 +706,9 @@
         "target": {
           "name": "FancyTypes",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 1076, "length": 10 } }
+          "location": { "span": { "start": 1095, "length": 10 } }
         },
-        "source": { "span": { "start": 1218, "length": 10 } }
+        "source": { "span": { "start": 1237, "length": 10 } }
       },
       "entity": {
         "hack": {

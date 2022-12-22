@@ -24,8 +24,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 85,
-                        "lineBegin": 57,
-                        "lineEnd": 57
+                        "lineBegin": 58,
+                        "lineEnd": 58
                     },
                     "repository": "test"
                 },
@@ -41,8 +41,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 85,
-                        "lineBegin": 57,
-                        "lineEnd": 57
+                        "lineBegin": 58,
+                        "lineEnd": 58
                     },
                     "repository": "test"
                 },
@@ -921,7 +921,12 @@
                 "visibility": 20
             },
             {
-                "annotations": [],
+                "annotations": [
+                    {
+                        "name": "__Deprecated",
+                        "source": "__Deprecated"
+                    }
+                ],
                 "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
@@ -943,7 +948,7 @@
                         "columnBegin": 3,
                         "columnEnd": 4,
                         "lineBegin": 51,
-                        "lineEnd": 53
+                        "lineEnd": 54
                     },
                     "repository": "test"
                 },
@@ -960,7 +965,7 @@
                         "columnBegin": 3,
                         "columnEnd": 4,
                         "lineBegin": 51,
-                        "lineEnd": 53
+                        "lineEnd": 54
                     },
                     "repository": "test"
                 },
@@ -985,8 +990,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 85,
-                        "lineBegin": 57,
-                        "lineEnd": 57
+                        "lineBegin": 58,
+                        "lineEnd": 58
                     },
                     "repository": "test"
                 },
@@ -1526,7 +1531,7 @@
                         "columnBegin": 3,
                         "columnEnd": 4,
                         "lineBegin": 51,
-                        "lineEnd": 53
+                        "lineEnd": 54
                     },
                     "repository": "test"
                 },
