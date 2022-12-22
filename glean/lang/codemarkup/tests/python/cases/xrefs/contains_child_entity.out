@@ -132,6 +132,22 @@
       "child": {
         "python": {
           "decl": {
+            "func": { "key": { "name": { "key": "big_lib.func_sleep" } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "big_lib" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": {
             "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
           }
         }

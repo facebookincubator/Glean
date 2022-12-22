@@ -227,7 +227,7 @@
         "location": {
           "name": "big_lib",
           "file": { "key": "big_lib/__init__.py" },
-          "location": { "span": { "start": 0, "length": 274 } }
+          "location": { "span": { "start": 0, "length": 313 } }
         }
       },
       "child": {
@@ -258,7 +258,38 @@
         "location": {
           "name": "big_lib",
           "file": { "key": "big_lib/__init__.py" },
-          "location": { "span": { "start": 0, "length": 274 } }
+          "location": { "span": { "start": 0, "length": 313 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "func": { "key": { "name": { "key": "big_lib.func_sleep" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "big_lib.func_sleep",
+          "file": { "key": "big_lib/__init__.py" },
+          "location": { "span": { "start": 276, "length": 36 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": { "module": { "key": { "name": { "key": "big_lib" } } } }
+          }
+        },
+        "location": {
+          "name": "big_lib",
+          "file": { "key": "big_lib/__init__.py" },
+          "location": { "span": { "start": 0, "length": 313 } }
         }
       },
       "child": {

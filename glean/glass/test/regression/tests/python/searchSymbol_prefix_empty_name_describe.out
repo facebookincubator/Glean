@@ -336,7 +336,7 @@
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
+                    "hasMoreChildren": true,
                     "hasMoreParents": false
                 },
                 "extends_relation": {
@@ -353,7 +353,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 12
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 },
@@ -370,7 +370,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 12
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 },
@@ -465,6 +465,55 @@
                         "columnEnd": 45,
                         "lineBegin": 10,
                         "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 20
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 14,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [
+                    3
+                ],
+                "name": {
+                    "container": "as",
+                    "localName": "func_sleep"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/as.py/as.func_sleep",
+                "sym_location": {
+                    "filepath": "as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 14,
+                        "lineEnd": 15
                     },
                     "repository": "test"
                 },
@@ -1995,7 +2044,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 12
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 },
@@ -2068,6 +2117,36 @@
                     "exactness": 2
                 },
                 "symbol": "test/py/as.py/as.fn.%3Clocals%3E.local_var"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "as"
+                    },
+                    "symbol": "test/py/as.py/as"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 14,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "name": "as.func_sleep",
+                "qname": {
+                    "container": "as",
+                    "localName": "func_sleep"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/as.py/as.func_sleep"
             },
             {
                 "kind": 5,

@@ -201,6 +201,12 @@
   },
   {
     "key": {
+      "name": { "key": "func_sleep" },
+      "decl": { "func": { "key": { "name": { "key": "big_lib.func_sleep" } } } }
+    }
+  },
+  {
+    "key": {
       "name": { "key": "g" },
       "decl": { "func": { "key": { "name": { "key": "main.g" } } } }
     }

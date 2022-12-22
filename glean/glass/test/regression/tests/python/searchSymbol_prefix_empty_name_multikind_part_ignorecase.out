@@ -120,6 +120,36 @@
                 "context": {
                     "qname": {
                         "container": "",
+                        "localName": "as"
+                    },
+                    "symbol": "test/py/as.py/as"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 14,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "name": "as.func_sleep",
+                "qname": {
+                    "container": "as",
+                    "localName": "func_sleep"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/as.py/as.func_sleep"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
                         "localName": "big_lib"
                     },
                     "symbol": "test/py/big_lib/big_lib"

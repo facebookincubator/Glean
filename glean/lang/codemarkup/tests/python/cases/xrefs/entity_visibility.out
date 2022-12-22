@@ -60,6 +60,16 @@
     "key": {
       "python": {
         "decl": {
+          "func": { "key": { "name": { "key": "big_lib.func_sleep" } } }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
           "func": { "key": { "name": { "key": "lib.HelperClass.method" } } }
         }
       }

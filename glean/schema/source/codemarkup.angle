@@ -342,6 +342,9 @@ predicate EntityModifiers:
     ) | (
       { cxx = E } = Entity;
       codemarkup.cxx.CxxModifiers { E, Modifiers }
+    ) | (
+      { python = E } = Entity;
+      codemarkup.python.PythonModifiers { E, Modifiers }
     );
 
 #
@@ -462,7 +465,7 @@ predicate SearchRelatedEntities:
     codemarkup.EntityLocation {P, PLoc};
 
 #
-# Generic comment blocsk
+# Generic comment blocks
 #
 predicate EntityDocumentation:
   {

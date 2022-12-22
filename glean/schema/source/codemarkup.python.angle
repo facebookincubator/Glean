@@ -151,6 +151,27 @@ predicate PythonVisibility :
       then ( Private )
       else ( Public ) ) = Visibility;
 
+# We expect to have at least static, async
+predicate PythonModifiers:
+  {
+    entity: code.python.Entity,
+    modifiers: codemarkup.types.Modifiers
+  }
+  { { decl = Decl }, Modifiers } where
+    { func = D } = Decl;
+    python.FunctionDefinition { declaration = D, is_async = Async };
+    # only Async is set so far
+    { isAbstract = false,
+      isFinal = false,
+      isAsync = Async,
+      isStatic = false,
+      isReadonly = false,
+      isConst = false,
+      isMutable = false,
+      isVolatile = false,
+      isVirtual = false,
+      isInline = false } = Modifiers;
+
 # For backward compatibility:
 predicate PythonEntityInfo:
   {

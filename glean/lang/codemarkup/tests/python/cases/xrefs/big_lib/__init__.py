@@ -11,3 +11,7 @@ big_var = 0
 
 def big_func():
     return big_var
+
+
+async def func_sleep():
+    return 1

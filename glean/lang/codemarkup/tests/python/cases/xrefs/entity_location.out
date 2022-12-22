@@ -105,6 +105,22 @@
       "entity": {
         "python": {
           "decl": {
+            "func": { "key": { "name": { "key": "big_lib.func_sleep" } } }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "big_lib/__init__.py" },
+        "location": { "span": { "length": 36, "start": 276 } },
+        "name": "big_lib.func_sleep"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
             "func": { "key": { "name": { "key": "lib.HelperClass.method" } } }
           }
         }
@@ -409,7 +425,7 @@
       },
       "location": {
         "file": { "key": "big_lib/__init__.py" },
-        "location": { "span": { "length": 274, "start": 0 } },
+        "location": { "span": { "length": 313, "start": 0 } },
         "name": "big_lib"
       }
     }
