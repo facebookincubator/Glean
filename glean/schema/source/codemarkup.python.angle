@@ -192,6 +192,8 @@ predicate PythonContainsChildEntity :
     child: code.python.Entity
   }
   { { decl = Container }, { decl = Member } } where
+    # this only works where the parent container is a TopLevel container
+    # in the other cases we'd need to find an SName where parent = { just = _ }
     python.ContainedByTopLevelDeclaration { Container, Member };
     Member != Container; # work around T140038357
     python.NonImportDeclaration Member; # no import decls
@@ -202,20 +204,13 @@ predicate PythonContainsParentEntity :
     child: code.python.Entity,
     parent: code.python.Entity
   }
-  { { decl = Member }, { decl = Container } } where
-    python.ContainingTopLevelDeclaration { Member, Container };
-    Member != Container; # work around T140038357
-
-predicate PythonFileCall :
-  {
-    file: src.File,
-    callee_span: src.ByteSpan,
-    call_args: [code.CallArgument],
-  } {File, Span, CodeArgs} where
-  (
-    python.FileCall { File, Span, PythonArgs};
-    ConvertCallArguments { PythonArgs, CodeArgs};
-  )
+  { { decl = Child }, { decl = Parent } } where
+    ( python.SNameWithDeclaration { Child, { parent = { just = SName }}};
+      python.DeclarationBySName SName -> Parent
+    ) | (
+      python.ContainingTopLevelDeclaration { Child, Parent };
+      Child != Parent; # work around T140038357
+    )
 
 # Child extends parent by an inheritance relationship
 predicate PythonExtendsParentEntity :
@@ -230,6 +225,21 @@ predicate PythonExtendsParentEntity :
     { decl = { cls = Bases[..] } } = Parent;
 
 # TODO : parent extends child
+
+#
+# file call processing
+#
+
+predicate PythonFileCall :
+  {
+    file: src.File,
+    callee_span: src.ByteSpan,
+    call_args: [code.CallArgument],
+  } {File, Span, CodeArgs} where
+  (
+    python.FileCall { File, Span, PythonArgs};
+    ConvertCallArguments { PythonArgs, CodeArgs};
+  )
 
 # (internal) helper predicate for CallArgument
 # Manually unrolled to lists of <=6 arguments

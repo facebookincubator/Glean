@@ -350,9 +350,19 @@ predicate DeclarationWithSName:
     sname: SName,
     declaration: Declaration,
   }
-  {SN, D} where
-    SNameToName SN -> N;
-    DeclarationWithName { N, D };
+  { SName, Decl } where
+    SNameToName SName -> Name;
+    DeclarationWithName { Name, Decl };
+
+# Look up SNames using Declarations
+predicate SNameWithDeclaration:
+  {
+    declaration: Declaration,
+    sname: SName,
+  }
+  { Decl, SName } where
+    python.DeclarationToName Decl -> Name;
+    python.NameToSName Name -> SName
 
 # map from a declaration to the closest top level declaration
 # useful as we operate a lot of analysis on the top level declarations

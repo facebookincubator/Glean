@@ -440,6 +440,37 @@
         "child": {
           "python": {
             "decl": {
+              "module": { "key": { "name": { "key": "big_lib.relative" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "big_lib.relative",
+          "file": { "key": "big_lib/relative.py" },
+          "location": { "span": { "start": 0, "length": 260 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 3,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": { "module": { "key": { "name": { "key": "big_lib" } } } }
+          }
+        },
+        "location": {
+          "name": "big_lib",
+          "file": { "key": "big_lib/__init__.py" },
+          "location": { "span": { "start": 0, "length": 313 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
               "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
             }
           }
@@ -801,6 +832,42 @@
           "name": "main.Helper",
           "file": { "key": "main.py" },
           "location": { "span": { "start": 297, "length": 11 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 3,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": { "module": { "key": { "name": { "key": "main" } } } }
+          }
+        },
+        "location": {
+          "name": "main",
+          "file": { "key": "main.py" },
+          "location": { "span": { "start": 0, "length": 581 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "imp": {
+                "key": {
+                  "from_name": { "key": "lib.HelperClass" },
+                  "as_name": { "key": "main.OtherHelper" }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "main.OtherHelper",
+          "file": { "key": "main.py" },
+          "location": { "span": { "start": 468, "length": 11 } }
         }
       }
     }
