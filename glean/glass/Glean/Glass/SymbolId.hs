@@ -41,12 +41,13 @@ module Glean.Glass.SymbolId
 
   ) where
 
-import Data.Text ( Text )
 import Control.Monad.Catch ( throwM, try )
-import qualified Data.Map as Map
 import Data.Maybe ( fromMaybe )
-import qualified Data.Text as Text
 import Data.Tuple ( swap )
+import Util.Text ( textShow )
+import Data.Text ( Text )
+import qualified Data.Map as Map
+import qualified Data.Text as Text
 import qualified Network.URI.Encode as URI
 
 import Glean.Glass.Base (SymbolRepoPath(..))
@@ -328,7 +329,7 @@ instance ToQName Code.Entity where
       Lsif.Entity_swift x -> toQName x
       Lsif.Entity_typescript x -> toQName x
       Lsif.Entity_EMPTY -> pure $ Left "LSIF language unsupported"
-    _ -> pure $ Left "Language unsupported"
+    _ -> pure $ Left ("Language unsupported: " <> textShow (entityLanguage e))
 
 instance ToSymbolParent Code.Entity where
   toSymbolParent e = case e of
