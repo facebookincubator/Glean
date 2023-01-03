@@ -33,11 +33,12 @@ data Config = Config
   { cfgDB :: Database.Config
   , cfgOriginal :: Repo
   , cfgNew :: Repo
+  , cfgLogAdded :: Bool
   }
 
 options :: ParserInfo Config
 options = info (parser <**> helper)
-  (fullDesc <> progDesc "Create, manipulate and query Glean databases")
+  (fullDesc <> progDesc "Compare two databases")
   where
     parser :: Parser Config
     parser = do
@@ -48,6 +49,8 @@ options = info (parser <**> helper)
       cfgNew <- argument (maybeReader Glean.parseRepo)
         (  metavar "NAME/HASH"
         )
+      cfgLogAdded <-
+        switch (long "log-added" <> help "log facts added in second DB")
       return Config{..}
 
 main :: IO ()
@@ -61,7 +64,7 @@ main =
   with (schemaInventory (odbSchema odb)) $ \inventory_ptr ->
   withLookup original $ \original_ptr ->
   withLookup new $ \new_ptr ->
-  invoke $ glean_diff inventory_ptr original_ptr new_ptr
+  invoke $ glean_diff inventory_ptr original_ptr new_ptr cfgLogAdded
 
 foreign import ccall safe glean_diff
-  :: Ptr Inventory -> Ptr Lookup -> Ptr Lookup -> IO CString
+  :: Ptr Inventory -> Ptr Lookup -> Ptr Lookup -> Bool -> IO CString
