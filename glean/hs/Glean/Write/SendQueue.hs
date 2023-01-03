@@ -24,7 +24,7 @@ import System.Time.Extra (sleep)
 import Text.Printf (printf)
 
 import Util.Control.Exception (tryBracket)
-import Util.Log (logWarning, logInfo)
+import Util.Log (logWarning, vlog)
 import Util.STM
 
 import Glean.Backend.Types (Backend)
@@ -278,4 +278,4 @@ logQueueStats :: SendQueue -> IO ()
 logQueueStats SendQueue{..} = do
   count <- readTVarIO sqCount
   memory <- readTVarIO sqMemory
-  logInfo $ printf "count:%d/%d memory:%d/%d" count sqMaxCount memory sqMaxMemory
+  vlog 1 $ printf "count:%d/%d memory:%d/%d" count sqMaxCount memory sqMaxMemory
