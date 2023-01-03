@@ -2379,7 +2379,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
   bool VisitCXXConstructExpr(const clang::CXXConstructExpr* expr) {
     xrefTarget(
-        db.rangeOfToken(expr->getLocation()),
+        clang::SourceRange(expr->getBeginLoc(), expr->getEndLoc()),
         XRef::toTemplatableDecl(funDecls, expr->getConstructor()));
     return true;
   }
