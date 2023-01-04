@@ -500,6 +500,7 @@ predicate FileCall :
     file: src.File,
     callee_span: src.ByteSpan,
     call_args: [CallArgument],
+    callee_xref: maybe XRefTarget
   }
 
 # All uses of a declaration in a file. Note that the bytespan offsets are

@@ -1,0 +1,68 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "span": { "start": 772, "length": 11 },
+      "arguments": [ { "span": { "start": 784, "length": 8 } } ],
+      "callee_xref": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "quux" },
+                "container": {
+                  "trait": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceTrait" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "span": { "start": 873, "length": 21 },
+      "arguments": [
+        { "span": { "start": 895, "length": 1 } },
+        { "span": { "start": 3, "length": 6 } }
+      ],
+      "callee_xref": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "superAdd" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SuperClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/SourceClass.php" },
+      "span": { "start": 1054, "length": 15 },
+      "arguments": [
+        {
+          "span": { "start": 1060, "length": 9 },
+          "argument": { "lit": "also ok" }
+        }
+      ]
+    }
+  }
+]

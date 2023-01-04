@@ -364,10 +364,12 @@ predicate HackFileCall :
     file: src.File,
     callee_span: src.ByteSpan,
     call_args: [code.CallArgument],
-  } {File, Span, CodeArgs} where
+    callee_xref: maybe code.Entity,
+  } {File, Span, CodeArgs, CalleeEntity} where
   (
-    hack.FileCall { File, Span, HackArgs};
+    hack.FileCall { File, Span, HackArgs, CalleeXRef};
     ConvertCallArguments { HackArgs, CodeArgs};
+    ConvertCallee { CalleeXRef, CalleeEntity };
   )
 
 # (internal) helper predicate for CallArgument
@@ -485,4 +487,17 @@ predicate ConvertArgument :
   ) | (
     nothing = Hack ; nothing = Code;
   )
+
+predicate ConvertCallee :
+  { hackCallee : maybe hack.XRefTarget
+  , codeCallee : maybe code.Entity
+  }
+  (D : hack.Declaration; {
+    { just = { declaration = D } },
+    { just = { hack = { decl = D } } }
+  }) |
+  {
+     nothing,
+     nothing
+  }
 }
