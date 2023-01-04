@@ -84,9 +84,10 @@ withOpenDatabase env@Env{..} repo action =
             let version = Thrift.metaVersion meta
                 mode
                   | envReadOnly = ReadOnly
-                  | Thrift.Finalizing{} <- completeness = ReadOnly
                   | Thrift.Complete{} <- completeness = ReadOnly
                   | otherwise = ReadWrite
+                    -- Note: Finalizing also needs to be ReadWrite,
+                    -- because compaction modifies the DB.
                   where completeness = metaCompleteness meta
             when (not $ canOpenVersion mode version) $ dbError dbRepo
               $ "can't open database version " ++ show (unDBVersion version)
