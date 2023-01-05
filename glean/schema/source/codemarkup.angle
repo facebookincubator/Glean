@@ -288,9 +288,12 @@ predicate FileCall :
     span: src.ByteSpan,
     arguments: [code.CallArgument],
     callee_xref: maybe code.Entity,
-  } {File, Span, CodeArgs, Callee} where
-  ( (codemarkup.python.PythonFileCall{File, Span, CodeArgs}; nothing = Callee)
-  | codemarkup.hack.HackFileCall{File, Span, CodeArgs, Callee}
+    dispatch_arg: maybe code.CallArgument,
+  } {File, Span, CodeArgs, Callee, DispatchArg} where
+  ( (codemarkup.python.PythonFileCall{File, Span, CodeArgs};
+     nothing = Callee;
+     nothing = DispatchArg)
+  | codemarkup.hack.HackFileCall{File, Span, CodeArgs, Callee, DispatchArg}
   )
 
 #

@@ -495,12 +495,15 @@ type CallArgument =
 
 # Information for all calls, organized by file and callee_span, which
 # should match an entry in FileXRefs.
+# callee_xref points to the called method/function.
+# dispatch_arg represents the implicit argument
 predicate FileCall :
   {
     file: src.File,
     callee_span: src.ByteSpan,
     call_args: [CallArgument],
-    callee_xref: maybe XRefTarget
+    callee_xref: maybe XRefTarget,
+    dispatch_arg: maybe CallArgument,
   }
 
 # All uses of a declaration in a file. Note that the bytespan offsets are
