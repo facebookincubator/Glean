@@ -40,7 +40,7 @@ struct DatabaseImpl final : Database {
   folly::F14FastMap<uint64_t, size_t> ownership_derived_counters;
 
   // Cached ownership sets, only used when writing.
-  // TODO: initialize this lazily
+  // Note: must only be accessed under the write lock
   std::unique_ptr<rts::Usets> usets_;
 
   explicit DatabaseImpl(
