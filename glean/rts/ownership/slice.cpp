@@ -36,11 +36,12 @@ std::unique_ptr<Slice> slice(
   auto p = iter->sizes();
   auto first = p.first, size = p.second;
   VLOG(1) << folly::sformat(
-      "slice: first={}, size={}, base.first={}, base.end={}",
+      "slice: first={}, size={}, base.first={}, base.end={}, units.size={}",
       first,
       size,
       base.first(),
-      base.end());
+      base.end(),
+      units.size());
 
   if (size == 0) {
     return std::make_unique<Slice>(base.end(), std::vector<bool>());
@@ -50,6 +51,7 @@ std::unique_ptr<Slice> slice(
 
   std::vector<bool> members(size, false);
 
+  // true if reader is a subset of units
   auto isSubset = [&, first](Reader& reader) {
     if (!reader.valid() || reader.value() >= first) {
       return true;
@@ -57,7 +59,7 @@ std::unique_ptr<Slice> slice(
     auto it = units.begin();
     do {
       it = std::lower_bound(it, units.end(), reader.value());
-      if (it == units.end() || reader.value() < *it) {
+      if (it == units.end() || reader.value() != *it) {
         VLOG(5) << folly::sformat("isSubset: {} not in set", reader.value());
         // owned by a unit not in the set
         return false;
@@ -69,25 +71,32 @@ std::unique_ptr<Slice> slice(
     return true; // checked all values, so this is a subset
   };
 
+  // true if the intersection of reader and units is empty
   auto emptyIntersection = [&](Reader& reader) {
     if (!reader.valid() || units.empty()) {
       return true;
     }
-    if (reader.value() < units[0] && !reader.skipTo(units[0])) {
-      return true;
-    }
-    for (auto unit : units) {
-      if (reader.value() < unit) {
+    auto it = units.begin();
+    do {
+      auto unit = *it;
+      if (unit < reader.value()) {
+        it = std::lower_bound(it, units.end(), reader.value());
+        if (it == units.end()) {
+          return true;
+        }
+      } else {
         if (!reader.skipTo(unit)) {
           return true;
         }
       }
       if (reader.value() == unit) {
-        VLOG(5) << folly::sformat("emptyIntersection: {} in set", reader.value());
+        VLOG(5) << folly::sformat("emptyIntersection: {} in set",
+                                  reader.value());
         return false;
       }
-      VLOG(5) << folly::sformat("emptyIntersection: {} not in set", reader.value());
-    }
+      VLOG(5) << folly::sformat("emptyIntersection: {} not in set",
+                                reader.value());
+    } while (reader.value() < first);
     return true;
   };
 
