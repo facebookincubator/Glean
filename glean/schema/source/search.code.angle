@@ -281,17 +281,27 @@ predicate FlowSearchByName:
     name: string,
     entity: code.Entity,
   }
-  { Name, { flow = { decl = D }}} where
-  flow.SearchByName { name = flow.Name Name, decl = D};
+  { NameStr, Entity } where
+    Name = flow.Name NameStr;
+    FlowSearchByNameWithFact { Name, Entity }
 
 predicate FlowSearchByLowerCaseName:
   {
     name: string,
     entity: code.Entity,
   }
-  { Name, Entity } where
-  flow.NameLowerCase { Name, flow.Name NameCase };
-  FlowSearchByName { NameCase, Entity };
+  { NameStr, Entity } where
+    flow.NameLowerCase { NameStr, Name };
+    FlowSearchByNameWithFact { Name, Entity }
+
+# helper to share Name fact in the lower case scenario
+predicate FlowSearchByNameWithFact:
+  {
+    name: flow.Name,
+    entity: code.Entity
+  }
+  { Name, { flow = { decl = Decl } } } where
+    flow.SearchByName { name = Name, decl = Decl }
 
 predicate CxxSearchByName:
   {
