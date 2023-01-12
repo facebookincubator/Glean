@@ -33,6 +33,8 @@ import Data.Vector.Unboxed ((!))
 import qualified Data.Vector.Unboxed as VU
 import Data.Word (Word64)
 import GHC.Compact as Compact
+import GHC.Stack (HasCallStack)
+import Text.Printf
 
 import Util.Control.Exception (catchAll)
 import Util.Log (logError, logInfo)
@@ -51,7 +53,6 @@ import Glean.Util.Time
 
 import Derive.Common
 import Derive.Types
-import Text.Printf
 
 
 -- -----------------------------------------------------------------------------
@@ -355,7 +356,8 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
         SourceVector -> matchSourceVector
 
   let generateCalls
-        :: Writer -> Src.File -> [[(ByteRange, [Cxx.Declaration])]] -> IO Int
+        :: HasCallStack
+        => Writer -> Src.File -> [[(ByteRange, [Cxx.Declaration])]] -> IO Int
       generateCalls writer file targetss =
         let
           fileId = getId file

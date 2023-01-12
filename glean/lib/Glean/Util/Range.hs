@@ -39,6 +39,7 @@ module Glean.Util.Range
   ) where
 
 import Control.DeepSeq
+import Control.Exception.Extra (Partial)
 import Data.Bifunctor (bimap)
 import Data.ByteString (ByteString)
 import qualified Data.ByteString.Char8 as B
@@ -48,7 +49,7 @@ import Data.List.Extra (chunksOf)
 import Data.Maybe (fromMaybe)
 import qualified Data.String.UTF8 as UTF8 hiding (take)
 import qualified Data.Vector as BoxedVector
-import Data.Vector.Unboxed (Vector, (!))
+import Data.Vector.Unboxed (Vector, (!), (!?))
 import qualified Data.Vector.Unboxed as Vector
 import Data.Word
 
@@ -363,7 +364,8 @@ srcRangeToByteRange flk contents =
 -- 'Src.Range' are the same as byte offsets. Thus Nothing is equivalent to
 -- passing @(\ _ col -> fromIntegral col)@ as the function.
 srcRangeToAdjustedByteRange
-  :: Maybe (Int -> Int -> Word64)
+  :: Partial
+  => Maybe (Int -> Int -> Word64)
     -- ^ converts column from character count to byte count.
     -- Takes line (0-based) and column (0-based character count)
     -- to 0-based byte-count column.
@@ -388,8 +390,11 @@ srcRangeToAdjustedByteRange mCharToByte lineOffsets Src.Range{..} =
     colEnd = prevNat range_columnEnd
     -- Note: range_columnEnd is the column of the last char (inclusive)
     -- so colEnd is inclusive, and so is inclusiveEnd
-    begin = (lineOffsets ! lineBegin) + charToByteCol lineBegin colBegin
-    inclusiveEnd = (lineOffsets ! lineEnd) + charToByteCol lineEnd colEnd
+    lBegin = fromMaybe (error err) (lineOffsets !? lineBegin)
+    lEnd = fromMaybe (error err) (lineOffsets !? lineEnd)
+    err = show (lineBegin, lineEnd, Vector.length lineOffsets)
+    begin = lBegin + charToByteCol lineBegin colBegin
+    inclusiveEnd = lEnd + charToByteCol lineEnd colEnd
     -- be careful subtracting Word64 to avoid wrap-around
     len | begin <= inclusiveEnd = (inclusiveEnd - begin) + 1
         | otherwise = 0
@@ -398,7 +403,7 @@ srcRangeToAdjustedByteRange mCharToByte lineOffsets Src.Range{..} =
 
 -- | Convert a Src.Range to a ByteRange, given a LineOffsets, and assuming
 -- columns count bytes (assuming characters and bytes and the same width).
-srcRangeToSimpleByteRange :: LineOffsets -> Src.Range -> ByteRange
+srcRangeToSimpleByteRange :: Partial => LineOffsets -> Src.Range -> ByteRange
 srcRangeToSimpleByteRange = srcRangeToAdjustedByteRange Nothing . lineOffsets
 
 -- | Convert a Src.Range to a Src.FileLocation, given the length of each line
