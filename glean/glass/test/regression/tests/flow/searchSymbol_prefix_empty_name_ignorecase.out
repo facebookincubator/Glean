@@ -4,6 +4,7 @@
         "symbolDetails": [],
         "symbols": [
             {
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/cjs_exports.js",
@@ -26,6 +27,7 @@
                 "symbol": "test/js/cjs_exports/plus"
             },
             {
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/cjs_exports.js",
@@ -48,6 +50,7 @@
                 "symbol": "test/js/cjs_exports/x"
             },
             {
+                "kind": 2,
                 "language": 2,
                 "location": {
                     "filepath": "test/es_exports.js.flow",
@@ -70,6 +73,30 @@
                 "symbol": "test/js/es_exports/C"
             },
             {
+                "kind": 21,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 15,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "repository": "test"
+                },
+                "name": "C",
+                "qname": {
+                    "container": "es_exports",
+                    "localName": "C"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/es_exports/C"
+            },
+            {
+                "kind": 9,
                 "language": 2,
                 "location": {
                     "filepath": "test/es_exports.js.flow",
@@ -92,6 +119,7 @@
                 "symbol": "test/js/es_exports/bar"
             },
             {
+                "kind": 2,
                 "language": 2,
                 "location": {
                     "filepath": "test/es_exports.js.flow",
@@ -114,6 +142,30 @@
                 "symbol": "test/js/es_exports/baz"
             },
             {
+                "kind": 21,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 10,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "name": "baz",
+                "qname": {
+                    "container": "es_exports",
+                    "localName": "baz"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/es_exports/baz"
+            },
+            {
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/es_exports.js.flow",
@@ -136,6 +188,7 @@
                 "symbol": "test/js/es_exports/bor"
             },
             {
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/es_exports.js.flow",
@@ -158,6 +211,7 @@
                 "symbol": "test/js/es_exports/d"
             },
             {
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/es_exports.js.flow",
@@ -180,6 +234,7 @@
                 "symbol": "test/js/es_exports/foo"
             },
             {
+                "kind": 2,
                 "language": 2,
                 "location": {
                     "filepath": "test/es_exports.js.flow",
@@ -202,6 +257,7 @@
                 "symbol": "test/js/es_exports/num"
             },
             {
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/es_exports.js.flow",
@@ -224,6 +280,7 @@
                 "symbol": "test/js/es_exports/x"
             },
             {
+                "kind": 2,
                 "language": 2,
                 "location": {
                     "filepath": "test/imports.js",
@@ -246,6 +303,7 @@
                 "symbol": "test/js/imports/D"
             },
             {
+                "kind": 2,
                 "language": 2,
                 "location": {
                     "filepath": "test/imports.js",
@@ -268,6 +326,30 @@
                 "symbol": "test/js/imports/caz"
             },
             {
+                "kind": 21,
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 10,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "name": "caz",
+                "qname": {
+                    "container": "imports",
+                    "localName": "caz"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/imports/caz"
+            },
+            {
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/imports.js",
@@ -290,6 +372,7 @@
                 "symbol": "test/js/imports/e"
             },
             {
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/imports.js",
@@ -312,6 +395,7 @@
                 "symbol": "test/js/imports/s"
             },
             {
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/imports.js",
@@ -334,6 +418,7 @@
                 "symbol": "test/js/imports/x"
             },
             {
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/imports.js",
@@ -356,6 +441,7 @@
                 "symbol": "test/js/imports/y"
             },
             {
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/imports.js",

@@ -497,6 +497,21 @@
     "key": {
       "file": { "key": "test/imports.js" },
       "location": {
+        "name": "test/imports.js",
+        "file": { "key": "test/imports.js" },
+        "location": { "span": { "start": 0, "length": 0 } }
+      },
+      "entity": {
+        "flow": {
+          "module_": { "key": { "file": { "key": "test/imports.js" } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test/imports.js" },
+      "location": {
         "name": "x",
         "file": { "key": "test/imports.js" },
         "location": { "span": { "start": 523, "length": 1 } }

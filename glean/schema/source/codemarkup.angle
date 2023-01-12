@@ -39,7 +39,8 @@ predicate EntityKind:
     (codemarkup.pp.PpEntityKind { E, Kind }; { pp = E } = Entity) |
     (codemarkup.hack.HackEntityKind { E, Kind }; { hack = E } = Entity) |
     (codemarkup.erlang.ErlangEntityKind { E, Kind }; { erlang = E } = Entity) |
-    (codemarkup.lsif.EntityInfo { E, { kind = Kind }}; { lsif = E } = Entity)
+    (codemarkup.lsif.EntityInfo { E, { kind = Kind }}; { lsif = E } = Entity) |
+    (codemarkup.flow.FlowEntityKind { E, Kind }; { flow = E } = Entity)
 
 # Retrieve information about an entity
 predicate EntityInfo:
@@ -54,7 +55,9 @@ predicate EntityInfo:
        (codemarkup.pp.PpEntityKind { E, Kind };
         { pp = E } = Entity) |
        (codemarkup.erlang.ErlangEntityKind { E, Kind };
-        { erlang = E } = Entity)
+        { erlang = E } = Entity) |
+       (codemarkup.flow.FlowEntityKind { E, Kind };
+        { flow = E } = Entity)
       )
     ) |
     (codemarkup.cxx.CxxEntityInfo { E, Info }; { cxx = E } = Entity) |

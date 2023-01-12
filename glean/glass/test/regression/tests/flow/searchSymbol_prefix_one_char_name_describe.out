@@ -16,6 +16,7 @@
                     "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/es_exports.js.flow",
@@ -50,6 +51,7 @@
         ],
         "symbols": [
             {
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/es_exports.js.flow",

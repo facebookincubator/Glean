@@ -22,6 +22,7 @@ predicate StringToFileModule: {
 }
   stored { S, F } where FileOfStringModule { F, S }
 
+# pairs of modules and identifier ranges. Associated with declarations
 predicate Range: {
   module : Module,
   span: src.ByteSpan,
@@ -219,7 +220,7 @@ type SomeDeclaration = {
   typeDecl : TypeDeclaration |
 }
 
-# Search for decl by strings, precisely. We might need to store these
+# Search for decl by strings, precisely
 predicate SearchByName :
   {
     name : flow.Name,
@@ -234,6 +235,17 @@ predicate SearchByName :
   ({ name = N, decl = { typeDecl = D } } where
     D = flow.TypeDeclaration { name = N };
   )
+
+# Search for Module entities by name
+predicate SearchByNameModule:
+  {
+    name: string,
+    module: Module
+  }
+  { Str, Mod } where
+    ( Module { string_ = Str } |
+      Module { lib = Str } |
+      Module { file = src.File Str } ) = Mod;
 
 # Search by Name and string code for the Module
 predicate SearchByModule :
@@ -290,6 +302,24 @@ predicate DeclarationLocation :
     MemberDeclaration { loc = { module = { file = F }, span = S } } = D ) |
   ( { decl = { typeDecl = D }, file = F, span = S } where
     TypeDeclaration { loc = { module = { file = F }, span = S } } = D )
+
+# Location/span/name of a Module. Note that we don't have the module span yet
+predicate ModuleLocation:
+  {
+    module_: Module,
+    file: src.File,
+    span: src.ByteSpan,
+    name: string
+  }
+  { Mod, File, Span, Name } where
+    ( { string_ = Name } = Mod;
+      flow.StringToFileModule { Name, File };
+      { 0, 0 } = Span;
+    ) | (
+      { file = File } = Mod;
+      src.File Name = File;
+      { 0, 0 } = Span;
+    )
 
 #
 # Working across module import/export boundaries

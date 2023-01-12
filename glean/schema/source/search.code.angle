@@ -282,8 +282,12 @@ predicate FlowSearchByName:
     entity: code.Entity,
   }
   { NameStr, Entity } where
-    Name = flow.Name NameStr;
-    FlowSearchByNameWithFact { Name, Entity }
+    ( Name = flow.Name NameStr;
+      FlowSearchByNameWithFact { Name, Entity }
+    ) | (
+      flow.SearchByNameModule { NameStr, Mod };
+      { flow = { module_ = Mod } } = Entity
+    )
 
 predicate FlowSearchByLowerCaseName:
   {

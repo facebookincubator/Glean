@@ -16,6 +16,99 @@
                     "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
+                "kind": 5,
+                "language": 2,
+                "location": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 1
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "cjs_exports"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/cjs_exports",
+                "sym_location": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 1
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 5,
+                "language": 2,
+                "location": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 1
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "cjs_exports"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/cjs_exports",
+                "sym_location": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 1
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/cjs_exports.js",
@@ -61,6 +154,7 @@
                     "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/cjs_exports.js",
@@ -106,6 +200,99 @@
                     "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
+                "kind": 5,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js",
+                    "range": {
+                        "columnBegin": 0,
+                        "columnEnd": 0,
+                        "lineBegin": 0,
+                        "lineEnd": 0
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "es_exports"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/es_exports",
+                "sym_location": {
+                    "filepath": "test/es_exports.js",
+                    "range": {
+                        "columnBegin": 0,
+                        "columnEnd": 0,
+                        "lineBegin": 0,
+                        "lineEnd": 0
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 5,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 1
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "es_exports"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/es_exports",
+                "sym_location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 1
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 2,
                 "language": 2,
                 "location": {
                     "filepath": "test/es_exports.js.flow",
@@ -151,6 +338,53 @@
                     "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
+                "kind": 21,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 15,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "es_exports",
+                    "localName": "C"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/es_exports/C",
+                "sym_location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 15,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 9,
                 "language": 2,
                 "location": {
                     "filepath": "test/es_exports.js.flow",
@@ -196,6 +430,53 @@
                     "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
+                "kind": 2,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 10,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "es_exports",
+                    "localName": "baz"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/es_exports/baz",
+                "sym_location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 10,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/es_exports.js.flow",
@@ -252,6 +533,7 @@
                     "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/es_exports.js.flow",
@@ -297,6 +579,7 @@
                     "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/es_exports.js.flow",
@@ -342,6 +625,7 @@
                     "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/es_exports.js.flow",
@@ -387,6 +671,7 @@
                     "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
+                "kind": 2,
                 "language": 2,
                 "location": {
                     "filepath": "test/es_exports.js.flow",
@@ -432,6 +717,7 @@
                     "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/es_exports.js.flow",
@@ -477,6 +763,53 @@
                     "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
+                "kind": 5,
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 1
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "imports"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/imports",
+                "sym_location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 1
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 2,
                 "language": 2,
                 "location": {
                     "filepath": "test/imports.js",
@@ -522,6 +855,7 @@
                     "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
+                "kind": 2,
                 "language": 2,
                 "location": {
                     "filepath": "test/imports.js",
@@ -567,6 +901,53 @@
                     "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
+                "kind": 21,
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 10,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "imports",
+                    "localName": "caz"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/imports/caz",
+                "sym_location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 10,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/imports.js",
@@ -612,6 +993,7 @@
                     "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/imports.js",
@@ -657,6 +1039,7 @@
                     "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/imports.js",
@@ -702,6 +1085,7 @@
                     "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/imports.js",
@@ -747,6 +1131,7 @@
                     "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/imports.js",
@@ -781,6 +1166,53 @@
         ],
         "symbols": [
             {
+                "kind": 5,
+                "language": 2,
+                "location": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 1
+                    },
+                    "repository": "test"
+                },
+                "name": "cjs_exports",
+                "qname": {
+                    "container": "",
+                    "localName": "cjs_exports"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/cjs_exports"
+            },
+            {
+                "kind": 5,
+                "language": 2,
+                "location": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 1
+                    },
+                    "repository": "test"
+                },
+                "name": "test/cjs_exports.js",
+                "qname": {
+                    "container": "",
+                    "localName": "cjs_exports"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/cjs_exports"
+            },
+            {
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/cjs_exports.js",
@@ -803,6 +1235,7 @@
                 "symbol": "test/js/cjs_exports/plus"
             },
             {
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/cjs_exports.js",
@@ -825,6 +1258,53 @@
                 "symbol": "test/js/cjs_exports/x"
             },
             {
+                "kind": 5,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js",
+                    "range": {
+                        "columnBegin": 0,
+                        "columnEnd": 0,
+                        "lineBegin": 0,
+                        "lineEnd": 0
+                    },
+                    "repository": "test"
+                },
+                "name": "test/es_exports.js",
+                "qname": {
+                    "container": "",
+                    "localName": "es_exports"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/es_exports"
+            },
+            {
+                "kind": 5,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 1
+                    },
+                    "repository": "test"
+                },
+                "name": "test/es_exports.js.flow",
+                "qname": {
+                    "container": "",
+                    "localName": "es_exports"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/es_exports"
+            },
+            {
+                "kind": 2,
                 "language": 2,
                 "location": {
                     "filepath": "test/es_exports.js.flow",
@@ -847,6 +1327,30 @@
                 "symbol": "test/js/es_exports/C"
             },
             {
+                "kind": 21,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 15,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "repository": "test"
+                },
+                "name": "C",
+                "qname": {
+                    "container": "es_exports",
+                    "localName": "C"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/es_exports/C"
+            },
+            {
+                "kind": 9,
                 "language": 2,
                 "location": {
                     "filepath": "test/es_exports.js.flow",
@@ -869,6 +1373,7 @@
                 "symbol": "test/js/es_exports/bar"
             },
             {
+                "kind": 2,
                 "language": 2,
                 "location": {
                     "filepath": "test/es_exports.js.flow",
@@ -891,6 +1396,30 @@
                 "symbol": "test/js/es_exports/baz"
             },
             {
+                "kind": 21,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 10,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "name": "baz",
+                "qname": {
+                    "container": "es_exports",
+                    "localName": "baz"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/es_exports/baz"
+            },
+            {
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/es_exports.js.flow",
@@ -913,6 +1442,7 @@
                 "symbol": "test/js/es_exports/bor"
             },
             {
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/es_exports.js.flow",
@@ -935,6 +1465,7 @@
                 "symbol": "test/js/es_exports/d"
             },
             {
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/es_exports.js.flow",
@@ -957,6 +1488,7 @@
                 "symbol": "test/js/es_exports/foo"
             },
             {
+                "kind": 2,
                 "language": 2,
                 "location": {
                     "filepath": "test/es_exports.js.flow",
@@ -979,6 +1511,7 @@
                 "symbol": "test/js/es_exports/num"
             },
             {
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/es_exports.js.flow",
@@ -1001,6 +1534,30 @@
                 "symbol": "test/js/es_exports/x"
             },
             {
+                "kind": 5,
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 1
+                    },
+                    "repository": "test"
+                },
+                "name": "test/imports.js",
+                "qname": {
+                    "container": "",
+                    "localName": "imports"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/imports"
+            },
+            {
+                "kind": 2,
                 "language": 2,
                 "location": {
                     "filepath": "test/imports.js",
@@ -1023,6 +1580,7 @@
                 "symbol": "test/js/imports/D"
             },
             {
+                "kind": 2,
                 "language": 2,
                 "location": {
                     "filepath": "test/imports.js",
@@ -1045,6 +1603,30 @@
                 "symbol": "test/js/imports/caz"
             },
             {
+                "kind": 21,
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 10,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "name": "caz",
+                "qname": {
+                    "container": "imports",
+                    "localName": "caz"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/imports/caz"
+            },
+            {
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/imports.js",
@@ -1067,6 +1649,7 @@
                 "symbol": "test/js/imports/e"
             },
             {
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/imports.js",
@@ -1089,6 +1672,7 @@
                 "symbol": "test/js/imports/s"
             },
             {
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/imports.js",
@@ -1111,6 +1695,7 @@
                 "symbol": "test/js/imports/x"
             },
             {
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/imports.js",
@@ -1133,6 +1718,7 @@
                 "symbol": "test/js/imports/y"
             },
             {
+                "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/imports.js",

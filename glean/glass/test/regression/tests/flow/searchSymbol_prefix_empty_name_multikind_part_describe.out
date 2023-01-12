@@ -1,7 +1,78 @@
 [
     "@generated",
     {
-        "symbolDetails": [],
-        "symbols": []
+        "symbolDetails": [
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 9,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 21,
+                        "columnEnd": 24,
+                        "lineBegin": 24,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "es_exports",
+                    "localName": "bar"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/es_exports/bar",
+                "sym_location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 21,
+                        "columnEnd": 24,
+                        "lineBegin": 24,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            }
+        ],
+        "symbols": [
+            {
+                "kind": 9,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 21,
+                        "columnEnd": 24,
+                        "lineBegin": 24,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "name": "bar",
+                "qname": {
+                    "container": "es_exports",
+                    "localName": "bar"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/es_exports/bar"
+            }
+        ]
     }
 ]

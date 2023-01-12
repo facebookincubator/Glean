@@ -2,6 +2,145 @@
     "@generated",
     {
         "symbolDetails": [],
-        "symbols": []
+        "symbols": [
+            {
+                "kind": 2,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 15,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "repository": "test"
+                },
+                "name": "C",
+                "qname": {
+                    "container": "es_exports",
+                    "localName": "C"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/es_exports/C"
+            },
+            {
+                "kind": 9,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 21,
+                        "columnEnd": 24,
+                        "lineBegin": 24,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "name": "bar",
+                "qname": {
+                    "container": "es_exports",
+                    "localName": "bar"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/es_exports/bar"
+            },
+            {
+                "kind": 2,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 10,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "name": "baz",
+                "qname": {
+                    "container": "es_exports",
+                    "localName": "baz"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/es_exports/baz"
+            },
+            {
+                "kind": 2,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 16,
+                        "lineBegin": 28,
+                        "lineEnd": 28
+                    },
+                    "repository": "test"
+                },
+                "name": "num",
+                "qname": {
+                    "container": "es_exports",
+                    "localName": "num"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/es_exports/num"
+            },
+            {
+                "kind": 2,
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 7,
+                        "lineBegin": 31,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "name": "D",
+                "qname": {
+                    "container": "imports",
+                    "localName": "D"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/imports/D"
+            },
+            {
+                "kind": 2,
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 10,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "name": "caz",
+                "qname": {
+                    "container": "imports",
+                    "localName": "caz"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/imports/caz"
+            }
+        ]
     }
 ]

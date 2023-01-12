@@ -13,10 +13,15 @@ predicate FlowResolveLocation:
     location: codemarkup.types.Location,
     entity: code.flow.Entity,
   }
-  { { NameStr, File, { span = Span }, nothing }, { decl = Decl } } where
-    flow.FileDeclaration { File, Decl };
-    flow.DeclarationNameSpan { Decl, Name, Span };
-    Name = flow.Name NameStr;
+  { { NameStr, File, { span = Span }, nothing }, Entity } where
+    ( { decl = Decl } = Entity;
+      flow.FileDeclaration { File, Decl };
+      flow.DeclarationNameSpan { Decl, Name, Span };
+      Name = flow.Name NameStr
+    ) | (
+      { module_ = Mod } = Entity;
+      flow.ModuleLocation { Mod, File, Span, NameStr }
+    )
 
 # Finding entities' locations
 
@@ -25,9 +30,15 @@ predicate FlowEntityLocation:
     entity: code.flow.Entity,
     location: codemarkup.types.Location,
   }
-  { { decl = D }, { Name, File, { span = Span }, nothing } } where
-    flow.DeclarationLocation { decl = D, file = File, span = Span };
-    flow.DeclarationNameSpan { decl = D, name = flow.Name Name, span = Span };
+  { Entity, { NameStr, File, { span = Span }, nothing } } where
+    ( { decl = D } = Entity;
+      flow.DeclarationLocation { decl = D, file = File, span = Span };
+      flow.DeclarationNameSpan { decl = D, name = Name };
+      Name = flow.Name NameStr;
+    ) | (
+      { module_ = Mod } = Entity;
+      flow.ModuleLocation { Mod, File, Span, NameStr }
+    )
 
 predicate FlowFileEntityXRefLocations:
   {
@@ -123,6 +134,28 @@ predicate FlowEntityUses:
   }
   { Entity, File, Span } where
     flow.FlowEntityUsesAll { Entity, File, Span };
+
+# kinds and symbol info
+predicate FlowEntityKind:
+  {
+    entity: code.flow.Entity,
+    kind: codemarkup.types.SymbolKind
+  }
+  { Entity, Kind} where
+    ( { decl = Decl } = Entity;
+      ( { localDecl = _ } = Decl;
+        Object_ = Kind # not true
+      ) | (
+        { memberDecl = _ } = Decl;
+        Property = Kind # not true either
+      ) | (
+        { typeDecl = _ } = Decl;
+        Type = Kind
+      )
+    ) | (
+      { module_ = _ } = Entity;
+      Module = Kind
+    )
 
 # documentation spans in flow are attached to declarations only
 predicate FlowEntityDocumentation :
