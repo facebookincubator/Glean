@@ -1,0 +1,49 @@
+[
+    "@generated",
+    {
+        "comments": [],
+        "contains_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "extends_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "kind": 5,
+        "language": 2,
+        "location": {
+            "filepath": "test/cjs_exports.js",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 1,
+                "lineBegin": 1,
+                "lineEnd": 1
+            },
+            "repository": "test"
+        },
+        "modifiers": [],
+        "name": {
+            "container": "",
+            "localName": "cjs_exports"
+        },
+        "repo_hash": "testhash",
+        "sym": "test/js/cjs_exports",
+        "sym_location": {
+            "filepath": "test/cjs_exports.js",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 1,
+                "lineBegin": 1,
+                "lineEnd": 1
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": [],
+        "type_xrefs": []
+    }
+]

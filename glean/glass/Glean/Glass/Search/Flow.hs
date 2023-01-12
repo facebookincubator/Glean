@@ -29,6 +29,12 @@ import qualified Glean.Schema.CodemarkupTypes.Types as Code
 instance Search Flow.Entity where
   symbolSearch [] = return $ None "Flow.symbolSearch: empty"
 
+  -- if its a single token it is likely a module (tbd: or a global sym)
+  symbolSearch toks@[module_] = do
+    m <- searchSymbolId toks (searchByModuleName module_)
+    return $ Flow.Entity_module_ <$> m
+
+  -- module , method
   symbolSearch toks@[module_, name] = do
     a <- searchSymbolId toks $ searchByModule module_ name
     decl <- case a of
@@ -90,3 +96,18 @@ searchTypeByModuleExport module_ name =
         end),
       entityLocation (alt @"flow" (alt @"decl" decl)) file rangespan lname
     ]
+
+-- Single token module name lookup
+searchByModuleName :: Text -> Angle (ResultLocation Flow.Module)
+searchByModuleName modstr = vars $ \(modent :: Angle Flow.Module)
+  (file :: Angle Src.File) (rangespan :: Angle Code.RangeSpan)
+    (lname :: Angle Text) ->
+  tuple (modent, file, rangespan, lname) `where_` [
+    wild .= predicate @Flow.SearchByNameModule (
+      rec $
+        field @"name" (string modstr) $
+        field @"module" (asPredicate modent)
+      end),
+    entityLocation (alt @"flow" (alt @"module_" (asPredicate modent)))
+      file rangespan lname
+  ]
