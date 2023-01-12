@@ -412,6 +412,10 @@ predicate ContainsParentEntity :
       { python = C } = Child;
       codemarkup.python.PythonContainsParentEntity { C, P };
       { python = P } = Parent
+    ) | (
+      { flow = C } = Child;
+      codemarkup.flow.FlowContainsParentEntity { C, P };
+      { flow = P } = Parent
     )
 
 # A parent `contains` a child

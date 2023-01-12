@@ -135,6 +135,26 @@ predicate FlowEntityUses:
   { Entity, File, Span } where
     flow.FlowEntityUsesAll { Entity, File, Span };
 
+#
+# relations
+#
+
+predicate FlowContainsParentEntity :
+  {
+    child: code.flow.Entity,
+    parent: code.flow.Entity
+  }
+  { { decl = Child }, { module_ = Parent } } where
+    ( { localDecl = Decl } = Child;
+      { loc = { module = Parent } } = Decl;
+    ) | (
+      { memberDecl = Decl } = Child;
+      { loc = { module = Parent } } = Decl;
+    ) | (
+      { typeDecl = Decl } = Child;
+      { loc = { module = Parent } } = Decl;
+    )
+
 # kinds and symbol info
 predicate FlowEntityKind:
   {

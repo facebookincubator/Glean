@@ -4,6 +4,13 @@
         "symbolDetails": [],
         "symbols": [
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "es_exports"
+                    },
+                    "symbol": "test/js/es_exports"
+                },
                 "kind": 2,
                 "language": 2,
                 "location": {
@@ -27,6 +34,13 @@
                 "symbol": "test/js/es_exports/C"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "es_exports"
+                    },
+                    "symbol": "test/js/es_exports"
+                },
                 "kind": 2,
                 "language": 2,
                 "location": {
@@ -50,6 +64,13 @@
                 "symbol": "test/js/es_exports/baz"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "es_exports"
+                    },
+                    "symbol": "test/js/es_exports"
+                },
                 "kind": 2,
                 "language": 2,
                 "location": {
@@ -73,6 +94,13 @@
                 "symbol": "test/js/es_exports/num"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "imports"
+                    },
+                    "symbol": "test/js/imports"
+                },
                 "kind": 2,
                 "language": 2,
                 "location": {
@@ -96,6 +124,13 @@
                 "symbol": "test/js/imports/D"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "imports"
+                    },
+                    "symbol": "test/js/imports"
+                },
                 "kind": 2,
                 "language": 2,
                 "location": {
