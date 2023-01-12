@@ -196,7 +196,7 @@ data Staleness
 
 doBackup :: Site site => Env -> Repo -> Text -> site -> IO Bool
 doBackup env@Env{..} repo prefix site =
-  do
+  loggingAction (runLogRepo "backup" env repo) (const mempty) $ do
     atomically $ notify envListener $ BackupStarted repo
     say logInfo "starting"
     withOpenDatabase env repo $ \OpenDB{..} -> do
@@ -321,7 +321,7 @@ doRestore env@Env{..} repo meta
 
 doFinalize :: Env -> Repo -> IO Bool
 doFinalize env@Env{..} repo =
-  do
+  loggingAction (runLogRepo "finalize" env repo) (const mempty) $ do
     atomically $ notify envListener $ FinalizeStarted repo
 
     -- If the client didn't explicitly call completePredicates, we'll
