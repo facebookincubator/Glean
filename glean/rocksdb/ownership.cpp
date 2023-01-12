@@ -733,6 +733,9 @@ void DatabaseImpl::addDefineOwnership(DefineOwnership& def) {
     for (auto& owner : def.owners_) {
       owner = subst(owner);
     }
+    for (auto& owner : def.new_owners_) {
+      owner = subst(owner);
+    }
   }
 
   // ownershipDerivedRaw :: (Pid,nat) -> vector<int64_t>
