@@ -30,36 +30,5 @@
       },
       "language": 6
     }
-  },
-  {
-    "key": {
-      "searchcase": 0,
-      "name": "foo",
-      "entity": {
-        "flow": {
-          "decl": {
-            "localDecl": {
-              "key": {
-                "name": { "key": "foo" },
-                "loc": {
-                  "key": {
-                    "module": {
-                      "key": { "file": { "key": "test/imports.js" } }
-                    },
-                    "span": { "start": 287, "length": 3 }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "location": {
-        "name": "foo",
-        "file": { "key": "test/imports.js" },
-        "location": { "span": { "start": 287, "length": 3 } }
-      },
-      "language": 6
-    }
   }
 ]

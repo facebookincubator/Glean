@@ -24,28 +24,6 @@
                     "exactness": 0
                 },
                 "symbol": "test/js/es_exports/foo"
-            },
-            {
-                "language": 2,
-                "location": {
-                    "filepath": "test/imports.js",
-                    "range": {
-                        "columnBegin": 12,
-                        "columnEnd": 15,
-                        "lineBegin": 13,
-                        "lineEnd": 13
-                    },
-                    "repository": "test"
-                },
-                "name": "foo",
-                "qname": {
-                    "container": "imports",
-                    "localName": "foo"
-                },
-                "score": {
-                    "exactness": 0
-                },
-                "symbol": "test/js/imports/foo"
             }
         ]
     }

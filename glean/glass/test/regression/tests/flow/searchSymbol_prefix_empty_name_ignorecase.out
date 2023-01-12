@@ -228,28 +228,6 @@
                 "location": {
                     "filepath": "test/imports.js",
                     "range": {
-                        "columnBegin": 21,
-                        "columnEnd": 22,
-                        "lineBegin": 29,
-                        "lineEnd": 29
-                    },
-                    "repository": "test"
-                },
-                "name": "C",
-                "qname": {
-                    "container": "imports",
-                    "localName": "C"
-                },
-                "score": {
-                    "exactness": 2
-                },
-                "symbol": "test/js/imports/C"
-            },
-            {
-                "language": 2,
-                "location": {
-                    "filepath": "test/imports.js",
-                    "range": {
                         "columnBegin": 6,
                         "columnEnd": 7,
                         "lineBegin": 31,
@@ -266,116 +244,6 @@
                     "exactness": 2
                 },
                 "symbol": "test/js/imports/D"
-            },
-            {
-                "language": 2,
-                "location": {
-                    "filepath": "test/imports.js",
-                    "range": {
-                        "columnBegin": 8,
-                        "columnEnd": 9,
-                        "lineBegin": 11,
-                        "lineEnd": 11
-                    },
-                    "repository": "test"
-                },
-                "name": "a",
-                "qname": {
-                    "container": "imports",
-                    "localName": "a"
-                },
-                "score": {
-                    "exactness": 2
-                },
-                "symbol": "test/js/imports/a"
-            },
-            {
-                "language": 2,
-                "location": {
-                    "filepath": "test/imports.js",
-                    "range": {
-                        "columnBegin": 11,
-                        "columnEnd": 12,
-                        "lineBegin": 11,
-                        "lineEnd": 11
-                    },
-                    "repository": "test"
-                },
-                "name": "b",
-                "qname": {
-                    "container": "imports",
-                    "localName": "b"
-                },
-                "score": {
-                    "exactness": 2
-                },
-                "symbol": "test/js/imports/b"
-            },
-            {
-                "language": 2,
-                "location": {
-                    "filepath": "test/imports.js",
-                    "range": {
-                        "columnBegin": 17,
-                        "columnEnd": 20,
-                        "lineBegin": 13,
-                        "lineEnd": 13
-                    },
-                    "repository": "test"
-                },
-                "name": "bar",
-                "qname": {
-                    "container": "imports",
-                    "localName": "bar"
-                },
-                "score": {
-                    "exactness": 2
-                },
-                "symbol": "test/js/imports/bar"
-            },
-            {
-                "language": 2,
-                "location": {
-                    "filepath": "test/imports.js",
-                    "range": {
-                        "columnBegin": 22,
-                        "columnEnd": 25,
-                        "lineBegin": 13,
-                        "lineEnd": 13
-                    },
-                    "repository": "test"
-                },
-                "name": "baz",
-                "qname": {
-                    "container": "imports",
-                    "localName": "baz"
-                },
-                "score": {
-                    "exactness": 2
-                },
-                "symbol": "test/js/imports/baz"
-            },
-            {
-                "language": 2,
-                "location": {
-                    "filepath": "test/imports.js",
-                    "range": {
-                        "columnBegin": 14,
-                        "columnEnd": 15,
-                        "lineBegin": 11,
-                        "lineEnd": 11
-                    },
-                    "repository": "test"
-                },
-                "name": "c",
-                "qname": {
-                    "container": "imports",
-                    "localName": "c"
-                },
-                "score": {
-                    "exactness": 2
-                },
-                "symbol": "test/js/imports/c"
             },
             {
                 "language": 2,
@@ -404,28 +272,6 @@
                 "location": {
                     "filepath": "test/imports.js",
                     "range": {
-                        "columnBegin": 8,
-                        "columnEnd": 9,
-                        "lineBegin": 13,
-                        "lineEnd": 13
-                    },
-                    "repository": "test"
-                },
-                "name": "d",
-                "qname": {
-                    "container": "imports",
-                    "localName": "d"
-                },
-                "score": {
-                    "exactness": 2
-                },
-                "symbol": "test/js/imports/d"
-            },
-            {
-                "language": 2,
-                "location": {
-                    "filepath": "test/imports.js",
-                    "range": {
                         "columnBegin": 5,
                         "columnEnd": 6,
                         "lineBegin": 21,
@@ -448,94 +294,6 @@
                 "location": {
                     "filepath": "test/imports.js",
                     "range": {
-                        "columnBegin": 8,
-                        "columnEnd": 10,
-                        "lineBegin": 16,
-                        "lineEnd": 16
-                    },
-                    "repository": "test"
-                },
-                "name": "fn",
-                "qname": {
-                    "container": "imports",
-                    "localName": "fn"
-                },
-                "score": {
-                    "exactness": 2
-                },
-                "symbol": "test/js/imports/fn"
-            },
-            {
-                "language": 2,
-                "location": {
-                    "filepath": "test/imports.js",
-                    "range": {
-                        "columnBegin": 12,
-                        "columnEnd": 15,
-                        "lineBegin": 13,
-                        "lineEnd": 13
-                    },
-                    "repository": "test"
-                },
-                "name": "foo",
-                "qname": {
-                    "container": "imports",
-                    "localName": "foo"
-                },
-                "score": {
-                    "exactness": 2
-                },
-                "symbol": "test/js/imports/foo"
-            },
-            {
-                "language": 2,
-                "location": {
-                    "filepath": "test/imports.js",
-                    "range": {
-                        "columnBegin": 14,
-                        "columnEnd": 17,
-                        "lineBegin": 19,
-                        "lineEnd": 19
-                    },
-                    "repository": "test"
-                },
-                "name": "num",
-                "qname": {
-                    "container": "imports",
-                    "localName": "num"
-                },
-                "score": {
-                    "exactness": 2
-                },
-                "symbol": "test/js/imports/num"
-            },
-            {
-                "language": 2,
-                "location": {
-                    "filepath": "test/imports.js",
-                    "range": {
-                        "columnBegin": 13,
-                        "columnEnd": 16,
-                        "lineBegin": 14,
-                        "lineEnd": 14
-                    },
-                    "repository": "test"
-                },
-                "name": "qux",
-                "qname": {
-                    "container": "imports",
-                    "localName": "qux"
-                },
-                "score": {
-                    "exactness": 2
-                },
-                "symbol": "test/js/imports/qux"
-            },
-            {
-                "language": 2,
-                "location": {
-                    "filepath": "test/imports.js",
-                    "range": {
                         "columnBegin": 5,
                         "columnEnd": 6,
                         "lineBegin": 32,
@@ -552,28 +310,6 @@
                     "exactness": 2
                 },
                 "symbol": "test/js/imports/s"
-            },
-            {
-                "language": 2,
-                "location": {
-                    "filepath": "test/imports.js",
-                    "range": {
-                        "columnBegin": 15,
-                        "columnEnd": 18,
-                        "lineBegin": 29,
-                        "lineEnd": 29
-                    },
-                    "repository": "test"
-                },
-                "name": "str",
-                "qname": {
-                    "container": "imports",
-                    "localName": "str"
-                },
-                "score": {
-                    "exactness": 2
-                },
-                "symbol": "test/js/imports/str"
             },
             {
                 "language": 2,

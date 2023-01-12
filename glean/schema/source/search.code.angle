@@ -295,13 +295,26 @@ predicate FlowSearchByLowerCaseName:
     FlowSearchByNameWithFact { Name, Entity }
 
 # helper to share Name fact in the lower case scenario
+#
+# Similar to C++ and Python, we don't include import declarations
+# in search results, as they are too noisy
+#
 predicate FlowSearchByNameWithFact:
   {
     name: flow.Name,
     entity: code.Entity
   }
   { Name, { flow = { decl = Decl } } } where
-    flow.SearchByName { name = Name, decl = Decl }
+    flow.SearchByName { Name, Decl };
+    # filter out import declarations
+    ({ localDecl = LocalDecl } = Decl;
+     !flow.ImportDeclaration { declaration = LocalDecl }
+    ) | (
+     { typeDecl = TypeDecl } = Decl;
+     !flow.TypeImportDeclaration { typeDeclaration = TypeDecl }
+    ) | (
+     { memberDecl = _ } = Decl;
+    )
 
 predicate CxxSearchByName:
   {

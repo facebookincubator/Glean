@@ -46,51 +46,6 @@
                 },
                 "sym_other_locations": [],
                 "type_xrefs": []
-            },
-            {
-                "comments": [],
-                "contains_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "extends_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "language": 2,
-                "location": {
-                    "filepath": "test/imports.js",
-                    "range": {
-                        "columnBegin": 12,
-                        "columnEnd": 15,
-                        "lineBegin": 13,
-                        "lineEnd": 13
-                    },
-                    "repository": "test"
-                },
-                "modifiers": [],
-                "name": {
-                    "container": "imports",
-                    "localName": "foo"
-                },
-                "repo_hash": "testhash",
-                "sym": "test/js/imports/foo",
-                "sym_location": {
-                    "filepath": "test/imports.js",
-                    "range": {
-                        "columnBegin": 12,
-                        "columnEnd": 15,
-                        "lineBegin": 13,
-                        "lineEnd": 13
-                    },
-                    "repository": "test"
-                },
-                "sym_other_locations": [],
-                "type_xrefs": []
             }
         ],
         "symbols": [
@@ -115,28 +70,6 @@
                     "exactness": 2
                 },
                 "symbol": "test/js/es_exports/foo"
-            },
-            {
-                "language": 2,
-                "location": {
-                    "filepath": "test/imports.js",
-                    "range": {
-                        "columnBegin": 12,
-                        "columnEnd": 15,
-                        "lineBegin": 13,
-                        "lineEnd": 13
-                    },
-                    "repository": "test"
-                },
-                "name": "foo",
-                "qname": {
-                    "container": "imports",
-                    "localName": "foo"
-                },
-                "score": {
-                    "exactness": 2
-                },
-                "symbol": "test/js/imports/foo"
             }
         ]
     }
