@@ -1,6 +1,6 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema python.4 {
+schema python.1 {
 import builtin.1
 import src.1
 
@@ -21,6 +21,13 @@ predicate FunctionDeclaration: { name: Name }
 predicate VariableDeclaration: { name: Name }
 # Records that a Python module exists with a given fully qualified name.
 predicate Module: { name: Name }
+
+} # python.1
+
+schema python.2 : python.1 {
+
+import builtin.1
+import src.1
 
 # A structured name.
 predicate SName:
@@ -312,6 +319,11 @@ predicate DeclarationBySName: SName -> Declaration
     Declaration { module = M }
   )
 
+} # python.2
+
+schema python.3 : python.2 {
+import src.1
+
 # This is the inverse of ImportStatement. It allows for efficient queries
 # by alias. Note that multiple ImportStatements might have the same
 # alias, so this must be a record and not Name -> ImportStatement.
@@ -507,6 +519,4 @@ predicate SearchByLocalName:
     python.DeclarationWithName { Name, Decl };
     python.NameToSName Name -> { local_name = python.Name NameStr };
 
-} # python.4
-
-schema python.4 evolves python.3
+} # python.3
