@@ -52,6 +52,7 @@ indexer = Indexer {
             , "flow.FlowEntityImportUses"
             , "flow.FlowTypeEntityImportUses"
             , "flow.NameLowerCase"
+            , "flow.ModuleContains"
             ]
         }
     indexerRun externalIndexer ext

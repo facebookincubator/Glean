@@ -214,6 +214,34 @@ predicate FileDeclaration: {
     { module = Mod } = Loc;
     { file = F }  = Mod )
 
+# Find declarations contained in a parent module
+predicate ModuleContains:
+  {
+    module : Module,
+    member : SomeDeclaration,
+  }
+  stored
+  { Parent, Child } where
+    ( Decl = flow.Declaration { loc = Loc };
+      { localDecl = Decl } = Child
+    ) | (
+      Decl = flow.MemberDeclaration { loc = Loc };
+      { memberDecl = Decl } = Child
+    ) | (
+      Decl = flow.TypeDeclaration { loc = Loc };
+      { typeDecl = Decl } = Child
+    );
+    { module = Mod } = Loc;
+    # There are only file and lib modules in the xref table
+    # build an index here for string modules too
+    ( { file = File } = Mod;
+      FileOfStringModule { File, ModString };
+      Module { string_ = ModString } = Parent
+    ) | (
+      Mod = Parent;
+    )
+
+# tagged declaration types used for entities, see also flow.Module
 type SomeDeclaration = {
   localDecl : Declaration |
   memberDecl : MemberDeclaration |
