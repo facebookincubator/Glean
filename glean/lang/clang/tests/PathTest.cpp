@@ -39,14 +39,6 @@ TEST(PathTest, goodPath) {
 
 }
 
-TEST(PathTest, betterPath) {
-  EXPECT_EQ(betterPath("/foo","/bar").native(), "/foo");
-  EXPECT_EQ(betterPath("/foo","bar").native(), "bar");
-  EXPECT_EQ(betterPath("foo","/bar").native(), "foo");
-  EXPECT_EQ(betterPath("foo","bar").native(), "foo");
-  EXPECT_EQ(betterPath("","bar").native(), "bar");
-}
-
 }
 }
 }

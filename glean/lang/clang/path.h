@@ -33,12 +33,6 @@ std::filesystem::path goodPath(
   std::filesystem::path root,
   std::filesystem::path path);
 
-/// Given two paths, pick the better one, preferring the first. At the moment,
-/// this only prefers relative paths to absolute ones.
-std::filesystem::path betterPath(
-  std::filesystem::path path1,
-  std::filesystem::path path2);
-
 }
 }
 }

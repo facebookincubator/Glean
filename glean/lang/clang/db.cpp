@@ -20,10 +20,9 @@ namespace {
 
 std::filesystem::path subpath(
     const folly::Optional<std::string>& subdir,
-    clang::StringRef path) {
+    std::filesystem::path p) {
   // This returns 'path' if it is absolute or if 'subdir' is empty and
   // 'subdir'/'path' otherwise.
-  std::filesystem::path p(static_cast<std::string>(path));
   return p.is_absolute() || !subdir
     ? p
     : std::filesystem::path(subdir.value()) / p;
@@ -31,22 +30,31 @@ std::filesystem::path subpath(
 
 }
 
+//
+// To get a good filename we need to deal with 4 cases:
+//
+// 1. Name is relative, e.g. "folly/File.h". In this case, prepending
+//    subdir (if set) gives us a path relative to root, and goodPath()
+//    removes any "../" components.
+//
+// 2. Name is absolute and inside root,
+//    e.g. "/home/smarlow/code/folly/File.h" where root is
+//    "/home/smarlow/code". In this case we strip root using
+//    goodPath(), giving us "folly/File.h".
+//
+// 3. Name is a symlink (absolute or relative) to a file inside
+//    root. Use canonical() to get the symlink target, and goodPath()
+//    to strip root.
+//
+// 4. Name is relative, but is a symlink to a file *outside* root. In
+//    this case we want to just keep the original relative path.
+//
 Fact<Src::File> ClangDB::fileFromEntry(
     const clang::FileEntry& entry) {
-  // Clang files have a Name and *maybe* a RealPathName (which seems to be
-  // Name with symlinks resolved). For fbcode sources, RealPathName tends to
-  // be what we want for sources (RealPathName could be "folly/File.h" and
-  // Name would be the symlink under "buck-out"). For other things, we tend
-  // to want Name (e.g., "third-party-buck/.../basic_ios.h" rather than
-  // "/mnt/gvfs/.../basic_ios.h").
-  //
-  // TODO: Do we want to resolve symlinks ourselves instead of using
-  // tryGetRealPathName?
-  auto path = goodPath(root, subpath(subdir, entry.getName()));
-  auto real = entry.tryGetRealPathName();
-  if (!real.empty()) {
-    path = betterPath(goodPath(root, subpath(subdir, real)), path);
-  }
+  auto path = goodPath(root, subpath(subdir, entry.getName().str()));
+  auto canon = goodPath(root,
+                        std::filesystem::canonical(entry.getName().str()));
+  path = canon.is_relative() ? canon : path;
   if (path_prefix.has_value()) {
      path = std::filesystem::path(path_prefix.value()) / path;
   }

@@ -64,15 +64,6 @@ std::filesystem::path goodPath(
   }
 }
 
-std::filesystem::path betterPath(
-    std::filesystem::path path1,
-    std::filesystem::path path2) {
-  return
-    !path1.empty() && (path1.is_relative() || path2.is_absolute())
-      ? path1
-      : path2;
-}
-
 }
 }
 }
