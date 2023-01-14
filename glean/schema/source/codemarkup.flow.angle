@@ -155,6 +155,14 @@ predicate FlowContainsParentEntity :
       { loc = { module = Parent } } = Decl;
     )
 
+predicate FlowContainsChildEntity :
+  {
+    parent: code.flow.Entity,
+    child: code.flow.Entity
+  }
+  { { module_ = Parent }, { decl = Child } } where
+    flow.ModuleContains { Parent, Child }
+
 # kinds and symbol info
 predicate FlowEntityKind:
   {
