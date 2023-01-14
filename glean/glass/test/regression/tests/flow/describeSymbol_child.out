@@ -32,6 +32,7 @@
             "localName": "num"
         },
         "repo_hash": "testhash",
+        "signature": "num: type num = number",
         "sym": "test/js/es_exports/num",
         "sym_location": {
             "filepath": "test/es_exports.js.flow",

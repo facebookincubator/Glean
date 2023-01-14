@@ -48,6 +48,7 @@
                     "localName": "cjs_exports"
                 },
                 "repo_hash": "testhash",
+                "signature": "module cjs_exports",
                 "sym": "test/js/cjs_exports",
                 "sym_location": {
                     "filepath": "test/cjs_exports.js",
@@ -94,6 +95,7 @@
                     "localName": "plus"
                 },
                 "repo_hash": "testhash",
+                "signature": "plus: (x: number) => number",
                 "sym": "test/js/cjs_exports/plus",
                 "sym_location": {
                     "filepath": "test/cjs_exports.js",
@@ -140,6 +142,7 @@
                     "localName": "x"
                 },
                 "repo_hash": "testhash",
+                "signature": "x: number",
                 "sym": "test/js/cjs_exports/x",
                 "sym_location": {
                     "filepath": "test/cjs_exports.js",

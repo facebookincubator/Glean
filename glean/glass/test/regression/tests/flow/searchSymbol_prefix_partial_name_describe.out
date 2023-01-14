@@ -34,6 +34,7 @@
                     "localName": "foo"
                 },
                 "repo_hash": "testhash",
+                "signature": "foo: number",
                 "sym": "test/js/es_exports/foo",
                 "sym_location": {
                     "filepath": "test/es_exports.js.flow",

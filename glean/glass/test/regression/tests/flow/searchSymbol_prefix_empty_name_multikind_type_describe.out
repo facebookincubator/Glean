@@ -34,6 +34,7 @@
                     "localName": "C"
                 },
                 "repo_hash": "testhash",
+                "signature": "C: class C",
                 "sym": "test/js/es_exports/C",
                 "sym_location": {
                     "filepath": "test/es_exports.js.flow",
@@ -80,6 +81,7 @@
                     "localName": "baz"
                 },
                 "repo_hash": "testhash",
+                "signature": "baz: class baz",
                 "sym": "test/js/es_exports/baz",
                 "sym_location": {
                     "filepath": "test/es_exports.js.flow",
@@ -126,6 +128,7 @@
                     "localName": "num"
                 },
                 "repo_hash": "testhash",
+                "signature": "num: type num = number",
                 "sym": "test/js/es_exports/num",
                 "sym_location": {
                     "filepath": "test/es_exports.js.flow",
@@ -172,6 +175,7 @@
                     "localName": "D"
                 },
                 "repo_hash": "testhash",
+                "signature": "D: type D = typeof C",
                 "sym": "test/js/imports/D",
                 "sym_location": {
                     "filepath": "test/imports.js",
@@ -218,6 +222,7 @@
                     "localName": "caz"
                 },
                 "repo_hash": "testhash",
+                "signature": "caz: class caz",
                 "sym": "test/js/imports/caz",
                 "sym_location": {
                     "filepath": "test/imports.js",

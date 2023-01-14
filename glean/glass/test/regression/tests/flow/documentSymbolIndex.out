@@ -18,6 +18,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "test/imports.js"
                         }
                     },
                     "range": {
@@ -43,6 +46,9 @@
                         },
                         "symbolParent": {
                             "aString": "imports"
+                        },
+                        "symbolSignature": {
+                            "aString": "a: any (implicit)"
                         }
                     },
                     "range": {
@@ -66,6 +72,9 @@
                         },
                         "symbolParent": {
                             "aString": "imports"
+                        },
+                        "symbolSignature": {
+                            "aString": "b: any (implicit)"
                         }
                     },
                     "range": {
@@ -89,6 +98,9 @@
                         },
                         "symbolParent": {
                             "aString": "imports"
+                        },
+                        "symbolSignature": {
+                            "aString": "c: any (implicit)"
                         }
                     },
                     "range": {
@@ -114,6 +126,9 @@
                         },
                         "symbolParent": {
                             "aString": "es_exports"
+                        },
+                        "symbolSignature": {
+                            "aString": "baz: class baz"
                         }
                     },
                     "range": {
@@ -147,6 +162,9 @@
                         },
                         "symbolParent": {
                             "aString": "es_exports"
+                        },
+                        "symbolSignature": {
+                            "aString": "bor: (x: number) => number"
                         }
                     },
                     "range": {
@@ -180,6 +198,9 @@
                         },
                         "symbolParent": {
                             "aString": "es_exports"
+                        },
+                        "symbolSignature": {
+                            "aString": "d: string"
                         }
                     },
                     "range": {
@@ -213,6 +234,9 @@
                         },
                         "symbolParent": {
                             "aString": "es_exports"
+                        },
+                        "symbolSignature": {
+                            "aString": "foo: number"
                         }
                     },
                     "range": {
@@ -246,6 +270,9 @@
                         },
                         "symbolParent": {
                             "aString": "imports"
+                        },
+                        "symbolSignature": {
+                            "aString": "bar: (x: number) => number"
                         }
                     },
                     "range": {
@@ -269,6 +296,9 @@
                         },
                         "symbolParent": {
                             "aString": "imports"
+                        },
+                        "symbolSignature": {
+                            "aString": "baz: class baz"
                         }
                     },
                     "range": {
@@ -292,6 +322,9 @@
                         },
                         "symbolParent": {
                             "aString": "imports"
+                        },
+                        "symbolSignature": {
+                            "aString": "d: string"
                         }
                     },
                     "range": {
@@ -315,6 +348,9 @@
                         },
                         "symbolParent": {
                             "aString": "imports"
+                        },
+                        "symbolSignature": {
+                            "aString": "foo: number"
                         }
                     },
                     "range": {
@@ -340,6 +376,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "test/es_exports.js"
                         }
                     },
                     "range": {
@@ -373,6 +412,9 @@
                         },
                         "symbolParent": {
                             "aString": "imports"
+                        },
+                        "symbolSignature": {
+                            "aString": "qux: module \"./es_exports\""
                         }
                     },
                     "range": {
@@ -398,6 +440,9 @@
                         },
                         "symbolParent": {
                             "aString": "cjs_exports"
+                        },
+                        "symbolSignature": {
+                            "aString": "plus: (x: number) => number"
                         }
                     },
                     "range": {
@@ -431,6 +476,9 @@
                         },
                         "symbolParent": {
                             "aString": "imports"
+                        },
+                        "symbolSignature": {
+                            "aString": "fn: (x: number) => any"
                         }
                     },
                     "range": {
@@ -456,6 +504,9 @@
                         },
                         "symbolParent": {
                             "aString": "es_exports"
+                        },
+                        "symbolSignature": {
+                            "aString": "num: type num = number"
                         }
                     },
                     "range": {
@@ -514,6 +565,9 @@
                         },
                         "symbolParent": {
                             "aString": "es_exports"
+                        },
+                        "symbolSignature": {
+                            "aString": "d: string"
                         }
                     },
                     "range": {
@@ -547,6 +601,9 @@
                         },
                         "symbolParent": {
                             "aString": "imports"
+                        },
+                        "symbolSignature": {
+                            "aString": "d: string"
                         }
                     },
                     "range": {
@@ -580,6 +637,9 @@
                         },
                         "symbolParent": {
                             "aString": "imports"
+                        },
+                        "symbolSignature": {
+                            "aString": "e: string"
                         }
                     },
                     "range": {
@@ -605,6 +665,9 @@
                         },
                         "symbolParent": {
                             "aString": "es_exports"
+                        },
+                        "symbolSignature": {
+                            "aString": "bor: (x: number) => number"
                         }
                     },
                     "range": {
@@ -638,6 +701,9 @@
                         },
                         "symbolParent": {
                             "aString": "es_exports"
+                        },
+                        "symbolSignature": {
+                            "aString": "num: type num = number"
                         }
                     },
                     "range": {
@@ -671,6 +737,9 @@
                         },
                         "symbolParent": {
                             "aString": "imports"
+                        },
+                        "symbolSignature": {
+                            "aString": "a: any (implicit)"
                         }
                     },
                     "range": {
@@ -704,6 +773,9 @@
                         },
                         "symbolParent": {
                             "aString": "imports"
+                        },
+                        "symbolSignature": {
+                            "aString": "bar: (x: number) => number"
                         }
                     },
                     "range": {
@@ -770,6 +842,9 @@
                         },
                         "symbolParent": {
                             "aString": "imports"
+                        },
+                        "symbolSignature": {
+                            "aString": "x: num"
                         }
                     },
                     "range": {
@@ -795,6 +870,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "test/es_exports.js"
                         }
                     },
                     "range": {
@@ -861,6 +939,9 @@
                         },
                         "symbolParent": {
                             "aString": "es_exports"
+                        },
+                        "symbolSignature": {
+                            "aString": "foo: number"
                         }
                     },
                     "range": {
@@ -894,6 +975,9 @@
                         },
                         "symbolParent": {
                             "aString": "es_exports"
+                        },
+                        "symbolSignature": {
+                            "aString": "num: type num = number"
                         }
                     },
                     "range": {
@@ -927,6 +1011,9 @@
                         },
                         "symbolParent": {
                             "aString": "imports"
+                        },
+                        "symbolSignature": {
+                            "aString": "foo: number"
                         }
                     },
                     "range": {
@@ -993,6 +1080,9 @@
                         },
                         "symbolParent": {
                             "aString": "imports"
+                        },
+                        "symbolSignature": {
+                            "aString": "qux: module \"./es_exports\""
                         }
                     },
                     "range": {
@@ -1026,6 +1116,9 @@
                         },
                         "symbolParent": {
                             "aString": "imports"
+                        },
+                        "symbolSignature": {
+                            "aString": "y: num"
                         }
                     },
                     "range": {
@@ -1051,6 +1144,9 @@
                         },
                         "symbolParent": {
                             "aString": "cjs_exports"
+                        },
+                        "symbolSignature": {
+                            "aString": "plus: (x: number) => number"
                         }
                     },
                     "range": {
@@ -1084,6 +1180,9 @@
                         },
                         "symbolParent": {
                             "aString": "es_exports"
+                        },
+                        "symbolSignature": {
+                            "aString": "num: type num = number"
                         }
                     },
                     "range": {
@@ -1117,6 +1216,9 @@
                         },
                         "symbolParent": {
                             "aString": "imports"
+                        },
+                        "symbolSignature": {
+                            "aString": "fn: (x: number) => any"
                         }
                     },
                     "range": {
@@ -1183,6 +1285,9 @@
                         },
                         "symbolParent": {
                             "aString": "imports"
+                        },
+                        "symbolSignature": {
+                            "aString": "z: num"
                         }
                     },
                     "range": {
@@ -1208,6 +1313,9 @@
                         },
                         "symbolParent": {
                             "aString": "es_exports"
+                        },
+                        "symbolSignature": {
+                            "aString": "baz: class baz"
                         }
                     },
                     "range": {
@@ -1241,6 +1349,9 @@
                         },
                         "symbolParent": {
                             "aString": "imports"
+                        },
+                        "symbolSignature": {
+                            "aString": "baz: class baz"
                         }
                     },
                     "range": {
@@ -1274,6 +1385,9 @@
                         },
                         "symbolParent": {
                             "aString": "imports"
+                        },
+                        "symbolSignature": {
+                            "aString": "caz: class caz"
                         }
                     },
                     "range": {
@@ -1297,6 +1411,9 @@
                         },
                         "symbolParent": {
                             "aString": "imports"
+                        },
+                        "symbolSignature": {
+                            "aString": "caz: class caz"
                         }
                     },
                     "range": {
@@ -1322,6 +1439,9 @@
                         },
                         "symbolParent": {
                             "aString": "es_exports"
+                        },
+                        "symbolSignature": {
+                            "aString": "C: class C"
                         }
                     },
                     "range": {
@@ -1355,6 +1475,9 @@
                         },
                         "symbolParent": {
                             "aString": "es_exports"
+                        },
+                        "symbolSignature": {
+                            "aString": "d: string"
                         }
                     },
                     "range": {
@@ -1436,6 +1559,9 @@
                         },
                         "symbolParent": {
                             "aString": "es_exports"
+                        },
+                        "symbolSignature": {
+                            "aString": "C: class C"
                         }
                     },
                     "range": {
@@ -1502,6 +1628,9 @@
                         },
                         "symbolParent": {
                             "aString": "imports"
+                        },
+                        "symbolSignature": {
+                            "aString": "D: type D = typeof C"
                         }
                     },
                     "range": {
@@ -1527,6 +1656,9 @@
                         },
                         "symbolParent": {
                             "aString": "es_exports"
+                        },
+                        "symbolSignature": {
+                            "aString": "d: string"
                         }
                     },
                     "range": {
@@ -1560,6 +1692,9 @@
                         },
                         "symbolParent": {
                             "aString": "imports"
+                        },
+                        "symbolSignature": {
+                            "aString": "s: string"
                         }
                     },
                     "range": {
