@@ -574,4 +574,21 @@ predicate DeclarationNameSpan:
   { { memberDecl = { name = Name, loc = { span = Span }}}, Name, Span } |
   { { typeDecl = { name = Name, loc = { span = Span }}}, Name, Span }
 
+# convenience wrapper for extracting the signature from each decl
+predicate DeclarationSignature:
+  {
+    decl : flow.SomeDeclaration,
+    signature : string
+  }
+  { Decl, Sig } where
+    ( { localDecl = D } = Decl;
+      flow.DeclarationInfo { declaration = D, type = flow.Type Sig }
+    ) | (
+      { memberDecl = D } = Decl;
+      flow.MemberDeclarationInfo { memberDeclaration = D, type = flow.Type Sig }
+    ) | (
+      { typeDecl = D } = Decl;
+      flow.TypeDeclarationInfo { typeDeclaration = D, type = flow.Type Sig }
+    )
+
 }
