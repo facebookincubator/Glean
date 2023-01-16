@@ -11,10 +11,10 @@
                             "aInteger": 10
                         },
                         "symbolName": {
-                            "aString": ""
+                            "aString": "<unknown>"
                         },
                         "symbolParent": {
-                            "aString": "<unknown>"
+                            "aString": "basics::n"
                         },
                         "symbolSignature": {
                             "aString": "\n```rust\nn: u64\n```"
@@ -26,7 +26,7 @@
                         "lineBegin": 12,
                         "lineEnd": 12
                     },
-                    "sym": "test/rs/src/lib.rs/%3Cglobal%3E/12/15/12/16"
+                    "sym": "test/rs/lsif/basics::n"
                 },
                 {
                     "attributes": {
@@ -34,10 +34,10 @@
                             "aInteger": 10
                         },
                         "symbolName": {
-                            "aString": ""
+                            "aString": "<unknown>"
                         },
                         "symbolParent": {
-                            "aString": "<unknown>"
+                            "aString": "basics::sum_f1"
                         },
                         "symbolSignature": {
                             "aString": "\n```rust\nbasics\n```\n\n```rust\npub fn sum_f1(n: u64) -> u64\n```"
@@ -49,7 +49,7 @@
                         "lineBegin": 12,
                         "lineEnd": 12
                     },
-                    "sym": "test/rs/src/lib.rs/%3Cglobal%3E/12/8/12/14"
+                    "sym": "test/rs/lsif/basics::sum_f1"
                 }
             ],
             "13": [
@@ -59,43 +59,10 @@
                             "aInteger": 10
                         },
                         "symbolName": {
-                            "aString": ""
-                        },
-                        "symbolParent": {
                             "aString": "<unknown>"
                         },
-                        "symbolSignature": {
-                            "aString": "\n```rust\nn: u64\n```"
-                        }
-                    },
-                    "range": {
-                        "columnBegin": 11,
-                        "columnEnd": 12,
-                        "lineBegin": 13,
-                        "lineEnd": 13
-                    },
-                    "sym": "test/rs/src/lib.rs/%3Cglobal%3E/12/15/12/16",
-                    "target": {
-                        "filepath": "src/lib.rs",
-                        "range": {
-                            "columnBegin": 15,
-                            "columnEnd": 16,
-                            "lineBegin": 12,
-                            "lineEnd": 12
-                        },
-                        "repository": "test"
-                    }
-                },
-                {
-                    "attributes": {
-                        "symbolLanguage": {
-                            "aInteger": 10
-                        },
-                        "symbolName": {
-                            "aString": ""
-                        },
                         "symbolParent": {
-                            "aString": "<unknown>"
+                            "aString": "basics::f1_go"
                         },
                         "symbolSignature": {
                             "aString": "\n```rust\nbasics\n```\n\n```rust\nfn f1_go(n: u64, acc: u64) -> u64\n```"
@@ -107,7 +74,7 @@
                         "lineBegin": 13,
                         "lineEnd": 13
                     },
-                    "sym": "test/rs/src/lib.rs/%3Cglobal%3E/16/4/16/9",
+                    "sym": "test/rs/lsif/basics::f1_go",
                     "target": {
                         "filepath": "src/lib.rs",
                         "range": {
@@ -115,6 +82,39 @@
                             "columnEnd": 9,
                             "lineBegin": 16,
                             "lineEnd": 16
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 10
+                        },
+                        "symbolName": {
+                            "aString": "<unknown>"
+                        },
+                        "symbolParent": {
+                            "aString": "basics::n"
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nn: u64\n```"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 12,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "sym": "test/rs/lsif/basics::n",
+                    "target": {
+                        "filepath": "src/lib.rs",
+                        "range": {
+                            "columnBegin": 15,
+                            "columnEnd": 16,
+                            "lineBegin": 12,
+                            "lineEnd": 12
                         },
                         "repository": "test"
                     }
@@ -127,33 +127,10 @@
                             "aInteger": 10
                         },
                         "symbolName": {
-                            "aString": ""
-                        },
-                        "symbolParent": {
                             "aString": "<unknown>"
                         },
-                        "symbolSignature": {
-                            "aString": "\n```rust\nn: u64\n```"
-                        }
-                    },
-                    "range": {
-                        "columnBegin": 10,
-                        "columnEnd": 11,
-                        "lineBegin": 16,
-                        "lineEnd": 16
-                    },
-                    "sym": "test/rs/src/lib.rs/%3Cglobal%3E/16/10/16/11"
-                },
-                {
-                    "attributes": {
-                        "symbolLanguage": {
-                            "aInteger": 10
-                        },
-                        "symbolName": {
-                            "aString": ""
-                        },
                         "symbolParent": {
-                            "aString": "<unknown>"
+                            "aString": "basics::acc"
                         },
                         "symbolSignature": {
                             "aString": "\n```rust\nacc: u64\n```"
@@ -165,7 +142,7 @@
                         "lineBegin": 16,
                         "lineEnd": 16
                     },
-                    "sym": "test/rs/src/lib.rs/%3Cglobal%3E/16/18/16/21"
+                    "sym": "test/rs/lsif/basics::acc"
                 },
                 {
                     "attributes": {
@@ -173,10 +150,10 @@
                             "aInteger": 10
                         },
                         "symbolName": {
-                            "aString": ""
+                            "aString": "<unknown>"
                         },
                         "symbolParent": {
-                            "aString": "<unknown>"
+                            "aString": "basics::f1_go"
                         },
                         "symbolSignature": {
                             "aString": "\n```rust\nbasics\n```\n\n```rust\nfn f1_go(n: u64, acc: u64) -> u64\n```"
@@ -188,7 +165,30 @@
                         "lineBegin": 16,
                         "lineEnd": 16
                     },
-                    "sym": "test/rs/src/lib.rs/%3Cglobal%3E/16/4/16/9"
+                    "sym": "test/rs/lsif/basics::f1_go"
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 10
+                        },
+                        "symbolName": {
+                            "aString": "<unknown>"
+                        },
+                        "symbolParent": {
+                            "aString": "basics::n"
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nn: u64\n```"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 10,
+                        "columnEnd": 11,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "sym": "test/rs/lsif/basics::n"
                 }
             ],
             "17": [
@@ -198,109 +198,10 @@
                             "aInteger": 10
                         },
                         "symbolName": {
-                            "aString": ""
-                        },
-                        "symbolParent": {
                             "aString": "<unknown>"
                         },
-                        "symbolSignature": {
-                            "aString": "\n```rust\nn: u64\n```"
-                        }
-                    },
-                    "range": {
-                        "columnBegin": 8,
-                        "columnEnd": 9,
-                        "lineBegin": 17,
-                        "lineEnd": 17
-                    },
-                    "sym": "test/rs/src/lib.rs/%3Cglobal%3E/16/10/16/11",
-                    "target": {
-                        "filepath": "src/lib.rs",
-                        "range": {
-                            "columnBegin": 10,
-                            "columnEnd": 11,
-                            "lineBegin": 16,
-                            "lineEnd": 16
-                        },
-                        "repository": "test"
-                    }
-                },
-                {
-                    "attributes": {
-                        "symbolLanguage": {
-                            "aInteger": 10
-                        },
-                        "symbolName": {
-                            "aString": ""
-                        },
                         "symbolParent": {
-                            "aString": "<unknown>"
-                        },
-                        "symbolSignature": {
-                            "aString": "\n```rust\nn: u64\n```"
-                        }
-                    },
-                    "range": {
-                        "columnBegin": 36,
-                        "columnEnd": 37,
-                        "lineBegin": 17,
-                        "lineEnd": 17
-                    },
-                    "sym": "test/rs/src/lib.rs/%3Cglobal%3E/16/10/16/11",
-                    "target": {
-                        "filepath": "src/lib.rs",
-                        "range": {
-                            "columnBegin": 10,
-                            "columnEnd": 11,
-                            "lineBegin": 16,
-                            "lineEnd": 16
-                        },
-                        "repository": "test"
-                    }
-                },
-                {
-                    "attributes": {
-                        "symbolLanguage": {
-                            "aInteger": 10
-                        },
-                        "symbolName": {
-                            "aString": ""
-                        },
-                        "symbolParent": {
-                            "aString": "<unknown>"
-                        },
-                        "symbolSignature": {
-                            "aString": "\n```rust\nn: u64\n```"
-                        }
-                    },
-                    "range": {
-                        "columnBegin": 49,
-                        "columnEnd": 50,
-                        "lineBegin": 17,
-                        "lineEnd": 17
-                    },
-                    "sym": "test/rs/src/lib.rs/%3Cglobal%3E/16/10/16/11",
-                    "target": {
-                        "filepath": "src/lib.rs",
-                        "range": {
-                            "columnBegin": 10,
-                            "columnEnd": 11,
-                            "lineBegin": 16,
-                            "lineEnd": 16
-                        },
-                        "repository": "test"
-                    }
-                },
-                {
-                    "attributes": {
-                        "symbolLanguage": {
-                            "aInteger": 10
-                        },
-                        "symbolName": {
-                            "aString": ""
-                        },
-                        "symbolParent": {
-                            "aString": "<unknown>"
+                            "aString": "basics::acc"
                         },
                         "symbolSignature": {
                             "aString": "\n```rust\nacc: u64\n```"
@@ -312,7 +213,7 @@
                         "lineBegin": 17,
                         "lineEnd": 17
                     },
-                    "sym": "test/rs/src/lib.rs/%3Cglobal%3E/16/18/16/21",
+                    "sym": "test/rs/lsif/basics::acc",
                     "target": {
                         "filepath": "src/lib.rs",
                         "range": {
@@ -330,10 +231,10 @@
                             "aInteger": 10
                         },
                         "symbolName": {
-                            "aString": ""
+                            "aString": "<unknown>"
                         },
                         "symbolParent": {
-                            "aString": "<unknown>"
+                            "aString": "basics::acc"
                         },
                         "symbolSignature": {
                             "aString": "\n```rust\nacc: u64\n```"
@@ -345,7 +246,7 @@
                         "lineBegin": 17,
                         "lineEnd": 17
                     },
-                    "sym": "test/rs/src/lib.rs/%3Cglobal%3E/16/18/16/21",
+                    "sym": "test/rs/lsif/basics::acc",
                     "target": {
                         "filepath": "src/lib.rs",
                         "range": {
@@ -363,10 +264,10 @@
                             "aInteger": 10
                         },
                         "symbolName": {
-                            "aString": ""
+                            "aString": "<unknown>"
                         },
                         "symbolParent": {
-                            "aString": "<unknown>"
+                            "aString": "basics::f1_go"
                         },
                         "symbolSignature": {
                             "aString": "\n```rust\nbasics\n```\n\n```rust\nfn f1_go(n: u64, acc: u64) -> u64\n```"
@@ -378,12 +279,111 @@
                         "lineBegin": 17,
                         "lineEnd": 17
                     },
-                    "sym": "test/rs/src/lib.rs/%3Cglobal%3E/16/4/16/9",
+                    "sym": "test/rs/lsif/basics::f1_go",
                     "target": {
                         "filepath": "src/lib.rs",
                         "range": {
                             "columnBegin": 4,
                             "columnEnd": 9,
+                            "lineBegin": 16,
+                            "lineEnd": 16
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 10
+                        },
+                        "symbolName": {
+                            "aString": "<unknown>"
+                        },
+                        "symbolParent": {
+                            "aString": "basics::n"
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nn: u64\n```"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 9,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "sym": "test/rs/lsif/basics::n",
+                    "target": {
+                        "filepath": "src/lib.rs",
+                        "range": {
+                            "columnBegin": 10,
+                            "columnEnd": 11,
+                            "lineBegin": 16,
+                            "lineEnd": 16
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 10
+                        },
+                        "symbolName": {
+                            "aString": "<unknown>"
+                        },
+                        "symbolParent": {
+                            "aString": "basics::n"
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nn: u64\n```"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 36,
+                        "columnEnd": 37,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "sym": "test/rs/lsif/basics::n",
+                    "target": {
+                        "filepath": "src/lib.rs",
+                        "range": {
+                            "columnBegin": 10,
+                            "columnEnd": 11,
+                            "lineBegin": 16,
+                            "lineEnd": 16
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 10
+                        },
+                        "symbolName": {
+                            "aString": "<unknown>"
+                        },
+                        "symbolParent": {
+                            "aString": "basics::n"
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nn: u64\n```"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 49,
+                        "columnEnd": 50,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "sym": "test/rs/lsif/basics::n",
+                    "target": {
+                        "filepath": "src/lib.rs",
+                        "range": {
+                            "columnBegin": 10,
+                            "columnEnd": 11,
                             "lineBegin": 16,
                             "lineEnd": 16
                         },
@@ -398,10 +398,10 @@
                             "aInteger": 10
                         },
                         "symbolName": {
-                            "aString": ""
+                            "aString": "<unknown>"
                         },
                         "symbolParent": {
-                            "aString": "<unknown>"
+                            "aString": "basics::n"
                         },
                         "symbolSignature": {
                             "aString": "\n```rust\nn: u64\n```"
@@ -413,7 +413,7 @@
                         "lineBegin": 22,
                         "lineEnd": 22
                     },
-                    "sym": "test/rs/src/lib.rs/%3Cglobal%3E/22/15/22/16"
+                    "sym": "test/rs/lsif/basics::n"
                 },
                 {
                     "attributes": {
@@ -421,10 +421,10 @@
                             "aInteger": 10
                         },
                         "symbolName": {
-                            "aString": ""
+                            "aString": "<unknown>"
                         },
                         "symbolParent": {
-                            "aString": "<unknown>"
+                            "aString": "basics::sum_f2"
                         },
                         "symbolSignature": {
                             "aString": "\n```rust\nbasics\n```\n\n```rust\npub fn sum_f2(n: u64) -> u64\n```"
@@ -436,7 +436,7 @@
                         "lineBegin": 22,
                         "lineEnd": 22
                     },
-                    "sym": "test/rs/src/lib.rs/%3Cglobal%3E/22/8/22/14"
+                    "sym": "test/rs/lsif/basics::sum_f2"
                 }
             ],
             "23": [
@@ -471,10 +471,10 @@
                             "aInteger": 10
                         },
                         "symbolName": {
-                            "aString": ""
+                            "aString": "<unknown>"
                         },
                         "symbolParent": {
-                            "aString": "<unknown>"
+                            "aString": "basics::n"
                         },
                         "symbolSignature": {
                             "aString": "\n```rust\nn: u64\n```"
@@ -486,7 +486,7 @@
                         "lineBegin": 24,
                         "lineEnd": 24
                     },
-                    "sym": "test/rs/src/lib.rs/%3Cglobal%3E/22/15/22/16",
+                    "sym": "test/rs/lsif/basics::n",
                     "target": {
                         "filepath": "src/lib.rs",
                         "range": {
@@ -702,10 +702,10 @@
                             "aInteger": 10
                         },
                         "symbolName": {
-                            "aString": ""
+                            "aString": "<unknown>"
                         },
                         "symbolParent": {
-                            "aString": "<unknown>"
+                            "aString": "basics::n"
                         },
                         "symbolSignature": {
                             "aString": "\n```rust\nn: u64\n```"
@@ -717,7 +717,7 @@
                         "lineBegin": 37,
                         "lineEnd": 37
                     },
-                    "sym": "test/rs/src/lib.rs/%3Cglobal%3E/37/15/37/16"
+                    "sym": "test/rs/lsif/basics::n"
                 },
                 {
                     "attributes": {
@@ -725,10 +725,10 @@
                             "aInteger": 10
                         },
                         "symbolName": {
-                            "aString": ""
+                            "aString": "<unknown>"
                         },
                         "symbolParent": {
-                            "aString": "<unknown>"
+                            "aString": "basics::sum_f3"
                         },
                         "symbolSignature": {
                             "aString": "\n```rust\nbasics\n```\n\n```rust\npub fn sum_f3(n: u64) -> u64\n```"
@@ -740,7 +740,7 @@
                         "lineBegin": 37,
                         "lineEnd": 37
                     },
-                    "sym": "test/rs/src/lib.rs/%3Cglobal%3E/37/8/37/14"
+                    "sym": "test/rs/lsif/basics::sum_f3"
                 }
             ],
             "38": [
@@ -775,10 +775,10 @@
                             "aInteger": 10
                         },
                         "symbolName": {
-                            "aString": ""
+                            "aString": "<unknown>"
                         },
                         "symbolParent": {
-                            "aString": "<unknown>"
+                            "aString": "basics::n"
                         },
                         "symbolSignature": {
                             "aString": "\n```rust\nn: u64\n```"
@@ -790,7 +790,7 @@
                         "lineBegin": 39,
                         "lineEnd": 39
                     },
-                    "sym": "test/rs/src/lib.rs/%3Cglobal%3E/37/15/37/16",
+                    "sym": "test/rs/lsif/basics::n",
                     "target": {
                         "filepath": "src/lib.rs",
                         "range": {
