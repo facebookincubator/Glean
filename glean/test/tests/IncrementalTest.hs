@@ -201,6 +201,8 @@ stackedIncrementalTest = TestCase $
         derivePredicate env repo Nothing Nothing
           (parseRef "glean.test.RevEdge") Nothing
         derivePredicate env repo Nothing Nothing
+          (parseRef "glean.test.IsParent") Nothing
+        derivePredicate env repo Nothing Nothing
           (parseRef "glean.test.SkipRevEdge") Nothing
         completeTestDB env repo
 
@@ -219,7 +221,12 @@ stackedIncrementalTest = TestCase $
                       (Glean.Test.Node _ (Just (Glean.Test.Node_key x)))
                       (Glean.Test.Node _ (Just (Glean.Test.Node_key y)))))
             <- edges ])
-
+      parentsAre test db ns = do
+        results <- runQuery_ env db $ recursive $ query $ predicate @Glean.Test.IsParent wild
+        print results
+        assertEqual test ns
+          (sort [ x | Glean.Test.IsParent _ (Just (
+                        Glean.Test.Node _ (Just (Glean.Test.Node_key x)))) <- results ])
 
       revEdgesAre test db es = do
         edges <- runQuery_ env db $ recursive $ query $
@@ -279,6 +286,7 @@ stackedIncrementalTest = TestCase $
 
     -- nodes are a,b,c,d
     nodesAre "stacked inc 0n" inc ["a", "b", "c", "d"]
+    parentsAre "stacked inc 0p" inc ["a", "b", "c"]
     edgesAre "stacked inc 0e" inc [("a","d"),("b","a"),("c","d")]
     revEdgesAre "stacked inc 0r" inc [("a","b"),("d","a"),("d","c")]
     skipRevEdgesAre "stacked inc 0s" inc [("d","b")]
@@ -303,6 +311,7 @@ stackedIncrementalTest = TestCase $
 
     nodesAre "stacked inc 2n" inc2 ["a", "b", "d", "e"]
     edgesAre "stacked inc 2e" inc2 [("a","d"),("b","a"),("e","a")]
+    parentsAre "stacked inc 2p" inc2 ["a", "b", "e"]
     revEdgesAre "stacked inc 2r" inc2 [("a","b"),("a","e"),("d","a")]
     skipRevEdgesAre "stacked inc 2s" inc2 [("d","b"),("d","e")]
 
@@ -321,6 +330,7 @@ stackedIncrementalTest = TestCase $
 
     nodesAre "stacked inc 3n" inc3 ["a", "b", "d"]
     edgesAre "stacked inc 3e" inc3 [("a","d"),("b","a")]
+    parentsAre "stacked inc 3p" inc3 ["a", "b"]
     revEdgesAre "stacked inc 3r" inc3 [("a","b"),("d","a")]
     skipRevEdgesAre "stacked inc 3s" inc3 [("d","b")]
 
@@ -337,8 +347,79 @@ stackedIncrementalTest = TestCase $
 
     nodesAre "stacked inc 4n" inc4 ["a", "e"]
     edgesAre "stacked inc 4e" inc4 [("e","a")]
+    parentsAre "stacked inc 4p" inc4 ["e"]
     revEdgesAre "stacked inc 4r" inc4 [("a","e")]
     skipRevEdgesAre "stacked inc 4s" inc4 []
+
+    inc5 <- incrementalDB env inc (Repo "base-inc" "5") ["C"]
+    writeFactsIntoDB env inc5 [ Glean.Test.allPredicates ] $ do
+      b <- withUnit "B" $ makeFact @Glean.Test.Node (Glean.Test.Node_key "b")
+      withUnit "E" $ do
+        e <- makeFact @Glean.Test.Node (Glean.Test.Node_key "e")
+        makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key b e)
+    deriveAndFinish env inc5
+
+    {-
+    inc5:
+         b---e
+         |
+         a
+          \
+           d
+    -}
+
+    nodesAre "stacked inc 5n" inc5 ["a", "b", "d", "e"]
+    edgesAre "stacked inc 5e" inc5 [("a","d"),("b","a"),("b","e")]
+    parentsAre "stacked inc 5p" inc5 ["a", "b"]
+    revEdgesAre "stacked inc 5r" inc5 [("a","b"),("d","a"),("e","b")]
+    skipRevEdgesAre "stacked inc 5s" inc5 [("d","b")]
+
+    -- Check ownership of the `IsParent (Node "b")` fact in base-inc/5
+    -- It should be B|E, because it was derived from B in the base DB
+    -- and from E in the increment.
+    results <- runQuery_ env inc5 $ recursive $ query $
+      predicate @Glean.Test.IsParent $
+        predicate @Glean.Test.Node $ rec $ field @"label" "b" end
+    case results of
+      [Glean.Test.IsParent id _] -> do
+        ownerExpr <- factOwnership env inc5 (Fid id)
+        assertBool "IsParent owner" $ case ownerExpr of
+          Just (OrOwners [OrOwners [Unit b],OrOwners [Unit e]]) ->
+            sort [b,e] == ["B","E"]
+          _ -> False
+      _ -> assertFailure "query failed"
+
+    inc6 <- incrementalDB env inc5 (Repo "base-inc" "6") ["B"]
+      -- excludes the edge b->a but node b remains because it is
+      -- mentioned by the edge e->b
+
+    {-
+    inc6:
+         b---e
+
+         a
+          \
+           d
+    -}
+
+    nodesAre "stacked inc 6n" inc6 ["a", "b", "d", "e"]
+    edgesAre "stacked inc 6e" inc6 [("a","d"),("b","e")]
+    parentsAre "stacked inc 6p" inc6 ["a", "b"]
+    revEdgesAre "stacked inc 6r" inc6 [("d","a"),("e","b")]
+    skipRevEdgesAre "stacked inc 6s" inc6 []
+
+    -- Check ownership of the `IsParent (Node "b")` fact in the new DB
+    results <- runQuery_ env inc6 $ recursive $ query $
+      predicate @Glean.Test.IsParent $
+        predicate @Glean.Test.Node $ rec $ field @"label" "b" end
+    case results of
+      [Glean.Test.IsParent id _] -> do
+        ownerExpr <- factOwnership env inc6 (Fid id)
+        assertBool "IsParent owner" $ case ownerExpr of
+          Just (OrOwners [OrOwners [Unit b],OrOwners [Unit e]]) ->
+            sort [b,e] == ["B","E"]
+          _ -> False
+      _ -> assertFailure "query failed"
 
 
 stackedIncrementalTest2 :: Test

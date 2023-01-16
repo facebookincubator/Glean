@@ -71,6 +71,7 @@ struct DerivedFactOwnershipIterator {
 //
 std::unique_ptr<ComputedOwnership> computeDerivedOwnership(
   Ownership& ownership,
+  Lookup* base,
   DerivedFactOwnershipIterator *iter);
 
 }

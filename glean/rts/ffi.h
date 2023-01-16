@@ -604,6 +604,7 @@ void glean_define_ownership_free(DefineOwnership *def);
 
 const char *glean_derived_ownership_compute(
   Ownership *own,
+  Lookup *base_lookup,
   DerivedFactOwnershipIterator *iter,
   ComputedOwnership **result
 );

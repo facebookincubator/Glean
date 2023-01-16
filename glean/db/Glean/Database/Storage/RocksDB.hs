@@ -212,14 +212,14 @@ instance Storage RocksDB where
     with define $ \define_ptr ->
       invoke $ glean_rocksdb_add_define_ownership db_ptr define_ptr
 
-  computeDerivedOwnership db ownership (Pid pid) =
+  computeDerivedOwnership db ownership base (Pid pid) =
     withForeignPtr (dbPtr db) $ \db_ptr ->
     using
       (invoke $
         glean_rocksdb_get_derived_fact_ownership_iterator
           db_ptr
           (fromIntegral pid)) $
-      Ownership.computeDerivedOwnership ownership
+      Ownership.computeDerivedOwnership ownership base
 
   cacheOwnership db =
     withForeignPtr (dbPtr db) $ \db_ptr ->

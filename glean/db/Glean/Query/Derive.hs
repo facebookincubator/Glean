@@ -509,11 +509,15 @@ finishDerivation env log repo ref pred = do
         -- we need the write lock while computing the final ownership,
         -- because we might write new ownership sets to the DB. This
         -- step should hopefully be fast though (TOOD: measure)
-        forM_ maybeOwnership $ \ownership ->
-          withMutex (wrLock writing) $ \_ -> do
-            computed <- Storage.computeDerivedOwnership odbHandle ownership
-              (predicatePid details)
-            Storage.storeOwnership odbHandle computed
+        forM_ maybeOwnership $ \ownership -> do
+          maybeBase <- repoParent env repo
+          let withBase repo f =
+                readDatabase env repo $ \_ lookup -> f (Just lookup)
+          maybe ($ Nothing) withBase maybeBase $ \base -> do
+            withMutex (wrLock writing) $ \_ -> do
+              computed <- Storage.computeDerivedOwnership odbHandle
+                ownership base (predicatePid details)
+              Storage.storeOwnership odbHandle computed
 
 getDerivation :: Database.Env -> Repo -> PredicateId -> STM Derivation
 getDerivation env repo pred = do

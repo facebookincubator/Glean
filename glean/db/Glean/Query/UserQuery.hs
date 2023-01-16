@@ -1070,7 +1070,9 @@ writeDerivedFacts env repo firstId derived owned = do
       order <- defineOwnershipSortByOwner define
         (fromIntegral (fromFid nextId - fromFid firstId))
       FactSet.serializeReorder derived order
-  if Thrift.batch_count batch == 0
+  -- If the batch is empty, we may still have new ownership data about
+  -- existing facts, so we have to write that
+  if Thrift.batch_count batch == 0 && isNothing owned
     then return Nothing
     else do
       resp <- enqueueBatch env Thrift.ComputedBatch

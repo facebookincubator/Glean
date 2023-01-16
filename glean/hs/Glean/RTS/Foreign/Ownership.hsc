@@ -171,12 +171,16 @@ instance Static DerivedFactOwnershipIterator where
   destroyStatic = glean_derived_fact_ownership_iterator_free
 
 computeDerivedOwnership
-  :: Ownership
+  :: (CanLookup base)
+  => Ownership
+  -> Maybe base
   -> DerivedFactOwnershipIterator
   -> IO ComputedOwnership
-computeDerivedOwnership ownership iter =
+computeDerivedOwnership ownership base iter =
   with ownership $ \ownership_ptr ->
-    construct $ invoke $ glean_derived_ownership_compute ownership_ptr iter
+  maybe ($ nullPtr) withLookup base $ \base_lookup_ptr ->
+    construct $ invoke $
+      glean_derived_ownership_compute ownership_ptr base_lookup_ptr iter
 
 defineOwnershipSortByOwner
   :: DefineOwnership
@@ -316,6 +320,7 @@ foreign import ccall unsafe glean_get_ownership_set
 
 foreign import ccall safe glean_derived_ownership_compute
   :: Ptr Ownership
+  -> Ptr Lookup
   -> DerivedFactOwnershipIterator
   -> Ptr (Ptr ComputedOwnership)
   -> IO CString

@@ -403,16 +403,37 @@ void DatabaseImpl::storeOwnership(ComputedOwnership& ownership) {
 
   if (ownership.facts_.size() > 0) {
     auto t = makeAutoTimer("storeOwnership(facts)");
+
+    auto hasOwner = [&](EncodedNat key) -> bool {
+      rocksdb::PinnableSlice val;
+      auto s = container_.db->Get(
+          rocksdb::ReadOptions(),
+          container_.family(Family::factOwners),
+          slice(key.byteRange()),
+          &val);
+      if (!s.IsNotFound()) {
+        check(s);
+        return true;
+      } else {
+        return false;
+      }
+    };
+
     rocksdb::WriteBatch batch;
     for (uint64_t i = 0; i < ownership.facts_.size(); i++) {
       auto id = ownership.facts_[i].first;
       auto usetid = ownership.facts_[i].second;
       EncodedNat key(id.toWord());
-      EncodedNat val(usetid);
-      check(batch.Put(
-          container_.family(Family::factOwners),
-          slice(key.byteRange()),
-          slice(val.byteRange())));
+      if (usetid != INVALID_USET || !hasOwner(key)) {
+        // This is an interval map, and we might be writing multiple sparse sets
+        // of intervals where the gaps are indicated by INVALID_USET. Therefore
+        // don't overwrite an existing owner with INVALID_USET.
+        EncodedNat val(usetid);
+        check(batch.Put(
+            container_.family(Family::factOwners),
+            slice(key.byteRange()),
+            slice(val.byteRange())));
+      }
     }
     VLOG(1) << "storeOwnership: writing facts: " << ownership.facts_.size()
             << " intervals";

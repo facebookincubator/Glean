@@ -10,6 +10,7 @@
 #include <folly/container/F14Map.h>
 
 #include "glean/rts/ownership/derived.h"
+#include "glean/rts/lookup.h"
 #include "glean/rts/timer.h"
 
 namespace facebook {
@@ -139,6 +140,7 @@ void DefineOwnership::subst(const Substitution& subst) {
 
 std::unique_ptr<ComputedOwnership> computeDerivedOwnership(
   Ownership& ownership,
+  Lookup* base, // Lookup for the base DB, if there is one
   DerivedFactOwnershipIterator *iter) {
   auto t = makeAutoTimer("computeDerivedOwnership");
   VLOG(1) << "computing derived ownership";
@@ -151,14 +153,28 @@ std::unique_ptr<ComputedOwnership> computeDerivedOwnership(
   std::map<uint64_t,UsetId> factOwners;
   folly::F14FastMap<int64_t,std::set<UsetId>> factOwnerSets;
 
+  auto min_id = base ? base->firstFreeId() : Id::lowest();
+
   while (const auto owners = iter->get()) {
     for (uint32_t i = 0; i < owners->ids.size(); i++) {
       auto id = owners->ids[i].toWord();
       auto owner = owners->owners[i];
+      bool is_base_fact = base && id < min_id.toWord();
       const auto [it, inserted] = factOwners.insert({id, owner});
-      if (!inserted) {
+      if (!inserted || is_base_fact) {
+        // The second time we see a fact, create an entry in factOwnerSets
         const auto [it2, _] = factOwnerSets.insert({id, {it->second}});
         it2->second.insert(owner);
+        if (inserted && is_base_fact) {
+          // If this is a fact in the base DB, we need to OR the new owners with
+          // the existing owner, creating a new set. This owner set will
+          // then override the ownership of the fact in the base DB.
+          auto baseOwner = base->getOwner(Id::fromWord(id));
+          VLOG(2) << "baseOwner: " << baseOwner;
+          if (baseOwner != INVALID_USET) {
+             it2->second.insert(baseOwner);
+          }
+        }
       }
     }
   }
@@ -178,9 +194,9 @@ std::unique_ptr<ComputedOwnership> computeDerivedOwnership(
         auto p = usets.add(std::move(uset));
         usets.promote(p);
         usetid = p->id;
-        VLOG(1) << "new set: " << usetid;
+        VLOG(2) << "new set: " << usetid;
       } else {
-        VLOG(1) << "existing set: " << usetid;
+        VLOG(2) << "existing set: " << usetid;
       }
       factOwners[pair.first] = usetid;
     }
@@ -188,16 +204,27 @@ std::unique_ptr<ComputedOwnership> computeDerivedOwnership(
 
   auto sets = usets.toEliasFano();
 
-  // convert factOwners into a vector of intervals
+  // convert factOwners into a vector of intervals. factOwners may be sparse,
+  // because we may have derived facts that already existed in a base DB, so we
+  // have to be careful to fill in gaps in the interval map with INVALID_USET
   std::vector<std::pair<Id,UsetId>> intervals;
   intervals.reserve(factOwners.size());
   UsetId current = INVALID_USET;
+  Id prev = Id::lowest() - 1;
   for (auto& pair : factOwners) {
+    auto id = Id::fromWord(pair.first);
     auto usetid = pair.second;
-    if (usetid != current) {
-      intervals.push_back(std::make_pair(Id::fromWord(pair.first), usetid));
+    if (id != prev + 1 || usetid != current) {
+      if (id != prev + 1) {
+        intervals.emplace_back(prev + 1, INVALID_USET);
+      }
+      intervals.emplace_back(id, usetid);
       current = usetid;
     }
+    prev = id;
+  }
+  if (!intervals.empty()) {
+    intervals.emplace_back(prev + 1, INVALID_USET);
   }
 
   VLOG(1) << "computing derived ownership: " <<
@@ -208,7 +235,6 @@ std::unique_ptr<ComputedOwnership> computeDerivedOwnership(
       usets.getFirstId(),
       std::move(sets),
       std::move(intervals));
-
 }
 
 }

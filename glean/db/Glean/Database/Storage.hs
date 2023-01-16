@@ -146,6 +146,10 @@ class CanLookup (Database s) => Storage s where
   computeDerivedOwnership
     :: Database s
     -> Ownership
+    -> Maybe Lookup
+       -- ^ Base DB lookup if this is a stacked DB, because we may
+       -- derive facts that already exist in the base DB and the
+       -- ownership of those facts will need to be extended.
     -> Pid
     -> IO ComputedOwnership
 
