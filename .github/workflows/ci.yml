@@ -40,7 +40,7 @@ jobs:
 
       - name: Install indexer (flow)
         run: |
-          export FLOW=0.186.0
+          export FLOW=0.197.0
           wget "https://github.com/facebook/flow/releases/download/v${FLOW}/flow-linux64-v${FLOW}.zip"
           unzip "flow-linux64-v${FLOW}.zip"
           mkdir -p "$HOME"/.hsthrift/bin && mv flow/flow "$HOME"/.hsthrift/bin
