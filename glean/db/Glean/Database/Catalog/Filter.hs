@@ -21,6 +21,7 @@ module Glean.Database.Catalog.Filter
   , Order(..)
   , everythingF
   , queryableF
+  , incompleteQueryableF
   , (.==.)
   , inF
   , notInF
@@ -122,7 +123,12 @@ everythingF = return ()
 queryableF :: Filter ()
 queryableF =
   inF entryStatusV $
-    HashSet.fromList [ItemComplete, ItemIncomplete, ItemBroken, ItemFinalizing]
+    HashSet.fromList [ItemComplete , ItemIncomplete, ItemBroken, ItemFinalizing]
+
+incompleteQueryableF :: Filter ()
+incompleteQueryableF =
+  inF entryStatusV $
+    HashSet.fromList [ItemIncomplete, ItemFinalizing]
 
 -- | Require that a field has a specific value
 (.==.) :: Eq a => Value a -> a -> Filter ()

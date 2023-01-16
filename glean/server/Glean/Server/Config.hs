@@ -20,6 +20,7 @@ data Config = Config
   , cfgDBConfig :: DBConfig.Config
   , cfgPublishShards :: Bool
   , cfgEnableIndexing :: Bool
+  , cfgGracefulShutdownTimeout :: Int
   , cfgWritePort :: Maybe FilePath
   , cfgHandler :: String -- ^ deprecated, ignored.
   }
@@ -34,6 +35,11 @@ options = Config
         <|> O.switch (O.long "set-shards" <> O.hidden)
   )
   <*> O.switch (O.long "enable-indexing")
+  <*> O.option O.auto
+        (O.long "graceful-shudown-wait-seconds" <>
+          O.value 0 <>
+          O.showDefault <>
+          O.help "How long to wait for incomplete DBs before shutting down.")
   <*> O.optional (O.strOption
       (O.long "write-port"
         <> O.metavar "FILE"

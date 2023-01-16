@@ -41,7 +41,10 @@ import Glean.Impl.ConfigProvider (ConfigAPI)
 import qualified Glean.Index as Index
 import Glean.Index.GleanIndexingService.Service
 import Glean.Server.Config as Config
-import Glean.Server.Sharding (shardManagerConfig, withShardsUpdater)
+import Glean.Server.Sharding (
+  shardManagerConfig,
+  withShardsUpdater,
+  waitForTerminateSignalsAndGracefulShutdown)
 import Glean.Util.ConfigProvider
 import Glean.Util.Some
 
@@ -67,8 +70,9 @@ main =
       cfg = cfg0{cfgDBConfig = dbCfg}
 #endif
   in
-  withDatabases evb (cfgDBConfig cfg) configAPI $ \databases ->
-  withShardsUpdater evb cfg databases (1 :: Seconds) $ do
+  withDatabases evb (cfgDBConfig cfg) configAPI $ \databases -> do
+  terminating <- newTVarIO False
+  withShardsUpdater evb cfg databases (1 :: Seconds) (readTVar terminating) $ do
 
   fb303 <- newFb303 "gleandriver"
 
@@ -92,7 +96,12 @@ main =
         when (isNothing l) retry
       setAlive server
 
-    waitToStart server = waitForAlive server >> waitForTerminateSignals
+    waitForTerminate = waitForTerminateSignalsAndGracefulShutdown
+                        databases
+                        terminating
+                        (cfgGracefulShutdownTimeout cfg)
+
+    waitToStart server = waitForAlive server >> waitForTerminate
     opts = defaultOptions{ desiredPort = cfgPort cfg }
 
     getPort =

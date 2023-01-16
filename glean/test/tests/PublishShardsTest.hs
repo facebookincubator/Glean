@@ -39,21 +39,29 @@ main =
       TestList
         [ TestLabel "publish incomplete DBs" publishIncompleteDBs
         , TestLabel "publish complete DBs" publishCompleteDBs
+        , TestLabel "stop publishing after timeout" stopPublishingCompletedDBs
         ]
 
-runTest :: (IO [Repo] -> IO ()) -> IO ()
-runTest test = do
+runTest :: Bool -> (IO [Repo] -> IO ()) -> IO ()
+runTest term test = do
   published <- newTVarIO mempty
   let callback = atomically . writeTVar published
+  terminating <- newTVarIO term
   withTest setupFakeDBs setupCloudDBs $ \evb cfgAPI dbdir backupdir ->
     withDatabases evb (dbConfig dbdir $ serverConfig backupdir) cfgAPI $ \env ->
-      withAsync (dbUpdateNotifierThread env 0.0000001 callback) $ \_ ->
-        test $
-          atomically $ do
-            repos <- readTVar published
-            if null repos
-              then retry
-              else return $ toList repos
+      withAsync (
+          dbUpdateNotifierThread
+          env
+          0.0000001
+          (readTVar terminating)
+          callback
+        ) $ \_ ->
+            test $
+              atomically $ do
+                repos <- readTVar published
+                if null repos
+                  then retry
+                  else return $ toList repos
 
 setupCloudDBs :: FilePath -> IO ()
 setupCloudDBs _ = return ()
@@ -81,12 +89,23 @@ completeRepo = Repo "test" "complete"
 
 publishIncompleteDBs :: Test
 publishIncompleteDBs = TestCase $
-  runTest $ \readShards -> do
+  runTest False $ \readShards -> do
     repos <- readShards
     assertBool "Incomplete DBs are published" (incompleteRepo `elem` repos)
 
 publishCompleteDBs :: Test
 publishCompleteDBs = TestCase $
-  runTest $ \readShards -> do
+  runTest False $ \readShards -> do
     repos <- readShards
     assertBool "Complete DBs are published" (completeRepo `elem` repos)
+
+stopPublishingCompletedDBs :: Test
+stopPublishingCompletedDBs = TestCase $
+  runTest True $ \readShards -> do
+    repos <- readShards
+    assertBool
+      "Still publishing incomplete DBs after timeout"
+      (incompleteRepo `elem` repos)
+    assertBool
+      "Stopped publishing completed DBs after timeout"
+      (completeRepo `notElem` repos)

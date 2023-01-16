@@ -10,13 +10,20 @@
 module Glean.Server.Sharding (
   shardManagerConfig,
   withShardsUpdater,
+  waitForTerminateSignalsAndGracefulShutdown,
   -- for testing
-  dbUpdateNotifierThread,
-  ) where
+  dbUpdateNotifierThread) where
 
-import Control.Concurrent ( modifyMVar_, newMVar, MVar )
-import Control.Concurrent.Async ( withAsync )
-import Control.Monad ( when )
+import Control.Concurrent (
+  modifyMVar_,
+  newMVar,
+  MVar,
+  newEmptyMVar,
+  tryPutMVar,
+  takeMVar)
+import Control.Concurrent.Async ( withAsync, async )
+import Control.Exception
+import Control.Monad ( when, void, unless )
 import Data.HashSet (HashSet)
 import qualified Data.HashSet as HashSet
 import Data.List (sort)
@@ -34,7 +41,7 @@ import Glean.Impl.ShardManager
 import Glean.Server.Config (Config, cfgPort, cfgPublishShards)
 import Glean.Server.PublishShards ( ShardKey, getShardKey, updateShards )
 import qualified Glean.ServerConfig.Types as ServerConfig
-import Glean.Types
+import Glean.Types ( Repo )
 import Glean.Util.Observed (Observed)
 import qualified Glean.Util.Observed as Observed
 import Glean.Util.Periodic ( doPeriodically )
@@ -42,11 +49,13 @@ import Glean.Util.ShardManager
 import Glean.Util.ThriftService (DbShard)
 import Glean.Util.Time ( seconds )
 import System.Exit (die)
+import System.Posix.Signals (installHandler, sigTERM, Handler (Catch), sigINT)
 import System.Time.Extra ( showDuration, sleep, Seconds )
 import Util.Control.Exception ( swallow )
 import Util.EventBase ( EventBaseDataplane )
-import Util.Log
-import Util.STM ( retry, atomically )
+import Util.Log ( vlog, logInfo )
+import Util.STM ( retry, atomically, writeTVar, newTVarIO, STM, TVar, readTVar)
+
 
 type PortNumber = Int
 
@@ -134,32 +143,44 @@ databasesUpdatedCallback evb shardKey currentShards dbs = swallow $ do
 -- goes wrong; it ensures that the exception is caught and logged, and we
 -- don't immediately retry in a loop.
 --
-dbUpdateNotifierThread :: Env -> Seconds -> (HashSet Repo -> IO ()) -> IO ()
-dbUpdateNotifierThread Env{..} delay callback = doPeriodically (seconds 30) $ do
-  initial <- updated
-  go initial
-  where
-  go prev = do
-    atomically $ do
-      dbs <- list
-      when (dbs == prev) retry
-    vlog 1 $ "DB update detected, waiting " <> showDuration delay
-    sleep delay -- wait 1s so we can batch updates
-    current <- updated
-    go current
+dbUpdateNotifierThread
+  :: Env
+  -> Seconds
+  -> STM Bool  -- ^ is the server gracefullly shutting down?
+  -> (HashSet Repo -> IO ())
+  -> IO ()
+dbUpdateNotifierThread env delay terminating callback =
+  doPeriodically (seconds 30) $ do
+    initial <- updated
+    go initial
+    where
+    go prev = do
+      atomically $ do
+        termSignal <- terminating
+        dbs <- fetchCurrentShardList env termSignal
+        when (dbs == prev) retry
 
-  list = HashSet.fromList . map Catalog.itemRepo
-    <$> Catalog.list envCatalog [Catalog.Local] Catalog.queryableF
+      vlog 1 $ "DB update detected, waiting " <> showDuration delay
+      sleep delay -- wait 1s so we can batch updates
+      current <- updated
+      go current
 
-  updated = do
-    dbs <- atomically list
-    vlog 1 "DB update notification"
-    callback dbs
-    return dbs
+    updated = do
+      termSignal <- atomically terminating
+      dbs <- atomically $ fetchCurrentShardList env termSignal
+      vlog 1 "DB update notification"
+      callback dbs
+      return dbs
 
 withShardsUpdater
-  :: EventBaseDataplane -> Config -> Env -> Seconds -> IO a -> IO a
-withShardsUpdater evb cfg env delay action
+  :: EventBaseDataplane
+  -> Config
+  -> Env
+  -> Seconds
+  -> STM Bool  -- ^ is the server gracefullly shutting down?
+  -> IO a
+  -> IO a
+withShardsUpdater evb cfg env delay terminating action
   | cfgPublishShards cfg = do
     port <- case cfgPort cfg of
       Just port -> return port
@@ -167,7 +188,58 @@ withShardsUpdater evb cfg env delay action
     currentShards <- newMVar Nothing
     key <- getShardKey evb port
     withAsync
-      (dbUpdateNotifierThread env delay
+      (dbUpdateNotifierThread env delay terminating
         $ databasesUpdatedCallback evb key currentShards)
       $ const action
   | otherwise = action
+
+
+waitForTerminateSignalsAndGracefulShutdown
+  :: Env
+  -> TVar Bool -- ^ broadcast channel for initiating the timeout
+  -> Int -- ^ amount of time to wait before forcing a shutdown
+  -> IO ()
+waitForTerminateSignalsAndGracefulShutdown env terminating timeout = do
+  -- To wait in Haskell-land while the server is taking requests,
+  -- use an mvar that gets filled when the right signals are read
+  mvar <- newEmptyMVar
+  let sigHandler = void $ tryPutMVar mvar ()
+  withSignalHandler sigTERM sigHandler $ \_ ->
+    withSignalHandler sigINT sigHandler $ \_ -> do
+      -- Haskell will wait here until being instructed to stop
+      takeMVar mvar
+
+      -- stop publishing complete shards
+      atomically $ writeTVar terminating True
+
+      timeoutElapsedRef <- newTVarIO False
+      _ <- async $ do
+        sleep $ fromIntegral timeout
+        atomically $ writeTVar timeoutElapsedRef True
+
+      -- block until we do not advertise any shards anymore or run out of time
+      atomically $ do
+        dbs <- list
+        timeoutElapsed <- readTVar timeoutElapsedRef
+
+        -- terminate when either the list is empty or we exceed the timeout
+        unless (null dbs || timeoutElapsed) retry
+
+      return ()
+
+  where
+    withSignalHandler sig h = bracket
+      (installHandler sig (Catch h) Nothing)
+      (\old -> installHandler sig old Nothing)
+
+    list = fetchCurrentShardList env True
+
+
+fetchCurrentShardList :: Env -> Bool -> STM (HashSet Repo)
+fetchCurrentShardList Env{..} terminating =
+    let filter = if terminating
+                  then incompleteQueryableF
+                  else queryableF
+    in
+    HashSet.fromList . map Catalog.itemRepo
+      <$> Catalog.list envCatalog [Catalog.Local] filter
