@@ -1183,6 +1183,7 @@ library glass-lib
         Glean.Glass.Path
         Glean.Glass.Pretty.Annotations
         Glean.Glass.Pretty.Cxx
+        Glean.Glass.Pretty.Flow
         Glean.Glass.Pretty.Hack
         Glean.Glass.Pretty.LSIF
         Glean.Glass.Query
