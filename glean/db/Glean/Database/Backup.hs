@@ -185,7 +185,8 @@ bestRestore restoring avail = depsFirst (sortBy order restoring)
       where
       itemDeps item = case metaDependencies (itemMeta item) of
         Nothing -> []
-        Just (Dependencies_stacked repo) -> [repo]
+        Just (Dependencies_stacked Thrift.Stacked{..}) ->
+          [Thrift.Repo stacked_name stacked_hash]
         Just (Dependencies_pruned Pruned{..}) -> [pruned_base]
 
 data Staleness

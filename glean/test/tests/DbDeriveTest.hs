@@ -498,10 +498,11 @@ deriveIncrementalTest = TestLabel "incremental" $ TestList
         stats <- deriveStored' env stacked opts' pref
         action stats
 
+    stacked (Repo name hash) = Dependencies_stacked $ Stacked name hash Nothing
     stackedDB :: Env -> Repo -> Repo -> IO Repo
     stackedDB env base top = do
       kickOffTestDB env top $ \kickOff ->
-        kickOff { kickOff_dependencies = Just $ Dependencies_stacked base }
+        kickOff { kickOff_dependencies = Just $ stacked base }
       return top
 
     -- get derivation stats

@@ -250,6 +250,10 @@ writeAfterFinished = TestCase $ withTEnv $ \TEnv{..} -> do
     Left err -> "read-only" `isInfixOf` show (err :: SomeException)
     _ -> False
 
+stacked :: Repo -> Dependencies
+stacked (Repo name hash) = Dependencies_stacked $
+  Stacked name hash Nothing
+
 kickOffStacked :: Test
 kickOffStacked = TestCase $ withTEnv $ \TEnv{..} -> do
   mkDB tEnv repo1
@@ -257,7 +261,7 @@ kickOffStacked = TestCase $ withTEnv $ \TEnv{..} -> do
   KickOffResponse ex <- kickOffDatabase tEnv def
     { kickOff_repo = repo2
     , kickOff_fill = Just $ KickOffFill_writeHandle ""
-    , kickOff_dependencies = Just $ Dependencies_stacked repo1
+      , kickOff_dependencies = Just $ stacked repo1
     }
   assert $ not ex
   withOpenDatabase tEnv repo2 $ \_ -> return ()
@@ -269,7 +273,7 @@ kickOffStackedIncomplete = TestCase $ withTEnv $ \TEnv{..} -> do
     $ kickOffDatabase tEnv def
       { kickOff_repo = repo2
       , kickOff_fill = Just $ KickOffFill_writeHandle ""
-      , kickOff_dependencies = Just $ Dependencies_stacked repo1
+      , kickOff_dependencies = Just $ stacked repo1
       }
 
 main :: IO ()

@@ -26,6 +26,7 @@ import Glean
   , Database(..)
   , DatabaseStatus(..)
   , Dependencies(..)
+  , Stacked(..)
   , Pruned(..))
 import qualified Glean
 
@@ -185,5 +186,6 @@ dependencies databases repo = repoDeps repo
         , Just dep <- [database_dependencies]
         ]
     toRepo dep = case dep of
-      Dependencies_stacked repo -> repo
-      Dependencies_pruned (Pruned repo _ _) -> repo
+      Dependencies_stacked Stacked{..} ->
+        Repo stacked_name stacked_hash
+      Dependencies_pruned (Pruned repo _ _ _) -> repo

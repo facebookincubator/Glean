@@ -131,7 +131,7 @@ repoParent Env{..} repo = do
 depParent :: Thrift.Dependencies -> Repo
 depParent deps = case deps of
   Thrift.Dependencies_pruned Thrift.Pruned{..} -> pruned_base
-  Thrift.Dependencies_stacked baseRepo -> baseRepo
+  Thrift.Dependencies_stacked Thrift.Stacked{..} -> Thrift.Repo stacked_name stacked_hash
 
 withOpenDBLookup
   :: Env
@@ -498,8 +498,8 @@ baseSlices
   -> IO [Maybe Ownership.Slice]
 baseSlices env deps stored_units = case deps of
   Nothing -> return []
-  Just (Thrift.Dependencies_stacked repo) ->
-    dbSlices repo Set.empty True
+  Just (Thrift.Dependencies_stacked Thrift.Stacked{..}) ->
+    dbSlices (Thrift.Repo stacked_name stacked_hash) Set.empty True
   Just (Thrift.Dependencies_pruned Thrift.Pruned{..}) -> do
     let real_units = fromMaybe pruned_units stored_units
     dbSlices pruned_base (Set.fromList real_units) pruned_exclude
@@ -546,8 +546,8 @@ baseSlices env deps stored_units = case deps of
   depSlices dep dep_units units exclude slices = do
     case dep of
       Nothing -> return []
-      Just (Thrift.Dependencies_stacked base_repo) ->
-        dbSlices base_repo units exclude
+      Just (Thrift.Dependencies_stacked Thrift.Stacked{..}) ->
+        dbSlices (Thrift.Repo stacked_name stacked_hash) units exclude
       Just (Thrift.Dependencies_pruned Thrift.Pruned{..})
         -- optimisation: check if the slices for the stack will be the
         -- same as the slices we already have for this repo. TODO:

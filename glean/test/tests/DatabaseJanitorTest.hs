@@ -104,11 +104,11 @@ setupBasicDBs dbdir = do
   makeFakeDB schema dbdir (Repo "test" "0002") (age (days 2)) broken Nothing
   makeFakeDB schema dbdir repo0001 (age (days 0)) complete Nothing
   makeFakeDB schema dbdir (Repo "test" "0003") (age (days 3)) complete $
-    Just (Repo "test" "0004")
+    Just (Stacked "test" "0004" Nothing)
   makeFakeDB schema dbdir (Repo "test" "0004") (age (days 4)) complete $
-    Just (Repo "test" "0005")
+    Just (Stacked "test" "0005" Nothing)
   makeFakeDB schema dbdir (Repo "test" "0005") (age (days 5)) complete $
-    Just (Repo "test2" "0006")
+    Just (Stacked "test2" "0006" Nothing)
   makeFakeDB schema dbdir (Repo "test2" "0006") (age (days 6)) complete Nothing
 
 setupBasicCloudDBs :: FilePath -> IO ()
@@ -130,7 +130,7 @@ makeFakeDB
   -> Repo
   -> UTCTime
   -> (UTCTime -> Completeness)
-  -> Maybe Repo
+  -> Maybe Stacked
   -> IO ()
 makeFakeDB schema root repo dbtime completeness stacked = do
   let
@@ -163,7 +163,7 @@ makeFakeCloudDB
   -> Repo
   -> UTCTime
   -> (UTCTime -> Completeness)
-  -> Maybe Repo
+  -> Maybe Stacked
   -> IO ()
 makeFakeCloudDB backupDir repo dbtime completeness stacked =
   void $ backup (mockSite backupDir) repo props Nothing mempty

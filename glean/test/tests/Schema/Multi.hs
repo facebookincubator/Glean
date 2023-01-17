@@ -304,8 +304,11 @@ multiSchemaTest = TestCase $
       "derived.D _" (Just 1)
 
     -- create a stacked DB on top of v0
-    let set kickOff = kickOff {
-          kickOff_dependencies = Just (Dependencies_stacked repo0) }
+    let
+      stacked (Thrift.Repo name hash) =
+        Thrift.Dependencies_stacked $ Thrift.Stacked name hash Nothing
+      set kickOff = kickOff {
+          kickOff_dependencies = Just (stacked repo0) }
     repo3 <- mkRepo schema_index_file_1 "3" set $ \env repo -> do
       void $ syncWriteJsonBatch env repo v0_facts Nothing
 

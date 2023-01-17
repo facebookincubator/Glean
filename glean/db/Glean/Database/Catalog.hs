@@ -170,11 +170,13 @@ recalculateStatus Catalog{..} entry = do
         missingStatus _ = ItemMissing
 
         dependencies = case metaDependencies meta of
-          Just (Thrift.Dependencies_stacked repo) -> [repo]
-          Just (Thrift.Dependencies_pruned up) -> [Thrift.pruned_base up]
+          Just (Thrift.Dependencies_stacked Thrift.Stacked{..}) ->
+            [(Repo stacked_name stacked_hash, stacked_guid)]
+          Just (Thrift.Dependencies_pruned up) ->
+            [(Thrift.pruned_base up, Thrift.pruned_guid up)]
           Nothing -> []
         live = entryRepo entry `HashMap.member` entriesLiveHere
-      forM_ dependencies $ \dep -> if live then
+      forM_ dependencies $ \(dep, _) -> if live then
           modifyTVar' catRepoDependents $
             HashMap.insertWith (<>) dep [entryRepo entry]
         else
@@ -188,9 +190,21 @@ recalculateStatus Catalog{..} entry = do
         itemStatusFor Thrift.Broken{} = ItemBroken
         itemStatusFor Thrift.Finalizing{} = ItemFinalizing
 
-      dependencyStatuses <- forM dependencies $ \dep ->
-        maybe (return $ missingStatus dep) (readTVar . entryStatus) $
-          HashMap.lookup dep entriesLiveHere
+      dependencyStatuses <- forM dependencies $ \(dep, guid) -> do
+        let missing = missingStatus dep
+        case HashMap.lookup dep entriesLiveHere of
+          Nothing -> return missing
+          Just entry -> do
+            meta <- readTVar $ entryMeta entry
+            status <- readTVar $ entryStatus entry
+            let properties = Thrift.metaProperties meta
+            if HashMap.lookup "glean.guid" properties == guid then
+              return status
+            else
+              -- TODO: enable verification
+              -- return missing
+              return status
+
 
       meta <- readTVar $ entryMeta entry
       oldStatus <- readTVar $ entryStatus entry

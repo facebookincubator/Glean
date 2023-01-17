@@ -26,6 +26,10 @@ repo1 = Repo "dbtest-repo" "f00001"
 repo2 :: Repo
 repo2 = Repo "dbtest-repo" "f00002"
 
+stacked :: Repo -> Dependencies
+stacked (Repo name hash) = Dependencies_stacked $
+  Stacked name hash Nothing
+
 dependenciesTest :: Test
 dependenciesTest = TestCase $ withTestEnv [] $ \env -> do
   let props = HashMap.fromList [("key","value")]
@@ -40,7 +44,7 @@ dependenciesTest = TestCase $ withTestEnv [] $ \env -> do
 
   void $ kickOffDatabase env def
     { kickOff_repo = repo2
-    , kickOff_dependencies = Just $ Dependencies_stacked repo1
+    , kickOff_dependencies = Just $ stacked repo1
     , kickOff_fill = Just (KickOffFill_writeHandle "")
     , kickOff_properties = props
     }
@@ -49,7 +53,9 @@ dependenciesTest = TestCase $ withTestEnv [] $ \env -> do
             listDatabasesResult_databases
 
   assertEqual "dependencyTest" (Just repo1) $ case db of
-    [Database{database_dependencies=Just (Dependencies_stacked d)}] -> Just d
+    [Database{database_dependencies=
+      Just (Dependencies_stacked (Stacked name hash _))}] ->
+        Just $ Repo name hash
     _ -> Nothing
 
 main :: IO ()

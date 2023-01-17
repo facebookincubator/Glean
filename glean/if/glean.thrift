@@ -184,16 +184,24 @@ struct WriteFromScribe {
 
 typedef map<string, string> (hs.type = "HashMap") DatabaseProperties
 
+// TODO deprecate for pruned?
+struct Stacked {
+  1: string name;
+  2: string hash;
+  3: optional string guid;
+}
+
 // A Stacked DB that views only a portion of the underlying DB
 struct Pruned {
   1: Repo base;
   2: list<binary> units;
   3: bool exclude; // True => exclude the units, otherwise include
+  4: optional string guid;
 }
 
 // Dependencies of a DB (to be extended)
 union Dependencies {
-  1: Repo stacked; // TODO remove?
+  1: Stacked stacked; // TODO remove?
   2: Pruned pruned;
 } (hs.nonempty)
 

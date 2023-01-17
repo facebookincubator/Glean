@@ -547,7 +547,8 @@ userQueryWrites env odb config bounds lookup repo pred q = do
     -- --update-schema-for-stacked set, for testing derivation.
     shouldDeriveIncrementally meta =
       case Thrift.metaDependencies meta of
-        Just (Thrift.Dependencies_stacked repo) -> check repo
+        Just (Thrift.Dependencies_stacked Thrift.Stacked{..}) ->
+          check $ Thrift.Repo stacked_name stacked_hash
         Just (Thrift.Dependencies_pruned pruned) ->
           check (Thrift.pruned_base pruned)
         Nothing -> return False

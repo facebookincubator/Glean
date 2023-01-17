@@ -53,10 +53,12 @@ withStackedTestDB settings action = withTestEnv settings $ \env -> do
   writeTestDB env repo1 testFacts1
   completeTestDB env repo1
   kickOffTestDB env repo2 $ \x -> x
-    { Thrift.kickOff_dependencies = Just $ Thrift.Dependencies_stacked repo1 }
+    { Thrift.kickOff_dependencies = Just $ stacked repo1 }
   writeTestDB env repo2 testFacts2
   action env repo2
   where
+    stacked (Thrift.Repo name hash) =
+      Thrift.Dependencies_stacked $ Thrift.Stacked name hash Nothing
     repo1 = Thrift.Repo "dbtest-repo" "1"
     repo2 = Thrift.Repo "dbtest-repo" "2"
 

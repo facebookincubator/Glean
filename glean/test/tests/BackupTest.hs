@@ -301,7 +301,8 @@ restoreOrderTest = TestCase $ withTest $ withTestEnv
     repos =
       [ goodDbAge "foo" "1" 2
       , goodDbAge "foo" "3" 1
-      , goodDbAgeDeps "bar" "2" 1 (Dependencies_stacked (Repo "foo" "1"))
+      , goodDbAgeDeps "bar" "2" 1 $
+          Dependencies_stacked (Stacked "foo" "1" Nothing)
       , goodDbAge "bar" "5" 0
       , goodDbAge "baz" "4" 3
       ]

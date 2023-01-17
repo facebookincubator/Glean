@@ -837,7 +837,7 @@ stackedSchemaTest = TestCase $
         let stacked = Repo "stacked" "0"
         kickOffTestDB env stacked $ \x -> x
           { Thrift.kickOff_dependencies =
-             Just $ Thrift.Dependencies_stacked repo }
+             Just $ stackedDeps repo }
         void $ syncWriteJsonBatch env stacked
           [ mkBatch (PredicateRef "y.Q" 1)
               [ "{ \"key\" : \"b\" }" ]
@@ -971,7 +971,7 @@ stackedSchemaUpdateTest = TestCase $
     -- switch to schema v1, make a stacked DB, we shouldn't be able to
     -- make a y.R fact
     let set x = x { Thrift.kickOff_dependencies =
-           Just $ Thrift.Dependencies_stacked repo0 }
+           Just $ stackedDeps repo0 }
     r <- try $ mkRepo schema_v1_file "1" set $ \env repo ->
         void $ syncWriteJsonBatch env repo
           [ mkBatch (PredicateRef "y.R" 1)
@@ -987,7 +987,7 @@ stackedSchemaUpdateTest = TestCase $
     -- works even though y.Q changed, because there are no facts of y.Q
     let set x = x {
           Thrift.kickOff_dependencies =
-            Just $ Thrift.Dependencies_stacked repo0,
+            Just $ stackedDeps repo0,
           Thrift.kickOff_update_schema_for_stacked = True }
     repo1 <- mkRepo schema_v1_file "2" set $ \env repo ->
         void $ syncWriteJsonBatch env repo
@@ -1004,7 +1004,7 @@ stackedSchemaUpdateTest = TestCase $
     -- should fail.
     let set x = x {
           Thrift.kickOff_dependencies =
-            Just $ Thrift.Dependencies_stacked repo0,
+            Just $ stackedDeps repo0,
           Thrift.kickOff_update_schema_for_stacked = True }
     r <- try $ mkRepo schema_v2_file "3" set $ \env repo ->
         void $ syncWriteJsonBatch env repo
@@ -1019,7 +1019,7 @@ stackedSchemaUpdateTest = TestCase $
     -- switch to schema v3, make a stacked DB with update_schema_for_stacked
     let set x = x {
           Thrift.kickOff_dependencies =
-            Just $ Thrift.Dependencies_stacked repo0,
+            Just $ stackedDeps repo0,
           Thrift.kickOff_update_schema_for_stacked = True }
     repo4 <- mkRepo schema_v3_file "4" set $ \env repo -> do
         void $ syncWriteJsonBatch env repo
@@ -1032,6 +1032,9 @@ stackedSchemaUpdateTest = TestCase $
     testQuery "stacked schema 6" repo4 schema_v3_file "y.Q _" (Just 1)
     testQuery "stacked schema 7" repo4 schema_v3_file "y.D _" (Just 1)
 
+stackedDeps :: Thrift.Repo -> Thrift.Dependencies
+stackedDeps (Thrift.Repo name hash) =
+  Thrift.Dependencies_stacked $ Thrift.Stacked name hash Nothing
 
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList $

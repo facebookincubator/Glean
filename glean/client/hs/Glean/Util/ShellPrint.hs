@@ -208,13 +208,15 @@ instance ShellFormat o Thrift.DatabaseStatus where
 instance ShellFormat o Thrift.Dependencies where
   shellFormatText _ctx _ dependency =
     case dependency of
-      Thrift.Dependencies_stacked repo -> pretty (showRepo repo)
-      Thrift.Dependencies_pruned (Thrift.Pruned baseRepo _ _)
+      Thrift.Dependencies_stacked Thrift.Stacked{..} ->
+        pretty (showRepo $ Thrift.Repo stacked_name stacked_hash)
+      Thrift.Dependencies_pruned (Thrift.Pruned baseRepo _ _ _)
         -> pretty (showRepo baseRepo)
   shellFormatJson _ctx _ dependency =
     case dependency of
-      Thrift.Dependencies_stacked repo -> J.toJSON (showRepo repo)
-      Thrift.Dependencies_pruned (Thrift.Pruned baseRepo _ _)
+      Thrift.Dependencies_stacked Thrift.Stacked{..} ->
+        J.toJSON (showRepo $ Thrift.Repo stacked_name stacked_hash)
+      Thrift.Dependencies_pruned (Thrift.Pruned baseRepo _ _ _)
         -> J.toJSON (showRepo baseRepo)
 
 instance ShellFormat o Thrift.Repo where

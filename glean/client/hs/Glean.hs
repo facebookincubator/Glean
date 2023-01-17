@@ -58,6 +58,7 @@ module Glean
   , Success(..)
   , Failure(..)
   , Pruned(..)
+  , Stacked(..)
   , Dependencies(..)
   , PosixEpochTime(..)
   , StackedDbOpts(..)

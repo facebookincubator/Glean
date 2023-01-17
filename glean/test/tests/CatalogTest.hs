@@ -191,9 +191,10 @@ stackedDbsTest = TestCase $ withMemCatalog $ \_ cat -> do
     repoA = Repo "base" "repoA"
     repoB = Repo "stacked" "repoB"
     repoC = Repo "stacked2" "repoC"
+    stacked (Repo name hash) = Dependencies_stacked $ Stacked name hash Nothing
     metaA = meta
-    metaB = meta{metaDependencies=Just $ Dependencies_stacked repoA}
-    metaC = meta{metaDependencies=Just $ Dependencies_stacked repoB}
+    metaB = meta{metaDependencies=Just $ stacked repoA}
+    metaC = meta{metaDependencies=Just $ stacked repoB}
     meta = def
       {metaCompleteness=Complete $ DatabaseComplete (PosixEpochTime 0) Nothing}
 

@@ -12,6 +12,7 @@ module Glean.Database.Create (
   updateProperties,
 ) where
 
+import Control.Applicative
 import qualified Control.Concurrent.Async as Async
 import Control.Exception hiding(handle)
 import Control.Monad.Catch (handle)
@@ -75,12 +76,14 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
               Just id -> Storage.UseSpecificSchema (SchemaId id)
               Nothing -> Storage.UseDefaultSchema
 
+        stackedCreate :: Repo -> IO (Storage.Mode, Maybe Text)
         stackedCreate repo =
           readDatabase env repo $ \OpenDB{..} lookup -> do
-            atomically $ do
+            guid <- atomically $ do
               meta <- Catalog.readMeta envCatalog repo
               case metaCompleteness meta of
-                Complete{} -> return ()
+                Complete{} -> return $
+                  HashMap.lookup "glean.guid" $ metaProperties meta
                 c -> throwSTM $ InvalidDependency kickOff_repo repo $
                   "database is " <> showCompleteness c
             start <- firstFreeId lookup
@@ -89,8 +92,10 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
 
             ownership <- readTVarIO odbOwnership
             if not kickOff_update_schema_for_stacked
-              then return $ Storage.Create start ownership
-                (Storage.UseThisSchema storedSchema)
+              then return
+                (Storage.Create start ownership $
+                  Storage.UseThisSchema storedSchema
+                , guid)
               else do
 
             stats <- predicateStats env repo IncludeBase
@@ -134,12 +139,26 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
                   "update_schema_for_stacked specified, but schemas are " <>
                   "incompatible: " <> Text.intercalate ", " errors
 
-            return $ Storage.Create start ownership chooseSchema
+            return (Storage.Create start ownership chooseSchema, guid)
 
-      mode <- case kickOff_dependencies of
-        Nothing -> return $ Storage.Create lowestFid Nothing schemaToUse
-        Just (Dependencies_stacked repo) -> stackedCreate repo
-        Just (Dependencies_pruned update) -> stackedCreate (pruned_base update)
+      (mode, kickOff_dependencies') <- case kickOff_dependencies of
+        Nothing -> return
+          (Storage.Create lowestFid Nothing schemaToUse
+          , kickOff_dependencies)
+        Just (Dependencies_stacked stacked) -> do
+            let Thrift.Stacked{..} = stacked
+            (mode, guid) <-
+              stackedCreate $ Thrift.Repo stacked_name stacked_hash
+            return
+              ( mode,
+                Just (Dependencies_stacked
+                  stacked{stacked_guid=stacked_guid <|> guid}))
+        Just (Dependencies_pruned update) -> do
+            (mode, guid) <- stackedCreate (pruned_base update)
+            return
+              ( mode,
+                Just (Dependencies_pruned
+                  update{pruned_guid=pruned_guid update <|> guid}))
 
       -- NOTE: We don't want to load recipes (which might fail) if we don't
       -- need them.
@@ -184,17 +203,18 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
           (Catalog.create
             envCatalog
             kickOff_repo
-            (newMeta version time state allProps lightDeps) $ do
-              modifyTVar' envActive $ HashMap.insert kickOff_repo db
-              writeTVar (dbState db) Opening
-              acquireDB db)
+            (newMeta version time state allProps
+              (lightDeps kickOff_dependencies')) $ do
+                modifyTVar' envActive $ HashMap.insert kickOff_repo db
+                writeTVar (dbState db) Opening
+                acquireDB db)
           (atomically $ releaseDB env db) $
           do
             -- Open the new db in Create mode which will create the
             -- physical storage. This might fail - in that case, we
             -- mark the db as failed. NB. pass the full dependencies
             -- here, not lightDeps.
-            opener <- asyncOpenDB env db version mode kickOff_dependencies
+            opener <- asyncOpenDB env db version mode kickOff_dependencies'
               (do
                 -- On success, schedule the db's tasks. If this throws,
                 -- 'asyncOpenDB' will close the db and call our failure action
@@ -260,7 +280,7 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
     -- removed, because the units can be large and the Meta has a size
     -- limit. The units are stored separately in the DB; see
     -- Glean.Database.Data.storeUnits.
-    lightDeps = case kickOff_dependencies of
+    lightDeps kickOff_deps = case kickOff_deps of
       Just (Thrift.Dependencies_pruned pruned) ->
         Just (Thrift.Dependencies_pruned pruned { pruned_units = [] })
       _other -> _other

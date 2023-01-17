@@ -333,7 +333,11 @@ instance Plugin WriteCommand where
           }
 
     stackedOptions :: Parser (IO Dependencies)
-    stackedOptions = return . Thrift.Dependencies_stacked <$> stackedOpt
+    stackedOptions = f <$> stackedOpt
+      where
+        f Repo{..} =
+          return $ Thrift.Dependencies_stacked $
+            Thrift.Stacked repo_name repo_hash Nothing
 
     updateOptions :: Parser (IO Dependencies)
     updateOptions = do
@@ -346,7 +350,7 @@ instance Plugin WriteCommand where
       where
         prune :: Repo -> Bool -> [ByteString] -> Dependencies
         prune repo exclude units = Thrift.Dependencies_pruned $
-          Thrift.Pruned repo units exclude
+          Thrift.Pruned repo units exclude Nothing
 
   runCommand _ _ backend Write{..} =
     tryBracket

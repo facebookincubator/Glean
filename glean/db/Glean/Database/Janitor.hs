@@ -193,7 +193,8 @@ runWithShards env myShards sm = do
 
     repoStack :: Item -> Maybe [Repo]
     repoStack Item{..} = case metaDependencies itemMeta of
-      Just (Dependencies_stacked base) -> do
+      Just (Dependencies_stacked Stacked{..}) -> do
+        let base = Thrift.Repo stacked_name stacked_hash
         baseItem <- Map.lookup base byRepoMap
         rest <- repoStack baseItem
         return (base : rest)
@@ -346,8 +347,8 @@ computeRetentionSet config_retention t items = ComputeRetentionSet{..}
         )
         byRepo
     dependencies = stacked byRepoMap . metaDependencies . itemMeta
-    stacked byRepoMap (Just (Thrift.Dependencies_stacked repo)) =
-      [repo `Map.lookup` byRepoMap]
+    stacked byRepoMap (Just (Thrift.Dependencies_stacked Thrift.Stacked{..})) =
+      [Thrift.Repo stacked_name stacked_hash `Map.lookup` byRepoMap]
     stacked byRepoMap (Just (Thrift.Dependencies_pruned update)) =
       [pruned_base update `Map.lookup` byRepoMap]
     stacked _ Nothing = []

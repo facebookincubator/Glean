@@ -79,10 +79,14 @@ main = benchmarkMain $ \run -> withBenchDB 10000 $ \env repo -> do
        |]
 
   let stacked = Repo "test" "stacked"
+  let
+    dependencies =
+      Dependencies_stacked $ Stacked name hash Nothing
+      where (Repo name hash) = repo
   void $ kickOffDatabase env def
     { kickOff_repo = stacked
     , kickOff_fill = Just $ KickOffFill_writeHandle ""
-    , kickOff_dependencies = Just $ Dependencies_stacked repo
+    , kickOff_dependencies = Just dependencies
     }
   run
       [ bench "complex-parallel" $ whnfIO
