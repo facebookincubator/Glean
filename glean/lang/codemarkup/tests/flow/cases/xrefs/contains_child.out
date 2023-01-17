@@ -898,28 +898,6 @@
   },
   {
     "key": {
-      "parent": { "flow": { "module_": { "key": { "lib": "core.js" } } } },
-      "child": {
-        "flow": {
-          "decl": {
-            "memberDecl": {
-              "key": {
-                "name": { "key": "exports" },
-                "loc": {
-                  "key": {
-                    "module": { "key": { "lib": "core.js" } },
-                    "span": { "start": 116191, "length": 7 }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
       "parent": {
         "flow": { "module_": { "key": { "string_": "cjs_exports" } } }
       },

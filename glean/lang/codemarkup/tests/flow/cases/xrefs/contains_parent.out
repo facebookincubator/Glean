@@ -677,28 +677,6 @@
       "child": {
         "flow": {
           "decl": {
-            "memberDecl": {
-              "key": {
-                "name": { "key": "exports" },
-                "loc": {
-                  "key": {
-                    "module": { "key": { "lib": "core.js" } },
-                    "span": { "start": 116191, "length": 7 }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "parent": { "flow": { "module_": { "key": { "lib": "core.js" } } } }
-    }
-  },
-  {
-    "key": {
-      "child": {
-        "flow": {
-          "decl": {
             "typeDecl": {
               "key": {
                 "name": { "key": "C" },

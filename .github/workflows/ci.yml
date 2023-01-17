@@ -17,7 +17,7 @@ jobs:
       options: --cpus 2 --security-opt=seccomp=unconfined
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install additional tools
         run: |
@@ -116,7 +116,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Install Node
         uses: actions/setup-node@v2
       - name: Build VS Code extension
