@@ -117,7 +117,7 @@ The feature is enabled using a top-level directive
 schema my_schema.2 evolves my_schema.1
 ```
 
-This declaration has the effect of treating queries for `my_schema.1` predicates as if they were for `my_schema.2`. That is the query results will be retrieved from the database in the shame of a `my_schema.2` fact and transformed into a fact of the equivalent `my_schema.1` predicate specified in the query.
+This declaration has the effect of treating queries for `my_schema.1` predicates as if they were for `my_schema.2`. That is the query results will be retrieved from the database in the shape of a `my_schema.2` fact and transformed into a fact of the equivalent `my_schema.1` predicate specified in the query.
 
 The new schema must contain all the predicates of the old schema, either with new versions or old versions, and their definitions must be backwards compatible. We can achieve this by copying the entire content of the old schema into the new one and modifying it there.
 
