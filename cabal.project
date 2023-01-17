@@ -20,3 +20,5 @@ allow-newer: haskeline:base
 
 -- https://github.com/TomMD/entropy/issues/75
 constraints: entropy < 0.4.1.9
+
+index-state: 2022-12-25T00:00:00Z
