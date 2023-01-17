@@ -67,6 +67,15 @@ predicate ClassDefinition:
     docstring: maybe Docstring,
   }
 
+predicate BaseClassToDerived:
+  {
+    base: ClassDeclaration,
+    derived: ClassDeclaration,
+  }
+  stored {Base, Child} where
+    ClassDefinition { declaration = Child, bases = { just = Bases } };
+    Bases[..] = Base;
+
 # Allows efficient queries for functions by structured name.
 predicate FunctionBySName: SName -> FunctionDeclaration
   stored SN -> F where FunctionDeclaration {name = N} = F; NameToSName N -> SN

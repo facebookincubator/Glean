@@ -1,0 +1,31 @@
+[
+  "@generated",
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.Parent1" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.Child" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.Parent2" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.Child" } } } }
+        }
+      }
+    }
+  }
+]

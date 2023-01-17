@@ -1,1 +1,61 @@
-[ "@generated" ]
+[
+  "@generated",
+  {
+    "key": {
+      "query": 1,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": { "cls": { "key": { "name": { "key": "lib.Parent1" } } } }
+          }
+        },
+        "location": {
+          "name": "lib.Parent1",
+          "file": { "key": "lib.py" },
+          "location": { "span": { "start": 391, "length": 23 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": { "cls": { "key": { "name": { "key": "lib.Child" } } } }
+          }
+        },
+        "location": {
+          "name": "lib.Child",
+          "file": { "key": "lib.py" },
+          "location": { "span": { "start": 443, "length": 39 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 1,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": { "cls": { "key": { "name": { "key": "lib.Parent2" } } } }
+          }
+        },
+        "location": {
+          "name": "lib.Parent2",
+          "file": { "key": "lib.py" },
+          "location": { "span": { "start": 417, "length": 23 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": { "cls": { "key": { "name": { "key": "lib.Child" } } } }
+          }
+        },
+        "location": {
+          "name": "lib.Child",
+          "file": { "key": "lib.py" },
+          "location": { "span": { "start": 443, "length": 39 } }
+        }
+      }
+    }
+  }
+]

@@ -224,7 +224,17 @@ predicate PythonExtendsParentEntity :
     { bases = { just = Bases } } = ChildClassDef;
     { decl = { cls = Bases[..] } } = Parent;
 
-# TODO : parent extends child
+
+predicate PythonExtendsChildEntity :
+  {
+    parent: code.python.Entity,
+    child: code.python.Entity
+  }
+  { Parent, Child } where
+    { decl = {cls = ParentClassDecl} } = Parent;
+    python.BaseClassToDerived { base = ParentClassDecl, derived = ChildClassDecl };
+    { decl = { cls = ChildClassDecl } } = Child;
+
 
 #
 # file call processing

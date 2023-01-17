@@ -392,6 +392,10 @@ predicate ExtendsChildEntity :
       { cxx = P } = Parent;
       codemarkup.cxx.CxxExtendsChildEntity { P, C };
       { cxx = C } = Child
+    ) | (
+      { python = P } = Parent;
+      codemarkup.python.PythonExtendsChildEntity { P, C };
+      { python = C } = Child
     )
 
 # A child `is contained by` a parent
