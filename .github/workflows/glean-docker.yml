@@ -19,7 +19,7 @@ jobs:
         run: echo "IMAGE_TAG=$(date +'v%Y.%m.%d')" >> $GITHUB_ENV
 
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Docker Buildx
         id:   buildx
