@@ -1,0 +1,3 @@
+query: codemarkup.EntityToAnnotations _
+transform: [gensort, []]
+perf: true

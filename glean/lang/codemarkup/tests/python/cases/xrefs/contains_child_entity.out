@@ -20,6 +20,22 @@
     "key": {
       "parent": {
         "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "lib.HelperClass.prop" } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
           "decl": { "func": { "key": { "name": { "key": "main.f" } } } }
         }
       },

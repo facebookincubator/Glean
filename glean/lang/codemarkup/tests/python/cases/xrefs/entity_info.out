@@ -115,6 +115,14 @@
   },
   {
     "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 7 },
+      "tuplefield1": {
+        "func": { "key": { "name": { "key": "lib.HelperClass.prop" } } }
+      }
+    }
+  },
+  {
+    "key": {
       "tuplefield0": { "isAbstract": false, "kind": 13 },
       "tuplefield1": { "func": { "key": { "name": { "key": "all.fn" } } } }
     }

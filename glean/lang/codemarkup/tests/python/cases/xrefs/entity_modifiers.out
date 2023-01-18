@@ -95,6 +95,29 @@
       "entity": {
         "python": {
           "decl": {
+            "func": { "key": { "name": { "key": "lib.HelperClass.prop" } } }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isAsync": false,
+        "isConst": false,
+        "isFinal": false,
+        "isInline": false,
+        "isMutable": false,
+        "isReadonly": false,
+        "isStatic": false,
+        "isVirtual": false,
+        "isVolatile": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
             "func": { "key": { "name": { "key": "lib.helper_func" } } }
           }
         }

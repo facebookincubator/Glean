@@ -258,6 +258,14 @@
   },
   {
     "key": {
+      "name": { "key": "prop" },
+      "decl": {
+        "func": { "key": { "name": { "key": "lib.HelperClass.prop" } } }
+      }
+    }
+  },
+  {
+    "key": {
       "name": { "key": "relative" },
       "decl": { "module": { "key": { "name": { "key": "big_lib.relative" } } } }
     }

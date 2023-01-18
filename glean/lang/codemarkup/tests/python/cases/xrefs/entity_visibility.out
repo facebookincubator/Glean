@@ -79,6 +79,16 @@
   {
     "key": {
       "python": {
+        "decl": {
+          "func": { "key": { "name": { "key": "lib.HelperClass.prop" } } }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
         "decl": { "func": { "key": { "name": { "key": "lib.helper_func" } } } }
       }
     },

@@ -137,6 +137,24 @@ predicate PythonEntityKind:
       NonImportPythonDeclarationKind { Imported, Kind }
     )
 
+#
+# Annotations
+#
+
+predicate PythonAnnotation :
+  {
+    entity: code.python.Entity,
+    anns: code.python.Annotations,
+  }
+  { { decl = Decl }, { decorators = Decorators }} where
+    (
+      { cls = Cls } = Decl;
+      python.ClassDefinition { declaration = Cls, decorators = { just = Decorators }};
+    ) | (
+      { func = Func } = Decl;
+      python.FunctionDefinition { declaration = Func, decorators = { just = Decorators }};
+    )
+
 # Just the visibility attributes
 # A single underscore indicates the intent that the symbol should be private
 predicate PythonVisibility :

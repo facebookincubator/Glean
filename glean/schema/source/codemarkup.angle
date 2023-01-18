@@ -309,7 +309,9 @@ predicate EntityAnnotations : code.Entity -> code.Annotations
     ( codemarkup.cxx.CxxAnnotation { Ent, Anns };
       { cxx = Ent } = E; { cxx = Anns } = A ) |
     ( codemarkup.hack.HackAnnotation{ Ent, Anns };
-     { hack = Ent } = E; { hack = Anns } = A );
+     { hack = Ent } = E; { hack = Anns } = A ) |
+    ( codemarkup.python.PythonAnnotation{ Ent, Anns };
+     { python = Ent } = E; { python = Anns } = A );
 
 predicate EntityToAnnotations :
   {
@@ -320,7 +322,9 @@ predicate EntityToAnnotations :
     ( codemarkup.cxx.CxxAnnotation { Ent, Anns };
       { cxx = Ent } = E; { cxx = Anns } = A ) |
     ( codemarkup.hack.HackAnnotation{ Ent, Anns };
-     { hack = Ent } = E; { hack = Anns } = A );
+     { hack = Ent } = E; { hack = Anns } = A ) |
+    ( codemarkup.python.PythonAnnotation{ Ent, Anns };
+     { python = Ent } = E; { python = Anns } = A );
 
 #
 # Visibility and other keywords

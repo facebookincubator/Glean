@@ -9,8 +9,14 @@
 from big_lib import big_func as func  # noqa
 
 
+@final
 class HelperClass:
     def method(self) -> "HelperClass":
+        pass
+
+    @final
+    @property
+    def prop() -> int:
         pass
 
 

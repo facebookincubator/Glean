@@ -1,0 +1,31 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": { "cxx": { "decl": { "function_": { } } } },
+      "annotations": { "cxx": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      },
+      "annotations": { "python": { "decorators": [ "@final" ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "lib.HelperClass.prop" } } }
+          }
+        }
+      },
+      "annotations": { "python": { "decorators": [ "@final", "@property" ] } }
+    }
+  }
+]
