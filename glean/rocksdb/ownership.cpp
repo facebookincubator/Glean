@@ -385,15 +385,15 @@ void DatabaseImpl::storeOwnership(ComputedOwnership& ownership) {
       id++;
     }
 
-    VLOG(1) << "storeOwnership: writing sets (" << ownership.sets_.size()
-            << ")";
-    check(container_.db->Write(container_.writeOptions, &batch));
-
     next_uset_id = ownership.firstId_ + ownership.sets_.size();
     check(batch.Put(
       container_.family(Family::admin),
       toSlice(AdminId::NEXT_UNIT_ID),
       toSlice(next_uset_id)));
+
+    VLOG(1) << "storeOwnership: writing sets (" << ownership.sets_.size()
+            << ")";
+    check(container_.db->Write(container_.writeOptions, &batch));
   }
 
   // ToDo: just update usets_, don't load the whole thing
@@ -748,6 +748,14 @@ void DatabaseImpl::addDefineOwnership(DefineOwnership& def) {
       VLOG(2) << "rebased set " << oldId << " -> " << q->id;
       substitution[oldId] = q->id;
     }
+
+    if (numNewSets > 0) {
+      check(batch.Put(
+          container_.family(Family::admin),
+          toSlice(AdminId::NEXT_UNIT_ID),
+          toSlice(next_uset_id)));
+    }
+
     VLOG(1) << "addDefineOwnership: writing sets (" << numNewSets << ")";
     check(container_.db->Write(container_.writeOptions, &batch));
 

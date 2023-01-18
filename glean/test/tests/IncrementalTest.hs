@@ -21,6 +21,7 @@ import TestRunner
 
 import Glean.Backend.Types (completePredicates)
 import Glean.Init
+import Glean.Database.Close
 import Glean.Database.Types
 import Glean.Database.Ownership
 import Glean.Database.Test
@@ -252,6 +253,7 @@ stackedIncrementalTest = TestCase $
     kickOffTestDB env base id
     mkGraph env base
     deriveAndFinish env base
+    closeDatabase env base  -- test closing and re-opening the base DB
 
     {-
     base:
@@ -274,6 +276,7 @@ stackedIncrementalTest = TestCase $
         b <- makeFact @Glean.Test.Node (Glean.Test.Node_key "b")
         makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key b a)
     deriveAndFinish env inc
+    closeDatabase env base  -- test closing and re-opening the incremental DB
 
     {-
     inc:
