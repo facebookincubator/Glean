@@ -30,6 +30,7 @@ import Util.Logger ( ActionLog(..) )
 import qualified Logger.GleanGlass as Logger
 import qualified Logger.GleanGlassErrors as Errors
 
+import Data.List.Extra (nubOrd)
 import Data.Text ( Text )
 import Util.Text ( textShow )
 
@@ -216,6 +217,7 @@ data ErrorTy
   | EntityNotSupported !Text
   | AttributesError !Text
   | AggregateError [ErrorTy]
+  deriving (Eq, Ord)
 
 errorText :: ErrorTy -> Text
 errorText e = case e of
@@ -225,7 +227,7 @@ errorText e = case e of
   EntityNotSupported t -> t
   AttributesError t -> t
   AggregateError errs ->
-    Text.unlines $ "Multiple errors:": map (("  " <>) . errorText) errs
+    Text.unlines $ "Multiple errors:": map (("  " <>) . errorText) (nubOrd errs)
 
 type ErrorLogger = GleanGlassErrorsLogger
 
