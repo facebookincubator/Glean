@@ -13,6 +13,7 @@
   { "key": "big_lib" },
   { "key": "big_var" },
   { "key": "c" },
+  { "key": "class_method" },
   { "key": "f" },
   { "key": "fn" },
   { "key": "func" },
@@ -25,5 +26,6 @@
   { "key": "method" },
   { "key": "prop" },
   { "key": "relative" },
+  { "key": "static_method" },
   { "key": "var" }
 ]

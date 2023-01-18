@@ -14,6 +14,14 @@ class HelperClass:
     def method(self) -> "HelperClass":
         pass
 
+    @classmethod
+    def class_method(cls) -> None:
+        pass
+
+    @staticmethod
+    def static_method() -> None:
+        pass
+
     @final
     @property
     def prop() -> int:

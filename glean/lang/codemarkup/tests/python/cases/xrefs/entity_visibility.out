@@ -70,6 +70,18 @@
     "key": {
       "python": {
         "decl": {
+          "func": {
+            "key": { "name": { "key": "lib.HelperClass.class_method" } }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
           "func": { "key": { "name": { "key": "lib.HelperClass.method" } } }
         }
       }
@@ -81,6 +93,18 @@
       "python": {
         "decl": {
           "func": { "key": { "name": { "key": "lib.HelperClass.prop" } } }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "func": {
+            "key": { "name": { "key": "lib.HelperClass.static_method" } }
+          }
         }
       }
     },

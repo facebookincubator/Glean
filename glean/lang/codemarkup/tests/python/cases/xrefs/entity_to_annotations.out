@@ -21,11 +21,39 @@
       "entity": {
         "python": {
           "decl": {
+            "func": {
+              "key": { "name": { "key": "lib.HelperClass.class_method" } }
+            }
+          }
+        }
+      },
+      "annotations": { "python": { "decorators": [ "@classmethod" ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
             "func": { "key": { "name": { "key": "lib.HelperClass.prop" } } }
           }
         }
       },
       "annotations": { "python": { "decorators": [ "@final", "@property" ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": { "name": { "key": "lib.HelperClass.static_method" } }
+            }
+          }
+        }
+      },
+      "annotations": { "python": { "decorators": [ "@staticmethod" ] } }
     }
   }
 ]

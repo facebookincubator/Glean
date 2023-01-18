@@ -7,6 +7,7 @@
   { "key": { "lowercase": "big_var", "name": { "key": "big_var" } } },
   { "key": { "lowercase": "c", "name": { "key": "c" } } },
   { "key": { "lowercase": "child", "name": { "key": "Child" } } },
+  { "key": { "lowercase": "class_method", "name": { "key": "class_method" } } },
   { "key": { "lowercase": "f", "name": { "key": "f" } } },
   { "key": { "lowercase": "fn", "name": { "key": "fn" } } },
   { "key": { "lowercase": "func", "name": { "key": "func" } } },
@@ -25,5 +26,8 @@
   { "key": { "lowercase": "parent2", "name": { "key": "Parent2" } } },
   { "key": { "lowercase": "prop", "name": { "key": "prop" } } },
   { "key": { "lowercase": "relative", "name": { "key": "relative" } } },
+  {
+    "key": { "lowercase": "static_method", "name": { "key": "static_method" } }
+  },
   { "key": { "lowercase": "var", "name": { "key": "var" } } }
 ]

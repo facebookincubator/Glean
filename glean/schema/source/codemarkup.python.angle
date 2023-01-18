@@ -177,12 +177,16 @@ predicate PythonModifiers:
   }
   { { decl = Decl }, Modifiers } where
     { func = D } = Decl;
-    python.FunctionDefinition { declaration = D, is_async = Async };
-    # only Async is set so far
+    python.FunctionDefinition { declaration = D, is_async = Async, decorators = MaybeDecorators };
+    IsStatic = if (
+      { just = Decorators } = MaybeDecorators;
+      Decorators[..] = "@staticmethod" | "@classmethod";
+    ) then (true) else (false);
+    # only Async&Static is set so far
     { isAbstract = false,
       isFinal = false,
       isAsync = Async,
-      isStatic = false,
+      isStatic = IsStatic,
       isReadonly = false,
       isConst = false,
       isMutable = false,
