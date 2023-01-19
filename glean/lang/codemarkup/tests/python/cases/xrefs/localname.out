@@ -8,6 +8,8 @@
   { "key": "Parent1" },
   { "key": "Parent2" },
   { "key": "__all__" },
+  { "key": "__private_method" },
+  { "key": "_protected_method" },
   { "key": "all" },
   { "key": "big_func" },
   { "key": "big_lib" },

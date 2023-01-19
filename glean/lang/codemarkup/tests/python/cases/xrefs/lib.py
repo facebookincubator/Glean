@@ -27,6 +27,12 @@ class HelperClass:
     def prop() -> int:
         pass
 
+    def _protected_method() -> int:
+        pass
+
+    def __private_method() -> int:
+        pass
+
 
 def helper_func():
     return HelperClass()

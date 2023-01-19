@@ -73,6 +73,56 @@
         "python": {
           "decl": {
             "func": {
+              "key": { "name": { "key": "lib.HelperClass.__private_method" } }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isAsync": false,
+        "isConst": false,
+        "isFinal": false,
+        "isInline": false,
+        "isMutable": false,
+        "isReadonly": false,
+        "isStatic": false,
+        "isVirtual": false,
+        "isVolatile": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": { "name": { "key": "lib.HelperClass._protected_method" } }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isAsync": false,
+        "isConst": false,
+        "isFinal": false,
+        "isInline": false,
+        "isMutable": false,
+        "isReadonly": false,
+        "isStatic": false,
+        "isVirtual": false,
+        "isVolatile": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
               "key": { "name": { "key": "lib.HelperClass.class_method" } }
             }
           }

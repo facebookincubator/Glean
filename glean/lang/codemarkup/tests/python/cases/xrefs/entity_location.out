@@ -23,7 +23,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 39, "start": 643 } },
+        "location": { "span": { "length": 39, "start": 742 } },
         "name": "lib.Child"
       }
     }
@@ -37,7 +37,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 263, "start": 279 } },
+        "location": { "span": { "length": 362, "start": 279 } },
         "name": "lib.HelperClass"
       }
     }
@@ -51,7 +51,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 23, "start": 591 } },
+        "location": { "span": { "length": 23, "start": 690 } },
         "name": "lib.Parent1"
       }
     }
@@ -65,7 +65,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 23, "start": 617 } },
+        "location": { "span": { "length": 23, "start": 716 } },
         "name": "lib.Parent2"
       }
     }
@@ -113,6 +113,42 @@
         "file": { "key": "big_lib/__init__.py" },
         "location": { "span": { "length": 36, "start": 276 } },
         "name": "big_lib.func_sleep"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": { "name": { "key": "lib.HelperClass.__private_method" } }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "lib.py" },
+        "location": { "span": { "length": 43, "start": 598 } },
+        "name": "lib.HelperClass.__private_method"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": { "name": { "key": "lib.HelperClass._protected_method" } }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "lib.py" },
+        "location": { "span": { "length": 44, "start": 548 } },
+        "name": "lib.HelperClass._protected_method"
       }
     }
   },
@@ -195,7 +231,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 43, "start": 545 } },
+        "location": { "span": { "length": 43, "start": 644 } },
         "name": "lib.helper_func"
       }
     }
@@ -507,7 +543,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 683, "start": 0 } },
+        "location": { "span": { "length": 782, "start": 0 } },
         "name": "lib"
       }
     }

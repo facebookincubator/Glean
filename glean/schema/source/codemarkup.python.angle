@@ -156,7 +156,8 @@ predicate PythonAnnotation :
     )
 
 # Just the visibility attributes
-# A single underscore indicates the intent that the symbol should be private
+# A single underscore indicates the intent that the symbol should be protected
+# A double underscore indicates the intent that the symbol should be private
 predicate PythonVisibility :
   {
     entity: code.python.Entity,
@@ -165,8 +166,10 @@ predicate PythonVisibility :
   { { decl = Decl }, Visibility } where
     python.DeclarationToName Decl -> Name;
     python.NameToSName Name -> { local_name = python.Name NameStr };
-    ( if ( NameStr = "_".. )
+    ( if ( NameStr = "__".. )
       then ( Private )
+      else if ( NameStr = "_".. )
+      then ( Protected )
       else ( Public ) ) = Visibility;
 
 # We expect to have at least static, async

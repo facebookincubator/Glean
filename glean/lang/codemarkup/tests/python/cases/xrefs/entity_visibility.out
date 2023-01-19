@@ -71,6 +71,30 @@
       "python": {
         "decl": {
           "func": {
+            "key": { "name": { "key": "lib.HelperClass.__private_method" } }
+          }
+        }
+      }
+    },
+    "value": 2
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "func": {
+            "key": { "name": { "key": "lib.HelperClass._protected_method" } }
+          }
+        }
+      }
+    },
+    "value": 1
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "func": {
             "key": { "name": { "key": "lib.HelperClass.class_method" } }
           }
         }

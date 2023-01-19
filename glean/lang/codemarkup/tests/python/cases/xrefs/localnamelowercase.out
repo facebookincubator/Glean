@@ -1,6 +1,18 @@
 [
   "@generated",
   { "key": { "lowercase": "__all__", "name": { "key": "__all__" } } },
+  {
+    "key": {
+      "lowercase": "__private_method",
+      "name": { "key": "__private_method" }
+    }
+  },
+  {
+    "key": {
+      "lowercase": "_protected_method",
+      "name": { "key": "_protected_method" }
+    }
+  },
   { "key": { "lowercase": "all", "name": { "key": "all" } } },
   { "key": { "lowercase": "big_func", "name": { "key": "big_func" } } },
   { "key": { "lowercase": "big_lib", "name": { "key": "big_lib" } } },

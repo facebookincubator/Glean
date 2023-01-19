@@ -11,6 +11,42 @@
         "python": {
           "decl": {
             "func": {
+              "key": { "name": { "key": "lib.HelperClass.__private_method" } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": { "name": { "key": "lib.HelperClass._protected_method" } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": {
+            "func": {
               "key": { "name": { "key": "lib.HelperClass.class_method" } }
             }
           }

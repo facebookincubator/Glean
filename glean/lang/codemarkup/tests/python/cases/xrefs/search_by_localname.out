@@ -77,6 +77,26 @@
   },
   {
     "key": {
+      "name": { "key": "__private_method" },
+      "decl": {
+        "func": {
+          "key": { "name": { "key": "lib.HelperClass.__private_method" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "_protected_method" },
+      "decl": {
+        "func": {
+          "key": { "name": { "key": "lib.HelperClass._protected_method" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "name": { "key": "all" },
       "decl": { "module": { "key": { "name": { "key": "all" } } } }
     }

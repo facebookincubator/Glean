@@ -294,7 +294,7 @@
   {
     "key": {
       "file": { "key": "lib.py" },
-      "span": { "length": 7, "start": 655 },
+      "span": { "length": 7, "start": 754 },
       "target": {
         "python": {
           "decl": { "cls": { "key": { "name": { "key": "lib.Parent1" } } } }
@@ -305,7 +305,7 @@
   {
     "key": {
       "file": { "key": "lib.py" },
-      "span": { "length": 7, "start": 664 },
+      "span": { "length": 7, "start": 763 },
       "target": {
         "python": {
           "decl": { "cls": { "key": { "name": { "key": "lib.Parent2" } } } }
@@ -329,7 +329,7 @@
   {
     "key": {
       "file": { "key": "lib.py" },
-      "span": { "length": 11, "start": 575 },
+      "span": { "length": 11, "start": 674 },
       "target": {
         "python": {
           "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
