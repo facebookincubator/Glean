@@ -2,12 +2,6 @@
   "@generated",
   {
     "key": {
-      "entity": { "cxx": { "decl": { "function_": { } } } },
-      "annotations": { "cxx": { "attributes": [ ] } }
-    }
-  },
-  {
-    "key": {
       "entity": {
         "python": {
           "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
