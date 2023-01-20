@@ -385,9 +385,9 @@ predicate CxxAnnotation:
   }
   {{ decl = Decl }, { attributes = As }} where
     { function_ = F } = Decl;
-    ( cxx1.FunctionDeclAttribute { F, A }; As=[A] ) |
-    (!cxx1.FunctionDeclAttribute { F, _ }; As=[]:[cxx1.Attribute]);
-
+    if (cxx1.FunctionDeclAttribute { F, A })
+      then (As=[A])
+      else (As=[]:[cxx1.Attribute]);
 #
 # Visibility and modifiers
 #
