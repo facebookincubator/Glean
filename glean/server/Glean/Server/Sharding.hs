@@ -21,7 +21,7 @@ import Control.Concurrent (
   newEmptyMVar,
   tryPutMVar,
   takeMVar)
-import Control.Concurrent.Async ( withAsync, async )
+import Control.Concurrent.Async ( withAsync )
 import Control.Exception
 import Control.Monad ( when, void, unless )
 import Data.HashSet (HashSet)
@@ -54,7 +54,8 @@ import System.Time.Extra ( showDuration, sleep, Seconds )
 import Util.Control.Exception ( swallow )
 import Util.EventBase ( EventBaseDataplane )
 import Util.Log ( vlog, logInfo )
-import Util.STM ( retry, atomically, writeTVar, newTVarIO, STM, TVar, readTVar)
+import Util.STM
+  (retry, atomically, writeTVar, STM, TVar, readTVar, registerDelay)
 
 
 type PortNumber = Int
@@ -212,15 +213,15 @@ waitForTerminateSignalsAndGracefulShutdown env terminating timeout = do
       -- stop publishing complete shards
       atomically $ writeTVar terminating True
 
-      timeoutElapsedRef <- newTVarIO False
-      _ <- async $ do
-        sleep timeout
-        atomically $ writeTVar timeoutElapsedRef True
+      -- start the timeout (if any)
+      timeoutElapsedSTM <- if timeout > 0
+        then readTVar <$> registerDelay (floor $ timeout * 1000000)
+        else return $ pure True
 
       -- block until we do not advertise any shards anymore or run out of time
       atomically $ do
         dbs <- list
-        timeoutElapsed <- readTVar timeoutElapsedRef
+        timeoutElapsed <- timeoutElapsedSTM
 
         -- terminate when either the list is empty or we exceed the timeout
         unless (null dbs || timeoutElapsed) retry
