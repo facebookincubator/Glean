@@ -19,6 +19,7 @@ import qualified Data.Aeson.Types as Aeson
 import Data.ByteString (ByteString)
 import qualified Data.ByteString.Lazy.Char8 as LB
 import Data.Maybe
+import qualified Data.Text.Encoding as Text
 import qualified Data.Vector as Vector
 
 import Glean.Types hiding (Value)
@@ -54,7 +55,7 @@ parseJsonFactBatch = withObject "JsonFactBatch" $ \v ->
   JsonFactBatch
     <$> Aeson.explicitParseField parsePred v "predicate"
     <*> Aeson.explicitParseField parseFacts v "facts"
-    <*> v .:? "unit"
+    <*> fmap (fmap Text.encodeUtf8) (v .:? "unit")
   where
     parsePred v = parsePredicate v `mplus` parsePredicateRef v
     parseFacts = withArray "facts" (mapM parseFact . Vector.toList)

@@ -24,7 +24,6 @@ import Data.IORef
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.Maybe
-import Data.Text (Text)
 import Data.Text.Prettyprint.Doc hiding ((<>))
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
@@ -116,18 +115,20 @@ writeFacts
   -> FactBuilder
   -> PredicateRef
   -> [ByteString]  -- ^ The facts to write, in JSON
-  -> Maybe Text -- ^ The unit that owns the facts, if any
+  -> Maybe ByteString -- ^ The unit that owns the facts, if any
   -> IO ()
-writeFacts dbSchema opts builder@FactBuilder{..} pred factList unit = do
+writeFacts dbSchema opts builder@FactBuilder{..} pred factList maybeUnit = do
   details <- predDetailsForWriting dbSchema pred
   before <- readIORef nextId
   mapM_ (writeFact dbSchema opts builder details) factList
   after <- readIORef nextId
-  forM_ unit $ \unitText ->
+  forM_ maybeUnit $ \unit ->
     when (after > before) $ do
-      let unit = Text.encodeUtf8 unitText
-      modifyIORef owned $
-        HashMap.insertWith (++) unit [Fid before, Fid (after-1)]
+      -- merge adjacent ranges
+      let merge _ (Fid last : rest) | last+1 == before = Fid (after-1) : rest
+          merge new old = new ++ old
+      modifyIORef' owned $
+        HashMap.insertWith merge unit [Fid (after-1), Fid before]
 
 predDetailsForWriting :: DbSchema -> PredicateRef -> IO PredicateDetails
 predDetailsForWriting dbSchema (PredicateRef name ver) = do
@@ -157,6 +158,10 @@ data FactBuilder = FactBuilder
   , nextId :: {-# UNPACK #-} !(IORef Int64)
   , idsRef :: {-# UNPACK #-} !(IORef [Fid])  -- TODO: use a Storable Vector
   , owned :: {-# UNPACK #-} !(IORef (HashMap ByteString [Fid]))
+      -- maps each unit to a *reversed* list of inclusive fact ID ranges
+      -- e.g. [end2,start2,end1,start1,end0,start0]
+      -- reversed so that we can prepend the next one easily and merge it
+      -- with the previous one.
   }
 
 withFactBuilder :: (FactBuilder -> IO ()) -> IO Thrift.Batch
@@ -174,7 +179,7 @@ withFactBuilder action =
     (fromIntegral (length ids))
     mem
     (Just $ Vector.fromList $ coerce $ reverse ids)
-    (fmap (Vector.fromList . coerce) ownerMap)
+    (fmap (Vector.fromList . coerce . reverse) ownerMap)
 
 
 type WriteFacts a = ReaderT FactBuilder IO a
