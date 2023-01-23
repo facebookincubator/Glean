@@ -197,7 +197,7 @@ withShardsUpdater evb cfg env delay terminating action
 waitForTerminateSignalsAndGracefulShutdown
   :: Env
   -> TVar Bool -- ^ broadcast channel for initiating the timeout
-  -> Int -- ^ amount of time to wait before forcing a shutdown
+  -> Seconds -- ^ amount of time to wait before forcing a shutdown
   -> IO ()
 waitForTerminateSignalsAndGracefulShutdown env terminating timeout = do
   -- To wait in Haskell-land while the server is taking requests,
@@ -214,7 +214,7 @@ waitForTerminateSignalsAndGracefulShutdown env terminating timeout = do
 
       timeoutElapsedRef <- newTVarIO False
       _ <- async $ do
-        sleep $ fromIntegral timeout
+        sleep timeout
         atomically $ writeTVar timeoutElapsedRef True
 
       -- block until we do not advertise any shards anymore or run out of time

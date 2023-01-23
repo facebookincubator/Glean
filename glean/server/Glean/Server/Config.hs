@@ -14,13 +14,14 @@ import qualified Glean.Backend.Local as DBConfig
 
 import Control.Applicative
 import qualified Options.Applicative as O
+import System.Time.Extra (Seconds)
 
 data Config = Config
   { cfgPort :: Maybe Int
   , cfgDBConfig :: DBConfig.Config
   , cfgPublishShards :: Bool
   , cfgEnableIndexing :: Bool
-  , cfgGracefulShutdownTimeout :: Int
+  , cfgGracefulShutdownTimeout :: Seconds
   , cfgWritePort :: Maybe FilePath
   , cfgHandler :: String -- ^ deprecated, ignored.
   }
@@ -36,7 +37,7 @@ options = Config
   )
   <*> O.switch (O.long "enable-indexing")
   <*> O.option O.auto
-        (O.long "graceful-shudown-wait-seconds" <>
+        (O.long "graceful-shutdown-wait-seconds" <>
           O.value 0 <>
           O.showDefault <>
           O.help "How long to wait for incomplete DBs before shutting down.")
