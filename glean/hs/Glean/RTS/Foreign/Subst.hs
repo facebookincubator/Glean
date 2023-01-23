@@ -7,7 +7,7 @@
 -}
 
 module Glean.RTS.Foreign.Subst (
-  Subst, empty, serialize, substIntervals
+  Subst, empty, serialize, substIntervals, deserialize,
 ) where
 
 import Control.Exception
@@ -60,6 +60,15 @@ substIntervals subst ins = unsafePerformIO $
       (fromIntegral $ VS.length ins)
     unsafeMallocedVector outs_ptr outs_size
 
+deserialize :: Thrift.Subst -> IO Subst
+deserialize Thrift.Subst{..} =
+  VS.unsafeWith subst_ids $ \ids_ptr ->
+    construct $ invoke $
+      glean_subst_deserialize
+        (Fid subst_firstId)
+        (fromIntegral $ VS.length subst_ids)
+        ids_ptr
+
 foreign import ccall unsafe glean_new_subst
   :: Fid -> CSize -> Ptr (Ptr Subst) -> IO CString
 foreign import ccall unsafe "&glean_free_subst" glean_free_subst
@@ -76,6 +85,13 @@ foreign import ccall unsafe glean_serialize_subst
   -> Ptr Fid
   -> Ptr CSize
   -> Ptr (Ptr Int64)
+  -> IO CString
+
+foreign import ccall unsafe glean_subst_deserialize
+  :: Fid
+  -> CSize
+  -> Ptr Int64
+  -> Ptr (Ptr Subst)
   -> IO CString
 
 foreign import ccall safe glean_subst_intervals

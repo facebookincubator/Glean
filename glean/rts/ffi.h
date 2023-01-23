@@ -281,6 +281,12 @@ const char *glean_serialize_subst(
   size_t *count,
   int64_t **ids
 );
+const char *glean_subst_deserialize(
+  int64_t firstId,
+  size_t count,
+  int64_t* ids,
+  Substitution **result
+);
 
 const char *glean_subst_intervals(
   const Substitution *subst,
@@ -342,6 +348,14 @@ const char *glean_factset_serializeReorder(
 const char *glean_factset_append(
   FactSet *target,
   FactSet *source
+);
+
+const char* glean_factset_rebase(
+  FactSet* facts,
+  const Inventory* inventory,
+  const Substitution* subst,
+  LookupCache* cache,
+  FactSet** result
 );
 
 const char *glean_stacked_lookup_new(

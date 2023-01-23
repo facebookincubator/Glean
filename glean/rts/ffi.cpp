@@ -527,14 +527,11 @@ const char *glean_factset_serializeReorder(
   });
 }
 
-const char* glean_factset_rebase(
-    FactSet* facts,
-    const Inventory* inventory,
-    int64_t firstId,
-    size_t count,
-    int64_t* ids,
-    LookupCache* cache,
-    FactSet** result) {
+const char *glean_subst_deserialize(
+  int64_t firstId,
+  size_t count,
+  int64_t* ids,
+  Substitution **result) {
   return ffi::wrap([=] {
     thrift::Subst thrift_subst;
     auto subst_vec = std::vector<int64_t>();
@@ -542,12 +539,22 @@ const char* glean_factset_rebase(
     subst_vec.insert(subst_vec.end(), &ids[0], &ids[count]);
     thrift_subst.firstId() = firstId;
     thrift_subst.ids() = subst_vec;
-    Substitution subst = Substitution::deserialize(thrift_subst);
-    GLEAN_SANITY_CHECK(subst.sanityCheck(false));
+    *result = new Substitution(Substitution::deserialize(thrift_subst));
+  });
+}
+
+const char* glean_factset_rebase(
+    FactSet* facts,
+    const Inventory* inventory,
+    const Substitution* subst,
+    LookupCache* cache,
+    FactSet** result) {
+  return ffi::wrap([=] {
+    GLEAN_SANITY_CHECK(subst->sanityCheck(false));
     *result = nullptr;
     cache->withBulkStore([&](auto& store) {
       GLEAN_SANITY_CHECK(facts->sanityCheck());
-      *result = new FactSet(facts->rebase(*inventory, subst, store));
+      *result = new FactSet(facts->rebase(*inventory, *subst, store));
       GLEAN_SANITY_CHECK((*result)->sanityCheck());
     });
   });

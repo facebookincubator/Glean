@@ -100,19 +100,17 @@ serializeReorder facts order =
       order_ptr
       (fromIntegral (Vector.length order))
 
-rebase :: Inventory -> Thrift.Subst -> LookupCache -> FactSet -> IO FactSet
-rebase inventory Thrift.Subst{..} cache facts =
+rebase :: Inventory -> Subst -> LookupCache -> FactSet -> IO FactSet
+rebase inventory subst cache facts =
   with inventory $ \inventory_ptr ->
-  unsafeWith subst_ids $ \ids_ptr ->
+  with subst $ \subst_ptr ->
   with cache $ \cache_ptr ->
   with facts $ \facts_ptr ->
   construct $ invoke $
     glean_factset_rebase
       facts_ptr
       inventory_ptr
-      (Fid subst_firstId)
-      (fromIntegral $ Vector.length subst_ids)
-      ids_ptr
+      subst_ptr
       cache_ptr
 
 append :: FactSet -> FactSet -> IO ()
@@ -188,9 +186,7 @@ foreign import ccall unsafe glean_factset_serializeReorder
 foreign import ccall unsafe glean_factset_rebase
   :: Ptr FactSet
   -> Ptr Inventory
-  -> Fid
-  -> CSize
-  -> Ptr Int64
+  -> Ptr Subst
   -> Ptr LookupCache
   -> Ptr (Ptr FactSet)
   -> IO CString

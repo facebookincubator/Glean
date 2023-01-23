@@ -13,13 +13,20 @@ module Glean.Write.SendAndRebaseQueue
   ) where
 
 import Control.Concurrent
+import Control.DeepSeq
 import Control.Exception
 import Control.Monad
+import Data.Coerce
+import Data.Vector.Storable (Vector)
+import qualified Data.Vector.Storable as Vector
+import Data.HashMap.Strict (HashMap)
+import qualified Data.HashMap.Strict as HashMap
 
 import Util.Log
 import Util.STM
 
 import Glean.Backend.Types (Backend)
+import Glean.FFI (release)
 import qualified Glean.Write.SendQueue as SendQueue
 import Glean.Write.SendQueue (SendQueue)
 import Glean.RTS.Foreign.Define
@@ -30,16 +37,30 @@ import Glean.RTS.Foreign.LookupCache (LookupCache)
 import qualified Glean.RTS.Foreign.FactSet as FactSet
 import Glean.RTS.Foreign.FactSet (FactSet)
 import Glean.RTS.Foreign.Inventory (Inventory)
+import Glean.RTS.Foreign.Subst
 import Glean.RTS.Types (Fid(..))
 import qualified Glean.Types as Thrift
 
 -- | When the send operation fails or is completed this is called once.
 type Callback = Either SomeException () -> STM ()
 
+data Ownership = Ownership
+  { ownershipUnits :: HashMap Thrift.UnitName (Vector Thrift.Id)
+     -- ^ exactly the same as Batch.owned in glean.thrift
+  , ownershipEnd :: Fid
+     -- ^ exclusive upper bound on the facts covered by ownershipUnits
+  }
+
 data Sender = Sender
   { sId :: Integer
   , sSubstVar :: TMVar (Maybe Thrift.Subst)
-  , sFacts :: MVar FactSet
+  , sFacts :: MVar (FactSet, [Ownership])
+    -- ^ [Ownership] is the ownership assignments for facts in the
+    -- FactSet, in descending order by ownershipEnd (newest at the
+    -- front of the list). Each time we add a new batch to the
+    -- FactSet, we prepend its ownership to the list. When rebasing,
+    -- we will discard ownership for facts already written by taking a
+    -- prefix of the list.
   , sCallbacks :: TQueue Callback
   }
 
@@ -91,17 +112,39 @@ rebase
   -> Thrift.Batch
   -> LookupCache
   -> FactSet.FactSet
-  -> IO FactSet.FactSet
+  -> IO (FactSet.FactSet, Ownership)
 rebase inventory batch cache base = do
   LookupCache.withCache Lookup.EmptyLookup cache $ \lookup -> do
     factSet <- Lookup.firstFreeId base >>= FactSet.new
     let define = stacked (stacked lookup base) factSet
-    _ <- defineUntrustedBatch define inventory batch
-    return factSet
+    subst <- defineUntrustedBatch define inventory batch
+    let owned = substOwnership subst (Thrift.batch_owned batch)
+    nextId <- Lookup.firstFreeId factSet
+    return (factSet, Ownership owned nextId)
+
+toBatchOwnership :: [Ownership] -> HashMap Thrift.UnitName (Vector Thrift.Id)
+toBatchOwnership =
+  fmap Vector.concat .
+  foldr
+    (HashMap.unionWith (<>) . fmap (: []) . ownershipUnits)
+    HashMap.empty
+
+rebaseOwnership :: [Ownership] -> Subst -> Thrift.Id -> [Ownership]
+rebaseOwnership ownership subst boundary =
+  [ own { ownershipUnits = substOwnership subst (ownershipUnits own) }
+  | own <- takeWhile ((> boundary) . coerce . ownershipEnd) ownership
+  ]
+
+substOwnership
+  :: Subst
+  -> HashMap Thrift.UnitName (Vector Thrift.Id)
+  -> HashMap Thrift.UnitName (Vector Thrift.Id)
+substOwnership subst = fmap (coerce . substIntervals subst . coerce)
 
 senderFlush :: SendAndRebaseQueue -> Sender -> IO ()
-senderFlush srq sender = withMVar (sFacts sender) $ \facts -> do
-  batch <- FactSet.serialize facts
+senderFlush srq sender = withMVar (sFacts sender) $ \(facts, owned) -> do
+  factOnlyBatch <- FactSet.serialize facts
+  let batch = factOnlyBatch { Thrift.batch_owned = toBatchOwnership owned }
   atomically $ do
     callbacks <- flushTQueue (sCallbacks sender)
     SendQueue.writeSendQueue (srqSendQueue srq) batch $ \result -> do
@@ -124,10 +167,22 @@ senderRebaseAndFlush wait srq sender = do
     Just Nothing -> do -- first send
       log "Sending first batch"
       senderFlush srq sender
-    Just (Just subst) -> do -- got subst
+    Just (Just thriftSubst) -> do -- got subst
       log "Sending next batch"
-      modifyMVar_ (sFacts sender) $ \base -> do
-        FactSet.rebase (srqInventory srq) subst (srqFacts srq) base
+      modifyMVar_ (sFacts sender) $ \(base,owned) ->
+        -- eagerly release the subst when we're done
+        bracket (deserialize thriftSubst) release $ \subst -> do
+          newBase <- FactSet.rebase (srqInventory srq) subst (srqFacts srq) base
+          let
+              -- all facts below the boundary have now been written,
+              -- we'll use this to determine which ownership data to
+              -- retain.
+              boundary =
+                Thrift.subst_firstId thriftSubst +
+                fromIntegral (Vector.length (Thrift.subst_ids thriftSubst))
+              newOwned = rebaseOwnership owned subst boundary
+          _ <- evaluate (force (map ownershipUnits newOwned))
+          return (newBase, newOwned)
       senderFlush srq sender
     where log msg = vlog 1 $ "Sender " <> show (sId sender) <> ": " <> msg
 
@@ -138,11 +193,14 @@ senderSendOrAppend
   -> Callback
   -> IO ()
 senderSendOrAppend srq sender batch callback = do
-  modifyMVar_ (sFacts sender) $ \base -> do
-    facts <- rebase (srqInventory srq) batch (srqFacts srq) base
+  modifyMVar_ (sFacts sender) $ \(base, ownership) -> do
+    (facts, owned) <- rebase (srqInventory srq) batch (srqFacts srq) base
     FactSet.append base facts
     atomically $ writeTQueue (sCallbacks sender) callback
-    return base
+    assert (case ownership of
+      [] -> True
+      (next:_) -> ownershipEnd owned >= ownershipEnd next) $ return ()
+    return (base, owned : ownership)
   senderRebaseAndFlush False srq sender
 
 serviceRebaseQueue :: SendAndRebaseQueue -> IO ()
@@ -173,10 +231,8 @@ withSendAndRebaseQueue backend repo inventory settings action =
           inventory
           sendAndRebaseQueueFactCacheSize
 
-      createSenderPool srq
-      result <- action srq
-      deleteSenderPool srq
-      return result
+      bracket_ (createSenderPool srq) (deleteSenderPool srq) $
+        action srq
     where
       SendAndRebaseQueueSettings{..} = settings
       createSenderPool srq =
@@ -184,7 +240,7 @@ withSendAndRebaseQueue backend repo inventory settings action =
           factset <- FactSet.new $ Fid Thrift.fIRST_FREE_ID
           worker <- Sender i
             <$> newTMVarIO Nothing
-            <*> newMVar factset
+            <*> newMVar (factset, [])
             <*> newTQueueIO
           atomically $ writeTQueue (srqSenders srq) worker
       deleteSenderPool srq =
