@@ -546,22 +546,26 @@ reapHeartbeats env = forever $ do
   threadDelay $ heartbeatFrequency * 2 * 1000000
 
 -- | Poll for finalization of a database
+--   Throws Exception if the database is broken or incomplete.
 finalizeDatabase :: Env -> Repo -> IO FinalizeResponse
 finalizeDatabase env repo = do
   atomically $ do
     meta <- Catalog.readMeta (envCatalog env) repo
     case metaCompleteness meta of
       Finalizing{} -> throwM $ Retry 1.0
+      Incomplete{} -> throwM $ Exception "incomplete database"
       Broken b -> throwM $ Exception $ databaseBroken_reason b
       _ -> return ()
   return FinalizeResponse{}
 
 -- | Wait for finalization of a database. Use for local DBs only.
+--   Throws Exception if the database is broken or incomplete.
 finalizeWait :: Env -> Repo -> IO ()
 finalizeWait env repo =
   atomically $ do
     meta <- Catalog.readMeta (envCatalog env) repo
     case metaCompleteness meta of
       Finalizing{} -> retry
+      Incomplete{} -> throwM $ Exception "incomplete database"
       Broken b -> throwM $ Exception $ databaseBroken_reason b
       _ -> return ()
