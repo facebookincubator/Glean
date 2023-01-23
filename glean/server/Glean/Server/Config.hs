@@ -40,7 +40,8 @@ options = Config
         (O.long "graceful-shutdown-wait-seconds" <>
           O.value 0 <>
           O.showDefault <>
-          O.help "How long to wait for incomplete DBs before shutting down.")
+          O.help ("How long to wait for incomplete DBs before shutting down."
+                  <> " A value of 0 disables the graceful shutdown"))
   <*> O.optional (O.strOption
       (O.long "write-port"
         <> O.metavar "FILE"
