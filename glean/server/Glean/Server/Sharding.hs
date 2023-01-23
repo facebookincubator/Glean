@@ -24,13 +24,14 @@ import Control.Concurrent (
 import Control.Concurrent.Async ( withAsync )
 import Control.Exception
 import Control.Monad ( when, void, unless )
-import Data.HashSet (HashSet)
+import Data.HashSet (HashSet, toList)
 import qualified Data.HashSet as HashSet
 import Data.List (sort)
 #if FACEBOOK
 import Data.Maybe
 #endif
 import qualified Data.Set as Set
+import GHC.Conc (unsafeIOToSTM)
 import Glean.Backend.Types (dbShard)
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Catalog.Filter as Catalog
@@ -209,6 +210,7 @@ waitForTerminateSignalsAndGracefulShutdown env terminating timeout = do
     withSignalHandler sigINT sigHandler $ \_ -> do
       -- Haskell will wait here until being instructed to stop
       takeMVar mvar
+      logInfo "SIGTERM/SIGINT received"
 
       -- stop publishing complete shards
       atomically $ writeTVar terminating True
@@ -224,9 +226,12 @@ waitForTerminateSignalsAndGracefulShutdown env terminating timeout = do
         timeoutElapsed <- timeoutElapsedSTM
 
         -- terminate when either the list is empty or we exceed the timeout
-        unless (null dbs || timeoutElapsed) retry
+        unless (null dbs || timeoutElapsed) $ do
+          unsafeIOToSTM $ logInfo $
+            "Waiting for incomplete dbs: " <> show (toList dbs)
+          retry
 
-      return ()
+      logInfo "Shutting down"
 
   where
     withSignalHandler sig h = bracket
