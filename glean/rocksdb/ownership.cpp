@@ -557,6 +557,16 @@ struct StoredOwnership : Ownership {
 
 }
 
+// The size of each page in the fact cache. This is a time/space tradeoff:
+// bigger page = higher latency to fetch a page, smaller cache size,
+// slightly higher overhead to look up an owner in the page.
+// Examples for 1B facts:
+//   16 bits: ~3ms to fetch a page, 100KB cache overhead
+//   12 bits: ~0.3ms to fetch a page, 2MB cache overhead
+//   10 bits: ~0.1ms to fetch a page, 7.5MB cache overhead
+constexpr uint32_t page_bits = 12; // max 16 bits!
+constexpr uint32_t page_mask = (1 << page_bits) - 1;
+
 const DatabaseImpl::FactOwnerCache::Page* FOLLY_NULLABLE
 DatabaseImpl::FactOwnerCache::getPage(
     ContainerImpl& container,
@@ -569,12 +579,13 @@ DatabaseImpl::FactOwnerCache::getPage(
   }
 
   if (prefix >= cache->size() || !(*cache)[prefix]) {
+    auto t = makeAutoTimer("FactOwnerCache::getPage");
     auto page = std::make_unique<FactOwnerCache::Page>();
     size_t size = 0;
 
     std::unique_ptr<rocksdb::Iterator> iter(container.db->NewIterator(
         rocksdb::ReadOptions(), container.family(Family::factOwners)));
-    EncodedNat prefixKey(prefix << 16);
+    EncodedNat prefixKey(prefix << page_bits);
 
     // Start with the first interval <= the prefix, so that we can always find
     // the desired interval by looking at the appropriate page.
@@ -601,10 +612,10 @@ DatabaseImpl::FactOwnerCache::getPage(
       rts::Id factId = Id::fromWord(key.trustedNat());
       binary::Input val(byteRange(iter->value()));
       UsetId usetId = val.trustedNat();
-      if ((factId.toWord() >> 16) > prefix) {
+      if ((factId.toWord() >> page_bits) > prefix) {
         break;
       }
-      page->factIds.push_back(factId.toWord() & 0xffff);
+      page->factIds.push_back(factId.toWord() & page_mask);
       page->setIds.push_back(usetId);
       iter->Next();
       size += sizeof(uint16_t) + sizeof(UsetId);
@@ -649,7 +660,7 @@ void DatabaseImpl::FactOwnerCache::enable() {
 
 UsetId DatabaseImpl::FactOwnerCache::getOwner(ContainerImpl& container, Id id) {
   // first find the right page
-  auto prefix = id.toWord() >> 16;
+  auto prefix = id.toWord() >> page_bits;
   const auto* page = getPage(container, prefix);
 
   if (!page) {
@@ -670,7 +681,7 @@ UsetId DatabaseImpl::FactOwnerCache::getOwner(ContainerImpl& container, Id id) {
   // next binary-search on the content of the page to find the
   // interval containing the desired fact ID.
   uint32_t low, high, mid;
-  uint16_t ix = id.toWord() & 0xffff;
+  uint16_t ix = id.toWord() & page_mask;
 
   low = 0;
   high = page->factIds.size();
