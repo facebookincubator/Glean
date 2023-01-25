@@ -366,12 +366,14 @@ predicate HackFileCall :
     call_args: [code.CallArgument],
     callee_xref: maybe code.Entity,
     dispatch_arg: maybe code.CallArgument,
-  } {File, Span, CodeArgs, CalleeEntity, DispatchArg } where
+    receiver_type: maybe code.Entity,
+  } {File, Span, CodeArgs, CalleeEntity, DispatchArg, StaticType } where
   (
-    hack.FileCall { File, Span, HackArgs, CalleeXRef, HackDispatchArg};
+    hack.FileCall { File, Span, HackArgs, CalleeXRef, HackDispatchArg, HackStaticType };
     ConvertCallArguments { HackArgs, CodeArgs};
     ConvertMaybeCallArguments { HackDispatchArg, DispatchArg };
     ConvertCallee { CalleeXRef, CalleeEntity };
+    ConvertStaticType { HackStaticType, StaticType };
   )
 
 # (internal) helper predicate for CallArgument
@@ -512,6 +514,18 @@ predicate ConvertCallee :
     { just = { hack = { decl = D } } }
   }) |
   {
+     nothing,
+     nothing
+  }
+
+predicate ConvertStaticType :
+  { hackCallee : maybe hack.Declaration
+  , codeCallee : maybe code.Entity
+  }
+  (
+    D : hack.Declaration; {{ just = D },
+    { just = { hack = { decl = D } } }
+  }) | {
      nothing,
      nothing
   }

@@ -292,11 +292,13 @@ predicate FileCall :
     arguments: [code.CallArgument],
     callee_xref: maybe code.Entity,
     dispatch_arg: maybe code.CallArgument,
-  } {File, Span, CodeArgs, Callee, DispatchArg} where
+    receiver_type: maybe code.Entity,
+  } {File, Span, CodeArgs, Callee, DispatchArg, StaticType} where
   ( (codemarkup.python.PythonFileCall{File, Span, CodeArgs};
      nothing = Callee;
-     nothing = DispatchArg)
-  | codemarkup.hack.HackFileCall{File, Span, CodeArgs, Callee, DispatchArg}
+     nothing = DispatchArg;
+     nothing = StaticType)
+  | codemarkup.hack.HackFileCall{File, Span, CodeArgs, Callee, DispatchArg, StaticType}
   )
 
 #

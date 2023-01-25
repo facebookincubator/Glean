@@ -504,6 +504,7 @@ predicate FileCall :
     call_args: [CallArgument],
     callee_xref: maybe XRefTarget,
     dispatch_arg: maybe CallArgument,
+    receiver_type: maybe Declaration,
   }
 
 # All uses of a declaration in a file. Note that the bytespan offsets are
