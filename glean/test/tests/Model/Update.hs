@@ -33,11 +33,7 @@ import Glean.Database.Catalog.Filter (
   statusV,
   (.==.),
  )
-import Glean.Database.Janitor (
-  ComputedRetentionSet (..),
-  computeRetentionSet,
-  mergeLocalAndRemote,
- )
+import Glean.Database.Janitor
 import Glean.Database.Meta (posixEpochTimeToUTCTime)
 import Glean.Internal.Types (Meta (..))
 import Glean.Types (
@@ -151,8 +147,8 @@ recomputeEntries model@Model {..} =
       Catalog.list' id [Local, Restoring] everythingF modelEntries
     allDBs =
       mergeLocalAndRemote (HM.toList modelRestorableDBs) localAndRestoring
-    ComputeRetentionSet {..} =
-      computeRetentionSet modelRetentionPolicy time allDBs
+    index = dbIndex allDBs
+    retentionSet = computeRetentionSet modelRetentionPolicy time index
     keepHereSet = [(itemRepo, itemMeta) | Item {..} <- retentionSet]
     entriesLiveHere' =
       foldl'

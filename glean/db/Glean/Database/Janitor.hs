@@ -14,7 +14,8 @@ module Glean.Database.Janitor
   -- for testing
   , mergeLocalAndRemote
   , computeRetentionSet
-  , ComputedRetentionSet(..)
+  , dbIndex
+  , DbIndex(..)
   ) where
 
 import Control.Concurrent.Stream (stream)
@@ -165,8 +166,8 @@ runWithShards env myShards sm = do
     allDBsByAge :: [Item]
     allDBsByAge = mergeLocalAndRemote backups localAndRestoring
 
-    ComputeRetentionSet keep byRepoMap byRepoAndAge dependencies =
-      computeRetentionSet config_retention t allDBsByAge
+    index@DbIndex{byRepo, byRepoName, dependencies} = dbIndex allDBsByAge
+    keep = computeRetentionSet config_retention t index
 
     keepAnnotatedWithShard =
       [ (item, guard (shard `Set.member` myShards) >> pure shard)
@@ -195,12 +196,12 @@ runWithShards env myShards sm = do
     repoStack Item{..} = case metaDependencies itemMeta of
       Just (Dependencies_stacked Stacked{..}) -> do
         let base = Thrift.Repo stacked_name stacked_hash
-        baseItem <- Map.lookup base byRepoMap
+        baseItem <- Map.lookup base byRepo
         rest <- repoStack baseItem
         return (base : rest)
 
       Just (Dependencies_pruned Pruned{..}) -> do
-        baseItem <- Map.lookup pruned_base byRepoMap
+        baseItem <- Map.lookup pruned_base byRepo
         rest <- repoStack baseItem
         return (pruned_base : rest)
       Nothing -> return []
@@ -260,7 +261,7 @@ runWithShards env myShards sm = do
      (toList mostRecent)
 
   execWriterT $ do
-    forM_ byRepoAndAge $ \(repoNm, dbsByAge) -> do
+    forM_ byRepoName $ \(repoNm, dbsByAge) -> do
       let prefix = "glean.db." <> Text.encodeUtf8 repoNm
       let repoKeep =
             filter (\item -> repoNm == Thrift.repo_name (itemRepo item)) keep
@@ -322,37 +323,48 @@ mergeLocalAndRemote backups localAndRestoring =
         | (repo, meta) <- backups
         , repo `notElem` map itemRepo localAndRestoring  ]
 
-data ComputedRetentionSet = ComputeRetentionSet
-   { retentionSet :: [Item]
-   , byRepoMap :: Map.Map Repo Item
-   , byRepo    :: [(Text, NonEmpty Item)]
-   , dependencies :: Item -> [Maybe Item]
-   }
+-- | Information about the set of DBs that we have
+data DbIndex = DbIndex
+  { byRepo :: Map.Map Repo Item
+    -- ^ Items indexed by Repo
+  , byRepoName :: [(Text, NonEmpty Item)]
+    -- ^ Items grouped by Repo name
+  , dependencies :: Item -> [Maybe Item]
+    -- ^ DB dependencies, Nothing indicates that there is a dependency
+    -- but it is missing in the catalog.
+  }
+
+dbIndex :: [Item] -> DbIndex
+dbIndex items = DbIndex{..}
+  where
+    byRepo = Map.fromList [(itemRepo item, item) | item <- items]
+
+    byRepoName =
+      HashMap.toList $ HashMap.fromListWith (<>)
+        [ (Thrift.repo_name $ itemRepo item, item :| []) | item <- items ]
+
+    dependencies = stacked . metaDependencies . itemMeta
+
+    stacked (Just (Thrift.Dependencies_stacked Thrift.Stacked{..})) =
+      [ Thrift.Repo stacked_name stacked_hash `Map.lookup` byRepo ]
+    stacked (Just (Thrift.Dependencies_pruned update)) =
+      [ pruned_base update `Map.lookup` byRepo ]
+    stacked Nothing = []
 
 -- | The final set of DBs we want usable on disk.
 --  This is the set of 'keepRoots' DB extended with all the stacked dependencies
 computeRetentionSet
   :: ServerConfig.DatabaseRetentionPolicy
   -> UTCTime
+  -> DbIndex
   -> [Item]
-  -> ComputedRetentionSet
-computeRetentionSet config_retention t items = ComputeRetentionSet{..}
-  where
-    byRepo = byRepoName items
-    byRepoMap = Map.fromList $ [(itemRepo item, item) | item <- items]
-    retentionSet = transitiveClosureBy itemRepo (catMaybes . dependencies) $
-      concatMap
-        (\(repoNm, dbs) ->
-          dbKeepRoots (repoRetention config_retention repoNm) t dbs
-        )
-        byRepo
-    dependencies = stacked byRepoMap . metaDependencies . itemMeta
-    stacked byRepoMap (Just (Thrift.Dependencies_stacked Thrift.Stacked{..})) =
-      [Thrift.Repo stacked_name stacked_hash `Map.lookup` byRepoMap]
-    stacked byRepoMap (Just (Thrift.Dependencies_pruned update)) =
-      [pruned_base update `Map.lookup` byRepoMap]
-    stacked _ Nothing = []
-
+computeRetentionSet config_retention time DbIndex{..} =
+  transitiveClosureBy itemRepo (catMaybes . dependencies) $
+    concatMap
+      (\(repoNm, dbs) ->
+        dbKeepRoots (repoRetention config_retention repoNm) time dbs
+      )
+      byRepoName
 
 -- The target set of DBs we want usable on the disk. This is a set of
 -- DBs that satisfies the policy.
@@ -426,11 +438,6 @@ fetchBackups env = do
           forRestoreSitesM env mempty listRestorable
       atomically $ writeTVar (envCachedRestorableDBs env) (Just (now,dbs))
       return dbs
-
--- Group databases by repository name
-byRepoName :: [Item] -> [(Text, NonEmpty Item)]
-byRepoName dbs = HashMap.toList $ HashMap.fromListWith (<>)
-  [ (Thrift.repo_name $ itemRepo item, item :| []) | item <- dbs ]
 
 repoRetention
   :: ServerConfig.DatabaseRetentionPolicy -> Text -> ServerConfig.Retention
