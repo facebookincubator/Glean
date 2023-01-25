@@ -68,25 +68,36 @@ import Glean.Util.ConfigProvider (
   ConfigProvider (defaultConfigOptions, withConfigProvider),
  )
 
+data Config = Config
+  { serverBinary :: FilePath
+  , schemaDir :: FilePath
+  }
+
+getConfig :: IO Config
+getConfig = do
+  serverBinary <- getEnv "GLEAN_SERVER"
+  schemaDir <- getEnv "SCHEMA"
+  return Config{..}
+
 main :: IO ()
 main = do
-  srvBinary <- getEnv "GLEAN_SERVER"
+  cfg <- getConfig
   withUnitTest $
     testRunner $
       TestList
         [ TestLabel "server waits for incomplete DBs" $
             TestCase $
-              waitForIncompleteDBs srvBinary
+              waitForIncompleteDBs cfg
         , TestLabel "test assumptions" $
             TestList
               [ TestLabel "server shuts down timely with default config" $
-                  TestCase $ serverShutdown 0 srvBinary
+                  TestCase $ serverShutdown 0 cfg
               , TestLabel "server shuts down when no incomplete DBs" $
-                  TestCase $ serverShutdown 1000 srvBinary
+                  TestCase $ serverShutdown 1000 cfg
               ]
         ]
 
-serverShutdown :: Int -> String -> Assertion
+serverShutdown :: Int -> Config -> Assertion
 serverShutdown timeout = setupOutOfProcessServer timeout $ \ph err backend -> do
   -- consumer the server error output to prevent it from getting blocked
   _ <- async $ evaluate (rnf $ length err)
@@ -97,7 +108,7 @@ serverShutdown timeout = setupOutOfProcessServer timeout $ \ph err backend -> do
     ec <- getProcessExitCode ph
     assertBool "Server did not shut down in a reasonable time" (isJust ec)
 
-waitForIncompleteDBs :: FilePath -> Assertion
+waitForIncompleteDBs :: Config -> Assertion
 waitForIncompleteDBs = setupOutOfProcessServer 10000 $ \ph err backend -> do
   -- kick off a database
   let repo = Repo "repo" "hash"
@@ -137,14 +148,15 @@ waitForIncompleteDBs = setupOutOfProcessServer 10000 $ \ph err backend -> do
 setupOutOfProcessServer ::
   Int ->
   (ProcessHandle -> String -> ThriftBackend -> IO a) ->
-  FilePath ->
+  Config ->
   IO a
-setupOutOfProcessServer timeout test srvBinary = do
+setupOutOfProcessServer timeout test Config{..} = do
   let cp =
         ( proc
-            srvBinary
+            serverBinary
             [ "--db-tmp"
             , "--graceful-shutdown-wait-seconds=" <> show timeout
+            , "--schema=" <> schemaDir
             ]
         )
           { std_err = CreatePipe
