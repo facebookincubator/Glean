@@ -73,6 +73,7 @@ import Glean.RTS.Typecheck
 import Glean.RTS.Types as RTS
 import Glean.Angle.Types as Schema
 import Glean.Schema.Resolve
+import Glean.Schema.Evolve (evolveOneSchema, VisiblePredicates(..))
 import Glean.Schema.Util (showRef, ShowRef)
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Query.Codegen.Types (QueryWithInfo(..))
