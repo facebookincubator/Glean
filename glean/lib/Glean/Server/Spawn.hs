@@ -44,6 +44,7 @@ withServer proc f =
           loop
 
         loop = do
+          checkTermination
           r <- try $ BS.readFile path
           case r of
             Left err
@@ -52,5 +53,13 @@ withServer proc f =
             Right s
               | BS.null s -> wait
               | otherwise -> return $! read (BS.unpack s)
+
+        checkTermination = do
+          mcode <- getProcessExitCode ph
+          case mcode of
+            Nothing -> return ()
+            Just code ->
+              throwIO $ ErrorCall $ "server process exited with: " <> show code
+
     port <- loop
     f port mb_in mb_out mb_err ph
