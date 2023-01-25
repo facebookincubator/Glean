@@ -7,20 +7,19 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import json
+import os
 
 import re
 import sys
 
 import pexpect
-from libfb.py.pathutils import find_path_in_fbcode_bin, find_path_in_fbcode_dir
 from libfb.py.testutil import BaseFacebookTestCase
 
-
-GLEAN_PATH = find_path_in_fbcode_bin("glean/tools/gleancli/glean")
-MKTESTDB_PATH = find_path_in_fbcode_bin("glean/test/lib/make_test_db")
-SCHEMA_PATH = find_path_in_fbcode_dir("glean/schema/source")
-EXAMPLE_SCHEMA_PATH = find_path_in_fbcode_dir("glean/example/schema")
-EXAMPLE_FACTS_PATH = find_path_in_fbcode_dir("glean/example/facts.glean")
+GLEAN_PATH = os.getenv("GLEAN")
+MKTESTDB_PATH = os.getenv("MAKE_TEST_DB")
+SCHEMA_PATH = os.getenv("SCHEMA_SOURCE")
+EXAMPLE_SCHEMA_PATH = os.getenv("EXAMPLE") + "/schema"
+EXAMPLE_FACTS_PATH = os.getenv("EXAMPLE") + "/facts.glean"
 
 REPO = "dbtest-repo"
 DB = REPO + "/f00baa"
