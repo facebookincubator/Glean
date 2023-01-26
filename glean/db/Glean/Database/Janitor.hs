@@ -337,7 +337,11 @@ data DbIndex = DbIndex
 dbIndex :: [Item] -> DbIndex
 dbIndex items = DbIndex{..}
   where
-    byRepo = Map.fromList [(itemRepo item, item) | item <- items]
+    byRepo =
+      Map.fromListWith pickFromDuplicates
+        $ [(itemRepo item, item) | item <- items]
+    pickFromDuplicates x y = -- Pick local one in a conflict
+      minimumBy (\x y -> compare (itemLocality x) (itemLocality y)) [x, y]
 
     byRepoName =
       HashMap.toList $ HashMap.fromListWith (<>)

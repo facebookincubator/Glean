@@ -52,7 +52,8 @@ import Glean.Database.Meta
 import Glean.Types (Repo(..))
 import qualified Glean.Types as Thrift
 
--- | How a DB is available
+-- | How a DB is available, in priority order
+-- (used to resolve conflicts of two dbs with the same name)
 data Locality = Local | Restoring | Cloud
   deriving(Eq,Ord,Enum,Bounded,Show)
 
