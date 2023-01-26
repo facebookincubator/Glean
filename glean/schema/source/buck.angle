@@ -473,4 +473,16 @@ predicate DestinationUses:
     FileXRefs { File, XRefs };
     { Destination, Spans } = XRefs[..];
 
+# Reverse of the TargetDependencies relationship
+predicate LocatorReverseDep :
+  {
+    locator : Locator,
+    rdep : Locator,
+  }
+  stored
+  { Parent, Child } where
+    TargetDependencies { target = { locator = Parent }, dependencies = Deps };
+    { target = Child } = Deps[..];
+
+
 } # end schema buck.3
