@@ -8,6 +8,8 @@
 
 module HieDBIndexer.DefaultMain (defaultMain) where
 
+import Control.Monad.Extra (unlessM, when)
+import Data.Foldable (toList)
 import Data.Text (Text)
 import Glean (Backend)
 import Glean.Impl.ConfigProvider ()
@@ -18,7 +20,7 @@ import HieDBIndexer.Options
 import HieDBIndexer.Trace (Tracer, traceMsg)
 import HieDb.Run (optParser)
 import Options.Applicative.Common (evalParser)
-import System.Directory (copyFile)
+import System.Directory (copyFile, doesFileExist)
 import System.IO.Extra (withTempFile)
 
 {- | Tests run concurrently, and they become flaky because the
@@ -52,8 +54,12 @@ defaultMain tracer cfg backend = handleDontCreateDb cfg $ \cfg' ->
 
 withHieDB :: HieDBIndexerOptions Sources -> (FilePath -> IO a) -> IO a
 withHieDB cfg k = case sources cfg of
-  HieDB p -> k p
+  HieDB p -> do
+    unlessM (doesFileExist p) $
+      error $ "Cannot find hiedb at: " <> p
+    k p
   HieFiles paths -> withTempFile $ \hiedb -> do
     let Just opts = evalParser (optParser hiedb False)
-    mkHieDB paths opts
+    when (null paths) $ error "Empty set of paths for hiedb"
+    mkHieDB (toList paths) opts
     k hiedb

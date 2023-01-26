@@ -17,11 +17,13 @@
 module HieDBIndexer.HieDB (mkHieDB) where
 
 import Control.Applicative (liftA2)
-import Control.Monad (forM_)
+import Control.Exception (throwIO)
+import Control.Monad (forM_, when)
 import Control.Monad.State (StateT, evalStateT, get, liftIO, put)
 import Data.HashSet (HashSet, toList)
 import qualified Data.HashSet as Set
 import Data.IORef
+import Data.List (intercalate)
 import Database.SQLite.Simple (withTransaction)
 import GHC.Fingerprint (getFileHash)
 import GhcPlugins (mkSplitUniqSupply)
@@ -50,6 +52,9 @@ mkHieDB :: [FilePath] -> Options -> IO ()
 mkHieDB pathsToIndex hiedbOptions =
   withHieDb (database hiedbOptions) $ \conn -> do
     files <- getHieFilesIn pathsToIndex
+    when (null files) $ do
+      throwIO $ userError $ "No .hie files found at given locations: " <>
+        intercalate ", " pathsToIndex
     initConn conn
     doIndex conn $ toList files
 

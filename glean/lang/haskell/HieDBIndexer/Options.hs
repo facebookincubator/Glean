@@ -13,6 +13,10 @@ module HieDBIndexer.Options where
 -- @lint-ignore-every TODOHACK
 -- @lint-ignore-every LINEWRAP
 
+-- @lint-ignore-every TODOHACK
+-- @lint-ignore-every LINEWRAP
+import Data.List.NonEmpty (NonEmpty, nonEmpty)
+import Data.Maybe (fromJust)
 import Data.Text (Text)
 import qualified Glean (Backend)
 import Options.Applicative (
@@ -36,7 +40,7 @@ import Options.Applicative (
 -- | Either a HieDB or a set of folders to recursively search for .hie files
 data Sources
   = HieDB FilePath        -- ^ Path to a hiedb
-  | HieFiles [FilePath]   -- ^ Paths to search recursively for .hie files
+  | HieFiles (NonEmpty FilePath)   -- ^ Paths to search recursively for .hie files
 
 data HieDBIndexerOptions sources = HieDBIndexerOptions
   { sources :: sources
@@ -62,7 +66,7 @@ sourcesP = HieDB <$> hiedbP <|> (HieFiles <$> hieFilesP)
               <> metavar "HIEDB_PATH"
               <> help "Path to the HieDB that will be used to get XReferences"
           )
-    hieFilesP = some
+    hieFilesP = fromJust . nonEmpty <$> some
       (strArgument (metavar "PATH" <> help "Tree containing .hie files"))
 
 options :: ParserInfo (HieDBIndexerOptions Sources)
