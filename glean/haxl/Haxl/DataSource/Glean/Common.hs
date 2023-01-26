@@ -174,10 +174,10 @@ putQueryResultsOrException q r maybeAcc rvar more =
   case r of
     UserQueryResultsOrException_results r ->
       putQueryResults q r maybeAcc rvar more
-    UserQueryResultsOrException_badQuery ex ->
-      Haxl.putFailure rvar (toException ex)
-    UserQueryResultsOrException_retry ex ->
-      Haxl.putFailure rvar (toException ex)
-    UserQueryResultsOrException_other ex ->
-      Haxl.putFailure rvar (toException ex)
-    _ -> error "TODO"
+    UserQueryResultsOrException_badQuery (BadQueryException ex) ->
+      Haxl.putFailure rvar (BadQuery ex)
+    UserQueryResultsOrException_retry (RetryException ex) ->
+      Haxl.putFailure rvar (Retry ex)
+    UserQueryResultsOrException_other (GleanException ex) ->
+      Haxl.putFailure rvar (Exception ex)
+    other -> throwIO $ userError $ "unexpected: " <> show other

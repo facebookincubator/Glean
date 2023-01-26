@@ -801,11 +801,23 @@ struct UserQueryResults {
 // The inferred type of the query
 }
 
+// struct versions of exception types, needed because the
+// "shapes" Hack codegen cannot deal with exceptions in unions
+struct RetryException {
+  1: double seconds;
+}
+struct BadQueryException {
+  1: string reason;
+}
+struct GleanException {
+  1: string message;
+}
+
 union UserQueryResultsOrException {
   1: UserQueryResults results;
-  2: BadQuery badQuery;
-  3: Retry retry;
-  4: Exception other;
+  2: BadQueryException badQuery;
+  3: RetryException retry;
+  4: GleanException other;
 }
 
 struct FactQuery {

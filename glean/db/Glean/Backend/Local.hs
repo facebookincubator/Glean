@@ -122,8 +122,12 @@ instance Backend Database.Env where
           (Thrift.UserQueryResultsOrException_results
             <$> userQuery env repo query)
           `catches`
-          [ Handler $ return . Thrift.UserQueryResultsOrException_retry
-          , Handler $ return . Thrift.UserQueryResultsOrException_badQuery
+          [ Handler $ \(Thrift.Retry r) -> return $
+              Thrift.UserQueryResultsOrException_retry $
+                Thrift.RetryException r
+          , Handler $ \(Thrift.BadQuery b) -> return $
+              Thrift.UserQueryResultsOrException_badQuery $
+                Thrift.BadQueryException b
           ]
 
 
