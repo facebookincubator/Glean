@@ -186,17 +186,44 @@ stackedDbsTest = TestCase $ withMemCatalog $ \_ cat -> do
   assertEqual "" DatabaseStatus_Complete =<< status cat repoB
   assertEqual "" DatabaseStatus_Complete =<< status cat repoC
 
+  Catalog.delete cat repoC
+  Catalog.create cat repoC metaCWrongGuid $ return ()
+
+  assertEqual "" DatabaseStatus_Complete =<< status cat repoA
+  assertEqual "" DatabaseStatus_Complete =<< status cat repoB
+  assertEqual "" DatabaseStatus_Missing =<< status cat repoC
+
+  Catalog.delete cat repoC
+  Catalog.create cat repoC metaC $ return ()
+
+  assertEqual "" DatabaseStatus_Complete =<< status cat repoA
+  assertEqual "" DatabaseStatus_Complete =<< status cat repoB
+  assertEqual "" DatabaseStatus_Complete =<< status cat repoC
+
   where
     -- Dependencies: C -> B -> A
     repoA = Repo "base" "repoA"
     repoB = Repo "stacked" "repoB"
     repoC = Repo "stacked2" "repoC"
-    stacked (Repo name hash) = Dependencies_stacked $ Stacked name hash Nothing
+    guidA = "aaaaaa"
+    guidB = "bbbbbb"
+    guidC = "cccccc"
+    guidWrong = "xxxxxx"
+    stacked (Repo name hash) guid =
+      Dependencies_stacked $ Stacked name hash (Just guid)
     metaA = meta
-    metaB = meta{metaDependencies=Just $ stacked repoA}
-    metaC = meta{metaDependencies=Just $ stacked repoB}
+      { metaProperties=HashMap.fromList [("glean.guid", guidA)] }
+    metaB = meta
+      { metaDependencies=Just $ stacked repoA guidA
+      , metaProperties=HashMap.fromList [("glean.guid", guidB)]}
+    metaC = meta
+      { metaDependencies=Just $ stacked repoB guidB
+      , metaProperties=HashMap.fromList [("glean.guid", guidC)]}
+    metaCWrongGuid = meta
+      { metaDependencies=Just $ stacked repoB guidWrong
+      , metaProperties=HashMap.fromList [("glean.guid", guidC)]}
     meta = def
-      {metaCompleteness=Complete $ DatabaseComplete (PosixEpochTime 0) Nothing}
+      { metaCompleteness=Complete $ DatabaseComplete (PosixEpochTime 0) Nothing}
 
     status cat repo = do
       result <- atomically $ Catalog.getLocalDatabase cat repo

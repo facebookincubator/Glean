@@ -201,9 +201,7 @@ recalculateStatus Catalog{..} entry = do
             if HashMap.lookup "glean.guid" properties == guid then
               return status
             else
-              -- TODO: enable verification
-              -- return missing
-              return status
+              return missing
 
 
       meta <- readTVar $ entryMeta entry
