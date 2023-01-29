@@ -23,7 +23,18 @@
           }
         }
       },
-      "dispatch_arg": { "span": { "start": 772, "length": 5 } }
+      "dispatch_arg": { "span": { "start": 772, "length": 5 } },
+      "receiver_type": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
+              }
+            }
+          }
+        }
+      }
     }
   },
   {
@@ -46,6 +57,19 @@
                       "name": { "key": { "name": { "key": "SuperClass" } } }
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      },
+      "receiver_type": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceClass" } } }
                 }
               }
             }
