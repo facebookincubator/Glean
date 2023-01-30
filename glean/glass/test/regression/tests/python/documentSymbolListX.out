@@ -33,7 +33,7 @@
                     "columnBegin": 1,
                     "columnEnd": 1,
                     "lineBegin": 1,
-                    "lineEnd": 21
+                    "lineEnd": 26
                 },
                 "sym": "test/py/all.py/all"
             },
@@ -67,8 +67,8 @@
                 "range": {
                     "columnBegin": 17,
                     "columnEnd": 28,
-                    "lineBegin": 5,
-                    "lineEnd": 5
+                    "lineBegin": 8,
+                    "lineEnd": 8
                 },
                 "sym": "test/py/all.py/all.Helper"
             },
@@ -102,8 +102,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 20,
-                    "lineBegin": 15,
-                    "lineEnd": 17
+                    "lineBegin": 20,
+                    "lineEnd": 22
                 },
                 "sym": "test/py/all.py/all.LocalClass"
             },
@@ -129,6 +129,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "def meth(...) -> ...:"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -137,8 +143,8 @@
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 20,
-                    "lineBegin": 16,
-                    "lineEnd": 17
+                    "lineBegin": 21,
+                    "lineEnd": 22
                 },
                 "sym": "test/py/all.py/all.LocalClass.meth"
             },
@@ -172,8 +178,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 81,
-                    "lineBegin": 20,
-                    "lineEnd": 20
+                    "lineBegin": 25,
+                    "lineEnd": 25
                 },
                 "sym": "test/py/all.py/all.__all__"
             },
@@ -207,8 +213,8 @@
                 "range": {
                     "columnBegin": 21,
                     "columnEnd": 29,
-                    "lineBegin": 4,
-                    "lineEnd": 4
+                    "lineBegin": 7,
+                    "lineEnd": 7
                 },
                 "sym": "test/py/all.py/all.big_func"
             },
@@ -242,8 +248,8 @@
                 "range": {
                     "columnBegin": 31,
                     "columnEnd": 38,
-                    "lineBegin": 4,
-                    "lineEnd": 4
+                    "lineBegin": 7,
+                    "lineEnd": 7
                 },
                 "sym": "test/py/all.py/all.big_var"
             },
@@ -269,6 +275,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "@timeit\n@lru_cache\ndef fn(...) -> ...:"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -277,8 +289,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 21,
-                    "lineBegin": 10,
-                    "lineEnd": 12
+                    "lineBegin": 15,
+                    "lineEnd": 17
                 },
                 "sym": "test/py/all.py/all.fn"
             },
@@ -312,8 +324,8 @@
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 41,
-                    "lineBegin": 11,
-                    "lineEnd": 11
+                    "lineBegin": 16,
+                    "lineEnd": 16
                 },
                 "sym": "test/py/all.py/all.fn.%3Clocals%3E.local_var"
             },
@@ -347,10 +359,68 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 11,
+                    "lineBegin": 6,
+                    "lineEnd": 6
+                },
+                "sym": "test/py/all.py/all.lib"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "lru_cache"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "all"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 7
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 23,
+                    "columnEnd": 32,
+                    "lineBegin": 4,
+                    "lineEnd": 4
+                },
+                "sym": "test/py/all.py/all.lru_cache"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "timeit"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "all"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 7
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 8,
+                    "columnEnd": 14,
                     "lineBegin": 3,
                     "lineEnd": 3
                 },
-                "sym": "test/py/all.py/all.lib"
+                "sym": "test/py/all.py/all.timeit"
             },
             {
                 "attributes": [
@@ -382,8 +452,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 10,
-                    "lineBegin": 7,
-                    "lineEnd": 7
+                    "lineBegin": 10,
+                    "lineEnd": 10
                 },
                 "sym": "test/py/all.py/all.var"
             }
@@ -419,8 +489,8 @@
                 "range": {
                     "columnBegin": 12,
                     "columnEnd": 20,
-                    "lineBegin": 20,
-                    "lineEnd": 20
+                    "lineBegin": 25,
+                    "lineEnd": 25
                 },
                 "sym": "test/py/all.py/all.Helper",
                 "target": {
@@ -428,8 +498,8 @@
                     "range": {
                         "columnBegin": 17,
                         "columnEnd": 28,
-                        "lineBegin": 5,
-                        "lineEnd": 5
+                        "lineBegin": 8,
+                        "lineEnd": 8
                     },
                     "repository": "test"
                 }
@@ -464,8 +534,8 @@
                 "range": {
                     "columnBegin": 61,
                     "columnEnd": 69,
-                    "lineBegin": 20,
-                    "lineEnd": 20
+                    "lineBegin": 25,
+                    "lineEnd": 25
                 },
                 "sym": "test/py/all.py/all.Helper",
                 "target": {
@@ -473,8 +543,8 @@
                     "range": {
                         "columnBegin": 17,
                         "columnEnd": 28,
-                        "lineBegin": 5,
-                        "lineEnd": 5
+                        "lineBegin": 8,
+                        "lineEnd": 8
                     },
                     "repository": "test"
                 }
@@ -509,8 +579,8 @@
                 "range": {
                     "columnBegin": 34,
                     "columnEnd": 46,
-                    "lineBegin": 20,
-                    "lineEnd": 20
+                    "lineBegin": 25,
+                    "lineEnd": 25
                 },
                 "sym": "test/py/all.py/all.LocalClass",
                 "target": {
@@ -518,8 +588,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 20,
-                        "lineBegin": 15,
-                        "lineEnd": 17
+                        "lineBegin": 20,
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 }
@@ -554,8 +624,8 @@
                 "range": {
                     "columnBegin": 22,
                     "columnEnd": 32,
-                    "lineBegin": 20,
-                    "lineEnd": 20
+                    "lineBegin": 25,
+                    "lineEnd": 25
                 },
                 "sym": "test/py/all.py/all.big_func",
                 "target": {
@@ -563,8 +633,8 @@
                     "range": {
                         "columnBegin": 21,
                         "columnEnd": 29,
-                        "lineBegin": 4,
-                        "lineEnd": 4
+                        "lineBegin": 7,
+                        "lineEnd": 7
                     },
                     "repository": "test"
                 }
@@ -599,8 +669,8 @@
                 "range": {
                     "columnBegin": 33,
                     "columnEnd": 40,
-                    "lineBegin": 11,
-                    "lineEnd": 11
+                    "lineBegin": 16,
+                    "lineEnd": 16
                 },
                 "sym": "test/py/all.py/all.big_var",
                 "target": {
@@ -608,8 +678,8 @@
                     "range": {
                         "columnBegin": 31,
                         "columnEnd": 38,
-                        "lineBegin": 4,
-                        "lineEnd": 4
+                        "lineBegin": 7,
+                        "lineEnd": 7
                     },
                     "repository": "test"
                 }
@@ -644,8 +714,8 @@
                 "range": {
                     "columnBegin": 71,
                     "columnEnd": 80,
-                    "lineBegin": 20,
-                    "lineEnd": 20
+                    "lineBegin": 25,
+                    "lineEnd": 25
                 },
                 "sym": "test/py/all.py/all.big_var",
                 "target": {
@@ -653,8 +723,8 @@
                     "range": {
                         "columnBegin": 31,
                         "columnEnd": 38,
-                        "lineBegin": 4,
-                        "lineEnd": 4
+                        "lineBegin": 7,
+                        "lineEnd": 7
                     },
                     "repository": "test"
                 }
@@ -678,6 +748,12 @@
                             "aString": "all"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "@timeit\n@lru_cache\ndef fn(...) -> ...:"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -689,8 +765,8 @@
                 "range": {
                     "columnBegin": 16,
                     "columnEnd": 18,
-                    "lineBegin": 17,
-                    "lineEnd": 17
+                    "lineBegin": 22,
+                    "lineEnd": 22
                 },
                 "sym": "test/py/all.py/all.fn",
                 "target": {
@@ -698,8 +774,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 21,
-                        "lineBegin": 10,
-                        "lineEnd": 12
+                        "lineBegin": 15,
+                        "lineEnd": 17
                     },
                     "repository": "test"
                 }
@@ -726,6 +802,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "@timeit\n@lru_cache\ndef fn(...) -> ...:"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -734,8 +816,8 @@
                 "range": {
                     "columnBegin": 48,
                     "columnEnd": 52,
-                    "lineBegin": 20,
-                    "lineEnd": 20
+                    "lineBegin": 25,
+                    "lineEnd": 25
                 },
                 "sym": "test/py/all.py/all.fn",
                 "target": {
@@ -743,8 +825,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 21,
-                        "lineBegin": 10,
-                        "lineEnd": 12
+                        "lineBegin": 15,
+                        "lineEnd": 17
                     },
                     "repository": "test"
                 }
@@ -779,8 +861,8 @@
                 "range": {
                     "columnBegin": 12,
                     "columnEnd": 21,
-                    "lineBegin": 12,
-                    "lineEnd": 12
+                    "lineBegin": 17,
+                    "lineEnd": 17
                 },
                 "sym": "test/py/all.py/all.fn.%3Clocals%3E.local_var",
                 "target": {
@@ -788,8 +870,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 41,
-                        "lineBegin": 11,
-                        "lineEnd": 11
+                        "lineBegin": 16,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 }
@@ -824,8 +906,8 @@
                 "range": {
                     "columnBegin": 17,
                     "columnEnd": 20,
-                    "lineBegin": 11,
-                    "lineEnd": 11
+                    "lineBegin": 16,
+                    "lineEnd": 16
                 },
                 "sym": "test/py/all.py/all.lib",
                 "target": {
@@ -833,6 +915,84 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 11,
+                        "lineBegin": 6,
+                        "lineEnd": 6
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "lru_cache"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "all"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 7
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 2,
+                    "columnEnd": 11,
+                    "lineBegin": 14,
+                    "lineEnd": 14
+                },
+                "sym": "test/py/all.py/all.lru_cache",
+                "target": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 32,
+                        "lineBegin": 4,
+                        "lineEnd": 4
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "timeit"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "all"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 7
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 2,
+                    "columnEnd": 8,
+                    "lineBegin": 13,
+                    "lineEnd": 13
+                },
+                "sym": "test/py/all.py/all.timeit",
+                "target": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 14,
                         "lineBegin": 3,
                         "lineEnd": 3
                     },
@@ -869,8 +1029,8 @@
                 "range": {
                     "columnBegin": 54,
                     "columnEnd": 59,
-                    "lineBegin": 20,
-                    "lineEnd": 20
+                    "lineBegin": 25,
+                    "lineEnd": 25
                 },
                 "sym": "test/py/all.py/all.var",
                 "target": {
@@ -878,8 +1038,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 10,
-                        "lineBegin": 7,
-                        "lineEnd": 7
+                        "lineBegin": 10,
+                        "lineEnd": 10
                     },
                     "repository": "test"
                 }
@@ -914,8 +1074,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 13,
-                    "lineBegin": 4,
-                    "lineEnd": 4
+                    "lineBegin": 7,
+                    "lineEnd": 7
                 },
                 "sym": "test/py/big_lib/big_lib",
                 "target": {
@@ -951,6 +1111,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "def big_func(...) -> ...:"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -959,8 +1125,8 @@
                 "range": {
                     "columnBegin": 21,
                     "columnEnd": 29,
-                    "lineBegin": 4,
-                    "lineEnd": 4
+                    "lineBegin": 7,
+                    "lineEnd": 7
                 },
                 "sym": "test/py/big_lib/big_lib.big_func",
                 "target": {
@@ -996,6 +1162,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "def big_func(...) -> ...:"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -1004,8 +1176,8 @@
                 "range": {
                     "columnBegin": 22,
                     "columnEnd": 32,
-                    "lineBegin": 20,
-                    "lineEnd": 20
+                    "lineBegin": 25,
+                    "lineEnd": 25
                 },
                 "sym": "test/py/big_lib/big_lib.big_func",
                 "target": {
@@ -1049,8 +1221,8 @@
                 "range": {
                     "columnBegin": 31,
                     "columnEnd": 38,
-                    "lineBegin": 4,
-                    "lineEnd": 4
+                    "lineBegin": 7,
+                    "lineEnd": 7
                 },
                 "sym": "test/py/big_lib/big_lib.big_var",
                 "target": {
@@ -1094,8 +1266,8 @@
                 "range": {
                     "columnBegin": 33,
                     "columnEnd": 40,
-                    "lineBegin": 11,
-                    "lineEnd": 11
+                    "lineBegin": 16,
+                    "lineEnd": 16
                 },
                 "sym": "test/py/big_lib/big_lib.big_var",
                 "target": {
@@ -1139,8 +1311,8 @@
                 "range": {
                     "columnBegin": 71,
                     "columnEnd": 80,
-                    "lineBegin": 20,
-                    "lineEnd": 20
+                    "lineBegin": 25,
+                    "lineEnd": 25
                 },
                 "sym": "test/py/big_lib/big_lib.big_var",
                 "target": {
@@ -1184,8 +1356,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 11,
-                    "lineBegin": 3,
-                    "lineEnd": 3
+                    "lineBegin": 6,
+                    "lineEnd": 6
                 },
                 "sym": "test/py/lib.py/lib",
                 "target": {
@@ -1229,8 +1401,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 9,
-                    "lineBegin": 5,
-                    "lineEnd": 5
+                    "lineBegin": 8,
+                    "lineEnd": 8
                 },
                 "sym": "test/py/lib.py/lib",
                 "target": {
@@ -1274,8 +1446,8 @@
                 "range": {
                     "columnBegin": 17,
                     "columnEnd": 20,
-                    "lineBegin": 11,
-                    "lineEnd": 11
+                    "lineBegin": 16,
+                    "lineEnd": 16
                 },
                 "sym": "test/py/lib.py/lib",
                 "target": {
@@ -1319,8 +1491,8 @@
                 "range": {
                     "columnBegin": 17,
                     "columnEnd": 28,
-                    "lineBegin": 5,
-                    "lineEnd": 5
+                    "lineBegin": 8,
+                    "lineEnd": 8
                 },
                 "sym": "test/py/lib.py/lib.HelperClass",
                 "target": {
@@ -1364,51 +1536,6 @@
                 "range": {
                     "columnBegin": 21,
                     "columnEnd": 32,
-                    "lineBegin": 11,
-                    "lineEnd": 11
-                },
-                "sym": "test/py/lib.py/lib.HelperClass",
-                "target": {
-                    "filepath": "lib.py",
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 13,
-                        "lineBegin": 9,
-                        "lineEnd": 16
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aInteger": 7
-                        },
-                        "key": "symbolKind"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "HelperClass"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "lib"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 7
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 30,
-                    "columnEnd": 38,
                     "lineBegin": 16,
                     "lineEnd": 16
                 },
@@ -1452,10 +1579,55 @@
                     }
                 ],
                 "range": {
+                    "columnBegin": 30,
+                    "columnEnd": 38,
+                    "lineBegin": 21,
+                    "lineEnd": 21
+                },
+                "sym": "test/py/lib.py/lib.HelperClass",
+                "target": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 9,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 7
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "HelperClass"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "lib"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 7
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
                     "columnBegin": 12,
                     "columnEnd": 20,
-                    "lineBegin": 20,
-                    "lineEnd": 20
+                    "lineBegin": 25,
+                    "lineEnd": 25
                 },
                 "sym": "test/py/lib.py/lib.HelperClass",
                 "target": {
@@ -1499,8 +1671,8 @@
                 "range": {
                     "columnBegin": 61,
                     "columnEnd": 69,
-                    "lineBegin": 20,
-                    "lineEnd": 20
+                    "lineBegin": 25,
+                    "lineEnd": 25
                 },
                 "sym": "test/py/lib.py/lib.HelperClass",
                 "target": {

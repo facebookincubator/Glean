@@ -25,6 +25,7 @@ import Glean.Glass.Pretty.Cxx as Cxx ( prettyCxxSignature, Qualified(..) )
 import Glean.Glass.Pretty.Flow as Flow ( prettyFlowSignature )
 import Glean.Glass.Pretty.Hack as Hack ( prettyHackSignature )
 import Glean.Glass.Pretty.LSIF as LSIF ( prettyLsifSignature )
+import Glean.Glass.Pretty.Python as Python ( prettyPythonSignature )
 import Glean.Glass.Types
     ( RepoName, SymbolId(..), TypeSymSpan(..), ByteSpan(..) )
 import qualified Data.Text.Lazy.Builder as TLB
@@ -119,6 +120,8 @@ instance ToSymbolSignature Code.Entity where
     Code.Entity_hack x -> Hack.prettyHackSignature opts repo x
     -- Flow signatures direct from the DB
     Code.Entity_flow x -> Flow.prettyFlowSignature opts x
+    -- python pretty signatures
+    Code.Entity_python x -> Python.prettyPythonSignature opts x
     -- lsif languages, just enumerate completely to stay total
     Code.Entity_lsif e -> case e of
       Lsif.Entity_erlang x -> LSIF.prettyLsifSignature opts x

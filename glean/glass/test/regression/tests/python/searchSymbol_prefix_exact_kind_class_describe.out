@@ -23,8 +23,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 20,
-                        "lineBegin": 16,
-                        "lineEnd": 17
+                        "lineBegin": 21,
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -34,14 +34,15 @@
                     "localName": "meth"
                 },
                 "repo_hash": "testhash",
+                "signature": "def meth(...) -> ...:",
                 "sym": "test/py/all.py/all.LocalClass.meth",
                 "sym_location": {
                     "filepath": "all.py",
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 20,
-                        "lineBegin": 16,
-                        "lineEnd": 17
+                        "lineBegin": 21,
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -81,6 +82,7 @@
                     "localName": "another_method"
                 },
                 "repo_hash": "testhash",
+                "signature": "def another_method(...) -> ...:",
                 "sym": "test/py/lib.py/lib.HelperClass.another_method",
                 "sym_location": {
                     "filepath": "lib.py",
@@ -128,6 +130,7 @@
                     "localName": "method"
                 },
                 "repo_hash": "testhash",
+                "signature": "def method(...) -> ...:",
                 "sym": "test/py/lib.py/lib.HelperClass.method",
                 "sym_location": {
                     "filepath": "lib.py",
@@ -160,8 +163,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 20,
-                        "lineBegin": 16,
-                        "lineEnd": 17
+                        "lineBegin": 21,
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },

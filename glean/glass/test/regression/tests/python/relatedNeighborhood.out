@@ -151,6 +151,7 @@
                     "localName": "another_method"
                 },
                 "repo_hash": "testhash",
+                "signature": "def another_method(...) -> ...:",
                 "sym": "test/py/lib.py/lib.HelperClass.another_method",
                 "sym_location": {
                     "filepath": "lib.py",
@@ -198,6 +199,7 @@
                     "localName": "method"
                 },
                 "repo_hash": "testhash",
+                "signature": "def method(...) -> ...:",
                 "sym": "test/py/lib.py/lib.HelperClass.method",
                 "sym_location": {
                     "filepath": "lib.py",

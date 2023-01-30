@@ -23,8 +23,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 20,
-                        "lineBegin": 15,
-                        "lineEnd": 17
+                        "lineBegin": 20,
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -40,8 +40,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 20,
-                        "lineBegin": 15,
-                        "lineEnd": 17
+                        "lineBegin": 20,
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -70,8 +70,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 20,
-                        "lineBegin": 16,
-                        "lineEnd": 17
+                        "lineBegin": 21,
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -81,14 +81,15 @@
                     "localName": "meth"
                 },
                 "repo_hash": "testhash",
+                "signature": "def meth(...) -> ...:",
                 "sym": "test/py/all.py/all.LocalClass.meth",
                 "sym_location": {
                     "filepath": "all.py",
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 20,
-                        "lineBegin": 16,
-                        "lineEnd": 17
+                        "lineBegin": 21,
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -97,6 +98,7 @@
                 "visibility": 20
             },
             {
+                "annotations": [],
                 "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
@@ -117,8 +119,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 21,
-                        "lineBegin": 10,
-                        "lineEnd": 12
+                        "lineBegin": 15,
+                        "lineEnd": 17
                     },
                     "repository": "test"
                 },
@@ -128,14 +130,15 @@
                     "localName": "fn"
                 },
                 "repo_hash": "testhash",
+                "signature": "@timeit\n@lru_cache\ndef fn(...) -> ...:",
                 "sym": "test/py/all.py/all.fn",
                 "sym_location": {
                     "filepath": "all.py",
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 21,
-                        "lineBegin": 10,
-                        "lineEnd": 12
+                        "lineBegin": 15,
+                        "lineEnd": 17
                     },
                     "repository": "test"
                 },
@@ -175,6 +178,7 @@
                     "localName": "fn"
                 },
                 "repo_hash": "testhash",
+                "signature": "def fn(...) -> ...:",
                 "sym": "test/py/as.py/as.fn",
                 "sym_location": {
                     "filepath": "as.py",
@@ -224,6 +228,7 @@
                     "localName": "func_sleep"
                 },
                 "repo_hash": "testhash",
+                "signature": "async def func_sleep(...) -> ...:",
                 "sym": "test/py/as.py/as.func_sleep",
                 "sym_location": {
                     "filepath": "as.py",
@@ -271,6 +276,7 @@
                     "localName": "big_func"
                 },
                 "repo_hash": "testhash",
+                "signature": "def big_func(...) -> ...:",
                 "sym": "test/py/big_lib/big_lib.big_func",
                 "sym_location": {
                     "filepath": "big_lib/__init__.py",
@@ -365,6 +371,7 @@
                     "localName": "another_method"
                 },
                 "repo_hash": "testhash",
+                "signature": "def another_method(...) -> ...:",
                 "sym": "test/py/lib.py/lib.HelperClass.another_method",
                 "sym_location": {
                     "filepath": "lib.py",
@@ -412,6 +419,7 @@
                     "localName": "method"
                 },
                 "repo_hash": "testhash",
+                "signature": "def method(...) -> ...:",
                 "sym": "test/py/lib.py/lib.HelperClass.method",
                 "sym_location": {
                     "filepath": "lib.py",
@@ -459,6 +467,7 @@
                     "localName": "helper_func"
                 },
                 "repo_hash": "testhash",
+                "signature": "def helper_func(...) -> ...:",
                 "sym": "test/py/lib.py/lib.helper_func",
                 "sym_location": {
                     "filepath": "lib.py",
@@ -506,6 +515,7 @@
                     "localName": "f"
                 },
                 "repo_hash": "testhash",
+                "signature": "def f(...) -> ...:",
                 "sym": "test/py/main.py/main.f",
                 "sym_location": {
                     "filepath": "main.py",
@@ -553,6 +563,7 @@
                     "localName": "g"
                 },
                 "repo_hash": "testhash",
+                "signature": "def g(...) -> ...:",
                 "sym": "test/py/main.py/main.g",
                 "sym_location": {
                     "filepath": "main.py",
@@ -600,6 +611,7 @@
                     "localName": "h"
                 },
                 "repo_hash": "testhash",
+                "signature": "def h(...) -> ...:",
                 "sym": "test/py/main.py/main.g.%3Clocals%3E.h",
                 "sym_location": {
                     "filepath": "main.py",
@@ -694,6 +706,7 @@
                     "localName": "shadow_func"
                 },
                 "repo_hash": "testhash",
+                "signature": "def shadow_func(...) -> ...:",
                 "sym": "test/py/shadow.py/shadow.shadow_func",
                 "sym_location": {
                     "filepath": "shadow.py",
@@ -719,8 +732,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 20,
-                        "lineBegin": 15,
-                        "lineEnd": 17
+                        "lineBegin": 20,
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -749,8 +762,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 20,
-                        "lineBegin": 16,
-                        "lineEnd": 17
+                        "lineBegin": 21,
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -779,8 +792,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 21,
-                        "lineBegin": 10,
-                        "lineEnd": 12
+                        "lineBegin": 15,
+                        "lineEnd": 17
                     },
                     "repository": "test"
                 },
