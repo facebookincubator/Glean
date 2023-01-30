@@ -384,6 +384,40 @@ validateSchemaChanges =
           schema all.1 : x.1 {}
         |]
 
+      schema_v7 =
+        [s|
+          schema x.1 {
+            predicate P : { a: bool }
+          }
+
+          schema y.1 {
+            import x.1
+            predicate Q : { a: x.P }
+          }
+
+          schema all.1 : x.1, y.1 {}
+        |]
+
+      schema_v8 =
+        [s|
+          schema x.1 {
+            predicate P : { a: bool }
+          }
+
+          schema x.2 {
+            predicate P : { a: bool, b: bool }
+          }
+
+          schema x.2 evolves x.1
+
+          schema y.1 {
+            import x.2
+            predicate Q : { a: x.P }
+          }
+
+          schema all.1 : x.1, x.2, y.1 {}
+        |]
+
       withIndex root a b f = do
         saveJSON schema_index_file schema_index
         f schema_index_file
@@ -436,6 +470,9 @@ validateSchemaChanges =
       , validateOK "adding a predicate" schema_v0 schema_v4
       , validateOK "adding a type synonym" schema_v0 schema_v5
       , validateFAIL "changing the type of a field" schema_v0 schema_v6
+      -- this tests only going from schema_v7 to schema_v8 because the
+      -- evolves relationship doesn't exist the other way around.
+      , validate "change evolved field" schema_v8 schema_v7 isRight
       ]
 
 

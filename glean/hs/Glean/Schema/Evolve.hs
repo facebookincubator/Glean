@@ -6,19 +6,29 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{- |
+This module focuses on determining which predicate should be transformed
+into which by looking at the contents of schemas and at the evolution
+relationships between schemas.
+-}
 module Glean.Schema.Evolve
-  ( resolveEvolves
-  , evolveOneSchema
-  , canEvolve
-  , VisiblePredicates(..)
+  ( validateResolvedEvolutions
+  , directSchemaEvolutions
+  , calcEvolutions
+  , validateEvolutions
+  , visiblePredicates
+  , mapVisible
+  , VisiblePredicates
+  , visibleDefined
   ) where
 
 import Control.Applicative
 import Control.Monad.Except
-import Control.Monad.Extra (whenJust)
-import Data.Bifunctor
 import Data.Foldable
+import Data.Graph
 import Data.Hashable
+import qualified Data.HashSet as HashSet
+import Data.HashSet (HashSet)
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.List
@@ -27,63 +37,160 @@ import qualified Data.Map as Map
 import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
+import Data.Text.Prettyprint.Doc as Pretty hiding ((<>), pageWidth)
 
 import Glean.Angle.Types
 import Glean.Schema.Types
 import Glean.Schema.Util
 
--- | Create a mapping from a schema to the schema that evolves it. This will
---  - check if any schema is evolved by multiple schemas.
---  - check if all schema evolutions are legal.
---
--- If 'B evolves A' and 'C evolves A', when a query for A comes we won't
--- know whether to serve facts from C or from B. Therefore we disallow
--- multiple schemas to evolve a single one.
-resolveEvolves
-  :: [ResolvedSchemaRef] -- ^ in dependency order
-  -> Either Text (HashMap SchemaRef SchemaRef)
-resolveEvolves resolved = do
-  checkLawfulEvolves
-  HashMap.traverseWithKey checkMultipleEvolves
-    $ HashMap.fromListWith (++)
-    $ concatMap evolvedByResolved resolved
+{- Note [Schema Evolutions]
+
+An 'schema evolution' is a non-commuting transitive relationship between two
+schemas. It is established by a source code annotation saying:
+
+    schema A evolves B
+
+It establishes a 'predicate evolution' relationship between all predicates
+defined or re-exported by B and predicates defined in A if they have the same
+name. Schema evolutions must form a graph with no cycles.
+
+A 'predicate evolution' is a reflexive, commutative, non-transitive
+relationship between two predicates. It means that facts from one predicate can
+be transformed into facts from the other.
+
+It is established in two cases:
+
+  - predicate P evolves predicate Q if the schema containing P evolves the
+  schema containing Q and both P and Q have the same name.
+  This is caused by a source code annotation.
+
+  - predicate P evolves predicate Q if they are defined in schemas with the
+  same SchemaRef and have the same name but different hashes.
+  This is caused by a version-less schema migration and the two instances
+  live in different ProcessedSchema.
+
+NB: Although 'predicate evolution' is not a transitive relationship, we
+expect it to work in all transitively evolved predicates because we want
+'schema evolution' to be transitive.
+
+Example of why predicate evolution is not transitive:
+  predicate P.1 = { a : maybe nat }
+  predicate P.2 = {}
+  predicate P.3 = { a : maybe string }
+
+P.2 can evolve P.1 and P.3 can evolve P.2, but P.3 cannot evolve P.1.
+-}
+
+-- | As specified by a `schema x evolves y` line.
+-- Does not take the db's content into account.
+-- value evolves key
+directSchemaEvolutions
+  :: [ResolvedSchemaRef]
+  -> Either Text (Map SchemaRef SchemaRef)
+directSchemaEvolutions schemas =
+  Map.traverseWithKey checkMultipleEvolves $
+  Map.fromListWith (++)
+    [ (evolved, [schemaRef resolved])
+    | resolved <- schemas
+    , evolved <- Set.toList $ resolvedSchemaEvolves resolved
+    ]
   where
-    evolvedByResolved new =
-        [ (oldRef, [schemaRef new])
-        | oldRef <- Set.toList $ resolvedSchemaEvolves new ]
+  checkMultipleEvolves old newList =
+    case nub newList of
+      [new] -> Right new
+      _     -> Left $ "multiple schemas evolve "
+        <> showSchemaRef old
+        <> ": "
+        <> Text.unwords (map showSchemaRef newList)
 
-    checkMultipleEvolves old newList =
-      case nub newList of
-        [new] -> Right new
-        _     -> Left $ "multiple schemas evolve "
-          <> showSchemaRef old
-          <> ": "
-          <> Text.unwords (map showSchemaRef newList)
-
-    resolvedByRef :: Map SchemaRef ResolvedSchemaRef
-    resolvedByRef = Map.fromList [(schemaRef s, s) | s <- resolved ]
-
-
-    -- Later definitions override earlier ones in case of db overrides
-    types = HashMap.unions $ reverse $ map resolvedSchemaTypes resolved
-
-    checkLawfulEvolves =
-      foldM_ (evolveOneSchema types predicateRef_name) mempty
-        [ (VisiblePredicates
-            (resolvedSchemaPredicates new)
-            (resolvedSchemaReExportedPredicates new),
-           VisiblePredicates
-            (resolvedSchemaPredicates old)
-            (resolvedSchemaReExportedPredicates old))
-        | new <- resolved
-        , oldRef <- Set.toList $ resolvedSchemaEvolves new
-        , Just old <- [Map.lookup oldRef resolvedByRef]
-        ]
-
-data VisiblePredicates p t = VisiblePredicates
-  { visiblePredicates :: HashMap p (PredicateDef_ SrcSpan p t)
-  , visibleReexported :: HashMap p (PredicateDef_ SrcSpan p t)
+data VisiblePredicates p = VisiblePredicates
+  { visibleDefined :: HashSet p
+  , visibleReexported :: HashSet p
   }
+
+visiblePredicates :: ResolvedSchemaRef -> VisiblePredicates PredicateRef
+visiblePredicates ResolvedSchema{..} = VisiblePredicates
+  { visibleDefined = HashMap.keysSet resolvedSchemaPredicates
+  , visibleReexported = HashMap.keysSet resolvedSchemaReExportedPredicates
+  }
+
+mapVisible
+  :: (Eq q, Hashable q)
+  => (p -> q)
+  -> VisiblePredicates p
+  -> VisiblePredicates q
+mapVisible f (VisiblePredicates d r) =
+  VisiblePredicates (HashSet.map f d) (HashSet.map f r)
+
+instance (Eq p, Hashable p) => Semigroup (VisiblePredicates p) where
+  VisiblePredicates d r <> VisiblePredicates d' r' =
+    VisiblePredicates (d <> d') (r <> r')
+
+instance (Eq p, Hashable p) => Monoid (VisiblePredicates p) where
+  mappend = (<>)
+  mempty = VisiblePredicates mempty mempty
+
+-- | Given evolutions between schemas and evolutions between instances of the
+-- same predicate, calculate the final instance-to-instance predicate
+-- evolutions.
+calcEvolutions
+  :: forall p. (Eq p, Ord p, Hashable p, ShowRef p)
+  => (p -> PredicateRef)
+  -> Map PredicateRef [p]          -- ^ all predicates by ref
+  -> Map SchemaRef (VisiblePredicates p) -- ^ all predicates by schema ref
+  -> Map SchemaRef SchemaRef       -- ^ evolutions from src code directives
+  -> Map PredicateRef p            -- ^ evolutions from versionless migrations
+  -> Either Text (HashMap p p)
+calcEvolutions toRef byPredRef bySchemaRef schemaEvolutions autoEvolutions =
+  case cycles evolutions of
+    [] -> Right evolutions
+    []:_ -> error "calcEvolutions"
+    (x:xs):_ -> Left $ "found a cycle in predicate evolutions: " <>
+      Text.intercalate " -> " (map showRef $ x:xs ++ [x])
+  where
+  cycles :: Ord a => HashMap a a -> [[a]]
+  cycles hm = [ cycle | CyclicSCC cycle <- scc]
+    where
+    scc = stronglyConnComp [ (k,k,[v]) | (k, v) <- HashMap.toList hm ]
+
+  evolutions = fromSourceAnnotations `HashMap.union` fromVersionlessMigrations
+
+  fromVersionlessMigrations :: HashMap p p
+  fromVersionlessMigrations = HashMap.fromList
+    [ (old, new)
+    | (ref, preds) <- Map.toList byPredRef
+    , old <- preds
+    , Just new <- [Map.lookup ref autoEvolutions]
+    , new /= old
+    ]
+
+  fromSourceAnnotations :: HashMap p p
+  fromSourceAnnotations =
+    HashMap.unions $ map (uncurry match) (Map.toList schemaEvolutions)
+
+  -- match predicates from 'new' schema to predicates from 'old' schema which
+  -- have the same name.
+  match :: SchemaRef -> SchemaRef -> HashMap p p
+  match old new = HashMap.fromList
+    [ (pold, ptarget)
+    | pnew <- HashSet.toList $ visibleDefined $ predicates new
+    , pold <- Map.findWithDefault [] (name pnew) oldByName
+    , ptarget <- [Map.findWithDefault pnew (toRef pnew) autoEvolutions]
+    ]
+    where
+    oldByName :: Map Name [p]
+    oldByName = Map.fromListWith (++)
+      [ (name id, [id])
+      | VisiblePredicates defined reexported <- [predicates old]
+        -- defined overrides reexported
+      , id <- HashSet.toList reexported <> HashSet.toList defined
+      ]
+
+  predicates :: SchemaRef -> VisiblePredicates p
+  predicates sref = Map.findWithDefault mempty sref bySchemaRef
+
+  name :: p -> Name
+  name = predicateRef_name . toRef
 
 -- | Check schemas for compatibility and map each predicate to their
 -- evolved counterpart in the the evolvedBy map.
@@ -95,97 +202,108 @@ data VisiblePredicates p t = VisiblePredicates
 --    check is performa at schema resolution time, so
 --       p = PredicateRef
 --       t = TypeRef
---       name = PredicateName
 --
 -- 2. To check compatibility between complete schemas when a new
 --    schema instance is added to the SchemaIndex. We're dealing with
 --    complete hashed schemas in this case, so
 --       p = PredicateId
 --       t = TypeId
---       name = PredicateRef
-
-evolveOneSchema
-  :: forall p t name.
-     (Eq p, ShowRef p, Hashable p,
-      Eq t, ShowRef t, Hashable t,
-      Eq name, Ord name, Hashable name)
-  => HashMap t (TypeDef_ p t)
-       -- ^ all type definitions
-  -> (p -> name)
-      -- ^ Extract the "name" from a predicate. Predicates with the same
-      -- name in the new/old schema must be compatible.
-  -> HashMap p p
-      -- ^ Existing predicate evolutions (key evolves value)
-  -> (VisiblePredicates p t, VisiblePredicates p t)
-      -- ^ (new, old) schemas
-  -> Either Text (HashMap p p)
-evolveOneSchema types predicateName evolvedBy
-    (VisiblePredicates newPreds newReExp,
-     VisiblePredicates oldPreds oldReExp) = do
-  checkBackCompatibility
-  return evolvedBy'
+--
+validateEvolutions
+  :: (Eq p, Eq t, ShowRef p, ShowRef t,
+      Hashable p, Hashable t, Pretty p, Pretty t)
+  => HashMap t (TypeDef_ p t)        -- ^ types to their definitions
+  -> HashMap p (PredicateDef_ s p t) -- ^ predicates to their definitions
+  -> HashMap p p                     -- ^ predicate evolutions
+  -> Either Text ()
+validateEvolutions types preds evolutions =
+  void $ HashMap.traverseWithKey validate evolutions
   where
-    checkBackCompatibility :: Either Text ()
-    checkBackCompatibility =
-      forM_ oldPreds $ \oldDef -> do
-        whenJust (matchNew oldDef) $ \newDef ->
-          evolveDef newDef oldDef
+    validate old new =
+      let PredicateDef _ oldKey oldVal _ = preds HashMap.! old
+          PredicateDef _ newKey newVal _ = preds HashMap.! new
+          keyErr = newKey `canEvolve'` oldKey
+          valErr = newVal `canEvolve'` oldVal
+      in
+      case keyErr <|> valErr of
+        Nothing -> Right ()
+        Just err -> Left $
+          "cannot evolve predicate " <> showRef old <>
+          " into " <> showRef new <> ": " <> err
 
-    matchNew oldDef = HashMap.lookup name newPredsByName
-      where name = predicateName $ predicateDefRef oldDef
+    canEvolve' = canEvolve types compatible
 
-    evolveDef
-      (PredicateDef ref key val _)
-      (PredicateDef _ oldkey oldval _) =
-      let
-          keyErr = key `canEvolve'` oldkey
-          valErr = val `canEvolve'` oldval
-      in case keyErr <|> valErr of
-        Nothing -> return ()
-        Just err -> throwError $
-          "cannot evolve predicate " <> showRef ref <> ": " <> err
-
-    canEvolve' :: Type_ p t -> Type_ p t -> Maybe Text
-    canEvolve' = canEvolve types evolvedBy'
-
-    -- add evolutions from current schema
-    evolvedBy' :: HashMap p p
-    evolvedBy' = foldr addEvolution evolvedBy oldPredKeys
+    compatible a b =
+      evolveToSamePredicate || versionsOfSamePredicate
       where
-        oldPredKeys = HashMap.keys (oldPreds <> oldReExp)
-        addEvolution oldPred acc =
-          case HashMap.lookup (predicateName oldPred) newPredsByName of
-            Nothing -> acc
-            Just newPred -> HashMap.insert oldPred (predicateDefRef newPred) acc
+        evolveToSamePredicate = evolved a == evolved b
+        versionsOfSamePredicate = ref a == ref b
 
-    newPredsByName :: HashMap name (PredicateDef_ SrcSpan p t)
-    newPredsByName = mapKeys predicateName (newPreds <> newReExp)
+    ref p = predicateDefRef $ preds HashMap.! p
 
-    mapKeys f = HashMap.fromList . map (first f) . HashMap.toList
+    -- get most evolved version of a predicate
+    evolved p = case HashMap.lookup p evolutions of
+      Nothing -> p
+      Just p' -> if p' == p then p else evolved p'
+
+
+-- | Create a mapping from a schema to the schema that evolves it. This will
+--  - check if any schema is evolved by multiple schemas.
+--  - check if all schema evolutions are legal.
+--
+-- If 'B evolves A' and 'C evolves A', when a query for A comes we won't
+-- know whether to serve facts from C or from B. Therefore we disallow
+-- multiple schemas to evolve a single one.
+validateResolvedEvolutions :: [ResolvedSchemaRef] -> Either Text ()
+validateResolvedEvolutions resolved = do
+  schemaEvolutions <- directSchemaEvolutions resolved
+  let autoEvolutions = mempty
+  evolutions <- calcEvolutions
+    id
+    byRef
+    bySchemaRef
+    schemaEvolutions
+    autoEvolutions
+
+  validateEvolutions types preds evolutions
+  where
+    byRef :: Map PredicateRef [PredicateRef]
+    byRef = Map.fromList [ (ref, [ref]) | ref <- HashMap.keys preds ]
+
+    bySchemaRef :: Map SchemaRef (VisiblePredicates PredicateRef)
+    bySchemaRef = Map.fromList
+      [ (schemaRef schema, visiblePredicates schema)
+      | schema <- resolved
+      ]
+
+    -- Later definitions override earlier ones in case of db overrides
+    -- (is this really the case or are overrides added to a new ProcessedSchema?)
+    preds :: HashMap PredicateRef (PredicateDef_ SrcSpan PredicateRef TypeRef)
+    preds = HashMap.unions $ reverse $ map resolvedSchemaPredicates resolved
+
+    types :: HashMap TypeRef (TypeDef_ PredicateRef TypeRef)
+    types = HashMap.unions $ reverse $ map resolvedSchemaTypes resolved
 
 data Opt = Option | FieldOpt
 
 -- | Check if a type is backward and forward compatible.
 --
--- For backward compatibility to work if predicate A depends on predicate
--- B, evolved A must depend on evolved B.  That is, the following diagram must
--- commute
+-- For backward and forward compatibility the rules are:
+--  - only add or remove fields with defaultable values
+--  - if a field referencing a predicate is changed, it must be
+--    to a compatible predicate reference.
 --
---     A --------> evolved(A)
---     |           |
---     |           | depends-on
---     ∨           ∨
---     B --------> evolved(B)
---      evolved-by
---
+-- Two predicate references are compatible if they evolve to the same predicate
+-- or have the same PredicateRef.
 canEvolve
-  :: (Eq p, Eq t, ShowRef p, ShowRef t, Hashable p, Hashable t)
+  :: (Eq p, Eq t, ShowRef p, ShowRef t,
+      Hashable p, Hashable t, Pretty p, Pretty t)
   => HashMap t (TypeDef_ p t) -- ^ type definitions
-  -> HashMap p p              -- ^ current evolutions map
+  -> (p -> p -> Bool)         -- ^ whether two predicates are compatible
   -> Type_ p t                -- ^ updated type
   -> Type_ p t                -- ^ old type
   -> Maybe Text               -- ^ compatibility error
-canEvolve types evolvedBy new old = go new old
+canEvolve types compatible new old = go new old
   where
     get ty = case HashMap.lookup ty types of
       Just v -> typeDefType v
@@ -203,7 +321,7 @@ canEvolve types evolvedBy new old = go new old
     go BooleanTy BooleanTy = Nothing
     go (ArrayTy new) (ArrayTy old) = go new old
     go (PredicateTy new) (PredicateTy old)
-      | evolved new /= evolved old = Just
+      | not (compatible new old) = Just
           $ "type changed from " <> showRef old
           <> " to " <> showRef new
       | otherwise = Nothing
@@ -215,12 +333,8 @@ canEvolve types evolvedBy new old = go new old
         unitOpt name = FieldDef name (RecordTy [])
     go (SumTy new) (SumTy old) = compareFieldList Option new old
     go (RecordTy new) (RecordTy old) = compareFieldList FieldOpt new old
-    go _ _ = Just "type changed"
-
-    -- get most evolved version of a predicate
-    evolved p = case HashMap.lookup p evolvedBy of
-      Nothing -> p
-      Just p' -> if p' == p then p else evolved p'
+    go new old = Just $ Text.pack $
+      "type changed from " <> show (pretty old) <> " to " <> show (pretty new)
 
     compareFieldList optName new old =
       removedFieldsError <|> newRequiredFieldsError <|>

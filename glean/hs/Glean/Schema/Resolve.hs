@@ -13,7 +13,6 @@ module Glean.Schema.Resolve
   , parseAndResolveSchemaCached
   , SchemaParserCache
   , resolveType
-  , resolveEvolves
   , runResolve
   , resolveQuery
   ) where
@@ -42,7 +41,7 @@ import Glean.Angle.Parser
 import Glean.Angle.Types
 import Glean.Schema.Types
 import Glean.Schema.Util
-import Glean.Schema.Evolve (resolveEvolves)
+import Glean.Schema.Evolve (validateResolvedEvolutions)
 
 type SchemaParserCache = HashMap Hash SourceSchemas
 
@@ -172,8 +171,7 @@ resolveSchema SourceSchemas{..} = runExcept $ do
       , resolvedSchemaName == "all"
       ]
 
-  -- Check whether any schema is evolved by multiple schemas.
-  _ <- either throwError return $ resolveEvolves resolved
+  liftEither $ validateResolvedEvolutions resolved
 
   return ResolvedSchemas
     { schemasHighestVersion =

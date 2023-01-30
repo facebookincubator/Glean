@@ -47,6 +47,7 @@ import Data.IntMap (IntMap)
 import qualified Data.Map as Map
 import Data.Map (Map)
 import Data.Maybe
+import Data.Set (Set)
 import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
@@ -72,8 +73,14 @@ import Glean.RTS.Traverse
 import Glean.RTS.Typecheck
 import Glean.RTS.Types as RTS
 import Glean.Angle.Types as Schema
-import Glean.Schema.Resolve
-import Glean.Schema.Evolve (evolveOneSchema, VisiblePredicates(..))
+import Glean.Schema.Evolve
+  ( validateEvolutions
+  , directSchemaEvolutions
+  , calcEvolutions
+  , visiblePredicates
+  , VisiblePredicates
+  , visibleDefined
+  , mapVisible )
 import Glean.Schema.Util (showRef, ShowRef)
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Query.Codegen.Types (QueryWithInfo(..))
@@ -325,22 +332,6 @@ mkDbSchema validate knownPids dbContent
       maxPid = maybe lowestPid (Pid . fromIntegral . fst)
         (IntMap.lookupMax byPid)
 
-      evolveTransformations = IntMap.unions
-        [ mkTransformations
-            dbContent byPid
-            (tcEnvPredicates tcEnv)
-            (schemaRefToIdEnv (procSchemaHashed proc))
-            (schemasResolved (procSchemaResolved proc))
-        | proc <- procStored : addedSchemas
-        ]
-
-      autoTransformations = IntMap.unions
-        [ mkAutoTransformations dbContent byPid
-            stored (procSchemaHashed added)
-            (tcEnvPredicates tcEnv)
-        | added <- addedSchemas
-        ]
-
       schemaEnvMap =
         Map.unions $
         map (hashedSchemaEnvs . procSchemaHashed) $
@@ -374,8 +365,12 @@ mkDbSchema validate knownPids dbContent
   forM_ (IntMap.toList legacyAllVersions) $ \(n, id) ->
     vlog 2 $ "all." <> showt n <> " = " <> unSchemaId id
 
-  let transformations = IntMap.union evolveTransformations autoTransformations
-      pruned = prune dbContent transformations (tcEnvPredicates tcEnv)
+  transformations <- failOnLeft $ mkTransformations
+    dbContent
+    (tcEnvPredicates tcEnv)
+    (SchemaIndex procStored addedSchemas)
+
+  let pruned = prune dbContent transformations (tcEnvPredicates tcEnv)
       byPid = IntMap.fromList [ (intPid p, p) | p <- HashMap.elems pruned ]
   return $ DbSchema
     { predicatesById = pruned
@@ -389,6 +384,151 @@ mkDbSchema validate knownPids dbContent
     , schemaMaxPid = maxPid
     , schemaLatestVersion = latestSchemaId
     }
+
+mkTransformations
+  :: DbContent
+  -> HashMap PredicateId PredicateDetails
+  -> SchemaIndex
+  -> Either Text (IntMap PredicateTransformation)
+mkTransformations DbWritable _ _ = Right mempty
+mkTransformations (DbReadOnly stats) byId index = do
+  manual <- calcSchemaEvolutions hasFacts bySchemaRef <$> directEvolutions index
+  auto <- calcAutoEvolutions hasFacts byPredRef
+  evolutions <- calcEvolutions predicateIdRef byPredRef bySchemaRef manual auto
+  validateEvolutions types preds evolutions
+  return $ evolutionsToTransformations evolutions
+  where
+  (types, preds) = definitions index
+
+  hasFacts id = fromMaybe False $ do
+    details <- HashMap.lookup id byId
+    let pid = predicatePid details
+    pstats <- HashMap.lookup pid stats
+    return $ predicateStats_count pstats > 0
+
+  byPredRef :: Map PredicateRef [PredicateId]
+  byPredRef = predicatesByPredicateRef index
+
+  bySchemaRef :: Map SchemaRef (VisiblePredicates PredicateId)
+  bySchemaRef = predicatesBySchemaRef index
+
+  detailsById id = HashMap.lookupDefault err id byId
+    where err = error $ "mkTransformations: " <> show (pretty id)
+
+  evolutionsToTransformations
+    :: HashMap PredicateId PredicateId
+    -> IntMap PredicateTransformation
+  evolutionsToTransformations evolutions = IntMap.fromList
+    [ (intPid , trans)
+    | (old, new) <- HashMap.toList evolutions
+    , let intPid = fromIntegral $ fromPid $ predicatePid $ detailsById old
+    , Just trans <- [mkPredicateTransformation detailsById old new]
+    ]
+
+predicatesByPredicateRef :: SchemaIndex -> Map PredicateRef [PredicateId]
+predicatesByPredicateRef (SchemaIndex curr older) =
+  Set.toList <$>
+  Map.fromListWith (<>)
+  [ (predicateIdRef pred, Set.singleton pred)
+  | processed <- curr : older
+  , pred <- HashMap.keys $ hashedPreds (procSchemaHashed processed)
+  ]
+
+predicatesBySchemaRef
+  :: SchemaIndex
+  -> Map SchemaRef (VisiblePredicates PredicateId)
+predicatesBySchemaRef (SchemaIndex curr old) =
+  Map.fromListWith (<>)
+  [ ( schemaRef resolved, visible)
+  | processed <- curr : old
+  , let env = predRefToId $ schemaRefToIdEnv $ procSchemaHashed processed
+        refToId ref =
+          HashMap.lookupDefault (error "predicatesBySchemaRef") ref env
+  , resolved <- schemasResolved $ procSchemaResolved processed
+  , let visible = mapVisible refToId (visiblePredicates resolved)
+  ]
+
+-- | Evolves relationships as per source code annotations.
+--
+-- We only consider evolution annotations in the current schema. This is so
+-- that we don't need to wait until schemas are garbage-collected to be able to
+-- remove an evolves relationship.
+directEvolutions :: SchemaIndex -> Either Text (Map SchemaRef SchemaRef)
+directEvolutions (SchemaIndex curr _) =
+  directSchemaEvolutions $ schemasResolved $ procSchemaResolved curr
+
+-- | Calculate predicate evolutions caused by version-less schema migrations.
+calcAutoEvolutions
+  :: (PredicateId -> Bool)
+  -> Map PredicateRef [PredicateId] -- ^ all SchemaIndex predicates
+  -> Either Text (Map PredicateRef PredicateId)
+calcAutoEvolutions hasFacts byRef =
+  Map.traverseMaybeWithKey choose byRef
+  where
+  -- from a list of predicates with the same PredicateRef,
+  -- choose the one that has facts in the DB.
+  choose :: PredicateRef -> [PredicateId] -> Either Text (Maybe PredicateId)
+  choose ref xs =
+    case filter hasFacts xs of
+      []  -> Right Nothing
+      [y] -> Right (Just y)
+      ys  -> Left $ Text.unwords
+        [ "db has facts for multiple instances of", showRef ref, ":"
+        , Text.unwords (showRef <$> ys)
+        ]
+
+-- | Calculate which schema should effectively evolve which by taking the DB's
+-- content into account.
+--
+-- If A.3 evolves A.2 which evolves A.1, but we only have facts for predicates
+-- from A.3, then we end-up with both A.1 and A.2 being directly evolved by
+-- A.3.
+--
+-- Schema evolutions are for the entire SchemaIndex.
+calcSchemaEvolutions
+  :: (PredicateId -> Bool)
+  -> Map SchemaRef (VisiblePredicates PredicateId)
+  -> Map SchemaRef SchemaRef
+  -> Map SchemaRef SchemaRef -- ^ value evolves key
+calcSchemaEvolutions hasFacts bySchemaRef direct =
+  Map.fromList
+    [ (ref, target)
+    | ref <- Map.keys bySchemaRef
+    , Just target <- [transformationTarget ref]
+    ]
+  where
+    -- map each schema to the schema its queries should be transformed into
+    transformationTarget :: SchemaRef -> Maybe SchemaRef
+    transformationTarget src
+      | hasFactsInDb src = Nothing
+        -- Pick closest related schema with facts in the db.
+        -- If a schema has only derived facts there is no need to
+        -- transform it since the original version will still work.
+      | otherwise =
+          find hasFactsInDb newerSchemas <|>
+          find hasFactsInDb olderSchemas
+          where
+            -- if we have 'b evolves a' and 'c evolves b'
+            -- given 'a' produces [b, c]
+            newerSchemas = close (`Map.lookup` direct) src
+            -- given 'c' produces [b, a]
+            olderSchemas = close (`Map.lookup` reverseDirect) src
+
+    reverseDirect :: Map SchemaRef SchemaRef
+    reverseDirect =
+      Map.fromList $ map swap $ Map.toList direct
+
+    hasFactsInDb :: SchemaRef -> Bool
+    hasFactsInDb sref = sref `Set.member` withFacts
+
+    withFacts :: Set SchemaRef
+    withFacts = Map.keysSet $
+      Map.filter (any hasFacts . visibleDefined) bySchemaRef
+
+close :: (a -> Maybe a) -> a -> [a]
+close next x = case next x of
+  Just y -> y : close next y
+  Nothing -> []
 
 transDetails
   :: IntMap PredicateTransformation
@@ -498,68 +638,14 @@ compareInsert thing ref id tids
       else ([thing <> " " <> showRef ref <> " has changed"], tids)
   | otherwise = ([], HashMap.insert ref id tids)
 
-detailsFor :: IntMap PredicateDetails -> Pid -> PredicateDetails
-detailsFor byId pid =
-  case IntMap.lookup (fromIntegral $ fromPid pid) byId of
-    Just details -> details
-    Nothing -> error $ "unknown pid " <> show pid
-
-mkTransformations
-  :: DbContent
-  -> IntMap PredicateDetails
-  -> HashMap PredicateId PredicateDetails
-  -> RefToIdEnv
-  -> [ResolvedSchemaRef]
-  -> IntMap PredicateTransformation
-mkTransformations DbWritable _ _ _ _ = mempty
-mkTransformations (DbReadOnly stats) byId byRef refToId resolved =
-  IntMap.fromList
-    [ (fromIntegral (fromPid old), evolution)
-    | (old, new) <- Map.toList $
-        transformedPredicates stats byRef refToId resolved
-    , Just evolution <- [mkTransformation old new]
-    ]
-  where
-    mkTransformation old new =
-      mkPredicateTransformation (detailsFor byId) old new
-
--- | Automatically transform predicates between the stored schema and
--- a global schema.
-mkAutoTransformations
-  :: DbContent
-  -> IntMap PredicateDetails
-  -> HashedSchema
-  -> HashedSchema
-  -> HashMap PredicateId PredicateDetails
-  -> IntMap PredicateTransformation
-mkAutoTransformations DbWritable _ _ _ _ = mempty
-mkAutoTransformations (DbReadOnly stats) byPid stored added byId =
-  IntMap.fromList
-    [ (fromIntegral (fromPid newPid), evolution)
-    | id <- HashMap.keys (hashedPreds stored)
-    , Just details <- [HashMap.lookup id byId]
-    , Just newId <- [HashMap.lookup (predicateIdRef id)
-        (predRefToId (schemaRefToIdEnv added))]
-    , id /= newId
-    , let pid = predicatePid details
-    , predicateHasFactsInDb pid
-    , Just newDetails <- [HashMap.lookup newId byId]
-    , let newPid = predicatePid newDetails
-    , Just evolution <-
-        [mkPredicateTransformation (detailsFor byPid) newPid pid]
-    ]
-  where
-    predicateHasFactsInDb :: Pid -> Bool
-    predicateHasFactsInDb id = factCount > 0
-      where factCount = maybe 0 predicateStats_count (HashMap.lookup id stats)
-
 mkPredicateTransformation
-  :: (Pid -> PredicateDetails)
-  -> Pid
-  -> Pid
+  :: Eq id
+  => (id -> PredicateDetails)
+  -> id
+  -> id
   -> Maybe PredicateTransformation
-mkPredicateTransformation detailsFor requestedPid availablePid
-  | requestedPid == availablePid = Nothing
+mkPredicateTransformation detailsFor requestedId availableId
+  | requestedId == availableId = Nothing
   | otherwise = Just PredicateTransformation
     { tRequested = pidRef requested
     , tAvailable = pidRef available
@@ -572,114 +658,8 @@ mkPredicateTransformation detailsFor requestedPid availablePid
   where
       key = predicateKeyType
       val = predicateValueType
-      available = detailsFor availablePid
-      requested = detailsFor requestedPid
-
--- ^ Create a map of which should be transformed into which
-transformedPredicates
-  :: HashMap Pid PredicateStats
-  -> HashMap PredicateId PredicateDetails
-  -> RefToIdEnv
-  -> [ResolvedSchemaRef]
-  -> Map Pid Pid -- ^ when key pred is requested, get value pred from db
-transformedPredicates stats byRef refToId resolved =
-  HashMap.foldMapWithKey mapPredicates schemaTransformations
-  where
-    schemaTransformations :: HashMap SchemaRef SchemaRef
-    schemaTransformations = HashMap.fromList
-      [ (requested, available)
-      | requested <- map schemaRef resolved
-      , Just available <- [transformationTarget requested]
-      ]
-
-    -- map each schema to the schema its queries should be transformed into
-    transformationTarget :: SchemaRef -> Maybe SchemaRef
-    transformationTarget src
-      | hasFactsInDb src = Nothing
-        -- Pick closest related schema with facts in the db.
-        -- If a schema has only derived facts there is no need to
-        -- transform it since the original version will still work.
-      | otherwise =
-          find hasFactsInDb newerSchemas <|>
-          find hasFactsInDb olderSchemas
-          where
-            -- if we have 'b evolves a' and 'c evolves b'
-            -- given 'a' produces [b, c]
-            newerSchemas = close directEvolves src
-            -- given 'c' produces [b, a]
-            olderSchemas = close reverseDirectEvolves src
-
-    close :: (Hashable a, Eq a) => HashMap a a -> a -> [a]
-    close m x = case HashMap.lookup x m of
-        Just y -> y : close m y
-        Nothing -> []
-
-    -- as specified by a `schema x evolves y` line
-    directEvolves :: HashMap SchemaRef SchemaRef
-    directEvolves = either (error . show) id (resolveEvolves resolved)
-
-    reverseDirectEvolves :: HashMap SchemaRef SchemaRef
-    reverseDirectEvolves =
-      HashMap.fromList $ map swap $ HashMap.toList directEvolves
-
-    hasFactsInDb :: SchemaRef -> Bool
-    hasFactsInDb sref = fromMaybe False $ do
-      schema <- find ((sref ==) . schemaRef) resolved
-      let definedPreds = map predicatePid
-            $ mapMaybe (`HashMap.lookup` byRef)
-            $ mapMaybe ((`HashMap.lookup` (predRefToId refToId)) . predicateDefRef)
-            $ HashMap.elems
-            $ resolvedSchemaPredicates schema
-      return $ any predicateHasFactsInDb definedPreds
-
-    predicateHasFactsInDb :: Pid -> Bool
-    predicateHasFactsInDb id = factCount > 0
-      where factCount = maybe 0 predicateStats_count (HashMap.lookup id stats)
-
-    pid (PidRef x _) = x
-
-    mapPredicates
-      :: SchemaRef
-      -> SchemaRef
-      -> Map Pid Pid
-    mapPredicates requestedRef availableRef = Map.fromList
-      [ (pid requested, pid available)
-      | (name, requested) <- Map.toList (exports requestedRef)
-      -- we don't transform derived predicates, only their derivation query.
-      , not (isDerivedPred requested)
-      , Just available <- return $ Map.lookup name (exports availableRef)
-      ]
-
-    isDerivedPred :: PidRef -> Bool
-    isDerivedPred (PidRef _ ref) =
-      case predicateDeriving details of
-        NoDeriving -> False
-        Derive _ _ -> True
-      where
-        details = case HashMap.lookup ref byRef of
-          Nothing -> error $ "unknown predicate " <> show ref
-          Just details -> details
-
-    exports :: SchemaRef -> Map Name PidRef
-    exports sref = HashMap.lookupDefault mempty sref exportsBySchemaRef
-
-    exportsBySchemaRef :: HashMap SchemaRef (Map Name PidRef)
-    exportsBySchemaRef = HashMap.fromListWith choose
-      [ (schemaRef schema, exportsResolved schema )
-      | schema <- resolved ]
-      where
-        choose new _old = new
-
-    exportsResolved :: ResolvedSchemaRef -> Map Name PidRef
-    exportsResolved schema = Map.fromList
-      [ (predicateRef_name (predicateIdRef id),
-          PidRef (predicatePid details) id)
-      | ref <- map predicateDefRef $ HashMap.elems $
-          resolvedSchemaPredicates schema
-          <> resolvedSchemaReExportedPredicates schema
-      , Just id <- [HashMap.lookup ref (predRefToId refToId)]
-      , Just details <- return $ HashMap.lookup id byRef
-      ]
+      available = detailsFor availableId
+      requested = detailsFor requestedId
 
 {- Note [Negation in stored predicates]
 
@@ -904,29 +884,70 @@ validateNewSchema ServerConfig.Config{..} newSrc current = do
     checkChanges
     readWriteContent
 
+failOnLeft :: Either Text a -> IO a
+failOnLeft = \case
+  Right x -> return x
+  Left err -> throwIO $ ErrorCall $ Text.unpack err
+
 -- | Check that the current schema in the SchemaIndex is compatible
 -- with each of the older schema instances. This is the validity check
 -- when adding a new schema instance.
---
--- We currently don't allow mixing evolves annotations with automatic schema
--- evolutions over different schema instances. This could be supported in the
--- future but given it isn't implemented it is forbidden.
 validateNewSchemaInstance :: SchemaIndex -> IO ()
-validateNewSchemaInstance schema = do
-  let hashedNew = procSchemaHashed (schemaIndexCurrent schema)
-  forM_ (schemaIndexOlder schema) $ \old -> do
-    let
-      hashedOld = procSchemaHashed old
-      types = HashMap.union (hashedTypes hashedOld) (hashedTypes hashedNew)
-      newDefs = VisiblePredicates (hashedPreds hashedNew) HashMap.empty
-      oldDefs = VisiblePredicates (hashedPreds hashedOld) HashMap.empty
-    case evolveOneSchema types predicateIdRef mempty (newDefs, oldDefs) of
-      Left err -> throwIO $ ErrorCall $ unlines
-        [ Text.unpack err
-        , ""
-        , "NB: evolves annotations are not considered when checking" ++
-          " schema compatibility." ]
-      Right{} -> return ()
+validateNewSchemaInstance index@(SchemaIndex curr _) = failOnLeft $ do
+  let auto = Map.fromList
+        [ (predicateIdRef id, id)
+        | id <- HashMap.keys $ hashedPreds $ procSchemaHashed curr ]
+
+  direct <- directEvolutions index
+  evolutions <- calcEvolutions
+    predicateIdRef
+    (predicatesByPredicateRef index)
+    (predicatesBySchemaRef index)
+    direct
+    auto
+
+  if performExhaustiveCheck
+    then validateEvolutions types preds (transitive evolutions)
+    else validateEvolutions types preds evolutions
+  where
+  (types, preds) = definitions index
+
+  -- I P evolves Q and Q evolves R, we expect that `P evolves R` to work. If Q
+  -- removes a field from R and P adds it again with a different type then `P
+  -- evolves R` will not hold.
+  --
+  -- This flag controls whether we should check for compatibility with all
+  -- transitively evolved predicates. For now we don't have an efficient way to
+  -- perform the check. This is O(n^2), and therefore off by default.
+  performExhaustiveCheck = False
+
+  -- add transitive relations explicitly to the map
+  --    HashMap.fromList [(1,2),(2,3)]
+  -- becomes
+  --    HashMap.fromList [(1,2),(2,3),(1,3)]
+  transitive :: (Hashable a, Eq a) => HashMap a a -> HashMap a a
+  transitive m = HashMap.fromList
+    [ (key, val)
+    | key <- HashMap.keys m
+    , val <- close (`HashMap.lookup` m) key
+    ]
+
+
+definitions
+  :: SchemaIndex
+  -> (HashMap TypeId TypeDef, HashMap PredicateId PredicateDef)
+definitions (SchemaIndex curr older) = (types, preds)
+  where
+  preds :: HashMap PredicateId PredicateDef
+  preds = HashMap.fromList
+      [ (id, def)
+      | processed <- curr : older
+      , (id, def) <- HashMap.toList $ hashedPreds $ procSchemaHashed processed
+      ]
+
+  types  :: HashMap TypeId TypeDef
+  types = HashMap.unions $ hashedTypes . procSchemaHashed <$> (curr : older)
+
 
 -- | Interrogate the schema associated with a DB
 getSchemaInfo :: DbSchema -> SchemaIndex -> GetSchemaInfo -> IO SchemaInfo

@@ -138,7 +138,8 @@ schemaEvolves = TestList
       assertBool "throws error stating missing field" $
         case r of
           Left err ->
-            "cannot evolve predicate test.P.2: missing required field: b"
+            ("cannot evolve predicate test.P.1 " <>
+              "into test.P.2: missing required field: b")
             `isInfixOf` show err
           Right _ -> False
 
@@ -421,8 +422,7 @@ schemaEvolves = TestList
     withSchema latestAngleVersion
       [s|
         schema x.1 {
-          predicate P : { x : nat }
-          predicate Q : { x : P }
+          predicate P : { a : string }
         }
 
         schema x.2 : x.1  {
@@ -430,17 +430,20 @@ schemaEvolves = TestList
         schema x.2 evolves x.1
 
         schema x.3 {
-          predicate P : { x: nat, y: nat }
-          predicate Q : { x: P }
+          predicate P : { a: nat }
         }
         schema x.3 evolves x.2
         schema all.1 : x.1, x.2, x.3 {}
       |]
       $ \r ->
-      assertBool "succeeds creating schema" $
+      -- should try to make x.P.3 evolve x.P.1
+      assertBool "throws error stating missing field" $
         case r of
-          Right _ -> True
-          Left _ -> False
+          Left err ->
+            ("cannot evolve predicate x.P.1 into x.P.3: " <>
+              "in field 'a', type changed")
+            `isInfixOf` show err
+          Right _ -> False
   ]
 
 schemaEvolvesTransformations :: Test
