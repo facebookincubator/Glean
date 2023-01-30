@@ -436,6 +436,7 @@ library core
         Glean.Query.Angle
         Glean.Repo.Text
         Glean.Schema.Resolve
+        Glean.Schema.Evolve
         Glean.Schema.Types
         Glean.Schema.Util
 
