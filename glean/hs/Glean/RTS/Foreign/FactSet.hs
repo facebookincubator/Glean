@@ -127,11 +127,12 @@ renameFacts
   -> l                  -- ^ where to lookup facts
   -> Fid                -- ^ first free fact id in the database
   -> Thrift.Batch       -- ^ batch to rename
+  -> Bool               -- ^ is trusted batch or not
   -> IO (FactSet, Subst)
                         -- ^ resulting facts and substitution
-renameFacts inventory base next batch = do
+renameFacts inventory base next batch trusted = do
   added <- new next
-  subst <- defineUntrustedBatch (stacked base added) inventory batch
+  subst <- defineBatch (stacked base added) inventory batch trusted
   return (added, subst)
 
 foreign import ccall unsafe glean_factset_new

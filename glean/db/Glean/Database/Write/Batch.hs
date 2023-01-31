@@ -85,7 +85,12 @@ writeDatabase env repo (WriteContent factBatch maybeOwn) latency =
                   logExceptions (\s -> inRepo repo $ "rename error: " ++ s) $
                   Stats.tick (envStats env) Stats.renameThroughput real_size $
                   withLookupCache repo writing lookup $ \cache ->
-                    renameBatch (schemaInventory odbSchema) cache writing batch
+                    renameBatch
+                      (schemaInventory odbSchema)
+                      cache
+                      writing
+                      batch
+                      deduped
                 )
                 (\(facts, _) -> release facts)
                   -- release the FactSet now that we're done with it,
@@ -131,6 +136,7 @@ writeDatabase env repo (WriteContent factBatch maybeOwn) latency =
                   snapshot
                   next_id
                   factBatch
+                  False
             )
             (\(deduped_facts, _) -> release deduped_facts)
               -- release the FactSet now that we're done with it, don't wait for
@@ -181,10 +187,11 @@ renameBatch
   -> l
   -> Writing
   -> Thrift.Batch
+  -> Bool
   -> IO (FactSet, Subst)
-renameBatch inventory lookup Writing{..} batch = do
+renameBatch inventory lookup Writing{..} batch trusted = do
   next_id <- readIORef wrNextId
-  (facts, subst) <- FactSet.renameFacts inventory lookup next_id batch
+  (facts, subst) <- FactSet.renameFacts inventory lookup next_id batch trusted
   new_next_id <- Lookup.firstFreeId facts
   atomicWriteIORef wrNextId new_next_id
   return (facts, subst)

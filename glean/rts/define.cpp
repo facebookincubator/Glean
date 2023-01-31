@@ -17,13 +17,14 @@ namespace rts {
 
 /// Define all new facts in a Batch. The substition is used and updated
 /// with the new facts. The facts are typechecked based on the inventory.
-Substitution defineUntrustedBatch(
+Substitution defineBatch(
     Define& def,
     const Inventory& inventory,
     Id first,
     const Id * FOLLY_NULLABLE ids,   // nullptr if there are no named facts
     size_t count,
-    folly::ByteRange batch) {
+    folly::ByteRange batch,
+    bool isTrusted) {
   if (first < Id::lowest()) {
     error("invalid base id {} in batch", first);
   }
@@ -37,6 +38,15 @@ Substitution defineUntrustedBatch(
   Id max_ref;
   const auto rename = syscall([&](Id id, Pid type) {
     const auto real_id = subst.subst(folly::get_default(idmap, id, id));
+    // If this is a trusted batch, the previous run (deduplication) should
+    // have already performed the validation. Don't call typeById().
+    if (isTrusted) {
+      if (real_id > max_ref) {
+        max_ref = real_id;
+      }
+      return real_id;
+    }
+
     auto real_type = def.typeById(real_id);
     if (real_type == type) {
       if (real_id > max_ref) {

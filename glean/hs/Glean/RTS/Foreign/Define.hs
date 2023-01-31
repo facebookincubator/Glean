@@ -11,7 +11,7 @@ module Glean.RTS.Foreign.Define
   , CanDefine(..)
   , InvalidRedefinition(..)
   , defineFact
-  , defineUntrustedBatch
+  , defineBatch
   ) where
 
 import Control.Exception
@@ -23,6 +23,7 @@ import Foreign.C.String
 import Foreign.C.Types
 import Foreign.Ptr
 import Foreign.Storable
+import Foreign.Marshal.Utils (fromBool)
 
 import Util.FFI
 
@@ -59,18 +60,19 @@ defineFact facts pred clause key_size =
 
 -- Prepare a Thrift batch for writing into the database by renaming and
 -- deduplicating facts.
-defineUntrustedBatch
+defineBatch
   :: CanDefine a
   => a                  -- ^ where to define facts
   -> Inventory          -- ^ inventory
   -> Thrift.Batch       -- ^ batch to rename
+  -> Bool               -- ^ is batch trusted
   -> IO Subst           -- ^ resulting substitution
-defineUntrustedBatch facts inventory batch =
+defineBatch facts inventory batch is_trusted =
   withDefine facts $ \p_facts ->
   with inventory $ \p_inventory ->
   withIds $ \ids_ptr ->
   unsafeWithBytes (Thrift.batch_facts batch) $ \facts_ptr facts_size ->
-    construct $ invoke $ glean_define_untrusted_batch
+    construct $ invoke $ glean_define_batch
       p_facts
       p_inventory
       (Fid $ Thrift.batch_firstId batch)
@@ -78,6 +80,7 @@ defineUntrustedBatch facts inventory batch =
       (fromIntegral $ Thrift.batch_count batch)
       facts_ptr
       facts_size
+      (fromBool is_trusted)
   where
     withIds f
       | Just ids <- Thrift.batch_ids batch =
@@ -95,7 +98,7 @@ foreign import ccall unsafe glean_define_fact
   -> Ptr Fid
   -> IO CString
 
-foreign import ccall safe glean_define_untrusted_batch
+foreign import ccall safe glean_define_batch
   :: Define
   -> Ptr Inventory
   -> Fid
@@ -103,5 +106,6 @@ foreign import ccall safe glean_define_untrusted_batch
   -> CSize
   -> Ptr ()
   -> CSize
+  -> CBool
   -> Ptr (Ptr Subst)
   -> IO CString

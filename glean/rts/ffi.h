@@ -252,7 +252,7 @@ const char *glean_define_fact(
   glean_fact_id_t *id
 );
 
-const char *glean_define_untrusted_batch(
+const char *glean_define_batch(
   Define *facts,
   Inventory *inventory,
   int64_t batch_first_id,
@@ -260,6 +260,7 @@ const char *glean_define_untrusted_batch(
   size_t batch_count,
   const void *batch_facts_data,
   size_t batch_facts_size,
+  bool is_trusted,
   Substitution **subst
 );
 

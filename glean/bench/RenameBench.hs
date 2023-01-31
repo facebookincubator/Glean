@@ -33,6 +33,7 @@ main = benchmarkMain $ \run ->
         empty_lookup
         lowestFid
         batch
+        False
 
   _ <- rename
 

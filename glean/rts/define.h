@@ -34,14 +34,14 @@ struct Define : Lookup {
 
 /// Define all new facts in a batch, returning the resulting substitution. The
 /// facts are typechecked based on the inventory.
-Substitution defineUntrustedBatch(
+Substitution defineBatch(
   Define& define,
   const Inventory& inventory,
   Id first,
   const Id * FOLLY_NULLABLE ids,   // nullptr if there are no named facts
   size_t count,
-  folly::ByteRange batch);
-
+  folly::ByteRange batch,
+  bool isTrusted = false);
 }
 }
 }

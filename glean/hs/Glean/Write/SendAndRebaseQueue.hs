@@ -117,7 +117,7 @@ rebase inventory batch cache base = do
   LookupCache.withCache Lookup.EmptyLookup cache LookupCache.LRU $ \lookup -> do
     factSet <- Lookup.firstFreeId base >>= FactSet.new
     let define = stacked (stacked lookup base) factSet
-    subst <- defineUntrustedBatch define inventory batch
+    subst <- defineBatch define inventory batch False
     let owned = substOwnership subst (Thrift.batch_owned batch)
     nextId <- Lookup.firstFreeId factSet
     return (factSet, Ownership owned nextId)
