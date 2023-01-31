@@ -1187,6 +1187,7 @@ library glass-lib
         Glean.Glass.Pretty.Flow
         Glean.Glass.Pretty.Hack
         Glean.Glass.Pretty.LSIF
+        Glean.Glass.Pretty.Python
         Glean.Glass.Query
         Glean.Glass.Query.Cxx
         Glean.Glass.Range
