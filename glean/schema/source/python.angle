@@ -517,5 +517,3 @@ predicate SearchByLocalName:
     python.NameToSName Name -> { local_name = python.Name NameStr };
 
 } # python.4
-
-schema python.4 evolves python.3
