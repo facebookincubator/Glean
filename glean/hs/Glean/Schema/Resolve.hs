@@ -171,7 +171,8 @@ resolveSchema SourceSchemas{..} = runExcept $ do
       , resolvedSchemaName == "all"
       ]
 
-  liftEither $ validateResolvedEvolutions resolved
+  when (srcAngleVersion >= 6) $
+    liftEither $ validateResolvedEvolutions resolved
 
   return ResolvedSchemas
     { schemasHighestVersion =

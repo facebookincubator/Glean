@@ -577,7 +577,7 @@ latestSupportedAngleVersion :: AngleVersion
 latestSupportedAngleVersion = 5
 
 latestAngleVersion :: AngleVersion
-latestAngleVersion = 5
+latestAngleVersion = 6
 
 -- -----------------------------------------------------------------------------
 -- Pretty-printing
