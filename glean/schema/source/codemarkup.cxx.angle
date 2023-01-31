@@ -515,10 +515,6 @@ predicate CxxDefinitionExtendsParent:
       cxx1.RecordDefinition { bases = BS } = C;
       cxx1.RecordBase { base = P } = BS[..];
       CxxResolveDeclarationToEntity { { record_ = P }, Parent }
-    ) | (
-      ( { function_ = _ } | { objcContainer = _ } ) = Child;
-      cxx1.DefToBaseDecl { Child, C };
-      CxxDeclarationExtendsParent { C, Parent }
     )
 
 predicate CxxDeclarationExtendsParent:
