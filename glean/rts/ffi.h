@@ -181,6 +181,7 @@ const char *glean_lookupcache_clear(
 const char *glean_lookupcache_anchor_new(
   Lookup *base,
   LookupCache *cache,
+  int replacementPolicy,
   Lookup **anchor
 );
 void glean_lookupcache_anchor_free(

@@ -7,7 +7,7 @@
 -}
 
 module Glean.RTS.Foreign.LookupCache
- ( LookupCache, new, clear, withCache
+ ( LookupCache, new, clear, withCache, ReplacementPolicy(..)
  , Stats, StatValues, Stat(..)
  , isCounter, getStat, newStats, readStatsAndResetCounters
  )
@@ -28,6 +28,12 @@ import Util.FFI
 import Glean.FFI
 import Glean.RTS.Foreign.Lookup
 
+-- NOTE: This must be kept in sync with the ReplacementPolicy in rts/cache.h
+data ReplacementPolicy
+  = LRU  -- evict least-recently-used entries
+  | FIFO -- evict the oldest entries. Faster with many concurrent clients
+  deriving(Eq,Ord,Enum,Bounded,Show)
+
 newtype LookupCache = LookupCache (ForeignPtr LookupCache)
 
 instance Object LookupCache where
@@ -39,12 +45,21 @@ instance Object LookupCache where
 -- the user's responsibility to ensure that the 'Lookup's are morally the same
 -- throughout the cache's lifetime (such as different instances of the same
 -- database).
-withCache :: CanLookup base => base -> LookupCache -> (Lookup -> IO a) -> IO a
-withCache base cache f =
+withCache
+  :: CanLookup base
+  => base
+  -> LookupCache
+  -> ReplacementPolicy
+  -> (Lookup -> IO a)
+  -> IO a
+withCache base cache replacement_policy f =
   withLookup base $ \base_lookup ->
   with cache $ \cache_ptr ->
   bracket
-    (invoke $ glean_lookupcache_anchor_new base_lookup cache_ptr)
+    (invoke $ glean_lookupcache_anchor_new
+      base_lookup
+      cache_ptr
+      (fromEnum replacement_policy))
     glean_lookupcache_anchor_free
     (\p -> f (Lookup p ("anchor:" <> lookupName base)))
 
@@ -154,6 +169,7 @@ foreign import ccall safe glean_lookupcache_clear
 foreign import ccall unsafe glean_lookupcache_anchor_new
   :: Ptr Lookup
   -> Ptr LookupCache
+  -> Int
   -> Ptr (Ptr Lookup)
   -> IO CString
 foreign import ccall unsafe glean_lookupcache_anchor_free

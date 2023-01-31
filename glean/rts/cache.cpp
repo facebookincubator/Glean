@@ -109,7 +109,9 @@ Id LookupCache::Anchor::idByKey(Pid type, folly::ByteRange key) {
     if (i != rindex->keys.end()) {
       const auto fact = *i;
       const auto id = fact->id();
-      cache->touch(std::move(rindex), fact);
+      if (replacementPolicy == ReplacementPolicy::LRU) {
+        cache->touch(std::move(rindex), fact);
+      }
       return id;
     } else {
       return Id::invalid();
@@ -137,7 +139,9 @@ Pid LookupCache::Anchor::typeById(Id id) {
     if (i != rindex->ids.end()) {
       const auto fact = *i;
       const auto ty = fact->type();
-      cache->touch(std::move(rindex), fact);
+      if (replacementPolicy == ReplacementPolicy::LRU) {
+        cache->touch(std::move(rindex), fact);
+      }
       return ty;
     } else {
       return Pid::invalid();
@@ -171,7 +175,11 @@ bool LookupCache::Anchor::factById(
       //
       // We might consider finer-grained locking if this becomes an issue.
       folly::SharedMutex::ReadHolder dont_delete(rindex->delete_lock);
-      cache->touch(std::move(rindex), fact);
+      if (replacementPolicy == ReplacementPolicy::LRU) {
+        cache->touch(std::move(rindex), fact);
+      } else {
+        rindex.unlock();
+      }
       f(fact->type(), fact->clause());
       return true;
     } else {

@@ -114,7 +114,7 @@ rebase
   -> FactSet.FactSet
   -> IO (FactSet.FactSet, Ownership)
 rebase inventory batch cache base = do
-  LookupCache.withCache Lookup.EmptyLookup cache $ \lookup -> do
+  LookupCache.withCache Lookup.EmptyLookup cache LookupCache.LRU $ \lookup -> do
     factSet <- Lookup.firstFreeId base >>= FactSet.new
     let define = stacked (stacked lookup base) factSet
     subst <- defineUntrustedBatch define inventory batch

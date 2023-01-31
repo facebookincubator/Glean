@@ -173,7 +173,7 @@ withLookupCache repo Writing{..} lookup f = do
         | otherwise -> return $ dbError repo $
           "base lookup mismatch: prev: " <> Text.unpack prevName <>
           ", new: " <> Text.unpack baseName
-  LookupCache.withCache lookup wrLookupCache f
+  LookupCache.withCache lookup wrLookupCache LookupCache.FIFO f
 
 renameBatch
   :: Lookup.CanLookup l

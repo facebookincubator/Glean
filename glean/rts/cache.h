@@ -122,9 +122,15 @@ public:
 
   // LookupCache paired with a base Lookup for looking up facts
   struct Anchor : Lookup {
-    Anchor(Lookup *b, LookupCache *c)
-      : base(b), cache(c)
-      {}
+    enum class ReplacementPolicy {
+      LRU, // evict least-recently-used entries
+      FIFO // evict the oldest entries. Faster with many concurrent clients.
+    };
+    Anchor(
+        Lookup* b,
+        LookupCache* c,
+        ReplacementPolicy replacementPolicy = ReplacementPolicy::LRU)
+        : base(b), cache(c), replacementPolicy(replacementPolicy) {}
 
     Id idByKey(Pid type, folly::ByteRange key) override;
     Pid typeById(Id id) override;
@@ -152,12 +158,16 @@ public:
 
     Lookup *base;
     LookupCache *cache;
+    const ReplacementPolicy replacementPolicy;
   };
 
   friend struct Anchor;
 
-  Anchor anchor(Lookup *base) {
-    return Anchor(base, this);
+  Anchor anchor(
+      Lookup* base,
+      Anchor::ReplacementPolicy replacementPolicy =
+          Anchor::ReplacementPolicy::LRU) {
+    return Anchor(base, this, replacementPolicy);
   }
 
   // Execute a bulk loading function which takes a 'Store&' argument. The cache

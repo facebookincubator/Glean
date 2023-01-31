@@ -211,12 +211,16 @@ const char *glean_lookupcache_clear(LookupCache *cache) {
   });
 }
 
-const char *glean_lookupcache_anchor_new(
-    Lookup *base,
-    LookupCache *cache,
-    Lookup **anchor) {
+const char* glean_lookupcache_anchor_new(
+    Lookup* base,
+    LookupCache* cache,
+    int replacementPolicy,
+    Lookup** anchor) {
   return ffi::wrap([=] {
-    *anchor = new LookupCache::Anchor(cache->anchor(base));
+    *anchor = new LookupCache::Anchor(cache->anchor(
+        base,
+        static_cast<LookupCache::Anchor::ReplacementPolicy>(
+            replacementPolicy)));
   });
 }
 
