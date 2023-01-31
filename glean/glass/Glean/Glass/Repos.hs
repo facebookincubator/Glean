@@ -208,6 +208,8 @@ filetype (Path file)
   | ".cinc" `Text.isSuffixOf` file = Just Language_Python
   | ".cconf" `Text.isSuffixOf` file = Just Language_Python
   | ".mcconf" `Text.isSuffixOf` file = Just Language_Python
+  | ".ctest" `Text.isSuffixOf` file = Just Language_Python
+  | ".thrift-cvalidator" `Text.isSuffixOf` file = Just Language_Python
 
   | ".thrift" `Text.isSuffixOf` file = Just Language_Thrift
 
