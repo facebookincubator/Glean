@@ -129,7 +129,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 16
+                        "lineEnd": 21
                     },
                     "repository": "test"
                 },
@@ -146,7 +146,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 16
+                        "lineEnd": 21
                     },
                     "repository": "test"
                 },
@@ -155,7 +155,18 @@
                 "visibility": 20
             },
             {
-                "comments": [],
+                "comments": [
+                    {
+                        "filepath": "as.py",
+                        "range": {
+                            "columnBegin": 5,
+                            "columnEnd": 8,
+                            "lineBegin": 10,
+                            "lineEnd": 13
+                        },
+                        "repository": "test"
+                    }
+                ],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -176,7 +187,7 @@
                         "columnBegin": 1,
                         "columnEnd": 21,
                         "lineBegin": 9,
-                        "lineEnd": 11
+                        "lineEnd": 15
                     },
                     "repository": "test"
                 },
@@ -194,7 +205,7 @@
                         "columnBegin": 1,
                         "columnEnd": 21,
                         "lineBegin": 9,
-                        "lineEnd": 11
+                        "lineEnd": 15
                     },
                     "repository": "test"
                 },
@@ -203,6 +214,12 @@
                 "visibility": 20
             },
             {
+                "annotations": [
+                    {
+                        "name": "@staticmethod",
+                        "source": "@staticmethod"
+                    }
+                ],
                 "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
@@ -223,13 +240,14 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 13,
-                        "lineBegin": 14,
-                        "lineEnd": 15
+                        "lineBegin": 19,
+                        "lineEnd": 20
                     },
                     "repository": "test"
                 },
                 "modifiers": [
-                    3
+                    3,
+                    4
                 ],
                 "name": {
                     "container": "as",
@@ -243,8 +261,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 13,
-                        "lineBegin": 14,
-                        "lineEnd": 15
+                        "lineBegin": 19,
+                        "lineEnd": 20
                     },
                     "repository": "test"
                 },
@@ -839,7 +857,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 16
+                        "lineEnd": 21
                     },
                     "repository": "test"
                 },
@@ -869,7 +887,7 @@
                         "columnBegin": 1,
                         "columnEnd": 21,
                         "lineBegin": 9,
-                        "lineEnd": 11
+                        "lineEnd": 15
                     },
                     "repository": "test"
                 },
@@ -898,8 +916,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 13,
-                        "lineBegin": 14,
-                        "lineEnd": 15
+                        "lineBegin": 19,
+                        "lineEnd": 20
                     },
                     "repository": "test"
                 },

@@ -1,0 +1,27 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "func": { "key": { "name": { "key": "all.fn" } } } }
+        }
+      },
+      "file": { "key": "all.py" },
+      "span": { "length": 49, "start": 312 }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "big_lib.big_func" } } }
+          }
+        }
+      },
+      "file": { "key": "big_lib/__init__.py" },
+      "span": { "length": 101, "start": 259 }
+    }
+  }
+]

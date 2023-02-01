@@ -10,6 +10,12 @@ big_var = 0
 
 
 def big_func():
+    """A summary
+
+    A comment goes here.
+    A comment goes there.
+    A comment over here too.
+    """
     return big_var
 
 

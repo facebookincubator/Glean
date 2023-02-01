@@ -510,6 +510,9 @@ predicate EntityDocumentation:
     ) | (
       { flow = D } = E;
       codemarkup.flow.FlowEntityDocumentation { D, F, S }
+    ) | (
+      { python = D } = E;
+      codemarkup.python.PythonEntityDocumentation { D, F, S }
     )
 
 # end

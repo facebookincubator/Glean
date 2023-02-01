@@ -14,7 +14,7 @@
   {
     "key": {
       "file": { "key": "all.py" },
-      "span": { "length": 8, "start": 359 },
+      "span": { "length": 8, "start": 413 },
       "target": {
         "python": {
           "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
@@ -25,7 +25,7 @@
   {
     "key": {
       "file": { "key": "all.py" },
-      "span": { "length": 8, "start": 408 },
+      "span": { "length": 8, "start": 462 },
       "target": {
         "python": {
           "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }

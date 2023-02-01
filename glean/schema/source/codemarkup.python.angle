@@ -206,6 +206,21 @@ predicate PythonEntityInfo:
   { E, { kind = K, isAbstract = false }} where
     PythonEntityKind { entity = E, kind = K }
 
+# docstrings are only attached to definitions
+predicate PythonEntityDocumentation :
+  {
+    entity : code.python.Entity,
+    file : src.File,
+    span : src.ByteSpan
+  }
+  { { decl = Decl }, File, Span } where
+    python.DeclarationDefinition { Decl, Defn };
+    ( { cls = { docstring = { just = Docs } } } = Defn) | (
+      { func = { docstring = { just = Docs } } } = Defn) | (
+      { module = { docstring = { just = Docs } } } = Defn );
+    python.DefinitionLocation { definition = Defn, file = File };
+    { location = Span } = Docs
+
 #
 # Relations
 #

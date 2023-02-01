@@ -3,6 +3,12 @@
     {
         "symbolDetails": [
             {
+                "annotations": [
+                    {
+                        "name": "@staticmethod",
+                        "source": "@staticmethod"
+                    }
+                ],
                 "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
@@ -23,13 +29,14 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 13,
-                        "lineBegin": 14,
-                        "lineEnd": 15
+                        "lineBegin": 19,
+                        "lineEnd": 20
                     },
                     "repository": "test"
                 },
                 "modifiers": [
-                    3
+                    3,
+                    4
                 ],
                 "name": {
                     "container": "as",
@@ -43,8 +50,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 13,
-                        "lineBegin": 14,
-                        "lineEnd": 15
+                        "lineBegin": 19,
+                        "lineEnd": 20
                     },
                     "repository": "test"
                 },
@@ -69,8 +76,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 13,
-                        "lineBegin": 14,
-                        "lineEnd": 15
+                        "lineBegin": 19,
+                        "lineEnd": 20
                     },
                     "repository": "test"
                 },

@@ -14,7 +14,7 @@
   {
     "key": {
       "file": { "key": "all.py" },
-      "span": { "length": 4, "start": 395 },
+      "span": { "length": 4, "start": 449 },
       "target": {
         "python": {
           "decl": { "func": { "key": { "name": { "key": "all.fn" } } } }
@@ -25,7 +25,7 @@
   {
     "key": {
       "file": { "key": "all.py" },
-      "span": { "length": 5, "start": 401 },
+      "span": { "length": 5, "start": 455 },
       "target": {
         "python": {
           "decl": { "variable": { "key": { "name": { "key": "all.var" } } } }
@@ -73,7 +73,7 @@
   {
     "key": {
       "file": { "key": "all.py" },
-      "span": { "length": 8, "start": 359 },
+      "span": { "length": 8, "start": 413 },
       "target": {
         "python": {
           "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
@@ -84,7 +84,7 @@
   {
     "key": {
       "file": { "key": "all.py" },
-      "span": { "length": 8, "start": 359 },
+      "span": { "length": 8, "start": 413 },
       "target": {
         "python": {
           "decl": {
@@ -102,7 +102,7 @@
   {
     "key": {
       "file": { "key": "all.py" },
-      "span": { "length": 8, "start": 408 },
+      "span": { "length": 8, "start": 462 },
       "target": {
         "python": {
           "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
@@ -113,7 +113,7 @@
   {
     "key": {
       "file": { "key": "all.py" },
-      "span": { "length": 8, "start": 408 },
+      "span": { "length": 8, "start": 462 },
       "target": {
         "python": {
           "decl": {
@@ -131,7 +131,7 @@
   {
     "key": {
       "file": { "key": "all.py" },
-      "span": { "length": 9, "start": 418 },
+      "span": { "length": 9, "start": 472 },
       "target": {
         "python": {
           "decl": {
@@ -149,7 +149,7 @@
   {
     "key": {
       "file": { "key": "all.py" },
-      "span": { "length": 9, "start": 418 },
+      "span": { "length": 9, "start": 472 },
       "target": {
         "python": {
           "decl": {
@@ -162,7 +162,7 @@
   {
     "key": {
       "file": { "key": "all.py" },
-      "span": { "length": 10, "start": 369 },
+      "span": { "length": 10, "start": 423 },
       "target": {
         "python": {
           "decl": {
@@ -175,7 +175,7 @@
   {
     "key": {
       "file": { "key": "all.py" },
-      "span": { "length": 10, "start": 369 },
+      "span": { "length": 10, "start": 423 },
       "target": {
         "python": {
           "decl": {
@@ -204,7 +204,7 @@
   {
     "key": {
       "file": { "key": "all.py" },
-      "span": { "length": 12, "start": 381 },
+      "span": { "length": 12, "start": 435 },
       "target": {
         "python": {
           "decl": { "cls": { "key": { "name": { "key": "all.LocalClass" } } } }
@@ -215,7 +215,7 @@
   {
     "key": {
       "file": { "key": "big_lib/__init__.py" },
-      "span": { "length": 7, "start": 266 },
+      "span": { "length": 7, "start": 372 },
       "target": {
         "python": {
           "decl": {

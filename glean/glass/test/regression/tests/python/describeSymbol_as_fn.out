@@ -1,13 +1,18 @@
 [
     "@generated",
     {
-        "annotations": [
+        "comments": [
             {
-                "name": "@staticmethod",
-                "source": "@staticmethod"
+                "filepath": "as.py",
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 8,
+                    "lineBegin": 10,
+                    "lineEnd": 13
+                },
+                "repository": "test"
             }
         ],
-        "comments": [],
         "contains_relation": {
             "firstChild": "nondeterministic",
             "firstParent": "nondeterministic",
@@ -26,30 +31,27 @@
             "filepath": "as.py",
             "range": {
                 "columnBegin": 1,
-                "columnEnd": 13,
-                "lineBegin": 19,
-                "lineEnd": 20
+                "columnEnd": 21,
+                "lineBegin": 9,
+                "lineEnd": 15
             },
             "repository": "test"
         },
-        "modifiers": [
-            3,
-            4
-        ],
+        "modifiers": [],
         "name": {
             "container": "as",
-            "localName": "func_sleep"
+            "localName": "fn"
         },
         "repo_hash": "testhash",
-        "signature": "async def func_sleep(...) -> ...:",
-        "sym": "test/py/as.py/as.func_sleep",
+        "signature": "def fn(...) -> ...:",
+        "sym": "test/py/as.py/as.fn",
         "sym_location": {
             "filepath": "as.py",
             "range": {
                 "columnBegin": 1,
-                "columnEnd": 13,
-                "lineBegin": 19,
-                "lineEnd": 20
+                "columnEnd": 21,
+                "lineBegin": 9,
+                "lineEnd": 15
             },
             "repository": "test"
         },

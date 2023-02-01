@@ -1,12 +1,6 @@
 [
     "@generated",
     {
-        "annotations": [
-            {
-                "name": "@staticmethod",
-                "source": "@staticmethod"
-            }
-        ],
         "comments": [],
         "contains_relation": {
             "firstChild": "nondeterministic",
@@ -23,33 +17,30 @@
         "kind": 14,
         "language": 7,
         "location": {
-            "filepath": "as.py",
+            "filepath": "big_lib/__init__.py",
             "range": {
                 "columnBegin": 1,
-                "columnEnd": 13,
-                "lineBegin": 19,
-                "lineEnd": 20
+                "columnEnd": 19,
+                "lineBegin": 8,
+                "lineEnd": 9
             },
             "repository": "test"
         },
-        "modifiers": [
-            3,
-            4
-        ],
+        "modifiers": [],
         "name": {
-            "container": "as",
-            "localName": "func_sleep"
+            "container": "big_lib",
+            "localName": "big_func"
         },
         "repo_hash": "testhash",
-        "signature": "async def func_sleep(...) -> ...:",
-        "sym": "test/py/as.py/as.func_sleep",
+        "signature": "def big_func(...) -> ...:",
+        "sym": "test/py/big_lib/big_lib.big_func",
         "sym_location": {
-            "filepath": "as.py",
+            "filepath": "big_lib/__init__.py",
             "range": {
                 "columnBegin": 1,
-                "columnEnd": 13,
-                "lineBegin": 19,
-                "lineEnd": 20
+                "columnEnd": 19,
+                "lineBegin": 8,
+                "lineEnd": 9
             },
             "repository": "test"
         },

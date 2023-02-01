@@ -10,7 +10,7 @@
       "file": { "key": "all.py" },
       "location": {
         "file": { "key": "all.py" },
-        "location": { "span": { "length": 26, "start": 319 } },
+        "location": { "span": { "length": 26, "start": 373 } },
         "name": "all.LocalClass"
       }
     }
@@ -25,7 +25,7 @@
       "file": { "key": "all.py" },
       "location": {
         "file": { "key": "all.py" },
-        "location": { "span": { "length": 18, "start": 298 } },
+        "location": { "span": { "length": 72, "start": 298 } },
         "name": "all.fn"
       }
     }
@@ -106,7 +106,7 @@
       "file": { "key": "all.py" },
       "location": {
         "file": { "key": "all.py" },
-        "location": { "span": { "length": 429, "start": 0 } },
+        "location": { "span": { "length": 483, "start": 0 } },
         "name": "all"
       }
     }
@@ -123,7 +123,7 @@
       "file": { "key": "all.py" },
       "location": {
         "file": { "key": "all.py" },
-        "location": { "span": { "length": 80, "start": 348 } },
+        "location": { "span": { "length": 80, "start": 402 } },
         "name": "all.__all__"
       }
     }

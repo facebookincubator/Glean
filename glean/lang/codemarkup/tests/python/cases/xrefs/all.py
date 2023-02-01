@@ -11,6 +11,10 @@ var = 123
 
 
 def fn():
+    """Another comment
+
+    Here is a comment
+    """
     pass
 
 
