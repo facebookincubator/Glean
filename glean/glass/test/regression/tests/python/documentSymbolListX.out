@@ -275,7 +275,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "@timeit\n@lru_cache\ndef fn(...) -> ...:"
+                            "aString": "def fn(...) -> ...:"
                         },
                         "key": "symbolSignature"
                     },
@@ -751,7 +751,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "@timeit\n@lru_cache\ndef fn(...) -> ...:"
+                            "aString": "def fn(...) -> ...:"
                         },
                         "key": "symbolSignature"
                     },
@@ -802,7 +802,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "@timeit\n@lru_cache\ndef fn(...) -> ...:"
+                            "aString": "def fn(...) -> ...:"
                         },
                         "key": "symbolSignature"
                     },

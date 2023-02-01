@@ -91,7 +91,7 @@
                     "localName": "fn"
                 },
                 "repo_hash": "testhash",
-                "signature": "@timeit\n@lru_cache\ndef fn(...) -> ...:",
+                "signature": "def fn(...) -> ...:",
                 "sym": "test/py/all.py/all.fn",
                 "sym_location": {
                     "filepath": "all.py",

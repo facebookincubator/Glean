@@ -14,7 +14,6 @@ module Glean.Glass.Pretty.Python
   ) where
 
 import Data.Text ( Text, takeWhileEnd )
-import qualified Data.Text as Text
 import Data.Text.Prettyprint.Doc
 
 import qualified Glean
@@ -23,7 +22,7 @@ import qualified Glean.Haxl.Repos as Glean
 import Glean.Schema.CodePython.Types as Python ( Entity(..) )
 import qualified Glean.Schema.Python.Types as Python
 import Glean.Util.ToAngle ( ToAngle(toAngle) )
-import Glean.Glass.Types
+import Glean.Glass.Types ( SymbolId )
 import Glean.Glass.Utils (fetchDataRecursive )
 
 prettyPythonSignature
@@ -57,11 +56,10 @@ prettyDef :: Python.Definition -> Glean.RepoHaxl u w (Maybe Text)
 prettyDef (Python.Definition_func def) = do
   Python.FunctionDefinition_key {
     functionDefinition_key_declaration = decl,
-    functionDefinition_key_is_async = async,
-    functionDefinition_key_decorators = decors }  <- Glean.keyOf def
+    functionDefinition_key_is_async = async
+   }  <- Glean.keyOf def
   Python.FunctionDeclaration_key name  <- Glean.keyOf decl
   Just <$>
-    pure (fmtDecorators decors) <>
     (if async then "async " else "") <>
     "def " <> (trimModule <$> Glean.keyOf name) <>
     "(...) -> ...:"
@@ -74,8 +72,4 @@ prettyDef Python.Definition_EMPTY = return Nothing
 -- | we could use the sname here to lookup the associated decl fact
 -- as an xref in the type signature (c.f how Hack does this)
 trimModule :: Text -> Text
-trimModule qname = takeWhileEnd (/='.') qname
-
-fmtDecorators :: Maybe [Python.Decorator] -> Text
-fmtDecorators Nothing = ""
-fmtDecorators (Just decors) = Text.unlines decors
+trimModule qname = takeWhileEnd (/= '.') qname

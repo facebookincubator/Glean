@@ -134,7 +134,7 @@
                             "aString": "all"
                         },
                         "symbolSignature": {
-                            "aString": "@timeit\n@lru_cache\ndef fn(...) -> ...:"
+                            "aString": "def fn(...) -> ...:"
                         }
                     },
                     "range": {
@@ -473,7 +473,7 @@
                             "aString": "all"
                         },
                         "symbolSignature": {
-                            "aString": "@timeit\n@lru_cache\ndef fn(...) -> ...:"
+                            "aString": "def fn(...) -> ...:"
                         }
                     },
                     "range": {
@@ -699,7 +699,7 @@
                             "aString": "all"
                         },
                         "symbolSignature": {
-                            "aString": "@timeit\n@lru_cache\ndef fn(...) -> ...:"
+                            "aString": "def fn(...) -> ...:"
                         }
                     },
                     "range": {
