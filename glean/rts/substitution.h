@@ -79,9 +79,9 @@ public:
     return !(*this == other);
   }
 
-  thrift::Subst serialize() const;
-
-  static Substitution deserialize(const thrift::Subst& subst);
+  void with(const std::function<void(Id base, const std::vector<Id>& items)>& fun) const {
+    fun(base, items);
+  }
 
   bool sanityCheck(bool incomplete) const;
 

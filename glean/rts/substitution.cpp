@@ -79,32 +79,6 @@ Substitution Substitution::compose(
   return Substitution(first.base, std::move(ids));
 }
 
-thrift::Subst Substitution::serialize() const {
-  std::vector<thrift::Id> ids;
-  ids.reserve(items.size());
-  std::transform(
-    items.begin(),
-    items.end(),
-    std::back_inserter(ids),
-    [](auto x) { return x.toThrift(); }
-  );
-  thrift::Subst s;
-  s.firstId() = base.toThrift();
-  s.ids() = std::move(ids);
-  return s;
-}
-
-Substitution Substitution::deserialize(const thrift::Subst& subst) {
-  Substitution s(Id::fromThrift(subst.firstId().value()), subst.ids().value().size());
-  std::transform(
-    subst.ids().value().begin(),
-    subst.ids().value().end(),
-    s.items.begin(),
-    Id::fromThrift
-  );
-  return s;
-}
-
 bool Substitution::sanityCheck(bool incomplete) const {
   if (base == Id::invalid()) {
     if (!items.empty()) {

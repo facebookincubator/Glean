@@ -108,10 +108,6 @@ RC_GTEST_PROP(
       == Substitution::compose(Substitution::compose(s,t),u));
 }
 
-RC_GTEST_PROP(SubstitutionTest, serialize, (const Substitution& subst)) {
-  RC_ASSERT(Substitution::deserialize(subst.serialize()) == subst);
-}
-
 }
 }
 }

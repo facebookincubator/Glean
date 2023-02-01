@@ -8,6 +8,7 @@
 
 #include <folly/gen/Base.h>
 #include <folly/FBString.h>
+#include <iterator>
 #include "glean/cpp/glean.h"
 #include "glean/rts/sanity.h"
 
@@ -43,7 +44,14 @@ thrift::Batch BatchBase::serialize() const {
 }
 
 void BatchBase::rebase(const thrift::Subst& s) {
-  auto subst = rts::Substitution::deserialize(s);
+  std::vector<Id> ids(s.ids().value().size());
+  std::transform(
+      s.ids().value().begin(),
+      s.ids().value().end(),
+      ids.begin(),
+      Id::fromWord);
+  auto subst =
+      rts::Substitution(Id::fromWord(s.firstId().value()), std::move(ids));
   GLEAN_SANITY_CHECK(subst.sanityCheck(false));
   cache.withBulkStore([&](auto& store) {
     buffer = buffer.rebase(inventory->inventory, subst, store);

@@ -427,10 +427,12 @@ const char *glean_serialize_subst(
     size_t *count,
     int64_t **ids) {
   return ffi::wrap([=]() {
-    thrift::Subst s = subst->serialize();
-    *firstId = s.firstId().value();
-    *count = s.ids().value().size();
-    *ids = ffi::clone_array(s.ids().value().data(), *count).release();
+    subst->with([=](Id base, const std::vector<Id>& items) {
+      *firstId = base.toWord();
+      *count = items.size();
+      *ids = ffi::clone_array(
+        reinterpret_cast<const int64_t*>(items.data()), *count).release();
+    });
   });
 }
 
@@ -539,13 +541,9 @@ const char *glean_subst_deserialize(
   int64_t* ids,
   Substitution **result) {
   return ffi::wrap([=] {
-    thrift::Subst thrift_subst;
-    auto subst_vec = std::vector<int64_t>();
-    // TODO: Remove this copy
-    subst_vec.insert(subst_vec.end(), &ids[0], &ids[count]);
-    thrift_subst.firstId() = firstId;
-    thrift_subst.ids() = subst_vec;
-    *result = new Substitution(Substitution::deserialize(thrift_subst));
+    auto subst_vec = std::vector<Id>();
+    std::transform(&ids[0], &ids[count], std::back_inserter(subst_vec), Id::fromWord);
+    *result = new Substitution(Id::fromWord(firstId), std::move(subst_vec));
   });
 }
 
