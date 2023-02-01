@@ -444,6 +444,32 @@ schemaEvolves = TestList
               "in field 'a', type changed")
             `isInfixOf` show err
           Right _ -> False
+
+  , TestLabel "re-exported predicates reverse" $ TestCase $ do
+    withSchema latestAngleVersion
+      [s|
+        schema x.1 {
+          predicate Q : nat
+          predicate P : { ref : Q }
+        }
+
+        schema x.2 {
+          predicate Q : nat
+          predicate P : { ref : Q }
+        }
+
+        schema x.3 : x.2 {
+          predicate P : { ref : Q }
+        }
+        schema x.3 evolves x.1
+        schema all.1 : x.1, x.2, x.3 {}
+      |]
+      $ \r ->
+      -- x.Q.2 should evolve x.Q.1
+      assertBool "succeeds creating schema" $
+        case r of
+          Right _ -> True
+          Left _ -> False
   ]
 
 schemaEvolvesTransformations :: Test
@@ -1378,6 +1404,38 @@ schemaEvolvesTransformations =
       $ \_ (Right results) _ -> do
         let Just ty = userQueryResults_type results
         assertEqual "result type" "x.P.1" ty
+
+  , TestLabel "re-exported predicates" $ TestCase $ do
+    withSchemaAndFactsQ
+      [s|
+        schema x.1 {
+          predicate Q : nat
+        }
+
+        schema x.2 : x.1 {
+          predicate P : { ref : Q.1 }
+        }
+
+        schema x.3 {
+          predicate Q : nat
+          predicate P : { ref : Q }
+        }
+
+        schema x.3 evolves x.2
+        schema all.1 : x.1, x.2, x.3 {}
+      |]
+      [ mkBatch (PredicateRef "x.Q" 1)
+          [ [s|{ "id": 1, "key": 1 }|]
+          ]
+      , mkBatch (PredicateRef "x.P" 2)
+          [ [s|{ "id": 1, "key": { "ref": 1 } }|]
+          ]
+      ]
+      -- should make x.Q.1, which is re-exported by x.3, evolve x.Q.3
+      [s| x.P.3 _ |]
+      $ \byRef response _ -> do
+        facts <- decodeResultsAs (SourceRef "x.P" (Just 3)) byRef response
+        assertEqual "result count" 1 (length facts)
   ]
   where
     -- run a userQuery using the given schemas and facts

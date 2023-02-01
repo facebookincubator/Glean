@@ -32,6 +32,7 @@ import Data.HashSet (HashSet)
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.List
+import Data.List.Extra (nubOrdOn)
 import Data.Map (Map)
 import qualified Data.Map as Map
 import qualified Data.Set as Set
@@ -51,8 +52,8 @@ schemas. It is established by a source code annotation saying:
     schema A evolves B
 
 It establishes a 'predicate evolution' relationship between all predicates
-defined or re-exported by B and predicates defined in A if they have the same
-name. Schema evolutions must form a graph with no cycles.
+exported by B and predicates exported by A if they have the same name. Schema
+evolutions must form a graph with no cycles.
 
 A 'predicate evolution' is a reflexive, commutative, non-transitive
 relationship between two predicates. It means that facts from one predicate can
@@ -173,21 +174,25 @@ calcEvolutions toRef byPredRef bySchemaRef schemaEvolutions autoEvolutions =
   match :: SchemaRef -> SchemaRef -> HashMap p p
   match old new = HashMap.fromList
     [ (pold, ptarget)
-    | pnew <- HashSet.toList $ visibleDefined $ predicates new
+    | pnew <- predicates new
     , pold <- Map.findWithDefault [] (name pnew) oldByName
     , ptarget <- [Map.findWithDefault pnew (toRef pnew) autoEvolutions]
+    , pold /= ptarget
     ]
     where
     oldByName :: Map Name [p]
     oldByName = Map.fromListWith (++)
       [ (name id, [id])
-      | VisiblePredicates defined reexported <- [predicates old]
-        -- defined overrides reexported
-      , id <- HashSet.toList reexported <> HashSet.toList defined
+      | id <- predicates old
       ]
 
-  predicates :: SchemaRef -> VisiblePredicates p
-  predicates sref = Map.findWithDefault mempty sref bySchemaRef
+  predicates :: SchemaRef -> [p]
+  predicates sref =
+    -- defined override reexported
+    nubOrdOn name $ HashSet.toList defined <> HashSet.toList reexported
+    where
+      VisiblePredicates defined reexported =
+        Map.findWithDefault mempty sref bySchemaRef
 
   name :: p -> Name
   name = predicateRef_name . toRef
