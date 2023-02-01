@@ -1,0 +1,53 @@
+[
+    "@generated",
+    {
+        "comments": [],
+        "contains_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "extends_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "kind": 14,
+        "language": 7,
+        "location": {
+            "filepath": "as.py",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 13,
+                "lineBegin": 14,
+                "lineEnd": 15
+            },
+            "repository": "test"
+        },
+        "modifiers": [
+            3
+        ],
+        "name": {
+            "container": "as",
+            "localName": "func_sleep"
+        },
+        "repo_hash": "testhash",
+        "signature": "async def func_sleep(...) -> ...:",
+        "sym": "test/py/as.py/as.func_sleep",
+        "sym_location": {
+            "filepath": "as.py",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 13,
+                "lineBegin": 14,
+                "lineEnd": 15
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": [],
+        "type_xrefs": [],
+        "visibility": 20
+    }
+]

@@ -1182,7 +1182,6 @@ library glass-lib
         Glean.Glass.Main
         Glean.Glass.Options
         Glean.Glass.Path
-        Glean.Glass.Pretty.Annotations
         Glean.Glass.Pretty.Cxx
         Glean.Glass.Pretty.Flow
         Glean.Glass.Pretty.Hack

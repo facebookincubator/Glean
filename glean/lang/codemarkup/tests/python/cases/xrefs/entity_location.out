@@ -111,7 +111,7 @@
       },
       "location": {
         "file": { "key": "big_lib/__init__.py" },
-        "location": { "span": { "length": 36, "start": 276 } },
+        "location": { "span": { "length": 36, "start": 290 } },
         "name": "big_lib.func_sleep"
       }
     }
@@ -513,7 +513,7 @@
       },
       "location": {
         "file": { "key": "big_lib/__init__.py" },
-        "location": { "span": { "length": 313, "start": 0 } },
+        "location": { "span": { "length": 327, "start": 0 } },
         "name": "big_lib"
       }
     }

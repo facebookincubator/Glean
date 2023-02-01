@@ -402,7 +402,7 @@
         "location": {
           "name": "big_lib",
           "file": { "key": "big_lib/__init__.py" },
-          "location": { "span": { "start": 0, "length": 313 } }
+          "location": { "span": { "start": 0, "length": 327 } }
         }
       },
       "child": {
@@ -433,7 +433,7 @@
         "location": {
           "name": "big_lib",
           "file": { "key": "big_lib/__init__.py" },
-          "location": { "span": { "start": 0, "length": 313 } }
+          "location": { "span": { "start": 0, "length": 327 } }
         }
       },
       "child": {
@@ -447,7 +447,7 @@
         "location": {
           "name": "big_lib.func_sleep",
           "file": { "key": "big_lib/__init__.py" },
-          "location": { "span": { "start": 276, "length": 36 } }
+          "location": { "span": { "start": 290, "length": 36 } }
         }
       }
     }
@@ -464,7 +464,7 @@
         "location": {
           "name": "big_lib",
           "file": { "key": "big_lib/__init__.py" },
-          "location": { "span": { "start": 0, "length": 313 } }
+          "location": { "span": { "start": 0, "length": 327 } }
         }
       },
       "child": {

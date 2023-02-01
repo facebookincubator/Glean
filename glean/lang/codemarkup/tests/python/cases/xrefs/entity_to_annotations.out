@@ -15,6 +15,18 @@
       "entity": {
         "python": {
           "decl": {
+            "func": { "key": { "name": { "key": "big_lib.func_sleep" } } }
+          }
+        }
+      },
+      "annotations": { "python": { "decorators": [ "@staticmethod" ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
             "func": {
               "key": { "name": { "key": "lib.HelperClass.class_method" } }
             }

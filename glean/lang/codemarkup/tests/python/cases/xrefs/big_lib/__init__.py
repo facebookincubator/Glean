@@ -13,5 +13,6 @@ def big_func():
     return big_var
 
 
+@staticmethod
 async def func_sleep():
     return 1

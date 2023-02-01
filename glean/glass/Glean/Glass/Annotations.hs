@@ -11,10 +11,14 @@
 
 module Glean.Glass.Annotations
   ( getAnnotationsForEntity
+
+  -- * testing
+  , prettyHackAnnotation
   ) where
 
 
 import Data.Text (Text)
+import qualified Data.Text as Text
 import qualified Data.Map as Map
 import Data.Maybe (catMaybes)
 import Control.Monad (forM )
@@ -31,7 +35,6 @@ import qualified Glean.Schema.Cxx1.Types as Cxx1
 import qualified Glean.Schema.Hack.Types as Hack
 
 import Glean.Glass.SymbolId (entityToAngle, toSymbolId)
-import Glean.Glass.Pretty.Annotations
 import qualified Glean.Glass.Types as Glass
 import Glean.Glass.Utils ( searchRecursiveWithLimit )
 import Glean.Glass.Path ( fromGleanPath )
@@ -144,7 +147,7 @@ instance HasAnnotations Cxx1.Annotations where
 instance HasAnnotations Cxx1.Attribute where
   getAnnotations Cxx1.Attribute{attribute_key=Just key} = Just
     [ Glass.Annotation
-        { annotation_source = prettyCxxAnnotation key
+        { annotation_source = key
         , annotation_name = key
         , annotation_symbol = Nothing
         }
@@ -176,3 +179,11 @@ instance HasAnnotations (Hack.UserAttribute, Maybe Glass.SymbolId) where
               }
           ]
   getAnnotations _ = Nothing
+
+prettyHackAnnotation :: Text -> [Text] -> Text
+prettyHackAnnotation name [] = name
+prettyHackAnnotation name args = name <> parens (commas (map quotes args))
+  where
+    parens x = "(" <> x <> ")"
+    commas = Text.intercalate ", "
+    quotes arg = "\"" <> arg <> "\""
