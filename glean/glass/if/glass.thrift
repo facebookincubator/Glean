@@ -248,7 +248,10 @@ struct QualifiedName {
   2: Name container;
 }
 
-// Annotations/Attributes/Decorators/Directives attach metadata to definitions in source code
+// Annotations/Attributes/Decorators/Directives attach metadata to definitions
+// in source code. They can be optionally cross-referenced with symbols
+// and symbolic names (e.g. if the directive is a class name)
+//
 struct Annotation {
   1: string source; // the annotation as it appears in the source code
   2: optional SymbolId symbol; // the symbol of the annotation

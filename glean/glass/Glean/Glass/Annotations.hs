@@ -31,21 +31,24 @@ import qualified Glean.Schema.Codemarkup.Types as Code
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Schema.CodeCxx.Types as Cxx1
 import qualified Glean.Schema.CodeHack.Types as Hack
+import qualified Glean.Schema.CodePython.Types as Python
 import qualified Glean.Schema.Cxx1.Types as Cxx1
 import qualified Glean.Schema.Hack.Types as Hack
+import qualified Glean.Schema.Python.Types as Python
 
 import Glean.Glass.SymbolId (entityToAngle, toSymbolId)
 import qualified Glean.Glass.Types as Glass
 import Glean.Glass.Utils ( searchRecursiveWithLimit )
 import Glean.Glass.Path ( fromGleanPath )
 
--- | For Hack, the annotations are a single fact.
+-- | For Hack and Python, the annotations are a single array fact.
 -- For C++ they're sprinkled across each function decl, forcing us to search
 max_annotations_limit :: Int
 max_annotations_limit = 10
 
 getAnnotationsForEntity
-  :: Glass.RepoName -> Code.Entity
+  :: Glass.RepoName
+  -> Code.Entity
   -> Glean.RepoHaxl u w (Either Text (Maybe [Glass.Annotation]))
 getAnnotationsForEntity repo entity = fetch repo `mapM` entityToAngle entity
 
@@ -62,6 +65,7 @@ fetch repo ent = do
   annotationsSyms <- forM annotations (annotationsToSymbols repo)
   return $ getAnnotations annotationsSyms
 
+-- | Entity to its annotation facts.
 queryAnnotations
   :: Angle Code.Entity -> Glean.RepoHaxl u w [Code.EntityToAnnotations]
 queryAnnotations entity = searchRecursiveWithLimit (Just max_annotations_limit)$
@@ -124,6 +128,10 @@ declarationsToSymbolId repo attrDecl = do
   sym <- toSymbolId (fromGleanPath repo (GleanPath path)) entity
   return (userAttribute, sym)
 
+--
+-- The type of annotations is language specific. We unwrap here in the client
+-- this also lets us do a bit of language-specific processing
+--
 class HasAnnotations a where
   getAnnotations :: a -> Maybe [Glass.Annotation]
 
@@ -135,7 +143,7 @@ instance HasAnnotations AnnotationsSymbolId where
   getAnnotations (AnnotationsSymbolId (ann, syms)) = case (ann, syms) of
     (Code.Annotations_cxx ann, _) -> getAnnotations ann
     (Code.Annotations_hack ann, syms) -> getAnnotations (ann, syms)
-    (Code.Annotations_python{}, _) -> Nothing -- Not yet supported
+    (Code.Annotations_python anns, _) -> getAnnotations anns
     (Code.Annotations_thrift{}, _) -> Nothing -- Not yet supported
     (Code.Annotations_java{}, _) -> Nothing -- Not yet supported
     (Code.Annotations_EMPTY, _) -> Nothing
@@ -153,6 +161,17 @@ instance HasAnnotations Cxx1.Attribute where
         }
     ]
   getAnnotations _ = Nothing
+
+instance HasAnnotations Python.Annotations where
+  getAnnotations (Python.Annotations_decorators anns) = getAnnotations anns
+  getAnnotations Python.Annotations_EMPTY = Nothing
+
+instance HasAnnotations Python.Decorator where
+  getAnnotations key = Just $ pure Glass.Annotation {
+          annotation_source = key,
+          annotation_symbol = Nothing,
+          annotation_name = key
+        }
 
 instance HasAnnotations (Hack.Annotations, [Maybe Glass.SymbolId]) where
   getAnnotations (Hack.Annotations_attributes anns, syms) =

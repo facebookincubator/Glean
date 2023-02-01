@@ -98,7 +98,16 @@
                 "visibility": 20
             },
             {
-                "annotations": [],
+                "annotations": [
+                    {
+                        "name": "@timeit",
+                        "source": "@timeit"
+                    },
+                    {
+                        "name": "@lru_cache",
+                        "source": "@lru_cache"
+                    }
+                ],
                 "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
