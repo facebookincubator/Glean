@@ -502,34 +502,34 @@ Define *glean_factset_define(FactSet *facts) {
   return facts;
 }
 
-const char *glean_factset_serialize(
-    FactSet *facts,
-    int64_t *first_id,
-    size_t *count,
-    void **facts_data,
-    size_t *facts_size) {
+const char* glean_factset_serialize(
+    FactSet* facts,
+    int64_t* first_id,
+    size_t* count,
+    void** facts_data,
+    size_t* facts_size) {
   return ffi::wrap([=] {
-    auto batch = facts->serialize();
-    *first_id = batch.firstId().value();
-    *count = batch.count().value();
-    ffi::clone_bytes(batch.facts().value()).release_to(facts_data, facts_size);
+    auto s = facts->serialize();
+    *first_id = s.first.toWord();
+    *count = s.count;
+    s.facts.release_to(facts_data, facts_size);
   });
 }
 
-const char *glean_factset_serializeReorder(
-  FactSet *facts,
-  uint64_t *order,
-  size_t order_size,
-  int64_t *first_id,
-  size_t *count,
-  void **facts_data,
-  size_t *facts_size) {
+const char* glean_factset_serializeReorder(
+    FactSet* facts,
+    uint64_t* order,
+    size_t order_size,
+    int64_t* first_id,
+    size_t* count,
+    void** facts_data,
+    size_t* facts_size) {
   return ffi::wrap([=] {
-    auto batch = facts->serializeReorder(
-        folly::Range<const uint64_t*>(order,order_size));
-    *first_id = batch.firstId().value();
-    *count = batch.count().value();
-    ffi::clone_bytes(batch.facts().value()).release_to(facts_data, facts_size);
+    auto s = facts->serializeReorder(
+        folly::Range<const uint64_t*>(order, order_size));
+    *first_id = s.first.toWord();
+    *count = s.count;
+    s.facts.release_to(facts_data, facts_size);
   });
 }
 

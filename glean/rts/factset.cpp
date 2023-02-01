@@ -273,18 +273,12 @@ Id FactSet::define(Pid type, Fact::Clause clause, Id) {
   }
 }
 
-thrift::Batch FactSet::serialize() const {
+FactSet::Serialized FactSet::serialize() const {
   binary::Output output;
   for (auto fact : *this) {
     fact.serialize(output);
   }
-
-  thrift::Batch batch;
-  batch.firstId() = startingId().toThrift();
-  batch.count() = size();
-  batch.facts() = output.moveToFbString();
-
-  return batch;
+  return {startingId(), size(), output.moveBytes()};
 }
 
 ///
@@ -297,21 +291,16 @@ thrift::Batch FactSet::serialize() const {
 // The ordering can omit facts or mention facts multiple times,
 // although I'm not sure why you would want to do that.
 //
-thrift::Batch
-FactSet::serializeReorder(folly::Range<const uint64_t *> order) const {
+FactSet::Serialized FactSet::serializeReorder(
+    folly::Range<const uint64_t*> order) const {
   binary::Output output;
   for (auto i : order) {
-    assert(i >= startingId().toWord() &&
-           i - startingId().toWord() < facts.size());
+    assert(
+        i >= startingId().toWord() && i - startingId().toWord() < facts.size());
     facts[i - startingId().toWord()].serialize(output);
   }
 
-  thrift::Batch batch;
-  batch.firstId() = startingId().toThrift();
-  batch.count() = size();
-  batch.facts() = output.moveToFbString();
-
-  return batch;
+  return {startingId(), size(), output.moveBytes()};
 }
 
 namespace {

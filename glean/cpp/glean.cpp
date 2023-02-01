@@ -7,6 +7,7 @@
  */
 
 #include <folly/gen/Base.h>
+#include <folly/FBString.h>
 #include "glean/cpp/glean.h"
 #include "glean/rts/sanity.h"
 
@@ -29,7 +30,16 @@ BatchBase::BatchBase(const SchemaInventory *inv, size_t cache_capacity)
 {}
 
 thrift::Batch BatchBase::serialize() const {
-  return buffer.serialize();
+  thrift::Batch batch;
+  auto s = buffer.serialize();
+  batch.firstId() = s.first.toThrift();
+  batch.count() = s.count;
+  batch.facts() = folly::fbstring(
+      reinterpret_cast<char*>(s.facts.release()),
+      s.facts.size(),
+      s.facts.size(),
+      folly::AcquireMallocatedString());
+  return batch;
 }
 
 void BatchBase::rebase(const thrift::Subst& s) {

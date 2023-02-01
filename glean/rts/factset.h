@@ -302,9 +302,14 @@ public:
 
   Id define(Pid type, Fact::Clause, Id max_ref = Id::invalid()) override;
 
-  thrift::Batch serialize() const;
+  struct Serialized {
+    Id first;
+    size_t count;
+    hs::ffi::malloced_array<uint8_t> facts;
+  };
+  Serialized serialize() const;
 
-  thrift::Batch serializeReorder(folly::Range<const uint64_t*> order) const;
+  Serialized serializeReorder(folly::Range<const uint64_t*> order) const;
 
   // Substitute all facts in the set and split it into a global and a local part
   // based on the substitution. Facts with Ids that are in the range of the
