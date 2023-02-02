@@ -43,6 +43,7 @@ predicate ModuleDefinition:
   {
     module: Module,
     docstring: maybe Docstring,
+    declarations: maybe [Declaration],
   }
 
 # Allows efficient queries for classes by structured name
@@ -58,6 +59,10 @@ predicate ClassDefinition:
     keywords: maybe [Parameter],  # metaclass parameters
     decorators: maybe [Decorator],
     docstring: maybe Docstring,
+    methods: maybe [FunctionDeclaration],
+    variables: maybe [VariableDeclaration],
+    class_variables: maybe [VariableDeclaration],
+    inner_classes: maybe [ClassDeclaration],
   }
 
 predicate BaseClassToDerived:
