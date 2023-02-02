@@ -485,4 +485,31 @@ predicate LocatorReverseDep :
     { target = Child } = Deps[..];
 
 
+type FailureReason = enum {
+  # config was intentionally skipped
+  Skipped |
+  # config was manually blocked
+  Blocked |
+  # Compilation database for this target is empty
+  EmptyCdb |
+  # Failed to create Compilation database
+  FailedCdb |
+  # Failed to run a buck query on this target
+  QueryFailed
+}
+
+predicate IndexerName: string
+
+predicate IndexFailure :
+  {
+    # Source of the error
+    source : Target,
+    # Any string to identify an Indexer which added this predicate
+    indexer : IndexerName,
+    # Predefined classification of errors
+    reason: FailureReason,
+    # Additional details
+    details: string,
+  }
+
 } # end schema buck.3

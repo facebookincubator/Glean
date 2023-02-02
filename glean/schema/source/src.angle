@@ -96,13 +96,13 @@ type FileLocation = {
 
 # IndexFailure reasons supported by Glean
 type IndexFailureReason = enum {
-  CompileError
+  CompileError |
 }
 
 predicate IndexFailure : {
   file : File,
   reason : IndexFailureReason,
-  details : string
+  details : string,
 }
 
 }
