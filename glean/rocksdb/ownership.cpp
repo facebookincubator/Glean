@@ -579,7 +579,6 @@ DatabaseImpl::FactOwnerCache::getPage(
   }
 
   if (prefix >= cache->size() || !(*cache)[prefix]) {
-    auto t = makeAutoTimer("FactOwnerCache::getPage");
     auto page = std::make_unique<FactOwnerCache::Page>();
     size_t size = 0;
 
@@ -587,34 +586,40 @@ DatabaseImpl::FactOwnerCache::getPage(
         rocksdb::ReadOptions(), container.family(Family::factOwners)));
     EncodedNat prefixKey(prefix << page_bits);
 
-    // Start with the first interval <= the prefix, so that we can always find
-    // the desired interval by looking at the appropriate page.
-    iter->SeekForPrev(slice(prefixKey.byteRange()));
-
     // The first interval must start at 0
     page->factIds.push_back(0);
     size += sizeof(uint16_t) + sizeof(UsetId);
 
-    if (!iter->Valid()) {
-      // no interval <= the beginning of the page
-      page->setIds.push_back(INVALID_USET);
-      // better check for later intervals though
-      iter->Seek(slice(prefixKey.byteRange()));
+    if (prefix == 0 || prefix-1 >= cache->size() || !(*cache)[prefix-1]) {
+      // Start with the first interval <= the prefix, so that we can always find
+      // the desired interval by looking at the appropriate page.
+      iter->SeekForPrev(slice(prefixKey.byteRange()));
+
+      if (!iter->Valid()) {
+        // no interval <= the beginning of the page
+        page->setIds.push_back(INVALID_USET);
+        // better check for later intervals though
+        iter->Seek(slice(prefixKey.byteRange()));
+      } else {
+        binary::Input val(byteRange(iter->value()));
+        UsetId usetId = val.trustedNat();
+        page->setIds.push_back(usetId);
+        iter->Next();
+      }
     } else {
-      binary::Input val(byteRange(iter->value()));
-      UsetId usetId = val.trustedNat();
-      page->setIds.push_back(usetId);
-      iter->Next();
+      auto& prev = (*cache)[prefix-1];
+      page->setIds.push_back(prev->setIds.back());
+      iter->Seek(slice(prefixKey.byteRange()));
     }
 
     while (iter->Valid()) {
       binary::Input key(byteRange(iter->key()));
       rts::Id factId = Id::fromWord(key.trustedNat());
-      binary::Input val(byteRange(iter->value()));
-      UsetId usetId = val.trustedNat();
       if ((factId.toWord() >> page_bits) > prefix) {
         break;
       }
+      binary::Input val(byteRange(iter->value()));
+      UsetId usetId = val.trustedNat();
       page->factIds.push_back(factId.toWord() & page_mask);
       page->setIds.push_back(usetId);
       iter->Next();
@@ -628,7 +633,9 @@ DatabaseImpl::FactOwnerCache::getPage(
     if (prefix >= wcache->size()) {
       wcache->resize(prefix + 1);
     }
-    (*wcache)[prefix] = std::move(page);
+    if (!(*wcache)[prefix]) {
+      (*wcache)[prefix] = std::move(page);
+    }
 
     VLOG(2) << "FactOwnerCache::getPage(" << prefix << ") size = "
             << folly::prettyPrint(size_, folly::PRETTY_BYTES_IEC);
