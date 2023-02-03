@@ -571,7 +571,7 @@ const DatabaseImpl::FactOwnerCache::Page* FOLLY_NULLABLE
 DatabaseImpl::FactOwnerCache::getPage(
     ContainerImpl& container,
     uint64_t prefix) {
-  auto cachePtr = cache_.ulock();
+  auto cachePtr = cache_.rlock();
   auto cache = cachePtr->get();
 
   if (!cache) {
@@ -612,6 +612,8 @@ DatabaseImpl::FactOwnerCache::getPage(
       iter->Seek(slice(prefixKey.byteRange()));
     }
 
+    cachePtr.unlock();
+
     while (iter->Valid()) {
       binary::Input key(byteRange(iter->key()));
       rts::Id factId = Id::fromWord(key.trustedNat());
@@ -626,10 +628,11 @@ DatabaseImpl::FactOwnerCache::getPage(
       size += sizeof(uint16_t) + sizeof(UsetId);
     }
 
+    auto wlock = cache_.wlock();
+    auto wcache = wlock->get();
+
     size_ += size + sizeof(struct Page);
 
-    auto wlock = cachePtr.moveFromUpgradeToWrite();
-    auto wcache = wlock->get();
     if (prefix >= wcache->size()) {
       wcache->resize(prefix + 1);
     }
