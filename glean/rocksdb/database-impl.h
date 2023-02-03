@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <folly/container/F14Map.h>
+
 #include "glean/rts/ownership/uset.h"
 
 #include "glean/rocksdb/rocksdb.h"

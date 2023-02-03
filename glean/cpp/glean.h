@@ -18,6 +18,7 @@
 #include <boost/variant.hpp>
 #include <folly/Format.h>
 
+#include "glean/if/gen-cpp2/glean_types.h"
 #include "glean/rts/binary.h"
 #include "glean/rts/cache.h"
 #include "glean/rts/inventory.h"

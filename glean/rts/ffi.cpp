@@ -13,7 +13,6 @@
 #include <common/hs/util/cpp/memory.h>
 #include <common/hs/util/cpp/wrap.h>
 #endif
-#include "glean/if/gen-cpp2/glean_types.h"
 #include "glean/rts/bytecode/subroutine.h"
 #include "glean/rts/cache.h"
 #include "glean/rts/ffi.h"

@@ -8,9 +8,6 @@
 
 #pragma once
 
-#include "glean/if/gen-cpp2/glean_constants.h"
-#include "glean/if/gen-cpp2/glean_types.h"
-
 #include <folly/container/HeterogeneousAccess.h>
 #include <folly/Format.h>
 #include <folly/Hash.h>
@@ -19,10 +16,18 @@ namespace facebook {
 namespace glean {
 namespace rts {
 
+const uint64_t FIRST_FREE_ID = 1024;
+const uint64_t INVALID_ID = 0;
+
 template<typename Tag>
 struct WordId {
   // We might use uint32_t for pids in the future
   using word_type = uint64_t;
+
+  // The FFI interface uses signed integers, because we need
+  // to send data over Thrift which doesn't have unsigned types
+  // and it's easier to convert at the FFI boundary.
+  using thrift_word_type = int64_t;
 
   WordId() : val(0) {}
 
@@ -30,15 +35,15 @@ struct WordId {
   WordId& operator=(const WordId&) = default;
 
   static constexpr WordId invalid() {
-    return WordId(0);
+    return WordId(INVALID_ID);
   }
 
   static constexpr WordId lowest() {
-    return fromThrift(thrift::glean_constants::FIRST_FREE_ID());
+    return WordId(FIRST_FREE_ID);
   }
 
   explicit operator bool() const {
-    return val != 0;
+    return val != INVALID_ID;
   }
 
   bool operator==(const WordId& other) const {
@@ -118,11 +123,11 @@ struct WordId {
     return WordId(x);
   }
 
-  constexpr thrift::Id toThrift() const {
-    return static_cast<thrift::Id>(val);
+  constexpr thrift_word_type toThrift() const {
+    return static_cast<thrift_word_type>(val);
   }
 
-  static constexpr WordId fromThrift(thrift::Id id) {
+  static constexpr WordId fromThrift(thrift_word_type id) {
     return WordId(id);
   }
 

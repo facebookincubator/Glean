@@ -87,12 +87,12 @@ bool Substitution::sanityCheck(bool incomplete) const {
     }
   } else {
     if (base < Id::lowest()) {
-      LOG(ERROR) << "substitution with base " << base.toThrift();
+      LOG(ERROR) << "substitution with base " << base.toWord();
       return false;
     }
     for (auto id : items) {
       if (id < Id::lowest() && !(incomplete && !id)) {
-        LOG(ERROR) << "substitution with invalid id " << id.toThrift();
+        LOG(ERROR) << "substitution with invalid id " << id.toWord();
         return false;
       }
     }

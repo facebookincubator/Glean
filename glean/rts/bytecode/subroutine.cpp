@@ -6,6 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+#include <glog/logging.h>
+
 #include "glean/rts/binary.h"
 #include "glean/rts/serialize.h"
 #include "glean/rts/bytecode/subroutine.h"

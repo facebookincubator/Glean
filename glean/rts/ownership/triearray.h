@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <folly/container/F14Map.h>
 #include <glog/logging.h>
 #include "glean/rts/error.h"
 #include "glean/rts/ownership/pool.h"

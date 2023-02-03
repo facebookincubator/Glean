@@ -42,7 +42,7 @@ std::string Fact::dump() const {
     }
   };
 
-  os << '{' << id().toThrift() << "} {" << type().toThrift() << "} ";
+  os << '{' << id().toWord() << "} {" << type().toWord() << "} ";
   bytes(os, key());
   os << ' ';
   bytes(os, value());
