@@ -214,68 +214,6 @@
       "parent": {
         "parent": {
           "python": {
-            "decl": { "func": { "key": { "name": { "key": "main.f" } } } }
-          }
-        },
-        "location": {
-          "name": "main.f",
-          "file": { "key": "main.py" },
-          "location": { "span": { "start": 321, "length": 107 } }
-        }
-      },
-      "child": {
-        "child": {
-          "python": {
-            "decl": {
-              "variable": { "key": { "name": { "key": "main.f.<locals>.c" } } }
-            }
-          }
-        },
-        "location": {
-          "name": "main.f.<locals>.c",
-          "file": { "key": "main.py" },
-          "location": { "span": { "start": 388, "length": 12 } }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "query": 2,
-      "parent": {
-        "parent": {
-          "python": {
-            "decl": { "func": { "key": { "name": { "key": "main.g" } } } }
-          }
-        },
-        "location": {
-          "name": "main.g",
-          "file": { "key": "main.py" },
-          "location": { "span": { "start": 431, "length": 112 } }
-        }
-      },
-      "child": {
-        "child": {
-          "python": {
-            "decl": {
-              "func": { "key": { "name": { "key": "main.g.<locals>.h" } } }
-            }
-          }
-        },
-        "location": {
-          "name": "main.g.<locals>.h",
-          "file": { "key": "main.py" },
-          "location": { "span": { "start": 500, "length": 43 } }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "query": 2,
-      "parent": {
-        "parent": {
-          "python": {
             "decl": { "module": { "key": { "name": { "key": "all" } } } }
           }
         },

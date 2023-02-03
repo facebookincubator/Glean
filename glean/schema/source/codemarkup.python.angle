@@ -232,11 +232,25 @@ predicate PythonContainsChildEntity :
     child: code.python.Entity
   }
   { { decl = Container }, { decl = Member } } where
-    # this only works where the parent container is a TopLevel container
-    # in the other cases we'd need to find an SName where parent = { just = _ }
-    python.ContainedByTopLevelDeclaration { Container, Member };
-    Member != Container; # work around T140038357
-    python.NonImportDeclaration Member; # no import decls
+  (
+    { cls = Cls } = Container;
+    python.ClassDefinition {
+      declaration = Cls,
+      methods = { just = Methods },
+      variables = { just = Variables },
+      class_variables = { just = ClassVariables },
+      inner_classes = { just = InnerClassess }
+    };
+    ( { func = Methods[..] } = Member ) |
+    ( { variable = Variables[..] } = Member ) |
+    ( { variable = ClassVariables[..] } = Member ) |
+    ( { cls = InnerClassess[..] } = Member );
+  ) | (
+    { module = Module } = Container;
+    python.ModuleDefinition { module = Module, declarations = { just = Declarations }};
+    Declarations[..] = Member;
+    python.NonImportDeclaration Member;
+  )
 
 # Child is contained in scope of parent
 predicate PythonContainsParentEntity :

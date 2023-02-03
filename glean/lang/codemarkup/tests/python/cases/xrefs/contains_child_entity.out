@@ -108,38 +108,6 @@
     "key": {
       "parent": {
         "python": {
-          "decl": { "func": { "key": { "name": { "key": "main.f" } } } }
-        }
-      },
-      "child": {
-        "python": {
-          "decl": {
-            "variable": { "key": { "name": { "key": "main.f.<locals>.c" } } }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "parent": {
-        "python": {
-          "decl": { "func": { "key": { "name": { "key": "main.g" } } } }
-        }
-      },
-      "child": {
-        "python": {
-          "decl": {
-            "func": { "key": { "name": { "key": "main.g.<locals>.h" } } }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "parent": {
-        "python": {
           "decl": { "module": { "key": { "name": { "key": "all" } } } }
         }
       },
