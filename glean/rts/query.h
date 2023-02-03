@@ -13,7 +13,6 @@
 #include "glean/rts/factset.h"
 #include "glean/rts/inventory.h"
 #include "glean/rts/ownership/derived.h"
-#include "glean/if/gen-cpp2/internal_types.h"
 
 #ifdef OSS
 #include <cpp/HsStruct.h> // @manual
@@ -57,8 +56,7 @@ std::unique_ptr<QueryResults> executeQuery(
     folly::Optional<uint64_t> maxTime,
     Depth depth,
     std::unordered_set<Pid, folly::hasher<Pid>>& expandPids,
-    bool wantStats,
-    folly::Optional<thrift::internal::QueryCont> restart);
+    bool wantStats);
 
 std::unique_ptr<QueryResults> restartQuery(
     Inventory& inventory,

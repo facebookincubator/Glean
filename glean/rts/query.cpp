@@ -11,13 +11,10 @@
 
 #include <folly/Chrono.h>
 #include <folly/stop_watch.h>
-#include <thrift/lib/cpp2/protocol/Serializer.h>
 
-#include "glean/if/gen-cpp2/glean_types.h"
-#include "glean/if/gen-cpp2/glean_constants.h"
-#include "glean/if/gen-cpp2/internal_types.h"
 #include "glean/rts/bytecode/syscall.h"
 #include "glean/rts/query.h"
+#include "glean/rts/serialize.h"
 
 
 namespace facebook {
@@ -153,18 +150,18 @@ struct QueryExecutor {
     }
   }
 
+  using SerializedCont = binary::Output;
+
   //
   // Produce a query continuation
   //
-  thrift::internal::QueryCont queryCont(
-    thrift::internal::SubroutineState subState,
-    Subroutine::Activation::Outputs outputs) const;
+  SerializedCont queryCont(Subroutine::Activation& act) const;
 
   //
   // Done; collect and return the final results
   //
   std::unique_ptr<QueryResults> finish(
-    folly::Optional<thrift::internal::QueryCont> cont);
+    folly::Optional<SerializedCont> cont);
 
   // ------------------------------------------------------------
   // Below here: query state
@@ -389,50 +386,32 @@ Id QueryExecutor::newDerivedFact(
   return id;
 };
 
-
-thrift::internal::QueryCont QueryExecutor::queryCont(
-    thrift::internal::SubroutineState subState,
-    Subroutine::Activation::Outputs outputs) const {
-  thrift::internal::QueryCont cont;
-
-  std::vector<thrift::internal::KeyIterator> contIters;
-
-  for (auto &iter : iters) {
-    thrift::internal::KeyIterator i;
-    if (auto fact = iter.iter->get(FactIterator::KeyOnly)) {
-      i.fact() = fact.id.toThrift();
-      i.type() = iter.type.toThrift();
-      i.prefix_size() = static_cast<int64_t>(iter.prefix_size);
-      i.first() = iter.first;
-      if (iter.iter->lower_bound().has_value()) {
-        i.from() = iter.iter->lower_bound().value().toThrift();
-      }
-      if (iter.iter->upper_bound().has_value()) {
-        i.to() = iter.iter->upper_bound().value().toThrift();
-      }
-    } else {
-      // A finished iterator - we have nothing to serialize
-      i.fact() = Id::invalid().toThrift();
-      i.type() = Pid::invalid().toThrift();
-    }
-    contIters.emplace_back(std::move(i));
+void put(binary::Output& out, const QueryExecutor::Iter& iter) {
+  if (auto fact = iter.iter->get(FactIterator::KeyOnly)) {
+    serialize::put(out, fact.id);
+    serialize::put(out, iter.type);
+    serialize::put(out, static_cast<uint64_t>(iter.prefix_size));
+    serialize::put(out, iter.first);
+    serialize::put(out, iter.iter->lower_bound());
+    serialize::put(out, iter.iter->upper_bound());
+  } else {
+    serialize::put(out, Id::invalid().toWord());
+    serialize::put(out, Pid::invalid().toWord());
   }
-  cont.iters() = std::move(contIters);
+}
 
-  std::vector<std::string> contOutputs;
-  contOutputs.reserve(outputs.size());
-  for (auto &output : outputs) {
-    contOutputs.emplace_back(output.string());
-  }
-  cont.outputs() = std::move(contOutputs);
-  cont.sub() = std::move(subState);
-  cont.pid() = pid.toWord();
-  if (traverse) {
-    cont.traverse() = Subroutine::toThrift(*traverse);
-  }
-  return cont;
+using SerializedCont = binary::Output;
+
+SerializedCont QueryExecutor::queryCont(Subroutine::Activation& act) const {
+  binary::Output out;
+
+  serialize::put(out, iters);
+  serialize::put(out, act);
+  serialize::put(out, pid);
+  serialize::put(out, traverse);
+
+  return out;
 };
-
 
 void QueryExecutor::nestedFact(Id id, Pid pid) {
   DVLOG(5) << "nestedFact: " << id.toWord();
@@ -511,7 +490,7 @@ size_t QueryExecutor::recordResult(
 
 
 std::unique_ptr<QueryResults> QueryExecutor::finish(
-    folly::Optional<thrift::internal::QueryCont> cont) {
+    folly::Optional<SerializedCont> cont) {
   auto res = std::make_unique<QueryResults>();
   res->fact_ids = std::move(result_ids);
   res->fact_pids = std::move(result_pids);
@@ -523,11 +502,7 @@ std::unique_ptr<QueryResults> QueryExecutor::finish(
   res->nested_fact_values = std::move(nested_result_values);
 
   if (cont.hasValue()) {
-    std::string out;
-    using namespace apache::thrift;
-    Serializer<BinaryProtocolReader, BinaryProtocolWriter>::serialize(
-      cont.value(), &out);
-    res->continuation = std::move(out);
+    res->continuation = cont->string();
   };
 
   if (wantStats) {
@@ -537,70 +512,7 @@ std::unique_ptr<QueryResults> QueryExecutor::finish(
   return res;
 }
 
-} // namespace {}
-
-void interruptRunningQueries() {
-  last_interrupt = Clock::now();
-}
-
-std::unique_ptr<QueryResults> restartQuery(
-    Inventory& inventory,
-    Define& facts,
-    DefineOwnership* ownership,
-    folly::Optional<uint64_t> maxResults,
-    folly::Optional<uint64_t> maxBytes,
-    folly::Optional<uint64_t> maxTime,
-    Depth depth,
-    std::unordered_set<Pid, folly::hasher<Pid>>& expandPids,
-    bool wantStats,
-    void* serializedCont,
-    uint64_t serializedContLen) {
-  thrift::internal::QueryCont queryCont;
-
-  // Deserialize the continuation into thrift::internal::QueryCont
-  using namespace apache::thrift;
-  Serializer<BinaryProtocolReader, BinaryProtocolWriter>::deserialize(
-      folly::ByteRange(
-          reinterpret_cast<unsigned char*>(serializedCont), serializedContLen),
-      queryCont);
-
-  // Build a Subroutine
-  uint64_t* code = reinterpret_cast<uint64_t*>(
-    const_cast<char*>(queryCont.sub()->code()->data()));
-  auto code_size = queryCont.sub()->code()->size() / sizeof(uint64_t);
-  Subroutine sub{std::vector<uint64_t>(code, code + code_size),
-                 static_cast<size_t>(*queryCont.sub()->inputs()),
-                 queryCont.outputs()->size(),
-                 static_cast<size_t>(queryCont.sub()->locals()->size()),
-                 {}, // no constants - they're already on the stack
-                 std::move(*queryCont.sub()->literals())};
-
-  std::shared_ptr<Subroutine> traverse;
-  if (queryCont.traverse().has_value()) {
-    traverse = Subroutine::fromThrift(*queryCont.traverse());
-  }
-
-  // Setup the state as it was before, and execute the Subroutine
-  auto pid = Pid::fromWord(*queryCont.pid());
-
-  return executeQuery(
-      inventory,
-      facts,
-      ownership,
-      sub,
-      pid,
-      traverse,
-      maxResults,
-      maxBytes,
-      maxTime,
-      depth,
-      expandPids,
-      wantStats,
-      std::move(queryCont));
-}
-
-
-std::unique_ptr<QueryResults> executeQuery (
+std::unique_ptr<QueryResults> executeQuery(
     Inventory& inventory,
     Define& facts,
     DefineOwnership* ownership,
@@ -613,8 +525,8 @@ std::unique_ptr<QueryResults> executeQuery (
     Depth depth,
     std::unordered_set<Pid, folly::hasher<Pid>>& expandPids,
     bool wantStats,
-    folly::Optional<thrift::internal::QueryCont> restart) {
-
+    std::vector<QueryExecutor::Iter> iters,
+    std::optional<Subroutine::Activation::State> restart) {
   QueryExecutor q {
     .inventory = inventory,
     .facts = facts,
@@ -624,8 +536,10 @@ std::unique_ptr<QueryResults> executeQuery (
     .traverse = traverse,
     .depth = depth,
     .expandPids = expandPids,
-    .wantStats = wantStats
+    .wantStats = wantStats,
+    .iters = std::move(iters),
   };
+
   // coarse_steady_clock is around 1ms granularity which is enough for us.
   q.timeout = Clock::now();
   q.start_time = Clock::now();
@@ -634,52 +548,6 @@ std::unique_ptr<QueryResults> executeQuery (
     q.check_timeout = CHECK_TIMEOUT_INTERVAL;
   } else {
     q.check_timeout = UINT64_MAX;
-  }
-
-  // Set up all the iterators as before if we're restarting
-  if (restart) {
-    for (auto& savedIter : *restart->iters()) {
-      std::unique_ptr<FactIterator> iter;
-      Id id;
-      const size_t prefixSize = savedIter.prefix_size().value();
-      if (const auto type = Pid::fromThrift(*savedIter.type())) {
-        std::string keyBuf;
-        bool found = facts.factById(
-          Id::fromThrift(*savedIter.fact()),
-          [&](auto pid, Fact::Clause clause) {
-            if (pid != type) {
-              error("restart iter fact has wrong type");
-            }
-            keyBuf = binary::mkString(clause.key());
-          });
-        if (!found) {
-          error("restart iter fact not found");
-        }
-        const auto key = binary::byteRange(keyBuf);
-        if (savedIter.from().has_value() && savedIter.to().has_value()) {
-          auto from = savedIter.from().value();
-          auto to = savedIter.to().value();
-          iter = facts.seekWithinSection(type, key, prefixSize,
-              Id::fromThrift(from), Id::fromThrift(to));
-        } else {
-          iter = facts.seek(type, key, prefixSize);
-        }
-        auto res = iter->get(FactIterator::KeyOnly);
-        if (!res || res.key() != key) {
-          error("restart iter didn't find a key");
-        }
-        id = res.id;
-      } else {
-        // We serialized a finished iterator
-        iter = std::make_unique<EmptyIterator>();
-        id = Id::invalid();
-      }
-      q.iters.emplace_back(QueryExecutor::Iter{std::move(iter),
-          Pid::fromWord(*savedIter.type()),
-          id,
-          prefixSize,
-          *savedIter.first()});
-    }
   }
 
   auto max_results = maxResults ? *maxResults : UINT64_MAX;
@@ -702,18 +570,10 @@ std::unique_ptr<QueryResults> executeQuery (
     &QueryExecutor::resultWithPid,
     &QueryExecutor::newDerivedFact>(q);
 
-  folly::Optional<thrift::internal::QueryCont> cont;
+  folly::Optional<SerializedCont> cont;
   Subroutine::Activation::with(sub, context_.contextptr(), [&](Subroutine::Activation& activation) {
-    if (restart) {
-      activation.restart(
-        *restart->sub()->entry(),
-        restart->sub()->locals()->begin(),
-        restart->sub()->locals()->end());
-      auto buf = restart->outputs()->begin();
-      for (auto& out : activation.outputs()) {
-        out = binary::Output(*buf, binary::Output::RefMem());
-        ++buf;
-      }
+    if (restart.has_value()) {
+      activation.resume(std::move(*restart));
     } else {
       activation.start();
     }
@@ -726,13 +586,160 @@ std::unique_ptr<QueryResults> executeQuery (
 
     activation.execute();
     if (activation.suspended()) {
-      cont = q.queryCont(activation.toThrift(), activation.outputs());
+      cont = q.queryCont(activation);
     }
   });
 
   return q.finish(std::move(cont));
 }
+}
 
+void interruptRunningQueries() {
+  last_interrupt = Clock::now();
+}
+
+std::unique_ptr<QueryResults> restartQuery(
+    Inventory& inventory,
+    Define& facts,
+    DefineOwnership* ownership,
+    folly::Optional<uint64_t> maxResults,
+    folly::Optional<uint64_t> maxBytes,
+    folly::Optional<uint64_t> maxTime,
+    Depth depth,
+    std::unordered_set<Pid, folly::hasher<Pid>>& expandPids,
+    bool wantStats,
+    void* serializedCont,
+    uint64_t serializedContLen) {
+
+  binary::Input in { serializedCont, serializedContLen };
+
+  std::shared_ptr<Subroutine> traverse;
+  Pid pid;
+
+  struct DeserializeIter {
+    Define &facts;
+
+    void get(binary::Input& in, QueryExecutor::Iter &result) {
+      std::unique_ptr<FactIterator> iter;
+      Id id;
+      Pid type;
+      serialize::get(in, id);
+      serialize::get(in, type);
+
+      if (type) {
+        uint64_t prefixSize;
+        bool first;
+        std::optional<Id> lower_bound;
+        std::optional<Id> upper_bound;
+        serialize::get(in, prefixSize);
+        serialize::get(in, first);
+        serialize::get(in, lower_bound);
+        serialize::get(in, upper_bound);
+
+        std::string keyBuf;
+        bool found = facts.factById(
+          id,
+          [&](auto pid, Fact::Clause clause) {
+            if (pid != type) {
+              error("restart iter fact has wrong type");
+            }
+            keyBuf = binary::mkString(clause.key());
+          });
+        if (!found) {
+          error("restart iter fact not found");
+        }
+        const auto key = binary::byteRange(keyBuf);
+        if (lower_bound.has_value() && upper_bound.has_value()) {
+          auto from = lower_bound.value();
+          auto to = upper_bound.value();
+          iter = facts.seekWithinSection(type, key, prefixSize, from, to);
+        } else {
+          iter = facts.seek(type, key, prefixSize);
+        }
+        auto res = iter->get(FactIterator::KeyOnly);
+        if (!res || res.key() != key) {
+          error("restart iter didn't find a key");
+        }
+        id = res.id;
+        result.prefix_size = prefixSize;
+        result.first = first;
+      } else {
+        // We serialized a finished iterator
+        iter = std::make_unique<EmptyIterator>();
+        id = Id::invalid();
+      }
+      result.iter = std::move(iter);
+      result.type = type;
+      result.id = id;
+    }
+
+    std::vector<QueryExecutor::Iter> getIters(binary::Input& in) {
+      // I can't figure out how to use the generic serialize::get for vectors
+      // here, so expanding it inline
+      size_t count;
+      serialize::get(in, count);
+      std::vector<QueryExecutor::Iter> iters = {};
+      for (size_t n = 0; n < count; n++) {
+        QueryExecutor::Iter elt;
+        get(in, elt);
+        iters.push_back(std::move(elt));
+      }
+      return iters;
+    }
+  };
+
+  DeserializeIter di { facts };
+  auto iters = di.getIters(in);
+
+  auto [sub, state] = Subroutine::Activation::get(in);
+  serialize::get(in, pid);
+  serialize::get(in, traverse);
+
+  return executeQuery(
+      inventory,
+      facts,
+      ownership,
+      sub,
+      pid,
+      traverse,
+      maxResults,
+      maxBytes,
+      maxTime,
+      depth,
+      expandPids,
+      wantStats,
+      std::move(iters),
+      std::move(state));
+}
+
+std::unique_ptr<QueryResults> executeQuery(
+    Inventory& inventory,
+    Define& facts,
+    DefineOwnership* ownership,
+    Subroutine& sub,
+    Pid pid,
+    std::shared_ptr<Subroutine> traverse,
+    folly::Optional<uint64_t> maxResults,
+    folly::Optional<uint64_t> maxBytes,
+    folly::Optional<uint64_t> maxTime,
+    Depth depth,
+    std::unordered_set<Pid, folly::hasher<Pid>>& expandPids,
+    bool wantStats) {
+  return executeQuery(
+      inventory,
+      facts,
+      ownership,
+      sub,
+      pid,
+      traverse,
+      maxResults,
+      maxBytes,
+      maxTime,
+      depth,
+      expandPids,
+      wantStats,
+      {}, {});
+}
 
 }
 }

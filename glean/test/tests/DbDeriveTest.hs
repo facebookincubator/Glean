@@ -36,7 +36,7 @@ import Glean.Database.Schema.Types
 import Glean.Database.Test
 import Glean.Database.Types
 import qualified Glean.Database.Catalog as Catalog
-import Glean.Internal.Types hiding (Predicate)
+import Glean.Internal.Types
 import Glean.Typed
 import Glean.Types as Thrift
 import Glean.Test.HUnit

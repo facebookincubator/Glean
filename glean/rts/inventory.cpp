@@ -6,12 +6,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#include "glean/if/gen-cpp2/internal_types.h"
 #include "glean/rts/bytecode/subroutine.h"
 #include "glean/rts/fact.h"
 #include "glean/rts/inventory.h"
-
-#include <thrift/lib/cpp2/protocol/Serializer.h>
+#include "glean/rts/serialize.h"
 
 namespace facebook {
 namespace glean {
@@ -67,37 +65,38 @@ std::vector<const Predicate *> Inventory::predicates() const {
 }
 
 std::string Inventory::serialize() const {
-  thrift::internal::Inventory inv;
-  inv.predicates() = {};
+  binary::Output out;
+  using namespace serialize;
+  put(out, preds.size());
   for (const auto& p : preds) {
     if (p.id) {
-      thrift::internal::Predicate ser;
-      ser.id() = p.id.toThrift();
-      ser.ref() = {};
-      ser.ref()->name() = p.name;
-      ser.ref()->version() = p.version;
-      ser.typechecker() = Subroutine::toThrift(*p.typechecker);
-      ser.traverser() =  Subroutine::toThrift(*p.traverser);
-      inv.predicates()->push_back(std::move(ser));
+      put(out, p.id);
+      put(out, p.name);
+      put(out, p.version);
+      put(out, *p.typechecker);
+      put(out, *p.traverser);
     }
   }
-  return apache::thrift::CompactSerializer::serialize<std::string>(inv);
+  return out.string();
 }
 
 Inventory Inventory::deserialize(folly::ByteRange bytes) {
-  auto inv =
-    apache::thrift::CompactSerializer::deserialize<thrift::internal::Inventory>(
-      bytes);
+  binary::Input in(bytes);
   std::vector<Predicate> preds;
-  for (auto& ser : inv.predicates().value()) {
-    preds.push_back(Predicate{
-      Pid::fromThrift(ser.id().value()),
-      ser.ref().value().name().value(),
-      ser.ref().value().version().value(),
-      Subroutine::fromThrift(ser.typechecker().value()),
-      Subroutine::fromThrift(ser.traverser().value())
-      });
-  };
+  size_t count;
+  using namespace serialize;
+  get(in, count);
+  for (size_t i = 0; i < count; i++) {
+    Predicate p;
+    get(in, p.id);
+    get(in, p.name);
+    get(in, p.version);
+    p.typechecker = std::make_shared<Subroutine>();
+    p.traverser = std::make_shared<Subroutine>();
+    serialize::get(in, *p.typechecker);
+    serialize::get(in, *p.traverser);
+    preds.push_back(std::move(p));
+  }
   return Inventory(std::move(preds));
 }
 

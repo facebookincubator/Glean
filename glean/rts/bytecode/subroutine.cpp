@@ -7,6 +7,7 @@
  */
 
 #include "glean/rts/binary.h"
+#include "glean/rts/serialize.h"
 #include "glean/rts/bytecode/subroutine.h"
 #include "glean/rts/bytecode/syscall.h"
 #include "glean/rts/id.h"
@@ -347,41 +348,69 @@ std::vector<T> copy_as(const std::vector<U>& xs) {
 }
 }
 
-thrift::internal::SubroutineState Subroutine::Activation::toThrift()
-    const {
-  thrift::internal::SubroutineState state;
-  state.code() = std::string(
-    reinterpret_cast<const char *>(sub.code.data()),
-    sub.code.size() * sizeof(uint64_t));
-  state.entry() = pc - sub.code.data();
-  state.literals() = sub.literals;
-  state.locals() = std::vector<int64_t>(
-    frame() + sub.inputs,
-    frame() + sub.inputs + sub.locals);
-  state.inputs() = sub.inputs;
-  return state;
+void Subroutine::put(binary::Output& out, const Subroutine& sub) {
+  serialize::put(out, sub.code, serialize::AsBytes{});
+  serialize::put(out, sub.inputs);
+  serialize::put(out, sub.outputs);
+  serialize::put(out, sub.locals);
+  serialize::put(out, sub.constants);
+  serialize::put(out, sub.literals);
 }
 
-
-std::shared_ptr<Subroutine>
-Subroutine::fromThrift(const thrift::internal::Subroutine &ser) {
-  return std::make_shared<Subroutine>(Subroutine{
-      copy_as<uint64_t>(ser.code().value()), static_cast<size_t>(ser.inputs().value()),
-      static_cast<size_t>(ser.outputs().value()),
-      static_cast<size_t>(ser.locals().value()),
-      copy_as<uint64_t>(ser.constants().value()), ser.literals().value()});
+void Subroutine::get(binary::Input& in, Subroutine& sub) {
+  serialize::get(in, sub.code, serialize::AsBytes{});
+  serialize::get(in, sub.inputs);
+  serialize::get(in, sub.outputs);
+  serialize::get(in, sub.locals);
+  serialize::get(in, sub.constants);
+  serialize::get(in, sub.literals);
 }
 
-thrift::internal::Subroutine Subroutine::toThrift(const Subroutine &sub) {
-  thrift::internal::Subroutine ser = {};
-  ser.code().emplace(copy_as<int64_t>(sub.code));
-  ser.inputs().emplace(sub.inputs);
-  ser.outputs() = sub.outputs;
-  ser.locals() = sub.locals;
-  ser.constants().emplace(copy_as<int64_t>(sub.constants));
-  ser.literals().emplace(sub.literals);
-  return ser;
+/// Serialize an Activation. The Activation is notionally
+///   Subroutine + current PC + locals + outputs
+/// but we don't use the standard Subroutine serialization
+/// because we can do it slightly more efficiently by
+/// serializing just the bits we need.
+void Subroutine::Activation::put(binary::Output& out) const {
+  serialize::put(out, sub.code, serialize::AsBytes{});
+  serialize::put(out, (uint64_t)(pc - sub.code.data()));
+  serialize::put(out, sub.literals);
+  const folly::Range<const uint64_t*> locals{frame() + sub.inputs, sub.locals};
+  serialize::put(out, locals);
+  serialize::put(out, sub.inputs);
+  const folly::Range<const binary::Output*> outputs{
+      reinterpret_cast<const binary::Output*>(this + 1), sub.outputs};
+  serialize::put(out, outputs);
 }
+
+std::pair<Subroutine, Subroutine::Activation::State>
+Subroutine::Activation::get(binary::Input& in) {
+  uint64_t pc;
+  std::vector<uint64_t> code;
+  size_t inputs;
+  std::vector<uint64_t> locals;
+  std::vector<std::string> literals;
+  std::vector<binary::Output> outputs;
+
+  serialize::get(in, code, serialize::AsBytes{});
+  serialize::get(in, pc);
+  serialize::get(in, literals);
+  serialize::get(in, locals);
+  serialize::get(in, inputs);
+  serialize::get(in, outputs);
+
+  auto sub = Subroutine(
+      std::move(code),
+      inputs,
+      outputs.size(),
+      locals.size(),
+      std::vector<uint64_t>(), // no constants, they're already on the stack
+      std::move(literals));
+
+  Subroutine::Activation::State state{
+      pc, std::move(locals), std::move(outputs)};
+  return { std::move(sub), std::move(state) };
+};
 
 }
 }
