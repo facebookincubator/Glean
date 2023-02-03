@@ -35,6 +35,7 @@ import Data.List
 import Data.List.Extra (nubOrdOn)
 import Data.Map (Map)
 import qualified Data.Map as Map
+import Data.Maybe (listToMaybe)
 import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
@@ -167,35 +168,53 @@ calcEvolutions toRef byPredRef bySchemaRef schemaEvolutions autoEvolutions =
 
   fromSourceAnnotations :: HashMap p p
   fromSourceAnnotations =
-    HashMap.unions $ map (uncurry match) (Map.toList schemaEvolutions)
+    HashMap.unions
+    $ map concrete
+    $ map (uncurry match)
+    $ Map.toList schemaEvolutions
+    where
+      concrete :: HashMap PredicateRef PredicateRef -> HashMap p p
+      concrete = HashMap.fromList . concatMap expand . HashMap.toList
 
-  -- match predicates from 'new' schema to predicates from 'old' schema which
-  -- have the same name.
-  match :: SchemaRef -> SchemaRef -> HashMap p p
+      expand :: (PredicateRef, PredicateRef) -> [(p,p)]
+      expand (from, to) =
+        [ (from', to')
+        | from' <- allInstances from
+        , Just to' <- [mostEvolvedInstance to]
+        ]
+
+      allInstances :: PredicateRef -> [p]
+      allInstances ref = Map.findWithDefault [] ref byPredRef
+
+      mostEvolvedInstance :: PredicateRef -> Maybe p
+      mostEvolvedInstance ref = evolved <|> anyInstance
+        where
+        evolved = Map.lookup ref autoEvolutions
+        anyInstance = listToMaybe =<< Map.lookup ref byPredRef
+
+  match :: SchemaRef -> SchemaRef -> HashMap PredicateRef PredicateRef
   match old new = HashMap.fromList
-    [ (pold, ptarget)
-    | pnew <- predicates new
-    , pold <- Map.findWithDefault [] (name pnew) oldByName
-    , ptarget <- [Map.findWithDefault pnew (toRef pnew) autoEvolutions]
-    , pold /= ptarget
+    [ (rold, rnew)
+    | rold <- predicates old
+    , Just rnew <- [Map.lookup (name rold) newByName]
+    , rnew /= rold -- avoid re-exports evolving themselves
     ]
     where
-    oldByName :: Map Name [p]
-    oldByName = Map.fromListWith (++)
-      [ (name id, [id])
-      | id <- predicates old
-      ]
+    newByName :: Map Name PredicateRef
+    newByName = Map.fromList [ (name ref, ref) | ref <- predicates new ]
 
-  predicates :: SchemaRef -> [p]
+  predicates :: SchemaRef -> [PredicateRef]
   predicates sref =
     -- defined override reexported
-    nubOrdOn name $ HashSet.toList defined <> HashSet.toList reexported
+    nubOrdOn name
+      $ map toRef
+      $ HashSet.toList defined <> HashSet.toList reexported
     where
       VisiblePredicates defined reexported =
         Map.findWithDefault mempty sref bySchemaRef
 
-  name :: p -> Name
-  name = predicateRef_name . toRef
+  name :: PredicateRef -> Name
+  name = predicateRef_name
 
 -- | Check schemas for compatibility and map each predicate to their
 -- evolved counterpart in the the evolvedBy map.

@@ -69,7 +69,19 @@ multiSchemaTest = TestCase $
               stored X where x.P { a = X }
           }
 
-          schema all.1 : x.1, y.1, z.1, derived.1 {}
+          schema evolved.1 {
+            predicate P : enum { A | }
+            predicate Q : { ref : P }
+          }
+
+          schema evolved.2 {
+            predicate P : enum { A | B }
+            predicate Q : { ref : P }
+          }
+
+          schema evolved.2 evolves evolved.1
+
+          schema all.1 : x.1, y.1, z.1, derived.1, evolved.1, evolved.2 {}
         |]
 
       schema_v1_file = root </> "schema1"
@@ -99,7 +111,21 @@ multiSchemaTest = TestCase $
               stored X where x.P { a = X }
           }
 
-          schema all.1 : x.1, y.1, derived.1 {}
+          schema evolved.1 {
+            # evolved.P.2 should be able to evolve both the new and old
+            # versions of evolved.P.1
+            predicate P : enum { A | B }
+            predicate Q : { ref : P }
+          }
+
+          schema evolved.2 {
+            predicate P : enum { A | B }
+            predicate Q : { ref : P }
+          }
+
+          schema evolved.2 evolves evolved.1
+
+          schema all.1 : x.1, y.1, derived.1, evolved.1, evolved.2 {}
         |]
 
       schema_index_file_0 = root </> "schema_index_0"
@@ -206,6 +232,8 @@ multiSchemaTest = TestCase $
             [ [s| { "key" : { "a" : "xyz", "b": 3 } } |] ]
         , mkBatch (PredicateRef "y.Q" 1)
             [ [s| { "key" : { "p" : { "key" : { "a" : "xyz", "b" : 3 } }}} |] ]
+        , mkBatch (PredicateRef "evolved.P" 2)
+            [ [s| { "key" : 0 } |] ]
         ]
 
     -- create a DB using v0
