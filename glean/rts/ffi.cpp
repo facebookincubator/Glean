@@ -268,8 +268,7 @@ const char *glean_query_execute_compiled(
         max_time_ms == 0 ? folly::none : folly::Optional<uint64_t>(max_time_ms),
         static_cast<Depth>(depth),
         expandPids,
-        want_stats,
-        folly::none
+        want_stats
       ).release();
   });
 }
@@ -541,8 +540,8 @@ const char *glean_subst_deserialize(
   int64_t* ids,
   Substitution **result) {
   return ffi::wrap([=] {
-    auto subst_vec = std::vector<Id>();
-    std::transform(&ids[0], &ids[count], std::back_inserter(subst_vec), Id::fromWord);
+    auto subst_vec = std::vector<Id>(count);
+    std::transform(ids, ids + count, subst_vec.begin(), Id::fromWord);
     *result = new Substitution(Id::fromWord(firstId), std::move(subst_vec));
   });
 }

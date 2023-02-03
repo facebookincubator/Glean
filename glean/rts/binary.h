@@ -380,7 +380,7 @@ struct Output {
     rts::mangleString(r, *this);
   }
 
-  folly::ByteRange bytes() & noexcept {
+  folly::ByteRange bytes() const & noexcept {
     return to<folly::ByteRange>();
   }
 

@@ -12,8 +12,8 @@
 #include <vector>
 
 #include "glean/rts/binary.h"
+#include "glean/rts/serialize.h"
 #include "glean/rts/bytecode/gen/instruction.h"
-#include "glean/if/gen-cpp2/internal_types.h"
 
 namespace facebook {
 namespace glean {
@@ -42,24 +42,31 @@ struct Subroutine {
   /// instructions.
   std::vector<std::string> literals;
 
-  Subroutine() = delete;
-  Subroutine(const std::vector<uint64_t>& code0,
-                  size_t inputs0,
-                  size_t outputs0,
-                  size_t locals0,
-                  const std::vector<uint64_t>& constants0,
-                  const std::vector<std::string>& literals0):
-          code(code0),
-          inputs(inputs0),
-          outputs(outputs0),
-          locals(locals0),
-          constants(constants0),
-          literals(literals0){}
+  Subroutine() = default;
+  Subroutine(
+      std::vector<uint64_t> code0,
+      size_t inputs0,
+      size_t outputs0,
+      size_t locals0,
+      std::vector<uint64_t> constants0,
+      std::vector<std::string> literals0)
+      : code(std::move(code0)),
+        inputs(inputs0),
+        outputs(outputs0),
+        locals(locals0),
+        constants(std::move(constants0)),
+        literals(std::move(literals0)) {}
 
   /// Size of the subroutine's frame in words
   size_t frameSize() const {
     return inputs + locals;
   }
+
+  /// Serialize a Subroutine
+  static void put(binary::Output& out, const Subroutine& sub);
+
+  /// Deserialize a Subroutine
+  static void get(binary::Input& in, Subroutine& s);
 
   /// A subroutine activation record which can be 'execute'd after supplying
   /// arguments. The activation requires a pointer to a preallocated frame but
@@ -143,7 +150,38 @@ struct Subroutine {
       return pc != nullptr;
     }
 
-    thrift::internal::SubroutineState toThrift() const;
+    /// Serialize an Activation.
+    void put(binary::Output& out) const;
+
+    static void put(binary::Output& out, const Subroutine::Activation& act) {
+      act.put(out);
+    }
+
+    /// Deserialize an Activation, producing a Subroutine and
+    /// a State. To continue execution, do something like:
+    ///
+    ///    auto [sub, state] = get(input);
+    ///    Activation::with(sub, context, [](Activation& act) {
+    ///       act.resume(std::move(state));
+    ///       ...
+    ///       act.execute();
+    ///    }
+    struct State {
+      uint64_t pc;
+      std::vector<uint64_t> locals;
+      std::vector<binary::Output> outputs;
+    };
+    static std::pair<Subroutine, State> get(binary::Input& in);
+
+    /// Set up the Activation from a previously serialized State
+    void resume(State s) {
+      restart(s.pc, s.locals.begin(), s.locals.end());
+      auto buf = s.outputs.begin();
+      for (auto& out : outputs()) {
+        out = std::move(*buf);
+        buf++;
+      }
+    }
 
    private:
     explicit Activation(const Subroutine &sub, void *context)
@@ -190,13 +228,6 @@ struct Subroutine {
   /// Return the size of this bytecode routine in bytes, including the
   /// code, literals and constants.
   size_t size() const;
-
-  // Deserialize a Subroutine from thrift::internal::Subroutine
-  static std::shared_ptr<Subroutine> fromThrift(
-      const thrift::internal::Subroutine &ser);
-
-  // Serialize a Subroutine as thrift::internal::Subroutine
-  static thrift::internal::Subroutine toThrift(const Subroutine& sub);
 };
 
 }
