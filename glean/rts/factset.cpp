@@ -278,7 +278,7 @@ FactSet::Serialized FactSet::serialize() const {
   for (auto fact : *this) {
     fact.serialize(output);
   }
-  return {startingId(), size(), output.moveBytes()};
+  return {startingId(), size(), std::move(output)};
 }
 
 ///
@@ -300,7 +300,7 @@ FactSet::Serialized FactSet::serializeReorder(
     facts[i - startingId().toWord()].serialize(output);
   }
 
-  return {startingId(), size(), output.moveBytes()};
+  return {startingId(), size(), std::move(output)};
 }
 
 namespace {

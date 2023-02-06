@@ -305,7 +305,7 @@ public:
   struct Serialized {
     Id first;
     size_t count;
-    hs::ffi::malloced_array<uint8_t> facts;
+    binary::Output facts;
   };
   Serialized serialize() const;
 

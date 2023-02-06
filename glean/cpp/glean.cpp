@@ -35,12 +35,7 @@ thrift::Batch BatchBase::serialize() const {
   auto s = buffer.serialize();
   batch.firstId() = s.first.toThrift();
   batch.count() = s.count;
-  auto size = s.facts.size();
-  batch.facts() = folly::fbstring(
-      reinterpret_cast<char*>(s.facts.release()),
-      size,
-      size,
-      folly::AcquireMallocatedString());
+  batch.facts() = s.facts.moveToFbString();
   return batch;
 }
 
