@@ -512,7 +512,7 @@ const char* glean_factset_serialize(
     auto s = facts->serialize();
     *first_id = s.first.toWord();
     *count = s.count;
-    s.facts.release_to(facts_data, facts_size);
+    s.facts.moveBytes().release_to(facts_data, facts_size);
   });
 }
 
@@ -529,7 +529,7 @@ const char* glean_factset_serializeReorder(
         folly::Range<const uint64_t*>(order, order_size));
     *first_id = s.first.toWord();
     *count = s.count;
-    s.facts.release_to(facts_data, facts_size);
+    s.facts.moveBytes().release_to(facts_data, facts_size);
   });
 }
 
