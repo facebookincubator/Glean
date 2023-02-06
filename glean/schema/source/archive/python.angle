@@ -533,4 +533,35 @@ predicate SearchByLocalName:
     python.DeclarationWithName { Name, Decl };
     python.NameToSName Name -> { local_name = python.Name NameStr };
 
+# Mapping between declarations and their **immediate** parents.
+# - a module is parent for everything declared at module level
+# - a class is parent for its methods, variables and inner classes
+# - grandchildren of a parent cannot be its children
+# Currently, it contains only data we need for CodeHub API docs.
+predicate ContainedByParent:
+  {
+    child: Declaration,
+    parent: Declaration
+  }
+  stored {Child, Parent} where
+    (
+      python.ModuleDefinition { module = ModuleDecl, declarations = { just = Children } };
+      Children[..] = Child;
+      python.NonImportDeclaration Child; # we just not need imports atm
+      { module = ModuleDecl } = Parent;
+    ) | (
+      python.ClassDefinition {
+        declaration = ClassDecl,
+        methods = { just = Methods },
+        variables = { just = Variables },
+        class_variables = { just = ClassVariables },
+        inner_classes = { just = InnerClassess }
+      };
+      ( { func = Methods[..] } = Child ) |
+      ( { variable = Variables[..] } = Child ) |
+      ( { variable = ClassVariables[..] } = Child ) |
+      ( { cls = InnerClassess[..] } = Child );
+      { cls = ClassDecl } = Parent;
+    )
+
 } # python.3
