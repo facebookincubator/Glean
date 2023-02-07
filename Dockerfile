@@ -2,21 +2,22 @@ FROM ghcr.io/facebookincubator/hsthrift/ci-base:latest as tools
 # remove any old stuff
 RUN rm -rf /usr/local/lib
 RUN rm -rf /usr/local/include
-RUN apt-get install -y ghc-8.10.2 cmake ninja-build libxxhash-dev wget unzip
+RUN apt-get install -y ghc-8.10.2 cmake ninja-build libxxhash-dev wget unzip rsync
 RUN cabal update
 RUN mkdir /glean-code
 WORKDIR /glean-code
 ADD https://api.github.com/repos/facebookincubator/hsthrift/compare/main...HEAD /dev/null
+ADD ./glean /glean-code/glean
+ADD ./cabal.project /glean-code/
+ADD ./Makefile  /glean-code/
+ADD ./mk /glean-code/mk
+ADD ./glean.cabal.in /glean-code/
+ADD ./LICENSE /glean-code/
+ADD ./Setup.hs /glean-code/
 ADD ./install_deps.sh /glean-code/
 RUN ./install_deps.sh
 # Nuke build artifacts to save space
 RUN rm -rf /tmp/fbcode_builder_getdeps-Z__wZGleanZGleanZhsthriftZbuildZfbcode_builder-root/
-ADD ./glean /glean-code/glean
-ADD ./cabal.project /glean-code/
-ADD ./Makefile  /glean-code/
-ADD ./glean.cabal /glean-code/
-ADD ./LICENSE /glean-code/
-ADD ./Setup.hs /glean-code/
 
 ENV LD_LIBRARY_PATH=/root/.hsthrift/lib
 ENV PKG_CONFIG_PATH=/root/.hsthrift/lib/pkgconfig
