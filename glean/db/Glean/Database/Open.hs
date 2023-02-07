@@ -33,6 +33,7 @@ import Data.Set (Set)
 import qualified Data.Set as Set
 import GHC.Stack (HasCallStack)
 
+import Util.Control.Exception (tryAll)
 import qualified Util.Control.Exception.CallStack as CallStack
 import Util.Log
 import Util.Logger
@@ -348,17 +349,24 @@ schemaUpdated env@Env{..} mbRepo = do
             -- a writable DB.
           Nothing -> do
             logInfo $ "updating schema for: " <> showRepo dbRepo
-            schema <- setupSchema env dbRepo odbHandle ReadOnly
-            atomically $ do
-              state <- readTVar dbState
-              case state of
-                Opening -> return ()
-                 -- if we are Opening now, this must have happened
-                 -- after the transaction above, so it will already
-                 -- pick up the new schema.
-                Open odb -> writeTVar dbState $ Open odb { odbSchema = schema }
-                Closing -> return ()
-                Closed -> return ()
+            r <- tryAll $
+              loggingAction
+                (runLogRepo "update-schema" env dbRepo) (const mempty) $
+                  setupSchema env dbRepo odbHandle ReadOnly
+            case r of
+              Left err -> logError $ "schema update for " <> showRepo dbRepo <>
+                "failed: " <> show err
+              Right schema -> atomically $ do
+                state <- readTVar dbState
+                case state of
+                  Opening -> return ()
+                   -- if we are Opening now, this must have happened
+                   -- after the transaction above, so it will already
+                   -- pick up the new schema.
+                  Open odb ->
+                    writeTVar dbState $ Open odb { odbSchema = schema }
+                  Closing -> return ()
+                  Closed -> return ()
   logInfo "done updating schema for open DBs"
 
 
