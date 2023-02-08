@@ -1,0 +1,516 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "all.LocalClass" } } } }
+        }
+      },
+      "file": { "key": "all.py" }
+    },
+    "value": "class LocalClass:\u000a    pass"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.Child" } } } }
+        }
+      },
+      "file": { "key": "lib.py" }
+    },
+    "value": "class Child(Parent1, Parent2):\u000a    pass"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      },
+      "file": { "key": "lib.py" }
+    },
+    "value": "class HelperClass:\u000a    def method(self) -> \"HelperClass\":\u000a        pass\u000a\u000a    @classmethod\u000a    def class_method(cls) -> None:\u000a        pass\u000a\u000a    @staticmethod\u000a    def static_method() -> None:\u000a        pass\u000a\u000a    @final\u000a    @property\u000a    def prop() -> int:\u000a        pass\u000a\u000a    def _protected_method() -> int:\u000a        pass\u000a\u000a    def __private_method() -> int:\u000a        pass"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.Parent1" } } } }
+        }
+      },
+      "file": { "key": "lib.py" }
+    },
+    "value": "class Parent1:\u000a    pass"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.Parent2" } } } }
+        }
+      },
+      "file": { "key": "lib.py" }
+    },
+    "value": "class Parent2:\u000a    pass"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "func": { "key": { "name": { "key": "all.fn" } } } }
+        }
+      },
+      "file": { "key": "all.py" }
+    },
+    "value": "def fn():\u000a    pass"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "big_lib.big_func" } } }
+          }
+        }
+      },
+      "file": { "key": "big_lib/__init__.py" }
+    },
+    "value": "def big_func():\u000a    return big_var"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "big_lib.func_sleep" } } }
+          }
+        }
+      },
+      "file": { "key": "big_lib/__init__.py" }
+    },
+    "value": "async def func_sleep():\u000a    return 1"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": { "name": { "key": "lib.HelperClass.__private_method" } }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.py" }
+    },
+    "value": "def __private_method() -> int:\u000a        pass"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": { "name": { "key": "lib.HelperClass._protected_method" } }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.py" }
+    },
+    "value": "def _protected_method() -> int:\u000a        pass"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": { "name": { "key": "lib.HelperClass.class_method" } }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.py" }
+    },
+    "value": "def class_method(cls) -> None:\u000a        pass"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "lib.HelperClass.method" } } }
+          }
+        }
+      },
+      "file": { "key": "lib.py" }
+    },
+    "value": "def method(self) -> \"HelperClass\":\u000a        pass"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "lib.HelperClass.prop" } } }
+          }
+        }
+      },
+      "file": { "key": "lib.py" }
+    },
+    "value": "def prop() -> int:\u000a        pass"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": { "name": { "key": "lib.HelperClass.static_method" } }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.py" }
+    },
+    "value": "def static_method() -> None:\u000a        pass"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "lib.helper_func" } } }
+          }
+        }
+      },
+      "file": { "key": "lib.py" }
+    },
+    "value": "def helper_func():\u000a    return HelperClass()"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "func": { "key": { "name": { "key": "main.f" } } } }
+        }
+      },
+      "file": { "key": "main.py" }
+    },
+    "value": "def f() -> \"None\":\u000a    helper_func()\u000a    big_func()\u000a    func()\u000a    c = Helper()\u000a    c.method()\u000a    return c"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "func": { "key": { "name": { "key": "main.g" } } } }
+        }
+      },
+      "file": { "key": "main.py" }
+    },
+    "value": "def g() -> None:\u000a    from lib import HelperClass as OtherHelper\u000a\u000a    def h(_: OtherHelper) -> None:\u000a        pass"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "main.g.<locals>.h" } } }
+          }
+        }
+      },
+      "file": { "key": "main.py" }
+    },
+    "value": "def h(_: OtherHelper) -> None:\u000a        pass"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "all.Helper" },
+                "from_name": { "key": "lib.HelperClass" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "all.py" }
+    },
+    "value": "HelperClass"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "all.big_func" },
+                "from_name": { "key": "big_lib.big_func" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "all.py" }
+    },
+    "value": "big_func"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "all.big_var" },
+                "from_name": { "key": "big_lib.big_var" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "all.py" }
+    },
+    "value": "big_var"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "big_lib.relative.big_func" },
+                "from_name": { "key": "big_lib.big_func" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "big_lib/relative.py" }
+    },
+    "value": "big_func"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "lib.func" },
+                "from_name": { "key": "big_lib.big_func" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.py" }
+    },
+    "value": "big_func"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "main.Helper" },
+                "from_name": { "key": "lib.HelperClass" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "main.py" }
+    },
+    "value": "HelperClass"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "main.OtherHelper" },
+                "from_name": { "key": "lib.HelperClass" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "main.py" }
+    },
+    "value": "HelperClass"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "main.big_func" },
+                "from_name": { "key": "big_lib.big_func" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "main.py" }
+    },
+    "value": "big_func"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "main.func" },
+                "from_name": { "key": "lib.func" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "main.py" }
+    },
+    "value": "func"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "main.helper_func" },
+                "from_name": { "key": "lib.helper_func" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "main.py" }
+    },
+    "value": "helper_func"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "all" } } } }
+        }
+      },
+      "file": { "key": "all.py" }
+    },
+    "value": "# Copyright (c) Meta Platforms, Inc. and affiliates.\u000a# All rights reserved.\u000a#\u000a# This source code is licensed under the BSD-style license found in the\u000a# LICENSE file in the root directory of this source tree.\u000a\u000afrom big_lib import big_func, big_var\u000afrom lib import HelperClass as Helper\u000a\u000avar = 123\u000a\u000a\u000adef fn():\u000a    pass\u000a\u000a\u000aclass LocalClass:\u000a    pass\u000a\u000a\u000a__all__ = [\"Helper\", \"big_func\", \"LocalClass\", \"fn\", \"var\", \"Helper\", \"big_var\"]\u000a"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "big_lib" } } } }
+        }
+      },
+      "file": { "key": "big_lib/__init__.py" }
+    },
+    "value": "# Copyright (c) Meta Platforms, Inc. and affiliates.\u000a# All rights reserved.\u000a#\u000a# This source code is licensed under the BSD-style license found in the\u000a# LICENSE file in the root directory of this source tree.\u000a\u000a# flake8: noqa\u000a\u000abig_var = 0\u000a\u000a\u000adef big_func():\u000a    return big_var\u000a\u000a\u000aasync def func_sleep():\u000a    return 1\u000a"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "module": { "key": { "name": { "key": "big_lib.relative" } } }
+          }
+        }
+      },
+      "file": { "key": "big_lib/relative.py" }
+    },
+    "value": "# Copyright (c) Meta Platforms, Inc. and affiliates.\u000a# All rights reserved.\u000a#\u000a# This source code is licensed under the BSD-style license found in the\u000a# LICENSE file in the root directory of this source tree.\u000a\u000a# flake8: noqa\u000a\u000afrom . import big_func\u000a\u000abig_func()\u000a"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "lib" } } } }
+        }
+      },
+      "file": { "key": "lib.py" }
+    },
+    "value": "# Copyright (c) Meta Platforms, Inc. and affiliates.\u000a# All rights reserved.\u000a#\u000a# This source code is licensed under the BSD-style license found in the\u000a# LICENSE file in the root directory of this source tree.\u000a\u000a# flake8: noqa\u000a\u000afrom big_lib import big_func as func  # noqa\u000a\u000a\u000a@final\u000aclass HelperClass:\u000a    def method(self) -> \"HelperClass\":\u000a        pass\u000a\u000a    @classmethod\u000a    def class_method(cls) -> None:\u000a        pass\u000a\u000a    @staticmethod\u000a    def static_method() -> None:\u000a        pass\u000a\u000a    @final\u000a    @property\u000a    def prop() -> int:\u000a        pass\u000a\u000a    def _protected_method() -> int:\u000a        pass\u000a\u000a    def __private_method() -> int:\u000a        pass\u000a\u000a\u000adef helper_func():\u000a    return HelperClass()\u000a\u000a\u000aclass Parent1:\u000a    pass\u000a\u000a\u000aclass Parent2:\u000a    pass\u000a\u000a\u000aclass Child(Parent1, Parent2):\u000a    pass\u000a"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "main" } } } }
+        }
+      },
+      "file": { "key": "main.py" }
+    },
+    "value": "# Copyright (c) Meta Platforms, Inc. and affiliates.\u000a# All rights reserved.\u000a#\u000a# This source code is licensed under the BSD-style license found in the\u000a# LICENSE file in the root directory of this source tree.\u000a\u000a# flake8: noqa\u000a\u000afrom big_lib import big_func  # noqa\u000afrom lib import func, helper_func, HelperClass as Helper\u000a\u000a\u000adef f() -> \"None\":\u000a    helper_func()\u000a    big_func()\u000a    func()\u000a    c = Helper()\u000a    c.method()\u000a    return c\u000a\u000a\u000adef g() -> None:\u000a    from lib import HelperClass as OtherHelper\u000a\u000a    def h(_: OtherHelper) -> None:\u000a        pass\u000a\u000a\u000aif __name__ == \"__main__\":\u000a    f()\u000a"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": { "key": { "name": { "key": "all.__all__" } } }
+          }
+        }
+      },
+      "file": { "key": "all.py" }
+    },
+    "value": "__all__ = [\"Helper\", \"big_func\", \"LocalClass\", \"fn\", \"var\", \"Helper\", \"big_var\"]"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "variable": { "key": { "name": { "key": "all.var" } } } }
+        }
+      },
+      "file": { "key": "all.py" }
+    },
+    "value": "var = 123"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
+          }
+        }
+      },
+      "file": { "key": "big_lib/__init__.py" }
+    },
+    "value": "big_var = 0"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": { "key": { "name": { "key": "main.f.<locals>.c" } } }
+          }
+        }
+      },
+      "file": { "key": "main.py" }
+    },
+    "value": "c = Helper()"
+  }
+]
