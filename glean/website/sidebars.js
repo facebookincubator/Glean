@@ -32,6 +32,7 @@ module.exports = {
                        external: ['schema/workflow'],
                    }),
                    'schema/thrift',
+                   'schema/design',
                ]
            },
            {
