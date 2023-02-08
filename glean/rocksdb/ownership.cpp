@@ -516,14 +516,16 @@ struct StoredOwnership : Ownership {
 
   OwnershipStats getStats() override {
     rocksdb::Range range(toSlice(""), toSlice("\xff"));
-    uint64_t units_size, unit_ids_size, sets_size, owners_size, num_owners;
+    uint64_t units_size, unit_ids_size, sets_size, owners_size, num_owners,
+        owner_pages_size, num_owner_pages;
     auto& db = db_->container_.db;
     rocksdb::FlushOptions opts;
     db->Flush(opts, {
         db_->container_.family(Family::ownershipUnits),
         db_->container_.family(Family::ownershipUnitIds),
         db_->container_.family(Family::ownershipSets),
-        db_->container_.family(Family::factOwners)
+        db_->container_.family(Family::factOwners),
+        db_->container_.family(Family::factOwnerPages)
     });
     check(db->GetApproximateSizes(
               db_->container_.family(Family::ownershipUnits),
@@ -540,14 +542,20 @@ struct StoredOwnership : Ownership {
         &num_owners);
     check(db->GetApproximateSizes(
         db_->container_.family(Family::factOwners), &range, 1, &owners_size));
+    db->GetIntProperty(
+        db_->container_.family(Family::factOwnerPages),
+        "rocksdb.estimate-num-keys",
+        &num_owner_pages);
+    check(db->GetApproximateSizes(
+        db_->container_.family(Family::factOwnerPages), &range, 1, &owner_pages_size));
 
     OwnershipStats stats;
     stats.num_units = nextUnitId() - db_->first_unit_id; // accurate
     stats.units_size = units_size + unit_ids_size; // estimate
     stats.num_sets = db_->next_uset_id - stats.num_units; // accurate
     stats.sets_size = sets_size; // estimate
-    stats.num_owner_entries = num_owners; // estimate
-    stats.owners_size = owners_size; // estimate
+    stats.num_owner_entries = num_owners + num_owner_pages; // estimate
+    stats.owners_size = owners_size + owner_pages_size; // estimate
     return stats;
   }
 
@@ -555,6 +563,10 @@ struct StoredOwnership : Ownership {
   DatabaseImpl* db_;
 };
 
+}
+
+void DatabaseImpl::prepareFactOwnerCache() {
+  FactOwnerCache::prepare(container_);
 }
 
 // The size of each page in the fact cache. This is a time/space tradeoff:
@@ -657,6 +669,19 @@ UsetId DatabaseImpl::getOwner(Id id) {
   return factOwnerCache_.getOwner(container_, id);
 }
 
+namespace {
+  // key in factOwnerPages where we store the index
+  static const std::string INDEX_KEY = "INDEX";
+
+  // sentinel value in the index indicating that this prefix has a page in
+  // factOwnerPages
+  static const UsetId HAS_PAGE = SPECIAL_USET;
+
+  // Note: this constant affects the data in the DB, so it can't be changed.
+  static const size_t PAGE_BITS = 12;
+  static const uint64_t PAGE_MASK = (1<<PAGE_BITS) - 1;
+}
+
 void DatabaseImpl::FactOwnerCache::enable() {
   auto cache = cache_.ulock();
   if (*cache) {
@@ -724,6 +749,82 @@ UsetId DatabaseImpl::FactOwnerCache::getOwner(ContainerImpl& container, Id id) {
 
 void DatabaseImpl::cacheOwnership() {
   factOwnerCache_.enable();
+}
+
+void DatabaseImpl::FactOwnerCache::prepare(ContainerImpl& container) {
+  auto t = makeAutoTimer("prepareFactOwnerCache");
+
+  std::unique_ptr<rocksdb::Iterator> iter(container.db->NewIterator(
+      rocksdb::ReadOptions(), container.family(Family::factOwners)));
+
+  if (!iter) {
+    rts::error("rocksdb: couldn't allocate iterator");
+  }
+
+  iter->SeekToFirst();
+
+  std::vector<UsetId> index; // indexed by prefix
+  uint64_t prefix = 0; // prefix of the current page
+  UsetId set = INVALID_USET; // always the last set we saw
+  std::vector<uint16_t> ids; // in the current page
+  std::vector<UsetId> sets; // in the current page
+  size_t populated = 0; // for stats
+  rocksdb::WriteBatch batch;
+
+  auto writePage = [&]() {
+    if (ids.size() == 0) {
+      index.push_back(set);
+    } else {
+      index.push_back(HAS_PAGE);
+      binary::Output out;
+      out.bytes(ids.data(), ids.size() * sizeof(uint16_t));
+      out.bytes(sets.data(), sets.size() * sizeof(UsetId));
+      batch.Put(
+          container.family(Family::factOwnerPages),
+          toSlice(prefix),
+          slice(out));
+      ids.clear();
+      sets.clear();
+      populated++;
+    };
+  };
+
+  for (; iter->Valid(); iter->Next()) {
+    binary::Input key(byteRange(iter->key()));
+    uint64_t id = key.trustedNat();
+
+    uint64_t this_prefix = id >> PAGE_BITS;
+    uint16_t this_offset = id & PAGE_MASK;
+
+    if (this_prefix != prefix) {
+      for (; prefix < this_prefix; prefix++) {
+        writePage();
+      }
+    }
+    if (this_offset != 0 && ids.size() == 0) {
+      // fill in the lower bound with the previous set
+      ids.push_back(0);
+      sets.push_back(set);
+    }
+    binary::Input val(byteRange(iter->value()));
+    set = val.trustedNat();
+    ids.push_back(this_offset);
+    sets.push_back(set);
+  }
+
+  // write the last page
+  writePage();
+
+  batch.Put(
+      container.family(Family::factOwnerPages),
+      INDEX_KEY,
+      slice(folly::ByteRange(
+          reinterpret_cast<const uint8_t*>(index.data()),
+          index.size() * sizeof(UsetId))));
+
+  t.logFormat("{} index entries, {} populated", index.size(), populated);
+
+  check(container.db->Write(container.writeOptions, &batch));
 }
 
 void DatabaseImpl::addDefineOwnership(DefineOwnership& def) {

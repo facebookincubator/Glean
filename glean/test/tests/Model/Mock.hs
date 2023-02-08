@@ -64,6 +64,7 @@ instance Storage s => Storage (MockStorage s) where
   storeOwnership = storeOwnership . unmockDatabase
   getOwnership = getOwnership . unmockDatabase
   cacheOwnership = cacheOwnership . unmockDatabase
+  prepareFactOwnerCache = prepareFactOwnerCache . unmockDatabase
   getUnitId = getUnitId . unmockDatabase
   getUnit = getUnit . unmockDatabase
   addDefineOwnership = addDefineOwnership . unmockDatabase

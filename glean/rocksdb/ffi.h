@@ -180,6 +180,8 @@ const char *glean_rocksdb_database_cache_ownership(
   Database *db
 );
 
+const char* glean_rocksdb_prepare_fact_owner_cache(Database* db);
+
 #ifdef __cplusplus
 }
 }

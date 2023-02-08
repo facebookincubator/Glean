@@ -259,6 +259,13 @@ const char *glean_rocksdb_cache_ownership(
   });
 }
 
+const char *glean_rocksdb_prepare_fact_owner_cache(
+  Database *db) {
+  return ffi::wrap([=] {
+    db->prepareFactOwnerCache();
+  });
+}
+
 }
 }
 }

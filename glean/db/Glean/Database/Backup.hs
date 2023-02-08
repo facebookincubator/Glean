@@ -334,6 +334,7 @@ doFinalize env@Env{..} repo =
 
     config <- Observed.get envServerConfig
     withOpenDatabase env repo $ \OpenDB{..} -> do
+      Storage.prepareFactOwnerCache odbHandle
       maybeOwnership <- readTVarIO odbOwnership
       forM_ maybeOwnership $ \ownership -> do
         stats <- getOwnershipStats ownership

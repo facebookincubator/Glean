@@ -20,6 +20,7 @@ namespace rts {
 
 using UsetId = uint32_t;
 constexpr UsetId INVALID_USET = 0xffffffff;
+constexpr UsetId SPECIAL_USET = 0xfffffffe; // special value as a sentinel
 
 enum SetOp { Or, And };
 

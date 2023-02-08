@@ -108,6 +108,7 @@ struct Database : rts::Lookup {
   virtual std::unique_ptr<rts::Ownership> getOwnership() = 0;
 
   virtual void cacheOwnership() = 0;
+  virtual void prepareFactOwnerCache() = 0;
 };
 
 void restore(const std::string& target, const std::string& source);

@@ -225,6 +225,10 @@ instance Storage RocksDB where
     withForeignPtr (dbPtr db) $ \db_ptr ->
       invoke $ glean_rocksdb_cache_ownership db_ptr
 
+  prepareFactOwnerCache db =
+    withForeignPtr (dbPtr db) $ \db_ptr ->
+      invoke $ glean_rocksdb_prepare_fact_owner_cache db_ptr
+
   getTotalCapacity = getDiskSize . rocksRoot
   getUsedCapacity = getUsedDiskSpace . rocksRoot
   getFreeCapacity = getFreeDiskSpace . rocksRoot
@@ -408,5 +412,9 @@ foreign import ccall unsafe glean_rocksdb_get_derived_fact_ownership_iterator
   -> IO CString
 
 foreign import ccall unsafe glean_rocksdb_cache_ownership
+  :: Ptr (Database RocksDB)
+  -> IO CString
+
+foreign import ccall unsafe glean_rocksdb_prepare_fact_owner_cache
   :: Ptr (Database RocksDB)
   -> IO CString

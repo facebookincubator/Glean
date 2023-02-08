@@ -142,7 +142,7 @@ DatabaseImpl::DatabaseImpl(
 
   // Enable the fact owner cache when the DB is read-only
   if (container_.mode == Mode::ReadOnly) {
-    factOwnerCache_.enable();
+    cacheOwnership();
   }
 }
 

@@ -126,22 +126,58 @@ struct DatabaseImpl final : Database {
 
   void addDefineOwnership(rts::DefineOwnership& define) override;
 
+  // Cache for getOwner(Id)
+  //
+  // We start with an interval map stored in the factOwners column family. This
+  // is translated into a more efficient representation in factOwnerPages when
+  // the DB is finalized,
+  //
+  // The cache is split into pages each covering 2^PAGE_BITS Ids.
+  // The prefix of a page is Id >> PAGE_BITS.
+  //
+  // We're trying to trade-off:
+  //    - space overhead in the DB: group data into pages, and don't create
+  //      DB entries for empty pages.
+  //    - time to open a DB: the cache is populated lazily from the DB
+  //    - latency when the cache is cold: just one Get() to fetch a page
+  //    - as few DB lookups as possible: each lookup populates a whole page
+  //
+  // PageIndex
+  //    - stored as one blob in the DB, factOwnerPages["INDEX"]
+  //    - maps prefix -> maybe UsetId
+  //      - UsetId => all Ids in this page map to the same UsetId, which might
+  //      be INVALID_USET
+  //      - nothing => fetch the page
+  //    - the purpose of the index is to support the sparse interval maps we
+  //    will have in
+  //      stacked DBs. Otherwise we would need 250k entries in the PageStore for
+  //      a stacked DB where the base has 1B facts. With the index we just need
+  //      a 1MB index blob where a few of the pages will be populated.
+  //
+  // PageStore
+  //    - stored as prefix -> Page in the DB
+  //    - Each page is a table of intervals [(id1,set1), (id2,set2), ...],
+  //      split into two arrays because the IDs are 16 bits and we want that
+  //      array to be as compact as possible. See "struct Page" below.
+  //
+  // To find the UsetId for a given Id:
+  //    - look up the prefix in the index
+  //    - if the index contains a UsetId, that's the result
+  //    - otherwise fetch the Page for this prefix
+  //    - binary-search in the Page to find the correct interval
+
   /// Enable the fact owner cache. This should only be called when the
-  // DB is read-only.
+  // DB is read-only, and only after prepareFactOwnerCache().
   void cacheOwnership() override;
 
-  // Cache for getOwner(Id). This is represented as a vector of pages
-  // indexed by the upper 48 bits of the fact ID. Each page is a table
-  // of intervals [(id1,set1), (id2,set2), ...], split into two arrays
-  // because the IDs are 16 bits and we want that array to be as
-  // compact as possible. We find the correct interval in getOwner()
-  // by binary search in the page on the low 16 bits of the fact ID.
-  // TODO: maybe it's worth optimizing very dense pages to be just a
-  // lookup, and conversely very sparse pages to a linear search?
+  /// Translate the data in factOwners into factOwnerPages. Do not call
+  // prepareFactOwnerCache() until the DB is complete.
+  void prepareFactOwnerCache() override;
 
   struct FactOwnerCache {
     rts::UsetId getOwner(ContainerImpl& container, Id id);
     void enable();
+    static void prepare(ContainerImpl& container);
 
    private:
     struct Page {

@@ -92,6 +92,7 @@ instance Storage Memory where
   computeDerivedOwnership _ _ _ =
     return (error "unimplemented computeDerivedOwnership")
   cacheOwnership _ = return ()
+  prepareFactOwnerCache _ = return ()
 
   -- TODO
   getTotalCapacity _ = return maxBound

@@ -159,6 +159,8 @@ class CanLookup (Database s) => Storage s where
   -- in an incremental stack.
   cacheOwnership :: Database s -> IO ()
 
+  prepareFactOwnerCache :: Database s -> IO ()
+
   -- | Determine the total capacity of the storage medium (e.g., disk size).
   getTotalCapacity :: s -> IO Int
 
