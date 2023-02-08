@@ -6,6 +6,9 @@ schema src.1 {
 # Can be under buck-out, e.g. fbcode/buck-out/opt/gen/...
 predicate File : string
 
+# Source code digests produced by unspecified hash function
+predicate FileDigest : File -> string
+
 # Common source code location type
 type Loc = {
   file : File,

@@ -65,7 +65,10 @@ predicate EntityInfo:
     (codemarkup.lsif.EntityInfo { E, Info }; { lsif = E } = Entity)
 
 # Source code digests produced by unspecified hash function
-predicate EntityDigest: code.Entity -> string
+predicate FileEntityDigest:
+  { file: src.File
+  , entity: code.Entity,
+  } -> string
 
 # All entities defined in a src.File and their locations
 predicate FileEntityLocations:
