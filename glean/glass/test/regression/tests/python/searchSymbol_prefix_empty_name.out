@@ -140,13 +140,6 @@
                 "symbol": "test/py/all.py/all.fn"
             },
             {
-                "context": {
-                    "qname": {
-                        "container": "all",
-                        "localName": "fn"
-                    },
-                    "symbol": "test/py/all.py/all.fn"
-                },
                 "kind": 15,
                 "language": 7,
                 "location": {
@@ -253,13 +246,6 @@
                 "symbol": "test/py/as.py/as.fn"
             },
             {
-                "context": {
-                    "qname": {
-                        "container": "as",
-                        "localName": "fn"
-                    },
-                    "symbol": "test/py/as.py/as.fn"
-                },
                 "kind": 15,
                 "language": 7,
                 "location": {
@@ -638,13 +624,6 @@
                 "symbol": "test/py/main.py/main.f"
             },
             {
-                "context": {
-                    "qname": {
-                        "container": "main",
-                        "localName": "f"
-                    },
-                    "symbol": "test/py/main.py/main.f"
-                },
                 "kind": 15,
                 "language": 7,
                 "location": {
@@ -698,13 +677,6 @@
                 "symbol": "test/py/main.py/main.g"
             },
             {
-                "context": {
-                    "qname": {
-                        "container": "main",
-                        "localName": "g"
-                    },
-                    "symbol": "test/py/main.py/main.g"
-                },
                 "kind": 14,
                 "language": 7,
                 "location": {
@@ -1014,13 +986,6 @@
                 "symbol": "test/py/shadow.py/shadow.shadow_func"
             },
             {
-                "context": {
-                    "qname": {
-                        "container": "shadow",
-                        "localName": "shadow_func"
-                    },
-                    "symbol": "test/py/shadow.py/shadow.shadow_func"
-                },
                 "kind": 15,
                 "language": 7,
                 "location": {
@@ -1044,13 +1009,6 @@
                 "symbol": "test/py/shadow.py/shadow.shadow_func.%3Clocals%3E.big_func"
             },
             {
-                "context": {
-                    "qname": {
-                        "container": "shadow",
-                        "localName": "shadow_func"
-                    },
-                    "symbol": "test/py/shadow.py/shadow.shadow_func"
-                },
                 "kind": 15,
                 "language": 7,
                 "location": {
@@ -1074,13 +1032,6 @@
                 "symbol": "test/py/shadow.py/shadow.shadow_func.%3Clocals%3E.local_var"
             },
             {
-                "context": {
-                    "qname": {
-                        "container": "shadow",
-                        "localName": "shadow_func"
-                    },
-                    "symbol": "test/py/shadow.py/shadow.shadow_func"
-                },
                 "kind": 15,
                 "language": 7,
                 "location": {
