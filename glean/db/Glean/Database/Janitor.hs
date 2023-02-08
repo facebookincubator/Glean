@@ -251,32 +251,44 @@ runWithShards env myShards sm = do
       -- Nothing means the db is not in any of the shards assigned to this node
     | (item, Nothing) <- keepAnnotatedWithShard]
 
-  -- ORDERING: 'listMostRecent' reuses the data published by 'resetElsewhere'
-  let closeDeps = transitiveClosureBy itemRepo (catMaybes . dependencies)
-  mostRecent <- Set.fromList . map itemRepo . closeDeps <$>
-    Catalog.listMostRecent (envCatalog env)
+  deleting <- readTVarIO (envDeleting env)
 
+  -- Open the most recent local, complete DB for each repo in order
+  -- to avoid lag spikes. This will be the DB that clients will get
+  -- by default unless they specify a particular DB instance.
+  let
+      toOpen =
+        [ item
+        | (_, dbsByAge) <- byRepoName
+        , item : _ <- [filter shouldOpen (NonEmpty.toList dbsByAge)]
+        ]
+
+      isComplete Complete{} = True
+      isComplete _ = False
+
+      shouldOpen item =
+        isComplete (metaCompleteness (itemMeta item)) &&
+        itemLocality item == Local &&
+        not (HashMap.member (itemRepo item) deleting)
+
+      closeDeps = transitiveClosureBy itemRepo (catMaybes . dependencies)
+
+  -- close any DBs that are idle, avoiding the set of DBs that we will
+  -- be proactively keeping open (and their dependencies).
   closeIdleDatabases env
      (seconds $ fromIntegral databaseClosePolicy_close_after)
-     (toList mostRecent)
+     (map itemRepo $ closeDeps toOpen)
 
   execWriterT $ do
+    forM_ toOpen $ \item ->
+      whenM (liftIO $ atomically $ isDatabaseClosed env $ itemRepo item) $
+        preOpenDB (itemRepo item)
+
     forM_ byRepoName $ \(repoNm, dbsByAge) -> do
       let prefix = "glean.db." <> Text.encodeUtf8 repoNm
       let repoKeep =
             filter (\item -> repoNm == Thrift.repo_name (itemRepo item)) keep
 
-    -- Open the most recent local DB for each repo in order to avoid lag spikes
-      let newestDb = NonEmpty.head dbsByAge
-          isDeletingNewestDb = liftIO $
-            HashMap.member (itemRepo newestDb) <$> readTVarIO (envDeleting env)
-      let isMostRecentDbAndLocal =
-            itemRepo newestDb `elem` mostRecent
-            && itemLocality newestDb == Local
-      when isMostRecentDbAndLocal $
-        whenM (liftIO $ atomically $ isDatabaseClosed env $ itemRepo newestDb) $
-        unlessM isDeletingNewestDb
-          $ preOpenDB (itemRepo newestDb)
       -- upsert counters
       publishCounter (prefix <> ".all") $ length repoKeep
       publishCounter (prefix <> ".available") $ length $ filter
@@ -296,7 +308,12 @@ runWithShards env myShards sm = do
       publishCounter (prefix <> ".backups") $ length $ NonEmpty.filter
         (\Item{..} -> itemLocality == Cloud)
         dbsByAge
-      when isMostRecentDbAndLocal $ void $ do
+
+      -- Report the age of the newest DB if it is local. We only want
+      -- to report the age when the DB is available for clients to query,
+      -- hence the locality check.
+      let newestDb = NonEmpty.head dbsByAge
+      when (itemLocality newestDb == Local) $ void $ do
         let dbCreated = posixEpochTimeToTime (metaCreated $ itemMeta newestDb)
             dbAge = timeSpanInSeconds $ fromUTCTime t `timeDiff` dbCreated
         publishCounter (prefix <> ".age") dbAge

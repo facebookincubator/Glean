@@ -44,6 +44,7 @@ import Util.TimeSec
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Config
 import Glean.Database.Data
+import Glean.Database.Delete
 import Glean.Database.Env
 import Glean.Database.Janitor
 import Glean.Database.Meta
@@ -456,6 +457,18 @@ openNewestTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   assertBool "newest open after" newestOpen
   assertBool "oldest closed after" oldestStillClosed
 
+  -- delete repo001, repo002 is the newest but is broken, so we
+  -- should open repo003.
+  deleteDatabase env newestDb
+  runDatabaseJanitor env
+
+  let nextBroken = Repo "test" "0002"
+  let nextNotBroken = Repo "test" "0003"
+  dontOpenBroken <- atomically $ isDatabaseClosed env nextBroken
+  openNotBroken <- atomically $ not <$> isDatabaseClosed env nextNotBroken
+
+  assertBool "don't open broken" dontOpenBroken
+  assertBool "open not broken" openNotBroken
 
 closeIdleDBsTest :: Test
 closeIdleDBsTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
