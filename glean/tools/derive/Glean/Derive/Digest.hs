@@ -16,6 +16,7 @@ module Glean.Derive.Digest (
 import Data.Hashable (hash)
 import Options.Applicative (
   ParserInfo,
+  auto,
   fullDesc,
   help,
   helper,
@@ -24,8 +25,12 @@ import Options.Applicative (
   maybeReader,
   metavar,
   option,
+  short,
+  showDefault,
+  value,
   (<**>), progDesc
  )
+import System.FilePath (joinPath, splitPath, splitFileName, (</>))
 import TextShow (showt)
 
 import Util.EventBase (withEventBaseDataplane)
@@ -34,7 +39,7 @@ import Glean (
   Repo,
   parseRepo,
  )
-import Glean.Derive.Digest.Lib (derive)
+import Glean.Derive.Digest.Lib (Config (Config, hashFunction, pathAdaptor), derive)
 import Glean.Impl.ConfigProvider (ConfigAPI)
 import Glean.LocalOrRemote (withBackend)
 import qualified Glean.LocalOrRemote as Glean
@@ -49,11 +54,24 @@ main = withConfigOptions options $ \(Options {..}, cfg) ->
   withEventBaseDataplane $ \evb ->
     withConfigProvider cfg $ \(cfgAPI :: ConfigAPI) ->
       withBackend evb cfgAPI service (Just schema_id) id $ \backend -> do
-        derive backend repo "." (showt . hash)
+        let deriveConfig =
+              Config
+                { pathAdaptor = stripPath stripDepth
+                , hashFunction = showt . hash
+                }
+        derive backend repo deriveConfig
+
+-- | stripPath 1 "www/take/me/home.php"  = "take/me/home.php"
+stripPath :: Int -> FilePath -> FilePath
+stripPath depth path = stripped_body </> file
+  where
+    (body,file) = splitFileName path
+    stripped_body = joinPath $ drop depth $ splitPath body
 
 data Options = Options
   { service :: Glean.Service
   , repo :: Glean.Repo
+  , stripDepth :: Int
   }
 
 description :: String
@@ -78,4 +96,15 @@ options = info (parser <**> helper) (fullDesc <> progDesc description)
               <> metavar "NAME/INSTANCE"
               <> help "database to extend"
           )
+      stripDepth <-
+        option
+          auto
+          ( long "strip"
+              <> short 'p'
+              <> metavar "NUM"
+              <> help "Strip NUM leading components from file names."
+              <> value 0
+              <> showDefault
+          )
+
       return Options {..}

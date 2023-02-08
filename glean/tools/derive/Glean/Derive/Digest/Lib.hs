@@ -10,6 +10,7 @@
 
 -- | A derive function for generating codemarkup.LocationDigest facts
 module Glean.Derive.Digest.Lib (
+  Config(..),
   derive,
 ) where
 
@@ -22,7 +23,6 @@ import Data.Text (Text)
 import qualified Data.Text as T
 import Data.Text.Encoding (encodeUtf8)
 import qualified Data.Text.IO as T
-import System.FilePath ((</>))
 import System.Directory (getCurrentDirectory)
 import System.IO.Error (isDoesNotExistError)
 
@@ -60,8 +60,13 @@ import qualified Glean.Schema.Src as Src
 type SourceCode = Text
 type Digest = Text
 
-derive :: Backend b => b -> Repo -> FilePath -> (SourceCode -> Digest) -> IO ()
-derive backend repo cwd hashFunction = do
+data Config = Config
+  { hashFunction :: SourceCode -> Digest
+  , pathAdaptor :: FilePath -> FilePath
+  }
+
+derive :: Backend b => b -> Repo -> Config -> IO ()
+derive backend repo Config{..} = do
   locationsByFile <- runHaxl backend repo $ do
     locations <- Glean.search_ $ query codeLocations
     return $ Map.fromListWith (++)
@@ -69,7 +74,7 @@ derive backend repo cwd hashFunction = do
 
   forM_ (Map.toList locationsByFile) $ \(f, locations) -> do
     contents <- do
-      let fpath = cwd </> T.unpack f
+      let fpath = pathAdaptor $ T.unpack f
       T.readFile fpath `catch` \e ->
         if isDoesNotExistError e
           then do

@@ -10,6 +10,7 @@ module Derive.Digest.Test.Driver
   ( main
   ) where
 
+import System.FilePath ((</>))
 
 import Glean.Indexer
 import Glean.Indexer.List (cmdLineParser)
@@ -27,7 +28,10 @@ driver = driverFromIndexer $
     } `indexerThen` deriveDigests
   where
     deriveDigests backend repo params =
-      derive backend repo (indexerRoot params) id
+      derive backend repo Config
+        { hashFunction = id
+        , pathAdaptor = (indexerRoot params </>)
+        }
 
 main :: IO ()
 main = testMain driver
