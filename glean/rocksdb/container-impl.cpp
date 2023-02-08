@@ -47,8 +47,11 @@ const Family Family::ownershipDerivedRaw("ownershipDerivedRaw", [](auto& opts) {
   opts.inplace_update_support = false; }, false);
 const Family Family::ownershipSets("ownershipSets", [](auto& opts){
   opts.inplace_update_support = false; });
+// TODO: don't keep factOwners after prepareFactOwnerCache()
 const Family Family::factOwners("factOwners", [](auto& opts){
   opts.inplace_update_support = false; });
+const Family Family::factOwnerPages("factOwnerPages", [](auto& opts) {
+  opts.OptimizeForPointLookup(100); });
 
 #ifndef FACEBOOK
 namespace {

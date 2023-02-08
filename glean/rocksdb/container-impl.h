@@ -54,6 +54,7 @@ public:
   static const Family ownershipDerivedRaw;
   static const Family ownershipSets;
   static const Family factOwners;
+  static const Family factOwnerPages;
 
   static size_t count() { return families.size(); }
 
