@@ -6,11 +6,18 @@
 
 # flake8: noqa
 
+from typing import ClassVar, final
+
 from big_lib import big_func as func  # noqa
 
 
 @final
 class HelperClass:
+    old_style_class_var = 1
+
+    class_var: ClassVar[bool] = True
+    instance_var: int
+
     def method(self) -> "HelperClass":
         pass
 

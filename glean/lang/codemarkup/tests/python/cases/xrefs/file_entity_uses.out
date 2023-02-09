@@ -47,7 +47,43 @@
   {
     "key": {
       "file": { "key": "lib.py" },
-      "span": { "length": 7, "start": 754 },
+      "span": { "length": 5, "start": 309 },
+      "target": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "lib.final" },
+                "from_name": { "key": "typing.final" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "lib.py" },
+      "span": { "length": 5, "start": 612 },
+      "target": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "lib.final" },
+                "from_name": { "key": "typing.final" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "lib.py" },
+      "span": { "length": 7, "start": 879 },
       "target": {
         "python": {
           "decl": { "cls": { "key": { "name": { "key": "lib.Parent1" } } } }
@@ -58,7 +94,7 @@
   {
     "key": {
       "file": { "key": "lib.py" },
-      "span": { "length": 7, "start": 763 },
+      "span": { "length": 7, "start": 888 },
       "target": {
         "python": {
           "decl": { "cls": { "key": { "name": { "key": "lib.Parent2" } } } }
@@ -69,7 +105,25 @@
   {
     "key": {
       "file": { "key": "lib.py" },
-      "span": { "length": 11, "start": 674 },
+      "span": { "length": 8, "start": 378 },
+      "target": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "lib.ClassVar" },
+                "from_name": { "key": "typing.ClassVar" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "lib.py" },
+      "span": { "length": 11, "start": 799 },
       "target": {
         "python": {
           "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
@@ -80,7 +134,7 @@
   {
     "key": {
       "file": { "key": "lib.py" },
-      "span": { "length": 13, "start": 322 },
+      "span": { "length": 13, "start": 447 },
       "target": {
         "python": {
           "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }

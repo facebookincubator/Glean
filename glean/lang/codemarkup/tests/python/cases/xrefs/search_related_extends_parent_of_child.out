@@ -12,7 +12,7 @@
         "location": {
           "name": "lib.Parent1",
           "file": { "key": "lib.py" },
-          "location": { "span": { "start": 690, "length": 23 } }
+          "location": { "span": { "start": 815, "length": 23 } }
         }
       },
       "child": {
@@ -24,7 +24,7 @@
         "location": {
           "name": "lib.Child",
           "file": { "key": "lib.py" },
-          "location": { "span": { "start": 742, "length": 39 } }
+          "location": { "span": { "start": 867, "length": 39 } }
         }
       }
     }
@@ -41,7 +41,7 @@
         "location": {
           "name": "lib.Parent2",
           "file": { "key": "lib.py" },
-          "location": { "span": { "start": 716, "length": 23 } }
+          "location": { "span": { "start": 841, "length": 23 } }
         }
       },
       "child": {
@@ -53,7 +53,7 @@
         "location": {
           "name": "lib.Child",
           "file": { "key": "lib.py" },
-          "location": { "span": { "start": 742, "length": 39 } }
+          "location": { "span": { "start": 867, "length": 39 } }
         }
       }
     }

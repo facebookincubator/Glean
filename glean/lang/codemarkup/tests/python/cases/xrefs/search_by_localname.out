@@ -8,6 +8,19 @@
   },
   {
     "key": {
+      "name": { "key": "ClassVar" },
+      "decl": {
+        "imp": {
+          "key": {
+            "from_name": { "key": "typing.ClassVar" },
+            "as_name": { "key": "lib.ClassVar" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "name": { "key": "Helper" },
       "decl": {
         "imp": {
@@ -191,8 +204,31 @@
   },
   {
     "key": {
+      "name": { "key": "class_var" },
+      "decl": {
+        "variable": {
+          "key": { "name": { "key": "lib.HelperClass.class_var" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "name": { "key": "f" },
       "decl": { "func": { "key": { "name": { "key": "main.f" } } } }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "final" },
+      "decl": {
+        "imp": {
+          "key": {
+            "from_name": { "key": "typing.final" },
+            "as_name": { "key": "lib.final" }
+          }
+        }
+      }
     }
   },
   {
@@ -266,6 +302,16 @@
   },
   {
     "key": {
+      "name": { "key": "instance_var" },
+      "decl": {
+        "variable": {
+          "key": { "name": { "key": "lib.HelperClass.instance_var" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "name": { "key": "lib" },
       "decl": { "module": { "key": { "name": { "key": "lib" } } } }
     }
@@ -281,6 +327,16 @@
       "name": { "key": "method" },
       "decl": {
         "func": { "key": { "name": { "key": "lib.HelperClass.method" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "old_style_class_var" },
+      "decl": {
+        "variable": {
+          "key": { "name": { "key": "lib.HelperClass.old_style_class_var" } }
+        }
       }
     }
   },

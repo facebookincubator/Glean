@@ -179,12 +179,23 @@ predicate PythonModifiers:
     modifiers: codemarkup.types.Modifiers
   }
   { { decl = Decl }, Modifiers } where
-    { func = D } = Decl;
-    python.FunctionDefinition { declaration = D, is_async = Async, decorators = MaybeDecorators };
-    IsStatic = if (
-      { just = Decorators } = MaybeDecorators;
-      Decorators[..] = "@staticmethod" | "@classmethod";
-    ) then (true) else (false);
+    (
+      { func = D } = Decl;
+      python.FunctionDefinition { declaration = D, is_async = Async, decorators = MaybeDecorators };
+      IsStatic = if (
+        { just = Decorators } = MaybeDecorators;
+        Decorators[..] = "@staticmethod" | "@classmethod";
+      ) then (true) else (false);
+    ) | (
+      { variable = D } = Decl;
+      IsStatic = if (
+        python.ContainedByParent { Decl, Parent };
+        { cls = ClassDecl } = Parent;
+        python.ClassDefinition {declaration = ClassDecl, class_variables = { just = ClassVariables } };
+        ClassVariables[..] = D;
+      ) then (true) else (false);
+      Async = false;
+    );
     # only Async&Static is set so far
     { isAbstract = false,
       isFinal = false,

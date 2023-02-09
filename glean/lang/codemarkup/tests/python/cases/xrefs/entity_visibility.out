@@ -234,6 +234,36 @@
         "decl": {
           "imp": {
             "key": {
+              "as_name": { "key": "lib.ClassVar" },
+              "from_name": { "key": "typing.ClassVar" }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "imp": {
+            "key": {
+              "as_name": { "key": "lib.final" },
+              "from_name": { "key": "typing.final" }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "imp": {
+            "key": {
               "as_name": { "key": "lib.func" },
               "from_name": { "key": "big_lib.big_func" }
             }
@@ -381,6 +411,42 @@
       "python": {
         "decl": {
           "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "variable": {
+            "key": { "name": { "key": "lib.HelperClass.class_var" } }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "variable": {
+            "key": { "name": { "key": "lib.HelperClass.instance_var" } }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "variable": {
+            "key": { "name": { "key": "lib.HelperClass.old_style_class_var" } }
+          }
         }
       }
     },

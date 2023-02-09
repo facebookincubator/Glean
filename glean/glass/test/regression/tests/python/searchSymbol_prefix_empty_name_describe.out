@@ -1385,7 +1385,9 @@
                     },
                     "repository": "test"
                 },
-                "modifiers": [],
+                "modifiers": [
+                    4
+                ],
                 "name": {
                     "container": "shadow.ShadowClass",
                     "localName": "big_func"
@@ -1432,7 +1434,9 @@
                     },
                     "repository": "test"
                 },
-                "modifiers": [],
+                "modifiers": [
+                    4
+                ],
                 "name": {
                     "container": "shadow.ShadowClass",
                     "localName": "local_var"
@@ -1479,7 +1483,9 @@
                     },
                     "repository": "test"
                 },
-                "modifiers": [],
+                "modifiers": [
+                    4
+                ],
                 "name": {
                     "container": "shadow.ShadowClass",
                     "localName": "other_var"

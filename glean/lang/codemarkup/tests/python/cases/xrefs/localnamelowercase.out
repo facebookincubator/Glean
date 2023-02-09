@@ -20,7 +20,10 @@
   { "key": { "lowercase": "c", "name": { "key": "c" } } },
   { "key": { "lowercase": "child", "name": { "key": "Child" } } },
   { "key": { "lowercase": "class_method", "name": { "key": "class_method" } } },
+  { "key": { "lowercase": "class_var", "name": { "key": "class_var" } } },
+  { "key": { "lowercase": "classvar", "name": { "key": "ClassVar" } } },
   { "key": { "lowercase": "f", "name": { "key": "f" } } },
+  { "key": { "lowercase": "final", "name": { "key": "final" } } },
   { "key": { "lowercase": "fn", "name": { "key": "fn" } } },
   { "key": { "lowercase": "func", "name": { "key": "func" } } },
   { "key": { "lowercase": "func_sleep", "name": { "key": "func_sleep" } } },
@@ -29,10 +32,17 @@
   { "key": { "lowercase": "helper", "name": { "key": "Helper" } } },
   { "key": { "lowercase": "helper_func", "name": { "key": "helper_func" } } },
   { "key": { "lowercase": "helperclass", "name": { "key": "HelperClass" } } },
+  { "key": { "lowercase": "instance_var", "name": { "key": "instance_var" } } },
   { "key": { "lowercase": "lib", "name": { "key": "lib" } } },
   { "key": { "lowercase": "localclass", "name": { "key": "LocalClass" } } },
   { "key": { "lowercase": "main", "name": { "key": "main" } } },
   { "key": { "lowercase": "method", "name": { "key": "method" } } },
+  {
+    "key": {
+      "lowercase": "old_style_class_var",
+      "name": { "key": "old_style_class_var" }
+    }
+  },
   { "key": { "lowercase": "otherhelper", "name": { "key": "OtherHelper" } } },
   { "key": { "lowercase": "parent1", "name": { "key": "Parent1" } } },
   { "key": { "lowercase": "parent2", "name": { "key": "Parent2" } } },

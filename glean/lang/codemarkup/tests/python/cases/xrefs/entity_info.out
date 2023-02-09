@@ -161,6 +161,36 @@
   },
   {
     "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 9 },
+      "tuplefield1": {
+        "variable": {
+          "key": { "name": { "key": "lib.HelperClass.class_var" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 9 },
+      "tuplefield1": {
+        "variable": {
+          "key": { "name": { "key": "lib.HelperClass.instance_var" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 9 },
+      "tuplefield1": {
+        "variable": {
+          "key": { "name": { "key": "lib.HelperClass.old_style_class_var" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "tuplefield0": { "isAbstract": false, "kind": 13 },
       "tuplefield1": { "func": { "key": { "name": { "key": "all.fn" } } } }
     }

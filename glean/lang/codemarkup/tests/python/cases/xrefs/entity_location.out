@@ -23,7 +23,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 39, "start": 742 } },
+        "location": { "span": { "length": 39, "start": 867 } },
         "name": "lib.Child"
       }
     }
@@ -37,7 +37,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 362, "start": 279 } },
+        "location": { "span": { "length": 451, "start": 315 } },
         "name": "lib.HelperClass"
       }
     }
@@ -51,7 +51,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 23, "start": 690 } },
+        "location": { "span": { "length": 23, "start": 815 } },
         "name": "lib.Parent1"
       }
     }
@@ -65,7 +65,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 23, "start": 716 } },
+        "location": { "span": { "length": 23, "start": 841 } },
         "name": "lib.Parent2"
       }
     }
@@ -129,7 +129,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 43, "start": 598 } },
+        "location": { "span": { "length": 43, "start": 723 } },
         "name": "lib.HelperClass.__private_method"
       }
     }
@@ -147,7 +147,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 44, "start": 548 } },
+        "location": { "span": { "length": 44, "start": 673 } },
         "name": "lib.HelperClass._protected_method"
       }
     }
@@ -165,7 +165,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 43, "start": 372 } },
+        "location": { "span": { "length": 43, "start": 497 } },
         "name": "lib.HelperClass.class_method"
       }
     }
@@ -181,7 +181,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 47, "start": 302 } },
+        "location": { "span": { "length": 47, "start": 427 } },
         "name": "lib.HelperClass.method"
       }
     }
@@ -197,7 +197,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 31, "start": 511 } },
+        "location": { "span": { "length": 31, "start": 636 } },
         "name": "lib.HelperClass.prop"
       }
     }
@@ -215,7 +215,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 41, "start": 439 } },
+        "location": { "span": { "length": 41, "start": 564 } },
         "name": "lib.HelperClass.static_method"
       }
     }
@@ -231,7 +231,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 43, "start": 644 } },
+        "location": { "span": { "length": 43, "start": 769 } },
         "name": "lib.helper_func"
       }
     }
@@ -371,6 +371,48 @@
           "decl": {
             "imp": {
               "key": {
+                "as_name": { "key": "lib.ClassVar" },
+                "from_name": { "key": "typing.ClassVar" }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "lib.py" },
+        "location": { "span": { "length": 8, "start": 244 } },
+        "name": "lib.ClassVar"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "lib.final" },
+                "from_name": { "key": "typing.final" }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "lib.py" },
+        "location": { "span": { "length": 5, "start": 254 } },
+        "name": "lib.final"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
                 "as_name": { "key": "lib.func" },
                 "from_name": { "key": "big_lib.big_func" }
               }
@@ -380,7 +422,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 8, "start": 245 } },
+        "location": { "span": { "length": 8, "start": 281 } },
         "name": "lib.func"
       }
     }
@@ -543,7 +585,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 782, "start": 0 } },
+        "location": { "span": { "length": 907, "start": 0 } },
         "name": "lib"
       }
     }
@@ -605,6 +647,62 @@
         "file": { "key": "big_lib/__init__.py" },
         "location": { "span": { "length": 11, "start": 225 } },
         "name": "big_lib.big_var"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": { "name": { "key": "lib.HelperClass.class_var" } }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "lib.py" },
+        "location": { "span": { "length": 32, "start": 367 } },
+        "name": "lib.HelperClass.class_var"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": { "name": { "key": "lib.HelperClass.instance_var" } }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "lib.py" },
+        "location": { "span": { "length": 17, "start": 404 } },
+        "name": "lib.HelperClass.instance_var"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": { "key": "lib.HelperClass.old_style_class_var" }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "lib.py" },
+        "location": { "span": { "length": 23, "start": 338 } },
+        "name": "lib.HelperClass.old_style_class_var"
       }
     }
   },
