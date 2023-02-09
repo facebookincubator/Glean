@@ -125,9 +125,17 @@ type Parameter =
 # representation.
 type Decorator = string
 
+# this will be removed
 type Docstring =
   {
     location: src.ByteSpan,
+  }
+
+predicate DeclarationDocstring:
+  {
+    declaration: Declaration,
+    location: src.ByteSpan, # raw docstring location
+    pretty_text: string, # pretty printed docstring
   }
 
 # A concrete symbol being imported.
