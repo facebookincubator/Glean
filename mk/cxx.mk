@@ -28,10 +28,6 @@ CXX_SOURCES_glean_cpp_if = \
     glean/if/gen-cpp2/glean_types.cpp \
     glean/if/gen-cpp2/glean_data.cpp
 
-CXX_SOURCES_glean_cpp_if_internal = \
-    glean/if/gen-cpp2/internal_types.cpp \
-    glean/if/gen-cpp2/internal_data.cpp
-
 CXX_SOURCES_glean_cpp_rts = \
     glean/rts/binary.cpp \
     glean/rts/benchmarking/factblock.cpp \

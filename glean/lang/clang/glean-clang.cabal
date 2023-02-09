@@ -114,7 +114,6 @@ executable clang-index
         glean:rts,
         glean:config,
         glean:if-glean-cpp,
-        glean:if-internal-cpp,
         glean:client-cpp
     extra-libraries:
         clangFrontend,

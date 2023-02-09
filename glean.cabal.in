@@ -296,23 +296,12 @@ library if-glean-cpp
         glean:if-fb303-cpp,
         glean:config
 
-library if-internal-cpp
-    import: fb-haskell, fb-cpp, deps
-    visibility: public
-    CXX_LIB_glean_cpp_if_internal
-    build-depends:
-        glean:if-fb303-cpp,
-        glean:if-glean-cpp,
-        glean:config
-
 library rts
     import: fb-haskell, fb-cpp, deps
     visibility: public
     include-dirs: .
     CXX_LIB_glean_cpp_rts
     pkgconfig-depends: libfolly, libunwind, libglog, icu-uc, gflags, libxxhash
-    build-depends:
-        glean:if-internal-cpp,
 
 library rocksdb
     import: fb-haskell, fb-cpp, deps
@@ -601,7 +590,8 @@ library client-cpp
     install-includes:
         glean/cpp/glean.h
     build-depends:
-        glean:rts
+        glean:rts,
+        glean:if-glean-cpp
 
 library interprocess
     import: fb-haskell, deps

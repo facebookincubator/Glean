@@ -279,7 +279,6 @@ THRIFT_CPP= \
 	glean/config/recipes/recipes.thrift \
 	glean/config/server/server_config.thrift \
 	glean/if/glean.thrift \
-	glean/if/internal.thrift \
 	glean/github/if/fb303_core.thrift \
 	glean/github/if/fb303.thrift
 
