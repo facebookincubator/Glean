@@ -23,9 +23,9 @@ namespace rts {
  * Facts use a compact memory layout: a fact occupies one memory block where
  * statically sized data (class Fact) is followed by the key and the value:
  *
- * +------+-----+-------+
- * | Fact | key | value |
- * +------+-----+-------+
+ *   +------+-----+-------+
+ *   | Fact | key | value |
+ *   +------+-----+-------+
  *
  */
 class Fact {
