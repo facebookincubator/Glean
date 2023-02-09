@@ -4,6 +4,134 @@
     "key": {
       "entity": {
         "python": {
+          "decl": { "cls": { "key": { "name": { "key": "all.LocalClass" } } } }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isAsync": false,
+        "isConst": false,
+        "isFinal": false,
+        "isInline": false,
+        "isMutable": false,
+        "isReadonly": false,
+        "isStatic": false,
+        "isVirtual": false,
+        "isVolatile": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "cls": { "key": { "name": { "key": "lib.AbstractClass" } } }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": true,
+        "isAsync": false,
+        "isConst": false,
+        "isFinal": false,
+        "isInline": false,
+        "isMutable": false,
+        "isReadonly": false,
+        "isStatic": false,
+        "isVirtual": false,
+        "isVolatile": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.Child" } } } }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isAsync": false,
+        "isConst": false,
+        "isFinal": false,
+        "isInline": false,
+        "isMutable": false,
+        "isReadonly": false,
+        "isStatic": false,
+        "isVirtual": false,
+        "isVolatile": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isAsync": false,
+        "isConst": false,
+        "isFinal": false,
+        "isInline": false,
+        "isMutable": false,
+        "isReadonly": false,
+        "isStatic": false,
+        "isVirtual": false,
+        "isVolatile": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.Parent1" } } } }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isAsync": false,
+        "isConst": false,
+        "isFinal": false,
+        "isInline": false,
+        "isMutable": false,
+        "isReadonly": false,
+        "isStatic": false,
+        "isVirtual": false,
+        "isVolatile": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.Parent2" } } } }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isAsync": false,
+        "isConst": false,
+        "isFinal": false,
+        "isInline": false,
+        "isMutable": false,
+        "isReadonly": false,
+        "isStatic": false,
+        "isVirtual": false,
+        "isVolatile": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
           "decl": { "func": { "key": { "name": { "key": "all.fn" } } } }
         }
       },
@@ -62,6 +190,31 @@
         "isMutable": false,
         "isReadonly": false,
         "isStatic": true,
+        "isVirtual": false,
+        "isVolatile": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": { "name": { "key": "lib.AbstractClass.abstract_method" } }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": true,
+        "isAsync": false,
+        "isConst": false,
+        "isFinal": false,
+        "isInline": false,
+        "isMutable": false,
+        "isReadonly": false,
+        "isStatic": false,
         "isVirtual": false,
         "isVolatile": false
       }

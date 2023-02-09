@@ -4,6 +4,26 @@
     "key": {
       "parent": {
         "python": {
+          "decl": {
+            "cls": { "key": { "name": { "key": "lib.AbstractClass" } } }
+          }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": { "name": { "key": "lib.AbstractClass.abstract_method" } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
           "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
         }
       },
@@ -261,6 +281,22 @@
         "python": {
           "decl": {
             "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "lib" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": {
+            "cls": { "key": { "name": { "key": "lib.AbstractClass" } } }
           }
         }
       }

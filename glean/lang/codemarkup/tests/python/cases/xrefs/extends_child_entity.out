@@ -4,6 +4,22 @@
     "key": {
       "parent": {
         "python": {
+          "decl": { "cls": { "key": { "name": { "key": "abc.ABC" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": {
+            "cls": { "key": { "name": { "key": "lib.AbstractClass" } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
           "decl": { "cls": { "key": { "name": { "key": "lib.Parent1" } } } }
         }
       },

@@ -2,6 +2,31 @@
   "@generated",
   {
     "key": {
+      "name": { "key": "ABC" },
+      "decl": { "cls": { "key": { "name": { "key": "abc.ABC" } } } }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "ABC" },
+      "decl": {
+        "imp": {
+          "key": {
+            "from_name": { "key": "abc.ABC" },
+            "as_name": { "key": "lib.ABC" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "AbstractClass" },
+      "decl": { "cls": { "key": { "name": { "key": "lib.AbstractClass" } } } }
+    }
+  },
+  {
+    "key": {
       "name": { "key": "Child" },
       "decl": { "cls": { "key": { "name": { "key": "lib.Child" } } } }
     }
@@ -104,6 +129,29 @@
       "decl": {
         "func": {
           "key": { "name": { "key": "lib.HelperClass._protected_method" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "abstract_method" },
+      "decl": {
+        "func": {
+          "key": { "name": { "key": "lib.AbstractClass.abstract_method" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "abstractmethod" },
+      "decl": {
+        "imp": {
+          "key": {
+            "from_name": { "key": "abc.abstractmethod" },
+            "as_name": { "key": "lib.abstractmethod" }
+          }
         }
       }
     }

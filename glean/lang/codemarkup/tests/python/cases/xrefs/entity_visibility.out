@@ -11,6 +11,14 @@
   {
     "key": {
       "python": {
+        "decl": { "cls": { "key": { "name": { "key": "lib.AbstractClass" } } } }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
         "decl": { "cls": { "key": { "name": { "key": "lib.Child" } } } }
       }
     },
@@ -61,6 +69,18 @@
       "python": {
         "decl": {
           "func": { "key": { "name": { "key": "big_lib.func_sleep" } } }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "func": {
+            "key": { "name": { "key": "lib.AbstractClass.abstract_method" } }
+          }
         }
       }
     },
@@ -234,8 +254,38 @@
         "decl": {
           "imp": {
             "key": {
+              "as_name": { "key": "lib.ABC" },
+              "from_name": { "key": "abc.ABC" }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "imp": {
+            "key": {
               "as_name": { "key": "lib.ClassVar" },
               "from_name": { "key": "typing.ClassVar" }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "imp": {
+            "key": {
+              "as_name": { "key": "lib.abstractmethod" },
+              "from_name": { "key": "abc.abstractmethod" }
             }
           }
         }

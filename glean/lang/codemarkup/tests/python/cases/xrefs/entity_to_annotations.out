@@ -28,6 +28,20 @@
         "python": {
           "decl": {
             "func": {
+              "key": { "name": { "key": "lib.AbstractClass.abstract_method" } }
+            }
+          }
+        }
+      },
+      "annotations": { "python": { "decorators": [ "@abstractmethod" ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
               "key": { "name": { "key": "lib.HelperClass.class_method" } }
             }
           }

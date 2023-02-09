@@ -552,4 +552,20 @@ predicate ContainedByParent:
       { cls = ClassDecl } = Parent;
     )
 
+predicate IsAbstract: Declaration
+  Decl where
+  (
+    { cls = ClassDecl } = Decl;
+    ClassDef = python.ClassDefinition { declaration = ClassDecl};
+    { bases = { just = Bases } } = ClassDef;
+    ABC = python.ClassDeclaration { name = "abc.ABC"};
+    Bases[..] = ABC;
+    # ABCMeta is not supported, because doesn't have this data
+  ) | (
+    { func = FuncDecl } = Decl;
+    python.FunctionDefinition { declaration = FuncDecl, decorators = { just = Decorators } };
+    # decorators are plain text, so we have to guess how they were imported
+    Decorators[..] = "@abc.abstractmethod" | "@abstractmethod";
+  )
+
 } # python.4

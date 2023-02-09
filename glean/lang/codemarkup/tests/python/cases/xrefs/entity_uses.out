@@ -283,7 +283,47 @@
   {
     "key": {
       "file": { "key": "lib.py" },
-      "span": { "length": 5, "start": 309 },
+      "span": { "length": 3, "start": 241 },
+      "target": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "abc.ABC" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "lib.py" },
+      "span": { "length": 3, "start": 965 },
+      "target": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "abc.ABC" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "lib.py" },
+      "span": { "length": 3, "start": 965 },
+      "target": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "lib.ABC" },
+                "from_name": { "key": "abc.ABC" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "lib.py" },
+      "span": { "length": 5, "start": 345 },
       "target": {
         "python": {
           "decl": {
@@ -301,7 +341,7 @@
   {
     "key": {
       "file": { "key": "lib.py" },
-      "span": { "length": 5, "start": 612 },
+      "span": { "length": 5, "start": 648 },
       "target": {
         "python": {
           "decl": {
@@ -319,7 +359,7 @@
   {
     "key": {
       "file": { "key": "lib.py" },
-      "span": { "length": 7, "start": 266 },
+      "span": { "length": 7, "start": 302 },
       "target": {
         "python": {
           "decl": { "module": { "key": { "name": { "key": "big_lib" } } } }
@@ -330,7 +370,7 @@
   {
     "key": {
       "file": { "key": "lib.py" },
-      "span": { "length": 7, "start": 879 },
+      "span": { "length": 7, "start": 915 },
       "target": {
         "python": {
           "decl": { "cls": { "key": { "name": { "key": "lib.Parent1" } } } }
@@ -341,7 +381,7 @@
   {
     "key": {
       "file": { "key": "lib.py" },
-      "span": { "length": 7, "start": 888 },
+      "span": { "length": 7, "start": 924 },
       "target": {
         "python": {
           "decl": { "cls": { "key": { "name": { "key": "lib.Parent2" } } } }
@@ -352,7 +392,7 @@
   {
     "key": {
       "file": { "key": "lib.py" },
-      "span": { "length": 8, "start": 281 },
+      "span": { "length": 8, "start": 317 },
       "target": {
         "python": {
           "decl": {
@@ -365,7 +405,7 @@
   {
     "key": {
       "file": { "key": "lib.py" },
-      "span": { "length": 8, "start": 378 },
+      "span": { "length": 8, "start": 414 },
       "target": {
         "python": {
           "decl": {
@@ -383,7 +423,7 @@
   {
     "key": {
       "file": { "key": "lib.py" },
-      "span": { "length": 11, "start": 799 },
+      "span": { "length": 11, "start": 835 },
       "target": {
         "python": {
           "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
@@ -394,10 +434,28 @@
   {
     "key": {
       "file": { "key": "lib.py" },
-      "span": { "length": 13, "start": 447 },
+      "span": { "length": 13, "start": 483 },
       "target": {
         "python": {
           "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "lib.py" },
+      "span": { "length": 14, "start": 976 },
+      "target": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "lib.abstractmethod" },
+                "from_name": { "key": "abc.abstractmethod" }
+              }
+            }
+          }
         }
       }
     }

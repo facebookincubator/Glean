@@ -122,7 +122,8 @@ predicate NonImportPythonDeclarationInfo:
     declaration: python.Declaration,
     info: codemarkup.types.SymbolInfo,
   }
-  { D, { kind = K, isAbstract = false }} where
+  { D, { kind = K, isAbstract = IsAbstract }} where
+    IsAbstract = if (python.IsAbstract D) then (true) else (false);
     NonImportPythonDeclarationKind { D, K }
 
 predicate PythonEntityKind:
@@ -195,9 +196,14 @@ predicate PythonModifiers:
         ClassVariables[..] = D;
       ) then (true) else (false);
       Async = false;
+    ) | (
+      { cls = _ } = Decl;
+      IsStatic = false;
+      Async = false;
     );
-    # only Async&Static is set so far
-    { isAbstract = false,
+
+    IsAbstract = if (python.IsAbstract Decl) then (true) else (false);
+    { isAbstract = IsAbstract,
       isFinal = false,
       isAsync = Async,
       isStatic = IsStatic,
@@ -214,7 +220,9 @@ predicate PythonEntityInfo:
     entity: code.python.Entity,
     info: codemarkup.types.SymbolInfo,
   }
-  { E, { kind = K, isAbstract = false }} where
+  { E, { kind = K, isAbstract = IsAbstract }} where
+    { decl = Decl } = E;
+    IsAbstract = if (python.IsAbstract Decl) then (true) else (false);
     PythonEntityKind { entity = E, kind = K }
 
 # docstrings are only attached to definitions

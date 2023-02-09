@@ -18,12 +18,28 @@
     "key": {
       "entity": {
         "python": {
+          "decl": {
+            "cls": { "key": { "name": { "key": "lib.AbstractClass" } } }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "lib.py" },
+        "location": { "span": { "length": 88, "start": 945 } },
+        "name": "lib.AbstractClass"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
           "decl": { "cls": { "key": { "name": { "key": "lib.Child" } } } }
         }
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 39, "start": 867 } },
+        "location": { "span": { "length": 39, "start": 903 } },
         "name": "lib.Child"
       }
     }
@@ -37,7 +53,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 451, "start": 315 } },
+        "location": { "span": { "length": 451, "start": 351 } },
         "name": "lib.HelperClass"
       }
     }
@@ -51,7 +67,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 23, "start": 815 } },
+        "location": { "span": { "length": 23, "start": 851 } },
         "name": "lib.Parent1"
       }
     }
@@ -65,7 +81,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 23, "start": 841 } },
+        "location": { "span": { "length": 23, "start": 877 } },
         "name": "lib.Parent2"
       }
     }
@@ -122,6 +138,24 @@
         "python": {
           "decl": {
             "func": {
+              "key": { "name": { "key": "lib.AbstractClass.abstract_method" } }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "lib.py" },
+        "location": { "span": { "length": 38, "start": 995 } },
+        "name": "lib.AbstractClass.abstract_method"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
               "key": { "name": { "key": "lib.HelperClass.__private_method" } }
             }
           }
@@ -129,7 +163,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 43, "start": 723 } },
+        "location": { "span": { "length": 43, "start": 759 } },
         "name": "lib.HelperClass.__private_method"
       }
     }
@@ -147,7 +181,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 44, "start": 673 } },
+        "location": { "span": { "length": 44, "start": 709 } },
         "name": "lib.HelperClass._protected_method"
       }
     }
@@ -165,7 +199,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 43, "start": 497 } },
+        "location": { "span": { "length": 43, "start": 533 } },
         "name": "lib.HelperClass.class_method"
       }
     }
@@ -181,7 +215,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 47, "start": 427 } },
+        "location": { "span": { "length": 47, "start": 463 } },
         "name": "lib.HelperClass.method"
       }
     }
@@ -197,7 +231,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 31, "start": 636 } },
+        "location": { "span": { "length": 31, "start": 672 } },
         "name": "lib.HelperClass.prop"
       }
     }
@@ -215,7 +249,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 41, "start": 564 } },
+        "location": { "span": { "length": 41, "start": 600 } },
         "name": "lib.HelperClass.static_method"
       }
     }
@@ -231,7 +265,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 43, "start": 769 } },
+        "location": { "span": { "length": 43, "start": 805 } },
         "name": "lib.helper_func"
       }
     }
@@ -371,6 +405,27 @@
           "decl": {
             "imp": {
               "key": {
+                "as_name": { "key": "lib.ABC" },
+                "from_name": { "key": "abc.ABC" }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "lib.py" },
+        "location": { "span": { "length": 3, "start": 241 } },
+        "name": "lib.ABC"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
                 "as_name": { "key": "lib.ClassVar" },
                 "from_name": { "key": "typing.ClassVar" }
               }
@@ -380,8 +435,29 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 8, "start": 244 } },
+        "location": { "span": { "length": 8, "start": 280 } },
         "name": "lib.ClassVar"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "lib.abstractmethod" },
+                "from_name": { "key": "abc.abstractmethod" }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "lib.py" },
+        "location": { "span": { "length": 14, "start": 246 } },
+        "name": "lib.abstractmethod"
       }
     }
   },
@@ -401,7 +477,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 5, "start": 254 } },
+        "location": { "span": { "length": 5, "start": 290 } },
         "name": "lib.final"
       }
     }
@@ -422,7 +498,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 8, "start": 281 } },
+        "location": { "span": { "length": 8, "start": 317 } },
         "name": "lib.func"
       }
     }
@@ -585,7 +661,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 907, "start": 0 } },
+        "location": { "span": { "length": 1034, "start": 0 } },
         "name": "lib"
       }
     }
@@ -663,7 +739,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 32, "start": 367 } },
+        "location": { "span": { "length": 32, "start": 403 } },
         "name": "lib.HelperClass.class_var"
       }
     }
@@ -681,7 +757,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 17, "start": 404 } },
+        "location": { "span": { "length": 17, "start": 440 } },
         "name": "lib.HelperClass.instance_var"
       }
     }
@@ -701,7 +777,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 23, "start": 338 } },
+        "location": { "span": { "length": 23, "start": 374 } },
         "name": "lib.HelperClass.old_style_class_var"
       }
     }

@@ -43,6 +43,14 @@
   {
     "key": {
       "tuplefield0": { "isAbstract": false, "kind": 6 },
+      "tuplefield1": {
+        "cls": { "key": { "name": { "key": "lib.AbstractClass" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 6 },
       "tuplefield1": { "cls": { "key": { "name": { "key": "lib.Child" } } } }
     }
   },
@@ -85,6 +93,19 @@
       "tuplefield1": {
         "imp": {
           "key": {
+            "as_name": { "key": "lib.ABC" },
+            "from_name": { "key": "abc.ABC" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 6 },
+      "tuplefield1": {
+        "imp": {
+          "key": {
             "as_name": { "key": "main.Helper" },
             "from_name": { "key": "lib.HelperClass" }
           }
@@ -101,6 +122,16 @@
             "as_name": { "key": "main.OtherHelper" },
             "from_name": { "key": "lib.HelperClass" }
           }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 7 },
+      "tuplefield1": {
+        "func": {
+          "key": { "name": { "key": "lib.AbstractClass.abstract_method" } }
         }
       }
     }

@@ -6,6 +6,7 @@
 
 # flake8: noqa
 
+from abc import ABC, abstractmethod
 from typing import ClassVar, final
 
 from big_lib import big_func as func  # noqa
@@ -55,3 +56,9 @@ class Parent2:
 
 class Child(Parent1, Parent2):
     pass
+
+
+class AbstractClass(ABC):
+    @abstractmethod
+    def abstract_method(self):
+        ...

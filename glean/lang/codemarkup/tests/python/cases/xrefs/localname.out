@@ -1,5 +1,7 @@
 [
   "@generated",
+  { "key": "ABC" },
+  { "key": "AbstractClass" },
   { "key": "Child" },
   { "key": "ClassVar" },
   { "key": "Helper" },
@@ -11,6 +13,8 @@
   { "key": "__all__" },
   { "key": "__private_method" },
   { "key": "_protected_method" },
+  { "key": "abstract_method" },
+  { "key": "abstractmethod" },
   { "key": "all" },
   { "key": "big_func" },
   { "key": "big_lib" },

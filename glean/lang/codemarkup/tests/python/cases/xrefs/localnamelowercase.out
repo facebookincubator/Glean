@@ -13,6 +13,22 @@
       "name": { "key": "_protected_method" }
     }
   },
+  { "key": { "lowercase": "abc", "name": { "key": "ABC" } } },
+  {
+    "key": {
+      "lowercase": "abstract_method",
+      "name": { "key": "abstract_method" }
+    }
+  },
+  {
+    "key": { "lowercase": "abstractclass", "name": { "key": "AbstractClass" } }
+  },
+  {
+    "key": {
+      "lowercase": "abstractmethod",
+      "name": { "key": "abstractmethod" }
+    }
+  },
   { "key": { "lowercase": "all", "name": { "key": "all" } } },
   { "key": { "lowercase": "big_func", "name": { "key": "big_func" } } },
   { "key": { "lowercase": "big_lib", "name": { "key": "big_lib" } } },
