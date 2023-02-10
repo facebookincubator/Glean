@@ -63,9 +63,7 @@ data IndexerParams = IndexerParams
 -- convenient when used with 'Driver'.
 indexerThen :: Indexer a -> RunIndexer -> Indexer a
 indexerThen indexer run2 = indexer
-  { indexerRun = \opts backend repo params -> do
-      indexerRun indexer opts backend repo params
-      run2 backend repo params
+  { indexerRun = \opts -> indexerRun indexer opts <> run2
   }
 
 indexerWithNoOptions :: String -> RunIndexer -> Indexer ()
