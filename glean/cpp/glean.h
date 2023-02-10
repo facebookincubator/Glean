@@ -18,12 +18,12 @@
 #include <boost/variant.hpp>
 #include <folly/Format.h>
 
-#include "glean/if/gen-cpp2/glean_types.h"
 #include "glean/rts/binary.h"
 #include "glean/rts/cache.h"
 #include "glean/rts/inventory.h"
 #include "glean/rts/id.h"
 #include "glean/rts/stacked.h"
+#include "glean/rts/substitution.h"
 
 namespace facebook {
 namespace glean {
@@ -432,8 +432,9 @@ public:
     return facts.define(ty, clause);
   }
 
-  thrift::Batch serialize() const;
-  void rebase(const thrift::Subst&);
+  void rebase(const rts::Substitution&);
+
+  rts::FactSet::Serialized serialize() const;
 
   FactStats bufferStats() const {
     return FactStats{buffer.factMemory(), buffer.size()};
@@ -575,7 +576,6 @@ public:
   BatchBase& base() { return *this; }
   const BatchBase& base() const { return *this; }
 
-  using BatchBase::serialize;
   using BatchBase::rebase;
   using BatchBase::bufferStats;
   using BatchBase::CacheStats;

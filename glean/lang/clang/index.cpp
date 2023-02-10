@@ -38,6 +38,10 @@
 
 #include "glean/cpp/glean.h"
 #include "glean/cpp/sender.h"
+#include "glean/cpp/filewriter.h"
+#if FACEBOOK
+#include "glean/cpp/thriftsender.h"
+#endif
 #include "glean/interprocess/cpp/counters.h"
 #include "glean/interprocess/cpp/worklist.h"
 #include "glean/lang/clang/action.h"

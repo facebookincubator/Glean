@@ -30,24 +30,11 @@ BatchBase::BatchBase(const SchemaInventory *inv, size_t cache_capacity)
   , facts(&anchor, &buffer)
 {}
 
-thrift::Batch BatchBase::serialize() const {
-  thrift::Batch batch;
-  auto s = buffer.serialize();
-  batch.firstId() = s.first.toThrift();
-  batch.count() = s.count;
-  batch.facts() = s.facts.moveToFbString();
-  return batch;
+rts::FactSet::Serialized BatchBase::serialize() const {
+  return buffer.serialize();
 }
 
-void BatchBase::rebase(const thrift::Subst& s) {
-  std::vector<Id> ids(s.ids().value().size());
-  std::transform(
-      s.ids().value().begin(),
-      s.ids().value().end(),
-      ids.begin(),
-      Id::fromWord);
-  auto subst =
-      rts::Substitution(Id::fromWord(s.firstId().value()), std::move(ids));
+void BatchBase::rebase(const rts::Substitution& subst) {
   GLEAN_SANITY_CHECK(subst.sanityCheck(false));
   cache.withBulkStore([&](auto& store) {
     buffer = buffer.rebase(inventory->inventory, subst, store);
