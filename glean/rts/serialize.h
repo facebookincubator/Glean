@@ -8,8 +8,10 @@
 
 #pragma once
 
+#include <variant>
 #include "glean/rts/binary.h"
 #include "glean/rts/id.h"
+#include <glog/logging.h>
 
 namespace facebook {
 namespace glean {
@@ -152,6 +154,54 @@ void get(binary::Input& i, std::shared_ptr<T>& p) {
     p = nullptr;
   }
 }
+
+/// A Thrift compact serializer that only supports a very
+// small subset of the types.
+struct ThriftCompact {
+  using Nat = int64_t;
+  using Binary = folly::ByteRange;
+
+  using Field = std::variant<Nat, Binary>;
+  using Object = std::vector<std::pair<uint32_t, Field>>;
+
+  enum Type : uint32_t {
+    NatTy = 6,
+    BinaryTy = 8,
+  };
+
+  static void put(binary::Output& out, Nat x) {
+    out.packed(folly::encodeZigZag(x));
+  }
+
+  static void put(binary::Output& out, Binary b) {
+    out.packed(b.size());
+    out.bytes(b.data(), b.size());
+  }
+
+  static void put(binary::Output& out, const Object& obj) {
+    uint32_t prev = 0;
+    auto field = [&](Type ty, uint32_t num) {
+      auto delta = num - prev;
+      if (delta < 16) {
+        out.fixed(uint8_t(ty + (delta<<4)));
+      } else {
+        out.fixed(uint8_t(ty));
+        out.packed(num);
+      }
+      prev = num;
+    };
+    for (const auto& [num, val] : obj) {
+      if (std::holds_alternative<Nat>(val)) {
+        field(NatTy, num);
+        put(out, std::get<Nat>(val));
+      } else if (std::holds_alternative<Binary>(val)) {
+        field(BinaryTy, num);
+        put(out, std::get<Binary>(val));
+      }
+    }
+    out.fixed(uint8_t(0)); // object terminator
+  }
+};
 
 }
 }

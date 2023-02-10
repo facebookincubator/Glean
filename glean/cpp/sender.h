@@ -41,20 +41,5 @@ struct Sender {
   virtual void flush(cpp::BatchBase& batch) = 0;
 };
 
-// A Sender which sends data synchronously via Thrift.
-std::unique_ptr<Sender> thriftSender(
-  const std::string& service,
-  const std::string& repo_name,
-  const std::string& repo_hash,
-  double min_retry_delay,
-  size_t max_errors
-);
-
-// A Sender which dumps all data into a file. This happens on the final flush,
-// rebaseAndSend is a noop. This is mostly useful for testing.
-std::unique_ptr<Sender> fileWriter(
-  std::string path
-);
-
 }
 }

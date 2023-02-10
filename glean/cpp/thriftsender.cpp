@@ -6,17 +6,15 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#include "glean/cpp/sender.h"
+#include "glean/cpp/thriftsender.h"
+#include "glean/cpp/glean.h"
 #include "glean/if/gen-cpp2/GleanServiceAsyncClient.h"
 
-#include <folly/FileUtil.h>
 #include <folly/executors/GlobalExecutor.h>
 #include <folly/futures/Retrying.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 
-#if FACEBOOK
 #include "glean/facebook/cpp/service.h"
-#endif
 
 namespace facebook {
 namespace glean {
@@ -42,7 +40,18 @@ public:
   void rebaseAndSend(BatchBase& batch, bool wait = false) override {
     if (future && (wait || future->isReady())) {
       // We've already sent a batch and received back a substitution.
-      batch.rebase(std::move(*future).get());
+      auto s = std::move(*future).get();
+
+      std::vector<Id> ids(s.ids().value().size());
+      std::transform(
+          s.ids().value().begin(),
+          s.ids().value().end(),
+          ids.begin(),
+          Id::fromWord);
+      auto subst =
+        rts::Substitution(Id::fromWord(s.firstId().value()), std::move(ids));
+
+      batch.rebase(subst);
       future.reset();
     }
 
@@ -55,7 +64,13 @@ public:
       thrift::ComputedBatch cbatch;
       cbatch.repo() = std::move(repo);
       cbatch.remember() = true;
-      cbatch.batch() = batch.serialize();
+
+      thrift::Batch tbatch;
+      auto s = batch.serialize();
+      tbatch.firstId() = s.first.toThrift();
+      tbatch.count() = s.count;
+      tbatch.facts() = s.facts.moveToFbString();
+
       future = std::make_unique<folly::Future<thrift::Subst>>(
         send(
           std::make_shared<thrift::ComputedBatch>(std::move(cbatch)))
@@ -184,7 +199,6 @@ private:
 
 }
 
-#if FACEBOOK
 std::unique_ptr<Sender> thriftSender(
     const std::string& service,
     const std::string& repo_name,
@@ -198,36 +212,6 @@ std::unique_ptr<Sender> thriftSender(
     }
   );
 }
-#endif
-
-namespace {
-
-class FileWriter : public Sender {
-public:
-  explicit FileWriter(std::string p) : path(std::move(p)) {}
-
-  void rebaseAndSend(BatchBase&, bool) override {
-    // don't do anything
-    // NOTE: we ignore the 'wait' flag for now
-  }
-
-  void flush(BatchBase& batch) override {
-    auto r = batch.serialize();
-    folly::writeFile(
-      apache::thrift::CompactSerializer::serialize<std::string>(r),
-      path.c_str());
-  }
-
-private:
-  std::string path;
-};
-
-}
-
-std::unique_ptr<Sender> fileWriter(std::string path) {
-  return std::make_unique<FileWriter>(std::move(path));
-}
-
 
 }
 }

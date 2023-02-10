@@ -74,7 +74,7 @@ CXX_SOURCES_glean_cpp_rocksdb = \
 CXX_FLAGS_glean_cpp_rocksdb = -fno-rtti -DOSS=1
 
 CXX_SOURCES_glean_cpp_client = \
-    glean/cpp/sender.cpp \
+    glean/cpp/filewriter.cpp \
     glean/cpp/glean.cpp \
     glean/interprocess/cpp/worklist.cpp \
     glean/interprocess/cpp/counters.cpp
