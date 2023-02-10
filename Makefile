@@ -204,7 +204,7 @@ SCHEMAS= \
 	thrift \
 
 .PHONY: thrift
-thrift:: thrift-cpp thrift-compiler thrift-hs
+thrift:: thrift-hsthrift-cpp thrift-compiler thrift-hs
 
 .PHONY: thrift-hs
 thrift-hs:: thrift-hsthrift-hs thrift-glean-hs
@@ -273,23 +273,6 @@ thrift-schema-hs: thrift-compiler
 	# This depends on the schema .thrift files:
 	$(THRIFT_COMPILE) --hs glean/if/search.thrift \
 		-o $(CODEGEN_DIR)/$@/glean/if/search
-	rsync -r --checksum $(CODEGEN_DIR)/$@/ .
-
-THRIFT_CPP= \
-	glean/config/recipes/recipes.thrift \
-	glean/config/server/server_config.thrift \
-	glean/if/glean.thrift \
-	glean/github/if/fb303_core.thrift \
-	glean/github/if/fb303.thrift
-
-.PHONY: thrift-cpp
-thrift-cpp: thrift-hsthrift-cpp
-	rm -rf $(CODEGEN_DIR)/$@
-	for f in $(THRIFT_CPP); do \
-		mkdir -p $(CODEGEN_DIR)/$@/$$(dirname $$f) ;\
-		thrift1 -I . --gen mstch_cpp2 \
-			-o $(CODEGEN_DIR)/$@/$$(dirname $$f) $$f; \
-	done
 	rsync -r --checksum $(CODEGEN_DIR)/$@/ .
 
 .PHONY: thrift-hsthrift-cpp

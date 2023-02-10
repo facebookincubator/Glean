@@ -202,7 +202,6 @@ library config
         glean/config/recipes/gen-hs2
         glean/config/server/gen-hs2
         glean/config/client/gen-hs2
-    CXX_LIB_glean_cpp_config
     exposed-modules:
         Glean.Recipes.Types
         Glean.Service.Types
@@ -281,20 +280,6 @@ library if-search-hs
         glean:if-glean-hs,
         glean:schema
 --        fb303
-
-library if-fb303-cpp
-    import: fb-haskell, fb-cpp, deps
-    visibility: public
-    include-dirs: .
-    CXX_LIB_glean_cpp_if_fb303
-
-library if-glean-cpp
-    import: fb-haskell, fb-cpp, deps
-    visibility: public
-    CXX_LIB_glean_cpp_if
-    build-depends:
-        glean:if-fb303-cpp,
-        glean:config
 
 library rts
     import: fb-haskell, fb-cpp, deps
@@ -590,8 +575,7 @@ library client-cpp
     install-includes:
         glean/cpp/glean.h
     build-depends:
-        glean:rts,
-        glean:if-glean-cpp
+        glean:rts
 
 library interprocess
     import: fb-haskell, deps
