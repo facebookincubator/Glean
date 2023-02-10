@@ -18,7 +18,7 @@ import qualified Data.HashMap.Strict as HashMap
 import Data.List
 import qualified Data.Map as Map
 import Data.Maybe
-import Data.Text (Text)
+import Data.Text (Text, pack)
 import System.Directory
 import System.FilePath
 import System.IO.Temp
@@ -27,18 +27,22 @@ import Test.HUnit
 
 import System.Timeout
 import TestRunner
+import Util.Control.Exception (tryAll)
 import Util.EventBase
 import Util.String.Quasi
+import Thrift.Util (saveJSON)
 
 import Glean.Angle.Types (latestAngleVersion)
 import Glean.Backend.Types
 import Glean.Database.Config
 import Glean.Database.Env
+import Glean.Database.Schema (validateNewSchemaInstance)
 import Glean.Database.Test
 import Glean.Derive
 import Glean.Impl.ConfigProvider ()
 import Glean.Impl.TestConfigProvider
 import Glean.Init
+import qualified Glean.Internal.Types as Internal
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Schema.Util
 import Glean.Types as Thrift
@@ -284,6 +288,60 @@ schemaValidation = TestCase $
       assertBool "validate3" $ case r of
         Left err@Exception{} -> "test.Q.2 has changed" `isInfixOf` show err
         _ -> False
+
+-- The validation run at gen-schema time.
+schemaGenValidation :: Test
+schemaGenValidation = TestList
+  [ TestLabel "recursive derivation" $ TestCase $
+      hasCycles
+        [s|
+          schema test.1 {
+            predicate P : nat
+              X where P X;
+          }
+
+          schema all.1 : test.1 {}
+        |]
+
+  , TestLabel "co-recursive derivation" $ TestCase $ do
+      hasCycles
+        [s|
+          schema test.1 {
+            predicate P : nat
+              X where Q X;
+
+            predicate Q : nat
+              X where P X;
+          }
+
+          schema all.1 : test.1 {}
+        |]
+  ]
+  where
+    hasCycles schema = do
+      r <- tryAll $ validate schema
+      print r
+      case r of
+        Left err@SomeException{} ->
+          assertBool "validation failure" $
+          "found cycles in predicate derivations" `isInfixOf` show err
+        _ -> assertFailure "did not fail validation"
+
+    validate schema =
+      withSystemTempDirectory "glean-dbtest" $ \root -> do
+      let schemaPath = root </> "schema"
+          indexPath = root </> "index"
+          index = Internal.SchemaIndex curr older
+            where
+            older = []
+            curr = Internal.SchemaInstance
+                { schemaInstance_versions = Map.fromList [ ("v1", 1) ]
+                , schemaInstance_file = pack schemaPath
+                }
+      saveJSON indexPath index
+      appendFile schemaPath schema
+      schemaIndex <- parseSchemaIndex indexPath
+      validateNewSchemaInstance schemaIndex
 
 schemaReservedWord :: Test
 schemaReservedWord = TestCase $ do
@@ -1042,6 +1100,7 @@ main = withUnitTest $ testRunner $ TestList $
   , TestLabel "schemaTypeError" schemaTypeError
   , TestLabel "schemaStoredError" schemaStoredError
   , TestLabel "schemaValidation" schemaValidation
+  , TestLabel "schemaGenValidation" schemaGenValidation
   , TestLabel "schemaReservedWord" schemaReservedWord
   , TestLabel "schemaUpperCaseField" schemaUpperCaseField
   , TestLabel "schemaTypeShadowing" schemaTypeShadowing

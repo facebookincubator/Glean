@@ -34,6 +34,7 @@ import Control.Exception
 import Control.Monad
 import Control.Monad.Except
 import Control.Monad.State as State
+import Data.Bifoldable (bifoldMap)
 import Data.ByteString (ByteString)
 import Data.Foldable
 import Data.Graph
@@ -41,6 +42,8 @@ import Data.Hashable
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.HashMap.Lazy as Lazy.HashMap
+import qualified Data.HashSet as HashSet
+import Data.HashSet (HashSet)
 import Data.List.Extra (firstJust)
 import qualified Data.IntMap as IntMap
 import Data.IntMap (IntMap)
@@ -894,6 +897,12 @@ failOnLeft = \case
 -- when adding a new schema instance.
 validateNewSchemaInstance :: SchemaIndex -> IO ()
 validateNewSchemaInstance index@(SchemaIndex curr _) = failOnLeft $ do
+
+  -- Prevent recursive predicates. Because this is a constraint we will remove
+  -- in the future, for now we only check this when a new schema instance is to
+  -- be generated.
+  mapM_ checkRecursiveDefinitions (schemasResolved $ procSchemaResolved curr)
+
   let auto = Map.fromList
         [ (predicateIdRef id, id)
         | id <- HashMap.keys $ hashedPreds $ procSchemaHashed curr ]
@@ -932,6 +941,55 @@ validateNewSchemaInstance index@(SchemaIndex curr _) = failOnLeft $ do
     , val <- close (`HashMap.lookup` m) key
     ]
 
+-- | Detect recursion and co-recursion in predicate derivations.
+-- We don't check default derived predicates because whether they will in fact
+-- recurse or not depends on the db's content.
+checkRecursiveDefinitions :: ResolvedSchemaRef -> Either Text ()
+checkRecursiveDefinitions resolved =
+  unless (null recursiveDefinitions) $
+  Left $ Text.unlines $
+    "found cycles in predicate derivations: " :
+    [ Text.intercalate " -> " $ map showRef (x:xs ++ [x])
+    | x:xs <- recursiveDefinitions
+    ]
+  where
+    recursiveDefinitions :: [[PredicateRef]]
+    recursiveDefinitions =
+      cycles (HashMap.keys deps) (\p -> HashMap.lookupDefault [] p deps)
+
+    -- derived predicate to derived predicate dependency map
+    deps :: HashMap PredicateRef [PredicateRef]
+    deps = fmap (filter hasDerivation .  preds) derivationQueries
+
+    hasDerivation :: PredicateRef -> Bool
+    hasDerivation ref = ref `HashMap.member` derivationQueries
+
+    derivationQueries :: HashMap PredicateRef (Query_ PredicateRef TypeRef)
+    derivationQueries =
+      HashMap.mapMaybe toQuery (resolvedSchemaDeriving resolved)
+      where
+        toQuery = \case
+          NoDeriving -> Nothing
+          Derive when query ->
+            case when of
+              DeriveIfEmpty -> Nothing
+              DeriveOnDemand -> Just query
+              DerivedAndStored -> Just query
+
+    -- predicates referenced in the query
+    preds :: Query_ PredicateRef TypeRef -> [PredicateRef]
+    preds query = HashSet.toList $ bifoldMap HashSet.singleton references query
+
+    cycles :: Ord a => [a] -> (a -> [a]) -> [[a]]
+    cycles roots children = [ cycle | CyclicSCC cycle <- scc]
+      where
+      scc = stronglyConnComp [ (node, node, children node) | node <- roots ]
+
+    -- predicates referenced by type
+    references :: TypeRef -> HashSet PredicateRef
+    references tref = fromMaybe mempty $ do
+      TypeDef _ ty <- HashMap.lookup tref (resolvedSchemaTypes resolved)
+      return $ bifoldMap HashSet.singleton references ty
 
 definitions
   :: SchemaIndex
