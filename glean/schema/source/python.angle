@@ -577,3 +577,5 @@ predicate IsAbstract: Declaration
   )
 
 } # python.4
+
+schema python.4 evolves python.3

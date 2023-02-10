@@ -1,7 +1,7 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
 schema search.python.1 {
-import python.3
+import python.4
 
 #
 # Generating SNames from an array of string fragments
