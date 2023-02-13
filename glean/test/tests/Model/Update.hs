@@ -148,7 +148,9 @@ recomputeEntries model@Model {..} =
     allDBs =
       mergeLocalAndRemote (HM.toList modelRestorableDBs) localAndRestoring
     index = dbIndex allDBs
-    retentionSet = computeRetentionSet modelRetentionPolicy time index
+    backups = [(itemRepo,itemMeta) | Item{..} <- allDBs]
+    RetentionSet{retentionSetLocalAndRemote = retentionSet} =
+      computeRetentionSet modelRetentionPolicy time backups index
     keepHereSet = [(itemRepo, itemMeta) | Item {..} <- retentionSet]
     entriesLiveHere' =
       foldl'

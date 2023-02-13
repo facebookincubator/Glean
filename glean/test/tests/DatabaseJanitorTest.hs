@@ -23,6 +23,7 @@ import qualified Data.ByteString.Lazy.Char8 as LBS
 import Data.Default
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.HashSet as HashSet
+import Data.Int (Int64)
 import Data.IORef
 import Data.List
 import Data.Maybe
@@ -88,9 +89,12 @@ withTest setup setupBackup action =
     setupBackup backupdir
     action evb cfgAPI dbdir backupdir
 
-complete, broken :: UTCTime -> Completeness
-complete = Complete . (`DatabaseComplete` Nothing) . utcTimeToPosixEpochTime
+broken :: UTCTime -> Completeness
 broken _ = Broken (DatabaseBroken "index" "TESTING")
+
+complete :: Int64 -> UTCTime -> Completeness
+complete size =
+  Complete . (`DatabaseComplete` Just size) . utcTimeToPosixEpochTime
 
 repo0001 :: Repo
 repo0001 = Repo "test" "0001"
@@ -103,21 +107,29 @@ setupBasicDBs dbdir = do
   schema <- newDbSchema schema LatestSchemaAll readWriteContent
   -- populate a dir with various DBs
   makeFakeDB schema dbdir (Repo "test" "0002") (age (days 2)) broken Nothing
-  makeFakeDB schema dbdir repo0001 (age (days 0)) complete Nothing
-  makeFakeDB schema dbdir (Repo "test" "0003") (age (days 3)) complete $
+  makeFakeDB schema dbdir repo0001 (age (days 0)) (complete 1) Nothing
+  makeFakeDB schema dbdir (Repo "test" "0003") (age (days 3)) (complete 3) $
     Just (Stacked "test" "0004" Nothing)
-  makeFakeDB schema dbdir (Repo "test" "0004") (age (days 4)) complete $
+  makeFakeDB schema dbdir (Repo "test" "0004") (age (days 4)) (complete 4) $
     Just (Stacked "test" "0005" Nothing)
-  makeFakeDB schema dbdir (Repo "test" "0005") (age (days 5)) complete $
+  makeFakeDB schema dbdir (Repo "test" "0005") (age (days 5)) (complete 5) $
     Just (Stacked "test2" "0006" Nothing)
-  makeFakeDB schema dbdir (Repo "test2" "0006") (age (days 6)) complete Nothing
+  makeFakeDB schema dbdir (Repo "test2" "0006") (age (days 6)) (complete 6)
+    Nothing
+
+noLocalDBs :: FilePath -> IO ()
+noLocalDBs _ = pure ()
 
 setupBasicCloudDBs :: FilePath -> IO ()
 setupBasicCloudDBs backupDir = do
   now <- getCurrentTime
   let age t = addUTCTime (negate (fromIntegral (timeSpanInSeconds t))) now
-  makeFakeCloudDB backupDir (Repo "test" "0008") (age(days 8)) complete Nothing
-  makeFakeCloudDB backupDir (Repo "test2" "0009") (age(days 0)) complete Nothing
+  schema <- parseSchemaDir schemaSourceDir
+  schema <- newDbSchema schema LatestSchemaAll readWriteContent
+  makeFakeCloudDB schema backupDir (Repo "test" "0008")
+    (age(days 8)) (complete 8) Nothing
+  makeFakeCloudDB schema backupDir (Repo "test2" "0009")
+    (age(days 0)) (complete 9) Nothing
 
 withFakeDBs
   :: (EventBaseDataplane -> NullConfigProvider -> FilePath -> FilePath
@@ -160,17 +172,35 @@ makeFakeDB schema root repo dbtime completeness stacked = do
   LB.writeFile (repoPath </> "meta") (encode meta)
 
 makeFakeCloudDB
-  :: FilePath
+  :: DbSchema
+  -> FilePath
   -> Repo
   -> UTCTime
   -> (UTCTime -> Completeness)
   -> Maybe Stacked
   -> IO ()
-makeFakeCloudDB backupDir repo dbtime completeness stacked =
-  void $ backup (mockSite backupDir) repo props Nothing mempty
+makeFakeCloudDB schema backupDir repo dbtime completeness stacked = do
+  let repoPath = databasePath backupDir repo
+  createDirectoryIfMissing True repoPath
+  storage <- RocksDB.newStorage backupDir def
+  bracket
+    (Storage.open
+      storage
+      repo
+      (Storage.Create lowestFid Nothing Storage.UseDefaultSchema)
+      Storage.currentVersion)
+    Storage.close
+    (\hdl -> do
+      storeSchema hdl $ toStoredSchema schema
+      tmpDir <- getCanonicalTemporaryDirectory
+      withTempDirectory tmpDir "scratch" $ \scratch ->
+        Storage.backup hdl scratch $ \bytes _data ->
+          void $ backup (mockSite backupDir) repo props Nothing bytes
+    )
   where
     props = Map.fromList [
-      ("meta"::String, LBS.unpack $ encode $ Meta
+      ("meta"::String, LBS.unpack $ encode meta) ]
+    meta = Meta
         { metaVersion = Storage.currentVersion
         , metaCreated = utcTimeToPosixEpochTime dbtime
         , metaRepoHashTime = Nothing
@@ -181,8 +211,6 @@ makeFakeCloudDB backupDir repo dbtime completeness stacked =
         , metaCompletePredicates = mempty
         , metaAxiomComplete = False
         }
-      )
-      ]
 
 dbConfig :: FilePath -> ServerTypes.Config -> Glean.Database.Config.Config
 dbConfig dbdir serverConfig = def
@@ -712,6 +740,45 @@ ageCountersClearTest = TestCase $ do
     assertBool "glean.db.test.age cleared"
       $ not (HashMap.member "glean.db.test.age" counters)
 
+slackCountersTest :: Test
+slackCountersTest = TestCase $ do
+  shardAssignment <- newIORef $ Just ["0008"]
+  withTest noLocalDBs setupBasicCloudDBs $ \evb cfgAPI dbdir backupDir -> do
+    let cfg = (dbConfig dbdir (serverConfig backupDir)
+          { config_restore = def {
+              databaseRestorePolicy_enabled = True
+            }, config_retention = def{
+              databaseRetentionPolicy_default_retention = def{
+              retention_retain_at_least = Just 1,
+              retention_retain_at_most = Just 1
+              }
+            }
+          }) {cfgShardManager = \_ _ k -> k shardManager}
+        shardManager =
+          SomeShardManager $ shardByRepoHash (readIORef shardAssignment)
+    withDatabases evb cfg cfgAPI $ \env -> do
+      let getSlackCounters sideEffects =
+            [ (c,v)
+            | PublishCounter c v <- sideEffects
+            , ".slack.bytes" `BS.isSuffixOf` c
+            ]
+      slackCounters0 <- getSlackCounters <$> runDatabaseJanitorPureish env
+      assertEqual "slack counters" [("glean.db.slack.bytes", 0)] slackCounters0
+      now <- getCurrentTime
+      schema <- parseSchemaDir schemaSourceDir
+      schema <- newDbSchema schema LatestSchemaAll readWriteContent
+      -- Two new DBs push 0008 out of the retention set
+      makeFakeCloudDB schema backupDir (Repo "test" "0009") now (complete 1)
+        Nothing
+      makeFakeCloudDB schema backupDir (Repo "test" "0010") now (complete 1)
+        Nothing
+      -- Force the janitor to fetch backups
+      atomically $ writeTVar (envCachedRestorableDBs env) Nothing
+      slackCounters1 <- getSlackCounters <$> runDatabaseJanitorPureish env
+      assertEqual "slack counters"
+        [("glean.db.slack.bytes", 8), ("glean.db.test.slack.bytes", 8)]
+        slackCounters1
+
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
   [ TestLabel "deleteOldDBs" deleteOldDBsTest
@@ -732,4 +799,5 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "ageCountersForOnlyNewestDBs" ageCountersOnlyNewestTest
   , TestLabel "ageCountersForOnlyLocalDBs" ageCountersOnlyLocalTest
   , TestLabel "ageCountersClear" ageCountersClearTest
+  , TestLabel "slackCounters" slackCountersTest
   ]

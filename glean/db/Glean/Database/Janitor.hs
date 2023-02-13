@@ -14,6 +14,7 @@ module Glean.Database.Janitor
   -- for testing
   , mergeLocalAndRemote
   , computeRetentionSet
+  , RetentionSet(..)
   , dbIndex
   , DbIndex(..)
   ) where
@@ -167,7 +168,8 @@ runWithShards env myShards sm = do
     allDBsByAge = mergeLocalAndRemote backups localAndRestoring
 
     index@DbIndex{byRepo, byRepoName, dependencies} = dbIndex allDBsByAge
-    keep = computeRetentionSet config_retention t index
+    RetentionSet{retentionSetRemote, retentionSetLocalAndRemote = keep} =
+      computeRetentionSet config_retention t backups index
 
     keepAnnotatedWithShard =
       [ (item, guard (shard `Set.member` myShards) >> pure shard)
@@ -179,6 +181,11 @@ runWithShards env myShards sm = do
 
     keepInThisNode =
       mapMaybe (\(item, shard) -> (item,) <$> shard) keepAnnotatedWithShard
+
+    retentionSlackInThisNode =
+      [ item
+      | (item@Item{itemRepo}, _) <- keepInThisNode
+      , not $ HashSet.member itemRepo retentionSetRemote ]
 
     delete =
       [ repo | Item repo Local _ _ <- allDBsByAge
@@ -284,6 +291,16 @@ runWithShards env myShards sm = do
       whenM (liftIO $ atomically $ isDatabaseClosed env $ itemRepo item) $
         preOpenDB (itemRepo item)
 
+    -- see "Retention set slack" note
+    let totalSlack = sum
+            [ fromIntegral b
+            | Item{ itemMeta = Meta {
+                  metaCompleteness =
+                    Complete DatabaseComplete{databaseComplete_bytes = Just b}
+                  }
+                } <- retentionSlackInThisNode
+            ]
+    publishCounter "glean.db.slack.bytes" totalSlack
     forM_ byRepoName $ \(repoNm, dbsByAge) -> do
       let prefix = "glean.db." <> Text.encodeUtf8 repoNm
       let repoKeep =
@@ -317,6 +334,20 @@ runWithShards env myShards sm = do
         let dbCreated = posixEpochTimeToTime (metaCreated $ itemMeta newestDb)
             dbAge = timeSpanInSeconds $ fromUTCTime t `timeDiff` dbCreated
         publishCounter (prefix <> ".age") dbAge
+
+      -- see "Retention set slack" note
+      let leaked = sum
+            [ fromIntegral b
+            | Item{
+                itemRepo,
+                itemMeta = Meta {
+                  metaCompleteness =
+                    Complete DatabaseComplete{databaseComplete_bytes = Just b}
+                  }
+                } <- retentionSlackInThisNode
+            , repo_name itemRepo == repoNm
+            ]
+      unless (leaked == 0) $ publishCounter (prefix <> ".slack.bytes") leaked
 
     -- Report shard stats for dynamic sharding assignment
     mapM_ (\(n,v) -> publishCounter (Text.encodeUtf8 n) v) $
@@ -372,20 +403,89 @@ dbIndex items = DbIndex{..}
       [ pruned_base update `Map.lookup` byRepo ]
     stacked Nothing = []
 
+{- NOTE Retention set slack
+
+  The slack is the difference between the remote and local+remote
+  retention sets. It is only justified  when no other shard is
+  serving DB instances for a given DB name. This happens very rarely
+  with hash-based sharding, and constitutes a resource leak that we track.
+
+  Example using sharding per DB name:
+
+  Remote Retention Set: [DB1(I1, I2), DB2(I1,I2), DB3(I1)]
+  Shard 1: DB1(I1,I2)
+  Shard 2: DB2(I1,I2)
+  Shard 3: DB3(I1)
+
+  --> Event: DB1(I3) gets published
+
+  Retention Set: [DB1(I2, I3), DB2(I1,I2), DB3(I1)]
+  Shard 1: DB1(I2, *I3*) --I3 is getting restored
+  Shard 2: DB2(I1,I2)
+  Shard 3: DB3(I1)
+
+  --> Event: DB1(I4) gets published
+  Retention Set: [DB1(I3, I4), DB2(I1,I2), DB3(I1)]
+  Shard 1: DB1(*I3*, *I4*) --I3 and I4 are getting restored
+           -- in this case the local retention set will include DB1(I2)
+           -- to continue serving DB1 until I3 and I4 are restored
+  Shard 2: DB2(I1,I2)
+  Shard 3: DB3(I1)
+
+  A different sharding policy for the same event sequence could render:
+
+  Remote Retention Set: [DB1(I1, I2), DB2(I1,I2), DB3(I1)]
+  Shard 1: DB1(I1,I2)
+  Shard 2: DB2(I1,I2)
+  Shard 3: DB3(I1)
+
+  --> Event: DB1(I3) gets published
+  --> Event: DB1(I4) gets published
+  --> Event: DB1(I3) gets restored
+  --> Event: DB1(I4) gets restored
+
+  Retention Set: [DB1(I2, I3), DB2(I1,I2), DB3(I1)]
+  Shard 1: DB1(I2)
+           -- DB1(I2) is still in the local retention set after DB1(I3)
+           -- has been restored, which constitutes a leak.
+  Shard 2: DB1(I4), DB2(I1,I2)
+  Shard 3: DB1(I3), DB3(I1)
+  --
+ -}
+
+data RetentionSet = RetentionSet
+  { retentionSetRemote :: HashSet.HashSet Repo
+  -- ^ The retention set ignoring local DBs
+  , retentionSetLocalAndRemote :: [Item]
+  -- ^ The retention set that applies to this server
+  }
 -- | The final set of DBs we want usable on disk.
 --  This is the set of 'keepRoots' DB extended with all the stacked dependencies
 computeRetentionSet
   :: ServerConfig.DatabaseRetentionPolicy
   -> UTCTime
+  -> [(Repo, Meta)] -- ^ Remote backups
   -> DbIndex
-  -> [Item]
-computeRetentionSet config_retention time DbIndex{..} =
-  transitiveClosureBy itemRepo (catMaybes . dependencies) $
-    concatMap
-      (\(repoNm, dbs) ->
-        dbKeepRoots (repoRetention config_retention repoNm) time dbs
-      )
-      byRepoName
+  -> RetentionSet
+computeRetentionSet config_retention time backups DbIndex{..} = RetentionSet{..}
+  where
+    retentionSetRemote =
+      HashSet.fromList $ map itemRepo $ retentionSet backupItemsByRepoName
+    retentionSetLocalAndRemote = retentionSet byRepoName
+    retentionSet dbsByRepoName =
+      transitiveClosureBy itemRepo (catMaybes . dependencies) $
+        concatMap
+          (\(repoNm, dbs) ->
+            dbKeepRoots (repoRetention config_retention repoNm) time
+              dbs
+          )
+          dbsByRepoName
+    backupItemsByRepoName = Map.toList $ Map.fromListWith (<>)
+      [ (repo_name itemRepo, pure Item{..})
+      | let itemLocality = Cloud
+      , let itemStatus = ItemComplete
+      , (itemRepo, itemMeta) <- backups
+      ]
 
 -- The target set of DBs we want usable on the disk. This is a set of
 -- DBs that satisfies the policy.
