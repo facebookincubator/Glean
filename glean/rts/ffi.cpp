@@ -436,6 +436,7 @@ const char *glean_serialize_subst(
 
 const char *glean_subst_intervals(
     const Substitution *subst,
+    bool rebase,
     const glean_fact_id_t *ins,
     size_t ins_size,
     glean_fact_id_t **outs,
@@ -448,7 +449,7 @@ const char *glean_subst_intervals(
       ins+ins_size,
       std::back_inserter(ids),
       Id::fromThrift);
-    auto res = subst->substIntervals(ids);
+    auto res = rebase ? subst->rebaseIntervals(ids) : subst->substIntervals(ids);
     auto fres = ffi::malloc_array<glean_fact_id_t>(res.size());
     std::transform(res.begin(), res.end(), fres.get(), [](auto id) { return id.toThrift(); });
     fres.release_to(outs, outs_size);

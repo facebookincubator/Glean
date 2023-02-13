@@ -7,7 +7,7 @@
 -}
 
 module Glean.RTS.Foreign.Subst (
-  Subst, empty, serialize, substIntervals, deserialize,
+  Subst, empty, serialize, substIntervals, rebaseIntervals, deserialize,
 ) where
 
 import Control.Exception
@@ -50,12 +50,23 @@ serialize subst = unsafePerformIO $
     vec <- unsafeMallocedVector p count
     return $ Thrift.Subst id vec
 
+-- | Apply the given substitution to the intervals
 substIntervals :: Subst -> VS.Vector Fid -> VS.Vector Fid
-substIntervals subst ins = unsafePerformIO $
+substIntervals subst ins = substIntervals_ subst False ins
+
+-- | Apply the given substitution to the intervals, and also rename
+-- Ids in the same way as FactSet.rebase. For use when rebasing a
+-- FactSet with respect to a substitution.
+rebaseIntervals :: Subst -> VS.Vector Fid -> VS.Vector Fid
+rebaseIntervals subst ins = substIntervals_ subst True ins
+
+substIntervals_ :: Subst -> Bool -> VS.Vector Fid -> VS.Vector Fid
+substIntervals_ subst rebase ins = unsafePerformIO $
   with subst $ \subst_ptr ->
   VS.unsafeWith ins $ \ins_ptr -> mask_ $ do
     (outs_ptr, outs_size) <- invoke $ glean_subst_intervals
       subst_ptr
+      (fromIntegral (fromEnum rebase))
       ins_ptr
       (fromIntegral $ VS.length ins)
     unsafeMallocedVector outs_ptr outs_size
@@ -96,6 +107,7 @@ foreign import ccall unsafe glean_subst_deserialize
 
 foreign import ccall safe glean_subst_intervals
   :: Ptr Subst
+  -> CBool
   -> Ptr Fid
   -> CSize
   -> Ptr (Ptr Fid)

@@ -46,6 +46,11 @@ public:
   // output will be non-overlapping and sorted in ascending order.
   std::vector<Id> substIntervals(const std::vector<Id>& intervals) const;
 
+  // Exactly like substIntervals, except that we *also* rename Ids > finish() so
+  // that they don't clash with Ids in the range of the substitution, to match
+  // the transformation done by FactSet::rebase().
+  std::vector<Id> rebaseIntervals(const std::vector<Id>& intervals) const;
+
   boost::icl::interval_set<Id> substIntervals(
       const boost::icl::interval_set<Id>& intervals) const;
 

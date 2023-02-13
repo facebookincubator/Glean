@@ -129,17 +129,18 @@ toBatchOwnership =
     (HashMap.unionWith (<>) . fmap (: []) . ownershipUnits)
     HashMap.empty
 
-rebaseOwnership :: [Ownership] -> Subst -> Thrift.Id -> [Ownership]
-rebaseOwnership ownership subst boundary =
-  [ own { ownershipUnits = substOwnership subst (ownershipUnits own) }
+rebaseOwnershipList :: [Ownership] -> Subst -> Thrift.Id -> [Ownership]
+rebaseOwnershipList ownership subst boundary =
+  [ own { ownershipUnits = rebaseOwnership subst (ownershipUnits own) }
   | own <- takeWhile ((> boundary) . coerce . ownershipEnd) ownership
   ]
 
-substOwnership
+substOwnership, rebaseOwnership
   :: Subst
   -> HashMap Thrift.UnitName (Vector Thrift.Id)
   -> HashMap Thrift.UnitName (Vector Thrift.Id)
 substOwnership subst = fmap (coerce . substIntervals subst . coerce)
+rebaseOwnership subst = fmap (coerce . rebaseIntervals subst . coerce)
 
 senderFlush :: SendAndRebaseQueue -> Sender -> IO ()
 senderFlush srq sender = withMVar (sFacts sender) $ \(facts, owned) -> do
@@ -180,7 +181,7 @@ senderRebaseAndFlush wait srq sender = do
               boundary =
                 Thrift.subst_firstId thriftSubst +
                 fromIntegral (Vector.length (Thrift.subst_ids thriftSubst))
-              newOwned = rebaseOwnership owned subst boundary
+              newOwned = rebaseOwnershipList owned subst boundary
           _ <- evaluate (force (map ownershipUnits newOwned))
           return (newBase, newOwned)
       senderFlush srq sender

@@ -27,22 +27,19 @@ Id Substitution::firstFreeId() const {
    return i != items.end() ? std::max(*i+1, finish()) : finish();
  }
 
-std::vector<Id> Substitution::substIntervals(const std::vector<Id>& intervals) const {
+namespace {
+
+template <typename F>
+std::vector<Id> transformIntervals(const std::vector<Id>& intervals, F&& add) {
   CHECK_EQ(intervals.size() % 2, 0);
   boost::icl::interval_set<Id> is;
   auto i = intervals.begin();
   const auto e = intervals.end();
   while (i != e) {
     const auto start = i[0];
-    const auto finish = i[1];
-    CHECK(start <= finish);
-    if (finish < base) {
-      is.add({start,finish});
-    } else {
-      for (Id id = start; id <= finish; ++id) {
-        is.add(subst(id));
-      }
-    }
+    const auto end = i[1];
+    CHECK(start <= end);
+    add(is, start, end);
     i += 2;
   }
   std::vector<Id> results;
@@ -52,6 +49,43 @@ std::vector<Id> Substitution::substIntervals(const std::vector<Id>& intervals) c
     results.push_back(p.upper());
   }
   return results;
+}
+}
+
+std::vector<Id> Substitution::substIntervals(const std::vector<Id>& intervals) const {
+  return transformIntervals(
+      intervals, [&](boost::icl::interval_set<Id>& is, Id start, Id end) {
+        if (end < base || start >= finish()) {
+          is.add({start, end});
+        } else {
+          for (Id id = start; id <= end; ++id) {
+            is.add(subst(id));
+          }
+        }
+      });
+}
+
+std::vector<Id> Substitution::rebaseIntervals(const std::vector<Id>& intervals) const {
+  const auto new_start = firstFreeId();
+  const auto offset = distance(finish(), new_start);
+  return transformIntervals(
+      intervals,
+      [&, offset](boost::icl::interval_set<Id>& is, Id start, Id end) {
+        if (end < base) {
+          is.add({start, end});
+        } else {
+          if (start >= finish()) {
+            is.add({start + offset, end + offset});
+          }
+          for (Id id = start; id <= end; ++id) {
+            if (id >= finish()) {
+              is.add(id + offset);
+            } else {
+              is.add(subst(id));
+            }
+          }
+        }
+      });
 }
 
 boost::icl::interval_set<Id> Substitution::substIntervals(const boost::icl::interval_set<Id>& intervals) const {

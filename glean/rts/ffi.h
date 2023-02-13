@@ -292,6 +292,7 @@ const char *glean_subst_deserialize(
 
 const char *glean_subst_intervals(
   const Substitution *subst,
+  bool rebase,
   const glean_fact_id_t *ins,
   size_t ins_size,
   glean_fact_id_t **outs,
