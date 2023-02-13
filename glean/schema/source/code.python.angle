@@ -1,7 +1,7 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
 schema code.python.1 {
-import python.4
+import python.2
 
 type Entity =
   {
