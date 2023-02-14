@@ -197,7 +197,8 @@ predicate PythonModifiers:
       ) then (true) else (false);
       Async = false;
     ) | (
-      { cls = _ } = Decl;
+      { cls = C } = Decl;
+      C = python.ClassDeclaration {};
       IsStatic = false;
       Async = false;
     );
