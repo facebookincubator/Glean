@@ -54,19 +54,18 @@
         ],
         "symbolDetails": {
             "test/php/RefClass": {
-                "annotations": [],
                 "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
-                    "hasMoreChildren": true,
+                    "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
                 "extends_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
                     "hasMoreChildren": false,
-                    "hasMoreParents": true
+                    "hasMoreParents": false
                 },
                 "kind": 7,
                 "language": 3,
@@ -483,7 +482,6 @@
                 "visibility": 20
             },
             "test/php/SubClass": {
-                "annotations": [],
                 "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",

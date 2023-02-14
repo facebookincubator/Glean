@@ -490,6 +490,21 @@ mkSymbolDescription symbolId scmRevs repo CodeEntityLocation{..} ctx = do
   describeEntity scmRevs entity $
     SymbolResult symbolId range lang kind entityName score qname ctx
 
+-- Worker to fill out symbol description metadata uniformly
+mkBriefSymbolDescription
+  :: SymbolId
+  -> RepoName
+  -> CodeEntityLocation
+  -> Glean.RepoHaxl u w SymbolDescription
+mkBriefSymbolDescription symbolId repo CodeEntityLocation{..} = do
+  range <- rangeSpanToLocationRange repo entityFile entityRange
+  kind <- eitherToMaybe <$> findSymbolKind entity
+  qname <- eThrow =<< toQualifiedName entity -- non-optional now
+  let lang = entityLanguage entity
+      score = mempty
+  briefDescribeEntity entity $
+    SymbolResult symbolId range lang kind entityName score qname Nothing
+
 -- | Search for entities by string name with kind and language filters
 searchSymbol
   :: Glass.Env
@@ -1408,6 +1423,39 @@ runErrorLog :: Glass.Env -> Text -> GleanGlassErrorsLogger -> IO ()
 runErrorLog env cmd err = ErrorsLogger.runLog (Glass.logger env) $
   err <> ErrorsLogger.setMethod cmd
 
+-- | Return a brief description with only required fields set.
+-- More efficient for cases where we don't need everything
+-- TBD should be a different type in thrift
+briefDescribeEntity
+  :: Code.Entity
+  -> SymbolResult
+  -> Glean.RepoHaxl u w SymbolDescription
+briefDescribeEntity ent SymbolResult{..} = do
+  let symbolDescription_repo_hash = Revision mempty
+      symbolDescription_annotations = mempty
+      symbolDescription_comments = mempty
+      symbolDescription_visibility = Nothing
+      symbolDescription_modifiers = mempty
+      symbolDescription_type_xrefs  = mempty
+  symbolDescription_signature <- fst <$> toSymbolSignatureText ent repo
+    Cxx.Qualified
+  let symbolDescription_extends_relation  = def
+      symbolDescription_contains_relation  = def
+  pure SymbolDescription{..}
+  where
+    symbolDescription_sym = symbolResult_symbol
+    symbolDescription_kind = symbolResult_kind
+    symbolDescription_language = symbolResult_language
+    symbolDescription_name = symbolResult_qname
+    symbolDescription_sym_location = symbolResult_location
+    symbolDescription_sym_other_locations = []
+    repo = locationRange_repository symbolResult_location
+    symbolDescription_location = SymbolPath {
+      symbolPath_range = locationRange_range symbolResult_location,
+      symbolPath_repository = locationRange_repository symbolResult_location,
+      symbolPath_filepath = locationRange_filepath symbolResult_location
+    }
+
 -- | Return a description for a single Entity with a unique location.
 describeEntity
   :: ScmRevisions
@@ -1621,21 +1669,33 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
         -- for contained and inherited children we need type sigs + docs too
         -- for children-extends, parent-extends, parent-contains,
         -- we only need qnames/symbol ids/kinds.
-        let !syms = uniqBy (comparing snd) $
-              fromSearchEntity sym baseEntity :
-                concatMap flattenEdges [a,b,c,d] ++
+        let !syms = uniqBy (comparing snd) $ fromSearchEntity sym baseEntity :
+                concatMap flattenEdges [a,{- b,-}c,d] ++
                 concatMap (\(parent, children) -> parent : children) eFinal
                   -- full descriptions of final methods
         descs0 <- Map.fromAscList <$> mapM (mkDescribe repo scmRevs) syms
         overrides' <- mapM addQName overrides
         let !descriptions = patchDescriptions lang descs0 overrides'
-        return (NeighborRawResult a b c d eFinal descriptions)
+        -- brief descriptions for children by inheritance
+        descs1 <- Map.fromAscList <$> mapM (mkBriefDescribe repo)
+            (uniqBy (comparing snd) $ concatMap flattenEdges [b])
+        return (NeighborRawResult a b c d eFinal
+          (Map.union descriptions descs1))
 
     -- building map of sym id -> descriptions, by first occurence
     mkDescribe repo scmRevs e@(_,SymbolId rawSymId) =
       (rawSymId,) <$> describe repo scmRevs e
     describe repo scmRevs ((entity, entityFile, entityRange, entityName), symId)
       = mkSymbolDescription symId scmRevs repo CodeEntityLocation{..} Nothing
+
+    -- for children by inheritance, we only need name, kind, parent name, sym id
+    -- and signature. In particular, we don't e.g. need comments or annotations
+    -- or type xrefs
+    mkBriefDescribe repo e@(_,SymbolId rawSymId) =
+      (rawSymId,) <$> briefDescribe repo e
+    briefDescribe repo
+        ((entity, entityFile, entityRange, entityName), symId)
+      = mkBriefSymbolDescription symId repo CodeEntityLocation{..}
 
     -- for overrides, we just need to know the parent qname of the entity
     -- no need to compute the full details()

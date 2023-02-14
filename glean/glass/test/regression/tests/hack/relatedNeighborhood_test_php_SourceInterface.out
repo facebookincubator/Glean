@@ -26,19 +26,18 @@
         "inheritedSymbols": [],
         "symbolDetails": {
             "test/php/RefClass": {
-                "annotations": [],
                 "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
-                    "hasMoreChildren": true,
+                    "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
                 "extends_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
                     "hasMoreChildren": false,
-                    "hasMoreParents": true
+                    "hasMoreParents": false
                 },
                 "kind": 7,
                 "language": 3,
