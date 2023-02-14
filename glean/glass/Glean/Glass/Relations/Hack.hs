@@ -66,7 +66,7 @@ instance NamedSymbol LocatedEntity where
 data Env a = Env {
     seenNames :: !(HashMap Text SymbolId), -- names we've seen and where
     visitedContainers :: !(HashSet SymbolId), -- containers we have processed
-    mappings :: !(HashMap SymbolId SymbolId), -- accumulated overrides
+    mappings :: !(HashMap SymbolId a), -- accumulated overrides, child to parent
     indexedParents :: !(ContainerIndex a) -- each container
   }
 
@@ -105,7 +105,7 @@ updateSeenNames :: HashMap Text SymbolId -> S a ()
 updateSeenNames seen = modify' $ \e@Env{..} ->
   e { seenNames = HashMap.union seenNames seen }
 
-updateMappings :: HashMap SymbolId SymbolId -> S a ()
+updateMappings :: NamedSymbol a => HashMap SymbolId a -> S a ()
 updateMappings more = modify' $ \e@Env{..} ->
   e { mappings = HashMap.union mappings more } -- early mappings win over later
 
@@ -127,7 +127,7 @@ difference
   -> SymbolId
   -> [e]
   -> [(e, [e])]
-  -> ([(e, [e])], HashMap SymbolId SymbolId)
+  -> ([(e, [e])], HashMap SymbolId e)
 difference topoEdges topoKinds baseSym baseSymNames allParents =
   let zero = newEnv (toNameMap baseSymNames) initIndex
       final = execState (partitionOverrides topoEdges topoKinds [baseSym]) zero
@@ -188,7 +188,7 @@ filterOneParent parentSym = do
       case HashMap.lookup (localNameOf ent) seen of
         -- both seen already and not seen in a prior visit to this symbol
         Just thisSymId | thisSymId /= symIdOf ent ->
-          let !mapping = HashMap.insert thisSymId (symIdOf ent) overrides
+          let !mapping = HashMap.insert thisSymId ent overrides
           in go seen children mapping ents
         _ -> go seen (ent : children) overrides ents
           -- no override, retain `ent` as a visible symbol
@@ -210,18 +210,16 @@ kindOrder kinds sym = case HashMap.lookup sym kinds of
 --
 patchDescriptions
   :: Map Text SymbolDescription
-  -> HashMap SymbolId SymbolId
+  -> HashMap SymbolId (SymbolId, QualifiedName)
   -> Map Text SymbolDescription
 patchDescriptions allsyms overrides = HashMap.foldlWithKey go allsyms overrides
   where
-    go syms (SymbolId child) parent@(SymbolId p) = fromMaybe syms $ do
+    go syms (SymbolId child) (parent, qname) = fromMaybe syms $! do
       desc <- Map.lookup child syms
-      parentDescription <- Map.lookup p syms
-      let qname = symbolDescription_name parentDescription
-          childDesc = desc { symbolDescription_extends_relation =
+      let !childDesc = desc { symbolDescription_extends_relation =
             (symbolDescription_extends_relation desc) {
                 relationDescription_firstParent = Just parent,
                 relationDescription_firstParentName = Just qname
             }
           }
-      return $ Map.insert child childDesc syms
+      return $! Map.insert child childDesc syms

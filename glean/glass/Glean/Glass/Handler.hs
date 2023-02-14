@@ -217,6 +217,11 @@ import qualified Glean.Glass.Query.Cxx as Cxx
 
 import Glean.Glass.SymbolMap ( toSymbolIndex )
 import Glean.Glass.Search as Search
+    ( CodeEntityLocation(..),
+      SearchEntity(..),
+      SearchResult(Many, None, One, rest, message, initial),
+      searchEntity,
+      prefixSearchEntity )
 import Glean.Glass.Utils
 import qualified Data.Set as Set
 import Data.Set ( Set )
@@ -1606,24 +1611,38 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
         b <- childrenExtends1Level (decl baseEntity) repo
         c <- parentContainsNLevel (decl baseEntity) repo
         d <- parentExtends1Level (decl baseEntity) repo
-        (e0, edges, kinds) <- inheritedNLevel (decl baseEntity) repo
-        let (e,overrides) = partitionInheritedScopes lang sym edges
-                              kinds (map Search.childRL a) e0
-        let syms = uniqBy (comparing snd) $
+        -- all contained symbols of inherited parents
+        -- n.b. not all are actually in scope after we resolve names
+        (eFull, edges, kinds) <- inheritedNLevel (decl baseEntity) repo
+        -- now filter out any names that are shadowed
+        let (!eFinal,!overrides) = partitionInheritedScopes lang sym edges
+                              kinds (map Search.childRL a) eFull
+        -- syms visible to the client, we need their minimal details
+        -- for contained and inherited children we need type sigs + docs too
+        -- for children-extends, parent-extends, parent-contains,
+        -- we only need qnames/symbol ids/kinds.
+        let !syms = uniqBy (comparing snd) $
               fromSearchEntity sym baseEntity :
                 concatMap flattenEdges [a,b,c,d] ++
-                concatMap (\(parent, children) -> parent : children)
-                  e0 {- use full set so we can stitch up overrides later -}
+                concatMap (\(parent, children) -> parent : children) eFinal
+                  -- full descriptions of final methods
         descs0 <- Map.fromAscList <$> mapM (mkDescribe repo scmRevs) syms
-        let descriptions = patchDescriptions lang descs0 overrides
-        return (NeighborRawResult a b c d e descriptions)
+        overrides' <- mapM addQName overrides
+        let !descriptions = patchDescriptions lang descs0 overrides'
+        return (NeighborRawResult a b c d eFinal descriptions)
 
     -- building map of sym id -> descriptions, by first occurence
     mkDescribe repo scmRevs e@(_,SymbolId rawSymId) =
       (rawSymId,) <$> describe repo scmRevs e
-
     describe repo scmRevs ((entity, entityFile, entityRange, entityName), symId)
       = mkSymbolDescription symId scmRevs repo CodeEntityLocation{..} Nothing
+
+    -- for overrides, we just need to know the parent qname of the entity
+    -- no need to compute the full details()
+    addQName ((entity, _file, _span, _name), symId)  = do
+      qName <- eThrow =<< toQualifiedName entity
+      return (symId, qName)
+
     childrenContains1Level :: SearchRelatedQuery u w
     childrenContains1Level baseEntity repo = Search.searchRelatedEntities
       (fromIntegral relatedNeighborhoodRequest_children_limit)
@@ -1722,7 +1741,7 @@ partitionInheritedScopes
   -> HashMap SymbolId SymbolKind
   -> [Search.LocatedEntity]
   -> [InheritedContainer]
-  -> ([InheritedContainer], HashMap SymbolId SymbolId)
+  -> ([InheritedContainer], HashMap SymbolId Search.LocatedEntity)
 partitionInheritedScopes lang symId edges kinds locals inherited = case lang of
   Language_Hack -> Hack.difference edges kinds symId locals inherited
   _ -> (inherited, mempty)
@@ -1732,7 +1751,7 @@ partitionInheritedScopes lang symId edges kinds locals inherited = case lang of
 patchDescriptions
   :: Language
   -> Map.Map Text SymbolDescription
-  -> HashMap SymbolId SymbolId
+  -> HashMap SymbolId (SymbolId, QualifiedName)
   -> Map.Map Text SymbolDescription
 patchDescriptions lang descs overrides = case lang of
   Language_Hack -> Hack.patchDescriptions descs overrides

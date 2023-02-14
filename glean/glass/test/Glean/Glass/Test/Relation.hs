@@ -112,7 +112,8 @@ test5 = TestSpec contents graph expected
         ]
 
 test6 :: TestSpec
-test6 = TestSpec contents graph expected [(qsym traitB "f", qsym classB "f")]
+test6 = TestSpec contents graph expected
+  [(symbolIdOf (qsym traitB "f"), qsym classB "f")]
   where
     contents =
       (classA, []) :|
@@ -143,7 +144,7 @@ test7 = TestSpec contents graph expected remappings
         , (classB, []) -- "f" is removed and remapped to trait
         ]
     remappings =
-        [(qsym traitB "f", qsym classB "f")
+        [(symbolIdOf (qsym traitB "f"), qsym classB "f")
            -- ordering, traitB hides f in sibling classB
            -- if we inline traits recurisvely first, this would be traitC
         ]
@@ -168,7 +169,7 @@ test8 = TestSpec contents graph expected remappings
         , (classC, [])
         ]
     remappings =
-        [(qsym traitB "f", qsym traitC "f")
+        [(symbolIdOf (qsym traitB "f"), qsym traitC "f")
         ]
 
 ------------------------------------------------------------------------
@@ -176,8 +177,6 @@ test8 = TestSpec contents graph expected remappings
 mkTest :: TestSpec -> Test
 mkTest TestSpec{..} = TestCase (expected @=? actual)
   where
-    actual :: ([(TestEntity, [TestEntity])]
-                , HashMap.HashMap SymbolId SymbolId)
     actual = S.difference
       (topoMap (NE.toList graph))
       (kindMap (NE.toList graph))
@@ -194,13 +193,14 @@ data TestSpec =
     graph :: NE.NonEmpty (SymAndKind, [SymAndKind]),
       -- outputs
     result :: [(SymAndKind,[Text])],
-    overrides :: [(SymbolId, SymbolId)]
+    overrides :: [(SymbolId, TestEntity)]
   }
 
 type SymAndKind = (SymbolId, SymbolKind)
 
-qsym :: SymAndKind -> Text -> SymbolId
-qsym p t = case fst p of SymbolId parent -> sym (parent <> "/" <> t)
+qsym :: SymAndKind -> Text -> TestEntity
+qsym parent name = case fst parent of
+  SymbolId p -> TestEntity (sym (p <> "/" <> name)) name
 
 sym :: Text -> SymbolId
 sym x = SymbolId x
@@ -230,7 +230,7 @@ mk (Just (SymbolId p)) (SymbolId name) =
   TestEntity (SymbolId (p <> "/" <> name)) name
 
 -- stub of a located entity
-data TestEntity = TestEntity SymbolId Text
+data TestEntity = TestEntity { symbolIdOf :: SymbolId, nameOf :: Text }
   deriving (Eq, Show)
 
 instance S.NamedSymbol TestEntity where
