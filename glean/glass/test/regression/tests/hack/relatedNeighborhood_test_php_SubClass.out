@@ -35,35 +35,17 @@
         ],
         "symbolDetails": {
             "test/php/SourceClass": {
-                "annotations": [
-                    {
-                        "name": "TestAnnotation",
-                        "source": "TestAnnotation(\"Text\")",
-                        "symbol": "test/php/TestAnnotation"
-                    }
-                ],
-                "comments": [
-                    {
-                        "filepath": "www/SourceClass.php",
-                        "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 4,
-                            "lineBegin": 10,
-                            "lineEnd": 12
-                        },
-                        "repository": "test"
-                    }
-                ],
+                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
-                    "hasMoreChildren": true,
+                    "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
                 "extends_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
-                    "hasMoreChildren": true,
+                    "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
                 "kind": 7,
@@ -468,12 +450,11 @@
                 "visibility": 20
             },
             "test/php/SuperClass": {
-                "annotations": [],
                 "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
-                    "hasMoreChildren": true,
+                    "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
                 "extends_relation": {
