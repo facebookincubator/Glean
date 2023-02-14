@@ -1665,20 +1665,17 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
         -- now filter out any names that are shadowed
         let (!eFinal,!overrides) = partitionInheritedScopes lang sym edges
                               kinds (map Search.childRL a) eFull
-        -- syms visible to the client, we need their minimal details
-        -- for contained and inherited children we need type sigs + docs too
-        -- for children-extends, parent-extends, parent-contains,
-        -- we only need qnames/symbol ids/kinds.
+        -- syms visible to the client, we need their full details
         let !syms = uniqBy (comparing snd) $ fromSearchEntity sym baseEntity :
-                concatMap flattenEdges [a,{- b,-}c,d] ++
+                concatMap flattenEdges [a,c] ++
                 concatMap (\(parent, children) -> parent : children) eFinal
                   -- full descriptions of final methods
         descs0 <- Map.fromAscList <$> mapM (mkDescribe repo scmRevs) syms
         overrides' <- mapM addQName overrides
         let !descriptions = patchDescriptions lang descs0 overrides'
-        -- brief descriptions for children by inheritance
+        -- brief descriptions for inherited things
         descs1 <- Map.fromAscList <$> mapM (mkBriefDescribe repo)
-            (uniqBy (comparing snd) $ concatMap flattenEdges [b])
+            (uniqBy (comparing snd) $ concatMap flattenEdges [b,d])
         return (NeighborRawResult a b c d eFinal
           (Map.union descriptions descs1))
 
