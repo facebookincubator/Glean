@@ -565,108 +565,38 @@ struct StoredOwnership : Ownership {
 
 }
 
-void DatabaseImpl::prepareFactOwnerCache() {
-  FactOwnerCache::prepare(container_);
-}
-
-// The size of each page in the fact cache. This is a time/space tradeoff:
-// bigger page = higher latency to fetch a page, smaller cache size,
-// slightly higher overhead to look up an owner in the page.
-// Examples for 1B facts:
-//   16 bits: ~3ms to fetch a page, 100KB cache overhead
-//   12 bits: ~0.3ms to fetch a page, 2MB cache overhead
-//   10 bits: ~0.1ms to fetch a page, 7.5MB cache overhead
-constexpr uint32_t page_bits = 12; // max 16 bits!
-constexpr uint32_t page_mask = (1 << page_bits) - 1;
-
-const DatabaseImpl::FactOwnerCache::Page* FOLLY_NULLABLE
-DatabaseImpl::FactOwnerCache::getPage(
-    ContainerImpl& container,
-    uint64_t prefix) {
-  auto cachePtr = cache_.rlock();
-  auto cache = cachePtr->get();
-
-  if (!cache) {
-    return nullptr;
-  }
-
-  if (prefix >= cache->size() || !(*cache)[prefix]) {
-    auto page = std::make_unique<FactOwnerCache::Page>();
-    size_t size = 0;
-
-    std::unique_ptr<rocksdb::Iterator> iter(container.db->NewIterator(
-        rocksdb::ReadOptions(), container.family(Family::factOwners)));
-    EncodedNat prefixKey(prefix << page_bits);
-
-    // The first interval must start at 0
-    page->factIds.push_back(0);
-    size += sizeof(uint16_t) + sizeof(UsetId);
-
-    if (prefix == 0 || prefix-1 >= cache->size() || !(*cache)[prefix-1]) {
-      // Start with the first interval <= the prefix, so that we can always find
-      // the desired interval by looking at the appropriate page.
-      iter->SeekForPrev(slice(prefixKey.byteRange()));
-
-      if (!iter->Valid()) {
-        // no interval <= the beginning of the page
-        page->setIds.push_back(INVALID_USET);
-        // better check for later intervals though
-        iter->Seek(slice(prefixKey.byteRange()));
-      } else {
-        binary::Input val(byteRange(iter->value()));
-        UsetId usetId = val.trustedNat();
-        page->setIds.push_back(usetId);
-        iter->Next();
-      }
-    } else {
-      auto& prev = (*cache)[prefix-1];
-      page->setIds.push_back(prev->setIds.back());
-      iter->Seek(slice(prefixKey.byteRange()));
-    }
-
-    cachePtr.unlock();
-
-    while (iter->Valid()) {
-      binary::Input key(byteRange(iter->key()));
-      rts::Id factId = Id::fromWord(key.trustedNat());
-      if ((factId.toWord() >> page_bits) > prefix) {
-        break;
-      }
-      binary::Input val(byteRange(iter->value()));
-      UsetId usetId = val.trustedNat();
-      page->factIds.push_back(factId.toWord() & page_mask);
-      page->setIds.push_back(usetId);
-      iter->Next();
-      size += sizeof(uint16_t) + sizeof(UsetId);
-    }
-
-    auto wlock = cache_.wlock();
-    auto wcache = wlock->get();
-
-    size_ += size + sizeof(struct Page);
-
-    if (prefix >= wcache->size()) {
-      wcache->resize(prefix + 1);
-    }
-    if (!(*wcache)[prefix]) {
-      (*wcache)[prefix] = std::move(page);
-    }
-
-    VLOG(2) << "FactOwnerCache::getPage(" << prefix << ") size = "
-            << folly::prettyPrint(size_, folly::PRETTY_BYTES_IEC);
-    return (*wcache)[prefix].get();
-  }
-
-  return (*cache)[prefix].get();
-}
-
 std::unique_ptr<rts::Ownership> DatabaseImpl::getOwnership() {
   container_.requireOpen();
   return std::make_unique<StoredOwnership>(this);
 }
 
+void DatabaseImpl::cacheOwnership() {
+  factOwnerCache_.enable(container_);
+}
+
+void DatabaseImpl::prepareFactOwnerCache() {
+  FactOwnerCache::prepare(container_);
+}
+
 UsetId DatabaseImpl::getOwner(Id id) {
-  return factOwnerCache_.getOwner(container_, id);
+  auto cached = factOwnerCache_.getOwner(container_, id);
+
+  if (cached) {
+    return cached.value();
+  } else {
+    // cache is not enabled; fall back to reading from the DB.
+    std::unique_ptr<rocksdb::Iterator> iter(container_.db->NewIterator(
+        rocksdb::ReadOptions(), container_.family(Family::factOwners)));
+
+    EncodedNat key(id.toWord());
+    iter->SeekForPrev(slice(key.byteRange()));
+    if (iter->Valid()) {
+      binary::Input val(byteRange(iter->value()));
+      return val.trustedNat();
+    } else {
+      return INVALID_USET;
+    }
+  }
 }
 
 namespace {
@@ -682,44 +612,84 @@ namespace {
   static const uint64_t PAGE_MASK = (1<<PAGE_BITS) - 1;
 }
 
-void DatabaseImpl::FactOwnerCache::enable() {
+void DatabaseImpl::FactOwnerCache::enable(ContainerImpl& container) {
   auto cache = cache_.ulock();
   if (*cache) {
     return;
   }
 
-  auto wcache = cache.moveFromUpgradeToWrite();
-  *wcache = std::make_unique<FactOwnerCache::Cache>();
-  size_ = 0;
-}
-
-UsetId DatabaseImpl::FactOwnerCache::getOwner(ContainerImpl& container, Id id) {
-  // first find the right page
-  auto prefix = id.toWord() >> page_bits;
-  const auto* page = getPage(container, prefix);
-
-  if (!page) {
-    // cache is not enabled; fall back to reading from the DB.
-    std::unique_ptr<rocksdb::Iterator> iter(container.db->NewIterator(
-        rocksdb::ReadOptions(), container.family(Family::factOwners)));
-
-    EncodedNat key(id.toWord());
-    iter->SeekForPrev(slice(key.byteRange()));
-    if (iter->Valid()) {
-      binary::Input val(byteRange(iter->value()));
-      return val.trustedNat();
-    } else {
-      return INVALID_USET;
-    }
+  rocksdb::PinnableSlice val;
+  auto s = container.db->Get(
+      rocksdb::ReadOptions(),
+      container.family(Family::factOwnerPages),
+      INDEX_KEY,
+      &val);
+  if (s.IsNotFound()) {
+    LOG(WARNING) << "cannot enable cache; missing INDEX";
+    // assume this is an old DB without factOwnerPages, we'll fall back
+    // to using factOwners.
+    return;
   }
 
+  check(s);
+  assert(val.size() % sizeof(UsetId) == 0);
+  size_t num = val.size() / sizeof(UsetId);
+  std::vector<UsetId> index(num);
+  const UsetId* start = reinterpret_cast<const UsetId*>(val.data());
+  std::copy(start, start + num, index.data());
+  size_t size = index.size() * sizeof(UsetId);
+  Cache content {
+    .index = std::move(index),
+    .pages = {},
+    .size_ = size,
+  };
+
+  VLOG(1) << folly::sformat("owner cache index: {} entries", num);
+
+  auto wcache = cache.moveFromUpgradeToWrite();
+  *wcache = std::make_unique<Cache>(std::move(content));
+}
+
+std::unique_ptr<DatabaseImpl::FactOwnerCache::Page>
+DatabaseImpl::FactOwnerCache::readPage(
+    ContainerImpl& container,
+    uint64_t prefix) {
+
+  rocksdb::PinnableSlice val;
+  auto s = container.db->Get(
+      rocksdb::ReadOptions(),
+      container.family(Family::factOwnerPages),
+      toSlice(prefix),
+      &val);
+  if (s.IsNotFound()) {
+    rts::error("missing page: {}", prefix);
+  } else {
+    check(s);
+  }
+
+  auto p = std::make_unique<FactOwnerCache::Page>();
+  size_t num = val.size() / (sizeof(int16_t) + sizeof(UsetId));
+  p->factIds.resize(num);
+  p->setIds.resize(num);
+  const uint16_t* ids = reinterpret_cast<const uint16_t*>(val.data());
+  const UsetId* sets =
+      reinterpret_cast<const UsetId*>(val.data() + num * sizeof(uint16_t));
+  std::copy(ids, ids + num, p->factIds.data());
+  std::copy(sets, sets + num, p->setIds.data());
+
+  return p;
+}
+
+UsetId DatabaseImpl::FactOwnerCache::lookup(
+    const DatabaseImpl::FactOwnerCache::Page& page,
+    Id id) {
   // next binary-search on the content of the page to find the
   // interval containing the desired fact ID.
   uint32_t low, high, mid;
-  uint16_t ix = id.toWord() & page_mask;
+  uint16_t ix = id.toWord() & PAGE_MASK;
 
   low = 0;
-  high = page->factIds.size();
+  high = page.factIds.size();
 
   if (high == 0) {
     rts::error("empty page");
@@ -729,9 +699,9 @@ UsetId DatabaseImpl::FactOwnerCache::getOwner(ContainerImpl& container, Id id) {
   // low..high always contains an element that is <= id, if there is one
   while (high - low > 1) {
     mid = (high + low) / 2;
-    auto x = page->factIds[mid];
+    auto x = page.factIds[mid];
     if (x == ix) {
-      return page->setIds[mid];
+      return page.setIds[mid];
     }
     if (x < ix) {
       low = mid;
@@ -740,15 +710,67 @@ UsetId DatabaseImpl::FactOwnerCache::getOwner(ContainerImpl& container, Id id) {
     }
   }
 
-  if (page->factIds[low] <= ix) {
-    return page->setIds[low];
+  if (page.factIds[low] <= ix) {
+    return page.setIds[low];
   } else {
-    rts::error("missing lower bound, ix={} low={} prefix={}", ix, low, prefix);
+    rts::error(
+        "missing lower bound, ix={} low={} prefix={}",
+        ix,
+        low,
+        id.toWord() >> PAGE_BITS);
   }
 }
 
-void DatabaseImpl::cacheOwnership() {
-  factOwnerCache_.enable();
+std::optional<UsetId> DatabaseImpl::FactOwnerCache::getOwner(
+    ContainerImpl& container,
+    Id id) {
+  auto cachePtr = cache_.rlock();
+  auto cache = cachePtr->get();
+
+  if (!cache) {
+    return {};
+  }
+
+  // first find the right page
+  auto prefix = id.toWord() >> PAGE_BITS;
+
+  if (prefix >= cache->index.size()) {
+    rts::error("prefix out of range");
+  }
+  UsetId pageval = cache->index[prefix];
+  if (pageval != HAS_PAGE) {
+    return pageval;
+  }
+
+  const FactOwnerCache::Page* page;
+
+  // grab the Page from the cache, or read it from the DB
+  if (prefix < cache->pages.size() && cache->pages[prefix]) {
+    page = cache->pages[prefix].get();
+    cachePtr.unlock();
+  } else {
+    cachePtr.unlock();
+
+    auto p = FactOwnerCache::readPage(container, prefix);
+    auto wlock = cache_.wlock();
+    auto wcache = wlock->get();
+    auto size = wcache->size_;
+
+    if (prefix >= wcache->pages.size()) {
+      wcache->pages.resize(prefix + 1);
+    }
+    if (!wcache->pages[prefix]) {
+      wcache->size_ += p->factIds.size() * sizeof(uint16_t) +
+          p->setIds.size() * sizeof(UsetId) + sizeof(*p);
+      wcache->pages[prefix] = std::move(p);
+    }
+
+    VLOG(2) << "new page(" << prefix << ") size = "
+            << folly::prettyPrint(size, folly::PRETTY_BYTES_IEC);
+    page = wcache->pages[prefix].get();
+  }
+
+  return FactOwnerCache::lookup(*page, id);
 }
 
 void DatabaseImpl::FactOwnerCache::prepare(ContainerImpl& container) {
@@ -935,8 +957,6 @@ void DatabaseImpl::addDefineOwnership(DefineOwnership& def) {
           << def.ids_.size() + def.new_ids_.size() << " entries for pid "
           << def.pid_.toWord();
 }
-
-
 
 }
 }

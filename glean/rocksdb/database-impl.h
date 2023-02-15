@@ -175,22 +175,30 @@ struct DatabaseImpl final : Database {
   void prepareFactOwnerCache() override;
 
   struct FactOwnerCache {
-    rts::UsetId getOwner(ContainerImpl& container, Id id);
-    void enable();
     static void prepare(ContainerImpl& container);
+    void enable(ContainerImpl& container);
 
-   private:
+    // Lookup in the cache. Returns none if the cache is not enabled
+    std::optional<rts::UsetId> getOwner(ContainerImpl& container, Id id);
+
+  private:
     struct Page {
       std::vector<uint16_t> factIds;
       std::vector<rts::UsetId> setIds;
     };
-    using Cache = std::vector<std::unique_ptr<Page>>;
+    static rts::UsetId lookup(const Page& page, Id id);
+    static std::unique_ptr<Page> readPage(ContainerImpl& container, uint64_t prefix);
 
-    const Page* getPage(ContainerImpl& container, uint64_t prefix);
+    struct Cache {
+      std::vector<rts::UsetId> index;
+      std::vector<std::unique_ptr<Page>> pages;
+
+      // tracks the memory usage of the cache
+      size_t size_;
+    };
 
     // nullptr means the cache is disabled (while the DB is writable)
     folly::Synchronized<std::unique_ptr<Cache>> cache_;
-    size_t size_;
   };
 
   FactOwnerCache factOwnerCache_;
