@@ -29,7 +29,10 @@ const char *glean_diff(
     Inventory *inventory,
     Lookup *first,
     Lookup *second,
-    bool log_added) {
+    bool log_added,
+    int32_t *kept_,
+    int32_t *added_,
+    int32_t *removed_) {
   return ffi::wrap([=] {
   const auto first_starting = first->startingId();
   const auto first_boundary = first->firstFreeId();
@@ -93,14 +96,12 @@ const char *glean_diff(
     }
   }
 
-
-  std::cout
-    << "kept " << kept
-    << ", added " << added
-    // removed can be incorrect if the first db is incremental as it includes
-    // facts in excluded units.
-    << ", removed " << distance(first_starting, first_boundary) - kept
-    << std::endl;
+  // removed can be incorrect if the first db is incremental as it includes
+  // facts in excluded units.
+  size_t removed = distance(first_starting, first_boundary) - kept;
+  *kept_ = static_cast<int32_t>(kept);
+  *added_ = static_cast<int32_t>(added);
+  *removed_ = static_cast<int32_t>(removed);
   });
 }
 

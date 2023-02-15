@@ -6,65 +6,59 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE ApplicativeDo #-}
-module Diff (main) where
+module Diff (diff, DiffOptions(..), Result(..)) where
 
 import Foreign.C.String (CString)
 import Foreign.Ptr (Ptr)
-import Options.Applicative
+import Data.Int (Int32)
 
-import Util.EventBase
-import Util.FFI
+import Util.FFI (invoke)
 
-import qualified Glean
-import Glean (Repo(..))
-import qualified Glean.Database.Config as Database
-import qualified Glean.Database.Env as Database
+import Glean (Repo)
 import Glean.Database.Schema (schemaInventory)
 import Glean.Database.Open (readDatabase)
-import Glean.Database.Types
+import Glean.Database.Types (Env, odbSchema)
 import Glean.FFI (with)
 import Glean.RTS.Foreign.Inventory (Inventory)
-import Glean.RTS.Foreign.Lookup
-import Glean.Impl.ConfigProvider (ConfigAPI)
-import Glean.Util.ConfigProvider
+import Glean.RTS.Foreign.Lookup (withLookup, Lookup)
 
-data Config = Config
-  { cfgDB :: Database.Config
-  , cfgOriginal :: Repo
-  , cfgNew :: Repo
-  , cfgLogAdded :: Bool
+newtype DiffOptions =  DiffOptions
+  { logAdded :: Bool -- ^ log IDs of added facts
   }
 
-options :: ParserInfo Config
-options = info (parser <**> helper)
-  (fullDesc <> progDesc "Compare two databases")
-  where
-    parser :: Parser Config
-    parser = do
-      cfgDB <- Database.options
-      cfgOriginal <- argument (maybeReader Glean.parseRepo)
-        (  metavar "NAME/HASH"
-        )
-      cfgNew <- argument (maybeReader Glean.parseRepo)
-        (  metavar "NAME/HASH"
-        )
-      cfgLogAdded <-
-        switch (long "log-added" <> help "log facts added in second DB")
-      return Config{..}
+data Result = Result
+  { kept :: Int
+  , added :: Int
+  , removed :: Int
+  }
+  deriving (Show, Eq)
 
-main :: IO ()
-main =
-  withConfigOptions options $ \(Config{..}, cfgOpts) ->
-  withEventBaseDataplane $ \evb ->
-  withConfigProvider cfgOpts $ \(cfgAPI :: ConfigAPI) ->
-  Database.withDatabases evb cfgDB cfgAPI $ \env ->
-  readDatabase env cfgOriginal $ \_original_schema original ->
-  readDatabase env cfgNew $ \odb new ->
-  with (schemaInventory (odbSchema odb)) $ \inventory_ptr ->
-  withLookup original $ \original_ptr ->
-  withLookup new $ \new_ptr ->
-  invoke $ glean_diff inventory_ptr original_ptr new_ptr cfgLogAdded
+diff :: Env -> DiffOptions -> Repo -> Repo -> IO Result
+diff env DiffOptions{..} one two =
+  withInventory one $ \_ original_ptr ->
+  withInventory two $ \new_inventory_ptr new_ptr -> do
+  (kept, added, removed) <- invoke $ glean_diff
+    new_inventory_ptr
+    original_ptr
+    new_ptr
+    logAdded
+  return $ Result
+    (fromIntegral kept)
+    (fromIntegral added)
+    (fromIntegral removed)
+  where
+    withInventory repo f =
+      readDatabase env repo $ \odb lookup ->
+      with (schemaInventory (odbSchema odb)) $ \inventory_ptr ->
+      withLookup lookup $ \lookup_ptr ->
+      f inventory_ptr lookup_ptr
 
 foreign import ccall safe glean_diff
-  :: Ptr Inventory -> Ptr Lookup -> Ptr Lookup -> Bool -> IO CString
+  :: Ptr Inventory
+  -> Ptr Lookup
+  -> Ptr Lookup
+  -> Bool       -- ^ log added
+  -> Ptr Int32  -- ^ kept
+  -> Ptr Int32  -- ^ added
+  -> Ptr Int32  -- ^ removed
+  -> IO CString
