@@ -9,7 +9,7 @@
 {-# LANGUAGE ApplicativeDo #-}
 module GleanCLI.Finish (FinishCommand, finished) where
 
-import Control.Exception
+import Control.Exception.Safe
 import Control.Monad
 import Data.Default
 import Data.Maybe
@@ -91,15 +91,27 @@ finished backend repo handle task parcel failure = do
         Nothing -> Outcome_success def
         Just msg -> Outcome_failure (Thrift.Failure msg)
     }
-    `catch` \e@Retry{} ->
+    `catch` \e -> if
+      | Just Retry{} <- fromException e ->
        die 1 $
          "finish: " <> show e <> "\n" <>
          "  This error indicates that previous write or derive\n" <>
          "  operations have not completed yet. Please ensure that\n" <>
          "  all writing operations have completed before invoking\n" <>
          "  'glean finish'"
+      | alreadyComplete e -> return ()
+      | otherwise -> throwIO e
 
   -- If the client needs to create a stacked DB on top of this one, it
   -- will fail unless we wait for the DB to finish finalizing first.
   when (isNothing failure) $
     Glean.LocalOrRemote.finalize backend repo
+
+  where
+  -- "glean finish" should not be an error if the DB is
+  -- finalizing or is already finished.
+  alreadyComplete e
+    | Just DatabaseNotIncomplete{..} <- fromException e =
+      databaseNotIncomplete_status == DatabaseStatus_Complete ||
+      databaseNotIncomplete_status == DatabaseStatus_Finalizing
+    | otherwise = False
