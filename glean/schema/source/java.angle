@@ -593,6 +593,15 @@ predicate Inheritance :
   stored { Base, Subclass } where
     Subclass = ClassDeclaration { extends_ = { just = Base } }
 
+predicate InterfaceInheritance :
+  {
+    interface_name: Type,
+    subclass: ClassDeclaration,
+  }
+  stored { InterfaceName, Subclass } where
+    Subclass = ClassDeclaration { implements_ = Implements_ };
+    InterfaceName = Implements_[..];
+
 predicate XRefFile :
 {
   xref: XRef,
