@@ -112,8 +112,6 @@ executable clang-index
         preprocessor.cpp,
     build-depends:
         glean:rts,
-        glean:config,
-        glean:if-glean-cpp,
         glean:client-cpp
     extra-libraries:
         clangFrontend,

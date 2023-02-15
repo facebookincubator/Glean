@@ -14,20 +14,6 @@
 #
 # CXX_FLAGS_glean_cpp_lib = ... - sets additional C++ flags for the library
 
-CXX_SOURCES_glean_cpp_if_fb303 = \
-    glean/github/if/gen-cpp2/fb303_core_types.cpp \
-    glean/github/if/gen-cpp2/fb303_core_data.cpp \
-    glean/github/if/gen-cpp2/fb303_types.cpp \
-    glean/github/if/gen-cpp2/fb303_data.cpp
-
-CXX_SOURCES_glean_cpp_config = \
-    glean/config/recipes/gen-cpp2/recipes_types.cpp \
-    glean/config/recipes/gen-cpp2/recipes_data.cpp
-
-CXX_SOURCES_glean_cpp_if = \
-    glean/if/gen-cpp2/glean_types.cpp \
-    glean/if/gen-cpp2/glean_data.cpp
-
 CXX_SOURCES_glean_cpp_rts = \
     glean/rts/binary.cpp \
     glean/rts/benchmarking/factblock.cpp \
