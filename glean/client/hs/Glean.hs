@@ -65,6 +65,8 @@ module Glean
   , LogDerivationResult
   , SendJsonBatchOptions(..)
   , Subst(..)
+  , DatabaseNotIncomplete(..)
+  , WrongHandle(..)
 
   -- * Repositories
   , Repo(..)

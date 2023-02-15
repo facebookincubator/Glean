@@ -302,6 +302,14 @@ exception InvalidDependency {
 
 exception UnknownBatchHandle {}
 
+// workFinished: supplied handle doesn't match the server's handle
+exception WrongHandle {}
+
+// workFinished on a DB that is already broken, complete or finalizing
+exception DatabaseNotIncomplete {
+  1: DatabaseStatus status;
+}
+
 enum DatabaseStatus {
   // database is complete and available on this server:
   Complete = 0,
@@ -1114,13 +1122,20 @@ service GleanService extends fb303.FacebookService {
   void workCancelled(1: WorkCancelled request) throws (
     1: Exception e,
     2: AbortWork a,
+    3: UnknownDatabase u,
+    4: DatabaseNotIncomplete c,
+    5: WrongHandle h,
   );
 
   // Tell the server that work is still ongoing. This needs to be done
   // periodically as indicated by WorkAvailable.heartbeat.
   void workHeartbeat(1: WorkHeartbeat request) throws (
     1: Exception e,
+    // client should abort the work if it receives any of the following:
     2: AbortWork a,
+    3: UnknownDatabase u,
+    4: DatabaseNotIncomplete c,
+    5: WrongHandle h,
   );
 
   // Tell the server that work has finished, either successfully or
@@ -1128,8 +1143,10 @@ service GleanService extends fb303.FacebookService {
   // has pending writes, it will fail with Retry.
   void workFinished(1: WorkFinished request) throws (
     1: Exception e,
-    2: AbortWork a,
     3: Retry r,
+    4: UnknownDatabase u,
+    5: DatabaseNotIncomplete c,
+    6: WrongHandle h,
   );
 
   // Tell the server when non-derived predicates are complete.  This
