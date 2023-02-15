@@ -326,14 +326,18 @@ runWithShards env myShards sm = do
         (\Item{..} -> itemLocality == Cloud)
         dbsByAge
 
-      -- Report the age of the newest DB if it is local. We only want
-      -- to report the age when the DB is available for clients to query,
-      -- hence the locality check.
-      let newestDb = NonEmpty.head dbsByAge
-      when (itemLocality newestDb == Local) $ void $ do
-        let dbCreated = posixEpochTimeToTime (metaCreated $ itemMeta newestDb)
-            dbAge = timeSpanInSeconds $ fromUTCTime t `timeDiff` dbCreated
-        publishCounter (prefix <> ".age") dbAge
+      -- Report the age of the newest local DB. We only want to report
+      -- the age for DBs that clients can query, hence the locality
+      -- filter. The global DB age will be calculated by taking the
+      -- minimum age reported by all the servers.
+      case [ item | item <- NonEmpty.toList dbsByAge,
+                itemLocality item == Local ] of
+        [] -> return ()
+        db:_ ->
+          let dbCreated = posixEpochTimeToTime (metaCreated $ itemMeta db)
+              dbAge = timeSpanInSeconds $ fromUTCTime t `timeDiff` dbCreated
+          in
+          publishCounter (prefix <> ".age") dbAge
 
       -- see "Retention set slack" note
       let leaked = sum

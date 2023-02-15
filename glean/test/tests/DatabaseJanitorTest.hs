@@ -710,13 +710,6 @@ ageCountersCompleteTest = TestCase $ ageCountersTestEx
     "Should publish age counters for all newest DBs restored locally"
     ["glean.db.test.age"]
 
-ageCountersOnlyLocalTest :: Test
-ageCountersOnlyLocalTest = TestCase $ ageCountersTestEx
-  (SomeShardManager $ shardByRepoHash (pure $ Just ["0006"]))
-  $ \_ -> assertEqual
-      "Should not publish age for locally newest DBs not globally newest"
-    []
-
 ageCountersOnlyNewestTest :: Test
 ageCountersOnlyNewestTest = TestCase $ ageCountersTestEx
   (SomeShardManager $ shardByRepoHash (pure $ Just []))
@@ -797,7 +790,6 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "availableElsewhere" elsewhereTest
   , TestLabel "ageCountersForAllNewestDBs" ageCountersCompleteTest
   , TestLabel "ageCountersForOnlyNewestDBs" ageCountersOnlyNewestTest
-  , TestLabel "ageCountersForOnlyLocalDBs" ageCountersOnlyLocalTest
   , TestLabel "ageCountersClear" ageCountersClearTest
   , TestLabel "slackCounters" slackCountersTest
   ]
