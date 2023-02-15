@@ -7,7 +7,8 @@
 -}
 
 module Glean.Util.Periodic (
-    doPeriodically
+    doPeriodically,
+    doPeriodicallySynchronised
   ) where
 
 import Control.Exception
@@ -22,14 +23,32 @@ import Glean.Util.Time
 -- exception, log and swallow it, and then wait t seconds before
 -- retrying.
 doPeriodically :: DiffTimePoints -> IO () -> IO ()
-doPeriodically period action = mask $ \restore -> forever $ handler restore $ do
-  t0 <- getTimePoint
-  action
-  t <- getElapsedTime t0
-  delay (addDiffTimePoints period (negate t))
- where
-  handler restore action = do
-    r <- tryAll (restore action)
-    case r of
-      Left e -> do logError (show e); delay period; return ()
-      Right () -> return ()
+doPeriodically period action = mask $ \restore ->
+  forever $ handler restore period $ do
+    t0 <- getTimePoint
+    action
+    t <- getElapsedTime t0
+    delay (addDiffTimePoints period (negate t))
+
+-- | Run an action every t seconds from epoch.  If the action throws an
+-- exception, log and swallow it, and then wait t seconds before
+-- retrying.
+doPeriodicallySynchronised :: DiffTimePoints -> IO () -> IO ()
+doPeriodicallySynchronised period action = mask $ \restore ->
+  forever $ handler restore period $ do
+    now <- getEpochTime
+    let
+      nanosSinceEpoch = fromIntegral $ toEpochNanos now
+      nanosSinceLastTick = nanosSinceEpoch `rem` toDiffNanos period
+      durationSinceLastTick = nanoseconds $ fromIntegral nanosSinceLastTick
+      durationToNextTick =
+        addDiffTimePoints period (negate durationSinceLastTick)
+    delay durationToNextTick
+    action
+
+handler :: (t -> IO ()) -> DiffTimePoints -> t -> IO ()
+handler restore period action = do
+  r <- tryAll (restore action)
+  case r of
+    Left e -> do logError (show e); delay period; return ()
+    Right () -> return ()

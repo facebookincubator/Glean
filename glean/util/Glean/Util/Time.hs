@@ -11,7 +11,7 @@ module Glean.Util.Time
 ( -- * Util.TimeSec
   module Util.TimeSec
   -- * absolute time
-, EpochClock(..), getEpochTime, toEpochSeconds
+, EpochClock(..), getEpochTime, toEpochSeconds, toEpochNanos
 , epochClockToUTCTime, showUTC, readUTC, showEpochTime, showNominalDiffTime
   -- * time point differences
 , TimePoint(..), DiffTimePoints(..), getTimePoint
@@ -45,6 +45,9 @@ getEpochTime = EpochClock <$> SC.getTime SC.Realtime
 toEpochSeconds :: EpochClock -> Double
 toEpochSeconds (EpochClock SC.TimeSpec{sec, nsec}) = fromRational $
   fromIntegral sec + (fromIntegral nsec % 1000000000)
+
+toEpochNanos :: EpochClock -> Integer
+toEpochNanos (EpochClock timeSpec) = SC.toNanoSecs timeSpec
 
 -- | Using this with 'getEpochTime' and 'showEpochTime' agrees with running
 --

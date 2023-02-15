@@ -45,7 +45,7 @@ import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.Text ( Text, intercalate )
 
-import Glean.Util.Periodic ( doPeriodically )
+import Glean.Util.Periodic ( doPeriodicallySynchronised )
 import Glean.Util.Time ( DiffTimePoints )
 import qualified Glean
 import Util.List ( uniq )
@@ -258,7 +258,7 @@ withLatestRepos backend freq f = do
   withAsync (worker tvRepos tvRevs) $ \_async -> f tvRepos tvRevs
   where
     worker tvRepos tvRevs =
-      doPeriodically freq $
+      doPeriodicallySynchronised freq $
       uninterruptibleMask_ $
         -- prevents the update from being cancelled while in progress
         -- which can cause memory leaks if the process exits
