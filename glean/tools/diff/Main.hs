@@ -9,11 +9,12 @@
 {-# LANGUAGE ApplicativeDo #-}
 module Main (main) where
 
-import Diff (diff, Result(..), DiffOptions(..))
+import Data.Default (def)
 import Options.Applicative
 
 import Util.EventBase
 
+import Diff (diff, Result(..), DiffOptions(..))
 import qualified Glean
 import Glean (Repo(..))
 import qualified Glean.Database.Config as Database
@@ -51,7 +52,7 @@ main =
   withEventBaseDataplane $ \evb ->
   withConfigProvider cfgOpts $ \(cfgAPI :: ConfigAPI) ->
   Database.withDatabases evb cfgDB cfgAPI $ \env -> do
-  let opts = DiffOptions { logAdded = cfgLogAdded }
+  let opts = def { opt_logAdded = cfgLogAdded }
   Result kept added removed <- diff env opts cfgOriginal cfgNew
   putStrLn $ unlines
     [ "kept: " <> show kept

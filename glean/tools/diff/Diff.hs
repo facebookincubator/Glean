@@ -9,8 +9,9 @@
 module Diff (diff, DiffOptions(..), Result(..)) where
 
 import Foreign.C.String (CString)
+import Foreign.C.Types (CSize(..))
 import Foreign.Ptr (Ptr)
-import Data.Int (Int32)
+import Data.Default (Default(..))
 
 import Util.FFI (invoke)
 
@@ -23,8 +24,13 @@ import Glean.RTS.Foreign.Inventory (Inventory)
 import Glean.RTS.Foreign.Lookup (withLookup, Lookup)
 
 newtype DiffOptions =  DiffOptions
-  { logAdded :: Bool -- ^ log IDs of added facts
+  { opt_logAdded :: Bool -- ^ log IDs of added facts
   }
+
+instance Default DiffOptions where
+  def = DiffOptions
+    { opt_logAdded = False
+    }
 
 data Result = Result
   { kept :: Int
@@ -41,7 +47,7 @@ diff env DiffOptions{..} one two =
     new_inventory_ptr
     original_ptr
     new_ptr
-    logAdded
+    opt_logAdded
   return $ Result
     (fromIntegral kept)
     (fromIntegral added)
@@ -58,7 +64,7 @@ foreign import ccall safe glean_diff
   -> Ptr Lookup
   -> Ptr Lookup
   -> Bool       -- ^ log added
-  -> Ptr Int32  -- ^ kept
-  -> Ptr Int32  -- ^ added
-  -> Ptr Int32  -- ^ removed
+  -> Ptr CSize  -- ^ kept
+  -> Ptr CSize  -- ^ added
+  -> Ptr CSize  -- ^ removed
   -> IO CString
