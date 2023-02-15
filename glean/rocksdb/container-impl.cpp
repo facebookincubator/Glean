@@ -182,6 +182,9 @@ void ContainerImpl::close() noexcept {
       }
     }
     families.resize(0);
+    // ensure the WAL is fully sync'd, otherwise re-opening the DB will take a
+    // long time due to WAL recovery.
+    db->FlushWAL(true);
     db.reset();
   }
 }
