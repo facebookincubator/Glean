@@ -257,8 +257,7 @@ data ParcelInfo = ParcelInfo
 -- | Compute the 'ParcelInfo' for a particular work parcel
 parcelInfo :: Env -> Parcel -> STM ParcelInfo
 parcelInfo env parcel = do
-  Meta{..} <- Catalog.readMeta (envCatalog env) (parcelRepo parcel)
-    `catch` \UnknownDatabase{} -> throwM $ AbortWork "invalid database"
+  meta@Meta{..} <- Catalog.readMeta (envCatalog env) (parcelRepo parcel)
   case metaCompleteness of
     Incomplete (DatabaseIncomplete_tasks tasks)
       | Just task <- HashMap.lookup (parcelTask parcel) tasks
@@ -270,8 +269,7 @@ parcelInfo env parcel = do
             , piParcel = parcel
             , piState = xs Vector.! parcelIndex parcel
             }
-    _ -> throwM $ AbortWork $
-      "invalid parcel " <> Text.pack (show metaCompleteness)
+    _ -> throwM $ DatabaseNotIncomplete $ completenessStatus meta
 
 failTask :: Meta -> FailedTaskError -> Defer IO STM Meta
 failTask meta FailedTaskError{..} = do
@@ -368,7 +366,7 @@ updateParcel env ParcelInfo{..} time state = do
 runningParcelInfo :: Env -> Thrift.Work -> STM ParcelInfo
 runningParcelInfo env work = do
   info <- parcelInfo env (fromThriftWork work)
-  when (not $ ok info) $ throwM $ AbortWork "wrong parcel handle"
+  when (not $ ok info) $ throwM WrongHandle{}
   return info
   where
     ok info = case piState info of
@@ -506,6 +504,7 @@ workFinished env Thrift.WorkFinished{..} = do
   logInfo $ "workFinished " ++ show workFinished_work
   logInfo $ "workFinished_outcome " ++ show workFinished_outcome
   time <- envGetCurrentTime env
+
   immediately $ do
     info <- lift $ runningParcelInfo env workFinished_work
     lift $ deleteHeartbeat (envHeartbeats env) workFinished_work
