@@ -3,6 +3,54 @@
   {
     "key": {
       "file": { "key": "www/RefClass.php" },
+      "span": { "start": 410, "length": 5 },
+      "arguments": [ ],
+      "callee_xref": {
+        "hack": {
+          "decl": {
+            "function_": {
+              "key": { "name": { "key": { "name": { "key": "corge" } } } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "span": { "start": 481, "length": 5 },
+      "arguments": [ ],
+      "callee_xref": {
+        "hack": {
+          "decl": {
+            "function_": {
+              "key": { "name": { "key": { "name": { "key": "corge" } } } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "span": { "start": 692, "length": 5 },
+      "arguments": [ ],
+      "callee_xref": {
+        "hack": {
+          "decl": {
+            "function_": {
+              "key": { "name": { "key": { "name": { "key": "corge" } } } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
       "span": { "start": 772, "length": 11 },
       "arguments": [ { "span": { "start": 784, "length": 8 } } ],
       "callee_xref": {
@@ -24,6 +72,79 @@
         }
       },
       "dispatch_arg": { "span": { "start": 772, "length": 5 } },
+      "receiver_type": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "span": { "start": 814, "length": 10 },
+      "arguments": [ ],
+      "callee_xref": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "foo" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "RefClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "receiver_type": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "span": { "start": 856, "length": 12 },
+      "arguments": [ ],
+      "callee_xref": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "bazza" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "RefClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "dispatch_arg": { "span": { "start": 856, "length": 5 } },
       "receiver_type": {
         "hack": {
           "decl": {
@@ -72,6 +193,38 @@
                   "name": { "key": { "name": { "key": "SourceClass" } } }
                 }
               }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "span": { "start": 972, "length": 5 },
+      "arguments": [ ],
+      "callee_xref": {
+        "hack": {
+          "decl": {
+            "function_": {
+              "key": { "name": { "key": { "name": { "key": "corge" } } } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/SourceClass.php" },
+      "span": { "start": 451, "length": 5 },
+      "arguments": [ ],
+      "callee_xref": {
+        "hack": {
+          "decl": {
+            "function_": {
+              "key": { "name": { "key": { "name": { "key": "corge" } } } }
             }
           }
         }

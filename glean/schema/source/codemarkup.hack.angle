@@ -384,6 +384,9 @@ predicate ConvertCallArguments :
   } {HackArgs, CodeArgs} where
   (
     (
+      [] = HackArgs; [] = CodeArgs
+    ) |
+    (
       [hack.CallArgument{Span, Argument}] = HackArgs;
       ConvertArgument{Argument, CodeArgument};
       CodeArgs = [code.CallArgument{nothing, Span, CodeArgument}]
