@@ -1427,33 +1427,34 @@ runErrorLog env cmd err = ErrorsLogger.runLog (Glass.logger env) $
 -- More efficient for cases where we don't need everything
 -- TBD should be a different type in thrift
 briefDescribeEntity
-  :: Code.Entity
-  -> SymbolResult
-  -> Glean.RepoHaxl u w SymbolDescription
+  :: Code.Entity -> SymbolResult -> Glean.RepoHaxl u w SymbolDescription
 briefDescribeEntity ent SymbolResult{..} = do
-  let symbolDescription_repo_hash = Revision mempty
-      symbolDescription_annotations = mempty
-      symbolDescription_comments = mempty
-      symbolDescription_visibility = Nothing
-      symbolDescription_modifiers = mempty
-      symbolDescription_type_xrefs  = mempty
   symbolDescription_signature <- fst <$> toSymbolSignatureText ent repo
     Cxx.Qualified
-  let symbolDescription_extends_relation  = def
-      symbolDescription_contains_relation  = def
   pure SymbolDescription{..}
   where
+    symbolDescription_repo_hash = Revision mempty
+    symbolDescription_annotations = mempty
+    symbolDescription_comments = mempty
+    symbolDescription_visibility = Nothing
+    symbolDescription_modifiers = mempty
+    symbolDescription_type_xrefs  = mempty
+    symbolDescription_sym_other_locations = mempty
+    symbolDescription_extends_relation  = def
+    symbolDescription_contains_relation  = def
+    symbolDescription_location = def
+
     symbolDescription_sym = symbolResult_symbol
     symbolDescription_kind = symbolResult_kind
     symbolDescription_language = symbolResult_language
     symbolDescription_name = symbolResult_qname
-    symbolDescription_sym_location = symbolResult_location
-    symbolDescription_sym_other_locations = []
+
     repo = locationRange_repository symbolResult_location
-    symbolDescription_location = SymbolPath {
-      symbolPath_range = locationRange_range symbolResult_location,
-      symbolPath_repository = locationRange_repository symbolResult_location,
-      symbolPath_filepath = locationRange_filepath symbolResult_location
+
+    symbolDescription_sym_location = LocationRange {
+      locationRange_range = locationRange_range symbolResult_location,
+      locationRange_repository = locationRange_repository symbolResult_location,
+      locationRange_filepath = locationRange_filepath symbolResult_location
     }
 
 -- | Return a description for a single Entity with a unique location.
