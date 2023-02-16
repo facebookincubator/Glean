@@ -7,28 +7,12 @@
             "test/py/lib.py/lib.HelperClass.value"
         ],
         "childrenExtended": [],
-        "containsChildren": [
-            {
-                "child": "test/py/lib.py/lib.HelperClass.another_method",
-                "parent": "test/py/lib.py/lib.HelperClass"
-            },
-            {
-                "child": "test/py/lib.py/lib.HelperClass.method",
-                "parent": "test/py/lib.py/lib.HelperClass"
-            },
-            {
-                "child": "test/py/lib.py/lib.HelperClass.value",
-                "parent": "test/py/lib.py/lib.HelperClass"
-            }
-        ],
         "containsParents": [
             {
                 "child": "test/py/lib.py/lib.HelperClass",
                 "parent": "test/py/lib.py/lib"
             }
         ],
-        "extendsChildren": [],
-        "extendsParents": [],
         "inheritedSymbols": [],
         "parentsExtended": [],
         "symbolDetails": {

@@ -7,23 +7,7 @@
             "test/cpp//maybe/nothing/.decl"
         ],
         "childrenExtended": [],
-        "containsChildren": [
-            {
-                "child": "test/cpp//maybe/Nothing/.decl",
-                "parent": "test/cpp//maybe"
-            },
-            {
-                "child": "test/cpp//maybe/Something/.decl",
-                "parent": "test/cpp//maybe"
-            },
-            {
-                "child": "test/cpp//maybe/nothing/.decl",
-                "parent": "test/cpp//maybe"
-            }
-        ],
         "containsParents": [],
-        "extendsChildren": [],
-        "extendsParents": [],
         "inheritedSymbols": [],
         "parentsExtended": [],
         "symbolDetails": {

@@ -1640,14 +1640,9 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
         NeighborRawResult a b c d e descs <- searchNeighbors
           repo scmRevs lang baseEntity
         let result = RelatedNeighborhoodResult {
-              -- deprecated
-              relatedNeighborhoodResult_containsChildren = symbolIdPairs a,
-              relatedNeighborhoodResult_extendsChildren = symbolIdPairs b,
-              relatedNeighborhoodResult_extendsParents = symbolIdPairs d,
-              -- replaced by
-              relatedNeighborhoodResult_childrenContained = childIdsOf a,
-              relatedNeighborhoodResult_childrenExtended = childIdsOf b,
-              relatedNeighborhoodResult_parentsExtended = parentIdsOf d,
+              relatedNeighborhoodResult_childrenContained = a,
+              relatedNeighborhoodResult_childrenExtended = b,
+              relatedNeighborhoodResult_parentsExtended = d,
 
               relatedNeighborhoodResult_containsParents = symbolIdPairs c,
               relatedNeighborhoodResult_inheritedSymbols =
@@ -1671,19 +1666,18 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
         (eFull, edges, kinds) <- inheritedNLevel (decl baseEntity) repo
         -- now filter out any names that are shadowed
         let (!eFinal,!overrides) = partitionInheritedScopes lang sym edges
-                              kinds (map Search.childRL a) eFull
+              kinds a eFull
         -- syms visible to the client, we need their full details
         let !syms = uniqBy (comparing snd) $ fromSearchEntity sym baseEntity :
-                concatMap flattenEdges [a,c] ++ concatMap snd eFinal
+                a ++ flattenEdges c ++ concatMap snd eFinal
                   -- full descriptions of final methods
         descs0 <- Map.fromAscList <$> mapM (mkDescribe repo scmRevs) syms
         overrides' <- mapM addQName overrides
         let !descriptions = patchDescriptions lang descs0 overrides'
         -- brief descriptions for inherited things
         descs1 <- Map.fromAscList <$> mapM (mkBriefDescribe repo)
-            (uniqBy (comparing snd) $
-              concatMap flattenEdges [b,d] ++ map fst eFinal)
-        return (NeighborRawResult a b c d eFinal
+            (uniqBy (comparing snd) $ (b ++ d) ++ map fst eFinal)
+        return (NeighborRawResult (map snd a) (map snd b) c (map snd d) eFinal
           (Map.union descriptions descs1))
 
     -- building map of sym id -> descriptions, by first occurence
@@ -1707,8 +1701,9 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
       qName <- eThrow =<< toQualifiedName entity
       return (symId, qName)
 
-    childrenContains1Level :: SearchRelatedQuery u w
-    childrenContains1Level baseEntity repo = Search.searchRelatedEntities
+    childrenContains1Level :: SearchRelatedList u w
+    childrenContains1Level baseEntity repo = map Search.childRL <$>
+        Search.searchRelatedEntities
       (fromIntegral relatedNeighborhoodRequest_children_limit)
       Search.NotRecursive
       RelationDirection_Child
@@ -1718,8 +1713,9 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
     -- children by `extends`. typically a list. this includes method overrides
     -- note that some methods have a lot of overrides (50k+) so be careful with
     -- the limit values
-    childrenExtends1Level :: SearchRelatedQuery u w
-    childrenExtends1Level baseEntity repo = Search.searchRelatedEntities
+    childrenExtends1Level :: SearchRelatedList u w
+    childrenExtends1Level baseEntity repo = map Search.childRL <$>
+        Search.searchRelatedEntities
       (fromIntegral relatedNeighborhoodRequest_inherited_limit)
       Search.NotRecursive
       RelationDirection_Child
@@ -1727,8 +1723,9 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
       baseEntity
       repo
     -- Direct inheritance parents
-    parentExtends1Level :: SearchRelatedQuery u w
-    parentExtends1Level baseEntity repo = Search.searchRelatedEntities limit
+    parentExtends1Level :: SearchRelatedList u w
+    parentExtends1Level baseEntity repo = map Search.parentRL <$>
+        Search.searchRelatedEntities limit
       Search.NotRecursive
       RelationDirection_Parent
       RelationType_Extends
@@ -1768,17 +1765,13 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
       inherited <- mapM (childrenOf repo) parents
       return (inherited,symTable,toKindTable kinds)
 
-    childrenOf repo parent = do
-      children <- childrenContains1Level (toEntity parent) repo
-      return (parent, map Search.childRL children)
+    childrenOf repo parent = (parent,) <$>
+      childrenContains1Level (toEntity parent) repo
 
     toEntity ((entity, _file, _rangespan, _name), _symId) = entity
 
     symbolIdPairs = map (\Search.RelatedLocatedEntities{..} ->
       RelatedSymbols (snd parentRL) (snd childRL))
-
-    childIdsOf = map (\Search.RelatedLocatedEntities{..} -> snd childRL)
-    parentIdsOf = map (\Search.RelatedLocatedEntities{..} -> snd parentRL)
 
     inheritedSymbolIdSets :: InheritedContainer -> InheritedSymbols
     inheritedSymbolIdSets (parent, children) = InheritedSymbols {
@@ -1826,14 +1819,16 @@ patchDescriptions lang descs overrides = case lang of
 
 type SearchRelatedQuery u w = Code.Entity -> RepoName
       -> RepoHaxl u w [Search.RelatedLocatedEntities]
+type SearchRelatedList u w = Code.Entity -> RepoName
+      -> RepoHaxl u w [Search.LocatedEntity]
 
 data NeighborRawResult = NeighborRawResult {
-    _childrenContains :: [Search.RelatedLocatedEntities],
-    _childrenExtends :: [Search.RelatedLocatedEntities],
-    _parentContains :: [Search.RelatedLocatedEntities],
-    _parentExtends :: [Search.RelatedLocatedEntities],
-    _inherited :: [InheritedContainer],
-    _descriptions :: Map.Map Text SymbolDescription
+    _containedChildren :: ![SymbolId],
+    _extendedChildren :: ![SymbolId],
+    _parentContains :: ![Search.RelatedLocatedEntities],
+    _extendedParents :: ![SymbolId],
+    _inherited :: ![InheritedContainer],
+    _descriptions :: !(Map.Map Text SymbolDescription)
   }
 
 searchFirstEntity

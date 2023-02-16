@@ -3,15 +3,12 @@
     {
         "childrenContained": [],
         "childrenExtended": [],
-        "containsChildren": [],
         "containsParents": [
             {
                 "child": "test/cpp//maybe/Nothing/.ctor",
                 "parent": "test/cpp//maybe/Nothing"
             }
         ],
-        "extendsChildren": [],
-        "extendsParents": [],
         "inheritedSymbols": [],
         "parentsExtended": [],
         "symbolDetails": {

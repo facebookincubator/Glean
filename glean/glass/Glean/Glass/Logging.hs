@@ -155,10 +155,10 @@ instance LogResult SearchRelatedResult where
 instance LogResult RelatedNeighborhoodResult where
   logResult (RelatedNeighborhoodResult{..}, log) =
     log <> Logger.setItemCount
-      (length relatedNeighborhoodResult_containsChildren +
-        length relatedNeighborhoodResult_extendsChildren +
+      (length relatedNeighborhoodResult_childrenContained +
+        length relatedNeighborhoodResult_childrenExtended +
         length relatedNeighborhoodResult_containsParents +
-        length relatedNeighborhoodResult_extendsParents +
+        length relatedNeighborhoodResult_parentsExtended +
         sum (map (\x -> 1 + length (inheritedSymbols_provides x))
               relatedNeighborhoodResult_inheritedSymbols
             )

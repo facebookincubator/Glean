@@ -6,19 +6,7 @@
             "test/cpp//baz/U/InUClass"
         ],
         "childrenExtended": [],
-        "containsChildren": [
-            {
-                "child": "test/cpp//baz/U/InU",
-                "parent": "test/cpp//baz/U"
-            },
-            {
-                "child": "test/cpp//baz/U/InUClass",
-                "parent": "test/cpp//baz/U"
-            }
-        ],
         "containsParents": [],
-        "extendsChildren": [],
-        "extendsParents": [],
         "inheritedSymbols": [],
         "parentsExtended": [],
         "symbolDetails": {

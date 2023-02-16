@@ -13,49 +13,7 @@
             "test/php/RefClass",
             "test/php/SubClass"
         ],
-        "containsChildren": [
-            {
-                "child": "test/php/SourceClass/:prop/daz",
-                "parent": "test/php/SourceClass"
-            },
-            {
-                "child": "test/php/SourceClass/BAZ",
-                "parent": "test/php/SourceClass"
-            },
-            {
-                "child": "test/php/SourceClass/T",
-                "parent": "test/php/SourceClass"
-            },
-            {
-                "child": "test/php/SourceClass/bar",
-                "parent": "test/php/SourceClass"
-            },
-            {
-                "child": "test/php/SourceClass/overrideMe",
-                "parent": "test/php/SourceClass"
-            },
-            {
-                "child": "test/php/SourceClass/pleaseOverride",
-                "parent": "test/php/SourceClass"
-            }
-        ],
         "containsParents": [],
-        "extendsChildren": [
-            {
-                "child": "test/php/RefClass",
-                "parent": "test/php/SourceClass"
-            },
-            {
-                "child": "test/php/SubClass",
-                "parent": "test/php/SourceClass"
-            }
-        ],
-        "extendsParents": [
-            {
-                "child": "test/php/SourceClass",
-                "parent": "test/php/SuperClass"
-            }
-        ],
         "inheritedSymbols": [
             {
                 "base": "test/php/SuperClass",

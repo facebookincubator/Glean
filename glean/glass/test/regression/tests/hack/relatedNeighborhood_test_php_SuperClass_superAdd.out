@@ -3,15 +3,12 @@
     {
         "childrenContained": [],
         "childrenExtended": [],
-        "containsChildren": [],
         "containsParents": [
             {
                 "child": "test/php/SuperClass/superAdd",
                 "parent": "test/php/SuperClass"
             }
         ],
-        "extendsChildren": [],
-        "extendsParents": [],
         "inheritedSymbols": [],
         "parentsExtended": [],
         "symbolDetails": {

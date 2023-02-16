@@ -5,20 +5,7 @@
             "test/php/SubClass/pleaseOverride"
         ],
         "childrenExtended": [],
-        "containsChildren": [
-            {
-                "child": "test/php/SubClass/pleaseOverride",
-                "parent": "test/php/SubClass"
-            }
-        ],
         "containsParents": [],
-        "extendsChildren": [],
-        "extendsParents": [
-            {
-                "child": "test/php/SubClass",
-                "parent": "test/php/SourceClass"
-            }
-        ],
         "inheritedSymbols": [
             {
                 "base": "test/php/SourceClass",

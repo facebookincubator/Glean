@@ -8,24 +8,7 @@
         "childrenExtended": [
             "test/php/RefClass"
         ],
-        "containsChildren": [
-            {
-                "child": "test/php/SourceTrait/quux",
-                "parent": "test/php/SourceTrait"
-            },
-            {
-                "child": "test/php/SourceTrait/superAdd",
-                "parent": "test/php/SourceTrait"
-            }
-        ],
         "containsParents": [],
-        "extendsChildren": [
-            {
-                "child": "test/php/RefClass",
-                "parent": "test/php/SourceTrait"
-            }
-        ],
-        "extendsParents": [],
         "inheritedSymbols": [],
         "parentsExtended": [],
         "symbolDetails": {

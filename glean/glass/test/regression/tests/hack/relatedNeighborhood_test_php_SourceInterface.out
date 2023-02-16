@@ -9,28 +9,7 @@
         "childrenExtended": [
             "test/php/RefClass"
         ],
-        "containsChildren": [
-            {
-                "child": "test/php/SourceInterface/JAZZ",
-                "parent": "test/php/SourceInterface"
-            },
-            {
-                "child": "test/php/SourceInterface/foo",
-                "parent": "test/php/SourceInterface"
-            },
-            {
-                "child": "test/php/SourceInterface/quux",
-                "parent": "test/php/SourceInterface"
-            }
-        ],
         "containsParents": [],
-        "extendsChildren": [
-            {
-                "child": "test/php/RefClass",
-                "parent": "test/php/SourceInterface"
-            }
-        ],
-        "extendsParents": [],
         "inheritedSymbols": [],
         "parentsExtended": [],
         "symbolDetails": {

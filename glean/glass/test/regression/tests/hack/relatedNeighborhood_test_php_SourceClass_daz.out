@@ -3,15 +3,12 @@
     {
         "childrenContained": [],
         "childrenExtended": [],
-        "containsChildren": [],
         "containsParents": [
             {
                 "child": "test/php/SourceClass/:prop/daz",
                 "parent": "test/php/SourceClass"
             }
         ],
-        "extendsChildren": [],
-        "extendsParents": [],
         "inheritedSymbols": [],
         "parentsExtended": [],
         "symbolDetails": {

@@ -7,23 +7,7 @@
             "test/cpp//Global/GC"
         ],
         "childrenExtended": [],
-        "containsChildren": [
-            {
-                "child": "test/cpp//Global/GA",
-                "parent": "test/cpp//Global"
-            },
-            {
-                "child": "test/cpp//Global/GB",
-                "parent": "test/cpp//Global"
-            },
-            {
-                "child": "test/cpp//Global/GC",
-                "parent": "test/cpp//Global"
-            }
-        ],
         "containsParents": [],
-        "extendsChildren": [],
-        "extendsParents": [],
         "inheritedSymbols": [],
         "parentsExtended": [],
         "symbolDetails": {

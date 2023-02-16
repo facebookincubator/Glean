@@ -3,15 +3,12 @@
     {
         "childrenContained": [],
         "childrenExtended": [],
-        "containsChildren": [],
         "containsParents": [
             {
                 "child": "test/cpp//foo/S/UsingDeclInteger/.decl",
                 "parent": "test/cpp//foo/S"
             }
         ],
-        "extendsChildren": [],
-        "extendsParents": [],
         "inheritedSymbols": [],
         "parentsExtended": [],
         "symbolDetails": {

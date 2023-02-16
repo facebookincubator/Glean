@@ -3,15 +3,12 @@
     {
         "childrenContained": [],
         "childrenExtended": [],
-        "containsChildren": [],
         "containsParents": [
             {
                 "child": "test/php/RefClass/bar",
                 "parent": "test/php/RefClass"
             }
         ],
-        "extendsChildren": [],
-        "extendsParents": [],
         "inheritedSymbols": [],
         "parentsExtended": [],
         "symbolDetails": {

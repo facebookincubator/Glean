@@ -6,19 +6,7 @@
             "test/js/cjs_exports/x"
         ],
         "childrenExtended": [],
-        "containsChildren": [
-            {
-                "child": "test/js/cjs_exports/plus",
-                "parent": "test/js/cjs_exports"
-            },
-            {
-                "child": "test/js/cjs_exports/x",
-                "parent": "test/js/cjs_exports"
-            }
-        ],
         "containsParents": [],
-        "extendsChildren": [],
-        "extendsParents": [],
         "inheritedSymbols": [],
         "parentsExtended": [],
         "symbolDetails": {

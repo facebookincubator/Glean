@@ -7,28 +7,12 @@
             "test/cpp//baz/U/InU/UC"
         ],
         "childrenExtended": [],
-        "containsChildren": [
-            {
-                "child": "test/cpp//baz/U/InU/UA",
-                "parent": "test/cpp//baz/U/InU"
-            },
-            {
-                "child": "test/cpp//baz/U/InU/UB",
-                "parent": "test/cpp//baz/U/InU"
-            },
-            {
-                "child": "test/cpp//baz/U/InU/UC",
-                "parent": "test/cpp//baz/U/InU"
-            }
-        ],
         "containsParents": [
             {
                 "child": "test/cpp//baz/U/InU",
                 "parent": "test/cpp//baz/U"
             }
         ],
-        "extendsChildren": [],
-        "extendsParents": [],
         "inheritedSymbols": [],
         "parentsExtended": [],
         "symbolDetails": {

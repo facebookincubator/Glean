@@ -6,19 +6,7 @@
             "test/cpp//maybe/Nothing/_secret"
         ],
         "childrenExtended": [],
-        "containsChildren": [
-            {
-                "child": "test/cpp//maybe/Nothing/.ctor",
-                "parent": "test/cpp//maybe/Nothing"
-            },
-            {
-                "child": "test/cpp//maybe/Nothing/_secret",
-                "parent": "test/cpp//maybe/Nothing"
-            }
-        ],
         "containsParents": [],
-        "extendsChildren": [],
-        "extendsParents": [],
         "inheritedSymbols": [],
         "parentsExtended": [],
         "symbolDetails": {

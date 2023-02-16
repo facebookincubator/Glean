@@ -6,19 +6,7 @@
             "test/cpp//foo/S/UsingDeclInteger/.decl"
         ],
         "childrenExtended": [],
-        "containsChildren": [
-            {
-                "child": "test/cpp//foo/S/TypedefDeclInteger/.decl",
-                "parent": "test/cpp//foo/S"
-            },
-            {
-                "child": "test/cpp//foo/S/UsingDeclInteger/.decl",
-                "parent": "test/cpp//foo/S"
-            }
-        ],
         "containsParents": [],
-        "extendsChildren": [],
-        "extendsParents": [],
         "inheritedSymbols": [],
         "parentsExtended": [],
         "symbolDetails": {

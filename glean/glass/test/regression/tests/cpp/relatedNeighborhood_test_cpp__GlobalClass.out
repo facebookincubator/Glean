@@ -7,23 +7,7 @@
             "test/cpp//GlobalClass/GCC"
         ],
         "childrenExtended": [],
-        "containsChildren": [
-            {
-                "child": "test/cpp//GlobalClass/GCA",
-                "parent": "test/cpp//GlobalClass"
-            },
-            {
-                "child": "test/cpp//GlobalClass/GCB",
-                "parent": "test/cpp//GlobalClass"
-            },
-            {
-                "child": "test/cpp//GlobalClass/GCC",
-                "parent": "test/cpp//GlobalClass"
-            }
-        ],
         "containsParents": [],
-        "extendsChildren": [],
-        "extendsParents": [],
         "inheritedSymbols": [],
         "parentsExtended": [],
         "symbolDetails": {

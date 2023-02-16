@@ -7,28 +7,12 @@
             "test/cpp//baz/U/InUClass/UCC"
         ],
         "childrenExtended": [],
-        "containsChildren": [
-            {
-                "child": "test/cpp//baz/U/InUClass/UCA",
-                "parent": "test/cpp//baz/U/InUClass"
-            },
-            {
-                "child": "test/cpp//baz/U/InUClass/UCB",
-                "parent": "test/cpp//baz/U/InUClass"
-            },
-            {
-                "child": "test/cpp//baz/U/InUClass/UCC",
-                "parent": "test/cpp//baz/U/InUClass"
-            }
-        ],
         "containsParents": [
             {
                 "child": "test/cpp//baz/U/InUClass",
                 "parent": "test/cpp//baz/U"
             }
         ],
-        "extendsChildren": [],
-        "extendsParents": [],
         "inheritedSymbols": [],
         "parentsExtended": [],
         "symbolDetails": {

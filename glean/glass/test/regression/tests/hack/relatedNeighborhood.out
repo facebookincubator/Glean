@@ -9,31 +9,7 @@
             "test/php/Position/Top"
         ],
         "childrenExtended": [],
-        "containsChildren": [
-            {
-                "child": "test/php/Position/Bottom",
-                "parent": "test/php/Position"
-            },
-            {
-                "child": "test/php/Position/Center",
-                "parent": "test/php/Position"
-            },
-            {
-                "child": "test/php/Position/Left",
-                "parent": "test/php/Position"
-            },
-            {
-                "child": "test/php/Position/Right",
-                "parent": "test/php/Position"
-            },
-            {
-                "child": "test/php/Position/Top",
-                "parent": "test/php/Position"
-            }
-        ],
         "containsParents": [],
-        "extendsChildren": [],
-        "extendsParents": [],
         "inheritedSymbols": [],
         "parentsExtended": [],
         "symbolDetails": {

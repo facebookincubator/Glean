@@ -10,48 +10,7 @@
             "test/php/RefClass/lotsofkeywords"
         ],
         "childrenExtended": [],
-        "containsChildren": [
-            {
-                "child": "test/php/RefClass/:prop/raz",
-                "parent": "test/php/RefClass"
-            },
-            {
-                "child": "test/php/RefClass/JAZZ",
-                "parent": "test/php/RefClass"
-            },
-            {
-                "child": "test/php/RefClass/bar",
-                "parent": "test/php/RefClass"
-            },
-            {
-                "child": "test/php/RefClass/bazza",
-                "parent": "test/php/RefClass"
-            },
-            {
-                "child": "test/php/RefClass/foo",
-                "parent": "test/php/RefClass"
-            },
-            {
-                "child": "test/php/RefClass/lotsofkeywords",
-                "parent": "test/php/RefClass"
-            }
-        ],
         "containsParents": [],
-        "extendsChildren": [],
-        "extendsParents": [
-            {
-                "child": "test/php/RefClass",
-                "parent": "test/php/SourceClass"
-            },
-            {
-                "child": "test/php/RefClass",
-                "parent": "test/php/SourceInterface"
-            },
-            {
-                "child": "test/php/RefClass",
-                "parent": "test/php/SourceTrait"
-            }
-        ],
         "inheritedSymbols": [
             {
                 "base": "test/php/SourceClass",
