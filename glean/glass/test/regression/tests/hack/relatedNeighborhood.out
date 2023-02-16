@@ -1,6 +1,14 @@
 [
     "@generated",
     {
+        "childrenContained": [
+            "test/php/Position/Bottom",
+            "test/php/Position/Center",
+            "test/php/Position/Left",
+            "test/php/Position/Right",
+            "test/php/Position/Top"
+        ],
+        "childrenExtended": [],
         "containsChildren": [
             {
                 "child": "test/php/Position/Bottom",
@@ -27,6 +35,7 @@
         "extendsChildren": [],
         "extendsParents": [],
         "inheritedSymbols": [],
+        "parentsExtended": [],
         "symbolDetails": {
             "test/php/Position": {
                 "annotations": [],

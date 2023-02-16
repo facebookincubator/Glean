@@ -1,6 +1,10 @@
 [
     "@generated",
     {
+        "childrenContained": [
+            "test/php/SubClass/pleaseOverride"
+        ],
+        "childrenExtended": [],
         "containsChildren": [
             {
                 "child": "test/php/SubClass/pleaseOverride",
@@ -32,6 +36,9 @@
                     "test/php/SuperClass/superAdd"
                 ]
             }
+        ],
+        "parentsExtended": [
+            "test/php/SourceClass"
         ],
         "symbolDetails": {
             "test/php/SourceClass": {

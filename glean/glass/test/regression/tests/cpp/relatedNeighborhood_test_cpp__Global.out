@@ -1,6 +1,12 @@
 [
     "@generated",
     {
+        "childrenContained": [
+            "test/cpp//Global/GA",
+            "test/cpp//Global/GB",
+            "test/cpp//Global/GC"
+        ],
+        "childrenExtended": [],
         "containsChildren": [
             {
                 "child": "test/cpp//Global/GA",
@@ -19,6 +25,7 @@
         "extendsChildren": [],
         "extendsParents": [],
         "inheritedSymbols": [],
+        "parentsExtended": [],
         "symbolDetails": {
             "test/cpp//Global": {
                 "comments": [],

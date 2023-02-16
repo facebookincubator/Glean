@@ -1,6 +1,8 @@
 [
     "@generated",
     {
+        "childrenContained": [],
+        "childrenExtended": [],
         "containsChildren": [],
         "containsParents": [
             {
@@ -11,6 +13,7 @@
         "extendsChildren": [],
         "extendsParents": [],
         "inheritedSymbols": [],
+        "parentsExtended": [],
         "symbolDetails": {
             "test/php/SourceClass": {
                 "annotations": [

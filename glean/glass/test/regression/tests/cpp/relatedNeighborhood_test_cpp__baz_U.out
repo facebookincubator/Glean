@@ -1,6 +1,11 @@
 [
     "@generated",
     {
+        "childrenContained": [
+            "test/cpp//baz/U/InU",
+            "test/cpp//baz/U/InUClass"
+        ],
+        "childrenExtended": [],
         "containsChildren": [
             {
                 "child": "test/cpp//baz/U/InU",
@@ -15,6 +20,7 @@
         "extendsChildren": [],
         "extendsParents": [],
         "inheritedSymbols": [],
+        "parentsExtended": [],
         "symbolDetails": {
             "test/cpp//baz/U": {
                 "comments": [],

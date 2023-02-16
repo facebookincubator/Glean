@@ -1,6 +1,10 @@
 [
     "@generated",
     {
+        "childrenContained": [
+            "test/php/FancyTypes/flatten"
+        ],
+        "childrenExtended": [],
         "containsChildren": [
             {
                 "child": "test/php/FancyTypes/flatten",
@@ -11,6 +15,7 @@
         "extendsChildren": [],
         "extendsParents": [],
         "inheritedSymbols": [],
+        "parentsExtended": [],
         "symbolDetails": {
             "test/php/FancyTypes": {
                 "annotations": [],

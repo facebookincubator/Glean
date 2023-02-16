@@ -1,6 +1,12 @@
 [
     "@generated",
     {
+        "childrenContained": [
+            "test/py/lib.py/lib.HelperClass.another_method",
+            "test/py/lib.py/lib.HelperClass.method",
+            "test/py/lib.py/lib.HelperClass.value"
+        ],
+        "childrenExtended": [],
         "containsChildren": [
             {
                 "child": "test/py/lib.py/lib.HelperClass.another_method",
@@ -24,6 +30,7 @@
         "extendsChildren": [],
         "extendsParents": [],
         "inheritedSymbols": [],
+        "parentsExtended": [],
         "symbolDetails": {
             "test/py/lib.py/lib": {
                 "comments": [],

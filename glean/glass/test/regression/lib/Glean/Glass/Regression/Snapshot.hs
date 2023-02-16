@@ -277,9 +277,9 @@ instance DeterministicResponse SearchRelatedResult where
   det (SearchRelatedResult xs ys) = -- to edit the desc hash
     SearchRelatedResult (det xs) (det ys)
 instance DeterministicResponse RelatedNeighborhoodResult where
-  det (RelatedNeighborhoodResult as bs cs ds es fs) = -- to edit the desc hash
+  det (RelatedNeighborhoodResult as bs cs ds es fs gs hs is) =
     RelatedNeighborhoodResult (det as) (det bs) (det cs) (det ds)
-      (det es) (det fs)
+      (det es) (det fs) (det gs) (det hs) (det is)
 instance DeterministicResponse RelatedSymbols where
   det = id
 instance DeterministicResponse InheritedSymbols where

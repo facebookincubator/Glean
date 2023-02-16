@@ -1,6 +1,15 @@
 [
     "@generated",
     {
+        "childrenContained": [
+            "test/php/RefClass/:prop/raz",
+            "test/php/RefClass/JAZZ",
+            "test/php/RefClass/bar",
+            "test/php/RefClass/bazza",
+            "test/php/RefClass/foo",
+            "test/php/RefClass/lotsofkeywords"
+        ],
+        "childrenExtended": [],
         "containsChildren": [
             {
                 "child": "test/php/RefClass/:prop/raz",
@@ -69,6 +78,11 @@
                 "base": "test/php/SuperClass",
                 "provides": []
             }
+        ],
+        "parentsExtended": [
+            "test/php/SourceClass",
+            "test/php/SourceInterface",
+            "test/php/SourceTrait"
         ],
         "symbolDetails": {
             "test/php/RefClass": {

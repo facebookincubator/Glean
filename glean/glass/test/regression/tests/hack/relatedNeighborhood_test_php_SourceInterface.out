@@ -1,6 +1,14 @@
 [
     "@generated",
     {
+        "childrenContained": [
+            "test/php/SourceInterface/JAZZ",
+            "test/php/SourceInterface/foo",
+            "test/php/SourceInterface/quux"
+        ],
+        "childrenExtended": [
+            "test/php/RefClass"
+        ],
         "containsChildren": [
             {
                 "child": "test/php/SourceInterface/JAZZ",
@@ -24,6 +32,7 @@
         ],
         "extendsParents": [],
         "inheritedSymbols": [],
+        "parentsExtended": [],
         "symbolDetails": {
             "test/php/RefClass": {
                 "comments": [],

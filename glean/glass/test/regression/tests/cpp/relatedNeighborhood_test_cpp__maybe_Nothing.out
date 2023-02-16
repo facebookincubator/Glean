@@ -1,6 +1,11 @@
 [
     "@generated",
     {
+        "childrenContained": [
+            "test/cpp//maybe/Nothing/.ctor",
+            "test/cpp//maybe/Nothing/_secret"
+        ],
+        "childrenExtended": [],
         "containsChildren": [
             {
                 "child": "test/cpp//maybe/Nothing/.ctor",
@@ -15,6 +20,7 @@
         "extendsChildren": [],
         "extendsParents": [],
         "inheritedSymbols": [],
+        "parentsExtended": [],
         "symbolDetails": {
             "test/cpp//maybe/Nothing": {
                 "comments": [

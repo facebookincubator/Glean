@@ -1,6 +1,18 @@
 [
     "@generated",
     {
+        "childrenContained": [
+            "test/php/SourceClass/:prop/daz",
+            "test/php/SourceClass/BAZ",
+            "test/php/SourceClass/T",
+            "test/php/SourceClass/bar",
+            "test/php/SourceClass/overrideMe",
+            "test/php/SourceClass/pleaseOverride"
+        ],
+        "childrenExtended": [
+            "test/php/RefClass",
+            "test/php/SubClass"
+        ],
         "containsChildren": [
             {
                 "child": "test/php/SourceClass/:prop/daz",
@@ -51,6 +63,9 @@
                     "test/php/SuperClass/superAdd"
                 ]
             }
+        ],
+        "parentsExtended": [
+            "test/php/SuperClass"
         ],
         "symbolDetails": {
             "test/php/RefClass": {

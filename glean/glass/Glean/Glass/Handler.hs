@@ -1640,10 +1640,16 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
         NeighborRawResult a b c d e descs <- searchNeighbors
           repo scmRevs lang baseEntity
         let result = RelatedNeighborhoodResult {
+              -- deprecated
               relatedNeighborhoodResult_containsChildren = symbolIdPairs a,
               relatedNeighborhoodResult_extendsChildren = symbolIdPairs b,
-              relatedNeighborhoodResult_containsParents = symbolIdPairs c,
               relatedNeighborhoodResult_extendsParents = symbolIdPairs d,
+              -- replaced by
+              relatedNeighborhoodResult_childrenContained = childIdsOf a,
+              relatedNeighborhoodResult_childrenExtended = childIdsOf b,
+              relatedNeighborhoodResult_parentsExtended = parentIdsOf d,
+
+              relatedNeighborhoodResult_containsParents = symbolIdPairs c,
               relatedNeighborhoodResult_inheritedSymbols =
                 map inheritedSymbolIdSets e,
               relatedNeighborhoodResult_symbolDetails = descs
@@ -1770,6 +1776,9 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
 
     symbolIdPairs = map (\Search.RelatedLocatedEntities{..} ->
       RelatedSymbols (snd parentRL) (snd childRL))
+
+    childIdsOf = map (\Search.RelatedLocatedEntities{..} -> snd childRL)
+    parentIdsOf = map (\Search.RelatedLocatedEntities{..} -> snd parentRL)
 
     inheritedSymbolIdSets :: InheritedContainer -> InheritedSymbols
     inheritedSymbolIdSets (parent, children) = InheritedSymbols {

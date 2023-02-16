@@ -1,6 +1,13 @@
 [
     "@generated",
     {
+        "childrenContained": [
+            "test/php/SourceTrait/quux",
+            "test/php/SourceTrait/superAdd"
+        ],
+        "childrenExtended": [
+            "test/php/RefClass"
+        ],
         "containsChildren": [
             {
                 "child": "test/php/SourceTrait/quux",
@@ -20,6 +27,7 @@
         ],
         "extendsParents": [],
         "inheritedSymbols": [],
+        "parentsExtended": [],
         "symbolDetails": {
             "test/php/RefClass": {
                 "comments": [],

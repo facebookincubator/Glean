@@ -1,6 +1,11 @@
 [
     "@generated",
     {
+        "childrenContained": [
+            "test/js/cjs_exports/plus",
+            "test/js/cjs_exports/x"
+        ],
+        "childrenExtended": [],
         "containsChildren": [
             {
                 "child": "test/js/cjs_exports/plus",
@@ -15,6 +20,7 @@
         "extendsChildren": [],
         "extendsParents": [],
         "inheritedSymbols": [],
+        "parentsExtended": [],
         "symbolDetails": {
             "test/js/cjs_exports": {
                 "comments": [],

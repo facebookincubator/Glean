@@ -509,10 +509,17 @@ struct InheritedSymbols {
 // of the base symbol. the contains and extends 1st level children redundantly
 // track the parent symbol id (even though its known from context)
 struct RelatedNeighborhoodResult {
+  // deprecated
   1: list<RelatedSymbols> containsChildren; // 1st level children, contained
   2: list<RelatedSymbols> extendsChildren; // 1st level children, extends
-  3: list<RelatedSymbols> containsParents; // N level path of containing parents
   4: list<RelatedSymbols> extendsParents; // 1st level of extended parents
+  // replacing containsChildren :1
+  // replacing extendsChildren :1
+  7: list<SymbolId> childrenContained; // 1st level children, contained
+  8: list<SymbolId> childrenExtended; // 1st level children, extends
+  9: list<SymbolId> parentsExtended; // 1st level of parents, extends
+
+  3: list<RelatedSymbols> containsParents; // N level path of containing parents
   5: list<InheritedSymbols> inheritedSymbols; // "inherited" children, in scope
   6: map<string, SymbolDescription> symbolDetails; // details for everything
 }
