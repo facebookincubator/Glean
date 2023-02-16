@@ -345,6 +345,16 @@ instance AngleTuple (Angle a, Angle b, Angle c, Angle d) where
     td <- gen d
     return $ Tuple DSL [ta,tb,tc,td]
 
+instance AngleTuple (Angle a, Angle b, Angle c, Angle d, Angle e) where
+  type AngleTupleTy (Angle a, Angle b, Angle c, Angle d, Angle e) = (a,b,c,d,e)
+  fromTuple (a,b,c,d,e) = Angle $ do
+    ta <- gen a
+    tb <- gen b
+    tc <- gen c
+    td <- gen d
+    te <- gen e
+    return $ Tuple DSL [ta,tb,tc,td,te]
+
 -- | Build a fact id with an explicit type @$123 : Type.2@
 factId :: forall p. Predicate p => IdOf p -> Angle p
 factId = sig . factId_
