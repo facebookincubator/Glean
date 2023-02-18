@@ -1,0 +1,25 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema search.java.1 {
+
+import java.6
+
+# SearchByName can be used to search for symbols in any context (wildcard
+# context).
+predicate SearchByQName :
+  {
+    name : java.QName,
+    defn : java.Definition
+  }
+  { QName, Defn } where
+    ( Decl = java.ClassDeclaration { name = QName };
+      { class_ = Decl } = Defn
+    ) | (
+      Decl = java.InterfaceDeclaration { name = QName };
+      { interface_ = Decl } = Defn
+    ) | (
+      Decl = java.EnumDeclaration { name = QName };
+      { enum_ = Decl } = Defn
+    );
+
+}

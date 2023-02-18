@@ -666,4 +666,18 @@ predicate JavaFile :
   file: src.File,
 }
 
+# Find locations of a definition
+predicate DefinitionLocation:
+  {
+    defn : java.Definition,
+    name : string,
+    file : src.File,
+    span : src.ByteSpan,
+  } { Defn, NameStr, File, Span } where
+    ( { class_ = { name = QN, location = { just = Loc } } } = Defn ) |
+    ( { interface_ = { name = QN, location = { just = Loc } } } = Defn ) |
+    ( { enum_ = { name = QN, location = { just = Loc } } } = Defn );
+    { File, Span } = Loc;
+    { simple = { just = Name NameStr } } = QN;
+
 }

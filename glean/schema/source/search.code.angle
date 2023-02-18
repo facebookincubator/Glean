@@ -4,10 +4,12 @@ schema search.code.16 {
 import code.24
 import code.cxx.4
 import code.hack.4
+import code.java.5
 import code.python.1
 import cxx1.5
 import flow.3
 import hack.6
+import java.6
 import erlang.1
 import hs.2
 import lsif.2
@@ -18,6 +20,7 @@ import search.cxx.5
 import search.erlang.4
 import search.hack.7
 import search.hs.9
+import search.java.1
 import search.python.1
 import thrift.7
 
@@ -36,6 +39,7 @@ predicate SearchByNameAndLanguage:
     ( Hack = Language; HackSearchByName { Name, Entity } ) |
     ( Python = Language; PythonSearchByName { Name, Entity } ) |
     ( JavaScript = Language; FlowSearchByName { Name, Entity } ) |
+    ( Java = Language; JavaSearchByName { Name, Entity } ) |
     ( Cpp = Language; CxxSearchByName { Name, Entity } ) |
     ( Haskell = Language; HsSearchByName { Name, Entity } ) |
     ( Erlang = Language; ErlangSearchByName { Name, Entity } ) |
@@ -319,6 +323,23 @@ predicate FlowSearchByNameWithFact:
     ) | (
      { memberDecl = _ } = Decl;
     )
+
+predicate JavaSearchByName:
+  {
+    name: string,
+    entity: code.Entity,
+  }
+  { NameStr, Entity } where
+    QName = java.QName { name = NameStr };
+    JavaSearchByNameWithFact { QName, Entity }
+
+predicate JavaSearchByNameWithFact:
+  {
+    name: java.QName,
+    entity: code.Entity
+  }
+  { QName, { java = { definition_ = Defn } } } where
+    search.java.SearchByQName { QName, Defn };
 
 predicate CxxSearchByName:
   {

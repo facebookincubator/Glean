@@ -1,0 +1,81 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema codemarkup.java.1 {
+
+import src.1
+import code.java.5
+import codemarkup.types.1
+import java.6
+
+#
+# Resolving locations to entities
+#
+
+predicate JavaResolveLocation:
+  {
+    location: codemarkup.types.Location,
+    entity: code.java.Entity,
+  }
+#  { { Name, File, { span = Span }, nothing }, Defn } where
+
+#
+# Finding entities' locations
+#
+
+predicate JavaEntityLocation:
+  {
+    entity: code.java.Entity,
+    location: codemarkup.types.Location,
+  }
+  { Entity, { Name, File, { span = Span }, nothing } } where
+    { definition_ = Defn } = Entity;
+    java.DefinitionLocation { Defn, Name, File, Span };
+
+#
+# Finding references in a file
+#
+
+# XRefs
+predicate JavalFileEntityXRefLocations:
+  {
+    file: src.File,
+    xref: codemarkup.types.XRefLocation,
+    entity: code.java.Entity,
+  }
+#  { File, { Location, { span = SrcSpan } }, { definition = Def } } where
+
+#
+# Language entity uses
+#
+
+predicate JavaEntityUses:
+  {
+    target: code.java.Entity,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+#  { { definition = Def }, File, SrcSpan } where
+
+# kinds and symbol info
+predicate JavaEntityKind:
+  {
+    entity: code.java.Entity,
+    kind: codemarkup.types.SymbolKind
+  }
+  { Entity, Kind} where
+    ( { class_ = _ } = Entity;
+      Class_ = Kind
+    ) | (
+      { definition_ = Defn } = Entity;
+      ( { class_ = _ } = Defn;
+        Class_ = Kind
+      ) | (
+        { interface_ = _ } = Defn;
+        Interface = Kind
+      ) | (
+        { enum_ = _ } = Defn;
+        Enum_ = Kind
+      )
+    )
+
+}

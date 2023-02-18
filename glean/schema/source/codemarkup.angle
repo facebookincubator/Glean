@@ -9,6 +9,7 @@ import codemarkup.erlang.2
 import codemarkup.flow.2
 import codemarkup.hack.2
 import codemarkup.haskell.2
+import codemarkup.java.1
 import codemarkup.lsif.3
 import codemarkup.pp.3
 import codemarkup.python.2
@@ -40,7 +41,8 @@ predicate EntityKind:
     (codemarkup.hack.HackEntityKind { E, Kind }; { hack = E } = Entity) |
     (codemarkup.erlang.ErlangEntityKind { E, Kind }; { erlang = E } = Entity) |
     (codemarkup.lsif.EntityInfo { E, { kind = Kind }}; { lsif = E } = Entity) |
-    (codemarkup.flow.FlowEntityKind { E, Kind }; { flow = E } = Entity)
+    (codemarkup.flow.FlowEntityKind { E, Kind }; { flow = E } = Entity) |
+    (codemarkup.java.JavaEntityKind { E, Kind }; { java = E } = Entity)
 
 # Retrieve information about an entity
 predicate EntityInfo:
@@ -159,7 +161,9 @@ predicate EntityLocation:
     (codemarkup.erlang.ErlangEntityLocation { E, Location };
      { erlang = E } = Entity) |
     (codemarkup.lsif.LsifEntityLocation { E, Location };
-     { lsif = E } = Entity);
+     { lsif = E } = Entity) |
+    (codemarkup.java.JavaEntityLocation { E, Location };
+     { java = E } = Entity);
 
 # Finding xrefs. All references in a file and their targets
 predicate FileEntityXRefLocations:
