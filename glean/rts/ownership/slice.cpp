@@ -19,7 +19,7 @@ using namespace folly::compression;
 
 // The ownership set contains
 //
-//    base.first()...base.end()  references to ownerhsip sets for base DB(s)
+//    base.first()...base.end()  references to ownership sets for base DB(s)
 //    base.end()..first          units in this DB
 //    first...first+size         sets in this DB
 
