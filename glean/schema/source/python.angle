@@ -63,6 +63,7 @@ predicate ClassDefinition:
     variables: maybe [VariableDeclaration],
     class_variables: maybe [VariableDeclaration],
     inner_classes: maybe [ClassDeclaration],
+    container: maybe DeclarationContainer,
   }
 
 predicate BaseClassToDerived:
@@ -92,6 +93,7 @@ predicate FunctionDefinition:
     star_kwarg: maybe Parameter,  # **kwargs
     decorators: maybe [Decorator],
     docstring: maybe Docstring,
+    container: maybe DeclarationContainer,
   }
 
 # Allows efficient queries for variables by structured name.
@@ -103,6 +105,14 @@ predicate VariableDefinition:
   {
     declaration: VariableDeclaration,
     type: maybe Type,
+    container: maybe DeclarationContainer,
+  }
+
+type DeclarationContainer =
+  {
+    module: Module |
+    cls: ClassDeclaration |
+    func: FunctionDeclaration
   }
 
 type Parameter =
@@ -534,6 +544,7 @@ predicate SearchByLocalName:
 # - a class is parent for its methods, variables and inner classes
 # - grandchildren of a parent cannot be its children
 # Currently, it contains only data we need for CodeHub API docs.
+# Deprecated: use ContainedBy
 predicate ContainedByParent:
   {
     child: Declaration,
@@ -559,6 +570,48 @@ predicate ContainedByParent:
       ( { cls = InnerClassess[..] } = Child );
       { cls = ClassDecl } = Parent;
     )
+
+# Mapping between declarations and their **immediate** containers.
+# - a module is the container for everything declared at module level
+# - a class is the container for its methods, variables and inner classes
+# - a function is the container for variables, functions and classes
+  predicate ContainedBy:
+    {
+      containee: Declaration,
+      container: Declaration,
+    }
+    {ContaineeDecl, ContainerDecl} where
+      (
+        { cls = ClassDecl } = ContaineeDecl;
+        python.ClassDefinition { declaration = ClassDecl, container = { just = Container } };
+      ) | (
+        { func = FuncDecl } = ContaineeDecl;
+        python.FunctionDefinition { declaration = FuncDecl, container = { just = Container } };
+      ) | (
+        { variable = VarDecl } = ContaineeDecl;
+        python.VariableDefinition { declaration = VarDecl, container = { just = Container } };
+      );
+      Container = Container; # hack to make this variable available inside or patterns below
+      (
+        { module = ModuleDecl } = Container;
+        { module = ModuleDecl } = ContainerDecl;
+      ) | (
+        { cls = ClassDecl } = Container ;
+        { cls = ClassDecl } = ContainerDecl;
+      ) | (
+        { func = FuncDecl } = Container;
+        { func = FuncDecl } = ContainerDecl;
+      );
+
+# Reverse mapping of ContainedBy
+  predicate Contains:
+    {
+      container: Declaration,
+      containee: Declaration,
+    }
+    stored {ContainerDecl, ContaineeDecl} where
+      ContainedBy { ContaineeDecl, ContainerDecl}
+
 
 predicate IsAbstract: Declaration
   Decl where
