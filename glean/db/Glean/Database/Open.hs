@@ -30,6 +30,7 @@ import qualified Data.HashMap.Strict as HashMap
 import Data.IORef
 import Data.Maybe
 import Data.Set (Set)
+import Data.Word
 import qualified Data.Set as Set
 import GHC.Stack (HasCallStack)
 
@@ -373,9 +374,10 @@ schemaUpdated env@Env{..} mbRepo = do
 setupWriting :: Lookup.CanLookup lookup => Env -> lookup -> IO Writing
 setupWriting Env{..} lookup = do
   scfg <- Observed.get envServerConfig
+  -- Convert to Word64 from Int32 to prevent silent truncation.
+  let cache_limit_mb :: Word64 = fromIntegral $ ServerConfig.config_db_lookup_cache_limit_mb scfg
   lookupCache <- LookupCache.new
-    (fromIntegral
-      $ ServerConfig.config_db_lookup_cache_limit_mb scfg * 1024 * 1024)
+    (fromIntegral$ cache_limit_mb * 1024 * 1024)
     (fromIntegral $ ServerConfig.config_db_writer_threads scfg)
     envLookupCacheStats
   next_id <- newIORef =<< Lookup.firstFreeId lookup

@@ -92,7 +92,7 @@ newSendAndRebaseQueue sendQueue inventory cacheMem = do
     <*> newTQueueIO
     <*> newTQueueIO
     <*> pure inventory
-    <*> LookupCache.new cacheMem 1 stats
+    <*> LookupCache.new (fromIntegral cacheMem) 1 stats
     <*> pure stats
 
 -- | Settings for a 'SendAndRebase'

@@ -138,7 +138,7 @@ readStatsAndResetCounters stats = do
       (fromIntegral $ VM.length v)
   StatValues <$> V.unsafeFreeze v
 
-new :: Int -> Int -> Stats -> IO LookupCache
+new :: Word64 -> Int -> Stats -> IO LookupCache
 new capacity shards stats =
   with stats $ construct . invoke . glean_lookupcache_new
     (fromIntegral capacity)
