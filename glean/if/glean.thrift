@@ -1143,6 +1143,7 @@ service GleanService extends fb303.FacebookService {
   // has pending writes, it will fail with Retry.
   void workFinished(1: WorkFinished request) throws (
     1: Exception e,
+    2: AbortWork a,
     3: Retry r,
     4: UnknownDatabase u,
     5: DatabaseNotIncomplete c,
