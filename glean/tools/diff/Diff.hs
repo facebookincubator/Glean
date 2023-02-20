@@ -23,13 +23,15 @@ import Glean.FFI (with)
 import Glean.RTS.Foreign.Inventory (Inventory)
 import Glean.RTS.Foreign.Lookup (withLookup, Lookup)
 
-newtype DiffOptions =  DiffOptions
+data DiffOptions =  DiffOptions
   { opt_logAdded :: Bool -- ^ log IDs of added facts
+  , opt_batchSize :: Int -- ^ how many facts to dedupe together
   }
 
 instance Default DiffOptions where
   def = DiffOptions
     { opt_logAdded = False
+    , opt_batchSize = 1000
     }
 
 data Result = Result
@@ -48,6 +50,7 @@ diff env DiffOptions{..} one two =
     original_ptr
     new_ptr
     opt_logAdded
+    (fromIntegral opt_batchSize)
   return $ Result
     (fromIntegral kept)
     (fromIntegral added)
@@ -64,6 +67,7 @@ foreign import ccall safe glean_diff
   -> Ptr Lookup
   -> Ptr Lookup
   -> Bool       -- ^ log added
+  -> CSize      -- ^ batch_size
   -> Ptr CSize  -- ^ kept
   -> Ptr CSize  -- ^ added
   -> Ptr CSize  -- ^ removed

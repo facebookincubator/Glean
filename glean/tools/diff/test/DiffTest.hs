@@ -75,6 +75,9 @@ diffTest = TestList
   where
     opts = DiffOptions
         { opt_logAdded = False
+        -- use a small batchSize to ensure the parallel machinery is
+        -- used despite the small amount of facts in the test dbs.
+        , opt_batchSize = 100
         }
 
     withEnv act =
