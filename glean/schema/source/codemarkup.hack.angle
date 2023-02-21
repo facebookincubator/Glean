@@ -492,6 +492,12 @@ predicate ConvertArgument :
     { just = { lit = hack.StringLiteral L } } = Hack;
     { just = { lit = L } } = Code;
   ) | (
+    { just = { xref = { declaration = L  } } } = Hack;
+    { just = { xref = { hack = code.hack.Entity { decl = L } } } } = Code;
+  ) | (
+    { just = { xref = { occurrence = _ } } } = Hack;
+    nothing = Code;
+  ) | (
     nothing = Hack ; nothing = Code;
   )
 
