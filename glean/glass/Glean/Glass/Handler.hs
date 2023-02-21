@@ -42,6 +42,7 @@ module Glean.Glass.Handler
   -- * C++ specific methods
   , fileIncludeLocations
   , clangUSRToDefinition
+  , clangUSRToReferenceRanges
 
   ) where
 
@@ -196,7 +197,7 @@ import Glean.Glass.Types
       RelationType (..),
       rELATED_SYMBOLS_MAX_LIMIT,
       mAXIMUM_SYMBOLS_QUERY_LIMIT,
-      Path (..) )
+      Path (..), USRSymbolReference (USRSymbolReference) )
 import Glean.Index.Types
   ( IndexRequest,
     IndexResponse)
@@ -449,6 +450,32 @@ clangUSRToDefinition env@Glass.Env{..} usr@(USR hash) _opts = withRepoLanguage
   where
     repo = RepoName "fbsource"
     mlang = Just Language_Cpp
+
+-- | Lookup the USR in Glean to yield and entity,
+-- compute entity declToDef, return the pairs and other info.
+clangUSRToReferenceRanges
+  :: Glass.Env
+  -> USR
+  -> RequestOptions
+  -> IO [USRSymbolReference]
+clangUSRToReferenceRanges env@Glass.Env{..} usr@(USR hash) _opts =
+  withRepoLanguage "clangUSRToReferenceRanges" env usr repo mlang  $
+   \(gleanDBs,_) _ -> do
+    backendRunHaxl GleanBackend{..} $ do
+      result <- firstOrErrors $ queryEachRepo $ do
+        refs <- Cxx.usrHashToXRefs mlimit hash
+        res <- mapM convert refs
+        pure (Right res)
+      case result of
+        Left err -> throwM $ ServerException $ errorText err
+        Right defn -> return (defn, Nothing)
+  where
+    repo = RepoName "fbsource"
+    mlang = Just Language_Cpp
+    mlimit = fromIntegral <$> requestOptions_limit _opts
+    convert (targetFile, rspan) = do
+      r <- rangeSpanToLocationRange repo targetFile rspan
+      return $ USRSymbolReference r
 
 -- | Scrub all glean types for export to the client
 -- And flatten to lists for GraphQL.

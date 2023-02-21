@@ -13,7 +13,8 @@ module Glean.Glass.Query.Cxx
   (
     documentSymbolsForCxx,
     fileIncludeLocationsForCxx,
-    usrHashToDeclaration
+    usrHashToDeclaration,
+    usrHashToXRefs
   ) where
 
 import Data.Maybe ( catMaybes )
@@ -38,6 +39,7 @@ import Glean.Util.ToAngle ( ToAngle(toAngle) )
 import qualified Glean.Util.Range as Range
 
 import Glean.Glass.Utils
+import qualified Glean.Schema.Codemarkup.Types as Code
 
 --
 -- The cxx1 schema is complicated for xrefs and decls, as files have multiple
@@ -626,3 +628,32 @@ fetchFactIdOnly p = fmap (Glean.getId . fst) <$> fetchData (factIdQuery p)
 factIdQuery :: Type t => Angle t -> Angle (t, ())
 factIdQuery p = var $ \r ->
   tuple (r, sig unit) `where_` [ r .= p ]
+
+usrHashToXRefs
+  :: Maybe Int
+    -> Text
+    -> Glean.RepoHaxl u w [(Src.File, Code.RangeSpan) ]
+usrHashToXRefs n usrhash = searchWithLimit n (usrToXref usrhash)
+
+-- | Return all reference locations of the symbol that corresponds to USR hash.
+--
+-- Equivalent to a findReferenceRanges but accepts a USR instead of a glean
+-- symbol id
+usrToXref :: Text -> Angle ( Src.File, Code.RangeSpan)
+usrToXref usrhash =
+  vars $ \(reffile :: Angle Src.File) (rangespan :: Angle Code.RangeSpan)
+          (decl :: Angle Cxx.Declaration) ->
+    tuple (reffile, rangespan)  `where_` [
+      wild .= predicate @Cxx.USRToDeclaration (
+        rec $
+          field @"hash" (string usrhash) $
+          field @"declaration" decl
+        end),
+      wild .= predicate @Code.EntityReferences (
+      rec $
+          field @"target" (alt @"cxx" (alt @"decl" decl)) $
+          field @"file" (asPredicate reffile) $
+          field @"range" rangespan
+        end
+      )
+    ]

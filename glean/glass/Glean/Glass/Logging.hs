@@ -169,6 +169,15 @@ instance LogResult USRSymbolDefinition where
     logResult (uSRSymbolDefinition_location, log) <>
     Logger.setItemCount 1
 
+
+instance LogResult USRSymbolReference  where
+  logResult (USRSymbolReference{..}, log) = log <>
+    logResult (uSRSymbolReference_location, log) <>
+    Logger.setItemCount 1
+
+instance LogResult [USRSymbolReference] where
+  logResult (xs, log) = log <> Logger.setItemCount (length xs)
+
 instance LogResult [RelatedSymbols] where
   logResult (edges, log) = log <> Logger.setItemCount (length edges)
 

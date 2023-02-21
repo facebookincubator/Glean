@@ -144,3 +144,5 @@ glassHandler env cmd = case cmd of
   -- C++/LSP specific
   FileIncludeLocations r opts -> Handler.fileIncludeLocations env r opts
   ClangUSRToDefinition r opts -> Handler.clangUSRToDefinition env r opts
+  ClangUSRToReferenceRanges r opts ->
+    Handler.clangUSRToReferenceRanges env r opts

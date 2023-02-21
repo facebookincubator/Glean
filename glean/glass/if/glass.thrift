@@ -559,6 +559,15 @@ struct USRSymbolDefinition {
   5: Revision revision;
 }
 
+# Response to ClangD for the references we know about a USR. Based off of the `Ref` protobuf in clangd's remote index:
+# https://github.com/llvm/llvm-project/blob/93cf9640fa3890aa3a4af8c4bd7c07322548b5e8/clang-tools-extra/clangd/index/remote/Index.proto#L80
+# n.b. we remove kind because in glean all references are the same entity with the same kind.
+# We will keep it a separate struct instead returning LocationRanges in case of
+# future additions to API.
+struct USRSymbolReference {
+  1: LocationRange location;
+}
+
 // Glass symbol service
 service GlassService extends fb303.FacebookService {
   // Return a list of symbols in the given file, with attributes
@@ -646,6 +655,12 @@ service GlassService extends fb303.FacebookService {
 
   // Resolve declaration USR from ClangD to definition sites
   USRSymbolDefinition clangUSRToDefinition(
+    1: USR hash,
+    2: RequestOptions options,
+  ) throws (1: ServerException e);
+
+  // Resolve declaration USR from ClangD to xref sites
+  list<USRSymbolReference> clangUSRToReferenceRanges(
     1: USR hash,
     2: RequestOptions options,
   ) throws (1: ServerException e);
