@@ -735,7 +735,10 @@ std::optional<UsetId> DatabaseImpl::FactOwnerCache::getOwner(
   auto prefix = id.toWord() >> PAGE_BITS;
 
   if (prefix >= cache->index.size()) {
-    rts::error("prefix out of range");
+    rts::error(
+        "prefix out of range: id = {}, index size = {}",
+        id.toWord(),
+        cache->index.size());
   }
   UsetId pageval = cache->index[prefix];
   if (pageval != HAS_PAGE) {
