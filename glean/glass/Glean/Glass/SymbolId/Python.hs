@@ -66,7 +66,7 @@ declarationLocation decl = var $ \file ->
     wild .= predicate @Py.DeclarationLocation (
       rec $
         field @"declaration" decl $
-        field @"file" file
+        field @"file" (sig file)
       end)
   ]
 

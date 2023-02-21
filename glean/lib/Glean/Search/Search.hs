@@ -460,9 +460,9 @@ findHackDecls lim backend repo SearchQuery{..} = Glean.runHaxl backend repo $
             var $ \d -> d `where_`
               [ wild .= searchByName d (string ident) ]
           else
-            var $ \d -> var $ \x -> d `where_`
-              [ wild .= searchLower x,
-                wild .= searchByName d x ]
+            var $ \d -> var $ \(x :: Angle Hack.Name) -> d `where_`
+              [ wild .= searchLower (asPredicate x),
+                wild .= searchByName d (asPredicate x) ]
 
     -- \Foo or Foo\Bar or \Foo\Bar
     -- This ignores the SearchQuery{case_sensitive} value

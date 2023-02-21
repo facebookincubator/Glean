@@ -623,6 +623,6 @@ fetchFactIdOnly
 fetchFactIdOnly p = fmap (Glean.getId . fst) <$> fetchData (factIdQuery p)
 
 -- | Used to avoid recursive expansion when we just need a fact id
-factIdQuery :: Angle t -> Angle (t, ())
+factIdQuery :: Type t => Angle t -> Angle (t, ())
 factIdQuery p = var $ \r ->
   tuple (r, sig unit) `where_` [ r .= p ]

@@ -758,8 +758,10 @@ instance (Pretty p, Pretty t) => Pretty (SourceQuery_ s p t) where
 instance (Pretty p, Pretty t) => Pretty (SourceStatement_ s p t) where
   pretty (SourceStatement lhs rhs) = prettyStatement lhs rhs
 
-prettyStatement :: Pretty pat => pat -> pat -> Doc ann
-prettyStatement lhs rhs = hang 2 $ sep [pretty lhs <+> "=", pretty rhs]
+prettyStatement :: (IsWild pat, Pretty pat) => pat -> pat -> Doc ann
+prettyStatement lhs rhs
+  | isWild lhs = pretty rhs
+  | otherwise = hang 2 $ sep [pretty lhs <+> "=", pretty rhs]
 
 prettyArg :: (Pretty p, Pretty t) => SourcePat_ s p t -> Doc ann
 prettyArg pat = case pat of

@@ -15,6 +15,7 @@ module Glean.Query.Angle
   ( Angle
   , AngleStatement
   , var
+  , Type
   , vars
   , predicate
   , where_
@@ -143,15 +144,24 @@ class AngleVars f r where
 instance AngleVars (Angle b) (Angle b) where
   vars = id
 
-instance (AngleVars s (Angle r)) => AngleVars (Angle a -> s) (Angle r) where
+instance (Type a, AngleVars s (Angle r)) =>
+    AngleVars (Angle a -> s) (Angle r) where
   vars f = var $ \ a -> vars (f a)
 
 -- | Introduce an Angle variable
-var :: forall a b . (Angle a -> Angle b) -> Angle b
+var :: forall a b . Type a => (Angle a -> Angle b) -> Angle b
 var f = Angle $ do
   x <- get
   modify (+1)
-  gen $ f (Angle (pure (Variable DSL ("X" <> showt x))))
+  let v = Angle (pure (Variable DSL ("X" <> showt x)))
+  ty <- gen (sig v)
+  r <- gen (f v)
+  let stmt = Angle.SourceStatement (Wildcard DSL) ty
+  case r of
+    Angle.NestedQuery DSL (Angle.SourceQuery q stmts) ->
+      return (Angle.NestedQuery DSL (Angle.SourceQuery q (stmt : stmts)))
+    _ ->
+      return (Angle.NestedQuery DSL (Angle.SourceQuery (Just r) [stmt]))
 
 predicate :: forall p . Predicate p => Angle (KeyType p) -> Angle p
 predicate (Angle pat) = Angle $ do
@@ -161,8 +171,14 @@ predicate (Angle pat) = Angle $ do
 -- | Build a query of the form `X where statements`
 where_ :: Angle t -> [AngleStatement] -> Angle t
 where_ t stmts = Angle $
-  NestedQuery DSL <$>
-    (Angle.SourceQuery <$> (Just <$> gen t) <*> mapM genStmt stmts)
+  nest <$> gen t <*> mapM genStmt stmts
+  where
+  -- merge adjacent where-clauses
+  nest (Angle.NestedQuery DSL (Angle.SourceQuery (Just q) stmts1)) stmts2 =
+    Angle.NestedQuery DSL $
+      Angle.SourceQuery (Just q) (stmts1 <> stmts2)
+  nest q stmts =
+    Angle.NestedQuery DSL (Angle.SourceQuery (Just q) stmts)
 
 not_ :: [AngleStatement] -> AngleStatement
 not_ stmts = unit' .= Angle (Negation DSL <$> gen t)

@@ -11,6 +11,7 @@
 module Angle.MiscTest (main) where
 
 import Control.Exception
+import Data.ByteString (ByteString)
 import Data.Default
 import Data.Int
 import Data.List
@@ -125,6 +126,22 @@ angleDSL modify = dbTestCase $ \env repo -> do
     ]
   assertEqual "angle - DSL 5" 2 (length (concat results))
 
+  -- test for type inference with the DSL. If we don't tell the compiler
+  -- what type we're expecting for the variable `p` it will assume
+  -- the type of the field (Sys.Blob) rather than the key type (ByteString)
+  -- and we'll get a deserialization error.
+  r <- try $ runQuery_ env repo $ modify $
+    Angle.query @(ByteString,ByteString) $
+      var $ \p -> tuple (p,p) `where_` [
+        wild .= predicate @Glean.Test.Predicate (
+          rec $
+           field @"pred" p
+          end)
+      ]
+  print r
+  assertBool "angle - DSL 6" $ case r of
+    Left BadQuery{} -> True
+    _ -> False
 
 scopingTest :: Test
 scopingTest = dbTestCase $ \env repo -> do
