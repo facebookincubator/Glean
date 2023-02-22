@@ -22,6 +22,7 @@
 #include <folly/executors/GlobalExecutor.h>
 #include <folly/futures/Future.h>
 #include <folly/Unit.h>
+#include <folly/Synchronized.h>
 
 #include <iostream>
 #include <vector>
@@ -71,51 +72,73 @@ void consume(Queue& q, std::function<void (Batch)> fn) {
   terminate_consumers(q);
 }
 
-// A thread-safe Substitution.
+// An efficient thread-safe substitution for blocks of consecutive ids.
+// We protect substitution sections with mutexes.
+size_t max_shard_size = 10000;
 struct TSubstitution {
 public:
-  TSubstitution(Id first, size_t size)
-    : size(size)
+  TSubstitution(Id first, size_t size_)
+    : size(size_)
     , base(first)
-    , items(size, Id::invalid())
-    , m_items()
-    , mapped_(0)
-    {}
+    , shard_size(std::min(size, max_shard_size)) {
+    auto shard_count = size/shard_size + std::min(1, (int) (size % shard_size));
+    shards = std::vector<folly::Synchronized<Shard>>(shard_count);
+    for (auto ix = 0; ix < shards.size(); ix++) {
+      shards.at(ix).withWLock([&](Shard& shard) {
+        auto size_this_shard = std::min(shard_size, size - (ix * shard_size));
+        shard.items = std::vector<Id>(size_this_shard, Id::invalid());
+      });
+    }
+  }
 
   Id start() const { return base; }
   Id finish() const { return base + size; }
   Id subst(const Id id) {
     if (id >= start() && id < finish()) {
-      const std::lock_guard<std::mutex> lock(m_items);
-      auto d = distance(start(), id);
-      return items.at(d);
+      const auto d = distance(start(), id);
+      const auto shard_index = d / shard_size;
+      const auto item_index = d % shard_size;
+      return shards.at(shard_index).withRLock([&](const Shard& shard) {
+        return shard.items.at(item_index);
+      });
     } else {
       return Id::invalid();
     }
   }
 
   void set(const Id pos, const Id id) {
-    const std::lock_guard<std::mutex> lock(m_items);
-    size_t d = distance(start(),pos);
     CHECK(pos >= start() && pos < finish());
-    items.at(d) = id;
-    if (id != Id::invalid()) {
-      mapped_++;
-    }
+    const size_t d = distance(start(),pos);
+    const auto shard_index = d / shard_size;
+    const auto item_index = d % shard_size;
+    shards.at(shard_index).withWLock([&](Shard &shard) {
+      shard.items.at(item_index) = id;
+      if (id != Id::invalid()) {
+        shard.used++;
+      }
+    });
   }
 
   size_t mapped() {
-    const std::lock_guard<std::mutex> lock(m_items);
-    return mapped_;
+    auto total = 0;
+    for (auto& shard : shards) {
+      shard.withRLock([&](const Shard& shard) {
+        total += shard.used;
+      });
+    }
+    return total;
   }
 
 private:
-  size_t size;
-  Id base;
-  std::vector<Id> items;
-  std::mutex m_items;
-  // count of values that map to a valid Id.
-  size_t mapped_;
+  struct Shard {
+    std::vector<Id> items;
+    size_t used = 0; // values mapped to a valid Id.
+  };
+
+  const size_t size;
+  const Id base;
+  const size_t shard_size;
+  std::vector<folly::Synchronized<Shard>> shards;
 };
 
 }

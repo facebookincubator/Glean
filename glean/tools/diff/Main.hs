@@ -10,7 +10,9 @@
 module Main (main) where
 
 import Data.Default (def)
+import Data.Maybe (fromMaybe)
 import Options.Applicative
+import Numeric.Natural (Natural)
 
 import Util.EventBase
 
@@ -27,6 +29,7 @@ data Config = Config
   , cfgOriginal :: Repo
   , cfgNew :: Repo
   , cfgLogAdded :: Bool
+  , cfgBatchSize :: Maybe Natural
   }
 
 options :: ParserInfo Config
@@ -36,14 +39,17 @@ options = info (parser <**> helper)
     parser :: Parser Config
     parser = do
       cfgDB <- Database.options
-      cfgOriginal <- argument (maybeReader Glean.parseRepo)
-        (  metavar "NAME/HASH"
-        )
-      cfgNew <- argument (maybeReader Glean.parseRepo)
-        (  metavar "NAME/HASH"
-        )
-      cfgLogAdded <-
-        switch (long "log-added" <> help "log facts added in second DB")
+      cfgLogAdded <- switch $
+        long "log-added" <>
+        help "Log facts added in second DB"
+      cfgBatchSize <- optional $ option auto $
+        long "batch-size" <>
+        metavar "N" <>
+        help "How many facts to deduplicate together"
+      cfgOriginal <- argument (maybeReader Glean.parseRepo) $
+        metavar "NAME/HASH"
+      cfgNew <- argument (maybeReader Glean.parseRepo) $
+        metavar "NAME/HASH"
       return Config{..}
 
 main :: IO ()
@@ -52,7 +58,10 @@ main =
   withEventBaseDataplane $ \evb ->
   withConfigProvider cfgOpts $ \(cfgAPI :: ConfigAPI) ->
   Database.withDatabases evb cfgDB cfgAPI $ \env -> do
-  let opts = def { opt_logAdded = cfgLogAdded }
+  let opts = DiffOptions
+        { opt_logAdded = cfgLogAdded
+        , opt_batchSize = fromMaybe (opt_batchSize def) cfgBatchSize
+        }
   Result kept added removed <- diff env opts cfgOriginal cfgNew
   putStrLn $ unlines
     [ "kept: " <> show kept

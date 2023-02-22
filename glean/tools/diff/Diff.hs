@@ -8,10 +8,11 @@
 
 module Diff (diff, DiffOptions(..), Result(..)) where
 
+import Data.Default (Default(..))
 import Foreign.C.String (CString)
 import Foreign.C.Types (CSize(..))
 import Foreign.Ptr (Ptr)
-import Data.Default (Default(..))
+import Numeric.Natural (Natural)
 
 import Util.FFI (invoke)
 
@@ -25,13 +26,13 @@ import Glean.RTS.Foreign.Lookup (withLookup, Lookup)
 
 data DiffOptions =  DiffOptions
   { opt_logAdded :: Bool -- ^ log IDs of added facts
-  , opt_batchSize :: Int -- ^ how many facts to dedupe together
+  , opt_batchSize :: Natural -- ^ how many facts to dedupe together
   }
 
 instance Default DiffOptions where
   def = DiffOptions
     { opt_logAdded = False
-    , opt_batchSize = 1000
+    , opt_batchSize = 10000
     }
 
 data Result = Result
