@@ -415,6 +415,6 @@ foreign import ccall unsafe glean_rocksdb_cache_ownership
   :: Ptr (Database RocksDB)
   -> IO CString
 
-foreign import ccall unsafe glean_rocksdb_prepare_fact_owner_cache
+foreign import ccall safe glean_rocksdb_prepare_fact_owner_cache
   :: Ptr (Database RocksDB)
   -> IO CString
