@@ -34,6 +34,7 @@ module Glean.Glass.Repos
   , selectGleanDBs
   ) where
 
+import Data.List (nub)
 import qualified Data.Text as Text
 import qualified Data.Set as Set
 import Control.Concurrent.Async ( withAsync, forConcurrently )
@@ -48,7 +49,6 @@ import Data.Text ( Text, intercalate )
 import Glean.Util.Periodic ( doPeriodicallySynchronised )
 import Glean.Util.Time ( DiffTimePoints )
 import qualified Glean
-import Util.List ( uniq )
 import Util.STM ( readTVar, writeTVar, atomically, newTVarIO, TVar, STM )
 import qualified Glean.Repo as Glean
 
@@ -171,7 +171,7 @@ listGleanIndices testsOnly
 fromSCSRepo :: RepoName -> Maybe Language -> [GleanDBName]
 fromSCSRepo r hint
   | Just rs <- Map.lookup r gleanIndices
-  = uniq $ map fst $ case hint of
+  = nub $ map fst $ case hint of
       Nothing -> rs
       Just h -> filter ((== h) . snd) rs
   | otherwise = []
