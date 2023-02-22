@@ -571,7 +571,20 @@
                     "container": "es_exports",
                     "localName": "bor"
                 },
-                "pretty_comments": [],
+                "pretty_comments": [
+                    {
+                        "location": {
+                            "filepath": "test/es_exports.js.flow",
+                            "range": {
+                                "columnBegin": 1,
+                                "columnEnd": 4,
+                                "lineBegin": 13,
+                                "lineEnd": 15
+                            },
+                            "repository": "test"
+                        }
+                    }
+                ],
                 "repo_hash": "testhash",
                 "signature": "bor: (x: number) => number",
                 "sym": "test/js/es_exports/bor",

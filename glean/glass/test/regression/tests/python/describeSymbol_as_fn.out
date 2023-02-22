@@ -42,7 +42,21 @@
             "container": "as",
             "localName": "fn"
         },
-        "pretty_comments": [],
+        "pretty_comments": [
+            {
+                "comment": "Test title\n\n    extra comment body",
+                "location": {
+                    "filepath": "as.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 8,
+                        "lineBegin": 10,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
         "repo_hash": "testhash",
         "signature": "def fn(...) -> ...:",
         "sym": "test/py/as.py/as.fn",

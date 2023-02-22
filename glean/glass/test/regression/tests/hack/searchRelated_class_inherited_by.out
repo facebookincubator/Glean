@@ -114,7 +114,20 @@
                     "container": "",
                     "localName": "SourceClass"
                 },
-                "pretty_comments": [],
+                "pretty_comments": [
+                    {
+                        "location": {
+                            "filepath": "www/SourceClass.php",
+                            "range": {
+                                "columnBegin": 1,
+                                "columnEnd": 4,
+                                "lineBegin": 10,
+                                "lineEnd": 12
+                            },
+                            "repository": "test"
+                        }
+                    }
+                ],
                 "repo_hash": "testhash",
                 "signature": "class SourceClass",
                 "sym": "test/php/SourceClass",

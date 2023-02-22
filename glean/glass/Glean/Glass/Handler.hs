@@ -174,6 +174,7 @@ import Glean.Glass.Types
       RelationDirection(..),
       ServerException(ServerException),
       SymbolDescription(..),
+      SymbolComment(..),
       RelationDescription(..),
       SymbolId(..),
       Range,
@@ -1463,11 +1464,11 @@ briefDescribeEntity ent SymbolResult{..} = do
     symbolDescription_repo_hash = Revision mempty
     symbolDescription_annotations = mempty
     symbolDescription_comments = mempty
+    symbolDescription_pretty_comments = mempty
     symbolDescription_visibility = Nothing
     symbolDescription_modifiers = mempty
     symbolDescription_type_xrefs  = mempty
     symbolDescription_sym_other_locations = mempty
-    symbolDescription_pretty_comments = mempty
     symbolDescription_extends_relation  = def
     symbolDescription_contains_relation  = def
     symbolDescription_location = def
@@ -1496,7 +1497,10 @@ describeEntity scmRevs ent SymbolResult{..} = do
     getRepoHashForLocation symbolResult_location scmRevs <$> Glean.haxlRepo
   let symbolDescription_name = symbolResult_qname
   symbolDescription_annotations <- eThrow =<< getAnnotationsForEntity repo ent
-  symbolDescription_comments <- eThrow =<< getCommentsForEntity repo ent
+  symbolDescription_pretty_comments <- eThrow =<< getCommentsForEntity repo ent
+  -- backwards compat until deprecated, we just make a copy
+  let symbolDescription_comments = map symbolComment_location
+        symbolDescription_pretty_comments
   (symbolDescription_visibility, symbolDescription_modifiers)
      <- eThrow =<< getInfoForEntity ent
   (symbolDescription_signature, symbolDescription_type_xrefs)
@@ -1513,7 +1517,6 @@ describeEntity scmRevs ent SymbolResult{..} = do
 
     symbolDescription_sym_location = symbolResult_location
     symbolDescription_sym_other_locations = []
-    symbolDescription_pretty_comments = mempty
 
     repo = locationRange_repository symbolResult_location
 

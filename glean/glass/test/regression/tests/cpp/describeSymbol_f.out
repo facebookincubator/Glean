@@ -43,7 +43,20 @@
             "container": "foo",
             "localName": "f"
         },
-        "pretty_comments": [],
+        "pretty_comments": [
+            {
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 4,
+                        "lineBegin": 18,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
         "repo_hash": "testhash",
         "signature": "void foo::f()",
         "sym": "test/cpp//foo/f/.decl",

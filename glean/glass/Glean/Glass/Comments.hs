@@ -34,35 +34,44 @@ mAX_COMMENTS = 3
 getCommentsForEntity
   :: Glass.RepoName
   -> Code.Entity
-  -> Glean.RepoHaxl u w (Either Text [Glass.LocationRange])
+  -> Glean.RepoHaxl u w (Either Text [Glass.SymbolComment])
 getCommentsForEntity repo entity = case entityToAngle entity of
   Left err -> pure (Left err)
-  Right q -> Right <$> getEntityDocumentation repo q
+  Right q -> Right <$> getEntityComments repo q
 
-getEntityDocumentation
+getEntityComments
   :: Glass.RepoName
   -> Angle Code.Entity
-  -> Glean.RepoHaxl u w [Glass.LocationRange]
-getEntityDocumentation repo entity = do
-  res <- searchRecursiveWithLimit (Just mAX_COMMENTS) $ getDocumentation entity
-  mapM (uncurry (mkLocationRange repo)) res
+  -> Glean.RepoHaxl u w [Glass.SymbolComment]
+getEntityComments repo entity = do
+    res <- searchRecursiveWithLimit (Just mAX_COMMENTS) $ entityComments entity
+    mapM toLocation res
+  where
+    toLocation (file, span, mtext) = do
+      range <- mkLocationRange repo file span
+      return (Glass.SymbolComment range mtext)
 
 -- | Docs are always bytespans at the moment. Convert them out.
+-- these files should be in the src.FileLines cache as they're almost always
+-- the same file as the declaration location, which is already processed
 mkLocationRange
    :: Glass.RepoName -> Src.File -> Src.ByteSpan
    -> Glean.RepoHaxl u w Glass.LocationRange
 mkLocationRange repo file span = rangeSpanToLocationRange repo file
   (Code.RangeSpan_span span)
 
-getDocumentation :: Angle Code.Entity -> Angle (Src.File, Src.ByteSpan)
-getDocumentation entity =
-  vars $ \ (file :: Angle Src.File) (span :: Angle Src.ByteSpan) ->
-  tuple (file, span) `where_` [
-    wild .= Angle.predicate @Code.EntityDocumentation (
+entityComments
+  :: Angle Code.Entity -> Angle (Src.File, Src.ByteSpan, Maybe Text)
+entityComments entity =
+  vars $ \ (file :: Angle Src.File) (span :: Angle Src.ByteSpan)
+    (mtext :: Angle (Maybe Text)) ->
+  tuple (file, span, mtext) `where_` [
+    wild .= Angle.predicate @Code.EntityComments (
       rec $
         field @"entity" entity $
         field @"file" (asPredicate file) $
-        field @"span" span
+        field @"span" span $
+        field @"text" mtext
       end
     )
   ]

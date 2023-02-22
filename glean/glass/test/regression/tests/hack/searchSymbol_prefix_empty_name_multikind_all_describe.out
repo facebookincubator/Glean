@@ -736,7 +736,20 @@
                     "container": "",
                     "localName": "SourceClass"
                 },
-                "pretty_comments": [],
+                "pretty_comments": [
+                    {
+                        "location": {
+                            "filepath": "www/SourceClass.php",
+                            "range": {
+                                "columnBegin": 1,
+                                "columnEnd": 4,
+                                "lineBegin": 10,
+                                "lineEnd": 12
+                            },
+                            "repository": "test"
+                        }
+                    }
+                ],
                 "repo_hash": "testhash",
                 "sym": "test/php/SourceClass",
                 "sym_location": {
@@ -988,7 +1001,20 @@
                     "container": "SourceClass",
                     "localName": "overrideMe"
                 },
-                "pretty_comments": [],
+                "pretty_comments": [
+                    {
+                        "location": {
+                            "filepath": "www/SourceClass.php",
+                            "range": {
+                                "columnBegin": 3,
+                                "columnEnd": 6,
+                                "lineBegin": 26,
+                                "lineEnd": 29
+                            },
+                            "repository": "test"
+                        }
+                    }
+                ],
                 "repo_hash": "testhash",
                 "sym": "test/php/SourceClass/overrideMe",
                 "sym_location": {
@@ -1051,7 +1077,20 @@
                     "container": "SourceClass",
                     "localName": "pleaseOverride"
                 },
-                "pretty_comments": [],
+                "pretty_comments": [
+                    {
+                        "location": {
+                            "filepath": "www/SourceClass.php",
+                            "range": {
+                                "columnBegin": 3,
+                                "columnEnd": 6,
+                                "lineBegin": 34,
+                                "lineEnd": 36
+                            },
+                            "repository": "test"
+                        }
+                    }
+                ],
                 "repo_hash": "testhash",
                 "sym": "test/php/SourceClass/pleaseOverride",
                 "sym_location": {
@@ -1563,7 +1602,20 @@
                     "container": "SubClass",
                     "localName": "pleaseOverride"
                 },
-                "pretty_comments": [],
+                "pretty_comments": [
+                    {
+                        "location": {
+                            "filepath": "www/SourceClass.php",
+                            "range": {
+                                "columnBegin": 3,
+                                "columnEnd": 6,
+                                "lineBegin": 34,
+                                "lineEnd": 36
+                            },
+                            "repository": "test"
+                        }
+                    }
+                ],
                 "repo_hash": "testhash",
                 "sym": "test/php/SubClass/pleaseOverride",
                 "sym_location": {
