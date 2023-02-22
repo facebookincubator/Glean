@@ -500,7 +500,7 @@ predicate SearchRelatedEntities:
     codemarkup.EntityLocation {P, PLoc};
 
 #
-# Generic comment blocks
+# Generic comment blocks (deprecated, prefer codemarkup.EntityComments)
 #
 predicate EntityDocumentation:
   {
@@ -519,7 +519,37 @@ predicate EntityDocumentation:
       codemarkup.flow.FlowEntityDocumentation { D, F, S }
     ) | (
       { python = D } = E;
-      codemarkup.python.PythonEntityDocumentation { D, F, S }
+      codemarkup.python.PythonEntityComments { D, F, S, _ }
+    )
+
+#
+# Expanded version of codemarkup.EntityDocumentation that knows about
+# docs stored in the index itself. Indexers are still required to support
+# the span/file format. Optionally, they may provide pre-rendered comments in
+# markdown format
+#
+predicate EntityComments:
+  {
+    entity : code.Entity,
+    file : src.File,
+    span : src.ByteSpan,
+    text : maybe string,
+  }
+  { Entity, File, Span, Text } where
+    ( { cxx = Decl } = Entity;
+      codemarkup.cxx.CxxEntityDocumentation { Decl, File, Span };
+      nothing = Text
+    ) | (
+      { hack = Decl } = Entity;
+      codemarkup.hack.HackEntityDocumentation { Decl, File, Span };
+      nothing = Text
+    ) | (
+      { flow = Decl } = Entity;
+      codemarkup.flow.FlowEntityDocumentation { Decl, File, Span };
+      nothing = Text
+    ) | (
+      { python = Decl } = Entity;
+      codemarkup.python.PythonEntityComments { Decl, File, Span, Text }
     )
 
 # end

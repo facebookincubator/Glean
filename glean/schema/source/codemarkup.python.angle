@@ -226,20 +226,19 @@ predicate PythonEntityInfo:
     IsAbstract = if (python.IsAbstract Decl) then (true) else (false);
     PythonEntityKind { entity = E, kind = K }
 
-# docstrings are only attached to definitions
-predicate PythonEntityDocumentation :
+# All cases where we have a docstring span we also have a pretty docstring
+# span, so we can rely on python.DeclarationDocstring entirely for comments
+predicate PythonEntityComments:
   {
     entity : code.python.Entity,
     file : src.File,
-    span : src.ByteSpan
+    span : src.ByteSpan,
+    text : maybe string
   }
-  { { decl = Decl }, File, Span } where
-    python.DeclarationDefinition { Decl, Defn };
-    ( { cls = { docstring = { just = Docs } } } = Defn) | (
-      { func = { docstring = { just = Docs } } } = Defn) | (
-      { module = { docstring = { just = Docs } } } = Defn );
-    python.DefinitionLocation { definition = Defn, file = File };
-    { location = Span } = Docs
+  { { decl = Decl }, File, Span, { just = Text } } where
+    python.DeclarationDocstring { Decl, Span, Text };
+    # should be second as not all decls have text
+    python.DeclarationLocation { declaration = Decl, file = File }
 
 #
 # Relations
@@ -661,7 +660,6 @@ predicate ConvertCallArguments :
         ]
     )
   )
-
 
 predicate ConvertArgument :
   { pythonArgument : maybe python.Argument
