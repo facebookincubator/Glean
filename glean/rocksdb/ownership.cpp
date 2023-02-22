@@ -735,10 +735,10 @@ std::optional<UsetId> DatabaseImpl::FactOwnerCache::getOwner(
   auto prefix = id.toWord() >> PAGE_BITS;
 
   if (prefix >= cache->index.size()) {
-    rts::error(
-        "prefix out of range: id = {}, index size = {}",
-        id.toWord(),
-        cache->index.size());
+    // The DB may have no or partial ownership information, leading to a
+    // smaller than expected index, in which case the missing entries
+    // are facts with no ownership.
+    return INVALID_USET;
   }
   UsetId pageval = cache->index[prefix];
   if (pageval != HAS_PAGE) {
