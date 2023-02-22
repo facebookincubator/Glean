@@ -33,6 +33,7 @@
                     "container": "",
                     "localName": "Global"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/cpp//Global",
                 "sym_location": {
@@ -79,6 +80,7 @@
                     "container": "",
                     "localName": "GlobalClass"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/cpp//GlobalClass",
                 "sym_location": {
@@ -125,6 +127,7 @@
                     "container": "baz::U",
                     "localName": "InU"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/cpp//baz/U/InU",
                 "sym_location": {
@@ -171,6 +174,7 @@
                     "container": "baz::U",
                     "localName": "InUClass"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/cpp//baz/U/InUClass",
                 "sym_location": {
@@ -217,6 +221,7 @@
                     "container": "foo",
                     "localName": "foo"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/cpp//foo/foo",
                 "sym_location": {
@@ -263,6 +268,7 @@
                     "container": "foo",
                     "localName": "fooFn"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/cpp//foo/fooFn",
                 "sym_location": {
@@ -309,6 +315,7 @@
                     "container": "",
                     "localName": "h"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/cpp//h",
                 "sym_location": {
@@ -355,6 +362,7 @@
                     "container": "maybe::Nothing",
                     "localName": "_secret"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/cpp//maybe/Nothing/_secret",
                 "sym_location": {

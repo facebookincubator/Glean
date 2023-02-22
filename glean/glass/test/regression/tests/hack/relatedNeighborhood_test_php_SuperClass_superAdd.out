@@ -44,6 +44,7 @@
                     "container": "",
                     "localName": "SuperClass"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "class SuperClass",
                 "sym": "test/php/SuperClass",
@@ -92,6 +93,7 @@
                     "container": "SuperClass",
                     "localName": "superAdd"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "public function superAdd(int $i, int $i): int",
                 "sym": "test/php/SuperClass/superAdd",

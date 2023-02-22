@@ -41,6 +41,7 @@
                     "container": "",
                     "localName": "FancyTypes"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "class FancyTypes<<<__Memoize, __Deprecated(Use something else instead)>> +T>",
                 "sym": "test/php/FancyTypes",
@@ -89,6 +90,7 @@
                     "container": "FancyTypes",
                     "localName": "flatten"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "public function flatten<<<__Soft>> reify Tu>(): void",
                 "sym": "test/php/FancyTypes/flatten",

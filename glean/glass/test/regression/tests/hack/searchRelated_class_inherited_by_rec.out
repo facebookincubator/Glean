@@ -52,6 +52,7 @@
                     "container": "",
                     "localName": "RefClass"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "class RefClass",
                 "sym": "test/php/RefClass",
@@ -117,6 +118,7 @@
                     "container": "",
                     "localName": "SourceClass"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "class SourceClass",
                 "sym": "test/php/SourceClass",
@@ -165,6 +167,7 @@
                     "container": "",
                     "localName": "SourceInterface"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "interface SourceInterface",
                 "sym": "test/php/SourceInterface",
@@ -213,6 +216,7 @@
                     "container": "",
                     "localName": "SourceTrait"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "trait SourceTrait",
                 "sym": "test/php/SourceTrait",
@@ -261,6 +265,7 @@
                     "container": "",
                     "localName": "SuperClass"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "class SuperClass",
                 "sym": "test/php/SuperClass",

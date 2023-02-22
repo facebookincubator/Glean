@@ -40,6 +40,7 @@
                     "container": "",
                     "localName": "RefClass"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "class RefClass",
                 "sym": "test/php/RefClass",
@@ -88,6 +89,7 @@
                     "container": "",
                     "localName": "SourceInterface"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "interface SourceInterface",
                 "sym": "test/php/SourceInterface",

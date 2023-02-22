@@ -43,6 +43,7 @@
                     "container": "foo",
                     "localName": "bar"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "namespace foo::bar",
                 "sym": "test/cpp//foo/bar",
@@ -90,6 +91,7 @@
                     "container": "foo::bar",
                     "localName": "T"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "struct foo::bar::T",
                 "sym": "test/cpp//foo/bar/T/.decl",
@@ -137,6 +139,7 @@
                     "container": "foo::bar",
                     "localName": "TypedefDeclShort"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "typedef short foo::bar::TypedefDeclShort",
                 "sym": "test/cpp//foo/bar/TypedefDeclShort/.decl",
@@ -184,6 +187,7 @@
                     "container": "foo::bar",
                     "localName": "UsingDeclShort"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "using foo::bar::UsingDeclShort = short",
                 "sym": "test/cpp//foo/bar/UsingDeclShort/.decl",
@@ -232,6 +236,7 @@
                     "container": "foo::bar",
                     "localName": "g"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "void foo::bar::g()",
                 "sym": "test/cpp//foo/bar/g/.decl",

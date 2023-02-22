@@ -40,6 +40,7 @@
                     "container": "maybe",
                     "localName": "nothing"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "const maybe::Nothing maybe::nothing",
                 "sym": "test/cpp//maybe/nothing/.decl",

@@ -42,6 +42,7 @@
                     "container": "",
                     "localName": "Global"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "enum ::Global : int",
                 "sym": "test/cpp//Global",
@@ -89,6 +90,7 @@
                     "container": "Global",
                     "localName": "GA"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "GA",
                 "sym": "test/cpp//Global/GA",
@@ -136,6 +138,7 @@
                     "container": "Global",
                     "localName": "GB"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "GB",
                 "sym": "test/cpp//Global/GB",
@@ -183,6 +186,7 @@
                     "container": "Global",
                     "localName": "GC"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "GC",
                 "sym": "test/cpp//Global/GC",

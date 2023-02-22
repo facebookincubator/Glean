@@ -51,6 +51,7 @@
                     "container": "",
                     "localName": "SourceClass"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/SourceClass",
                 "sym_location": {
@@ -98,6 +99,7 @@
                     "container": "",
                     "localName": "SubClass"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/SubClass",
                 "sym_location": {
@@ -145,6 +147,7 @@
                     "container": "",
                     "localName": "SuperClass"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/SuperClass",
                 "sym_location": {

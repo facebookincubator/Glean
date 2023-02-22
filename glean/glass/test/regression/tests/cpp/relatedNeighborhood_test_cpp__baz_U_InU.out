@@ -47,6 +47,7 @@
                     "container": "baz",
                     "localName": "U"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "struct baz::U",
                 "sym": "test/cpp//baz/U",
@@ -94,6 +95,7 @@
                     "container": "baz::U",
                     "localName": "InU"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "enum baz::U::InU : int",
                 "sym": "test/cpp//baz/U/InU",
@@ -141,6 +143,7 @@
                     "container": "baz::U::InU",
                     "localName": "UA"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "UA",
                 "sym": "test/cpp//baz/U/InU/UA",
@@ -188,6 +191,7 @@
                     "container": "baz::U::InU",
                     "localName": "UB"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "UB",
                 "sym": "test/cpp//baz/U/InU/UB",
@@ -235,6 +239,7 @@
                     "container": "baz::U::InU",
                     "localName": "UC"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "UC",
                 "sym": "test/cpp//baz/U/InU/UC",

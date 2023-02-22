@@ -44,6 +44,7 @@
                     "container": "",
                     "localName": "RefClass"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "class RefClass",
                 "sym": "test/php/RefClass",
@@ -92,6 +93,7 @@
                     "container": "RefClass",
                     "localName": "bar"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "public function bar(SourceClass::T $param): int",
                 "sym": "test/php/RefClass/bar",

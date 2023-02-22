@@ -37,6 +37,7 @@
             "container": "TestAnnotation",
             "localName": "io_good"
         },
+        "pretty_comments": [],
         "repo_hash": "testhash",
         "signature": "private function io_good()[io]: void",
         "sym": "test/php/TestAnnotation/io_good",

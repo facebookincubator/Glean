@@ -43,6 +43,7 @@
                     "container": "all",
                     "localName": "fn"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "def fn(...) -> ...:",
                 "sym": "test/py/all.py/all.fn",

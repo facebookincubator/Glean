@@ -1467,6 +1467,7 @@ briefDescribeEntity ent SymbolResult{..} = do
     symbolDescription_modifiers = mempty
     symbolDescription_type_xrefs  = mempty
     symbolDescription_sym_other_locations = mempty
+    symbolDescription_pretty_comments = mempty
     symbolDescription_extends_relation  = def
     symbolDescription_contains_relation  = def
     symbolDescription_location = def
@@ -1512,6 +1513,7 @@ describeEntity scmRevs ent SymbolResult{..} = do
 
     symbolDescription_sym_location = symbolResult_location
     symbolDescription_sym_other_locations = []
+    symbolDescription_pretty_comments = mempty
 
     repo = locationRange_repository symbolResult_location
 

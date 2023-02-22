@@ -43,6 +43,7 @@
                     "container": "foo::bar",
                     "localName": "T"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "struct foo::bar::T",
                 "sym": "test/cpp//foo/bar/T",
@@ -90,6 +91,7 @@
                     "container": "foo::bar::T",
                     "localName": "memberVariableDecl"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "int foo::bar::T::memberVariableDecl",
                 "sym": "test/cpp//foo/bar/T/memberVariableDecl/.decl",

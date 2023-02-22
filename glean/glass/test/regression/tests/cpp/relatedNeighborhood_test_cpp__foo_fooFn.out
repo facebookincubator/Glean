@@ -38,6 +38,7 @@
                     "container": "foo",
                     "localName": "fooFn"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "int foo::fooFn(int fooI)",
                 "sym": "test/cpp//foo/fooFn",

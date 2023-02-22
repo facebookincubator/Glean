@@ -43,6 +43,7 @@
                     "container": "foo",
                     "localName": "S"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "struct foo::S",
                 "sym": "test/cpp//foo/S",
@@ -90,6 +91,7 @@
                     "container": "foo::S",
                     "localName": "TypedefDeclInteger"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "typedef long foo::S::TypedefDeclInteger",
                 "sym": "test/cpp//foo/S/TypedefDeclInteger/.decl",

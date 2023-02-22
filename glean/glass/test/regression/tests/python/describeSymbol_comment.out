@@ -31,6 +31,7 @@
             "container": "big_lib",
             "localName": "big_func"
         },
+        "pretty_comments": [],
         "repo_hash": "testhash",
         "signature": "def big_func(...) -> ...:",
         "sym": "test/py/big_lib/big_lib.big_func",

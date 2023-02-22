@@ -40,6 +40,7 @@
                     "container": "",
                     "localName": "baz"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "namespace baz",
                 "sym": "test/cpp//baz",
@@ -87,6 +88,7 @@
                     "container": "baz",
                     "localName": "U"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "struct baz::U",
                 "sym": "test/cpp//baz/U/.decl",

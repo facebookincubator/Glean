@@ -33,6 +33,7 @@
                     "container": "",
                     "localName": "all"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/all.py/all",
                 "sym_location": {
@@ -90,6 +91,7 @@
                     "container": "all",
                     "localName": "fn"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "def fn(...) -> ...:",
                 "sym": "test/py/all.py/all.fn",
@@ -138,6 +140,7 @@
                     "container": "",
                     "localName": "as"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/as.py/as",
                 "sym_location": {
@@ -196,6 +199,7 @@
                     "container": "as",
                     "localName": "fn"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "def fn(...) -> ...:",
                 "sym": "test/py/as.py/as.fn",
@@ -253,6 +257,7 @@
                     "container": "as",
                     "localName": "func_sleep"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "async def func_sleep(...) -> ...:",
                 "sym": "test/py/as.py/as.func_sleep",
@@ -301,6 +306,7 @@
                     "container": "",
                     "localName": "big_lib"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/big_lib/big_lib",
                 "sym_location": {
@@ -348,6 +354,7 @@
                     "container": "big_lib",
                     "localName": "big_func"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "def big_func(...) -> ...:",
                 "sym": "test/py/big_lib/big_lib.big_func",
@@ -396,6 +403,7 @@
                     "container": "big_lib",
                     "localName": "relative"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/big_lib/big_lib.relative",
                 "sym_location": {
@@ -443,6 +451,7 @@
                     "container": "",
                     "localName": "lib"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/lib.py/lib",
                 "sym_location": {
@@ -490,6 +499,7 @@
                     "container": "lib",
                     "localName": "helper_func"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "def helper_func(...) -> ...:",
                 "sym": "test/py/lib.py/lib.helper_func",
@@ -538,6 +548,7 @@
                     "container": "",
                     "localName": "main"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/main.py/main",
                 "sym_location": {
@@ -585,6 +596,7 @@
                     "container": "main",
                     "localName": "f"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "def f(...) -> ...:",
                 "sym": "test/py/main.py/main.f",
@@ -633,6 +645,7 @@
                     "container": "main",
                     "localName": "g"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "def g(...) -> ...:",
                 "sym": "test/py/main.py/main.g",
@@ -681,6 +694,7 @@
                     "container": "main.g.<locals>",
                     "localName": "h"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "def h(...) -> ...:",
                 "sym": "test/py/main.py/main.g.%3Clocals%3E.h",
@@ -729,6 +743,7 @@
                     "container": "",
                     "localName": "shadow"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/shadow.py/shadow",
                 "sym_location": {
@@ -776,6 +791,7 @@
                     "container": "shadow",
                     "localName": "shadow_func"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "def shadow_func(...) -> ...:",
                 "sym": "test/py/shadow.py/shadow.shadow_func",

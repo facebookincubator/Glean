@@ -34,6 +34,7 @@
                     "container": "FancyTypes",
                     "localName": "flatten"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/FancyTypes/flatten",
                 "sym_location": {
@@ -82,6 +83,7 @@
                     "container": "NS\\AnotherNamespaceClass",
                     "localName": "another_class_function"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/NS/AnotherNamespaceClass/another_class_function",
                 "sym_location": {
@@ -130,6 +132,7 @@
                     "container": "NS\\NamespaceClass",
                     "localName": "class_function"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/NS/NamespaceClass/class_function",
                 "sym_location": {
@@ -178,6 +181,7 @@
                     "container": "RefClass",
                     "localName": "bar"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/RefClass/bar",
                 "sym_location": {
@@ -226,6 +230,7 @@
                     "container": "RefClass",
                     "localName": "bazza"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/RefClass/bazza",
                 "sym_location": {
@@ -276,6 +281,7 @@
                     "container": "RefClass",
                     "localName": "foo"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/RefClass/foo",
                 "sym_location": {
@@ -328,6 +334,7 @@
                     "container": "RefClass",
                     "localName": "lotsofkeywords"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/RefClass/lotsofkeywords",
                 "sym_location": {
@@ -376,6 +383,7 @@
                     "container": "SourceClass",
                     "localName": "bar"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/SourceClass/bar",
                 "sym_location": {
@@ -435,6 +443,7 @@
                     "container": "SourceClass",
                     "localName": "overrideMe"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/SourceClass/overrideMe",
                 "sym_location": {
@@ -497,6 +506,7 @@
                     "container": "SourceClass",
                     "localName": "pleaseOverride"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/SourceClass/pleaseOverride",
                 "sym_location": {
@@ -548,6 +558,7 @@
                     "container": "SourceInterface",
                     "localName": "foo"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/SourceInterface/foo",
                 "sym_location": {
@@ -598,6 +609,7 @@
                     "container": "SourceInterface",
                     "localName": "quux"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/SourceInterface/quux",
                 "sym_location": {
@@ -646,6 +658,7 @@
                     "container": "SourceTrait",
                     "localName": "quux"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/SourceTrait/quux",
                 "sym_location": {
@@ -694,6 +707,7 @@
                     "container": "SourceTrait",
                     "localName": "superAdd"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/SourceTrait/superAdd",
                 "sym_location": {
@@ -760,6 +774,7 @@
                     "container": "SubClass",
                     "localName": "pleaseOverride"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/SubClass/pleaseOverride",
                 "sym_location": {
@@ -808,6 +823,7 @@
                     "container": "SuperClass",
                     "localName": "overrideMe"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/SuperClass/overrideMe",
                 "sym_location": {
@@ -856,6 +872,7 @@
                     "container": "SuperClass",
                     "localName": "superAdd"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/SuperClass/superAdd",
                 "sym_location": {
@@ -904,6 +921,7 @@
                     "container": "TestAnnotation",
                     "localName": "__construct"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/TestAnnotation/__construct",
                 "sym_location": {
@@ -957,6 +975,7 @@
                     "container": "TestAnnotation",
                     "localName": "io_good"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/TestAnnotation/io_good",
                 "sym_location": {

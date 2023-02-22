@@ -33,6 +33,7 @@
                     "container": "",
                     "localName": "cjs_exports"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "module cjs_exports",
                 "sym": "test/js/cjs_exports",
@@ -80,6 +81,7 @@
                     "container": "",
                     "localName": "cjs_exports"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "test/cjs_exports.js",
                 "sym": "test/js/cjs_exports",
@@ -127,6 +129,7 @@
                     "container": "cjs_exports",
                     "localName": "plus"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "plus: (x: number) => number",
                 "sym": "test/js/cjs_exports/plus",
@@ -174,6 +177,7 @@
                     "container": "cjs_exports",
                     "localName": "x"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "x: number",
                 "sym": "test/js/cjs_exports/x",
@@ -221,6 +225,7 @@
                     "container": "",
                     "localName": "es_exports"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "test/es_exports.js",
                 "sym": "test/js/es_exports",
@@ -268,6 +273,7 @@
                     "container": "",
                     "localName": "es_exports"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "test/es_exports.js.flow",
                 "sym": "test/js/es_exports",
@@ -315,6 +321,7 @@
                     "container": "es_exports",
                     "localName": "C"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "C: class C",
                 "sym": "test/js/es_exports/C",
@@ -362,6 +369,7 @@
                     "container": "es_exports",
                     "localName": "C"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "C: class C",
                 "sym": "test/js/es_exports/C",
@@ -409,6 +417,7 @@
                     "container": "es_exports",
                     "localName": "bar"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/js/es_exports/bar",
                 "sym_location": {
@@ -455,6 +464,7 @@
                     "container": "es_exports",
                     "localName": "baz"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "baz: class baz",
                 "sym": "test/js/es_exports/baz",
@@ -502,6 +512,7 @@
                     "container": "es_exports",
                     "localName": "baz"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "baz: class baz",
                 "sym": "test/js/es_exports/baz",
@@ -560,6 +571,7 @@
                     "container": "es_exports",
                     "localName": "bor"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "bor: (x: number) => number",
                 "sym": "test/js/es_exports/bor",
@@ -607,6 +619,7 @@
                     "container": "es_exports",
                     "localName": "d"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "d: string",
                 "sym": "test/js/es_exports/d",
@@ -654,6 +667,7 @@
                     "container": "es_exports",
                     "localName": "foo"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "foo: number",
                 "sym": "test/js/es_exports/foo",
@@ -701,6 +715,7 @@
                     "container": "es_exports",
                     "localName": "num"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "num: type num = number",
                 "sym": "test/js/es_exports/num",
@@ -748,6 +763,7 @@
                     "container": "es_exports",
                     "localName": "x"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "x: number",
                 "sym": "test/js/es_exports/x",
@@ -795,6 +811,7 @@
                     "container": "",
                     "localName": "imports"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "test/imports.js",
                 "sym": "test/js/imports",
@@ -842,6 +859,7 @@
                     "container": "imports",
                     "localName": "D"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "D: type D = typeof C",
                 "sym": "test/js/imports/D",
@@ -889,6 +907,7 @@
                     "container": "imports",
                     "localName": "caz"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "caz: class caz",
                 "sym": "test/js/imports/caz",
@@ -936,6 +955,7 @@
                     "container": "imports",
                     "localName": "caz"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "caz: class caz",
                 "sym": "test/js/imports/caz",
@@ -983,6 +1003,7 @@
                     "container": "imports",
                     "localName": "e"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "e: string",
                 "sym": "test/js/imports/e",
@@ -1030,6 +1051,7 @@
                     "container": "imports",
                     "localName": "s"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "s: string",
                 "sym": "test/js/imports/s",
@@ -1077,6 +1099,7 @@
                     "container": "imports",
                     "localName": "x"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "x: num",
                 "sym": "test/js/imports/x",
@@ -1124,6 +1147,7 @@
                     "container": "imports",
                     "localName": "y"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "y: num",
                 "sym": "test/js/imports/y",
@@ -1171,6 +1195,7 @@
                     "container": "imports",
                     "localName": "z"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "z: num",
                 "sym": "test/js/imports/z",

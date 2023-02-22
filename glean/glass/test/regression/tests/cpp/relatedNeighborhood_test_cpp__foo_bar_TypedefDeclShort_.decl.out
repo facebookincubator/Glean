@@ -38,6 +38,7 @@
                     "container": "foo::bar",
                     "localName": "TypedefDeclShort"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "typedef short foo::bar::TypedefDeclShort",
                 "sym": "test/cpp//foo/bar/TypedefDeclShort/.decl",

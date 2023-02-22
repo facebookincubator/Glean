@@ -38,6 +38,7 @@
                     "container": "foo::bar",
                     "localName": "UsingDeclShort"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "using foo::bar::UsingDeclShort = short",
                 "sym": "test/cpp//foo/bar/UsingDeclShort/.decl",

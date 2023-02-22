@@ -61,6 +61,7 @@
                     "container": "",
                     "localName": "SourceClass"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "class SourceClass",
                 "sym": "test/php/SourceClass",
@@ -109,6 +110,7 @@
                     "container": "SourceClass",
                     "localName": "T"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "const type T",
                 "sym": "test/php/SourceClass/T",

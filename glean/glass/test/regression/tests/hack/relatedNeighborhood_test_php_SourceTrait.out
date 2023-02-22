@@ -43,6 +43,7 @@
                     "container": "",
                     "localName": "RefClass"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "class RefClass",
                 "sym": "test/php/RefClass",
@@ -91,6 +92,7 @@
                     "container": "",
                     "localName": "SourceTrait"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "trait SourceTrait",
                 "sym": "test/php/SourceTrait",
@@ -139,6 +141,7 @@
                     "container": "SourceTrait",
                     "localName": "quux"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "public function quux(int $i): int",
                 "sym": "test/php/SourceTrait/quux",
@@ -188,6 +191,7 @@
                     "container": "SourceTrait",
                     "localName": "superAdd"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "public function superAdd(int $i, int $i): int",
                 "sym": "test/php/SourceTrait/superAdd",

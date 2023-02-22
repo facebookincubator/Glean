@@ -33,6 +33,7 @@
                     "container": "",
                     "localName": "all"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/all.py/all",
                 "sym_location": {
@@ -80,6 +81,7 @@
                     "container": "all",
                     "localName": "LocalClass"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/all.py/all.LocalClass",
                 "sym_location": {
@@ -127,6 +129,7 @@
                     "container": "all.LocalClass",
                     "localName": "meth"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "def meth(...) -> ...:",
                 "sym": "test/py/all.py/all.LocalClass.meth",
@@ -175,6 +178,7 @@
                     "container": "all",
                     "localName": "__all__"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/all.py/all.__all__",
                 "sym_location": {
@@ -232,6 +236,7 @@
                     "container": "all",
                     "localName": "fn"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "def fn(...) -> ...:",
                 "sym": "test/py/all.py/all.fn",
@@ -280,6 +285,7 @@
                     "container": "all.fn.<locals>",
                     "localName": "local_var"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/all.py/all.fn.%3Clocals%3E.local_var",
                 "sym_location": {
@@ -327,6 +333,7 @@
                     "container": "all",
                     "localName": "var"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/all.py/all.var",
                 "sym_location": {
@@ -374,6 +381,7 @@
                     "container": "",
                     "localName": "as"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/as.py/as",
                 "sym_location": {
@@ -432,6 +440,7 @@
                     "container": "as",
                     "localName": "fn"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "def fn(...) -> ...:",
                 "sym": "test/py/as.py/as.fn",
@@ -480,6 +489,7 @@
                     "container": "as.fn.<locals>",
                     "localName": "local_var"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/as.py/as.fn.%3Clocals%3E.local_var",
                 "sym_location": {
@@ -536,6 +546,7 @@
                     "container": "as",
                     "localName": "func_sleep"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "async def func_sleep(...) -> ...:",
                 "sym": "test/py/as.py/as.func_sleep",
@@ -584,6 +595,7 @@
                     "container": "",
                     "localName": "big_lib"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/big_lib/big_lib",
                 "sym_location": {
@@ -631,6 +643,7 @@
                     "container": "big_lib",
                     "localName": "big_func"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "def big_func(...) -> ...:",
                 "sym": "test/py/big_lib/big_lib.big_func",
@@ -679,6 +692,7 @@
                     "container": "big_lib",
                     "localName": "big_var"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/big_lib/big_lib.big_var",
                 "sym_location": {
@@ -726,6 +740,7 @@
                     "container": "big_lib",
                     "localName": "relative"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/big_lib/big_lib.relative",
                 "sym_location": {
@@ -773,6 +788,7 @@
                     "container": "",
                     "localName": "lib"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/lib.py/lib",
                 "sym_location": {
@@ -820,6 +836,7 @@
                     "container": "lib",
                     "localName": "HelperClass"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/lib.py/lib.HelperClass",
                 "sym_location": {
@@ -867,6 +884,7 @@
                     "container": "lib.HelperClass",
                     "localName": "another_method"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "def another_method(...) -> ...:",
                 "sym": "test/py/lib.py/lib.HelperClass.another_method",
@@ -915,6 +933,7 @@
                     "container": "lib.HelperClass",
                     "localName": "method"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "def method(...) -> ...:",
                 "sym": "test/py/lib.py/lib.HelperClass.method",
@@ -963,6 +982,7 @@
                     "container": "lib.HelperClass",
                     "localName": "value"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/lib.py/lib.HelperClass.value",
                 "sym_location": {
@@ -1010,6 +1030,7 @@
                     "container": "lib",
                     "localName": "helper_func"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "def helper_func(...) -> ...:",
                 "sym": "test/py/lib.py/lib.helper_func",
@@ -1058,6 +1079,7 @@
                     "container": "",
                     "localName": "main"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/main.py/main",
                 "sym_location": {
@@ -1105,6 +1127,7 @@
                     "container": "main",
                     "localName": "f"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "def f(...) -> ...:",
                 "sym": "test/py/main.py/main.f",
@@ -1153,6 +1176,7 @@
                     "container": "main.f.<locals>",
                     "localName": "c"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/main.py/main.f.%3Clocals%3E.c",
                 "sym_location": {
@@ -1200,6 +1224,7 @@
                     "container": "main",
                     "localName": "g"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "def g(...) -> ...:",
                 "sym": "test/py/main.py/main.g",
@@ -1248,6 +1273,7 @@
                     "container": "main.g.<locals>",
                     "localName": "h"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "def h(...) -> ...:",
                 "sym": "test/py/main.py/main.g.%3Clocals%3E.h",
@@ -1296,6 +1322,7 @@
                     "container": "",
                     "localName": "shadow"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/shadow.py/shadow",
                 "sym_location": {
@@ -1343,6 +1370,7 @@
                     "container": "shadow",
                     "localName": "ShadowClass"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/shadow.py/shadow.ShadowClass",
                 "sym_location": {
@@ -1392,6 +1420,7 @@
                     "container": "shadow.ShadowClass",
                     "localName": "big_func"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/shadow.py/shadow.ShadowClass.big_func",
                 "sym_location": {
@@ -1441,6 +1470,7 @@
                     "container": "shadow.ShadowClass",
                     "localName": "local_var"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/shadow.py/shadow.ShadowClass.local_var",
                 "sym_location": {
@@ -1490,6 +1520,7 @@
                     "container": "shadow.ShadowClass",
                     "localName": "other_var"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/shadow.py/shadow.ShadowClass.other_var",
                 "sym_location": {
@@ -1537,6 +1568,7 @@
                     "container": "shadow",
                     "localName": "big_func"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/shadow.py/shadow.big_func",
                 "sym_location": {
@@ -1584,6 +1616,7 @@
                     "container": "shadow",
                     "localName": "local_var"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/shadow.py/shadow.local_var",
                 "sym_location": {
@@ -1631,6 +1664,7 @@
                     "container": "shadow",
                     "localName": "local_var"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/shadow.py/shadow.local_var",
                 "sym_location": {
@@ -1678,6 +1712,7 @@
                     "container": "shadow",
                     "localName": "other_var"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/shadow.py/shadow.other_var",
                 "sym_location": {
@@ -1725,6 +1760,7 @@
                     "container": "shadow",
                     "localName": "shadow_func"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "def shadow_func(...) -> ...:",
                 "sym": "test/py/shadow.py/shadow.shadow_func",
@@ -1773,6 +1809,7 @@
                     "container": "shadow.shadow_func.<locals>",
                     "localName": "big_func"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/shadow.py/shadow.shadow_func.%3Clocals%3E.big_func",
                 "sym_location": {
@@ -1820,6 +1857,7 @@
                     "container": "shadow.shadow_func.<locals>",
                     "localName": "local_var"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/shadow.py/shadow.shadow_func.%3Clocals%3E.local_var",
                 "sym_location": {
@@ -1867,6 +1905,7 @@
                     "container": "shadow.shadow_func.<locals>",
                     "localName": "other_var"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/py/shadow.py/shadow.shadow_func.%3Clocals%3E.other_var",
                 "sym_location": {

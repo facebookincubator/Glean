@@ -54,6 +54,7 @@
                     "container": "maybe",
                     "localName": "Nothing"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "struct maybe::Nothing",
                 "sym": "test/cpp//maybe/Nothing",
@@ -101,6 +102,7 @@
                     "container": "maybe",
                     "localName": "Nothing"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "maybe::Nothing::Nothing(maybe::Nothing::_secret)",
                 "sym": "test/cpp//maybe/Nothing/.ctor",

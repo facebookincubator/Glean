@@ -299,7 +299,7 @@ struct SymbolDescription {
   3: QualifiedName name;
   4: optional SymbolKind kind;
   5: optional list<Annotation> annotations;
-  6: list<LocationRange> comments;
+  6: list<LocationRange> comments; // deprecated, use pretty_comments
   7: optional Visibility visibility;
   8: Revision repo_hash;
   9: Language language;
@@ -310,6 +310,13 @@ struct SymbolDescription {
   14: RelationDescription contains_relation;
   15: set<Modifier> modifiers;
   16: list<TypeSymSpan> type_xrefs;
+  17: list<SymbolComment> pretty_comments; // comment text in markdown format
+}
+
+// Processed comment and original span
+struct SymbolComment {
+  1: LocationRange location;
+  2: optional string comment; // comment in doxygen/docblock or markdown format
 }
 
 // summary of search related results

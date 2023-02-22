@@ -41,6 +41,7 @@
                     "container": "",
                     "localName": "cjs_exports"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "module cjs_exports",
                 "sym": "test/js/cjs_exports",
@@ -88,6 +89,7 @@
                     "container": "cjs_exports",
                     "localName": "plus"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "plus: (x: number) => number",
                 "sym": "test/js/cjs_exports/plus",
@@ -135,6 +137,7 @@
                     "container": "cjs_exports",
                     "localName": "x"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "x: number",
                 "sym": "test/js/cjs_exports/x",

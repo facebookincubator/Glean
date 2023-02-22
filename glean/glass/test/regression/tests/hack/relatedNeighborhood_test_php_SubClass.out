@@ -59,6 +59,7 @@
                     "container": "",
                     "localName": "SourceClass"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "class SourceClass",
                 "sym": "test/php/SourceClass",
@@ -107,6 +108,7 @@
                     "container": "SourceClass",
                     "localName": "daz"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "public int daz",
                 "sym": "test/php/SourceClass/:prop/daz",
@@ -155,6 +157,7 @@
                     "container": "SourceClass",
                     "localName": "BAZ"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "const BAZ",
                 "sym": "test/php/SourceClass/BAZ",
@@ -203,6 +206,7 @@
                     "container": "SourceClass",
                     "localName": "T"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "const type T",
                 "sym": "test/php/SourceClass/T",
@@ -251,6 +255,7 @@
                     "container": "SourceClass",
                     "localName": "bar"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "public function bar(int $param): int",
                 "sym": "test/php/SourceClass/bar",
@@ -311,6 +316,7 @@
                     "container": "SourceClass",
                     "localName": "overrideMe"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "public function overrideMe(int $i): int",
                 "sym": "test/php/SourceClass/overrideMe",
@@ -360,6 +366,7 @@
                     "container": "",
                     "localName": "SubClass"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "class SubClass",
                 "sym": "test/php/SubClass",
@@ -426,6 +433,7 @@
                     "container": "SubClass",
                     "localName": "pleaseOverride"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "public static function pleaseOverride(): string",
                 "sym": "test/php/SubClass/pleaseOverride",
@@ -474,6 +482,7 @@
                     "container": "",
                     "localName": "SuperClass"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "class SuperClass",
                 "sym": "test/php/SuperClass",
@@ -522,6 +531,7 @@
                     "container": "SuperClass",
                     "localName": "superAdd"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "public function superAdd(int $i, int $i): int",
                 "sym": "test/php/SuperClass/superAdd",

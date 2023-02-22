@@ -33,6 +33,7 @@
                     "container": "all.LocalClass",
                     "localName": "meth"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "def meth(...) -> ...:",
                 "sym": "test/py/all.py/all.LocalClass.meth",
@@ -81,6 +82,7 @@
                     "container": "lib.HelperClass",
                     "localName": "another_method"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "def another_method(...) -> ...:",
                 "sym": "test/py/lib.py/lib.HelperClass.another_method",
@@ -129,6 +131,7 @@
                     "container": "lib.HelperClass",
                     "localName": "method"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "def method(...) -> ...:",
                 "sym": "test/py/lib.py/lib.HelperClass.method",

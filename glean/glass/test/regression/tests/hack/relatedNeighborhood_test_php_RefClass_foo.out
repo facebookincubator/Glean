@@ -44,6 +44,7 @@
                     "container": "",
                     "localName": "RefClass"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "class RefClass",
                 "sym": "test/php/RefClass",
@@ -94,6 +95,7 @@
                     "container": "RefClass",
                     "localName": "foo"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "public static function foo(): int",
                 "sym": "test/php/RefClass/foo",

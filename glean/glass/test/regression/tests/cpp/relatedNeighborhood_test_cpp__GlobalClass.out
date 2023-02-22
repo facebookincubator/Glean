@@ -42,6 +42,7 @@
                     "container": "",
                     "localName": "GlobalClass"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "enum class ::GlobalClass : int",
                 "sym": "test/cpp//GlobalClass",
@@ -89,6 +90,7 @@
                     "container": "GlobalClass",
                     "localName": "GCA"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "GCA",
                 "sym": "test/cpp//GlobalClass/GCA",
@@ -136,6 +138,7 @@
                     "container": "GlobalClass",
                     "localName": "GCB"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "GCB",
                 "sym": "test/cpp//GlobalClass/GCB",
@@ -183,6 +186,7 @@
                     "container": "GlobalClass",
                     "localName": "GCC"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "GCC",
                 "sym": "test/cpp//GlobalClass/GCC",

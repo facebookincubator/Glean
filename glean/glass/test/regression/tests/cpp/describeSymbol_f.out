@@ -43,6 +43,7 @@
             "container": "foo",
             "localName": "f"
         },
+        "pretty_comments": [],
         "repo_hash": "testhash",
         "signature": "void foo::f()",
         "sym": "test/cpp//foo/f/.decl",

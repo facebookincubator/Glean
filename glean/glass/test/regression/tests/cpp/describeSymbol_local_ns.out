@@ -31,6 +31,7 @@
             "container": "foo::fooFn",
             "localName": "fooI"
         },
+        "pretty_comments": [],
         "repo_hash": "testhash",
         "signature": "int fooI",
         "sym": "test/cpp//foo/fooFn/fooI/.decl",

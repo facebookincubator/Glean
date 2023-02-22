@@ -45,6 +45,7 @@
                     "container": "",
                     "localName": "Position"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "enum Position : int as int",
                 "sym": "test/php/Position",
@@ -92,6 +93,7 @@
                     "container": "Position",
                     "localName": "Bottom"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "Position::Bottom",
                 "sym": "test/php/Position/Bottom",
@@ -139,6 +141,7 @@
                     "container": "Position",
                     "localName": "Center"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "Position::Center",
                 "sym": "test/php/Position/Center",
@@ -186,6 +189,7 @@
                     "container": "Position",
                     "localName": "Left"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "Position::Left",
                 "sym": "test/php/Position/Left",
@@ -233,6 +237,7 @@
                     "container": "Position",
                     "localName": "Right"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "Position::Right",
                 "sym": "test/php/Position/Right",
@@ -280,6 +285,7 @@
                     "container": "Position",
                     "localName": "Top"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "Position::Top",
                 "sym": "test/php/Position/Top",

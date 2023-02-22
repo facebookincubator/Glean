@@ -42,6 +42,7 @@
                     "container": "as",
                     "localName": "func_sleep"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "async def func_sleep(...) -> ...:",
                 "sym": "test/py/as.py/as.func_sleep",

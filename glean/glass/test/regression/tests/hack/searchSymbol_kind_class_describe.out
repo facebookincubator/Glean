@@ -34,6 +34,7 @@
                     "container": "",
                     "localName": "FancyTypes"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/FancyTypes",
                 "sym_location": {
@@ -81,6 +82,7 @@
                     "container": "NS",
                     "localName": "AnotherNamespaceClass"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/NS/AnotherNamespaceClass",
                 "sym_location": {
@@ -128,6 +130,7 @@
                     "container": "NS",
                     "localName": "NamespaceClass"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/NS/NamespaceClass",
                 "sym_location": {
@@ -175,6 +178,7 @@
                     "container": "",
                     "localName": "RefClass"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/RefClass",
                 "sym_location": {
@@ -239,6 +243,7 @@
                     "container": "",
                     "localName": "SourceClass"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/SourceClass",
                 "sym_location": {
@@ -286,6 +291,7 @@
                     "container": "",
                     "localName": "SubClass"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/SubClass",
                 "sym_location": {
@@ -333,6 +339,7 @@
                     "container": "",
                     "localName": "SuperClass"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/SuperClass",
                 "sym_location": {
@@ -380,6 +387,7 @@
                     "container": "",
                     "localName": "TestAnnotation"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/TestAnnotation",
                 "sym_location": {

@@ -33,6 +33,7 @@
                     "container": "foo",
                     "localName": "foo"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/cpp//foo/foo",
                 "sym_location": {
@@ -79,6 +80,7 @@
                     "container": "foo",
                     "localName": "fooFn"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/cpp//foo/fooFn",
                 "sym_location": {

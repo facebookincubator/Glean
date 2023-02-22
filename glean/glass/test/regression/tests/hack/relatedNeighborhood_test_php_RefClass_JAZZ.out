@@ -44,6 +44,7 @@
                     "container": "",
                     "localName": "RefClass"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "class RefClass",
                 "sym": "test/php/RefClass",
@@ -91,6 +92,7 @@
                     "container": "RefClass",
                     "localName": "JAZZ"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "const JAZZ",
                 "sym": "test/php/RefClass/JAZZ",

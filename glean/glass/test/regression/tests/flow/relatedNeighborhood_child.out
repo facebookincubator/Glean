@@ -43,6 +43,7 @@
                     "container": "",
                     "localName": "cjs_exports"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "test/cjs_exports.js",
                 "sym": "test/js/cjs_exports",
@@ -90,6 +91,7 @@
                     "container": "cjs_exports",
                     "localName": "plus"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "plus: (x: number) => number",
                 "sym": "test/js/cjs_exports/plus",

@@ -34,6 +34,7 @@
                     "container": "NS\\InnerNS",
                     "localName": "deep_function"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/fun/NS/InnerNS/deep_function",
                 "sym_location": {
@@ -81,6 +82,7 @@
                     "container": "",
                     "localName": "corge"
                 },
+                "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/php/fun/corge",
                 "sym_location": {
