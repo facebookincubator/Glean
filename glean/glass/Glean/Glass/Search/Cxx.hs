@@ -152,7 +152,7 @@ lookupNamespaceDefinition = lookupEntityFn $ \name ns entity ->
 lookupEnumerator
   :: Text -> [Text] -> Text -> Text -> Angle (ResultLocation Cxx.Entity)
 lookupEnumerator anchor ns parent name =
-  vars $ \ (decl :: Angle Cxx.Enumerator_key) (entity :: Angle Cxx.Entity)
+  vars $ \ (decl :: Angle Cxx.Enumerator) (entity :: Angle Cxx.Entity)
     (codeEntity :: Angle Code.Entity) (file :: Angle Src.File)
       (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
     tuple (entity, file, rangespan, lname) `where_` ((
@@ -161,9 +161,9 @@ lookupEnumerator anchor ns parent name =
           field @"name" (string name) $
           field @"parent" (string parent) $
           field @"scope" (scopeQ (reverse ns)) $
-          field @"decl" decl
+          field @"decl" (asPredicate decl)
         end))
-      : (alt @"enumerator" decl .= sig entity)
+      : (alt @"enumerator" (asPredicate decl) .= sig entity)
       : entityFooter anchor entity codeEntity file rangespan lname
       )
 
