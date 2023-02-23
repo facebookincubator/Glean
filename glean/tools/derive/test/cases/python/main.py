@@ -11,6 +11,10 @@ from lib import func, helper_func, HelperClass as Helper
 
 
 def f() -> "None":
+    pass
+
+
+def f() -> "None":
     helper_func()
     big_func()
     func()

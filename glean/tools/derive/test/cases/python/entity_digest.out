@@ -200,7 +200,7 @@
       },
       "file": { "key": "main.py" }
     },
-    "value": "def f() -> \"None\":\u000a    helper_func()\u000a    big_func()\u000a    func()\u000a    c = Helper()\u000a    c.method()\u000a    return c"
+    "value": "def f() -> \"None\":\u000a    pass"
   },
   {
     "key": {
@@ -461,7 +461,7 @@
       },
       "file": { "key": "main.py" }
     },
-    "value": "# Copyright (c) Meta Platforms, Inc. and affiliates.\u000a# All rights reserved.\u000a#\u000a# This source code is licensed under the BSD-style license found in the\u000a# LICENSE file in the root directory of this source tree.\u000a\u000a# flake8: noqa\u000a\u000afrom big_lib import big_func  # noqa\u000afrom lib import func, helper_func, HelperClass as Helper\u000a\u000a\u000adef f() -> \"None\":\u000a    helper_func()\u000a    big_func()\u000a    func()\u000a    c = Helper()\u000a    c.method()\u000a    return c\u000a\u000a\u000adef g() -> None:\u000a    from lib import HelperClass as OtherHelper\u000a\u000a    def h(_: OtherHelper) -> None:\u000a        pass\u000a\u000a\u000aif __name__ == \"__main__\":\u000a    f()\u000a"
+    "value": "# Copyright (c) Meta Platforms, Inc. and affiliates.\u000a# All rights reserved.\u000a#\u000a# This source code is licensed under the BSD-style license found in the\u000a# LICENSE file in the root directory of this source tree.\u000a\u000a# flake8: noqa\u000a\u000afrom big_lib import big_func  # noqa\u000afrom lib import func, helper_func, HelperClass as Helper\u000a\u000a\u000adef f() -> \"None\":\u000a    pass\u000a\u000a\u000adef f() -> \"None\":\u000a    helper_func()\u000a    big_func()\u000a    func()\u000a    c = Helper()\u000a    c.method()\u000a    return c\u000a\u000a\u000adef g() -> None:\u000a    from lib import HelperClass as OtherHelper\u000a\u000a    def h(_: OtherHelper) -> None:\u000a        pass\u000a\u000a\u000aif __name__ == \"__main__\":\u000a    f()\u000a"
   },
   {
     "key": {

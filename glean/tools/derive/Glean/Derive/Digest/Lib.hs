@@ -15,10 +15,12 @@ module Glean.Derive.Digest.Lib (
 ) where
 
 import Control.Exception (catch, throwIO)
-import Control.Monad (forM, void)
+import Control.Monad (forM, when, void)
 import Control.Monad.IO.Class (liftIO)
 import qualified Data.HashMap.Strict as Map
-import Data.Foldable (for_)
+import Data.Foldable (for_, minimumBy)
+import Data.Function (on)
+import Data.List.NonEmpty (NonEmpty((:|)))
 import Data.Text (Text)
 import qualified Data.Text as T
 import Data.Text.Encoding (encodeUtf8)
@@ -26,6 +28,7 @@ import qualified Data.Text.IO as T
 import System.Directory (getCurrentDirectory)
 import System.IO.Error (isDoesNotExistError)
 
+import Util.Log.String (logWarning)
 import Util.Text(slice)
 
 import Glean (
@@ -71,8 +74,8 @@ derive :: Backend b => b -> Repo -> Config -> IO ()
 derive backend repo Config{..} = do
   locationsByFile <- runHaxl backend repo $ do
     locations <- Glean.search_ $ query codeLocations
-    return $ Map.fromListWith (++)
-      [(f, [(range, e)]) | (f, range, e) <- locations]
+    return $ Map.fromListWith (Map.unionWith (<>))
+      [(f, Map.singleton e (range :| [])) | (f, range, e) <- locations]
 
   factsByFile <- forM (Map.toList locationsByFile) $ \(f, locations) -> do
     contents <- do
@@ -83,9 +86,15 @@ derive backend repo Config{..} = do
             cwd <- getCurrentDirectory
             throwIO $ userError $ fpath <> " not found in " <> cwd
           else throwIO e
-    facts <- forM locations $ \(range, entity) -> do
+    facts <- forM (Map.toList locations) $ \(entity, ranges) -> do
+      when (length ranges > 1) $
+        logWarning $
+          "Multiple ranges found for entity, " <>
+          "picking the earliest starting one: " <>
+          show entity
       let srcCode = textAt range contents
           !digest = hashFunction srcCode
+          range = minimumBy (compare `on` rangeStart) ranges
       return (entity, digest)
     return (f, facts)
   liftIO $ basicWriter backend repo [Src.allPredicates, Code.allPredicates] $ do
@@ -95,6 +104,13 @@ derive backend repo Config{..} = do
         for_ facts $ \(entity, digest) -> do
           let key = Code.FileEntityDigest_key srcFile entity
           void $ newFact @_ @Code.FileEntityDigest key digest
+
+rangeStart :: Code.RangeSpan -> Int
+rangeStart (Code.RangeSpan_span Src.ByteSpan{..}) =
+  fromIntegral $ unNat byteSpan_start
+rangeStart (Code.RangeSpan_range Src.Range{..}) =
+  fromIntegral $ unNat range_lineBegin
+rangeStart Code.RangeSpan_EMPTY = 0
 
 textAt :: Code.RangeSpan -> T.Text -> T.Text
 textAt (Code.RangeSpan_span Src.ByteSpan {..}) text =

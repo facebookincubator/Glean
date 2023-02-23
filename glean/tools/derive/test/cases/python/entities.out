@@ -245,7 +245,21 @@
       },
       "location": {
         "file": { "key": "main.py" },
-        "location": { "span": { "length": 107, "start": 321 } },
+        "location": { "span": { "length": 27, "start": 321 } },
+        "name": "main.f"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "func": { "key": { "name": { "key": "main.f" } } } }
+        }
+      },
+      "location": {
+        "file": { "key": "main.py" },
+        "location": { "span": { "length": 107, "start": 351 } },
         "name": "main.f"
       }
     }
@@ -259,7 +273,7 @@
       },
       "location": {
         "file": { "key": "main.py" },
-        "location": { "span": { "length": 112, "start": 431 } },
+        "location": { "span": { "length": 112, "start": 461 } },
         "name": "main.g"
       }
     }
@@ -275,7 +289,7 @@
       },
       "location": {
         "file": { "key": "main.py" },
-        "location": { "span": { "length": 43, "start": 500 } },
+        "location": { "span": { "length": 43, "start": 530 } },
         "name": "main.g.<locals>.h"
       }
     }
@@ -422,7 +436,7 @@
       },
       "location": {
         "file": { "key": "main.py" },
-        "location": { "span": { "length": 11, "start": 468 } },
+        "location": { "span": { "length": 11, "start": 498 } },
         "name": "main.OtherHelper"
       }
     }
@@ -557,7 +571,7 @@
       },
       "location": {
         "file": { "key": "main.py" },
-        "location": { "span": { "length": 581, "start": 0 } },
+        "location": { "span": { "length": 611, "start": 0 } },
         "name": "main"
       }
     }
@@ -619,7 +633,7 @@
       },
       "location": {
         "file": { "key": "main.py" },
-        "location": { "span": { "length": 12, "start": 388 } },
+        "location": { "span": { "length": 12, "start": 418 } },
         "name": "main.f.<locals>.c"
       }
     }
