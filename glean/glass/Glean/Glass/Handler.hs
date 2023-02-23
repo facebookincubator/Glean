@@ -279,6 +279,7 @@ documentSymbolIndex
   -> IO DocumentSymbolIndex
 documentSymbolIndex = runRepoFile "documentSymbolIndex" fetchDocumentSymbolIndex
 
+-- | Return the first success
 firstOrErrors
   :: ReposHaxl u w [Either ErrorTy a] -> ReposHaxl u w (Either ErrorTy a)
 firstOrErrors act = do
@@ -286,6 +287,18 @@ firstOrErrors act = do
   let (fail, success) = partitionEithers result
   return $ case success of
     x:_ -> Right x
+    [] -> Left $ AggregateError fail
+
+-- | Return all successes, after de-duplication
+anyOrErrors
+  :: Ord a
+  => ReposHaxl u w [Either ErrorTy [a]]
+  -> ReposHaxl u w (Either ErrorTy [a])
+anyOrErrors act = do
+  result <- act
+  let (fail, success) = partitionEithers result
+  return $ case success of
+    xs@(_:_) -> Right (nubOrd (concat xs))
     [] -> Left $ AggregateError fail
 
 -- | Given a Location , resolve it to a line:col range in the target file
@@ -460,23 +473,22 @@ clangUSRToReferenceRanges
   -> RequestOptions
   -> IO [USRSymbolReference]
 clangUSRToReferenceRanges env@Glass.Env{..} usr@(USR hash) _opts =
-  withRepoLanguage "clangUSRToReferenceRanges" env usr repo mlang  $
-   \(gleanDBs,_) _ -> do
+  withRepoLanguage "clangUSRToReferenceRanges" env usr scmRepo mlang $
+   \(gleanDBs,_) _ ->
     backendRunHaxl GleanBackend{..} $ do
-      result <- firstOrErrors $ queryEachRepo $ do
+      result <- anyOrErrors $ queryEachRepo $ do
+        repo <- RepoName . Glean.repo_name <$> Glean.haxlRepo
         refs <- Cxx.usrHashToXRefs mlimit hash
-        res <- mapM convert refs
+        res <- forM refs $ \(targetFile, rspan) -> USRSymbolReference <$>
+          rangeSpanToLocationRange repo targetFile rspan
         pure (Right res)
       case result of
         Left err -> throwM $ ServerException $ errorText err
-        Right defn -> return (defn, Nothing)
+        Right refs -> return (refs, Nothing)
   where
-    repo = RepoName "fbsource"
+    scmRepo = RepoName "fbsource" -- a "corpus" corresponds to >1 glean index
     mlang = Just Language_Cpp
     mlimit = fromIntegral <$> requestOptions_limit _opts
-    convert (targetFile, rspan) = do
-      r <- rangeSpanToLocationRange repo targetFile rspan
-      return $ USRSymbolReference r
 
 -- | Scrub all glean types for export to the client
 -- And flatten to lists for GraphQL.
@@ -872,7 +884,7 @@ searchBySymbolId env@Glass.Env{..} symbolPrefix opts = do
       withRepoLanguage "findSymbols" env symbolPrefix repo (Just lang) $
         \(gleanDBs, _) _ -> do
           backendRunHaxl GleanBackend{..} $ do
-            symids <-  queryAllRepos $ do
+            symids <- queryAllRepos $ do
               entities <- prefixSearchEntity lang limit tokens
               forM (take limit entities) $ \(entity, file, _, _) -> do
                 path <- GleanPath <$> Glean.keyOf file
