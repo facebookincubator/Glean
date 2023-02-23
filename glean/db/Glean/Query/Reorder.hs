@@ -762,7 +762,7 @@ reorderStmt stmt@(FlatStatement ty lhs gen)
   -- know the type of X or Y is a predicate then we can add the statement
   -- X = p _ to bind it and retry.
   --
-  -- Termination is guarenteed as we strictly decrease the number of unbound
+  -- Termination is guaranteed as we strictly decrease the number of unbound
   -- variables each time
   attemptBindFromType e f
     | (_, Just (UnboundVariable var@(Var ty _ _))) <- e
