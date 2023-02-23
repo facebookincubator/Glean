@@ -86,14 +86,14 @@ public:
     for (auto ix = 0; ix < shards.size(); ix++) {
       shards.at(ix).withWLock([&](Shard& shard) {
         auto size_this_shard = std::min(shard_size, size - (ix * shard_size));
-        shard.items = std::vector<Id>(size_this_shard, Id::invalid());
+        shard.items = std::vector<std::optional<Id>>(size_this_shard, std::nullopt);
       });
     }
   }
 
   Id start() const { return base; }
   Id finish() const { return base + size; }
-  Id subst(const Id id) {
+  std::optional<Id> subst(const Id id) {
     if (id >= start() && id < finish()) {
       const auto d = distance(start(), id);
       const auto shard_index = d / shard_size;
@@ -131,7 +131,7 @@ public:
 
 private:
   struct Shard {
-    std::vector<Id> items;
+    std::vector<std::optional<Id>> items;
     size_t used = 0; // values mapped to a valid Id.
   };
 
@@ -174,9 +174,8 @@ const char *glean_diff(
   // without ever allowing the writer to be blocked.
   Queue queue_deduped(20 * parallel_dedupes);
 
-  const auto substitute = syscall([&subst](Id id, Pid) {
-    return subst.subst(id);
-  });
+
+  enum class SearchResult { Found, NotFound, Invalid };
 
   // Find a fact from 'second' in 'first' and save the id mapping if found. If
   // we don't have mappings for some of the referenced ids, they get mapped to
@@ -188,7 +187,30 @@ const char *glean_diff(
     binary::Output out;
     uint64_t key_size;
 
+    bool has_missing_reference = false;
+    bool has_invalid_reference = false;
+    const auto substitute = syscall([&](Id id, Pid) {
+      if (has_invalid_reference || has_missing_reference) {
+        return Id::invalid();
+      }
+      auto found = subst.subst(id);
+      if (found) {
+        has_invalid_reference = *found == Id::invalid();
+        return *found;
+      } else {
+        has_missing_reference = true;
+        return Id::invalid();
+      }
+    });
+
     pred->substitute(substitute, fact_second->clause(), out, key_size);
+    if (has_invalid_reference) {
+      return SearchResult::Invalid;
+    }
+    if (has_missing_reference) {
+      return SearchResult::NotFound;
+    }
+
     // clause from 'second' with translated ids.
     Fact::Clause clause_second = Fact::Clause::from(out.bytes(), key_size);
 
@@ -202,25 +224,27 @@ const char *glean_diff(
         found = true;
       } else {
         first_lookup->factById(id, [&](Pid, Fact::Clause clause_first) {
-          if (clause_second.value() == clause_first.value()) {
-            found = true;
-          }
+          found = clause_second.value() == clause_first.value();
         });
       }
     }
 
+    // At this point the fact has no missing or invalid references so the
+    // search result will be final.
+    subst.set(fact_second->id(), id);
     if (found) {
-      subst.set(fact_second->id(), id);
+      return SearchResult::Found;
+    } else {
+      return SearchResult::Invalid;
     }
-    return found;
   };
 
   const auto dedupe = [&](Batch batch) {
     std::vector<std::shared_ptr<Fact>> not_found {};
     for (auto const& fact : batch.facts) {
-      bool found = find(fact);
+      SearchResult found = find(fact);
 
-      if (!found) {
+      if (found == SearchResult::NotFound) {
         not_found.push_back(fact);
       }
     }
