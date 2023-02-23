@@ -15,7 +15,7 @@ module Glean.Derive.Digest.Lib (
 ) where
 
 import Control.Exception (catch, throwIO)
-import Control.Monad (forM_, void)
+import Control.Monad (forM, void)
 import Control.Monad.IO.Class (liftIO)
 import qualified Data.HashMap.Strict as Map
 import Data.Foldable (for_)
@@ -74,7 +74,7 @@ derive backend repo Config{..} = do
     return $ Map.fromListWith (++)
       [(f, [(range, e)]) | (f, range, e) <- locations]
 
-  forM_ (Map.toList locationsByFile) $ \(f, locations) -> do
+  factsByFile <- forM (Map.toList locationsByFile) $ \(f, locations) -> do
     contents <- do
       let fpath = pathAdaptor $ T.unpack f
       T.readFile fpath `catch` \e ->
@@ -83,15 +83,18 @@ derive backend repo Config{..} = do
             cwd <- getCurrentDirectory
             throwIO $ userError $ fpath <> " not found in " <> cwd
           else throwIO e
-    liftIO $
-      basicWriter backend repo [Src.allPredicates, Code.allPredicates] $
-        withUnit (encodeUtf8 f) $ do
-          srcFile <- makeFact @Src.File f
-          for_ locations $ \(range, entity) -> do
-            let srcCode = textAt range contents
-                !digest = hashFunction srcCode
-                key = Code.FileEntityDigest_key srcFile entity
-            void $ newFact @_ @Code.FileEntityDigest key digest
+    facts <- forM locations $ \(range, entity) -> do
+      let srcCode = textAt range contents
+          !digest = hashFunction srcCode
+      return (entity, digest)
+    return (f, facts)
+  liftIO $ basicWriter backend repo [Src.allPredicates, Code.allPredicates] $ do
+    for_ factsByFile $ \(f, facts) ->
+      withUnit (encodeUtf8 f) $ do
+        srcFile <- makeFact @Src.File f
+        for_ facts $ \(entity, digest) -> do
+          let key = Code.FileEntityDigest_key srcFile entity
+          void $ newFact @_ @Code.FileEntityDigest key digest
 
 textAt :: Code.RangeSpan -> T.Text -> T.Text
 textAt (Code.RangeSpan_span Src.ByteSpan {..}) text =
@@ -115,7 +118,6 @@ codeLocations =
                     ( rec $
                         field @"location"
                           (rec @_ @Code.Location $
-                            field @"name" wild $
                             field @"file" (asPredicate file) $
                             field @"location" range
                             end) $
