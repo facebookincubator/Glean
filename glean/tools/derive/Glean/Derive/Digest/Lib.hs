@@ -26,6 +26,8 @@ import qualified Data.Text.IO as T
 import System.Directory (getCurrentDirectory)
 import System.IO.Error (isDoesNotExistError)
 
+import Util.Text(slice)
+
 import Glean (
   Backend,
   Nat (unNat),
@@ -93,8 +95,10 @@ derive backend repo Config{..} = do
 
 textAt :: Code.RangeSpan -> T.Text -> T.Text
 textAt (Code.RangeSpan_span Src.ByteSpan {..}) text =
-  T.take (fromIntegral $ unNat byteSpan_length) $
-    T.drop (fromIntegral $ unNat byteSpan_start) text
+  slice
+    (fromIntegral $ unNat byteSpan_start)
+    (fromIntegral $ unNat byteSpan_length)
+    text
 textAt (Code.RangeSpan_range Src.Range {..}) _ =
   error "TODO"
 textAt Code.RangeSpan_EMPTY _ = ""

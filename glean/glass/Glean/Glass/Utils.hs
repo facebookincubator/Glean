@@ -40,6 +40,7 @@ import Data.Maybe (fromMaybe)
 import Data.Tuple.Extra ( snd3 )
 import Data.Text ( Text, length )
 import qualified Data.Text as Text
+import Data.Typeable ( Typeable )
 import System.FilePath ( splitDirectories, joinPath )
 import qualified Data.List as List
 
@@ -47,7 +48,7 @@ import Glean ( recursive, limit, limitTime, search, getFirstResult )
 import Glean.Angle as Angle ( query, Angle )
 import Glean.Typed.Binary ( Type )
 import Glean.Typed.Predicate ( Predicate )
-import Data.Typeable ( Typeable )
+import Util.Text (slice)
 
 import qualified Glean.Haxl.Repos as Glean
 import Glean.Haxl.Repos (RepoHaxl, ReposHaxl)
@@ -144,7 +145,7 @@ splitOnAny pats src =
   List.foldl' (\acc p -> concatMap (Text.splitOn p) acc) [src] pats
 
 subString :: Int -> Int -> Text -> Text
-subString start len = Text.take len . Text.drop start
+subString start len = slice start len
 
 -- Split a type string along reference spans. Annotate
 -- extracted fragments. (annotation, start, length)
