@@ -387,15 +387,17 @@ predicate ConvertCallArguments :
       [] = HackArgs; [] = CodeArgs
     ) |
     (
-      [hack.CallArgument{Span, Argument}] = HackArgs;
+      [hack.CallArgument{Span_rel, Argument}] = HackArgs;
       ConvertArgument{Argument, CodeArgument};
+      [Span] = prim.relToAbsByteSpans [Span_rel];
       CodeArgs = [code.CallArgument{nothing, Span, CodeArgument}]
     ) |
     (
       [
-        hack.CallArgument{Span, Argument},
-        hack.CallArgument{Span2, Argument2}
+        hack.CallArgument{Span_rel, Argument},
+        hack.CallArgument{Span2_rel, Argument2}
       ] = HackArgs;
+      [Span, Span2] = prim.relToAbsByteSpans [Span_rel, Span2_rel];
       ConvertArgument{Argument, CodeArgument};
       ConvertArgument{Argument2, CodeArgument2};
       CodeArgs = [
@@ -405,10 +407,15 @@ predicate ConvertCallArguments :
     ) |
     (
       [
-        hack.CallArgument{Span, Argument},
-        hack.CallArgument{Span2, Argument2},
-        hack.CallArgument{Span3, Argument3}
+        hack.CallArgument{Span_rel, Argument},
+        hack.CallArgument{Span2_rel, Argument2},
+        hack.CallArgument{Span3_rel, Argument3}
       ] = HackArgs;
+      [Span, Span2, Span3] = prim.relToAbsByteSpans
+        [ Span_rel,
+          Span2_rel,
+          Span3_rel
+        ];
       ConvertArgument{Argument, CodeArgument};
       ConvertArgument{Argument2, CodeArgument2};
       ConvertArgument{Argument3, CodeArgument3};
@@ -420,11 +427,17 @@ predicate ConvertCallArguments :
     ) |
     (
       [
-        hack.CallArgument{Span, Argument},
-        hack.CallArgument{Span2, Argument2},
-        hack.CallArgument{Span3, Argument3},
-        hack.CallArgument{Span4, Argument4}
+        hack.CallArgument{Span_rel, Argument},
+        hack.CallArgument{Span2_rel, Argument2},
+        hack.CallArgument{Span3_rel, Argument3},
+        hack.CallArgument{Span4_rel, Argument4}
       ] = HackArgs;
+      [Span, Span2, Span3, Span4] = prim.relToAbsByteSpans
+        [ Span_rel,
+          Span2_rel,
+          Span3_rel,
+          Span4_rel
+        ];
       ConvertArgument{Argument, CodeArgument};
       ConvertArgument{Argument2, CodeArgument2};
       ConvertArgument{Argument3, CodeArgument3};
@@ -438,12 +451,19 @@ predicate ConvertCallArguments :
     ) |
     (
       [
-        hack.CallArgument{Span, Argument},
-        hack.CallArgument{Span2, Argument2},
-        hack.CallArgument{Span3, Argument3},
-        hack.CallArgument{Span4, Argument4},
-        hack.CallArgument{Span5, Argument5}
+        hack.CallArgument{Span_rel, Argument},
+        hack.CallArgument{Span2_rel, Argument2},
+        hack.CallArgument{Span3_rel, Argument3},
+        hack.CallArgument{Span4_rel, Argument4},
+        hack.CallArgument{Span5_rel, Argument5}
       ] = HackArgs;
+      [Span, Span2, Span3, Span4, Span5] = prim.relToAbsByteSpans
+        [ Span_rel,
+          Span2_rel,
+          Span3_rel,
+          Span4_rel,
+          Span5_rel
+        ];
       ConvertArgument{Argument, CodeArgument};
       ConvertArgument{Argument2, CodeArgument2};
       ConvertArgument{Argument3, CodeArgument3};
@@ -459,13 +479,21 @@ predicate ConvertCallArguments :
     ) |
     (
       [
-        hack.CallArgument{Span, Argument},
-        hack.CallArgument{Span2, Argument2},
-        hack.CallArgument{Span3, Argument3},
-        hack.CallArgument{Span4, Argument4},
-        hack.CallArgument{Span5, Argument5},
-        hack.CallArgument{Span6, Argument6}
+        hack.CallArgument{Span_rel, Argument},
+        hack.CallArgument{Span2_rel, Argument2},
+        hack.CallArgument{Span3_rel, Argument3},
+        hack.CallArgument{Span4_rel, Argument4},
+        hack.CallArgument{Span5_rel, Argument5},
+        hack.CallArgument{Span6_rel, Argument6}
       ] = HackArgs;
+      [Span, Span2, Span3, Span4, Span5, Span6] = prim.relToAbsByteSpans
+        [ Span_rel,
+          Span2_rel,
+          Span3_rel,
+          Span4_rel,
+          Span5_rel,
+          Span6_rel
+        ];
       ConvertArgument{Argument, CodeArgument};
       ConvertArgument{Argument2, CodeArgument2};
       ConvertArgument{Argument3, CodeArgument3};
@@ -507,7 +535,8 @@ predicate ConvertMaybeCallArguments : {
  }
  { Hack, Code } where
  (
-    {just = {Span, HArgument}} = Hack;
+    {just = {Span_rel, HArgument}} = Hack;
+    [Span] = prim.relToAbsByteSpans [Span_rel];
     ConvertArgument{HArgument, CArgument};
     {just = {nothing, Span, CArgument}} = Code;
  ) | (
