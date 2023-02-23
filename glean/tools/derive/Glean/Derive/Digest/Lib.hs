@@ -71,39 +71,41 @@ data Config = Config
   }
 
 derive :: Backend b => b -> Repo -> Config -> IO ()
-derive backend repo Config{..} = do
-  locationsByFile <- runHaxl backend repo $ do
+derive backend repo Config{..} = {-# SCC "derive-digests" #-} do
+  locationsByFile <- {-# SCC "query" #-} runHaxl backend repo $ do
     locations <- Glean.search_ $ query codeLocations
     return $ Map.fromListWith (Map.unionWith (<>))
       [(f, Map.singleton e (range :| [])) | (f, range, e) <- locations]
 
-  factsByFile <- forM (Map.toList locationsByFile) $ \(f, locations) -> do
-    contents <- do
-      let fpath = pathAdaptor $ T.unpack f
-      T.readFile fpath `catch` \e ->
-        if isDoesNotExistError e
-          then do
-            cwd <- getCurrentDirectory
-            throwIO $ userError $ fpath <> " not found in " <> cwd
-          else throwIO e
-    facts <- forM (Map.toList locations) $ \(entity, ranges) -> do
-      when (length ranges > 1) $
-        logWarning $
-          "Multiple ranges found for entity, " <>
-          "picking the earliest starting one: " <>
-          show entity
-      let srcCode = textAt range contents
-          !digest = hashFunction srcCode
-          range = minimumBy (compare `on` rangeStart) ranges
-      return (entity, digest)
-    return (f, facts)
-  liftIO $ basicWriter backend repo [Src.allPredicates, Code.allPredicates] $ do
-    for_ factsByFile $ \(f, facts) ->
-      withUnit (encodeUtf8 f) $ do
-        srcFile <- makeFact @Src.File f
-        for_ facts $ \(entity, digest) -> do
-          let key = Code.FileEntityDigest_key srcFile entity
-          void $ newFact @_ @Code.FileEntityDigest key digest
+  factsByFile <- {-# SCC "digest" #-}
+    forM (Map.toList locationsByFile) $ \(f, locations) -> do
+      contents <- do
+        let fpath = pathAdaptor $ T.unpack f
+        T.readFile fpath `catch` \e ->
+          if isDoesNotExistError e
+            then do
+              cwd <- getCurrentDirectory
+              throwIO $ userError $ fpath <> " not found in " <> cwd
+            else throwIO e
+      facts <- forM (Map.toList locations) $ \(entity, ranges) -> do
+        when (length ranges > 1) $
+          logWarning $
+            "Multiple ranges found for entity, " <>
+            "picking the earliest starting one: " <>
+            show entity
+        let srcCode = textAt range contents
+            !digest = hashFunction srcCode
+            range = minimumBy (compare `on` rangeStart) ranges
+        return (entity, digest)
+      return (f, facts)
+  {-# SCC "write" #-} liftIO $
+    basicWriter backend repo [Src.allPredicates, Code.allPredicates] $ do
+      for_ factsByFile $ \(f, facts) ->
+        withUnit (encodeUtf8 f) $ do
+          srcFile <- makeFact @Src.File f
+          for_ facts $ \(entity, digest) -> do
+            let key = Code.FileEntityDigest_key srcFile entity
+            void $ newFact @_ @Code.FileEntityDigest key digest
 
 rangeStart :: Code.RangeSpan -> Int
 rangeStart (Code.RangeSpan_span Src.ByteSpan{..}) =
