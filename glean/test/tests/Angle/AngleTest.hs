@@ -278,6 +278,16 @@ angleTest modify = dbTestCase $ \env repo -> do
   assertEqual "angle - resolvable unbound" 6 $
     (length . nub . map Glean.Test.stringPairBox_key) results
 
+  -- we should be able to resolve wildcards by adding a fact generator
+  -- (query has no results, but we're testing that it doesn't fail with
+  -- an unbound variable)
+  results <- runQuery_ env repo $ modify $
+    angleData @Glean.Test.EdgeSum
+    [s|
+      X where ( { fst = _ } | { snd = _ } ) = X : glean.test.EdgeSum
+    |]
+  assertEqual "angle - resolvable wildcard" 0 (length results)
+
   -- matching bools
   results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
     [s|

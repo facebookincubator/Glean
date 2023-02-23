@@ -17,6 +17,7 @@ import Glean.Query.Codegen.Types
   (Match(..), Var(..), Pat, QueryWithInfo(..), Typed(..))
 import Glean.Query.Flatten.Types
 import Glean.Query.Typecheck.Types
+import Glean.Query.Vars
 import Glean.RTS.Term as RTS hiding (Match(..))
 import Glean.Database.Schema.Types
 

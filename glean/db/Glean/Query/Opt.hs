@@ -16,7 +16,6 @@ import qualified Data.ByteString as B
 import Data.Foldable (toList)
 import Data.IntMap (IntMap)
 import qualified Data.IntMap as IntMap
-import Data.IntSet (IntSet)
 import qualified Data.IntSet as IntSet
 import Data.Maybe
 import Data.List.NonEmpty (NonEmpty(..))
@@ -25,7 +24,7 @@ import Data.Text (Text)
 
 import qualified Glean.Angle.Types as Type
 import Glean.Angle.Types (FieldDef_(..))
-import Glean.Query.Flatten.Types hiding (fresh)
+import Glean.Query.Flatten.Types
 import Glean.Query.Codegen.Types
   ( matchVar
   , Match(..)
@@ -34,6 +33,7 @@ import Glean.Query.Codegen.Types
   , Pat
   , Generator
   , QueryWithInfo(..))
+import Glean.Query.Vars
 import Glean.RTS.Term hiding (Match(..))
 import Glean.RTS.Types
 
@@ -410,7 +410,7 @@ extend (Var ty v nm) pat = do
   pat <- apply pat  -- ensure we don't create a recursive substitution
   let
     bind v pat = do
-      (pat', fresh) <- freshWild pat
+      (pat', fresh) <- freshWildVars pat
       -- don't forget that any fresh vars are now part of the current scope:
       modify $ \s ->
          s { optSubst = IntMap.insert v pat' (optSubst s)
@@ -438,32 +438,6 @@ extend (Var ty v nm) pat = do
       _ -> return True
 
 
--- | Instantiate all the wildcards in a pattern with fresh
--- variables. This makes the pattern usable when we substitute it, for
--- two reasons: (1) it might occur in multiple places, and we must
--- ensure that it matches the same term in all places, and (2) it
--- might occur in an expression (E where ...) where wildcards don't
--- make sense.
-freshWild :: Pat -> U (Pat, VarSet)
-freshWild pat = do
-  v0 <- gets optNextVar
-  pat' <- mapM freshWildMatch pat
-  v1 <- gets optNextVar
-  return (pat', IntSet.fromList [v0..v1])
-  where
-  freshWildMatch :: Match a Var -> U (Match a Var)
-  freshWildMatch m = case m of
-    MatchWild ty -> MatchBind <$> fresh ty
-    MatchPrefix str rest -> MatchPrefix str <$> mapM freshWildMatch rest
-    MatchArrayPrefix ty pre ->
-      MatchArrayPrefix ty <$> (mapM.mapM) freshWildMatch pre
-    MatchNever ty -> return (MatchNever ty)
-    MatchFid f -> return (MatchFid f)
-    MatchBind v -> return (MatchBind v)
-    MatchVar v -> return (MatchVar v)
-    MatchAnd x y -> MatchAnd <$> mapM freshWildMatch x <*> mapM freshWildMatch y
-    MatchExt _ -> throwError "freshWildMatch"
-
 data OptState = OptState
   { optNextVar :: !Int
     -- ^ for making fresh variables
@@ -479,15 +453,15 @@ data OptState = OptState
     -- module).
   }
 
-fresh :: Type -> U Var
-fresh ty = do
-  v <- gets optNextVar
-  modify $ \state -> state { optNextVar = v+1 }
-  return (Var ty v Nothing)
+instance Monad m => Fresh (StateT OptState m) where
+  peek = gets optNextVar
+  alloc = do
+    state@OptState{..} <- get
+    put state{ optNextVar = optNextVar + 1 }
+    return optNextVar
 
 type U a = StateT OptState (Except Text) a
 
-type VarSet = IntSet
 type Subst = IntMap Pat
 
 -- | Traverse the query, excluding nested (A | B), !A, and "if" subterms,

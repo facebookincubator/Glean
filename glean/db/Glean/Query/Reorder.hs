@@ -14,7 +14,7 @@ module Glean.Query.Reorder
 
 import Control.Applicative ((<|>))
 import Control.Monad.Except
-import Control.Monad.State
+import Control.Monad.State.Strict
 import Data.Foldable (find, fold)
 import Data.Functor.Identity (Identity(..))
 import qualified Data.ByteString as ByteString
@@ -42,7 +42,7 @@ import Glean.Query.Codegen.Types
   , QueryWithInfo(..)
   , SeekSection(..)
   , CodegenQuery)
-import Glean.Query.Flatten.Types hiding (fresh)
+import Glean.Query.Flatten.Types
 import Glean.Query.Vars
 import Glean.RTS.Term as RTS hiding (Match(..))
 import Glean.RTS.Types as RTS
@@ -131,9 +131,23 @@ reorder dbSchema QueryWithInfo{..} =
   where
     qi = do
       (q, ReorderState{..}) <-
-        flip runStateT (initialReorderState qiNumVars dbSchema) $
-          reorderQuery qiQuery
+        flip runStateT (initialReorderState qiNumVars dbSchema) $ do
+          go qiQuery
       return (QueryWithInfo q roNextVar qiReturnType)
+
+    -- 1. replace all wildcards with fresh variables
+    -- 2. reorder the statements
+    -- 3. replace any unused variables with wildcards
+    -- 4. recover unused variable Ids
+    -- (steps 3 and 4 lead to more efficient/smaller code)
+    go query0 = do
+      query <- reorderQuery =<< freshWildQuery query0
+      let used = varsUsed query
+          recover v
+            | (v-1) `IntSet.member` used = v
+            | otherwise = recover (v-1)
+      modify $ \s -> s { roNextVar = recover (roNextVar s) }
+      return (reWildQuery used query)
 
 reorderQuery :: FlatQuery -> R CgQuery
 reorderQuery (FlatQuery pat _ stmts) =
@@ -915,8 +929,9 @@ fixVars isPat p = do
   return p'
   where
     errMsg err = case err of
-      UnboundVariable v@(Var _ _ nm) ->
-        "unbound variable: " <> fromMaybe (Text.pack $ show v) nm
+      UnboundVariable v@(Var ty _ _) ->
+        "unbound variable: " <>
+        Text.pack (show (pretty v <+> ":" <+> pretty ty))
       CannotUseWildcardInExpr -> "cannot use a wildcard in an expression"
       CannotUseNeverInExpr -> "cannot use 'never' in an expression"
 
@@ -930,6 +945,13 @@ data ReorderState = ReorderState
   }
 
 type R a = StateT ReorderState (Except (Text, Maybe FixBindOrderError)) a
+
+instance Monad m => Fresh (StateT ReorderState m) where
+  peek = gets roNextVar
+  alloc = do
+    state@ReorderState{..} <- get
+    put state{ roNextVar = roNextVar + 1 }
+    return roNextVar
 
 initialReorderState :: Int -> Schema.DbSchema -> ReorderState
 initialReorderState nextVar dbSchema = ReorderState

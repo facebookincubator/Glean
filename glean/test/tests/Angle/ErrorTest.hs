@@ -141,8 +141,7 @@ angleErrorTests = dbTestCase $ \env repo -> do
   print r
   assertBool "angle - wildcard in expr" $
     case r of
-      Left (BadQuery x) -> "cannot use a wildcard in an expression"
-        `Text.isInfixOf` x
+      Left (BadQuery x) -> "unbound variable" `Text.isInfixOf` x
       _ -> False
 
   r <- try $ runQuery_ env repo $ angle @Glean.Test.Predicate

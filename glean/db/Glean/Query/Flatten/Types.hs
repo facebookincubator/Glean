@@ -10,7 +10,6 @@ module Glean.Query.Flatten.Types
   ( F
   , initialFlattenState
   , FlattenState(..)
-  , fresh
   , FlattenedQuery
   , FlatQuery_(..)
   , FlatQuery
@@ -18,19 +17,26 @@ module Glean.Query.Flatten.Types
   , falseStmt
   , FlatStatementGroup
   , singletonGroup
+  , boundVars
+  , boundVarsOf
+  , boundVarsOfGen
+  , freshWildStmt
+  , freshWildQuery
   ) where
 
 import Control.Monad.Except
 import Control.Monad.State
+import qualified Data.IntSet as IntSet
 import qualified Data.List.NonEmpty as NonEmpty
 import Data.List.NonEmpty (NonEmpty(..))
 import Data.Text (Text)
 import Data.Text.Prettyprint.Doc hiding ((<>))
 
 import Glean.Angle.Types hiding (Type)
-import Glean.Query.Codegen.Types (Var(..), QueryWithInfo(..), Pat, Generator)
+import Glean.Query.Codegen.Types
 import Glean.Database.Schema
 import Glean.RTS.Types as RTS
+import Glean.Query.Vars
 
 
 type FlattenedQuery = QueryWithInfo FlatQuery
@@ -84,6 +90,82 @@ data FlatStatement
 
   deriving Show
 
+instance VarsOf FlatStatement where
+  varsOf w s r = case s of
+    FlatStatement _ lhs rhs -> varsOf w lhs $! varsOf w rhs r
+    FlatNegation stmts      -> varsStmts w stmts r
+    FlatDisjunction stmtss  -> foldr (varsStmts w) r stmtss
+    FlatConditional cond then_ else_ ->
+      foldr (varsStmts w) r [cond, then_, else_]
+    where
+      varsStmts w stmts r = foldr (\g r -> foldr (varsOf w) r g) r stmts
+
+freshWildQuery :: (Monad m, Fresh m) => FlatQuery -> m FlatQuery
+freshWildQuery (FlatQuery p v stmts) =
+  FlatQuery
+    <$> freshWild p
+    <*> mapM freshWild v
+    <*> mapM freshWildGroup stmts
+
+freshWildStmt :: (Monad m, Fresh m) => FlatStatement -> m FlatStatement
+freshWildStmt (FlatStatement ty pat gen) = do
+  pat' <- freshWild pat
+  gen' <- freshWildGen gen
+  return (FlatStatement ty pat' gen')
+freshWildStmt (FlatNegation groups) =
+  FlatNegation <$> mapM freshWildGroup groups
+freshWildStmt (FlatDisjunction alts) =
+  FlatDisjunction <$> mapM (mapM freshWildGroup) alts
+freshWildStmt (FlatConditional cond then_ else_) =
+  FlatConditional
+    <$> mapM freshWildGroup cond
+    <*> mapM freshWildGroup then_
+    <*> mapM freshWildGroup else_
+
+freshWildGroup
+  :: (Monad m, Fresh m)
+  => FlatStatementGroup
+  -> m FlatStatementGroup
+freshWildGroup = mapM freshWildStmt
+
+freshWildGen :: (Monad m, Fresh m) => Generator -> m Generator
+freshWildGen gen = case gen of
+  FactGenerator pid pat val sect ->
+    FactGenerator pid
+      <$> freshWild pat
+      <*> freshWild val
+      <*> pure sect
+  TermGenerator expr -> TermGenerator <$> freshWild expr
+  DerivedFactGenerator pid key val ->
+    DerivedFactGenerator pid
+      <$> freshWild key
+      <*> freshWild val
+  ArrayElementGenerator ty expr ->
+    ArrayElementGenerator ty <$> freshWild expr
+  PrimCall op args ->
+    PrimCall op <$> mapM freshWild args
+
+-- | Like 'varsOf', but only including variables that can be bound by
+-- this statement.
+boundVars :: FlatStatement -> VarSet
+boundVars stmt = boundVarsOf stmt IntSet.empty
+
+boundVarsOf :: FlatStatement -> VarSet -> VarSet
+boundVarsOf (FlatStatement _ lhs rhs) r =
+  varsOf AllVars lhs (boundVarsOfGen rhs r)
+boundVarsOf (FlatNegation _) r = r -- a negated query cannot bind variables
+boundVarsOf (FlatDisjunction stmtss) r = foldr varsStmts r stmtss
+  where varsStmts stmts r = foldr (\g r -> foldr boundVarsOf r g) r stmts
+boundVarsOf (FlatConditional cond then_ else_) r =
+  varsStmts cond $ varsStmts then_ $ varsStmts else_ r
+  where varsStmts stmts r = foldr (\g r -> foldr boundVarsOf r g) r stmts
+
+boundVarsOfGen :: Generator -> VarSet -> VarSet
+boundVarsOfGen DerivedFactGenerator{} r = r
+boundVarsOfGen ArrayElementGenerator{} r = r
+boundVarsOfGen PrimCall{} r = r
+boundVarsOfGen other r = varsOf AllVars other r
+
 -- | a statement that always fails
 falseStmt :: FlatStatement
 falseStmt = FlatDisjunction []
@@ -130,9 +212,9 @@ initialFlattenState dbSchema nextVar deriveStored = FlattenState
 
 type F a = StateT FlattenState (Except Text) a
 
-
-fresh :: Type -> F Var
-fresh ty = do
-  state@FlattenState{..} <- get
-  put state { flNextVar = flNextVar + 1 }
-  return (Var ty flNextVar Nothing)
+instance Fresh (StateT FlattenState (Except Text)) where
+  peek = gets flNextVar
+  alloc = do
+    state@FlattenState{..} <- get
+    put state { flNextVar = flNextVar + 1 }
+    return flNextVar

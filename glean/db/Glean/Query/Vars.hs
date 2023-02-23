@@ -9,90 +9,175 @@
 -- | Collecting the variables mentioned by a term
 module Glean.Query.Vars (
     VarSet,
-    varsOf,
+    WhichVars(..),
+    VarsOf(..),
     vars,
-    boundVars,
-    boundVarsOf,
+    varsBound,
+    varsUsed,
+    Fresh(..),
+    fresh,
+    freshWild,
+    freshWildVars,
+    reWild,
+    reWildQuery,
   ) where
 
 import qualified Data.IntSet as IntSet
 import Data.IntSet (IntSet)
 import Data.List.NonEmpty (NonEmpty)
 
-import Glean.Query.Codegen.Types (Var(..), Match(..), Generator, Generator_(..))
-import Glean.Query.Flatten.Types
+import Glean.Query.Codegen.Types
 import Glean.RTS.Term hiding (Match(..))
+import Glean.RTS.Types as RTS
 
 type VarSet = IntSet
 
 vars :: VarsOf a => a -> VarSet
-vars x = varsOf x IntSet.empty
+vars x = varsOf AllVars x IntSet.empty
+
+varsBound :: VarsOf a => a -> VarSet
+varsBound x = varsOf VarsBound x IntSet.empty
+
+varsUsed :: VarsOf a => a -> VarSet
+varsUsed x = varsOf VarsUsed x IntSet.empty
+
+data WhichVars = VarsUsed | VarsBound | AllVars
+  deriving Eq
 
 class VarsOf a where
-  varsOf :: a -> VarSet -> VarSet
-
-instance VarsOf FlatStatement where
-  varsOf s r = case s of
-    FlatStatement _ lhs rhs -> varsOf lhs (varsOf rhs r)
-    FlatNegation stmts      -> varsStmts stmts r
-    FlatDisjunction stmtss  -> foldr varsStmts r stmtss
-    FlatConditional cond then_ else_ ->
-      foldr varsStmts r [cond, then_, else_]
-    where
-      varsStmts stmts r = foldr (\g r -> foldr varsOf r g) r stmts
+  varsOf :: WhichVars -> a -> VarSet -> VarSet
 
 instance VarsOf Generator where
-  varsOf (FactGenerator _ key val _) r = varsOf key $! varsOf val r
-  varsOf (TermGenerator exp) r = varsOf exp r
-  varsOf (DerivedFactGenerator _ key val) r = varsOf key $! varsOf val r
-  varsOf (ArrayElementGenerator _ arr) r = varsOf arr r
-  varsOf (PrimCall _ args) r = foldr varsOf r args
+  varsOf w (FactGenerator _ key val _) r = varsOf w key $! varsOf w val r
+  varsOf w (TermGenerator exp) r = varsOf w exp r
+  varsOf w (DerivedFactGenerator _ key val) r = varsOf w key $! varsOf w val r
+  varsOf w (ArrayElementGenerator _ arr) r = varsOf w arr r
+  varsOf w (PrimCall _ args) r = varsOf w args r
 
 instance (VarsOf a) => VarsOf [a] where
-  varsOf container r = foldr varsOf r container
+  varsOf w container r = foldr (varsOf w) r container
 
 instance (VarsOf a) => VarsOf (NonEmpty a) where
-  varsOf container r = foldr varsOf r container
+  varsOf w container r = foldr (varsOf w) r container
 
 instance VarsOf m => VarsOf (Term m) where
-  varsOf t r = case t of
+  varsOf w t r = case t of
     Byte{} -> r
     Nat{} -> r
     ByteArray{} -> r
     String{} -> r
-    Ref x -> varsOf x r
-    Tuple xs -> foldr varsOf r xs
-    Array xs -> foldr varsOf r xs
-    Alt _ x -> varsOf x r
+    Ref x -> varsOf w x r
+    Tuple xs -> varsOf w xs r
+    Array xs -> varsOf w xs r
+    Alt _ x -> varsOf w x r
 
 instance VarsOf (Match () Var) where
-  varsOf m r = case m of
+  varsOf w m r = case m of
     MatchWild{} -> r
     MatchNever{} -> r
     MatchFid{} -> r
-    MatchBind (Var _ v _) -> IntSet.insert v r
-    MatchVar (Var _ v _) -> IntSet.insert v r
-    MatchAnd a b -> varsOf a $! varsOf b r
-    MatchPrefix _ t -> varsOf t r
-    MatchArrayPrefix _ty pre -> foldr varsOf r pre
+    MatchBind (Var _ v _) -> if w == VarsUsed then r else IntSet.insert v r
+    MatchVar (Var _ v _) -> if w == VarsBound then r else IntSet.insert v r
+    MatchAnd a b -> varsOf w a $! varsOf w b r
+    MatchPrefix _ t -> varsOf w t r
+    MatchArrayPrefix _ty pre -> varsOf w pre r
     MatchExt{} -> r
 
--- | Like 'varsOf', but only including variables that can be bound by
--- this statement.
-boundVars :: FlatStatement -> VarSet
-boundVars stmt = boundVarsOf stmt IntSet.empty
+instance VarsOf CgQuery where
+  varsOf w (CgQuery head stmts) r = varsOf w head $! varsOf w stmts r
 
-boundVarsOf :: FlatStatement -> VarSet -> VarSet
-boundVarsOf (FlatStatement _ lhs rhs) r = varsOf lhs (boundVarsOfGen rhs r)
-boundVarsOf (FlatNegation _) r = r -- a negated query cannot bind variables
-boundVarsOf (FlatDisjunction stmtss) r = foldr varsStmts r stmtss
-  where varsStmts stmts r = foldr (\g r -> foldr boundVarsOf r g) r stmts
-boundVarsOf (FlatConditional cond then_ else_) r =
-  varsStmts cond $ varsStmts then_ $ varsStmts else_ r
-  where varsStmts stmts r = foldr (\g r -> foldr boundVarsOf r g) r stmts
+instance VarsOf CgStatement where
+  varsOf w (CgStatement lhs gen) r = varsOf w lhs $! varsOf w gen r
+  varsOf w (CgNegation stmts) r = varsOf w stmts r
+  varsOf w (CgDisjunction stmtss) r = varsOf w stmtss r
+  varsOf w (CgConditional cond then_ else_) r =
+    varsOf w cond $! varsOf w then_ $! varsOf w else_ r
 
-boundVarsOfGen :: Generator -> VarSet -> VarSet
-boundVarsOfGen DerivedFactGenerator{} r = r
-boundVarsOfGen ArrayElementGenerator{} r = r
-boundVarsOfGen PrimCall{} r = r
-boundVarsOfGen other r = varsOf other r
+-- -----------------------------------------------------------------------------
+-- Fresh variables
+
+class Fresh m where
+  peek :: m Int
+  alloc :: m Int
+
+fresh :: (Monad m, Fresh m) => Type -> m Var
+fresh ty = do
+  n <- alloc
+  return (Var ty n Nothing)
+
+-- -----------------------------------------------------------------------------
+-- Replace wildcards with fresh variables
+
+freshWildVars :: (Monad m, Fresh m) => Pat -> m (Pat, VarSet)
+freshWildVars pat = do
+  v0 <- peek
+  pat' <- freshWild pat
+  v1 <- peek
+  return (pat', IntSet.fromList [v0..v1])
+
+-- | Instantiate all the wildcards in a pattern with fresh
+-- variables. This makes the pattern usable when we substitute it, for
+-- two reasons: (1) it might occur in multiple places, and we must
+-- ensure that it matches the same term in all places, and (2) it
+-- might occur in an expression (E where ...) where wildcards don't
+-- make sense.
+freshWild :: forall m . (Monad m, Fresh m) => Pat -> m Pat
+freshWild pat = mapM freshWildMatch pat
+  where
+  freshWildMatch :: Match a Var -> m (Match a Var)
+  freshWildMatch m = case m of
+    MatchWild ty -> MatchBind <$> fresh ty
+    MatchPrefix str rest -> MatchPrefix str <$> mapM freshWildMatch rest
+    MatchArrayPrefix ty pre ->
+      MatchArrayPrefix ty <$> (mapM.mapM) freshWildMatch pre
+    MatchNever ty -> return (MatchNever ty)
+    MatchFid f -> return (MatchFid f)
+    MatchBind v -> return (MatchBind v)
+    MatchVar v -> return (MatchVar v)
+    MatchAnd x y -> MatchAnd <$> mapM freshWildMatch x <*> mapM freshWildMatch y
+    MatchExt _ -> error "freshWildMatch"
+
+-- | Replace unused variables with wildcards
+reWild :: VarSet -> Pat -> Pat
+reWild used pat = fmap reWildMatch pat
+  where
+  reWildMatch :: Match a Var -> Match a Var
+  reWildMatch m = case m of
+    MatchWild ty -> MatchWild ty
+    MatchBind (Var ty n _) | not (n `IntSet.member` used) -> MatchWild ty
+    MatchPrefix str rest -> MatchPrefix str (fmap reWildMatch rest)
+    MatchArrayPrefix ty pre ->
+      MatchArrayPrefix ty $ (fmap . fmap) reWildMatch pre
+    MatchAnd x y -> MatchAnd (fmap reWildMatch x) (fmap reWildMatch y)
+    MatchNever ty -> MatchNever ty
+    MatchFid f -> MatchFid f
+    MatchBind v -> MatchBind v
+    MatchVar v -> MatchVar v
+    MatchExt _ -> error "reWild"
+
+reWildGenerator :: VarSet -> Generator -> Generator
+reWildGenerator used gen = case gen of
+  FactGenerator pid key val sec ->
+    FactGenerator pid (reWild used key) (reWild used val) sec
+  -- The rest can't bind variables:
+  TermGenerator{} -> gen
+  DerivedFactGenerator{} -> gen
+  ArrayElementGenerator{} -> gen
+  PrimCall{} -> gen
+
+reWildStatement :: VarSet -> CgStatement -> CgStatement
+reWildStatement used (CgStatement lhs rhs) =
+  CgStatement (reWild used lhs) (reWildGenerator used rhs)
+reWildStatement used (CgNegation stmts) =
+  CgNegation (map (reWildStatement used) stmts)
+reWildStatement used (CgDisjunction stmtss) =
+  CgDisjunction (map (map (reWildStatement used)) stmtss)
+reWildStatement used (CgConditional cond then_ else_) =
+  CgConditional
+    (map (reWildStatement used) cond)
+    (map (reWildStatement used) then_)
+    (map (reWildStatement used) else_)
+
+reWildQuery :: VarSet -> CgQuery -> CgQuery
+reWildQuery used (CgQuery head stmts) =
+  CgQuery (reWild used head) (map (reWildStatement used) stmts)
