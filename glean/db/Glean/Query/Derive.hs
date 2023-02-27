@@ -192,7 +192,7 @@ getPredicate env repo schema ref = do
   case lookupSourceRef ref schemaVersion schema of
     ResolvesTo (RefPred pred)
       | Just details <- lookupPredicateId pred schema -> return details
-    _ -> throwIO Thrift.UnknownPredicate
+    _ -> throwIO $ Thrift.UnknownPredicate $ Just $ sourceRefName ref
 
 overDerivation
   :: Database.Env
@@ -278,7 +278,8 @@ getPredicateDetails :: DbSchema -> PredicateId -> PredicateDetails
 getPredicateDetails schema pred =
   case lookupPredicateId pred schema of
     Just details -> details
-    Nothing -> throw Thrift.UnknownPredicate
+    Nothing -> throw $
+      Thrift.UnknownPredicate $ Just $ predicateRef_name $ predicateIdRef pred
 
 -- | exhaust a query (until there is no more continuation)
 runDerivation

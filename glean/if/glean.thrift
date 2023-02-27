@@ -638,11 +638,17 @@ exception NotAStoredPredicate {}
 
 exception UnknownDerivationHandle {}
 
-exception UnknownPredicate {}
+exception UnknownPredicate {
+  1: optional string predicate;
+}
 
-exception PredicateAlreadyComplete {}
+exception PredicateAlreadyComplete {
+  1: optional string predicate;
+}
 
-exception PredicateAlreadyBeingDerived {}
+exception PredicateAlreadyBeingDerived {
+  1: optional string predicate;
+}
 
 exception IncompleteDependencies {
   1: list<PredicateRef> incomplete;
