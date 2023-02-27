@@ -469,7 +469,7 @@ userQueryFactsTransformations
   -> DbSchema
   -> Thrift.UserQueryFacts
   -> QueryResults
-  -> Either Text Transformations
+  -> Either Text ResultTransformations
 userQueryFactsTransformations selector schema query results = do
   nameEnv <-  maybe (Left "invalid schema_id") return $ do
     schemaNameEnv schema selector

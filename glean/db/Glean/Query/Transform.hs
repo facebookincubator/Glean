@@ -12,7 +12,7 @@
 module Glean.Query.Transform
   ( transformationsFor
   , transformResultsBack
-  , Transformations
+  , ResultTransformations
   , transformType
   , transformBytes
   , transformPattern
@@ -62,14 +62,15 @@ import Glean.RTS.Types as RTS
 import Glean.RTS.Term (Term(..), Value)
 import qualified Glean.Types as Thrift
 
--- | Predicate transformations to be applied to a query
--- Keyed by the predicate available in the database (available -> required)
-newtype Transformations = Transformations (IntMap PredicateTransformation)
+-- | Predicate transformations to be applied to a query's result. Keyed by the
+-- predicate to be transformed. i.e. the one available in the database.
+newtype ResultTransformations =
+  ResultTransformations (IntMap PredicateTransformation)
   deriving newtype (Semigroup, Monoid)
 
 -- | Transformations for a type and all its transitively nested types
 -- It is an error if the type uses multiple versions of the same predicate.
-transformationsFor :: DbSchema -> Type -> Either Text Transformations
+transformationsFor :: DbSchema -> Type -> Either Text ResultTransformations
 transformationsFor schema ty =
   if null repeated
   then Right transformations
@@ -112,8 +113,8 @@ transformationsFor schema ty =
     repeated :: [(Pid, Set Pid)]
     repeated = Map.toList $ Map.filter ((> 1) . Set.size) mappings
 
-    transformations :: Transformations
-    transformations = Transformations $ IntMap.fromList
+    transformations :: ResultTransformations
+    transformations = ResultTransformations $ IntMap.fromList
       [ (to, evolution)
       | evolution <- mapMaybe (`lookupTransformation` tmap) withDeps
       , let to = fromIntegral $ fromPid $ pid  $ tAvailable evolution
@@ -133,8 +134,8 @@ pid (PidRef x _) = x
 -- ========================
 
 -- | Transform facts back into the type the query originally asked for.
-transformResultsBack :: Transformations -> QueryResults -> QueryResults
-transformResultsBack (Transformations trans) results@QueryResults{..}
+transformResultsBack :: ResultTransformations -> QueryResults -> QueryResults
+transformResultsBack (ResultTransformations trans) results@QueryResults{..}
   | IntMap.null trans = results
   | otherwise = results
     { queryResultsFacts = overFacts queryResultsFacts
