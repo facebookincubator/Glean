@@ -189,12 +189,8 @@ predicate PythonModifiers:
       ) then (true) else (false);
     ) | (
       { variable = D } = Decl;
-      IsStatic = if (
-        python.ContainedByParent { Decl, Parent };
-        { cls = ClassDecl } = Parent;
-        python.ClassDefinition {declaration = ClassDecl, class_variables = { just = ClassVariables } };
-        ClassVariables[..] = D;
-      ) then (true) else (false);
+      D = python.VariableDeclaration {};
+      IsStatic = false;
       Async = false;
     ) | (
       { cls = C } = Decl;
@@ -251,25 +247,8 @@ predicate PythonContainsChildEntity :
     child: code.python.Entity
   }
   { { decl = Container }, { decl = Member } } where
-  (
-    { cls = Cls } = Container;
-    python.ClassDefinition {
-      declaration = Cls,
-      methods = { just = Methods },
-      variables = { just = Variables },
-      class_variables = { just = ClassVariables },
-      inner_classes = { just = InnerClassess }
-    };
-    ( { func = Methods[..] } = Member ) |
-    ( { variable = Variables[..] } = Member ) |
-    ( { variable = ClassVariables[..] } = Member ) |
-    ( { cls = InnerClassess[..] } = Member );
-  ) | (
-    { module = Module } = Container;
-    python.ModuleDefinition { module = Module, declarations = { just = Declarations }};
-    Declarations[..] = Member;
-    python.NonImportDeclaration Member;
-  )
+  !({ func = _ } = Container); # don't show content of functions
+  python.Contains { Container, Member };
 
 # Child is contained in scope of parent
 predicate PythonContainsParentEntity :
@@ -282,7 +261,7 @@ predicate PythonContainsParentEntity :
       python.SNameWithDeclaration { Child, { parent = { just = SName }}};
       python.DeclarationBySName SName -> Parent
     ) | (
-      python.ContainedByParent { Child, Parent };
+      python.ContainedBy { Child, Parent };
     )
 
 # Child extends parent by an inheritance relationship

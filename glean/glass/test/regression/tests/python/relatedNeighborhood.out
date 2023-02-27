@@ -3,8 +3,7 @@
     {
         "childrenContained": [
             "test/py/lib.py/lib.HelperClass.another_method",
-            "test/py/lib.py/lib.HelperClass.method",
-            "test/py/lib.py/lib.HelperClass.value"
+            "test/py/lib.py/lib.HelperClass.method"
         ],
         "childrenExtended": [],
         "containsParents": [
@@ -203,54 +202,6 @@
                         "columnEnd": 13,
                         "lineBegin": 12,
                         "lineEnd": 13
-                    },
-                    "repository": "test"
-                },
-                "sym_other_locations": [],
-                "type_xrefs": [],
-                "visibility": 20
-            },
-            "test/py/lib.py/lib.HelperClass.value": {
-                "comments": [],
-                "contains_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "extends_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "kind": 10,
-                "language": 7,
-                "location": {
-                    "filepath": "lib.py",
-                    "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 56,
-                        "lineBegin": 10,
-                        "lineEnd": 10
-                    },
-                    "repository": "test"
-                },
-                "modifiers": [],
-                "name": {
-                    "container": "lib.HelperClass",
-                    "localName": "value"
-                },
-                "pretty_comments": [],
-                "repo_hash": "testhash",
-                "sym": "test/py/lib.py/lib.HelperClass.value",
-                "sym_location": {
-                    "filepath": "lib.py",
-                    "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 56,
-                        "lineBegin": 10,
-                        "lineEnd": 10
                     },
                     "repository": "test"
                 },
