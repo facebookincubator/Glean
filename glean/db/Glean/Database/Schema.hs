@@ -371,7 +371,7 @@ mkDbSchema validate knownPids dbContent
   transformations <- failOnLeft $ mkTransformations
     dbContent
     (tcEnvPredicates tcEnv)
-    (procStored : addedSchemas)
+    (SchemaIndex procStored addedSchemas)
 
   let pruned = prune dbContent transformations (tcEnvPredicates tcEnv)
       byPid = IntMap.fromList [ (intPid p, p) | p <- HashMap.elems pruned ]
@@ -391,18 +391,17 @@ mkDbSchema validate knownPids dbContent
 mkTransformations
   :: DbContent
   -> HashMap PredicateId PredicateDetails
-  -> [ProcessedSchema]
+  -> SchemaIndex
   -> Either Text (IntMap PredicateTransformation)
 mkTransformations DbWritable _ _ = Right mempty
-mkTransformations (DbReadOnly stats) byId schemas = do
-  manual <- calcSchemaEvolutions hasFacts bySchemaRef <$>
-    directEvolutions schemas
+mkTransformations (DbReadOnly stats) byId index = do
+  manual <- calcSchemaEvolutions hasFacts bySchemaRef <$> directEvolutions index
   auto <- calcAutoEvolutions hasFacts byPredRef
   evolutions <- calcEvolutions predicateIdRef byPredRef bySchemaRef manual auto
   validateEvolutions types preds evolutions
   return $ evolutionsToTransformations evolutions
   where
-  (types, preds) = definitions schemas
+  (types, preds) = definitions index
 
   hasFacts id = fromMaybe False $ do
     details <- HashMap.lookup id byId
@@ -411,10 +410,10 @@ mkTransformations (DbReadOnly stats) byId schemas = do
     return $ predicateStats_count pstats > 0
 
   byPredRef :: Map PredicateRef [PredicateId]
-  byPredRef = predicatesByPredicateRef schemas
+  byPredRef = predicatesByPredicateRef index
 
   bySchemaRef :: Map SchemaRef (VisiblePredicates PredicateId)
-  bySchemaRef = predicatesBySchemaRef schemas
+  bySchemaRef = predicatesBySchemaRef index
 
   detailsById id = HashMap.lookupDefault err id byId
     where err = error $ "mkTransformations: " <> show (pretty id)
@@ -429,22 +428,22 @@ mkTransformations (DbReadOnly stats) byId schemas = do
     , Just trans <- [mkPredicateTransformation detailsById old new]
     ]
 
-predicatesByPredicateRef :: [ProcessedSchema] -> Map PredicateRef [PredicateId]
-predicatesByPredicateRef schemas =
+predicatesByPredicateRef :: SchemaIndex -> Map PredicateRef [PredicateId]
+predicatesByPredicateRef (SchemaIndex curr older) =
   Set.toList <$>
   Map.fromListWith (<>)
   [ (predicateIdRef pred, Set.singleton pred)
-  | processed <- schemas
+  | processed <- curr : older
   , pred <- HashMap.keys $ hashedPreds (procSchemaHashed processed)
   ]
 
 predicatesBySchemaRef
-  :: [ProcessedSchema]
+  :: SchemaIndex
   -> Map SchemaRef (VisiblePredicates PredicateId)
-predicatesBySchemaRef schemas =
+predicatesBySchemaRef (SchemaIndex curr old) =
   Map.fromListWith (<>)
   [ ( schemaRef resolved, visible)
-  | processed <- schemas
+  | processed <- curr : old
   , let env = predRefToId $ schemaRefToIdEnv $ procSchemaHashed processed
         refToId ref =
           HashMap.lookupDefault (error "predicatesBySchemaRef") ref env
@@ -457,9 +456,9 @@ predicatesBySchemaRef schemas =
 -- We only consider evolution annotations in the current schema. This is so
 -- that we don't need to wait until schemas are garbage-collected to be able to
 -- remove an evolves relationship.
-directEvolutions :: [ProcessedSchema] -> Either Text (Map SchemaRef SchemaRef)
-directEvolutions schemas = directSchemaEvolutions $
-  concatMap (schemasResolved . procSchemaResolved) schemas
+directEvolutions :: SchemaIndex -> Either Text (Map SchemaRef SchemaRef)
+directEvolutions (SchemaIndex curr _) =
+  directSchemaEvolutions $ schemasResolved $ procSchemaResolved curr
 
 -- | Calculate predicate evolutions caused by version-less schema migrations.
 calcAutoEvolutions
@@ -897,7 +896,8 @@ failOnLeft = \case
 -- with each of the older schema instances. This is the validity check
 -- when adding a new schema instance.
 validateNewSchemaInstance :: SchemaIndex -> IO ()
-validateNewSchemaInstance (SchemaIndex curr older) = failOnLeft $ do
+validateNewSchemaInstance index@(SchemaIndex curr _) = failOnLeft $ do
+
   -- Prevent recursive predicates. Because this is a constraint we will remove
   -- in the future, for now we only check this when a new schema instance is to
   -- be generated.
@@ -907,11 +907,11 @@ validateNewSchemaInstance (SchemaIndex curr older) = failOnLeft $ do
         [ (predicateIdRef id, id)
         | id <- HashMap.keys $ hashedPreds $ procSchemaHashed curr ]
 
-  direct <- directEvolutions schemas
+  direct <- directEvolutions index
   evolutions <- calcEvolutions
     predicateIdRef
-    (predicatesByPredicateRef schemas)
-    (predicatesBySchemaRef schemas)
+    (predicatesByPredicateRef index)
+    (predicatesBySchemaRef index)
     direct
     auto
 
@@ -919,8 +919,7 @@ validateNewSchemaInstance (SchemaIndex curr older) = failOnLeft $ do
     then validateEvolutions types preds (transitive evolutions)
     else validateEvolutions types preds evolutions
   where
-  schemas = curr : older
-  (types, preds) = definitions schemas
+  (types, preds) = definitions index
 
   -- I P evolves Q and Q evolves R, we expect that `P evolves R` to work. If Q
   -- removes a field from R and P adds it again with a different type then `P
@@ -993,19 +992,19 @@ checkRecursiveDefinitions resolved =
       return $ bifoldMap HashSet.singleton references ty
 
 definitions
-  :: [ProcessedSchema]
+  :: SchemaIndex
   -> (HashMap TypeId TypeDef, HashMap PredicateId PredicateDef)
-definitions schemas = (types, preds)
+definitions (SchemaIndex curr older) = (types, preds)
   where
   preds :: HashMap PredicateId PredicateDef
   preds = HashMap.fromList
       [ (id, def)
-      | processed <- schemas
+      | processed <- curr : older
       , (id, def) <- HashMap.toList $ hashedPreds $ procSchemaHashed processed
       ]
 
   types  :: HashMap TypeId TypeDef
-  types = HashMap.unions $ hashedTypes . procSchemaHashed <$> schemas
+  types = HashMap.unions $ hashedTypes . procSchemaHashed <$> (curr : older)
 
 
 -- | Interrogate the schema associated with a DB
