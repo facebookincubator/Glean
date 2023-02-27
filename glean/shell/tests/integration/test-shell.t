@@ -3,7 +3,7 @@
   $ source "$TESTDIR/setup.sh"
   Creating DB using handle fbcode:glean/tools/gleancli:glean@.* (re)
 
-  $ function query { "$GLEAN" --service "::1:$PORT" shell --db "$DB" "$(echo -e $1)" ; }
+  $ function query { "$GLEAN" --service "::1:$PORT" --minloglevel 10 shell --db "$DB" "$(echo -e $1)" ; }
 
   $ query ":help"
   [>] :help (re)
@@ -232,13 +232,13 @@
 
 
 Recursive expansion is on by default
-  $ "$GLEAN" --service "::1:$PORT" shell --db "$DB" ":limit 1" "example.Parent _" | head -n -4
+  $ "$GLEAN" --service "::1:$PORT" --minloglevel 10 shell --db "$DB" ":limit 1" "example.Parent _" | head -n -4
   [>] :limit 1 (re)
   [>] example.Parent _ (re)
   { "id": 1028, "key": { "child": { "id": 1025, "key": { "name": "Lizard", "line": 20 } }, "parent": { "id": 1024, "key": { "name": "Pet", "line": 10 } } } }
 
 Setting `:expand off` disables recursive expansion
-  $ "$GLEAN" --service "::1:$PORT" shell --db "$DB" ":limit 1" ":expand off" "example.Parent _ " | head -n -4
+  $ "$GLEAN" --service "::1:$PORT" --minloglevel 10 shell --db "$DB" ":limit 1" ":expand off" "example.Parent _ " | head -n -4
   [>] :limit 1 (re)
   [>] :expand off (re)
   [>] example.+ (re)
