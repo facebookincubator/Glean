@@ -765,3 +765,9 @@ angleTest modify = dbTestCase $ \env repo -> do
   assertEqual
     "if statement - variables bound in condition and 'else' are available outside."
     [(Nat 1, Nat 2)] r
+
+  -- should be able to rearrange this one so that the variables are
+  -- bound in order
+  r <- runQuery_ env repo $ modify $ angleData @(Nat, Nat)
+      "(X = (Y:nat|2); Y = (7|8); {X,Y}) | {1,2}"
+  assertEqual "reordering disjunctions" 5 (length r)

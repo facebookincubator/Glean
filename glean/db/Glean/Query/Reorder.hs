@@ -97,13 +97,26 @@ In addition, the output has valid binding. Namely:
 
 HOW?
 
-Note first that the pass might FAIL if it can't find a way to express
-the query such that it satisfies the above constraints.  For example,
-there's no way to make
+First (reorderStmtGroup): we order the stmts within each group. This
+ordering phase is concerned with *efficiency*: we pick the best
+ordering based on heuristics about which ordering will run the
+fastest. Then, the groups are concatenated into a list.
+
+Second (reorderStmts): attempt to order the statements in this list so
+that variables are bound before they are used. Here we're potentially
+changing the order of the statements that the user wrote (as opposed
+to reorderStmtGroup above, which is picking an order where the user
+didn't specify one, e.g. for nested generators). So we only reorder
+statements when (a) we can be sure that performance will be better or
+(b) there are unbound variables that force a reordering.
+
+This phase might fail if we can't find a way to sequence the
+statements. For example, there's no way to make
 
    _ = _
 
-valid.  Similarly, there's no way to make
+valid (although we should have eliminated this via unification
+earlier) .  Similarly, there's no way to make
 
    X = Y
 
@@ -111,15 +124,20 @@ valid if neither X nor Y is bound by anything. However, if X or Y can
 be bound by a later statement, then it might be possible to reorder
 statements to make this valid.
 
-In general, establishing correct binding could mean
-  - re-ordering statements
-  - flipping statements from P = Q to Q = P
+In general, finding an ordering for the statements could involve
+trying all the possibilities, including trying all the possibilities
+for nested statement sequences, and so on. Since this is exponential
+in complexity, we try to do something more efficient:
 
-Moreover, removing generators and or-patterns on the left will also
-require some transformations.
+1. Try to find a statement that is a filter (an O(1) statement) with
+all its variables bound. We'll do this next, because it's cheap.
 
-For now, the pass does nothing clever: no reordering and limited
-flipping. More cleverness will be added later.
+2. Try to find the first statement in the list that is definitely
+resolved using a cheap test.
+
+3. Otherwise, just try to resolve the next statement. If this fails,
+put the statement to the back of the queue and try the next one. If we
+get all the way through the list, give up.
 
 -}
 
@@ -146,6 +164,8 @@ reorder dbSchema QueryWithInfo{..} =
           recover v
             | (v-1) `IntSet.member` used = v
             | otherwise = recover (v-1)
+          -- TODO: this is only best-effort recovery of unused variables,
+          -- really we should renumber all the variables before codegen.
       modify $ \s -> s { roNextVar = recover (roNextVar s) }
       return (reWildQuery used query)
 
@@ -416,38 +436,6 @@ reorderStmtGroup scope stmts =
   -- order the statements and then recursively reorder nested groups
   map snd $ postorderDfs nodes edges
 
-{-
-After reordering groups, we perform some further obvious reorderings.
-
-Note that here we're technically changing the order of statements that
-the user wrote, so we better know what we're doing, because the user
-has no control over this and we won't be able to manually fix the
-Angle code to work around anything that the optimiser gets wrong.
-
-So here we will:
-
-1. Hoist a filter (P = Q) that is resolved (either P or Q is known)
-
-This is important when we expand a derived predicate
-
-    X = pred K
-
-and the predicate is defined as 'Q where S', we typically generate
-
-    X = Y where S; Y = K; Y = Q
-
-(see Glean/Query/Expand.hs).
-
-If unification doesn't deal with the X = K, Y = Q statements, then we
-might need to hoist them ahead of S (or coversely, if we generated
-them in the other order, on some occasions we might need to sink
-them to avoid unresolved variables).
-
-2. Sink a statement that is unresolved (P = Q where neither P nor Q is known)
-
-This avoids "cannot resolve" errors that we can fix by reordering statements.
--}
-
 {- Note [Reordering negations]
 
 A negated subquery doesn't bind values to variables in its enclosing scope.
@@ -477,21 +465,35 @@ variables from the parent scope that it uses.
 -}
 
 reorderStmts :: [FlatStatement] -> R [CgStatement]
-reorderStmts stmts = iterate stmts
+reorderStmts stmts = iterate stmts []
   where
-  iterate [] = return []
-  iterate [x] = reorderStmt x
-  iterate stmts = do
+  iterate [] bad = mconcat <$> mapM reorderStmt (reverse bad)
+    -- we already tried the bad list, so the first one should throw
+  iterate stmts bad = do
     scope <- gets roScope
     let (chosen, rest) = choose scope stmts
-    cgChosen <- reorderStmt chosen
-    cgRest <- iterate rest
-    return (cgChosen <> cgRest)
+    r <- tryError $ reorderStmt chosen
+    case r of
+      Left{} -> iterate rest (chosen : bad)
+      Right cgChosen -> do
+        -- we made some progress, so reset the bad list
+        let next = if null bad then rest else rest <> reverse bad
+        cgRest <- iterate next []
+        return (cgChosen <> cgRest)
 
+  tryError m = (Right <$> m) `catchError` (return . Left)
+
+  -- Attempt to cheaply pick a good statement from the list. We try
+  -- not to mess with the original order if we can avoid it, but we
+  -- will pick a different statement if there's an O(1) statement we
+  -- can do next, or if the current statement is definitely
+  -- unresolved. If we don't know whether it's resolved, such as in
+  -- the case of a disjunction, we'll fall back to just trying it.
   choose
     :: Scope
     -> [FlatStatement]
     -> (FlatStatement,[FlatStatement])
+  choose _ [one] = (one, [])
   choose scope stmts = fromMaybe (error "choose") $
     find (isResolvedFilter scope . fst) stmts' <|>
     find (not . isUnresolved scope . fst) stmts' <|>
@@ -506,25 +508,32 @@ reorderStmts stmts = iterate stmts
 
 -- | True if the statement is O(1) and resolved
 isResolvedFilter :: Scope -> FlatStatement -> Bool
-isResolvedFilter _ (FlatStatement _ _ ArrayElementGenerator{}) = False
-  -- an ArrayElementGenerator is not O(1)
-isResolvedFilter scope stmt = isReadyFilter scope stmt False
+isResolvedFilter scope stmt = case stmt of
+  FlatStatement _ _ ArrayElementGenerator{} -> False
+    -- an ArrayElementGenerator is not O(1)
+  _otherwise -> isReadyFilter scope stmt False
 
--- | True if the statement is unresolved in the given scope
-isUnresolved
-  :: Scope
-  -> FlatStatement
-  -> Bool
-isUnresolved scope stmt = not (isReadyFilter scope stmt True)
+-- | True if the statement is definitely unresolved in the given
+-- scope. False indicates "maybe resolved"; we'll fall back to trying
+-- to resolve the stmt in reorderStmts.
+isUnresolved :: Scope -> FlatStatement -> Bool
+isUnresolved scope stmt = case stmt of
+  FlatDisjunction{} -> False -- don't know
+  FlatStatement _ _ (ArrayElementGenerator _ arr) -> not (patIsBound scope arr)
+  _otherwise -> not (isReadyFilter scope stmt True)
 
 isReadyFilter :: Scope -> FlatStatement -> Bool -> Bool
 isReadyFilter scope stmt notFilter = case stmt of
+  FlatDisjunction [one] -> all (all isReady) one
+    where isReady stmt = isReadyFilter scope stmt notFilter
+    -- Don't hoist a disjunction with multiple alts, even if they're
+    -- all resolved, because that might duplicate work.
   FlatStatement _ lhs (TermGenerator rhs) ->
     patIsBound scope lhs || patIsBound scope rhs
-  FlatStatement _ _ (ArrayElementGenerator _ arr) ->
-    patIsBound scope arr
   FlatStatement _ _ (PrimCall _ args) ->
     all (patIsBound scope) args
+  FlatStatement _ _ (DerivedFactGenerator _ key val) ->
+    patIsBound scope key && patIsBound scope val
   FlatNegation stmtss ->
     -- See Note [Reordering negations]
     all (all isReady) stmtss && hasAllNonLocalsBound
