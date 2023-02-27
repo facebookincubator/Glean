@@ -20,6 +20,7 @@ import Control.Monad.IO.Class (liftIO)
 import qualified Data.HashMap.Strict as Map
 import Data.Foldable (for_, minimumBy)
 import Data.Function (on)
+import Data.List (sortOn)
 import Data.List.NonEmpty (NonEmpty((:|)))
 import Data.Text (Text)
 import qualified Data.Text as T
@@ -29,7 +30,6 @@ import System.Directory (getCurrentDirectory)
 import System.IO.Error (isDoesNotExistError)
 
 import Util.Log.String (logWarning)
-import Util.Text(slice)
 
 import Glean (
   Backend,
@@ -87,17 +87,24 @@ derive backend repo Config{..} = {-# SCC "derive-digests" #-} do
               cwd <- getCurrentDirectory
               throwIO $ userError $ fpath <> " not found in " <> cwd
             else throwIO e
-      facts <- forM (Map.toList locations) $ \(entity, ranges) -> do
+      entities <- forM (Map.toList locations) $ \(entity, ranges) -> do
         when (length ranges > 1) $
           logWarning $
             "Multiple ranges found for entity, " <>
             "picking the earliest starting one: " <>
             show entity
-        let srcCode = textAt range contents
-            !digest = hashFunction srcCode
-            range = minimumBy (compare `on` rangeStart) ranges
-        return (entity, digest)
+        let range = minimumBy (compare `on` rangeStart) ranges
+        return (entity, range)
+      let sorted_entities = sortOn snd entities
+          facts = loop 0 contents sorted_entities
+          loop pos ptr ((entity, range) : rest) =
+            let ptr' = T.drop (pos' - pos) ptr
+                pos' = rangeStart range
+                !digest = hashFunction (T.take (rangeLength range) ptr')
+            in (entity, digest) : loop pos' ptr' rest
+          loop _ _ [] = []
       return (f, facts)
+
   {-# SCC "write" #-} liftIO $
     basicWriter backend repo [Src.allPredicates, Code.allPredicates] $ do
       for_ factsByFile $ \(f, facts) ->
@@ -114,15 +121,11 @@ rangeStart (Code.RangeSpan_range Src.Range{..}) =
   fromIntegral $ unNat range_lineBegin
 rangeStart Code.RangeSpan_EMPTY = 0
 
-textAt :: Code.RangeSpan -> T.Text -> T.Text
-textAt (Code.RangeSpan_span Src.ByteSpan {..}) text =
-  slice
-    (fromIntegral $ unNat byteSpan_start)
-    (fromIntegral $ unNat byteSpan_length)
-    text
-textAt (Code.RangeSpan_range Src.Range {..}) _ =
-  error "TODO"
-textAt Code.RangeSpan_EMPTY _ = ""
+rangeLength :: Code.RangeSpan -> Int
+rangeLength (Code.RangeSpan_span Src.ByteSpan{..}) =
+  fromIntegral $ unNat byteSpan_length
+rangeLength (Code.RangeSpan_range Src.Range{..}) = error "TODO"
+rangeLength Code.RangeSpan_EMPTY = 0
 
 codeLocations :: Angle (Text, Code.RangeSpan, Code.Entity)
 codeLocations =
