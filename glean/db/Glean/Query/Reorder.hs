@@ -734,23 +734,18 @@ postorderDfs nodes edges = go IntSet.empty nodes (\_ -> [])
 reorderStmt :: FlatStatement -> R [CgStatement]
 reorderStmt stmt@(FlatStatement ty lhs gen)
   | Just flip <- canFlip =
-    noflip `catchErrorRestore` \e ->
-      flip `catchErrorRestore` \e' ->
-        attemptBindFromType e noflip `catchErrorRestore` \_ ->
-          attemptBindFromType e' flip `catchErrorRestore` \_ ->
+    noflip `catchError` \e ->
+      flip `catchError` \e' ->
+        attemptBindFromType e noflip `catchError` \_ ->
+          attemptBindFromType e' flip `catchError` \_ ->
             giveUp e
   -- If this statement can't be flipped, we may still need to bind
   -- unbound variables:
   | otherwise =
-    noflip `catchErrorRestore` \e ->
-      attemptBindFromType e noflip `catchErrorRestore` \_ ->
+    noflip `catchError` \e ->
+      attemptBindFromType e noflip `catchError` \_ ->
          giveUp e
   where
-  catchErrorRestore x f = do
-    state0 <- get
-    let restore = put state0
-    x `catchError` \e -> restore >> f e
-
   noflip = toCgStatement (FlatStatement ty lhs gen)
   canFlip
     | TermGenerator rhs <- gen
@@ -791,7 +786,7 @@ reorderStmt stmt@(FlatStatement ty lhs gen)
           Just details@Schema.PredicateDetails{} -> do return details
 
       bindVar var
-      stmts <- f `catchErrorRestore` \e' -> attemptBindFromType e' f
+      stmts <- f `catchError` \e' -> attemptBindFromType e' f
       let
         pid = Schema.predicatePid details
         ref = Schema.predicateId details
@@ -954,6 +949,9 @@ data ReorderState = ReorderState
   }
 
 type R a = StateT ReorderState (Except (Text, Maybe FixBindOrderError)) a
+  -- with the StateT outside, m `catchError` h will restore the state
+  -- prior to m when executing h.  This is what we want for trying
+  -- alternative binding orders.
 
 instance Monad m => Fresh (StateT ReorderState m) where
   peek = gets roNextVar
