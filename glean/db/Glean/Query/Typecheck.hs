@@ -131,7 +131,7 @@ typecheckDeriving tcEnv ver rtsType PredicateDetails{..} derivingInfo = do
           key' <- typecheckPattern ContextExpr predicateKeyType key
           maybeVal' <- case maybeVal of
             Nothing
-              | unit `eqType` predicateValueType -> return Nothing
+              | eqType ver unit predicateValueType -> return Nothing
               | otherwise -> prettyErrorIn head $ nest 4 $ vcat
                 [ "a functional predicate must return a value,"
                 , "i.e. the query should have the form 'X -> Y where .." ]
@@ -392,8 +392,9 @@ typecheckPattern ctx typ pat = case (typ, pat) of
       pat typ
   (NamedTy (ExpandedType _ ty), term) -> typecheckPattern ctx ty term
   (ty, Prim span primOp args) -> do
+    ver <- gets tcAngleVersion
     let (primArgTys, retTy) = primOpType primOp
-    unless (ty `eqType` retTy) $
+    unless (eqType ver ty retTy) $
       patTypeError pat ty
     args' <- primInferAndCheck span args primOp primArgTys
     return (RTS.Ref (MatchExt (Typed retTy (TcPrimCall primOp args'))))
@@ -474,8 +475,9 @@ typecheckPattern ctx typ pat = case (typ, pat) of
 
   (ty, TypeSignature s e sigty) -> do
     rtsType <- gets tcRtsType
+    ver <- gets tcAngleVersion
     sigty' <- convertType s rtsType sigty
-    if ty `eqType` sigty'
+    if eqType ver ty sigty'
       then typecheckPattern ctx ty e
       else
         -- Try compiling as a fact generator that matches the key type.
@@ -649,7 +651,7 @@ varOcc ctx span name ty = do
         , tcFree = HashSet.insert name tcFree }
       return (RTS.Ref (MatchBind var))
     Just v@(Var ty' _ _)
-      | ty' `eqType` ty -> do
+      | eqType tcAngleVersion ty' ty -> do
         put $ bindOrUse ctx name $
           state { tcFree = HashSet.delete name tcFree }
         return (Ref (MatchVar v))

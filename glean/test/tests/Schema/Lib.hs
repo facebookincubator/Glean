@@ -140,7 +140,11 @@ withSchemaAndFacts customSettings schema facts act =
   withTestEnv settings $ \env ->
     act env repo dbSchema
 
-withSchemaFile :: AngleVersion -> String -> (FilePath -> FilePath -> IO a) -> IO a
+withSchemaFile
+  :: AngleVersion
+  -> String
+  -> (FilePath -> FilePath -> IO a)
+  -> IO a
 withSchemaFile (AngleVersion version) str action = do
   withSystemTempDirectory "glean-dbtest" $ \root -> do
     let newSchemaFile = root </> "schema"
@@ -148,7 +152,11 @@ withSchemaFile (AngleVersion version) str action = do
     appendFile newSchemaFile str
     action root newSchemaFile
 
-withSchema :: AngleVersion -> String -> (Either SomeException () -> IO a) -> IO a
+withSchema
+  :: AngleVersion
+  -> String
+  -> (Either SomeException () -> IO a)
+  -> IO a
 withSchema version str action =
   withSchemaFile version str $ \root file -> do
     let settings =

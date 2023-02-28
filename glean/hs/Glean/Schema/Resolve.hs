@@ -483,8 +483,9 @@ checkFieldName n =
     throwError $ "field names must begin with a lowercase letter: " <> n
 
 checkName :: Name -> Except Text ()
-checkName n = when (n `HashSet.member` reservedWords) $
-  throwError $ n <> " is a reserved word, it cannot be used"
+checkName n = do
+  when (n `HashSet.member` reservedWords) $
+    throwError $ n <> " is a reserved word, it cannot be used"
 
 checkNameSpace :: Name -> Except Text ()
 checkNameSpace n = mapM_ checkName (splitDot n)

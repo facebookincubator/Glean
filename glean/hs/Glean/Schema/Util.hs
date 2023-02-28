@@ -58,7 +58,7 @@ enumFields ides = [FieldDef ide unit | ide <- ides]
 
 tupleSchema :: [Type_ a b] -> Type_ a b
 tupleSchema tys = RecordTy
-  [ FieldDef ("tuplefield" <> Text.pack (show n)) ty
+  [ FieldDef (tupleField <> Text.pack (show n)) ty
   | (n,ty) <- zip [0::Int ..] tys ]
 
 -- | Parse a predicate reference of the form @<predicate>[.<version>]@

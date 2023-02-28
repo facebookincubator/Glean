@@ -36,6 +36,7 @@ module Glean.RTS.Types
 
 import Control.DeepSeq
 import Data.Hashable
+import qualified Data.Text as Text
 import Data.Text.Prettyprint.Doc
 import Data.Vector.Primitive (Prim)
 import Foreign
@@ -127,33 +128,40 @@ sumLike BooleanTy = Just boolFields
 sumLike _ = Nothing
 
 -- | Compare types for (structural) equality
-eqType :: Type -> Type -> Bool
-eqType a b = case (a,b) of
+eqType :: AngleVersion -> Type -> Type -> Bool
+eqType version a b = case (a,b) of
   (ByteTy, ByteTy) -> True
   (NatTy, NatTy) -> True
   (StringTy, StringTy) -> True
-  (ArrayTy a, ArrayTy b) -> a `eqType` b
+  (ArrayTy a, ArrayTy b) -> eqType version a b
   (RecordTy as, RecordTy bs) ->
-    -- structural equality for records, so that e.g. tuples work as records
+    let isTuple = all (Text.isInfixOf "tuplefield"  . fieldDefName)
+        -- previous to version 7 records were always compared structurally
+        compareStructurally =
+          version < AngleVersion 7 || isTuple as || isTuple bs
+        -- structural equality for tuples by ignoring field names.
+        eqField fa fb = fa == fb
+    in
     length as == length bs &&
-    and [ eqType a b | (FieldDef _ a, FieldDef _ b) <- zip as bs ]
+    and [ eqType version a b && (compareStructurally || eqField fa fb)
+        | (FieldDef fa a, FieldDef fb b) <- zip as bs ]
   (SumTy as, SumTy bs) ->
     length as == length bs &&
-    and [ eqType a b | (FieldDef _ a, FieldDef _ b) <- zip as bs ]
+    and [ eqType version a b | (FieldDef _ a, FieldDef _ b) <- zip as bs ]
   (PredicateTy (PidRef p _), PredicateTy (PidRef q _)) -> p == q
   (NamedTy (ExpandedType n t), NamedTy (ExpandedType m u)) ->
-    n == m || t `eqType` u
-  (NamedTy (ExpandedType _ t), u) -> t `eqType` u
-  (t, NamedTy (ExpandedType _ u)) -> t `eqType` u
-  (MaybeTy t, MaybeTy u) -> t `eqType` u
-  (MaybeTy t, u) -> lowerMaybe t `eqType` u
-  (t, MaybeTy u) -> t `eqType` lowerMaybe u
+    n == m || eqType version t u
+  (NamedTy (ExpandedType _ t), u) -> eqType version t u
+  (t, NamedTy (ExpandedType _ u)) -> eqType version t u
+  (MaybeTy t, MaybeTy u) -> eqType version t u
+  (MaybeTy t, u) ->  eqType version (lowerMaybe t) u
+  (t, MaybeTy u) -> eqType version t (lowerMaybe u)
   (EnumeratedTy xs, EnumeratedTy ys) -> xs == ys
-  (EnumeratedTy xs, t) -> lowerEnum xs `eqType` t
-  (t, EnumeratedTy xs) -> t `eqType` lowerEnum xs
+  (EnumeratedTy xs, t) -> eqType version (lowerEnum xs) t
+  (t, EnumeratedTy xs) -> eqType version t (lowerEnum xs)
   (BooleanTy, BooleanTy) -> True
-  (BooleanTy, t) -> lowerBool `eqType` t
-  (t, BooleanTy) -> t `eqType` lowerBool
+  (BooleanTy, t) -> eqType version lowerBool t
+  (t, BooleanTy) -> eqType version t lowerBool
   _ -> False
 
 -- | dereference NamedTy on the outside of a Type

@@ -526,7 +526,7 @@ predicate TargetUsesAbs :
   {
     target : hack.XRefTarget,
     file : src.File,
-    uses : src.ByteSpans,
+    uses : [src.ByteSpan],
   }
   { T, F, prim.relToAbsByteSpans U } where
   hack.TargetUses { target = T, file = F, uses = U }

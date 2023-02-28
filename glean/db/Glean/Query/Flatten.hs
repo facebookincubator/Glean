@@ -49,11 +49,11 @@ flatten
   -> Bool -- ^ derive DerivedAndStored predicates
   -> TypecheckedQuery
   -> Except Text FlattenedQuery
-flatten dbSchema _ver deriveStored QueryWithInfo{..} =
+flatten dbSchema ver deriveStored QueryWithInfo{..} =
   fmap fst $ flip runStateT state $ do
     (flattened, returnType) <- do
       flat <- flattenQuery qiQuery `catchError` flattenFailure
-      captureKey dbSchema flat (case qiQuery of TcQuery ty _ _ _ -> ty)
+      captureKey ver dbSchema flat (case qiQuery of TcQuery ty _ _ _ -> ty)
     nextVar <- gets flNextVar
     return $ QueryWithInfo flattened nextVar returnType
   where
@@ -448,11 +448,12 @@ twoTerms constr as bs =
 --   $result = pred<- $key -> $val where $key = K; $val = V
 
 captureKey
-  :: DbSchema
+  :: Schema.AngleVersion
+  -> DbSchema
   -> FlatQuery
   -> Type
   -> F (FlatQuery, Type)
-captureKey dbSchema (FlatQuery pat Nothing stmts) ty
+captureKey ver dbSchema (FlatQuery pat Nothing stmts) ty
   | Angle.PredicateTy pidRef@(PidRef pid _) <- ty  = do
   let
     -- look for $result = pred pat
@@ -519,7 +520,7 @@ captureKey dbSchema (FlatQuery pat Nothing stmts) ty
     Nothing -> throwError "internal: captureKey"
     Just details -> return details
   keyVar <- fresh predicateKeyType
-  maybeValVar <- if predicateValueType `eqType` unit
+  maybeValVar <- if eqType ver predicateValueType unit
     then return Nothing
     else Just <$> fresh predicateValueType
   let
@@ -595,5 +596,5 @@ captureKey dbSchema (FlatQuery pat Nothing stmts) ty
           (stmts ++ [singletonGroup resultStmt1, singletonGroup resultStmt2])
       , retTy )
 
-captureKey _ (FlatQuery _ Just{} _) _ =
+captureKey _ _ (FlatQuery _ Just{} _) _ =
   throwError "queries returning both a key and value are not supported"

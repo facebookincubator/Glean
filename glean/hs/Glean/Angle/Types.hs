@@ -57,6 +57,7 @@ module Glean.Angle.Types
   , TypeDef
   , Field(..)
   , IsWild(..)
+  , tupleField
   , sourcePatSpan
   , spanBetween
   , PredicateDef
@@ -424,6 +425,9 @@ instance Bifunctor FieldDef_ where
 instance Bifoldable FieldDef_ where
   bifoldMap f g (FieldDef _ ty) = bifoldMap f g ty
 
+tupleField :: Text
+tupleField = "tuplefield"
+
 -- | A definition of a named type
 data TypeDef_ pref tref = TypeDef
   { typeDefRef :: tref
@@ -580,7 +584,7 @@ latestSupportedAngleVersion :: AngleVersion
 latestSupportedAngleVersion = AngleVersion 5
 
 latestAngleVersion :: AngleVersion
-latestAngleVersion = AngleVersion 6
+latestAngleVersion = AngleVersion 7
 
 -- -----------------------------------------------------------------------------
 -- Pretty-printing
@@ -606,9 +610,8 @@ instance (Pretty pref, Pretty tref) => Pretty (Type_ pref tref) where
   pretty StringTy = "string"
   pretty (ArrayTy ty) = "[" <> pretty ty <> "]"
   pretty (RecordTy fields) =
-    sep
-      [ nest 2 $ vsep $ "{" :  punctuate "," (map pretty fields)
-      , "}" ]
+    sep [ nest 2 $ vsep $ "{" :  punctuate "," (map pretty fields) , "}" ]
+
   pretty (SumTy fields) =
     sep
       [ nest 2 $ vsep $ "{" :  map (<> " |") (map pretty fields)
@@ -732,7 +735,7 @@ instance (Pretty p, Pretty t) => Pretty (SourcePat_ s p t) where
   pretty (KeyValue _ k v) = prettyArg k <+> "->" <+> prettyArg v
   pretty (Wildcard _) = "_"
   pretty (Variable _ name) = pretty name
-  pretty (ElementsOfArray _ pat) = pretty pat <> "[..]"
+  pretty (ElementsOfArray _ pat) = prettyArg pat <> "[..]"
   pretty (OrPattern _ lhs rhs) = sep [prettyArg lhs <+> "|", prettyArg rhs]
   pretty (IfPattern _ cond then_ else_) = sep
     [ nest 2 $ sep ["if", prettyArg cond ]

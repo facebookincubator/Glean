@@ -658,6 +658,19 @@ angleTest modify = dbTestCase $ \env repo -> do
     |]
   assertEqual "angle - eqType maybe" 1 (length r)
 
+  -- Test that records are not compared structurally
+  r <- try $ runQuery_ env repo $ angleData @Nat
+    [s| A : { a : nat, b : nat } = { c = 1, d = 1 } : { c : nat, d : nat };
+        { N, _ } = A;
+        N
+    |]
+  print r
+  assertBool
+    "eqType - field versions matter when comparing record types" $
+    case r of
+      Left (BadQuery x) -> "type error in pattern" `Text.isInfixOf` x
+      _ -> False
+
   -- test for bugs in the handling of {} in the code generator
   r <- runQuery_ env repo $ modify $ recursive $ angleData @()
     [s|
