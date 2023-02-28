@@ -1319,7 +1319,7 @@ setupLocalSchema service = do
           `catch` \(e :: ErrorCall) -> do
             print e
             let proc = ProcessedSchema
-                  (SourceSchemas 0 [] [])
+                  (SourceSchemas (AngleVersion 0) [] [])
                   (ResolvedSchemas Nothing [])
                   emptyHashedSchema
             return (SchemaIndex proc [])

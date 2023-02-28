@@ -6,6 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE DeriveFunctor #-}
 {-# LANGUAGE DeriveFoldable  #-}
 {-# LANGUAGE DeriveAnyClass  #-}
@@ -84,7 +85,7 @@ module Glean.Angle.Types
   , SourceDecl_(..)
 
   -- * Versions of the Angle syntax
-  , AngleVersion
+  , AngleVersion(..)
   , latestAngleVersion
   , latestSupportedAngleVersion
 
@@ -571,13 +572,15 @@ type PredicateDef = PredicateDef_ SrcSpan PredicateId TypeId
 -- | Version of the syntax. This is required so that we can change the
 -- syntax while still allowing DBs that contain a schema with the old
 -- syntax to be understood.
-type AngleVersion = Int
+newtype AngleVersion = AngleVersion Int
+  deriving (Eq, Ord)
+  deriving newtype (Pretty)
 
 latestSupportedAngleVersion :: AngleVersion
-latestSupportedAngleVersion = 5
+latestSupportedAngleVersion = AngleVersion 5
 
 latestAngleVersion :: AngleVersion
-latestAngleVersion = 6
+latestAngleVersion = AngleVersion 6
 
 -- -----------------------------------------------------------------------------
 -- Pretty-printing

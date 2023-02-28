@@ -159,8 +159,8 @@ apat
         SourceQuery Nothing [SourceStatement (Wildcard _) pat] -> pat
         _other -> NestedQuery (s $1 $3) $2 }
   -- OLD version 1 constructs:
-  | '(' ')'                         {% ifVersionOrOlder 1 $2 (Tuple (s $1 $2) []) }
-  | '(' seplist2(pattern,',') ')'   {% ifVersionOrOlder 1 $3 (Tuple (s $1 $3) $2) }
+  | '(' ')'                         {% ifVersionOrOlder (AngleVersion 1) $2 (Tuple (s $1 $2) []) }
+  | '(' seplist2(pattern,',') ')'   {% ifVersionOrOlder (AngleVersion 1) $3 (Tuple (s $1 $3) $2) }
 
 field :: { Field SrcSpan SourceRef SourceRef }
 field
@@ -361,7 +361,7 @@ parseSchema bs = parseSchemaWithVersion rest ver
 stripAngleVersion :: ByteString -> (AngleVersion, ByteString)
 stripAngleVersion bs
   | Just bs1 <- B.stripPrefix "version: " bs
-  , Just (ver, bs2) <- B.readInt bs1 = (ver, bs2)
+  , Just (ver, bs2) <- B.readInt bs1 = (Schema.AngleVersion ver, bs2)
   | otherwise = (latestAngleVersion, bs)
   -- if the header is omitted, assume we are using the latest version
 

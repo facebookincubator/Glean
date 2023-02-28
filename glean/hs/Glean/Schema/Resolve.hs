@@ -171,7 +171,7 @@ resolveSchema SourceSchemas{..} = runExcept $ do
       , resolvedSchemaName == "all"
       ]
 
-  when (srcAngleVersion >= 6) $
+  when (srcAngleVersion >= AngleVersion 6) $
     liftEither $ validateResolvedEvolutions resolved
 
   return ResolvedSchemas
@@ -474,7 +474,8 @@ lookupResultToExcept ref res =
 checkAngleVersion :: AngleVersion -> Except Text ()
 checkAngleVersion v =
   unless (v >= latestSupportedAngleVersion) $
-    throwError $ "Angle version " <> showt v <> " is not supported"
+    let ver = Text.pack $ show $ pretty v in
+    throwError $ "Angle version " <> ver <> " is not supported"
 
 checkFieldName :: Name -> Except Text ()
 checkFieldName n =

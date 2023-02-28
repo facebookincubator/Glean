@@ -31,7 +31,7 @@ import System.IO.Temp
 
 import Util.Control.Exception
 
-import Glean.Angle.Types (latestAngleVersion)
+import Glean.Angle.Types (latestAngleVersion, AngleVersion(..))
 import Glean.Backend.Types
 import Glean.Database.Open
 import Glean.Database.Config
@@ -140,15 +140,15 @@ withSchemaAndFacts customSettings schema facts act =
   withTestEnv settings $ \env ->
     act env repo dbSchema
 
-withSchemaFile :: Int -> String -> (FilePath -> FilePath -> IO a) -> IO a
-withSchemaFile version str action = do
+withSchemaFile :: AngleVersion -> String -> (FilePath -> FilePath -> IO a) -> IO a
+withSchemaFile (AngleVersion version) str action = do
   withSystemTempDirectory "glean-dbtest" $ \root -> do
     let newSchemaFile = root </> "schema"
     appendFile newSchemaFile $ "version: " <> show version
     appendFile newSchemaFile str
     action root newSchemaFile
 
-withSchema :: Int -> String -> (Either SomeException () -> IO a) -> IO a
+withSchema :: AngleVersion -> String -> (Either SomeException () -> IO a) -> IO a
 withSchema version str action =
   withSchemaFile version str $ \root file -> do
     let settings =

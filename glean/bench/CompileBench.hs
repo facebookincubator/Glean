@@ -23,7 +23,7 @@ import System.FilePath ((</>))
 import Util.String.Quasi
 
 import Glean
-import Glean.Angle.Types (latestAngleVersion)
+import Glean.Angle.Types (latestAngleVersion, AngleVersion(..))
 import Glean.Database.Open
 import Glean.Database.Test
 import Glean.Database.Types
@@ -156,8 +156,8 @@ benchTransformations =
       , jsonFactBatch_unit = Nothing
       }
 
-    withSchemaFile :: Int -> String -> (FilePath -> FilePath -> IO a) -> IO a
-    withSchemaFile version str action = do
+    withSchemaFile :: AngleVersion -> String -> (FilePath -> FilePath -> IO a) -> IO a
+    withSchemaFile (AngleVersion version) str action = do
       withSystemTempDirectory "glean-dbtest" $ \root -> do
         let newSchemaFile = root </> "schema"
         appendFile newSchemaFile $ "version: " <> show version
