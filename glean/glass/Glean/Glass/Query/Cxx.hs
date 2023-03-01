@@ -554,26 +554,29 @@ usrHashToDeclaration
   :: Text -> Glean.RepoHaxl u w (Maybe (Code.Location, Code.Entity))
 usrHashToDeclaration usrhash = fetchDataRecursive (usrToDeclaration usrhash)
 
--- | Resolve USR hash to possibly is definition site
--- Returns nothing if the usr is a definition site already
+-- | Resolve USR hash to its definition site
 usrToDeclaration :: Text -> Angle (Code.Location, Code.Entity)
 usrToDeclaration usrhash =
-  vars $ \(decl :: Angle Cxx.Declaration) (entity :: Angle Cxx.Entity)
-      (loc :: Angle Code.Location) ->
-    tuple (loc, sig (alt @"cxx" entity) :: Angle Code.Entity) `where_` [
-      wild .= predicate @Cxx.USRToDeclaration (
-        rec $
-          field @"hash" (string usrhash) $
-          field @"declaration" decl
-        end),
-      wild .= predicate @Code.CxxDeclToDefXRefTargetLocation (
-        rec $
-          field @"decl" decl $
-          field @"entity" entity $
-          field @"location" loc
-        end
-      )
-    ]
+  vars $ \(decl :: Angle Cxx.Declaration) (loc :: Angle Code.Location)
+      (defn :: Angle Cxx.Definition) ->
+    tuple (loc, sig (alt @"cxx" (alt @"defn" defn)) :: Angle Code.Entity)
+      `where_` [
+        wild .= predicate @Cxx.USRToDeclaration (
+          rec $
+            field @"hash" (string usrhash) $
+            field @"declaration" decl
+          end),
+        wild .= predicate @Cxx.DeclToDef (
+          rec $
+            field @"decl" decl $
+            field @"defn" defn
+          end),
+        wild .= predicate @Code.CxxEntityLocation (
+          rec $
+            field @"entity"  (alt @"defn" defn) $
+            field @"location" loc
+          end)
+      ]
 
 --
 -- #include resolution acceleration. We can quickly return target filepaths

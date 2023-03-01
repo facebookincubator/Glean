@@ -465,8 +465,8 @@ clangUSRToDefinition env@Glass.Env{..} usr@(USR hash) _opts = withRepoLanguage
     repo = RepoName "fbsource"
     mlang = Just Language_Cpp
 
--- | Lookup the USR in Glean to yield and entity,
--- compute entity declToDef, return the pairs and other info.
+-- | Lookup the USR in Glean to get an entity and return the range spans of
+-- its usages.
 clangUSRToReferenceRanges
   :: Glass.Env
   -> USR
