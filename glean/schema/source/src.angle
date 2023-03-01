@@ -2,8 +2,7 @@
 
 schema src.1 {
 
-# Relative path to source file, starts with subdir, e.g. fbcode or fbobjc,
-# Can be under buck-out, e.g. fbcode/buck-out/opt/gen/...
+# Path to the source file relative to the repository root
 predicate File : string
 
 # Source code digests produced by unspecified hash function
@@ -97,11 +96,13 @@ type FileLocation = {
   span : ByteSpan,
 }
 
-# IndexFailure reasons supported by Glean
+# Why didn't Glean Indexer index a particular file?
 type IndexFailureReason = enum {
   CompileError |
 }
 
+# It is a good practice to add all errors directly into db
+# so it is easy to classify and investigate errors in future
 predicate IndexFailure : {
   file : File,
   reason : IndexFailureReason,
