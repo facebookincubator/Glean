@@ -42,7 +42,6 @@ import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
-import Data.Text.Prettyprint.Doc hiding ((<>))
 import qualified Data.Tree as Tree
 import Options.Applicative
 import System.Directory
@@ -63,6 +62,7 @@ import Glean.Database.Config hiding (options)
 import Glean.Database.Schema
 import Glean.Database.Schema.ComputeIds
 import Glean.Database.Schema.Types
+import Glean.Display
 import qualified Glean.Internal.Types as Internal
 import Glean.RTS.Types (PidRef(..), ExpandedType(..))
 import Glean.Schema.Util (showRef)
@@ -217,7 +217,7 @@ main = do
 
   let ProcessedSchema sourceSchemas resolved _ = schema
   reportTime "checking schema roundtrip" $ do
-    let pp = show (pretty sourceSchemas)
+    let pp = show (displayDefault sourceSchemas)
     case parseSchema (BC.pack pp) of
       Left err -> throwIO $ ErrorCall $ "schema roundtrip error: " <> err
          ++ "\n" ++ pp

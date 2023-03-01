@@ -29,7 +29,6 @@ import qualified Data.IntSet as IntSet
 import Data.List (genericLength)
 import Data.Maybe
 import qualified Data.Text as Text
-import Data.Text.Prettyprint.Doc
 import qualified Data.Vector as Vector
 import Data.Vector (Vector, (!), (//))
 import Data.Word
@@ -49,6 +48,7 @@ import Glean.Query.Transform
 import Glean.Angle.Types (IsWild(..), tempPredicateId)
 import qualified Glean.Angle.Types as Angle
 import Glean.Bytecode.Types
+import Glean.Display
 import qualified Glean.FFI as FFI
 import Glean.Query.Codegen.Types
 import Glean.Database.Schema.Types
@@ -192,7 +192,7 @@ compileQuery
   -> IO CompiledQuery
 
 compileQuery tmap bounds (QueryWithInfo query numVars ty) = do
-  vlog 2 $ show (pretty query)
+  vlog 2 $ show (displayDefault query)
 
   (idTerm, resultKey, resultValue, stmts) <- case query of
     (CgQuery (Tuple [idTerm, resultKey, resultValue]) stmts) ->

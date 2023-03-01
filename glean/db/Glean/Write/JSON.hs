@@ -39,6 +39,7 @@ import Glean.Database.Open
 import Glean.Database.Write.Batch
 import Glean.Database.Schema.Types
 import Glean.Database.Types as Database
+import Glean.Display
 import qualified Glean.FFI as FFI
 import Glean.RTS as RTS
 import Glean.RTS.Builder
@@ -348,7 +349,8 @@ writeJsonFact
       -- Facts can be nested. We know from the schema the predicate of
       -- the fact at this position.
       case lookupPid pid dbSchema of
-        Nothing -> throwError $ "unknown predicate " ++ show (pretty ref)
+        Nothing ->
+          throwError $ "unknown predicate " ++ show (displayDefault ref)
         Just deets -> do
           fid <- factToTerm deets val
           lift $ invoke $ glean_push_value_fact b fid
@@ -394,7 +396,7 @@ writeJsonFact
     enc <- liftIO $ J.encode val
     throwError $ show $ vcat
       [ "Error in fact. Expecting an expression of type:"
-      , indent 2 (pretty typ)
+      , indent 2 (displayDefault typ)
       , "which should be of the form:"
       , indent 2 (expecting typ)
       , "but got:"

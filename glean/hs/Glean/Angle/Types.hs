@@ -91,7 +91,7 @@ module Glean.Angle.Types
   , latestSupportedAngleVersion
 
   -- * Pretty printing
-  , prettyStatement
+  , displayStatement
   ) where
 
 import qualified Data.Aeson as Aeson
@@ -108,6 +108,7 @@ import Data.Bifoldable
 import GHC.Generics
 
 import Glean.Angle.Hash
+import Glean.Display
 import Glean.Types (PredicateRef(..), TypeRef(..), Version)
 
 
@@ -589,98 +590,111 @@ latestAngleVersion = AngleVersion 7
 -- -----------------------------------------------------------------------------
 -- Pretty-printing
 
-instance Pretty SourceRef where
-  pretty (SourceRef name ver) = pretty name <> case ver of
+instance Display SourceRef where
+  display _ (SourceRef name ver) = pretty name <> case ver of
     Nothing -> mempty
     Just ver -> "." <> pretty ver
 
-instance Pretty PredicateId where
-  pretty (PredicateId name hash) = pretty name <> "." <> pretty (show hash)
+instance Display PredicateRef where
+  display _ = pretty
 
-instance Pretty TypeId where
-  pretty (TypeId name hash) = pretty name <> "." <> pretty (show hash)
+instance Display TypeRef where
+  display _ = pretty
 
-instance Pretty (SourceEvolves_ s) where
-  pretty (SourceEvolves _ new old) =
+instance Display PredicateId where
+  display opts (PredicateId name hash) =
+    case predicateStyle opts of
+      PredicateWithHash -> pretty name <> "." <> pretty (show hash)
+      PredicateWithoutHash -> pretty name
+
+instance Display TypeId where
+  display opts (TypeId name hash) =
+    case predicateStyle opts of
+      PredicateWithHash -> pretty name <> "." <> pretty (show hash)
+      PredicateWithoutHash -> pretty name
+
+instance Display (SourceEvolves_ s) where
+  display _ (SourceEvolves _ new old) =
     "schema " <> pretty new <> " evolves " <> pretty old
 
-instance (Pretty pref, Pretty tref) => Pretty (Type_ pref tref) where
-  pretty ByteTy = "byte"
-  pretty NatTy = "nat"
-  pretty StringTy = "string"
-  pretty (ArrayTy ty) = "[" <> pretty ty <> "]"
-  pretty (RecordTy fields) =
-    sep [ nest 2 $ vsep $ "{" :  punctuate "," (map pretty fields) , "}" ]
-
-  pretty (SumTy fields) =
+instance (Display pref, Display tref) => Display (Type_ pref tref) where
+  display _ ByteTy = "byte"
+  display _ NatTy = "nat"
+  display _ StringTy = "string"
+  display opts (ArrayTy ty) = "[" <> display opts ty <> "]"
+  display opts (RecordTy fields) =
     sep
-      [ nest 2 $ vsep $ "{" :  map (<> " |") (map pretty fields)
+      [ nest 2 $ vsep $ "{" :  punctuate "," (map (display opts) fields)
       , "}" ]
-  pretty (PredicateTy p) = pretty p
-  pretty (NamedTy t) = pretty t
-  pretty (MaybeTy t) = "maybe" <+> pretty t
-  pretty (EnumeratedTy names) =
+  display opts (SumTy fields) =
+    sep
+      [ nest 2 $ vsep $ "{" :  map ((<> " |") . display opts) fields
+      , "}" ]
+  display opts (PredicateTy p) = display opts p
+  display opts (NamedTy t) = display opts t
+  display opts (MaybeTy t) = "maybe" <+> display opts t
+  display _ (EnumeratedTy names) =
     sep
       [ nest 2 $ vsep $ "enum {" :  map (<> " |") (map pretty names)
       , "}" ]
-  pretty BooleanTy = "bool"
+  display _ BooleanTy = "bool"
 
-instance (Pretty pref, Pretty tref) => Pretty (FieldDef_ pref tref) where
-  pretty (FieldDef n ty) = pretty n <> " : " <> pretty ty
+instance (Display pref, Display tref) => Display (FieldDef_ pref tref) where
+  display opts (FieldDef n ty) = pretty n <> " : " <> displayAtom opts ty
 
-instance (Pretty pref, Pretty tref) =>
-    Pretty (PredicateDef_ s pref tref) where
-  pretty PredicateDef{..} =
+instance (Display pref, Display tref) =>
+    Display (PredicateDef_ s pref tref) where
+  display opts PredicateDef{..} =
     hang 2 $ sep $
-      [ "predicate" <+> pretty predicateDefRef <+> ":"
-      , pretty predicateDefKeyType
+      [ "predicate" <+> display opts predicateDefRef <+> ":"
+      , display opts predicateDefKeyType
       ] ++
       (case predicateDefValueType of
          RecordTy [] -> []
-         _other -> [ "->" <+> pretty predicateDefValueType ]) ++
+         _other -> [ "->" <+> display opts predicateDefValueType ]) ++
       (case predicateDefDeriving of
-         Derive DerivedAndStored query -> [ "stored", pretty query ]
-         Derive _ query -> [ pretty query ]
+         Derive DerivedAndStored query -> [ "stored", display opts query ]
+         Derive _ query -> [ display opts query ]
          _other -> [])
 
-instance (Pretty pref, Pretty tref) => Pretty (TypeDef_ pref tref) where
-  pretty TypeDef{..} =
+instance (Display pref, Display tref) => Display (TypeDef_ pref tref) where
+  display opts TypeDef{..} =
     hang 2 $ sep
-      [ "type" <+> pretty typeDefRef <+> "="
-      , pretty typeDefType
+      [ "type" <+> display opts typeDefRef <+> "="
+      , display opts typeDefType
       ]
 
-instance Pretty SourceSchemas where
-  pretty SourceSchemas{..} = vcat $
+instance Display SourceSchemas where
+  display opts SourceSchemas{..} = vcat $
     ("version:" <+> pretty srcAngleVersion)
-    : map pretty srcSchemas <> map pretty srcEvolves
+    : map (display opts) srcSchemas <> map (display opts) srcEvolves
 
-instance Pretty SourceSchema where
-  pretty SourceSchema{..} = vcat
+instance Display SourceSchema where
+  display opts SourceSchema{..} = vcat
     [ "schema" <+> pretty schemaName <>
         case schemaInherits of
           [] -> mempty
           _ -> " : " <> hcat (punctuate "," (map pretty schemaInherits))
         <> " {"
-    , vcat (map pretty schemaDecls)
+    , vcat (map (display opts) schemaDecls)
     , "}"
     ]
 
-instance Pretty SourceDecl where
-  pretty (SourceImport name) = "import " <> pretty name
-  pretty (SourcePredicate def) = pretty def
-  pretty (SourceType def) = pretty def
-  pretty (SourceDeriving ref der) =
-    hang 2 $ sep ["derive " <> pretty ref, pretty der]
+instance Display SourceDecl where
+  display _ (SourceImport name) = "import " <> pretty name
+  display opts (SourcePredicate def) = display opts def
+  display opts (SourceType def) = display opts def
+  display opts (SourceDeriving ref der) =
+    hang 2 $ sep ["derive " <> display opts ref, display opts der]
 
-instance Pretty q => Pretty (DerivingInfo q) where
-  pretty NoDeriving = mempty
-  pretty (Derive DeriveOnDemand q) = pretty q
-  pretty (Derive DerivedAndStored q) = "stored" <+> pretty q
-  pretty (Derive DeriveIfEmpty q) = "default" <+> pretty q
+instance Display q => Display (DerivingInfo q) where
+  display _ NoDeriving = mempty
+  display opts (Derive DeriveOnDemand q) = display opts q
+  display opts (Derive DerivedAndStored q) = "stored" <+> display opts q
+  display opts (Derive DeriveIfEmpty q) = "default" <+> display opts q
 
 -- ---------------------------------------------------------------------------
--- Pretty printing queries
+-- Display printing queries
 
 class IsWild pat where
   isWild :: pat -> Bool
@@ -706,105 +720,124 @@ instance IsSrcSpan SrcSpan where
   endLoc = spanEnd
   mkSpan = SrcSpan
 
-instance Pretty SrcSpan where
-  pretty s =
-    pretty (spanStart s)
+instance Display SrcSpan where
+  display opts s =
+    display opts (spanStart s)
     <> pretty (" - " :: String)
-    <> pretty (spanEnd s)
+    <> display opts (spanEnd s)
+
+instance Pretty SrcSpan where
+  pretty = displayDefault
+
+instance Display SrcLoc where
+  display _ (SrcLoc line col) =
+    "line " <> pretty line <> ", column " <> pretty col
 
 instance Pretty SrcLoc where
-  pretty (SrcLoc line col) =
-    "line " <> pretty  line <> ", column " <> pretty col
+  pretty = displayDefault
 
-instance (Pretty p, Pretty t) => Pretty (SourcePat_ s p t) where
-  pretty (Nat _ w) = pretty w
-  pretty (String _ str) =
+instance (Display p, Display t) => Pretty (SourcePat_ s p t) where
+  pretty = displayDefault
+
+instance (Display p, Display t) => Display (SourcePat_ s p t) where
+  display _ (Nat _ w) = pretty w
+  display _ (String _ str) =
     pretty (Text.decodeUtf8 (BL.toStrict (Aeson.encode (Aeson.String str))))
-  pretty (StringPrefix s str) =
-    pretty (String s str :: SourcePat_ s p t) <> ".."
-  pretty (ByteArray _ b) = pretty (show b)
-  pretty (Array _ pats) = brackets $ hsep (punctuate "," (map pretty pats))
-  pretty (ArrayPrefix _ pats) =
-    encloseSep "[" ", ..]" "," (map pretty $ toList pats)
-  pretty (Tuple _ pats) = braces $ hsep (punctuate "," (map pretty pats))
-  pretty (Struct _ fs) = cat [ nest 2 $ cat [ "{", fields fs], "}"]
+  display opts (StringPrefix s str) =
+    display opts (String s str :: SourcePat_ s p t) <> ".."
+  display _ (ByteArray _ b) = pretty (show b)
+  display opts (Array _ pats) =
+    brackets $ hsep (punctuate "," (map (display opts) pats))
+  display opts (ArrayPrefix _ pats) =
+    encloseSep "[" ", ..]" "," (map (display opts) $ toList pats)
+  display opts (Tuple _ pats) =
+    braces $ hsep (punctuate "," (map (display opts) pats))
+  display opts (Struct _ fs) = cat [ nest 2 $ cat [ "{", fields fs], "}"]
     where
     fields = sep . punctuate "," . map field
-    field (Field name pat) = pretty name <+> "=" <+> pretty pat
-  pretty (App _ l pats) = pretty l <+> hsep (punctuate " " (map prettyArg pats))
-  pretty (KeyValue _ k v) = prettyArg k <+> "->" <+> prettyArg v
-  pretty (Wildcard _) = "_"
-  pretty (Variable _ name) = pretty name
-  pretty (ElementsOfArray _ pat) = prettyArg pat <> "[..]"
-  pretty (OrPattern _ lhs rhs) = sep [prettyArg lhs <+> "|", prettyArg rhs]
-  pretty (IfPattern _ cond then_ else_) = sep
-    [ nest 2 $ sep ["if", prettyArg cond ]
-    , nest 2 $ sep ["then", prettyArg then_]
-    , nest 2 $ sep ["else", prettyArg else_]
+    field (Field name pat) = pretty name <+> "=" <+> display opts pat
+  display opts (App _ l pats) =
+    display opts l <+> hsep (punctuate " " (map (displayAtom opts) pats))
+  display opts (KeyValue _ k v) =
+    displayAtom opts k <+> "->" <+> displayAtom opts v
+  display _ (Wildcard _) = "_"
+  display _ (Variable _ name) = pretty name
+  display opts (ElementsOfArray _ pat) = displayAtom opts pat <> "[..]"
+  display opts (OrPattern _ lhs rhs) =
+    sep [displayAtom opts lhs <+> "|", displayAtom opts rhs]
+  display opts (IfPattern _ cond then_ else_) = sep
+    [ nest 2 $ sep ["if", displayAtom opts cond ]
+    , nest 2 $ sep ["then", displayAtom opts then_]
+    , nest 2 $ sep ["else", displayAtom opts else_]
     ]
-  pretty (NestedQuery _ q) = parens $ pretty q
-  pretty (Negation _ q) = "!" <> parens (pretty q)
-  pretty (FactId _ Nothing n) = "$" <> pretty n
-  pretty (FactId _ (Just p) n) = "$" <> pretty p <+> pretty n
-  pretty (TypeSignature _ p t) = prettyArg p <+> ":" <+> pretty t
-  pretty (Never _) = "never"
-  pretty (Clause _ p pat) = pretty p <+> prettyArg pat
-  pretty (Prim _ p pats) =
-    pretty p <+> hsep (punctuate " " (map prettyArg pats))
+  display opts (NestedQuery _ q) = parens $ display opts q
+  display opts (Negation _ q) = "!" <> parens (display opts q)
+  display _ (FactId _ Nothing n) = "$" <> pretty n
+  display _ (FactId _ (Just p) n) = "$" <> pretty p <+> pretty n
+  display opts (TypeSignature _ p t) =
+    displayAtom opts p <+> ":" <+> display opts t
+  display _ (Never _) = "never"
+  display opts (Clause _ p pat) = display opts p <+> displayAtom opts pat
+  display opts (Prim _ p pats) =
+    display opts p <+> hsep (punctuate " " (map (displayAtom opts) pats))
 
-instance (Pretty p, Pretty t) => Pretty (SourceQuery_ s p t) where
-  pretty (SourceQuery maybeHead stmts) = case stmts of
-    [] -> pretty maybeHead
+  displayAtom opts pat = case pat of
+    App{} -> parens $ display opts pat
+    KeyValue{} -> parens $ display opts pat
+    OrPattern{} -> parens $ display opts pat
+    IfPattern{} -> parens $ display opts pat
+    TypeSignature{} -> parens $ display opts pat
+    Nat{} -> display opts pat
+    String{} -> display opts pat
+    StringPrefix{} -> display opts pat
+    ByteArray{} -> display opts pat
+    Array{} -> display opts pat
+    ArrayPrefix{} -> display opts pat
+    Tuple{} -> display opts pat
+    Struct{} -> display opts pat
+    ElementsOfArray{} -> display opts pat
+    Wildcard{} -> display opts pat
+    Variable{} -> display opts pat
+    NestedQuery{} -> display opts pat
+    Negation{} -> display opts pat
+    FactId{} -> display opts pat
+    Never{} -> display opts pat
+    Clause{} -> parens $ display opts pat
+    Prim{} -> parens $ display opts pat
+
+instance (Display p, Display t) => Display (SourceQuery_ s p t) where
+  display opts (SourceQuery maybeHead stmts) = case stmts of
+    [] -> maybe mempty (display opts) maybeHead
     _ -> case maybeHead of
-      Just head -> hang 2 (sep (pretty head <+> "where" : pstmts))
+      Just head -> hang 2 (sep (display opts head <+> "where" : pstmts))
       Nothing -> sep pstmts
     where
-    pstmts = punctuate ";" (map pretty stmts)
+    pstmts = punctuate ";" (map (display opts) stmts)
 
-instance (Pretty p, Pretty t) => Pretty (SourceStatement_ s p t) where
-  pretty (SourceStatement lhs rhs) = prettyStatement lhs rhs
+instance (Display p, Display t) => Display (SourceStatement_ s p t) where
+  display opts (SourceStatement lhs rhs) = displayStatement opts lhs rhs
 
-prettyStatement :: (IsWild pat, Pretty pat) => pat -> pat -> Doc ann
-prettyStatement lhs rhs
-  | isWild lhs = pretty rhs
-  | otherwise = hang 2 $ sep [pretty lhs <+> "=", pretty rhs]
+displayStatement
+  :: (IsWild pat, Display pat)
+  => DisplayOpts
+  -> pat
+  -> pat
+  -> Doc ann
+displayStatement opts lhs rhs
+  | isWild lhs = display opts rhs
+  | otherwise = hang 2 $ sep [display opts lhs <+> "=", display opts rhs]
 
-prettyArg :: (Pretty p, Pretty t) => SourcePat_ s p t -> Doc ann
-prettyArg pat = case pat of
-  App{} -> parens $ pretty pat
-  KeyValue{} -> parens $ pretty pat
-  OrPattern{} -> parens $ pretty pat
-  IfPattern{} -> parens $ pretty pat
-  TypeSignature{} -> parens $ pretty pat
-  Nat{} -> pretty pat
-  String{} -> pretty pat
-  StringPrefix{} -> pretty pat
-  ByteArray{} -> pretty pat
-  Array{} -> pretty pat
-  ArrayPrefix{} -> pretty pat
-  Tuple{} -> pretty pat
-  Struct{} -> pretty pat
-  ElementsOfArray{} -> pretty pat
-  Wildcard{} -> pretty pat
-  Variable{} -> pretty pat
-  NestedQuery{} -> pretty pat
-  Negation{} -> pretty pat
-  FactId{} -> pretty pat
-  Never{} -> pretty pat
-  Clause{} -> parens $ pretty pat
-  Prim{} -> parens $ pretty pat
-
-instance Pretty PrimOp where
-  pretty PrimOpToLower = "prim.toLower"
-  pretty PrimOpLength = "prim.length"
-  pretty PrimOpRelToAbsByteSpans = "prim.relToAbsByteSpans"
-  pretty PrimOpGtNat = "prim.gtNat"
-  pretty PrimOpGeNat = "prim.geNat"
-  pretty PrimOpLtNat = "prim.ltNat"
-  pretty PrimOpLeNat = "prim.leNat"
-  pretty PrimOpNeNat = "prim.neNat"
-  pretty PrimOpAddNat = "prim.addNat"
-  pretty PrimOpNeExpr = "prim.neExpr"
+instance Display PrimOp where
+  display _ PrimOpToLower = "prim.toLower"
+  display _ PrimOpLength = "prim.length"
+  display _ PrimOpRelToAbsByteSpans = "prim.relToAbsByteSpans"
+  display _ PrimOpGtNat = "prim.gtNat"
+  display _ PrimOpGeNat = "prim.geNat"
+  display _ PrimOpLtNat = "prim.ltNat"
+  display _ PrimOpLeNat = "prim.leNat"
+  display _ PrimOpNeNat = "prim.neNat"
+  display _ PrimOpAddNat = "prim.addNat"
+  display _ PrimOpNeExpr = "prim.neExpr"
 
 -- -----------------------------------------------------------------------------
 -- Removing source locations from the AST

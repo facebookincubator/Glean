@@ -46,6 +46,7 @@ import Thrift.Protocol.JSON.Base64
 import Util.Buffer (ascii, liftST)
 import qualified Util.Buffer as Buffer
 
+import Glean.Display
 import Glean.Query.Nested.Types
 import Glean.RTS as RTS
 import qualified Glean.RTS.Foreign.JSON as RTS hiding (String, Array)
@@ -480,7 +481,7 @@ matchToJSON env opts typ term = case (typ,term) of
     OrderedObject [("prefix", OrderedValue $ Aeson.String (Text.decodeUtf8 s))]
   (_,_) ->
    throwError $ "queryToJSON: "
-     ++ renderString (layoutCompact (pretty term))
+     ++ renderString (layoutCompact (displayVerbose term))
      ++ " :: " ++ show typ
 
 -- | Takes a Glean schema type and a pattern of that type, and returns a
@@ -522,5 +523,5 @@ queryToJSON env opts@Thrift.UserQueryOptions{..} typ t = case (typ,t) of
   (_, RTS.Ref ref) -> matchToJSON env opts typ ref
   (typ, term) ->
      throwError $ "queryToJSON: "
-       ++ renderString (layoutCompact (pretty term))
+       ++ renderString (layoutCompact (displayVerbose term))
        ++ " :: " ++ show typ

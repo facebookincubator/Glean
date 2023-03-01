@@ -43,6 +43,7 @@ import Foreign
 
 import Glean.Types (Id, fIRST_FREE_ID)
 import Glean.Angle.Types hiding (Type)
+import Glean.Display
 import Glean.Schema.Util
 
 -- | 'Pid' holds the glean Id corresponding to the definition of a predicate.
@@ -56,6 +57,9 @@ newtype Pid = Pid { fromPid :: Int64 }
 
 instance Pretty Pid where
   pretty (Pid n) = "{" <> pretty n <> "}"
+
+instance Display Pid where
+  display _ = pretty
 
 invalidPid :: Pid
 invalidPid = Pid 0
@@ -72,6 +76,9 @@ newtype Fid = Fid { fromFid :: Id }
 
 instance Pretty Fid where
   pretty (Fid n) = "{" <> pretty n <> "}"
+
+instance Display Fid where
+  display _ = pretty
 
 invalidFid :: Fid
 invalidFid = Fid 0
@@ -91,14 +98,15 @@ instance Eq PidRef where
 instance Ord PidRef where
   compare (PidRef a _) (PidRef b _) = compare a b
 
-instance Pretty PidRef where
-  pretty (PidRef _ ref) = pretty ref
+instance Display PidRef where
+  display opts (PidRef _ ref) = display opts ref
+    -- we could add an option to display the Pids too
 
 data ExpandedType = ExpandedType TypeId Type
   deriving (Show, Eq)
 
-instance Pretty ExpandedType where
-  pretty (ExpandedType ref _) = pretty ref
+instance Display ExpandedType where
+  display opts (ExpandedType ref _) = display opts ref
 
 type Type = Type_ PidRef ExpandedType
 type FieldDef = FieldDef_ PidRef ExpandedType

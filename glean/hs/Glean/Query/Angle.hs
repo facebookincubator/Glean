@@ -79,6 +79,7 @@ import TextShow
 import Glean.Angle.Types hiding
   (SourcePat, SourceStatement, SourceQuery, Field, Type)
 import qualified Glean.Angle.Types as Angle
+import qualified Glean.Display as Display
 import Glean.Query.Thrift.Internal as Thrift
 import Glean.Typed hiding (end)
 import Glean.Types (Nat, Byte)
@@ -132,7 +133,7 @@ query :: (Type t) => Angle t -> Query t
 query = Thrift.angleData . display
 
 render :: SourceQuery -> Text
-render q = renderStrict (layoutCompact (pretty q))
+render q = renderStrict (layoutCompact (Display.displayDefault q))
 
 class AngleVars f r where
   -- | Use `vars` to batch up a series of nested `var` calls:

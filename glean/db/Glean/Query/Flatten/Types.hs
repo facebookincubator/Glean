@@ -35,6 +35,7 @@ import Data.Text.Prettyprint.Doc hiding ((<>))
 import Glean.Angle.Types hiding (Type)
 import Glean.Query.Codegen.Types
 import Glean.Database.Schema
+import Glean.Display
 import Glean.RTS.Types as RTS
 import Glean.Query.Vars
 
@@ -59,15 +60,16 @@ type FlatStatementGroup = NonEmpty FlatStatement
 singletonGroup :: FlatStatement -> FlatStatementGroup
 singletonGroup s = s :| []
 
-instance Pretty pat => Pretty (FlatQuery_ pat) where
-  pretty (FlatQuery key maybeVal stmts) = case stmts of
+instance Display pat => Display (FlatQuery_ pat) where
+  display opts (FlatQuery key maybeVal stmts) = case stmts of
     [] -> head
     _ -> hang 2 (sep (head <+> "where" : map prettyGroup stmts))
     where
-    head = pretty key <> maybe mempty (\val -> " -> " <> pretty val) maybeVal
+    head = display opts key <>
+      maybe mempty (\val -> " -> " <> display opts val) maybeVal
     prettyGroup stmts =
       brackets (align (sep (punctuate ";"
-        (map pretty (NonEmpty.toList stmts)))))
+        (map (display opts) (NonEmpty.toList stmts)))))
 
 data FlatStatement
   = FlatStatement Type Pat Generator
@@ -170,10 +172,10 @@ boundVarsOfGen other r = varsOf AllVars other r
 falseStmt :: FlatStatement
 falseStmt = FlatDisjunction []
 
-instance Pretty FlatStatement where
-  pretty = \case
+instance Display FlatStatement where
+  display opts = \case
     FlatStatement _ lhs rhs ->
-      hang 2 $ sep [pretty lhs <+> "=", pretty rhs ]
+      hang 2 $ sep [display opts lhs <+> "=", display opts rhs ]
     FlatNegation groups ->
       "!" <> doStmts groups
     FlatDisjunction groupss ->
@@ -185,8 +187,10 @@ instance Pretty FlatStatement where
       ]
     where
     doStmts groups =
-      hang 2 (sep [sep ("(" : punctuate ";" (map pretty groups)), ")"])
+      hang 2 (sep [sep ("(" : punctuate ";" (map stmtGroup groups)), ")"])
 
+    stmtGroup group = brackets $
+      sep (punctuate ";" (map (display opts) (NonEmpty.toList group)))
 
 data FlattenState = FlattenState
   { flDbSchema :: DbSchema

@@ -20,6 +20,7 @@ import Data.Text.Prettyprint.Doc hiding ((<>), enclose)
 import Glean.Query.Codegen.Types
   (Match(..), Var(..), QueryWithInfo(..), Typed(..))
 import Glean.Angle.Types hiding (Type)
+import Glean.Display
 import Glean.RTS.Types as RTS
 import Glean.RTS.Term as RTS hiding (Match(..))
 
@@ -29,18 +30,21 @@ import Glean.RTS.Term as RTS hiding (Match(..))
 data TcQuery = TcQuery Type TcPat (Maybe TcPat) [TcStatement]
   deriving Show
 
-instance Pretty TcQuery where
-  pretty (TcQuery _ key maybeVal stmts) = case stmts of
+instance Display TcQuery where
+  display opts (TcQuery _ key maybeVal stmts) = case stmts of
     [] -> head
-    _ -> hang 2 (sep (head <+> "where" : punctuate ";" (map pretty stmts)))
+    _ ->
+      hang 2 $ sep $ head <+>
+        "where" : punctuate ";" (map (display opts) stmts)
     where
-   head = pretty key <> maybe mempty (\val -> " -> " <> pretty val) maybeVal
+   head = display opts key <>
+     maybe mempty (\val -> " -> " <> display opts val) maybeVal
 
 data TcStatement = TcStatement Type TcPat TcPat
   deriving Show
 
-instance Pretty TcStatement where
-  pretty (TcStatement _ lhs rhs) = prettyStatement lhs rhs
+instance Display TcStatement where
+  display opts (TcStatement _ lhs rhs) = displayStatement opts lhs rhs
 
 type TcPat = Term (Match (Typed TcTerm) Var)
 
@@ -54,29 +58,31 @@ data TcTerm
   | TcIf { cond :: Typed TcPat, then_ :: TcPat, else_ :: TcPat }
   deriving Show
 
-instance Pretty TcTerm where
-  pretty (TcOr a b) = pretty a <+> "++" <+> pretty b
-  pretty (TcIf (Typed _ cond) then_ else_) = sep
-    [ nest 2 $ sep ["if", prettyArg cond ]
-    , nest 2 $ sep ["then", prettyArg then_]
-    , nest 2 $ sep ["else", prettyArg else_]
+instance Display TcTerm where
+  display opts (TcOr a b) = display opts a <+> "++" <+> display opts b
+  display opts (TcIf (Typed _ cond) then_ else_) = sep
+    [ nest 2 $ sep ["if", displayAtom opts cond ]
+    , nest 2 $ sep ["then", displayAtom opts then_]
+    , nest 2 $ sep ["else", displayAtom opts else_]
     ]
-  pretty (TcFactGen pid kpat vpat)
-    | isWild vpat = pretty pid <+> prettyArg kpat
-    | otherwise = pretty pid <+> prettyArg kpat <+> "->" <+> prettyArg vpat
-  pretty (TcElementsOfArray arr) = prettyArg arr <> "[..]"
-  pretty (TcQueryGen q) = parens (pretty q)
-  pretty (TcNegation q) = "!" <> parens (pretty q)
-  pretty (TcPrimCall op args) = hsep (pretty op : map prettyArg args)
+  display opts (TcFactGen pid kpat vpat)
+    | isWild vpat = display opts pid <+> displayAtom opts kpat
+    | otherwise = display opts pid <+>
+      displayAtom opts kpat <+> "->" <+> displayAtom opts vpat
+  display opts (TcElementsOfArray arr) = displayAtom opts arr <> "[..]"
+  display opts (TcQueryGen q) = parens (display opts q)
+  display opts (TcNegation q) =
+    "!" <> parens (sep (punctuate ";" (map (display opts) q)))
+  display opts (TcPrimCall op args) =
+    hsep (display opts op : map (displayAtom opts) args)
 
-prettyArg :: TcPat -> Doc ann
-prettyArg pat = case pat of
-  Ref (MatchExt (Typed _ TcOr{})) -> parens (pretty pat)
-  Ref (MatchExt (Typed _ TcFactGen{})) -> parens (pretty pat)
-  Ref (MatchExt (Typed _ TcPrimCall{})) -> parens (pretty pat)
-  Ref (MatchExt (Typed _ TcQueryGen{})) -> parens (pretty pat)
-  Ref (MatchExt (Typed _ TcNegation{})) -> pretty pat
-  Ref (MatchExt (Typed _ TcIf{})) -> parens (pretty pat)
-  _ -> pretty pat
+  displayAtom opts pat = case pat of
+    TcOr{} -> parens (display opts pat)
+    TcFactGen{} -> parens (display opts pat)
+    TcPrimCall{} -> parens (display opts pat)
+    TcQueryGen{} -> parens (display opts pat)
+    TcNegation{} -> display opts pat
+    TcIf{} -> parens (display opts pat)
+    _ -> display opts pat
 
 type TypecheckedQuery = QueryWithInfo TcQuery

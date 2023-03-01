@@ -21,7 +21,6 @@ import Control.Applicative ((<|>))
 import Control.Monad.Except
 import Control.Monad.State
 import Data.Bifoldable
-import Data.Bifunctor
 import Data.Char
 import Data.Foldable (toList)
 import Data.List.Extra (firstJust)
@@ -41,6 +40,7 @@ import Data.Text.Prettyprint.Doc hiding ((<>), enclose)
 
 import Glean.Angle.Types hiding (Type)
 import qualified Glean.Angle.Types as Schema
+import Glean.Display
 import Glean.Query.Codegen.Types
   (Match(..), Var(..), QueryWithInfo(..), Typed(..))
 import Glean.Query.Typecheck.Types
@@ -157,12 +157,14 @@ needsResult q@(SourceQuery Nothing stmts) = case reverse stmts of
   (SourceStatement Wildcard{} rhs : rstmts) ->
     return (rhs, reverse rstmts)
   (SourceStatement pat _ : _) ->
-    prettyErrorIn pat err
+    prettyErrorIn pat =<< err
   _ ->
-    prettyError err
+    prettyError =<< err
   where
-    err = "the last statement should be an expression: " <>
-      pretty (readable q)
+    err = do
+      opts <- gets tcDisplayOpts
+      return $ "the last statement should be an expression: " <>
+        display opts q
 
 -- add a unit result if the pattern doesn't have a result.
 ignoreResult :: IsSrcSpan s => Pat' s -> Pat' s
@@ -310,12 +312,14 @@ inferExpr ctx pat = case pat of
     case ty of
       (ArrayTy elemTy) ->
         return (Ref (MatchExt (Typed elemTy (TcElementsOfArray e'))), elemTy)
-      _other -> prettyErrorIn pat $
-        nest 4 $ vcat
-          [ "type error in array element generator:"
-          , "expression: " <> pretty (readable e)
-          , "does not have an array type"
-          ]
+      _other -> do
+        opts <- gets tcDisplayOpts
+        prettyErrorIn pat $
+          nest 4 $ vcat
+            [ "type error in array element generator:"
+            , "expression: " <> display opts e
+            , "does not have an array type"
+            ]
   -- we can infer { just = E } as a maybe:
   Struct _ [ Field "just" e ] -> do
     (e', ty) <- inferExpr ctx e
@@ -327,11 +331,13 @@ inferExpr ctx pat = case pat of
 
   v@KeyValue{} -> unexpectedValue v
 
-  _ -> prettyErrorIn pat $ nest 4 $ vcat
-    [ "can't infer the type of: " <> pretty (readable pat)
-    , "try adding a type annotation like (" <> pretty (readable pat) <> " : T)"
-    , "or reverse the statement (Q = P instead of P = Q)"
-    ]
+  _ -> do
+    opts <- gets tcDisplayOpts
+    prettyErrorIn pat $ nest 4 $ vcat
+      [ "can't infer the type of: " <> display opts pat
+      , "try adding a type annotation like (" <> display opts pat <> " : T)"
+      , "or reverse the statement (Q = P instead of P = Q)"
+      ]
 
 convertType
   :: IsSrcSpan s => s -> ToRtsType -> Schema.Type -> T Type
@@ -516,7 +522,7 @@ tcFactGenerator
 tcFactGenerator ref pat = do
   TcEnv{..} <- gets tcEnv
   PredicateDetails{..} <- case HashMap.lookup ref tcEnvPredicates of
-    Nothing -> prettyErrorIn pat $ "tcFactGenerator: " <> pretty ref
+    Nothing -> prettyErrorIn pat $ "tcFactGenerator: " <> displayDefault ref
     Just details -> return details
   (kpat', vpat') <- case pat of
     KeyValue _ kpat vpat -> do
@@ -544,9 +550,10 @@ isVar _ = False
 isFactIdAllowed :: IsSrcSpan s => Pat' s -> T ()
 isFactIdAllowed pat = do
   mode <- gets tcMode
+  opts <- gets tcDisplayOpts
   when (mode /= TcModeQuery) $ prettyErrorIn pat $
     "fact IDs are not allowed in a derived predicate: " <>
-      pretty (readable pat)
+      display opts pat
 
 falseVal, trueVal :: TcPat
 falseVal = RTS.Alt 0 (RTS.Tuple [])
@@ -566,12 +573,14 @@ patTypeError :: (IsSrcSpan s) => Pat' s -> Type -> T a
 patTypeError = patTypeErrorDesc "type error in pattern"
 
 patTypeErrorDesc :: (IsSrcSpan s) => Text -> Pat' s -> Type -> T a
-patTypeErrorDesc desc q ty = prettyErrorIn q $
-  nest 4 $ vcat
-    [ pretty desc
-    , "pattern: " <> pretty (readable q)
-    , "expected type: " <> pretty (readableType ty)
-    ]
+patTypeErrorDesc desc q ty = do
+  opts <- gets tcDisplayOpts
+  prettyErrorIn q $
+    nest 4 $ vcat
+      [ pretty desc
+      , "pattern: " <> display opts q
+      , "expected type: " <> display opts ty
+      ]
 
 data TcMode = TcModeQuery | TcModePredicate
   deriving Eq
@@ -592,6 +601,8 @@ data TypecheckState = TypecheckState
   , tcBindings :: HashSet Name
     -- ^ Accumulates variables that appear in an ContextPat context
   , tcMode :: TcMode
+  , tcDisplayOpts :: DisplayOpts
+    -- ^ Options for pretty-printing
   }
 
 initialTypecheckState
@@ -611,6 +622,8 @@ initialTypecheckState tcEnv version rtsType mode = TypecheckState
   , tcUses = HashSet.empty
   , tcBindings = HashSet.empty
   , tcMode = mode
+  , tcDisplayOpts = defaultDisplayOpts
+      -- might make this configurable with flags later
   }
 
 type T a = StateT TypecheckState (Except Text) a
@@ -655,12 +668,13 @@ varOcc ctx span name ty = do
         put $ bindOrUse ctx name $
           state { tcFree = HashSet.delete name tcFree }
         return (Ref (MatchVar v))
-      | otherwise -> prettyErrorAt span $
-        nest 4 $ vcat
-          [ "type mismatch for variable " <> pretty name
-          , "type of variable: " <> pretty (readableType ty')
-          , "expected type: " <> pretty (readableType ty)
-          ]
+      | otherwise -> do
+        prettyErrorAt span $
+          nest 4 $ vcat
+            [ "type mismatch for variable " <> pretty name
+            , "type of variable: " <> display tcDisplayOpts ty'
+            , "expected type: " <> display tcDisplayOpts ty
+            ]
 
 freeVariablesAreErrors :: T ()
 freeVariablesAreErrors = do
@@ -817,12 +831,13 @@ primInferAndCheck span args primOp argTys =
 
 
 primInferAndCheckError :: IsSrcSpan s => s -> PrimOp -> String -> T b
-primInferAndCheckError span primOp debugString =
+primInferAndCheckError span primOp debugString = do
+  opts <- gets tcDisplayOpts
   prettyErrorAt span $ nest 4 $ vcat
-  [ "primitive operation " <> pretty primOp
-    <> " does not pass associated check: "
-  , pretty debugString
-  ]
+    [ "primitive operation " <> display opts primOp
+      <> " does not pass associated check: "
+    , pretty debugString
+    ]
 
 primOpType :: PrimOp -> ([PrimArgType], Type)
 primOpType op = case op of
@@ -971,12 +986,3 @@ tcTermUsesNegation = \case
   TcPrimCall _ xs -> firstJust tcPatUsesNegation xs
   -- one can replicate negation using if statements
   TcIf{} -> Just IfStatement
-
--- | Strip out the hashes before printing types and things in error messages
-readable :: Bifunctor t => t PredicateId TypeId -> t PredicateRef TypeRef
-readable = bimap predicateIdRef typeIdRef
-
-readableType :: Bifunctor t => t PidRef ExpandedType -> t PredicateRef TypeRef
-readableType = bimap pred typ
-  where pred (PidRef _ id) = predicateIdRef id
-        typ (ExpandedType id _) = typeIdRef id

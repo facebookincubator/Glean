@@ -39,9 +39,9 @@ import Data.Maybe (listToMaybe)
 import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
-import Data.Text.Prettyprint.Doc as Pretty hiding ((<>), pageWidth)
 
 import Glean.Angle.Types
+import Glean.Display
 import Glean.Schema.Types
 import Glean.Schema.Util
 
@@ -235,7 +235,7 @@ calcEvolutions toRef byPredRef bySchemaRef schemaEvolutions autoEvolutions =
 --
 validateEvolutions
   :: (Eq p, Eq t, ShowRef p, ShowRef t,
-      Hashable p, Hashable t, Pretty p, Pretty t)
+      Hashable p, Hashable t, Display p, Display t)
   => HashMap t (TypeDef_ p t)        -- ^ types to their definitions
   -> HashMap p (PredicateDef_ s p t) -- ^ predicates to their definitions
   -> HashMap p p                     -- ^ predicate evolutions
@@ -321,7 +321,7 @@ data Opt = Option | FieldOpt
 -- or have the same PredicateRef.
 canEvolve
   :: (Eq p, Eq t, ShowRef p, ShowRef t,
-      Hashable p, Hashable t, Pretty p, Pretty t)
+      Hashable p, Hashable t, Display p, Display t)
   => HashMap t (TypeDef_ p t) -- ^ type definitions
   -> (p -> p -> Bool)         -- ^ whether two predicates are compatible
   -> Type_ p t                -- ^ updated type
@@ -358,7 +358,9 @@ canEvolve types compatible new old = go new old
     go (SumTy new) (SumTy old) = compareFieldList Option new old
     go (RecordTy new) (RecordTy old) = compareFieldList FieldOpt new old
     go new old = Just $ Text.pack $
-      "type changed from " <> show (pretty old) <> " to " <> show (pretty new)
+      "type changed from " <>
+        show (displayDefault old) <> " to " <>
+        show (displayDefault new)
 
     compareFieldList optName new old =
       removedFieldsError <|> newRequiredFieldsError <|>

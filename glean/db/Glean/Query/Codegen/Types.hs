@@ -37,6 +37,7 @@ import Data.Text.Prettyprint.Doc
 
 import Glean.Angle.Types (IsWild(..), PrimOp(..))
 import Glean.Bytecode.Types (Register, Ty(..))
+import Glean.Display
 import Glean.RTS.Term hiding (Match)
 import Glean.RTS.Types (Type, Fid, PidRef)
 
@@ -202,8 +203,8 @@ data Var = Var
 instance Eq Var where
   Var _ x _ == Var _ y _  = x == y
 
-instance Pretty Var where
-  pretty (Var _ v nm) = pretty (fromMaybe "" nm) <> "_" <> pretty v
+instance Display Var where
+  display _ (Var _ v nm) = pretty (fromMaybe "" nm) <> "_" <> pretty v
 
 instance IsWild (Term (Match ext v)) where
   isWild (Ref MatchWild{}) = True
@@ -301,20 +302,23 @@ matchVar _ = Nothing
 data Typed x = Typed Type x
   deriving (Show, Functor, Traversable, Foldable)
 
-instance Pretty x => Pretty (Typed x) where
-  pretty (Typed _ x) = pretty x
+instance Display x => Display (Typed x) where
+  display opts (Typed _ x) = display opts x
 
 -- -----------------------------------------------------------------------------
 -- Pretty-printing
 
-instance Pretty CgQuery where
-  pretty (CgQuery expr []) = pretty expr
-  pretty (CgQuery expr stmts) =
-    hang 2 $ sep (pretty expr <+> "where" : punctuate ";" (map pretty stmts))
+instance Display CgQuery where
+  display opts (CgQuery expr []) = display opts expr
+  display opts (CgQuery expr stmts) =
+    hang 2 $ sep $
+      display opts expr <+>
+        "where" : punctuate ";" (map (display opts) stmts)
 
-instance Pretty CgStatement where
-  pretty = \case
-    CgStatement pat gen -> hang 2 $ sep [pretty pat <+> "=", pretty gen]
+instance Display CgStatement where
+  display opts = \case
+    CgStatement pat gen ->
+      hang 2 $ sep [display opts pat <+> "=", display opts gen]
     CgNegation stmts -> "!" <> doStmts stmts
     CgDisjunction stmtss -> sep (punctuate " |" (map doStmts stmtss))
     CgConditional cond then_ else_ -> sep
@@ -323,45 +327,49 @@ instance Pretty CgStatement where
       , nest 2 $ sep ["else", doStmts else_]
       ]
     where
-      doStmts stmts =
-        hang 2 (sep [sep ("(" : punctuate ";" (map pretty stmts)), ")"])
+      doStmts stmts = hang 2 $
+        sep [sep ("(" : punctuate ";" (map (display opts) stmts)), ")"]
 
-instance Pretty Generator where
-  pretty (FactGenerator pref kpat vpat section)
-    | isWild vpat || isUnit vpat = pred <+> pretty kpat
-    | otherwise = pred <+> pretty kpat <+> "->" <+> pretty vpat
+instance Display Generator where
+  display opts (FactGenerator pref kpat vpat section)
+    | isWild vpat || isUnit vpat = hang 2 (sep [pred, display opts kpat])
+    | otherwise =
+      hang 2 (sep [pred, display opts kpat <+> "->", display opts vpat])
     where
-    pred = pretty pref <> prettySection
+    pred = display opts pref <> prettySection
     prettySection = case section of
       SeekOnAllFacts -> ""
       SeekOnBase -> "<base>"
       SeekOnStacked -> "<stacked>"
     isUnit (Tuple []) = True
     isUnit _ = False
-  pretty (TermGenerator q) = pretty q
-  pretty (DerivedFactGenerator pid k (Tuple [])) =
-    pretty pid <> "<- (" <> pretty k <> ")"
-  pretty (DerivedFactGenerator pid k v) =
-    pretty pid <> "<- (" <> pretty k <> " -> " <> pretty v <> ")"
-  pretty (ArrayElementGenerator _ arr) = pretty arr <> "[..]"
-  pretty (PrimCall op args) = hsep (pretty op : map pretty args)
-instance Pretty ext => Pretty (Match ext Var) where
-  pretty (MatchAnd l r) = pretty l <+> "@" <+> pretty r
-  pretty (MatchBind v@(Var ty _ _)) = pretty v  <> ":" <> pretty ty
-  pretty (MatchPrefix str rest) = pretty (show str) <> ".." <> pretty rest
-  pretty (MatchExt ext) = pretty ext
-  pretty other = prettyMatchAtom other
+  display opts (TermGenerator q) = display opts q
+  display opts (DerivedFactGenerator pid k (Tuple [])) =
+    hang 2 (sep [display opts pid <> "<-", displayAtom opts k ])
+  display opts (DerivedFactGenerator pid k v) =
+    display opts pid <> "<- (" <>
+      displayAtom opts k <> " -> " <> displayAtom opts v <> ")"
+  display opts (ArrayElementGenerator _ arr) = display opts arr <> "[..]"
+  display opts (PrimCall op args) =
+    hsep (display opts op : map (displayAtom opts) args)
 
-prettyMatchAtom :: Pretty ext => Match ext Var -> Doc ann
-prettyMatchAtom (MatchWild _) = "_"
-prettyMatchAtom (MatchNever _) = "()"
-prettyMatchAtom (MatchFid fid) = pretty fid
-prettyMatchAtom (MatchVar v) = pretty v
-prettyMatchAtom (MatchPrefix str rest) =
-  pretty (show str) <> ".." <> pretty rest
-prettyMatchAtom (MatchArrayPrefix _ty pre) =
-  align $ encloseSep "[" "..]" "," $ map pretty pre
-prettyMatchAtom other@MatchAnd{} = "(" <> pretty other <> ")"
-prettyMatchAtom other@MatchBind{} = "(" <> pretty other <> ")"
-prettyMatchAtom other@MatchExt{} = "(" <> pretty other <> ")"
+instance Display ext => Display (Match ext Var) where
+  display opts (MatchAnd l r) = display opts l <+> "@" <+> display opts r
+  display opts (MatchBind v@(Var ty _ _)) =
+    display opts v  <> ":" <> display opts ty
+  display opts (MatchPrefix str rest) =
+    display opts (show str) <> ".." <> display opts rest
+  display opts (MatchExt ext) = display opts ext
+  display opts other = displayAtom opts other
 
+  displayAtom _ (MatchWild _) = "_"
+  displayAtom _ (MatchNever _) = "()"
+  displayAtom _ (MatchFid fid) = pretty fid
+  displayAtom opts (MatchVar v) = display opts v
+  displayAtom opts (MatchPrefix str rest) =
+    pretty (show str) <> ".." <> display opts rest
+  displayAtom opts (MatchArrayPrefix _ty pre) =
+    align $ encloseSep "[" "..]" "," $ map (display opts) pre
+  displayAtom opts other@MatchAnd{} = parens (display opts other)
+  displayAtom opts other@MatchBind{} = parens (display opts other)
+  displayAtom opts (MatchExt ext) = displayAtom opts ext

@@ -42,6 +42,7 @@ import Glean.Query.Codegen.Types
   , QueryWithInfo(..)
   , SeekSection(..)
   , CodegenQuery)
+import Glean.Display
 import Glean.Query.Flatten.Types
 import Glean.Query.Vars
 import Glean.RTS.Term as RTS hiding (Match(..))
@@ -145,7 +146,7 @@ get all the way through the list, give up.
 reorder :: Schema.DbSchema -> FlattenedQuery -> Except Text CodegenQuery
 reorder dbSchema QueryWithInfo{..} =
   withExcept (\(e, _) -> Text.pack $ show $
-    vcat [pretty e, nest 2 $ vcat [ "in:", pretty qiQuery]]) qi
+    vcat [pretty e, nest 2 $ vcat [ "in:", displayDefault qiQuery]]) qi
   where
     qi = do
       (q, ReorderState{..}) <-
@@ -756,8 +757,8 @@ reorderStmt stmt@(FlatStatement ty lhs gen)
   giveUp (s, e) =
     throwError (errMsg s, e)
   errMsg s = Text.pack $ show $ vcat
-    [ nest 2 $ vcat ["cannot resolve:", pretty stmt]
-    , nest 2 $ vcat ["because:", pretty s]
+    [ nest 2 $ vcat ["cannot resolve:", displayDefault stmt]
+    , nest 2 $ vcat ["because:", displayDefault s]
     ]
 
   -- In general if we have X = Y where both X and Y are unbound (or LHS = RHS
@@ -935,7 +936,7 @@ fixVars isPat p = do
     errMsg err = case err of
       UnboundVariable v@(Var ty _ _) ->
         "unbound variable: " <>
-        Text.pack (show (pretty v <+> ":" <+> pretty ty))
+        Text.pack (show (displayDefault v <+> ":" <+> displayDefault ty))
       CannotUseWildcardInExpr -> "cannot use a wildcard in an expression"
       CannotUseNeverInExpr -> "cannot use 'never' in an expression"
 

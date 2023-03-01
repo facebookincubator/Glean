@@ -66,6 +66,7 @@ import Util.Log.Text
 import Glean.RTS.Foreign.Inventory as Inventory
 import Glean.Database.Config
 import Glean.Database.Schema.Types
+import Glean.Display
 import Glean.Query.Transform
   ( transformPattern
   , transformBytes
@@ -417,7 +418,7 @@ mkTransformations (DbReadOnly stats) byId schemas = do
   bySchemaRef = predicatesBySchemaRef schemas
 
   detailsById id = HashMap.lookupDefault err id byId
-    where err = error $ "mkTransformations: " <> show (pretty id)
+    where err = error $ "mkTransformations: " <> show (displayVerbose id)
 
   evolutionsToTransformations
     :: HashMap PredicateId PredicateId
@@ -855,8 +856,8 @@ checkStoredType preds types def ty = go ty
     Just PredicateDetails{..} -> case predicateDeriving of
       Derive DerivedAndStored _ -> return ()
       Derive _ _ -> throwIO $ ErrorCall $ show $
-         "stored predicate " <> pretty def <>
-         " refers to non-stored derived predicate " <> pretty ref
+         "stored predicate " <> displayDefault def <>
+         " refers to non-stored derived predicate " <> displayDefault ref
       _ -> return ()
     Nothing -> error $ "checkStoredType: " <> Text.unpack (showRef ref)
   go (NamedTy (ExpandedType ref _)) = case HashMap.lookup ref types of
@@ -1064,4 +1065,4 @@ fromStoredVersions versions = IntMap.fromList
 
 renderSchemaSource :: SourceSchemas -> ByteString
 renderSchemaSource parsed =
-  Text.encodeUtf8 $ renderStrict $ layoutCompact $ pretty parsed
+  Text.encodeUtf8 $ renderStrict $ layoutCompact $ displayDefault parsed

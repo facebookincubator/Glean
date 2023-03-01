@@ -16,6 +16,7 @@ import Data.Maybe
 import Data.Text.Prettyprint.Doc hiding ((<>))
 
 import Glean.Database.Schema
+import Glean.Display
 import Glean.RTS.Term as RTS
 
 
@@ -43,15 +44,15 @@ data SumMatchMode
      -- ^ matches any alternative. The alts specify additional
      -- structure to fetch and/or nested queries.
 
-instance Pretty r => Pretty (Nested r) where
-  pretty (NestedRef r) = pretty r
-  pretty (NestedPred _ _ maybeTerm) =
-    "*" <> maybe emptyDoc (parens . pretty) maybeTerm
-  pretty (NestedSum match alts) =
+instance Display r => Display (Nested r) where
+  display opts (NestedRef r) = display opts r
+  display opts (NestedPred _ _ maybeTerm) =
+    "*" <> maybe emptyDoc (parens . display opts) maybeTerm
+  display opts (NestedSum match alts) =
     surround $ hcat $ punctuate "|" $
-      map (pretty . fromMaybe (Ref Wildcard)) alts
+      map (display opts . fromMaybe (Ref Wildcard)) alts
     where
      surround = case match of
        SumMatchThese -> angles
        SumMatchAny -> parens
-  pretty (NestedArray t) = "[" <> pretty t <> ",...]"
+  display opts (NestedArray t) = "[" <> display opts t <> ",...]"

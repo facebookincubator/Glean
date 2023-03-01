@@ -19,7 +19,7 @@ import Control.Exception
 import Control.Monad
 import Control.Monad.Except
 import qualified Data.Aeson as Aeson
-import Data.Bifunctor (first, bimap)
+import Data.Bifunctor (first)
 import Data.ByteString (ByteString)
 import qualified Data.ByteString as B
 import qualified Data.ByteString.Lazy as LB
@@ -55,13 +55,14 @@ import Util.Timing
 import Util.Log
 import Util.STM
 
+import Glean.Display
 import qualified Glean.Angle.Parser as Angle
 import Glean.Angle.Types hiding (Type, FieldDef, SourcePat_(..))
 import qualified Glean.Angle.Types as Angle
 import qualified Glean.Internal.Types as Thrift
 import qualified Glean.Backend.Types as Backend
 import Glean.Schema.Types
-  (ResolvedType, RefTarget(..), LookupResult(..), NameEnv, resolveRef)
+  (RefTarget(..), LookupResult(..), NameEnv, resolveRef)
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Schema.Types
 import Glean.Database.Open
@@ -635,7 +636,7 @@ userQueryImpl
               stored
           let
             irDiag =
-              [ "ir:\n" <> Text.pack (show (pretty qiQuery))
+              [ "ir:\n" <> Text.pack (show (displayDefault qiQuery))
               | Thrift.queryDebugOptions_ir debug ]
 
             cont = case Thrift.userQueryOptions_continuation opts of
@@ -644,7 +645,7 @@ userQueryImpl
 
           return (ty, compileTime, irDiag, cont)
 
-    vlog 2 $ "return type: " <> show (pretty returnType)
+    vlog 2 $ "return type: " <> show (displayDefault returnType)
 
     details@PredicateDetails{..} <- case returnType of
       Angle.PredicateTy (PidRef pid _) ->
@@ -754,7 +755,7 @@ userQueryImpl
       addStatValueType "glean.query.truncated" 1 Stats.Sum
 
     let ppType = renderStrict $ layoutPretty defaultLayoutOptions $
-          pretty $ toResolvedType returnType
+          displayDefault returnType
 
         results = Results
           { resFacts = Vector.toList queryResultsFacts
@@ -987,25 +988,25 @@ compileAngleQuery
   -> IO (CodegenQuery, Type)
 compileAngleQuery ver dbSchema mode source stored = do
   parsed <- checkBadQuery Text.pack $ Angle.parseQuery source
-  vlog 2 $ "parsed query: " <> show (pretty parsed)
+  vlog 2 $ "parsed query: " <> show (displayDefault parsed)
 
   let scope = addTmpPredicate $ fromMaybe HashMap.empty $
         schemaNameEnv dbSchema ver
 
   resolved <- checkBadQuery id $ runExcept $
     runResolve latestAngleVersion scope $ resolveQuery parsed
-  vlog 2 $ "resolved query: " <> show (pretty resolved)
+  vlog 2 $ "resolved query: " <> show (displayDefault resolved)
 
   typechecked <- checkBadQuery id $ runExcept $
     typecheck dbSchema latestAngleVersion (dbSchemaRtsType dbSchema) resolved
-  vlog 2 $ "typechecked query: " <> show (pretty (qiQuery typechecked))
+  vlog 2 $ "typechecked query: " <> show (displayDefault (qiQuery typechecked))
 
   flattened <- checkBadQuery id $ runExcept $
     flatten dbSchema latestAngleVersion stored typechecked
-  vlog 2 $ "flattened query: " <> show (pretty (qiQuery flattened))
+  vlog 2 $ "flattened query: " <> show (displayDefault (qiQuery flattened))
 
   optimised <- checkBadQuery id $ runExcept $ optimise flattened
-  vlog 2 $ "optimised query: " <> show (pretty (qiQuery optimised))
+  vlog 2 $ "optimised query: " <> show (displayDefault (qiQuery optimised))
 
   -- no need to vlog, compileQuery will vlog it later
   reordered <- checkBadQuery id $ runExcept $ reorder dbSchema optimised
@@ -1256,7 +1257,8 @@ parseQuery dbSchema Thrift.UserQueryOptions{..} details val =
     (NamedTy (ExpandedType _ ty), val) -> jsonToValMatch ty val
     (PredicateTy (PidRef pid ref), val) ->
       case lookupPid pid dbSchema of
-        Nothing -> throwError $ "unknown predicate " ++ show (pretty ref)
+        Nothing ->
+          throwError $ "unknown predicate " ++ show (displayDefault ref)
         Just deets -> Ref <$> jsonToPredMatch deets val
     (EnumeratedTy vals, Aeson.Number n)
       | Just i <- toBoundedInteger n, fromIntegral i < length vals ->
@@ -1279,7 +1281,7 @@ parseQuery dbSchema Thrift.UserQueryOptions{..} details val =
   queryError :: Type -> Aeson.Value -> Except String a
   queryError typ val = throwError $ show $ vcat
     [ "Error in query. Expecting a query for the " <> thing <> ":"
-    , indent 2 (pretty typ)
+    , indent 2 (displayDefault typ)
     , "which should be of the form:"
     , indent 2 (expecting typ)
     , "but got:"
@@ -1402,18 +1404,10 @@ hashUserQueryCont Thrift.UserQueryCont{..} = Thrift.UserQueryCont
 
 serializeType :: Type -> ByteString
 serializeType = Text.encodeUtf8 . renderStrict . layoutCompact .
-  pretty . toResolvedType
-
--- map PredicateId/TypeId back to PredicateRef/TypeRef before
--- printing, because compileType will parse it as a normal source
--- type. We could shortcut all of this by either making the parser
--- accept a fully resolved type, or using some other serialization
--- mechanism.
-toResolvedType :: Type -> ResolvedType
-toResolvedType = bimap toPredRef toTypeRef
-  where
-  toPredRef (PidRef _ id) = predicateIdRef id
-  toTypeRef (ExpandedType id _) = typeIdRef id
+  displayDefault
+    -- Note that we have to print PredicateIds as PredicateRefs, because
+    -- the parser will parse it as a source type. The default display options
+    -- do exactly that.
 
 compileType :: DbSchema -> SchemaSelector -> ByteString -> IO Type
 compileType schema version src = do

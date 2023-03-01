@@ -18,9 +18,9 @@ import qualified Data.List.NonEmpty as NonEmpty
 import Data.Maybe
 import Data.Text (Text)
 import qualified Data.Text as Text
-import Data.Text.Prettyprint.Doc hiding ((<>), enclose)
 
 import qualified Glean.Angle.Types as Angle
+import Glean.Display
 import Glean.Query.Codegen.Types
   ( Match(..)
   , Var(..)
@@ -65,7 +65,7 @@ flatten dbSchema ver deriveStored QueryWithInfo{..} =
           _ -> Nothing
 
       flattenFailure e = throwError $
-        e <> " in\n" <> Text.pack (show (pretty qiQuery))
+        e <> " in\n" <> Text.pack (show (displayVerbose qiQuery))
 
 flattenQuery :: TcQuery -> F FlatQuery
 flattenQuery query = do
@@ -241,7 +241,7 @@ calling ref inner = do
   stack <- gets flStack
   when (ref `elem` stack) $
     throwError $ "recursive reference to predicate " <>
-      Text.pack (show (pretty ref))
+      Text.pack (show (displayDefault ref))
   modify $ \state -> state { flStack = ref : stack }
   a <- inner
   modify $ \state -> state { flStack = stack }

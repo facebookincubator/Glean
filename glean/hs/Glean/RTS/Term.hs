@@ -22,6 +22,7 @@ import Data.Text.Prettyprint.Doc
 import Data.Word (Word8, Word64)
 import GHC.Generics hiding (Rep)
 
+import Glean.Display
 import Glean.RTS.Types (Fid)
 
 -- -----------------------------------------------------------------------------
@@ -49,17 +50,22 @@ data Term ref
 
 instance Hashable ref => Hashable (Term ref)
 
-instance Pretty ref => Pretty (Term ref) where
-  pretty (Byte x) = "#" <> pretty x
-  pretty (Nat x) = pretty x
-  pretty (Array xs) = align $ encloseSep "[" "]" "," $ map pretty xs
-  pretty (ByteArray xs) = pretty (show xs) <> "#"
-  pretty (Tuple xs) = align $ encloseSep "{" "}" "," $ map pretty xs
-  pretty (Alt s x) = "(" <> pretty s <> "|" <> pretty x <> ")"
-  -- pretty (String s) = "\"" <> pretty s <> "\""
-  pretty (String s) =
+instance Display ref => Display (Term ref) where
+  display _ (Byte x) = "#" <> pretty x
+  display _ (Nat x) = pretty x
+  display opts (Array xs) =
+    align $ encloseSep "[" "]" "," $ map (display opts) xs
+  display _ (ByteArray xs) = pretty (show xs) <> "#"
+  display opts (Tuple xs) =
+    align $ encloseSep "{" "}" "," $ map (display opts) xs
+  display opts (Alt s x) = "(" <> pretty s <> "|" <> display opts x <> ")"
+  -- display opts (String s) = "\"" <> display opts s <> "\""
+  display _ (String s) =
     "\"" <> pretty (Text.decodeUtf8With Text.lenientDecode s) <> "\""
-  pretty (Ref ref) = pretty ref
+  display opts (Ref ref) = display opts ref
+
+  displayAtom opts (Ref ref) = displayAtom opts ref
+  displayAtom opts other = display opts other
 
 -- | Typically 'ref' is 'Fid', 'Nested', 'Deep'
 data Match ref
@@ -70,12 +76,17 @@ data Match ref
   | PrefixWildcard ByteString
   deriving(Foldable,Functor,Traversable,Show)
 
-instance Pretty ref => Pretty (Match ref) where
-  pretty Variable = "?"
-  pretty Wildcard = "_"
-  pretty (MatchTerm ref) = pretty ref
-  pretty (PrefixVariable s) = "\"" <> pretty (Text.decodeUtf8 s) <> "\"?.."
-  pretty (PrefixWildcard s) = "\"" <> pretty (Text.decodeUtf8 s) <> "\"..."
+instance Display ref => Display (Match ref) where
+  display _ Variable = "?"
+  display _ Wildcard = "_"
+  display opts (MatchTerm ref) = display opts ref
+  display _ (PrefixVariable s) =
+    "\"" <> pretty (Text.decodeUtf8 s) <> "\"?.."
+  display _ (PrefixWildcard s) =
+    "\"" <> pretty (Text.decodeUtf8 s) <> "\"..."
+
+  displayAtom opts (MatchTerm ref) = displayAtom opts ref
+  displayAtom opts other = display opts other
 
 type Value = Term Fid
 

@@ -19,7 +19,6 @@ import qualified Control.Monad.Catch as C
 import Control.Monad.IO.Class (liftIO, MonadIO)
 import Control.Monad.Trans.Class (lift)
 import qualified Control.Monad.Trans.State.Strict as State
-import Data.Bifunctor
 import qualified Data.ByteString.UTF8 as UTF8
 import Data.Char
 import Data.Default
@@ -67,6 +66,7 @@ import Util.TimeSec
 import qualified Glean
 import qualified Glean.BuildInfo as BuildInfo
 import Glean.Angle.Types as SchemaTypes
+import Glean.Display
 import Glean.Remote (clientInfo)
 import Glean.Database.Ownership
 import Glean.Database.Open
@@ -231,33 +231,17 @@ getSchemaCmd str = do
   let
     HashedSchema{..} = procSchemaHashed
 
-    stripIdsPred :: PredicateDef -> ResolvedPredicateDef
-    stripIdsPred (PredicateDef ref key val drv) =
-      PredicateDef (predicateIdRef ref)
-        (bimap predicateIdRef typeIdRef key)
-        (bimap predicateIdRef typeIdRef val)
-        (stripIdsDerivingInfo drv)
+    opts = defaultDisplayOpts { predicateStyle = PredicateWithoutHash }
 
-    stripIdsDerivingInfo
-      :: DerivingInfo (Query_ PredicateId TypeId)
-      -> ResolvedDeriving
-    stripIdsDerivingInfo NoDeriving = NoDeriving
-    stripIdsDerivingInfo (Derive w q) =
-      Derive w (bimap predicateIdRef typeIdRef q)
-
-    stripIdsType :: TypeDef -> ResolvedTypeDef
-    stripIdsType (TypeDef ref ty) =
-      TypeDef (typeIdRef ref) (bimap predicateIdRef typeIdRef ty)
-
-    found refs = output $ vcat $ punctuate line $ map display refs
+    found refs = output $ vcat $ punctuate line $ map pp refs
       where
-      display ref = case ref of
+      pp ref = case ref of
         RefPred p -> case HashMap.lookup p hashedPreds of
           Nothing -> mempty
-          Just def -> pretty (stripIdsPred def)
+          Just def -> display opts def
         RefType p -> case HashMap.lookup p hashedTypes of
           Nothing -> mempty
-          Just def -> pretty (stripIdsType def)
+          Just def -> display opts def
 
   env <- case nameEnv of
     Nothing -> liftIO $ throwIO $ ErrorCall "can't find schema"

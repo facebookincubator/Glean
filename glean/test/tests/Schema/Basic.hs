@@ -22,7 +22,6 @@ import Data.Text (Text, pack)
 import System.Directory
 import System.FilePath
 import System.IO.Temp
-import Data.Text.Prettyprint.Doc hiding ((<>))
 import Test.HUnit
 
 import System.Timeout
@@ -39,6 +38,7 @@ import Glean.Database.Env
 import Glean.Database.Schema (validateNewSchemaInstance)
 import Glean.Database.Test
 import Glean.Derive
+import Glean.Display
 import Glean.Impl.ConfigProvider ()
 import Glean.Impl.TestConfigProvider
 import Glean.Init
@@ -65,7 +65,7 @@ mergeSchemaTest = TestCase $
     -- create an extended schema
     let newSchemaFile = root </> "schema"
     SchemaIndex{..} <- parseSchemaDir schemaSourceDir
-    writeFile newSchemaFile $ show $ pretty $
+    writeFile newSchemaFile $ show $ displayDefault $
       procSchemaSource schemaIndexCurrent
     appendFile newSchemaFile
       [s|
