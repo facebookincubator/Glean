@@ -111,8 +111,9 @@ type Parameter =
   {
     name: Name,
     type: maybe Type,
-    # value is only filled out for metaclass parameters
-    # (see the `keywords` field in `ClassDefinition`)
+    # value is filled out for:
+    # - metaclass parameters (see the `keywords` field in `ClassDefinition`)
+    # - default values of function parameters (see `FunctionDefinition`)
     value: maybe string,
   }
 
