@@ -42,7 +42,6 @@ predicate ModuleBySName: SName -> Module
 predicate ModuleDefinition:
   {
     module: Module,
-    docstring: maybe Docstring,
   }
 
 # Allows efficient queries for classes by structured name
@@ -57,7 +56,6 @@ predicate ClassDefinition:
     bases: maybe [ClassDeclaration],
     keywords: maybe [Parameter],  # metaclass parameters
     decorators: maybe [Decorator],
-    docstring: maybe Docstring,
     container: maybe DeclarationContainer,
   }
 
@@ -87,7 +85,6 @@ predicate FunctionDefinition:
     star_arg: maybe Parameter,  # *args
     star_kwarg: maybe Parameter,  # **kwargs
     decorators: maybe [Decorator],
-    docstring: maybe Docstring,
     container: maybe DeclarationContainer,
   }
 
@@ -122,12 +119,6 @@ type Parameter =
 # Decorators can be arbitrary expressions, this just records their string
 # representation.
 type Decorator = string
-
-# this will be removed
-type Docstring =
-  {
-    location: src.ByteSpan,
-  }
 
 predicate DeclarationDocstring:
   {
