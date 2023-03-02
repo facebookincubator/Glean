@@ -156,19 +156,14 @@ reorder dbSchema QueryWithInfo{..} =
 
     -- 1. replace all wildcards with fresh variables
     -- 2. reorder the statements
-    -- 3. replace any unused variables with wildcards
-    -- 4. recover unused variable Ids
-    -- (steps 3 and 4 lead to more efficient/smaller code)
+    -- 3. replace any unused variables with wildcards, and
+    --    renumber variables (this leads to more efficient/smaller code)
     go query0 = do
       query <- reorderQuery query0
       let used = varsUsed query
-          recover v
-            | (v-1) `IntSet.member` used = v
-            | otherwise = recover (v-1)
-          -- TODO: this is only best-effort recovery of unused variables,
-          -- really we should renumber all the variables before codegen.
-      modify $ \s -> s { roNextVar = recover (roNextVar s) }
-      return (reWildQuery used query)
+          varMap = IntMap.fromList (zip (IntSet.toList used) [0..])
+      modify $ \s -> s { roNextVar = IntSet.size used }
+      return (reWildQuery varMap query)
 
 reorderQuery :: FlatQuery -> R CgQuery
 reorderQuery (FlatQuery pat _ stmts) =

@@ -24,13 +24,17 @@ module Glean.Query.Vars (
 
 import qualified Data.IntSet as IntSet
 import Data.IntSet (IntSet)
+import qualified Data.IntMap as IntMap
+import Data.IntMap (IntMap)
 import Data.List.NonEmpty (NonEmpty)
 
+import Glean.Display
 import Glean.Query.Codegen.Types
 import Glean.RTS.Term hiding (Match(..))
 import Glean.RTS.Types as RTS
 
 type VarSet = IntSet
+type VarMap = IntMap Int
 
 vars :: VarsOf a => a -> VarSet
 vars x = varsOf AllVars x IntSet.empty
@@ -137,35 +141,40 @@ freshWild pat = mapM freshWildMatch pat
     MatchAnd x y -> MatchAnd <$> mapM freshWildMatch x <*> mapM freshWildMatch y
     MatchExt _ -> error "freshWildMatch"
 
--- | Replace unused variables with wildcards
-reWild :: VarSet -> Pat -> Pat
+-- | Replace unused variables with wildcards and remap variable numbers
+reWild :: VarMap -> Pat -> Pat
 reWild used pat = fmap reWildMatch pat
   where
-  reWildMatch :: Match a Var -> Match a Var
+  reWildMatch :: Match () Var -> Match () Var
   reWildMatch m = case m of
     MatchWild ty -> MatchWild ty
-    MatchBind (Var ty n _) | not (n `IntSet.member` used) -> MatchWild ty
+    MatchBind (Var ty n x) -> case IntMap.lookup n used of
+      Nothing -> MatchWild ty
+      Just new -> MatchBind (Var ty new x)
+    MatchVar (Var ty n x) -> case IntMap.lookup n used of
+      Nothing -> error $ "reWild: " <> show (displayVerbose m)
+      Just new -> MatchVar (Var ty new x)
     MatchPrefix str rest -> MatchPrefix str (fmap reWildMatch rest)
     MatchArrayPrefix ty pre ->
       MatchArrayPrefix ty $ (fmap . fmap) reWildMatch pre
     MatchAnd x y -> MatchAnd (fmap reWildMatch x) (fmap reWildMatch y)
     MatchNever ty -> MatchNever ty
     MatchFid f -> MatchFid f
-    MatchBind v -> MatchBind v
-    MatchVar v -> MatchVar v
     MatchExt _ -> error "reWild"
 
-reWildGenerator :: VarSet -> Generator -> Generator
+reWildGenerator :: VarMap -> Generator -> Generator
 reWildGenerator used gen = case gen of
   FactGenerator pid key val sec ->
     FactGenerator pid (reWild used key) (reWild used val) sec
-  -- The rest can't bind variables:
-  TermGenerator{} -> gen
-  DerivedFactGenerator{} -> gen
-  ArrayElementGenerator{} -> gen
-  PrimCall{} -> gen
+  TermGenerator t -> TermGenerator (reWild used t)
+  DerivedFactGenerator pid key val ->
+    DerivedFactGenerator pid (reWild used key) (reWild used val)
+  ArrayElementGenerator ty exp ->
+    ArrayElementGenerator ty (reWild used exp)
+  PrimCall op args ->
+    PrimCall op (map (reWild used) args)
 
-reWildStatement :: VarSet -> CgStatement -> CgStatement
+reWildStatement :: VarMap -> CgStatement -> CgStatement
 reWildStatement used (CgStatement lhs rhs) =
   CgStatement (reWild used lhs) (reWildGenerator used rhs)
 reWildStatement used (CgNegation stmts) =
@@ -178,6 +187,6 @@ reWildStatement used (CgConditional cond then_ else_) =
     (map (reWildStatement used) then_)
     (map (reWildStatement used) else_)
 
-reWildQuery :: VarSet -> CgQuery -> CgQuery
+reWildQuery :: VarMap -> CgQuery -> CgQuery
 reWildQuery used (CgQuery head stmts) =
   CgQuery (reWild used head) (map (reWildStatement used) stmts)
