@@ -397,12 +397,13 @@ predicate FlowModuleNamespaceXRef :
     entity : SomeEntity,
     file : src.File
   }
-  { Local, { module_ = { file = File }}, File }
+  { Local, { module_ = FileMod }, File }
   where
     ImportDeclaration {
       declaration = Local,
       import_ = { moduleNamespace = M } };
-    { file = File } = M | (N where FlowSameModule { M, N });
+    FileMod = M | (N where FlowSameModule { M, N });
+    { file = File } = FileMod
 
 # Mostly we need declarations, but occasionally we need modules
 # Synonym for code.flow.Entity
