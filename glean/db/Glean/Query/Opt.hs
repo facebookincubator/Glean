@@ -11,7 +11,7 @@ module Glean.Query.Opt
   ) where
 
 import Control.Monad.Except
-import Control.Monad.State
+import Control.Monad.State.Strict
 import qualified Data.ByteString as B
 import Data.Foldable (toList)
 import Data.IntMap (IntMap)
