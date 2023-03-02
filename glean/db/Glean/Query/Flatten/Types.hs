@@ -21,6 +21,7 @@ module Glean.Query.Flatten.Types
   , boundVarsOf
   , boundVarsOfGen
   , freshWildStmt
+  , freshWildGen
   , freshWildQuery
   ) where
 

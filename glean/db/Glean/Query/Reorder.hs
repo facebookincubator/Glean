@@ -160,7 +160,7 @@ reorder dbSchema QueryWithInfo{..} =
     -- 4. recover unused variable Ids
     -- (steps 3 and 4 lead to more efficient/smaller code)
     go query0 = do
-      query <- reorderQuery =<< freshWildQuery query0
+      query <- reorderQuery query0
       let used = varsUsed query
           recover v
             | (v-1) `IntSet.member` used = v

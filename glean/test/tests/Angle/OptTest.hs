@@ -178,7 +178,6 @@ optTest = dbTestCase $ \env repo -> do
   assertEqual "optimise if condition" Nothing $
     factsSearched (PredicateRef "glean.test.StringPair" 1) lookupPid stats
 
-
   -- we should recognise that the `cxx1.Name _` statement only checks
   -- whether there is any cxx1.Name fact in the db and stop after finding
   -- the first result.
@@ -188,3 +187,13 @@ optTest = dbTestCase $ \env repo -> do
     |]
   assertEqual "optimise existence check" (Just 1) $
     factsSearched (PredicateRef "cxx1.Name" 5) lookupPid stats
+
+  -- check that we unify multiple fact generators
+  (_, stats) <- queryStats env repo $ angleData @(Text, Text)
+    [s| {A, B} where
+        X = glean.test.StringPair { _, "b" };
+        X = glean.test.StringPair { "a", _ };
+        X = glean.test.StringPair { A, B };
+    |]
+  assertEqual "optimise multiple generators" (Just 1) $
+    factsSearched (PredicateRef "glean.test.StringPair" 1) lookupPid stats

@@ -132,7 +132,7 @@ data SeekSection
   = SeekOnAllFacts -- ^ base + stacked + writable
   | SeekOnBase -- ^ base only
   | SeekOnStacked -- ^ stacked only
-  deriving (Show)
+  deriving (Eq, Show)
 
 type Generator = Generator_ Var
 
@@ -184,7 +184,7 @@ data Generator_ var
     { primOp :: PrimOp
     , primOpArgs :: [Expr_ var]
     }
-  deriving (Show, Functor, Foldable, Traversable)
+  deriving (Eq, Show, Functor, Foldable, Traversable)
 
 type Pat = Pat_ Var
 type Expr = Expr_ Var
@@ -245,7 +245,7 @@ data Match ext var
     -- | placeholder for extending this type
   | MatchExt ext
 
-  deriving (Functor, Foldable, Traversable, Show)
+  deriving (Eq, Functor, Foldable, Traversable, Show)
 
 -- | Bind a value of one type into an output of a different type by first
 -- performing a type transformation.

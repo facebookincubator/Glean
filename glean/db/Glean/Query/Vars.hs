@@ -108,10 +108,10 @@ fresh ty = do
 -- -----------------------------------------------------------------------------
 -- Replace wildcards with fresh variables
 
-freshWildVars :: (Monad m, Fresh m) => Pat -> m (Pat, VarSet)
-freshWildVars pat = do
+freshWildVars :: (Monad m, Fresh m) => (a -> m a) -> a -> m (a, VarSet)
+freshWildVars freshen thing = do
   v0 <- peek
-  pat' <- freshWild pat
+  pat' <- freshen thing
   v1 <- peek
   return (pat', IntSet.fromList [v0..v1])
 
@@ -132,7 +132,7 @@ freshWild pat = mapM freshWildMatch pat
       MatchArrayPrefix ty <$> (mapM.mapM) freshWildMatch pre
     MatchNever ty -> return (MatchNever ty)
     MatchFid f -> return (MatchFid f)
-    MatchBind v -> return (MatchBind v)
+    MatchBind v -> return (MatchVar v)  -- also make all variables MatchVar
     MatchVar v -> return (MatchVar v)
     MatchAnd x y -> MatchAnd <$> mapM freshWildMatch x <*> mapM freshWildMatch y
     MatchExt _ -> error "freshWildMatch"
