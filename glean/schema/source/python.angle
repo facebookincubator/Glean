@@ -77,7 +77,7 @@ predicate FunctionDefinition:
   {
     declaration: FunctionDeclaration,
     is_async: bool,
-    # returns: maybe Type,
+    returns: maybe TypeInfo,
     params: [Parameter],  # "regular" parameters (can be pos or kwarg)
     # nothing means the indexer doesn't support detecting these features
     posonly_params: maybe [Parameter],
@@ -96,7 +96,7 @@ predicate VariableBySName: SName -> VariableDeclaration
 predicate VariableDefinition:
   {
     declaration: VariableDeclaration,
-    # type: maybe Type,
+    type: maybe TypeInfo,
     container: maybe DeclarationContainer,
   }
 
@@ -110,11 +110,17 @@ type DeclarationContainer =
 type Parameter =
   {
     name: Name,
-    # type: maybe Type,
+    type: maybe TypeInfo,
     # value is filled out for:
     # - metaclass parameters (see the `keywords` field in `ClassDefinition`)
     # - default values of function parameters (see `FunctionDefinition`)
     value: maybe string,
+  }
+
+type TypeInfo =
+  {
+    displayType: Type,
+    xrefs: [XRefViaName],
   }
 
 # Decorators can be arbitrary expressions, this just records their string
