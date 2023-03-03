@@ -45,6 +45,25 @@ module Glean.Glass.Pretty.Hack
   , Transparency(..)
   ) where
 
+import Data.List as List ( foldl' )
+import Data.Maybe (fromMaybe, mapMaybe)
+import Data.Text (Text)
+import Data.Text.Prettyprint.Doc
+import Data.Text.Prettyprint.Doc.Render.Text (renderStrict)
+import qualified Data.Text as Text
+import Control.Monad.Extra ( when, MonadPlus(mzero), whenJust )
+import Control.Monad.Trans (MonadTrans(lift))
+import Control.Monad.Trans.Maybe (MaybeT (..))
+import Control.Monad.Trans.Writer.Strict ( execWriter, tell )
+
+import Glean.Glass.SymbolId ( toSymbolId )
+import Glean.Glass.Types ( SymbolId(..), RepoName(..) )
+import Glean.Glass.Base ( GleanPath(..) )
+import Glean.Glass.Path ( fromGleanPath )
+import Glean.Util.ToAngle ( ToAngle(toAngle) )
+import Glean.Glass.Utils
+    ( fetchData, fetchDataRecursive, splitString )
+
 import qualified Glean
 import Glean.Angle as Angle
 import qualified Glean.Haxl.Repos as Glean
@@ -54,23 +73,6 @@ import Glean.Schema.CodeHack.Types as Hack ( Entity(..) )
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import qualified Glean.Schema.Codemarkup.Types as Code
-import Glean.Glass.Utils
-import Data.Maybe (fromMaybe, mapMaybe)
-import Data.Text.Prettyprint.Doc
-import Data.Text.Prettyprint.Doc.Render.Text (renderStrict)
-import Data.Text (Text)
-import qualified Data.Text as Text
-import Control.Monad.Trans.Maybe (MaybeT (..))
-import Control.Monad
-import Control.Monad.Extra
-import Control.Monad.Trans (MonadTrans(lift))
-import Control.Monad.Trans.Writer.Strict
-import Data.List as List
-import Glean.Glass.SymbolId ( toSymbolId )
-import Glean.Glass.Types ( SymbolId(..), RepoName(..) )
-import Glean.Glass.Base ( GleanPath(..) )
-import Glean.Glass.Path ( fromGleanPath )
-import Glean.Util.ToAngle ( ToAngle(toAngle) )
 
 -- Pretty-printer annotations for Doc or SimpleDocStream
 -- Used to collect xrefs bytespan in pretty-printed signatures
@@ -116,11 +118,11 @@ data ClassMod    = ClassMod Abstract Final
 data MethodMod   = MethodMod Abstract Final Visibility Static Async
 data PropertyMod   = PropertyMod Abstract Final Visibility Static
 
-data Abstract = Abstract | NotAbstract deriving (Eq)
-data Final = Final | NotFinal deriving (Eq)
-data Visibility = Public | Protected | Private | Internal deriving (Eq)
-data Static = Static | NotStatic deriving (Eq)
-data Async = Async | NotAsync deriving (Eq)
+data Abstract = Abstract | NotAbstract deriving Eq
+data Final = Final | NotFinal deriving Eq
+data Visibility = Public | Protected | Private | Internal
+data Static = Static | NotStatic deriving Eq
+data Async = Async | NotAsync deriving Eq
 
 data ByteSpan = ByteSpan
   { start :: {-# UNPACK #-}!Int
@@ -419,6 +421,11 @@ ppPropertyModifiers container (PropertyMod abstract final visibility static) =
       Internal -> "internal"
     when (static==Static) $ tell ["static"]
 
+--
+-- Process the raw declaration result from Glean to build up a cleaner
+-- `Decl` description of the type signature, possibly pulling in some related
+-- information as we go
+--
 decl :: Hack.Declaration -> Glean.MaybeTRepoHaxl u w Decl
 decl (Hack.Declaration_classConst Hack.ClassConstDeclaration{..}) = do
   Hack.ClassConstDeclaration_key{..} <- liftMaybe classConstDeclaration_key
@@ -622,7 +629,6 @@ modifiersForProperty Hack.PropertyDefinition_key {..} =
   )
   (if propertyDefinition_key_isStatic then Static else NotStatic)
 
-
 -- Glass-side implementation of fbcode/glean/rts/prim.cpp:relSpansToAbs
 relSpansToAbs :: [Src.RelByteSpan] -> [ByteSpan]
 relSpansToAbs byteSpans = snd $ List.foldl' f (0, []) byteSpans
@@ -739,6 +745,7 @@ toName (Hack.Name _ mkey) = Name $ fromMaybe "(anonymous)" mkey
 unknownType :: Text
 unknownType = "<unknown-type>"
 
+-- From Control.Monad.Extra in newer versions
 liftMaybe :: (MonadPlus m) => Maybe a -> m a
 liftMaybe = maybe mzero return
 
