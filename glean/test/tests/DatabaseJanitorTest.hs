@@ -388,7 +388,6 @@ retainAtLeastTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
     [ "0001", "0003", "0004", "0005", "0006"]
     (sort $ map repo_hash repos)
 
-
 backupRestoreTest :: Test
 backupRestoreTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   let cfg = dbConfig dbdir $ (serverConfig backupdir)
@@ -737,6 +736,7 @@ slackCountersTest :: Test
 slackCountersTest = TestCase $ do
   shardAssignment <- newIORef $ Just ["0008"]
   withTest noLocalDBs setupBasicCloudDBs $ \evb cfgAPI dbdir backupDir -> do
+
     let cfg = (dbConfig dbdir (serverConfig backupDir)
           { config_restore = def {
               databaseRestorePolicy_enabled = True
@@ -772,6 +772,65 @@ slackCountersTest = TestCase $ do
         [("glean.db.slack.bytes", 8), ("glean.db.test.slack.bytes", 8)]
         slackCounters1
 
+slackDeletionTest :: Test
+slackDeletionTest = TestCase $ do
+  shardAssignment <- newIORef $ Just ["0008"]
+  withTest noLocalDBs setupBasicCloudDBs $ \evb cfgAPI dbdir backupDir -> do
+
+    let cfg = (dbConfig dbdir (serverConfig backupDir)
+          { config_restore = def {
+              databaseRestorePolicy_enabled = True
+            }, config_retention = def{
+              databaseRetentionPolicy_default_retention = def{
+              retention_retain_at_least = Just 1,
+              retention_retain_at_most = Just 1,
+              retention_remote_db_bumps_local_db_after =
+                Just (fromIntegral (timeSpanInSeconds (days 2)))
+              }
+            }
+          }) {cfgShardManager = \_ _ k -> k shardManager}
+        shardManager =
+          SomeShardManager $ shardByRepoHash (readIORef shardAssignment)
+
+    withDatabases evb cfg cfgAPI $ \env -> do
+      runDatabaseJanitor env
+
+      now <- getCurrentTime
+      schema <- parseSchemaDir schemaSourceDir
+      schema <- newDbSchema schema LatestSchemaAll readWriteContent
+      let age t = addUTCTime (negate (fromIntegral (timeSpanInSeconds t))) now
+
+      makeFakeCloudDB schema backupDir
+        (Repo "test" "0009") (age (days 0)) (complete 1) Nothing
+      makeFakeCloudDB schema backupDir
+        (Repo "test" "0010") (age (days 1)) (complete 1) Nothing
+      -- 0009/0010 are not in our shard, and they aren't old enough to
+      -- push out 0008
+      atomically $ writeTVar (envCachedRestorableDBs env) Nothing
+      runDatabaseJanitor env
+      res <- timeout 10000000 -- 10s
+                     (waitDel env)
+      waitingDeletion <- readTVarIO (envDeleting env)
+      assertBool ("timeout: " <> show (HashMap.keys waitingDeletion))
+        (isJust res)
+      localDBs <- listHereDBs env
+      assertBool "not deleted" $ case localDBs of
+        [one] -> repo_hash (database_repo one) == "0008"
+        _ -> False
+
+      makeFakeCloudDB schema backupDir
+        (Repo "test" "0011") (age (days 2)) (complete 1) Nothing
+      -- 0010 is not in our shard, and it is old enough to push out 0008
+      atomically $ writeTVar (envCachedRestorableDBs env) Nothing
+      runDatabaseJanitor env
+      res <- timeout 10000000 -- 10s
+                     (waitDel env)
+      waitingDeletion <- readTVarIO (envDeleting env)
+      assertBool ("timeout: " <> show (HashMap.keys waitingDeletion))
+        (isJust res)
+      localDBs <- listHereDBs env
+      assertEqual "deleted" [] localDBs
+
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
   [ TestLabel "deleteOldDBs" deleteOldDBsTest
@@ -792,4 +851,5 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "ageCountersForOnlyNewestDBs" ageCountersOnlyNewestTest
   , TestLabel "ageCountersClear" ageCountersClearTest
   , TestLabel "slackCounters" slackCountersTest
+  , TestLabel "slackDeletion" slackDeletionTest
   ]

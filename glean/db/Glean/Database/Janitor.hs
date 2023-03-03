@@ -480,7 +480,7 @@ computeRetentionSet config_retention time backups DbIndex{..} = RetentionSet{..}
       transitiveClosureBy itemRepo (catMaybes . dependencies) $
         concatMap
           (\(repoNm, dbs) ->
-            dbKeepRoots (repoRetention config_retention repoNm) time
+            dbRetentionForRepo (repoRetention config_retention repoNm) time
               dbs
           )
           dbsByRepoName
@@ -491,53 +491,63 @@ computeRetentionSet config_retention time backups DbIndex{..} = RetentionSet{..}
       , (itemRepo, itemMeta) <- backups
       ]
 
--- The target set of DBs we want usable on the disk. This is a set of
+-- | The target set of DBs we want usable on the disk. This is a set of
 -- DBs that satisfies the policy.
---   - start from the set of DBs satisfying
---     delete_if_older and retain_at_most
---   - ensure that we have retain_at_least DBs
---   - ensure that we have retain_at_least local DBs
---     (i.e. avoid deleting local DBs while we wait for restores)
-dbKeepRoots
+dbRetentionForRepo
   :: ServerConfig.Retention
   -> UTCTime
   -> NonEmpty Item
   -> [Item]
-dbKeepRoots ServerConfig.Retention{..} t dbs = keepRoots
+dbRetentionForRepo ServerConfig.Retention{..} t dbs = keep
   where
+    -- retention policy parameters
     retainAtLeast = fromIntegral $ fromMaybe 0 retention_retain_at_least
     retainAtMost = fmap fromIntegral retention_retain_at_most
     deleteIfOlder = fmap fromIntegral retention_delete_if_older
     deleteIncompleteIfOlder =
       fmap fromIntegral retention_delete_incomplete_if_older
+    remoteBumpsLocalAfter =
+      fmap fromIntegral retention_remote_db_bumps_local_db_after
 
+    f &&& g = \x -> f x && g x
+    f ||| g = \x -> f x || g x
+
+    ifSet (Just a) f = f a
+    ifSet Nothing _ = const False
+
+    -- predicates
+    isLocal Item{..} = itemLocality == Local
+    isComplete Item{..} =
+      completenessStatus itemMeta == Thrift.DatabaseStatus_Complete
+    isOlderThan secs Item{..} = dbAge t itemMeta >= secs
+
+    -- all DBs sorted by most recent first
     sorted = sortOn (Down . metaCreated . itemMeta) (NonEmpty.toList dbs)
 
-    keepAccordingToPolicy = filter (fresh . itemMeta) (dropExcess sorted)
-      where
-        dropExcess = maybe id take retainAtMost
-        fresh meta
-          | completenessStatus meta /= Thrift.DatabaseStatus_Complete
-          , Just secs <- deleteIncompleteIfOlder
-          , dbAge t meta >= secs = False
-          | Just secs <- deleteIfOlder = dbAge t meta < secs
-          | otherwise = True
+    -- whether to delete a DB according to the deletion policy
+    delete =
+      ifSet deleteIfOlder isOlderThan |||
+      (ifSet deleteIncompleteIfOlder $ \secs ->
+        (not . isComplete) &&& isOlderThan secs)
 
-    viableWith f Item{..} =
-      f itemLocality
-        && completenessStatus itemMeta == Thrift.DatabaseStatus_Complete
+    -- selects DBs to satisfy retain_at_least
+    shouldHold =
+      isComplete &&&
+      (isLocal ||| ifSet remoteBumpsLocalAfter isOlderThan)
 
-    viable = viableWith (const True)
-    viableNow = viableWith (== Local)
-
-    viableLocalOrRemoteDBs = filter viable sorted
-    viableLocalDBs = filter viableNow sorted
-
-    keepRoots =
+    keep =
       uniqBy (comparing itemRepo) $
-      keepAccordingToPolicy
-        ++ take retainAtLeast viableLocalOrRemoteDBs
-        ++ take retainAtLeast viableLocalDBs
+
+      -- delete DBs according to the deletion policy, and keep retain_at_most
+      maybe id take retainAtMost (filter (not . delete) sorted) ++
+
+      -- ensure we have retain_at_least DBs from the global + local set
+      take retainAtLeast (filter isComplete sorted) ++
+
+      -- Finally, ensure we have retain_at_least DBs from the local set
+      -- to avoid premuaturely deleting local DBs before the remote
+      -- one has downloaded.
+      filter isLocal (take retainAtLeast (filter shouldHold sorted))
 
 
 -- Fetches backups only if they haven't been fetched recently
