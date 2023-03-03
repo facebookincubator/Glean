@@ -37,10 +37,11 @@ logDBStatistics env Thrift.Repo{..} preds maybeOwnershipStats size locator = do
 
   -- We shoehorn a summary row into the format for query rows
   let summary  = mconcat
-        [ Logger.SetPredicateCount $ length preds -- # queries
-        , Logger.SetPredicateSize size            -- # bytes uploaded
+        [ Logger.SetPredicateSize size            -- # bytes uploaded
+        , Logger.SetPredicateCount factCount      -- # total facts
         , Logger.SetUploadDestination locator
         ]
+      factCount = fromIntegral $ sum [predicateStats_count p| (_, p) <- preds]
 
   let queries  =
         [ mconcat
