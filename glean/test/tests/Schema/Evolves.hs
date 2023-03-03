@@ -1436,6 +1436,35 @@ schemaEvolvesTransformations =
       $ \byRef response _ -> do
         facts <- decodeResultsAs (SourceRef "x.P" (Just 3)) byRef response
         assertEqual "result count" 1 (length facts)
+
+  , TestLabel "transform within array" $ TestCase $ do
+    withSchemaAndFactsQ
+      [s|
+        schema x.1 {
+          type T = { a : nat }
+          predicate P: { x : [T] }
+        }
+        schema x.2 {
+          type T = { a : nat, b : maybe nat }
+          predicate P: { x : [T] }
+        }
+        schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
+      |]
+      [ mkBatch (PredicateRef "x.P" 1)
+          [ [s|{ "key": { "x": [{ "a": 1 }, { "a": 2 }] } }|] ]
+      ]
+      [s| x.P.2 _ |]
+      $ \byRef response _ -> do
+        facts <- decodeResultsAs (SourceRef "x.P" (Just 2)) byRef response
+        assertEqual "result content"
+          [ RTS.Tuple
+            [ RTS.Array
+              [ RTS.Tuple [RTS.Nat 1, nothing]
+              , RTS.Tuple [RTS.Nat 2, nothing]
+              ] ] ]
+          facts
+
   ]
   where
     -- run a userQuery using the given schemas and facts

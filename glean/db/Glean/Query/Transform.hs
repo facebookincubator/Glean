@@ -594,6 +594,7 @@ transformBytes' discard src dst =
       Right trans -> Right $ \out (Bytes start end) ->
         local $ \size -> mdo
           inputNat start end size
+          outputNat size out
           jumpIf0 size finish
           loop <- label
           trans out (Bytes start end)
