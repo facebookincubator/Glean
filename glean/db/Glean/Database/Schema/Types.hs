@@ -12,7 +12,6 @@ module Glean.Database.Schema.Types
   , PredicateDetails(..)
   , predicateRef
   , PredicateTransformation(..)
-  , TransDetails(..)
   , Bytes(..)
   , IsPointQuery
   , SchemaSelector(..)
@@ -23,6 +22,9 @@ module Glean.Database.Schema.Types
   , lookupPredicateId
   , lookupPid
   , lookupTransformation
+  , needsTransformation
+  , QueryTransformations
+  , mkQueryTransformations
   , TypeDetails(..)
   , lookupTypeId
   , dbSchemaRtsType
@@ -35,11 +37,13 @@ module Glean.Database.Schema.Types
 
 import Data.Bifoldable (bifoldr')
 import Data.HashMap.Strict (HashMap)
+import qualified Data.Graph as Graph
 import qualified Data.HashMap.Strict as HashMap
 import Data.IntMap (IntMap)
 import qualified Data.IntMap as IntMap
 import Data.Map (Map)
 import qualified Data.Map as Map
+import Data.Maybe (fromMaybe, isJust)
 import qualified Data.Set as Set
 import Data.Set (Set)
 import Data.Text (Text)
@@ -74,9 +78,7 @@ data DbSchema = DbSchema
      -- ^ Maps all.N schema versions to SchemaIds
 
   , predicatesByPid :: IntMap PredicateDetails
-  , predicatesTransformations  :: IntMap TransDetails
-     -- ^ keyed by predicate requested
-
+  , predicatesTransformations :: QueryTransformations
   , schemaInventory :: Inventory
   , schemaMaxPid :: Pid
   , schemaLatestVersion :: SchemaId
@@ -84,6 +86,10 @@ data DbSchema = DbSchema
   , schemaSource :: (SourceSchemas, IntMap SchemaId)
     -- ^ This is for toStoredSchema
   }
+
+-- | Transformations to be applied to a query. Keyed by the requested predicate
+-- (i.e. the one present in the query)
+newtype QueryTransformations = QueryTransformations (IntMap TransDetails)
 
 data TransDetails
   = HasTransformation PredicateTransformation
@@ -219,31 +225,28 @@ lookupPid (Pid pid) = IntMap.lookup (fromIntegral pid) . predicatesByPid
 lookupTypeId :: TypeId -> DbSchema -> Maybe TypeDetails
 lookupTypeId ref  = HashMap.lookup ref . typesById
 
+-- | Either the type or a type transitively referenced by it needs to be
+-- transformed.
+needsTransformation
+  :: QueryTransformations
+  -> Pid
+  -> Bool
+needsTransformation (QueryTransformations tmap) pid =
+  isJust $ IntMap.lookup (fromIntegral $ fromPid pid) tmap
+
 lookupTransformation
   :: Pid
-  -> IntMap TransDetails
+  -> QueryTransformations
   -> Maybe PredicateTransformation
-lookupTransformation pid tmap = do
+lookupTransformation pid (QueryTransformations tmap) = do
   dets <- IntMap.lookup (fromIntegral $ fromPid pid) tmap
   case dets of
     HasTransformation trans -> Just trans
     DependenciesHaveTransformations -> Nothing
 
 transitiveDeps :: (Pid -> PredicateDetails) -> Set Pid -> Pid -> [Pid]
-transitiveDeps = transitive . predicateDeps
+transitiveDeps detailsFor = transitive (predicateDeps . detailsFor)
   where
-    -- All predicates mentioned in a predicate's type.
-    -- Does not include predicates from the derivation query.
-    predicateDeps :: (Pid -> PredicateDetails) -> Pid -> [Pid]
-    predicateDeps detailsFor pred =
-      typeDeps (predicateKeyType details) $
-        typeDeps (predicateValueType details) []
-      where
-        details = detailsFor pred
-        typeDeps ty r = bifoldr' overPidRef overExpanded r ty
-        overExpanded (ExpandedType _ ty) r = typeDeps ty r
-        overPidRef (PidRef pid _) r = pid : r
-
     transitive :: Ord a => (a -> [a]) -> Set a -> a ->  [a]
     transitive next initial root = go [root] initial
       where
@@ -251,6 +254,17 @@ transitiveDeps = transitive . predicateDeps
         go (x:xs) visited
           | x `Set.member`visited = go xs visited
           | otherwise = x : go (next x <> xs) (Set.insert x visited)
+
+-- All predicates mentioned in a predicate's type.
+-- Does not include predicates from the derivation query.
+predicateDeps :: PredicateDetails -> [Pid]
+predicateDeps details =
+  typeDeps (predicateKeyType details) $
+    typeDeps (predicateValueType details) []
+  where
+    typeDeps ty r = bifoldr' overPidRef overExpanded r ty
+    overExpanded (ExpandedType _ ty) r = typeDeps ty r
+    overPidRef (PidRef pid _) r = pid : r
 
 tempPid :: DbSchema -> Pid
 tempPid = succ . schemaMaxPid
@@ -299,3 +313,34 @@ mkRtsType lookupType lookupPid = rtsType
 
     fieldType :: Schema.FieldDef -> Maybe FieldDef
     fieldType (Schema.FieldDef name ty) = Schema.FieldDef name <$> rtsType ty
+
+mkQueryTransformations
+  :: IntMap PredicateTransformation
+  -> IntMap PredicateDetails
+  -> QueryTransformations
+mkQueryTransformations tmap pmap = QueryTransformations $
+  foldr addSCC mempty (reverse $ Graph.stronglyConnComp edges)
+  where
+    transFor pid =  IntMap.lookup (intPid pid) tmap
+    detailsFor pid = pmap IntMap.! intPid pid
+    intPid (Pid pid) = fromIntegral pid
+    deps = predicateDeps . detailsFor
+
+    addSCC scc depsTrans = foldr add depsTrans scc
+      where
+      add pid acc = fromMaybe acc $ do
+        trans <- case transFor pid of
+          Just trans -> Just $ HasTransformation trans
+          Nothing -> defaultForSCC
+        return $ IntMap.insert (intPid pid) trans acc
+
+      defaultForSCC =
+        if any needsTransformation $ concatMap deps scc
+          then Just DependenciesHaveTransformations
+          else Nothing
+        where needsTransformation pid = intPid pid `IntMap.member` depsTrans
+
+    edges =
+      [ (pid, pid, deps pid)
+      | pid <- Pid . fromIntegral <$> IntMap.keys pmap
+      ]

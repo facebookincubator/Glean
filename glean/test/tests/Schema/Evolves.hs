@@ -849,6 +849,44 @@ schemaEvolvesTransformations =
               ]
           ] facts
 
+  , TestLabel "transform deep nested record" $ TestCase $ do
+    withSchemaAndFactsQ
+      [s|
+        schema x.1 {
+          predicate P : { x: nat, y: nat  }
+        }
+
+        schema x.2 {
+          predicate P : { x: nat  }
+        }
+        schema x.2 evolves x.1
+
+        schema y.1 {
+          import x.2
+          predicate P : x.P
+            X where X = x.P _
+        }
+
+        schema z.1 {
+          import y.1
+          predicate P : y.P
+            X where X = y.P _
+        }
+
+        schema all.1 : x.1, x.2, z.1, y.1 {}
+      |]
+      [ mkBatch (PredicateRef "x.P" 1)
+          [ [s|{ "key": { "x": 1, "y": 2 }}|]
+          ]
+      ]
+      [s| z.P _ |]
+      -- should add the 'maybe nat` field when binding X and Y, and then remove
+      -- it again when matching X and Y against db values.
+      $ \schema response _ -> do
+        _ <- decodeResultsAs (SourceRef "z.P" (Just 1)) schema response
+        nested <- decodeNestedAs (SourceRef "x.P" (Just 2)) schema response
+        assertEqual "nested" 1 (length nested)
+
   , TestLabel "uses transformed record for prefix search" $ TestCase $ do
     withSchemaAndFactsQ
       [s|
@@ -1518,10 +1556,18 @@ schemaEvolvesTransformations =
         (keyType ref schema) userQueryResultsBin_facts eresults
       either assertFailure return res
 
+    -- filter nested predicates by SourceRef before decoding
     decodeNestedAs ref schema eresults = do
-      res <- decodeResults
-        (keyType ref schema) userQueryResultsBin_nestedFacts eresults
-      either assertFailure return res
+      let hasPid (RTS.Pid pid) fact = fromIntegral pid == Thrift.fact_type fact
+          factsOfType pid = Map.filterWithKey (const $ hasPid pid)
+      pid <- either (assertFailure . unpack) (return . predicatePid) $
+        lookupPredicateSourceRef ref LatestSchemaAll schema
+      putStrLn $ "Filtering for " <> show (showRef ref) <> " with Pid " <> show pid
+      either assertFailure return =<< decodeResults
+        (keyType ref schema)
+        (factsOfType pid . userQueryResultsBin_nestedFacts)
+        eresults
+
 
     decodeResultsAsTy ty eresults =  do
       res <- decodeResults ty userQueryResultsBin_facts eresults

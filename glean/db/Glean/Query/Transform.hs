@@ -21,7 +21,6 @@ module Glean.Query.Transform
   , buildTerm
   , isWordTy
   , defaultValue
-  , lookupTransformation
   ) where
 
 import Control.Monad.Cont
@@ -77,20 +76,16 @@ transformationsFor schema ty =
   else Left $ "multiple versions of evolved predicates: "
       <> Text.unlines (map showRepeated repeated)
   where
-    tmap = predicatesTransformations schema
+    qtrans = predicatesTransformations schema
 
     detailsFor pid = case lookupPid pid schema of
       Nothing -> error $ "unknown predicate " <> show pid
       Just details -> details
 
     inType :: [Pid]
-    inType = filter needsTrans (getPids ty)
+    inType = filter (needsTransformation qtrans) (getPids ty)
       where getPids = bifoldMap (pure . pid) (getPids . expandType)
             expandType (ExpandedType _ t) = t
-            -- either the type or one of its transitive dependencies
-            -- needs to be transformed.
-            needsTrans (Pid pid) =
-              isJust (IntMap.lookup (fromIntegral pid) tmap)
 
     withDeps :: [Pid]
     withDeps = Set.toList $ foldr addDeps mempty inType
@@ -105,7 +100,7 @@ transformationsFor schema ty =
       Map.fromListWith (<>)
         [ (to, Set.singleton from)
         | from <- withDeps
-        , let to = case lookupTransformation from tmap of
+        , let to = case lookupTransformation from qtrans of
                 Nothing -> from
                 Just e -> pid $ tAvailable e
         ]
@@ -116,7 +111,7 @@ transformationsFor schema ty =
     transformations :: ResultTransformations
     transformations = ResultTransformations $ IntMap.fromList
       [ (to, evolution)
-      | evolution <- mapMaybe (`lookupTransformation` tmap) withDeps
+      | evolution <- mapMaybe (`lookupTransformation` qtrans) withDeps
       , let to = fromIntegral $ fromPid $ pid  $ tAvailable evolution
       ]
 
@@ -261,13 +256,13 @@ isWordTy = isWordRep . repType
   isWordRep _ = False
 
 -- | Transform predicates inside the type but keep its structure.
-transformType :: IntMap TransDetails -> Type -> Type
-transformType tmap ty = transform ty
+transformType :: QueryTransformations -> Type -> Type
+transformType qtrans ty = transform ty
   where
     transform ty = bimap overPidRef overExpandedType ty
 
     overPidRef pref =
-      case lookupTransformation (pid pref) tmap of
+      case lookupTransformation (pid pref) qtrans of
         Nothing -> pref
         Just PredicateTransformation{..} -> tAvailable
 
@@ -277,11 +272,14 @@ transformType tmap ty = transform ty
 transformFact
   :: PredicateDetails
   -> PredicateDetails
-  -> Maybe (Thrift.Fact -> Thrift.Fact)
+  -> (Thrift.Fact -> Thrift.Fact)
 transformFact from to
   | Nothing <- mTransformKey
-  , Nothing <- mTransformValue = Nothing
-  | otherwise = Just $ \(Thrift.Fact _ key value) ->
+  , Nothing <- mTransformValue =
+    \(Thrift.Fact _ key value) ->
+      Thrift.Fact (fromPid $ predicatePid to) key value
+  | otherwise =
+    \(Thrift.Fact _ key value) ->
      Thrift.Fact
        (fromPid $ predicatePid to)
        (RTS.fromValue $ overKey $ RTS.toValue keyRep key)

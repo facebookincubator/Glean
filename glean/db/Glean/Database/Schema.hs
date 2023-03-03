@@ -382,7 +382,8 @@ mkDbSchema validate knownPids dbContent
     , schemaEnvs = schemaEnvMap
     , legacyAllVersions = legacyAllVersions
     , predicatesByPid = byPid
-    , predicatesTransformations = transDetails transformations byPid
+    , predicatesTransformations =
+        mkQueryTransformations transformations byPid
     , schemaInventory = inventory predicates
     , schemaSource = (source, hashedSchemaAllVersions stored)
     , schemaMaxPid = maxPid
@@ -535,23 +536,6 @@ close next x = case next x of
   Just y -> y : close next y
   Nothing -> []
 
-transDetails
-  :: IntMap PredicateTransformation
-  -> IntMap PredicateDetails
-  -> IntMap TransDetails
-transDetails tmap pmap =
-  flip IntMap.mapMaybeWithKey pmap $ \pid _ ->
-  case IntMap.lookup pid tmap of
-    Just trans -> Just $ HasTransformation trans
-    Nothing ->
-      if any hasTransformation (deps $ Pid $ fromIntegral pid)
-      then Just DependenciesHaveTransformations
-      else Nothing
-  where
-    detailsFor (Pid pid) = pmap IntMap.! fromIntegral pid
-    hasTransformation (Pid pid) = IntMap.member (fromIntegral pid) tmap
-    deps pid = transitiveDeps detailsFor mempty pid
-
 -- | Optimise derivation queries for fetching facts given the particular db's
 -- content.
 prune
@@ -654,7 +638,7 @@ mkPredicateTransformation detailsFor requestedId availableId
   | otherwise = Just PredicateTransformation
     { tRequested = pidRef requested
     , tAvailable = pidRef available
-    , tTransformFactBack = fromMaybe id $ transformFact available requested
+    , tTransformFactBack = transformFact available requested
     , transformKeyPattern   = transformPattern (key requested) (key available)
     , transformValuePattern = transformPattern (val requested) (val available)
     , transformKey   = transformBytes (key available) (key requested)
