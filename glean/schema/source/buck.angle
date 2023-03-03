@@ -512,4 +512,32 @@ predicate IndexFailure :
     details: string,
   }
 
+ type ArgumentMapping =
+  {
+    key: string,
+    value: ArgumentValue,
+  }
+
+ predicate ArgumentValue:
+  {
+    lit: string |
+    sequence: [ArgumentValue] |
+    mapping: [ArgumentMapping]
+  }
+
+predicate CallArgument: {
+    label: maybe string,
+    value: ArgumentValue,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+
+predicate TargetCall:
+  {
+    locator: Locator,
+    arguments: [CallArgument],
+    file: src.File,
+    span: src.ByteSpan,
+  }
+
 } # end schema buck.3
