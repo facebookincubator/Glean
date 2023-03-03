@@ -44,7 +44,7 @@ import qualified Data.HashMap.Strict as HashMap
 import qualified Data.HashMap.Lazy as Lazy.HashMap
 import qualified Data.HashSet as HashSet
 import Data.HashSet (HashSet)
-import Data.List.Extra (firstJust)
+import Data.List.Extra (firstJust, nubOrd)
 import qualified Data.IntMap as IntMap
 import Data.IntMap (IntMap)
 import qualified Data.Map as Map
@@ -372,10 +372,17 @@ mkDbSchema validate knownPids dbContent
   transformations <- failOnLeft $ mkTransformations
     dbContent
     (tcEnvPredicates tcEnv)
-    (procStored : addedSchemas)
+    procStored
+    addedSchemas
 
-  let pruned = prune dbContent transformations (tcEnvPredicates tcEnv)
+  let -- to avoid the need to have different prunings for each schemaId
+      -- we pass the union of all transformations to the 'prune' function
+      -- such that if a predicate can be mapped to something in the db
+      -- for any schemaId, then it is kept in the derivation query.
+      pruned = prune dbContent allTrans (tcEnvPredicates tcEnv)
+        where allTrans = fold $ HashMap.elems transformations
       byPid = IntMap.fromList [ (intPid p, p) | p <- HashMap.elems pruned ]
+
   return $ DbSchema
     { predicatesById = pruned
     , typesById = tcEnvTypes tcEnv
@@ -383,7 +390,7 @@ mkDbSchema validate knownPids dbContent
     , legacyAllVersions = legacyAllVersions
     , predicatesByPid = byPid
     , predicatesTransformations =
-        mkQueryTransformations transformations byPid
+        mkQueryTransformations byPid <$> transformations
     , schemaInventory = inventory predicates
     , schemaSource = (source, hashedSchemaAllVersions stored)
     , schemaMaxPid = maxPid
@@ -393,16 +400,73 @@ mkDbSchema validate knownPids dbContent
 mkTransformations
   :: DbContent
   -> HashMap PredicateId PredicateDetails
+  -> ProcessedSchema   -- ^ stored schema
+  -> [ProcessedSchema] -- ^ other schemas
+  -> Either Text (HashMap SchemaId (IntMap PredicateTransformation))
+mkTransformations content byId stored otherSchemas =
+  case content of
+    DbWritable -> Right $ HashMap.fromList
+      [ (schemaId, mempty)
+      | schema <- processed
+      , schemaId <- versionsOfAll schema
+      ]
+    DbReadOnly stats -> do
+      evolutions :: [HashMap PredicateId PredicateId] <-
+        forM processed $ \schema -> mkEvolutions stats byId [stored, schema]
+
+      let allPredicateTrans :: HashMap (PredicateId, PredicateId) PredicateTransformation
+          allPredicateTrans = HashMap.fromList
+            [ (pair, trans)
+            | pair@(old, new) <- nubOrd $ concatMap HashMap.toList evolutions
+            , Just trans <- [mkPredicateTransformation detailsById old new]
+            ]
+
+          transformations :: [IntMap PredicateTransformation]
+          transformations =
+            [ IntMap.fromList
+                [ (intPid, trans)
+                | pair@(old, _) <- HashMap.toList e
+                , Just trans <- [HashMap.lookup pair allPredicateTrans]
+                , let intPid = fromIntegral
+                        $ fromPid
+                        $ predicatePid
+                        $ detailsById old
+                ]
+            | e <- evolutions
+            ]
+
+      -- Transformations are per ProcessedSchema. Here we find the
+      -- transformations applicable to the union of the stored and a foreign
+      -- ProcessedSchema and then we associate them with all 'all' schemas of
+      -- the foreign ProcessedSchema.
+      return $ HashMap.fromList
+        [ (schemaId, trans)
+        | (schema, trans) <- zip processed transformations
+        , schemaId <- versionsOfAll schema
+        ]
+  where
+  processed :: [ProcessedSchema]
+  processed = stored : otherSchemas
+
+  versionsOfAll :: ProcessedSchema -> [SchemaId]
+  versionsOfAll = IntMap.elems . hashedSchemaAllVersions . procSchemaHashed
+
+  detailsById id = HashMap.lookupDefault err id byId
+    where err = error $ "mkEvolutions: " <> show (displayDefault id)
+
+
+-- Calculate predicate evolutions for a set of ProcessedSchema
+mkEvolutions
+  :: HashMap Pid PredicateStats
+  -> HashMap PredicateId PredicateDetails
   -> [ProcessedSchema]
-  -> Either Text (IntMap PredicateTransformation)
-mkTransformations DbWritable _ _ = Right mempty
-mkTransformations (DbReadOnly stats) byId schemas = do
-  manual <- calcSchemaEvolutions hasFacts bySchemaRef <$>
-    directEvolutions schemas
+  -> Either Text (HashMap PredicateId PredicateId)
+mkEvolutions stats byId schemas = do
+  manual <- calcSchemaEvolutions hasFacts bySchemaRef <$> directEvolutions schemas
   auto <- calcAutoEvolutions hasFacts byPredRef
   evolutions <- calcEvolutions predicateIdRef byPredRef bySchemaRef manual auto
   validateEvolutions types preds evolutions
-  return $ evolutionsToTransformations evolutions
+  return evolutions
   where
   (types, preds) = definitions schemas
 
@@ -417,19 +481,6 @@ mkTransformations (DbReadOnly stats) byId schemas = do
 
   bySchemaRef :: Map SchemaRef (VisiblePredicates PredicateId)
   bySchemaRef = predicatesBySchemaRef schemas
-
-  detailsById id = HashMap.lookupDefault err id byId
-    where err = error $ "mkTransformations: " <> show (displayVerbose id)
-
-  evolutionsToTransformations
-    :: HashMap PredicateId PredicateId
-    -> IntMap PredicateTransformation
-  evolutionsToTransformations evolutions = IntMap.fromList
-    [ (intPid , trans)
-    | (old, new) <- HashMap.toList evolutions
-    , let intPid = fromIntegral $ fromPid $ predicatePid $ detailsById old
-    , Just trans <- [mkPredicateTransformation detailsById old new]
-    ]
 
 predicatesByPredicateRef :: [ProcessedSchema] -> Map PredicateRef [PredicateId]
 predicatesByPredicateRef schemas =
@@ -489,8 +540,6 @@ calcAutoEvolutions hasFacts byRef =
 -- If A.3 evolves A.2 which evolves A.1, but we only have facts for predicates
 -- from A.3, then we end-up with both A.1 and A.2 being directly evolved by
 -- A.3.
---
--- Schema evolutions are for the entire SchemaIndex.
 calcSchemaEvolutions
   :: (PredicateId -> Bool)
   -> Map SchemaRef (VisiblePredicates PredicateId)

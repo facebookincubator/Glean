@@ -16,6 +16,7 @@ module Glean.Database.Schema.Types
   , IsPointQuery
   , SchemaSelector(..)
   , schemaNameEnv
+  , allSchemaVersion
   , addTmpPredicate
   , lookupSourceRef
   , lookupPredicateSourceRef
@@ -78,7 +79,11 @@ data DbSchema = DbSchema
      -- ^ Maps all.N schema versions to SchemaIds
 
   , predicatesByPid :: IntMap PredicateDetails
-  , predicatesTransformations :: QueryTransformations
+
+  , predicatesTransformations :: HashMap SchemaId QueryTransformations
+    -- ^ Transformations are specific to the union of evolutions in the client
+    -- and server schemas. Indexed by client schema id.
+
   , schemaInventory :: Inventory
   , schemaMaxPid :: Pid
   , schemaLatestVersion :: SchemaId
@@ -315,10 +320,10 @@ mkRtsType lookupType lookupPid = rtsType
     fieldType (Schema.FieldDef name ty) = Schema.FieldDef name <$> rtsType ty
 
 mkQueryTransformations
-  :: IntMap PredicateTransformation
-  -> IntMap PredicateDetails
+  :: IntMap PredicateDetails
+  -> IntMap PredicateTransformation
   -> QueryTransformations
-mkQueryTransformations tmap pmap = QueryTransformations $
+mkQueryTransformations pmap tmap = QueryTransformations $
   foldr addSCC mempty (reverse $ Graph.stronglyConnComp edges)
   where
     transFor pid =  IntMap.lookup (intPid pid) tmap

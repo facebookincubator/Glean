@@ -69,15 +69,17 @@ newtype ResultTransformations =
 
 -- | Transformations for a type and all its transitively nested types
 -- It is an error if the type uses multiple versions of the same predicate.
-transformationsFor :: DbSchema -> Type -> Either Text ResultTransformations
-transformationsFor schema ty =
+transformationsFor
+  :: DbSchema
+  -> QueryTransformations
+  -> Type
+  -> Either Text ResultTransformations
+transformationsFor schema qtrans ty =
   if null repeated
   then Right transformations
   else Left $ "multiple versions of evolved predicates: "
       <> Text.unlines (map showRepeated repeated)
   where
-    qtrans = predicatesTransformations schema
-
     detailsFor pid = case lookupPid pid schema of
       Nothing -> error $ "unknown predicate " <> show pid
       Just details -> details
@@ -583,9 +585,11 @@ transformBytes' discard src dst =
   go NatTy NatTy = Left $ copy NatTy
   go StringTy StringTy = Left $ copy StringTy
   go BooleanTy BooleanTy = Left $ copy BooleanTy
-  go (MaybeTy from) (MaybeTy to) = go (lowerMaybe from) (lowerMaybe to)
+  go (MaybeTy from) to = go (lowerMaybe from) to
+  go from (MaybeTy to) = go from (lowerMaybe to)
   go (PredicateTy _) (PredicateTy pid) = Left $ copy (PredicateTy pid)
-  go (EnumeratedTy from) (EnumeratedTy to) = go (lowerEnum from) (lowerEnum to)
+  go from (EnumeratedTy to) = go from (lowerEnum to)
+  go (EnumeratedTy from) to = go (lowerEnum from) to
   go (ArrayTy from) (ArrayTy to) =
     case go from to of
       Left _ -> Left $ copy (ArrayTy to)

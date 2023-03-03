@@ -81,7 +81,12 @@ multiSchemaTest = TestCase $
 
           schema evolved.2 evolves evolved.1
 
-          schema all.1 : x.1, y.1, z.1, derived.1, evolved.1, evolved.2 {}
+          schema evolved.3 {
+            predicate P : enum { A | B | C }
+            predicate Q : { ref : P }
+          }
+
+          schema all.1 : x.1, y.1, z.1, derived.1, evolved.1, evolved.2, evolved.3 {}
         |]
 
       schema_v1_file = root </> "schema1"
@@ -125,7 +130,15 @@ multiSchemaTest = TestCase $
 
           schema evolved.2 evolves evolved.1
 
-          schema all.1 : x.1, y.1, derived.1, evolved.1, evolved.2 {}
+          schema evolved.3 {
+            predicate P : enum { A | B | C }
+            predicate Q : { ref : P }
+          }
+
+          # added evolution
+          schema evolved.3 evolves evolved.2
+
+          schema all.1 : x.1, y.1, derived.1, evolved.1, evolved.2, evolved.3 {}
         |]
 
       schema_index_file_0 = root </> "schema_index_0"
@@ -225,6 +238,8 @@ multiSchemaTest = TestCase $
             [ [s| { "key" : { "a" : "xyz" } } |] ]
         , mkBatch (PredicateRef "y.Q" 1)
             [ [s| { "key" : { "p" : { "key" : { "a" : "xyz" } }}} |] ]
+        , mkBatch (PredicateRef "evolved.P" 1)
+            [ [s| { "key" : 0 } |] ]
         ]
 
       v1_facts =
@@ -233,6 +248,8 @@ multiSchemaTest = TestCase $
         , mkBatch (PredicateRef "y.Q" 1)
             [ [s| { "key" : { "p" : { "key" : { "a" : "xyz", "b" : 3 } }}} |] ]
         , mkBatch (PredicateRef "evolved.P" 2)
+            [ [s| { "key" : 0 } |] ]
+        , mkBatch (PredicateRef "evolved.P" 1)
             [ [s| { "key" : 0 } |] ]
         ]
 
@@ -258,6 +275,11 @@ multiSchemaTest = TestCase $
       "x.P _" (Just 1)
     testQuery "multi 0c" repo0 schema_index_file_1 (Just "v0")
       "derived.D _" (Just 1)
+    -- only takes into account evolutions in the schema used plus
+    -- the schema stored in the db. Given none of the two have
+    -- evolutions for evolved.3, this should return no results.
+    testQuery "multi 0d" repo0 schema_index_file_1 (Just "v0")
+      "evolved.P.3 _" (Just 0)
 
     -- query repo0 with index 1, explicitly ask for schema v1
     testQuery "multi 2a" repo0 schema_index_file_1 (Just "v1") "z.R _" Nothing
@@ -269,6 +291,9 @@ multiSchemaTest = TestCase $
       -- this should give us 1 fact, because we're matching on b's default
     testQuery "multi 2d" repo0 schema_index_file_1 (Just "v1")
       "derived.D _" (Just 0)
+    -- the evolution in v1 should be taken into account.
+    testQuery "multi 2e" repo0 schema_index_file_1 (Just "v1")
+      "evolved.P.3 _" (Just 1)
 
     -- query repo1 with index 1, explicitly ask for schema v0
     testQuery "multi 3a" repo1 schema_index_file_1 (Just "v0") "x.P _" (Just 1)
@@ -282,6 +307,9 @@ multiSchemaTest = TestCase $
     testQueryFacts "multi 3d" repo1 schema_index_file_1 (Just "v0") "x.P _"
       (RecordTy [FieldDef "a" StringTy])
       [RTS.Tuple [RTS.String "xyz"]]
+    -- the evolution in v1 should be taken into account.
+    testQuery "multi 3e" repo1 schema_index_file_1 (Just "v0")
+      "evolved.P.3 _" (Just 1)
 
     -- query repo1 with index 1, don't ask for v0
     testQuery "multi 4a" repo1 schema_index_file_1 Nothing "x.P _" (Just 1)

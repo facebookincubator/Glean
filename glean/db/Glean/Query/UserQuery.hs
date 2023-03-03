@@ -428,6 +428,8 @@ userQueryFactsImpl
       userQueryFacts_schema_version
       userQueryFacts_schema_id
 
+  trans <- transformationsForQuery schema schemaSelector
+
   vlog 2 $ "userQueryFactsImpl: " <> show (length userQueryFacts_facts)
   qResults@QueryResults{..} <- do
     nextId <- firstFreeId lookup
@@ -439,7 +441,7 @@ userQueryFactsImpl
       (release . compiledQuerySub) $ \sub -> do
         results <- executeCompiled schemaInventory Nothing stack sub limits
         appliedTrans <- either (throwIO . Thrift.BadQuery) return $
-          userQueryFactsTransformations schemaSelector schema query results
+          userQueryFactsTransformations trans schemaSelector schema query results
         -- use Pids in result facts to apply a suitable transformation if neded.
         return $ transformResultsBack appliedTrans results
 
@@ -466,12 +468,13 @@ userQueryFactsImpl
      else results
 
 userQueryFactsTransformations
-  :: SchemaSelector
+  :: QueryTransformations
+  -> SchemaSelector
   -> DbSchema
   -> Thrift.UserQueryFacts
   -> QueryResults
   -> Either Text ResultTransformations
-userQueryFactsTransformations selector schema query results = do
+userQueryFactsTransformations qtrans selector schema query results = do
   nameEnv <-  maybe (Left "invalid schema_id") return $ do
     schemaNameEnv schema selector
 
@@ -484,7 +487,7 @@ userQueryFactsTransformations selector schema query results = do
         [ Angle.FieldDef "" (PredicateTy predId) | predId <- predRefs ]
 
   -- errors if multiple versions of the same predicate are requested.
-  transformationsFor schema allTypes
+  transformationsFor schema qtrans allTypes
   where
     sourceRefs :: [SourceRef]
     sourceRefs = mapMaybe toRef $ Set.toList vset
@@ -615,6 +618,7 @@ userQueryImpl
       schemaVersionForQuery env schema config Nothing
         userQuery_schema_version
         userQuery_schema_id
+    trans <- transformationsForQuery schema schemaVersion
 
     (returnType, compileTime, irDiag, cont) <-
       case Thrift.userQueryOptions_continuation opts of
@@ -698,7 +702,7 @@ userQueryImpl
       else return Nothing
 
     appliedTrans <- either (throwIO . Thrift.BadQuery) return $
-      transformationsFor schema returnType
+      transformationsFor schema trans returnType
 
     ( qResults@QueryResults{..}
       , queryDiag
@@ -725,7 +729,7 @@ userQueryImpl
               | Thrift.queryDebugOptions_bytecode debug ]
 
           bracket
-            (timeIt $ compileQuery predicatesTransformations bounds query)
+            (timeIt $ compileQuery trans bounds query)
             (\(_, _, sub) -> release $ compiledQuerySub sub)
             $ \(codegenTime, _, sub) -> do
               results <- transformResultsBack appliedTrans <$>
@@ -788,11 +792,11 @@ userQueryImpl
   repo
   Thrift.UserQuery{..} = do
     let schema@DbSchema{..} = odbSchema odb
-
     schemaVersion <-
       schemaVersionForQuery env schema config Nothing
         userQuery_schema_version
         userQuery_schema_id
+    trans <- transformationsForQuery schema schemaVersion
 
     let ref = SourceRef userQuery_predicate userQuery_predicate_version
     details@PredicateDetails{..} <-
@@ -807,8 +811,8 @@ userQueryImpl
 
       mkResults pids firstId derived qResults defineOwners = do
         appliedTrans <- either (error . Text.unpack) return $ do
-          ktrans <- transformationsFor schema predicateKeyType
-          vtrans <- transformationsFor schema predicateKeyType
+          ktrans <- transformationsFor schema trans predicateKeyType
+          vtrans <- transformationsFor schema trans predicateKeyType
           return (ktrans <> vtrans)
 
         let QueryResults{..} = transformResultsBack appliedTrans qResults
@@ -895,7 +899,7 @@ userQueryImpl
             defineOwners <- mkDefineOwners nextId
             let stack = stacked lookup derived
             qResults <- bracket
-              (compileQuery predicatesTransformations bounds gens)
+              (compileQuery trans bounds gens)
               (release . compiledQuerySub)
               $ \sub -> executeCompiled schemaInventory defineOwners stack
                 sub limits
@@ -936,6 +940,19 @@ userQueryImpl
     return $ if Thrift.userQueryOptions_omit_results opts
        then withoutFacts results
        else results
+
+transformationsForQuery
+  :: DbSchema
+  -> SchemaSelector
+  -> IO QueryTransformations
+transformationsForQuery schema selector = do
+  case allSchemaVersion schema selector of
+    Nothing -> throwIO $ Thrift.BadQuery "invalid schema_id"
+    Just schemaId ->
+      let transMap = predicatesTransformations schema in
+      case HashMap.lookup schemaId transMap of
+        Just trans -> return trans
+        Nothing -> throwIO $ Thrift.BadQuery "no transformations for schema_id"
 
 schemaVersionForQuery
   :: Database.Env
