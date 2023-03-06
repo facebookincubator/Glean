@@ -354,7 +354,12 @@ mkDbSchema validate knownPids dbContent
           Nothing -> error "no \"all\" schema"
           Just (_, id) -> id
 
-  vlog 2 $ "DB schema has " <>
+      dbSchemaId =
+        case IntMap.lookupMax (hashedSchemaAllVersions stored) of
+          Nothing -> error "no \"all\" schema in DB"
+          Just (_, id) -> id
+
+  vlog 2 $ "DB schema " <> unSchemaId dbSchemaId <> " has " <>
     showt (HashMap.size (hashedTypes stored)) <> " types/" <>
     showt (HashMap.size (hashedPreds stored)) <>
     " predicates, global schema has " <>
