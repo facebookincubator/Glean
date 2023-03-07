@@ -90,6 +90,13 @@ struct RequestOptions {
 
   // maximum results to return.
   2: optional i32 limit;
+
+  // feature flags for internal use
+  3: optional FeatureFlags feature_flags;
+}
+
+struct FeatureFlags {
+  1: optional bool snapshots;
 }
 
 // List symbols in a file. Symbols are spans of one or more tokens Glean has

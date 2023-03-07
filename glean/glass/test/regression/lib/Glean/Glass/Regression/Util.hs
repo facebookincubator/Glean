@@ -20,6 +20,7 @@ import Glean.Util.Time
 
 import Glean.Glass.Env as Glass
 import Glean.Glass.Repos
+import Glean.Glass.SnapshotBackend as SB
 
 withTestEnv :: Some Backend -> (Glass.Env -> IO a) -> IO a
 withTestEnv backend f =
@@ -31,5 +32,6 @@ withTestEnv backend f =
     f Glass.Env
       { gleanBackend = Some backend
       , gleanIndexBackend = IndexBackend Nothing
+      , snapshotBackend = SB.snapshotBackend SB.snapshotDefaultTier
       , ..
       }

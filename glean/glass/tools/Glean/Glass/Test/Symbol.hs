@@ -72,7 +72,8 @@ main :: IO ()
 main =
   withOptions options $ \Config{..} ->
   Glass.withEnv "glass-symbol" (Glass.gleanService cfgGlass)
-    (Glass.configKey cfgGlass) (Glass.refreshFreq cfgGlass) $ \env -> do
+    (Glass.snapshotTier cfgGlass) (Glass.configKey cfgGlass)
+    (Glass.refreshFreq cfgGlass) $ \env -> do
 
     syms <- case (cfgSymbol, cfgFile) of
       (Nothing, Nothing) ->

@@ -43,6 +43,8 @@ import qualified Glean.Glass.Options as Glass
 import qualified Glean.Glass.Handler as Handler
 import Glean.Glass.GlassService.Service ( GlassServiceCommand(..) )
 
+import Glean.Glass.SnapshotBackend ( snapshotBackend, SnapshotTier )
+
 -- | Ok, go.
 main :: IO ()
 main = withGlass runGlass
@@ -53,18 +55,19 @@ type Server = Glass.Env -> Glass.Config -> IO ()
 withGlass :: Server -> IO ()
 withGlass f =
   withOptions Glass.options $ \config@Glass.Config{..} ->
-  withEnv serviceName gleanService configKey refreshFreq $ \env ->
+  withEnv serviceName gleanService snapshotTier configKey refreshFreq $ \env ->
   f env config
 
 -- | Construct a server environment
 withEnv
   :: Text
   -> Glean.Service
+  -> SnapshotTier
   -> Text
   -> DiffTimePoints
   -> (Glass.Env -> IO a)
   -> IO a
-withEnv name service _ refreshFreq f =
+withEnv name service snapshotTier _ refreshFreq f =
   withEventBaseDataplane $ \evp ->
   withConfigProvider defaultConfigOptions $ \cfgapi ->
   withLogger cfgapi $ \logger ->
@@ -75,6 +78,7 @@ withEnv name service _ refreshFreq f =
     f Glass.Env
       { gleanBackend = Some backend
       , gleanIndexBackend = indexBackend backend
+      , snapshotBackend = snapshotBackend snapshotTier
       , ..
       }
 

@@ -21,6 +21,7 @@ import Glean.Util.Time
 
 import qualified Glean.Glass.Env as Glass
 import qualified Glean.Glass.Config as Glass
+import Glean.Glass.SnapshotBackend ( snapshotTierParser )
 
 options :: ParserInfo Glass.Config
 options = info (helper <*> configParser) fullDesc
@@ -32,6 +33,7 @@ configParser = do
   serviceName <- serviceNameParser
   refreshFreq <- refreshFreqParser
   numWorkerThreads <- workerThreadsParser
+  snapshotTier <- snapshotTierParser
   return Glass.Config{configKey = Glass.defaultConfigKey, ..}
 
 portParser :: Parser Int

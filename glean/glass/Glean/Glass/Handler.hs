@@ -198,7 +198,8 @@ import Glean.Glass.Types
       RelationType (..),
       rELATED_SYMBOLS_MAX_LIMIT,
       mAXIMUM_SYMBOLS_QUERY_LIMIT,
-      Path (..), USRSymbolReference (USRSymbolReference) )
+      Path (..), USRSymbolReference (USRSymbolReference),
+      FeatureFlags (..), )
 import Glean.Index.Types
   ( IndexRequest,
     IndexResponse)
@@ -235,6 +236,8 @@ import qualified Glean.Glass.SearchRelated as Search
 import Glean.Glass.Visibility (getInfoForEntity)
 import Glean.Glass.SearchRelated (InheritedContainer, Recursive(NotRecursive))
 
+import Glean.Glass.SnapshotBackend ( getSnapshot, SnapshotBackend )
+
 -- | Runner for methods that are keyed by a file path
 -- TODO : do the plumbing via a class rather than function composition
 runRepoFile
@@ -244,6 +247,7 @@ runRepoFile
     -> DocumentSymbolsRequest
     -> RequestOptions
     -> GleanBackend (Glean.Some Glean.Backend)
+    -> SnapshotBackend
     -> Maybe Language
     -> IO (t, Maybe ErrorLogger))
   -> Glass.Env
@@ -254,6 +258,7 @@ runRepoFile sym fn env req opts =
   withRepoFile sym env req repo file $ \(dbs,_) mlang ->
     fn repos req opts
         (GleanBackend (Glass.gleanBackend env) dbs)
+        (Glass.snapshotBackend env)
           mlang
   where
     repos = Glass.latestGleanRepos env
@@ -1006,9 +1011,7 @@ withEntity f scsrepo lang toks = do
     Many { initial = e, message = t } -> return (e, Just (EntitySearchFail t))
   (, fmap logError err) <$> withRepo entityRepo (f scsrepo file rangespan)
 
-
--- Find all symbols and refs in file and add all attributes
-fetchSymbolsAndAttributes
+fetchSymbolsAndAttributesGlean
   :: Glean.Backend b
   => TVar Glean.LatestRepos
   -> DocumentSymbolsRequest
@@ -1016,7 +1019,7 @@ fetchSymbolsAndAttributes
   -> GleanBackend b
   -> Maybe Language
   -> IO (DocumentSymbolListXResult, Maybe ErrorLogger)
-fetchSymbolsAndAttributes latest req opts be mlang = do
+fetchSymbolsAndAttributesGlean latest req opts be mlang = do
   let
     file = toFileReference
       (documentSymbolsRequest_repository req)
@@ -1027,6 +1030,34 @@ fetchSymbolsAndAttributes latest req opts be mlang = do
   (res1, logs) <- fetchDocumentSymbols file mlimit includeRefs be mlang
   res2 <- addDynamicAttributes latest file mlimit be res1
   return (res2, logs)
+
+-- Find all symbols and refs in file and add all attributes
+fetchSymbolsAndAttributes
+  :: Glean.Backend b
+  => TVar Glean.LatestRepos
+  -> DocumentSymbolsRequest
+  -> RequestOptions
+  -> GleanBackend b
+  -> SnapshotBackend
+  -> Maybe Language
+  -> IO (DocumentSymbolListXResult, Maybe ErrorLogger)
+fetchSymbolsAndAttributes latest req opts be snapshotbe mlang =
+  case (trySnapshot, mrevision) of
+    (True, Just revision) -> do
+      Async.withAsync getFromGlean $ \gleanRes -> do
+        msnapshot <- getSnapshot snapshotbe repo file revision
+        case msnapshot of
+          Just queryResult -> return (queryResult, Nothing)
+          Nothing -> Async.wait gleanRes
+    _ -> getFromGlean
+  where
+    getFromGlean = fetchSymbolsAndAttributesGlean latest req opts be mlang
+    file = documentSymbolsRequest_filepath req
+    repo = documentSymbolsRequest_repository req
+    mrevision = requestOptions_revision opts
+    trySnapshot = case requestOptions_feature_flags opts of
+        Just (FeatureFlags (Just True)) -> True
+        _ -> False
 
 -- Find all references and definitions in the file
 fetchDocumentSymbols
@@ -1153,11 +1184,12 @@ fetchDocumentSymbolIndex
   -> DocumentSymbolsRequest
   -> RequestOptions
   -> GleanBackend b
+  -> SnapshotBackend
   -> Maybe Language
   -> IO (DocumentSymbolIndex, Maybe ErrorLogger)
-fetchDocumentSymbolIndex latest req opts be mlang = do
+fetchDocumentSymbolIndex latest req opts be snapshotbe mlang = do
   (DocumentSymbolListXResult refs defs revision, merr1) <-
-    fetchSymbolsAndAttributes latest req opts be mlang
+    fetchSymbolsAndAttributes latest req opts be snapshotbe mlang
 
   return $ (,merr1) DocumentSymbolIndex {
     documentSymbolIndex_symbols = toSymbolIndex refs defs,

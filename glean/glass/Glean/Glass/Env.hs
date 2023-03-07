@@ -32,6 +32,7 @@ import Glean.Util.Some ( Some )
 import Glean.Util.Time ( DiffTimePoints )
 
 import Glean.Glass.Repos (ScmRevisions)
+import Glean.Glass.SnapshotBackend ( SnapshotBackend, SnapshotTier )
 
 -- | Init-time configuration
 data Config = Config
@@ -41,6 +42,7 @@ data Config = Config
   , serviceName :: Text
   , refreshFreq :: DiffTimePoints -- ^ refresh glean repos on this frequency
   , numWorkerThreads :: Maybe Int
+  , snapshotTier :: SnapshotTier
   }
 
 -- | Read-only, scoped, dynamic resources.
@@ -53,6 +55,7 @@ data Env = Env
   , latestGleanRepos :: TVar Glean.LatestRepos
   , repoScmRevisions :: TVar ScmRevisions
   , gleanIndexBackend :: IndexBackend
+  , snapshotBackend :: SnapshotBackend
   }
 
 -- | A backend to create incremental databases

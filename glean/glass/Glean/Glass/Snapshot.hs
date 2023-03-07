@@ -91,18 +91,20 @@ main =
   withEnv
     (Glass.serviceName glassConfig)
     (Glass.gleanService glassConfig)
+    (Glass.snapshotTier glassConfig)
     (Glass.configKey glassConfig)
     (Glass.refreshFreq glassConfig) $ \env@Glass.Env{..} ->
   do
-    let opts = Types.RequestOptions Nothing Nothing
+    let opts = Types.RequestOptions Nothing Nothing Nothing
     snapShotItems <- forM files $ \(repo, path) -> do
       -- TODO move this loop to the Haxl monad for automatic parallelism
       let req = Types.DocumentSymbolsRequest repo path Nothing True
       symbolList <- Handler.documentSymbolListX env req opts
       let defs = length $ Types.documentSymbolListXResult_definitions symbolList
       let refs = length $ Types.documentSymbolListXResult_references symbolList
-      printf "%s %s: %d defs %d refs\n" (Types.unRepoName repo)
-        (Types.unPath path) defs refs
+      let rev = Types.documentSymbolListXResult_revision symbolList
+      printf "%s %s %s: %d defs %d refs\n" (Types.unRepoName repo)
+        (Types.unPath path) (Types.unRevision rev) defs refs
       return $ Types.DocumentSymbolListXQuery req opts symbolList
     let snapShots = Types.Snapshot snapShotItems
     BS.writeFile output $ serializeGen (Proxy :: Proxy Compact) snapShots
