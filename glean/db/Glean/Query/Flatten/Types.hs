@@ -157,11 +157,17 @@ boundVarsOf :: FlatStatement -> VarSet -> VarSet
 boundVarsOf (FlatStatement _ lhs rhs) r =
   varsOf AllVars lhs (boundVarsOfGen rhs r)
 boundVarsOf (FlatNegation _) r = r -- a negated query cannot bind variables
-boundVarsOf (FlatDisjunction stmtss) r = foldr varsStmts r stmtss
-  where varsStmts stmts r = foldr (\g r -> foldr boundVarsOf r g) r stmts
+boundVarsOf (FlatDisjunction []) r = r
+boundVarsOf (FlatDisjunction stmtss) r =
+  foldr1 IntSet.intersection $ map varsStmts stmtss
+  where
+    varsStmts stmts = foldr (\g r -> foldr boundVarsOf r g) r stmts
 boundVarsOf (FlatConditional cond then_ else_) r =
-  varsStmts cond $ varsStmts then_ $ varsStmts else_ r
-  where varsStmts stmts r = foldr (\g r -> foldr boundVarsOf r g) r stmts
+  varsThen `IntSet.intersection` varsElse
+  where
+    varsThen = varsStmts cond $ varsStmts then_ r
+    varsElse = varsStmts else_ r
+    varsStmts stmts r = foldr (\g r -> foldr boundVarsOf r g) r stmts
 
 boundVarsOfGen :: Generator -> VarSet -> VarSet
 boundVarsOfGen DerivedFactGenerator{} r = r
