@@ -144,7 +144,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "def another_method(...) -> ...:",
+                "signature": "def another_method(\n    self,\n    param: \"HelperClass\"\n) -> \"Union[HelperClass, None]\"",
                 "sym": "test/py/lib.py/lib.HelperClass.another_method",
                 "sym_location": {
                     "filepath": "lib.py",
@@ -193,7 +193,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "def method(...) -> ...:",
+                "signature": "def method(\n    self\n) -> \"HelperClass\"",
                 "sym": "test/py/lib.py/lib.HelperClass.method",
                 "sym_location": {
                     "filepath": "lib.py",

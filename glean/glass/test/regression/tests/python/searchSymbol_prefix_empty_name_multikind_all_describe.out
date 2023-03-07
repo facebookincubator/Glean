@@ -83,7 +83,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "def meth(...) -> ...:",
+                "signature": "def meth(\n    self,\n    param\n) -> \"Helper\"",
                 "sym": "test/py/all.py/all.LocalClass.meth",
                 "sym_location": {
                     "filepath": "all.py",
@@ -142,7 +142,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "def fn(...) -> ...:",
+                "signature": "def fn()",
                 "sym": "test/py/all.py/all.fn",
                 "sym_location": {
                     "filepath": "all.py",
@@ -216,7 +216,7 @@
                     }
                 ],
                 "repo_hash": "testhash",
-                "signature": "def fn(...) -> ...:",
+                "signature": "def fn()",
                 "sym": "test/py/as.py/as.fn",
                 "sym_location": {
                     "filepath": "as.py",
@@ -274,7 +274,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "async def func_sleep(...) -> ...:",
+                "signature": "async def func_sleep()",
                 "sym": "test/py/as.py/as.func_sleep",
                 "sym_location": {
                     "filepath": "as.py",
@@ -323,7 +323,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "def big_func(...) -> ...:",
+                "signature": "def big_func()",
                 "sym": "test/py/big_lib/big_lib.big_func",
                 "sym_location": {
                     "filepath": "big_lib/__init__.py",
@@ -420,7 +420,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "def another_method(...) -> ...:",
+                "signature": "def another_method(\n    self,\n    param: \"HelperClass\"\n) -> \"Union[HelperClass, None]\"",
                 "sym": "test/py/lib.py/lib.HelperClass.another_method",
                 "sym_location": {
                     "filepath": "lib.py",
@@ -469,7 +469,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "def method(...) -> ...:",
+                "signature": "def method(\n    self\n) -> \"HelperClass\"",
                 "sym": "test/py/lib.py/lib.HelperClass.method",
                 "sym_location": {
                     "filepath": "lib.py",
@@ -518,7 +518,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "def helper_func(...) -> ...:",
+                "signature": "def helper_func()",
                 "sym": "test/py/lib.py/lib.helper_func",
                 "sym_location": {
                     "filepath": "lib.py",
@@ -567,7 +567,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "def f(...) -> ...:",
+                "signature": "def f() -> \"None\"",
                 "sym": "test/py/main.py/main.f",
                 "sym_location": {
                     "filepath": "main.py",
@@ -616,7 +616,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "def g(...) -> ...:",
+                "signature": "def g() -> None",
                 "sym": "test/py/main.py/main.g",
                 "sym_location": {
                     "filepath": "main.py",
@@ -665,7 +665,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "def h(...) -> ...:",
+                "signature": "def h(\n    _: OtherHelper\n) -> None",
                 "sym": "test/py/main.py/main.g.%3Clocals%3E.h",
                 "sym_location": {
                     "filepath": "main.py",
@@ -762,7 +762,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "def shadow_func(...) -> ...:",
+                "signature": "def shadow_func()",
                 "sym": "test/py/shadow.py/shadow.shadow_func",
                 "sym_location": {
                     "filepath": "shadow.py",

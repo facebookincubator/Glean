@@ -45,7 +45,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "def fn(...) -> ...:",
+                "signature": "def fn()",
                 "sym": "test/py/all.py/all.fn",
                 "sym_location": {
                     "filepath": "all.py",

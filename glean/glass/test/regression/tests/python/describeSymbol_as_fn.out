@@ -58,7 +58,7 @@
             }
         ],
         "repo_hash": "testhash",
-        "signature": "def fn(...) -> ...:",
+        "signature": "def fn()",
         "sym": "test/py/as.py/as.fn",
         "sym_location": {
             "filepath": "as.py",

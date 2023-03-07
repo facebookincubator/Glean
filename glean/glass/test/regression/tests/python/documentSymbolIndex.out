@@ -134,7 +134,7 @@
                             "aString": "all"
                         },
                         "symbolSignature": {
-                            "aString": "def fn(...) -> ...:"
+                            "aString": "def fn()"
                         }
                     },
                     "range": {
@@ -412,7 +412,7 @@
                             "aString": "all.LocalClass"
                         },
                         "symbolSignature": {
-                            "aString": "def meth(...) -> ...:"
+                            "aString": "def meth(\n    self,\n    param\n) -> \"Helper\""
                         }
                     },
                     "range": {
@@ -473,7 +473,7 @@
                             "aString": "all"
                         },
                         "symbolSignature": {
-                            "aString": "def fn(...) -> ...:"
+                            "aString": "def fn()"
                         }
                     },
                     "range": {
@@ -699,7 +699,7 @@
                             "aString": "all"
                         },
                         "symbolSignature": {
-                            "aString": "def fn(...) -> ...:"
+                            "aString": "def fn()"
                         }
                     },
                     "range": {
@@ -768,7 +768,7 @@
                             "aString": "big_lib"
                         },
                         "symbolSignature": {
-                            "aString": "def big_func(...) -> ...:"
+                            "aString": "def big_func()"
                         }
                     },
                     "range": {
@@ -1086,7 +1086,7 @@
                             "aString": "big_lib"
                         },
                         "symbolSignature": {
-                            "aString": "def big_func(...) -> ...:"
+                            "aString": "def big_func()"
                         }
                     },
                     "range": {

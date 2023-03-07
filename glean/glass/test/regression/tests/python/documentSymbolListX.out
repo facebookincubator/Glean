@@ -129,7 +129,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "def meth(...) -> ...:"
+                            "aString": "def meth(\n    self,\n    param\n) -> \"Helper\""
                         },
                         "key": "symbolSignature"
                     },
@@ -275,7 +275,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "def fn(...) -> ...:"
+                            "aString": "def fn()"
                         },
                         "key": "symbolSignature"
                     },
@@ -751,7 +751,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "def fn(...) -> ...:"
+                            "aString": "def fn()"
                         },
                         "key": "symbolSignature"
                     },
@@ -802,7 +802,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "def fn(...) -> ...:"
+                            "aString": "def fn()"
                         },
                         "key": "symbolSignature"
                     },
@@ -1111,7 +1111,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "def big_func(...) -> ...:"
+                            "aString": "def big_func()"
                         },
                         "key": "symbolSignature"
                     },
@@ -1162,7 +1162,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "def big_func(...) -> ...:"
+                            "aString": "def big_func()"
                         },
                         "key": "symbolSignature"
                     },
