@@ -66,9 +66,13 @@ instance Display TcTerm where
     , nest 2 $ sep ["else", displayAtom opts else_]
     ]
   display opts (TcFactGen pid kpat vpat)
-    | isWild vpat || isUnit vpat = display opts pid <+> displayAtom opts kpat
-    | otherwise = display opts pid <+>
-      displayAtom opts kpat <+> "->" <+> displayAtom opts vpat
+    | isWild vpat || isUnit vpat =
+      nest 2 $ sep [display opts pid, displayAtom opts kpat]
+    | otherwise =
+      nest 2 $ sep
+        [ display opts pid
+        , displayAtom opts kpat
+        , "->" <+> displayAtom opts vpat ]
     where
     isUnit (RTS.Tuple []) = True
     isUnit _ = False
