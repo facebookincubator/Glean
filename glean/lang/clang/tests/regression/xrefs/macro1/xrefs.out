@@ -139,7 +139,7 @@
           }
         },
         {
-          "range": { "begin": 578, "end": 583 },
+          "range": { "begin": 578, "end": 589 },
           "target": {
             "declaration": {
               "function_": {
@@ -289,7 +289,7 @@
           }
         },
         {
-          "range": { "begin": 626, "end": 631 },
+          "range": { "begin": 626, "end": 637 },
           "target": {
             "declaration": {
               "function_": {
@@ -342,7 +342,7 @@
           }
         },
         {
-          "range": { "begin": 641, "end": 646 },
+          "range": { "begin": 641, "end": 652 },
           "target": {
             "declaration": {
               "variable": {
@@ -586,7 +586,7 @@
           }
         },
         {
-          "range": { "begin": 720, "end": 725 },
+          "range": { "begin": 720, "end": 731 },
           "target": {
             "indirect": {
               "key": {
@@ -770,7 +770,7 @@
           }
         },
         {
-          "range": { "begin": 759, "end": 764 },
+          "range": { "begin": 759, "end": 770 },
           "target": {
             "indirect": {
               "key": {
@@ -834,7 +834,7 @@
           }
         },
         {
-          "range": { "begin": 771, "end": 776 },
+          "range": { "begin": 771, "end": 782 },
           "target": {
             "indirect": {
               "key": {
@@ -1214,25 +1214,6 @@
           "range": { "begin": 876, "end": 889 },
           "target": {
             "declaration": {
-              "namespace_": {
-                "key": {
-                  "name": { "key": { "name": { "key": "N" } } },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 19,
-                    "columnBegin": 1,
-                    "lineEnd": 23,
-                    "columnEnd": 1
-                  }
-                }
-              }
-            }
-          }
-        },
-        {
-          "range": { "begin": 876, "end": 881 },
-          "target": {
-            "declaration": {
               "function_": {
                 "key": {
                   "name": {
@@ -1257,6 +1238,25 @@
                     "columnBegin": 3,
                     "lineEnd": 21,
                     "columnEnd": 18
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 876, "end": 889 },
+          "target": {
+            "declaration": {
+              "namespace_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 19,
+                    "columnBegin": 1,
+                    "lineEnd": 23,
+                    "columnEnd": 1
                   }
                 }
               }
@@ -1297,25 +1297,6 @@
           "range": { "begin": 893, "end": 911 },
           "target": {
             "declaration": {
-              "namespace_": {
-                "key": {
-                  "name": { "key": { "name": { "key": "N" } } },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 19,
-                    "columnBegin": 1,
-                    "lineEnd": 23,
-                    "columnEnd": 1
-                  }
-                }
-              }
-            }
-          }
-        },
-        {
-          "range": { "begin": 893, "end": 898 },
-          "target": {
-            "declaration": {
               "function_": {
                 "key": {
                   "name": {
@@ -1340,6 +1321,25 @@
                     "columnBegin": 3,
                     "lineEnd": 21,
                     "columnEnd": 18
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 893, "end": 911 },
+          "target": {
+            "declaration": {
+              "namespace_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 19,
+                    "columnBegin": 1,
+                    "lineEnd": 23,
+                    "columnEnd": 1
                   }
                 }
               }

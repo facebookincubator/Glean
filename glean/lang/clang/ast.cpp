@@ -2350,13 +2350,14 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     }
   }
 
-  // When using macros, the SourceLocation refers to the post expansion location.
-  // This is not useful to users who are looking at the pre-expansion location in
+  // When using macros, the SourceRange refers to the post expansion range.
+  // This is not useful to users who are looking at the pre-expansion range in
   // their code.
-  clang::SourceLocation fixMacroLocation(clang::SourceLocation loc) {
+  clang::SourceRange fixMacroRange(clang::SourceRange range) {
     const auto& srcMgr = db.sourceManager();
+    auto loc = range.getBegin();
     if (!srcMgr.isMacroArgExpansion(loc)) {
-      return srcMgr.getExpansionLoc(loc);
+      return range;
     }
     // If a macro arg is a result of a paste, its spelling is in scratch space.
     //
@@ -2371,7 +2372,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       do {
         loc = srcMgr.getImmediateMacroCallerLoc(loc);
       } while (srcMgr.isWrittenInScratchSpace(srcMgr.getSpellingLoc(loc)));
-      return srcMgr.getExpansionLoc(loc);
+      return srcMgr.getExpansionRange(loc).getAsRange();
     }
     return srcMgr.getSpellingLoc(loc);
   }
@@ -2384,12 +2385,10 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   }
 
   bool VisitDeclRefExpr(const clang::DeclRefExpr* expr) {
-    auto const beginLoc = expr->getNameInfo().getSourceRange().getBegin();
-    auto const endLoc = expr->getNameInfo().getSourceRange().getEnd();
     xrefExpr(
-      expr->getDecl(),
-      expr->getQualifier(),
-      { fixMacroLocation(beginLoc), fixMacroLocation(endLoc)});
+        expr->getDecl(),
+        expr->getQualifier(),
+        fixMacroRange(expr->getNameInfo().getSourceRange()));
     return true;
   }
 
