@@ -15,7 +15,6 @@ module Glean.Database.Backup.Locator
   , getAllSites
   ) where
 
-import Data.Functor
 import qualified Data.Map as Map
 import qualified Data.HashMap.Strict as HashMap
 import Data.Maybe
@@ -59,10 +58,7 @@ toRepoLocator :: Site site => Text -> site -> Repo -> Text
 toRepoLocator prefix site repo =
   toSiteLocator prefix site <> "/" <> repoToTextSep "." repo
 
-getSite
-  :: Env
-  -> Text
-  -> STM (Maybe (Text, Some Site, DatabaseBackupPolicy))
+getSite :: Env -> Text -> STM (Maybe (Text, Some Site))
 getSite Env{..} repoName = do
   policy <- ServerConfig.config_backup <$> Observed.get envServerConfig
   let locator = Map.findWithDefault
@@ -70,9 +66,7 @@ getSite Env{..} repoName = do
         repoName
         (Map.map ServerConfig.backup_location $
           databaseBackupPolicy_repos policy)
-  return $
-    fromSiteLocator envBackupBackends locator
-    <&> \(prefix, site) -> (prefix, site, policy)
+  return $ fromSiteLocator envBackupBackends locator
 
 getAllSites :: Env -> STM [(Text, Some Site)]
 getAllSites Env{..} = do
