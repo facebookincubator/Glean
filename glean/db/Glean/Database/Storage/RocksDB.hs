@@ -29,6 +29,8 @@ import Foreign.Ptr
 import Foreign.Storable
 import System.Directory
 import System.FilePath
+import System.Process (readProcessWithExitCode)
+import System.Exit (ExitCode(ExitSuccess))
 
 import Util.FFI
 import Util.IO (safeRemovePathForcibly)
@@ -47,6 +49,7 @@ import Glean.RTS.Types (Fid(..), invalidFid, Pid(..))
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types (Repo)
 import Glean.Util.Disk
+import Util.String (strip)
 
 newtype Cache = Cache (ForeignPtr Cache)
 
@@ -248,8 +251,7 @@ instance Storage RocksDB where
   restore rocks repo scratch scratch_file = do
     createDirectoryIfMissing True scratch_restore
     createDirectoryIfMissing True scratch_db
-    bytes <- LBS.readFile scratch_file
-    Tar.unpack scratch_restore $ Tar.read bytes
+    unTar scratch_file scratch_restore
     -- to avoid retaining an extra copy of the DB during restore,
     -- delete the input file now.
     removeFile scratch_file
@@ -263,6 +265,21 @@ instance Storage RocksDB where
       scratch_db = scratch </> "db"
 
       target = containerPath rocks repo
+
+unTar :: FilePath -> FilePath -> IO ()
+unTar scratch_file scratch_restore = do
+  (ec, out, _) <- readProcessWithExitCode "which" ["tar"] ""
+  let tarPath = strip out
+  case ec of
+    ExitSuccess -> do
+      (ec, _, err) <- readProcessWithExitCode
+        tarPath
+        ["-xf", scratch_file, "-C", scratch_restore]
+        ""
+      unless (ec == ExitSuccess) $ throwIO $ userError err
+    _ -> do
+      bytes <- LBS.readFile scratch_file
+      Tar.unpack scratch_restore $ Tar.read bytes
 
 getFileSizeRecursively :: FilePath -> IO Integer
 getFileSizeRecursively path = do
