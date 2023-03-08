@@ -262,7 +262,8 @@ data MockedEnv = MockedEnv
 mockEnv :: FilePath -> Env -> MockDataStore Memory -> IO MockedEnv
 mockEnv backupDir Env {..} MockDataStore {..} = do
   schemaSource <- Observed.get envSchemaSource
-  schema <- newDbSchema schemaSource LatestSchemaAll readWriteContent
+  schema <- newDbSchema (Just envDbSchemaCache) schemaSource
+    LatestSchemaAll readWriteContent
   let storedSchema = toStoredSchema schema
   mockedTime <- implement "getCurrentTime" (pure zeroTime)
   mockedShardAssignment <- newIORef mempty

@@ -63,7 +63,7 @@ main =
   withConfigProvider cfg $ \(cfgAPI :: ConfigAPI) -> do
 
   schemas <- ThriftSource.load cfgAPI cfgSchemaSource
-  db_schema <- newDbSchema schemas LatestSchemaAll readWriteContent
+  db_schema <- newDbSchema Nothing schemas LatestSchemaAll readWriteContent
 
   case cfgCommand of
     PTC args -> predicateTypecheckers db_schema args

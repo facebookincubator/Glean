@@ -207,6 +207,7 @@ data Env = forall storage. Storage storage => Env
   , envStorage :: storage
   , envSchemaSource :: Observed SchemaIndex
     -- ^ The schema source, and its parsed/resolved form are both cached here.
+  , envDbSchemaCache :: MVar DbSchemaCache
   , envUpdateSchema :: Bool
   , envSchemaUpdateSignal :: TMVar ()
   , envSchemaVersion :: Maybe Version

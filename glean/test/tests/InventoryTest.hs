@@ -29,7 +29,7 @@ main :: IO ()
 main = withUnitTest $ do
   schema <- parseSchemaDir schemaSourceDir
   inventory <- schemaInventory <$>
-    newDbSchema schema LatestSchemaAll readWriteContent
+    newDbSchema Nothing schema LatestSchemaAll readWriteContent
 
   testRunner $ TestList
     [ TestLabel "serialize" $ serializeTest inventory

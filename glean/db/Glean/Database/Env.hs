@@ -9,6 +9,7 @@
 {-# LANGUAGE CPP #-}
 module Glean.Database.Env ( withDatabases ) where
 
+import Control.Concurrent
 import Control.Exception
 import Control.Monad.Extra
 import Data.Default
@@ -124,6 +125,8 @@ initEnv evb envStorage envCatalog shardManager cfg
     envSchemaUpdateSignal <- atomically newEmptyTMVar
 
     envCompleting <- newTVarIO HashMap.empty
+
+    envDbSchemaCache <- newMVar HashMap.empty
 
     return Env
       { envEventBase = evb

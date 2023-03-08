@@ -132,7 +132,7 @@ withSchemaAndFacts customSettings schema facts act =
   dbSchema <- do
     schema <- either error return
       $ processOneSchema Map.empty $ encodeUtf8 $ pack schema
-    newDbSchema schema LatestSchemaAll readWriteContent
+    newDbSchema Nothing schema LatestSchemaAll readWriteContent
 
   -- open db for querying
   -- We need to open the db again because schema evolutions are

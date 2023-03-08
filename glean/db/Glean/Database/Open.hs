@@ -20,6 +20,7 @@ module Glean.Database.Open (
   repoParents
 ) where
 
+import Control.Concurrent (modifyMVar_)
 import Control.Concurrent.Async (Async, wait)
 import Control.Exception hiding(try)
 import Control.Monad.Catch (try)
@@ -268,10 +269,14 @@ setupSchema :: Storage s => Env -> Repo -> Database s -> Mode -> IO DbSchema
 setupSchema Env{..} _ handle (Create _ _ initial) = do
   schema <- Observed.get envSchemaSource
   dbSchema <- case initial of
-    UseDefaultSchema -> newDbSchema schema LatestSchemaAll readWriteContent
+    UseDefaultSchema ->
+      newDbSchema (Just envDbSchemaCache) schema
+        LatestSchemaAll readWriteContent
     UseSpecificSchema schemaId ->
-      newDbSchema schema (SpecificSchemaId schemaId) readWriteContent
-    UseThisSchema info -> fromStoredSchema info readWriteContent
+      newDbSchema (Just envDbSchemaCache) schema
+        (SpecificSchemaId schemaId) readWriteContent
+    UseThisSchema info ->
+      fromStoredSchema (Just envDbSchemaCache) info readWriteContent
   storeSchema handle $ toStoredSchema dbSchema
   return dbSchema
 setupSchema env@Env{..} repo handle mode = do
@@ -279,7 +284,8 @@ setupSchema env@Env{..} repo handle mode = do
   case stored of
     Just info
       | ReadOnly <- mode -> mergeSchema
-      | otherwise -> fromStoredSchema info readWriteContent
+      | otherwise ->
+        fromStoredSchema (Just envDbSchemaCache) info readWriteContent
           -- while writing, we don't allow new predicates to be added to
           -- the schema. This is the easiest way to prevent facts being
           -- added to the DB that aren't in the original stored schema.
@@ -301,7 +307,8 @@ setupSchema env@Env{..} repo handle mode = do
         -- stored in the DB when it was created.
         schema <- Observed.get envSchemaSource
         stats <- stackStats
-        newMergedDbSchema info schema AllowChanges (readOnlyContent stats)
+        newMergedDbSchema (Just envDbSchemaCache) info schema
+          AllowChanges (readOnlyContent stats)
     Nothing ->
       dbError repo "DB has no stored schema"
 
@@ -331,6 +338,13 @@ schemaUpdated env@Env{..} mbRepo = do
       mapM_ acquireDB active
       return active
     release = atomically . mapM_ (releaseDB env)
+
+  -- Empty the DbSchema cache. We probably have a new SchemaIndex now
+  -- which invalidates all the entries anyway, and also we don't prune
+  -- this cache anywhere else.
+  when (isNothing mbRepo) $
+    modifyMVar_ envDbSchemaCache $ \_ -> return HashMap.empty
+
   bracket acquire release $ \active -> do
     forM_ active $ \DB{..} -> do
       maybeOpenDB <- atomically $ do

@@ -211,7 +211,7 @@ main = do
       Right{} -> return ()
 
     -- for typechecking
-    dbschema <- newDbSchema (SchemaIndex schema [])
+    dbschema <- newDbSchema Nothing (SchemaIndex schema [])
       LatestSchemaAll readWriteContent
     return (str, schema, dbschema)
 

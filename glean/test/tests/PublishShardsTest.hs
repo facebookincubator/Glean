@@ -70,7 +70,7 @@ setupFakeDBs :: FilePath -> IO ()
 setupFakeDBs dbdir = do
   now <- getCurrentTime
   schema <- parseSchemaDir schemaSourceDir
-  schema <- newDbSchema schema LatestSchemaAll readWriteContent
+  schema <- newDbSchema Nothing schema LatestSchemaAll readWriteContent
   -- populate a dir with various DBs
   makeFakeDB schema dbdir incompleteRepo now incomplete Nothing
   makeFakeDB schema dbdir completeRepo now complete Nothing

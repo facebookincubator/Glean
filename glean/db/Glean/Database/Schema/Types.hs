@@ -8,6 +8,8 @@
 
 module Glean.Database.Schema.Types
   ( DbSchema(..)
+  , DbSchemaCache
+  , DbSchemaCacheKey(..)
   , RefTargetId
   , PredicateDetails(..)
   , predicateRef
@@ -37,6 +39,7 @@ module Glean.Database.Schema.Types
   ) where
 
 import Data.Bifoldable (bifoldr')
+import Data.Hashable
 import Data.HashMap.Strict (HashMap)
 import qualified Data.Graph as Graph
 import qualified Data.HashMap.Strict as HashMap
@@ -50,6 +53,7 @@ import Data.Set (Set)
 import Data.Text (Text)
 import Data.Text.Prettyprint.Doc hiding ((<>))
 
+import Glean.Angle.Hash
 import Glean.Angle.Types as Schema hiding (Type, FieldDef)
 import qualified Glean.Angle.Types as Schema
 import Glean.Bytecode.Types
@@ -91,6 +95,12 @@ data DbSchema = DbSchema
   , schemaSource :: (SourceSchemas, IntMap SchemaId)
     -- ^ This is for toStoredSchema
   }
+
+-- | Cached DbSchemas, so that we can share them amongst different DBs
+type DbSchemaCache = HashMap DbSchemaCacheKey DbSchema
+
+newtype DbSchemaCacheKey = DbSchemaCacheKey Hash
+  deriving (Eq, Hashable)
 
 -- | Transformations to be applied to a query. Keyed by the requested predicate
 -- (i.e. the one present in the query)

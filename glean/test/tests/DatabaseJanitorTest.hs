@@ -104,7 +104,7 @@ setupBasicDBs dbdir = do
   now <- getCurrentTime
   let age t = addUTCTime (negate (fromIntegral (timeSpanInSeconds t))) now
   schema <- parseSchemaDir schemaSourceDir
-  schema <- newDbSchema schema LatestSchemaAll readWriteContent
+  schema <- newDbSchema Nothing schema LatestSchemaAll readWriteContent
   -- populate a dir with various DBs
   makeFakeDB schema dbdir (Repo "test" "0002") (age (days 2)) broken Nothing
   makeFakeDB schema dbdir repo0001 (age (days 0)) (complete 1) Nothing
@@ -125,7 +125,7 @@ setupBasicCloudDBs backupDir = do
   now <- getCurrentTime
   let age t = addUTCTime (negate (fromIntegral (timeSpanInSeconds t))) now
   schema <- parseSchemaDir schemaSourceDir
-  schema <- newDbSchema schema LatestSchemaAll readWriteContent
+  schema <- newDbSchema Nothing schema LatestSchemaAll readWriteContent
   makeFakeCloudDB schema backupDir (Repo "test" "0008")
     (age(days 8)) (complete 8) Nothing
   makeFakeCloudDB schema backupDir (Repo "test2" "0009")
@@ -759,7 +759,7 @@ slackCountersTest = TestCase $ do
       assertEqual "slack counters" [("glean.db.slack.bytes", 0)] slackCounters0
       now <- getCurrentTime
       schema <- parseSchemaDir schemaSourceDir
-      schema <- newDbSchema schema LatestSchemaAll readWriteContent
+      schema <- newDbSchema Nothing schema LatestSchemaAll readWriteContent
       -- Two new DBs push 0008 out of the retention set
       makeFakeCloudDB schema backupDir (Repo "test" "0009") now (complete 1)
         Nothing
@@ -797,7 +797,7 @@ slackDeletionTest = TestCase $ do
 
       now <- getCurrentTime
       schema <- parseSchemaDir schemaSourceDir
-      schema <- newDbSchema schema LatestSchemaAll readWriteContent
+      schema <- newDbSchema Nothing schema LatestSchemaAll readWriteContent
       let age t = addUTCTime (negate (fromIntegral (timeSpanInSeconds t))) now
 
       makeFakeCloudDB schema backupDir

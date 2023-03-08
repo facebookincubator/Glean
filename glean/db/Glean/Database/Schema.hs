@@ -30,12 +30,14 @@ module Glean.Database.Schema
   ) where
 
 import Control.Applicative ((<|>))
+import Control.Concurrent
 import Control.Exception
 import Control.Monad
 import Control.Monad.Except
 import Control.Monad.State as State
 import Data.Bifoldable (bifoldMap)
 import Data.ByteString (ByteString)
+import Data.Coerce
 import Data.Foldable
 import Data.Graph
 import Data.Hashable
@@ -76,6 +78,7 @@ import Glean.Internal.Types as Internal (StoredSchema(..))
 import Glean.RTS.Traverse
 import Glean.RTS.Typecheck
 import Glean.RTS.Types as RTS
+import Glean.Angle.Hash
 import Glean.Angle.Types as Schema
 import Glean.Schema.Evolve
   ( validateEvolutions
@@ -119,9 +122,14 @@ schemaPredicates :: DbSchema -> [PredicateDetails]
 schemaPredicates = HashMap.elems . predicatesById
 
 
-fromStoredSchema :: StoredSchema -> DbContent -> IO DbSchema
-fromStoredSchema info@StoredSchema{..} dbContent =
+fromStoredSchema
+  :: Maybe (MVar DbSchemaCache)
+  -> StoredSchema
+  -> DbContent
+  -> IO DbSchema
+fromStoredSchema schemaCache info@StoredSchema{..} dbContent =
   mkDbSchemaFromSource
+    schemaCache
     (Just (storedSchemaPids info))
     dbContent
     storedSchema_schema
@@ -161,12 +169,14 @@ data CheckChanges
   | MustBeEqual
 
 newMergedDbSchema
-  :: StoredSchema  -- ^ schema from a DB
+  :: Maybe (MVar DbSchemaCache)
+  -> StoredSchema  -- ^ schema from a DB
   -> SchemaIndex  -- ^ current schema index
   -> CheckChanges  -- ^ validate DB schema?
   -> DbContent
   -> IO DbSchema
-newMergedDbSchema storedSchema@StoredSchema{..} index validate dbContent = do
+newMergedDbSchema schemaCache storedSchema@StoredSchema{..}
+    index validate dbContent = do
   let
     -- If we have an identical schema in the index, then we can use
     -- the cached ProcessedSchema. This saves a lot of time
@@ -198,25 +208,26 @@ newMergedDbSchema storedSchema@StoredSchema{..} index validate dbContent = do
 
   -- For the "source", we'll use the current schema source. It doesn't
   -- reflect what's in the DB, but it reflects what you can query for.
-  mkDbSchema validate  (Just (storedSchemaPids storedSchema)) dbContent
-    fromDB (Just index)
+  mkDbSchema schemaCache validate  (Just (storedSchemaPids storedSchema))
+    dbContent fromDB (Just index)
 
 -- | Build a DbSchema from parsed/resolved Schemas. Note that we still need
 -- the original source for the schema for 'toStoredSchema' (otherwise we would
 -- need to pretty-print the resolved Schemas back into source.
 newDbSchema
-  :: SchemaIndex
+  :: Maybe (MVar DbSchemaCache)
+  -> SchemaIndex
   -> SchemaSelector
   -> DbContent
   -> IO DbSchema
-newDbSchema index selector dbContent = do
+newDbSchema schemaCache index selector dbContent = do
   schema <- case selector of
     SpecificSchemaId id -> case schemaForSchemaId index id of
       Nothing -> throwIO $ ErrorCall $ "schema " <> show id <> " not found"
       Just schema -> return schema
     _otherwise ->
       return (schemaIndexCurrent index)
-  mkDbSchema AllowChanges Nothing dbContent schema Nothing
+  mkDbSchema schemaCache AllowChanges Nothing dbContent schema Nothing
 
 inventory :: [PredicateDetails] -> Inventory
 inventory ps = Inventory.new
@@ -233,174 +244,270 @@ inventory ps = Inventory.new
 -- stored in the database.  Anything in the 'Schemas' but not
 -- in the database is dropped from the 'DbSchema'
 mkDbSchemaFromSource
-  :: Maybe (HashMap PredicateRef Pid)
+  :: Maybe (MVar DbSchemaCache)
+  -> Maybe (HashMap PredicateRef Pid)
   -> DbContent
   -> ByteString
   -> IO DbSchema
-mkDbSchemaFromSource knownPids dbContent source = do
+mkDbSchemaFromSource schemaCache knownPids dbContent source = do
   case processSchema Map.empty source of
     Left str -> throwIO $ ErrorCall str
     Right (ProcessedSchema source resolved hashed) ->
-      mkDbSchema AllowChanges knownPids dbContent
+      mkDbSchema schemaCache AllowChanges knownPids dbContent
         (ProcessedSchema source resolved hashed)
         Nothing
 
+dbSchemaKey
+   :: HashMap PredicateRef Pid
+   -> ProcessedSchema
+   -> Maybe SchemaIndex
+   -> DbSchemaCacheKey
+dbSchemaKey pidMap stored maybeIndex = DbSchemaCacheKey $
+  hashBinary
+    ( [ (showRef ref, pid) | (ref, Pid pid) <- HashMap.toList pidMap ]
+    , coerce (hashedSchemaAllVersions (procSchemaHashed stored)) :: IntMap Text
+    , flip (maybe []) maybeIndex $ \SchemaIndex{..} ->
+        map (coerce . hashedSchemaAllVersions . procSchemaHashed)
+          (schemaIndexCurrent : schemaIndexOlder) :: [IntMap Text]
+    )
+
+{- |
+   Caching DbSchema
+
+   DbSchema is quite expensive to build:
+    - we have to typecheck all the derived predicates
+    - we have to build RTS.Types for types and predicates
+    - we have to compile byte-code for typechecking and traversing facts
+
+   So we'd like to cache these to avoid repeating the work and to
+   share as much as possible between open DBs.
+
+   The DbSchema depends on
+    - the schema in the DB and the Pids we assigned to predicates
+    - the SchemaIndex
+    - the content of the DB (which predicates have facts)
+
+   Schemas don't change all that much, so the first two will often be
+   the same (or at least, there will be a few combinations in use at
+   any given time). For a given schema, the Pids we assign should be
+   deterministic.
+
+   The dependency on the DB contents looks problematic. However, most
+   of the work of building the DbSchema does *not* depend on the
+   contents, only transformations and pruning derived predicates use
+   that. So we can cache the plain DbSchema before DbContent is taken
+   into account, and then apply the DbContent changes for each DB.
+-}
+
+withDbSchemaCache
+  :: Maybe (MVar DbSchemaCache)
+  -> CheckChanges
+  -> Maybe (HashMap PredicateRef Pid)
+  -> ProcessedSchema
+  -> Maybe SchemaIndex
+  -> IO DbSchema
+  -> IO DbSchema
+withDbSchemaCache maybeCache validate maybePids stored maybeIndex mk =
+  case (maybeCache, validate, maybePids) of
+    (Just cacheVar, AllowChanges, Just pidMap) -> do
+      -- only use the cache when
+      --   1. we're not validating (AllowChanges)
+      --   2. we have stored Pids
+      cache <- readMVar cacheVar
+      let key = dbSchemaKey pidMap stored maybeIndex
+      case HashMap.lookup key cache of
+        Just schema -> do
+          vlog 2 $ "DbSchema cache hit, stored SchemaId: " <>
+            maybe "<unknown>" (unSchemaId . snd)
+              (IntMap.lookupMax (hashedSchemaAllVersions
+                (procSchemaHashed stored)))
+          return schema
+        Nothing -> do
+          schema <- mk
+          modifyMVar_ cacheVar $ return . HashMap.insert key schema
+          return schema
+    _otherwise -> mk
+
+
 mkDbSchema
-  :: CheckChanges
+  :: Maybe (MVar DbSchemaCache)
+  -> CheckChanges
   -> Maybe (HashMap PredicateRef Pid)
   -> DbContent
-  -> ProcessedSchema -- ^ schema stored in the DB
-  -> Maybe SchemaIndex -- ^ global schema
+  -> ProcessedSchema
+  -> Maybe SchemaIndex
   -> IO DbSchema
-mkDbSchema validate knownPids dbContent
+mkDbSchema cacheVar validate knownPids dbContent
     procStored@(ProcessedSchema source _ stored) index = do
-  let
-    -- Assign Pids to predicates.
-    --  - predicates in the stored schema get Pids from the StoredSchema
-    --    (unless this is a new DB, in which case we'll assign fresh Pids)
-    --  - predicates in the merged schema get new fresh Pids.
 
-    storedPids = case knownPids of
-      Nothing -> zip (HashMap.keys (hashedPreds stored)) [lowestPid..]
-      Just pidMap -> assign first (HashMap.keys (hashedPreds stored))
-        where
-        first = maybe lowestPid succ $ maximumMay (HashMap.elems pidMap)
-        assign _next [] = []
-        assign next (id : ids) =
-          case HashMap.lookup (predicateIdRef id) pidMap of
-            Nothing -> (id, next) : assign (succ next) ids
-            Just pid -> (id, pid) : assign next ids
+  -- either fetch a cached DbSchema or build a new one
+  schema <-
+    withDbSchemaCache cacheVar validate knownPids procStored index
+      buildDbSchema
 
-    nextPid = maybe lowestPid succ $ maximumMay (map snd storedPids)
-
-    addedSchemas = case index of
-      Nothing -> []
-      Just SchemaIndex{..} -> schemaIndexCurrent : schemaIndexOlder
-
-    addedPreds =
-      HashMap.unions $ map (hashedPreds . procSchemaHashed) addedSchemas
-
-    addedPids = zip ids [nextPid ..]
-      where
-      ids = filter (not . isStoredPred) (HashMap.keys addedPreds)
-      isStoredPred id = HashMap.member id (hashedPreds stored)
-
-    idToPid = HashMap.fromList (storedPids ++ addedPids)
-
-  mapM_ (checkForChanges validate stored . procSchemaHashed) addedSchemas
-
-  let
-    typecheck env (stored, ProcessedSchema _ resolved hashed) =
-      typecheckSchema idToPid dbContent stored angleVersion hashed env
-      where
-      angleVersion =  maybe latestAngleVersion resolvedSchemaAngleVersion
-        (listToMaybe (schemasResolved resolved))
-
-  -- typecheck all the schemas, producing PredicateDetails / TypeDetails
-  tcEnv <- foldM typecheck emptyTcEnv
-    ((True, procStored) : map (False,) addedSchemas)
-
-  -- Check the invariant that stored predicates do not make use of
-  -- negation or refer to derived predicates that make use of it.
-  -- See Note [Negation in stored predicates]
-  let
-    usingNegation = usesOfNegation (tcEnvPredicates tcEnv)
-    isStored = \case
-      NoDeriving -> True
-      Derive when _ -> case when of
-        DeriveOnDemand -> False
-        DerivedAndStored -> True
-        DeriveIfEmpty -> True
-    useOfNegation ref = HashMap.lookup ref usingNegation
-
-  forM_ (tcEnvPredicates tcEnv) $ \d@PredicateDetails{..} ->
-    when (isStored predicateDeriving) $
-      case useOfNegation predicateId of
-        Nothing -> return ()
-        Just use ->
-          let feature = case use of
-                PatternNegation -> "negation"
-                IfStatement -> "if-statements"
-          in
-          throwIO $ Thrift.Exception
-          $ "use of " <> feature  <> " is not allowed in a stored predicate: "
-          <> showRef (predicateRef d)
-
-  let
-      predicates = HashMap.elems (tcEnvPredicates tcEnv)
-
-      intPid = fromIntegral . fromPid . predicatePid
-
-      byPid = IntMap.fromList [ (intPid deets, deets) | deets <- predicates ]
-
-      maxPid = maybe lowestPid (Pid . fromIntegral . fst)
-        (IntMap.lookupMax byPid)
-
-      schemaEnvMap =
-        Map.unions $
-        map (hashedSchemaEnvs . procSchemaHashed) $
-        procStored : addedSchemas
-
-      latestSchema =
-        case index of
-          Just SchemaIndex{..} -> schemaIndexCurrent
-          Nothing -> procStored
-
-      legacyAllVersions =
-        hashedSchemaAllVersions $ procSchemaHashed latestSchema
-
-      latestSchemaId =
-        case IntMap.lookupMax legacyAllVersions of
-          Nothing -> error "no \"all\" schema"
-          Just (_, id) -> id
-
-      dbSchemaId =
-        case IntMap.lookupMax (hashedSchemaAllVersions stored) of
-          Nothing -> error "no \"all\" schema in DB"
-          Just (_, id) -> id
-
-  vlog 2 $ "DB schema " <> unSchemaId dbSchemaId <> " has " <>
-    showt (HashMap.size (hashedTypes stored)) <> " types/" <>
-    showt (HashMap.size (hashedPreds stored)) <>
-    " predicates, global schema has " <>
-    showt (sum (map (HashMap.size . hashedTypes . procSchemaHashed)
-      addedSchemas)) <> " types/" <>
-    showt (sum (map (HashMap.size . hashedPreds . procSchemaHashed)
-      addedSchemas)) <>
-    " predicates, final schema has " <>
-    showt (HashMap.size (tcEnvTypes tcEnv)) <> " types/" <>
-    showt (HashMap.size (tcEnvPredicates tcEnv)) <> " predicates."
-
-  forM_ (IntMap.toList legacyAllVersions) $ \(n, id) ->
-    vlog 2 $ "all." <> showt n <> " = " <> unSchemaId id
-
+  -- the cached DbSchema cannot depend on the DbContent, so next we add in
+  -- any changes to DbSchema that need to depend on DbContent.
   transformations <- failOnLeft $ mkTransformations
     dbContent
-    (tcEnvPredicates tcEnv)
+    (predicatesById schema)
     procStored
     addedSchemas
 
-  let -- to avoid the need to have different prunings for each schemaId
+  let
+      -- to avoid the need to have different prunings for each schemaId
       -- we pass the union of all transformations to the 'prune' function
       -- such that if a predicate can be mapped to something in the db
       -- for any schemaId, then it is kept in the derivation query.
-      pruned = prune dbContent allTrans (tcEnvPredicates tcEnv)
-        where allTrans = fold $ HashMap.elems transformations
-      byPid = IntMap.fromList [ (intPid p, p) | p <- HashMap.elems pruned ]
+     byId =
+       enableSelectiveDerivations dbContent <$>
+         prune dbContent allTrans (predicatesById schema)
 
-  return $ DbSchema
-    { predicatesById = pruned
-    , typesById = tcEnvTypes tcEnv
-    , schemaEnvs = schemaEnvMap
-    , legacyAllVersions = legacyAllVersions
-    , predicatesByPid = byPid
-    , predicatesTransformations =
-        mkQueryTransformations byPid <$> transformations
-    , schemaInventory = inventory predicates
-    , schemaSource = (source, hashedSchemaAllVersions stored)
-    , schemaMaxPid = maxPid
-    , schemaLatestVersion = latestSchemaId
-    }
+     intPid = fromIntegral . fromPid . predicatePid
+     byPid = IntMap.fromList [ (intPid p, p) | p <- HashMap.elems byId ]
+
+     allTrans = fold $ HashMap.elems transformations
+
+  return $ schema {
+    predicatesById = byId,
+    predicatesByPid = byPid,
+    predicatesTransformations =
+      mkQueryTransformations byPid <$> transformations
+  }
+
+  where
+  addedSchemas = case index of
+    Nothing -> []
+    Just SchemaIndex{..} -> schemaIndexCurrent : schemaIndexOlder
+
+  buildDbSchema = do
+    let
+      -- Assign Pids to predicates.
+      --  - predicates in the stored schema get Pids from the StoredSchema
+      --    (unless this is a new DB, in which case we'll assign fresh Pids)
+      --  - predicates in the merged schema get new fresh Pids.
+
+      storedPids = case knownPids of
+        Nothing -> zip (HashMap.keys (hashedPreds stored)) [lowestPid..]
+        Just pidMap -> assign first (HashMap.keys (hashedPreds stored))
+          where
+          first = maybe lowestPid succ $ maximumMay (HashMap.elems pidMap)
+          assign _next [] = []
+          assign next (id : ids) =
+            case HashMap.lookup (predicateIdRef id) pidMap of
+              Nothing -> (id, next) : assign (succ next) ids
+              Just pid -> (id, pid) : assign next ids
+
+      nextPid = maybe lowestPid succ $ maximumMay (map snd storedPids)
+
+      addedPreds =
+        HashMap.unions $ map (hashedPreds . procSchemaHashed) addedSchemas
+
+      addedPids = zip ids [nextPid ..]
+        where
+        ids = filter (not . isStoredPred) (HashMap.keys addedPreds)
+        isStoredPred id = HashMap.member id (hashedPreds stored)
+
+      idToPid = HashMap.fromList (storedPids ++ addedPids)
+
+    mapM_ (checkForChanges validate stored . procSchemaHashed) addedSchemas
+
+    let
+      typecheck env (stored, ProcessedSchema _ resolved hashed) =
+        typecheckSchema idToPid stored angleVersion hashed env
+        where
+        angleVersion =  maybe latestAngleVersion resolvedSchemaAngleVersion
+          (listToMaybe (schemasResolved resolved))
+
+    -- typecheck all the schemas, producing PredicateDetails / TypeDetails
+    tcEnv <- foldM typecheck emptyTcEnv
+      ((True, procStored) : map (False,) addedSchemas)
+
+    -- Check the invariant that stored predicates do not make use of
+    -- negation or refer to derived predicates that make use of it.
+    -- See Note [Negation in stored predicates]
+    let
+      usingNegation = usesOfNegation (tcEnvPredicates tcEnv)
+      isStored = \case
+        NoDeriving -> True
+        Derive when _ -> case when of
+          DeriveOnDemand -> False
+          DerivedAndStored -> True
+          DeriveIfEmpty -> True
+      useOfNegation ref = HashMap.lookup ref usingNegation
+
+    forM_ (tcEnvPredicates tcEnv) $ \d@PredicateDetails{..} ->
+      when (isStored predicateDeriving) $
+        case useOfNegation predicateId of
+          Nothing -> return ()
+          Just use ->
+            let feature = case use of
+                  PatternNegation -> "negation"
+                  IfStatement -> "if-statements"
+            in
+            throwIO $ Thrift.Exception
+            $ "use of " <> feature  <> " is not allowed in a stored predicate: "
+            <> showRef (predicateRef d)
+
+    let
+        predicates = HashMap.elems (tcEnvPredicates tcEnv)
+
+        intPid = fromIntegral . fromPid . predicatePid
+
+        byPid = IntMap.fromList [ (intPid deets, deets) | deets <- predicates ]
+
+        maxPid = maybe lowestPid (Pid . fromIntegral . fst)
+          (IntMap.lookupMax byPid)
+
+        schemaEnvMap =
+          Map.unions $
+          map (hashedSchemaEnvs . procSchemaHashed) $
+          procStored : addedSchemas
+
+        latestSchema =
+          case index of
+            Just SchemaIndex{..} -> schemaIndexCurrent
+            Nothing -> procStored
+
+        legacyAllVersions =
+          hashedSchemaAllVersions $ procSchemaHashed latestSchema
+
+        latestSchemaId =
+          case IntMap.lookupMax legacyAllVersions of
+            Nothing -> error "no \"all\" schema"
+            Just (_, id) -> id
+
+        dbSchemaId =
+          case IntMap.lookupMax (hashedSchemaAllVersions stored) of
+            Nothing -> error "no \"all\" schema in DB"
+            Just (_, id) -> id
+
+    vlog 2 $ "DB schema " <> unSchemaId dbSchemaId <> " has " <>
+      showt (HashMap.size (hashedTypes stored)) <> " types/" <>
+      showt (HashMap.size (hashedPreds stored)) <>
+      " predicates, global schema has " <>
+      showt (sum (map (HashMap.size . hashedTypes . procSchemaHashed)
+        addedSchemas)) <> " types/" <>
+      showt (sum (map (HashMap.size . hashedPreds . procSchemaHashed)
+        addedSchemas)) <>
+      " predicates, final schema has " <>
+      showt (HashMap.size (tcEnvTypes tcEnv)) <> " types/" <>
+      showt (HashMap.size (tcEnvPredicates tcEnv)) <> " predicates."
+
+    forM_ (IntMap.toList legacyAllVersions) $ \(n, id) ->
+      vlog 2 $ "all." <> showt n <> " = " <> unSchemaId id
+
+    return $ DbSchema
+      { predicatesById = tcEnvPredicates tcEnv
+      , typesById = tcEnvTypes tcEnv
+      , schemaEnvs = schemaEnvMap
+      , legacyAllVersions = legacyAllVersions
+      , predicatesByPid = byPid
+      , predicatesTransformations = HashMap.empty
+      , schemaInventory = inventory predicates
+      , schemaSource = (source, hashedSchemaAllVersions stored)
+      , schemaMaxPid = maxPid
+      , schemaLatestVersion = latestSchemaId
+      }
 
 mkTransformations
   :: DbContent
@@ -718,14 +825,13 @@ derived predicates are not allowed to use negation.
 
 typecheckSchema
   :: HashMap PredicateId Pid
-  -> DbContent
   -> Bool -- ^ stored?
   -> AngleVersion
   -> HashedSchema
   -> TcEnv
   -> IO TcEnv
 
-typecheckSchema idToPid dbContent stored angleVersion
+typecheckSchema idToPid stored angleVersion
     HashedSchema{..} tcEnv = do
   let
     -- NOTE: We store Maybe Type rather than filtering out those typedefs
@@ -797,20 +903,7 @@ typecheckSchema idToPid dbContent stored angleVersion
       drv <- either (throwIO . ErrorCall . Text.unpack) return $ runExcept $
         typecheckDeriving env angleVersion rtsType details
           (predicateDefDeriving (predicateSchema details))
-      let
-        enable = return details { predicateDeriving = drv }
-        disable = return details { predicateDeriving = NoDeriving }
-      if
-        | Derive DeriveIfEmpty _ <- drv ->
-          case dbContent of
-            DbWritable -> disable
-            DbReadOnly stats -> do
-              case HashMap.lookup (predicatePid details) stats of
-                Nothing -> enable
-                Just stats
-                  | predicateStats_count stats == 0 -> enable
-                  | otherwise -> disable
-        | otherwise -> enable
+      return details { predicateDeriving = drv }
 
   -- typecheck the derivations for newly added predicates
   finalDetails <- mapM tcDeriving newDetails
@@ -843,6 +936,26 @@ typecheckSchema idToPid dbContent stored angleVersion
       _ -> return ()
 
   return env { tcEnvPredicates = finalPreds }
+
+
+-- | Enable or disable a DeriveIfEmpty derivation based on the DB
+-- contents.
+enableSelectiveDerivations :: DbContent -> PredicateDetails -> PredicateDetails
+enableSelectiveDerivations dbContent details =
+  let
+    disable = details { predicateDeriving = NoDeriving }
+  in
+  if
+    | Derive DeriveIfEmpty _ <- predicateDeriving details ->
+      case dbContent of
+        DbWritable -> disable
+        DbReadOnly stats -> do
+          case HashMap.lookup (predicatePid details) stats of
+            Nothing -> details
+            Just stats
+              | predicateStats_count stats == 0 -> details
+              | otherwise -> disable
+    | otherwise -> details
 
 
 usesOfNegation
@@ -920,8 +1033,10 @@ validateNewSchema ServerConfig.Config{..} newSrc current = do
       | config_use_schema_id = AllowChanges
       | otherwise = MustBeEqual
 
-  curDbSchema <- mkDbSchema AllowChanges Nothing readWriteContent schema Nothing
+  curDbSchema <- mkDbSchema Nothing AllowChanges Nothing
+    readWriteContent schema Nothing
   void $ newMergedDbSchema
+    Nothing
     (toStoredSchema curDbSchema)
     current
     checkChanges
