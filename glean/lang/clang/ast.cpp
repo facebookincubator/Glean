@@ -2378,7 +2378,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
   bool VisitCXXConstructExpr(const clang::CXXConstructExpr* expr) {
     xrefTarget(
-        clang::SourceRange(expr->getBeginLoc(), expr->getEndLoc()),
+        expr->getSourceRange(),
         XRef::toTemplatableDecl(funDecls, expr->getConstructor()));
     return true;
   }
@@ -2428,15 +2428,15 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         xref = XRef::unknown(decl);
       }
 
-      // getMemberLoc can return an invalid location if, say, an implicit
-      // conversion operator is applied to the member. This seems to be a bug
-      // either in Clang proper or at least in the docs.
-      auto begin = expr->getMemberLoc();
-      if (!begin.isValid()) {
-        begin = expr->getBeginLoc();
+      // getMemberNameInfo().getSourceRange() can return an invalid range if,
+      // say, an implicit conversion operator is applied to the member.
+      // If so, we use the full range of the expr as our range.
+      auto range = expr->getMemberNameInfo().getSourceRange();
+      if (range.isInvalid()) {
+        range = expr->getSourceRange();
       }
 
-      xrefTarget(clang::SourceRange(begin, expr->getEndLoc()), xref);
+      xrefTarget(range, xref);
     }
     return true;
   }
@@ -2445,15 +2445,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       const clang::CXXDependentScopeMemberExpr *expr) {
     if (const auto *decl = expr->getFirstQualifierFoundInScope()) {
       xrefTarget(
-        clang::SourceRange(
-          expr->getMemberLoc(),
-          expr->
-#if LLVM_VERSION_MAJOR >= 8
-            getEndLoc()
-#else
-            getLocEnd()
-#endif
-        ),
+        expr->getMemberNameInfo().getSourceRange(),
         XRef::unknown(decl));
     }
     return true;
@@ -2535,7 +2527,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
   bool VisitObjCSelectorExpr(const clang::ObjCSelectorExpr *expr) {
     db.xref(
-      clang::SourceRange(expr->getBeginLoc(), expr->getEndLoc()),
+      expr->getSourceRange(),
       folly::none,
       Cxx::XRefTarget::objcSelector(objcSelector(expr->getSelector()))
     );
