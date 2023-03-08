@@ -31,12 +31,12 @@ std::vector<size_t> DatabaseImpl::loadOwnershipUnitCounters() {
   for (iter->SeekToFirst(); iter->Valid(); iter->Next()) {
     binary::Input key(byteRange(iter->key()));
     auto id = key.trustedNat();
-    if (id == result.size()) {
+    if (id == first_unit_id + result.size()) {
       result.push_back(0);
-    } else if (id + 1 == result.size()) {
+    } else if (id + 1 == first_unit_id + result.size()) {
       ++result.back();
     } else {
-      rts::error("rocksdb: invalid ownershipUnits");
+      rts::error("rocksdb: invalid ownershipUnits {} {}", id, result.size());
     }
   }
 

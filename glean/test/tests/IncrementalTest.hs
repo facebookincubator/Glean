@@ -475,6 +475,7 @@ stackedIncrementalTest2 = TestCase $
         makeFact_ @Glean.Test.Node (Glean.Test.Node_key "d")
       withUnit "E" $
         makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key a a)
+    closeDatabase env inc -- we should be able to close and re-open here
     deriveAndFinish env inc
 
     {-
