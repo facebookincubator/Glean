@@ -79,7 +79,11 @@ void serializeEliasFano(binary::Output& out, const OwnerSet& set) {
   out.put(set.data);
 }
 
-void deserializeEliasFano(binary::Input& in, OwnerSet& set) {
+/// Deserialize an OwnerSet from a binary::Input. Note that the
+// OwnerSet points to the contents of the binary::Input, so that
+// must remain alive as long as the OwnerSet is needed.
+OwnerSet deserializeEliasFano(binary::Input& in) {
+  OwnerSet set;
   set.size = in.trustedNat();
   set.numLowerBits = in.trustedNat();
   set.upperSizeBytes = in.trustedNat();
@@ -92,6 +96,7 @@ void deserializeEliasFano(binary::Input& in, OwnerSet& set) {
   set.forwardPointers = set.data.begin() + forwardPointers;
   set.lower = set.data.begin() + lower;
   set.upper = set.data.begin() + upper;
+  return set;
 }
 
 void putOwnerSet(
@@ -119,13 +124,20 @@ std::unique_ptr<rts::OwnershipSetIterator> getSetIterator(ContainerImpl& contain
 
     folly::Optional<std::pair<UsetId, SetExpr<const OwnerSet*>>> get()
         override {
+      if (!initial) {
+        iter->Next();
+      } else {
+        initial = false;
+      }
       if (iter->Valid()) {
         binary::Input key(byteRange(iter->key()));
         auto usetid = key.trustedNat();
         binary::Input val(byteRange(iter->value()));
-        iter->Next();
         exp.op = static_cast<SetOp>(val.trustedNat());
-        deserializeEliasFano(val, exp.set);
+        exp.set = deserializeEliasFano(val);
+        // Note the OwnerSet points to the storage in iter->value(),
+        // so don't iter->Next() until the caller is finished with
+        // the result.
         return std::pair<uint32_t, SetExpr<const OwnerSet*>>(
             usetid, {exp.op, &exp.set});
       } else {
@@ -137,6 +149,7 @@ std::unique_ptr<rts::OwnershipSetIterator> getSetIterator(ContainerImpl& contain
       return {first_, size_};
     }
 
+    bool initial = true;
     SetExpr<OwnerSet> exp;
     size_t first_, size_;
     std::unique_ptr<rocksdb::Iterator> iter;
@@ -474,9 +487,7 @@ struct StoredOwnership : Ownership {
       check(s);
       SetExpr<SetU32> exp;
       exp.op = static_cast<SetOp>(inp.trustedNat());
-      OwnerSet efset;
-      deserializeEliasFano(inp, efset);
-      exp.set = SetU32::fromEliasFano(efset);
+      exp.set = SetU32::fromEliasFano(deserializeEliasFano(inp));
       return exp;
     } else {
       return folly::none;
