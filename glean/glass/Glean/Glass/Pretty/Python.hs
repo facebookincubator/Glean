@@ -18,17 +18,23 @@ import Data.Map.Strict ( Map )
 import qualified Data.Map.Strict as Map
 import Data.Text ( Text, takeWhileEnd )
 import Data.Text.Prettyprint.Doc
+import Control.Monad.Trans.Maybe (MaybeT (..))
 
-import qualified Glean
 import Glean.Angle as Angle
-import qualified Glean.Haxl.Repos as Glean
-import Glean.Util.ToAngle ( ToAngle(toAngle) )
-import Glean.Glass.Types ( SymbolId )
+import Glean.Glass.Base ( GleanPath(..) )
+import Glean.Glass.Path ( fromGleanPath )
+import Glean.Glass.Types ( SymbolId(..), RepoName(..) )
 import Glean.Glass.Utils
+import Glean.Glass.SymbolId ( toSymbolId )
+import Glean.Util.ToAngle ( ToAngle(toAngle) )
+import qualified Glean
+import qualified Glean.Haxl.Repos as Glean
 
 import Glean.Schema.CodePython.Types as Python ( Entity(..) )
 import qualified Glean.Schema.Python.Types as Python
 import qualified Glean.Schema.Src.Types as Src
+import qualified Glean.Schema.Code.Types as Code
+import qualified Glean.Schema.Codemarkup.Types as Code
 
 -- Type of Python entity signatures to capture the the subset we generate
 -- We use this to separate the processing of the Glean type from the text
@@ -66,21 +72,30 @@ type Ann = Maybe Python.Declaration
 
 prettyPythonSignature
   :: LayoutOptions
+  -> RepoName
   -> Python.Entity
   -> Glean.RepoHaxl u w (Maybe (SimpleDocStream (Maybe SymbolId)))
-prettyPythonSignature opts (Python.Entity_decl decl) = do
-  mQuery <- fetchDataRecursive (angleDeclToDef (toAngle decl))
-  case mQuery of
-    Nothing -> return Nothing
-    Just pyDef -> do
-      mDef <- fromAngleDefinition pyDef
-      return $ case mDef of
-        Nothing -> Nothing
-        Just def -> Just (doLayout (pprDefinition def))
+prettyPythonSignature opts repo (Python.Entity_decl decl) = runMaybeT $ do
+    pyDef <- maybeT $ fetchDataRecursive (angleDeclToDef (toAngle decl))
+    def <- maybeT $ fmap pprDefinition <$> fromAngleDefinition pyDef
+    maybeT $ Just <$> sequence (annotateDocs def)
   where
-    doLayout doc = reAnnotateS (const Nothing) (layoutSmart opts doc)
+    annotateDocs doc = reAnnotateS (declToSymbolId repo) (layoutSmart opts doc)
+prettyPythonSignature _ _ Python.Entity_EMPTY = return Nothing
 
-prettyPythonSignature _ Python.Entity_EMPTY = return Nothing
+--
+-- Almost a clone of the Hack version. Refactor
+--
+declToSymbolId :: RepoName -> Ann -> Glean.RepoHaxl u w (Maybe SymbolId)
+declToSymbolId _repo Nothing = return Nothing
+declToSymbolId repo (Just decl) = runMaybeT $ do
+  -- urgh right here we need each decl's filepath. Should be part of the Ann
+  filepath <- maybeT $ fetchDataRecursive $ angleEntityFilePath entityAngle
+  path <- maybeT $ Just . GleanPath <$> Glean.keyOf filepath
+  maybeT $ Just <$> toSymbolId (fromGleanPath repo path) entity
+  where
+    entity = Code.Entity_python (Python.Entity_decl decl)
+    entityAngle = alt @"python" (alt @"decl" (toAngle decl))
 
 fromAngleDefinition
   :: Python.Definition -> Glean.RepoHaxl u w (Maybe Definition)
@@ -225,3 +240,19 @@ angleDeclsByNames names = predicate @Python.DeclarationWithName $
 -- as an xref in the type signature (c.f how Hack does this)
 trimModule :: Text -> Name
 trimModule qname = Name (takeWhileEnd (/= '.') qname)
+
+-- Reuse this: we shouldn't need to refetch the location,
+-- get it at the same time as DeclarationWithName
+angleEntityFilePath :: Angle Code.Entity -> Angle Src.File
+angleEntityFilePath ent = var $ \(file :: Angle Src.File) ->
+  file `where_` [
+      wild .= predicate @Code.EntityLocation (
+        rec $
+          field @"entity" ent $
+          field @"location" (
+            rec $
+              field @"file" (asPredicate file) end
+          )
+        end
+      )
+  ]

@@ -9,8 +9,7 @@
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE ApplicativeDo #-}
 
-module Glean.Glass.Utils
-  (
+module Glean.Glass.Utils (
   -- Search utilities
     fetchData
   , fetchDataRecursive
@@ -34,7 +33,12 @@ module Glean.Glass.Utils
 
   -- Types
   , QueryType
-  ) where
+
+  -- compat stuff
+  , liftMaybe
+  , maybeT
+
+) where
 
 import Data.Maybe (fromMaybe)
 import Data.Tuple.Extra ( snd3 )
@@ -43,6 +47,9 @@ import qualified Data.Text as Text
 import Data.Typeable ( Typeable )
 import System.FilePath ( splitDirectories, joinPath )
 import qualified Data.List as List
+
+import Control.Monad.Extra
+import Control.Monad.Trans
 
 import Glean ( recursive, limit, limitTime, search, getFirstResult )
 import Glean.Angle as Angle ( query, Angle )
@@ -147,18 +154,16 @@ splitOnAny pats src =
 subString :: Int -> Int -> Text -> Text
 subString start len = slice start len
 
--- Split a type string along reference spans. Annotate
--- extracted fragments. (annotation, start, length)
--- if spans are inconsistent, don't fragment
-splitString :: Text -> [(ann, Int, Int)] -> [(Text, Maybe ann)]
+-- Split a type string along reference spans. Annotate extracted fragments.
+-- (annotation, start, length) if spans are inconsistent, don't fragment
+splitString :: Show ann => Text -> [(ann, Int, Int)] -> [(Text, Maybe ann)]
 splitString s xrefs =
   let res = reverse $ splitStringAux 0 (List.sortOn snd3 xrefs) []
       check = Text.concat $ fmap fst res
   in if check == s then res else [(s, Nothing)]
   where
-    splitStringAux pos xrefs res =
-      let n = Data.Text.length s in
-      case xrefs of
+    n = Data.Text.length s
+    splitStringAux pos xrefs res = case xrefs of
         [] | pos == n -> res
            | otherwise -> (subString pos (n - pos) s, Nothing) : res
         (ann, start, length) : xrefs' ->
@@ -172,3 +177,10 @@ splitString s xrefs =
               start
               xrefs
               ((subString pos (start - pos) s, Nothing) : res)
+
+-- From Control.Monad.Extra in newer versions
+liftMaybe :: (MonadPlus m) => Maybe a -> m a
+liftMaybe = maybe mzero return
+
+maybeT :: (MonadTrans t, Monad m, MonadPlus (t m)) => m (Maybe b) -> t m b
+maybeT act = lift act >>= liftMaybe

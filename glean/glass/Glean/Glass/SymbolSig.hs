@@ -121,7 +121,7 @@ instance ToSymbolSignature Code.Entity where
     -- Flow signatures direct from the DB
     Code.Entity_flow x -> Flow.prettyFlowSignature opts x
     -- python pretty signatures
-    Code.Entity_python x -> Python.prettyPythonSignature opts x
+    Code.Entity_python x -> Python.prettyPythonSignature opts repo x
     -- lsif languages, just enumerate completely to stay total
     Code.Entity_lsif e -> case e of
       Lsif.Entity_erlang x -> LSIF.prettyLsifSignature opts x

@@ -51,7 +51,7 @@ import Data.Text (Text)
 import Data.Text.Prettyprint.Doc
 import Data.Text.Prettyprint.Doc.Render.Text (renderStrict)
 import qualified Data.Text as Text
-import Control.Monad.Extra ( when, MonadPlus(mzero), whenJust )
+import Control.Monad.Extra ( when, whenJust )
 import Control.Monad.Trans (MonadTrans(lift))
 import Control.Monad.Trans.Maybe (MaybeT (..))
 import Control.Monad.Trans.Writer.Strict ( execWriter, tell )
@@ -62,7 +62,6 @@ import Glean.Glass.Base ( GleanPath(..) )
 import Glean.Glass.Path ( fromGleanPath )
 import Glean.Util.ToAngle ( ToAngle(toAngle) )
 import Glean.Glass.Utils
-    ( fetchData, fetchDataRecursive, splitString )
 
 import qualified Glean
 import Glean.Angle as Angle
@@ -86,7 +85,7 @@ prettyHackSignature
 prettyHackSignature opts repo (Hack.Entity_decl d) = runMaybeT $ do
   docStream <- layoutSmart opts . prettyDecl opts <$> decl d
   let docStreamSymbol = sequence $ reAnnotateS (declToSymbolId repo) docStream
-  MaybeT $ Just <$> docStreamSymbol
+  maybeT $ Just <$> docStreamSymbol
 prettyHackSignature _ _ Hack.Entity_EMPTY = return Nothing
 
 -- Turn declaration to symbol ids
@@ -98,14 +97,15 @@ declToSymbolId
   -> Glean.RepoHaxl u w (Maybe SymbolId)
 declToSymbolId _repo Nothing = return Nothing
 declToSymbolId repo (Just decl) = runMaybeT $ do
-  let entity = Code.Entity_hack (Hack.Entity_decl decl)
-  let entityAngle = alt @"hack" (alt @"decl" (toAngle decl))
   Code.EntityLocation{..} <- maybeT $ fetchDataRecursive $
     angleEntityLocation entityAngle
   Code.EntityLocation_key{..} <- liftMaybe entityLocation_key
   let Code.Location{..} = entityLocation_key_location
   path <- MaybeT (Just . GleanPath <$> Glean.keyOf location_file)
   MaybeT $ Just <$> toSymbolId (fromGleanPath repo path) entity
+  where
+    entity = Code.Entity_hack (Hack.Entity_decl decl)
+    entityAngle = alt @"hack" (alt @"decl" (toAngle decl))
 
 newtype Name = Name Text
 newtype Qual = Qual [Text]
@@ -744,13 +744,6 @@ toName (Hack.Name _ mkey) = Name $ fromMaybe "(anonymous)" mkey
 
 unknownType :: Text
 unknownType = "<unknown-type>"
-
--- From Control.Monad.Extra in newer versions
-liftMaybe :: (MonadPlus m) => Maybe a -> m a
-liftMaybe = maybe mzero return
-
-maybeT :: (MonadTrans t, Monad m, MonadPlus (t m)) => m (Maybe b) -> t m b
-maybeT act = lift act >>= liftMaybe
 
 angleClassDefinition
   :: Angle Hack.ClassDeclaration -> Angle (Bool, Bool, [Hack.TypeParameter])
