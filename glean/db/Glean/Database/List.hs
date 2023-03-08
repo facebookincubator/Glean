@@ -46,8 +46,7 @@ listDatabases env@Env{..} Thrift.ListDatabases{..} = do
           Just (_, dbs) -> return $ HashMap.fromList dbs
           Nothing -> do
             sites <- atomically $ Backup.getAllSites env
-            HashMap.unions <$> mapM
-              (\(prefix, site, _) -> listRestorable prefix site) sites
+            HashMap.unions <$> mapM (uncurry listRestorable) sites
         return $ reposToResults restorables
       else
         return mempty
@@ -74,7 +73,7 @@ listDatabases env@Env{..} Thrift.ListDatabases{..} = do
         currentAgeInSeconds = unPosixEpochTime now - unPosixEpochTime dbTime
 
 listRestorable :: Backup.Site site => Text -> site -> IO (HashMap Repo Meta)
-listRestorable prefix site =
+listRestorable prefix site = do
   (HashMap.fromList . mapMaybe restorable <$> Backup.enumerate site)
   `catchAll` \exc -> do
     logError $ "couldn't list restorable databases: " ++ show exc

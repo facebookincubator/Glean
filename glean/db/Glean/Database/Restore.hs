@@ -44,7 +44,7 @@ forRestoreSitesM env@Env{..} none inner = do
     sites@(_:_)
       | databaseRestorePolicy_enabled
         || not (Set.null databaseRestorePolicy_override) ->
-      mapM (\(prefix, site, _) -> inner prefix site) sites
+      mapM (uncurry inner) sites
     _ -> return [none]
 
 ifRestoreRepo

@@ -18,10 +18,11 @@ module Glean.Database.Backup.Locator
 import Data.Functor
 import qualified Data.Map as Map
 import qualified Data.HashMap.Strict as HashMap
-import Data.Maybe (maybeToList, mapMaybe)
+import Data.Maybe
 import Data.Text (Text)
 import qualified Data.Text as Text
 
+import Util.List
 import Util.STM
 
 import Glean.Database.Backup.Backend as Backend
@@ -73,16 +74,12 @@ getSite Env{..} repoName = do
     fromSiteLocator envBackupBackends locator
     <&> \(prefix, site) -> (prefix, site, policy)
 
-getAllSites
-  :: Env
-  -> STM [(Text, Some Site, DatabaseBackupPolicy)]
+getAllSites :: Env -> STM [(Text, Some Site)]
 getAllSites Env{..} = do
   policy <- ServerConfig.config_backup <$> Observed.get envServerConfig
-  let defaultSite = maybeToList $
-        fromSiteLocator envBackupBackends (databaseBackupPolicy_location policy)
-      perRepoLocations = map ServerConfig.backup_location $ Map.elems $
-        databaseBackupPolicy_repos policy
-      perRepoSites = mapMaybe (fromSiteLocator envBackupBackends)
-        perRepoLocations
-  return $ map (\(prefix, site) -> (prefix, site, policy)) $
-    defaultSite ++ perRepoSites
+  return $
+    mapMaybe (fromSiteLocator envBackupBackends) $
+    uniq $ -- don't forget to remove duplicates
+      databaseBackupPolicy_location policy :
+      map ServerConfig.backup_location
+        (Map.elems $ databaseBackupPolicy_repos policy)
