@@ -63,6 +63,8 @@ import Data.Tuple (swap)
 import Safe (maximumMay)
 import TextShow
 
+import ServiceData.GlobalStats
+import ServiceData.Types
 import Util.Log.Text
 
 import Glean.RTS.Foreign.Inventory as Inventory
@@ -317,17 +319,20 @@ withDbSchemaCache maybeCache validate maybePids stored maybeIndex mk =
       let key = dbSchemaKey pidMap stored maybeIndex
       case HashMap.lookup key cache of
         Just schema -> do
+          addStatValueType "glean.db.schema.cache.hit" 1 Sum
           vlog 2 $ "DbSchema cache hit, stored SchemaId: " <>
             maybe "<unknown>" (unSchemaId . snd)
               (IntMap.lookupMax (hashedSchemaAllVersions
                 (procSchemaHashed stored)))
           return schema
         Nothing -> do
+          addStatValueType "glean.db.schema.cache.miss" 1 Sum
           schema <- mk
           modifyMVar_ cacheVar $ return . HashMap.insert key schema
           return schema
-    _otherwise -> mk
-
+    _otherwise -> do
+      addStatValueType "glean.db.schema.cache.fail" 1 Sum
+      mk
 
 mkDbSchema
   :: Maybe (MVar DbSchemaCache)
