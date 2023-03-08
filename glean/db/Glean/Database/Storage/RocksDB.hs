@@ -28,6 +28,7 @@ import Foreign.Marshal.Array
 import Foreign.Ptr
 import Foreign.Storable
 import System.Directory
+import System.IO.Temp (withTempDirectory)
 import System.FilePath
 import System.Process (readProcessWithExitCode)
 import System.Exit (ExitCode(ExitSuccess))
@@ -248,20 +249,19 @@ instance Storage RocksDB where
     where
       path = scratch </> "backup"
 
-  restore rocks repo scratch scratch_file = do
-    createDirectoryIfMissing True scratch_restore
-    createDirectoryIfMissing True scratch_db
-    unTar scratch_file scratch_restore
-    -- to avoid retaining an extra copy of the DB during restore,
-    -- delete the input file now.
-    removeFile scratch_file
-    withCString scratch_db $ \p_target ->
-      withCString (scratch_restore </> "backup") $ \p_source ->
-      invoke $ glean_rocksdb_restore p_target p_source
-    createDirectoryIfMissing True $ takeDirectory target
-    renameDirectory scratch_db target
+  restore rocks repo scratch scratch_file =
+    withTempDirectory scratch "restore" $ \scratch_restore -> do
+      createDirectoryIfMissing True scratch_db
+      unTar scratch_file scratch_restore
+      -- to avoid retaining an extra copy of the DB during restore,
+      -- delete the input file now.
+      removeFile scratch_file
+      withCString scratch_db $ \p_target ->
+        withCString (scratch_restore </> "backup") $ \p_source ->
+        invoke $ glean_rocksdb_restore p_target p_source
+      createDirectoryIfMissing True $ takeDirectory target
+      renameDirectory scratch_db target
     where
-      scratch_restore = scratch </> "restore"
       scratch_db = scratch </> "db"
 
       target = containerPath rocks repo
