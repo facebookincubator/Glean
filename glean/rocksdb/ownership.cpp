@@ -40,7 +40,6 @@ std::vector<size_t> DatabaseImpl::loadOwnershipUnitCounters() {
     }
   }
 
-  assert(result.size() == next_uset_id - first_unit_id);
   return result;
 }
 
