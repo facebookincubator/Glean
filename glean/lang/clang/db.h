@@ -188,10 +188,6 @@ public:
 
   Src::Loc srcLoc(clang::SourceLocation loc);
 
-  /// Return the SourceRange of the token starting at the beginning of the range
-  /// if it isn't a macro expansion and the range itself otherwise.
-  clang::SourceRange rangeOfToken(clang::SourceRange range) const;
-
   template<typename T>
   ClangDB::SourceRange srcRange(T x) {
     return immediateSrcRange(sourceManager().getExpansionRange(x));

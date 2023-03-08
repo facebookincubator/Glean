@@ -785,8 +785,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         visitor.db.declaration(range, result->declaration());
         // The name location retrieval logic should be consistent with ClangD:
         // https://github.com/llvm/llvm-project/blob/a3a2239aaaf6860eaee591c70a016b7c5984edde/clang-tools-extra/clangd/AST.cpp#L167-L172
-        auto nameRange =
-            visitor.db.srcRange(visitor.db.rangeOfToken(decl->getLocation()));
+        auto nameRange = visitor.db.srcRange(decl->getLocation());
         if (nameRange.file) {
           visitor.db.fact<Cxx::DeclarationNameSpan>(
               result->declaration(), nameRange.file->fact, nameRange.span);
@@ -959,8 +958,8 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     if (auto nominated = decl->getNominatedNamespace()) {
       usingTracker.inNameContext(decl->getQualifier(), [&] {
         xrefTarget(
-          db.rangeOfToken(decl->getIdentLocation()),
-          XRef::toDecl(namespaces, nominated)); });
+            decl->getIdentLocation(), XRef::toDecl(namespaces, nominated));
+      });
     }
 
     if (auto ns = decl->getNominatedNamespaceAsWritten()) {
@@ -1375,9 +1374,9 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
           if (auto ctor = clang::dyn_cast<clang::CXXConstructorDecl>(mtd)) {
             for (const auto *init : ctor->inits()) {
               if (init->isMemberInitializer()) {
-                 visitor.xrefTarget(
-                     visitor.db.rangeOfToken(init->getMemberLocation()),
-                     XRef::toDecl(visitor.varDecls, init->getMember()));
+                visitor.xrefTarget(
+                    init->getMemberLocation(),
+                    XRef::toDecl(visitor.varDecls, init->getMember()));
               }
             }
           }
@@ -2181,7 +2180,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         // can't get functions or variables here.
         return;
       }
-      xrefTarget(db.rangeOfToken(loc), xref);
+      xrefTarget(loc, xref);
     }
   }
 
@@ -2321,8 +2320,8 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         if (spec) {
           if (auto ns = spec->getAsNamespace()) {
             xrefTarget(
-              db.rangeOfToken(loc.getLocalSourceRange()),
-              XRef::toDecl(namespaces, ns->getCanonicalDecl()));
+                loc.getLocalSourceRange().getBegin(),
+                XRef::toDecl(namespaces, ns->getCanonicalDecl()));
           }
         }
         return Base::TraverseNestedNameSpecifierLoc(loc);
@@ -2519,10 +2518,9 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     }
 
     if (!xrefs.empty()) {
-      const auto start = expr->getLocation();
-      const auto range = db.rangeOfToken(start);
+      const auto loc = expr->getLocation();
       for (const auto &xref : xrefs) {
-        xrefTarget(range, xref);
+        xrefTarget(loc, xref);
       }
     }
     return true;
@@ -2530,7 +2528,8 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
   bool VisitObjCIvarRefExpr(const clang::ObjCIvarRefExpr *expr) {
     const clang::ObjCIvarDecl *decl = expr->getDecl();
-    xrefTarget(db.rangeOfToken(expr->getLocation()), XRef::toDecl(varDecls, decl));
+    xrefTarget(
+        expr->getLocation(), XRef::toDecl(varDecls, CHECK_NOTNULL(decl)));
     return true;
   }
 

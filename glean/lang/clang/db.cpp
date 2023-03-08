@@ -161,20 +161,6 @@ void ClangDB::xref(
   }
 }
 
-clang::SourceRange ClangDB::rangeOfToken(clang::SourceRange range) const {
-  auto start = range.getBegin();
-  if (!start.isMacroID()) {
-    auto end = clang::Lexer::getLocForEndOfToken(
-      start,
-      1,
-      sourceManager(),
-      compilerInstance.getLangOpts());
-    return clang::SourceRange(start, end);
-  } else {
-    return range;
-  }
-}
-
 clang::SourceRange ClangDB::spellingRange(clang::SourceRange range) const {
   return clang::SourceRange(
     sourceManager().getSpellingLoc(range.getBegin()),
