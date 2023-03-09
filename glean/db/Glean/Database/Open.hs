@@ -17,7 +17,8 @@ module Glean.Database.Open (
   getDbSchemaVersion,
   updateLookupCacheStats,
   repoParent,
-  repoParents
+  repoParents,
+  depParent
 ) where
 
 import Control.Concurrent (modifyMVar_)

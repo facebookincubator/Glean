@@ -10,6 +10,7 @@
 module GleanCLI.Restore (RestoreCommand) where
 
 import Control.Monad (forM_, forM)
+import Control.Monad.Extra (firstJustM)
 import Control.Concurrent
 import Data.Text (Text)
 import Data.Maybe (listToMaybe)
@@ -20,18 +21,24 @@ import Options.Applicative
 
 import Util.IO
 import Util.OptParse
+import Util.Log (logInfo)
+import Util.STM (atomically)
 
 import Glean
   ( Repo(..)
   , Database(..)
   , DatabaseStatus(..)
-  , Dependencies(..)
-  , Stacked(..)
-  , Pruned(..))
+  )
 import qualified Glean
+import qualified Glean.Database.Backup.Locator as Backup
+import Glean.LocalOrRemote (BackendKind(BackendEnv), backendKind)
+import Glean.Database.Backup.Backend (Site(inspect))
+import Glean.Database.Meta (metaFromProps, metaToThriftDatabase)
 
 import GleanCLI.Common
 import GleanCLI.Types
+import Glean.Database.Repo (inRepo)
+import Glean.Database.Open (depParent)
 
 data WhatToRestore
   = RestoreLocator Text
@@ -81,12 +88,20 @@ instance Plugin RestoreCommand where
       locatorsToRestore = case what of
         -- ignores dependencies
         RestoreLocator locator -> return [(locator, Nothing)]
-        RestoreDb repo -> do
-          databases <- listWithBackups
-          let deps = if ignoreDependencies
-                then []
-                else dependencies databases repo
-          withLocator databases $ repo : deps
+        RestoreDb repo
+          | BackendEnv env <- backendKind backend -> do
+            logInfo $ inRepo repo "Searching"
+            sites <- atomically $ Backup.getAllSites env
+            db <- getDatabaseFromSite sites repo
+            if ignoreDependencies then withLocator [db] [repo] else do
+            allDbs <- getDependenciesOneByOne sites db
+            withLocator allDbs (map database_repo allDbs)
+          | otherwise -> do
+            databases <- listWithBackups
+            let deps = if ignoreDependencies
+                  then []
+                  else dependencies databases repo
+            withLocator databases $ repo : deps
         RestoreDbOnDay repoName day -> do
           databases <- listWithBackups
           let matchingDay = listToMaybe
@@ -107,6 +122,26 @@ instance Plugin RestoreCommand where
               ["Cannot find backup locator for", Text.unpack repoName, "on"
               , formatTime defaultTimeLocale (iso8601DateFormat Nothing) day ]
 
+      getDependenciesOneByOne sites db = do
+        case database_dependencies db of
+          Nothing -> return [db]
+          Just dep -> do
+            dep_db <- getDatabaseFromSite sites (depParent dep)
+            (db:) <$> getDependenciesOneByOne sites dep_db
+
+      getDatabaseFromSite sites repo = do
+        result <- flip firstJustM sites $ \(prefix, site, _) ->
+                    restorable prefix site repo <$> inspect site repo
+        maybe (dieHere repo) return result
+
+      restorable prefix site repo props
+        | Right meta <-
+            metaFromProps (Backup.toRepoLocator prefix site repo) props
+        = Just $
+          metaToThriftDatabase Glean.DatabaseStatus_Restorable Nothing repo meta
+        | otherwise = Nothing
+
+      dieHere repo = die 1 $ "Cannot find " <> show repo
 
       withLocator :: [Database] -> [Repo] -> IO [(Locator, Maybe Repo)]
       withLocator databases repos = forM repos $ \repo -> do
@@ -122,7 +157,7 @@ instance Plugin RestoreCommand where
 
       restore targets = do
         forM_ targets $ \(locator, mrepo) -> do
-          putStrLn $ unwords $
+          logInfo $ unwords $
             [ "Restoring" ] ++
             [ Glean.showRepo repo | Just repo <- [mrepo]] ++
             [ "from", Text.unpack locator]
@@ -180,12 +215,8 @@ dependencies databases repo = repoDeps repo
         Nothing -> []
         Just repo -> repo : repoDeps repo
     repoDirectDep repo = listToMaybe
-        [ toRepo dep
+        [ depParent dep
         | Database{..} <- databases
         , database_repo == repo
         , Just dep <- [database_dependencies]
         ]
-    toRepo dep = case dep of
-      Dependencies_stacked Stacked{..} ->
-        Repo stacked_name stacked_hash
-      Dependencies_pruned (Pruned repo _ _ _) -> repo

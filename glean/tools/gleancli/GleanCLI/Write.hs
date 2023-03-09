@@ -9,7 +9,6 @@
 {-# LANGUAGE ApplicativeDo #-}
 module GleanCLI.Write (WriteCommand, FinishCommand) where
 
-import Control.Concurrent.STM
 import Control.Exception
 import Control.Monad
 import qualified Data.ByteString as B
@@ -28,6 +27,7 @@ import Thrift.Protocol
 import Util.Control.Exception
 import Util.IO
 import Util.OptParse
+import Util.STM
 
 import Glean
 import Glean.LocalOrRemote (loadDbSchema)
