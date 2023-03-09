@@ -130,7 +130,7 @@ instance Plugin RestoreCommand where
             (db:) <$> getDependenciesOneByOne sites dep_db
 
       getDatabaseFromSite sites repo = do
-        result <- flip firstJustM sites $ \(prefix, site, _) ->
+        result <- flip firstJustM sites $ \(prefix, site) ->
                     restorable prefix site repo <$> inspect site repo
         maybe (dieHere repo) return result
 
