@@ -15,7 +15,6 @@ import qualified Codec.Archive.Tar as Tar
 import Codec.Archive.Tar.Entry (getDirectoryContentsRecursive)
 import Control.Exception
 import Control.Monad
-import qualified Data.ByteString.Lazy as LBS
 import qualified Data.HashMap.Strict as HashMap
 import Data.Int
 import Data.List (unzip4)
@@ -50,7 +49,6 @@ import Glean.RTS.Types (Fid(..), invalidFid, Pid(..))
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types (Repo)
 import Glean.Util.Disk
-import Util.String (strip)
 
 newtype Cache = Cache (ForeignPtr Cache)
 
@@ -268,18 +266,15 @@ instance Storage RocksDB where
 
 unTar :: FilePath -> FilePath -> IO ()
 unTar scratch_file scratch_restore = do
-  (ec, out, _) <- readProcessWithExitCode "which" ["tar"] ""
-  let tarPath = strip out
-  case ec of
-    ExitSuccess -> do
+  tarPath <- findExecutable "tar"
+  case tarPath of
+    Just path -> do
       (ec, _, err) <- readProcessWithExitCode
-        tarPath
+        path
         ["-xf", scratch_file, "-C", scratch_restore]
         ""
       unless (ec == ExitSuccess) $ throwIO $ userError err
-    _ -> do
-      bytes <- LBS.readFile scratch_file
-      Tar.unpack scratch_restore $ Tar.read bytes
+    Nothing  -> throwIO $ userError "Cannot find tar executable"
 
 getFileSizeRecursively :: FilePath -> IO Integer
 getFileSizeRecursively path = do
