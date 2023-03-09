@@ -62,7 +62,8 @@ newtype Name = Name Text
 
 newtype PyType = PyType Text
 
-type XRefs = [(Python.Declaration, Src.ByteSpan, GleanPath)]
+type XRef = (Python.Declaration, Src.ByteSpan, GleanPath)
+type XRefs = [XRef]
 
 type Ann = Maybe (Python.Declaration, GleanPath)
 
@@ -101,17 +102,25 @@ fromFunctionDefinition def = do
     Nothing -> pure Nothing
     Just tyInfo -> Just <$> fromTypeInfo tyInfo
 
-  paramsAndXRefs <- mapM (\x -> case Python.parameter_typeInfo x of
-    Nothing -> pure (x, [])
-    Just ti -> (x,) <$> fetchDeclsByNames (Python.typeInfo_xrefs ti)
-    ) pyParams
+  -- resolve all names to their xref decls in one shot
+  declMap <- fetchDeclWithNames $ concat
+      [ map Python.xRefViaName_target (Python.typeInfo_xrefs tyInfo)
+      | Just tyInfo <- map Python.parameter_typeInfo pyParams
+      ]
 
-  nameStr <- Glean.keyOf name
+  let paramsAndXRefs =
+        [ case parameter_typeInfo of
+            Nothing -> (param, [])
+            Just tyInfo -> (param, mkXRefs declMap tyInfo)
+        | param@Python.Parameter{..} <- pyParams
+        ]
+
+  nameStr <- trimModule <$> Glean.keyOf name
 
   params <- mapM fromParameter paramsAndXRefs
   return $ Function
     (if async then Async else NotAsync)
-    (trimModule nameStr)
+    nameStr
     params
     returnTy
   where
@@ -122,13 +131,22 @@ fromFunctionDefinition def = do
       functionDefinition_key_returnsInfo = mReturnTy
     } = def
 
+mkXRefs
+  :: Map.Map Python.Name (Python.Declaration, GleanPath)
+  -> Python.TypeInfo
+  -> XRefs
+mkXRefs declMap Python.TypeInfo{..} =
+  mapMaybe (\Python.XRefViaName{..} ->
+    case Map.lookup xRefViaName_target declMap of
+      Nothing -> Nothing
+      Just (decl, path) -> Just (decl, xRefViaName_source, path)
+  ) typeInfo_xrefs
+
 fromTypeInfo  :: Python.TypeInfo -> Glean.RepoHaxl u w PyType
 fromTypeInfo Python.TypeInfo{..} = PyType <$> Glean.keyOf
   typeInfo_displayType
 
-fromParameter
-   :: (Python.Parameter, XRefs)
-   -> Glean.RepoHaxl u w Parameter
+fromParameter :: (Python.Parameter, XRefs) -> Glean.RepoHaxl u w Parameter
 fromParameter (Python.Parameter{..}, xrefs) = do
   nameStr <- Glean.keyOf parameter_name
   tyInfo <- case parameter_typeInfo of
@@ -181,30 +199,27 @@ pprTypeXRefs (PyType ty) xrefs =
                ((decl,filepath), fromIntegral (Glean.fromNat byteSpan_start)
                    , fromIntegral (Glean.fromNat byteSpan_length))) xrefs
 
-fetchDeclsByNames :: [Python.XRefViaName] -> Glean.RepoHaxl u w XRefs
-fetchDeclsByNames [] = pure []
-fetchDeclsByNames xrefs = do
-  result <- searchRecursiveWithLimit maxXRefs (angleDeclsByNames names)
-  decls <- forM result (\(decl,filepath) -> do
-    a <- Glean.keyOf decl
-    b <- GleanPath <$> Glean.keyOf filepath
-    return (a,b))
-  return $ mapMaybe (\(Python.DeclarationWithName_key{..}, filepath) ->
-    case Map.lookup declarationWithName_key_name xrefTable of
-      Nothing -> Nothing
-      Just span -> Just (declarationWithName_key_declaration, span, filepath)
-    ) decls
+--
+-- | Convert a list of python.Names into their corresponding decl/location pairs
+--
+fetchDeclWithNames
+  :: [Python.Name]
+  -> Glean.RepoHaxl u w (Map Python.Name (Python.Declaration, GleanPath))
+fetchDeclWithNames [] = pure mempty
+fetchDeclWithNames names = do
+  result <- searchRecursiveWithLimit maxXRefs (angleDeclsByNames ids)
+  Map.fromList <$> forM result (\(decl,srcFile) -> do
+    Python.DeclarationWithName_key{..} <- Glean.keyOf decl
+    filepath <- GleanPath <$> Glean.keyOf srcFile
+    let decl = (declarationWithName_key_declaration, filepath)
+        name = declarationWithName_key_name
+    return (name, decl)
+   )
   where
-    maxXRefs = Just 10
+    maxXRefs = Just (length names)
 
-    xrefTable :: Map Python.Name Src.ByteSpan
-    xrefTable = Map.fromList
-      [ (xRefViaName_target, xRefViaName_source)
-      | Python.XRefViaName{..} <- xrefs
-      ]
-
-    names :: [Glean.IdOf Python.Name]
-    names = map Glean.getId (Map.keys xrefTable)
+    ids :: [Glean.IdOf Python.Name]
+    ids = map Glean.getId names
 
 
 angleDeclToDef :: Angle Python.Declaration -> Angle Python.Definition
