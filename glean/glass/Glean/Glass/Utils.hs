@@ -156,7 +156,7 @@ subString start len = slice start len
 
 -- Split a type string along reference spans. Annotate extracted fragments.
 -- (annotation, start, length) if spans are inconsistent, don't fragment
-splitString :: Show ann => Text -> [(ann, Int, Int)] -> [(Text, Maybe ann)]
+splitString :: Text -> [(ann, Int, Int)] -> [(Text, Maybe ann)]
 splitString s xrefs =
   let res = reverse $ splitStringAux 0 (List.sortOn snd3 xrefs) []
       check = Text.concat $ fmap fst res

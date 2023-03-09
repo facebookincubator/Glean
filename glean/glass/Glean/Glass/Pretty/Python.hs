@@ -19,6 +19,7 @@ import qualified Data.Map.Strict as Map
 import Data.Text ( Text, takeWhileEnd )
 import Data.Text.Prettyprint.Doc
 import Control.Monad.Trans.Maybe (MaybeT (..))
+import Control.Monad
 
 import Glean.Angle as Angle
 import Glean.Glass.Base ( GleanPath(..) )
@@ -47,28 +48,23 @@ data Definition
  -- Variable
  -- Import
  -- Module
- deriving Show
 
 data Parameter = Parameter !Name (Maybe ExprText) !(Maybe PyType) XRefs
- deriving Show
 
 -- modifiers
 data AsyncModifier = Async | NotAsync
  deriving (Eq, Show)
 
 newtype ExprText = ExprText Text
- deriving Show
 
 -- names
 newtype Name = Name Text
- deriving Show
 
 newtype PyType = PyType Text
- deriving Show
 
-type XRefs = [(Python.Declaration, Src.ByteSpan)]
+type XRefs = [(Python.Declaration, Src.ByteSpan, GleanPath)]
 
-type Ann = Maybe Python.Declaration
+type Ann = Maybe (Python.Declaration, GleanPath)
 
 prettyPythonSignature
   :: LayoutOptions
@@ -83,19 +79,12 @@ prettyPythonSignature opts repo (Python.Entity_decl decl) = runMaybeT $ do
     annotateDocs doc = reAnnotateS (declToSymbolId repo) (layoutSmart opts doc)
 prettyPythonSignature _ _ Python.Entity_EMPTY = return Nothing
 
---
--- Almost a clone of the Hack version. Refactor
---
 declToSymbolId :: RepoName -> Ann -> Glean.RepoHaxl u w (Maybe SymbolId)
 declToSymbolId _repo Nothing = return Nothing
-declToSymbolId repo (Just decl) = runMaybeT $ do
-  -- urgh right here we need each decl's filepath. Should be part of the Ann
-  filepath <- maybeT $ fetchDataRecursive $ angleEntityFilePath entityAngle
-  path <- maybeT $ Just . GleanPath <$> Glean.keyOf filepath
-  maybeT $ Just <$> toSymbolId (fromGleanPath repo path) entity
+declToSymbolId repo (Just (decl, filepath)) = Just <$>
+    toSymbolId (fromGleanPath repo filepath) entity
   where
     entity = Code.Entity_python (Python.Entity_decl decl)
-    entityAngle = alt @"python" (alt @"decl" (toAngle decl))
 
 fromAngleDefinition
   :: Python.Definition -> Glean.RepoHaxl u w (Maybe Definition)
@@ -138,7 +127,7 @@ fromTypeInfo Python.TypeInfo{..} = PyType <$> Glean.keyOf
   typeInfo_displayType
 
 fromParameter
-   :: (Python.Parameter, [(Python.Declaration, Src.ByteSpan)])
+   :: (Python.Parameter, XRefs)
    -> Glean.RepoHaxl u w Parameter
 fromParameter (Python.Parameter{..}, xrefs) = do
   nameStr <- Glean.keyOf parameter_name
@@ -188,21 +177,22 @@ pprTypeXRefs (PyType ty) xrefs =
     mconcat $ (\(frag, ann) -> annotate ann $ pretty frag) <$>
       splitString ty spans
   where
-    spans = map (\(ann, Src.ByteSpan{..}) ->
-               (ann, fromIntegral (Glean.fromNat byteSpan_start)
+    spans = map (\(decl, Src.ByteSpan{..}, filepath) ->
+               ((decl,filepath), fromIntegral (Glean.fromNat byteSpan_start)
                    , fromIntegral (Glean.fromNat byteSpan_length))) xrefs
 
-fetchDeclsByNames
-  :: [Python.XRefViaName]
-  -> Glean.RepoHaxl u w [(Python.Declaration,Src.ByteSpan)]
+fetchDeclsByNames :: [Python.XRefViaName] -> Glean.RepoHaxl u w XRefs
 fetchDeclsByNames [] = pure []
 fetchDeclsByNames xrefs = do
   result <- searchRecursiveWithLimit maxXRefs (angleDeclsByNames names)
-  decls <- mapM Glean.keyOf result
-  return $ mapMaybe (\Python.DeclarationWithName_key{..} ->
+  decls <- forM result (\(decl,filepath) -> do
+    a <- Glean.keyOf decl
+    b <- GleanPath <$> Glean.keyOf filepath
+    return (a,b))
+  return $ mapMaybe (\(Python.DeclarationWithName_key{..}, filepath) ->
     case Map.lookup declarationWithName_key_name xrefTable of
       Nothing -> Nothing
-      Just span -> Just (declarationWithName_key_declaration, span)
+      Just span -> Just (declarationWithName_key_declaration, span, filepath)
     ) decls
   where
     maxXRefs = Just 10
@@ -228,31 +218,26 @@ angleDeclToDef decl = var $ \(def :: Angle Python.Definition) ->
     )
   ]
 
--- Bulk convert each name to its definition entity
+-- Bulk convert each name to its definition entity and file location
+-- to build a symbol id later
 angleDeclsByNames
-  :: [Glean.IdOf Python.Name] -> Angle Python.DeclarationWithName
-angleDeclsByNames names = predicate @Python.DeclarationWithName $
-  rec $
-    field @"name" (elementsOf (array (map (asPredicate . factId) names)))
-  end
+  :: [Glean.IdOf Python.Name] -> Angle (Python.DeclarationWithName, Src.File)
+angleDeclsByNames names = vars $ \(decl :: Angle Python.Declaration)
+    (file :: Angle Src.File) (p :: Angle Python.DeclarationWithName) ->
+  tuple (p, file) `where_` [
+    p .= predicate @Python.DeclarationWithName (
+      rec $
+        field @"name" (elementsOf (array (map (asPredicate . factId) names))) $
+        field @"declaration" decl
+      end),
+    wild .= predicate @Code.EntityLocation (
+      rec $
+        field @"entity" (alt @"python" (alt @"decl" decl)) $
+        field @"location" (rec $ field @"file" (asPredicate file) $ end)
+      end)
+    ]
 
 -- | we could use the sname here to lookup the associated decl fact
 -- as an xref in the type signature (c.f how Hack does this)
 trimModule :: Text -> Name
 trimModule qname = Name (takeWhileEnd (/= '.') qname)
-
--- Reuse this: we shouldn't need to refetch the location,
--- get it at the same time as DeclarationWithName
-angleEntityFilePath :: Angle Code.Entity -> Angle Src.File
-angleEntityFilePath ent = var $ \(file :: Angle Src.File) ->
-  file `where_` [
-      wild .= predicate @Code.EntityLocation (
-        rec $
-          field @"entity" ent $
-          field @"location" (
-            rec $
-              field @"file" (asPredicate file) end
-          )
-        end
-      )
-  ]
