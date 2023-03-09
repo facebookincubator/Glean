@@ -13,13 +13,14 @@ module Glean.Glass.Pretty.Python
     prettyPythonSignature
   ) where
 
-import Data.Maybe
+import Data.Maybe ( mapMaybe )
 import Data.Map.Strict ( Map )
 import qualified Data.Map.Strict as Map
 import Data.Text ( Text, takeWhileEnd )
 import Data.Text.Prettyprint.Doc
 import Control.Monad.Trans.Maybe (MaybeT (..))
-import Control.Monad
+import Control.Monad ( forM )
+import Util.List ( uniq )
 
 import Glean.Angle as Angle
 import Glean.Glass.Base ( GleanPath(..) )
@@ -216,11 +217,10 @@ fetchDeclWithNames names = do
     return (name, decl)
    )
   where
-    maxXRefs = Just (length names)
+    maxXRefs = Just (length ids)
 
     ids :: [Glean.IdOf Python.Name]
-    ids = map Glean.getId names
-
+    ids = uniq (map Glean.getId names)
 
 angleDeclToDef :: Angle Python.Declaration -> Angle Python.Definition
 angleDeclToDef decl = var $ \(def :: Angle Python.Definition) ->
