@@ -66,14 +66,22 @@ predicate ClassDefinition:
     container: maybe DeclarationContainer,
   }
 
+predicate DerivedClassToBase:
+  {
+    derived: ClassDeclaration,
+    base: ClassDeclaration,
+  }
+  {Derived, Base} where
+    ClassDefinition { declaration = Derived, bases = { just = Bases } };
+    Bases[..] = Base;
+
 predicate BaseClassToDerived:
   {
     base: ClassDeclaration,
     derived: ClassDeclaration,
   }
-  stored {Base, Child} where
-    ClassDefinition { declaration = Child, bases = { just = Bases } };
-    Bases[..] = Base;
+  stored {Base, Derived} where
+    DerivedClassToBase { Derived, Base};
 
 # Allows efficient queries for functions by structured name.
 predicate FunctionBySName: SName -> FunctionDeclaration
@@ -590,10 +598,8 @@ predicate IsAbstract: Declaration
   Decl where
   (
     { cls = ClassDecl } = Decl;
-    ClassDef = python.ClassDefinition { declaration = ClassDecl};
-    { bases = { just = Bases } } = ClassDef;
-    ABC = python.ClassDeclaration { name = "abc.ABC"};
-    Bases[..] = ABC;
+    # A class is abstract if it was based on "abc.ABC"
+    DerivedClassToBase { ClassDecl, { name = "abc.ABC" } };
     # ABCMeta is not supported, because doesn't have this data
   ) | (
     { func = FuncDecl } = Decl;
