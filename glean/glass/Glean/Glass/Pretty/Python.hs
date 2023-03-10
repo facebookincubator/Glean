@@ -44,11 +44,15 @@ import qualified Glean.Schema.Codemarkup.Types as Code
 
 -- Python symbol kinds
 data Definition
-  = Function !AsyncModifier !Name [Parameter] !(Maybe PyType)
+  = Function !AsyncModifier !Name [Parameter] !ReturnType
  -- Class
  -- Variable
  -- Import
  -- Module
+
+data ReturnType
+  = NoReturnType
+  | ReturnType !PyType XRefs
 
 data Parameter = Parameter !Name (Maybe ExprText) !(Maybe PyType) XRefs
 
@@ -101,13 +105,17 @@ fromFunctionDefinition def = do
   Python.FunctionDeclaration_key name <- Glean.keyOf decl
   returnTy <- case mReturnTy of
     Nothing -> pure Nothing
-    Just tyInfo -> Just <$> fromTypeInfo tyInfo
+    Just tyInfo -> do
+      let retTypeDeclNames = map Python.xRefViaName_target
+            (Python.typeInfo_xrefs tyInfo)
+      return $ Just (retTypeDeclNames, tyInfo)
 
   -- resolve all names to their xref decls in one shot
-  declMap <- fetchDeclWithNames $ concat
-      [ map Python.xRefViaName_target (Python.typeInfo_xrefs tyInfo)
-      | Just tyInfo <- map Python.parameter_typeInfo pyParams
-      ]
+  declMap <- fetchDeclWithNames $
+      concat
+        [ map Python.xRefViaName_target (Python.typeInfo_xrefs tyInfo)
+        | Just tyInfo <- map Python.parameter_typeInfo pyParams
+        ] ++ maybe [] fst returnTy
 
   let paramsAndXRefs =
         [ case parameter_typeInfo of
@@ -116,6 +124,12 @@ fromFunctionDefinition def = do
         | param@Python.Parameter{..} <- pyParams
         ]
 
+  returnTyXRefs <- case returnTy of
+    Nothing -> pure NoReturnType
+    Just (_, retTyInfo) -> do
+      retTyText <- fromTypeInfo retTyInfo
+      pure $ ReturnType retTyText (mkXRefs declMap retTyInfo)
+
   nameStr <- trimModule <$> Glean.keyOf name
 
   params <- mapM fromParameter paramsAndXRefs
@@ -123,7 +137,7 @@ fromFunctionDefinition def = do
     (if async then Async else NotAsync)
     nameStr
     params
-    returnTy
+    returnTyXRefs
   where
     Python.FunctionDefinition_key {
       functionDefinition_key_declaration = decl,
@@ -160,9 +174,7 @@ pprDefinition :: Definition -> Doc Ann
 pprDefinition (Function async name [] returnTy) =
   hcat [
    pprAsync async, "def" <+> pprName name, "()",
-   case returnTy of
-      Nothing -> emptyDoc
-      Just ty -> space <> "->" <+> pprTypeXRefs ty []
+   pprReturnType returnTy
   ]
 -- full param list
 pprDefinition (Function async name params returnTy) =
@@ -171,14 +183,16 @@ pprDefinition (Function async name params returnTy) =
       hcat [pprAsync async, "def" <> space, pprName name <> lparen] :
       punctuate comma (map pprParam params)
     )),
-    rparen <+> case returnTy of
-      Nothing -> emptyDoc
-      Just ty -> "->" <+> pprTypeXRefs ty []
+    rparen <> pprReturnType returnTy
     ]
 
 pprAsync :: AsyncModifier -> Doc Ann
 pprAsync Async = "async" <> space
 pprAsync _ = emptyDoc
+
+pprReturnType :: ReturnType -> Doc Ann
+pprReturnType NoReturnType = emptyDoc
+pprReturnType (ReturnType ty xrefs) = space <> "->" <+> pprTypeXRefs ty xrefs
 
 pprParam :: Parameter -> Doc Ann
 pprParam (Parameter name _mDefValue mty xrefs) = hcat
