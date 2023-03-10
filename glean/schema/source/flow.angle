@@ -86,6 +86,11 @@ predicate ModuleExport: {
   export_: Export,
 }
 
+predicate ModuleDoc: {
+  documentation: Documentation,
+  file: src.File,
+}
+
 # indicates that a declaration is an import statement
 predicate ImportDeclaration: {
   declaration: Declaration,
