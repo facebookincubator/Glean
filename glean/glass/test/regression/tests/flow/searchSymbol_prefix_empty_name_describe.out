@@ -51,7 +51,18 @@
                 "type_xrefs": []
             },
             {
-                "comments": [],
+                "comments": [
+                    {
+                        "filepath": "test/cjs_exports.js",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 4,
+                            "lineBegin": 1,
+                            "lineEnd": 7
+                        },
+                        "repository": "test"
+                    }
+                ],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -81,7 +92,20 @@
                     "container": "",
                     "localName": "cjs_exports"
                 },
-                "pretty_comments": [],
+                "pretty_comments": [
+                    {
+                        "location": {
+                            "filepath": "test/cjs_exports.js",
+                            "range": {
+                                "columnBegin": 1,
+                                "columnEnd": 4,
+                                "lineBegin": 1,
+                                "lineEnd": 7
+                            },
+                            "repository": "test"
+                        }
+                    }
+                ],
                 "repo_hash": "testhash",
                 "signature": "test/cjs_exports.js",
                 "sym": "test/js/cjs_exports",
@@ -243,7 +267,18 @@
                 "type_xrefs": []
             },
             {
-                "comments": [],
+                "comments": [
+                    {
+                        "filepath": "test/es_exports.js.flow",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 4,
+                            "lineBegin": 1,
+                            "lineEnd": 7
+                        },
+                        "repository": "test"
+                    }
+                ],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -273,7 +308,20 @@
                     "container": "",
                     "localName": "es_exports"
                 },
-                "pretty_comments": [],
+                "pretty_comments": [
+                    {
+                        "location": {
+                            "filepath": "test/es_exports.js.flow",
+                            "range": {
+                                "columnBegin": 1,
+                                "columnEnd": 4,
+                                "lineBegin": 1,
+                                "lineEnd": 7
+                            },
+                            "repository": "test"
+                        }
+                    }
+                ],
                 "repo_hash": "testhash",
                 "signature": "test/es_exports.js.flow",
                 "sym": "test/js/es_exports",
@@ -794,7 +842,18 @@
                 "type_xrefs": []
             },
             {
-                "comments": [],
+                "comments": [
+                    {
+                        "filepath": "test/imports.js",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 4,
+                            "lineBegin": 1,
+                            "lineEnd": 7
+                        },
+                        "repository": "test"
+                    }
+                ],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -824,7 +883,20 @@
                     "container": "",
                     "localName": "imports"
                 },
-                "pretty_comments": [],
+                "pretty_comments": [
+                    {
+                        "location": {
+                            "filepath": "test/imports.js",
+                            "range": {
+                                "columnBegin": 1,
+                                "columnEnd": 4,
+                                "lineBegin": 1,
+                                "lineEnd": 7
+                            },
+                            "repository": "test"
+                        }
+                    }
+                ],
                 "repo_hash": "testhash",
                 "signature": "test/imports.js",
                 "sym": "test/js/imports",

@@ -193,8 +193,15 @@ predicate FlowEntityDocumentation :
     span : src.ByteSpan
   }
   { Entity, File, Span } where
-    { decl = Decl } = Entity;
-    FlowDeclarationDocumentation { Decl, File, Span }
+    ( { decl = Decl } = Entity;
+      FlowDeclarationDocumentation { Decl, File, Span }
+    ) | (
+      { module_ = M } = Entity;
+      flow.ModuleDoc {
+        documentation = flow.Documentation Doc,
+        file = File };
+      flow.Range { M , Span } = Doc
+    )
 
 predicate FlowDeclarationDocumentation :
   {
