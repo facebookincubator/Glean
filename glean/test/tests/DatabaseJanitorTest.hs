@@ -698,7 +698,7 @@ ageCountersTestEx shardManager k =
       let countersToPublish =
             [ c
             | PublishCounter c _ <- sideEffects
-            , ".age" `BS.isSuffixOf` c
+            , ".age" `BS.isSuffixOf` c || ".span" `BS.isSuffixOf` c
             ]
       k env $ sort countersToPublish
 
@@ -707,7 +707,7 @@ ageCountersCompleteTest = TestCase $ ageCountersTestEx
   (SomeShardManager $ shardByRepoHash (pure $ Just ["0001"]))
   $ \_ -> assertEqual
     "Should publish age counters for all newest DBs restored locally"
-    ["glean.db.test.age"]
+    ["glean.db.test.age", "glean.db.test.span"]
 
 ageCountersOnlyNewestTest :: Test
 ageCountersOnlyNewestTest = TestCase $ ageCountersTestEx

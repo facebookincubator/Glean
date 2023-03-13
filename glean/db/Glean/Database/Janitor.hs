@@ -333,11 +333,17 @@ runWithShards env myShards sm = do
       case [ item | item <- NonEmpty.toList dbsByAge,
                 itemLocality item == Local ] of
         [] -> return ()
-        db:_ ->
-          let dbCreated = posixEpochTimeToTime (metaCreated $ itemMeta db)
-              dbAge = timeSpanInSeconds $ fromUTCTime t `timeDiff` dbCreated
-          in
-          publishCounter (prefix <> ".age") dbAge
+        db:_ -> do
+          let
+              meta = itemMeta db
+              dbConceived = metaRepoHashTime meta
+              dbCreated = metaCreated meta
+              dbStart = fromMaybe dbCreated dbConceived
+              ageFrom t0 = timeSpanInSeconds $
+                fromUTCTime t `timeDiff` posixEpochTimeToTime t0
+          -- .age is the age of the data, .span is the age of the DB
+          publishCounter (prefix <> ".age") (ageFrom dbStart)
+          publishCounter (prefix <> ".span") (ageFrom dbCreated)
 
       -- see "Retention set slack" note
       let leaked = sum
