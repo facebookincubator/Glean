@@ -44,7 +44,13 @@ import qualified Glean.Schema.Codemarkup.Types as Code
 
 -- Python symbol kinds
 data Definition
-  = Function !AsyncModifier !Name [Parameter] !ReturnType
+  = Function {
+      _funModifier :: !AsyncModifier,
+      _funName :: !Name,
+      _funParams :: [Parameter],
+      _funStarKWArgs :: Maybe Parameter,
+      _funReType :: !ReturnType
+  }
  -- Class
  -- Variable
  -- Import
@@ -116,6 +122,9 @@ fromFunctionDefinition def = do
         [ map Python.xRefViaName_target (Python.typeInfo_xrefs tyInfo)
         | Just tyInfo <- map Python.parameter_typeInfo pyParams
         ] ++ maybe [] fst returnTy
+          ++ maybe []
+               (map Python.xRefViaName_target . Python.typeInfo_xrefs)
+               (Python.parameter_typeInfo =<< mStarKWArg)
 
   let paramsAndXRefs =
         [ case parameter_typeInfo of
@@ -123,6 +132,11 @@ fromFunctionDefinition def = do
             Just tyInfo -> (param, mkXRefs declMap tyInfo)
         | param@Python.Parameter{..} <- pyParams
         ]
+  let starKWArgsAndXRefs = case mStarKWArg of
+        Nothing -> Nothing
+        Just param@Python.Parameter{..} -> Just $ case parameter_typeInfo of
+            Nothing -> (param, []) -- has no type info
+            Just tyInfo -> (param, mkXRefs declMap tyInfo)
 
   returnTyXRefs <- case returnTy of
     Nothing -> pure NoReturnType
@@ -133,16 +147,19 @@ fromFunctionDefinition def = do
   nameStr <- trimModule <$> Glean.keyOf name
 
   params <- mapM fromParameter paramsAndXRefs
+  starKWArgParam <- mapM fromParameter starKWArgsAndXRefs
   return $ Function
     (if async then Async else NotAsync)
     nameStr
     params
+    starKWArgParam
     returnTyXRefs
   where
     Python.FunctionDefinition_key {
       functionDefinition_key_declaration = decl,
       functionDefinition_key_is_async = async,
       functionDefinition_key_params = pyParams,
+      functionDefinition_key_star_kwarg = mStarKWArg,
       functionDefinition_key_returnsInfo = mReturnTy
     } = def
 
@@ -171,17 +188,20 @@ fromParameter (Python.Parameter{..}, xrefs) = do
 
 pprDefinition :: Definition -> Doc Ann
 -- empty param case
-pprDefinition (Function async name [] returnTy) =
+pprDefinition (Function async name [] Nothing returnTy) =
   hcat [
    pprAsync async, "def" <+> pprName name, "()",
    pprReturnType returnTy
   ]
 -- full param list
-pprDefinition (Function async name params returnTy) =
+pprDefinition (Function async name params starKWArgs returnTy) =
   vcat [
     nest 4 (vsep (
       hcat [pprAsync async, "def" <> space, pprName name <> lparen] :
-      punctuate comma (map pprParam params)
+      punctuate comma
+         (map pprParam params ++ (case starKWArgs of
+            Nothing -> []
+            Just p -> [pprStarKWArgs p]))
     )),
     rparen <> pprReturnType returnTy
     ]
@@ -207,6 +227,9 @@ pprParam (Parameter name mDefValue mty xrefs) = hcat
         Nothing -> equals <> pretty val
         Just{} -> space <> equals <+> pretty val
   ]
+
+pprStarKWArgs :: Parameter -> Doc Ann
+pprStarKWArgs param = "**" <> pprParam param
 
 pprName :: Name -> Doc Ann
 pprName (Name name) = pretty name
