@@ -11,10 +11,9 @@ module Glean.Database.Storage.RocksDB
   , newStorage
   ) where
 
-import qualified Codec.Archive.Tar as Tar
-import Codec.Archive.Tar.Entry (getDirectoryContentsRecursive)
 import Control.Exception
 import Control.Monad
+import qualified Data.ByteString.Lazy as LBS
 import qualified Data.HashMap.Strict as HashMap
 import Data.Int
 import Data.List (unzip4)
@@ -49,6 +48,7 @@ import Glean.RTS.Types (Fid(..), invalidFid, Pid(..))
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types (Repo)
 import Glean.Util.Disk
+import System.IO.Extra (withTempFile)
 
 newtype Cache = Cache (ForeignPtr Cache)
 
@@ -241,9 +241,11 @@ instance Storage RocksDB where
     createDirectoryIfMissing True path
     withContainer db $ \s_ptr ->
       withCString path $ invoke . glean_rocksdb_container_backup s_ptr
-    entries <- Tar.pack scratch ["backup"]
-    size <- getFileSizeRecursively path
-    process (Tar.write entries) (Data $ fromIntegral size)
+    withTempFile $ \tarFile -> do
+      tar ["-cf", tarFile, "-C", scratch, "backup"]
+      size <- getFileSize tarFile
+      bytes <- LBS.readFile tarFile
+      process bytes (Data $ fromIntegral size)
     where
       path = scratch </> "backup"
 
@@ -265,26 +267,17 @@ instance Storage RocksDB where
       target = containerPath rocks repo
 
 unTar :: FilePath -> FilePath -> IO ()
-unTar scratch_file scratch_restore = do
+unTar scratch_file scratch_restore =
+  tar ["-xf", scratch_file, "-C", scratch_restore]
+
+tar :: [String] -> IO ()
+tar args = do
   tarPath <- findExecutable "tar"
   case tarPath of
-    Just path -> do
-      (ec, _, err) <- readProcessWithExitCode
-        path
-        ["-xf", scratch_file, "-C", scratch_restore]
-        ""
-      unless (ec == ExitSuccess) $ throwIO $ userError err
     Nothing  -> throwIO $ userError "Cannot find tar executable"
-
-getFileSizeRecursively :: FilePath -> IO Integer
-getFileSizeRecursively path = do
-  files <- getDirectoryContentsRecursive path
-  sizes <- forM files $ \f -> do
-    itIsAFile <- doesFileExist $ path </> f
-    if itIsAFile
-      then getFileSize $ path </> f
-      else return 0
-  return $! sum sizes
+    Just path -> do
+      (ec, _, err) <- readProcessWithExitCode path args ""
+      unless (ec == ExitSuccess) $ throwIO $ userError err
 
 containerPath :: RocksDB -> Repo -> FilePath
 containerPath RocksDB{..} repo = databasePath rocksRoot repo </> "db"
