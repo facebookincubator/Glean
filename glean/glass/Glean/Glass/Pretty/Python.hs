@@ -195,11 +195,17 @@ pprReturnType NoReturnType = emptyDoc
 pprReturnType (ReturnType ty xrefs) = space <> "->" <+> pprTypeXRefs ty xrefs
 
 pprParam :: Parameter -> Doc Ann
-pprParam (Parameter name _mDefValue mty xrefs) = hcat
+pprParam (Parameter name mDefValue mty xrefs) = hcat
   [ pprName name
   , case mty of
     Nothing -> emptyDoc
     Just ty -> colon <+> pprTypeXRefs ty xrefs
+  , case mDefValue of
+    Nothing -> emptyDoc
+    Just (ExprText val) ->
+      case mty of
+        Nothing -> equals <> pretty val
+        Just{} -> space <> equals <+> pretty val
   ]
 
 pprName :: Name -> Doc Ann
