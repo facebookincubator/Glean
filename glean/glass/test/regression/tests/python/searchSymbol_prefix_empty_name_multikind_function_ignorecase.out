@@ -48,8 +48,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 21,
-                        "lineBegin": 9,
-                        "lineEnd": 15
+                        "lineBegin": 10,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 },
@@ -78,8 +78,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 13,
-                        "lineBegin": 19,
-                        "lineEnd": 20
+                        "lineBegin": 20,
+                        "lineEnd": 21
                     },
                     "repository": "test"
                 },
@@ -92,6 +92,36 @@
                     "exactness": 2
                 },
                 "symbol": "test/py/as.py/as.func_sleep"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "as"
+                    },
+                    "symbol": "test/py/as.py/as"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 14,
+                        "lineBegin": 24,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "name": "as.test_fun",
+                "qname": {
+                    "container": "as",
+                    "localName": "test_fun"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/as.py/as.test_fun"
             },
             {
                 "context": {

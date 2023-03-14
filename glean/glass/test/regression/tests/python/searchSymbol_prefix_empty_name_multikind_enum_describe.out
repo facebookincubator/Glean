@@ -131,7 +131,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 21
+                        "lineEnd": 32
                     },
                     "repository": "test"
                 },
@@ -149,7 +149,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 21
+                        "lineEnd": 32
                     },
                     "repository": "test"
                 },
@@ -164,8 +164,8 @@
                         "range": {
                             "columnBegin": 5,
                             "columnEnd": 8,
-                            "lineBegin": 10,
-                            "lineEnd": 13
+                            "lineBegin": 11,
+                            "lineEnd": 14
                         },
                         "repository": "test"
                     }
@@ -189,8 +189,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 21,
-                        "lineBegin": 9,
-                        "lineEnd": 15
+                        "lineBegin": 10,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 },
@@ -207,8 +207,8 @@
                             "range": {
                                 "columnBegin": 5,
                                 "columnEnd": 8,
-                                "lineBegin": 10,
-                                "lineEnd": 13
+                                "lineBegin": 11,
+                                "lineEnd": 14
                             },
                             "repository": "test"
                         }
@@ -222,8 +222,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 21,
-                        "lineBegin": 9,
-                        "lineEnd": 15
+                        "lineBegin": 10,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 },
@@ -258,8 +258,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 13,
-                        "lineBegin": 19,
-                        "lineEnd": 20
+                        "lineBegin": 20,
+                        "lineEnd": 21
                     },
                     "repository": "test"
                 },
@@ -280,8 +280,57 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 13,
-                        "lineBegin": 19,
-                        "lineEnd": 20
+                        "lineBegin": 20,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 20
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 14,
+                        "lineBegin": 24,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "as",
+                    "localName": "test_fun"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def test_fun(\n    param1: Optional[Dict[str]],\n    param2: None,\n    *,\n    param3: Optional[str] = \"value\",\n    **kwargs\n) -> Dict[str, Dict[str, bytes]]",
+                "sym": "test/py/as.py/as.test_fun",
+                "sym_location": {
+                    "filepath": "as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 14,
+                        "lineBegin": 24,
+                        "lineEnd": 31
                     },
                     "repository": "test"
                 },
@@ -895,7 +944,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 21
+                        "lineEnd": 32
                     },
                     "repository": "test"
                 },
@@ -924,8 +973,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 21,
-                        "lineBegin": 9,
-                        "lineEnd": 15
+                        "lineBegin": 10,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 },
@@ -954,8 +1003,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 13,
-                        "lineBegin": 19,
-                        "lineEnd": 20
+                        "lineBegin": 20,
+                        "lineEnd": 21
                     },
                     "repository": "test"
                 },
@@ -968,6 +1017,36 @@
                     "exactness": 2
                 },
                 "symbol": "test/py/as.py/as.func_sleep"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "as"
+                    },
+                    "symbol": "test/py/as.py/as"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 14,
+                        "lineBegin": 24,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "name": "as.test_fun",
+                "qname": {
+                    "container": "as",
+                    "localName": "test_fun"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/as.py/as.test_fun"
             },
             {
                 "kind": 5,
