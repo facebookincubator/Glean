@@ -312,7 +312,7 @@
                         "columnBegin": 1,
                         "columnEnd": 14,
                         "lineBegin": 24,
-                        "lineEnd": 31
+                        "lineEnd": 33
                     },
                     "repository": "test"
                 },
@@ -323,7 +323,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "def test_fun(\n    param1: Optional[Dict[str]],\n    param2: None,\n    *,\n    param3: Optional[str] = \"value\",\n    **kwargs\n) -> Dict[str, Dict[str, bytes]]",
+                "signature": "def test_fun(\n    param0,\n    /,\n    param1: Optional[Dict[str]],\n    param2: None,\n    *,\n    param3: Optional[str] = \"value\",\n    **kwargs\n) -> Dict[str, Dict[str, bytes]]",
                 "sym": "test/py/as.py/as.test_fun",
                 "sym_location": {
                     "filepath": "as.py",
@@ -331,7 +331,7 @@
                         "columnBegin": 1,
                         "columnEnd": 14,
                         "lineBegin": 24,
-                        "lineEnd": 31
+                        "lineEnd": 33
                     },
                     "repository": "test"
                 },
@@ -996,7 +996,7 @@
                         "columnBegin": 1,
                         "columnEnd": 14,
                         "lineBegin": 24,
-                        "lineEnd": 31
+                        "lineEnd": 33
                     },
                     "repository": "test"
                 },

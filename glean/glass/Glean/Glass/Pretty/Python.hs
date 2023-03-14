@@ -48,6 +48,7 @@ data Definition
       _funModifier :: !AsyncModifier,
       _funName :: !Name,
       _funParams :: [Parameter],
+      _funPosOnlyParams :: [Parameter],
       _funKWOnlyParams :: [Parameter],
       _funStarKWArgs :: Maybe Parameter,
       _funReType :: !ReturnType
@@ -118,18 +119,21 @@ fromFunctionDefinition def = do
       return $ Just (retTypeDeclNames, tyInfo)
 
   -- resolve all names to their xref decls in one shot
-  declMap <- fetchDeclWithNames $
-      concat
-        [ map Python.xRefViaName_target (Python.typeInfo_xrefs tyInfo)
-        | Just tyInfo <- map Python.parameter_typeInfo pyParams
-        ] ++ maybe [] fst returnTy
-          ++ maybe []
-               (map Python.xRefViaName_target . Python.typeInfo_xrefs)
-               (Python.parameter_typeInfo =<< mStarKWArg)
-          ++ maybe [] (\ps -> concat
-              [ map Python.xRefViaName_target (Python.typeInfo_xrefs tyInfo)
-              | Just tyInfo <- map Python.parameter_typeInfo ps
-              ]) mKWOnlyParams
+  declMap <- fetchDeclWithNames $ concat
+    [ map Python.xRefViaName_target (Python.typeInfo_xrefs tyInfo)
+    | Just tyInfo <- map Python.parameter_typeInfo pyParams
+    ] ++ maybe [] fst returnTy
+      ++ maybe []
+            (map Python.xRefViaName_target . Python.typeInfo_xrefs)
+            (Python.parameter_typeInfo =<< mStarKWArg)
+      ++ maybe [] (\ps -> concat
+          [ map Python.xRefViaName_target (Python.typeInfo_xrefs tyInfo)
+          | Just tyInfo <- map Python.parameter_typeInfo ps
+          ]) mKWOnlyParams
+      ++ maybe [] (\ps -> concat
+          [ map Python.xRefViaName_target (Python.typeInfo_xrefs tyInfo)
+          | Just tyInfo <- map Python.parameter_typeInfo ps
+          ]) mPosOnlyParams
 
   let paramsAndXRefs =
         [ case parameter_typeInfo of
@@ -138,6 +142,14 @@ fromFunctionDefinition def = do
         | param@Python.Parameter{..} <- pyParams
         ]
   let kwOnlyParamsAndXRefs = case mKWOnlyParams of
+        Nothing -> []
+        Just ps ->
+          [ case parameter_typeInfo of
+              Nothing -> (param, [])
+              Just tyInfo -> (param, mkXRefs declMap tyInfo)
+          | param@Python.Parameter{..} <- ps
+          ]
+  let posOnlyParamsAndXRefs = case mPosOnlyParams of
         Nothing -> []
         Just ps ->
           [ case parameter_typeInfo of
@@ -161,12 +173,14 @@ fromFunctionDefinition def = do
 
   params <- mapM fromParameter paramsAndXRefs
   kwOnlyParams <- mapM fromParameter kwOnlyParamsAndXRefs
+  posOnlyParams <- mapM fromParameter posOnlyParamsAndXRefs
   starKWArgParam <- mapM fromParameter starKWArgsAndXRefs
 
   return $ Function
     (if async then Async else NotAsync)
     nameStr
     params
+    posOnlyParams
     kwOnlyParams
     starKWArgParam
     returnTyXRefs
@@ -176,6 +190,7 @@ fromFunctionDefinition def = do
       functionDefinition_key_is_async = async,
       functionDefinition_key_params = pyParams,
       functionDefinition_key_kwonly_params = mKWOnlyParams,
+      functionDefinition_key_posonly_params = mPosOnlyParams,
       functionDefinition_key_star_kwarg = mStarKWArg,
       functionDefinition_key_returnsInfo = mReturnTy
     } = def
@@ -205,17 +220,19 @@ fromParameter (Python.Parameter{..}, xrefs) = do
 
 pprDefinition :: Definition -> Doc Ann
 -- empty param case
-pprDefinition (Function async name [] [] Nothing returnTy) =
+pprDefinition (Function async name [] [] [] Nothing returnTy) =
   hcat [
    pprAsync async, "def" <+> pprName name, "()",
    pprReturnType returnTy
   ]
 -- full param list
-pprDefinition (Function async name params kwOnlyParams starKWArgs returnTy) =
+pprDefinition ( Function async name params posOnlyParams
+       kwOnlyParams starKWArgs returnTy) =
   vcat [
     nest 4 (vsep (
       hcat [pprAsync async, "def" <> space, pprName name <> lparen] :
-      punctuate comma (
+      punctuate comma ( -- ordering is quite semantically sensitive
+          pprPosOnlyParams posOnlyParams ++
           map pprParam params ++
           pprKWOnlyParams kwOnlyParams ++
           maybe [] (pure . pprStarKWArgs) starKWArgs
@@ -231,10 +248,13 @@ pprReturnType :: ReturnType -> Doc Ann
 pprReturnType NoReturnType = emptyDoc
 pprReturnType (ReturnType ty xrefs) = space <> "->" <+> pprTypeXRefs ty xrefs
 
-
 pprKWOnlyParams :: [Parameter] -> [Doc Ann]
 pprKWOnlyParams [] = []
 pprKWOnlyParams xs = "*" : map pprParam xs
+
+pprPosOnlyParams :: [Parameter] -> [Doc Ann]
+pprPosOnlyParams [] = []
+pprPosOnlyParams xs = map pprParam xs ++ ["/"]
 
 pprParam :: Parameter -> Doc Ann
 pprParam (Parameter name mDefValue mty xrefs) = hcat
