@@ -188,13 +188,11 @@ predicate PythonModifiers:
         Decorators[..] = "@staticmethod" | "@classmethod";
       ) then (true) else (false);
     ) | (
-      { variable = D } = Decl;
-      D = python.VariableDeclaration {};
+      { variable = _ } = Decl;
       IsStatic = false;
       Async = false;
     ) | (
-      { cls = C } = Decl;
-      C = python.ClassDeclaration {};
+      { cls = _ } = Decl;
       IsStatic = false;
       Async = false;
     );
