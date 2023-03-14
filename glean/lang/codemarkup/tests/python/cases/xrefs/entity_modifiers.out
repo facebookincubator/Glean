@@ -540,7 +540,7 @@
         "isInline": false,
         "isMutable": false,
         "isReadonly": false,
-        "isStatic": false,
+        "isStatic": true,
         "isVirtual": false,
         "isVolatile": false
       }
