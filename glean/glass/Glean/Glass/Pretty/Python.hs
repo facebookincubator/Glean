@@ -52,21 +52,18 @@ data Definition
       funKWOnlyParams :: [Parameter], -- kw only
       funStarArg :: Maybe Parameter, -- star args
       funStarKWArg :: Maybe Parameter, --  star star kwargs
-      funRetType :: !ReturnType
+      funRetType :: !AType
     }
   | Module !Name
+  | Variable !Name !AType
   | Class {
       _clsName :: !Name,
       _baseNames :: [Name]
     }
- -- Class
- -- Variable
- -- Import
- -- Module
 
-data ReturnType
-  = NoReturnType
-  | ReturnType !PyType XRefs
+data AType
+  = NoType
+  | AType !PyType XRefs
 
 data Parameter = Parameter !Name (Maybe ExprText) !(Maybe PyType) XRefs
 
@@ -120,6 +117,8 @@ fromAngleDefinition def = case def of
     (fromModuleDefinition =<< Glean.keyOf m)
   Python.Definition_cls c -> Just <$>
     (fromClassDefinition =<< Glean.keyOf c)
+  Python.Definition_variable v -> Just <$>
+    (fromVariableDefinition =<< Glean.keyOf v)
   _ -> pure Nothing
 
 fromClassDefinition
@@ -141,6 +140,30 @@ fromClassDefinition def = do
       classDefinition_key_declaration = decl
     } = def
 
+fromVariableDefinition
+  :: Python.VariableDefinition_key -> Glean.RepoHaxl u w Definition
+fromVariableDefinition def = do
+  Python.VariableDeclaration_key name <- Glean.keyOf decl
+  let mVarTy = case mTypeInfo of
+        Nothing -> Nothing
+        Just tyInfo ->
+          let tyNames = map Python.xRefViaName_target
+                (Python.typeInfo_xrefs tyInfo)
+          in Just (tyNames, tyInfo)
+  declMap <- fetchDeclWithNames $ maybe [] fst mVarTy
+  varType <- case mVarTy of
+    Nothing -> pure NoType
+    Just (_, retTyInfo) -> do
+      retTyText <- fromTypeInfo retTyInfo
+      pure $ AType retTyText (mkXRefs declMap retTyInfo)
+  varName <- trimModule <$> Glean.keyOf name
+  return $ Variable varName varType
+  where
+    Python.VariableDefinition_key {
+      variableDefinition_key_typeInfo = mTypeInfo,
+      variableDefinition_key_declaration = decl
+    } = def
+
 fromModuleDefinition
   :: Python.ModuleDefinition_key -> Glean.RepoHaxl u w Definition
 fromModuleDefinition (Python.ModuleDefinition_key mod) = do
@@ -152,12 +175,13 @@ fromFunctionDefinition
   :: Python.FunctionDefinition_key -> Glean.RepoHaxl u w Definition
 fromFunctionDefinition def = do
   Python.FunctionDeclaration_key name <- Glean.keyOf decl
-  returnTy <- case mReturnTy of
-    Nothing -> pure Nothing
-    Just tyInfo -> do
-      let retTypeDeclNames = map Python.xRefViaName_target
-            (Python.typeInfo_xrefs tyInfo)
-      return $ Just (retTypeDeclNames, tyInfo)
+
+  let returnTy = case mReturnTy of
+        Nothing -> Nothing
+        Just tyInfo ->
+          let retTypeDeclNames = map Python.xRefViaName_target
+                (Python.typeInfo_xrefs tyInfo)
+          in Just (retTypeDeclNames, tyInfo)
 
   -- resolve all names to their xref decls in one shot
   declMap <- fetchDeclWithNames $ concat
@@ -213,10 +237,10 @@ fromFunctionDefinition def = do
             Just tyInfo -> (param, mkXRefs declMap tyInfo)
 
   funRetType <- case returnTy of
-    Nothing -> pure NoReturnType
+    Nothing -> pure NoType
     Just (_, retTyInfo) -> do
       retTyText <- fromTypeInfo retTyInfo
-      pure $ ReturnType retTyText (mkXRefs declMap retTyInfo)
+      pure $ AType retTyText (mkXRefs declMap retTyInfo)
 
   funName <- trimModule <$> Glean.keyOf name
   funParams <- mapM fromParameter regParamsAndXRefs
@@ -267,6 +291,11 @@ pprDefinition self (Module name) =
 pprDefinition self (Class name _) =
   "class" <+> annotate (SymId self) (pprName name)
 
+pprDefinition self (Variable name mTyInfo) =
+  annotate (SymId self) (pprName name) <> case mTyInfo of
+    NoType -> emptyDoc
+    AType ty xrefs -> colon <+> pprTypeXRefs ty xrefs
+
 -- empty param case
 pprDefinition self (Function async name [] [] [] Nothing Nothing returnTy) =
   hcat [
@@ -296,9 +325,9 @@ pprAsync :: AsyncModifier -> Doc Ann
 pprAsync Async = "async" <> space
 pprAsync _ = emptyDoc
 
-pprReturnType :: ReturnType -> Doc Ann
-pprReturnType NoReturnType = emptyDoc
-pprReturnType (ReturnType ty xrefs) = space <> "->" <+> pprTypeXRefs ty xrefs
+pprReturnType :: AType -> Doc Ann
+pprReturnType NoType = emptyDoc
+pprReturnType (AType ty xrefs) = space <> "->" <+> pprTypeXRefs ty xrefs
 
 pprKWOnlyParams :: Bool -> [Parameter] -> [Doc Ann]
 pprKWOnlyParams _ [] = []

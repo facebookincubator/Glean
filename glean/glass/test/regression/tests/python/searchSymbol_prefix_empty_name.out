@@ -12,7 +12,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 26
+                        "lineEnd": 30
                     },
                     "repository": "test"
                 },
@@ -34,8 +34,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 20,
-                        "lineBegin": 20,
-                        "lineEnd": 22
+                        "lineBegin": 24,
+                        "lineEnd": 26
                     },
                     "repository": "test"
                 },
@@ -64,8 +64,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 20,
-                        "lineBegin": 21,
-                        "lineEnd": 22
+                        "lineBegin": 25,
+                        "lineEnd": 26
                     },
                     "repository": "test"
                 },
@@ -94,8 +94,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 81,
-                        "lineBegin": 25,
-                        "lineEnd": 25
+                        "lineBegin": 29,
+                        "lineEnd": 29
                     },
                     "repository": "test"
                 },
@@ -124,8 +124,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 21,
-                        "lineBegin": 15,
-                        "lineEnd": 17
+                        "lineBegin": 19,
+                        "lineEnd": 21
                     },
                     "repository": "test"
                 },
@@ -154,8 +154,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 41,
-                        "lineBegin": 16,
-                        "lineEnd": 16
+                        "lineBegin": 20,
+                        "lineEnd": 20
                     },
                     "repository": "test"
                 },
@@ -184,8 +184,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 10,
-                        "lineBegin": 10,
-                        "lineEnd": 10
+                        "lineBegin": 11,
+                        "lineEnd": 11
                     },
                     "repository": "test"
                 },
@@ -198,6 +198,66 @@
                     "exactness": 2
                 },
                 "symbol": "test/py/all.py/all.var"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "all"
+                    },
+                    "symbol": "test/py/all.py/all"
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 26,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "name": "all.var1",
+                "qname": {
+                    "container": "all",
+                    "localName": "var1"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/all.py/all.var1"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "all"
+                    },
+                    "symbol": "test/py/all.py/all"
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 23,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "name": "all.var2",
+                "qname": {
+                    "container": "all",
+                    "localName": "var2"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/all.py/all.var2"
             },
             {
                 "kind": 5,

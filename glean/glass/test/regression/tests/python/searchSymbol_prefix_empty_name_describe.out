@@ -24,7 +24,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 26
+                        "lineEnd": 30
                     },
                     "repository": "test"
                 },
@@ -43,7 +43,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 26
+                        "lineEnd": 30
                     },
                     "repository": "test"
                 },
@@ -80,8 +80,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 20,
-                        "lineBegin": 20,
-                        "lineEnd": 22
+                        "lineBegin": 24,
+                        "lineEnd": 26
                     },
                     "repository": "test"
                 },
@@ -99,8 +99,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 20,
-                        "lineBegin": 20,
-                        "lineEnd": 22
+                        "lineBegin": 24,
+                        "lineEnd": 26
                     },
                     "repository": "test"
                 },
@@ -137,8 +137,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 20,
-                        "lineBegin": 21,
-                        "lineEnd": 22
+                        "lineBegin": 25,
+                        "lineEnd": 26
                     },
                     "repository": "test"
                 },
@@ -156,8 +156,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 20,
-                        "lineBegin": 21,
-                        "lineEnd": 22
+                        "lineBegin": 25,
+                        "lineEnd": 26
                     },
                     "repository": "test"
                 },
@@ -194,8 +194,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 81,
-                        "lineBegin": 25,
-                        "lineEnd": 25
+                        "lineBegin": 29,
+                        "lineEnd": 29
                     },
                     "repository": "test"
                 },
@@ -206,19 +206,28 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
+                "signature": "__all__",
                 "sym": "test/py/all.py/all.__all__",
                 "sym_location": {
                     "filepath": "all.py",
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 81,
-                        "lineBegin": 25,
-                        "lineEnd": 25
+                        "lineBegin": 29,
+                        "lineEnd": 29
                     },
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 7,
+                            "start": 0
+                        },
+                        "type": "test/py/all.py/all.__all__"
+                    }
+                ],
                 "visibility": 40
             },
             {
@@ -252,8 +261,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 21,
-                        "lineBegin": 15,
-                        "lineEnd": 17
+                        "lineBegin": 19,
+                        "lineEnd": 21
                     },
                     "repository": "test"
                 },
@@ -271,8 +280,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 21,
-                        "lineBegin": 15,
-                        "lineEnd": 17
+                        "lineBegin": 19,
+                        "lineEnd": 21
                     },
                     "repository": "test"
                 },
@@ -309,8 +318,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 41,
-                        "lineBegin": 16,
-                        "lineEnd": 16
+                        "lineBegin": 20,
+                        "lineEnd": 20
                     },
                     "repository": "test"
                 },
@@ -321,19 +330,28 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
+                "signature": "local_var",
                 "sym": "test/py/all.py/all.fn.%3Clocals%3E.local_var",
                 "sym_location": {
                     "filepath": "all.py",
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 41,
-                        "lineBegin": 16,
-                        "lineEnd": 16
+                        "lineBegin": 20,
+                        "lineEnd": 20
                     },
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 9,
+                            "start": 0
+                        },
+                        "type": "test/py/all.py/all.fn.%3Clocals%3E.local_var"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -357,8 +375,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 10,
-                        "lineBegin": 10,
-                        "lineEnd": 10
+                        "lineBegin": 11,
+                        "lineEnd": 11
                     },
                     "repository": "test"
                 },
@@ -369,19 +387,142 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
+                "signature": "var",
                 "sym": "test/py/all.py/all.var",
                 "sym_location": {
                     "filepath": "all.py",
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 10,
-                        "lineBegin": 10,
-                        "lineEnd": 10
+                        "lineBegin": 11,
+                        "lineEnd": 11
                     },
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 3,
+                            "start": 0
+                        },
+                        "type": "test/py/all.py/all.var"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 26,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "all",
+                    "localName": "var1"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "var1: List[int]",
+                "sym": "test/py/all.py/all.var1",
+                "sym_location": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 26,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 4,
+                            "start": 0
+                        },
+                        "type": "test/py/all.py/all.var1"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 23,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "all",
+                    "localName": "var2"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "var2: List[int]",
+                "sym": "test/py/all.py/all.var2",
+                "sym_location": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 23,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 4,
+                            "start": 0
+                        },
+                        "type": "test/py/all.py/all.var2"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -556,6 +697,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
+                "signature": "local_var",
                 "sym": "test/py/as.py/as.fn.%3Clocals%3E.local_var",
                 "sym_location": {
                     "filepath": "as.py",
@@ -568,7 +710,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 9,
+                            "start": 0
+                        },
+                        "type": "test/py/as.py/as.fn.%3Clocals%3E.local_var"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -1037,6 +1187,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
+                "signature": "big_var",
                 "sym": "test/py/big_lib/big_lib.big_var",
                 "sym_location": {
                     "filepath": "big_lib/__init__.py",
@@ -1049,7 +1200,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 7,
+                            "start": 0
+                        },
+                        "type": "test/py/big_lib/big_lib.big_var"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -1589,6 +1748,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
+                "signature": "c",
                 "sym": "test/py/main.py/main.f.%3Clocals%3E.c",
                 "sym_location": {
                     "filepath": "main.py",
@@ -1601,7 +1761,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 1,
+                            "start": 0
+                        },
+                        "type": "test/py/main.py/main.f.%3Clocals%3E.c"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -1872,6 +2040,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
+                "signature": "big_func",
                 "sym": "test/py/shadow.py/shadow.ShadowClass.big_func",
                 "sym_location": {
                     "filepath": "shadow.py",
@@ -1884,7 +2053,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 8,
+                            "start": 0
+                        },
+                        "type": "test/py/shadow.py/shadow.ShadowClass.big_func"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -1920,6 +2097,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
+                "signature": "local_var",
                 "sym": "test/py/shadow.py/shadow.ShadowClass.local_var",
                 "sym_location": {
                     "filepath": "shadow.py",
@@ -1932,7 +2110,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 9,
+                            "start": 0
+                        },
+                        "type": "test/py/shadow.py/shadow.ShadowClass.local_var"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -1968,6 +2154,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
+                "signature": "other_var",
                 "sym": "test/py/shadow.py/shadow.ShadowClass.other_var",
                 "sym_location": {
                     "filepath": "shadow.py",
@@ -1980,7 +2167,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 9,
+                            "start": 0
+                        },
+                        "type": "test/py/shadow.py/shadow.ShadowClass.other_var"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -2016,6 +2211,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
+                "signature": "big_func",
                 "sym": "test/py/shadow.py/shadow.big_func",
                 "sym_location": {
                     "filepath": "shadow.py",
@@ -2028,7 +2224,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 8,
+                            "start": 0
+                        },
+                        "type": "test/py/shadow.py/shadow.big_func"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -2064,6 +2268,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
+                "signature": "local_var",
                 "sym": "test/py/shadow.py/shadow.local_var",
                 "sym_location": {
                     "filepath": "shadow.py",
@@ -2076,7 +2281,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 9,
+                            "start": 0
+                        },
+                        "type": "test/py/shadow.py/shadow.local_var"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -2112,6 +2325,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
+                "signature": "local_var",
                 "sym": "test/py/shadow.py/shadow.local_var",
                 "sym_location": {
                     "filepath": "shadow.py",
@@ -2124,7 +2338,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 9,
+                            "start": 0
+                        },
+                        "type": "test/py/shadow.py/shadow.local_var"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -2160,6 +2382,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
+                "signature": "other_var",
                 "sym": "test/py/shadow.py/shadow.other_var",
                 "sym_location": {
                     "filepath": "shadow.py",
@@ -2172,7 +2395,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 9,
+                            "start": 0
+                        },
+                        "type": "test/py/shadow.py/shadow.other_var"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -2265,6 +2496,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
+                "signature": "big_func",
                 "sym": "test/py/shadow.py/shadow.shadow_func.%3Clocals%3E.big_func",
                 "sym_location": {
                     "filepath": "shadow.py",
@@ -2277,7 +2509,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 8,
+                            "start": 0
+                        },
+                        "type": "test/py/shadow.py/shadow.shadow_func.%3Clocals%3E.big_func"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -2313,6 +2553,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
+                "signature": "local_var",
                 "sym": "test/py/shadow.py/shadow.shadow_func.%3Clocals%3E.local_var",
                 "sym_location": {
                     "filepath": "shadow.py",
@@ -2325,7 +2566,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 9,
+                            "start": 0
+                        },
+                        "type": "test/py/shadow.py/shadow.shadow_func.%3Clocals%3E.local_var"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -2361,6 +2610,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
+                "signature": "other_var",
                 "sym": "test/py/shadow.py/shadow.shadow_func.%3Clocals%3E.other_var",
                 "sym_location": {
                     "filepath": "shadow.py",
@@ -2373,7 +2623,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 9,
+                            "start": 0
+                        },
+                        "type": "test/py/shadow.py/shadow.shadow_func.%3Clocals%3E.other_var"
+                    }
+                ],
                 "visibility": 20
             }
         ],
@@ -2387,7 +2645,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 26
+                        "lineEnd": 30
                     },
                     "repository": "test"
                 },
@@ -2409,8 +2667,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 20,
-                        "lineBegin": 20,
-                        "lineEnd": 22
+                        "lineBegin": 24,
+                        "lineEnd": 26
                     },
                     "repository": "test"
                 },
@@ -2439,8 +2697,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 20,
-                        "lineBegin": 21,
-                        "lineEnd": 22
+                        "lineBegin": 25,
+                        "lineEnd": 26
                     },
                     "repository": "test"
                 },
@@ -2469,8 +2727,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 81,
-                        "lineBegin": 25,
-                        "lineEnd": 25
+                        "lineBegin": 29,
+                        "lineEnd": 29
                     },
                     "repository": "test"
                 },
@@ -2499,8 +2757,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 21,
-                        "lineBegin": 15,
-                        "lineEnd": 17
+                        "lineBegin": 19,
+                        "lineEnd": 21
                     },
                     "repository": "test"
                 },
@@ -2529,8 +2787,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 41,
-                        "lineBegin": 16,
-                        "lineEnd": 16
+                        "lineBegin": 20,
+                        "lineEnd": 20
                     },
                     "repository": "test"
                 },
@@ -2559,8 +2817,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 10,
-                        "lineBegin": 10,
-                        "lineEnd": 10
+                        "lineBegin": 11,
+                        "lineEnd": 11
                     },
                     "repository": "test"
                 },
@@ -2573,6 +2831,66 @@
                     "exactness": 2
                 },
                 "symbol": "test/py/all.py/all.var"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "all"
+                    },
+                    "symbol": "test/py/all.py/all"
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 26,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "name": "all.var1",
+                "qname": {
+                    "container": "all",
+                    "localName": "var1"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/all.py/all.var1"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "all"
+                    },
+                    "symbol": "test/py/all.py/all"
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 23,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "name": "all.var2",
+                "qname": {
+                    "container": "all",
+                    "localName": "var2"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/all.py/all.var2"
             },
             {
                 "kind": 5,

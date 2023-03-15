@@ -92,6 +92,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
+                "signature": "big_var",
                 "sym": "test/py/big_lib/big_lib.big_var",
                 "sym_location": {
                     "filepath": "big_lib/__init__.py",
@@ -104,7 +105,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 7,
+                            "start": 0
+                        },
+                        "type": "test/py/big_lib/big_lib.big_var"
+                    }
+                ],
                 "visibility": 20
             }
         ],
