@@ -518,6 +518,37 @@
         "child": {
           "python": {
             "decl": {
+              "module": { "key": { "name": { "key": "big_lib.relative" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "big_lib.relative",
+          "file": { "key": "big_lib/relative.py" },
+          "location": { "span": { "start": 0, "length": 260 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": { "module": { "key": { "name": { "key": "big_lib" } } } }
+          }
+        },
+        "location": {
+          "name": "big_lib",
+          "file": { "key": "big_lib/__init__.py" },
+          "location": { "span": { "start": 0, "length": 433 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
               "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
             }
           }

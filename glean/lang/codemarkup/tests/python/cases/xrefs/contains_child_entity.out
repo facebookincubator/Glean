@@ -262,6 +262,22 @@
       "child": {
         "python": {
           "decl": {
+            "module": { "key": { "name": { "key": "big_lib.relative" } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "big_lib" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": {
             "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
           }
         }

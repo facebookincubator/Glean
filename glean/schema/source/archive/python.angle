@@ -553,7 +553,7 @@ predicate SearchByLocalName:
     python.NameToSName Name -> { local_name = python.Name NameStr };
 
 # Mapping between declarations and their **immediate** containers.
-# - a module is the container for everything declared at module level
+# - a module is the container for everything declared at module level and submodules
 # - a class is the container for its methods, variables and inner classes
 # - a function is the container for variables, functions and classes
   predicate ContainedBy:
@@ -563,25 +563,34 @@ predicate SearchByLocalName:
     }
     {ContaineeDecl, ContainerDecl} where
       (
-        { cls = ClassDecl } = ContaineeDecl;
-        python.ClassDefinition { declaration = ClassDecl, container = { just = Container } };
+        # we don't have definitions for empty modules in the module chain,
+        # but we can define relations between them using names
+        { module = _ } = ContaineeDecl;
+        python.SNameWithDeclaration { ContaineeDecl, { parent = { just = SName } } };
+        python.DeclarationWithSName { SName, ContainerDecl };
+        { module = _ } = ContainerDecl;
       ) | (
-        { func = FuncDecl } = ContaineeDecl;
-        python.FunctionDefinition { declaration = FuncDecl, container = { just = Container } };
-      ) | (
-        { variable = VarDecl } = ContaineeDecl;
-        python.VariableDefinition { declaration = VarDecl, container = { just = Container } };
-      );
-      Container = Container; # hack to make this variable available inside or patterns below
-      (
-        { module = ModuleDecl } = Container;
-        { module = ModuleDecl } = ContainerDecl;
-      ) | (
-        { cls = ClassDecl } = Container ;
-        { cls = ClassDecl } = ContainerDecl;
-      ) | (
-        { func = FuncDecl } = Container;
-        { func = FuncDecl } = ContainerDecl;
+        (
+          { cls = ClassDecl } = ContaineeDecl;
+          python.ClassDefinition { declaration = ClassDecl, container = { just = Container } };
+        ) | (
+          { func = FuncDecl } = ContaineeDecl;
+          python.FunctionDefinition { declaration = FuncDecl, container = { just = Container } };
+        ) | (
+          { variable = VarDecl } = ContaineeDecl;
+          python.VariableDefinition { declaration = VarDecl, container = { just = Container } };
+        );
+        Container = Container; # hack to make this variable available inside or patterns below
+        (
+          { module = ModuleDecl } = Container;
+          { module = ModuleDecl } = ContainerDecl;
+        ) | (
+          { cls = ClassDecl } = Container ;
+          { cls = ClassDecl } = ContainerDecl;
+        ) | (
+          { func = FuncDecl } = Container;
+          { func = FuncDecl } = ContainerDecl;
+        );
       );
 
 # Reverse mapping of ContainedBy

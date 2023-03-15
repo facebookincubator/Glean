@@ -258,12 +258,7 @@ predicate PythonContainsParentEntity :
     parent: code.python.Entity
   }
   { { decl = Child }, { decl = Parent } } where
-    ( {module = _ } = Child;
-      python.SNameWithDeclaration { Child, { parent = { just = SName }}};
-      python.DeclarationBySName SName -> Parent
-    ) | (
-      python.ContainedBy { Child, Parent };
-    )
+    python.ContainedBy { Child, Parent };
 
 # Child extends parent by an inheritance relationship
 predicate PythonExtendsParentEntity :
