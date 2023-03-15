@@ -608,8 +608,12 @@ predicate IsAbstract: Declaration
   (
     { cls = ClassDecl } = Decl;
     # A class is abstract if it was based on "abc.ABC"
-    DerivedClassToBase { ClassDecl, { name = "abc.ABC" } };
+    DerivedClassToBase { ClassDecl, Base };
+    { name = "abc.ABC" } = Base;
     # ABCMeta is not supported, because doesn't have this data
+    # (perf note): find the base classes first and then check to see
+    # whether the name is "abc.ABC", don't find all the "abc.ABC"
+    # classes first.
   ) | (
     { func = FuncDecl } = Decl;
     python.FunctionDefinition { declaration = FuncDecl, decorators = { just = Decorators } };

@@ -278,7 +278,8 @@ predicate SearchByNameModule:
   { Str, Mod } where
     ( Module { string_ = Str } |
       Module { lib = Str } |
-      Module { file = src.File Str } ) = Mod;
+      ( F = src.File Str; Module { file = F } ) ) = Mod;
+      # [perf note] search files first and then modules
 
 # Search by Name and string code for the Module
 predicate SearchByModule :
