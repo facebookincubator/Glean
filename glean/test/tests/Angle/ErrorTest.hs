@@ -134,7 +134,7 @@ angleErrorTests = dbTestCase $ \env repo -> do
       Left (BadQuery x) -> "type mismatch for variable B" `Text.isInfixOf` x
       _ -> False
 
-  r <- try $ runQuery_ env repo $ angle @Glean.Test.Predicate
+  r <- try $ runQuery_ env repo $ angle @Cxx.Name
     [s|
       _ = prim.length (_ : [string]); cxx1.Name "xyz"
     |]

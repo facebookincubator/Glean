@@ -22,7 +22,7 @@ import Data.IntMap (IntMap)
 import qualified Data.IntMap as IntMap
 import Data.IntSet (IntSet)
 import qualified Data.IntSet as IntSet
-import Data.List (uncons)
+import Data.List (uncons, partition)
 import qualified Data.List.NonEmpty as NonEmpty
 import Data.Maybe
 import Data.Text (Text)
@@ -240,197 +240,169 @@ after flattening yields the group of statements
 The purpose of reorderStmtGroup is to find a good ordering for the
 statements in the group.
 
-Things that we take into acccount are:
-- A match with at most one result (point query) should probably be done early
-- A match that never fails should probably be done late
-- If a statement binds something that makes another statement more
-  efficient, choose the ordering to exploit that
+The algorithm is
 
-The algorithm is:
-
-- construct a graph where the nodes are statements and
-  - for each lookup statement (X = pred pat) (A)
-  - for each statement that mentions X (B)
-  - if pat is irrefutable
-    - edge A -> B
-  - if pat is a point match
-    - edge B -> A
-  - else, if X occurs in a prefix position in B
-    - edge B -> A
-  - else
-    - edge A -> B
-- render the postorder traversal of this graph
-
+  1. first choose lookups (X = pred P, where X is bound)
+  2. repeat step 1, binding more variables until there are no more lookups
+  3. classify all the remaining statements by cost
+  4. choose statements in the following order. If we choose any
+     statements, then go back to 1 to order the remaining statements.
+     a. filters (e.g. X = 1)
+     b. point matches (e.g. X = pred "abc")
+     c. prefix matches (e.g. X = pred { 1, _ })
+     d. full scans (e.g. X = pred _)
+     e. unresolved
 -}
+
+data StmtCost
+  = StmtFilter
+  | StmtLookup
+  | StmtPointMatch
+  | StmtPrefixMatch
+  | StmtScan
+  | StmtUnresolved
+  deriving (Bounded, Eq, Show, Ord)
 
 reorderStmtGroup :: Scope -> FlatStatementGroup -> [FlatStatement]
 reorderStmtGroup scope stmts =
   let
-    bound = allBound scope
-
-    nodes = zip [(0::Int)..] (NonEmpty.toList stmts)
-
-    -- statements, numbered from zero, and with the set of variables
-    -- mentioned anywhere in the statement.
-    withVars :: [(Int, VarSet, FlatStatement)]
-    withVars =
-      [ (n, vars stmt `IntSet.difference` bound, stmt)
-      | (n, stmt) <- nodes
-      ]
-
-    -- statements in this group that are candidates for reordering
-    -- (X = pred pat)
-    --
-    -- The goal of this pass is to establish, for each candidate C of
-    -- the form "X = pred pat" and each statement S that mentions X,
-    -- whether C should go before or after S.
-    candidates =
-      [ (n, x, xs, matchType, stmt)
-      | (n, xs, stmt) <- withVars
-      , Just (x, matchType) <- [isCandidate stmt]
-      ]
-
-    -- Just X if the statement will compile to a fact lookup if X is bound.
-    -- This is conservative and only matches simple cases, but it's enough
-    -- to spot statements generated when we flatten a nested generator.
-    -- At this point we also classify the match according to whether it
-    -- matches at most one thing, matches everything, or something else
-    -- (PatternMatch).
-    isCandidate
-      (FlatStatement _ (Ref v) (FactGenerator _ key _ _))
-      | Just (Var _ x _) <- matchVar v =
-        Just (x, classifyPattern bound key) -- TODO lookupScope here is wrong
-      where bound = (`IntSet.member` lhsScope)
-    isCandidate _ = Nothing
-
-    lhsVars = IntSet.unions $
-       IntSet.fromList [ x | (_, x, _, _, _) <- candidates ] :
-       [ xs | (_, xs, FlatDisjunction{}) <- withVars ]
-       -- we'll consider variables mentioned by disjunctions as
-       -- bound. There's a liberal amount of guesswork going on here
-       -- because we don't know how the disjunction should be ordered
-       -- with respect to the other statements and it might depend on
-       -- the ordering of the statements within the disjunction
-       -- itself.
-
-    -- for classifyPattern we want to consider the variables on the
-    -- lhs of the candidates as bound. e.g.
-    --
-    --   X = pred { Y, _ }
-    --   Y = ...
-    --
-    -- we want to consider { Y, _ } as a prefix match and put the
-    -- binding of Y first.
-    lhsScope = bound `IntSet.union` lhsVars
-
-    -- for each statements in this group, find the variables that
-    -- the statement mentions in a prefix position.
-    uses =
-      [ (n, xs, prefixVars lhsVars bound stmt, stmt)
-      | (n, xs, stmt) <- withVars
-      ]
-
-    -- classify each candidate (X = pred P) according to whether it
-    -- will be a lookup (X is bound) or a search (X is unbound).
-    --
-    -- If X = pred P is a lookup, then we want all the vars bound by P
-    -- to also be lookups, because a lookup is O(1). So this property
-    -- is propagated transitively.
-    --
-    -- * start from the set of bound vars,
-    -- * add vars that are in non-prefix positions, or where P is a full scan
-    -- * add vars from the rhs of all these candidates
-    -- * keep going until we're done
-    initialLookupVars = IntSet.unions
-      [ bound
-      , IntSet.fromList slowSearches
-      , IntSet.fromList nonPrefixVars
-      ]
-      where
-        slowSearches = [ x | (_, x, _, PatternSearchesAll, _) <- candidates ]
-        nonPrefixVars =
-          [ x
-          | (_, _, prefix, stmt) <- uses
-          , let lhs = case isCandidate stmt of
-                  Just (x,_) -> Just x
-                  Nothing -> Nothing
-          , x <- IntSet.toList (boundVars stmt)
-            -- NB. we want variables that this statement can *bind*,
-            -- not all the variables it mentions.
-          , Just x /= lhs && not (x `IntSet.member` prefix)
-            -- only consider variables that actually have lookup
-            -- statements, otherwise the assumption made by
-            -- new_slow_searches below is incorrect.
-          , x `IntMap.member` candidateMap
-          ]
-
-    candidateMap = IntMap.fromListWith (++)
-      [ (n, [stmt]) | stmt@(_,n,_,_,_) <- candidates ]
-
-    -- iteratively discover more variables that should be lookups,
-    -- starting from initialLookupVars
-    lookupVars = go (IntSet.toList initialLookupVars) IntSet.empty
-      where
-      go [] vars = vars
-      go (x:xs) vars
-        | x `IntSet.member` vars = go xs vars
-        | otherwise = go (new ++ xs) (IntSet.insert x vars)
-        where
-        new = new_unpacks ++ new_slow_searches
-
-        -- If X is a lookup and X = pred pat, then all vars in pat are
-        -- lookups too (nested unpacking).
-        new_unpacks = concat [ IntSet.toList ys | (_, _, ys, _, _) <- stmts ]
-          where stmts = IntMap.findWithDefault [] x candidateMap
-
-        -- If X is a lookup and Y = pred { X, ... }, then Y is a slow
-        -- search and therefore a lookup too.
-        new_slow_searches =
-          [ y
-          | Just stmts <- [usesOf x]
-          , (_,_,FlatStatement _ (Ref v) (FactGenerator _ key _ _)) <- stmts
-          , Just (Var _ y _) <- [matchVar v]
-          , let bound = (`IntSet.member` IntSet.delete x lhsScope)
-          , PatternSearchesAll <- [classifyPattern bound key]
-          ]
-
-    -- find the statements that mention X
-    usesOf x = IntMap.lookup x m
-      where
-      m = IntMap.fromListWith (++)
-        [ (x, [(n,ys,stmt)])
-        | (n, xs, ys, stmt) <- uses
-        , x <- IntSet.toList xs
-        ]
-
-    edges :: IntMap [(Int,FlatStatement)]
-    edges = IntMap.fromListWith (++)
-      [ if
-          | PatternMatchesOne <- matchType -> (use, [(lookup,lookupStmt)])
-            -- a point match: always do these first
-          | isUnresolved scope useStmt -> (use, [(lookup,lookupStmt)])
-            -- if the use is undefined at this point, put the lookup first
-          | x `IntSet.member` lookupVars -> (lookup, [(use, useStmt)])
-            -- we want X to be a lookup: do it after the use of X
-          | otherwise -> (use, [(lookup,lookupStmt)])
-            -- otherwise put the candidate before the use
-      | (lookup, x, _, matchType, lookupStmt) <- candidates
-      , Just uses <- [usesOf x]
-      , (use, _, useStmt) <- uses
-      , use /= lookup
-      ]
-
-    -- comment this out and import Debug.Trace for debugging
-    trace _ y = y
+    (lookups, others) = partitionStmts (map summarise (NonEmpty.toList stmts))
   in
-  trace ("numStmts: " <> show (length nodes)) $
-  trace ("candidates: " <> show [ x | (_,x,_,_,_) <- candidates ]) $
-  trace ("scope: " <> show scope) $
-  trace ("initialLookupVars: " <> show initialLookupVars) $
-  trace ("lookupVars: " <> show lookupVars) $
+  layout (IntSet.toList bound0) bound0 lookups others
+  where
+    bound0 = allBound scope
 
-  -- order the statements and then recursively reorder nested groups
-  map snd $ postorderDfs nodes edges
+    summarise :: FlatStatement -> (Maybe VarId, VarSet, FlatStatement)
+    summarise stmt = case stmt of
+      FlatStatement _ lhs rhs -> (maybeVar, bound, stmt)
+        where
+        maybeVar = case (lhs,rhs) of
+          (Ref v, FactGenerator{}) | Just (Var _ x _) <- matchVar v -> Just x
+          _otherwise -> Nothing
+      FlatDisjunction{} -> (Nothing, bound, stmt)
+      FlatNegation{} ->  (Nothing, bound, stmt)
+      FlatConditional{} ->  (Nothing, bound, stmt)
+      where
+      bound = boundVars stmt
+
+    partitionStmts
+       :: [(Maybe VarId, VarSet, FlatStatement)]
+       -> (IntMap [(VarSet, FlatStatement)], [(VarSet, FlatStatement)])
+    partitionStmts summaries = (lookups, others)
+      where
+      lookups = IntMap.fromListWith (<>)
+        [ (v, [(bound, stmt)]) | (Just v, bound, stmt) <- summaries ]
+      others = [ (bound, stmt) | (Nothing, bound, stmt) <- summaries ]
+
+    classify :: VarSet -> FlatStatement -> StmtCost
+    classify bound (FlatStatement _ _ (FactGenerator _ key _ _)) =
+      case classifyPattern ((`IntSet.member` bound) . varId) key of
+        PatternMatchesOne -> StmtPointMatch
+        PatternMatchesSome -> StmtPrefixMatch
+        PatternSearchesAll -> StmtScan
+    classify _ (FlatDisjunction []) = StmtFilter -- False
+    classify bound (FlatDisjunction alts@(_:_:_)) =
+      maximum (map (classifyAlt bound) alts)
+    classify _ stmt
+      | isResolvedFilter scope stmt = StmtFilter
+      | isCurrentlyUnresolved scope stmt = StmtUnresolved
+      | otherwise = StmtScan
+
+    -- Approximate classification of disjunctions. To be more
+    -- accurate we would have to recursively reorder the
+    -- statements in the disjunction. TODO: recursively reorder
+    -- but only if there are no O(1) statements in the group.
+    classifyAlt bound groups =
+      go bound (concatMap NonEmpty.toList groups) minBound
+      where
+      go _ [] cost = cost
+      go bound (stmt : stmts) cost =
+        go (boundVars stmt `IntSet.union` bound) stmts (max cost cost')
+        where cost' = classify bound stmt
+
+    layout
+      :: [VarId]
+      -> VarSet
+      -> IntMap [(VarSet, FlatStatement)]
+      -> [(VarSet, FlatStatement)]
+      -> [FlatStatement]
+    layout _ _ lookups [] | IntMap.null lookups = []
+    layout (x:xs) bound lookups others =
+      case IntMap.lookup x lookups of
+        Nothing -> layout xs (IntSet.insert x bound) lookups others
+        Just some ->
+          stmts <> layout (new <> xs) bound' (IntMap.delete x lookups) others
+          where
+          (varss, stmts) = unzip some
+          allVars = IntSet.unions varss
+          new = filter (`IntSet.notMember` bound) (IntSet.toList allVars)
+          bound' = IntSet.union allVars bound
+    layout [] bound lookups others =
+      let
+        trace _ x = x
+
+        classified =
+          [ (classify bound stmt, (Just var, vars, stmt))
+          | (var, some) <- IntMap.toList lookups, (vars, stmt) <- some ] <>
+          [ (classify bound stmt, (Nothing, vars, stmt))
+          | (vars, stmt) <- others ]
+
+        pick choose wanted orElse
+          | null found = orElse
+          | otherwise =
+            trace (show $ vcat [
+              "pick: " <> pretty (show wanted),
+              nest 2 (dumpStmts found),
+              "rejected:",
+              nest 2 (dumpStmts rejected) ]) $
+            choose (map snd found) (map snd rejected)
+          where
+          dumpStmts stmts =
+            vcat [ displayDefault stmt | (_, (_,_,stmt)) <- stmts ]
+          (found, rejected) = partition want classified
+            where want (cost, _) = cost == wanted
+
+        pickNext = case map snd classified of
+          [] -> error "pickNext"
+          ((_, vars, stmt):rest) -> chooseOne vars stmt rest
+
+        chooseAll found rejected =
+          stmts <> layout (concatMap IntSet.toList varss) bound lookups others
+          where
+          (_, varss, stmts) = unzip3 found
+          (lookups, others) = partitionStmts rejected
+
+        chooseOne vars stmt rest =
+          stmt : layout (IntSet.toList vars) bound lookups others
+          where
+          (lookups, others) = partitionStmts rest
+
+        chooseBest found rejected = go found []
+          -- pick a statement that isn't bound by some other statement
+          where
+          this vars stmt rest = chooseOne vars stmt (rest <> rejected)
+
+          go [] _ = case found of
+            [] -> error "chooseBest"
+            ((_, vars, stmt) : rest) -> this vars stmt rest
+          go ((Nothing, vars, stmt) : rest) other =
+            this vars stmt (rest <> other)
+          go (info@(Just var, vars, stmt) : rest) other
+            | not (boundBySomething var) = this vars stmt (rest <> other)
+            | otherwise = go rest (info : other)
+
+          boundBySomething v = any boundBy (found <> rejected)
+            where
+            boundBy (Just v', _, _) | v == v' = False
+            boundBy (_, vars, _) = v `IntSet.member` vars
+
+      in
+      pick chooseAll StmtFilter $
+      pick chooseAll StmtPointMatch $
+      pick chooseBest StmtPrefixMatch $
+      pick chooseBest StmtScan
+      pickNext
+      -- TODO: only classify Disjunction if there are no O(1) stmts
 
 {- Note [Reordering negations]
 
@@ -507,7 +479,7 @@ isResolvedFilter :: Scope -> FlatStatement -> Bool
 isResolvedFilter scope stmt = case stmt of
   FlatStatement _ _ ArrayElementGenerator{} -> False
     -- an ArrayElementGenerator is not O(1)
-  _otherwise -> isReadyFilter scope stmt False
+  _otherwise -> isReadyFilter (ifBoundOnly scope) stmt False
 
 -- | True if the statement is definitely unresolved in the given
 -- scope. False indicates "maybe resolved"; we'll fall back to trying
@@ -515,10 +487,24 @@ isResolvedFilter scope stmt = case stmt of
 isUnresolved :: Scope -> FlatStatement -> Bool
 isUnresolved scope stmt = case stmt of
   FlatDisjunction{} -> False -- don't know
-  FlatStatement _ _ (ArrayElementGenerator _ arr) -> not (patIsBound scope arr)
-  _otherwise -> not (isReadyFilter scope stmt True)
+  FlatStatement _ _ (ArrayElementGenerator _ arr) ->
+    not (patIsBound inScope arr)
+  _otherwise -> not (isReadyFilter inScope stmt True)
+  where
+  inScope = allowUnboundPredicates scope
+  -- an unbound variable of predicate type counts as resolved, because
+  -- it will be resolved by adding a generator in reorderStmt later.
 
-isReadyFilter :: Scope -> FlatStatement -> Bool -> Bool
+isCurrentlyUnresolved :: Scope -> FlatStatement -> Bool
+isCurrentlyUnresolved scope stmt = case stmt of
+  FlatDisjunction{} -> False -- don't know
+  FlatStatement _ _ (ArrayElementGenerator _ arr) ->
+    not (patIsBound inScope arr)
+  _otherwise -> not (isReadyFilter inScope stmt True)
+  where
+  inScope = ifBoundOnly scope
+
+isReadyFilter :: InScope -> FlatStatement -> Bool -> Bool
 isReadyFilter scope stmt notFilter = case stmt of
   FlatDisjunction [one] -> all (all isReady) one
     where isReady stmt = isReadyFilter scope stmt notFilter
@@ -536,14 +522,31 @@ isReadyFilter scope stmt notFilter = case stmt of
     where
       isReady stmt = isReadyFilter scope stmt notFilter
       appearInStmts = foldMap (foldMap vars) stmtss
+      InScope _ scope' = scope
       hasAllNonLocalsBound =
         IntSet.null $
-        IntSet.filter (\var -> isInScope scope var && not (isBound scope var))
+        IntSet.filter (\var -> isInScope scope' var && not (isBound scope' var))
         appearInStmts
   _ -> notFilter
 
+data InScope = InScope Bool Scope
+
+allowUnboundPredicates :: Scope -> InScope
+allowUnboundPredicates = InScope True
+
+ifBoundOnly :: Scope -> InScope
+ifBoundOnly = InScope False
+
 isInScope :: Scope -> Variable -> Bool
 isInScope (Scope scope) var = var `IntMap.member` scope
+
+isBoundInScope :: InScope -> Var -> Bool
+isBoundInScope (InScope allowPredicate scope) (Var ty v _) =
+  isBound scope v || (allowPredicate && isPredicate ty)
+  where
+  isPredicate ty
+    | RTS.PredicateRep{} <- RTS.repType ty = True
+    | otherwise = False
 
 allBound :: Scope -> VarSet
 allBound (Scope scope) = IntMap.keysSet $ IntMap.filter id scope
@@ -551,9 +554,9 @@ allBound (Scope scope) = IntMap.keysSet $ IntMap.filter id scope
 allVars :: Scope -> VarSet
 allVars (Scope scope) = IntMap.keysSet scope
 
-patIsBound :: Scope -> Pat -> Bool
-patIsBound scope pat
-  | PatternMatchesOne <- classifyPattern (isBound scope) pat = True
+patIsBound :: InScope -> Pat -> Bool
+patIsBound inScope pat
+  | PatternMatchesOne <- classifyPattern (isBoundInScope inScope) pat = True
   | otherwise = False
 
 data PatternMatch
@@ -566,7 +569,7 @@ data PatternMatch
 
 -- | Classify a pattern according to the cases in 'PatternMatch'
 classifyPattern
-  :: (Int -> Bool) -- ^ variable is bound?
+  :: (Var -> Bool) -- ^ variable is bound?
   -> Term (Match () Var)
   -> PatternMatch
 classifyPattern bound t = fromMaybe PatternMatchesOne (go False t end)
@@ -590,8 +593,8 @@ classifyPattern bound t = fromMaybe PatternMatchesOne (go False t end)
       MatchWild{} -> wild pref
       MatchNever{} -> Just PatternMatchesOne
       MatchFid{} -> fixed r
-      MatchBind (Var _ v _) -> var v
-      MatchVar (Var _ v _) -> var v
+      MatchBind v -> var v
+      MatchVar v -> var v
       MatchAnd a b ->
         case (go pref a end, go pref b end) of
           (Nothing, _) -> r False
@@ -629,77 +632,6 @@ classifyPattern bound t = fromMaybe PatternMatchesOne (go False t end)
 
   termSeq pref [] r = r pref
   termSeq pref (x:xs) r = go pref x (\pref -> termSeq pref xs r)
-
-
--- | Determine the set of variables that occur in a prefix position in
--- a pattern.
-prefixVars
-  :: VarSet
-     -- ^ bound variables that we're interested in
-  -> VarSet
-     -- ^ bound variables that we're not interested in
-  -> FlatStatement
-  -> VarSet
-prefixVars lookups scope stmt = prefixVarsStmt stmt
-  where
-  prefixVarsStmt (FlatStatement _ _ (FactGenerator _ key _ _)) =
-      prefixVarsTerm key IntSet.empty
-  prefixVarsStmt FlatStatement{} = IntSet.empty
-  prefixVarsStmt (FlatNegation stmtss) = prefixVarsStmts stmtss
-  prefixVarsStmt (FlatDisjunction stmtsss) = foldMap prefixVarsStmts stmtsss
-  prefixVarsStmt (FlatConditional cond then_ else_) =
-    foldMap prefixVarsStmts [cond, then_, else_]
-
-  prefixVarsStmts :: [FlatStatementGroup] -> VarSet
-  prefixVarsStmts stmtss =
-    IntSet.unions
-      [ prefixVarsStmt stmt
-      | stmts <- stmtss
-      , stmt <- NonEmpty.toList stmts
-      ]
-
-  prefixVarsTerm :: Term (Match () Var) -> VarSet -> VarSet
-  prefixVarsTerm t r = case t of
-    Byte{} -> r
-    Nat{} -> r
-    Array xs -> foldr prefixVarsTerm r xs
-    ByteArray{} -> r
-    Tuple xs -> foldr prefixVarsTerm r xs
-    Alt _ t -> prefixVarsTerm t r
-    String{} -> r
-    Ref m -> prefixVarsMatch m r
-
-  prefixVarsMatch :: Match () Var -> VarSet -> VarSet
-  prefixVarsMatch m r = case m of
-    MatchWild{} -> IntSet.empty
-    MatchNever{} -> IntSet.empty
-    MatchFid{} -> r
-    MatchBind (Var _ v _) -> var v
-    MatchVar (Var _ v _) -> var v
-    MatchAnd a b -> prefixVarsTerm a r `IntSet.union` prefixVarsTerm b r
-    MatchPrefix _ t -> prefixVarsTerm t r
-    MatchArrayPrefix _ty pre -> foldr prefixVarsTerm r pre
-    MatchExt{} -> IntSet.empty
-    where
-    var v
-      -- already bound: we're still in the prefix
-      | v `IntSet.member` scope = r
-      -- one of the lookups in this group: add to our list of prefix vars
-      | v `IntSet.member` lookups = IntSet.insert v r
-      -- unbound: this is the end of the prefix
-      | otherwise = IntSet.empty
-
-postorderDfs :: forall a. [(Int,a)] -> IntMap [(Int,a)] -> [(Int,a)]
-postorderDfs nodes edges = go IntSet.empty nodes (\_ -> [])
-  where
-  go :: IntSet -> [(Int,a)] -> (IntSet -> [(Int,a)]) -> [(Int,a)]
-  go seen [] cont = cont seen
-  go seen ((n,a):xs) cont
-    | n `IntSet.member` seen = go seen xs cont
-    | otherwise = go (IntSet.insert n seen) children
-        (\seen -> (n,a) : go seen xs cont)
-    where
-    children = IntMap.findWithDefault [] n edges
 
 -- | Decide whether to flip a statement or not.
 --

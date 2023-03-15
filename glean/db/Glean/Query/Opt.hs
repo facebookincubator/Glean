@@ -231,7 +231,7 @@ instance Apply FlatStatement where
     return (FlatNegation  stmts')
   apply (FlatDisjunction [stmts]) = do
     stmts' <- mapM (mapM apply) stmts
-    return (FlatDisjunction [stmts'])
+    return (grouping stmts')
   apply (FlatDisjunction stmtss) = do
     stmtss' <- mapM optStmtsEnclosed stmtss
     -- we can remove alternatives that are known to be false, but if
@@ -240,7 +240,7 @@ instance Apply FlatStatement where
     case filter (not . isFalseGroups) stmtss' of
       [] -> case stmtss' of
         [] -> return (FlatDisjunction [])
-        (ss : _) -> return (FlatDisjunction [ss])
+        (ss : _) -> return (grouping ss)
       some -> return (FlatDisjunction some)
   apply (FlatConditional cond then_ else_) = do
     -- like disjunctions, assumptions arising from the conditional statements
@@ -254,7 +254,7 @@ instance Apply FlatStatement where
     else' <- optStmtsEnclosed else_
 
     return $ if isFalseGroups cond'
-      then FlatDisjunction [else']
+      then grouping else'
       else FlatConditional cond' then' else'
 
 optStmtsEnclosed :: [FlatStatementGroup] -> U [FlatStatementGroup]
@@ -461,9 +461,12 @@ extend var (TermGenerator t) = do
   check var t $
     case isVar t of
       Just y -> check y (Ref (MatchVar var)) (return True)
-      _ -> return True
+      _ -> extendGen var (TermGenerator t)
 -- Other kinds of generators: remember them in optGenerators
-extend var gen = do
+extend var gen = extendGen var gen
+
+extendGen :: Var -> Generator -> U Bool
+extendGen var gen = do
   state <- get
   gen <- apply gen
   pat <- applyVar var
@@ -634,7 +637,7 @@ expandStmt s@(FlatNegation _) = [s]
 expandStmt (FlatDisjunction [stmts]) =
   case expandGroups stmts of
     [] -> []
-    xs -> [FlatDisjunction [xs]]
+    xs -> [grouping xs]
   -- non-singleton disjunctions are handled by apply, which will
   -- expand the stmts via optStmts.
 expandStmt s = [s]
@@ -703,7 +706,7 @@ filterStmt :: FlatStatement -> U FlatStatement
 filterStmt stmt = case stmt of
   FlatStatement{} -> return stmt
   FlatNegation stmts -> FlatNegation <$> filterGroupsEnclosed stmts
-  FlatDisjunction [stmts] -> FlatDisjunction . (:[]) <$> filterGroups stmts
+  FlatDisjunction [stmts] -> grouping <$> filterGroups stmts
   FlatDisjunction stmtss ->
     FlatDisjunction <$> mapM filterGroupsEnclosed stmtss
   FlatConditional cond then_ else_ -> do

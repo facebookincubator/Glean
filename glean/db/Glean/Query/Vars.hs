@@ -8,6 +8,7 @@
 
 -- | Collecting the variables mentioned by a term
 module Glean.Query.Vars (
+    VarId,
     VarSet,
     WhichVars(..),
     VarsOf(..),
@@ -33,8 +34,9 @@ import Glean.Query.Codegen.Types
 import Glean.RTS.Term hiding (Match(..))
 import Glean.RTS.Types as RTS
 
+type VarId = Int
 type VarSet = IntSet
-type VarMap = IntMap Int
+type VarMap = IntMap VarId
 
 vars :: VarsOf a => a -> VarSet
 vars x = varsOf AllVars x IntSet.empty
@@ -101,8 +103,8 @@ instance VarsOf CgStatement where
 -- Fresh variables
 
 class Fresh m where
-  peek :: m Int
-  alloc :: m Int
+  peek :: m VarId
+  alloc :: m VarId
 
 fresh :: (Monad m, Fresh m) => Type -> m Var
 fresh ty = do

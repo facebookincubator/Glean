@@ -16,6 +16,7 @@ module Glean.Query.Flatten.Types
   , FlatStatement(..)
   , falseStmt
   , FlatStatementGroup
+  , grouping
   , singletonGroup
   , boundVars
   , boundVarsOf
@@ -92,6 +93,12 @@ data FlatStatement
     -- evaluated, otherwide the 'else' statements are.
 
   deriving Show
+
+-- | Smart constructor for a subgroup of statements, ensures we don't
+-- create unnecessary nested singleton groups.
+grouping :: [FlatStatementGroup] -> FlatStatement
+grouping [one :| []] = one
+grouping groups = FlatDisjunction [groups]
 
 instance VarsOf FlatStatement where
   varsOf w s r = case s of

@@ -367,8 +367,7 @@ thenStmt (Statements ss) s = Statements (s : ss)
 -- reordered with respect to other statements around it.
 floatGroups :: [FlatStatementGroup] -> Statements
 floatGroups [] = Statements []
-floatGroups [x :| []] = Statements [x]
-floatGroups g = Statements [FlatDisjunction [g]]
+floatGroups g = Statements [grouping g]
   -- Note: we nest groups by using FlatDisjunction with a single
   -- alternative. This is so that this set of groups may be reordered with
   -- respect to other statements/groups at the same level. For this to

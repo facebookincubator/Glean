@@ -291,7 +291,8 @@ reorderTest = dbTestCase $ \env repo -> do
           _
         }
     |]
-  assertEqual "reorder nested 3" (Just 1) $
+  print stats
+  assertEqual "reorder nested 3" Nothing $
     factsSearched (PredicateRef "glean.test.Tree" 5) lookupPid stats
 
   -- inner match is in a prefix position (conditional on L being
@@ -305,7 +306,7 @@ reorderTest = dbTestCase $ \env repo -> do
            { just = L },
            { just = { { label = "d" }, _, _ } } }
     |]
-  assertEqual "reorder nested 4" (Just 2) $
+  assertEqual "reorder nested 4" (Just 1) $
     factsSearched (PredicateRef "glean.test.Tree" 5) lookupPid stats
 
   -- point match in a non-prefix position: do it first
