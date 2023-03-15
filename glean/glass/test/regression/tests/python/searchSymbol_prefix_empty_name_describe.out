@@ -372,7 +372,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 34
+                        "lineEnd": 66
                     },
                     "repository": "test"
                 },
@@ -390,7 +390,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 34
+                        "lineEnd": 66
                     },
                     "repository": "test"
                 },
@@ -598,6 +598,129 @@
                     "filepath": "as.py",
                     "range": {
                         "columnBegin": 1,
+                        "columnEnd": 16,
+                        "lineBegin": 58,
+                        "lineEnd": 65
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "as",
+                    "localName": "more_fun_things"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def more_fun_things(\n    a: int,\n    /,\n    *list_of_fish,\n    something = None,\n    **extra_bag_of_fun\n) -> bool",
+                "sym": "test/py/as.py/as.more_fun_things",
+                "sym_location": {
+                    "filepath": "as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 16,
+                        "lineBegin": 58,
+                        "lineEnd": 65
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 20
+            },
+            {
+                "comments": [
+                    {
+                        "filepath": "as.py",
+                        "range": {
+                            "columnBegin": 5,
+                            "columnEnd": 8,
+                            "lineBegin": 52,
+                            "lineEnd": 54
+                        },
+                        "repository": "test"
+                    }
+                ],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 17,
+                        "lineBegin": 42,
+                        "lineEnd": 55
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "as",
+                    "localName": "pep570_posonly_test_kwonly"
+                },
+                "pretty_comments": [
+                    {
+                        "comment": "'''\n\nHorrible test for type signature pretty printer\n'''",
+                        "location": {
+                            "filepath": "as.py",
+                            "range": {
+                                "columnBegin": 5,
+                                "columnEnd": 8,
+                                "lineBegin": 52,
+                                "lineEnd": 54
+                            },
+                            "repository": "test"
+                        }
+                    }
+                ],
+                "repo_hash": "testhash",
+                "signature": "def pep570_posonly_test_kwonly(\n    ok: Union[bytearray, str],\n    hmm: Union[bool, str] = (\n            'interesting'),\n    /,\n    what: Union[bytes, str] = (\n            'umm getting scary'),\n    *is_this_ok: Union[float, str],\n    get_me_out_of_here: Union[int, str]\n) -> bool",
+                "sym": "test/py/as.py/as.pep570_posonly_test_kwonly",
+                "sym_location": {
+                    "filepath": "as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 17,
+                        "lineBegin": 42,
+                        "lineEnd": 55
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 20
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "as.py",
+                    "range": {
+                        "columnBegin": 1,
                         "columnEnd": 14,
                         "lineBegin": 24,
                         "lineEnd": 33
@@ -620,6 +743,55 @@
                         "columnEnd": 14,
                         "lineBegin": 24,
                         "lineEnd": 33
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 20
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 14,
+                        "lineBegin": 35,
+                        "lineEnd": 39
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "as",
+                    "localName": "test_more_fun"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def test_more_fun(\n    param0: str = \"value\",\n    *extrargs: Optional[str]\n) -> Optional[bytes]",
+                "sym": "test/py/as.py/as.test_more_fun",
+                "sym_location": {
+                    "filepath": "as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 14,
+                        "lineBegin": 35,
+                        "lineEnd": 39
                     },
                     "repository": "test"
                 },
@@ -2194,7 +2366,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 34
+                        "lineEnd": 66
                     },
                     "repository": "test"
                 },
@@ -2312,6 +2484,66 @@
                     "filepath": "as.py",
                     "range": {
                         "columnBegin": 1,
+                        "columnEnd": 16,
+                        "lineBegin": 58,
+                        "lineEnd": 65
+                    },
+                    "repository": "test"
+                },
+                "name": "as.more_fun_things",
+                "qname": {
+                    "container": "as",
+                    "localName": "more_fun_things"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/as.py/as.more_fun_things"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "as"
+                    },
+                    "symbol": "test/py/as.py/as"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 17,
+                        "lineBegin": 42,
+                        "lineEnd": 55
+                    },
+                    "repository": "test"
+                },
+                "name": "as.pep570_posonly_test_kwonly",
+                "qname": {
+                    "container": "as",
+                    "localName": "pep570_posonly_test_kwonly"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/as.py/as.pep570_posonly_test_kwonly"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "as"
+                    },
+                    "symbol": "test/py/as.py/as"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "as.py",
+                    "range": {
+                        "columnBegin": 1,
                         "columnEnd": 14,
                         "lineBegin": 24,
                         "lineEnd": 33
@@ -2327,6 +2559,36 @@
                     "exactness": 2
                 },
                 "symbol": "test/py/as.py/as.test_fun"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "as"
+                    },
+                    "symbol": "test/py/as.py/as"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 14,
+                        "lineBegin": 35,
+                        "lineEnd": 39
+                    },
+                    "repository": "test"
+                },
+                "name": "as.test_more_fun",
+                "qname": {
+                    "container": "as",
+                    "localName": "test_more_fun"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/as.py/as.test_more_fun"
             },
             {
                 "kind": 5,

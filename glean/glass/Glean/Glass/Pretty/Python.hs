@@ -13,7 +13,7 @@ module Glean.Glass.Pretty.Python
     prettyPythonSignature
   ) where
 
-import Data.Maybe ( mapMaybe )
+import Data.Maybe ( mapMaybe, isNothing )
 import Data.Map.Strict ( Map )
 import qualified Data.Map.Strict as Map
 import Data.Text ( Text, takeWhileEnd )
@@ -45,13 +45,14 @@ import qualified Glean.Schema.Codemarkup.Types as Code
 -- Python symbol kinds
 data Definition
   = Function {
-      _funModifier :: !AsyncModifier,
-      _funName :: !Name,
-      _funParams :: [Parameter],
-      _funPosOnlyParams :: [Parameter],
-      _funKWOnlyParams :: [Parameter],
-      _funStarKWArgs :: Maybe Parameter,
-      _funReType :: !ReturnType
+      funModifier :: !AsyncModifier,
+      funName :: !Name,
+      funParams :: [Parameter], -- regular parameters
+      funPosOnlyParams :: [Parameter], -- posonly
+      funKWOnlyParams :: [Parameter], -- kw only
+      funStarArg :: Maybe Parameter, -- star args
+      funStarKWArg :: Maybe Parameter, --  star star kwargs
+      funRetType :: !ReturnType
   }
  -- Class
  -- Variable
@@ -126,6 +127,9 @@ fromFunctionDefinition def = do
       ++ maybe []
             (map Python.xRefViaName_target . Python.typeInfo_xrefs)
             (Python.parameter_typeInfo =<< mStarKWArg)
+      ++ maybe []
+            (map Python.xRefViaName_target . Python.typeInfo_xrefs)
+            (Python.parameter_typeInfo =<< mStarArg)
       ++ maybe [] (\ps -> concat
           [ map Python.xRefViaName_target (Python.typeInfo_xrefs tyInfo)
           | Just tyInfo <- map Python.parameter_typeInfo ps
@@ -135,7 +139,7 @@ fromFunctionDefinition def = do
           | Just tyInfo <- map Python.parameter_typeInfo ps
           ]) mPosOnlyParams
 
-  let paramsAndXRefs =
+  let regParamsAndXRefs =
         [ case parameter_typeInfo of
             Nothing -> (param, [])
             Just tyInfo -> (param, mkXRefs declMap tyInfo)
@@ -162,28 +166,26 @@ fromFunctionDefinition def = do
         Just param@Python.Parameter{..} -> Just $ case parameter_typeInfo of
             Nothing -> (param, []) -- has no type info
             Just tyInfo -> (param, mkXRefs declMap tyInfo)
+  let starArgAndXRefs = case mStarArg of
+        Nothing -> Nothing
+        Just param@Python.Parameter{..} -> Just $ case parameter_typeInfo of
+            Nothing -> (param, []) -- has no type info
+            Just tyInfo -> (param, mkXRefs declMap tyInfo)
 
-  returnTyXRefs <- case returnTy of
+  funRetType <- case returnTy of
     Nothing -> pure NoReturnType
     Just (_, retTyInfo) -> do
       retTyText <- fromTypeInfo retTyInfo
       pure $ ReturnType retTyText (mkXRefs declMap retTyInfo)
 
-  nameStr <- trimModule <$> Glean.keyOf name
+  funName <- trimModule <$> Glean.keyOf name
+  funParams <- mapM fromParameter regParamsAndXRefs
+  funPosOnlyParams <- mapM fromParameter posOnlyParamsAndXRefs
+  funKWOnlyParams <- mapM fromParameter kwOnlyParamsAndXRefs
+  funStarKWArg <- mapM fromParameter starKWArgsAndXRefs
+  funStarArg <- mapM fromParameter starArgAndXRefs
 
-  params <- mapM fromParameter paramsAndXRefs
-  kwOnlyParams <- mapM fromParameter kwOnlyParamsAndXRefs
-  posOnlyParams <- mapM fromParameter posOnlyParamsAndXRefs
-  starKWArgParam <- mapM fromParameter starKWArgsAndXRefs
-
-  return $ Function
-    (if async then Async else NotAsync)
-    nameStr
-    params
-    posOnlyParams
-    kwOnlyParams
-    starKWArgParam
-    returnTyXRefs
+  return $ Function { funModifier = if async then Async else NotAsync, .. }
   where
     Python.FunctionDefinition_key {
       functionDefinition_key_declaration = decl,
@@ -191,6 +193,7 @@ fromFunctionDefinition def = do
       functionDefinition_key_params = pyParams,
       functionDefinition_key_kwonly_params = mKWOnlyParams,
       functionDefinition_key_posonly_params = mPosOnlyParams,
+      functionDefinition_key_star_arg = mStarArg,
       functionDefinition_key_star_kwarg = mStarKWArg,
       functionDefinition_key_returnsInfo = mReturnTy
     } = def
@@ -220,23 +223,25 @@ fromParameter (Python.Parameter{..}, xrefs) = do
 
 pprDefinition :: Definition -> Doc Ann
 -- empty param case
-pprDefinition (Function async name [] [] [] Nothing returnTy) =
+pprDefinition (Function async name [] [] [] Nothing Nothing returnTy) =
   hcat [
    pprAsync async, "def" <+> pprName name, "()",
    pprReturnType returnTy
   ]
 -- full param list
 pprDefinition ( Function async name params posOnlyParams
-       kwOnlyParams starKWArgs returnTy) =
+       kwOnlyParams starArg starKWArg returnTy) =
   vcat [
     nest 4 (vsep (
       hcat [pprAsync async, "def" <> space, pprName name <> lparen] :
       punctuate comma ( -- ordering is quite semantically sensitive
-          pprPosOnlyParams posOnlyParams ++
-          map pprParam params ++
-          pprKWOnlyParams kwOnlyParams ++
-          maybe [] (pure . pprStarKWArgs) starKWArgs
-    ))),
+        concat [
+          pprPosOnlyParams posOnlyParams,
+          map pprParam params,
+          maybe [] (pure . pprStarArg) starArg,
+          pprKWOnlyParams (isNothing starArg) kwOnlyParams,
+          maybe [] (pure . pprStarKWArg) starKWArg
+        ]))),
     rparen <> pprReturnType returnTy
     ]
 
@@ -248,9 +253,10 @@ pprReturnType :: ReturnType -> Doc Ann
 pprReturnType NoReturnType = emptyDoc
 pprReturnType (ReturnType ty xrefs) = space <> "->" <+> pprTypeXRefs ty xrefs
 
-pprKWOnlyParams :: [Parameter] -> [Doc Ann]
-pprKWOnlyParams [] = []
-pprKWOnlyParams xs = "*" : map pprParam xs
+pprKWOnlyParams :: Bool -> [Parameter] -> [Doc Ann]
+pprKWOnlyParams _ [] = []
+pprKWOnlyParams True xs  = "*" : map pprParam xs
+pprKWOnlyParams False xs =       map pprParam xs
 
 pprPosOnlyParams :: [Parameter] -> [Doc Ann]
 pprPosOnlyParams [] = []
@@ -267,8 +273,11 @@ pprParam (Parameter name mDefValue mty xrefs) = hcat
     Just (ExprText val) -> space <> equals <+> pretty val
   ]
 
-pprStarKWArgs :: Parameter -> Doc Ann
-pprStarKWArgs param = "**" <> pprParam param
+pprStarArg :: Parameter -> Doc Ann
+pprStarArg param = "*" <> pprParam param
+
+pprStarKWArg :: Parameter -> Doc Ann
+pprStarKWArg param = "**" <> pprParam param
 
 pprName :: Name -> Doc Ann
 pprName (Name name) = pretty name
