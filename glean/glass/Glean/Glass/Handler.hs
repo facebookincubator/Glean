@@ -1278,7 +1278,7 @@ toReferenceSymbol
 toReferenceSymbol repoName file srcOffsets (Code.XRefLocation {..}, entity) = do
   path <- GleanPath <$> Glean.keyOf file
   sym <- toSymbolId (fromGleanPath repoName path) entity
-  attributes <- getStaticAttributes entity repoName
+  attributes <- getStaticAttributes entity repoName sym
 
   target <- rangeSpanToLocationRange repoName location_file
     location_location
@@ -1304,7 +1304,7 @@ toDefinitionSymbol
 toDefinitionSymbol repoName file offsets (Code.Location {..}, entity) = do
   path <- GleanPath <$> Glean.keyOf file
   sym <- toSymbolId (fromGleanPath repoName path) entity
-  attributes <- getStaticAttributes entity repoName
+  attributes <- getStaticAttributes entity repoName sym
   return $ (entity,) $ DefinitionSymbolX sym range attributes nameRange
   where
     range = rangeSpanToRange offsets location_location
@@ -1316,11 +1316,11 @@ toDefinitionSymbol repoName file offsets (Code.Location {..}, entity) = do
 -- schema information alone, without additional repos.
 -- They're expected to be cheap, as we call these once per entity in a file
 getStaticAttributes
-  :: Code.Entity -> RepoName -> Glean.RepoHaxl u w AttributeList
-getStaticAttributes e repo = do
+  :: Code.Entity -> RepoName -> SymbolId -> Glean.RepoHaxl u w AttributeList
+getStaticAttributes e repo sym = do
   mLocalName <- toSymbolLocalName e
   mParent <- toSymbolQualifiedContainer e -- the "parent" of the symbol
-  (mSignature, _xrefs) <- toSymbolSignatureText e repo Cxx.Unqualified
+  (mSignature, _xrefs) <- toSymbolSignatureText e repo sym Cxx.Unqualified
   mKind <- entityKind e -- optional glass-side symbol kind labels
   return $ AttributeList $ map (\(a,b) -> KeyedAttribute a b) $ catMaybes
     [ asLocalName <$> mLocalName
@@ -1502,7 +1502,7 @@ briefDescribeEntity
   :: Code.Entity -> SymbolResult -> Glean.RepoHaxl u w SymbolDescription
 briefDescribeEntity ent SymbolResult{..} = do
   symbolDescription_signature <- fst <$> toSymbolSignatureText ent repo
-    Cxx.Qualified
+    symbolResult_symbol Cxx.Qualified
   pure SymbolDescription{..}
   where
     symbolDescription_repo_hash = Revision mempty
@@ -1548,7 +1548,7 @@ describeEntity scmRevs ent SymbolResult{..} = do
   (symbolDescription_visibility, symbolDescription_modifiers)
      <- eThrow =<< getInfoForEntity ent
   (symbolDescription_signature, symbolDescription_type_xrefs)
-    <- toSymbolSignatureText ent repo Cxx.Qualified
+    <- toSymbolSignatureText ent repo symbolResult_symbol Cxx.Qualified
   symbolDescription_extends_relation <-
     relationDescription RelationType_Extends
   symbolDescription_contains_relation <-

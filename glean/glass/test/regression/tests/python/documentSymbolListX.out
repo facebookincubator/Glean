@@ -100,6 +100,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "class LocalClass"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -574,6 +580,12 @@
                             "aString": "all"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "class LocalClass"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -1513,6 +1525,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "class HelperClass"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -1555,6 +1573,12 @@
                             "aString": "lib"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "class HelperClass"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -1603,6 +1627,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "class HelperClass"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -1648,6 +1678,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "class HelperClass"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -1690,6 +1726,12 @@
                             "aString": "lib"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "class HelperClass"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {

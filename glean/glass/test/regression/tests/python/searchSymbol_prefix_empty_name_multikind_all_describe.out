@@ -35,6 +35,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
+                "signature": "class LocalClass",
                 "sym": "test/py/all.py/all.LocalClass",
                 "sym_location": {
                     "filepath": "all.py",
@@ -47,7 +48,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 10,
+                            "start": 6
+                        },
+                        "type": "test/py/all.py/all.LocalClass"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -593,6 +602,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
+                "signature": "class HelperClass",
                 "sym": "test/py/lib.py/lib.HelperClass",
                 "sym_location": {
                     "filepath": "lib.py",
@@ -605,7 +615,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 11,
+                            "start": 6
+                        },
+                        "type": "test/py/lib.py/lib.HelperClass"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -943,6 +961,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
+                "signature": "class ShadowClass",
                 "sym": "test/py/shadow.py/shadow.ShadowClass",
                 "sym_location": {
                     "filepath": "shadow.py",
@@ -955,7 +974,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 11,
+                            "start": 6
+                        },
+                        "type": "test/py/shadow.py/shadow.ShadowClass"
+                    }
+                ],
                 "visibility": 20
             },
             {

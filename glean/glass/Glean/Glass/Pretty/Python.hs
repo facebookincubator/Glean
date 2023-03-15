@@ -23,8 +23,8 @@ import Control.Monad ( forM )
 import Util.List ( uniq )
 
 import Glean.Angle as Angle
-import Glean.Glass.Base ( GleanPath(..) )
 import Glean.Glass.Path ( fromGleanPath )
+import Glean.Glass.Base ( GleanPath(GleanPath) )
 import Glean.Glass.Types ( SymbolId(..), RepoName(..) )
 import Glean.Glass.Utils
 import Glean.Glass.SymbolId ( toSymbolId )
@@ -55,6 +55,9 @@ data Definition
       funRetType :: !ReturnType
     }
   | Module !Name
+  | Class {
+      _clsName :: !Name
+    }
  -- Class
  -- Variable
  -- Import
@@ -80,24 +83,29 @@ newtype PyType = PyType Text
 type XRef = (Python.Declaration, Src.ByteSpan, GleanPath)
 type XRefs = [XRef]
 
-type Ann = Maybe (Python.Declaration, GleanPath)
+data Ann
+  = None
+  | BareDecl !Python.Declaration !GleanPath
+  | SymId !SymbolId
 
 prettyPythonSignature
   :: LayoutOptions
   -> RepoName
+  -> SymbolId
   -> Python.Entity
   -> Glean.RepoHaxl u w (Maybe (SimpleDocStream (Maybe SymbolId)))
-prettyPythonSignature opts repo (Python.Entity_decl decl) = runMaybeT $ do
+prettyPythonSignature opts repo sym (Python.Entity_decl decl) = runMaybeT $ do
     pyDef <- maybeT $ fetchDataRecursive (angleDeclToDef (toAngle decl))
-    def <- maybeT $ fmap pprDefinition <$> fromAngleDefinition pyDef
+    def <- maybeT $ fmap (pprDefinition sym) <$> fromAngleDefinition pyDef
     maybeT $ Just <$> sequence (annotateDocs def)
   where
     annotateDocs doc = reAnnotateS (declToSymbolId repo) (layoutSmart opts doc)
-prettyPythonSignature _ _ Python.Entity_EMPTY = return Nothing
+prettyPythonSignature _ _ _ Python.Entity_EMPTY = return Nothing
 
 declToSymbolId :: RepoName -> Ann -> Glean.RepoHaxl u w (Maybe SymbolId)
-declToSymbolId _repo Nothing = return Nothing
-declToSymbolId repo (Just (decl, filepath)) = Just <$>
+declToSymbolId _repo None = return Nothing
+declToSymbolId _repo (SymId symId) = return (Just symId)
+declToSymbolId repo (BareDecl decl filepath) = Just <$>
     toSymbolId (fromGleanPath repo filepath) entity
   where
     entity = Code.Entity_python (Python.Entity_decl decl)
@@ -109,7 +117,20 @@ fromAngleDefinition def = case def of
     (fromFunctionDefinition =<< Glean.keyOf fn)
   Python.Definition_module m -> Just <$>
     (fromModuleDefinition =<< Glean.keyOf m)
+  Python.Definition_cls c -> Just <$>
+    (fromClassDefinition =<< Glean.keyOf c)
   _ -> pure Nothing
+
+fromClassDefinition
+  :: Python.ClassDefinition_key -> Glean.RepoHaxl u w Definition
+fromClassDefinition def = do
+  Python.ClassDeclaration_key name _bases <- Glean.keyOf decl
+  nameStr <- trimModule <$> Glean.keyOf name
+  return $ Class nameStr
+  where
+    Python.ClassDefinition_key{
+      classDefinition_key_declaration = decl
+    } = def
 
 fromModuleDefinition
   :: Python.ModuleDefinition_key -> Glean.RepoHaxl u w Definition
@@ -231,17 +252,19 @@ fromParameter (Python.Parameter{..}, xrefs) = do
     Just ty -> Just <$> fromTypeInfo ty
   return $ Parameter (Name nameStr) (ExprText <$> parameter_value) tyInfo xrefs
 
-pprDefinition :: Definition -> Doc Ann
-pprDefinition (Module name) = hsep ["module", pprName name]
+pprDefinition :: SymbolId -> Definition -> Doc Ann
+pprDefinition _self (Module name) = hsep ["module", pprName name]
+pprDefinition self (Class name) =
+  "class" <+> annotate (SymId self) (pprName name)
 
 -- empty param case
-pprDefinition (Function async name [] [] [] Nothing Nothing returnTy) =
+pprDefinition _self (Function async name [] [] [] Nothing Nothing returnTy) =
   hcat [
    pprAsync async, "def" <+> pprName name, "()",
    pprReturnType returnTy
   ]
 -- full param list
-pprDefinition ( Function async name params posOnlyParams
+pprDefinition _self (Function async name params posOnlyParams
        kwOnlyParams starArg starKWArg returnTy) =
   vcat [
     nest 4 (vsep (
@@ -296,9 +319,12 @@ pprName (Name name) = pretty name
 
 pprTypeXRefs :: PyType -> XRefs -> Doc Ann
 pprTypeXRefs (PyType ty) xrefs =
-    mconcat $ (\(frag, ann) -> annotate ann $ pretty frag) <$>
+    mconcat $ (\(frag, ann) -> annotate (toAnn ann) $ pretty frag) <$>
       splitString ty spans
   where
+    toAnn Nothing = None
+    toAnn (Just (decl, path)) = BareDecl decl path
+
     spans = map (\(decl, Src.ByteSpan{..}, filepath) ->
                ((decl,filepath), fromIntegral (Glean.fromNat byteSpan_start)
                    , fromIntegral (Glean.fromNat byteSpan_length))) xrefs

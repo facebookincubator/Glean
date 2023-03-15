@@ -84,11 +84,12 @@ toSymbolSignatureText
   :: ToSymbolSignature a
   => a
   -> RepoName
+  -> SymbolId
   -> Cxx.Qualified
   -> Glean.RepoHaxl u w (Maybe Text, [TypeSymSpan])
-toSymbolSignatureText x repo qualified = do
-  maybeDoc <- toSymbolSignature
-    (LayoutOptions (AvailablePerLine sIGNATURE_LINEWRAP 1)) x repo qualified
+toSymbolSignatureText entity repo sym qualified = do
+  maybeDoc <- toSymbolSignature (LayoutOptions
+      (AvailablePerLine sIGNATURE_LINEWRAP 1)) entity repo sym qualified
   case maybeDoc of
     Nothing -> return (Nothing, [])
     Just doc ->
@@ -99,11 +100,13 @@ toSymbolSignatureText x repo qualified = do
 -- The signature SimpleDocStream is annotated with SymbolId.
 -- The renderer can extract them with their span so as to
 -- generate type xrefs
+--
 class ToSymbolSignature a where
   toSymbolSignature
     :: LayoutOptions
     -> a
-    -> RepoName
+    -> RepoName -- ^ repo name of this entity
+    -> SymbolId -- ^ symbol id of this entity if you need to link to it
     -> Cxx.Qualified
     -> Glean.RepoHaxl u w (Maybe (SimpleDocStream (Maybe SymbolId)))
 
@@ -112,7 +115,7 @@ class ToSymbolSignature a where
 -- fully qualify the name of the code entity in question. Other
 -- symbols in the signature will always remain fully qualified.
 instance ToSymbolSignature Code.Entity where
-  toSymbolSignature opts e repo qualified = case e of
+  toSymbolSignature opts e repo sym qualified = case e of
     -- cxx pretty signatures
     Code.Entity_cxx x -> pure $ Cxx.prettyCxxSignature opts x qualified
     Code.Entity_pp{} -> pure Nothing
@@ -121,7 +124,7 @@ instance ToSymbolSignature Code.Entity where
     -- Flow signatures direct from the DB
     Code.Entity_flow x -> Flow.prettyFlowSignature opts x
     -- python pretty signatures
-    Code.Entity_python x -> Python.prettyPythonSignature opts repo x
+    Code.Entity_python x -> Python.prettyPythonSignature opts repo sym x
     -- lsif languages, just enumerate completely to stay total
     Code.Entity_lsif e -> case e of
       Lsif.Entity_erlang x -> LSIF.prettyLsifSignature opts x
