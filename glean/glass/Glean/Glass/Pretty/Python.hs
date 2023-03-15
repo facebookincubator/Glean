@@ -56,7 +56,8 @@ data Definition
     }
   | Module !Name
   | Class {
-      _clsName :: !Name
+      _clsName :: !Name,
+      _baseNames :: [Name]
     }
  -- Class
  -- Variable
@@ -125,10 +126,18 @@ fromClassDefinition
   :: Python.ClassDefinition_key -> Glean.RepoHaxl u w Definition
 fromClassDefinition def = do
   Python.ClassDeclaration_key name _bases <- Glean.keyOf decl
+  -- get class xrefs from bases
+  baseNames <- case mBases of
+    Nothing -> pure []
+    Just decls ->
+      mapM (fmap Python.classDeclaration_key_name <$> Glean.keyOf) decls
+
   nameStr <- trimModule <$> Glean.keyOf name
-  return $ Class nameStr
+  baseStrs <- mapM (fmap trimModule <$> Glean.keyOf) baseNames
+  return $ Class nameStr baseStrs
   where
-    Python.ClassDefinition_key{
+    Python.ClassDefinition_key {
+      classDefinition_key_bases = mBases,
       classDefinition_key_declaration = decl
     } = def
 
@@ -253,22 +262,25 @@ fromParameter (Python.Parameter{..}, xrefs) = do
   return $ Parameter (Name nameStr) (ExprText <$> parameter_value) tyInfo xrefs
 
 pprDefinition :: SymbolId -> Definition -> Doc Ann
-pprDefinition _self (Module name) = hsep ["module", pprName name]
-pprDefinition self (Class name) =
+pprDefinition self (Module name) =
+  "module" <+> annotate (SymId self) (pprName name)
+pprDefinition self (Class name _) =
   "class" <+> annotate (SymId self) (pprName name)
 
 -- empty param case
-pprDefinition _self (Function async name [] [] [] Nothing Nothing returnTy) =
+pprDefinition self (Function async name [] [] [] Nothing Nothing returnTy) =
   hcat [
-   pprAsync async, "def" <+> pprName name, "()",
+   pprAsync async, "def" <+>
+      annotate (SymId self) (pprName name), "()",
    pprReturnType returnTy
   ]
 -- full param list
-pprDefinition _self (Function async name params posOnlyParams
+pprDefinition self (Function async name params posOnlyParams
        kwOnlyParams starArg starKWArg returnTy) =
   vcat [
     nest 4 (vsep (
-      hcat [pprAsync async, "def" <> space, pprName name <> lparen] :
+      hcat [pprAsync async, "def" <> space,
+        annotate (SymId self) (pprName name) <> lparen] :
       punctuate comma ( -- ordering is quite semantically sensitive
         concat [
           pprPosOnlyParams posOnlyParams,

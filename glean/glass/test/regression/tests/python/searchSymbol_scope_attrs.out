@@ -57,7 +57,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 10,
+                            "start": 10
+                        },
+                        "type": "test/py/as.py/as.func_sleep"
+                    }
+                ],
                 "visibility": 20
             }
         ],

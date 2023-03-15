@@ -105,7 +105,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 4,
+                            "start": 4
+                        },
+                        "type": "test/py/all.py/all.LocalClass.meth"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -164,7 +172,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 2,
+                            "start": 4
+                        },
+                        "type": "test/py/all.py/all.fn"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -238,7 +254,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 2,
+                            "start": 4
+                        },
+                        "type": "test/py/as.py/as.fn"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -296,7 +320,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 10,
+                            "start": 10
+                        },
+                        "type": "test/py/as.py/as.func_sleep"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -345,7 +377,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 15,
+                            "start": 4
+                        },
+                        "type": "test/py/as.py/as.more_fun_things"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -419,7 +459,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 26,
+                            "start": 4
+                        },
+                        "type": "test/py/as.py/as.pep570_posonly_test_kwonly"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -468,7 +516,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 8,
+                            "start": 4
+                        },
+                        "type": "test/py/as.py/as.test_fun"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -517,7 +573,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 13,
+                            "start": 4
+                        },
+                        "type": "test/py/as.py/as.test_more_fun"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -566,7 +630,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 8,
+                            "start": 4
+                        },
+                        "type": "test/py/big_lib/big_lib.big_func"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -672,7 +744,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 14,
+                            "start": 4
+                        },
+                        "type": "test/py/lib.py/lib.HelperClass.another_method"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -721,7 +801,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 6,
+                            "start": 4
+                        },
+                        "type": "test/py/lib.py/lib.HelperClass.method"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -770,7 +858,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 11,
+                            "start": 4
+                        },
+                        "type": "test/py/lib.py/lib.helper_func"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -819,7 +915,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 1,
+                            "start": 4
+                        },
+                        "type": "test/py/main.py/main.f"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -868,7 +972,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 1,
+                            "start": 4
+                        },
+                        "type": "test/py/main.py/main.g"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -918,6 +1030,13 @@
                 },
                 "sym_other_locations": [],
                 "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 1,
+                            "start": 4
+                        },
+                        "type": "test/py/main.py/main.g.%3Clocals%3E.h"
+                    },
                     {
                         "span": {
                             "length": 11,
@@ -1031,7 +1150,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 11,
+                            "start": 4
+                        },
+                        "type": "test/py/shadow.py/shadow.shadow_func"
+                    }
+                ],
                 "visibility": 20
             }
         ],

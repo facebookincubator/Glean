@@ -48,7 +48,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 4,
+                            "start": 4
+                        },
+                        "type": "test/py/all.py/all.LocalClass.meth"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -97,7 +105,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 14,
+                            "start": 4
+                        },
+                        "type": "test/py/lib.py/lib.HelperClass.another_method"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -146,7 +162,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 6,
+                            "start": 4
+                        },
+                        "type": "test/py/lib.py/lib.HelperClass.method"
+                    }
+                ],
                 "visibility": 20
             }
         ],

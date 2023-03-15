@@ -46,7 +46,15 @@
             "repository": "test"
         },
         "sym_other_locations": [],
-        "type_xrefs": [],
+        "type_xrefs": [
+            {
+                "span": {
+                    "length": 3,
+                    "start": 7
+                },
+                "type": "test/py/all.py/all"
+            }
+        ],
         "visibility": 20
     }
 ]
