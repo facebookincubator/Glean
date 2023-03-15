@@ -53,7 +53,8 @@ data Definition
       funStarArg :: Maybe Parameter, -- star args
       funStarKWArg :: Maybe Parameter, --  star star kwargs
       funRetType :: !ReturnType
-  }
+    }
+  | Module !Name
  -- Class
  -- Variable
  -- Import
@@ -106,7 +107,16 @@ fromAngleDefinition
 fromAngleDefinition def = case def of
   Python.Definition_func fn -> Just <$>
     (fromFunctionDefinition =<< Glean.keyOf fn)
+  Python.Definition_module m -> Just <$>
+    (fromModuleDefinition =<< Glean.keyOf m)
   _ -> pure Nothing
+
+fromModuleDefinition
+  :: Python.ModuleDefinition_key -> Glean.RepoHaxl u w Definition
+fromModuleDefinition (Python.ModuleDefinition_key mod) = do
+  Python.Module_key name <- Glean.keyOf mod
+  modName <- Glean.keyOf name
+  return $ Module (Name modName)
 
 fromFunctionDefinition
   :: Python.FunctionDefinition_key -> Glean.RepoHaxl u w Definition
@@ -222,6 +232,8 @@ fromParameter (Python.Parameter{..}, xrefs) = do
   return $ Parameter (Name nameStr) (ExprText <$> parameter_value) tyInfo xrefs
 
 pprDefinition :: Definition -> Doc Ann
+pprDefinition (Module name) = hsep ["module", pprName name]
+
 -- empty param case
 pprDefinition (Function async name [] [] [] Nothing Nothing returnTy) =
   hcat [

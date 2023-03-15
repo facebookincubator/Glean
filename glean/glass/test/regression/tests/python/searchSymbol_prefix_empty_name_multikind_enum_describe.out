@@ -35,6 +35,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
+                "signature": "module all",
                 "sym": "test/py/all.py/all",
                 "sym_location": {
                     "filepath": "all.py",
@@ -142,6 +143,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
+                "signature": "module as",
                 "sym": "test/py/as.py/as",
                 "sym_location": {
                     "filepath": "as.py",
@@ -543,6 +545,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
+                "signature": "module big_lib",
                 "sym": "test/py/big_lib/big_lib",
                 "sym_location": {
                     "filepath": "big_lib/__init__.py",
@@ -640,6 +643,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
+                "signature": "module big_lib.relative",
                 "sym": "test/py/big_lib/big_lib.relative",
                 "sym_location": {
                     "filepath": "big_lib/relative.py",
@@ -688,6 +692,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
+                "signature": "module lib",
                 "sym": "test/py/lib.py/lib",
                 "sym_location": {
                     "filepath": "lib.py",
@@ -785,6 +790,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
+                "signature": "module main",
                 "sym": "test/py/main.py/main",
                 "sym_location": {
                     "filepath": "main.py",
@@ -988,6 +994,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
+                "signature": "module shadow",
                 "sym": "test/py/shadow.py/shadow",
                 "sym_location": {
                     "filepath": "shadow.py",

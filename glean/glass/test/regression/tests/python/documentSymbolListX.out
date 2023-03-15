@@ -24,6 +24,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "module all"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -1066,6 +1072,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "module big_lib"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -1348,6 +1360,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "module lib"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -1393,6 +1411,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "module lib"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolLanguage"
@@ -1435,6 +1459,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "module lib"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
