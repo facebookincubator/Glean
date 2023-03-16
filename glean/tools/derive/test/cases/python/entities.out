@@ -299,6 +299,24 @@
       "entity": {
         "python": {
           "decl": {
+            "func": {
+              "key": { "name": { "key": "nonindex.notindexedwithdigests" } }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "nonindex.py" },
+        "location": { "span": { "length": 47, "start": 210 } },
+        "name": "nonindex.notindexedwithdigests"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
             "imp": {
               "key": {
                 "as_name": { "key": "all.Helper" },
@@ -573,6 +591,20 @@
         "file": { "key": "main.py" },
         "location": { "span": { "length": 611, "start": 0 } },
         "name": "main"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "nonindex" } } } }
+        }
+      },
+      "location": {
+        "file": { "key": "nonindex.py" },
+        "location": { "span": { "length": 258, "start": 0 } },
+        "name": "nonindex"
       }
     }
   },

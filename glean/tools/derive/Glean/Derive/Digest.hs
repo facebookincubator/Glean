@@ -14,6 +14,8 @@ module Glean.Derive.Digest (
 ) where
 
 import Data.Hashable (hash)
+import Data.List.NonEmpty (nonEmpty, NonEmpty)
+import Data.Text (pack)
 import Options.Applicative (
   ParserInfo,
   auto,
@@ -22,15 +24,18 @@ import Options.Applicative (
   helper,
   info,
   long,
+  many,
   maybeReader,
   metavar,
   option,
+  progDesc,
   short,
   showDefault,
+  strArgument,
   value,
-  (<**>), progDesc
+  (<**>),
  )
-import System.FilePath (joinPath, splitPath, splitFileName, (</>))
+import System.FilePath (joinPath, splitFileName, splitPath, (</>))
 import TextShow (showt)
 
 import Util.EventBase (withEventBaseDataplane)
@@ -39,7 +44,7 @@ import Glean (
   Repo,
   parseRepo,
  )
-import Glean.Derive.Digest.Lib (Config (Config, hashFunction, pathAdaptor), derive)
+import Glean.Derive.Digest.Lib (Config (..), FileFact, derive)
 import Glean.Impl.ConfigProvider (ConfigAPI)
 import Glean.LocalOrRemote (withBackend)
 import qualified Glean.LocalOrRemote as Glean
@@ -58,6 +63,7 @@ main = withConfigOptions options $ \(Options {..}, cfg) ->
               Config
                 { pathAdaptor = stripPath stripDepth
                 , hashFunction = showt . hash
+                , indexOnly = indexOnly
                 }
         derive backend repo deriveConfig
 
@@ -65,24 +71,26 @@ main = withConfigOptions options $ \(Options {..}, cfg) ->
 stripPath :: Int -> FilePath -> FilePath
 stripPath depth path = stripped_body </> file
   where
-    (body,file) = splitFileName path
+    (body, file) = splitFileName path
     stripped_body = joinPath $ drop depth $ splitPath body
 
 data Options = Options
   { service :: Glean.Service
   , repo :: Glean.Repo
   , stripDepth :: Int
+  , indexOnly :: Maybe (NonEmpty FileFact)
   }
 
 description :: String
-description = unwords
-  [ "Language agnostic external deriver to generate Digests for various"
-  , "entities."
-  , "Digests are produced by hashing source ranges."
-  , "The deriver expects to find the source code in the file system,"
-  , "and relative paths in src.File facts are resolved from"
-  , "the current working directory."
-  ]
+description =
+  unwords
+    [ "Language agnostic external deriver to generate Digests for various"
+    , "entities."
+    , "Digests are produced by hashing source ranges."
+    , "The deriver expects to find the source code in the file system,"
+    , "and relative paths in src.File facts are resolved from"
+    , "the current working directory."
+    ]
 
 options :: ParserInfo Options
 options = info (parser <**> helper) (fullDesc <> progDesc description)
@@ -106,5 +114,10 @@ options = info (parser <**> helper) (fullDesc <> progDesc description)
               <> value 0
               <> showDefault
           )
+      indexOnly <- nonEmpty <$>
+        many
+          (pack <$> strArgument (help "index-only"
+          <> metavar "FILE"
+          <> help "Restrict indexing to these files"))
 
       return Options {..}

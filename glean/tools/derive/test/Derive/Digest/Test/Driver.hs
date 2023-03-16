@@ -12,6 +12,8 @@ module Derive.Digest.Test.Driver
   ) where
 
 import Control.Monad (void)
+import Data.List.NonEmpty (nonEmpty)
+import Data.Text (pack)
 import System.FilePath ((</>), splitFileName, joinPath, splitPath)
 
 import Util.Timing
@@ -35,11 +37,13 @@ optionsParser = do
   runIndexerOptions <- cmdLineParser
   hashDigests <- switch (long "hash-digests")
   stripDepth <- option auto (long "strip" <> help "strip depth" <> value 0)
+  indexOnly <- many (pack <$> strOption(long "index-only"))
   return Options{
     runIndexerOptions = runIndexerOptions,
     deriveConfig = Config{
       hashFunction = if hashDigests then showt . hash else id,
-      pathAdaptor = stripPath stripDepth
+      pathAdaptor = stripPath stripDepth,
+      indexOnly = nonEmpty indexOnly
       }
   }
 
@@ -52,7 +56,7 @@ stripPath depth path = stripped_body </> file
     stripped_body = joinPath $ drop depth $ splitPath body
 
 driver :: Driver Options
-driver = driverFromIndexer $
+driver = driverFromIndexer
   Indexer {
     indexerShortName = "multiple",
     indexerDescription = "Choose an indexer to run",

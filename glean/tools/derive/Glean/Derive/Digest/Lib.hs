@@ -11,6 +11,7 @@
 -- | A derive function for generating codemarkup.LocationDigest facts
 module Glean.Derive.Digest.Lib (
   Config(..),
+  FileFact,
   derive,
 ) where
 
@@ -22,6 +23,7 @@ import Data.Foldable (for_, minimumBy)
 import Data.Function (on)
 import Data.List (sortOn)
 import Data.List.NonEmpty (NonEmpty((:|)))
+import qualified Data.List.NonEmpty as NE
 import Data.Text (Text)
 import qualified Data.Text as T
 import Data.Text.Encoding (encodeUtf8)
@@ -54,6 +56,7 @@ import Glean.Angle (
   where_,
   wild,
   (.=),
+  string,
  )
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Schema.Codemarkup as Code
@@ -64,16 +67,24 @@ import qualified Glean.Schema.Src as Src
 
 type SourceCode = Text
 type Digest = Text
+type FileFact = Text
 
 data Config = Config
   { hashFunction :: SourceCode -> Digest
   , pathAdaptor :: FilePath -> FilePath
+  , indexOnly :: Maybe (NonEmpty FileFact)
   }
 
 derive :: Backend b => b -> Repo -> Config -> IO ()
 derive backend repo Config{..} = {-# SCC "derive-digests" #-} do
   locationsByFile <- {-# SCC "query" #-} runHaxl backend repo $ do
-    locations <- Glean.search_ $ query codeLocations
+    locations <- case indexOnly of
+      Nothing -> Glean.search_ $ query codeLocations
+      Just files ->
+        concat <$>
+          traverse
+            (Glean.search_ . query . codeLocationsForFile)
+            (NE.toList files)
     return $ Map.fromListWith (Map.unionWith (<>))
       [(f, Map.singleton e (range :| [])) | (f, range, e) <- locations]
 
@@ -146,4 +157,22 @@ codeLocations =
                         end
                     )
                , file .= predicate @Src.File fileVal
+               ]
+
+codeLocationsForFile :: FileFact -> Angle (Text, Code.RangeSpan, Code.Entity)
+codeLocationsForFile fileFact =
+  vars $ \(range :: Angle Code.RangeSpan)
+          (entity :: Angle Code.Entity) ->
+    tuple (string fileFact, range, entity)
+      `where_` [ wild
+                  .= predicate @Code.ResolveLocation
+                    ( rec $
+                        field @"location"
+                          (rec @_ @Code.Location $
+                            field @"file" (string fileFact) $
+                            field @"location" range
+                            end) $
+                        field @"entity" entity
+                        end
+                    )
                ]
