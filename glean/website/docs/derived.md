@@ -207,6 +207,15 @@ Since this is a `default` derivation, it will take effect when there are no fact
 
 ## How do I write and test a derived predicate?
 
+There are two testing workflows in the following sections, depending
+on whether you want to test an [on-demand](#testing-an-on-demand-derived-predicate) or a [stored](#testing-a-stored-derived-predicate) derived
+predicate.
+
+When you're done, to make the derived predicate available see [Schema
+Workflow](schema/workflow.md).
+
+### Testing an on-demand derived predicate
+
 There's a process for iterating and testing derived predicates using the shell with a local database. Follow these steps:
 
 <FbInternalOnly>
@@ -240,8 +249,6 @@ Start the shell with the local DB and schema:
 glean shell --db-root ~/local/gleandb --schema glean/schema/source
 ```
 
-Add `--db-schema-override` if you are working on an existing predicate and want your version to override the schema in the DB.
-
 Select your DB with the `:db` command.
 
 Make edits to the local schema source files in `glean/schema/source`. There's no need to run `glean/schema/sync`, you can pick up the changes immediately in the shell:
@@ -257,10 +264,55 @@ The `:timeout` command can be used to change the default query timeout while ite
 If you run into performance issues, try the techniques in [Debugging
 Queries](angle/debugging.md).
 
-When you're done, the next section describes how to get your derived predicate into the schema proper.
+### Testing a stored derived predicate
 
-## How do I make a derived predicate available?
+If you're adding a new stored derived predicate to the schema, the
+workflow is as follows.
 
-Derived predicates are defined directly in the schema, so the process
-for adding them is exactly the same as modifying the schema, described
-over in [Schema Workflow](schema/workflow.md).
+First, obtain the base DB with the facts you want to derive
+from. Let's say you've put it in `~/local/gleandb`, and the DB is
+called `base/0`.
+
+Make your modifications to the schema in `glean/schema/source`.
+
+Stack a new empty DB on top of the base DB:
+
+```
+glean create --db-root ~/local/gleandb --db stacked/0 \
+    --stacked base/0 \
+    --schema glean/schema/source \
+    --update-schema-for-stacked
+```
+
+The flag `--update-schema-for-stacked` is important, it tells Glean
+that you want to use the current schema for the stacked DB and not the
+schema in the base DB. Without the flag, the changes you've made to
+the schema won't be visible in the stacked DB.
+
+:::note
+
+You're only allowed to add things to the schema in the stacked DB, not
+change things. Changes to existing predicates and types will be
+rejected with an error message. This is because a DB stack has a
+single schema to describe the data it contains; we can extend the
+schema when stacking new DBs, but we can't modify the schema that
+describes the data in the rest of the stack.
+
+If you need to test changes to an existing predicate, copy the
+predicate and give it a new name to test it, and then fold the changes
+back into the original when you've finished testing.
+
+:::
+
+Now, you can derive your new predicate:
+
+```
+glean derive --db-root ~/local/gleandb --db stacked/0 my.new.Predicate
+```
+
+and inspect the results in the shell:
+
+```
+glean shell --db-root ~/local/gleandb --db stacked/0
+```
+
