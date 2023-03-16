@@ -43,7 +43,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "class FancyTypes<<<__Memoize, __Deprecated(Use something else instead)>> +T>",
+                "signature": " class FancyTypes<<<__Memoize, __Deprecated(Use something else instead)>> +T>",
                 "sym": "test/php/FancyTypes",
                 "sym_location": {
                     "filepath": "www/SourceClass.php",
@@ -56,7 +56,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": []
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 10,
+                            "start": 7
+                        },
+                        "type": "test/php/FancyTypes"
+                    }
+                ]
             },
             "test/php/FancyTypes/flatten": {
                 "annotations": [],
@@ -105,7 +113,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 7,
+                            "start": 16
+                        },
+                        "type": "test/php/FancyTypes/flatten"
+                    }
+                ],
                 "visibility": 20
             }
         }

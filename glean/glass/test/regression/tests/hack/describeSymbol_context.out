@@ -52,7 +52,15 @@
             "repository": "test"
         },
         "sym_other_locations": [],
-        "type_xrefs": [],
+        "type_xrefs": [
+            {
+                "span": {
+                    "length": 7,
+                    "start": 17
+                },
+                "type": "test/php/TestAnnotation/io_good"
+            }
+        ],
         "visibility": 40
     }
 ]

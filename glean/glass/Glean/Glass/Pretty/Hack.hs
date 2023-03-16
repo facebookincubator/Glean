@@ -75,28 +75,30 @@ import qualified Glean.Schema.Codemarkup.Types as Code
 
 -- Pretty-printer annotations for Doc or SimpleDocStream
 -- Used to collect xrefs bytespan in pretty-printed signatures
-type Ann = Maybe Hack.Declaration
+data Ann
+  = None
+  | BareDecl !Hack.Declaration {- todo: !GleanPath -}
+  | SymId !SymbolId
 
 prettyHackSignature
   :: LayoutOptions
   -> RepoName
+  -> SymbolId
   -> Hack.Entity
   -> Glean.RepoHaxl u w (Maybe (SimpleDocStream (Maybe SymbolId)))
-prettyHackSignature opts repo (Hack.Entity_decl d) = runMaybeT $ do
-  docStream <- layoutSmart opts . prettyDecl opts <$> decl d
+prettyHackSignature opts repo sym (Hack.Entity_decl d) = runMaybeT $ do
+  docStream <- layoutSmart opts . prettyDecl opts sym <$> decl d
   let docStreamSymbol = sequence $ reAnnotateS (declToSymbolId repo) docStream
   maybeT $ Just <$> docStreamSymbol
-prettyHackSignature _ _ Hack.Entity_EMPTY = return Nothing
+prettyHackSignature _ _ _ Hack.Entity_EMPTY = return Nothing
 
 -- Turn declaration to symbol ids
 -- This requires a query to Code.EntityLocation to gather
 -- the path to an entity, needed for constructing a SymbolId
-declToSymbolId
-  :: RepoName
-  -> Ann
-  -> Glean.RepoHaxl u w (Maybe SymbolId)
-declToSymbolId _repo Nothing = return Nothing
-declToSymbolId repo (Just decl) = runMaybeT $ do
+declToSymbolId :: RepoName -> Ann -> Glean.RepoHaxl u w (Maybe SymbolId)
+declToSymbolId _repo None = return Nothing
+declToSymbolId _repo (SymId sym) = return (Just sym)
+declToSymbolId repo (BareDecl decl) = runMaybeT $ do
   Code.EntityLocation{..} <- maybeT $ fetchDataRecursive $
     angleEntityLocation entityAngle
   Code.EntityLocation_key{..} <- liftMaybe entityLocation_key
@@ -170,54 +172,60 @@ data Decl
   | Typedef QualName [TypeParameter] Transparency
   | Module Name
 
-prettyDecl :: LayoutOptions -> Decl -> Doc Ann
-prettyDecl _ (ClassConst name) =
-  "const" <+> ppName name
-prettyDecl _ (Module name) =
-  "module" <+> ppName name
-prettyDecl _ (Enum name Regular (EnumBase ty1)) =
+prettyDecl :: LayoutOptions -> SymbolId -> Decl -> Doc Ann
+prettyDecl _ sym (ClassConst name) =
+  "const" <+> annotate (SymId sym) (ppName name)
+prettyDecl _ sym (Module name) =
+  "module" <+> annotate (SymId sym) (ppName name)
+prettyDecl _ _sym (Enum name Regular (EnumBase ty1)) =
   "enum" <+> ppQualName name <+> ":" <+> ppType ty1
-prettyDecl _ (Enum name Regular (Constrained ty1 ty2)) =
+prettyDecl _ _sym (Enum name Regular (Constrained ty1 ty2)) =
   "enum" <+> ppQualName name <+> ":" <+> ppConstraintTypes ty1 ty2
-prettyDecl _ (Enum name IsClass _) =
+prettyDecl _ _sym (Enum name IsClass _) =
   "enum" <+> "class" <+> ppQualName name
-prettyDecl _ (Trait name typeParams) =
+prettyDecl _ _sym (Trait name typeParams) =
   "trait" <+> ppQualName name <> ppTypeParams typeParams
-prettyDecl _ (Class modifiers name typeParams) =
-  ppClassModifiers modifiers <+> ppQualName name <> ppTypeParams typeParams
-prettyDecl _ (Interface name typeParams) =
+prettyDecl _ sym (Class modifiers name typeParams) =
+  ppClassModifiers modifiers <+> "class" <+>
+    annotate (SymId sym) (ppQualName name) <> ppTypeParams typeParams
+prettyDecl _ _sym (Interface name typeParams) =
   "interface" <+> ppQualName name <> ppTypeParams typeParams
-prettyDecl _ (Enumerator enum name) =
+prettyDecl _ _sym (Enumerator enum name) =
   ppQualName enum <> "::" <> ppName name
-prettyDecl opts (Function modifiers name sig) =
-  ppSignature opts (ppFunctionModifiers modifiers <+> ppQualName name) sig
-prettyDecl _ (GlobalConst name) =
+
+prettyDecl opts sym (Function modifiers name sig) =
+  ppSignature opts (ppFunctionModifiers modifiers <+>
+    annotate (SymId sym) (ppQualName name)) sig
+prettyDecl opts sym (Method modifiers container name sig) =
+  ppSignature opts (ppMethodModifiers container modifiers <+>
+    annotate (SymId sym) (ppName name)) sig
+
+prettyDecl _ _sym (GlobalConst name) =
   "const" <+> ppQualName name
-prettyDecl _ (Namespace name) =
-  "namespace" <+> ppQual name
-prettyDecl opts (Method modifiers container name sig) =
-  ppSignature opts (ppMethodModifiers container modifiers <+> ppName name) sig
-prettyDecl _ (Property modifiers container name mhacktype) =
+prettyDecl _ sym (Namespace name) =
+  "namespace" <+> annotate (SymId sym) (ppQual name)
+
+prettyDecl _ _ (Property modifiers container name mhacktype) =
   ppPropertyModifiers container modifiers <+> ppType mhacktype <+> ppName name
-prettyDecl _ (TypeConst name IsAbstract) =
+prettyDecl _ _ (TypeConst name IsAbstract) =
   "abstract" <+> "const" <+> "type" <+> ppName name
-prettyDecl _ (TypeConst name _) =
+prettyDecl _ _ (TypeConst name _) =
   "const" <+> "type" <+> ppName name
-prettyDecl _ (Typedef name typeParams Type_) =
+prettyDecl _ _sym (Typedef name typeParams Type_) =
   "type" <+> ppQualName name <> ppTypeParams typeParams
-prettyDecl _ (Typedef name typeParams Newtype_) =
+prettyDecl _ _sym (Typedef name typeParams Newtype_) =
   "newtype" <+> ppQualName name <> ppTypeParams typeParams
 
 ppName :: Name -> Doc Ann
 ppName (Name n) = pretty n
+
 ppQualName :: QualName -> Doc Ann
-ppQualName (QualName ([], name)) =
-  pretty name
+ppQualName (QualName ([], name)) = pretty name
 ppQualName (QualName (namespace, name)) =
   surround "\\" (ppQual (Qual namespace)) (pretty name)
+
 ppQual :: Qual -> Doc Ann
-ppQual (Qual namespace) =
-  concatWith (surround "\\") (pretty <$> namespace)
+ppQual (Qual namespace) = concatWith (surround "\\") (pretty <$> namespace)
 
 ppFunctionModifiers :: FunctionMod -> Doc Ann
 ppFunctionModifiers (FunctionMod async) =
@@ -230,7 +238,6 @@ ppClassModifiers (ClassMod abstract final) =
   fillSep $ execWriter $ do
     when (abstract==Abstract) $ tell ["abstract"]
     when (final==Final) $ tell ["final"]
-    tell ["class"]
 
 ppSignature :: LayoutOptions -> Doc Ann -> Signature -> Doc Ann
 ppSignature opts head (Signature returnType typeParams params ctxs xrefs) =
@@ -348,7 +355,10 @@ ppTypeXRefs :: HackType -> XRefs -> Doc Ann
 ppTypeXRefs (HackType t) xrefs =
   let spans = fmap (\(ann, ByteSpan{..}) -> (ann, start, length)) xrefs
       fragments = splitString t spans in
-  mconcat $ (\(frag, ann) -> annotate ann $ pretty frag) <$> fragments
+  mconcat $ (\(frag, ann) -> annotate (toAnn ann) $ pretty frag) <$> fragments
+  where
+    toAnn Nothing = None
+    toAnn (Just decl) = BareDecl decl
 
 ppType :: HackType -> Doc Ann
 ppType (HackType t) = pretty t

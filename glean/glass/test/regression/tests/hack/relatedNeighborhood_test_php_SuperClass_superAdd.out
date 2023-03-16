@@ -46,7 +46,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "class SuperClass",
+                "signature": " class SuperClass",
                 "sym": "test/php/SuperClass",
                 "sym_location": {
                     "filepath": "www/SuperClass.php",
@@ -59,7 +59,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": []
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 10,
+                            "start": 7
+                        },
+                        "type": "test/php/SuperClass"
+                    }
+                ]
             },
             "test/php/SuperClass/superAdd": {
                 "annotations": [],
@@ -108,7 +116,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 8,
+                            "start": 16
+                        },
+                        "type": "test/php/SuperClass/superAdd"
+                    }
+                ],
                 "visibility": 20
             }
         }

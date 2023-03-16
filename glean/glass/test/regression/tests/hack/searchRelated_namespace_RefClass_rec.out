@@ -62,7 +62,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "class RefClass",
+                "signature": " class RefClass",
                 "sym": "test/php/RefClass",
                 "sym_location": {
                     "filepath": "www/RefClass.php",
@@ -75,7 +75,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": []
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 8,
+                            "start": 7
+                        },
+                        "type": "test/php/RefClass"
+                    }
+                ]
             },
             "test/php/RefClass/:prop/raz": {
                 "annotations": [],
@@ -173,7 +181,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": []
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 4,
+                            "start": 6
+                        },
+                        "type": "test/php/RefClass/JAZZ"
+                    }
+                ]
             },
             "test/php/RefClass/bar": {
                 "annotations": [],
@@ -223,6 +239,13 @@
                 },
                 "sym_other_locations": [],
                 "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 3,
+                            "start": 16
+                        },
+                        "type": "test/php/RefClass/bar"
+                    },
                     {
                         "span": {
                             "length": 11,
@@ -287,7 +310,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 5,
+                            "start": 16
+                        },
+                        "type": "test/php/RefClass/bazza"
+                    }
+                ],
                 "visibility": 20
             },
             "test/php/RefClass/foo": {
@@ -339,7 +370,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 3,
+                            "start": 23
+                        },
+                        "type": "test/php/RefClass/foo"
+                    }
+                ],
                 "visibility": 20
             },
             "test/php/RefClass/lotsofkeywords": {
@@ -393,7 +432,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 14,
+                            "start": 37
+                        },
+                        "type": "test/php/RefClass/lotsofkeywords"
+                    }
+                ],
                 "visibility": 50
             }
         }

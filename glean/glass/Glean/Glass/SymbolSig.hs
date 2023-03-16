@@ -120,7 +120,7 @@ instance ToSymbolSignature Code.Entity where
     Code.Entity_cxx x -> pure $ Cxx.prettyCxxSignature opts x qualified
     Code.Entity_pp{} -> pure Nothing
     -- hack pretty signatures
-    Code.Entity_hack x -> Hack.prettyHackSignature opts repo x
+    Code.Entity_hack x -> Hack.prettyHackSignature opts repo sym x
     -- Flow signatures direct from the DB
     Code.Entity_flow x -> Flow.prettyFlowSignature opts x
     -- python pretty signatures

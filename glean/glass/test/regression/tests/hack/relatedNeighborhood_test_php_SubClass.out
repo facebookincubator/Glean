@@ -61,7 +61,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "class SourceClass",
+                "signature": " class SourceClass",
                 "sym": "test/php/SourceClass",
                 "sym_location": {
                     "filepath": "www/SourceClass.php",
@@ -172,7 +172,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": []
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 3,
+                            "start": 6
+                        },
+                        "type": "test/php/SourceClass/BAZ"
+                    }
+                ]
             },
             "test/php/SourceClass/T": {
                 "annotations": [],
@@ -270,7 +278,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 3,
+                            "start": 16
+                        },
+                        "type": "test/php/SourceClass/bar"
+                    }
+                ],
                 "visibility": 20
             },
             "test/php/SourceClass/overrideMe": {
@@ -344,7 +360,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 10,
+                            "start": 16
+                        },
+                        "type": "test/php/SourceClass/overrideMe"
+                    }
+                ],
                 "visibility": 20
             },
             "test/php/SubClass": {
@@ -381,7 +405,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "class SubClass",
+                "signature": " class SubClass",
                 "sym": "test/php/SubClass",
                 "sym_location": {
                     "filepath": "www/SourceClass.php",
@@ -394,7 +418,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": []
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 8,
+                            "start": 7
+                        },
+                        "type": "test/php/SubClass"
+                    }
+                ]
             },
             "test/php/SubClass/pleaseOverride": {
                 "annotations": [
@@ -474,7 +506,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 14,
+                            "start": 23
+                        },
+                        "type": "test/php/SubClass/pleaseOverride"
+                    }
+                ],
                 "visibility": 20
             },
             "test/php/SuperClass": {
@@ -510,7 +550,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "class SuperClass",
+                "signature": " class SuperClass",
                 "sym": "test/php/SuperClass",
                 "sym_location": {
                     "filepath": "www/SuperClass.php",
@@ -572,7 +612,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 8,
+                            "start": 16
+                        },
+                        "type": "test/php/SuperClass/superAdd"
+                    }
+                ],
                 "visibility": 20
             }
         }

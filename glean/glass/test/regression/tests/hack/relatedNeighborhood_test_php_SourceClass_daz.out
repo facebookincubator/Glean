@@ -76,7 +76,7 @@
                     }
                 ],
                 "repo_hash": "testhash",
-                "signature": "class SourceClass",
+                "signature": " class SourceClass",
                 "sym": "test/php/SourceClass",
                 "sym_location": {
                     "filepath": "www/SourceClass.php",
@@ -89,7 +89,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": []
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 11,
+                            "start": 7
+                        },
+                        "type": "test/php/SourceClass"
+                    }
+                ]
             },
             "test/php/SourceClass/:prop/daz": {
                 "annotations": [],
