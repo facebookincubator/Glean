@@ -359,7 +359,21 @@ instance Monoid Statements where
   mconcat = foldl' (<>) mempty  -- override default, we want left-fold
 
 thenStmt :: Statements -> FlatStatement -> Statements
+thenStmt ss s | irrelevant s = ss
 thenStmt (Statements ss) s = Statements (s : ss)
+
+-- | True for statements that cannot make any difference to the query.
+-- That is, statements that can neither fail nor bind any variables.
+irrelevant :: FlatStatement -> Bool
+irrelevant (FlatStatement _ _ (TermGenerator (Ref (MatchWild _)))) = True
+irrelevant (FlatStatement _ (Ref (MatchWild _)) rhs) =
+  case rhs of
+    DerivedFactGenerator{} -> True
+    _ -> False
+    -- it's tempting to include PrimCall and TermGenerator here, but
+    -- note that these may be written by the user and may be
+    -- unresolvable, so elimiating them here may hide an error.
+irrelevant _ = False
 
 -- | Inject an ordered sequence of FlatStatementGroup into a
 -- Statements.  This is used when we need to retain the ordering

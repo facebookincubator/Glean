@@ -197,3 +197,13 @@ optTest = dbTestCase $ \env repo -> do
     |]
   assertEqual "optimise multiple generators" (Just 1) $
     factsSearched (PredicateRef "glean.test.StringPair" 1) lookupPid stats
+
+  -- Check that the optimiser doesn't get too excited and eliminate generators
+  -- that don't bind any variables. These can still fail if they don't match
+  -- any facts.
+  results <- runQuery_ env repo $ angleData @Nat
+    [s|
+      1 where glean.test.StringPair { "none", _ }
+    |]
+  assertEqual "check that we don't eliminate empty fact generators"
+    0 (length results)
