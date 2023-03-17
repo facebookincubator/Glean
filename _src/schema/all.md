@@ -41,7 +41,7 @@ The `all` schema is defined like this:
 ```
 schema all.6 :
   src.1,
-  python.4,
+  python.3,
   code.18
 ```
 
