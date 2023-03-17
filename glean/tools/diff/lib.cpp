@@ -8,6 +8,7 @@
 
 #include <sys/types.h>
 #include <cstdint>
+#include <optional>
 #ifdef OSS
 #include <cpp/wrap.h> // @manual
 #else
@@ -83,12 +84,10 @@ public:
     , base(first)
     , shard_size(std::min(size, max_shard_size)) {
     auto shard_count = size/shard_size + std::min(1, (int) (size % shard_size));
-    shards = std::vector<folly::Synchronized<Shard>>(shard_count);
-    for (auto ix = 0; ix < shards.size(); ix++) {
-      shards.at(ix).withWLock([&](Shard& shard) {
-        auto size_this_shard = std::min(shard_size, size - (ix * shard_size));
-        shard.items = std::vector<std::optional<Id>>(size_this_shard, std::nullopt);
-      });
+    shards.reserve(shard_count);
+    for (size_t ix = 0; ix < shard_count; ix++) {
+      auto size_this_shard = std::min(shard_size, size - (ix * shard_size));
+      shards.emplace_back(Shard{{size_this_shard, std::nullopt}, 0});
     }
   }
 
