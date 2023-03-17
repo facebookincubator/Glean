@@ -24,12 +24,10 @@ module Glean.Query.BindOrder
 import Control.Monad.Except
 import Control.Monad.State
 import Data.IntSet (IntSet)
-import Data.IntMap (IntMap)
-import Data.Maybe (fromMaybe)
 import qualified Data.IntSet as IntSet
-import qualified Data.IntMap.Strict as IntMap
 
 import Glean.Query.Codegen.Types (Match(..), Var(..), Generator_(..), Generator)
+import Glean.Query.Vars (VarSet)
 import Glean.RTS.Term as RTS hiding (Match(..))
 
 -- -----------------------------------------------------------------------------
@@ -50,20 +48,19 @@ import Glean.RTS.Term as RTS hiding (Match(..))
 -- able to give the user out-of-scope error messages from the
 -- typechecker.  Maybe we'll change this in the future.
 
-newtype Scope = Scope
-  { unScope :: IntMap Bool
-  -- ^ A map of all variables in a scope with a boolean
-  -- for whether it is bound or not
+data Scope = Scope
+  { isScope :: VarSet
+  , bound :: VarSet
   }
-  deriving newtype (Semigroup, Monoid, Show)
+  deriving (Show)
 
 type Variable = Int
 
 isBound :: Scope -> Variable -> Bool
-isBound (Scope scope) var = fromMaybe False $ IntMap.lookup var scope
+isBound (Scope _ bound) var = IntSet.member var bound
 
 bind :: Variable -> Scope -> Scope
-bind var (Scope scope) = Scope $ IntMap.insert var True scope
+bind var (Scope scope bound) = Scope scope (IntSet.insert var bound)
 
 
 -- | Variables that should not be bound.

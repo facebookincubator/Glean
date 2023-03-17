@@ -191,18 +191,17 @@ reorderGroups groups = do
 -- remove them from the scope in the end.
 withScopeFor :: [FlatStatementGroup] -> R a -> R a
 withScopeFor stmts act = do
-  outerScope <- gets roScope
+  Scope outerScope bound <- gets roScope
   let stmtsVars = scopeVars stmts
-      locals = IntSet.filter (not . isInScope outerScope) stmtsVars
-      localScope = Scope $ IntMap.fromSet (const False) locals
-      -- ^ add locals as unbound vars to the scope
+      locals = IntSet.filter (`IntSet.notMember` outerScope) stmtsVars
 
-  modify $ \s -> s { roScope = outerScope <> localScope }
+  modify $ \s -> s { roScope = Scope (outerScope <> locals) bound }
   res <- act
-  modify $ \s -> s { roScope = roScope s `without` localScope }
+  modify $ \s -> s { roScope = roScope s `without` locals }
   return res
   where
-    without (Scope x) (Scope y) = Scope $ IntMap.difference x y
+    without (Scope scope bound) x =
+      Scope (IntSet.difference scope x) (IntSet.difference bound x)
     -- | All variables that appear in the scope these statements are in.
     -- Does not include variables local to sub-scopes such as those that only
     -- appear:
@@ -538,7 +537,7 @@ ifBoundOnly :: Scope -> InScope
 ifBoundOnly = InScope False
 
 isInScope :: Scope -> Variable -> Bool
-isInScope (Scope scope) var = var `IntMap.member` scope
+isInScope (Scope scope _) var = var `IntSet.member` scope
 
 isBoundInScope :: InScope -> Var -> Bool
 isBoundInScope (InScope allowPredicate scope) (Var ty v _) =
@@ -549,10 +548,10 @@ isBoundInScope (InScope allowPredicate scope) (Var ty v _) =
     | otherwise = False
 
 allBound :: Scope -> VarSet
-allBound (Scope scope) = IntMap.keysSet $ IntMap.filter id scope
+allBound (Scope _ bound) = bound
 
 allVars :: Scope -> VarSet
-allVars (Scope scope) = IntMap.keysSet scope
+allVars (Scope scope _) = scope
 
 patIsBound :: InScope -> Pat -> Bool
 patIsBound inScope pat
@@ -891,7 +890,7 @@ instance Monad m => Fresh (StateT ReorderState m) where
 initialReorderState :: Int -> Schema.DbSchema -> ReorderState
 initialReorderState nextVar dbSchema = ReorderState
   { roNextVar = nextVar
-  , roScope = mempty
+  , roScope = Scope mempty mempty
   , roDbSchema = dbSchema
   , roNegationEnclosingScope = mempty
   }
