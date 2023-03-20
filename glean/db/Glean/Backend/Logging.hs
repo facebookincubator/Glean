@@ -12,6 +12,7 @@ module Glean.Backend.Logging
 
 import Control.Exception
 import qualified Data.ByteString as ByteString
+import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Map as Map
 import Data.Maybe
 import Data.Monoid (Sum(getSum, Sum))
@@ -88,7 +89,7 @@ instance Backend LoggingBackend where
 
   kickOffDatabase (LoggingBackend env) rq =
     loggingAction
-      (runLogRepo "kickOffDatabase" env $ Thrift.kickOff_repo rq)
+      (runLogKickOff "kickOff" env rq)
       (const mempty) $
       kickOffDatabase env rq
   finalizeDatabase (LoggingBackend env) repo =
@@ -155,6 +156,17 @@ instance Backend LoggingBackend where
   usingShards (LoggingBackend b) = usingShards b
   initGlobalState (LoggingBackend b) = initGlobalState b
 
+runLogKickOff
+  :: Text
+  -> Database.Env
+  -> Thrift.KickOff
+  -> GleanServerLog
+  -> IO ()
+runLogKickOff cmd env Thrift.KickOff{..} log =
+  runLogRepo cmd env kickOff_repo $ log <> schemaId
+  where
+  schemaId = maybe mempty Logger.SetSchemaId $
+    HashMap.lookup "glean.schema_id" kickOff_properties
 
 runLogQueryFacts
   :: Text
