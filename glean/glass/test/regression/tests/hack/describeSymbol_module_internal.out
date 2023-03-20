@@ -1,0 +1,61 @@
+[
+    "@generated",
+    {
+        "annotations": [],
+        "comments": [],
+        "contains_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "extends_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "kind": 14,
+        "language": 3,
+        "location": {
+            "filepath": "www/ModuleMember.php",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 2,
+                "lineBegin": 16,
+                "lineEnd": 18
+            },
+            "repository": "test"
+        },
+        "modifiers": [],
+        "name": {
+            "container": "",
+            "localName": "fun2"
+        },
+        "pretty_comments": [],
+        "repo_hash": "testhash",
+        "signature": "internal function fun2<T>(T $id, T $other): T",
+        "sym": "test/php/fun/fun2",
+        "sym_location": {
+            "filepath": "www/ModuleMember.php",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 2,
+                "lineBegin": 16,
+                "lineEnd": 18
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": [],
+        "type_xrefs": [
+            {
+                "span": {
+                    "length": 4,
+                    "start": 18
+                },
+                "type": "test/php/fun/fun2"
+            }
+        ],
+        "visibility": 50
+    }
+]

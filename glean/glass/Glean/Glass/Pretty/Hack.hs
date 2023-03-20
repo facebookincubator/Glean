@@ -29,6 +29,7 @@ module Glean.Glass.Pretty.Hack
   , Signature (..)
   , HackType(..)
   , ReturnType(..)
+  , ModuleInternal(..)
   , DefaultValue(..)
   , Inout(..)
   , Variadic(..)
@@ -115,7 +116,7 @@ newtype QualName = QualName ([Text], Text)
 
 -- Hack modifier orderings are not as strict as this but since we want
 -- to print them in some consistent ordering we enforce the most popular
-newtype FunctionMod = FunctionMod Async
+data FunctionMod = FunctionMod !Async !ModuleInternal
 data ClassMod    = ClassMod Abstract Final
 data MethodMod   = MethodMod Abstract Final Visibility Static Async
 data PropertyMod   = PropertyMod Abstract Final Visibility Static
@@ -125,6 +126,7 @@ data Final = Final | NotFinal deriving Eq
 data Visibility = Public | Protected | Private | Internal
 data Static = Static | NotStatic deriving Eq
 data Async = Async | NotAsync deriving Eq
+data ModuleInternal = IsInternal | NotInternal deriving Eq
 
 data ByteSpan = ByteSpan
   { start :: {-# UNPACK #-}!Int
@@ -228,10 +230,12 @@ ppQual :: Qual -> Doc Ann
 ppQual (Qual namespace) = concatWith (surround "\\") (pretty <$> namespace)
 
 ppFunctionModifiers :: FunctionMod -> Doc Ann
-ppFunctionModifiers (FunctionMod async) =
-  fillSep $ execWriter $ do
-    when (async==Async) $ tell ["async"]
-    tell ["function"]
+ppFunctionModifiers (FunctionMod async internal) =
+  hcat [
+    if internal == IsInternal then "internal" <> space else mempty,
+    if async == Async then "async" <> space else emptyDoc,
+    "function"
+  ]
 
 ppClassModifiers :: ClassMod -> Doc Ann
 ppClassModifiers (ClassMod abstract final) =
@@ -600,28 +604,27 @@ namespaceQName (Just name) = do
     namespaceQNameInner namespaceQName_key_parent (parent:children)
 
 modifiersForFunction :: Hack.FunctionDefinition_key -> FunctionMod
-modifiersForFunction Hack.FunctionDefinition_key {..} =
-  FunctionMod
-    (if functionDefinition_key_isAsync then Async else NotAsync)
+modifiersForFunction Hack.FunctionDefinition_key{..} =
+    FunctionMod asyncMod visibility
+  where
+    asyncMod = if functionDefinition_key_isAsync then Async else NotAsync
+    visibility = toModuleVisibility functionDefinition_key_module_
+
+toModuleVisibility :: Maybe Hack.ModuleMembership -> ModuleInternal
+toModuleVisibility (Just (Hack.ModuleMembership _ True)) = IsInternal
+toModuleVisibility _ = NotInternal
 
 modifiersForClass :: Bool -> Bool -> ClassMod
-modifiersForClass isAbstract isFinal =
-  ClassMod
-    (if isAbstract then Abstract else NotAbstract)
-    (if isFinal then Final else NotFinal)
+modifiersForClass isAbstract isFinal = ClassMod
+  (if isAbstract then Abstract else NotAbstract)
+  (if isFinal then Final else NotFinal)
 
 modifiersForMethod :: Hack.MethodDefinition_key -> MethodMod
 modifiersForMethod Hack.MethodDefinition_key {..} =
   MethodMod
   (if methodDefinition_key_isAbstract then Abstract else NotAbstract)
   (if methodDefinition_key_isFinal then Final else NotFinal)
-  (case methodDefinition_key_visibility of
-    Hack.Visibility_Public -> Public
-    Hack.Visibility_Protected -> Protected
-    Hack.Visibility_Private -> Private
-    Hack.Visibility_Internal -> Internal
-    Hack.Visibility__UNKNOWN{} -> error "unexpected visibility"
-  )
+  (fromHackVisibility methodDefinition_key_visibility)
   (if methodDefinition_key_isStatic then Static else NotStatic)
   (if methodDefinition_key_isAsync then Async else NotAsync)
 
@@ -630,14 +633,16 @@ modifiersForProperty Hack.PropertyDefinition_key {..} =
   PropertyMod
   (if propertyDefinition_key_isAbstract then Abstract else NotAbstract)
   (if propertyDefinition_key_isFinal then Final else NotFinal)
-  (case propertyDefinition_key_visibility of
-    Hack.Visibility_Public -> Public
-    Hack.Visibility_Protected -> Protected
-    Hack.Visibility_Private -> Private
-    Hack.Visibility_Internal -> Internal
-    Hack.Visibility__UNKNOWN{} -> error "unexpected visibility"
-  )
+  (fromHackVisibility propertyDefinition_key_visibility)
   (if propertyDefinition_key_isStatic then Static else NotStatic)
+
+fromHackVisibility :: Hack.Visibility  -> Visibility
+fromHackVisibility v = case v of
+  Hack.Visibility_Public -> Public
+  Hack.Visibility_Protected -> Protected
+  Hack.Visibility_Private -> Private
+  Hack.Visibility_Internal -> Internal
+  Hack.Visibility__UNKNOWN{} -> error "unexpected visibility"
 
 -- Glass-side implementation of fbcode/glean/rts/prim.cpp:relSpansToAbs
 relSpansToAbs :: [Src.RelByteSpan] -> [ByteSpan]
