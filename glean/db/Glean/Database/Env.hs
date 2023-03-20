@@ -128,6 +128,8 @@ initEnv evb envStorage envCatalog shardManager cfg
 
     envDbSchemaCache <- newMVar HashMap.empty
 
+    envOpenFailed <- newTVarIO HashMap.empty
+
     return Env
       { envEventBase = evb
       , envServerLogger = cfgServerLogger cfg

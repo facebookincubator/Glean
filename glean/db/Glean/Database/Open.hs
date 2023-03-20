@@ -102,10 +102,14 @@ withOpenDatabase env@Env{..} repo action =
         Right (version, mode) -> do
           deps <- atomically $ metaDependencies <$>
             Catalog.readMeta envCatalog dbRepo
+          let
+            onFailure ex = atomically $ do
+              openFailed <- readTVar envOpenFailed
+              writeTVar envOpenFailed $ HashMap.insert dbRepo ex openFailed
           -- opening a DB has long uninterruptible sections so do it on a
           -- separate thread in case we get cancelled
           opener <-
-            asyncOpenDB env db version mode deps (return ()) (const $ return ())
+            asyncOpenDB env db version mode deps (return ()) onFailure
           restore $ wait opener
     action odb `finally` do
       t <- getTimePoint
@@ -343,8 +347,11 @@ schemaUpdated env@Env{..} mbRepo = do
   -- Empty the DbSchema cache. We probably have a new SchemaIndex now
   -- which invalidates all the entries anyway, and also we don't prune
   -- this cache anywhere else.
-  when (isNothing mbRepo) $
+  when (isNothing mbRepo) $ do
     modifyMVar_ envDbSchemaCache $ \_ -> return HashMap.empty
+    -- reset the record of DB open failures, these might succeed now
+    -- that we've updated the schema.
+    atomically $ writeTVar envOpenFailed HashMap.empty
 
   bracket acquire release $ \active -> do
     forM_ active $ \DB{..} -> do
@@ -472,7 +479,7 @@ asyncOpenDB env@Env{..} db@DB{..} version mode deps on_success on_failure =
     handling_failures :: IO a -> IO a
     handling_failures = handle $ \exc -> do
       atomically (writeTVar dbState Closed)
-      logError $ inRepo dbRepo "couldn't open:" ++ show (exc :: SomeException)
+      logError $ inRepo dbRepo "couldn't open: " ++ show (exc :: SomeException)
       on_failure exc
       throwIO exc
 

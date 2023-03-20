@@ -15,6 +15,7 @@ import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.Maybe
 import Data.Text (Text)
+import qualified Data.Text as Text
 
 import Util.Control.Exception
 import Util.Log
@@ -51,11 +52,15 @@ listDatabases env@Env{..} Thrift.ListDatabases{..} = do
       else
         return mempty
   local <- atomically $ Catalog.getLocalDatabases envCatalog
-  let databases = mapToDatabase $ HashMap.elems $ HashMap.union local backups
+  open_failed <- readTVarIO envOpenFailed
+  let databases =
+        HashMap.elems $
+        mergeOpenFailed open_failed $
+        fmap Thrift.getDatabaseResult_database $
+        HashMap.union local backups
   return Thrift.ListDatabasesResult
     { listDatabasesResult_databases = filter filterWithMinDBAge databases }
   where
-    mapToDatabase = map Thrift.getDatabaseResult_database
     reposToResults = HashMap.mapWithKey
       (\repo meta -> Thrift.GetDatabaseResult
         { getDatabaseResult_database = metaToThriftDatabase
@@ -71,6 +76,24 @@ listDatabases env@Env{..} Thrift.ListDatabases{..} = do
           Just completedAt -> completedAt
           Nothing -> Thrift.database_created_since_epoch db
         currentAgeInSeconds = unPosixEpochTime now - unPosixEpochTime dbTime
+
+    -- If a DB failed to open in the past, report it as broken. We don't
+    -- permanently change the on-disk Meta because the failure might not be
+    -- permanent, but by reporting the DB as broken to clients we can minimize
+    -- the damage because clients will prefer non-broken DBs instead.
+    mergeOpenFailed failed dbs = foldr add dbs (HashMap.toList failed)
+      where
+      add (repo,exception) = HashMap.adjust (brokenWith exception) repo
+      brokenWith exception db
+        | DatabaseStatus_Broken <- database_status db = db -- already broken
+        | otherwise =
+          db {
+            database_status = DatabaseStatus_Broken,
+            database_broken = Just DatabaseBroken {
+              databaseBroken_task = "open",
+              databaseBroken_reason = Text.pack (show exception) }
+          }
+
 
 listRestorable :: Backup.Site site => Text -> site -> IO (HashMap Repo Meta)
 listRestorable prefix site = do
