@@ -20,3 +20,5 @@ enum Position: int as int {
   Right = 3;
   Center = 4;
 }
+
+new module glean.module1.thingo { }

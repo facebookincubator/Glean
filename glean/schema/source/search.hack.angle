@@ -12,25 +12,39 @@ predicate SearchByName :
     name : hack.Name,
     decl : hack.Declaration
   }
-  { N, Decl } where
-  Decl =
-    hack.Declaration { classConst = { name = N }} |
-    hack.Declaration { enumerator = { name = N }} |
-    hack.Declaration { method = { name = N }} |
-    hack.Declaration { property_ = { name = N }} |
-    hack.Declaration { typeConst = { name = N }} |
-    (
-      QN = {name = N} : hack.QName;
-      hack.Declaration { container = { class_ = { name = QN }}} |
-      hack.Declaration { container = { interface_ = {name = QN }}} |
-      hack.Declaration { container = { trait = { name = QN }}} |
-      hack.Declaration { container = { enum_ = { name = QN }}} |
-      hack.Declaration { function_ = { name = QN }} |
-      hack.Declaration { globalConst = { name = QN }} |
-      hack.Declaration { typedef_ = { name = QN }}
+  { Name, Decl } where
+    ( D = hack.ClassConstDeclaration { name = Name };
+      { classConst = D } = Decl ) |
+    ( D = hack.Enumerator { name = Name };
+      { enumerator = D } = Decl ) |
+    ( D = hack.MethodDeclaration { name = Name };
+      { method = D } = Decl ) |
+    ( D = hack.PropertyDeclaration { name = Name };
+      { property_ = D } = Decl ) |
+    ( D = hack.TypeConstDeclaration { name = Name };
+      { typeConst = D } = Decl ) |
+    ( D = hack.ModuleDeclaration { name = Name };
+      { module = D } = Decl
     ) | (
-      QN = {name = N} : hack.NamespaceQName;
-      hack.Declaration { namespace_ = { name = QN }}
+      QName = hack.QName { name = Name };
+      ( D = hack.ClassDeclaration { name = QName };
+        { container = { class_ = D } } = Decl ) |
+      ( D = hack.InterfaceDeclaration { name = QName };
+        { container = { interface_ = D } } = Decl ) |
+      ( D = hack.TraitDeclaration { name = QName };
+        { container = { trait = D } } = Decl ) |
+      ( D = hack.EnumDeclaration { name = QName };
+        { container = { enum_ = D } } = Decl ) |
+      ( D = hack.FunctionDeclaration { name = QName };
+        { function_ = D } = Decl ) |
+      ( D = hack.GlobalConstDeclaration { name = QName };
+        { globalConst = D } = Decl ) |
+      ( D = hack.TypedefDeclaration { name = QName };
+        { typedef_ = D } = Decl )
+    ) | (
+      NSQName = hack.NamespaceQName { name = Name };
+      D = hack.NamespaceDeclaration { name = NSQName };
+      { namespace_ = D } = Decl
     )
 
 # SearchInNamespace can find containers (class_, interface_, trait_),

@@ -799,6 +799,18 @@
       "entity": {
         "hack": {
           "decl": {
+            "module": { "key": { "name": { "key": "glean.module1.thingo" } } }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
             "property_": {
               "key": {
                 "name": { "key": "daz" },

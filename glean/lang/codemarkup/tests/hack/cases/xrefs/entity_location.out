@@ -1292,6 +1292,22 @@
       "entity": {
         "hack": {
           "decl": {
+            "module": { "key": { "name": { "key": "glean.module1.thingo" } } }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/TopLevel.php" },
+        "location": { "span": { "length": 35, "start": 395 } },
+        "name": "glean.module1.thingo"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
             "namespace_": {
               "key": {
                 "name": {

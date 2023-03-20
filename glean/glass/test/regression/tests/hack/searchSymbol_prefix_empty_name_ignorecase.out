@@ -1514,6 +1514,29 @@
                 "symbol": "test/php/fun/corge"
             },
             {
+                "kind": 5,
+                "language": 3,
+                "location": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 36,
+                        "lineBegin": 24,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "name": "glean.module1.thingo",
+                "qname": {
+                    "container": "",
+                    "localName": "glean.module1.thingo"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/module/glean.module1.thingo"
+            },
+            {
                 "kind": 6,
                 "language": 3,
                 "location": {

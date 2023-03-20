@@ -93,7 +93,8 @@ predicate HackEntityKind:
     ({ namespace_ = _ } = Decl; Namespace = Kind) |
     ({ property_ = _ } = Decl; Property = Kind) |
     ({ typeConst = _ } = Decl; Type = Kind) |
-    ({ typedef_ = _ } = Decl; Type = Kind)
+    ({ typedef_ = _ } = Decl; Type = Kind) |
+    ({ module = _ } = Decl; Module = Kind)
 
 predicate HackEntityInfo:
   {
