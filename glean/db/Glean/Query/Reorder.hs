@@ -263,7 +263,7 @@ data StmtCost
   deriving (Bounded, Eq, Show, Ord)
 
 reorderStmtGroup :: Scope -> FlatStatementGroup -> [FlatStatement]
-reorderStmtGroup scope stmts =
+reorderStmtGroup scope@(Scope sc _) stmts =
   let
     (lookups, others) = partitionStmts (map summarise (NonEmpty.toList stmts))
   in
@@ -302,9 +302,9 @@ reorderStmtGroup scope stmts =
     classify _ (FlatDisjunction []) = StmtFilter -- False
     classify bound (FlatDisjunction alts@(_:_:_)) =
       maximum (map (classifyAlt bound) alts)
-    classify _ stmt
-      | isResolvedFilter scope stmt = StmtFilter
-      | isCurrentlyUnresolved scope stmt = StmtUnresolved
+    classify bound stmt
+      | isResolvedFilter (Scope sc bound) stmt = StmtFilter
+      | isCurrentlyUnresolved (Scope sc bound) stmt = StmtUnresolved
       | otherwise = StmtScan
 
     -- Approximate classification of disjunctions. To be more
