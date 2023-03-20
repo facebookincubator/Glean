@@ -1507,5 +1507,23 @@
         "name": "T"
       }
     }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "typedef_": {
+              "key": { "name": { "key": { "name": { "key": "IntT" } } } }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/ModuleMember.php" },
+        "location": { "span": { "length": 25, "start": 366 } },
+        "name": "IntT"
+      }
+    }
   }
 ]

@@ -16,3 +16,5 @@ function fun1<T>(T $id): T {
 internal function fun2<T>(T $id, T $other): T {
   return $other;
 }
+
+internal type IntT = int;

@@ -1027,5 +1027,19 @@
       },
       "info": { "kind": 1, "isAbstract": false }
     }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "typedef_": {
+              "key": { "name": { "key": { "name": { "key": "IntT" } } } }
+            }
+          }
+        }
+      },
+      "info": { "kind": 1, "isAbstract": false }
+    }
   }
 ]

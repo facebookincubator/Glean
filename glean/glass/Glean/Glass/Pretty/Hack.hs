@@ -171,7 +171,7 @@ data Decl
   | Method MethodMod Container Name Signature
   | Property PropertyMod Container Name HackType
   | TypeConst Name TypeConstKind
-  | Typedef QualName [TypeParameter] Transparency
+  | Typedef QualName [TypeParameter] Transparency ModuleInternal
   | Module Name
 
 prettyDecl :: LayoutOptions -> SymbolId -> Decl -> Doc Ann
@@ -213,10 +213,13 @@ prettyDecl _ _ (TypeConst name IsAbstract) =
   "abstract" <+> "const" <+> "type" <+> ppName name
 prettyDecl _ _ (TypeConst name _) =
   "const" <+> "type" <+> ppName name
-prettyDecl _ _sym (Typedef name typeParams Type_) =
-  "type" <+> ppQualName name <> ppTypeParams typeParams
-prettyDecl _ _sym (Typedef name typeParams Newtype_) =
-  "newtype" <+> ppQualName name <> ppTypeParams typeParams
+
+prettyDecl _ _sym (Typedef name typeParams Type_ internal) =
+  ppModuleInternal internal <>
+    "type" <+> ppQualName name <> ppTypeParams typeParams
+prettyDecl _ _sym (Typedef name typeParams Newtype_ internal) =
+  ppModuleInternal internal <>
+    "newtype" <+> ppQualName name <> ppTypeParams typeParams
 
 ppName :: Name -> Doc Ann
 ppName (Name n) = pretty n
@@ -232,10 +235,14 @@ ppQual (Qual namespace) = concatWith (surround "\\") (pretty <$> namespace)
 ppFunctionModifiers :: FunctionMod -> Doc Ann
 ppFunctionModifiers (FunctionMod async internal) =
   hcat [
-    if internal == IsInternal then "internal" <> space else mempty,
+    ppModuleInternal internal,
     if async == Async then "async" <> space else emptyDoc,
     "function"
   ]
+
+ppModuleInternal :: ModuleInternal -> Doc Ann
+ppModuleInternal IsInternal = "internal" <> space
+ppModuleInternal NotInternal = mempty
 
 ppClassModifiers :: ClassMod -> Doc Ann
 ppClassModifiers (ClassMod abstract final) =
@@ -513,12 +520,14 @@ decl (Hack.Declaration_typeConst decl@Hack.TypeConstDeclaration{..}) = do
   pure $ TypeConst (Name name) typeConstKind
 decl (Hack.Declaration_typedef_ decl@Hack.TypedefDeclaration{..}) = do
   Hack.TypedefDeclaration_key{..} <- liftMaybe typedefDeclaration_key
-  (typedefTypeParams, isTransparent) <- maybeT $ fetchDataRecursive $
-    angleTypedefDefinition (Angle.factId (Glean.getId decl))
+  (typedefTypeParams, isTransparent, moduleMembership) <- maybeT $
+    fetchDataRecursive $
+      angleTypedefDefinition (Angle.factId (Glean.getId decl))
   name <- qName typedefDeclaration_key_name
   let typeParams = map toTypeParameter typedefTypeParams
       isNewtype = if isTransparent then Type_ else Newtype_
   pure $ Typedef (QualName name) typeParams isNewtype
+    (toModuleVisibility moduleMembership)
 decl Hack.Declaration_EMPTY = MaybeT (return Nothing)
 
 containerDecl :: Hack.ContainerDeclaration -> Glean.MaybeTRepoHaxl u w Decl
@@ -796,14 +805,16 @@ angleInterfaceDefinition decl = var $ \typeParams ->
   ]
 
 angleTypedefDefinition
-  :: Angle Hack.TypedefDeclaration -> Angle ([Hack.TypeParameter], Bool)
-angleTypedefDefinition decl = vars $ \typeParams transparency ->
-  tuple (typeParams, transparency) `where_` [
+  :: Angle Hack.TypedefDeclaration
+  -> Angle ([Hack.TypeParameter], Bool, Maybe Hack.ModuleMembership)
+angleTypedefDefinition decl = vars $ \typeParams transparency moduleInfo ->
+  tuple (typeParams, transparency, moduleInfo) `where_` [
     wild .= predicate @Hack.TypedefDefinition (
       rec $
         field @"declaration" (Angle.asPredicate decl) $
         field @"typeParams" typeParams $
-        field @"isTransparent" transparency
+        field @"isTransparent" transparency $
+        field @"module_" moduleInfo
       end)
   ]
 

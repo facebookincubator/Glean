@@ -1,0 +1,53 @@
+[
+    "@generated",
+    {
+        "annotations": [],
+        "comments": [],
+        "contains_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "extends_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "kind": 2,
+        "language": 3,
+        "location": {
+            "filepath": "www/ModuleMember.php",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 26,
+                "lineBegin": 20,
+                "lineEnd": 20
+            },
+            "repository": "test"
+        },
+        "modifiers": [],
+        "name": {
+            "container": "",
+            "localName": "IntT"
+        },
+        "pretty_comments": [],
+        "repo_hash": "testhash",
+        "signature": "internal type IntT",
+        "sym": "test/php/IntT",
+        "sym_location": {
+            "filepath": "www/ModuleMember.php",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 26,
+                "lineBegin": 20,
+                "lineEnd": 20
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": [],
+        "type_xrefs": [],
+        "visibility": 50
+    }
+]

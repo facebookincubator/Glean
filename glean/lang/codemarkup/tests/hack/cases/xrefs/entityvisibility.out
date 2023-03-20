@@ -483,5 +483,17 @@
       }
     },
     "value": 2
+  },
+  {
+    "key": {
+      "hack": {
+        "decl": {
+          "typedef_": {
+            "key": { "name": { "key": { "name": { "key": "IntT" } } } }
+          }
+        }
+      }
+    },
+    "value": 3
   }
 ]

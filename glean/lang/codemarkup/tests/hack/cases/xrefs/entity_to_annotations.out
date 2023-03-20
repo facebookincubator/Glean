@@ -925,5 +925,19 @@
       },
       "annotations": { "hack": { "attributes": [ ] } }
     }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "typedef_": {
+              "key": { "name": { "key": { "name": { "key": "IntT" } } } }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
   }
 ]

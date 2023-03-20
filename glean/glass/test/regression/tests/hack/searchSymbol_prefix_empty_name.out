@@ -80,6 +80,36 @@
                 "symbol": "test/php/IAInterface"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "glean.test.thing"
+                    },
+                    "symbol": "test/php/module/glean.test.thing"
+                },
+                "kind": 2,
+                "language": 3,
+                "location": {
+                    "filepath": "www/ModuleMember.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 26,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "name": "IntT",
+                "qname": {
+                    "container": "",
+                    "localName": "IntT"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/IntT"
+            },
+            {
                 "kind": 7,
                 "language": 3,
                 "location": {

@@ -1322,6 +1322,26 @@
       "parent": {
         "hack": {
           "decl": {
+            "module": { "key": { "name": { "key": "glean.test.thing" } } }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "typedef_": {
+              "key": { "name": { "key": { "name": { "key": "IntT" } } } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
             "namespace_": {
               "key": {
                 "name": {

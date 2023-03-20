@@ -1939,6 +1939,41 @@
         "parent": {
           "hack": {
             "decl": {
+              "module": { "key": { "name": { "key": "glean.test.thing" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "glean.test.thing",
+          "file": { "key": "www/Module.php" },
+          "location": { "span": { "start": 226, "length": 31 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "typedef_": {
+                "key": { "name": { "key": { "name": { "key": "IntT" } } } }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "IntT",
+          "file": { "key": "www/ModuleMember.php" },
+          "location": { "span": { "start": 366, "length": 25 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
               "namespace_": {
                 "key": {
                   "name": {
