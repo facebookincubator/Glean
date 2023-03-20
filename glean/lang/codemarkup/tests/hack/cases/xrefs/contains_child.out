@@ -1282,6 +1282,46 @@
       "parent": {
         "hack": {
           "decl": {
+            "module": { "key": { "name": { "key": "glean.test.thing" } } }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "function_": {
+              "key": { "name": { "key": { "name": { "key": "fun1" } } } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "module": { "key": { "name": { "key": "glean.test.thing" } } }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "function_": {
+              "key": { "name": { "key": { "name": { "key": "fun2" } } } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
             "namespace_": {
               "key": {
                 "name": {

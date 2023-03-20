@@ -56,6 +56,7 @@ indexer = Indexer {
             , "hack.NamespaceMember"
             , "hack.ContainerParent"
             , "hack.ContainerChild"
+            , "hack.ModuleChild"
             , "hack.MethodOverridden"
             , "hack.TargetUses"
             , "hack.DeclarationSource"

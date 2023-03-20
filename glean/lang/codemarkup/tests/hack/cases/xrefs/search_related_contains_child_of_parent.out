@@ -1869,6 +1869,76 @@
         "parent": {
           "hack": {
             "decl": {
+              "module": { "key": { "name": { "key": "glean.test.thing" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "glean.test.thing",
+          "file": { "key": "www/Module.php" },
+          "location": { "span": { "start": 226, "length": 31 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "function_": {
+                "key": { "name": { "key": { "name": { "key": "fun1" } } } }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "fun1",
+          "file": { "key": "www/ModuleMember.php" },
+          "location": { "span": { "start": 252, "length": 44 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "module": { "key": { "name": { "key": "glean.test.thing" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "glean.test.thing",
+          "file": { "key": "www/Module.php" },
+          "location": { "span": { "start": 226, "length": 31 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "function_": {
+                "key": { "name": { "key": { "name": { "key": "fun2" } } } }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "fun2",
+          "file": { "key": "www/ModuleMember.php" },
+          "location": { "span": { "start": 298, "length": 66 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
               "namespace_": {
                 "key": {
                   "name": {
