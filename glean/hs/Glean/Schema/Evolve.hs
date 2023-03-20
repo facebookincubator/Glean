@@ -236,11 +236,12 @@ calcEvolutions toRef byPredRef bySchemaRef schemaEvolutions autoEvolutions =
 validateEvolutions
   :: (Eq p, Eq t, ShowRef p, ShowRef t,
       Hashable p, Hashable t, Display p, Display t)
-  => HashMap t (TypeDef_ p t)        -- ^ types to their definitions
+  => Maybe (p -> Bool)               -- ^ does the db has facts of p
+  -> HashMap t (TypeDef_ p t)        -- ^ types to their definitions
   -> HashMap p (PredicateDef_ s p t) -- ^ predicates to their definitions
   -> HashMap p p                     -- ^ predicate evolutions
   -> Either Text ()
-validateEvolutions types preds evolutions =
+validateEvolutions mHasFacts types preds evolutions =
   void $ HashMap.traverseWithKey validate evolutions
   where
     validate old new =
@@ -257,11 +258,24 @@ validateEvolutions types preds evolutions =
 
     canEvolve' = canEvolve types compatible
 
-    compatible a b =
-      evolveToSamePredicate || versionsOfSamePredicate
-      where
-        evolveToSamePredicate = evolved a == evolved b
-        versionsOfSamePredicate = ref a == ref b
+    compatible new old =
+      case mHasFacts of
+        Nothing ->
+          -- Here we are validating an evolution graph without a database.
+          -- Compatible predicates must ultimately evolve to the same
+          -- PredicateRef. We ignore hashes because auto-evolutions will make
+          -- all predicates with the same PredicateRef evolve to the same thing
+          -- in a concrete database.
+          ref (evolved new) == ref (evolved old)
+        Just hasFacts
+            -- if there are no facts, there will be no transformation so all
+            -- types are considered compatible.
+          | not (hasFacts old) -> True
+            -- there will be a transformation so the evolutions map should have
+            -- an exact match.
+          | otherwise ->
+            HashMap.lookupDefault old old evolutions
+              ==  HashMap.lookupDefault new new evolutions
 
     ref p = predicateDefRef $ preds HashMap.! p
 
@@ -289,7 +303,7 @@ validateResolvedEvolutions resolved = do
     schemaEvolutions
     autoEvolutions
 
-  validateEvolutions types preds evolutions
+  validateEvolutions Nothing types preds evolutions
   where
     byRef :: Map PredicateRef [PredicateRef]
     byRef = Map.fromList [ (ref, [ref]) | ref <- HashMap.keys preds ]

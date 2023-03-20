@@ -582,7 +582,7 @@ mkEvolutions stats byId schemas = do
   manual <- calcSchemaEvolutions hasFacts bySchemaRef <$> directEvolutions schemas
   auto <- calcAutoEvolutions hasFacts byPredRef
   evolutions <- calcEvolutions predicateIdRef byPredRef bySchemaRef manual auto
-  validateEvolutions types preds evolutions
+  validateEvolutions (Just hasFacts) types preds evolutions
   return evolutions
   where
   (types, preds) = definitions schemas
@@ -1075,8 +1075,8 @@ validateNewSchemaInstance (SchemaIndex curr older) = failOnLeft $ do
     auto
 
   if performExhaustiveCheck
-    then validateEvolutions types preds (transitive evolutions)
-    else validateEvolutions types preds evolutions
+    then validateEvolutions Nothing types preds (transitive evolutions)
+    else validateEvolutions Nothing types preds evolutions
   where
   schemas = curr : older
   (types, preds) = definitions schemas

@@ -1025,6 +1025,39 @@ schemaEvolvesTransformations =
         nested <- decodeNestedAs (SourceRef "x.P" (Just 1)) byRef response
         assertEqual "nested count" 1 (length nested)
 
+  , TestLabel "dependency without facts" $ TestCase $ do
+    withSchemaAndFactsQ
+      [s|
+        schema x.1 { predicate P : { a : nat } }
+        schema x.2 { predicate P : { b : string } }
+        schema x.2 evolves x.1
+
+        schema y.1 {
+          import x.1
+          predicate Q : [x.P.1]
+        }
+
+        schema y.2 {
+          import x.2
+          predicate Q : [x.P.2]
+        }
+        schema y.2 evolves y.1
+        schema all.1 : x.1, x.2, y.1, y.2 {}
+      |]
+      [ mkBatch (PredicateRef "y.Q" 1)
+          [ [s|{ "key": [] }|]
+          ]
+      ]
+      [s| y.Q.2 _ |]
+      -- there are no facts of x.1 or x.2 so there will be no evolution
+      -- of the x schema. Nonetheless we should be able to evolve y.1
+      -- into y.2 even though there is no evolution for one of its option.
+      -- This is only the case because there are no facts for the option
+      -- or its evolved counterpart.
+      $ \byRef response _ -> do
+        facts <- decodeResultsAs (SourceRef "y.Q" (Just 2)) byRef response
+        assertEqual "result count" 1 (length facts)
+
   , TestLabel "query matching order" $ TestCase $ do
     withSchemaAndFactsQ
       [s|
