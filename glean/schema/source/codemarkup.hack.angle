@@ -187,12 +187,31 @@ predicate HackVisibility :
     entity: code.hack.Entity,
     visibility: codemarkup.types.Visibility,
   }
-  { D, V } where
-    ( { decl = { method = Decl }} = D;
+  { { decl = D }, V } where
+    ( { method = Decl } = D;
       hack.MethodDefinition { declaration = Decl, visibility = Vis}
     ) | (
-      { decl = { property_ = Decl }} = D;
+      { property_ = Decl } = D;
       hack.PropertyDefinition { declaration = Decl, visibility = Vis}
+    ) | (
+      # optional `internal` modifier on things that are contained by a module
+      ( { function_ = Decl } = D;
+        hack.FunctionDefinition { declaration = Decl, module_ = M } ) |
+      ( { typedef_ = Decl } = D;
+        hack.TypedefDefinition { declaration = Decl, module_ = M }
+      ) | (
+        { container = Decl } = D;
+        ( { class_ = CDecl } = Decl;
+          hack.ClassDefinition { declaration = CDecl, module_ = M } ) |
+        ( { enum_ = CDecl } = Decl;
+          hack.EnumDefinition { declaration = CDecl, module_ = M } ) |
+        ( { interface_ = CDecl } = Decl;
+          hack.InterfaceDefinition { declaration = CDecl, module_ = M } ) |
+        ( { trait = CDecl } = Decl;
+          hack.TraitDefinition { declaration = CDecl, module_ = M } )
+      );
+      { just = { internal = true } } = M;
+      Internal = Vis;
     );
     FromHackVisibility { Vis, V };
 
