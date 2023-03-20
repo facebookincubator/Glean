@@ -214,6 +214,28 @@
             "container": {
               "class_": {
                 "key": {
+                  "name": { "key": { "name": { "key": "SecretClass" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/ModuleMember.php" },
+        "location": { "span": { "length": 110, "start": 393 } },
+        "name": "SecretClass"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
                   "name": { "key": { "name": { "key": "SourceClass" } } }
                 }
               }
@@ -992,6 +1014,33 @@
         "file": { "key": "www/RefClass.php" },
         "location": { "span": { "length": 93, "start": 497 } },
         "name": "lotsofkeywords"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SecretClass" } } }
+                    }
+                  }
+                },
+                "name": { "key": "secretSecrets" }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/ModuleMember.php" },
+        "location": { "span": { "length": 74, "start": 427 } },
+        "name": "secretSecrets"
       }
     }
   },

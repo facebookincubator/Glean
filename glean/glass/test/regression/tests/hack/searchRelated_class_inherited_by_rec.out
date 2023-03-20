@@ -54,7 +54,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": " class RefClass",
+                "signature": "class RefClass",
                 "sym": "test/php/RefClass",
                 "sym_location": {
                     "filepath": "www/RefClass.php",
@@ -71,7 +71,7 @@
                     {
                         "span": {
                             "length": 8,
-                            "start": 7
+                            "start": 6
                         },
                         "type": "test/php/RefClass"
                     }
@@ -141,7 +141,7 @@
                     }
                 ],
                 "repo_hash": "testhash",
-                "signature": " class SourceClass",
+                "signature": "class SourceClass",
                 "sym": "test/php/SourceClass",
                 "sym_location": {
                     "filepath": "www/SourceClass.php",
@@ -158,7 +158,7 @@
                     {
                         "span": {
                             "length": 11,
-                            "start": 7
+                            "start": 6
                         },
                         "type": "test/php/SourceClass"
                     }
@@ -296,7 +296,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": " class SuperClass",
+                "signature": "class SuperClass",
                 "sym": "test/php/SuperClass",
                 "sym_location": {
                     "filepath": "www/SuperClass.php",
@@ -313,7 +313,7 @@
                     {
                         "span": {
                             "length": 10,
-                            "start": 7
+                            "start": 6
                         },
                         "type": "test/php/SuperClass"
                     }

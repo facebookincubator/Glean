@@ -46,7 +46,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": " class SuperClass",
+                "signature": "class SuperClass",
                 "sym": "test/php/SuperClass",
                 "sym_location": {
                     "filepath": "www/SuperClass.php",
@@ -63,7 +63,7 @@
                     {
                         "span": {
                             "length": 10,
-                            "start": 7
+                            "start": 6
                         },
                         "type": "test/php/SuperClass"
                     }

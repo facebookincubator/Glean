@@ -61,7 +61,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": " class SourceClass",
+                "signature": "class SourceClass",
                 "sym": "test/php/SourceClass",
                 "sym_location": {
                     "filepath": "www/SourceClass.php",
@@ -405,7 +405,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": " class SubClass",
+                "signature": "class SubClass",
                 "sym": "test/php/SubClass",
                 "sym_location": {
                     "filepath": "www/SourceClass.php",
@@ -422,7 +422,7 @@
                     {
                         "span": {
                             "length": 8,
-                            "start": 7
+                            "start": 6
                         },
                         "type": "test/php/SubClass"
                     }
@@ -550,7 +550,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": " class SuperClass",
+                "signature": "class SuperClass",
                 "sym": "test/php/SuperClass",
                 "sym_location": {
                     "filepath": "www/SuperClass.php",

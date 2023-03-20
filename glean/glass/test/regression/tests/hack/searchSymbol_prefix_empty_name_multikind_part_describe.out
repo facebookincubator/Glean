@@ -641,6 +641,107 @@
                 "visibility": 50
             },
             {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/ModuleMember.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 22,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "SecretClass"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/php/SecretClass",
+                "sym_location": {
+                    "filepath": "www/ModuleMember.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 22,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 50
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/ModuleMember.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 23,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [
+                    3,
+                    4
+                ],
+                "name": {
+                    "container": "SecretClass",
+                    "localName": "secretSecrets"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/php/SecretClass/secretSecrets",
+                "sym_location": {
+                    "filepath": "www/ModuleMember.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 23,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 40
+            },
+            {
                 "annotations": [
                     {
                         "name": "TestAnnotation",
@@ -2331,6 +2432,59 @@
                     "exactness": 2
                 },
                 "symbol": "test/php/RefClass/lotsofkeywords"
+            },
+            {
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/ModuleMember.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 22,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "name": "SecretClass",
+                "qname": {
+                    "container": "",
+                    "localName": "SecretClass"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SecretClass"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SecretClass"
+                    },
+                    "symbol": "test/php/SecretClass"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/ModuleMember.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 23,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "name": "secretSecrets",
+                "qname": {
+                    "container": "SecretClass",
+                    "localName": "secretSecrets"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SecretClass/secretSecrets"
             },
             {
                 "kind": 7,

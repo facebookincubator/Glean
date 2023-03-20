@@ -117,7 +117,7 @@ newtype QualName = QualName ([Text], Text)
 -- Hack modifier orderings are not as strict as this but since we want
 -- to print them in some consistent ordering we enforce the most popular
 data FunctionMod = FunctionMod !Async !ModuleInternal
-data ClassMod    = ClassMod Abstract Final
+data ClassMod    = ClassMod Abstract Final !ModuleInternal
 data MethodMod   = MethodMod Abstract Final Visibility Static Async
 data PropertyMod   = PropertyMod Abstract Final Visibility Static
 
@@ -188,7 +188,7 @@ prettyDecl _ _sym (Enum name IsClass _) =
 prettyDecl _ _sym (Trait name typeParams) =
   "trait" <+> ppQualName name <> ppTypeParams typeParams
 prettyDecl _ sym (Class modifiers name typeParams) =
-  ppClassModifiers modifiers <+> "class" <+>
+  ppClassModifiers modifiers <> "class" <+>
     annotate (SymId sym) (ppQualName name) <> ppTypeParams typeParams
 prettyDecl _ _sym (Interface name typeParams) =
   "interface" <+> ppQualName name <> ppTypeParams typeParams
@@ -209,6 +209,7 @@ prettyDecl _ sym (Namespace name) =
 
 prettyDecl _ _ (Property modifiers container name mhacktype) =
   ppPropertyModifiers container modifiers <+> ppType mhacktype <+> ppName name
+
 prettyDecl _ _ (TypeConst name IsAbstract) =
   "abstract" <+> "const" <+> "type" <+> ppName name
 prettyDecl _ _ (TypeConst name _) =
@@ -234,21 +235,27 @@ ppQual (Qual namespace) = concatWith (surround "\\") (pretty <$> namespace)
 
 ppFunctionModifiers :: FunctionMod -> Doc Ann
 ppFunctionModifiers (FunctionMod async internal) =
-  hcat [
-    ppModuleInternal internal,
-    if async == Async then "async" <> space else emptyDoc,
-    "function"
-  ]
+  hcat [ ppModuleInternal internal, ppAsync async, "function" ]
+
+ppClassModifiers :: ClassMod -> Doc Ann
+ppClassModifiers (ClassMod abstract final internal) =
+  hcat [ ppModuleInternal internal, ppAbstract abstract, ppFinal final ]
 
 ppModuleInternal :: ModuleInternal -> Doc Ann
 ppModuleInternal IsInternal = "internal" <> space
 ppModuleInternal NotInternal = mempty
 
-ppClassModifiers :: ClassMod -> Doc Ann
-ppClassModifiers (ClassMod abstract final) =
-  fillSep $ execWriter $ do
-    when (abstract==Abstract) $ tell ["abstract"]
-    when (final==Final) $ tell ["final"]
+ppAsync :: Async -> Doc Ann
+ppAsync Async = "async" <> space
+ppAsync NotAsync = mempty
+
+ppAbstract :: Abstract -> Doc Ann
+ppAbstract Abstract = "abstract" <> space
+ppAbstract NotAbstract = mempty
+
+ppFinal :: Final -> Doc Ann
+ppFinal Final = "final" <> space
+ppFinal NotFinal = mempty
 
 ppSignature :: LayoutOptions -> Doc Ann -> Signature -> Doc Ann
 ppSignature opts head (Signature returnType typeParams params ctxs xrefs) =
@@ -553,12 +560,14 @@ containerDecl
 containerDecl
   (Hack.ContainerDeclaration_class_ decl@Hack.ClassDeclaration{..}) = do
     Hack.ClassDeclaration_key{..} <- liftMaybe classDeclaration_key
-    (isAbstract, isFinal, classTypeParams) <- maybeT $ fetchDataRecursive $
-      angleClassDefinition (Angle.factId (Glean.getId decl))
+    (isAbstract, isFinal, classTypeParams, moduleInfo) <- maybeT $
+      fetchDataRecursive $ angleClassDefinition
+        (Angle.factId (Glean.getId decl))
     name <- qName classDeclaration_key_name
     let typeParams = map toTypeParameter classTypeParams
-    pure $ Class (modifiersForClass isAbstract isFinal) (QualName name)
-      typeParams
+    pure $ Class (modifiersForClass isAbstract isFinal
+             (toModuleVisibility moduleInfo))
+       (QualName name) typeParams
 containerDecl
   (Hack.ContainerDeclaration_interface_ decl@Hack.InterfaceDeclaration{..}) = do
     Hack.InterfaceDeclaration_key{..} <- liftMaybe interfaceDeclaration_key
@@ -623,10 +632,11 @@ toModuleVisibility :: Maybe Hack.ModuleMembership -> ModuleInternal
 toModuleVisibility (Just (Hack.ModuleMembership _ True)) = IsInternal
 toModuleVisibility _ = NotInternal
 
-modifiersForClass :: Bool -> Bool -> ClassMod
-modifiersForClass isAbstract isFinal = ClassMod
+modifiersForClass :: Bool -> Bool -> ModuleInternal -> ClassMod
+modifiersForClass isAbstract isFinal internal = ClassMod
   (if isAbstract then Abstract else NotAbstract)
   (if isFinal then Final else NotFinal)
+  internal
 
 modifiersForMethod :: Hack.MethodDefinition_key -> MethodMod
 modifiersForMethod Hack.MethodDefinition_key {..} =
@@ -770,15 +780,17 @@ unknownType :: Text
 unknownType = "<unknown-type>"
 
 angleClassDefinition
-  :: Angle Hack.ClassDeclaration -> Angle (Bool, Bool, [Hack.TypeParameter])
-angleClassDefinition decl = vars $ \isAbstract isFinal typeParams ->
-  tuple (isAbstract, isFinal, typeParams) `where_` [
+  :: Angle Hack.ClassDeclaration
+  -> Angle (Bool, Bool, [Hack.TypeParameter], Maybe Hack.ModuleMembership )
+angleClassDefinition decl = vars $ \isAbstract isFinal typeParams moduleInfo ->
+  tuple (isAbstract, isFinal, typeParams, moduleInfo) `where_` [
     wild .= predicate @Hack.ClassDefinition (
       rec $
         field @"declaration" (Angle.asPredicate decl) $
         field @"isAbstract" isAbstract $
         field @"isFinal" isFinal $
-        field @"typeParams" typeParams
+        field @"typeParams" typeParams $
+        field @"module_" moduleInfo
       end)
   ]
 

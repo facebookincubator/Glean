@@ -88,6 +88,24 @@
             "container": {
               "class_": {
                 "key": {
+                  "name": { "key": { "name": { "key": "SecretClass" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
                   "name": { "key": { "name": { "key": "SourceClass" } } }
                 }
               }
@@ -765,6 +783,29 @@
                   "trait": {
                     "key": {
                       "name": { "key": { "name": { "key": "SourceTrait" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "secretSecrets" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SecretClass" } } }
                     }
                   }
                 }

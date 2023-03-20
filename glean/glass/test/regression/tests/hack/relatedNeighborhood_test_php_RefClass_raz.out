@@ -46,7 +46,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": " class RefClass",
+                "signature": "class RefClass",
                 "sym": "test/php/RefClass",
                 "sym_location": {
                     "filepath": "www/RefClass.php",
@@ -63,7 +63,7 @@
                     {
                         "span": {
                             "length": 8,
-                            "start": 7
+                            "start": 6
                         },
                         "type": "test/php/RefClass"
                     }

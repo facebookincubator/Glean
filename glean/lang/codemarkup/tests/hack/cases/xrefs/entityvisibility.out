@@ -4,6 +4,20 @@
     "key": {
       "hack": {
         "decl": {
+          "container": {
+            "class_": {
+              "key": { "name": { "key": { "name": { "key": "SecretClass" } } } }
+            }
+          }
+        }
+      }
+    },
+    "value": 3
+  },
+  {
+    "key": {
+      "hack": {
+        "decl": {
           "function_": {
             "key": { "name": { "key": { "name": { "key": "fun2" } } } }
           }
@@ -378,6 +392,27 @@
       }
     },
     "value": 0
+  },
+  {
+    "key": {
+      "hack": {
+        "decl": {
+          "method": {
+            "key": {
+              "name": { "key": "secretSecrets" },
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SecretClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": 2
   },
   {
     "key": {

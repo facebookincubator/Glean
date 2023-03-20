@@ -64,7 +64,7 @@
             }
         ],
         "repo_hash": "testhash",
-        "signature": " class SourceClass",
+        "signature": "class SourceClass",
         "sym": "test/php/SourceClass",
         "sym_location": {
             "filepath": "www/SourceClass.php",
@@ -81,7 +81,7 @@
             {
                 "span": {
                     "length": 11,
-                    "start": 7
+                    "start": 6
                 },
                 "type": "test/php/SourceClass"
             }

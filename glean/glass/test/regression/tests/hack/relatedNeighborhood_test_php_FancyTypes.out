@@ -43,7 +43,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": " class FancyTypes<<<__Memoize, __Deprecated(Use something else instead)>> +T>",
+                "signature": "class FancyTypes<<<__Memoize, __Deprecated(Use something else instead)>> +T>",
                 "sym": "test/php/FancyTypes",
                 "sym_location": {
                     "filepath": "www/SourceClass.php",
@@ -60,7 +60,7 @@
                     {
                         "span": {
                             "length": 10,
-                            "start": 7
+                            "start": 6
                         },
                         "type": "test/php/FancyTypes"
                     }

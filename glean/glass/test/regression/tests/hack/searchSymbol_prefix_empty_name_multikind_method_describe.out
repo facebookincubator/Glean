@@ -369,6 +369,58 @@
                 "kind": 8,
                 "language": 3,
                 "location": {
+                    "filepath": "www/ModuleMember.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 23,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [
+                    3,
+                    4
+                ],
+                "name": {
+                    "container": "SecretClass",
+                    "localName": "secretSecrets"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/php/SecretClass/secretSecrets",
+                "sym_location": {
+                    "filepath": "www/ModuleMember.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 23,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 40
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
                     "filepath": "www/SourceClass.php",
                     "range": {
                         "columnBegin": 3,
@@ -1242,6 +1294,36 @@
                     "exactness": 2
                 },
                 "symbol": "test/php/RefClass/lotsofkeywords"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SecretClass"
+                    },
+                    "symbol": "test/php/SecretClass"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/ModuleMember.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 23,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "name": "secretSecrets",
+                "qname": {
+                    "container": "SecretClass",
+                    "localName": "secretSecrets"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SecretClass/secretSecrets"
             },
             {
                 "context": {

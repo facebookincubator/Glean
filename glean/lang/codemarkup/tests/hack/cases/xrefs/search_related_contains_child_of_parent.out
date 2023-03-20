@@ -480,6 +480,56 @@
               "container": {
                 "class_": {
                   "key": {
+                    "name": { "key": { "name": { "key": "SecretClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "SecretClass",
+          "file": { "key": "www/ModuleMember.php" },
+          "location": { "span": { "start": 393, "length": 110 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "method": {
+                "key": {
+                  "name": { "key": "secretSecrets" },
+                  "container": {
+                    "class_": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "SecretClass" } } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "secretSecrets",
+          "file": { "key": "www/ModuleMember.php" },
+          "location": { "span": { "start": 427, "length": 74 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "class_": {
+                  "key": {
                     "name": { "key": { "name": { "key": "SourceClass" } } }
                   }
                 }
@@ -1858,6 +1908,45 @@
           "name": "superAdd",
           "file": { "key": "www/SourceTrait.php" },
           "location": { "span": { "start": 381, "length": 75 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "module": { "key": { "name": { "key": "glean.test.thing" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "glean.test.thing",
+          "file": { "key": "www/Module.php" },
+          "location": { "span": { "start": 226, "length": 31 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SecretClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "SecretClass",
+          "file": { "key": "www/ModuleMember.php" },
+          "location": { "span": { "start": 393, "length": 110 } }
         }
       }
     }

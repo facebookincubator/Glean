@@ -331,6 +331,41 @@
             "container": {
               "class_": {
                 "key": {
+                  "name": { "key": { "name": { "key": "SecretClass" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "secretSecrets" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SecretClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
                   "name": { "key": { "name": { "key": "SourceClass" } } }
                 }
               }
@@ -1269,6 +1304,30 @@
                       "name": { "key": { "name": { "key": "SourceTrait" } } }
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "module": { "key": { "name": { "key": "glean.test.thing" } } }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SecretClass" } } }
                 }
               }
             }

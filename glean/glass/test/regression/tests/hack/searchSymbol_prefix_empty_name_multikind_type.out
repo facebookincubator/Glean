@@ -152,6 +152,29 @@
                 "kind": 7,
                 "language": 3,
                 "location": {
+                    "filepath": "www/ModuleMember.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 22,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "name": "SecretClass",
+                "qname": {
+                    "container": "",
+                    "localName": "SecretClass"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SecretClass"
+            },
+            {
+                "kind": 7,
+                "language": 3,
+                "location": {
                     "filepath": "www/SourceClass.php",
                     "range": {
                         "columnBegin": 1,

@@ -217,6 +217,36 @@
                 "context": {
                     "qname": {
                         "container": "",
+                        "localName": "SecretClass"
+                    },
+                    "symbol": "test/php/SecretClass"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/ModuleMember.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 23,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "name": "secretSecrets",
+                "qname": {
+                    "container": "SecretClass",
+                    "localName": "secretSecrets"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SecretClass/secretSecrets"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
                         "localName": "SourceClass"
                     },
                     "symbol": "test/php/SourceClass"

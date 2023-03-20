@@ -18,3 +18,9 @@ internal function fun2<T>(T $id, T $other): T {
 }
 
 internal type IntT = int;
+
+internal class SecretClass<T> {
+  private static async function secretSecrets(): bool {
+    return true;
+  }
+}
