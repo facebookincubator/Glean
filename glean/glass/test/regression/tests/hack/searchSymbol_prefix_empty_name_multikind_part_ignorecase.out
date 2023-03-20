@@ -970,6 +970,66 @@
                     "exactness": 2
                 },
                 "symbol": "test/php/fun/corge"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "glean.test.thing"
+                    },
+                    "symbol": "test/php/module/glean.test.thing"
+                },
+                "kind": 14,
+                "language": 3,
+                "location": {
+                    "filepath": "www/ModuleMember.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 12,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "name": "fun1",
+                "qname": {
+                    "container": "",
+                    "localName": "fun1"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/fun/fun1"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "glean.test.thing"
+                    },
+                    "symbol": "test/php/module/glean.test.thing"
+                },
+                "kind": 14,
+                "language": 3,
+                "location": {
+                    "filepath": "www/ModuleMember.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 16,
+                        "lineEnd": 18
+                    },
+                    "repository": "test"
+                },
+                "name": "fun2",
+                "qname": {
+                    "container": "",
+                    "localName": "fun2"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/fun/fun2"
             }
         ]
     }

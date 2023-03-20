@@ -413,6 +413,34 @@
       "entity": {
         "hack": {
           "decl": {
+            "function_": {
+              "key": { "name": { "key": { "name": { "key": "fun1" } } } }
+            }
+          }
+        }
+      },
+      "info": { "kind": 13, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "function_": {
+              "key": { "name": { "key": { "name": { "key": "fun2" } } } }
+            }
+          }
+        }
+      },
+      "info": { "kind": 13, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
             "globalConst": {
               "key": { "name": { "key": { "name": { "key": "WALDO" } } } }
             }

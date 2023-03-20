@@ -7,16 +7,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const int WALDO = -3;
+module glean.test.thing;
 
-function corge() : int {
-  return 5000 + WALDO;
+function fun1<T>(T $id): T {
+  return $id;
 }
 
-enum Position: int as int {
-  Top = 0;
-  Bottom = 1;
-  Left = 2;
-  Right = 3;
-  Center = 4;
+internal function fun2<T>(T $id, T $other): T {
+  return $other;
 }

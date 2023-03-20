@@ -747,6 +747,42 @@
       "entity": {
         "hack": {
           "decl": {
+            "function_": {
+              "key": { "name": { "key": { "name": { "key": "fun1" } } } }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/ModuleMember.php" },
+        "location": { "span": { "length": 44, "start": 252 } },
+        "name": "fun1"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "function_": {
+              "key": { "name": { "key": { "name": { "key": "fun2" } } } }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/ModuleMember.php" },
+        "location": { "span": { "length": 66, "start": 298 } },
+        "name": "fun2"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
             "globalConst": {
               "key": { "name": { "key": { "name": { "key": "WALDO" } } } }
             }
@@ -1292,14 +1328,14 @@
       "entity": {
         "hack": {
           "decl": {
-            "module": { "key": { "name": { "key": "glean.module1.thingo" } } }
+            "module": { "key": { "name": { "key": "glean.test.thing" } } }
           }
         }
       },
       "location": {
-        "file": { "key": "www/TopLevel.php" },
-        "location": { "span": { "length": 35, "start": 395 } },
-        "name": "glean.module1.thingo"
+        "file": { "key": "www/Module.php" },
+        "location": { "span": { "length": 31, "start": 226 } },
+        "name": "glean.test.thing"
       }
     }
   },

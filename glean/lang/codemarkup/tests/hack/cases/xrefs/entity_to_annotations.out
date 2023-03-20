@@ -336,6 +336,34 @@
       "entity": {
         "hack": {
           "decl": {
+            "function_": {
+              "key": { "name": { "key": { "name": { "key": "fun1" } } } }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "function_": {
+              "key": { "name": { "key": { "name": { "key": "fun2" } } } }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
             "method": {
               "key": {
                 "name": { "key": "__construct" },
@@ -799,7 +827,7 @@
       "entity": {
         "hack": {
           "decl": {
-            "module": { "key": { "name": { "key": "glean.module1.thingo" } } }
+            "module": { "key": { "name": { "key": "glean.test.thing" } } }
           }
         }
       },

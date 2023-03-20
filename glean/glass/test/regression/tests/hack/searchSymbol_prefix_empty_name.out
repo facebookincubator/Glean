@@ -1514,27 +1514,87 @@
                 "symbol": "test/php/fun/corge"
             },
             {
-                "kind": 5,
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "glean.test.thing"
+                    },
+                    "symbol": "test/php/module/glean.test.thing"
+                },
+                "kind": 14,
                 "language": 3,
                 "location": {
-                    "filepath": "www/TopLevel.php",
+                    "filepath": "www/ModuleMember.php",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 36,
-                        "lineBegin": 24,
-                        "lineEnd": 24
+                        "columnEnd": 2,
+                        "lineBegin": 12,
+                        "lineEnd": 14
                     },
                     "repository": "test"
                 },
-                "name": "glean.module1.thingo",
+                "name": "fun1",
                 "qname": {
                     "container": "",
-                    "localName": "glean.module1.thingo"
+                    "localName": "fun1"
                 },
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/php/module/glean.module1.thingo"
+                "symbol": "test/php/fun/fun1"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "glean.test.thing"
+                    },
+                    "symbol": "test/php/module/glean.test.thing"
+                },
+                "kind": 14,
+                "language": 3,
+                "location": {
+                    "filepath": "www/ModuleMember.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 16,
+                        "lineEnd": 18
+                    },
+                    "repository": "test"
+                },
+                "name": "fun2",
+                "qname": {
+                    "container": "",
+                    "localName": "fun2"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/fun/fun2"
+            },
+            {
+                "kind": 5,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Module.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "name": "glean.test.thing",
+                "qname": {
+                    "container": "",
+                    "localName": "glean.test.thing"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/module/glean.test.thing"
             },
             {
                 "kind": 6,

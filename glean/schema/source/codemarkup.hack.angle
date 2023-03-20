@@ -273,6 +273,9 @@ predicate HackContainsParentEntity :
     ) | (
       hack.NamespaceMember { namespace_ = Name, decl = Child};
       Parent = hack.Declaration { namespace_ = {name = Name }}
+    ) | (
+      hack.ModuleParent { Child, Module };
+      { module = Module } = Parent
     )
 
 # parent contains child
@@ -282,30 +285,27 @@ predicate HackContainsChildEntity :
     child: code.hack.Entity
   }
   { { decl = Container }, { decl = Member } } where
-    (
-      (
-        { container = { class_ = Class }} = Container;
+    ( ( { container = { class_ = Class }} = Container;
         hack.ClassDefinition { declaration = Class, members = Members };
-      ) |
-      (
+      ) | (
         { container = { interface_ = Interface }} = Container;
         hack.InterfaceDefinition { declaration = Interface, members = Members };
-      ) |
-      (
+      ) | (
         { container = { trait = Trait }} = Container;
         hack.TraitDefinition { declaration = Trait, members = Members };
       );
       Member = Members[..]
-    ) |
-    (
+    ) | (
       { container = { enum_ = EnumDecl }} = Container;
       hack.EnumDefinition { declaration = EnumDecl, enumerators = Enumerators };
       Enumerator = Enumerators[..];
       Member = hack.Declaration {enumerator = Enumerator}
-    ) |
-    (
+    ) | (
       { namespace_ = {name=Name} } = Container;
       hack.NamespaceMember { namespace_ = Name, decl = Member}
+    ) | (
+      { module = Module } = Container;
+      hack.ModuleChild { Module, Member };
     )
 
 # parent extended by child

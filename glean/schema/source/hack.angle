@@ -704,13 +704,44 @@ predicate ContainerParent :
       ParentDecl = Includes[..]
     )
 
-predicate ContainerChild :
+predicate ContainerChild:
   {
     container : hack.ContainerDeclaration,
     child : hack.ContainerDeclaration,
   }
-  stored
-  { Parent, Child } where hack.ContainerParent { container=Child, parent=Parent }
+  stored { Parent, Child }
+    where hack.ContainerParent { container=Child, parent=Parent }
+
+# parent module of any declaration
+predicate ModuleParent:
+  {
+    decl: hack.Declaration,
+    module: hack.ModuleDeclaration
+  }
+  { Decl, Module } where
+    ( { function_ = FunDecl } = Decl;
+      hack.FunctionDefinition { declaration = FunDecl, module_ = M } ) |
+    ( { typedef_ = TyDecl } = Decl;
+      hack.TypedefDefinition { declaration = TyDecl, module_ = M }
+    ) | (
+      { container = Container } = Decl;
+      ( { class_ = CDecl } = Container;
+        hack.ClassDefinition { declaration = CDecl, module_ = M } ) |
+      ( { enum_ = CDecl } = Container;
+        hack.EnumDefinition { declaration = CDecl, module_ = M } ) |
+      ( { interface_ = CDecl } = Container;
+        hack.InterfaceDefinition { declaration = CDecl, module_ = M } ) |
+      ( { trait = CDecl } = Container;
+        hack.TraitDefinition { declaration = CDecl, module_ = M } )
+    );
+    { just = { Module, _ } } = M
+
+# derive children decls that are members of a parent module
+predicate ModuleChild:
+  {
+    module: hack.ModuleDeclaration,
+    decl : hack.Declaration
+  } stored { Module, Decl } where hack.ModuleParent { Decl, Module }
 
 # Derived overrides base; only includes methods annotated with
 # the <<__Override>> attribute
