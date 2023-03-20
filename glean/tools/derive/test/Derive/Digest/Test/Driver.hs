@@ -7,6 +7,7 @@
 -}
 
 {-# LANGUAGE ApplicativeDo #-}
+{-# LANGUAGE BlockArguments #-}
 module Derive.Digest.Test.Driver
   ( main
   ) where
@@ -22,10 +23,11 @@ import Glean.Indexer
 import Glean.Indexer.List (cmdLineParser)
 import Glean.Regression.Snapshot.Driver
 import Glean.Regression.Snapshot
-import Glean.Derive.Digest.Lib ( derive, Config(..) )
+import Glean.Derive.Digest.Lib ( derive, Config(..), replaceName )
 import Data.Hashable (hash)
 import Options.Applicative
 import TextShow (showt)
+import qualified Glean.Glass.Types as Glass
 
 data Options = Options
   { runIndexerOptions :: RunIndexer
@@ -41,7 +43,9 @@ optionsParser = do
   return Options{
     runIndexerOptions = runIndexerOptions,
     deriveConfig = Config{
-      hashFunction = if hashDigests then showt . hash else id,
+      hashFunction = \name ->
+        (if hashDigests then showt . hash else id) .
+          replaceName name (Glass.Name "SELF"),
       pathAdaptor = stripPath stripDepth,
       indexOnly = nonEmpty indexOnly
       }

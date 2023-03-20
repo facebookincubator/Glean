@@ -9,7 +9,7 @@
       },
       "file": { "key": "all.py" }
     },
-    "value": "class LocalClass:\u000a    pass"
+    "value": "class SELF:\u000a    pass"
   },
   {
     "key": {
@@ -20,7 +20,7 @@
       },
       "file": { "key": "lib.py" }
     },
-    "value": "class Child(Parent1, Parent2):\u000a    pass"
+    "value": "class SELF(Parent1, Parent2):\u000a    pass"
   },
   {
     "key": {
@@ -31,7 +31,7 @@
       },
       "file": { "key": "lib.py" }
     },
-    "value": "class HelperClass:\u000a    def method(self) -> \"HelperClass\":\u000a        pass\u000a\u000a    @classmethod\u000a    def class_method(cls) -> None:\u000a        pass\u000a\u000a    @staticmethod\u000a    def static_method() -> None:\u000a        pass\u000a\u000a    @final\u000a    @property\u000a    def prop() -> int:\u000a        pass\u000a\u000a    def _protected_method() -> int:\u000a        pass\u000a\u000a    def __private_method() -> int:\u000a        pass"
+    "value": "class SELF:\u000a    def method(self) -> \"SELF\":\u000a        pass\u000a\u000a    @classmethod\u000a    def class_method(cls) -> None:\u000a        pass\u000a\u000a    @staticmethod\u000a    def static_method() -> None:\u000a        pass\u000a\u000a    @final\u000a    @property\u000a    def prop() -> int:\u000a        pass\u000a\u000a    def _protected_method() -> int:\u000a        pass\u000a\u000a    def __private_method() -> int:\u000a        pass"
   },
   {
     "key": {
@@ -42,7 +42,7 @@
       },
       "file": { "key": "lib.py" }
     },
-    "value": "class Parent1:\u000a    pass"
+    "value": "class SELF:\u000a    pass"
   },
   {
     "key": {
@@ -53,7 +53,7 @@
       },
       "file": { "key": "lib.py" }
     },
-    "value": "class Parent2:\u000a    pass"
+    "value": "class SELF:\u000a    pass"
   },
   {
     "key": {
@@ -64,7 +64,7 @@
       },
       "file": { "key": "all.py" }
     },
-    "value": "def fn():\u000a    pass"
+    "value": "def SELF():\u000a    pass"
   },
   {
     "key": {
@@ -77,7 +77,7 @@
       },
       "file": { "key": "big_lib/__init__.py" }
     },
-    "value": "def big_func():\u000a    return big_var"
+    "value": "def SELF():\u000a    return big_var"
   },
   {
     "key": {
@@ -90,7 +90,7 @@
       },
       "file": { "key": "big_lib/__init__.py" }
     },
-    "value": "async def func_sleep():\u000a    return 1"
+    "value": "async def SELF():\u000a    return 1"
   },
   {
     "key": {
@@ -105,7 +105,7 @@
       },
       "file": { "key": "lib.py" }
     },
-    "value": "def __private_method() -> int:\u000a        pass"
+    "value": "def SELF() -> int:\u000a        pass"
   },
   {
     "key": {
@@ -120,7 +120,7 @@
       },
       "file": { "key": "lib.py" }
     },
-    "value": "def _protected_method() -> int:\u000a        pass"
+    "value": "def SELF() -> int:\u000a        pass"
   },
   {
     "key": {
@@ -135,7 +135,7 @@
       },
       "file": { "key": "lib.py" }
     },
-    "value": "def class_method(cls) -> None:\u000a        pass"
+    "value": "def SELF(cls) -> None:\u000a        pass"
   },
   {
     "key": {
@@ -148,7 +148,7 @@
       },
       "file": { "key": "lib.py" }
     },
-    "value": "def method(self) -> \"HelperClass\":\u000a        pass"
+    "value": "def SELF(self) -> \"HelperClass\":\u000a        pass"
   },
   {
     "key": {
@@ -161,7 +161,7 @@
       },
       "file": { "key": "lib.py" }
     },
-    "value": "def prop() -> int:\u000a        pass"
+    "value": "def SELF() -> int:\u000a        pass"
   },
   {
     "key": {
@@ -176,7 +176,7 @@
       },
       "file": { "key": "lib.py" }
     },
-    "value": "def static_method() -> None:\u000a        pass"
+    "value": "def SELF() -> None:\u000a        pass"
   },
   {
     "key": {
@@ -189,7 +189,7 @@
       },
       "file": { "key": "lib.py" }
     },
-    "value": "def helper_func():\u000a    return HelperClass()"
+    "value": "def SELF():\u000a    return HelperClass()"
   },
   {
     "key": {
@@ -200,7 +200,7 @@
       },
       "file": { "key": "main.py" }
     },
-    "value": "def f() -> \"None\":\u000a    pass"
+    "value": "def SELF() -> \"None\":\u000a    pass"
   },
   {
     "key": {
@@ -211,7 +211,7 @@
       },
       "file": { "key": "main.py" }
     },
-    "value": "def g() -> None:\u000a    from lib import HelperClass as OtherHelper\u000a\u000a    def h(_: OtherHelper) -> None:\u000a        pass"
+    "value": "def SELF() -> None:\u000a    from lib import HelperClass as OtherHelper\u000a\u000a    def h(_: OtherHelper) -> None:\u000a        pass"
   },
   {
     "key": {
@@ -224,7 +224,7 @@
       },
       "file": { "key": "main.py" }
     },
-    "value": "def h(_: OtherHelper) -> None:\u000a        pass"
+    "value": "def SELF(_: OtherHelper) -> None:\u000a        pass"
   },
   {
     "key": {
@@ -260,7 +260,7 @@
       },
       "file": { "key": "all.py" }
     },
-    "value": "big_func"
+    "value": "SELF"
   },
   {
     "key": {
@@ -278,7 +278,7 @@
       },
       "file": { "key": "all.py" }
     },
-    "value": "big_var"
+    "value": "SELF"
   },
   {
     "key": {
@@ -296,7 +296,7 @@
       },
       "file": { "key": "big_lib/relative.py" }
     },
-    "value": "big_func"
+    "value": "SELF"
   },
   {
     "key": {
@@ -368,7 +368,7 @@
       },
       "file": { "key": "main.py" }
     },
-    "value": "big_func"
+    "value": "SELF"
   },
   {
     "key": {
@@ -386,7 +386,7 @@
       },
       "file": { "key": "main.py" }
     },
-    "value": "func"
+    "value": "SELF"
   },
   {
     "key": {
@@ -404,7 +404,7 @@
       },
       "file": { "key": "main.py" }
     },
-    "value": "helper_func"
+    "value": "SELF"
   },
   {
     "key": {
@@ -474,7 +474,7 @@
       },
       "file": { "key": "all.py" }
     },
-    "value": "__all__ = [\"Helper\", \"big_func\", \"LocalClass\", \"fn\", \"var\", \"Helper\", \"big_var\"]"
+    "value": "SELF = [\"Helper\", \"big_func\", \"LocalClass\", \"fn\", \"var\", \"Helper\", \"big_var\"]"
   },
   {
     "key": {
@@ -485,7 +485,7 @@
       },
       "file": { "key": "all.py" }
     },
-    "value": "var = 123"
+    "value": "SELF = 123"
   },
   {
     "key": {
@@ -498,7 +498,7 @@
       },
       "file": { "key": "big_lib/__init__.py" }
     },
-    "value": "big_var = 0"
+    "value": "SELF = 0"
   },
   {
     "key": {
@@ -511,6 +511,6 @@
       },
       "file": { "key": "main.py" }
     },
-    "value": "c = Helper()"
+    "value": "SELF = Helper()"
   }
 ]

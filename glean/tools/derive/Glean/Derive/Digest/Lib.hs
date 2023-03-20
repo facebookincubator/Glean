@@ -13,7 +13,8 @@ module Glean.Derive.Digest.Lib (
   Config(..),
   FileFact,
   derive,
-) where
+  replaceName
+  ) where
 
 import Control.Exception (catch, throwIO)
 import Control.Monad (forM, when, void)
@@ -28,10 +29,13 @@ import Data.Text (Text)
 import qualified Data.Text as T
 import Data.Text.Encoding (encodeUtf8)
 import qualified Data.Text.IO as T
+import Data.Traversable (for)
+import Data.Tuple.Extra (thd3)
 import System.Directory (getCurrentDirectory)
 import System.IO.Error (isDoesNotExistError)
 
 import Util.Log.String (logWarning)
+import Util.Regex (substituteNoLimit)
 
 import Glean (
   Backend,
@@ -64,13 +68,17 @@ import qualified Glean.Schema.Codemarkup.Types as Code
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import qualified Glean.Schema.Src.Types as Src
 import qualified Glean.Schema.Src as Src
+import Glean.Haxl.Repos (RepoHaxl)
+import qualified Glean.Glass.SymbolId()
+import qualified Glean.Glass.Types as Glass
+import Glean.Glass.SymbolId.Class (toQName, ToQName)
 
 type SourceCode = Text
 type Digest = Text
 type FileFact = Text
 
 data Config = Config
-  { hashFunction :: SourceCode -> Digest
+  { hashFunction :: Maybe Glass.Name -> SourceCode -> Digest
   , pathAdaptor :: FilePath -> FilePath
   , indexOnly :: Maybe (NonEmpty FileFact)
   }
@@ -85,8 +93,14 @@ derive backend repo Config{..} = {-# SCC "derive-digests" #-} do
           traverse
             (Glean.search_ . query . codeLocationsForFile)
             (NE.toList files)
+
+    locationsWithNames <- for locations $ \(f,r,e) -> do
+        n <- toName e
+        return (f,r,e,n)
+
     return $ Map.fromListWith (Map.unionWith (<>))
-      [(f, Map.singleton e (range :| [])) | (f, range, e) <- locations]
+      [ (f, Map.singleton (e,n) (range :| []))
+      | (f, range, e, n) <- locationsWithNames]
 
   factsByFile <- {-# SCC "digest" #-}
     forM (Map.toList locationsByFile) $ \(f, locations) -> do
@@ -98,20 +112,20 @@ derive backend repo Config{..} = {-# SCC "derive-digests" #-} do
               cwd <- getCurrentDirectory
               throwIO $ userError $ fpath <> " not found in " <> cwd
             else throwIO e
-      entities <- forM (Map.toList locations) $ \(entity, ranges) -> do
+      entities <- forM (Map.toList locations) $ \((entity, name), ranges) -> do
         when (length ranges > 1) $
           logWarning $
             "Multiple ranges found for entity, " <>
             "picking the earliest starting one: " <>
             show entity
         let range = minimumBy (compare `on` rangeStart) ranges
-        return (entity, range)
-      let sorted_entities = sortOn snd entities
+        return (entity, name, range)
+      let sorted_entities = sortOn thd3 entities
           facts = loop 0 contents sorted_entities
-          loop pos ptr ((entity, range) : rest) =
+          loop pos ptr ((entity, name, range) : rest) =
             let ptr' = T.drop (pos' - pos) ptr
                 pos' = rangeStart range
-                !digest = hashFunction (T.take (rangeLength range) ptr')
+                !digest = hashFunction name (T.take (rangeLength range) ptr')
             in (entity, digest) : loop pos' ptr' rest
           loop _ _ [] = []
       return (f, facts)
@@ -176,3 +190,41 @@ codeLocationsForFile fileFact =
                         end
                     )
                ]
+
+toName
+  :: ToQName Code.Entity => Code.Entity
+  -> RepoHaxl u w (Maybe Glass.Name)
+toName entity = do
+  eiName <- toQName entity
+  case eiName of
+    Right (gn@(Glass.Name p), gp)
+      | "" == p ->
+        return $ Just gp
+      | otherwise ->
+        return $ Just gn
+    Left _e ->
+      return Nothing
+
+-- | Helper function to replace an entity name in source code
+--   The property we want is:
+--
+--   > PROP: replaceName name name' src ==
+--   >       replace name'' name' (semanticRename name name'' src)
+--
+--   where semanticRename is fully syntax-aware name replacement.
+--   In other words, we want to be able to detect user-driven renames
+replaceName :: Maybe Glass.Name -> Glass.Name -> Text -> Text
+--   Plain search and replace would hardly satisfy the property above, e.g. when
+--   name is very short:
+--
+--   > replace "f" "NAME" "def f(x):\n ff(x)" = deNAME NAME(x):\n NAMENAME(x)
+--   > replace "g" "NAME" "def g(x):\n ff(x)" = def NAME(x):\n ff(x)
+  -- So we use a simple regular expression to detect word boundaries
+--   TODO a better? option would be to use a lexer for common PL identifiers to
+--   tokenize the code and then match-and-replace on the tokens
+replaceName (Just (Glass.Name n)) (Glass.Name replacement) haystack =
+  substituteNoLimit haystack (mkIdentifierRegex n) replacement
+replaceName Nothing _ haystack = haystack
+
+mkIdentifierRegex :: Text -> Text
+mkIdentifierRegex ident = "\\b" <> ident <> "\\b"

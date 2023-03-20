@@ -44,7 +44,7 @@ import Glean (
   Repo,
   parseRepo,
  )
-import Glean.Derive.Digest.Lib (Config (..), FileFact, derive)
+import Glean.Derive.Digest.Lib (Config (..), FileFact, derive, replaceName)
 import Glean.Impl.ConfigProvider (ConfigAPI)
 import Glean.LocalOrRemote (withBackend)
 import qualified Glean.LocalOrRemote as Glean
@@ -53,6 +53,7 @@ import Glean.Util.ConfigProvider (
   ConfigProvider (withConfigProvider),
   withConfigOptions,
  )
+import qualified Glean.Glass.Types as Glass
 
 main :: IO ()
 main = withConfigOptions options $ \(Options {..}, cfg) ->
@@ -62,7 +63,8 @@ main = withConfigOptions options $ \(Options {..}, cfg) ->
         let deriveConfig =
               Config
                 { pathAdaptor = stripPath stripDepth
-                , hashFunction = showt . hash
+                , hashFunction = \name ->
+                    showt . hash . replaceName name (Glass.Name "")
                 , indexOnly = indexOnly
                 }
         derive backend repo deriveConfig
