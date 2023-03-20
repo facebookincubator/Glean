@@ -300,12 +300,13 @@ reorderStmtGroup scope@(Scope sc _) stmts =
         PatternMatchesSome -> StmtPrefixMatch
         PatternSearchesAll -> StmtScan
     classify _ (FlatDisjunction []) = StmtFilter -- False
-    classify bound (FlatDisjunction alts@(_:_:_)) =
-      maximum (map (classifyAlt bound) alts)
     classify bound stmt
       | isResolvedFilter (Scope sc bound) stmt = StmtFilter
       | isCurrentlyUnresolved (Scope sc bound) stmt = StmtUnresolved
-      | otherwise = StmtScan
+    classify bound (FlatDisjunction alts@(_:_)) =
+      maximum (map (classifyAlt bound) alts)
+    classify _ (FlatStatement _ _ ArrayElementGenerator{}) = StmtPrefixMatch
+    classify _ _ = StmtScan
 
     -- Approximate classification of disjunctions. To be more
     -- accurate we would have to recursively reorder the
