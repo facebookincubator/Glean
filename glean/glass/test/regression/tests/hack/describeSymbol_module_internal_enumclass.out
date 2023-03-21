@@ -52,7 +52,15 @@
             "repository": "test"
         },
         "sym_other_locations": [],
-        "type_xrefs": [],
+        "type_xrefs": [
+            {
+                "span": {
+                    "length": 16,
+                    "start": 20
+                },
+                "type": "test/php/EnumClassExample"
+            }
+        ],
         "visibility": 50
     }
 ]

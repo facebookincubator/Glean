@@ -59,7 +59,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": []
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 11,
+                            "start": 6
+                        },
+                        "type": "test/php/SourceTrait"
+                    }
+                ]
             },
             "test/php/SourceTrait/quux": {
                 "annotations": [],

@@ -108,7 +108,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": []
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 15,
+                            "start": 10
+                        },
+                        "type": "test/php/SourceInterface"
+                    }
+                ]
             },
             "test/php/SourceInterface/JAZZ": {
                 "comments": [],

@@ -180,25 +180,26 @@ prettyDecl _ sym (ClassConst name) =
 prettyDecl _ sym (Module name) =
   "module" <+> annotate (SymId sym) (ppName name)
 
-prettyDecl _ _sym (Enum name Regular (EnumBase ty1) internal) =
+prettyDecl _ sym (Enum name Regular (EnumBase ty1) internal) =
   ppModuleInternal internal <>
-    "enum" <+> ppQualName name <+> ":" <+> ppType ty1
-prettyDecl _ _sym (Enum name Regular (Constrained ty1 ty2) internal) =
+    "enum" <+> annotate (SymId sym) (ppQualName name) <+> ":" <+> ppType ty1
+prettyDecl _ sym (Enum name Regular (Constrained ty1 ty2) internal) =
   ppModuleInternal internal <>
-    "enum" <+> ppQualName name <+> ":" <+> ppConstraintTypes ty1 ty2
-prettyDecl _ _sym (Enum name IsClass _ internal) =
-  ppModuleInternal internal <>
-    "enum" <+> "class" <+> ppQualName name
+    "enum" <+> annotate (SymId sym) (ppQualName name) <+>
+       ":" <+> ppConstraintTypes ty1 ty2
+prettyDecl _ sym (Enum name IsClass _ internal) =
+  ppModuleInternal internal <> "enum" <+> "class" <+>
+    annotate (SymId sym) (ppQualName name)
 
 prettyDecl _ sym (Class modifiers name typeParams) =
   ppClassModifiers modifiers <> "class" <+>
     annotate (SymId sym) (ppQualName name) <> ppTypeParams typeParams
-prettyDecl _ _sym (Interface name typeParams internal) =
-  ppModuleInternal internal <>
-    "interface" <+> ppQualName name <> ppTypeParams typeParams
-prettyDecl _ _sym (Trait name typeParams internal) =
-  ppModuleInternal internal <>
-    "trait" <+> ppQualName name <> ppTypeParams typeParams
+prettyDecl _ sym (Interface name typeParams internal) =
+  ppModuleInternal internal <> "interface" <+>
+    annotate (SymId sym) (ppQualName name) <> ppTypeParams typeParams
+prettyDecl _ sym (Trait name typeParams internal) =
+  ppModuleInternal internal <> "trait" <+>
+    annotate (SymId sym) (ppQualName name) <> ppTypeParams typeParams
 
 prettyDecl _ _sym (Enumerator enum name) =
   ppQualName enum <> "::" <> ppName name
@@ -218,10 +219,10 @@ prettyDecl _ sym (Namespace name) =
 prettyDecl _ _ (Property modifiers container name mhacktype) =
   ppPropertyModifiers container modifiers <+> ppType mhacktype <+> ppName name
 
-prettyDecl _ _ (TypeConst name IsAbstract) =
-  "abstract" <+> "const" <+> "type" <+> ppName name
-prettyDecl _ _ (TypeConst name _) =
-  "const" <+> "type" <+> ppName name
+prettyDecl _ sym (TypeConst name IsAbstract) =
+  "abstract" <+> "const" <+> "type" <+> annotate (SymId sym) (ppName name)
+prettyDecl _ sym (TypeConst name _) =
+  "const" <+> "type" <+> annotate (SymId sym) (ppName name)
 
 prettyDecl _ _sym (Typedef name typeParams Type_ internal) =
   ppModuleInternal internal <>

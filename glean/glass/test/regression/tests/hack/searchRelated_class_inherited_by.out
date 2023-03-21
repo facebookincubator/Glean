@@ -207,7 +207,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": []
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 15,
+                            "start": 10
+                        },
+                        "type": "test/php/SourceInterface"
+                    }
+                ]
             },
             "test/php/SourceTrait": {
                 "annotations": [],
@@ -256,7 +264,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": []
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 11,
+                            "start": 6
+                        },
+                        "type": "test/php/SourceTrait"
+                    }
+                ]
             }
         }
     }

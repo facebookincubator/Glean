@@ -47,7 +47,15 @@
             "repository": "test"
         },
         "sym_other_locations": [],
-        "type_xrefs": [],
+        "type_xrefs": [
+            {
+                "span": {
+                    "length": 13,
+                    "start": 19
+                },
+                "type": "test/php/InterfaceThis"
+            }
+        ],
         "visibility": 50
     }
 ]

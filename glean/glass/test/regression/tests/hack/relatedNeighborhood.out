@@ -60,7 +60,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": []
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 8,
+                            "start": 5
+                        },
+                        "type": "test/php/Position"
+                    }
+                ]
             },
             "test/php/Position/Bottom": {
                 "comments": [],

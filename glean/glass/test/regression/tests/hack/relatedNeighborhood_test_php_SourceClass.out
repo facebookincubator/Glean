@@ -314,7 +314,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": []
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 1,
+                            "start": 11
+                        },
+                        "type": "test/php/SourceClass/T"
+                    }
+                ]
             },
             "test/php/SourceClass/bar": {
                 "annotations": [],
