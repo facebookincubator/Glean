@@ -1348,6 +1348,78 @@
       "child": {
         "hack": {
           "decl": {
+            "container": {
+              "enum_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "EnumClassExample" } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "module": { "key": { "name": { "key": "glean.test.thing" } } }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "InterfaceThis" } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "module": { "key": { "name": { "key": "glean.test.thing" } } }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "container": {
+              "trait": {
+                "key": {
+                  "name": { "key": { "name": { "key": "TraitOverHere" } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "module": { "key": { "name": { "key": "glean.test.thing" } } }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
             "function_": {
               "key": { "name": { "key": { "name": { "key": "fun1" } } } }
             }

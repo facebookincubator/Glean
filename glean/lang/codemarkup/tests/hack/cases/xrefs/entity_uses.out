@@ -304,6 +304,25 @@
             "container": {
               "interface_": {
                 "key": {
+                  "name": { "key": { "name": { "key": "InterfaceThis" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/ModuleMember.php" },
+      "span": { "start": 543, "length": 13 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
+                "key": {
                   "name": { "key": { "name": { "key": "SourceInterface" } } }
                 }
               }

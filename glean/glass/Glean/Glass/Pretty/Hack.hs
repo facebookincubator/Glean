@@ -160,10 +160,10 @@ data Transparency = Newtype_ | Type_
 
 data Decl
   = ClassConst Name
-  | Enum QualName EnumKind EnumConstraint
-  | Trait QualName [TypeParameter]
+  | Enum QualName EnumKind EnumConstraint ModuleInternal
+  | Trait QualName [TypeParameter] ModuleInternal
   | Class ClassMod QualName [TypeParameter]
-  | Interface QualName [TypeParameter]
+  | Interface QualName [TypeParameter] ModuleInternal
   | Enumerator QualName Name
   | Function FunctionMod QualName Signature
   | GlobalConst QualName
@@ -179,19 +179,27 @@ prettyDecl _ sym (ClassConst name) =
   "const" <+> annotate (SymId sym) (ppName name)
 prettyDecl _ sym (Module name) =
   "module" <+> annotate (SymId sym) (ppName name)
-prettyDecl _ _sym (Enum name Regular (EnumBase ty1)) =
-  "enum" <+> ppQualName name <+> ":" <+> ppType ty1
-prettyDecl _ _sym (Enum name Regular (Constrained ty1 ty2)) =
-  "enum" <+> ppQualName name <+> ":" <+> ppConstraintTypes ty1 ty2
-prettyDecl _ _sym (Enum name IsClass _) =
-  "enum" <+> "class" <+> ppQualName name
-prettyDecl _ _sym (Trait name typeParams) =
-  "trait" <+> ppQualName name <> ppTypeParams typeParams
+
+prettyDecl _ _sym (Enum name Regular (EnumBase ty1) internal) =
+  ppModuleInternal internal <>
+    "enum" <+> ppQualName name <+> ":" <+> ppType ty1
+prettyDecl _ _sym (Enum name Regular (Constrained ty1 ty2) internal) =
+  ppModuleInternal internal <>
+    "enum" <+> ppQualName name <+> ":" <+> ppConstraintTypes ty1 ty2
+prettyDecl _ _sym (Enum name IsClass _ internal) =
+  ppModuleInternal internal <>
+    "enum" <+> "class" <+> ppQualName name
+
 prettyDecl _ sym (Class modifiers name typeParams) =
   ppClassModifiers modifiers <> "class" <+>
     annotate (SymId sym) (ppQualName name) <> ppTypeParams typeParams
-prettyDecl _ _sym (Interface name typeParams) =
-  "interface" <+> ppQualName name <> ppTypeParams typeParams
+prettyDecl _ _sym (Interface name typeParams internal) =
+  ppModuleInternal internal <>
+    "interface" <+> ppQualName name <> ppTypeParams typeParams
+prettyDecl _ _sym (Trait name typeParams internal) =
+  ppModuleInternal internal <>
+    "trait" <+> ppQualName name <> ppTypeParams typeParams
+
 prettyDecl _ _sym (Enumerator enum name) =
   ppQualName enum <> "::" <> ppName name
 
@@ -541,22 +549,23 @@ containerDecl :: Hack.ContainerDeclaration -> Glean.MaybeTRepoHaxl u w Decl
 containerDecl (Hack.ContainerDeclaration_enum_
       decl@Hack.EnumDeclaration{..}) = do
     Hack.EnumDeclaration_key{..} <- liftMaybe enumDeclaration_key
-    (enumBase,enumConstraint,isClass) <- maybeT $ fetchDataRecursive $
-      angleEnumDefinition (Angle.factId (Glean.getId decl))
+    (enumBase,enumConstraint,isClass,moduleInfo) <- maybeT $
+      fetchDataRecursive $ angleEnumDefinition (Angle.factId (Glean.getId decl))
     let enumKind = if isClass then IsClass else Regular
     let constraint =  case enumConstraint of
           Nothing -> EnumBase (toType1 enumBase)
           Just ty -> Constrained (toType1 enumBase) (toType1 ty)
     name <- qName enumDeclaration_key_name
     pure $ Enum (QualName name) enumKind constraint
+      (toModuleVisibility moduleInfo)
 containerDecl
   (Hack.ContainerDeclaration_trait decl@Hack.TraitDeclaration{..}) = do
     Hack.TraitDeclaration_key{..} <- liftMaybe traitDeclaration_key
-    traitTypeParams <- maybeT $ fetchDataRecursive $
+    (traitTypeParams, moduleInfo) <- maybeT $ fetchDataRecursive $
       angleTraitDefinition (Angle.factId (Glean.getId decl))
     name <- qName traitDeclaration_key_name
     let typeParams = map toTypeParameter traitTypeParams
-    pure $ Trait (QualName name) typeParams
+    pure $ Trait (QualName name) typeParams (toModuleVisibility moduleInfo)
 containerDecl
   (Hack.ContainerDeclaration_class_ decl@Hack.ClassDeclaration{..}) = do
     Hack.ClassDeclaration_key{..} <- liftMaybe classDeclaration_key
@@ -571,11 +580,11 @@ containerDecl
 containerDecl
   (Hack.ContainerDeclaration_interface_ decl@Hack.InterfaceDeclaration{..}) = do
     Hack.InterfaceDeclaration_key{..} <- liftMaybe interfaceDeclaration_key
-    interTypeParams <- maybeT $ fetchDataRecursive $
+    (interTypeParams, moduleInfo) <- maybeT $ fetchDataRecursive $
       angleInterfaceDefinition (Angle.factId (Glean.getId decl))
     name <- qName interfaceDeclaration_key_name
     let typeParams = map toTypeParameter interTypeParams
-    pure $ Interface (QualName name) typeParams
+    pure $ Interface (QualName name) typeParams (toModuleVisibility moduleInfo)
 containerDecl Hack.ContainerDeclaration_EMPTY = MaybeT (return Nothing)
 
 containerKind
@@ -795,24 +804,28 @@ angleClassDefinition decl = vars $ \isAbstract isFinal typeParams moduleInfo ->
   ]
 
 angleTraitDefinition
-  :: Angle Hack.TraitDeclaration -> Angle [Hack.TypeParameter]
-angleTraitDefinition decl = var $ \typeParams ->
-  typeParams `where_` [
+  :: Angle Hack.TraitDeclaration
+  -> Angle ([Hack.TypeParameter], Maybe Hack.ModuleMembership)
+angleTraitDefinition decl = vars $ \typeParams modInfo ->
+  tuple (typeParams, modInfo) `where_` [
     wild .= predicate @Hack.TraitDefinition (
       rec $
         field @"declaration" (Angle.asPredicate decl) $
-        field @"typeParams" typeParams
+        field @"typeParams" typeParams $
+        field @"module_" modInfo
       end)
   ]
 
 angleInterfaceDefinition
-  :: Angle Hack.InterfaceDeclaration -> Angle [Hack.TypeParameter]
-angleInterfaceDefinition decl = var $ \typeParams ->
-  typeParams `where_` [
+  :: Angle Hack.InterfaceDeclaration
+  -> Angle ([Hack.TypeParameter], Maybe Hack.ModuleMembership)
+angleInterfaceDefinition decl = vars $ \typeParams modInfo ->
+  tuple (typeParams, modInfo) `where_` [
     wild .= predicate @Hack.InterfaceDefinition (
       rec $
         field @"declaration" (Angle.asPredicate decl) $
-        field @"typeParams" typeParams
+        field @"typeParams" typeParams $
+        field @"module_" modInfo
       end)
   ]
 
@@ -843,16 +856,18 @@ angleTypeConstDefinition decl = var $ \typeConstKind ->
 
 -- hack enums: need to distinguish `enum T : Z` , or `enum class T : X as Y`
 angleEnumDefinition
-  :: Angle Hack.EnumDeclaration -> Angle (Hack.Type, Maybe Hack.Type, Bool)
+  :: Angle Hack.EnumDeclaration
+  -> Angle (Hack.Type, Maybe Hack.Type, Bool, Maybe Hack.ModuleMembership)
 angleEnumDefinition decl = vars $ \(baseType :: Angle Hack.Type)
-    (asType :: Angle (Maybe Hack.Type)) (isEnumClass :: Angle Bool) ->
-  tuple (baseType, asType, isEnumClass) `where_` [
+    asType isEnumClass modInfo ->
+  tuple (baseType, asType, isEnumClass, modInfo ) `where_` [
     wild .= predicate @Hack.EnumDefinition (
       rec $
         field @"declaration" (Angle.asPredicate decl) $
         field @"enumBase" (Angle.asPredicate baseType) $
         field @"enumConstraint" asType $
-        field @"isEnumClass" isEnumClass
+        field @"isEnumClass" isEnumClass $
+        field @"module_" modInfo
       end)
   ]
 

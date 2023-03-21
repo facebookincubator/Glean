@@ -3,6 +3,60 @@
     {
         "symbolDetails": [
             {
+                "annotations": [
+                    {
+                        "name": "__EnumClass",
+                        "source": "__EnumClass"
+                    }
+                ],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/ModuleMember.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 55,
+                        "lineBegin": 28,
+                        "lineEnd": 28
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "EnumClassExample"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/php/EnumClassExample",
+                "sym_location": {
+                    "filepath": "www/ModuleMember.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 55,
+                        "lineBegin": 28,
+                        "lineEnd": 28
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 50
+            },
+            {
                 "annotations": [],
                 "comments": [],
                 "contains_relation": {
@@ -189,6 +243,55 @@
                         "columnEnd": 26,
                         "lineBegin": 20,
                         "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 50
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 13,
+                "language": 3,
+                "location": {
+                    "filepath": "www/ModuleMember.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 36,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "InterfaceThis"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/php/InterfaceThis",
+                "sym_location": {
+                    "filepath": "www/ModuleMember.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 36,
+                        "lineBegin": 30,
+                        "lineEnd": 30
                     },
                     "repository": "test"
                 },
@@ -2790,6 +2893,55 @@
                 "visibility": 40
             },
             {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 31,
+                "language": 3,
+                "location": {
+                    "filepath": "www/ModuleMember.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 32,
+                        "lineBegin": 32,
+                        "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "TraitOverHere"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/php/TraitOverHere",
+                "sym_location": {
+                    "filepath": "www/ModuleMember.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 32,
+                        "lineBegin": 32,
+                        "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 50
+            },
+            {
                 "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
@@ -3221,6 +3373,29 @@
         ],
         "symbols": [
             {
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/ModuleMember.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 55,
+                        "lineBegin": 28,
+                        "lineEnd": 28
+                    },
+                    "repository": "test"
+                },
+                "name": "EnumClassExample",
+                "qname": {
+                    "container": "",
+                    "localName": "EnumClassExample"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/EnumClassExample"
+            },
+            {
                 "kind": 7,
                 "language": 3,
                 "location": {
@@ -3325,6 +3500,29 @@
                     "exactness": 2
                 },
                 "symbol": "test/php/IntT"
+            },
+            {
+                "kind": 13,
+                "language": 3,
+                "location": {
+                    "filepath": "www/ModuleMember.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 36,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "repository": "test"
+                },
+                "name": "InterfaceThis",
+                "qname": {
+                    "container": "",
+                    "localName": "InterfaceThis"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/InterfaceThis"
             },
             {
                 "kind": 7,
@@ -4736,6 +4934,29 @@
                     "exactness": 2
                 },
                 "symbol": "test/php/TestAnnotation/io_good"
+            },
+            {
+                "kind": 31,
+                "language": 3,
+                "location": {
+                    "filepath": "www/ModuleMember.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 32,
+                        "lineBegin": 32,
+                        "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "name": "TraitOverHere",
+                "qname": {
+                    "container": "",
+                    "localName": "TraitOverHere"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/TraitOverHere"
             },
             {
                 "kind": 16,

@@ -1972,6 +1972,123 @@
         "child": {
           "hack": {
             "decl": {
+              "container": {
+                "enum_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "EnumClassExample" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "EnumClassExample",
+          "file": { "key": "www/ModuleMember.php" },
+          "location": { "span": { "start": 505, "length": 54 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "module": { "key": { "name": { "key": "glean.test.thing" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "glean.test.thing",
+          "file": { "key": "www/Module.php" },
+          "location": { "span": { "start": 226, "length": 31 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "container": {
+                "interface_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "InterfaceThis" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "InterfaceThis",
+          "file": { "key": "www/ModuleMember.php" },
+          "location": { "span": { "start": 561, "length": 35 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "module": { "key": { "name": { "key": "glean.test.thing" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "glean.test.thing",
+          "file": { "key": "www/Module.php" },
+          "location": { "span": { "start": 226, "length": 31 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "container": {
+                "trait": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "TraitOverHere" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "TraitOverHere",
+          "file": { "key": "www/ModuleMember.php" },
+          "location": { "span": { "start": 598, "length": 31 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "module": { "key": { "name": { "key": "glean.test.thing" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "glean.test.thing",
+          "file": { "key": "www/Module.php" },
+          "location": { "span": { "start": 226, "length": 31 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
               "function_": {
                 "key": { "name": { "key": { "name": { "key": "fun1" } } } }
               }

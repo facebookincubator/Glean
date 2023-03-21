@@ -269,6 +269,24 @@
           "decl": {
             "container": {
               "enum_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "EnumClassExample" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 11, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "enum_": {
                 "key": { "name": { "key": { "name": { "key": "Position" } } } }
               }
             }
@@ -358,6 +376,24 @@
             "container": {
               "interface_": {
                 "key": {
+                  "name": { "key": { "name": { "key": "InterfaceThis" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 12, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
+                "key": {
                   "name": { "key": { "name": { "key": "SourceInterface" } } }
                 }
               }
@@ -377,6 +413,24 @@
               "trait": {
                 "key": {
                   "name": { "key": { "name": { "key": "SourceTrait" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 30, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "trait": {
+                "key": {
+                  "name": { "key": { "name": { "key": "TraitOverHere" } } }
                 }
               }
             }

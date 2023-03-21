@@ -24,3 +24,9 @@ internal class SecretClass<T> {
     return true;
   }
 }
+
+internal enum class EnumClassExample: InterfaceThis {}
+
+internal interface InterfaceThis {}
+
+internal trait TraitOverHere {}

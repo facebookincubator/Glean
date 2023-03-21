@@ -2,6 +2,32 @@
   "@generated",
   {
     "key": {
+      "file": { "key": "www/ModuleMember.php" },
+      "xref": {
+        "target": {
+          "name": "InterfaceThis",
+          "file": { "key": "www/ModuleMember.php" },
+          "location": { "span": { "start": 580, "length": 13 } }
+        },
+        "source": { "span": { "start": 543, "length": 13 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "InterfaceThis" } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "file": { "key": "www/RefClass.php" },
       "xref": {
         "target": {

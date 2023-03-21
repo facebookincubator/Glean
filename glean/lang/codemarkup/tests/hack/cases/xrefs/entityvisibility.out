@@ -18,6 +18,54 @@
     "key": {
       "hack": {
         "decl": {
+          "container": {
+            "enum_": {
+              "key": {
+                "name": { "key": { "name": { "key": "EnumClassExample" } } }
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": 3
+  },
+  {
+    "key": {
+      "hack": {
+        "decl": {
+          "container": {
+            "interface_": {
+              "key": {
+                "name": { "key": { "name": { "key": "InterfaceThis" } } }
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": 3
+  },
+  {
+    "key": {
+      "hack": {
+        "decl": {
+          "container": {
+            "trait": {
+              "key": {
+                "name": { "key": { "name": { "key": "TraitOverHere" } } }
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": 3
+  },
+  {
+    "key": {
+      "hack": {
+        "decl": {
           "function_": {
             "key": { "name": { "key": { "name": { "key": "fun2" } } } }
           }

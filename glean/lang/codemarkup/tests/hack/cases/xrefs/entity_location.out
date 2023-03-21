@@ -321,6 +321,28 @@
           "decl": {
             "container": {
               "enum_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "EnumClassExample" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/ModuleMember.php" },
+        "location": { "span": { "length": 54, "start": 505 } },
+        "name": "EnumClassExample"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "enum_": {
                 "key": { "name": { "key": { "name": { "key": "Position" } } } }
               }
             }
@@ -430,6 +452,28 @@
             "container": {
               "interface_": {
                 "key": {
+                  "name": { "key": { "name": { "key": "InterfaceThis" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/ModuleMember.php" },
+        "location": { "span": { "length": 35, "start": 561 } },
+        "name": "InterfaceThis"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
+                "key": {
                   "name": { "key": { "name": { "key": "SourceInterface" } } }
                 }
               }
@@ -463,6 +507,28 @@
         "file": { "key": "www/SourceTrait.php" },
         "location": { "span": { "length": 232, "start": 226 } },
         "name": "SourceTrait"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "trait": {
+                "key": {
+                  "name": { "key": { "name": { "key": "TraitOverHere" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/ModuleMember.php" },
+        "location": { "span": { "length": 31, "start": 598 } },
+        "name": "TraitOverHere"
       }
     }
   },
