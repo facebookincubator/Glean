@@ -34,6 +34,7 @@ import Options.Applicative
       progDesc,
       strOption,
       strArgument,
+      optional,
       helper,
       Parser,
       ParserInfo,
@@ -62,6 +63,13 @@ fileToSnapshot =  splitPath <$> strArgument (metavar "FILE [FILE]..."
 filesToSnapshot :: Parser [FileToSnapshot]
 filesToSnapshot = some fileToSnapshot
 
+optRev :: Parser (Maybe Types.Revision)
+optRev = optional $ Types.Revision <$> strOption
+        (long "revision"
+        <> short 'r'
+        <> metavar "REVISION"
+        <> help "An optional revision to be used in the snapshot" )
+
 outputString :: Parser FilePath
 outputString = strOption
   (  long "output"
@@ -74,11 +82,13 @@ data Config = Config
   { glassConfig :: Glass.Config -- TODO we don't need all these options
   , files :: [FileToSnapshot]
   , output :: FilePath
+  , rev :: Maybe Types.Revision
   }
+
 
 configParser :: Parser Config
 configParser =
-  Config <$> Glass.configParser <*> filesToSnapshot <*> outputString
+  Config <$> Glass.configParser <*> filesToSnapshot <*> outputString <*> optRev
 
 options :: ParserInfo Config
 options = info (helper <*> configParser) (fullDesc <>
@@ -99,12 +109,15 @@ main =
     snapShotItems <- forM files $ \(repo, path) -> do
       -- TODO move this loop to the Haxl monad for automatic parallelism
       let req = Types.DocumentSymbolsRequest repo path Nothing True
-      symbolList <- Handler.documentSymbolListX env req opts
+      symList <- Handler.documentSymbolListX env req opts
+      let symbolList = case rev of
+            Nothing -> symList
+            Just r -> symList { Types.documentSymbolListXResult_revision = r }
       let defs = length $ Types.documentSymbolListXResult_definitions symbolList
       let refs = length $ Types.documentSymbolListXResult_references symbolList
-      let rev = Types.documentSymbolListXResult_revision symbolList
+      let revision = Types.documentSymbolListXResult_revision symbolList
       printf "%s %s %s: %d defs %d refs\n" (Types.unRepoName repo)
-        (Types.unPath path) (Types.unRevision rev) defs refs
+        (Types.unPath path) (Types.unRevision revision) defs refs
       return $ Types.DocumentSymbolListXQuery req opts symbolList
     let snapShots = Types.Snapshot snapShotItems
     BS.writeFile output $ serializeGen (Proxy :: Proxy Compact) snapShots
