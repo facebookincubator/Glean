@@ -301,6 +301,7 @@ containerishKinds =
   , Code.SymbolKind_Class_
   , Code.SymbolKind_Trait
   , Code.SymbolKind_Interface
+  , Code.SymbolKind_Module
   ]
 
 --
