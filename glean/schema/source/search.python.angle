@@ -6,6 +6,9 @@ import python.3
 #
 # Generating SNames from an array of string fragments
 #
+# Python SNames can be really long so we support wildcard matches
+# on parent parts of the SName (unlike in Hack)
+#
 predicate QueryToScopeCase:
   {
     query : [string],
@@ -18,13 +21,13 @@ predicate QueryToScopeCase:
      # one tuple
      ( [A] = Query;
        PythonNameCase { Case, A, AName };
-       { just = python.SName { AName, nothing } } = SName) |
+       { just = python.SName { local_name = AName } } = SName) |
      # two tuple
      ( [B,A] = Query;
        PythonNameCase { Case, A, AName };
        PythonNameCase { Case, B, BName };
        { just = python.SName { AName, {
-         just = python.SName { BName, nothing }} }} = SName ) |
+         just = python.SName { local_name = BName }} }} = SName ) |
      # three tuple
      ( [C,B,A] = Query;
        PythonNameCase { Case, A, AName };
@@ -32,7 +35,7 @@ predicate QueryToScopeCase:
        PythonNameCase { Case, C, CName };
        { just = python.SName { AName, {
          just = python.SName { BName, {
-         just = python.SName { CName, nothing }} }} }} = SName ) |
+         just = python.SName { local_name = CName }} }} }} = SName ) |
      # four tuple
      ( [D,C,B,A] = Query;
        PythonNameCase { Case, A, AName };
@@ -42,7 +45,7 @@ predicate QueryToScopeCase:
        { just = python.SName { AName, {
          just = python.SName { BName, {
          just = python.SName { CName, {
-         just = python.SName { DName, nothing }} }} }} }} = SName ) |
+         just = python.SName { local_name = DName }} }} }} }} = SName ) |
      # five tuple, are there any? yes there are many
      ( [E,D,C,B,A] = Query;
        PythonNameCase { Case, A, AName };
@@ -54,7 +57,7 @@ predicate QueryToScopeCase:
          just = python.SName { BName, {
          just = python.SName { CName, {
          just = python.SName { DName, {
-         just = python.SName { EName, nothing }} }} }} }} }} = SName ) |
+         just = python.SName { local_name = EName }} }} }} }} }} = SName ) |
       # six tuple
      ( [F,E,D,C,B,A] = Query;
        PythonNameCase { Case, A, AName };
@@ -68,7 +71,7 @@ predicate QueryToScopeCase:
          just = python.SName { CName, {
          just = python.SName { DName, {
          just = python.SName { EName, {
-         just = python.SName { FName, nothing }} }} }} }} }} }} = SName ) |
+         just = python.SName { local_name = FName }} }} }} }} }} }} = SName ) |
      # seven tuple
      ( [G,F,E,D,C,B,A] = Query;
        PythonNameCase { Case, A, AName };
@@ -84,7 +87,8 @@ predicate QueryToScopeCase:
          just = python.SName { DName, {
          just = python.SName { EName, {
          just = python.SName { FName, {
-         just = python.SName { GName, nothing }} }} }} }} }} }} }} = SName ) |
+         just = python.SName { local_name = GName
+          }} }} }} }} }} }} }} = SName ) |
      # eight tuple
      ( [H,G,F,E,D,C,B,A] = Query;
        PythonNameCase { Case, A, AName };
@@ -102,7 +106,8 @@ predicate QueryToScopeCase:
          just = python.SName { EName, {
          just = python.SName { FName, {
          just = python.SName { GName, {
-         just = python.SName { HName, nothing }} }} }} }} }} }} }} }} = SName) |
+         just = python.SName { local_name = HName
+          }} }} }} }} }} }} }} }} = SName) |
      # nine tuple
      ( [I,H,G,F,E,D,C,B,A] = Query;
        PythonNameCase { Case, A, AName };
@@ -122,7 +127,7 @@ predicate QueryToScopeCase:
          just = python.SName { FName, {
          just = python.SName { GName, {
          just = python.SName { HName, {
-         just = python.SName { IName, nothing
+         just = python.SName { local_name = IName
            }} }} }} }} }} }} }} }} }} = SName ) |
      # ten tuple
      ( [J,I,H,G,F,E,D,C,B,A] = Query;
@@ -145,7 +150,7 @@ predicate QueryToScopeCase:
          just = python.SName { GName, {
          just = python.SName { HName, {
          just = python.SName { IName, {
-         just = python.SName { JName, nothing
+         just = python.SName { local_name = JName
           }} }} }} }} }} }} }} }} }} }} = SName );
 
 # Helper to lookup python.Name based on case sensitivity
