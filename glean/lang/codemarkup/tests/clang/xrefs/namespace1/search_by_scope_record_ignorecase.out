@@ -1,0 +1,63 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "t",
+      "scope": [ "bar" ],
+      "entity": {
+        "cxx": {
+          "defn": {
+            "record_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "T" },
+                        "scope": {
+                          "namespace_": {
+                            "key": {
+                              "name": { "key": "bar" },
+                              "parent": { "key": { "name": { "key": "foo" } } }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 20,
+                      "columnBegin": 1,
+                      "lineEnd": 20,
+                      "columnEnd": 11
+                    }
+                  }
+                },
+                "bases": [ ],
+                "members": { "key": [ ] }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "T",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 20,
+            "columnBegin": 1,
+            "lineEnd": 20,
+            "columnEnd": 11
+          }
+        },
+        "span": { "start": 314, "length": 1 }
+      },
+      "kind": 24,
+      "language": 0
+    }
+  }
+]

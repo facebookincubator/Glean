@@ -373,7 +373,7 @@ predicate CxxSearchByScope:
     entity: code.Entity,
   }
   { NameStr, Query, Entity } where
-    search.cxx.QueryToScope { Query, Scope };
+    search.cxx.QueryToScopeCase { Query, false, Scope };
     Name = cxx1.Name NameStr;
     CxxSearchByNameAndScopeFact { Name, Scope, Entity }
 
@@ -385,7 +385,7 @@ predicate CxxSearchByLowerCaseScope:
   }
   { NameStr, Query, Entity } where
     cxx1.DeclByName { name_lowercase = NameStr, ident = { name = Name } };
-    search.cxx.QueryToScope { Query, Scope };
+    search.cxx.QueryToScopeCase { Query, true, Scope };
     CxxSearchByNameAndScopeFact { Name, Scope, Entity };
 
 predicate CxxSearchByNameAndScopeFact:

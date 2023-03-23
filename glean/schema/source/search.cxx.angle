@@ -61,8 +61,7 @@ predicate SearchByNameAndScope :
     entity : code.cxx.Entity,
   }
   {N, Scope, Entity} where
-    (
-      # Several things use QName, so share the query for it
+    ( # Several things use QName, so share the query for it
       Q = cxx1.QName { name = N, scope = Scope };
       Entity =
         code.cxx.Entity { decl = { record_ = { name = Q }}}  |
@@ -136,6 +135,7 @@ predicate EntityUses :
 #
 
 # Compile search query tuples into scope facts
+# (deprecated, use QueryToScopeCase then delete this)
 predicate QueryToScope :
   {
     query : [string],
@@ -153,12 +153,14 @@ predicate QueryToScope :
           access = Public | Protected | Private } } # avoid wild card bind error
     ) = Scope;
 
+
 #
 # we don't have recursion, so have to flatten tuples manually.
 # Manual codegen below...
 #
 
 # compile to generic scoped qname
+# (deprecated, use QueryToQNameCase then delete this)
 predicate QueryToQName:
   {
     query : [string],
@@ -214,10 +216,10 @@ predicate QueryToQName:
            } } }
         } } }
       }
-
     ) = QName;
 
 # compile to namespace qname
+# (deprecated, use QueryToNSQNameCase then delete this)
 predicate QueryToNSQName:
   {
     query : [string],
@@ -288,7 +290,185 @@ predicate QueryToNSQName:
              parent = { just = { name = EName,
                parent = { just = { name = FName,
                  parent = { just = { name = GName }}}}}}}}}}}}}
+    ) = NSQName;
 
+# Helper to lookup cxx1.Name based on case sensitivity param
+# allows us to convert scope to lowercase search on the fly
+predicate CxxNameCase:
+  {
+    insensitive: bool,
+    namestr: string,
+    name: cxx1.Name
+  }
+  { Insensitive, NameStr, Name } where
+  ( true = Insensitive;
+    cxx1.DeclByName { name_lowercase = NameStr, ident = Ident };
+    { name = Name } = Ident # filtering to cxx1.Name only
+  ) | (
+    false = Insensitive;
+    Name = cxx1.Name NameStr
+  )
+
+# Compile search query tuples into scope facts
+predicate QueryToScopeCase :
+  {
+    query : [string],
+    insensitive: bool, # if true, search insensitive throughout scope term
+    scope : cxx1.Scope
+  }
+  { Query, Case, Scope } where
+    # global wild
+    ( [] = Query; true | false = Case; { global_ = _ }
+    # namespace scope
+    ) | (
+      QueryToNSQNameCase { Query, Case, NSQName };
+      { namespace_ = NSQName }
+    # struct/record scope
+    ) | (
+      QueryToQNameCase { Query, Case, QName };
+      { recordWithAccess = { record = QName,
+          access = Public | Protected | Private } } # avoid wild card bind error
+    ) = Scope;
+
+# compile to generic scoped qname
+predicate QueryToQNameCase:
+  {
+    query : [string],
+    insensitive: bool,
+    scope : cxx1.QName
+  }
+  { Query, Case, QName } where
+    # zero tuple
+    ( [] = Query; true | false = Case;
+      cxx1.QName { name = "", scope = { global_ = {} } } ) |
+    # one tuple
+    ( [A] = Query;
+      CxxNameCase { Case, A, AName };
+      { name = AName } ) |
+    # two tuple. we branch back to scope cases
+    ( [B,A] = Query;
+      CxxNameCase { Case, A, AName };
+      CxxNameCase { Case, B, BName };
+      { name = AName, scope =
+        { namespace_ = { name = { just = BName } } } |
+        { recordWithAccess = { record = { name = BName } } }
+      } ) |
+    # three tuple
+    ( [C,B,A] = Query;
+      CxxNameCase { Case, A, AName };
+      CxxNameCase { Case, B, BName };
+      CxxNameCase { Case, C, CName };
+      { name = AName, scope =
+        { namespace_ = { name = { just = BName },
+          parent = { just = { name = { just = CName } } } } } |
+        { recordWithAccess = { record = { name = BName,
+          scope = { namespace_ = { name = { just = CName } } } |
+                  { recordWithAccess = { record = { name = CName } } }
+        } } }
+      } ) |
+    # four tuple sigh. e.g. 4 records deep , or two records in two namespaces
+    ( [D,C,B,A] = Query;
+      CxxNameCase { Case, A, AName };
+      CxxNameCase { Case, B, BName };
+      CxxNameCase { Case, C, CName };
+      CxxNameCase { Case, D, DName };
+      { name = AName, scope =
+        { namespace_ = { name = { just = BName },
+          parent = { just = { name = { just = CName },
+            parent = { just = { name = { just = DName } }  }
+           } } } } |
+        { recordWithAccess = { record = { name = BName,
+          scope = { namespace_ = { name = { just = CName },
+            parent = { just = { name = { just = DName } } }
+           } } |
+          { recordWithAccess = { record = { name = CName,
+          scope = { namespace_ = { name = { just = DName } } } |
+            { recordWithAccess = { record = { name = DName } } }
+           } } }
+        } } }
+      }
+    ) = QName;
+
+# compile to namespace qname, case aware
+predicate QueryToNSQNameCase:
+  {
+    query : [string],
+    insensitive: bool,
+    scope : cxx1.NamespaceQName
+  }
+  { Query, Case, NSQName } where
+    # zero tuple
+    ( [] = Query; true | false = Case; { nothing, nothing } ) |
+    # one tuple
+    ( [A] = Query;
+      CxxNameCase { Case, A, AName };
+      { name = { just = AName }}) | # n.b. parent wild
+    # two tuple
+    ( [B,A] = Query;
+      CxxNameCase { Case, A, AName };
+      CxxNameCase { Case, B, BName };
+      { name = { just = AName },
+        parent = { just = { name = { just = BName } } } } ) |
+    # three tuple
+    ( [C,B,A] = Query;
+      CxxNameCase { Case, A, AName };
+      CxxNameCase { Case, B, BName };
+      CxxNameCase { Case, C, CName };
+      { name = { just = AName },
+        parent = { just = { name = { just = BName },
+        parent = { just = { name = { just = CName } }}}}} ) |
+    # four tuple
+    ( [D,C,B,A] = Query;
+      CxxNameCase { Case, A, AName };
+      CxxNameCase { Case, B, BName };
+      CxxNameCase { Case, C, CName };
+      CxxNameCase { Case, D, DName };
+      { name = { just = AName },
+        parent = { just = { name = { just = BName },
+        parent = { just = { name = { just = CName },
+        parent = { just = { name = { just = DName } }}}}}}} ) |
+    # five tuple
+    ( [E,D,C,B,A] = Query;
+      CxxNameCase { Case, A, AName };
+      CxxNameCase { Case, B, BName };
+      CxxNameCase { Case, C, CName };
+      CxxNameCase { Case, D, DName };
+      CxxNameCase { Case, E, EName };
+      { name = { just = AName },
+        parent = { just = { name = { just = BName },
+        parent = { just = { name = { just = CName },
+        parent = { just = { name = { just = DName },
+        parent = { just = { name = { just = EName } }}}}}}}}} ) |
+    # six tuple
+     ( [F,E,D,C,B,A] = Query;
+      CxxNameCase { Case, A, AName };
+      CxxNameCase { Case, B, BName };
+      CxxNameCase { Case, C, CName };
+      CxxNameCase { Case, D, DName };
+      CxxNameCase { Case, E, EName };
+      CxxNameCase { Case, F, FName };
+      { name = { just = AName },
+        parent = { just = { name = { just = BName },
+        parent = { just = { name = { just = CName },
+        parent = { just = { name = { just = DName },
+        parent = { just = { name = { just = EName },
+        parent = { just = { name = { just = FName } }}}}}}}}}}} ) |
+    # seven for real
+     ( [G,F,E,D,C,B,A] = Query;
+      CxxNameCase { Case, A, AName };
+      CxxNameCase { Case, B, BName };
+      CxxNameCase { Case, C, CName };
+      CxxNameCase { Case, D, DName };
+      CxxNameCase { Case, E, EName };
+      CxxNameCase { Case, F, FName };
+      CxxNameCase { Case, G, GName };
+      { name = { just = AName },
+        parent = { just = { name = { just = BName },
+        parent = { just = { name = { just = CName },
+        parent = { just = { name = { just = DName },
+        parent = { just = { name = { just = EName },
+        parent = { just = { name = { just = FName },
+        parent = { just = { name = { just = GName } }}}}}}}}}}}}}
     ) = NSQName;
 
 }
