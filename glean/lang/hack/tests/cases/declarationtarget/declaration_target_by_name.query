@@ -1,0 +1,14 @@
+query:
+  hack.DeclarationTarget {
+    source = {
+      container = {
+        class_ = {
+          name = {
+            name = "SourceA"
+          }
+        }
+      }
+    }
+  }
+transform: [gensort, []]
+perf: true

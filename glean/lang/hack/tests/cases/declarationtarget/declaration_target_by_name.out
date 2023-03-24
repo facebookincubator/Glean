@@ -1,0 +1,64 @@
+[
+  "@generated",
+  {
+    "key": {
+      "source": {
+        "container": {
+          "class_": {
+            "key": { "name": { "key": { "name": { "key": "SourceA" } } } }
+          }
+        }
+      },
+      "target": {
+        "container": {
+          "class_": {
+            "key": { "name": { "key": { "name": { "key": "TargetClass" } } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "container": {
+          "class_": {
+            "key": { "name": { "key": { "name": { "key": "SourceA" } } } }
+          }
+        }
+      },
+      "target": {
+        "container": {
+          "class_": {
+            "key": { "name": { "key": { "name": { "key": "TargetMethod" } } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "container": {
+          "class_": {
+            "key": { "name": { "key": { "name": { "key": "SourceA" } } } }
+          }
+        }
+      },
+      "target": {
+        "method": {
+          "key": {
+            "name": { "key": "method" },
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "TargetMethod" } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

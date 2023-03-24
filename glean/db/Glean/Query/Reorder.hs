@@ -258,6 +258,7 @@ data StmtCost
   | StmtLookup
   | StmtPointMatch
   | StmtPrefixMatch
+  | StmtPrefixFactMatch
   | StmtScan
   | StmtUnresolved
   deriving (Bounded, Eq, Show, Ord)
@@ -296,9 +297,10 @@ reorderStmtGroup scope@(Scope sc _) stmts =
     classify :: VarSet -> FlatStatement -> StmtCost
     classify bound (FlatStatement _ _ (FactGenerator _ key _ _)) =
       case classifyPattern ((`IntSet.member` bound) . varId) key of
-        PatternMatchesOne -> StmtPointMatch
-        PatternMatchesSome -> StmtPrefixMatch
-        PatternSearchesAll -> StmtScan
+        PatternMatch _ Point -> StmtPointMatch
+        PatternMatch PrefixFactId Scan -> StmtPrefixFactMatch
+        PatternMatch PrefixFixed Scan -> StmtPrefixMatch
+        PatternMatch _ Scan -> StmtScan
     classify _ (FlatDisjunction []) = StmtFilter -- False
     classify bound stmt
       | isResolvedFilter (Scope sc bound) stmt = StmtFilter
@@ -399,6 +401,7 @@ reorderStmtGroup scope@(Scope sc _) stmts =
       in
       pick chooseAll StmtFilter $
       pick chooseAll StmtPointMatch $
+      pick chooseBest StmtPrefixFactMatch $
       pick chooseBest StmtPrefixMatch $
       pick chooseBest StmtScan
       pickNext
@@ -556,79 +559,76 @@ allVars (Scope scope _) = scope
 
 patIsBound :: InScope -> Pat -> Bool
 patIsBound inScope pat
-  | PatternMatchesOne <- classifyPattern (isBoundInScope inScope) pat = True
+  | PatternMatch _ Point <- classifyPattern (isBoundInScope inScope) pat = True
   | otherwise = False
 
-data PatternMatch
-  = PatternSearchesAll
-    -- ^ no prefix; looks at all the facts
-  | PatternMatchesOne
-    -- ^ point-match: matches at most one value
-  | PatternMatchesSome
-    -- ^ neither of the above
+data PatternMatch = PatternMatch Prefix Point
+data Point = Point | Scan
+data Prefix
+  = PrefixEmpty
+  | PrefixFixed
+  | PrefixFactId -- ^ prefix contains a fact ID, so it's probably more specific
 
 -- | Classify a pattern according to the cases in 'PatternMatch'
 classifyPattern
   :: (Var -> Bool) -- ^ variable is bound?
   -> Term (Match () Var)
   -> PatternMatch
-classifyPattern bound t = fromMaybe PatternMatchesOne (go False t end)
+classifyPattern bound t = go PrefixEmpty t end
   where
   go
-    :: Bool -- non-empty fixed prefix seen?
+    :: Prefix -- non-empty fixed prefix seen?
     -> Term (Match () Var)
-    -> (Bool -> Maybe PatternMatch)  -- cont
-    -> Maybe PatternMatch
-       -- Nothing -> pattern was empty
-       -- Just p -> non-empty pattern of kind p
+    -> (Prefix -> PatternMatch)  -- cont
+    -> PatternMatch
   go pref t r = case t of
-    Byte{} -> fixed r
-    Nat{} -> fixed r
+    Byte{} -> fixed pref r
+    Nat{} -> fixed pref r
     Array xs -> termSeq pref xs r
-    ByteArray{} -> fixed r
+    ByteArray{} -> fixed pref r
     Tuple xs -> termSeq pref xs r
-    Alt _ t -> fixed (\pref -> go pref t r)
-    String{} -> fixed r
+    Alt _ t -> fixed pref (\pref -> go pref t r)
+    String{} -> fixed pref r
     Ref m -> case m of
       MatchWild{} -> wild pref
-      MatchNever{} -> Just PatternMatchesOne
-      MatchFid{} -> fixed r
+      MatchNever{} -> PatternMatch pref Point
+      MatchFid{} -> fact r
       MatchBind v -> var v
       MatchVar v -> var v
       MatchAnd a b ->
         case (go pref a end, go pref b end) of
-          (Nothing, _) -> r False
-          (_, Nothing) -> r False
-          (Just PatternMatchesOne, _) -> r True
-          (_, Just PatternMatchesOne) -> r True
-          (Just PatternMatchesSome, _) -> Just PatternMatchesSome -- stop here
-          (_, Just PatternMatchesSome) -> Just PatternMatchesSome -- stop here
-          (Just PatternSearchesAll, Just PatternSearchesAll) ->
-             Just PatternSearchesAll -- stop here
+          (PatternMatch prefix Point, _) -> r prefix
+          (_, PatternMatch prefix Point) -> r prefix
+          (match@(PatternMatch PrefixFactId Scan), _) -> match
+          (_, match@(PatternMatch PrefixFactId Scan)) -> match
+          (match@(PatternMatch PrefixFixed Scan), _) -> match
+          (_, match@(PatternMatch PrefixFixed Scan)) -> match
+          _ -> PatternMatch pref Scan
       MatchPrefix s t
-        | not (ByteString.null s) -> fixed (\pref' -> go pref' t r)
+        | not (ByteString.null s) -> fixed pref (\pref' -> go pref' t r)
         | otherwise -> go pref t r
       -- MatchArrayPrefix doesn't actually look at a prefix because
       -- arrays encode their length at the front
       MatchArrayPrefix{} -> wild pref
-      MatchExt{} -> Just PatternMatchesSome
+      MatchExt{} -> PatternMatch pref Scan
     where
     var v
-      | bound v = fixed r
+      | known, PredicateRep{} <- repType (varType v) = fact r
+      | known = fixed pref r
       | otherwise = wild pref
+      where known = bound v
 
   -- we've seen a bit of fixed pattern
-  fixed r = r True
+  fixed PrefixFactId r = r PrefixFactId
+  fixed _ r = r PrefixFixed
+
+  fact r = r PrefixFactId
 
   -- we've seen a bit of wild pattern
-  wild nonEmptyPrefix
-    | nonEmptyPrefix = Just PatternMatchesSome -- stop here
-    | otherwise = Just PatternSearchesAll -- stop here
+  wild prefix = PatternMatch prefix Scan -- stop here
 
   -- end of the pattern
-  end nonEmptyPrefix
-    | nonEmptyPrefix = Just PatternMatchesOne
-    | otherwise = Nothing
+  end prefix = PatternMatch prefix Point
 
   termSeq pref [] r = r pref
   termSeq pref (x:xs) r = go pref x (\pref -> termSeq pref xs r)
