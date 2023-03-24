@@ -299,6 +299,15 @@ struct TypeSymSpan {
   2: ByteSpan span;
 }
 
+// A more concise symbol description for common hover/link scenarios
+struct SymbolBasicDescription {
+  1: SymbolId sym;
+  2: QualifiedName name;
+  3: optional SymbolKind kind;
+  4: Language language;
+  5: optional string signature;
+}
+
 // A symbol description extends the symbol id with additional attributes
 struct SymbolDescription {
   1: SymbolId sym;
@@ -529,7 +538,8 @@ struct RelatedNeighborhoodResult {
 
   3: list<RelatedSymbols> containsParents; // N level path of containing parents
   5: list<InheritedSymbols> inheritedSymbols; // "inherited" children, in scope
-  6: map<string, SymbolDescription> symbolDetails; // details for everything
+  6: map<string, SymbolDescription> symbolDetails; // details for members
+  10: map<string, SymbolBasicDescription> symbolBasicDetails; // details of rest
 }
 
 # request xref locations (currently just #includes for C++ only)

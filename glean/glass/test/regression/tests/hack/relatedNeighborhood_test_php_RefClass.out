@@ -43,6 +43,48 @@
             "test/php/SourceInterface",
             "test/php/SourceTrait"
         ],
+        "symbolBasicDetails": {
+            "test/php/SourceClass": {
+                "kind": 7,
+                "language": 3,
+                "name": {
+                    "container": "",
+                    "localName": "SourceClass"
+                },
+                "signature": "class SourceClass",
+                "sym": "test/php/SourceClass"
+            },
+            "test/php/SourceInterface": {
+                "kind": 13,
+                "language": 3,
+                "name": {
+                    "container": "",
+                    "localName": "SourceInterface"
+                },
+                "signature": "interface SourceInterface",
+                "sym": "test/php/SourceInterface"
+            },
+            "test/php/SourceTrait": {
+                "kind": 31,
+                "language": 3,
+                "name": {
+                    "container": "",
+                    "localName": "SourceTrait"
+                },
+                "signature": "trait SourceTrait",
+                "sym": "test/php/SourceTrait"
+            },
+            "test/php/SuperClass": {
+                "kind": 7,
+                "language": 3,
+                "name": {
+                    "container": "",
+                    "localName": "SuperClass"
+                },
+                "signature": "class SuperClass",
+                "sym": "test/php/SuperClass"
+            }
+        },
         "symbolDetails": {
             "test/php/RefClass": {
                 "annotations": [],
@@ -495,12 +537,12 @@
                 "signature": "class SourceClass",
                 "sym": "test/php/SourceClass",
                 "sym_location": {
-                    "filepath": "www/SourceClass.php",
+                    "filepath": "",
                     "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 13,
-                        "lineEnd": 38
+                        "columnBegin": 0,
+                        "columnEnd": 0,
+                        "lineBegin": 0,
+                        "lineEnd": 0
                     },
                     "repository": "test"
                 },
@@ -873,12 +915,12 @@
                 "signature": "interface SourceInterface",
                 "sym": "test/php/SourceInterface",
                 "sym_location": {
-                    "filepath": "www/SourceInterface.php",
+                    "filepath": "",
                     "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 10,
-                        "lineEnd": 18
+                        "columnBegin": 0,
+                        "columnEnd": 0,
+                        "lineBegin": 0,
+                        "lineEnd": 0
                     },
                     "repository": "test"
                 },
@@ -921,12 +963,12 @@
                 "signature": "trait SourceTrait",
                 "sym": "test/php/SourceTrait",
                 "sym_location": {
-                    "filepath": "www/SourceTrait.php",
+                    "filepath": "",
                     "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 10,
-                        "lineEnd": 18
+                        "columnBegin": 0,
+                        "columnEnd": 0,
+                        "lineBegin": 0,
+                        "lineEnd": 0
                     },
                     "repository": "test"
                 },
@@ -1085,12 +1127,12 @@
                 "signature": "class SuperClass",
                 "sym": "test/php/SuperClass",
                 "sym_location": {
-                    "filepath": "www/SuperClass.php",
+                    "filepath": "",
                     "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 10,
-                        "lineEnd": 21
+                        "columnBegin": 0,
+                        "columnEnd": 0,
+                        "lineBegin": 0,
+                        "lineEnd": 0
                     },
                     "repository": "test"
                 },

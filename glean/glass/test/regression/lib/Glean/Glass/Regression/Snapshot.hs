@@ -277,9 +277,9 @@ instance DeterministicResponse SearchRelatedResult where
   det (SearchRelatedResult xs ys) = -- to edit the desc hash
     SearchRelatedResult (det xs) (det ys)
 instance DeterministicResponse RelatedNeighborhoodResult where
-  det (RelatedNeighborhoodResult as bs cs ds es fs) =
+  det (RelatedNeighborhoodResult as bs cs ds es fs gs) =
     RelatedNeighborhoodResult (det as) (det bs) (det cs) (det ds)
-      (det es) (det fs)
+      (det es) (det fs) (det gs)
 instance DeterministicResponse RelatedSymbols where
   det = id
 instance DeterministicResponse InheritedSymbols where
@@ -290,6 +290,10 @@ instance DeterministicResponse DefinitionSymbolX where
   det = id
 instance DeterministicResponse ReferenceRangeSymbolX where
   det = id
+instance DeterministicResponse SymbolBasicDescription where
+  det = id
+instance DeterministicResponse (Map.Map Text SymbolBasicDescription) where
+  det = Map.map det
 instance DeterministicResponse SymbolDescription where
   det sd = sd
     { symbolDescription_repo_hash = Revision "testhash"

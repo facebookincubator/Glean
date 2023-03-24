@@ -25,6 +25,38 @@
         "parentsExtended": [
             "test/php/SuperClass"
         ],
+        "symbolBasicDetails": {
+            "test/php/RefClass": {
+                "kind": 7,
+                "language": 3,
+                "name": {
+                    "container": "",
+                    "localName": "RefClass"
+                },
+                "signature": "class RefClass",
+                "sym": "test/php/RefClass"
+            },
+            "test/php/SubClass": {
+                "kind": 7,
+                "language": 3,
+                "name": {
+                    "container": "",
+                    "localName": "SubClass"
+                },
+                "signature": "class SubClass",
+                "sym": "test/php/SubClass"
+            },
+            "test/php/SuperClass": {
+                "kind": 7,
+                "language": 3,
+                "name": {
+                    "container": "",
+                    "localName": "SuperClass"
+                },
+                "signature": "class SuperClass",
+                "sym": "test/php/SuperClass"
+            }
+        },
         "symbolDetails": {
             "test/php/RefClass": {
                 "comments": [],
@@ -62,12 +94,12 @@
                 "signature": "class RefClass",
                 "sym": "test/php/RefClass",
                 "sym_location": {
-                    "filepath": "www/RefClass.php",
+                    "filepath": "",
                     "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 10,
-                        "lineEnd": 36
+                        "columnBegin": 0,
+                        "columnEnd": 0,
+                        "lineBegin": 0,
+                        "lineEnd": 0
                     },
                     "repository": "test"
                 },
@@ -585,12 +617,12 @@
                 "signature": "class SubClass",
                 "sym": "test/php/SubClass",
                 "sym_location": {
-                    "filepath": "www/SourceClass.php",
+                    "filepath": "",
                     "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 40,
-                        "lineEnd": 45
+                        "columnBegin": 0,
+                        "columnEnd": 0,
+                        "lineBegin": 0,
+                        "lineEnd": 0
                     },
                     "repository": "test"
                 },
@@ -633,12 +665,12 @@
                 "signature": "class SuperClass",
                 "sym": "test/php/SuperClass",
                 "sym_location": {
-                    "filepath": "www/SuperClass.php",
+                    "filepath": "",
                     "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 10,
-                        "lineEnd": 21
+                        "columnBegin": 0,
+                        "columnEnd": 0,
+                        "lineBegin": 0,
+                        "lineEnd": 0
                     },
                     "repository": "test"
                 },

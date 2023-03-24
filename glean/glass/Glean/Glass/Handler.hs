@@ -174,6 +174,7 @@ import Glean.Glass.Types
       RelationDirection(..),
       ServerException(ServerException),
       SymbolDescription(..),
+      SymbolBasicDescription(..),
       SymbolComment(..),
       RelationDescription(..),
       SymbolId(..),
@@ -540,7 +541,7 @@ mkBriefSymbolDescription
   :: SymbolId
   -> RepoName
   -> CodeEntityLocation
-  -> Glean.RepoHaxl u w SymbolDescription
+  -> Glean.RepoHaxl u w SymbolBasicDescription
 mkBriefSymbolDescription symbolId repo CodeEntityLocation{..} = do
   range <- rangeSpanToLocationRange repo entityFile entityRange
   kind <- eitherToMaybe <$> findSymbolKind entity
@@ -1499,12 +1500,29 @@ runErrorLog env cmd err = ErrorsLogger.runLog (Glass.logger env) $
 -- More efficient for cases where we don't need everything
 -- TBD should be a different type in thrift
 briefDescribeEntity
-  :: Code.Entity -> SymbolResult -> Glean.RepoHaxl u w SymbolDescription
+  :: Code.Entity -> SymbolResult -> Glean.RepoHaxl u w SymbolBasicDescription
 briefDescribeEntity ent SymbolResult{..} = do
-  symbolDescription_signature <- fst <$> toSymbolSignatureText ent repo
+  symbolBasicDescription_signature <- fst <$> toSymbolSignatureText ent repo
     symbolResult_symbol Cxx.Qualified
-  pure SymbolDescription{..}
+  pure SymbolBasicDescription{..}
   where
+    symbolBasicDescription_sym = symbolResult_symbol
+    symbolBasicDescription_name = symbolResult_qname
+    symbolBasicDescription_kind = symbolResult_kind
+    symbolBasicDescription_language = symbolResult_language
+    repo = locationRange_repository symbolResult_location
+
+-- Temporary legacy compat: copy brief to full desc while we're staging updates
+-- remove this after the client side is using the brief only.
+fromBriefDescription :: RepoName -> SymbolBasicDescription -> SymbolDescription
+fromBriefDescription repo SymbolBasicDescription{..} = SymbolDescription{..}
+  where
+    symbolDescription_sym = symbolBasicDescription_sym
+    symbolDescription_name = symbolBasicDescription_name
+    symbolDescription_kind = symbolBasicDescription_kind
+    symbolDescription_language = symbolBasicDescription_language
+    symbolDescription_signature = symbolBasicDescription_signature
+
     symbolDescription_repo_hash = Revision mempty
     symbolDescription_annotations = mempty
     symbolDescription_comments = mempty
@@ -1517,17 +1535,10 @@ briefDescribeEntity ent SymbolResult{..} = do
     symbolDescription_contains_relation  = def
     symbolDescription_location = def
 
-    symbolDescription_sym = symbolResult_symbol
-    symbolDescription_kind = symbolResult_kind
-    symbolDescription_language = symbolResult_language
-    symbolDescription_name = symbolResult_qname
-
-    repo = locationRange_repository symbolResult_location
-
     symbolDescription_sym_location = LocationRange {
-      locationRange_range = locationRange_range symbolResult_location,
-      locationRange_repository = locationRange_repository symbolResult_location,
-      locationRange_filepath = locationRange_filepath symbolResult_location
+      locationRange_range = def,
+      locationRange_repository = repo,
+      locationRange_filepath = Path mempty
     }
 
 -- | Return a description for a single Entity with a unique location.
@@ -1713,17 +1724,17 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
       backendRunHaxl GleanBackend{..} $ do
         baseEntity <- searchFirstEntity lang toks
         let lang = entityLanguage (decl baseEntity)
-        NeighborRawResult a b c d e descs <- searchNeighbors
-          repo scmRevs lang baseEntity
+        NeighborRawResult a b c d e descs basics <- searchNeighbors repo scmRevs
+          lang baseEntity
         let result = RelatedNeighborhoodResult {
               relatedNeighborhoodResult_childrenContained = a,
               relatedNeighborhoodResult_childrenExtended = b,
               relatedNeighborhoodResult_parentsExtended = d,
-
               relatedNeighborhoodResult_containsParents = symbolIdPairs c,
               relatedNeighborhoodResult_inheritedSymbols =
                 map inheritedSymbolIdSets e,
-              relatedNeighborhoodResult_symbolDetails = descs
+              relatedNeighborhoodResult_symbolDetails = descs,
+              relatedNeighborhoodResult_symbolBasicDetails = basics
             }
         return (result, Nothing)
   where
@@ -1751,10 +1762,17 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
         overrides' <- mapM addQName overrides
         let !descriptions = patchDescriptions lang descs0 overrides'
         -- brief descriptions for inherited things
-        descs1 <- Map.fromAscList <$> mapM (mkBriefDescribe repo)
-            (uniqBy (comparing snd) $ (b ++ d) ++ map fst eFinal)
-        return (NeighborRawResult (map snd a) (map snd b) c (map snd d) eFinal
-          (Map.union descriptions descs1))
+        basics <- Map.fromAscList <$> mapM (mkBriefDescribe repo)
+          (uniqBy (comparing snd) $ (b ++ d) ++ map fst eFinal)
+
+        return $ NeighborRawResult
+           (map snd a)
+           (map snd b)
+           c
+           (map snd d)
+           eFinal
+           (Map.union descriptions (Map.map (fromBriefDescription repo) basics))
+           basics
 
     -- building map of sym id -> descriptions, by first occurence
     mkDescribe repo scmRevs e@(_,SymbolId rawSymId) =
@@ -1904,7 +1922,8 @@ data NeighborRawResult = NeighborRawResult {
     _parentContains :: ![Search.RelatedLocatedEntities],
     _extendedParents :: ![SymbolId],
     _inherited :: ![InheritedContainer],
-    _descriptions :: !(Map.Map Text SymbolDescription)
+    _descriptions :: !(Map.Map Text SymbolDescription), -- contained symbols
+    _basics :: !(Map.Map Text SymbolBasicDescription) -- rest
   }
 
 searchFirstEntity
