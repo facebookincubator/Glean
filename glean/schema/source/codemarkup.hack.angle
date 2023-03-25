@@ -340,8 +340,8 @@ predicate HackExtendsChildEntity :
     { container = C } = Child;
   ) |
   (
-    {method=P}=Parent;
     hack.MethodOverridden{base=P, derived=C};
+    {method=P}=Parent;
     {method=C}=Child
   )
 
@@ -357,10 +357,10 @@ predicate HackExtendsParentEntity :
       hack.ContainerParent { C, P };
       { container = P } = Parent
     ) |
-    ({method=C}=Child; {method=P}=Parent;
-      (
-        hack.MethodOverrides{derived=C, base=P}
-      )
+    (
+      hack.MethodOverrides { derived=C, base=P };
+      { method = C } = Child;
+      { method = P } = Parent
     )
 
 # documentation spans
