@@ -17,6 +17,7 @@ import Control.Monad.Extra
 import qualified Data.ByteString as BS
 import Data.Coerce
 import Data.IORef
+import Data.Maybe
 import qualified Data.Text as Text
 
 import Util.Control.Exception
@@ -143,7 +144,7 @@ writeDatabase env repo (WriteContent factBatch maybeOwn) latency =
               -- the GC to free it.
             (\(deduped_facts, dsubst) -> do
               factCount <- FactSet.factCount deduped_facts
-              if factCount == 0 then
+              if factCount == 0 && isNothing maybeOwn then
                 return dsubst
               else do
                 deduped_batch <- FactSet.serialize deduped_facts
