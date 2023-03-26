@@ -50,54 +50,6 @@
             }
         },
         "symbolDetails": {
-            "test/php/SourceClass": {
-                "comments": [],
-                "contains_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "extends_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "kind": 7,
-                "language": 3,
-                "location": {
-                    "filepath": "",
-                    "range": {
-                        "columnBegin": 0,
-                        "columnEnd": 0,
-                        "lineBegin": 0,
-                        "lineEnd": 0
-                    },
-                    "repository": ""
-                },
-                "modifiers": [],
-                "name": {
-                    "container": "",
-                    "localName": "SourceClass"
-                },
-                "pretty_comments": [],
-                "repo_hash": "testhash",
-                "signature": "class SourceClass",
-                "sym": "test/php/SourceClass",
-                "sym_location": {
-                    "filepath": "",
-                    "range": {
-                        "columnBegin": 0,
-                        "columnEnd": 0,
-                        "lineBegin": 0,
-                        "lineEnd": 0
-                    },
-                    "repository": "test"
-                },
-                "sym_other_locations": [],
-                "type_xrefs": []
-            },
             "test/php/SourceClass/:prop/daz": {
                 "annotations": [],
                 "comments": [],
@@ -546,54 +498,6 @@
                     }
                 ],
                 "visibility": 20
-            },
-            "test/php/SuperClass": {
-                "comments": [],
-                "contains_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "extends_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "kind": 7,
-                "language": 3,
-                "location": {
-                    "filepath": "",
-                    "range": {
-                        "columnBegin": 0,
-                        "columnEnd": 0,
-                        "lineBegin": 0,
-                        "lineEnd": 0
-                    },
-                    "repository": ""
-                },
-                "modifiers": [],
-                "name": {
-                    "container": "",
-                    "localName": "SuperClass"
-                },
-                "pretty_comments": [],
-                "repo_hash": "testhash",
-                "signature": "class SuperClass",
-                "sym": "test/php/SuperClass",
-                "sym_location": {
-                    "filepath": "",
-                    "range": {
-                        "columnBegin": 0,
-                        "columnEnd": 0,
-                        "lineBegin": 0,
-                        "lineEnd": 0
-                    },
-                    "repository": "test"
-                },
-                "sym_other_locations": [],
-                "type_xrefs": []
             },
             "test/php/SuperClass/superAdd": {
                 "annotations": [],

@@ -1512,35 +1512,6 @@ briefDescribeEntity ent SymbolResult{..} = do
     symbolBasicDescription_language = symbolResult_language
     repo = locationRange_repository symbolResult_location
 
--- Temporary legacy compat: copy brief to full desc while we're staging updates
--- remove this after the client side is using the brief only.
-fromBriefDescription :: RepoName -> SymbolBasicDescription -> SymbolDescription
-fromBriefDescription repo SymbolBasicDescription{..} = SymbolDescription{..}
-  where
-    symbolDescription_sym = symbolBasicDescription_sym
-    symbolDescription_name = symbolBasicDescription_name
-    symbolDescription_kind = symbolBasicDescription_kind
-    symbolDescription_language = symbolBasicDescription_language
-    symbolDescription_signature = symbolBasicDescription_signature
-
-    symbolDescription_repo_hash = Revision mempty
-    symbolDescription_annotations = mempty
-    symbolDescription_comments = mempty
-    symbolDescription_pretty_comments = mempty
-    symbolDescription_visibility = Nothing
-    symbolDescription_modifiers = mempty
-    symbolDescription_type_xrefs  = mempty
-    symbolDescription_sym_other_locations = mempty
-    symbolDescription_extends_relation  = def
-    symbolDescription_contains_relation  = def
-    symbolDescription_location = def
-
-    symbolDescription_sym_location = LocationRange {
-      locationRange_range = def,
-      locationRange_repository = repo,
-      locationRange_filepath = Path mempty
-    }
-
 -- | Return a description for a single Entity with a unique location.
 describeEntity
   :: ScmRevisions
@@ -1771,7 +1742,7 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
            c
            (map snd d)
            eFinal
-           (Map.union descriptions (Map.map (fromBriefDescription repo) basics))
+           descriptions
            basics
 
     -- building map of sym id -> descriptions, by first occurence

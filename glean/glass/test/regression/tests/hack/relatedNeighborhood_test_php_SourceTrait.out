@@ -24,54 +24,6 @@
             }
         },
         "symbolDetails": {
-            "test/php/RefClass": {
-                "comments": [],
-                "contains_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "extends_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "kind": 7,
-                "language": 3,
-                "location": {
-                    "filepath": "",
-                    "range": {
-                        "columnBegin": 0,
-                        "columnEnd": 0,
-                        "lineBegin": 0,
-                        "lineEnd": 0
-                    },
-                    "repository": ""
-                },
-                "modifiers": [],
-                "name": {
-                    "container": "",
-                    "localName": "RefClass"
-                },
-                "pretty_comments": [],
-                "repo_hash": "testhash",
-                "signature": "class RefClass",
-                "sym": "test/php/RefClass",
-                "sym_location": {
-                    "filepath": "",
-                    "range": {
-                        "columnBegin": 0,
-                        "columnEnd": 0,
-                        "lineBegin": 0,
-                        "lineEnd": 0
-                    },
-                    "repository": "test"
-                },
-                "sym_other_locations": [],
-                "type_xrefs": []
-            },
             "test/php/SourceTrait": {
                 "annotations": [],
                 "comments": [],
