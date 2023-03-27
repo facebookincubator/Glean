@@ -184,16 +184,19 @@ multiSchemaTest = TestCase $
           completeTestDB env repo
           return repo
 
-      testEnv schema schema_id act =
-        withTestEnv
+      testEnv schema schema_id set act =
+        withTestEnv (
           [ setRoot dbRoot,
             setSchemaIndex schema,
             enableSchemaId,
-            maybe id (setSchemaId . SchemaId) schema_id ]
+            maybe id (setSchemaId . SchemaId) schema_id ] ++ set)
           act
 
       testQuery name repo schema schema_id query result =
-        testEnv schema schema_id $ \env -> do
+        testQuerySet name [] repo schema schema_id query result
+
+      testQuerySet name set repo schema schema_id query result =
+        testEnv schema schema_id set $ \env -> do
           r <- try $ angleQuery env repo query
           case result of
             Just n -> case r :: Either BadQuery UserQueryResults of
@@ -205,7 +208,10 @@ multiSchemaTest = TestCase $
               _ -> False
 
       testQueryFacts name repo schema schema_id query ty results =
-        testEnv schema schema_id $ \env -> do
+        testQueryFactsSet name [] repo schema schema_id query ty results
+
+      testQueryFactsSet name set repo schema schema_id query ty results =
+        testEnv schema schema_id set $ \env -> do
           -- get fids
           fids <- do
             UserQueryResults{..} <- userQuery env repo def
@@ -343,13 +349,22 @@ multiSchemaTest = TestCase $
       "derived.D _" (Just 1)
 
     -- asking for a schema that doesn't exist, we will default to the
-    -- latest global schema
-    testQuery "multi 7a" repo1 schema_index_file_0 (Just "na") "x.P _" (Just 1)
-    testQuery "multi 7b" repo1 schema_index_file_0 (Just "na") "y.Q _" (Just 1)
-    testQuery "multi 7c" repo1 schema_index_file_0 (Just "na")
-      "y.Q { p = { b = 3 }}" Nothing
-    testQuery "multi 7d" repo1 schema_index_file_0 (Just "na")
-      "derived.D _" (Just 1)
+    -- latest global schema if config_strict_query_schema_id = False
+    testQuerySet "multi 7a" [disableStrictSchemaId] repo1 schema_index_file_0
+      (Just "na") "x.P _" (Just 1)
+    testQuerySet "multi 7b" [disableStrictSchemaId] repo1 schema_index_file_0
+      (Just "na") "y.Q _" (Just 1)
+    testQuerySet "multi 7c" [disableStrictSchemaId] repo1 schema_index_file_0
+      (Just "na") "y.Q { p = { b = 3 }}" Nothing
+    testQuerySet "multi 7d" [disableStrictSchemaId] repo1 schema_index_file_0
+      (Just "na") "derived.D _" (Just 1)
+
+    -- with config_strict_query_schema_id = True, should fail
+    testEnv schema_index_file_0 (Just "na") [] $ \env -> do
+      r <- try $ angleQuery env repo1 "some query"
+      assertBool "multi 7e" $ case r of
+        Left UnknownSchemaId{} -> True
+        _ -> False
 
     -- Test that glean.schema_id works. repo2 should be using schema v0
     testQuery "multi 8a" repo2 schema_index_file_1 (Just "v0")

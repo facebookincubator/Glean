@@ -968,27 +968,41 @@ schemaVersionForQuery env schema ServerConfig.Config{..} repo qversion qid = do
       Nothing -> return (Nothing, Nothing)
       Just repo -> getDbSchemaVersion env repo
   let
-     selectors
+     allSelectors
        | config_use_schema_id = map SpecificSchemaId $ catMaybes
          [ qid
-         , (envSchemaId env)
+         , envSchemaId env
          , dbSchemaId
          ]
        | otherwise = map SpecificSchemaAll $ catMaybes
          [ qversion
-         , (envSchemaVersion env)
+         , envSchemaVersion env
          , dbSchemaVersion
          ]
-  vlog 1 $ "all selectors: " <> show (pretty selectors)
-  let avail = filter isAvailable selectors
-  vlog 1 $ "available selectors: " <> show (pretty avail)
-  return $ fromMaybe LatestSchemaAll $ listToMaybe avail
-  where
+  vlog 1 $ "all selectors: " <> show (pretty allSelectors)
+
+  let
     isAvailable (SpecificSchemaAll version) =
       fromIntegral version `IntMap.member` legacyAllVersions schema
     isAvailable (SpecificSchemaId id) =
       id `Map.member` schemaEnvs schema
     isAvailable _ = True
+
+  use <-
+    if config_strict_query_schema_id
+      then case allSelectors of
+        [] -> return LatestSchemaAll
+        (id : _)
+          | isAvailable id -> return id
+          | SpecificSchemaId schema_id <- id ->
+            throwIO (Thrift.UnknownSchemaId schema_id)
+          | otherwise ->
+            throwIO (Thrift.Exception "Unknown schema version")
+      else
+        return $ fromMaybe LatestSchemaAll $ find isAvailable allSelectors
+
+  vlog 1 $ "using selector: " <> show (pretty use)
+  return use
 
 data CompilationMode
   = NoExtraSteps

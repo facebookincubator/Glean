@@ -17,6 +17,7 @@ module Glean.Database.Test
   , setSchemaId
   , enableSchemaId
   , disableSchemaId
+  , disableStrictSchemaId
   , setMemoryStorage
   , setDBVersion
   , setCompactOnCompletion
@@ -94,6 +95,12 @@ disableSchemaId :: Setting
 disableSchemaId cfg = cfg {
   cfgServerConfig = cfgServerConfig cfg <&> \scfg -> scfg
     { ServerConfig.config_use_schema_id = False }
+  }
+
+disableStrictSchemaId :: Setting
+disableStrictSchemaId cfg = cfg {
+  cfgServerConfig = cfgServerConfig cfg <&> \scfg -> scfg
+    { ServerConfig.config_strict_query_schema_id = False }
   }
 
 setMemoryStorage :: Setting

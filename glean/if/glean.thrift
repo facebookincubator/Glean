@@ -310,6 +310,10 @@ exception DatabaseNotIncomplete {
   1: DatabaseStatus status;
 }
 
+exception UnknownSchemaId {
+  1: SchemaId schema_id;
+}
+
 enum DatabaseStatus {
   // database is complete and available on this server:
   Complete = 0,
@@ -1215,6 +1219,7 @@ service GleanService extends fb303.FacebookService {
     1: Exception e,
     3: BadQuery b,
     4: UnknownDatabase u,
+    5: UnknownSchemaId s,
   );
 
   UserQueryResults userQuery(1: Repo repo, 2: UserQuery q) throws (
@@ -1222,6 +1227,7 @@ service GleanService extends fb303.FacebookService {
     3: BadQuery b,
     4: Retry r,
     5: UnknownDatabase u,
+    6: UnknownSchemaId s,
   );
 
   list<UserQueryResultsOrException> userQueryBatch(
