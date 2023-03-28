@@ -10,28 +10,28 @@
   Glean Shell.+ (re)
   
   Commands:
-    :database [<db>]                          Use database <db>
-    :index <lang> <dir>                       Index source files in <dir> and create a database.
-    :list [<db>]                              List available databases which match <db>
-    :list-all [<db>]                          List available databases and restorable backups which match <db>
-    :debug off|[-]ir|[-]bytecode|all          Enable/disable query debugging options
-    :describe [<db>]                          Like :list, but show more details
-    :describe-all [<db>]                      Like :list-all, but show more details
-    :mode [json|angle]                        Select mode for query syntax and results
-    :schema [predicate|type]                  Show schema for the given predicate or type
-    :edit                                     Edit a query in an external editor. Set the EDITOR environment variable to choose an editor
-    :limit <n>                                Set limit on the number of query results
-    :load (<file> | <db>/<hash> <file> ...)   Create a DB from file(s) of JSON facts
-    :timeout off|<n>                          Set the query time budget
-    :expand off|on                            Recursively expand nested facts in the response
-    :pager off|on                             Enable/disable result paging
-    :count <query>                            Show only a count of query results, not the results themselves
-    :more                                     Fetch more results from the previous query
-    :profile [off|summary|full]               Show query profiling information
-    :reload                                   Reload the schema (when using --schema)
-    :statistics [-s] [<predicate>]            Show statistics for the current database, sorted by decreasing size when using -s
-    :use-schema (current|stored|<schema-id>)  Select which schema to use
-    :quit                                     Exit the shell
+    :database [<db>]                            Use database <db>
+    :index <lang> <dir>                         Index source files in <dir> and create a database.
+    :list [<db>]                                List available databases which match <db>
+    :list-all [<db>]                            List available databases and restorable backups which match <db>
+    :debug off|[-]ir|[-]bytecode|all            Enable/disable query debugging options
+    :describe [<db>]                            Like :list, but show more details
+    :describe-all [<db>]                        Like :list-all, but show more details
+    :mode [json|angle]                          Select mode for query syntax and results
+    :schema [predicate|type]                    Show schema for the given predicate or type
+    :edit                                       Edit a query in an external editor. Set the EDITOR environment variable to choose an editor
+    :limit <n>                                  Set limit on the number of query results
+    :load (<file> | <db>/<hash> <file> ...)     Create a DB from file(s) of JSON facts
+    :timeout off|<n>                            Set the query time budget
+    :expand off|on                              Recursively expand nested facts in the response
+    :pager off|on                               Enable/disable result paging
+    :count <query>                              Show only a count of query results, not the results themselves
+    :more                                       Fetch more results from the previous query
+    :profile [off|summary|full]                 Show query profiling information
+    :reload                                     Reload the schema (when using --schema)
+    :statistics [--topmost] [-s] [<predicate>]  Show statistics for the database. Use --topmost to only show statisticsfor the top database and -s to sort by decreasing size
+    :use-schema (current|stored|<schema-id>)    Select which schema to use
+    :quit                                       Exit the shell
   
   Queries (angle mode):
     {1234}                    Look up a fact by its Id
@@ -60,6 +60,11 @@
 
 
 
+
+
+
+
+
   $ query "example.Class _"
   [>] example.Class _ (re)
   { "id": [0-9]+, "key": { "name": "Fish", "line": 30 } } (re)
@@ -68,6 +73,7 @@
   { "id": [0-9]+, "key": { "name": "Pet", "line": 10 } } (re)
   
   4 results, 4 facts, .*, .* bytes, .* compiled bytes (re)
+
 
 
   $ query "{ wrong = what } : string"
@@ -81,6 +87,7 @@
   [1]
 
 
+
   $ query "_"
   [>] _ (re)
   can't infer the type of: _
@@ -92,6 +99,7 @@
   [1]
 
 
+
   $ query "A -> B"
   [>] A -> B (re)
   a key/value pattern (X -> Y) cannot be used here
@@ -101,6 +109,7 @@
   [1]
 
 
+
   $ query "A -> B"
   [>] A -> B (re)
   a key/value pattern (X -> Y) cannot be used here
@@ -108,6 +117,7 @@
   1 |  A -> B
        ^^^^^^
   [1]
+
 
 
   $ query "A B"
@@ -119,6 +129,7 @@
   [1]
 
 
+
   $ query "A B"
   [>] A B (re)
   not in scope: A
@@ -126,6 +137,7 @@
   1 |  A B
        ^
   [1]
+
 
 
   $ query "B = 1; 1 = B"
@@ -135,6 +147,7 @@
   1 |  B = 1; 1 = B
               ^
   [1]
+
 
 
   $ query "A = 1; B = A[..]"
@@ -148,6 +161,7 @@
   [1]
 
 
+
   $ query "A = \"a\"; B = A : nat"
   [>] A = \"a\"; B = A : nat (re)
   type mismatch for variable A
@@ -157,6 +171,7 @@
   1 |  A = "a"; B = A : nat
                     ^
   [1]
+
 
 
   $ query "{ w = A } : { n : nat | s : nat }"
@@ -170,6 +185,7 @@
   [1]
 
 
+
   $ query "{} : { n : nat | s : nat }"
   [>] {} : { n : nat | s : nat } (re)
   matching on a sum type should have the form { field = pattern }
@@ -179,6 +195,7 @@
   1 |  {} : { n : nat | s : nat }
        ^^
   [1]
+
 
 
   $ query "A; A"
@@ -193,6 +210,7 @@
   [1]
 
 
+
   $ query "a = 2"
   [>] a = 2 (re)
   variable does not begin with an upper-case letter: a
@@ -200,6 +218,7 @@
   1 |  a = 2
        ^
   [1]
+
 
 
   $ query "A\n  where\n\n\n\n\n\n A = {\n what = "what"\n }"
@@ -223,6 +242,13 @@
   10 |>  }
         
   [1]
+
+
+
+
+
+
+
 
 
 

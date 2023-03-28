@@ -261,17 +261,22 @@ displayStatistics :: String -> Eval ()
 displayStatistics arg =
   withRepo $ \repo ->
   withBackend $ \backend -> do
-  xs <- liftIO $ Glean.predicateStats backend repo Glean.ExcludeBase
+  let containsRemove element list = return (filter (/=element) list,
+                                            isJust (find (==element) list))
+  let args = words arg
+  (args, sortBySize) <- containsRemove "-s" args
+  (args, topmost) <- containsRemove "--topmost" args
+  predicate <- case args of
+    [] -> return ""
+    [predicate] -> return predicate
+    _ -> liftIO $ throwIO $
+      ErrorCall "syntax: :statistics [--topmost] [-s] [<predicate>]"
+  let
+  xs <- liftIO $ Glean.predicateStats backend repo (
+      if topmost then Glean.ExcludeBase else Glean.IncludeBase)
   preds <- forM (Map.toList xs) $ \(id,stats) -> do
     ref <- maybe (Left id) Right <$> lookupPid (Pid id)
     return (ref,stats)
-  let args = words arg
-  (sortBySize, predicate) <- case args of
-    [] -> return (False, "")
-    ["-s"] -> return (True, "")
-    [predicate] -> return (False, predicate)
-    ["-s", predicate] -> return (True, predicate)
-    _ -> liftIO $ throwIO $ ErrorCall "syntax: :statistics [-s] [<predicate>]"
   let
     filterPred :: Either Thrift.Id PredicateRef -> Bool
     filterPred ref =
@@ -445,9 +450,10 @@ helptext mode = vcat
             "Show query profiling information")
       , ("reload",
             "Reload the schema (when using --schema)")
-      , ("statistics [-s] [<predicate>]",
-            "Show statistics for the current database, "
-            <> "sorted by decreasing size when using -s")
+      , ("statistics [--topmost] [-s] [<predicate>]",
+            "Show statistics for the database."
+            <> " Use --topmost to only show statisticsfor the top database"
+            <> " and -s to sort by decreasing size")
       , ("use-schema (current|stored|<schema-id>)",
             "Select which schema to use")
       , ("quit",
