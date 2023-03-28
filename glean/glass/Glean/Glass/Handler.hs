@@ -1021,16 +1021,15 @@ fetchSymbolsAndAttributesGlean
   -> Maybe Language
   -> IO (DocumentSymbolListXResult, Maybe ErrorLogger)
 fetchSymbolsAndAttributesGlean latest req opts be mlang = do
-  let
-    file = toFileReference
-      (documentSymbolsRequest_repository req)
-      (documentSymbolsRequest_filepath req)
-    mlimit = Just (fromIntegral (fromMaybe mAXIMUM_SYMBOLS_QUERY_LIMIT
-      (requestOptions_limit opts)))
-    includeRefs = documentSymbolsRequest_include_refs req
   (res1, logs) <- fetchDocumentSymbols file mlimit includeRefs be mlang
   res2 <- addDynamicAttributes latest file mlimit be res1
   return (res2, logs)
+  where
+    file = toFileReference (documentSymbolsRequest_repository req)
+      (documentSymbolsRequest_filepath req)
+    includeRefs = documentSymbolsRequest_include_refs req
+    mlimit = Just (fromIntegral (fromMaybe mAXIMUM_SYMBOLS_QUERY_LIMIT
+      (requestOptions_limit opts)))
 
 -- Find all symbols and refs in file and add all attributes
 fetchSymbolsAndAttributes
@@ -1079,7 +1078,7 @@ fetchDocumentSymbols (FileReference scsrepo path) mlimit includeRefs b mlang =
     case efile of
       Left err ->
         return $ (, Just (logError err)) $
-          DocumentSymbols [] [] (revision b)
+          DocumentSymbols [] [] (revision b) False
         where
           -- Use first db's revision
           revision GleanBackend {gleanDBs = ((_, repo) :| _)} =
@@ -1088,7 +1087,7 @@ fetchDocumentSymbols (FileReference scsrepo path) mlimit includeRefs b mlang =
       Right FileInfo{..} -> do
 
       -- from Glean, fetch xrefs and defs in batches
-      (xrefs,defns) <- withRepo fileRepo $
+      (xrefs, defns, truncated) <- withRepo fileRepo $
         documentSymbolsForLanguage mlimit mlang includeRefs fileId
       (kindMap, merr) <- withRepo fileRepo $
         documentSymbolKinds mlimit mlang fileId
@@ -1122,12 +1121,13 @@ data DocumentSymbols = DocumentSymbols
   { refs :: [(Code.Entity, ReferenceRangeSymbolX)]
   , defs :: [(Code.Entity, DefinitionSymbolX)]
   , revision :: !Revision
+  , truncated :: !Bool
   }
 
 -- | Drop any remnant entities after we are done with them
 toDocumentSymbolResult :: DocumentSymbols -> DocumentSymbolListXResult
 toDocumentSymbolResult DocumentSymbols{..} = DocumentSymbolListXResult
-  (map snd refs) (map snd defs) revision
+  (map snd refs) (map snd defs) revision truncated
 
 --
 -- | Check if this db / lang pair has additional dynamic attributes
@@ -1163,7 +1163,7 @@ documentSymbolsForLanguage
   -> Maybe Language
   -> Bool  -- ^ include references?
   -> Glean.IdOf Src.File
-  -> Glean.RepoHaxl u w (XRefs, Defns)
+  -> Glean.RepoHaxl u w (XRefs, Defns, Bool)
 
 -- For Cpp, we need to do a bit of client-side processing
 documentSymbolsForLanguage mlimit (Just Language_Cpp) includeRefs fileId =
@@ -1171,11 +1171,12 @@ documentSymbolsForLanguage mlimit (Just Language_Cpp) includeRefs fileId =
 
 -- For everyone else, we just query the generic codemarkup predicates
 documentSymbolsForLanguage mlimit _ includeRefs fileId = do
-  xrefs <- if includeRefs
+  (xrefs, trunc1) <- if includeRefs
     then searchRecursiveWithLimit mlimit $ Query.fileEntityXRefLocations fileId
-    else return []
-  defns <- searchRecursiveWithLimit mlimit $ Query.fileEntityLocations fileId
-  return (xrefs,defns)
+    else return ([], False)
+  (defns, trunc2) <- searchRecursiveWithLimit mlimit $
+    Query.fileEntityLocations fileId
+  return (xrefs,defns, trunc1 || trunc2)
 
 -- And build a line-indexed map of symbols, resolved to spans
 -- With extra attributes loaded from any associated attr db
@@ -1189,13 +1190,14 @@ fetchDocumentSymbolIndex
   -> Maybe Language
   -> IO (DocumentSymbolIndex, Maybe ErrorLogger)
 fetchDocumentSymbolIndex latest req opts be snapshotbe mlang = do
-  (DocumentSymbolListXResult refs defs revision, merr1) <-
+  (DocumentSymbolListXResult refs defs revision truncated, merr1) <-
     fetchSymbolsAndAttributes latest req opts be snapshotbe mlang
 
   return $ (,merr1) DocumentSymbolIndex {
     documentSymbolIndex_symbols = toSymbolIndex refs defs,
     documentSymbolIndex_revision = revision,
-    documentSymbolIndex_size = fromIntegral $ length defs + length refs
+    documentSymbolIndex_size = fromIntegral (length defs + length refs),
+    documentSymbolIndex_truncated = truncated
   }
 
 -- Work out if we have extra attribute dbs and then run the queries

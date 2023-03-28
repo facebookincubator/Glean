@@ -233,7 +233,7 @@ hackGlobalNamespaceAliases
 hackGlobalNamespaceAliases = do
   repo <- Glean.haxlRepo -- use repo as memo hash as we store Ids
   Haxl.memo (repo, "Glean.Glass.SymbolId.Hack"::Text) $ do
-    pairs <- Utils.searchRecursiveWithLimit (Just maxMappings) query
+    (pairs,_lim) <- Utils.searchRecursiveWithLimit (Just maxMappings) query
     Map.fromList <$> forM pairs (\alias -> do
         Hack.GlobalNamespaceAlias_key{..} <- Glean.keyOf alias
         let nsQName = Glean.getId globalNamespaceAlias_key_to

@@ -170,7 +170,7 @@ runSearchRelated
   -> Code.RelationType
   -> RepoHaxl u w [RelatedEntities]
 runSearchRelated limit angle searchType = do
-  entities <- searchRecursiveWithLimit (Just limit) $
+  (entities, _truncated) <- searchRecursiveWithLimit (Just limit) $
     searchRelatedEntitiesQ searchType entities
   pure $
     [ RelatedEntities

@@ -106,10 +106,13 @@ searchPredicateWithLimit = searchWithLimit
 
 -- | Run a recursive data query with optional limit on search results
 -- If not limit set, MAXIMUM_SYMBOLS_QUERY_LIMIT is enforced
+--
+-- Returns a status bit indicating truncated results
+--
 searchRecursiveWithLimit
-  :: QueryType q => Maybe Int -> Angle q -> RepoHaxl u w [q]
+  :: QueryType q => Maybe Int -> Angle q -> RepoHaxl u w ([q], Bool)
 searchRecursiveWithLimit mlimit =
-    fmap fst <$> search . recursive . limitTime time . limit item . Angle.query
+    search . recursive . limitTime time . limit item . Angle.query
   where
     item = fromMaybe (fromIntegral mAXIMUM_SYMBOLS_QUERY_LIMIT) mlimit
     time = fromIntegral mAXIMUM_QUERY_TIME_LIMIT

@@ -378,7 +378,8 @@ fetchDeclWithNames
   -> Glean.RepoHaxl u w (Map Python.Name (Python.Declaration, GleanPath))
 fetchDeclWithNames [] = pure mempty
 fetchDeclWithNames names = do
-  result <- searchRecursiveWithLimit maxXRefs (angleDeclsByNames ids)
+  (result,_truncated) <- searchRecursiveWithLimit maxXRefs
+    (angleDeclsByNames ids)
   Map.fromList <$> forM result (\(decl,srcFile) -> do
     Python.DeclarationWithName_key{..} <- Glean.keyOf decl
     filepath <- GleanPath <$> Glean.keyOf srcFile

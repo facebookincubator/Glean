@@ -50,7 +50,7 @@ instance ToAttributes SymbolKindAttr where
   type AttrOut SymbolKindAttr = Code.SymbolKind
 
   -- We want to recursively load the entity for key lookup
-  searchBy _ = Utils.searchRecursiveWithLimit
+  searchBy _ q = fmap fst <$> Utils.searchRecursiveWithLimit q
 
   -- We actually make two queries!
   queryFileAttributes _ = \fileId ->

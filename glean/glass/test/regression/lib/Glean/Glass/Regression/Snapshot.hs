@@ -251,13 +251,14 @@ class DeterministicResponse a where
   det :: a -> a
 
 instance DeterministicResponse DocumentSymbolListXResult where
-  det (DocumentSymbolListXResult refs defs _rev) =
+  det (DocumentSymbolListXResult refs defs _rev truncated) =
     DocumentSymbolListXResult (det refs) (det defs) (Revision "testhash")
+      truncated
       -- n.b. don't want to include any test group revision tags
 
 instance DeterministicResponse DocumentSymbolIndex where
-  det (DocumentSymbolIndex syms _rev size) =
-    DocumentSymbolIndex (Map.map sort syms) (Revision "testhash") size
+  det (DocumentSymbolIndex syms _rev size truncated) =
+    DocumentSymbolIndex (Map.map sort syms) (Revision "testhash") size truncated
 
 instance DeterministicResponse SymbolSearchResult where
   det (SymbolSearchResult syms deets) =

@@ -78,18 +78,27 @@ documentSymbolsForCxx
   -> Bool  -- ^ include references?
   -> Glean.IdOf Src.File
   -> Glean.RepoHaxl u w
-      ([(Code.XRefLocation,Code.Entity)] , [(Code.Location,Code.Entity)])
+      ([(Code.XRefLocation,Code.Entity)] , [(Code.Location,Code.Entity)], Bool)
 documentSymbolsForCxx mlimit includeRefs fileId = do
   mTraceId <- getFirstFileTrace fileId
   case mTraceId of
-    Nothing -> return ([], [])
+    Nothing -> return ([], [], False)
     Just traceId -> do
       -- these can run concurrently
-      defns <- fileEntityLocations mlimit traceId
-      xrefs <- if includeRefs
+      (defns, trunc1) <- fileEntityLocations mlimit traceId
+      (xrefs, trunc2{- one of the sub queries truncated-}) <- if includeRefs
         then fileEntityXRefLocations mlimit fileId traceId
-        else return []
-      return (xrefs, defns)
+        else return ([], False)
+
+      let (xrefs', trunc3) = maybeTake mlimit xrefs
+
+      return (xrefs', defns, trunc1 || trunc2 || trunc3)
+
+maybeTake :: Maybe Int -> [a] -> ([a], Bool)
+maybeTake Nothing xs = (xs, False)
+maybeTake (Just n) xs = (take n xs, m > n)
+  where
+    m = length xs
 
 -- | Get first (arbitrary) file trace
 -- TODO: we can generalize this to return more traces
@@ -113,7 +122,7 @@ getFirstFileXRefs = fetchFactIdOnly . cxxFileXRefs
 fileEntityLocations
   :: Maybe Int
   -> Glean.IdOf Cxx.Trace
-  -> Glean.RepoHaxl u w [(Code.Location, Code.Entity)]
+  -> Glean.RepoHaxl u w ([(Code.Location, Code.Entity)], Bool)
 fileEntityLocations mlimit traceId = searchRecursiveWithLimit mlimit $
   cxxPpResolveTraceLocations traceId
 
@@ -126,28 +135,24 @@ fileEntityXRefLocations
   :: Maybe Int
   -> Glean.IdOf Src.File
   -> Glean.IdOf Cxx.Trace
-  -> Glean.RepoHaxl u w [(Code.XRefLocation,Code.Entity)]
+  -> Glean.RepoHaxl u w ([(Code.XRefLocation,Code.Entity)], Bool)
 fileEntityXRefLocations mlimit fileId traceId = do
   mresult <- getFirstFileXRefs fileId
   case mresult of
-    Nothing -> return []
+    Nothing -> return ([], False)
     Just xrefId -> do
       fixedXRefs <- fixedXRefs mlimit xrefId
       variableXRefs <- externalXRefs mlimit xrefId
       ppxrefs <- ppXRefs mlimit traceId
       defXRefs <- declToDefXRefs mlimit traceId
-      return $ maybeTake mlimit $
-        fixedXRefs ++ variableXRefs ++ ppxrefs ++ defXRefs
-
-maybeTake :: Maybe Int -> [a] -> [a]
-maybeTake Nothing = id
-maybeTake (Just n) = take n
+      let result = [fixedXRefs, variableXRefs, ppxrefs, defXRefs]
+      return (concatMap fst result, any snd result)
 
 -- fixed (easily discoverable) xrefs
 fixedXRefs
   :: Maybe Int
   -> Glean.IdOf Cxx.FileXRefs
-  -> Glean.RepoHaxl u w [(Code.XRefLocation, Code.Entity)]
+  -> Glean.RepoHaxl u w ([(Code.XRefLocation, Code.Entity)], Bool)
 fixedXRefs mlimit xmapId = searchRecursiveWithLimit mlimit $
   cxxFileEntityXMapFixedXRefLocations xmapId
 
@@ -155,20 +160,21 @@ fixedXRefs mlimit xmapId = searchRecursiveWithLimit mlimit $
 externalXRefs
   :: Maybe Int
   -> Glean.IdOf Cxx.FileXRefs
-  -> Glean.RepoHaxl u w [(Code.XRefLocation, Code.Entity)]
+  -> Glean.RepoHaxl u w ([(Code.XRefLocation, Code.Entity)], Bool)
 externalXRefs mlimit xrefId = do
   -- process concurrently
   maybeRawXRefs <- variableXRefs xrefId
-  declToDefMap <- externalDeclToDefXRefs mlimit xrefId
+  declToDefMap  <- externalDeclToDefXRefs mlimit xrefId
   declLocMap <- externalDeclToLocations mlimit xrefId
   case maybeRawXRefs of
-    Nothing -> return []
+    Nothing -> return ([], False)
     Just (sources, targets) -> do
-      locations <- mapM (cxxXRefTargetToLocation declLocMap) targets -- parallel
+      locations <- mapM (cxxXRefTargetToLocation (fst declLocMap)) targets
       let ranges = relativeByteSpansToRanges sources
-      let declXRefs = zipXRefSourceAndTargets ranges locations
-      let defnXRefs = zipXRefSourcesAndDefinitions declToDefMap ranges locations
-      return $ maybeTake mlimit $ defnXRefs ++ declXRefs
+          declXRefs = zipXRefSourceAndTargets ranges locations
+          defnXRefs = zipXRefSourcesAndDefinitions (fst declToDefMap)
+                        ranges locations
+      return (defnXRefs ++ declXRefs, snd declLocMap || snd declToDefMap)
 
 -- N.B. Src.ByteSpans are _relative_ bytespans ([RelByteSpan]), it's misnamed
 relativeByteSpansToRanges :: [Src.ByteSpans] -> [[Src.ByteSpan]]
@@ -226,12 +232,12 @@ variableXRefs = fetchDataRecursive . cxxFileEntityXMapVariableXRefLocations
 externalDeclToDefXRefs
   :: Maybe Int
   -> Glean.IdOf Cxx.FileXRefs
-  -> Glean.RepoHaxl u w DeclToDefMap
+  -> Glean.RepoHaxl u w (DeclToDefMap, Bool)
 externalDeclToDefXRefs mlimit xrefId = do
-  defRefs <- searchRecursiveWithLimit mlimit $
+  (defRefs, truncated) <- searchRecursiveWithLimit mlimit $
     cxxFileEntityXMapVariableXRefDeclToDefs xrefId
-  return $ Map.fromList $
-    map (\(decl, entity, loc) -> (decl, (entity, loc))) defRefs
+  return $ (,truncated) (Map.fromList $
+    map (\(decl, entity, loc) -> (decl, (entity, loc))) defRefs)
 
 -- | Map of external xref decl to location
 type DeclLocationMap = Map Cxx.Declaration Code.Location
@@ -242,16 +248,17 @@ type DeclLocationMap = Map Cxx.Declaration Code.Location
 externalDeclToLocations
   :: Maybe Int
   -> Glean.IdOf Cxx.FileXRefs
-  -> Glean.RepoHaxl u w DeclLocationMap
+  -> Glean.RepoHaxl u w (DeclLocationMap, Bool)
 externalDeclToLocations mlimit xrefId = do
-  Map.fromList <$> searchRecursiveWithLimit mlimit
+  (rows, truncated) <- searchRecursiveWithLimit mlimit
     (cxxFileEntityXMapVariableXRefDeclLocations xrefId)
+  return (Map.fromList rows, truncated)
 
 -- and the pp #define and #include occurences
 ppXRefs
   :: Maybe Int
   -> Glean.IdOf Cxx.Trace
-  -> Glean.RepoHaxl u w [(Code.XRefLocation, Code.Entity)]
+  -> Glean.RepoHaxl u w ([(Code.XRefLocation, Code.Entity)], Bool)
 ppXRefs mlimit traceId = searchRecursiveWithLimit mlimit $
   ppEntityTraceXRefLocations traceId
 
@@ -259,7 +266,7 @@ ppXRefs mlimit traceId = searchRecursiveWithLimit mlimit $
 declToDefXRefs
   :: Maybe Int
   -> Glean.IdOf Cxx.Trace
-  -> Glean.RepoHaxl u w [(Code.XRefLocation, Code.Entity)]
+  -> Glean.RepoHaxl u w ([(Code.XRefLocation, Code.Entity)], Bool)
 declToDefXRefs mlimit traceId = searchRecursiveWithLimit mlimit $
   cxxFileEntityTraceDeclToDefXRefLocations traceId
 
@@ -542,8 +549,8 @@ fileIncludeLocations mlimit fileId = do
         facts -> Just $ foldr1 (.|) (map (asPredicate . factId) facts)
   case mquery of
     Nothing -> return []
-    Just traceQ -> do
-      searchRecursiveWithLimit mlimit (ppXRefFileLocations traceQ)
+    Just traceQ ->
+      fst <$> searchRecursiveWithLimit mlimit (ppXRefFileLocations traceQ)
   where
     -- arbitrary number of fact traces to be reasonable. More than 1. But
     -- don't overwhelm things. c.f PPTrace { file = folly/Optional.h }

@@ -68,11 +68,12 @@ fetch repo ent = do
 -- | Entity to its annotation facts.
 queryAnnotations
   :: Angle Code.Entity -> Glean.RepoHaxl u w [Code.EntityToAnnotations]
-queryAnnotations entity = searchRecursiveWithLimit (Just max_annotations_limit)$
-  Angle.predicate @Code.EntityToAnnotations $
-    rec $
-      field @"entity" entity
-    end
+queryAnnotations entity = fmap fst <$> searchRecursiveWithLimit
+  (Just max_annotations_limit) $
+    Angle.predicate @Code.EntityToAnnotations $
+      rec $
+        field @"entity" entity
+      end
 
 -- Maps an Annotations (e.g. a list of annotation, to their possible
 -- corresponding symbolId). Codemarkup doesn't expose a single Annotation
@@ -105,7 +106,8 @@ queryAttributeToDecl
   :: [Hack.UserAttribute]
   -> Glean.RepoHaxl u w [Hack.AttributeToDeclaration]
 queryAttributeToDecl [] = return []
-queryAttributeToDecl attrs = searchRecursiveWithLimit (Just (length attrs)) $
+queryAttributeToDecl attrs = fmap fst <$> searchRecursiveWithLimit
+    (Just (length attrs)) $
   Angle.predicate @Hack.AttributeToDeclaration $
     rec $
       field @"attribute" (asPredicate (elementsOf factIds))

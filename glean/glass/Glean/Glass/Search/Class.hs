@@ -109,7 +109,8 @@ searchSymbolId :: (Typeable t, Show t, Glean.Typed.Binary.Type t)
 searchSymbolId toks query = do
   results <- Glean.queryAllRepos $ do
     repo <- Glean.haxlRepo
-    results <- searchRecursiveWithLimit (Just max_symbolid_matches) query
+    (results,_truncated) <- searchRecursiveWithLimit (Just max_symbolid_matches)
+      query
     return $ map (repo,) results
   let toksText = intercalate "/" toks
   return $ case results of

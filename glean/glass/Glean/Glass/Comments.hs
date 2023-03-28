@@ -44,7 +44,8 @@ getEntityComments
   -> Angle Code.Entity
   -> Glean.RepoHaxl u w [Glass.SymbolComment]
 getEntityComments repo entity = do
-    res <- searchRecursiveWithLimit (Just mAX_COMMENTS) $ entityComments entity
+    (res, _truncated) <- searchRecursiveWithLimit (Just mAX_COMMENTS) $
+      entityComments entity
     mapM toLocation res
   where
     toLocation (file, span, mtext) = do
