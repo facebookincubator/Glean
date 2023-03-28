@@ -82,7 +82,9 @@ class LogResult a where
 
 instance LogResult DocumentSymbolListXResult where
   logResult (DocumentSymbolListXResult{..}, log) =
-    log <> Logger.setItemCount (length documentSymbolListXResult_references +
+    log <>
+    Logger.setTruncated documentSymbolListXResult_truncated <>
+    Logger.setItemCount (length documentSymbolListXResult_references +
       length documentSymbolListXResult_definitions)
 
 instance LogResult FileIncludeLocationResults where
@@ -95,6 +97,7 @@ instance LogResult FileIncludeLocationResults where
 instance LogResult DocumentSymbolIndex where
   logResult (DocumentSymbolIndex{..}, log) =
     log <> Logger.setItemCount (fromIntegral documentSymbolIndex_size)
+        <> Logger.setTruncated documentSymbolIndex_truncated
 
 instance LogResult Range where
   logResult (_, log) = log
