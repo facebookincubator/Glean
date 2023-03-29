@@ -131,7 +131,11 @@ toBatchOwnership =
 
 rebaseOwnershipList :: [Ownership] -> Subst -> Thrift.Id -> [Ownership]
 rebaseOwnershipList ownership subst boundary =
-  [ own { ownershipUnits = rebaseOwnership subst (ownershipUnits own) }
+  [ own {
+      ownershipUnits = rebaseOwnership subst (ownershipUnits own),
+      ownershipEnd =
+        Fid (fromIntegral (substOffset subst) + fromFid (ownershipEnd own))
+    }
   | own <- takeWhile ((> boundary) . coerce . ownershipEnd) ownership
   ]
 

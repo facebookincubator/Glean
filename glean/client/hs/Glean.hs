@@ -163,6 +163,7 @@ module Glean
   , SendAndRebaseQueueSettings(..)
   , sendQueueOptions
   , SendQueueSettings(..)
+  , SendQueueEvent(..)
   , withWriter
   , Writer
   , WriterSettings(..)

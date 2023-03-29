@@ -456,6 +456,10 @@ const char *glean_subst_intervals(
   });
 }
 
+uint64_t glean_subst_offset(const Substitution* subst) {
+  return distance(subst->finish(), subst->firstFreeId());
+}
+
 const char *glean_factset_new(
     int64_t first_id,
     FactSet **facts) {

@@ -299,6 +299,9 @@ const char *glean_subst_intervals(
   size_t *outs_size
 );
 
+uint64_t glean_subst_offset(
+  const Substitution *subst
+);
 
 const char *glean_factset_new(
   int64_t first_id,
