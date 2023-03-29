@@ -206,8 +206,9 @@ inclusiveRangeToFileByteSpan (Just lineoffs) range =
 -- (internal)
 memoLineOffsets :: Src.File -> Glean.RepoHaxl u w (Maybe Range.LineOffsets)
 memoLineOffsets file = do
+  repo <- Glean.haxlRepo
   key <- Glean.keyOf file
-  Haxl.memo key $ toLineOffsets file
+  Haxl.memo (repo, key) $ toLineOffsets file
 
 -- | (internal) Get the line offsets associated with a file
 -- Use the memoized version, memoLineOffsets
