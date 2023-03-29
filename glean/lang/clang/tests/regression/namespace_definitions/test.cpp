@@ -33,4 +33,25 @@ namespace N1 {
   using UT = T;
 
   typedef S TD;
+
+  template <typename T>
+  struct ST2 {
+    static bool value;
+  };
+
+  template <typename T>
+  bool ST2<T>::value;
+}
+
+void f() {
+  N1::ST<int> s1;
+  N1::ST<double> s2;
+  N1::ft(1);
+  N1::ft(1.0);
+  (void)N1::vt<int>;
+  (void)N1::vt<double>;
+  N1::UT<int> u1;
+  N1::UT<double> u2;
+  (void)N1::ST2<int>::value;
+  (void)N1::ST2<double>::value;
 }

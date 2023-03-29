@@ -9,7 +9,7 @@
             "file": { "key": "test.cpp" },
             "lineBegin": 9,
             "columnBegin": 1,
-            "lineEnd": 36,
+            "lineEnd": 44,
             "columnEnd": 1
           }
         }
@@ -291,6 +291,189 @@
                   "columnBegin": 3,
                   "lineEnd": 35,
                   "columnEnd": 14
+                }
+              }
+            }
+          },
+          {
+            "record_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "ST2" },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                },
+                "kind": { "struct_": { } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 38,
+                  "columnBegin": 3,
+                  "lineEnd": 40,
+                  "columnEnd": 3
+                }
+              }
+            }
+          },
+          {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "value" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "ST2" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "N1" } }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "bool" },
+                "kind": {
+                  "global_": { "kind": 2, "attribute": 0, "definition": true }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 42,
+                  "columnBegin": 3,
+                  "lineEnd": 43,
+                  "columnEnd": 20
+                }
+              }
+            }
+          },
+          {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "vt" },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                },
+                "type": { "key": "const T" },
+                "kind": {
+                  "global_": { "kind": 0, "attribute": 2, "definition": true }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 28,
+                  "columnBegin": 3,
+                  "lineEnd": 28,
+                  "columnEnd": 28
+                }
+              }
+            }
+          },
+          {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "vt" },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                },
+                "type": { "key": "const T" },
+                "kind": {
+                  "global_": { "kind": 0, "attribute": 2, "definition": true }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 28,
+                  "columnBegin": 3,
+                  "lineEnd": 28,
+                  "columnEnd": 28
+                }
+              }
+            }
+          },
+          {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "value" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "ST2" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "N1" } }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "bool" },
+                "kind": {
+                  "global_": { "kind": 2, "attribute": 0, "definition": true }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 42,
+                  "columnBegin": 3,
+                  "lineEnd": 43,
+                  "columnEnd": 20
+                }
+              }
+            }
+          },
+          {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "value" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "ST2" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "N1" } }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "bool" },
+                "kind": {
+                  "global_": { "kind": 2, "attribute": 0, "definition": true }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 42,
+                  "columnBegin": 3,
+                  "lineEnd": 43,
+                  "columnEnd": 20
                 }
               }
             }
