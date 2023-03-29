@@ -851,7 +851,11 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       } else if (auto fd = clang::dyn_cast<clang::FieldDecl>(mem)) {
         add(visitor.varDecls, fd);
       } else if (auto vd = clang::dyn_cast<clang::VarDecl>(mem)) {
-        add(visitor.varDecls, vd);
+        // See `VisitVarDecl` for why we need to do this.
+        if (!clang::isTemplateInstantiation(
+                vd->getTemplateSpecializationKind())) {
+          add(visitor.varDecls, vd);
+        }
       } else if (auto vtd = clang::dyn_cast<clang::VarTemplateDecl>(mem)) {
         add(visitor.varDecls, vtd->getTemplatedDecl());
       } else if (auto tnd = clang::dyn_cast<clang::TypedefNameDecl>(mem)) {
@@ -1606,6 +1610,30 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   };
 
   bool VisitVarDecl(const clang::VarDecl *decl) {
+    // We check for implicitly instantiated variable declarations here due to a
+    // bug in `RecursiveASTVisitor`. With `shouldVisitTemplateInstantions` set
+    // to return `false`, `RecursiveASTVisitor` is supposed to skip all implicit
+    // template instantiations. For variable templates and out-of-line
+    // definition of static variables, nodes are injected into the enclosing
+    // `DeclContext`. For example:
+    //
+    //   namespace N {
+    //     template <typename T> bool value;
+    //   }
+    //
+    //   void h() {
+    //     (void)N::value<int>;
+    //     (void)N::value<double>;
+    //   }
+    //
+    // There is a `VarTemplateDecl` with 2 `VarTemplateSpecializationDecl`s
+    // nested inside it, which `RecursiveASTVisitor` skips correctly.
+    // But for some reason there are 2 `VarTemplateSpecializationDecl`s directly
+    // under `N` as well. `RecursiveASTVisitor` fails to skip these correctly.
+    // As such, we skip them manually here.
+    if (clang::isTemplateInstantiation(decl->getTemplateSpecializationKind())) {
+      return true;
+    }
     visitDeclaration(varDecls, decl);
     return true;
   }
