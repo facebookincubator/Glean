@@ -47,7 +47,7 @@ type Callback = Either SomeException () -> STM ()
 data Ownership = Ownership
   { ownershipUnits :: HashMap Thrift.UnitName (Vector Thrift.Id)
      -- ^ exactly the same as Batch.owned in glean.thrift
-  , ownershipEnd :: Fid
+  , ownershipEnd :: !Fid
      -- ^ exclusive upper bound on the facts covered by ownershipUnits
   }
 
