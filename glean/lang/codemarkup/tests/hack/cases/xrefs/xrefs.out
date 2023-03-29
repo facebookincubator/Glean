@@ -28,6 +28,26 @@
   },
   {
     "key": {
+      "file": { "key": "www/ModuleMember.php" },
+      "xref": {
+        "target": {
+          "name": "glean.test.thing",
+          "file": { "key": "www/Module.php" },
+          "location": { "span": { "start": 237, "length": 16 } }
+        },
+        "source": { "span": { "start": 233, "length": 16 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "module": { "key": { "name": { "key": "glean.test.thing" } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "file": { "key": "www/RefClass.php" },
       "xref": {
         "target": {

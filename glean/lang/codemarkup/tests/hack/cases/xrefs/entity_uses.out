@@ -618,6 +618,19 @@
       "target": {
         "hack": {
           "decl": {
+            "module": { "key": { "name": { "key": "glean.test.thing" } } }
+          }
+        }
+      },
+      "file": { "key": "www/ModuleMember.php" },
+      "span": { "start": 233, "length": 16 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "hack": {
+          "decl": {
             "property_": {
               "key": {
                 "name": { "key": "daz" },
