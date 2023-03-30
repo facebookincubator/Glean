@@ -626,7 +626,7 @@
                 },
                 "pretty_comments": [
                     {
-                        "comment": "Test title\n\nextra comment body",
+                        "comment": "Test title\nextra comment body",
                         "location": {
                             "filepath": "as.py",
                             "range": {
@@ -888,7 +888,7 @@
                 },
                 "pretty_comments": [
                     {
-                        "comment": "'''\n\nHorrible test for type signature pretty printer\n'''",
+                        "comment": "'''\nHorrible test for type signature pretty printer\n'''",
                         "location": {
                             "filepath": "as.py",
                             "range": {
