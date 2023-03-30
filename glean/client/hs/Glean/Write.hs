@@ -6,6 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# LANGUAGE TemplateHaskell, QuasiQuotes, DeriveGeneric #-}
 -- | Utilities for writing data to Glean
 module Glean.Write
   ( fileToBatches
@@ -13,28 +14,52 @@ module Glean.Write
   , parseJsonFactBatches
   ) where
 
+import Control.Exception (ErrorCall(ErrorCall), throwIO)
 import Control.Monad.Extra
 import Data.Aeson
 import qualified Data.Aeson.Types as Aeson
 import Data.ByteString (ByteString)
+import qualified Data.ByteString as B
 import qualified Data.ByteString.Lazy.Char8 as LB
 import Data.Maybe
+import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import qualified Data.Vector as Vector
+import Foreign(Ptr)
+import Foreign.C(CString, CChar, CLong(..))
+
+import Mangle.TH
+import Foreign.CPP.Dynamic (Dynamic, callJSONParserFFI)
+import Util.String.Quasi
 
 import Glean.Types hiding (Value)
 import Glean.Schema.Util
 
-newtype ParseJsonFactBatches = ParseJsonFactBatches [JsonFactBatch]
-instance FromJSON ParseJsonFactBatches where
-  parseJSON = fmap ParseJsonFactBatches <$> parseJsonFactBatches
+$(mangle
+  [s|
+    folly::dynamic* facebook::glean::cpp::parseJSONFacts(
+        const char*, int64_t, char **)
+  |] [d|
+    foreign import ccall safe c_parseJsonFacts
+      :: CString -> CLong -> Ptr (Ptr CChar) -> IO (Ptr Dynamic)
+  |])
+
+newtype ParseJsonFactBatchForWriteServer = ParseJsonFactBatchForWriteServer
+  {getBatch :: JsonFactBatch}
+instance FromJSON ParseJsonFactBatchForWriteServer where
+  parseJSON =
+    fmap ParseJsonFactBatchForWriteServer <$>
+      parseJsonFactBatchGen (withText "fact" $ return . Text.encodeUtf8)
 
 fileToBatches :: FilePath -> IO [JsonFactBatch]
 fileToBatches file = do
-  res <- eitherDecodeFileStrict' file
-  case res of
-    Right (ParseJsonFactBatches res) -> return res
-    Left err -> error err
+  bs <- B.readFile file
+  r <- Foreign.CPP.Dynamic.callJSONParserFFI c_parseJsonFacts bs
+  case r of
+    Right val -> case Aeson.parse parseJSON val of
+      Aeson.Error str -> throwIO $ ErrorCall $ file ++ ": " ++ str
+      Aeson.Success x -> return $ map getBatch x
+    Left err -> throwIO $ ErrorCall $ file ++ ": " ++ Text.unpack err
 
 parsePredicate :: Value -> Aeson.Parser PredicateRef
 parsePredicate = withText "predicate" $ \txt -> do
@@ -50,8 +75,10 @@ parsePredicateRef = withObject "predicate ref" $ \obj ->
 parseFact :: Value -> Aeson.Parser ByteString
 parseFact = withObject "fact" $ \obj -> return (LB.toStrict (encode obj))
 
-parseJsonFactBatch :: Value -> Aeson.Parser JsonFactBatch
-parseJsonFactBatch = withObject "JsonFactBatch" $ \v ->
+-- | Given a fact parser, returns a 'JsonFactBatch' parser
+parseJsonFactBatchGen
+  :: (Value -> Aeson.Parser Json) -> Value -> Aeson.Parser JsonFactBatch
+parseJsonFactBatchGen parseFact = withObject "JsonFactBatch" $ \v ->
   JsonFactBatch
     <$> Aeson.explicitParseField parsePred v "predicate"
     <*> Aeson.explicitParseField parseFacts v "facts"
@@ -60,6 +87,7 @@ parseJsonFactBatch = withObject "JsonFactBatch" $ \v ->
     parsePred v = parsePredicate v `mplus` parsePredicateRef v
     parseFacts = withArray "facts" (mapM parseFact . Vector.toList)
 
+-- | Parser that expects facts to be JSON objects
 parseJsonFactBatches :: Value -> Aeson.Parser [JsonFactBatch]
 parseJsonFactBatches = withArray "JsonFactBatch" $ \vec ->
-  mapM parseJsonFactBatch (Vector.toList vec)
+  mapM (parseJsonFactBatchGen parseFact) (Vector.toList vec)

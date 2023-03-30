@@ -530,6 +530,7 @@ library client-hs
     import: fb-haskell, fb-cpp, deps
     visibility: public
     hs-source-dirs: glean/client/hs
+    CXX_LIB_glean_client_hs
     exposed-modules:
           Glean
           Glean.Angle

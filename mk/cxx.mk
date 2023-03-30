@@ -66,6 +66,9 @@ CXX_SOURCES_glean_cpp_client = \
     glean/interprocess/cpp/counters.cpp
 CXX_FLAGS_glean_cpp_client = -DOSS=1
 
+CXX_SOURCES_glean_client_hs = \
+    glean/client/hs/cpp/write.cpp
+
 CXX_GTEST_SOURCES_BinaryTest = \
     glean/rts/tests/BinaryTest.cpp
 CXX_GTEST_LIBS_BinaryTest = glean_cpp_rts
