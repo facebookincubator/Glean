@@ -61,9 +61,6 @@ import qualified Data.Set as Set
 import Data.Set ( Set )
 import qualified Control.Concurrent.Async as Async
 import qualified Data.Map.Strict as Map
-import Data.HashMap.Strict ( HashMap )
-import Data.HashSet ( HashSet )
-import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
 
 import Haxl.Prelude (forM, forM_)
@@ -95,8 +92,7 @@ import qualified Glean.Schema.Src.Types as Src
 
 import qualified Glean.Glass.Attributes as Attributes
 import Glean.Glass.Base
-import Glean.Glass.Describe
-    ( mkSymbolDescription, describeEntity, mkBriefSymbolDescription )
+import Glean.Glass.Describe ( mkSymbolDescription, describeEntity )
 import Glean.Glass.Logging
 import Glean.Glass.Repos
 import Glean.Glass.Path ( toGleanPath, fromGleanPath )
@@ -104,8 +100,6 @@ import Glean.Glass.Range
 import Glean.Glass.SymbolId
 import Glean.Glass.SymbolSig ( toSymbolSignatureText )
 import Glean.Glass.Pretty.Cxx as Cxx (Qualified(..))
-import qualified Glean.Glass.Relations.Hack as Hack
-import Glean.Glass.SymbolKind ( findSymbolKind )
 import Glean.Glass.Types
 import Glean.Index.Types ( IndexRequest, IndexResponse )
 import qualified Glean.Index.GleanIndexingService.Client as IndexingService
@@ -134,7 +128,10 @@ import Glean.Glass.Utils
 import Glean.Glass.Attributes.SymbolKind
     ( symbolKindToSymbolKind, symbolKindFromSymbolKind )
 import qualified Glean.Glass.SearchRelated as Search
-import Glean.Glass.SearchRelated (InheritedContainer, Recursive(NotRecursive))
+import Glean.Glass.SearchRelated
+    ( RelatedLocatedEntities(childRL, parentRL),
+      Recursive(NotRecursive) )
+import Glean.Glass.Neighborhood ( searchNeighborhood )
 
 import Glean.Glass.SnapshotBackend ( getSnapshot, SnapshotBackend )
 
@@ -1402,8 +1399,8 @@ searchRelated
   -> RequestOptions
   -> SearchRelatedRequest
   -> IO SearchRelatedResult
-searchRelated env@Glass.Env{..}
-    sym RequestOptions{..} SearchRelatedRequest{..} =
+searchRelated env@Glass.Env{..} sym RequestOptions{..}
+    SearchRelatedRequest{..} =
   withSymbol "searchRelated" env sym $
     \(gleanDBs, scmRevs, (repo, lang, toks)) ->
       backendRunHaxl GleanBackend{..} $ do
@@ -1461,215 +1458,18 @@ searchRelatedNeighborhood
   -> RequestOptions
   -> RelatedNeighborhoodRequest
   -> IO RelatedNeighborhoodResult
-searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
-    RelatedNeighborhoodRequest{..} =
+searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..} req =
   withSymbol "searchRelatedNeighborhood" env sym $
     \(gleanDBs, scmRevs, (repo, lang, toks)) ->
       backendRunHaxl GleanBackend{..} $ do
         baseEntity <- searchFirstEntity lang toks
         let lang = entityLanguage (decl baseEntity)
-        NeighborRawResult a b c d e descs basics <- searchNeighbors repo scmRevs
-          lang baseEntity
-        let result = RelatedNeighborhoodResult {
-              relatedNeighborhoodResult_childrenContained = a,
-              relatedNeighborhoodResult_childrenExtended = b,
-              relatedNeighborhoodResult_parentsExtended = d,
-              relatedNeighborhoodResult_containsParents = symbolIdPairs c,
-              relatedNeighborhoodResult_inheritedSymbols =
-                map inheritedSymbolIdSets e,
-              relatedNeighborhoodResult_symbolDetails = descs,
-              relatedNeighborhoodResult_symbolBasicDetails = basics
-            }
-        return (result, Nothing)
+        (,Nothing) <$> searchNeighborhood limit req sym repo
+          scmRevs lang baseEntity
   where
-    -- being careful to keep things with clear data dependencies
-    searchNeighbors
-      :: RepoName -> ScmRevisions -> Language -> SearchEntity Code.Entity
-      -> ReposHaxl u w NeighborRawResult
-    searchNeighbors repo scmRevs lang baseEntity =
-      withRepo (entityRepo baseEntity) $ do
-        a <- childrenContains1Level (decl baseEntity) repo
-        b <- childrenExtends1Level (decl baseEntity) repo
-        c <- parentContainsNLevel (decl baseEntity) repo
-        d <- parentExtends1Level (decl baseEntity) repo
-        -- all contained symbols of inherited parents
-        -- n.b. not all are actually in scope after we resolve names
-        (eFull, edges, kinds) <- inheritedNLevel (decl baseEntity) repo
-        -- now filter out any names that are shadowed
-        let (!eFinal,!overrides) = partitionInheritedScopes lang sym edges
-              kinds a eFull
-        -- syms visible to the client, we need their full details
-        let !syms = uniqBy (comparing snd) $ fromSearchEntity sym baseEntity :
-                a ++ flattenEdges c ++ concatMap snd eFinal
-                  -- full descriptions of final methods
-        descs0 <- Map.fromAscList <$> mapM (mkDescribe repo scmRevs) syms
-        overrides' <- mapM addQName overrides
-        let !descriptions = patchDescriptions lang descs0 overrides'
-        -- brief descriptions for inherited things
-        basics <- Map.fromAscList <$> mapM (mkBriefDescribe repo scmRevs)
-          (uniqBy (comparing snd) $ (b ++ d) ++ map fst eFinal)
-
-        return $ NeighborRawResult
-           (map snd a)
-           (map snd b)
-           c
-           (map snd d)
-           eFinal
-           descriptions
-           basics
-
-    -- building map of sym id -> descriptions, by first occurence
-    mkDescribe repo scmRevs e@(_,SymbolId rawSymId) =
-      (rawSymId,) <$> describe repo scmRevs e
-    describe repo scmRevs ((entity, entityFile, entityRange, entityName), symId)
-      = mkSymbolDescription symId scmRevs repo CodeEntityLocation{..} Nothing
-
-    -- for children by inheritance, we only need name, kind, parent name, sym id
-    -- and signature. In particular, we don't e.g. need comments or annotations
-    -- or type xrefs
-    mkBriefDescribe repo scmRevs e@(_,SymbolId rawSymId) =
-      (rawSymId,) <$> briefDescribe repo scmRevs e
-    briefDescribe repo scmRevs
-        ((entity, entityFile, entityRange, entityName), symId)
-      = mkBriefSymbolDescription symId scmRevs repo CodeEntityLocation{..}
-        Nothing
-
-    -- for overrides, we just need to know the parent qname of the entity
-    -- no need to compute the full details()
-    addQName ((entity, _file, _span, _name), symId)  = do
-      qName <- eThrow =<< toQualifiedName entity
-      return (symId, qName)
-
-    childrenContains1Level :: SearchRelatedList u w
-    childrenContains1Level baseEntity repo = map Search.childRL <$>
-        Search.searchRelatedEntities
-      (fromIntegral relatedNeighborhoodRequest_children_limit)
-      Search.NotRecursive
-      RelationDirection_Child
-      RelationType_Contains
-      baseEntity
-      repo
-    -- children by `extends`. typically a list. this includes method overrides
-    -- note that some methods have a lot of overrides (50k+) so be careful with
-    -- the limit values
-    childrenExtends1Level :: SearchRelatedList u w
-    childrenExtends1Level baseEntity repo = map Search.childRL <$>
-        Search.searchRelatedEntities
-      (fromIntegral relatedNeighborhoodRequest_inherited_limit)
-      Search.NotRecursive
-      RelationDirection_Child
-      RelationType_Extends
-      baseEntity
-      repo
-    -- Direct inheritance parents
-    parentExtends1Level :: SearchRelatedList u w
-    parentExtends1Level baseEntity repo = map Search.parentRL <$>
-        Search.searchRelatedEntities limit
-      Search.NotRecursive
-      RelationDirection_Parent
-      RelationType_Extends
-      baseEntity
-      repo
-    -- N levels of container hierarchy
-    parentContainsNLevel :: SearchRelatedQuery u w
-    parentContainsNLevel baseEntity repo = Search.searchRelatedEntities
-      (fromIntegral relatedNeighborhoodRequest_parent_depth)
-      Search.Recursive
-      RelationDirection_Parent
-      RelationType_Contains
-      baseEntity
-      repo
-    -- Inherited symbols: the contained children of N levels of extended parents
-    inheritedNLevel :: Code.Entity -> RepoName
-        -> RepoHaxl u w
-            ([InheritedContainer]
-             ,HashMap SymbolId (HashSet SymbolId)
-             ,HashMap SymbolId SymbolKind
-             )
-    inheritedNLevel baseEntity repo = do
-      topoEdges <- Search.searchRelatedEntities
-        (fromIntegral relatedNeighborhoodRequest_inherited_limit)
-        Search.Recursive
-        RelationDirection_Parent
-        RelationType_Extends
-        baseEntity
-        repo
-      -- keep topological ordering handy
-      let symTable = Search.edgesToTopoMap topoEdges
-      -- reduce to just the unique parent symbols
-      let parents = uniq (map Search.parentRL topoEdges)
-      -- fetch the parent kinds (class, trait etc)
-      kinds <- mapM (\e -> (snd e,) <$> findSymbolKind (toEntity e)) parents
-      -- and fetch their children concurrently
-      inherited <- mapM (childrenOf repo) parents
-      return (inherited,symTable,toKindTable kinds)
-
-    childrenOf repo parent = (parent,) <$>
-      childrenContains1Level (toEntity parent) repo
-
-    toEntity ((entity, _file, _rangespan, _name), _symId) = entity
-
-    symbolIdPairs = map (\Search.RelatedLocatedEntities{..} ->
-      RelatedSymbols (snd parentRL) (snd childRL))
-
-    inheritedSymbolIdSets :: InheritedContainer -> InheritedSymbols
-    inheritedSymbolIdSets (parent, children) = InheritedSymbols {
-        inheritedSymbols_base = snd parent,
-        inheritedSymbols_provides = map snd children
-      }
-
-    fromSearchEntity symId SearchEntity{..} =
-      ((decl, file, rangespan, name), symId)
-
-    flattenEdges pairs = concat
-      [ [ e1, e2 ] | Search.RelatedLocatedEntities e1 e2 <- pairs ]
-
     limit = fromIntegral $ case requestOptions_limit of
       Just x | x < rELATED_SYMBOLS_MAX_LIMIT -> x
       _ -> rELATED_SYMBOLS_MAX_LIMIT
-
-toKindTable :: [(SymbolId,Either Text SymbolKind)] ->HashMap SymbolId SymbolKind
-toKindTable xs = HashMap.fromList [ (symId, kind) | (symId, Right kind) <- xs ]
-
--- | Apply any additional client-side filtering of what is in scope,
--- according to language rules
-partitionInheritedScopes
-  :: Language
-  -> SymbolId
-  -> HashMap SymbolId (HashSet SymbolId)
-  -> HashMap SymbolId SymbolKind
-  -> [Search.LocatedEntity]
-  -> [InheritedContainer]
-  -> ([InheritedContainer], HashMap SymbolId Search.LocatedEntity)
-partitionInheritedScopes lang symId edges kinds locals inherited = case lang of
-  Language_Hack -> Hack.difference edges kinds symId locals inherited
-  _ -> (inherited, mempty)
-
--- | And once we filter out hidden inherited things, infer any missing
--- synthetic extends relationships
-patchDescriptions
-  :: Language
-  -> Map.Map Text SymbolDescription
-  -> HashMap SymbolId (SymbolId, QualifiedName)
-  -> Map.Map Text SymbolDescription
-patchDescriptions lang descs overrides = case lang of
-  Language_Hack -> Hack.patchDescriptions descs overrides
-  _ -> descs
-
-type SearchRelatedQuery u w = Code.Entity -> RepoName
-      -> RepoHaxl u w [Search.RelatedLocatedEntities]
-type SearchRelatedList u w = Code.Entity -> RepoName
-      -> RepoHaxl u w [Search.LocatedEntity]
-
-data NeighborRawResult = NeighborRawResult {
-    _containedChildren :: ![SymbolId],
-    _extendedChildren :: ![SymbolId],
-    _parentContains :: ![Search.RelatedLocatedEntities],
-    _extendedParents :: ![SymbolId],
-    _inherited :: ![InheritedContainer],
-    _descriptions :: !(Map.Map Text SymbolDescription), -- contained symbols
-    _basics :: !(Map.Map Text SymbolBasicDescription) -- rest
-  }
 
 searchFirstEntity
   :: Language -> [Text] -> Glean.ReposHaxl u w (SearchEntity Code.Entity)

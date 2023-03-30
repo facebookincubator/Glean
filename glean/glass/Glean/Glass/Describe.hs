@@ -138,7 +138,7 @@ describeEntity scmRevs ent SymbolResult{..} = do
           firstChild = Search.childRL <$> listToMaybe children
           relationDescription_firstParent = snd <$> firstParent
           relationDescription_firstChild = snd <$> firstChild
-          relationDescription_hasMoreParents =  length parents > 1
+          relationDescription_hasMoreParents = length parents > 1
           relationDescription_hasMoreChildren = length children > 1
 
       relationDescription_firstParentName <- case firstParent of
