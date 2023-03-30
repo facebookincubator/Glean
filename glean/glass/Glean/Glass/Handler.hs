@@ -54,9 +54,11 @@ import Data.Default (def)
 import Data.List as List ( sortOn )
 import Data.List.Extra ( nubOrd, nubOrdOn, groupOn )
 import Data.List.NonEmpty (NonEmpty(..), toList, nonEmpty)
-import Data.Maybe
-import Data.Ord
+import Data.Maybe ( mapMaybe, catMaybes, fromMaybe, listToMaybe )
+import Data.Ord ( comparing )
 import Data.Text ( Text )
+import qualified Data.Set as Set
+import Data.Set ( Set )
 import qualified Control.Concurrent.Async as Async
 import qualified Data.Map.Strict as Map
 import Data.HashMap.Strict ( HashMap )
@@ -93,117 +95,19 @@ import qualified Glean.Schema.Src.Types as Src
 
 import qualified Glean.Glass.Attributes as Attributes
 import Glean.Glass.Base
-    ( GleanPath(..), SymbolRepoPath(..) )
+import Glean.Glass.Describe
+    ( mkSymbolDescription, describeEntity, mkBriefSymbolDescription )
 import Glean.Glass.Logging
-    ( LogRepo(..),
-      ErrorTy(..),
-      LogResult(..),
-      LogRequest(..),
-      LogError(..),
-      ErrorLogger, errorText )
 import Glean.Glass.Repos
-    ( GleanDBName(unGleanDBName),
-      ScmRevisions(..),
-      firstAttrDB,
-      filetype,
-      findLanguages,
-      findRepos,
-      fromSCSRepo,
-      lookupLatestRepos,
-      toRepoName,
-      selectGleanDBs,
-      GleanDBAttrName(GleanDBAttrName, gleanAttrDBName) )
-import Glean.Glass.Path
-    ( toGleanPath, fromGleanPath )
+import Glean.Glass.Path ( toGleanPath, fromGleanPath )
 import Glean.Glass.Range
-    ( FileInfo(..),
-      inclusiveRangeToExclusiveRange,
-      getFile,
-      getFileAndLines,
-      rangeSpanToLocation,
-      rangeSpanToLocationRange,
-      memoRangeSpanToRange,
-      rangeSpanToRange,
-      resolveLocationToRange )
 import Glean.Glass.SymbolId
-    ( entityToAngle,
-      symbolTokens,
-      toQualifiedName,
-      toSymbolLocalName,
-      toSymbolQualifiedContainer,
-      toShortCode,
-      toSymbolId,
-      entityDefinitionType,
-      entityLanguage,
-      entityKind,
-      fromShortCode,
-      languageToCodeLang
-    )
-import Glean.Glass.SymbolSig
-    ( toSymbolSignatureText )
+import Glean.Glass.SymbolSig ( toSymbolSignatureText )
 import Glean.Glass.Pretty.Cxx as Cxx (Qualified(..))
 import qualified Glean.Glass.Relations.Hack as Hack
 import Glean.Glass.SymbolKind ( findSymbolKind )
 import Glean.Glass.Types
-    ( SymbolPath(SymbolPath, symbolPath_range, symbolPath_repository,
-                 symbolPath_filepath),
-      SymbolKind(..),
-      SymbolContext(..),
-      QualifiedName(..),
-      Name(..),
-      Attribute(Attribute_aInteger, Attribute_aString),
-      KeyedAttribute(KeyedAttribute),
-      Name(Name),
-      AttributeList(AttributeList),
-      Attributes,
-      FileIncludeLocationRequest(..),
-      FileIncludeLocationResults(..),
-      USRSymbolDefinition(..),
-      USR(..),
-      DefinitionSymbolX(DefinitionSymbolX),
-      ReferenceRangeSymbolX(ReferenceRangeSymbolX),
-      SearchBySymbolIdResult(SearchBySymbolIdResult),
-      SearchRelatedRequest(..),
-      SearchRelatedResult(..),
-      SymbolSearchRequest(..),
-      SymbolSearchResult(..),
-      SymbolResult(..),
-      SymbolSearchOptions(..),
-      RelatedSymbols(..),
-      RelationType(..),
-      RelationDirection(..),
-      ServerException(ServerException),
-      SymbolDescription(..),
-      SymbolBasicDescription(..),
-      SymbolComment(..),
-      RelationDescription(..),
-      SymbolId(..),
-      Range,
-      Location(..),
-      LocationRange(..),
-      DocumentSymbolIndex(..),
-      DocumentSymbolListXResult(DocumentSymbolListXResult),
-      Language(Language_Cpp, Language_Hack),
-      Revision(Revision),
-      Path,
-      RepoName(..),
-      RequestOptions(..),
-      DocumentSymbolsRequest(..),
-      FileXRefTarget(..),
-      FileIncludeXRef(..),
-      XRefFileList(..),
-      RelatedNeighborhoodRequest(..),
-      RelatedNeighborhoodResult(..),
-      InheritedSymbols(..),
-      RelationDirection (..),
-      RelationType (..),
-      rELATED_SYMBOLS_MAX_LIMIT,
-      mAXIMUM_SYMBOLS_QUERY_LIMIT,
-      Path (..), USRSymbolReference (USRSymbolReference),
-      FeatureFlags (..), )
-import Glean.Index.Types
-  ( IndexRequest,
-    IndexResponse)
+import Glean.Index.Types ( IndexRequest, IndexResponse )
 import qualified Glean.Index.GleanIndexingService.Client as IndexingService
 import Glean.Index.GleanIndexingService.Client ( GleanIndexingService )
 import Glean.Impl.ThriftService ( ThriftService )
@@ -227,14 +131,9 @@ import Glean.Glass.Search as Search
       searchEntity,
       prefixSearchEntity )
 import Glean.Glass.Utils
-import qualified Data.Set as Set
-import Data.Set ( Set )
 import Glean.Glass.Attributes.SymbolKind
-    ( symbolKindFromSymbolKind, symbolKindToSymbolKind )
-import Glean.Glass.Annotations (getAnnotationsForEntity)
-import Glean.Glass.Comments (getCommentsForEntity)
+    ( symbolKindToSymbolKind, symbolKindFromSymbolKind )
 import qualified Glean.Glass.SearchRelated as Search
-import Glean.Glass.Visibility (getInfoForEntity)
 import Glean.Glass.SearchRelated (InheritedContainer, Recursive(NotRecursive))
 
 import Glean.Glass.SnapshotBackend ( getSnapshot, SnapshotBackend )
@@ -519,37 +418,6 @@ processFileIncludes repo rev xmap = do
     fileIncludeLocationResults_revision = rev
   }
 
--- Worker to fill out symbol description metadata uniformly
-mkSymbolDescription
-  :: SymbolId
-  -> ScmRevisions
-  -> RepoName
-  -> CodeEntityLocation
-  -> Maybe SymbolContext
-  -> Glean.RepoHaxl u w SymbolDescription
-mkSymbolDescription symbolId scmRevs repo CodeEntityLocation{..} ctx = do
-  range <- rangeSpanToLocationRange repo entityFile entityRange
-  kind <- eitherToMaybe <$> findSymbolKind entity
-  qname <- eThrow =<< toQualifiedName entity -- non-optional now
-  let lang = entityLanguage entity
-      score = mempty
-  describeEntity scmRevs entity $
-    SymbolResult symbolId range lang kind entityName score qname ctx
-
--- Worker to fill out symbol description metadata uniformly
-mkBriefSymbolDescription
-  :: SymbolId
-  -> RepoName
-  -> CodeEntityLocation
-  -> Glean.RepoHaxl u w SymbolBasicDescription
-mkBriefSymbolDescription symbolId repo CodeEntityLocation{..} = do
-  range <- rangeSpanToLocationRange repo entityFile entityRange
-  kind <- eitherToMaybe <$> findSymbolKind entity
-  qname <- eThrow =<< toQualifiedName entity -- non-optional now
-  let lang = entityLanguage entity
-      score = mempty
-  briefDescribeEntity entity $
-    SymbolResult symbolId range lang kind entityName score qname Nothing
 
 -- | Search for entities by string name with kind and language filters
 searchSymbol
@@ -1105,16 +973,6 @@ fetchDocumentSymbols (FileReference scsrepo path) mlimit includeRefs b mlang =
 
       return (DocumentSymbols {..}, merr)
 
--- TODO (T122759515): Get repo revision from db properties
-getRepoHash :: Glean.Repo -> Revision
-getRepoHash repo = Revision (Text.take 40 (Glean.repo_hash repo))
-
-getRepoHashForLocation
-  :: LocationRange -> ScmRevisions -> Glean.Repo -> Revision
-getRepoHashForLocation LocationRange{..} scmRevs repo =
-  maybe (getRepoHash repo) Revision $ do
-    scmRepoToHash <- HashMap.lookup repo $ scmRevisions scmRevs
-    HashMap.lookup (unRepoName locationRange_repository) scmRepoToHash
 
 -- | Wrapper for tracking symbol/entity pairs through processing
 data DocumentSymbols = DocumentSymbols
@@ -1498,86 +1356,6 @@ runErrorLog :: Glass.Env -> Text -> GleanGlassErrorsLogger -> IO ()
 runErrorLog env cmd err = ErrorsLogger.runLog (Glass.logger env) $
   err <> ErrorsLogger.setMethod cmd
 
--- | Return a brief description with only required fields set.
--- More efficient for cases where we don't need everything
--- TBD should be a different type in thrift
-briefDescribeEntity
-  :: Code.Entity -> SymbolResult -> Glean.RepoHaxl u w SymbolBasicDescription
-briefDescribeEntity ent SymbolResult{..} = do
-  symbolBasicDescription_signature <- fst <$> toSymbolSignatureText ent repo
-    symbolResult_symbol Cxx.Qualified
-  pure SymbolBasicDescription{..}
-  where
-    symbolBasicDescription_sym = symbolResult_symbol
-    symbolBasicDescription_name = symbolResult_qname
-    symbolBasicDescription_kind = symbolResult_kind
-    symbolBasicDescription_language = symbolResult_language
-    repo = locationRange_repository symbolResult_location
-
--- | Return a description for a single Entity with a unique location.
-describeEntity
-  :: ScmRevisions
-  -> Code.Entity
-  -> SymbolResult
-  -> Glean.RepoHaxl u w SymbolDescription
-describeEntity scmRevs ent SymbolResult{..} = do
-  symbolDescription_repo_hash <-
-    getRepoHashForLocation symbolResult_location scmRevs <$> Glean.haxlRepo
-  let symbolDescription_name = symbolResult_qname
-  symbolDescription_annotations <- eThrow =<< getAnnotationsForEntity repo ent
-  symbolDescription_pretty_comments <- eThrow =<< getCommentsForEntity repo ent
-  -- backwards compat until deprecated, we just make a copy
-  let symbolDescription_comments = map symbolComment_location
-        symbolDescription_pretty_comments
-  (symbolDescription_visibility, symbolDescription_modifiers)
-     <- eThrow =<< getInfoForEntity ent
-  (symbolDescription_signature, symbolDescription_type_xrefs)
-    <- toSymbolSignatureText ent repo symbolResult_symbol Cxx.Qualified
-  symbolDescription_extends_relation <-
-    relationDescription RelationType_Extends
-  symbolDescription_contains_relation <-
-    relationDescription RelationType_Contains
-  pure SymbolDescription{..}
-  where
-    symbolDescription_sym = symbolResult_symbol
-    symbolDescription_kind = symbolResult_kind
-    symbolDescription_language = symbolResult_language
-
-    symbolDescription_sym_location = symbolResult_location
-    symbolDescription_sym_other_locations = []
-
-    repo = locationRange_repository symbolResult_location
-
-    -- deprecated. we already have sym_location
-    symbolDescription_location = SymbolPath {
-      symbolPath_range = locationRange_range symbolResult_location,
-      symbolPath_repository = locationRange_repository symbolResult_location,
-      symbolPath_filepath = locationRange_filepath symbolResult_location
-    }
-
-    relationDescription relatedBy = do
-      parents <- describeRelation RelationDirection_Parent
-      children <- describeRelation RelationDirection_Child
-
-      let firstParent = Search.parentRL <$> listToMaybe parents
-          firstChild = Search.childRL <$> listToMaybe children
-          relationDescription_firstParent = snd <$> firstParent
-          relationDescription_firstChild = snd <$> firstChild
-          relationDescription_hasMoreParents =  length parents > 1
-          relationDescription_hasMoreChildren = length children > 1
-
-      relationDescription_firstParentName <- case firstParent of
-        Nothing -> pure Nothing
-        Just (p,_) -> eitherToMaybe <$> toQualifiedName (fst4 p)
-      relationDescription_firstChildName <- case firstChild of
-        Nothing -> pure Nothing
-        Just (p,_) -> eitherToMaybe <$> toQualifiedName (fst4 p)
-
-      pure RelationDescription{..}
-      where
-        describeRelation relation = Search.searchRelatedEntities 2
-          NotRecursive relation relatedBy ent repo
-
 parentContainer
   :: RepoName -> Code.Entity -> Glean.RepoHaxl u w (Maybe SymbolContext)
 parentContainer repo ent = do
@@ -1592,13 +1370,6 @@ parentContainer repo ent = do
         symbolContext_qname <- mQName
         let symbolContext_kind = Nothing
         pure SymbolContext{..}
-
-eThrow :: Either Text a -> RepoHaxl u w a
-eThrow (Right x) = pure x
-eThrow (Left err) = throwM $ ServerException err
-
-fst4 :: (a,b,c,d) -> a
-fst4 (x,_,_,_) = x
 
 partialSymbolTokens
   :: SymbolId
@@ -1735,7 +1506,7 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
         overrides' <- mapM addQName overrides
         let !descriptions = patchDescriptions lang descs0 overrides'
         -- brief descriptions for inherited things
-        basics <- Map.fromAscList <$> mapM (mkBriefDescribe repo)
+        basics <- Map.fromAscList <$> mapM (mkBriefDescribe repo scmRevs)
           (uniqBy (comparing snd) $ (b ++ d) ++ map fst eFinal)
 
         return $ NeighborRawResult
@@ -1756,11 +1527,12 @@ searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..}
     -- for children by inheritance, we only need name, kind, parent name, sym id
     -- and signature. In particular, we don't e.g. need comments or annotations
     -- or type xrefs
-    mkBriefDescribe repo e@(_,SymbolId rawSymId) =
-      (rawSymId,) <$> briefDescribe repo e
-    briefDescribe repo
+    mkBriefDescribe repo scmRevs e@(_,SymbolId rawSymId) =
+      (rawSymId,) <$> briefDescribe repo scmRevs e
+    briefDescribe repo scmRevs
         ((entity, entityFile, entityRange, entityName), symId)
-      = mkBriefSymbolDescription symId repo CodeEntityLocation{..}
+      = mkBriefSymbolDescription symId scmRevs repo CodeEntityLocation{..}
+        Nothing
 
     -- for overrides, we just need to know the parent qname of the entity
     -- no need to compute the full details()

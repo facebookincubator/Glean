@@ -228,7 +228,7 @@ struct DocumentSymbolListXResult {
   3: Revision revision;
 
   // was the result truncated either by glean or glass?
-  4: bool truncated (hs.strict);
+  4: bool truncated;
 }
 
 // For cursor navigation in a file, it is useful to have a line indexed
@@ -244,7 +244,7 @@ struct DocumentSymbolIndex {
   3: i64 size (hs.strict);
 
   // was the result truncated either by glean or glass?
-  4: bool truncated (hs.strict);
+  4: bool truncated;
 }
 
 // Generic server exception

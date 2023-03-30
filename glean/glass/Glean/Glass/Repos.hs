@@ -32,6 +32,8 @@ module Glean.Glass.Repos
   , findLanguages
   , findRepos
   , selectGleanDBs
+  , getRepoHash
+  , getRepoHashForLocation
   ) where
 
 import Data.List (nub)
@@ -52,7 +54,7 @@ import qualified Glean
 import Util.STM ( readTVar, writeTVar, atomically, newTVarIO, TVar, STM )
 import qualified Glean.Repo as Glean
 
-import Glean.Glass.Base
+import Glean.Glass.Base ( GleanDBAttrName(..), GleanDBName(..) )
 import Glean.Glass.SymbolId ( toShortCode )
 import Glean.Glass.Types
     ( Path(Path),
@@ -60,6 +62,8 @@ import Glean.Glass.Types
       Language(..),
       SymbolId(SymbolId),
       unRepoName,
+      Revision(..),
+      LocationRange(..)
     )
 import Glean.Glass.RepoMapping  -- site-specific
 
@@ -305,3 +309,15 @@ findLanguages repoName@(RepoName repo) pLang =
         Map.lookup repoName gleanIndices
       langs = filter (Text.isPrefixOf pLang) allLangs
   in map (\lang -> SymbolId $ repo <> "/" <> lang <> "/") langs
+
+
+-- TODO (T122759515): Get repo revision from db properties
+getRepoHash :: Glean.Repo -> Revision
+getRepoHash repo = Revision (Text.take 40 (Glean.repo_hash repo))
+
+getRepoHashForLocation
+  :: LocationRange -> ScmRevisions -> Glean.Repo -> Revision
+getRepoHashForLocation LocationRange{..} scmRevs repo =
+  maybe (getRepoHash repo) Revision $ do
+    scmRepoToHash <- HashMap.lookup repo $ scmRevisions scmRevs
+    HashMap.lookup (unRepoName locationRange_repository) scmRepoToHash

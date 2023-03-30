@@ -24,12 +24,18 @@ module Glean.Glass.Utils (
   , pathFragments
   , joinFragments
 
+  -- Tuple utilities
+  , fst4
+
   -- List utils
   , takeFairN
   , splitOnAny
 
   -- Str utils
   , splitString
+
+  -- Exceptions
+  , eThrow
 
   -- Types
   , QueryType
@@ -40,6 +46,7 @@ module Glean.Glass.Utils (
 
 ) where
 
+import Control.Monad.Catch ( throwM )
 import Data.Maybe (fromMaybe)
 import Data.Tuple.Extra ( snd3 )
 import Data.Text ( Text, length )
@@ -48,8 +55,8 @@ import Data.Typeable ( Typeable )
 import System.FilePath ( splitDirectories, joinPath )
 import qualified Data.List as List
 
-import Control.Monad.Extra
-import Control.Monad.Trans
+import Control.Monad.Extra ( MonadPlus(mzero) )
+import Control.Monad.Trans ( MonadTrans(..) )
 
 import Glean ( recursive, limit, limitTime, search, getFirstResult )
 import Glean.Angle as Angle ( query, Angle )
@@ -62,7 +69,8 @@ import Glean.Haxl.Repos (RepoHaxl, ReposHaxl)
 
 import Glean.Glass.Types (
     mAXIMUM_SYMBOLS_QUERY_LIMIT,
-    mAXIMUM_QUERY_TIME_LIMIT
+    mAXIMUM_QUERY_TIME_LIMIT,
+    ServerException(..)
   )
 
 type QueryType q =
@@ -187,3 +195,10 @@ liftMaybe = maybe mzero return
 
 maybeT :: (MonadTrans t, Monad m, MonadPlus (t m)) => m (Maybe b) -> t m b
 maybeT act = lift act >>= liftMaybe
+
+eThrow :: Either Text a -> RepoHaxl u w a
+eThrow (Right x) = pure x
+eThrow (Left err) = throwM $ ServerException err
+
+fst4 :: (a,b,c,d) -> a
+fst4 (x,_,_,_) = x
