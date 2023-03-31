@@ -259,6 +259,9 @@ const char *glean_diff(
     if (found) {
       return SearchResult::Found;
     } else {
+      if (log_added) {
+        std::cout << "Added $" << fact_second->id().toWord() << ": " << pred->name << std::endl;
+      }
       return SearchResult::Invalid;
     }
   };
