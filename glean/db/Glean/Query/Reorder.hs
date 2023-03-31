@@ -257,8 +257,8 @@ data StmtCost
   = StmtFilter
   | StmtLookup
   | StmtPointMatch
-  | StmtPrefixMatch
   | StmtPrefixFactMatch
+  | StmtPrefixMatch
   | StmtScan
   | StmtUnresolved
   deriving (Bounded, Eq, Show, Ord)
