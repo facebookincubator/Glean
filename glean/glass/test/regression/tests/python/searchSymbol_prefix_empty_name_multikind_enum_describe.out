@@ -227,7 +227,7 @@
                 },
                 "pretty_comments": [
                     {
-                        "comment": "Test title\nextra comment body",
+                        "comment": "Test title\n\nextra comment body",
                         "location": {
                             "filepath": "as.py",
                             "range": {
