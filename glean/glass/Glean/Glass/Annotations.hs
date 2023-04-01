@@ -55,25 +55,28 @@ getAnnotationsForEntity repo entity = fetch repo `mapM` entityToAngle entity
 -- Get all the annotations for a given entity. This may include
 -- computing symbolId for these annotations.
 fetch
-  :: Glass.RepoName
-  -> Angle Code.Entity
+  :: Glass.RepoName -> Angle Code.Entity
   -> Glean.RepoHaxl u w (Maybe [Glass.Annotation])
 fetch repo ent = do
-  entityToAnnotations <- queryAnnotations ent
-  let annotations = Code.entityToAnnotations_key_annotations <$>
-        catMaybes (Code.entityToAnnotations_key <$> entityToAnnotations)
-  annotationsSyms <- forM annotations (annotationsToSymbols repo)
-  return $ getAnnotations annotationsSyms
+  anns <- queryAnnotations ent
+  annsWithSyms <- forM anns (annotationsToSymbols repo)
+  return $ getAnnotations annsWithSyms
 
 -- | Entity to its annotation facts.
-queryAnnotations
-  :: Angle Code.Entity -> Glean.RepoHaxl u w [Code.EntityToAnnotations]
-queryAnnotations entity = fmap fst <$> searchRecursiveWithLimit
-  (Just max_annotations_limit) $
-    Angle.predicate @Code.EntityToAnnotations $
-      rec $
-        field @"entity" entity
-      end
+queryAnnotations :: Angle Code.Entity -> Glean.RepoHaxl u w [Code.Annotations]
+queryAnnotations entity =
+  fmap fst <$> searchRecursiveWithLimit (Just max_annotations_limit) $
+    entityAnnotations entity
+
+entityAnnotations :: Angle Code.Entity -> Angle Code.Annotations
+entityAnnotations ent =
+  var $ \anns -> anns `where_` [
+    wild .= Angle.predicate @Code.EntityToAnnotations (
+        rec $
+          field @"entity" ent $
+          field @"annotations" anns
+        end)
+  ]
 
 -- Maps an Annotations (e.g. a list of annotation, to their possible
 -- corresponding symbolId). Codemarkup doesn't expose a single Annotation
