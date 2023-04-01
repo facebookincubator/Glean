@@ -315,16 +315,6 @@ predicate FileCall :
 # Annotations
 #
 
-# (deprecated, buggy, use EntityToAnnotations)
-predicate EntityAnnotations : code.Entity -> code.Annotations
-  E -> A where
-    ( codemarkup.cxx.CxxAnnotation { Ent, Anns };
-      { cxx = Ent } = E; { cxx = Anns } = A ) |
-    ( codemarkup.hack.HackAnnotation{ Ent, Anns };
-     { hack = Ent } = E; { hack = Anns } = A ) |
-    ( codemarkup.python.PythonAnnotation{ Ent, Anns };
-     { python = Ent } = E; { python = Anns } = A );
-
 predicate EntityToAnnotations :
   {
     entity: code.Entity,
