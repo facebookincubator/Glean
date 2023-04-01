@@ -26,12 +26,11 @@ namespace impl {
 std::vector<const Family *> Family::families;
 
 const Family Family::admin("admin", [](auto& opts){
-  opts.OptimizeForPointLookup(100); });
+  opts.OptimizeForPointLookup(10); });
 const Family Family::entities("entities", [](auto& opts){
   // NOTE: Setting inplace_update_support=true leads to rocksdb assertion
   // failures when iteration backwards.
-  opts.inplace_update_support = false;
-  opts.OptimizeForPointLookup(100); });
+  opts.inplace_update_support = false; });
 const Family Family::keys("keys", [](auto& opts) {
   opts.prefix_extractor.reset(
     rocksdb::NewFixedPrefixTransform(sizeof(Id::word_type))); });
@@ -39,9 +38,9 @@ const Family Family::stats("stats", [](auto& opts) {
   opts.OptimizeForPointLookup(10); });
 const Family Family::meta("meta", [](auto&) {});
 const Family Family::ownershipUnits("ownershipUnits", [](auto& opts) {
-  opts.OptimizeForPointLookup(100); });
+  opts.OptimizeForPointLookup(10); });
 const Family Family::ownershipUnitIds("ownershipUnitIds", [](auto& opts) {
-  opts.OptimizeForPointLookup(100); });
+  opts.OptimizeForPointLookup(10); });
 const Family Family::ownershipRaw("ownershipRaw", [](auto&) {}, false);
 const Family Family::ownershipDerivedRaw("ownershipDerivedRaw", [](auto& opts) {
   opts.inplace_update_support = false; }, false);
@@ -50,7 +49,7 @@ const Family Family::ownershipSets("ownershipSets", [](auto& opts){
 const Family Family::factOwners("factOwners", [](auto& opts){
   opts.inplace_update_support = false; }, false);
 const Family Family::factOwnerPages("factOwnerPages", [](auto& opts) {
-  opts.OptimizeForPointLookup(100); });
+  opts.OptimizeForPointLookup(10); });
 
 #ifndef FACEBOOK
 namespace {
