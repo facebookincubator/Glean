@@ -111,6 +111,8 @@ ContainerImpl::ContainerImpl(
   // writeOptions.sync = false;
   // writeOptions.disableWAL = true;
 
+  options.compression = rocksdb::CompressionType::kLZ4Compression;
+
   families.resize(Family::count(), nullptr);
   std::vector<std::string> names;
   if (mode != Mode::Create) {
