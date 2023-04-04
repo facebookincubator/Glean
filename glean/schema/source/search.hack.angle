@@ -71,6 +71,10 @@ predicate SearchInNamespace :
     hack.Declaration { function_ = { name = QN }} |
     hack.Declaration { globalConst = { name = QN }} |
     hack.Declaration { typedef_ = { name = QN }}
+  ) | (
+    # modules are always at the global scope, so should be found with NS=nothing
+    nothing = NS : maybe hack.NamespaceQName;
+    hack.Declaration { module = { name = N } };
   )
 
 # SearchXXXInNamespace are specialized versions of SearchInNamespace.
