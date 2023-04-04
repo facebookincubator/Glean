@@ -102,6 +102,19 @@ ContainerImpl::ContainerImpl(
       table_options.pin_l0_filter_and_index_blocks_in_cache = true;
     }
 
+    // The default setting of block_size_deviation = 10 means that
+    // RocksDB will always add another KV to the current block if it
+    // is <90% full, even if the key is huge. We had an issue where
+    // there was a large entry in the entities column family adjacent
+    // to smaller entries in the same block, and because the block was
+    // massive it didn't get cached, so we had very poor performance
+    // for fetching all keys in that block.
+    //
+    // This setting means that RocksDB will never add a large K/V pair
+    // to a block if it would make the block larger than the max block
+    // size.
+    table_options.block_size_deviation = 100;
+
     options.table_factory.reset(
         rocksdb::NewBlockBasedTableFactory(table_options));
   }
