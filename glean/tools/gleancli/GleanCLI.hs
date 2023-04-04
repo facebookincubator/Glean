@@ -471,6 +471,9 @@ instance Plugin ValidateSchemaCommand where
   runCommand _ _ backend ValidateSchema{..} = do
     str <- B.readFile file
     Glean.validateSchema backend (Thrift.ValidateSchema str)
+      `catch` \e@Thrift.Exception{} -> do
+        hPrint stderr e
+        exitWith (ExitFailure 55)
 
 data StatsCommand
   = Stats
