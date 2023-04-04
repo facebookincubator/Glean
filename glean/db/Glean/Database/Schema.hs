@@ -390,7 +390,10 @@ mkDbSchema cacheVar validate knownPids dbContent
       --  - predicates in the stored schema get Pids from the StoredSchema
       --    (unless this is a new DB, in which case we'll assign fresh Pids)
       --  - predicates in the merged schema get new fresh Pids.
-
+      --
+      -- Note that the Pid assignment is deterministic for a given SchemaId,
+      -- because HashMap.keys returns the PredicateIds sorted by hash, which
+      -- is the low 64 bits of the predicate's Hash.
       storedPids = case knownPids of
         Nothing -> zip (HashMap.keys (hashedPreds stored)) [lowestPid..]
         Just pidMap -> assign first (HashMap.keys (hashedPreds stored))
