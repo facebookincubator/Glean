@@ -38,6 +38,7 @@ import Glean.Write.JSON
 
 
 import Schema.Lib
+import Glean.ServerConfig.Types (config_strict_query_schema_id)
 
 multiSchemaTest :: Test
 multiSchemaTest = TestCase $
@@ -360,11 +361,12 @@ multiSchemaTest = TestCase $
       (Just "na") "derived.D _" (Just 1)
 
     -- with config_strict_query_schema_id = True, should fail
-    testEnv schema_index_file_0 (Just "na") [] $ \env -> do
-      r <- try $ angleQuery env repo1 "some query"
-      assertBool "multi 7e" $ case r of
-        Left UnknownSchemaId{} -> True
-        _ -> False
+    when (config_strict_query_schema_id def) $
+      testEnv schema_index_file_0 (Just "na") [] $ \env -> do
+        r <- try $ angleQuery env repo1 "some query"
+        assertBool "multi 7e" $ case r of
+          Left UnknownSchemaId{} -> True
+          _ -> False
 
     -- Test that glean.schema_id works. repo2 should be using schema v0
     testQuery "multi 8a" repo2 schema_index_file_1 (Just "v0")
