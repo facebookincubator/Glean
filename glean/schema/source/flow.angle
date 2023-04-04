@@ -96,8 +96,7 @@ predicate ModuleComments: {
   module: flow.Module,
   file: src.File,
   span: src.ByteSpan
-}
-{ Module, File, Span } where
+} stored { Module, File, Span } where
   ( { file = F } = Module;
     Mod = Module
   ) | (

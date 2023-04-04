@@ -1,2 +1,3 @@
 query: codemarkup.flow.FlowEntityDocumentation _
+perf: true
 transform: [gensort, []]
