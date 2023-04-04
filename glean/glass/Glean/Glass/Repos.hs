@@ -224,6 +224,7 @@ filetype (Path file)
 
   | "TARGETS" `Text.isSuffixOf` file = Just Language_Buck
   | "BUCK" `Text.isSuffixOf` file = Just Language_Buck
+  | ".bzl" `Text.isSuffixOf` file = Just Language_Buck
 
   | otherwise = Nothing
 
