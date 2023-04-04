@@ -78,6 +78,7 @@ struct ContainerImpl final : Container {
   rocksdb::WriteOptions writeOptions;
   std::unique_ptr<rocksdb::DB> db;
   std::vector<rocksdb::ColumnFamilyHandle*> families;
+  std::shared_ptr<rocksdb::Statistics> statistics;
 
   ContainerImpl(
       const std::string& path,

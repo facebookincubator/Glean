@@ -13,6 +13,7 @@
 #include <rocksdb/filter_policy.h>
 #include <rocksdb/slice_transform.h>
 #include <rocksdb/table.h>
+#include <rocksdb/statistics.h>
 
 #ifdef FACEBOOK
 #include "glean/facebook/rocksdb/rocksdb.h"
@@ -67,6 +68,8 @@ rocksdb::Status openRocksDB(
     return rocksdb::DB::Open(options, name, column_families, handles, dbptr);
   }
 }
+
+void exportStatistics(std::shared_ptr<rocksdb::Statistics> stats) {}
 } // namespace
 #endif
 
@@ -125,6 +128,11 @@ ContainerImpl::ContainerImpl(
   // writeOptions.disableWAL = true;
 
   options.compression = rocksdb::CompressionType::kLZ4Compression;
+
+  statistics = rocksdb::CreateDBStatistics();
+  options.statistics = statistics;
+
+  exportStatistics(statistics);
 
   families.resize(Family::count(), nullptr);
   std::vector<std::string> names;
