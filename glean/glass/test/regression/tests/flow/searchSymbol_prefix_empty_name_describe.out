@@ -3,7 +3,18 @@
     {
         "symbolDetails": [
             {
-                "comments": [],
+                "comments": [
+                    {
+                        "filepath": "test/cjs_exports.js",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 4,
+                            "lineBegin": 1,
+                            "lineEnd": 7
+                        },
+                        "repository": "test"
+                    }
+                ],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -33,7 +44,20 @@
                     "container": "",
                     "localName": "cjs_exports"
                 },
-                "pretty_comments": [],
+                "pretty_comments": [
+                    {
+                        "location": {
+                            "filepath": "test/cjs_exports.js",
+                            "range": {
+                                "columnBegin": 1,
+                                "columnEnd": 4,
+                                "lineBegin": 1,
+                                "lineEnd": 7
+                            },
+                            "repository": "test"
+                        }
+                    }
+                ],
                 "repo_hash": "testhash",
                 "signature": "module cjs_exports",
                 "sym": "test/js/cjs_exports",

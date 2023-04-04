@@ -49,5 +49,12 @@
       "file": { "key": "test/imports.js" },
       "span": { "start": 0, "length": 220 }
     }
+  },
+  {
+    "key": {
+      "entity": { "module_": { "key": { "string_": "cjs_exports" } } },
+      "file": { "key": "test/cjs_exports.js" },
+      "span": { "start": 0, "length": 220 }
+    }
   }
 ]
