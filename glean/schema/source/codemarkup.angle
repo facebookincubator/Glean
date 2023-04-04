@@ -490,29 +490,6 @@ predicate SearchRelatedEntities:
     codemarkup.EntityLocation {P, PLoc};
 
 #
-# Generic comment blocks (deprecated, prefer codemarkup.EntityComments)
-#
-predicate EntityDocumentation:
-  {
-    entity : code.Entity,
-    file : src.File,
-    span : src.ByteSpan,
-  }
-  { E, F, S } where
-    ( { cxx = D } = E;
-      codemarkup.cxx.CxxEntityDocumentation { D, F, S }
-    ) | (
-      { hack = D } = E;
-      codemarkup.hack.HackEntityDocumentation { D, F, S }
-    ) | (
-      { flow = D } = E;
-      codemarkup.flow.FlowEntityDocumentation { D, F, S }
-    ) | (
-      { python = D } = E;
-      codemarkup.python.PythonEntityComments { D, F, S, _ }
-    )
-
-#
 # Expanded version of codemarkup.EntityDocumentation that knows about
 # docs stored in the index itself. Indexers are still required to support
 # the span/file format. Optionally, they may provide pre-rendered comments in

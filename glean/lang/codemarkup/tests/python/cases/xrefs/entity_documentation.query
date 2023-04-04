@@ -1,5 +1,5 @@
 query: |
     python.DeclarationLocation { declaration = Decl };
-    codemarkup.EntityDocumentation { entity = { python = { decl = Decl }} }
+    codemarkup.EntityComments { entity = { python = { decl = Decl }} }
 perf: true
 transform: [normord, []]
