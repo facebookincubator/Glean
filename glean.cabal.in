@@ -328,6 +328,7 @@ library util
         Glean.Util.RetryRecvTimeout
         Glean.Util.Service
         Glean.Util.ShardManager
+        Glean.Util.ShowSchemaId
         Glean.Util.Some
         Glean.Util.ThriftService
         Glean.Util.ThriftSource
@@ -340,6 +341,7 @@ library util
         glean:stubs,
         glean:config,
         glean:if-glean-hs,
+        glean:schema,
         primitive,
         network
 
