@@ -53,6 +53,7 @@ import Glean.Util.ConfigProvider (
   ConfigProvider (withConfigProvider),
   withConfigOptions,
  )
+import Glean.Util.ShowSchemaId
 import qualified Glean.Glass.Types as Glass
 
 main :: IO ()
@@ -95,7 +96,9 @@ description =
     ]
 
 options :: ParserInfo Options
-options = info (parser <**> helper) (fullDesc <> progDesc description)
+options = info
+  (parser <**> helper <**> showSchemaId)
+  (fullDesc <> progDesc description)
   where
     parser = do
       service <- Glean.options
