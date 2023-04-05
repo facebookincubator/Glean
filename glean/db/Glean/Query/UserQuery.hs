@@ -963,9 +963,9 @@ schemaVersionForQuery
   -> Maybe Thrift.SchemaId  -- ^ SchemaId specified by client
   -> IO SchemaSelector
 schemaVersionForQuery env schema ServerConfig.Config{..} repo qversion qid = do
-  (dbSchemaVersion, dbSchemaId) <-
+  dbSchemaId <-
     case repo of
-      Nothing -> return (Nothing, Nothing)
+      Nothing -> return Nothing
       Just repo -> getDbSchemaVersion env repo
   let
      allSelectors = catMaybes
@@ -974,7 +974,6 @@ schemaVersionForQuery env schema ServerConfig.Config{..} repo qversion qid = do
        , SpecificSchemaId <$> envSchemaId env
        , SpecificSchemaAll <$> envSchemaVersion env
        , SpecificSchemaId <$> dbSchemaId
-       , SpecificSchemaAll <$> dbSchemaVersion
        ]
   vlog 1 $ "all selectors: " <> show (pretty allSelectors)
 

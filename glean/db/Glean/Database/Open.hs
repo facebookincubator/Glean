@@ -41,7 +41,6 @@ import qualified Util.Control.Exception.CallStack as CallStack
 import Util.Log
 import Util.Logger
 import Util.STM
-import Util.Text
 
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Catalog.Filter (Locality(..))
@@ -484,24 +483,18 @@ asyncOpenDB env@Env{..} db@DB{..} version mode deps on_success on_failure =
       throwIO exc
 
 
--- | Fetch the glean.schema_version property of a DB, if it has
--- one. This property is used to resolve queries that don't specify
--- precise predicate versions.
+-- | Fetch the glean.schema_id property of a DB, if it has one. This
+-- property is used to resolve queries.
 getDbSchemaVersion
   :: Env
   -> Thrift.Repo
-  -> IO (Maybe Thrift.Version, Maybe Thrift.SchemaId)
+  -> IO (Maybe Thrift.SchemaId)
 getDbSchemaVersion env repo = do
   props <- atomically $ Thrift.metaProperties <$>
     Catalog.readMeta (envCatalog env) repo
-  let
-    ver = case HashMap.lookup "glean.schema_version" props of
-      Just txt | Right v <- textToInt txt -> Just (fromIntegral v)
-      _otherwise -> Nothing
-    id = case HashMap.lookup "glean.schema_id" props of
-      Just txt -> Just (Thrift.SchemaId txt)
-      _otherwise -> Nothing
-  return (ver, id)
+  return $ case HashMap.lookup "glean.schema_id" props of
+    Just txt -> Just (Thrift.SchemaId txt)
+    _otherwise -> Nothing
 
 type Unit = ByteString
   -- why is pruned_units a list<binary> instead of list<UnitName>?

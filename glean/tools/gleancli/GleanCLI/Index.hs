@@ -42,7 +42,7 @@ instance Plugin IndexCommand where
   runCommand _evb _cfg backend Index{..} = do
     projectRoot <- getCurrentDirectory
     withSystemTempDirectory "glean-index" $ \tmpdir -> do
-    fillDatabase backend Nothing indexCmdRepo "" (die 1 "DB already exists") $
+    fillDatabase backend indexCmdRepo "" (die 1 "DB already exists") $
       indexCmdRun (Some backend) indexCmdRepo
         IndexerParams {
           indexerRoot = indexCmdRoot,

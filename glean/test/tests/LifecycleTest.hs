@@ -76,7 +76,7 @@ instance Exception InconsistentDBError
 
 mkDB :: HasCallStack => Env -> Repo -> IO ()
 mkDB env repo =
-  fillDatabase env Nothing repo "" (fail "database already exists") (return ())
+  fillDatabase env repo "" (fail "database already exists") (return ())
 
 checkActive :: HasCallStack => Env -> Bool -> IO ()
 checkActive Env{..} allow_deleting = do

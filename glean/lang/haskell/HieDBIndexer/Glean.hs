@@ -25,7 +25,6 @@ import qualified Glean
 import Glean.Angle.Types (SourceRef (..))
 import Glean.BuildInfo (buildRevision, buildRule)
 import Glean.Derive (derivePredicate)
-import qualified Glean.Schema.Builtin.Types as Builtin
 import qualified Glean.Schema.Hs as Hs
 import qualified Glean.Schema.Hs.Types as Hs
 import qualified Glean.Schema.Src as Src
@@ -103,14 +102,11 @@ createGleanDB _env@HieDBIndexerEnv {..} fileLinesMap batchOutputs = do
           )
           predsToDerive
 
-      schemaVersion = Just $ fromIntegral Builtin.version
-
   if dontCreateDb cfg
     then finalWriter
     else
       Glean.fillDatabase
         backend
-        schemaVersion
         newRepo
         buildHandle
         (throwIO DatabaseAlreadyExistsException)

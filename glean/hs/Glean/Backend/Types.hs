@@ -233,8 +233,6 @@ fillDatabase
   :: Backend a
   => a
     -- ^ The backend
-  -> Maybe Version
-    -- ^ The schema version to be used
   -> Repo
     -- ^ The repo to create
   -> Text
@@ -245,7 +243,7 @@ fillDatabase
   -> IO b
     -- ^ Caller-supplied action to write data into the DB.
   -> IO b
-fillDatabase env mversion repo handle ifexists action =
+fillDatabase env repo handle ifexists action =
   tryBracket create finish (const action)
   where
   create = do
@@ -253,9 +251,6 @@ fillDatabase env mversion repo handle ifexists action =
       { kickOff_repo = repo
       , kickOff_fill = Just $ KickOffFill_writeHandle handle
       , kickOff_properties = HashMap.fromList $
-          [ ("glean.schema_version", Text.pack $ show version)
-          | Just version <- [mversion]
-          ] <>
           [ ("glean.schema_id", id)
           | Just (SchemaId id) <- [schemaId env]
           ]

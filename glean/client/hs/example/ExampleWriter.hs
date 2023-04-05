@@ -54,7 +54,7 @@ main =
 
 create :: Glean.Backend b => b -> IO ()
 create backend =
-  Glean.fillDatabase backend Nothing repo handle ifexists write
+  Glean.fillDatabase backend repo handle ifexists write
   where
   -- the handle can be anything, but we'll use some details
   -- about the binary since that might be useful for debugging

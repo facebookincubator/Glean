@@ -52,7 +52,6 @@ import Glean.Database.Schema.Types
 import Glean.Internal.Types
 import qualified Glean.Recipes.Types as Recipes
 import Glean.RTS.Foreign.Lookup (firstFreeId)
-import Glean.Schema.Types (schemasHighestVersion)
 import Glean.RTS.Types (lowestFid, fromPid)
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types hiding (Database)
@@ -161,14 +160,12 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
       creationTime <- envGetCurrentTime
       serverProps <- serverProperties
       fbServerProps <- facebookServerProperties
-      schemaProps <- schemaProperties
       guidProps <- guidProperties
       let
         allProps = mconcat
           [ kickOff_properties
           , serverProps
           , fbServerProps
-          , schemaProps
           , guidProps
           , scribeProperties kickOff_fill
           ]
@@ -248,14 +245,6 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
             (unSchemaId hash)
             (metaProperties meta)
           }
-
-    schemaProperties = do
-      ProcessedSchema{..} <- schemaIndexCurrent <$> Observed.get envSchemaSource
-      currentVersion <- case schemasHighestVersion procSchemaResolved of
-        Just ver -> return ver
-        Nothing -> dbError kickOff_repo "missing 'all' schema"
-      let version = Text.pack $ show currentVersion
-      return $ HashMap.fromList [ ("glean.schema_version", version) ]
 
     guidProperties = do
       guid <- Guid.toText <$> Guid.nextRandom
