@@ -1,7 +1,23 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema buck.4 {
+schema buck.1 {
+import sys.1
 import src.1
+
+# Targets in buck
+predicate Target :
+  {
+    repo : sys.Blob,
+    name : sys.Blob,
+    platform : maybe sys.Blob,
+  }
+
+# A translation unit (source file and target)
+predicate TranslationUnit :
+  {
+    file : src.File,
+    target : Target,
+  }
 
 # A target locator (subdir//path:name), subdir can be empty
 predicate Locator :
@@ -9,6 +25,13 @@ predicate Locator :
     subdir : maybe string,
     path : string,
     name : string,
+  }
+
+# A source file reference (either from the repo or generated during build)
+predicate File :
+  {
+    source : src.File |
+    generated : Locator
   }
 
 # Buck target type (cxx_libary, cxx_binary, ...)
@@ -23,6 +46,40 @@ predicate Label : string
 # A set of Buck labels
 predicate Labels : [Label]
 
+# Buck dependency (buck.direct_deps)
+type Dependency =
+  {
+    target : Locator,
+    explicit_ : bool,  # is it in deps in fbsource?
+    exported : bool,  # is it in exported_deps in fbsource?
+  }
+
+# Reverse locator dependencies derived from buck.TargetDependencies
+predicate LocatorReverseDeps :
+  {
+    locator : Locator,  # unique key
+    rdeps : [Locator],
+  }
+
+# From buck targets --show-target-hash
+predicate TargetHash :
+  {
+    locator : Locator,  # unique key
+    targetHash : string,
+  }
+
+# From buck targets --show-rulekey
+predicate RuleKey :
+  {
+    locator : Locator,  # unique key
+    ruleKey : string,
+  }
+
+}
+
+schema buck.2 : buck.1 {
+import src.1
+
 # Buck target
 predicate Target :
   {
@@ -31,6 +88,73 @@ predicate Target :
     defaultPlatform : maybe Platform,
     labels : Labels,
   }
+
+# Buck target dependencies
+predicate TargetDependencies.1 :
+  {
+    target : Target,
+    dependencies : [Dependency],
+  }
+
+# A translation unit (source file and target)
+predicate TranslationUnit :
+  {
+    file : src.File,
+    target : Locator,
+    platform : maybe Platform,
+  }
+
+# Buck target link_whole flag
+predicate TargetLinkWhole.1 : Target
+
+# Buck target sources
+predicate TargetSources.1 :
+  {
+    target : Target,
+    headers : [File],
+    exportedHeaders : [File],
+    srcs : [File],
+  }
+
+# Buck target output, indexed by target
+predicate TargetOut.1 :
+  {
+    target : Target,
+    file : src.File,
+  }
+
+# Buck target output, indexed by file
+predicate OutTarget.1 :
+  {
+    file : src.File,
+    target : Target,
+  }
+  stored {F,T} where TargetOut {T,F}
+
+# Which targets mention a file in headers, exportedHeaders, or srcs.
+# Derived from buck.TargetSources
+predicate Owner.1 :
+  {
+    source : src.File,  # unique key
+    owner : TargetSources,
+  }
+  stored
+  {Src,Owner} where
+    Owner = TargetSources
+    {
+      headers = Headers,
+      exportedHeaders = Exported,
+      srcs = Srcs
+    };
+    Src =
+    (S where F = Headers [..]; F = File { source = S }) |
+    (S where F = Exported [..]; F = File { source = S }) |
+    (S where F = Srcs [..]; F = File { source = S })
+
+} # end schema buck.2
+
+schema buck.3 : buck.2 {
+import src.1
 
 # Named output use OutputLabel as the key, the 'baz' in the form:
 # //foo:bar[baz]
@@ -86,6 +210,14 @@ predicate File :
     generated : Locator |
     generatedLabel : LocatorWithLabel
   }
+
+derive File default
+  ({ source = X } where buck.File.1 {source = X}) ++
+  ({ generated = X } where buck.File.1 {generated = X})
+
+derive buck.File.1 default
+  ({ source = X } where File {source = X}) ++
+  ({ generated = X } where File {generated = X})
 
 # Resolve source and generated files to the src.File itself.
 predicate FileResolved :
@@ -341,20 +473,6 @@ predicate DestinationUses:
     FileXRefs { File, XRefs };
     { Destination, Spans } = XRefs[..];
 
-type Dependency =
-  {
-    target : Locator,
-    explicit_ : bool,  # is it in deps in fbsource?
-    exported : bool,  # is it in exported_deps in fbsource?
-  }
-
-# Buck target dependencies
-predicate TargetDependencies :
-  {
-    target : Target,
-    dependencies : [Dependency],
-  }
-
 # Reverse of the TargetDependencies relationship
 predicate LocatorReverseDep :
   {
@@ -422,53 +540,4 @@ predicate TargetCall:
     span: src.ByteSpan,
   }
 
-# A translation unit (source file and target)
-predicate TranslationUnit :
-  {
-    file : src.File,
-    target : Locator,
-    platform : maybe Platform,
-  }
-
-# Reverse locator dependencies derived from buck.TargetDependencies
-predicate LocatorReverseDeps :
-  {
-    locator : Locator,  # unique key
-    rdeps : [Locator],
-  }
-
-# Buck target output, indexed by file
-predicate OutTarget :
-  {
-    file : src.File,
-    target : Target,
-  }
-  stored {F,T} where TargetOut {T,F}
-
-# From buck targets --show-rulekey
-predicate RuleKey :
-  {
-    locator : Locator,  # unique key
-    ruleKey : string,
-  }
-
-# From buck targets --show-target-hash
-predicate TargetHash :
-  {
-    locator : Locator,  # unique key
-    targetHash : string,
-  }
-
-# Buck target link_whole flag
-predicate TargetLinkWhole : Target
-
-# Buck target output, indexed by target
-predicate TargetOut :
-  {
-    target : Target,
-    file : src.File,
-  }
-
-} # end schema buck.4
-
-schema buck.4 evolves buck.3
+} # end schema buck.3
