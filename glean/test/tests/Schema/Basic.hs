@@ -9,7 +9,6 @@
 {-# LANGUAGE QuasiQuotes #-}
 module Schema.Basic (main) where
 
-import qualified Data.ByteString as B
 import Control.Concurrent
 import Control.Exception
 import Control.Monad
@@ -141,7 +140,7 @@ schemaUnversioned = TestCase $ do
         Right UserQueryResults{..} -> length userQueryResults_facts == 2
         _ -> False
 
-    withTestEnv [setRoot root, setSchemaPath file, disableSchemaId] $ \env -> do
+    withTestEnv [setRoot root, setSchemaPath file] $ \env -> do
       -- Test that an unversioned query "test.P _" resolves to test.P.1,
       -- if we set the schema_version field in the query to 1.
       r <- try $ userQuery env repo1 $
@@ -154,8 +153,7 @@ schemaUnversioned = TestCase $ do
     withTestEnv [
         setRoot root,
         setSchemaPath file,
-        setSchemaVersion 1,
-        disableSchemaId ] $ \env -> do
+        setSchemaVersion 1 ] $ \env -> do
       -- Test that an unversioned query "test.P _" now resolves to
       -- test.P.1, because we're now asking for all.1 explicitly, and
       -- all.1 inherits from test.1
@@ -209,84 +207,6 @@ schemaStoredError = TestCase $ do
       case r of
         Left e | Just (ErrorCall err) <- fromException e ->
           "stored predicate" `isInfixOf` err
-        _ -> False
-
-
-schemaValidation :: Test
-schemaValidation = TestCase $
-  withSystemTempDirectory "glean-dbtest" $ \root -> do
-    let schema1 = root </> "schema1"
-    appendFile schema1
-      [s|
-        schema test.1 {
-          predicate P : { a : string, b : nat }
-          predicate Q : { p : P }
-        }
-
-        schema test.2 : test.1 {
-          predicate Q : { p : P }
-        }
-
-        schema all.1 : test.1 {}
-      |]
-
-    let schema2 = root </> "schema2"
-    appendFile schema2
-      [s|
-        schema test.1 {
-          predicate P : { b : nat, a : string  }  # field order matters
-          predicate Q : { p : string }            # field types matter
-        }
-
-        schema test.2 : test.1 {
-          predicate Q : { p : P }
-        }
-
-        schema all.1 : test.2 {}
-      |]
-
-    let schema3 = root </> "schema3"
-    appendFile schema3
-      [s|
-        schema test.1 {
-          predicate P : { a : string, b : nat }
-          predicate Q : { p : P }
-        }
-
-        schema test.2 : test.1 {
-          predicate P : { a : string, b : nat, c : {} }
-          predicate Q : { p : P }  # now points to a different P
-        }
-
-        schema all.1 : test.2 {}
-      |]
-
-    withTestEnv [
-        setRoot root,
-        setSchemaPath schema1,
-        disableSchemaId ] $ \env -> do
-          -- disableSchemaId because schema validation isn't performed
-          -- when use_schema_id is on. We can retire this test when we
-          -- retire the schema validation code.
-      s <- B.readFile schema1
-      validateSchema env (ValidateSchema s)
-
-      s <- B.readFile schema2
-      r <- try $ validateSchema env (ValidateSchema s)
-      print r
-      assertBool "validate2 - first failure" $ case r of
-        Left err@Exception{} -> "test.P.1 has changed" `isInfixOf` show err
-        _ -> False
-
-      assertBool "validate2 - second failure failure" $ case r of
-        Left err@Exception{} -> "test.Q.1 has changed" `isInfixOf` show err
-        _ -> False
-
-      s <- B.readFile schema3
-      r <- try $ validateSchema env (ValidateSchema s)
-      print r
-      assertBool "validate3" $ case r of
-        Left err@Exception{} -> "test.Q.2 has changed" `isInfixOf` show err
         _ -> False
 
 -- The validation run at gen-schema time.
@@ -1099,7 +1019,6 @@ main = withUnitTest $ testRunner $ TestList $
   [ TestLabel "mergeSchemaTest" mergeSchemaTest
   , TestLabel "schemaTypeError" schemaTypeError
   , TestLabel "schemaStoredError" schemaStoredError
-  , TestLabel "schemaValidation" schemaValidation
   , TestLabel "schemaGenValidation" schemaGenValidation
   , TestLabel "schemaReservedWord" schemaReservedWord
   , TestLabel "schemaUpperCaseField" schemaUpperCaseField

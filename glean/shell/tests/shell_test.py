@@ -125,8 +125,7 @@ class GleanShellReload(GleanShellTest):
 class GleanShellSchema(GleanShellTest):
     @classmethod
     def setUp(cls):
-        # The :use-schema command relies on use_schema_id being enabled
-        cls.startShell(None, None, '{ "use_schema_id": true }')
+        cls.startShell(None, schema=None)
 
     def test(self):
         pexpect.run(

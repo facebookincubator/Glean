@@ -313,7 +313,7 @@ setupSchema env@Env{..} repo handle mode = do
         schema <- Observed.get envSchemaSource
         stats <- stackStats
         newMergedDbSchema (Just envDbSchemaCache) info schema
-          AllowChanges (readOnlyContent stats)
+          (readOnlyContent stats)
     Nothing ->
       dbError repo "DB has no stored schema"
 

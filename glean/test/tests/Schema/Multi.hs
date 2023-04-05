@@ -177,7 +177,6 @@ multiSchemaTest = TestCase $
       mkRepo schema hash upd facts =
         withTestEnv [
             setRoot dbRoot,
-            enableSchemaId,
             setSchemaIndex schema ] $ \env -> do
           let repo = Repo "test" hash
           kickOffTestDB env repo upd
@@ -189,7 +188,6 @@ multiSchemaTest = TestCase $
         withTestEnv (
           [ setRoot dbRoot,
             setSchemaIndex schema,
-            enableSchemaId,
             maybe id (setSchemaId . SchemaId) schema_id ] ++ set)
           act
 

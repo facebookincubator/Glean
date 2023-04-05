@@ -16,7 +16,6 @@ module Glean.Database.Schema
   , toSchemaInfo
   , newDbSchema
   , newMergedDbSchema
-  , CheckChanges(..)
   , lookupPid
   , compareSchemaPredicates
   , validateNewSchema
@@ -166,19 +165,14 @@ toSchemaInfo DbSchema{..} = SchemaInfo
   , schemaInfo_schemaIds = toStoredVersions (snd schemaSource)
   }
 
-data CheckChanges
-  = AllowChanges
-  | MustBeEqual
-
 newMergedDbSchema
   :: Maybe (MVar DbSchemaCache)
   -> StoredSchema  -- ^ schema from a DB
   -> SchemaIndex  -- ^ current schema index
-  -> CheckChanges  -- ^ validate DB schema?
   -> DbContent
   -> IO DbSchema
 newMergedDbSchema schemaCache storedSchema@StoredSchema{..}
-    index validate dbContent = do
+    index dbContent = do
   let
     -- If we have an identical schema in the index, then we can use
     -- the cached ProcessedSchema. This saves a lot of time
@@ -210,7 +204,7 @@ newMergedDbSchema schemaCache storedSchema@StoredSchema{..}
 
   -- For the "source", we'll use the current schema source. It doesn't
   -- reflect what's in the DB, but it reflects what you can query for.
-  mkDbSchema schemaCache validate  (Just (storedSchemaPids storedSchema))
+  mkDbSchema schemaCache (Just (storedSchemaPids storedSchema))
     dbContent fromDB (Just index)
 
 -- | Build a DbSchema from parsed/resolved Schemas. Note that we still need
@@ -229,7 +223,7 @@ newDbSchema schemaCache index selector dbContent = do
       Just schema -> return schema
     _otherwise ->
       return (schemaIndexCurrent index)
-  mkDbSchema schemaCache AllowChanges Nothing dbContent schema Nothing
+  mkDbSchema schemaCache Nothing dbContent schema Nothing
 
 inventory :: [PredicateDetails] -> Inventory
 inventory ps = Inventory.new
@@ -255,7 +249,7 @@ mkDbSchemaFromSource schemaCache knownPids dbContent source = do
   case processSchema Map.empty source of
     Left str -> throwIO $ ErrorCall str
     Right (ProcessedSchema source resolved hashed) ->
-      mkDbSchema schemaCache AllowChanges knownPids dbContent
+      mkDbSchema schemaCache knownPids dbContent
         (ProcessedSchema source resolved hashed)
         Nothing
 
@@ -303,18 +297,15 @@ dbSchemaKey pidMap stored maybeIndex = DbSchemaCacheKey $
 
 withDbSchemaCache
   :: Maybe (MVar DbSchemaCache)
-  -> CheckChanges
   -> Maybe (HashMap PredicateRef Pid)
   -> ProcessedSchema
   -> Maybe SchemaIndex
   -> IO DbSchema
   -> IO DbSchema
-withDbSchemaCache maybeCache validate maybePids stored maybeIndex mk =
-  case (maybeCache, validate, maybePids) of
-    (Just cacheVar, AllowChanges, Just pidMap) -> do
-      -- only use the cache when
-      --   1. we're not validating (AllowChanges)
-      --   2. we have stored Pids
+withDbSchemaCache maybeCache maybePids stored maybeIndex mk =
+  case (maybeCache, maybePids) of
+    (Just cacheVar, Just pidMap) -> do
+      -- only use the cache when we have stored Pids
       cache <- readMVar cacheVar
       let key = dbSchemaKey pidMap stored maybeIndex
       case HashMap.lookup key cache of
@@ -336,18 +327,17 @@ withDbSchemaCache maybeCache validate maybePids stored maybeIndex mk =
 
 mkDbSchema
   :: Maybe (MVar DbSchemaCache)
-  -> CheckChanges
   -> Maybe (HashMap PredicateRef Pid)
   -> DbContent
   -> ProcessedSchema
   -> Maybe SchemaIndex
   -> IO DbSchema
-mkDbSchema cacheVar validate knownPids dbContent
+mkDbSchema cacheVar knownPids dbContent
     procStored@(ProcessedSchema source _ stored) index = do
 
   -- either fetch a cached DbSchema or build a new one
   schema <-
-    withDbSchemaCache cacheVar validate knownPids procStored index
+    withDbSchemaCache cacheVar knownPids procStored index
       buildDbSchema
 
   -- the cached DbSchema cannot depend on the DbContent, so next we add in
@@ -416,8 +406,6 @@ mkDbSchema cacheVar validate knownPids dbContent
         isStoredPred id = HashMap.member id (hashedPreds stored)
 
       idToPid = HashMap.fromList (storedPids ++ addedPids)
-
-    mapM_ (checkForChanges validate stored . procSchemaHashed) addedSchemas
 
     let
       typecheck env (stored, ProcessedSchema _ resolved hashed) =
@@ -731,28 +719,6 @@ prune (DbReadOnly stats) transformations pmap = pruneDerivations hasFacts pmap
       PidRef pid _ <- return $ tAvailable trans
       return pid
 
-
--- | Check that predicates with the same name/version have the same definitions.
--- This is done by comparing Ids, which are hashes of the representation.
-checkForChanges
-  :: CheckChanges
-  -> HashedSchema
-  -> HashedSchema
-  -> IO ()
-checkForChanges AllowChanges _ _ = return ()
-checkForChanges MustBeEqual
-    (HashedSchema typesStored predsStored _ _ _)
-    (HashedSchema typesAdded predsAdded _ _ _) = do
-  let errors =
-        compareSchemaTypes
-          (HashMap.keys typesStored)
-          (HashMap.keys typesAdded) <>
-        compareSchemaPredicates
-          (HashMap.keys predsStored)
-          (HashMap.keys predsAdded)
-  unless (null errors) $
-    throwIO $ Thrift.Exception $ Text.intercalate "\n\n" errors
-
 -- | Compare schemas for compatibility. That is, if schema A defines a
 -- predicate or type P, then schema B must have an identical
 -- definition of P.
@@ -772,15 +738,6 @@ compareSchemaPredicates predsA predsB = errors
       (errs, pids) <- State.get
       let (err, pids') = compareInsert "predicate" (predicateIdRef id) id pids
       State.put (err <> errs, pids')
-
-compareSchemaTypes :: [TypeId] -> [TypeId] -> [Text]
-compareSchemaTypes typesA typesB = errors
-  where
-  (errors, _) = flip execState ([], HashMap.empty) $
-    forM_ (typesA ++ typesB) $ \id -> do
-      (errs, tids) <- State.get
-      let (err, tids') = compareInsert "type" (typeIdRef id) id tids
-      State.put (err <> errs, tids')
 
 compareInsert
   :: (Hashable a, Eq a, Eq b, ShowRef a)
@@ -1034,20 +991,11 @@ validateNewSchema ServerConfig.Config{..} newSrc current = do
     Left msg -> throwIO $ Thrift.Exception $ Text.pack msg
     Right resolved -> return resolved
   let
-    -- If use_schema_id is on then we can accept schema changes,
-    -- otherwise the new schema must exactly match the old schema
-    -- except for added/removed predicates.
-    checkChanges
-      | config_use_schema_id = AllowChanges
-      | otherwise = MustBeEqual
-
-  curDbSchema <- mkDbSchema Nothing AllowChanges Nothing
-    readWriteContent schema Nothing
+  curDbSchema <- mkDbSchema Nothing Nothing readWriteContent schema Nothing
   void $ newMergedDbSchema
     Nothing
     (toStoredSchema curDbSchema)
     current
-    checkChanges
     readWriteContent
 
 failOnLeft :: Either Text a -> IO a

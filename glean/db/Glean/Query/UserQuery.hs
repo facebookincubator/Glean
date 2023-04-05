@@ -968,17 +968,14 @@ schemaVersionForQuery env schema ServerConfig.Config{..} repo qversion qid = do
       Nothing -> return (Nothing, Nothing)
       Just repo -> getDbSchemaVersion env repo
   let
-     allSelectors
-       | config_use_schema_id = map SpecificSchemaId $ catMaybes
-         [ qid
-         , envSchemaId env
-         , dbSchemaId
-         ]
-       | otherwise = map SpecificSchemaAll $ catMaybes
-         [ qversion
-         , envSchemaVersion env
-         , dbSchemaVersion
-         ]
+     allSelectors = catMaybes
+       [ SpecificSchemaId <$> qid
+       , SpecificSchemaAll <$> qversion
+       , SpecificSchemaId <$> envSchemaId env
+       , SpecificSchemaAll <$> envSchemaVersion env
+       , SpecificSchemaId <$> dbSchemaId
+       , SpecificSchemaAll <$> dbSchemaVersion
+       ]
   vlog 1 $ "all selectors: " <> show (pretty allSelectors)
 
   let

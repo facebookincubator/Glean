@@ -66,15 +66,10 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
   | otherwise = do
       ServerConfig.Config{..} <- Observed.get envServerConfig
       let
-        -- If use_schema_id is enabled in the server config and the
-        -- glean.schema_id property is set, we'll use this to decide
-        -- which schema instance to store in the DB.
-        schemaToUse
-          | not config_use_schema_id = Storage.UseDefaultSchema
-          | otherwise =
-            case HashMap.lookup "glean.schema_id" kickOff_properties of
-              Just id -> Storage.UseSpecificSchema (SchemaId id)
-              Nothing -> Storage.UseDefaultSchema
+        schemaToUse =
+          case HashMap.lookup "glean.schema_id" kickOff_properties of
+            Just id -> Storage.UseSpecificSchema (SchemaId id)
+            Nothing -> Storage.UseDefaultSchema
 
         stackedCreate :: Repo -> IO (Storage.Mode, Maybe Text)
         stackedCreate repo =

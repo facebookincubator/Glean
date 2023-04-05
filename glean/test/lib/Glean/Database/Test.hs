@@ -15,8 +15,6 @@ module Glean.Database.Test
   , setSchemaPath
   , setSchemaVersion
   , setSchemaId
-  , enableSchemaId
-  , disableSchemaId
   , disableStrictSchemaId
   , setMemoryStorage
   , setDBVersion
@@ -84,18 +82,6 @@ setSchemaVersion ver cfg = cfg { cfgSchemaVersion = Just ver }
 -- to the highest all.N in the latest schema.
 setSchemaId :: Thrift.SchemaId -> Setting
 setSchemaId id cfg = cfg { cfgSchemaId = Just id }
-
-enableSchemaId :: Setting
-enableSchemaId cfg = cfg {
-  cfgServerConfig = cfgServerConfig cfg <&> \scfg -> scfg
-    { ServerConfig.config_use_schema_id = True }
-  }
-
-disableSchemaId :: Setting
-disableSchemaId cfg = cfg {
-  cfgServerConfig = cfgServerConfig cfg <&> \scfg -> scfg
-    { ServerConfig.config_use_schema_id = False }
-  }
 
 disableStrictSchemaId :: Setting
 disableStrictSchemaId cfg = cfg {
