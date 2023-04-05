@@ -16,6 +16,13 @@ namespace hs Glean
 struct StoredSchema {
   1: string (hs.type = "ByteString") schema;
   2: map<glean.Id, glean.PredicateRef> predicateIds;
+
+  // We store the SchemaId corresponding to each all.version in the
+  // DB's schema. This is so that if the internal fingerprinting of
+  // schemas (Glean.Database.Schema.ComputeIds) changes for whatever
+  // reason, the SchemaIds that were previously computed remain
+  // unchanged. Internal PredicateId and TypeId hashes might change,
+  // but those aren't exposed externally.
   3: map<string, glean.Version> versions;
 }
 

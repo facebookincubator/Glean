@@ -32,6 +32,7 @@ import qualified Control.Monad.Catch as C
 import Control.Monad.IO.Class (MonadIO, liftIO)
 import qualified Control.Monad.Trans.State.Strict as State
 import Data.Int
+import Data.List
 import qualified Data.Map as Map
 import Data.Text.Prettyprint.Doc as Pretty
 import qualified System.Console.Haskeline as Haskeline
@@ -173,7 +174,17 @@ setRepo r = do
   withBackend $ \backend -> do
     info@SchemaInfo{..} <- liftIO $
       getSchemaInfo backend r def { getSchemaInfo_select = sel }
-    let sids = map (first Thrift.SchemaId) (Map.toList schemaInfo_schemaIds)
+    let sids = map (first Thrift.SchemaId) $ Map.toList $ case sel of
+          Thrift.SelectSchema_current{} -> schemaInfo_schemaIds
+          Thrift.SelectSchema_stored{} -> schemaInfo_dbSchemaIds
+          Thrift.SelectSchema_schema_id id
+            | Map.member (unSchemaId id) schemaInfo_schemaIds ->
+              schemaInfo_schemaIds
+            | Map.member (unSchemaId id) schemaInfo_dbSchemaIds ->
+              schemaInfo_dbSchemaIds
+            | Just ids <- find (unSchemaId id `Map.member`)
+              schemaInfo_otherSchemaIds -> ids
+          _otherwise -> Map.empty
     Eval $ State.modify $ \s -> s
       { repo = Just r
       , schemaInfo = Just info }

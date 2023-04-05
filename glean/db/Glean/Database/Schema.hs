@@ -13,7 +13,6 @@ module Glean.Database.Schema
   , TypeDetails(..)
   , schemaSize, schemaPredicates
   , fromStoredSchema, toStoredSchema
-  , toSchemaInfo
   , newDbSchema
   , newMergedDbSchema
   , lookupPid
@@ -152,17 +151,6 @@ toStoredSchema DbSchema{..} = StoredSchema
       -- PredicateId), but only one of them is from the stored schema
       -- and corresponds to the Pids of facts stored in the DB.
   , storedSchema_versions = toStoredVersions (snd schemaSource)
-  }
-
--- Similar to toStoredSchema, but includes non-stored predicates too
-toSchemaInfo :: DbSchema -> SchemaInfo
-toSchemaInfo DbSchema{..} = SchemaInfo
-  { schemaInfo_schema = renderSchemaSource (fst schemaSource)
-  , schemaInfo_predicateIds = Map.fromList $
-      [ (fromPid $ predicatePid p, predicateRef p)
-      | p <- HashMap.elems predicatesById
-      ]
-  , schemaInfo_schemaIds = toStoredVersions (snd schemaSource)
   }
 
 newMergedDbSchema
@@ -1122,7 +1110,12 @@ definitions schemas = (types, preds)
 getSchemaInfo :: DbSchema -> SchemaIndex -> GetSchemaInfo -> IO SchemaInfo
 getSchemaInfo dbSchema SchemaIndex{..} GetSchemaInfo{..} = do
   let
-    SchemaInfo source pids storedVersions = toSchemaInfo dbSchema
+    pids = Map.fromList $
+      [ (fromPid $ predicatePid p, predicateRef p)
+      | p <- HashMap.elems (predicatesById dbSchema)
+      ]
+
+    storedSchema = renderSchemaSource (fst (schemaSource dbSchema))
 
     -- Try to find the source for the desired schema. It could be in
     -- our SchemaIndex, or it could be the schema stored in the DB if
@@ -1143,19 +1136,31 @@ getSchemaInfo dbSchema SchemaIndex{..} GetSchemaInfo{..} = do
         , sid `elem` IntMap.elems versions
         ]
 
-    schemaIds
-      | SelectSchema_stored{} <- getSchemaInfo_select = storedVersions
-      | otherwise = toStoredVersions (legacyAllVersions dbSchema)
+    schemaIds = toStoredVersions (legacyAllVersions dbSchema)
+    dbSchemaIds = toStoredVersions (snd (schemaSource dbSchema))
+    otherSchemaIds =
+      [ toStoredVersions (hashedSchemaAllVersions procSchemaHashed)
+      | ProcessedSchema{..} <- schemaIndexOlder
+      , all ((`Map.notMember` dbSchemaIds) . unSchemaId)
+          (IntMap.elems (hashedSchemaAllVersions procSchemaHashed))
+      ]
 
   source <- if getSchemaInfo_omit_source
     then return ""
     else case getSchemaInfo_select of
-      SelectSchema_stored{} -> return source
+      SelectSchema_stored{} -> return storedSchema
       SelectSchema_current{} -> findSchemaSource (schemaLatestVersion dbSchema)
       SelectSchema_schema_id sid -> findSchemaSource sid
-      _ -> return source
+      _ -> return storedSchema
 
-  return (SchemaInfo source pids schemaIds)
+  return SchemaInfo
+    { schemaInfo_schema = source
+    , schemaInfo_predicateIds = pids
+    , schemaInfo_schemaIds = schemaIds
+    , schemaInfo_dbSchemaIds = dbSchemaIds
+    , schemaInfo_otherSchemaIds = otherSchemaIds
+    }
+
 
 -- The version map in the 'StoredSchema', the 'SchemaIndex' and the
 -- 'SchemaInfo' is a @Map Text Version@ whereas the one we use

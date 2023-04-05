@@ -204,13 +204,34 @@ withRepo f = do
     Nothing -> liftIO $ throwIO $ ErrorCall "no database selected"
 
 useSchema :: String -> Eval ()
+useSchema "" = do
+  ShellState{..} <- getState
+  maybeCurrentId <- getSchemaId
+  forM_ maybeCurrentId $ \currentId ->
+    output $ "Using Schema ID: " <> pretty (Thrift.unSchemaId currentId)
+  forM_ schemaInfo $ \Thrift.SchemaInfo{..} -> do
+    output $ vcat $ map (nest 4 . vcat)
+      [ [ "Current schema ID(s):",
+          showSchemaIds schemaInfo_schemaIds ]
+      , [ "Schema ID(s) stored in the DB:",
+          showSchemaIds schemaInfo_dbSchemaIds ]
+      , [ "Other available schema ID(s):",
+          vcat (map showSchemaIds schemaInfo_otherSchemaIds) ]
+      ]
+  where
+  showSchemaIds m = vcat
+    [ pretty schemaId <+> parens ("all." <> pretty ver)
+    | (schemaId, ver) <- Map.toList m
+    ]
 useSchema str = do
   state <- getState
   sel <- case str of
     "current" -> return (Thrift.SelectSchema_current def)
     "stored" -> return (Thrift.SelectSchema_stored def)
     id | Just Thrift.SchemaInfo{..} <- schemaInfo state,
-         Text.pack id `Map.member` schemaInfo_schemaIds ->
+         Text.pack id `Map.member` schemaInfo_schemaIds ||
+         Text.pack id `Map.member` schemaInfo_dbSchemaIds ||
+         any (Text.pack id `Map.member`) schemaInfo_otherSchemaIds ->
            return (Thrift.SelectSchema_schema_id
              (Thrift.SchemaId (Text.pack id)))
        | otherwise -> liftIO $ throwIO $ ErrorCall $ "unknown schema: " <> id
@@ -454,8 +475,9 @@ helptext mode = vcat
             "Show statistics for the database."
             <> " Use --topmost to only show statisticsfor the top database"
             <> " and -s to sort by decreasing size")
-      , ("use-schema (current|stored|<schema-id>)",
-            "Select which schema to use")
+      , ("use-schema [current|stored|<schema-id>]",
+            "Select which schema to use. Without an argument lists the"
+            <> " available schemas")
       , ("quit",
             "Exit the shell")
       ]
@@ -488,11 +510,11 @@ helpSchema = vcat
 
 helpAngle :: Doc ann
 helpAngle = vcat
-  [ "Queries (angle mode):"
+  [ "Queries:"
   , "  {1234}                    Look up a fact by its Id"
   , "  <predicate> <pat>         Query a predicate for facts matching <pat>"
   , ""
-  , "Pattern syntax (angle mode):"
+  , "Pattern syntax:"
   , "  1234                     :: byte or nat"
   , "  \"abc\"                    :: string"
   , "  \"abc\"..                  :: string prefix match"
@@ -930,6 +952,7 @@ runUserQuery SchemaQuery
     , sqOmitResults = omitResults } = do
   let SourceRef pred maybeVer = parseRef (Text.pack str)
   ShellState{..} <- getState
+  schema_id <- getSchemaId
   Thrift.UserQueryResults{..} <- withRepo $ \repo -> withBackend $ \be -> do
     liftIO $ handle (throwIO . asBadQuery syntax rest) $ Glean.userQuery be repo
       def { Thrift.userQuery_predicate = pred
@@ -957,9 +980,7 @@ runUserQuery SchemaQuery
           -- before the ThriftBackend has a chance to incude client_info in the
           -- request.  This makes sure client_info will appear in the logs
           , Thrift.userQuery_client_info = Just client_info
-          , Thrift.userQuery_schema_id = do
-              ProcessedSchema{..} <- schemas
-              getSchemaId procSchemaHashed useSchemaId
+          , Thrift.userQuery_schema_id = schema_id
           }
   output $ vcat $
     [ "*** " <> pretty diag | diag <- userQueryResults_diagnostics ]
@@ -1203,25 +1224,30 @@ availableSchemaIds = do
   case m of
     Nothing -> return []
     Just Thrift.SchemaInfo{..} ->
-      return (map Text.unpack (Map.keys schemaInfo_schemaIds))
+      return $ map Text.unpack $ uniq $
+        Map.keys schemaInfo_schemaIds <>
+        Map.keys schemaInfo_dbSchemaIds <>
+        concatMap Map.keys schemaInfo_otherSchemaIds
 
-getSchemaId
-  :: HashedSchema
-  -> Thrift.SelectSchema
-  -> Maybe Thrift.SchemaId
-getSchemaId HashedSchema{..} sel =
-  case sel of
-    Thrift.SelectSchema_schema_id id -> Just id
-    _ -> snd <$> IntMap.lookupMax hashedSchemaAllVersions
+getSchemaId :: Eval (Maybe Thrift.SchemaId)
+getSchemaId = do
+  ShellState{..} <- getState
+  return $ do
+    ProcessedSchema{..} <- schemas
+    case useSchemaId of
+      Thrift.SelectSchema_schema_id id -> Just id
+      _ -> snd <$> IntMap.lookupMax (hashedSchemaAllVersions procSchemaHashed)
 
 getNameEnv :: Eval (Maybe (NameEnv RefTargetId))
 getNameEnv = do
   ShellState{..} <- getState
   case schemas of
     Nothing -> return Nothing
-    Just ProcessedSchema{..} -> return $ do
-      id <- getSchemaId procSchemaHashed useSchemaId
-      Map.lookup id (hashedSchemaEnvs procSchemaHashed)
+    Just ProcessedSchema{..} -> do
+      schema_id <- getSchemaId
+      return $ case schema_id of
+        Nothing -> Nothing
+        Just id -> Map.lookup id (hashedSchemaEnvs procSchemaHashed)
 
 availablePredicates :: Eval [String]
 availablePredicates = maybe [] preds <$> getNameEnv

@@ -1033,7 +1033,7 @@ struct WorkFinished {
 }
 
 struct SchemaInfo {
-  // The complete source of the schema
+  // The complete source of the schema selected by GetSchemaInfo.select
   1: string (hs.type = "ByteString") schema;
 
   // The mapping from Pid to PredicateRef stored in the DB. This can
@@ -1043,7 +1043,16 @@ struct SchemaInfo {
   2: map<Id, PredicateRef> predicateIds;
 
   // The SchemaIds that the server knows about
+
+  // "current" (latest) schema ID -> all.version
   3: map<string, Version> schemaIds;
+
+  // schema IDs from the DB schema -> all.version
+  4: map<string, Version> dbSchemaIds;
+
+  // Other known schemas, each maps schema IDs -> all.version
+  // Like SchemaIndex, but without files.
+  5: list<map<string, Version>> otherSchemaIds;
 }
 
 union SelectSchema {
