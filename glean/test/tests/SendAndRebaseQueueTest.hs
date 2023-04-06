@@ -12,6 +12,7 @@ module SendAndRebaseQueueTest
   ) where
 
 import Control.Concurrent
+import Control.Exception
 import Control.Monad
 import Data.Default
 import Data.List
@@ -70,6 +71,14 @@ mkA2 b c =
     makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key a b)
     makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key a c)
 
+settings :: (SendQueueEvent -> IO ()) -> SendAndRebaseQueueSettings
+settings log = SendAndRebaseQueueSettings {
+  sendAndRebaseQueueSendQueueSettings = def {
+    sendQueueLog = log },
+  sendAndRebaseQueueFactCacheSize = 1024*1024,
+  sendAndRebaseQueueSenders = 1
+  }
+
 sendAndRebaseQueueTest :: Test
 sendAndRebaseQueueTest = TestCase $
   withTestEnv [] $ \env -> do
@@ -88,17 +97,10 @@ sendAndRebaseQueueTest = TestCase $
           SendQueueFinished -> putStrLn "finished"
           SendQueueFailed ex -> putStrLn $ "failed: " <> show ex
 
-        settings = SendAndRebaseQueueSettings {
-          sendAndRebaseQueueSendQueueSettings = def {
-            sendQueueLog = fakeLog },
-          sendAndRebaseQueueFactCacheSize = 1024*1024,
-          sendAndRebaseQueueSenders = 1
-          }
-
     dbSchema <- loadDbSchema env base
     let inventory = schemaInventory dbSchema
     predicates <- loadPredicates env base [ Glean.Test.allPredicates ]
-    withSendAndRebaseQueue env base inventory settings $ \queue -> do
+    withSendAndRebaseQueue env base inventory (settings fakeLog) $ \queue -> do
       batch <- buildBatch predicates Nothing $ do
         d <- mkD
         void $ mkB d
@@ -135,8 +137,51 @@ sendAndRebaseQueueTest = TestCase $
             _otherwise -> False
       _ -> assertFailure "query failed"
 
+-- | Check that errors from the sender get propagated properly
+sendAndRebaseQueueFailureTest :: Test
+sendAndRebaseQueueFailureTest = TestCase $
+  withTestEnv [] $ \env -> do
+    let base = Repo "base" "0"
+    kickOffTestDB env base id
+    mkGraph env base (void mkD)
+
+    let
+        msg = "failing in SendQueueSending"
+        fakeLog event = case event of
+          SendQueueSending _batch -> throwIO $ ErrorCall msg
+          SendQueueSent size _t -> putStrLn $  "sent " <> show size
+          SendQueueFinished -> putStrLn "finished"
+          SendQueueFailed ex -> putStrLn $ "failed: " <> show ex
+
+    dbSchema <- loadDbSchema env base
+    let inventory = schemaInventory dbSchema
+    predicates <- loadPredicates env base [ Glean.Test.allPredicates ]
+    r <- try $ withSendAndRebaseQueue
+           env base inventory (settings fakeLog) $ \queue -> do
+      batch <- buildBatch predicates Nothing $ do
+        d <- mkD
+        void $ mkB d
+        void $ mkC d
+      writeSendAndRebaseQueue queue batch (const $ return ())
+      batch2 <- buildBatch predicates Nothing $ do
+        d <- mkD
+        b <- mkB d
+        c <- mkC d
+        mkA b c
+      writeSendAndRebaseQueue queue batch2 (const $ return ())
+      batch3 <- buildBatch predicates Nothing $ do
+        d <- mkD
+        b <- mkB d
+        c <- mkC d
+        mkA2 b c
+      writeSendAndRebaseQueue queue batch3 (const $ return ())
+
+    assertBool "failure" $ case r of
+      Left (ErrorCall m) -> m == msg
+      _ -> False
 
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
   [ TestLabel "sendAndRebaseQueueTest" sendAndRebaseQueueTest
+  , TestLabel "sendAndRebaseQueueFailureTest" sendAndRebaseQueueFailureTest
   ]

@@ -250,8 +250,9 @@ withSendAndRebaseQueue backend repo inventory settings action =
           atomically $ writeTQueue (srqSenders srq) worker
       deleteSenderPool srq =
         forM_ senderIds $ \_i -> do
-          sender <- atomically $ readTQueue (srqSenders srq)
-          senderRebaseAndFlush True srq sender
+          -- don't deadlock here in case we died leaving the queue empty
+          sender <- atomically $ tryReadTQueue (srqSenders srq)
+          forM_ sender $ senderRebaseAndFlush True srq
       senderIds = take sendAndRebaseQueueSenders [1..]
 
 
