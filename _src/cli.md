@@ -46,6 +46,23 @@ therefore predicates may only be added or removed relative to the base DB.
 File(s) of facts to write into the database (JSON). See [Writing data
 to Glean](./write.md).
 
+The schema for the new DB is given by:
+
+* the property `glean.schema_id` if specified, or
+
+* if `--stacked` or `--incremental`, then
+  * if `--update-schema-for-stacked` is specified, then the default
+    schema (or the one given by the `--schema` option),
+  * otherwise, the schema from the base DB.
+
+* otherwise the default schema, or the one given by the `--schema`
+  flag.
+
+Note that when creating a stacked DB, it is an error if the schema
+does not agree with the schema in the base DB for any predicate that
+has facts. That is, you cannot change the schema in a stacked DB for
+existing facts in the base DB.
+
 ### `glean write`
 
 Write facts to a database.

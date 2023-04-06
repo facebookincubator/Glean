@@ -94,6 +94,13 @@ Like `:list-all`, but show more details
 * `:schema [PREDICATE|TYPE]`<br />
 Show schema for the given `PREDICATE` or `TYPE`, or the whole schema
 if no predicate or type is given.
+* `:use-schema [current|stored|<schema-id>]` <br />
+With no arguments, shows the available schemas and the current setting.
+With an argument, selects the schema to use for queries and inspecting with the `:schema`
+command:
+  * `current`: selects the current schema.
+  * `stored`: selects the schema stored in the current DB.
+  * `<schema-id>`: selects the specified schema.
 * `:edit`<br />
 Edit a query in an external editor. Set the `EDITOR` environment
 variable to choose an editor.
