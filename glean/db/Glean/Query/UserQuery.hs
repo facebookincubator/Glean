@@ -967,14 +967,11 @@ schemaVersionForQuery env schema ServerConfig.Config{..} repo qid = do
      allSelectors = catMaybes
        [ SpecificSchemaId <$> qid
        , SpecificSchemaId <$> envSchemaId env
-       , SpecificSchemaAll <$> envSchemaVersion env
        , SpecificSchemaId <$> dbSchemaId
        ]
   vlog 1 $ "all selectors: " <> show (pretty allSelectors)
 
   let
-    isAvailable (SpecificSchemaAll version) =
-      fromIntegral version `IntMap.member` legacyAllVersions schema
     isAvailable (SpecificSchemaId id) =
       id `Map.member` schemaEnvs schema
     isAvailable _ = True

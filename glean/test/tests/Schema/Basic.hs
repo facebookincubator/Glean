@@ -140,19 +140,6 @@ schemaUnversioned = TestCase $ do
         Right UserQueryResults{..} -> length userQueryResults_facts == 2
         _ -> False
 
-    withTestEnv [
-        setRoot root,
-        setSchemaPath file,
-        setSchemaVersion 1 ] $ \env -> do
-      -- Test that an unversioned query "test.P _" now resolves to
-      -- test.P.1, because we're now asking for all.1 explicitly, and
-      -- all.1 inherits from test.1
-      r <- try $ angleQuery env repo1 "test.P _"
-      print (r :: Either BadQuery UserQueryResults)
-      assertBool "unversioned 3" $ case r of
-        Right UserQueryResults{..} -> length userQueryResults_facts == 1
-        _ -> False
-
 
 schemaTypeError :: Test
 schemaTypeError = TestCase $ do

@@ -129,10 +129,6 @@ data Config = Config
       -- ^ Records whether we're reading the schema from a directory
       -- of source files or not, because some clients (the shell) want
       -- to know this, and it's not avaialble from the ThriftSource.
-  , cfgSchemaVersion :: Maybe Version
-      -- ^ (deprecated) If set, this is the version of the "all"
-      -- schema that is used to resolve unversioned predicates in a
-      -- query.
   , cfgSchemaId :: Maybe SchemaId
       -- ^ If set, this is the version of the schema that is used to
       -- interpret a query.
@@ -170,7 +166,6 @@ instance Default Config where
     , cfgSchemaSource = ThriftSource.value (error "undefined schema")
     , cfgUpdateSchema = True
     , cfgSchemaDir = Nothing
-    , cfgSchemaVersion = Nothing
     , cfgSchemaId = Nothing
     , cfgRecipeConfig = def
     , cfgServerConfig = def
@@ -391,14 +386,6 @@ options = do
   cfgDataStore <- dbRoot <|> dbTmp <|> dbMem
   ~(cfgSchemaDir, cfgSchemaSource) <- schemaSourceOption
   _ignored_for_backwards_compat <- switch (long "db-schema-override")
-  cfgSchemaVersion <- optional $ option auto
-    ( long "schema-version"
-    <> metavar "VERSION"
-    <> help (
-      "version of \"all\" schema to use when resolving references " <>
-      "to unversioned predicates in a query (mostly for testing purposes; " <>
-      "defaults to the latest version)")
-    )
   cfgSchemaId <- fmap (fmap SchemaId) $ optional $ option auto
     ( long "schema-id"
     <> metavar "ID"

@@ -13,7 +13,6 @@ module Glean.Database.Test
   , setSchemaSource
   , setSchemaIndex
   , setSchemaPath
-  , setSchemaVersion
   , setSchemaId
   , disableStrictSchemaId
   , setMemoryStorage
@@ -74,9 +73,6 @@ setSchemaPath = setSchemaSource . schemaSourceFile
 
 setSchemaIndex :: FilePath -> Setting
 setSchemaIndex = setSchemaSource . schemaSourceIndexFile
-
-setSchemaVersion :: Thrift.Version -> Setting
-setSchemaVersion ver cfg = cfg { cfgSchemaVersion = Just ver }
 
 -- | Set the schema that will be used for queries, otherwise defaults
 -- to the highest all.N in the latest schema.

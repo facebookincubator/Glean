@@ -178,18 +178,14 @@ predicateRef = predicateIdRef . predicateId
 
 data SchemaSelector
   = LatestSchemaAll
-  | SpecificSchemaAll Version -- deprecated
   | SpecificSchemaId SchemaId
 
 instance Pretty SchemaSelector where
   pretty LatestSchemaAll = "latest"
-  pretty (SpecificSchemaAll v) = "schema-version:" <> pretty v
   pretty (SpecificSchemaId (SchemaId id)) = "schema-id:" <> pretty id
 
 allSchemaVersion :: DbSchema -> SchemaSelector -> Maybe SchemaId
 allSchemaVersion _ (SpecificSchemaId v) = Just v
-allSchemaVersion dbSchema (SpecificSchemaAll v) =
-  IntMap.lookup (fromIntegral v) (legacyAllVersions dbSchema)
 allSchemaVersion dbSchema LatestSchemaAll = Just (schemaLatestVersion dbSchema)
 
 schemaNameEnv :: DbSchema -> SchemaSelector -> Maybe (NameEnv RefTargetId)

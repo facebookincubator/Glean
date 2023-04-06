@@ -210,7 +210,6 @@ data Env = forall storage. Storage storage => Env
   , envDbSchemaCache :: MVar DbSchemaCache
   , envUpdateSchema :: Bool
   , envSchemaUpdateSignal :: TMVar ()
-  , envSchemaVersion :: Maybe Version
   , envSchemaId :: Maybe Thrift.SchemaId
   , envRecipeConfig :: Observed Recipes.Config
   , envServerConfig :: Observed ServerConfig.Config
