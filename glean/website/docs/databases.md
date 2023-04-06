@@ -13,6 +13,7 @@ A Glean database has:
 * A **name**. This is often (but not always) the name of the source code repository from which the facts in the database were collected. Indeed, for historical reasons we sometimes say "repository" or "repo" when we mean "database".
 * A **hash**. This is just an arbitrary string, used to distinguish different versions of databases with the same name. For source code repositories it can be the revision of the repository that was indexed.
 * Some **properties**. A database has a set of key-value pairs associated with it. Some of these are created by Glean itself, and others can be set by a client when the DB is created, or while writing facts. Properties can be used to store arbitrary metadata about the DB, and can be accessed cheaply.
+* A **schema**. The schema is stored in the DB, so that a DB knows the structure of the data it stores. You can query the DB using any schema that is [compatible](schema/changing.md#compatibility) with the DB's schema.
 
 <FbInternalOnly>
 
@@ -63,7 +64,7 @@ like this:
 
 <OssOnly>
 
-* The job invokes `glean kickoff --service <write-server> <args>` to create the database.
+* The job invokes `glean create --service <write-server> <args>` to create the database.
 
 * At this point the database is in the **Incomplete** state. Queries
 are supported in this state, and always reflect the current contents.
