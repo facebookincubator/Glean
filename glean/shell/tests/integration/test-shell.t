@@ -30,14 +30,14 @@
     :profile [off|summary|full]                 Show query profiling information
     :reload                                     Reload the schema (when using --schema)
     :statistics [--topmost] [-s] [<predicate>]  Show statistics for the database. Use --topmost to only show statisticsfor the top database and -s to sort by decreasing size
-    :use-schema (current|stored|<schema-id>)    Select which schema to use
+    :use-schema [current|stored|<schema-id>]    Select which schema to use. Without an argument lists the available schemas
     :quit                                       Exit the shell
   
-  Queries (angle mode):
+  Queries:
     {1234}                    Look up a fact by its Id
     <predicate> <pat>         Query a predicate for facts matching <pat>
   
-  Pattern syntax (angle mode):
+  Pattern syntax:
     1234                     :: byte or nat
     "abc"                    :: string
     "abc"..                  :: string prefix match
