@@ -609,4 +609,100 @@ predicate IsAbstract: Declaration
     Decorators[..] = "@abc.abstractmethod" | "@abstractmethod";
   )
 
+# manually traverse 10 layers of inheritance
+predicate MethodOverrides :
+  {
+    derived: FunctionDeclaration,
+    base: FunctionDeclaration,
+  }
+  { DerivedMethodDecl, BaseMethodDecl } where
+    # find class where method is defined
+    ContainedBy { { func = DerivedMethodDecl }, { cls = DerivedClassDecl } };
+    # find local name of method {module_name}.{class_name}.{method_local_name}
+    SNameWithDeclaration { { func = DerivedMethodDecl}, { local_name = MethodLocalName } };
+
+    DerivedClassToBase { DerivedClassDecl, BaseClassDeclL1 };
+    MaybeBaseMethodDecl = if (
+      MethodWithLocalName { BaseClassDeclL1, MethodLocalName, BaseMethodDeclL1 };
+    ) then (
+      { just = BaseMethodDeclL1 }
+    ) else (
+      DerivedClassToBase { BaseClassDeclL1, BaseClassDeclL2 };
+      if (
+        MethodWithLocalName { BaseClassDeclL2, MethodLocalName, BaseMethodDeclL2 };
+      ) then (
+        { just = BaseMethodDeclL2 }
+      ) else (
+        DerivedClassToBase { BaseClassDeclL2, BaseClassDeclL3 };
+        if (
+          MethodWithLocalName { BaseClassDeclL3, MethodLocalName, BaseMethodDeclL3 };
+        ) then (
+          { just = BaseMethodDeclL3 }
+        ) else (
+          DerivedClassToBase { BaseClassDeclL3, BaseClassDeclL4 };
+          if (
+            MethodWithLocalName { BaseClassDeclL4, MethodLocalName, BaseMethodDeclL4 };
+          ) then (
+            { just = BaseMethodDeclL4 }
+          ) else (
+            DerivedClassToBase { BaseClassDeclL4, BaseClassDeclL5 };
+            if (
+              MethodWithLocalName { BaseClassDeclL5, MethodLocalName, BaseMethodDeclL5 };
+            ) then (
+              { just = BaseMethodDeclL5 }
+            ) else (
+              DerivedClassToBase { BaseClassDeclL5, BaseClassDeclL6 };
+              if (
+                MethodWithLocalName { BaseClassDeclL6, MethodLocalName, BaseMethodDeclL6 };
+              ) then (
+                { just = BaseMethodDeclL6 }
+              ) else (
+                DerivedClassToBase { BaseClassDeclL6, BaseClassDeclL7 };
+                if (
+                  MethodWithLocalName { BaseClassDeclL7, MethodLocalName, BaseMethodDeclL7 };
+                ) then (
+                  { just = BaseMethodDeclL7 }
+                ) else (
+                  DerivedClassToBase { BaseClassDeclL7, BaseClassDeclL8 };
+                  if (
+                    MethodWithLocalName { BaseClassDeclL8, MethodLocalName, BaseMethodDeclL8 };
+                  ) then (
+                    { just = BaseMethodDeclL8 }
+                  ) else (
+                    DerivedClassToBase { BaseClassDeclL8, BaseClassDeclL9 };
+                    if (
+                      MethodWithLocalName { BaseClassDeclL9, MethodLocalName, BaseMethodDeclL9 };
+                    ) then (
+                      { just = BaseMethodDeclL9 }
+                    ) else (
+                      DerivedClassToBase { BaseClassDeclL9, BaseClassDeclL10 };
+                      if (
+                        MethodWithLocalName { BaseClassDeclL10, MethodLocalName, BaseMethodDeclL10 };
+                      ) then (
+                        { just = BaseMethodDeclL10 }
+                      ) else (
+                        { nothing = {} }
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    );
+    MaybeBaseMethodDecl = { just = BaseMethodDecl };
+
+# (internal) helper for MethodOverrides
+predicate MethodWithLocalName:
+  {
+    cls: ClassDeclaration,
+    method_local_name: Name,
+    method: FunctionDeclaration,
+  }
+  { ClassDecl, MethodLocalName, MethodDecl } where
+    Contains { { cls = ClassDecl }, { func = MethodDecl } };
+    SNameWithDeclaration { { func = MethodDecl }, { local_name = MethodLocalName } };
+
 } # python.4
