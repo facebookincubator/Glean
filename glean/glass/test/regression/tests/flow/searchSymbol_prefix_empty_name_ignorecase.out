@@ -4,6 +4,52 @@
         "symbolDetails": [],
         "symbols": [
             {
+                "kind": 5,
+                "language": 2,
+                "location": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 1
+                    },
+                    "repository": "test"
+                },
+                "name": "cjs_exports",
+                "qname": {
+                    "container": "",
+                    "localName": "cjs_exports"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/cjs_exports"
+            },
+            {
+                "kind": 5,
+                "language": 2,
+                "location": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 1
+                    },
+                    "repository": "test"
+                },
+                "name": "test/cjs_exports.js",
+                "qname": {
+                    "container": "",
+                    "localName": "cjs_exports"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/cjs_exports"
+            },
+            {
                 "kind": 21,
                 "language": 2,
                 "location": {
@@ -48,6 +94,52 @@
                     "exactness": 2
                 },
                 "symbol": "test/js/cjs_exports/x"
+            },
+            {
+                "kind": 5,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js",
+                    "range": {
+                        "columnBegin": 0,
+                        "columnEnd": 0,
+                        "lineBegin": 0,
+                        "lineEnd": 0
+                    },
+                    "repository": "test"
+                },
+                "name": "test/es_exports.js",
+                "qname": {
+                    "container": "",
+                    "localName": "es_exports"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/es_exports"
+            },
+            {
+                "kind": 5,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 1
+                    },
+                    "repository": "test"
+                },
+                "name": "test/es_exports.js.flow",
+                "qname": {
+                    "container": "",
+                    "localName": "es_exports"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/es_exports"
             },
             {
                 "context": {
@@ -299,6 +391,29 @@
                     "exactness": 2
                 },
                 "symbol": "test/js/es_exports/x"
+            },
+            {
+                "kind": 5,
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 1
+                    },
+                    "repository": "test"
+                },
+                "name": "test/imports.js",
+                "qname": {
+                    "container": "",
+                    "localName": "imports"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/imports"
             },
             {
                 "context": {

@@ -298,6 +298,14 @@ predicate SearchByNameModule:
       ( F = src.File Str; Module { file = F } ) ) = Mod;
       # [perf note] search files first and then modules
 
+# Lower case form of module name search
+# Slightly unusual as we have object names and module names indexed separately
+predicate ModuleNameLowerCase:
+  {
+    nameLowerCase: string,
+    name: Module
+  } stored { prim.toLower Str, Mod } where SearchByNameModule { Str, Mod }
+
 # Search by Name and string code for the Module
 predicate SearchByModule :
   {

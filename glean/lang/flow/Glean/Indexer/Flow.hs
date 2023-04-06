@@ -54,6 +54,7 @@ indexer = Indexer {
             , "flow.NameLowerCase"
             , "flow.ModuleContains"
             , "flow.ModuleComments"
+            , "flow.ModuleNameLowerCase"
             ]
         }
     indexerRun externalIndexer ext

@@ -264,8 +264,12 @@ predicate FlowSearchByLowerCaseName:
     entity: code.Entity,
   }
   { NameStr, Entity } where
-    flow.NameLowerCase { NameStr, Name };
-    FlowSearchByNameWithFact { Name, Entity }
+    ( flow.NameLowerCase { NameStr, Name };
+      FlowSearchByNameWithFact { Name, Entity }
+    ) | (
+      flow.ModuleNameLowerCase { NameStr, Mod };
+      { flow = { module_ = Mod } } = Entity
+    )
 
 # helper to share Name fact in the lower case scenario
 #
