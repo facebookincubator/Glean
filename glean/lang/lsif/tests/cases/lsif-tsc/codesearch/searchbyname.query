@@ -1,4 +1,4 @@
-query: search.code.SearchByName _
+query: search.code.LsifSearchByName _
 perf: True
 transform: [gensort, []]
 

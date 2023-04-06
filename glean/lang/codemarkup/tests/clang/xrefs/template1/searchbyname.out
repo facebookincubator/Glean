@@ -3,6 +3,7 @@
   {
     "key": {
       "name": "Bar",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -38,6 +39,7 @@
   {
     "key": {
       "name": "Baz",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -73,6 +75,7 @@
   {
     "key": {
       "name": "Foo",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -108,6 +111,7 @@
   {
     "key": {
       "name": "S",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -208,6 +212,7 @@
   {
     "key": {
       "name": "S",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -308,6 +313,7 @@
   {
     "key": {
       "name": "x1",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -340,6 +346,7 @@
   {
     "key": {
       "name": "x2",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -372,6 +379,7 @@
   {
     "key": {
       "name": "x3",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {

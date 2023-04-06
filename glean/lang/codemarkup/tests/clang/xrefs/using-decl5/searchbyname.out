@@ -3,6 +3,7 @@
   {
     "key": {
       "name": "Bar",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -105,6 +106,7 @@
   {
     "key": {
       "name": "Foo",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -154,6 +156,7 @@
   {
     "key": {
       "name": "bar",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -225,6 +228,7 @@
   {
     "key": {
       "name": "foo",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {

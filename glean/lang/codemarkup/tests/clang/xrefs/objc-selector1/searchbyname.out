@@ -3,6 +3,7 @@
   {
     "key": {
       "name": "J",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -64,6 +65,7 @@
   {
     "key": {
       "name": "bar",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -108,6 +110,7 @@
   {
     "key": {
       "name": "call",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {

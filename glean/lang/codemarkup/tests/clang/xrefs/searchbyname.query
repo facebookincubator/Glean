@@ -1,2 +1,2 @@
-query: search.code.SearchByName _
+query: search.code.SearchByNameAndLanguage _
 transform: [gensort, []]

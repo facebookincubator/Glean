@@ -3,6 +3,7 @@
   {
     "key": {
       "name": "E",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -142,6 +143,7 @@
   {
     "key": {
       "name": "E1",
+      "language": 0,
       "entity": {
         "cxx": {
           "enumerator": {
@@ -183,6 +185,7 @@
   {
     "key": {
       "name": "E2",
+      "language": 0,
       "entity": {
         "cxx": {
           "enumerator": {
@@ -224,6 +227,7 @@
   {
     "key": {
       "name": "E3",
+      "language": 0,
       "entity": {
         "cxx": {
           "enumerator": {
@@ -265,6 +269,7 @@
   {
     "key": {
       "name": "F",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -404,6 +409,7 @@
   {
     "key": {
       "name": "F1",
+      "language": 0,
       "entity": {
         "cxx": {
           "enumerator": {
@@ -445,6 +451,7 @@
   {
     "key": {
       "name": "F2",
+      "language": 0,
       "entity": {
         "cxx": {
           "enumerator": {
@@ -486,6 +493,7 @@
   {
     "key": {
       "name": "F3",
+      "language": 0,
       "entity": {
         "cxx": {
           "enumerator": {
@@ -527,6 +535,7 @@
   {
     "key": {
       "name": "T",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -641,6 +650,7 @@
   {
     "key": {
       "name": "W",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -755,6 +765,7 @@
   {
     "key": {
       "name": "foo",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -791,6 +802,7 @@
   {
     "key": {
       "name": "foo",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -829,6 +841,7 @@
   {
     "key": {
       "name": "x1",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -863,6 +876,7 @@
   {
     "key": {
       "name": "x2",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -897,6 +911,7 @@
   {
     "key": {
       "name": "x3",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -931,6 +946,7 @@
   {
     "key": {
       "name": "x4",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -965,6 +981,7 @@
   {
     "key": {
       "name": "x5",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -999,6 +1016,7 @@
   {
     "key": {
       "name": "x6",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -1033,6 +1051,7 @@
   {
     "key": {
       "name": "x7",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -1067,6 +1086,7 @@
   {
     "key": {
       "name": "x8",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {

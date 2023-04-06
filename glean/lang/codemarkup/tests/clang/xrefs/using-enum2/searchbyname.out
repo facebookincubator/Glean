@@ -3,6 +3,7 @@
   {
     "key": {
       "name": "X",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -184,6 +185,7 @@
   {
     "key": {
       "name": "X1",
+      "language": 0,
       "entity": {
         "cxx": {
           "enumerator": {
@@ -235,6 +237,7 @@
   {
     "key": {
       "name": "X2",
+      "language": 0,
       "entity": {
         "cxx": {
           "enumerator": {
@@ -286,6 +289,7 @@
   {
     "key": {
       "name": "X3",
+      "language": 0,
       "entity": {
         "cxx": {
           "enumerator": {
@@ -337,6 +341,7 @@
   {
     "key": {
       "name": "foo",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {

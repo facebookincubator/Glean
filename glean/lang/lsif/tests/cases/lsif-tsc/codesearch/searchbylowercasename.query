@@ -1,4 +1,4 @@
-query: search.code.SearchByLowerCaseName _
+query: search.code.LsifSearchByName _
 perf: True
 transform: [gensort, []]
 

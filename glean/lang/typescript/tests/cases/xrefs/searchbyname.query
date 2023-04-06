@@ -1,3 +1,3 @@
-query: search.code.SearchByName { name = "createTempRepo" }
+query: search.code.SearchByNameAndLanguage { name = "createTempRepo" }
 perf: True
 transform: [gensort, []]

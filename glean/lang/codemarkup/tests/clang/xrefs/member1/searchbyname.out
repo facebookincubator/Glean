@@ -3,6 +3,7 @@
   {
     "key": {
       "name": "Foo",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -113,6 +114,7 @@
   {
     "key": {
       "name": "Ptr",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -272,6 +274,7 @@
   {
     "key": {
       "name": "baz",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -313,6 +316,7 @@
   {
     "key": {
       "name": "foo",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {

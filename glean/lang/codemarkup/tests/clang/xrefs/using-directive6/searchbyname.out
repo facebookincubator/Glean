@@ -3,6 +3,7 @@
   {
     "key": {
       "name": "T",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -40,6 +41,7 @@
   {
     "key": {
       "name": "foo",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {

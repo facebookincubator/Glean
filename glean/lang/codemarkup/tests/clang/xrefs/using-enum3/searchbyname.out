@@ -3,6 +3,7 @@
   {
     "key": {
       "name": "A",
+      "language": 0,
       "entity": {
         "cxx": {
           "enumerator": {
@@ -44,6 +45,7 @@
   {
     "key": {
       "name": "B",
+      "language": 0,
       "entity": {
         "cxx": {
           "enumerator": {
@@ -85,6 +87,7 @@
   {
     "key": {
       "name": "C",
+      "language": 0,
       "entity": {
         "cxx": {
           "enumerator": {
@@ -126,6 +129,7 @@
   {
     "key": {
       "name": "E",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -265,6 +269,7 @@
   {
     "key": {
       "name": "bar",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -303,6 +308,7 @@
   {
     "key": {
       "name": "bar",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -341,6 +347,7 @@
   {
     "key": {
       "name": "foo",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -379,6 +386,7 @@
   {
     "key": {
       "name": "foo",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -417,6 +425,7 @@
   {
     "key": {
       "name": "foo",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -455,6 +464,7 @@
   {
     "key": {
       "name": "foo",
+      "language": 0,
       "entity": {
         "cxx": {
           "defn": {

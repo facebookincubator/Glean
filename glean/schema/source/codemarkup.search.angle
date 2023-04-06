@@ -54,58 +54,9 @@ predicate SearchByScope:
       search.code.SearchByLowerCaseScope { Name, Scope, Language, Entity });
     EntityLocationAndKind { Entity, Location, Kind };
 
-# -------------------------------------
-#
-# search for entities by identifier name, either case insensitive or not
-#
-# (deprecated)
-#
-predicate SearchByNameAndKind:
-  {
-    searchcase: SearchCase,
-    name: string,
-    entity: code.Entity,
-    location: codemarkup.types.Location,
-    kind: maybe codemarkup.types.SymbolKind,
-  }
-  { SearchCase, Name, Entity, Location, Kind } where
-    ( Sensitive = SearchCase;
-      SearchEntityByName { Name, Entity, Location, Kind }) |
-    ( Insensitive = SearchCase;
-      SearchEntityByLowerCaseName { Name, Entity, Location, Kind })
-
 #
 # Internal helpers
 #
-
-# Basic entity search. From exact name or prefix
-# to entity, and location and kind. May filter on kind if present.
-#
-# (deprecated)
-predicate SearchEntityByName:
-  {
-    name: string,
-    entity: code.Entity,
-    location: codemarkup.types.Location,
-    kind: maybe codemarkup.types.SymbolKind,
-  }
-  { Name, Entity, Location, MKind } where
-    search.code.SearchByName { Name, Entity };
-    EntityLocationAndKind { Entity, Location, MKind };
-
-# And the normalized lowercase form
-#
-# (deprecated)
-predicate SearchEntityByLowerCaseName:
-  {
-    name: string,
-    entity: code.Entity,
-    location: codemarkup.types.Location,
-    kind: maybe codemarkup.types.SymbolKind,
-  }
-  { Name, Entity, Location, MKind } where
-    search.code.SearchByLowerCaseName { Name, Entity };
-    EntityLocationAndKind { Entity, Location, MKind };
 
 # Symbol kind of entity, where kind is optional.
 predicate EntityLocationAndKind:

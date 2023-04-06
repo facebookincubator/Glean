@@ -92,41 +92,6 @@ predicate SearchByLowerCaseScope:
     ( Python = Language; PythonSearchByLowerCaseScope { Name, Scope, Entity } );
     code.EntityLanguage { Entity, Language };
 
-# global entity search by identifier name (or prefix)
-# (deprecated)
-predicate SearchByName:
-  {
-    name: string,
-    entity: code.Entity,
-  }
-  { Name, Entity } where
-  PythonSearchByName { Name, Entity } |
-  HackSearchByName { Name, Entity } |
-  FlowSearchByName { Name, Entity } |
-  CxxSearchByName { Name, Entity } |
-  HsSearchByName { Name, Entity } |
-  ErlangSearchByName { Name, Entity } |
-  LsifSearchByName { Name, Entity } |
-  RustSearchByName { Name, Entity }
-
-# same as SearchByName but assumes `name` is lowercase. Useful for
-# case-insensitive search
-# (deprecated)
-predicate SearchByLowerCaseName:
-  {
-    name: string,
-    entity: code.Entity,
-  }
-  { Name, Entity } where
-  PythonSearchByLowerCaseName { Name, Entity } |
-  HackSearchByLowerCaseName { Name, Entity } |
-  FlowSearchByLowerCaseName { Name, Entity } |
-  CxxSearchByLowerCaseName { Name, Entity } |
-  HsSearchByLowerCaseName { Name, Entity } |
-  ErlangSearchByLowerCaseName { Name, Entity } |
-  LsifSearchByLowerCaseName { Name, Entity } |
-  RustSearchByLowerCaseName { Name, Entity };
-
 #
 # Language-specific identifier search
 #
