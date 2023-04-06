@@ -196,8 +196,6 @@ runLogQuery cmd env repo Thrift.UserQuery{..} log = do
     , Logger.SetPredicate userQuery_predicate
     , maybe mempty (Logger.SetPredicateVersion . fromIntegral)
         userQuery_predicate_version
-    , maybe mempty (Logger.SetSchemaVersion . fromIntegral)
-        userQuery_schema_version
     , maybe mempty (Logger.SetSchemaId . Thrift.unSchemaId)
         userQuery_schema_id
     , maybe mempty logQueryOptions userQuery_options
@@ -225,8 +223,6 @@ runLogQueryBatch cmd env repo Thrift.UserQueryBatch{..} log =
     , Logger.SetPredicate userQueryBatch_predicate
     , maybe mempty (Logger.SetPredicateVersion . fromIntegral)
         userQueryBatch_predicate_version
-    , maybe mempty (Logger.SetSchemaVersion . fromIntegral)
-        userQueryBatch_schema_version
     , maybe mempty (Logger.SetSchemaId . Thrift.unSchemaId)
         userQueryBatch_schema_id
     , maybe mempty logQueryOptions userQueryBatch_options

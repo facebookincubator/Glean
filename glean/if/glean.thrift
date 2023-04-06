@@ -582,10 +582,7 @@ struct DerivePredicateQuery {
   5: optional DerivePredicateOptions options;
   // How to parallelise derivation
   6: optional ParallelDerivation parallel;
-  // Deprecated. The predicate/version is resolved using the schema
-  // specified by the `glean.schema_id` property when the DB was
-  // created; otherwise the current schema at the time.
-  7: optional Version schema_version;
+// 7: deprecated
 }
 
 // Derivation can be parallelised by partitioning over the range of an
@@ -680,8 +677,10 @@ struct UserQuery {
   1: string predicate;
   // Name of the predicate to query
   // (only necessary when using JSON query syntax)
+
   2: string (hs.type = "ByteString") query;
   // Query string; syntax specified by UserQueryOptions.syntax
+
   3: optional Version predicate_version;
   // If provided, and if the version requested is different from
   // the predicate version in the DB, the server will attempt to
@@ -689,15 +688,15 @@ struct UserQuery {
   // possible, an Exception will be thrown.
   // If omitted, defaults to the latest version of this predicate
   // in the schema version.
-  4: optional Version schema_version;
-  // If supplied, then any unversioned predicates in the query are
-  // resolved using this version of the "all" schema. Otherwise, they
-  // are resolved to the latest version of the "all" schema.
+
+  // 4: deprecated
+
   5: optional UserQueryOptions options;
 
   6: list<UserQueryEncoding> encodings = [];
   // Acceptable encodings for the results in order of preference. The server
   // guarantees to return one of these encodings or fail.
+
   7: optional UserQueryClientInfo client_info;
   // Information about who is making the call
 
@@ -710,10 +709,12 @@ struct UserQueryBatch {
   1: string predicate;
   // Name of the predicate to query
   // (only necessary when using JSON query syntax)
+
   2: list<string (hs.type = "ByteString")> queries;
   // Query strings; syntax specified by UserQueryOptions.syntax
   // The list of returned UserQueryResults is guaranteed to be
   // the same length as this list
+
   3: optional Version predicate_version;
   // If provided, and if the version requested is different from
   // the predicate version in the DB, the server will attempt to
@@ -721,7 +722,9 @@ struct UserQueryBatch {
   // possible, an Exception will be thrown.
   // If omitted, defaults to the latest version of this predicate
   // in the schema version.
-  4: optional Version schema_version;
+
+  // 4: deprecated
+
   // If supplied, then any unversioned predicates in the query are
   // resolved using this version of the "all" schema. Otherwise, they
   // are resolved to the latest version of the "all" schema.
@@ -730,6 +733,7 @@ struct UserQueryBatch {
   6: list<UserQueryEncoding> encodings = [];
   // Acceptable encodings for the results in order of preference. The server
   // guarantees to return one of these encodings or fail.
+
   7: optional UserQueryClientInfo client_info;
   // Information about who is making the call
 
@@ -849,7 +853,7 @@ struct UserQueryFacts {
   // Note: in the case of userQueryFacts, the length of the 'facts'
   // list in the returned UserQueryResults is guaranteed to be the
   // same length as this list.
-  3: optional Version schema_version; // deprecated
+  // 3: deprecated
   4: optional UserQueryOptions options;
   5: list<UserQueryEncoding> encodings = [];
   // Acceptable encodings for the results in order of preference.

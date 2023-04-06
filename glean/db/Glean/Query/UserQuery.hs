@@ -425,7 +425,6 @@ userQueryFactsImpl
       limits = mkQueryRuntimeOptions opts config
 
   schemaSelector <- schemaVersionForQuery env schema config Nothing
-      userQueryFacts_schema_version
       userQueryFacts_schema_id
 
   trans <- transformationsForQuery schema schemaSelector
@@ -616,7 +615,6 @@ userQueryImpl
 
     schemaVersion <-
       schemaVersionForQuery env schema config Nothing
-        userQuery_schema_version
         userQuery_schema_id
     trans <- transformationsForQuery schema schemaVersion
 
@@ -794,7 +792,6 @@ userQueryImpl
     let schema@DbSchema{..} = odbSchema odb
     schemaVersion <-
       schemaVersionForQuery env schema config Nothing
-        userQuery_schema_version
         userQuery_schema_id
     trans <- transformationsForQuery schema schemaVersion
 
@@ -959,10 +956,9 @@ schemaVersionForQuery
   -> DbSchema
   -> ServerConfig.Config
   -> Maybe Thrift.Repo -- ^ default to the DB version if this is supplied
-  -> Maybe Thrift.Version -- ^ version specified by the client (deprecated)
   -> Maybe Thrift.SchemaId  -- ^ SchemaId specified by client
   -> IO SchemaSelector
-schemaVersionForQuery env schema ServerConfig.Config{..} repo qversion qid = do
+schemaVersionForQuery env schema ServerConfig.Config{..} repo qid = do
   dbSchemaId <-
     case repo of
       Nothing -> return Nothing
@@ -970,7 +966,6 @@ schemaVersionForQuery env schema ServerConfig.Config{..} repo qversion qid = do
   let
      allSelectors = catMaybes
        [ SpecificSchemaId <$> qid
-       , SpecificSchemaAll <$> qversion
        , SpecificSchemaId <$> envSchemaId env
        , SpecificSchemaAll <$> envSchemaVersion env
        , SpecificSchemaId <$> dbSchemaId

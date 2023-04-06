@@ -182,9 +182,9 @@ getPredicate
 getPredicate env repo schema ref = do
   config <- Observed.get (envServerConfig env)
   schemaVersion <- UserQuery.schemaVersionForQuery env schema config
-    (Just repo) Nothing Nothing
+    (Just repo) Nothing
       -- we default to resolving this predicate using the schema
-      -- version stored in the glean.schema_version property of the
+      -- version stored in the glean.schema_id property of the
       -- DB. This is important because the client is often just "glean
       -- derive foo.Predicate" and it doesn't want or need to know
       -- what schema version to use. Letting the DB decide is the
@@ -373,7 +373,6 @@ runDerivation env repo ref pred Thrift.DerivePredicateQuery{..} = do
     outerQuery pred batchSize = def
       { userQuery_query = Text.encodeUtf8 $ allFacts (predicateRef pred)
       , userQuery_encodings = [UserQueryEncoding_bin def]
-      , userQuery_schema_version = derivePredicateQuery_schema_version
       , userQuery_options = Just def
         { userQueryOptions_syntax = QuerySyntax_ANGLE
         , userQueryOptions_max_results = Just batchSize
@@ -384,7 +383,6 @@ runDerivation env repo ref pred Thrift.DerivePredicateQuery{..} = do
       { userQuery_predicate = derivePredicateQuery_predicate
       , userQuery_predicate_version = derivePredicateQuery_predicate_version
       , userQuery_query = Text.encodeUtf8 q
-      , userQuery_schema_version = derivePredicateQuery_schema_version
       , userQuery_options = Just opts
       , userQuery_encodings = []
       }

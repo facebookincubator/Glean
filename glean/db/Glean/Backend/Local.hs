@@ -109,7 +109,6 @@ instance Backend Database.Env where
           [ Thrift.UserQuery
             { userQuery_predicate = userQueryBatch_predicate
             , userQuery_predicate_version = userQueryBatch_predicate_version
-            , userQuery_schema_version  = userQueryBatch_schema_version
             , userQuery_encodings  = userQueryBatch_encodings
             , userQuery_client_info = userQueryBatch_client_info
             , userQuery_schema_id = userQueryBatch_schema_id

@@ -471,7 +471,6 @@ runRemoteBatchQuery evb sem repo template batch ts = do
             { userQueryBatch_predicate=userQuery_predicate
             , userQueryBatch_queries=queries
             , userQueryBatch_predicate_version=userQuery_predicate_version
-            , userQueryBatch_schema_version=userQuery_schema_version
             , userQueryBatch_options=userQuery_options
             , userQueryBatch_encodings=userQuery_encodings
             , userQueryBatch_client_info=userQuery_client_info

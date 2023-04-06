@@ -140,16 +140,6 @@ schemaUnversioned = TestCase $ do
         Right UserQueryResults{..} -> length userQueryResults_facts == 2
         _ -> False
 
-    withTestEnv [setRoot root, setSchemaPath file] $ \env -> do
-      -- Test that an unversioned query "test.P _" resolves to test.P.1,
-      -- if we set the schema_version field in the query to 1.
-      r <- try $ userQuery env repo1 $
-        (mkAngleQuery "test.P _") { userQuery_schema_version = Just 1 }
-      print (r :: Either BadQuery UserQueryResults)
-      assertBool "unversioned 2" $ case r of
-        Right UserQueryResults{..} -> length userQueryResults_facts == 1
-        _ -> False
-
     withTestEnv [
         setRoot root,
         setSchemaPath file,
