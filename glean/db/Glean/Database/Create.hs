@@ -49,7 +49,7 @@ import Glean.Database.Schema (
   toStoredSchema, compareSchemaPredicates, renderSchemaSource, toStoredVersions)
 import Glean.Database.Schema.ComputeIds
 import Glean.Database.Schema.Types
-import Glean.Internal.Types
+import Glean.Internal.Types hiding (SchemaIndex)
 import qualified Glean.Recipes.Types as Recipes
 import Glean.RTS.Foreign.Lookup (firstFreeId)
 import Glean.RTS.Types (lowestFid, fromPid)
@@ -60,7 +60,7 @@ import Glean.Util.Observed as Observed
 
 -- | Kick off a specifc database, scheduling its tasks as necessary.
 kickOffDatabase :: Env -> Thrift.KickOff -> IO Thrift.KickOffResponse
-kickOffDatabase env@Env{..} Thrift.KickOff{..}
+kickOffDatabase env@Env{..} kickOff@Thrift.KickOff{..}
   | envReadOnly = dbError kickOff_repo "can't create database in read only mode"
   | otherwise = do
       ServerConfig.Config{..} <- Observed.get envServerConfig
@@ -70,89 +70,25 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
             Just id -> Storage.UseSpecificSchema (SchemaId id)
             Nothing -> Storage.UseDefaultSchema
 
-        stackedCreate :: Repo -> IO (Storage.Mode, Maybe Text)
-        stackedCreate repo =
-          readDatabase env repo $ \OpenDB{..} lookup -> do
-            guid <- atomically $ do
-              meta <- Catalog.readMeta envCatalog repo
-              case metaCompleteness meta of
-                Complete{} -> return $
-                  HashMap.lookup "glean.guid" $ metaProperties meta
-                c -> throwSTM $ InvalidDependency kickOff_repo repo $
-                  "database is " <> showCompleteness c
-            start <- firstFreeId lookup
-
-            let storedSchema = toStoredSchema odbSchema
-
-            ownership <- readTVarIO odbOwnership
-            if not kickOff_update_schema_for_stacked
-              then return
-                (Storage.Create start ownership $
-                  Storage.UseThisSchema storedSchema
-                , guid)
-              else do
-
-            stats <- predicateStats env repo IncludeBase
-
-            -- If update_schema_for_stacked is enabled, then we need
-            -- to check that the specified schema agrees with the
-            -- stored schema in the base DB about the definitions of
-            -- predicates and types. We can do a fast check using the
-            -- hashes, and throw an exception if there are any
-            -- differences.
-            index <- Observed.get envSchemaSource
-            let
-              DbSchema{..} = odbSchema
-
-              proc = case schemaToUse of
-                Storage.UseSpecificSchema id
-                  | Just proc <- schemaForSchemaId index id -> proc
-                _otherwise -> schemaIndexCurrent index
-
-              hasFacts pred = case HashMap.lookup pred predicatesById of
-                Just PredicateDetails{..}
-                  | Just stat <- Map.lookup (fromPid predicatePid) stats ->
-                    predicateStats_count stat > 0
-                _otherwise -> False
-
-              HashedSchema{..} = procSchemaHashed proc
-              errors = compareSchemaPredicates
-                (filter hasFacts (HashMap.keys predicatesById))
-                (HashMap.keys hashedPreds)
-
-            chooseSchema <-
-              if null errors then
-                return $ Storage.UseThisSchema
-                  (StoredSchema
-                    (renderSchemaSource (procSchemaSource proc))
-                    (storedSchema_predicateIds storedSchema)
-                    -- Note: we *must* use the Pids from the base DB
-                    (toStoredVersions hashedSchemaAllVersions))
-              else
-                throwIO $ Thrift.Exception $
-                  "update_schema_for_stacked specified, but schemas are " <>
-                  "incompatible: " <> Text.intercalate ", " errors
-
-            return (Storage.Create start ownership chooseSchema, guid)
-
       (mode, kickOff_dependencies') <- case kickOff_dependencies of
         Nothing -> return
           (Storage.Create lowestFid Nothing schemaToUse
           , kickOff_dependencies)
         Just (Dependencies_stacked stacked) -> do
             let Thrift.Stacked{..} = stacked
-            (mode, guid) <-
-              stackedCreate $ Thrift.Repo stacked_name stacked_hash
+                repo = Thrift.Repo stacked_name stacked_hash
+            (mode, guid) <- stackedCreate env repo kickOff schemaToUse
             return
               ( mode,
                 Just (Dependencies_stacked
                   stacked{stacked_guid=stacked_guid <|> guid}))
         Just (Dependencies_pruned update) -> do
-            (mode, guid) <- stackedCreate (pruned_base update)
-            return
-              ( mode,
-                Just (Dependencies_pruned
-                  update{pruned_guid=pruned_guid update <|> guid}))
+          (mode, guid) <- stackedCreate env (pruned_base update)
+            kickOff schemaToUse
+          return
+            ( mode,
+              Just (Dependencies_pruned
+                update{pruned_guid=pruned_guid update <|> guid}))
 
       -- NOTE: We don't want to load recipes (which might fail) if we don't
       -- need them.
@@ -268,6 +204,78 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
       Just (Thrift.Dependencies_pruned pruned) ->
         Just (Thrift.Dependencies_pruned pruned { pruned_units = [] })
       _other -> _other
+
+stackedCreate
+  :: Env
+  -> Repo
+  -> KickOff
+  -> Storage.CreateSchema
+  -> IO (Storage.Mode, Maybe Text {- GUID -})
+stackedCreate env@Env{..} base KickOff{..} schemaToUse =
+  readDatabase env base $ \OpenDB{..} lookup -> do
+    guid <- atomically $ do
+      meta <- Catalog.readMeta envCatalog base
+      case metaCompleteness meta of
+        Complete{} -> return $
+          HashMap.lookup "glean.guid" $ metaProperties meta
+        c -> throwSTM $ InvalidDependency kickOff_repo base $
+          "database is " <> showCompleteness c
+    start <- firstFreeId lookup
+
+    index <- Observed.get envSchemaSource
+    let storedSchema = toStoredSchema odbSchema
+
+    ownership <- readTVarIO odbOwnership
+    if
+      | Storage.UseDefaultSchema <- schemaToUse,
+        not kickOff_update_schema_for_stacked -> do
+        return (
+          Storage.Create start ownership (Storage.UseThisSchema storedSchema),
+          guid
+          )
+
+      | otherwise -> do
+        stats <- predicateStats env base IncludeBase
+
+        -- If update_schema_for_stacked is enabled or the client
+        -- specified glean.schema_id, then we need to check that the
+        -- specified schema agrees with the stored schema in the base
+        -- DB about the definitions of predicates and types. We can do
+        -- a fast check using the hashes, and throw an exception if
+        -- there are any differences.
+        let
+          DbSchema{..} = odbSchema
+
+          proc = case schemaToUse of
+            Storage.UseSpecificSchema id
+              | Just proc <- schemaForSchemaId index id -> proc
+            _otherwise -> schemaIndexCurrent index
+
+          hasFacts pred = case HashMap.lookup pred predicatesById of
+            Just PredicateDetails{..}
+              | Just stat <- Map.lookup (fromPid predicatePid) stats ->
+                predicateStats_count stat > 0
+            _otherwise -> False
+
+          HashedSchema{..} = procSchemaHashed proc
+          errors = compareSchemaPredicates
+            (filter hasFacts (HashMap.keys predicatesById))
+            (HashMap.keys hashedPreds)
+
+        chooseSchema <-
+          if null errors then
+            return $ Storage.UseThisSchema
+              (StoredSchema
+                (renderSchemaSource (procSchemaSource proc))
+                (storedSchema_predicateIds storedSchema)
+                -- Note: we *must* use the Pids from the base DB
+                (toStoredVersions hashedSchemaAllVersions))
+          else
+            throwIO $ Thrift.Exception $
+              "update_schema_for_stacked specified, but schemas are " <>
+              "incompatible: " <> Text.intercalate ", " errors
+
+        return (Storage.Create start ownership chooseSchema, guid)
 
 serverProperties :: IO DatabaseProperties
 serverProperties = return (HashMap.fromList rev)

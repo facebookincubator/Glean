@@ -13,6 +13,7 @@ import Control.Concurrent
 import Control.Exception
 import Control.Monad
 import Data.Default
+import Data.Either
 import qualified Data.HashMap.Strict as HashMap
 import Data.List
 import qualified Data.Map as Map
@@ -852,6 +853,17 @@ stackedSchemaUpdateTest = TestCase $
         |]
     writeFile schema_v1_file schema_v1
 
+    let
+      schema_index_file_1 = root </> "schema_index_1"
+      schema_index_1 = Internal.SchemaIndex
+        { schemaIndex_current = Internal.SchemaInstance
+          { schemaInstance_versions = Map.fromList [ ("v1", 1) ]
+          , schemaInstance_file = "schema1"
+          }
+        , schemaIndex_older = []
+        }
+    saveJSON schema_index_file_1 schema_index_1
+
     -- v2 modifies x.P in a backwards compatible way, and removes y.R
     let
       schema_v2_file = root </> "schema2"
@@ -903,6 +915,16 @@ stackedSchemaUpdateTest = TestCase $
           completeTestDB env repo
           return repo
 
+      mkRepoIndex schema hash upd facts =
+        withTestEnv [
+            setRoot dbRoot,
+            setSchemaIndex schema ] $ \env -> do
+          let repo = Repo "test" hash
+          kickOffTestDB env repo upd
+          facts env repo
+          completeTestDB env repo
+          return repo
+
       testQuery name repo schema query result =
         withTestEnv [
             setRoot dbRoot,
@@ -937,6 +959,22 @@ stackedSchemaUpdateTest = TestCase $
       case r of
         Left (e :: Thrift.Exception) -> "not in scope: y.R" `isInfixOf` show e
         _ -> False
+
+    let set x = x {
+           Thrift.kickOff_dependencies = Just $ stackedDeps repo0,
+           Thrift.kickOff_properties = HashMap.insert "glean.schema_id" "v1"
+             (kickOff_properties x) }
+    r <- try $ mkRepoIndex schema_index_file_1 "1a" set $ \env repo ->
+        void $ syncWriteJsonBatch env repo
+          [ mkBatch (PredicateRef "y.R" 1)
+              [ [s| { "key" : "x" } |] ]
+          ] Nothing
+    print (r :: Either Thrift.Exception Repo)
+    -- This should be allowed; the new schema is compatible with the
+    -- base DB schema for the populated predicates. We don't have to
+    -- use --update-schema-for-stacked because we explicitly requested
+    -- the schema with glean.schema_id.
+    assertBool "stacked schema 0a" $ isRight r
 
     -- switch to schema v1, make a stacked DB with update_schema_for_stacked
     -- works even though y.Q changed, because there are no facts of y.Q

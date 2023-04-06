@@ -54,6 +54,6 @@ have multiple versions of the `all` schema during a schema
 migration. We can code-generate the Thrift types from each version of
 `all` separately, and clients can select at build time which version
 they want to use. This enables incremental migration of code from one
-schema to another schem.
+schema to another schema.
 
 :::
