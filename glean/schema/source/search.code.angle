@@ -18,6 +18,7 @@ import python.3
 import rust.1
 import search.cxx.5
 import search.erlang.4
+import search.flow.1
 import search.hack.7
 import search.hs.9
 import search.java.1
@@ -75,7 +76,8 @@ predicate SearchByScope:
   { Name, Scope, Language, Entity } where
     ( Cpp = Language; CxxSearchByScope { Name, Scope, Entity } ) |
     ( Hack = Language; HackSearchByScope { Name, Scope, Entity } ) |
-    ( Python = Language; PythonSearchByScope { Name, Scope, Entity } );
+    ( Python = Language; PythonSearchByScope { Name, Scope, Entity } ) |
+    ( JavaScript = Language; FlowSearchByScope { Name, Scope, Entity } );
     code.EntityLanguage { Entity, Language };
 
 # lower case by scope
@@ -89,7 +91,8 @@ predicate SearchByLowerCaseScope:
   { Name, Scope, Language, Entity } where
     ( Cpp = Language; CxxSearchByLowerCaseScope { Name, Scope, Entity } ) |
     ( Hack = Language; HackSearchByLowerCaseScope { Name, Scope, Entity } ) |
-    ( Python = Language; PythonSearchByLowerCaseScope { Name, Scope, Entity } );
+    ( Python = Language; PythonSearchByLowerCaseScope { Name, Scope, Entity }) |
+    ( JavaScript = Language; FlowSearchByLowerCaseScope { Name, Scope, Entity});
     code.EntityLanguage { Entity, Language };
 
 #
@@ -282,16 +285,44 @@ predicate FlowSearchByNameWithFact:
     entity: code.Entity
   }
   { Name, { flow = { decl = Decl } } } where
-    flow.SearchByName { Name, Decl };
-    # filter out import declarations
-    ({ localDecl = LocalDecl } = Decl;
-     !flow.ImportDeclaration { declaration = LocalDecl }
-    ) | (
-     { typeDecl = TypeDecl } = Decl;
-     !flow.TypeImportDeclaration { typeDeclaration = TypeDecl }
-    ) | (
-     { memberDecl = _ } = Decl;
-    )
+    search.flow.FlowSearchByNameNonImport { Name, Decl };
+
+# Flow scope search: just parent module -> decl pairs for now
+predicate FlowSearchByScope:
+  {
+    name: string,
+    scope: [string],
+    entity: code.Entity,
+  }
+  { NameStr, Query, Entity } where
+    Name = flow.Name NameStr;
+    Insensitive = false;
+    FlowSearchByScopeWithName { Name, Insensitive, Query, Entity }
+
+predicate FlowSearchByLowerCaseScope:
+  {
+    name: string,
+    scope: [string],
+    entity: code.Entity,
+  }
+  { NameStr, Query, Entity } where
+    flow.NameLowerCase { NameStr, Name };
+    Insensitive = true;
+    FlowSearchByScopeWithName { Name, Insensitive, Query, Entity }
+
+predicate FlowSearchByScopeWithName:
+  {
+    name: flow.Name,
+    insensitive : bool,
+    scope: [string],
+    entity: code.Entity,
+  }
+  { Name, Insensitive, Query, Entity } where
+    search.flow.QueryToScopeCase { Query, Insensitive, Scope };
+    { just = Module } = Scope; # every decl is contained in something?
+    search.flow.FlowSearchByNameNonImport { Name, Decl };
+    flow.ModuleContains { Module, Decl }; # filter on membership
+    { flow = { decl = Decl } } = Entity;
 
 predicate JavaSearchByName:
   {

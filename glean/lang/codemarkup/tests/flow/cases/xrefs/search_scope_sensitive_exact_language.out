@@ -1,0 +1,69 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "plus",
+      "scope": [ "cjs_exports" ],
+      "entity": {
+        "flow": {
+          "decl": {
+            "localDecl": {
+              "key": {
+                "name": { "key": "plus" },
+                "loc": {
+                  "key": {
+                    "module": {
+                      "key": { "file": { "key": "test/cjs_exports.js" } }
+                    },
+                    "span": { "start": 240, "length": 4 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "plus",
+        "file": { "key": "test/cjs_exports.js" },
+        "location": { "span": { "start": 240, "length": 4 } }
+      },
+      "kind": 20,
+      "language": 6
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "x",
+      "scope": [ "cjs_exports" ],
+      "entity": {
+        "flow": {
+          "decl": {
+            "localDecl": {
+              "key": {
+                "name": { "key": "x" },
+                "loc": {
+                  "key": {
+                    "module": {
+                      "key": { "file": { "key": "test/cjs_exports.js" } }
+                    },
+                    "span": { "start": 245, "length": 1 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "x",
+        "file": { "key": "test/cjs_exports.js" },
+        "location": { "span": { "start": 245, "length": 1 } }
+      },
+      "kind": 20,
+      "language": 6
+    }
+  }
+]

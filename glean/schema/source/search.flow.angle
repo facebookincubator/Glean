@@ -1,0 +1,60 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema search.flow.1 {
+import flow.3
+
+#
+# Various sorts of Flow scopes
+#
+
+predicate QueryToScopeCase:
+  {
+    query: [string],
+    insensitive : bool, # if true, search insensitive
+    scopeName : maybe flow.Module
+  }
+  { Query, Case, Module } where
+    ( [] = Query; true | false = Case;
+      Module = nothing : maybe flow.Module) |
+    # one module deep
+    ( [A] = Query;
+      FlowModuleNameCase { Case, A, AModule };
+      Module = { just = AModule }
+    )
+
+# Helper to lookup flow.Module name based on case sensitivity
+predicate FlowModuleNameCase:
+  {
+    insensitive: bool,
+    namestr : string,
+    name : flow.Module
+  }
+  { Insensitive, NameStr, Module } where
+    ( true = Insensitive;
+      flow.ModuleNameLowerCase { NameStr, Module };
+    ) | (
+      false = Insensitive;
+      flow.SearchByNameModule { NameStr, Module };
+    );
+    # I don't think we want src.File names here
+    { string_ = _ } | { lib = _ } = Module;
+
+# Helper to remove import declarations consistently
+predicate FlowSearchByNameNonImport:
+  {
+    name: flow.Name,
+    decl : flow.SomeDeclaration
+  }
+  { Name, Decl } where
+    flow.SearchByName { Name, Decl };
+    ({ localDecl = LocalDecl } = Decl;
+     !flow.ImportDeclaration { declaration = LocalDecl }
+    ) | (
+     { typeDecl = TypeDecl } = Decl;
+     !flow.TypeImportDeclaration { typeDeclaration = TypeDecl }
+    ) | (
+     { memberDecl = _ } = Decl;
+    )
+
+
+}
