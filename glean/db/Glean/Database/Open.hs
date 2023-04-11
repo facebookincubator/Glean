@@ -396,7 +396,8 @@ setupWriting :: Lookup.CanLookup lookup => Env -> lookup -> IO Writing
 setupWriting Env{..} lookup = do
   scfg <- Observed.get envServerConfig
   -- Convert to Word64 from Int32 to prevent silent truncation.
-  let cache_limit_mb :: Word64 = fromIntegral $ ServerConfig.config_db_lookup_cache_limit_mb scfg
+  let cache_limit_mb :: Word64 = fromIntegral $
+        ServerConfig.config_db_lookup_cache_limit_mb scfg
   lookupCache <- LookupCache.new
     (fromIntegral$ cache_limit_mb * 1024 * 1024)
     (fromIntegral $ ServerConfig.config_db_writer_threads scfg)
