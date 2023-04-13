@@ -1,0 +1,3 @@
+query: search.code.CxxSearchByScope { name = "IN1", scope = ["N1"] }
+perf: true
+transform: [gensort, []]

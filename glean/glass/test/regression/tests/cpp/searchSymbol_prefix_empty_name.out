@@ -230,6 +230,29 @@
                 "symbol": "test/cpp//GlobalClass/GCC"
             },
             {
+                "kind": 6,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 90,
+                        "lineEnd": 97
+                    },
+                    "repository": "test"
+                },
+                "name": "baz",
+                "qname": {
+                    "container": "",
+                    "localName": "baz"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//baz"
+            },
+            {
                 "kind": 25,
                 "language": 1,
                 "location": {
@@ -479,6 +502,29 @@
                 "symbol": "test/cpp//baz/U/InUClass/UCC"
             },
             {
+                "kind": 6,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 11,
+                        "lineEnd": 49
+                    },
+                    "repository": "test"
+                },
+                "name": "foo",
+                "qname": {
+                    "container": "",
+                    "localName": "foo"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//foo"
+            },
+            {
                 "kind": 25,
                 "language": 1,
                 "location": {
@@ -500,6 +546,29 @@
                     "exactness": 2
                 },
                 "symbol": "test/cpp//foo/S"
+            },
+            {
+                "kind": 6,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 33,
+                        "lineEnd": 43
+                    },
+                    "repository": "test"
+                },
+                "name": "bar",
+                "qname": {
+                    "container": "foo",
+                    "localName": "bar"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//foo/bar"
             },
             {
                 "kind": 25,
@@ -592,6 +661,29 @@
                     "exactness": 2
                 },
                 "symbol": "test/cpp//h"
+            },
+            {
+                "kind": 6,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 64,
+                        "lineEnd": 83
+                    },
+                    "repository": "test"
+                },
+                "name": "maybe",
+                "qname": {
+                    "container": "",
+                    "localName": "maybe"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//maybe"
             },
             {
                 "kind": 25,

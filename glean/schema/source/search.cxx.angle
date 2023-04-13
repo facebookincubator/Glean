@@ -87,6 +87,20 @@ predicate SearchByNameAndScope :
         { recordWithAccess = { record = QN, access = Public }} = Scope
       );
       Entity = code.cxx.Entity { enumerator = E };
+    ) | (
+      ( { namespace_ = Parent } = Scope;
+        NSQName = cxx1.NamespaceQName { name = { just = N },
+                parent = { just = Parent } };
+        NS = cxx1.NamespaceDeclaration { name = NSQName };
+        { decl = { namespace_ = NS } } = Entity;
+      # or re-interpret the null case (global_ as a namespace root)
+      # to find namespaces at the top level (e.g. "folly")
+      ) | (
+        { global_ = {} } = Scope;
+        NSQName = cxx1.NamespaceQName { name = { just = N }, parent = nothing };
+        NS = cxx1.NamespaceDeclaration { name = NSQName };
+        { decl = { namespace_ = NS } } = Entity;
+      )
     )
 
 predicate SearchByScope :
@@ -159,7 +173,7 @@ predicate QueryToScopeCase :
     scope : cxx1.Scope
   }
   { Query, Case, Scope } where
-    # global wild
+    # global fixed global_
     ( [] = Query; true | false = Case; { global_ = _ }
     # namespace scope
     ) | (

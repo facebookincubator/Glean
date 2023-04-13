@@ -1,0 +1,2 @@
+action: searchSymbol
+args: {"name": "foo::bar", "repo_name": "test", "language": [1], "kinds": [], "options": {"detailedResults": false, "exactMatch": true, "ignoreCase": false, "namespaceSearch": true } }
