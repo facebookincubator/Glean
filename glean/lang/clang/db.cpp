@@ -327,7 +327,13 @@ void ClangDB::finish() {
     release(xrefs);
 
     auto& decls = file.declarations;
-    std::sort(decls.begin(), decls.end());
+    // We call `stable_sort` here only the `Src::ByteSpan` portion such that the
+    // order of `Cxx::Declaration` among ties are maintained. Since declarations
+    // are added in lexical order, this should produce a deterministic ordering.
+    std::stable_sort(
+        decls.begin(), decls.end(), [](const auto& x, const auto& y) {
+          return x.first < y.first;
+        });
     auto decl_trace = fact<Cxx::Declarations>(
       folly::gen::from(decls)
         | folly::gen::mapped([](const auto& x) { return x.second; })
