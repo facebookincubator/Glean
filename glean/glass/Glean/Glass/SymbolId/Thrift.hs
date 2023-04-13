@@ -12,9 +12,11 @@ module Glean.Glass.SymbolId.Thrift
   ({- instances -})
   where
 
+import Data.Maybe
+import Data.Text ( intercalate, stripSuffix )
+
 import Glean.Glass.SymbolId.Class
 import Glean.Glass.Types (Name(..))
-import Data.Text ( intercalate )
 
 import qualified Glean.Schema.Thrift.Types as Thrift
 import qualified Glean
@@ -111,6 +113,10 @@ instance ToQName Thrift.EnumValue_key where
     return $ Right (Name name, Name parentName)
 
 instance ToQName Thrift.QualName_key where
-  toQName (Thrift.QualName_key _file ident) = do
+  toQName (Thrift.QualName_key file ident) = do
+    path <- Glean.keyOf =<< Glean.keyOf file
+    let parent = case pathFragments path of
+          [] -> ""
+          xs -> let f = last xs in fromMaybe f (stripSuffix ".thrift" f)
     str <- Glean.keyOf ident
-    return (Right (Name str, Name ""))
+    return (Right (Name str, Name parent))
