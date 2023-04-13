@@ -5,42 +5,6 @@
       "file": { "key": "test.cpp" },
       "xrefs": [
         {
-          "range": { "begin": 251, "end": 252 },
-          "target": {
-            "declaration": {
-              "variable": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": "x" },
-                      "scope": {
-                        "recordWithAccess": {
-                          "record": {
-                            "key": {
-                              "name": { "key": "S" },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "access": 0
-                        }
-                      }
-                    }
-                  },
-                  "type": { "key": "int" },
-                  "kind": { "field": { "mutable_": false } },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 13,
-                    "columnBegin": 3,
-                    "lineEnd": 13,
-                    "columnEnd": 7
-                  }
-                }
-              }
-            }
-          }
-        },
-        {
           "range": { "begin": 259, "end": 260 },
           "target": {
             "declaration": {

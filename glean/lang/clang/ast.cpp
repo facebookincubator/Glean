@@ -1375,8 +1375,9 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
           }
           // We have to traverse member initializers explicitly, the
           // visitor doesn't capture these references.
-          if (auto ctor = clang::dyn_cast<clang::CXXConstructorDecl>(mtd)) {
-            for (const auto *init : ctor->inits()) {
+          if (auto ctor = clang::dyn_cast<clang::CXXConstructorDecl>(mtd);
+              ctor && !ctor->isDefaulted()) {
+            for (const auto* init : ctor->inits()) {
               if (init->isMemberInitializer()) {
                 visitor.xrefTarget(
                     init->getMemberLocation(),
