@@ -27,25 +27,29 @@ import Glean.Glass.Search.Class as Search
       PrefixSearch(..),
       CodeEntityLocation(..),
       ResultLocation)
+import qualified Glean.Glass.Search.Buck ({- instances -})
 import qualified Glean.Glass.Search.Cxx ({- instances -})
+import qualified Glean.Glass.Search.Erlang ({- instances -})
 import qualified Glean.Glass.Search.Flow ({- instances -})
 import qualified Glean.Glass.Search.Hack ({- instances -})
 import qualified Glean.Glass.Search.Haskell ({- instances -})
-import qualified Glean.Glass.Search.Python ({- instances -})
-import qualified Glean.Glass.Search.Erlang ({- instances -})
-import qualified Glean.Glass.Search.Buck ({- instances -})
 import qualified Glean.Glass.Search.LSIF ({- instances -})
+import qualified Glean.Glass.Search.Python ({- instances -})
+import qualified Glean.Glass.Search.Thrift ({- instances -})
 import Glean.Glass.Types (ServerException(ServerException))
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Haxl.Repos as Glean
 
 --
--- entity search: decodes a symbol id to a code.Entity fact
+-- | Entity search: decodes a symbol id to a code.Entity fact
+--
 -- Note: this is different to e.g. approximate string search, as we
 -- should _always_ be able to decode valid symbol ids back to their (unique*)
--- entity.
+-- entity. Unlike searchSymbol() we typically have full entity scope information
+-- sufficient to uniquely identify the symbol in an index.
 --
 -- There are cases where symbol ids are not unique:
+--
 -- - weird code
 -- - hack namespaces
 -- - bugs/approximations in our encoder
@@ -64,6 +68,7 @@ searchEntity lang toks = case lang of
   Language_Haskell -> fmap Code.Entity_hs <$> Search.symbolSearch toks
   Language_Erlang -> fmap Code.Entity_erlang <$> Search.symbolSearch toks
   Language_Buck -> fmap Code.Entity_buck <$> Search.symbolSearch toks
+  Language_Thrift -> fmap Code.Entity_thrift <$> Search.symbolSearch toks
   -- limited set via lsif
   Language_Go -> fmap Code.Entity_lsif <$> Search.symbolSearch toks
   Language_TypeScript -> fmap Code.Entity_lsif <$> Search.symbolSearch toks

@@ -18,12 +18,13 @@ import qualified Glean.Schema.Cxx1.Types as Cxx
 import qualified Glean.Schema.Erlang.Types as Erlang
 import qualified Glean.Schema.Flow.Types as Flow
 import qualified Glean.Schema.Hack.Types as Hack
-import qualified Glean.Schema.Python.Types as Py
 import qualified Glean.Schema.Lsif.Types as Lsif
+import qualified Glean.Schema.Python.Types as Py
 
 import qualified Glean.Schema.CodeCxx.Types as Cxx
 import qualified Glean.Schema.CodeBuck.Types as Buck
 import qualified Glean.Schema.CodeFlow.Types as Flow
+import qualified Glean.Schema.CodeThrift.Types as Thrift
 import qualified Glean.Schema.CodeHs.Types as Hs
 
 -- | Convert a value to a query for that value. Useful when we want to
@@ -63,7 +64,6 @@ instance ToAngle Cxx.Declaration where
     Cxx.Declaration_objcProperty x -> alt @"objcProperty" (mkKey x)
     Cxx.Declaration_typeAlias x -> alt @"typeAlias" (mkKey x)
     Cxx.Declaration_EMPTY -> error "unknown Declaration"
-
 
 instance ToAngle Cxx.Definition where
   toAngle e = case e of
@@ -150,6 +150,17 @@ instance ToAngle Py.Declaration where
   toAngle (Py.Declaration_variable x) = alt @"variable" (mkKey x)
   toAngle (Py.Declaration_imp x) = alt @"imp" (mkKey x)
   toAngle Py.Declaration_EMPTY = error "unknown Declaration"
+
+-- Thrift
+
+instance ToAngle Thrift.Entity where
+  toAngle (Thrift.Entity_include_ x) = alt @"include_" (mkKey x)
+  toAngle (Thrift.Entity_named x) = alt @"named" (mkKey x)
+  toAngle (Thrift.Entity_exception_ x) = alt @"exception_" (mkKey x)
+  toAngle (Thrift.Entity_service_ x) = alt @"service_" (mkKey x)
+  toAngle (Thrift.Entity_constant x) = alt @"constant" (mkKey x)
+  toAngle (Thrift.Entity_enumValue x) = alt @"enumValue" (mkKey x)
+  toAngle Thrift.Entity_EMPTY = error "unknown Entity"
 
 -- LSIF languages
 
