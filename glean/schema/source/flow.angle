@@ -50,6 +50,7 @@ predicate DeclarationInfo: {
   declaration: Declaration,
   type: Type,
   documentation: maybe Documentation,
+  span: maybe Range,
 }
 
 # connects a variable to its declaration within the same file
@@ -72,6 +73,7 @@ predicate MemberDeclarationInfo: {
   memberDeclaration: MemberDeclaration,
   type: Type,
   documentation: maybe Documentation,
+  span: maybe Range,
 }
 
 predicate Export: {
@@ -142,6 +144,7 @@ predicate TypeDeclarationInfo: {
   typeDeclaration: TypeDeclaration,
   type: Type,
   documentation: maybe Documentation,
+  span: maybe Range,
 }
 
 predicate TypeExport: {
@@ -349,6 +352,8 @@ predicate SearchTypeByModuleExport :
     { name = N } = D;
 
 # Location of a SomeDeclaration
+# Some local declarations don't have a DeclarationInfo
+# We fallback on Declaration for them
 predicate DeclarationLocation :
   {
     decl: SomeDeclaration,
@@ -356,11 +361,29 @@ predicate DeclarationLocation :
     span: src.ByteSpan,
   }
   ( { decl = { localDecl = D }, file = F, span = S } where
-    Declaration { loc = { module = { file = F }, span = S } } = D ) |
-  ( { decl = { memberDecl = D }, file = F, span = S } where
-    MemberDeclaration { loc = { module = { file = F }, span = S } } = D ) |
-  ( { decl = { typeDecl = D }, file = F, span = S } where
-    TypeDeclaration { loc = { module = { file = F }, span = S } } = D )
+      ( DeclarationInfo { declaration = D, span = { just = Range } };
+        Range = flow.Range { module = { file = F }, span = S }
+      ) | (
+        ! DeclarationInfo { declaration = D, span = { just = Range } };
+        Declaration { loc = { module = { file = F }, span = S } } = D
+      )
+  ) | (
+    { decl = { memberDecl = D }, file = F, span = S } where
+      ( MemberDeclarationInfo { memberDeclaration = D, span = { just = Range } };
+        Range = flow.Range { module = { file = F }, span = S }
+      ) | (
+        ! MemberDeclarationInfo { memberDeclaration = D, span = { just = Range } };
+        MemberDeclaration { loc = { module = { file = F }, span = S } } = D
+      )
+  ) | (
+    { decl = { typeDecl = D }, file = F, span = S } where
+      ( TypeDeclarationInfo { typeDeclaration = D, span = { just = Range } };
+        Range = flow.Range { module = { file = F }, span = S }
+      ) | (
+        ! TypeDeclarationInfo { typeDeclaration = D, span = _ };
+        TypeDeclaration { loc = { module = { file = F }, span = S } } = D
+      )
+  )
 
 # Location/span/name of a Module. Note that we don't have the module span yet
 predicate ModuleLocation:

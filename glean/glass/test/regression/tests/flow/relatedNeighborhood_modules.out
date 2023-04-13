@@ -102,8 +102,8 @@
                 "location": {
                     "filepath": "test/cjs_exports.js",
                     "range": {
-                        "columnBegin": 10,
-                        "columnEnd": 14,
+                        "columnBegin": 1,
+                        "columnEnd": 41,
                         "lineBegin": 11,
                         "lineEnd": 11
                     },
@@ -121,8 +121,8 @@
                 "sym_location": {
                     "filepath": "test/cjs_exports.js",
                     "range": {
-                        "columnBegin": 10,
-                        "columnEnd": 14,
+                        "columnBegin": 1,
+                        "columnEnd": 41,
                         "lineBegin": 11,
                         "lineEnd": 11
                     },

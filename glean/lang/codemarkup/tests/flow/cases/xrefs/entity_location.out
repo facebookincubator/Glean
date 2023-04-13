@@ -51,7 +51,7 @@
       },
       "location": {
         "file": { "key": "test/cjs_exports.js" },
-        "location": { "span": { "length": 4, "start": 240 } },
+        "location": { "span": { "length": 40, "start": 231 } },
         "name": "plus"
       }
     }
@@ -107,7 +107,7 @@
       },
       "location": {
         "file": { "key": "test/es_exports.js.flow" },
-        "location": { "span": { "length": 1, "start": 353 } },
+        "location": { "span": { "length": 20, "start": 353 } },
         "name": "d"
       }
     }
@@ -135,7 +135,7 @@
       },
       "location": {
         "file": { "key": "test/es_exports.js.flow" },
-        "location": { "span": { "length": 1, "start": 467 } },
+        "location": { "span": { "length": 10, "start": 461 } },
         "name": "C"
       }
     }
@@ -163,7 +163,7 @@
       },
       "location": {
         "file": { "key": "test/es_exports.js.flow" },
-        "location": { "span": { "length": 3, "start": 235 } },
+        "location": { "span": { "length": 15, "start": 235 } },
         "name": "foo"
       }
     }
@@ -191,7 +191,7 @@
       },
       "location": {
         "file": { "key": "test/es_exports.js.flow" },
-        "location": { "span": { "length": 3, "start": 291 } },
+        "location": { "span": { "length": 51, "start": 282 } },
         "name": "bor"
       }
     }
@@ -219,7 +219,7 @@
       },
       "location": {
         "file": { "key": "test/es_exports.js.flow" },
-        "location": { "span": { "length": 3, "start": 341 } },
+        "location": { "span": { "length": 12, "start": 335 } },
         "name": "baz"
       }
     }
@@ -359,7 +359,7 @@
       },
       "location": {
         "file": { "key": "test/imports.js" },
-        "location": { "span": { "length": 1, "start": 503 } },
+        "location": { "span": { "length": 13, "start": 503 } },
         "name": "e"
       }
     }
@@ -387,7 +387,7 @@
       },
       "location": {
         "file": { "key": "test/imports.js" },
-        "location": { "span": { "length": 1, "start": 523 } },
+        "location": { "span": { "length": 15, "start": 523 } },
         "name": "x"
       }
     }
@@ -415,7 +415,7 @@
       },
       "location": {
         "file": { "key": "test/imports.js" },
-        "location": { "span": { "length": 1, "start": 544 } },
+        "location": { "span": { "length": 21, "start": 544 } },
         "name": "y"
       }
     }
@@ -443,7 +443,7 @@
       },
       "location": {
         "file": { "key": "test/imports.js" },
-        "location": { "span": { "length": 1, "start": 571 } },
+        "location": { "span": { "length": 14, "start": 571 } },
         "name": "z"
       }
     }
@@ -471,7 +471,7 @@
       },
       "location": {
         "file": { "key": "test/imports.js" },
-        "location": { "span": { "length": 1, "start": 675 } },
+        "location": { "span": { "length": 14, "start": 675 } },
         "name": "s"
       }
     }
@@ -639,7 +639,7 @@
       },
       "location": {
         "file": { "key": "test/imports.js" },
-        "location": { "span": { "length": 3, "start": 594 } },
+        "location": { "span": { "length": 24, "start": 588 } },
         "name": "caz"
       }
     }
@@ -695,7 +695,7 @@
       },
       "location": {
         "file": { "key": "test/es_exports.js.flow" },
-        "location": { "span": { "length": 1, "start": 467 } },
+        "location": { "span": { "length": 10, "start": 461 } },
         "name": "C"
       }
     }
@@ -723,7 +723,7 @@
       },
       "location": {
         "file": { "key": "test/es_exports.js.flow" },
-        "location": { "span": { "length": 3, "start": 341 } },
+        "location": { "span": { "length": 12, "start": 335 } },
         "name": "baz"
       }
     }
@@ -751,7 +751,7 @@
       },
       "location": {
         "file": { "key": "test/es_exports.js.flow" },
-        "location": { "span": { "length": 3, "start": 439 } },
+        "location": { "span": { "length": 18, "start": 434 } },
         "name": "num"
       }
     }
@@ -807,7 +807,7 @@
       },
       "location": {
         "file": { "key": "test/imports.js" },
-        "location": { "span": { "length": 1, "start": 664 } },
+        "location": { "span": { "length": 11, "start": 659 } },
         "name": "D"
       }
     }
@@ -863,7 +863,7 @@
       },
       "location": {
         "file": { "key": "test/imports.js" },
-        "location": { "span": { "length": 3, "start": 594 } },
+        "location": { "span": { "length": 24, "start": 588 } },
         "name": "caz"
       }
     }

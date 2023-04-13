@@ -55,8 +55,8 @@
                 "location": {
                     "filepath": "test/cjs_exports.js",
                     "range": {
-                        "columnBegin": 10,
-                        "columnEnd": 14,
+                        "columnBegin": 1,
+                        "columnEnd": 41,
                         "lineBegin": 11,
                         "lineEnd": 11
                     },
@@ -154,8 +154,8 @@
                 "location": {
                     "filepath": "test/es_exports.js.flow",
                     "range": {
-                        "columnBegin": 14,
-                        "columnEnd": 15,
+                        "columnBegin": 8,
+                        "columnEnd": 18,
                         "lineBegin": 30,
                         "lineEnd": 30
                     },
@@ -177,8 +177,8 @@
                 "location": {
                     "filepath": "test/es_exports.js.flow",
                     "range": {
-                        "columnBegin": 14,
-                        "columnEnd": 15,
+                        "columnBegin": 8,
+                        "columnEnd": 18,
                         "lineBegin": 30,
                         "lineEnd": 30
                     },
@@ -230,56 +230,56 @@
                 "location": {
                     "filepath": "test/es_exports.js.flow",
                     "range": {
-                        "columnBegin": 7,
-                        "columnEnd": 10,
-                        "lineBegin": 20,
-                        "lineEnd": 20
-                    },
-                    "repository": "test"
-                },
-                "name": "baz",
-                "qname": {
-                    "container": "es_exports",
-                    "localName": "baz"
-                },
-                "score": {
-                    "exactness": 2
-                },
-                "symbol": "test/js/es_exports/baz"
-            },
-            {
-                "kind": 21,
-                "language": 2,
-                "location": {
-                    "filepath": "test/es_exports.js.flow",
-                    "range": {
-                        "columnBegin": 7,
-                        "columnEnd": 10,
-                        "lineBegin": 20,
-                        "lineEnd": 20
-                    },
-                    "repository": "test"
-                },
-                "name": "baz",
-                "qname": {
-                    "container": "es_exports",
-                    "localName": "baz"
-                },
-                "score": {
-                    "exactness": 2
-                },
-                "symbol": "test/js/es_exports/baz"
-            },
-            {
-                "kind": 21,
-                "language": 2,
-                "location": {
-                    "filepath": "test/es_exports.js.flow",
-                    "range": {
-                        "columnBegin": 10,
+                        "columnBegin": 1,
                         "columnEnd": 13,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "name": "baz",
+                "qname": {
+                    "container": "es_exports",
+                    "localName": "baz"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/es_exports/baz"
+            },
+            {
+                "kind": 21,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "name": "baz",
+                "qname": {
+                    "container": "es_exports",
+                    "localName": "baz"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/es_exports/baz"
+            },
+            {
+                "kind": 21,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
                         "lineBegin": 16,
-                        "lineEnd": 16
+                        "lineEnd": 18
                     },
                     "repository": "test"
                 },
@@ -300,7 +300,7 @@
                     "filepath": "test/es_exports.js.flow",
                     "range": {
                         "columnBegin": 5,
-                        "columnEnd": 6,
+                        "columnEnd": 25,
                         "lineBegin": 22,
                         "lineEnd": 22
                     },
@@ -323,7 +323,7 @@
                     "filepath": "test/es_exports.js.flow",
                     "range": {
                         "columnBegin": 5,
-                        "columnEnd": 8,
+                        "columnEnd": 20,
                         "lineBegin": 11,
                         "lineEnd": 11
                     },
@@ -352,8 +352,8 @@
                 "location": {
                     "filepath": "test/es_exports.js.flow",
                     "range": {
-                        "columnBegin": 13,
-                        "columnEnd": 16,
+                        "columnBegin": 8,
+                        "columnEnd": 26,
                         "lineBegin": 28,
                         "lineEnd": 28
                     },
@@ -428,8 +428,8 @@
                 "location": {
                     "filepath": "test/imports.js",
                     "range": {
-                        "columnBegin": 6,
-                        "columnEnd": 7,
+                        "columnBegin": 1,
+                        "columnEnd": 12,
                         "lineBegin": 31,
                         "lineEnd": 31
                     },
@@ -458,8 +458,8 @@
                 "location": {
                     "filepath": "test/imports.js",
                     "range": {
-                        "columnBegin": 7,
-                        "columnEnd": 10,
+                        "columnBegin": 1,
+                        "columnEnd": 25,
                         "lineBegin": 27,
                         "lineEnd": 27
                     },
@@ -481,8 +481,8 @@
                 "location": {
                     "filepath": "test/imports.js",
                     "range": {
-                        "columnBegin": 7,
-                        "columnEnd": 10,
+                        "columnBegin": 1,
+                        "columnEnd": 25,
                         "lineBegin": 27,
                         "lineEnd": 27
                     },
@@ -505,7 +505,7 @@
                     "filepath": "test/imports.js",
                     "range": {
                         "columnBegin": 5,
-                        "columnEnd": 6,
+                        "columnEnd": 18,
                         "lineBegin": 21,
                         "lineEnd": 21
                     },
@@ -528,7 +528,7 @@
                     "filepath": "test/imports.js",
                     "range": {
                         "columnBegin": 5,
-                        "columnEnd": 6,
+                        "columnEnd": 19,
                         "lineBegin": 32,
                         "lineEnd": 32
                     },
@@ -551,7 +551,7 @@
                     "filepath": "test/imports.js",
                     "range": {
                         "columnBegin": 5,
-                        "columnEnd": 6,
+                        "columnEnd": 20,
                         "lineBegin": 23,
                         "lineEnd": 23
                     },
@@ -574,7 +574,7 @@
                     "filepath": "test/imports.js",
                     "range": {
                         "columnBegin": 5,
-                        "columnEnd": 6,
+                        "columnEnd": 26,
                         "lineBegin": 24,
                         "lineEnd": 24
                     },
@@ -597,7 +597,7 @@
                     "filepath": "test/imports.js",
                     "range": {
                         "columnBegin": 5,
-                        "columnEnd": 6,
+                        "columnEnd": 19,
                         "lineBegin": 25,
                         "lineEnd": 25
                     },

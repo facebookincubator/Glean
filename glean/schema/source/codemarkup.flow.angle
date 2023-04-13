@@ -208,13 +208,13 @@ predicate FlowDeclarationDocumentation :
   }
   { Decl, File, Span } where
     ( { localDecl = D } = Decl;
-      flow.DeclarationInfo { D, _, { just = Docs } }
+      flow.DeclarationInfo { D, _, { just = Docs }, _ }
     ) | (
       { memberDecl = D } = Decl;
-      flow.MemberDeclarationInfo { D, _, { just = Docs } }
+      flow.MemberDeclarationInfo { D, _, { just = Docs }, _ }
     ) | (
       { typeDecl = D } = Decl;
-      flow.TypeDeclarationInfo { D, _, { just = Docs } }
+      flow.TypeDeclarationInfo { D, _, { just = Docs }, _ }
     );
     FlowDocumentationSpan { Docs, File, Span }
 
