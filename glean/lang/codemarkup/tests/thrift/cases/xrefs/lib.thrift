@@ -232,7 +232,13 @@ struct SearchBySymbolIdResult {
   1: list<SymbolId> symbols;
 }
 
-service GlassService {
+service ZeroService {
+}
+
+service BaseService extends ZeroService {
+}
+
+service GlassService extends BaseService {
   DocumentSymbolListXResult documentSymbolListX(
     1: DocumentSymbolsRequest request,
     2: RequestOptions options,

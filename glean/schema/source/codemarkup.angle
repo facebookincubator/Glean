@@ -382,6 +382,10 @@ predicate ExtendsParentEntity :
       { python = C } = Child;
       codemarkup.python.PythonExtendsParentEntity { C, P };
       { python = P } = Parent
+    ) | (
+      { thrift = C } = Child;
+      codemarkup.thrift.ThriftExtendsParentEntity { C, P };
+      { thrift = P } = Parent
     )
 
 # A parent `is extended by` a child
@@ -402,6 +406,10 @@ predicate ExtendsChildEntity :
       { python = P } = Parent;
       codemarkup.python.PythonExtendsChildEntity { P, C };
       { python = C } = Child
+    ) | (
+      { thrift = P } = Parent;
+      codemarkup.thrift.ThriftExtendsChildEntity { P, C };
+      { thrift = C } = Child
     )
 
 # A child `is contained by` a parent

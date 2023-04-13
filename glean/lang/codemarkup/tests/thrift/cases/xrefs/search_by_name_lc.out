@@ -8,9 +8,9 @@
             "key": {
               "locName": {
                 "endCol": 20,
-                "endLine": 235,
+                "endLine": 241,
                 "startCol": 9,
-                "startLine": 235
+                "startLine": 241
               },
               "name": {
                 "key": {
@@ -30,8 +30,8 @@
             "columnBegin": 9,
             "columnEnd": 20,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 235,
-            "lineEnd": 235
+            "lineBegin": 241,
+            "lineEnd": 241
           }
         },
         "name": "GlassService"

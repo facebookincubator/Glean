@@ -1946,10 +1946,54 @@
         "service_": {
           "key": {
             "locName": {
-              "endCol": 20,
+              "endCol": 19,
               "endLine": 235,
               "startCol": 9,
               "startLine": 235
+            },
+            "name": {
+              "key": {
+                "file": { "key": { "key": "lib.thrift" } },
+                "name": { "key": "ZeroService" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "thrift": {
+        "service_": {
+          "key": {
+            "locName": {
+              "endCol": 19,
+              "endLine": 238,
+              "startCol": 9,
+              "startLine": 238
+            },
+            "name": {
+              "key": {
+                "file": { "key": { "key": "lib.thrift" } },
+                "name": { "key": "BaseService" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "thrift": {
+        "service_": {
+          "key": {
+            "locName": {
+              "endCol": 20,
+              "endLine": 241,
+              "startCol": 9,
+              "startLine": 241
             },
             "name": {
               "key": {

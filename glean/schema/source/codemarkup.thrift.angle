@@ -65,4 +65,28 @@ predicate ThriftFileEntityXRefLocations:
   TargetRange = {TargetFile, TLB, TCB, TLE, TCE };
   { Name, TargetFile, { range = TargetRange }, nothing } = TargetLocation;
 
+#
+# Extends relationships
+#
+
+predicate ThriftExtendsChildEntity :
+  {
+    parent: code.thrift.Entity,
+    child: code.thrift.Entity
+  }
+  { Parent, Child } where
+    { service_ = P } = Parent;
+    thrift.ServiceChild { parent = P, child = C };
+    { service_ = C } = Child
+
+predicate ThriftExtendsParentEntity :
+  {
+    child: code.thrift.Entity,
+    parent: code.thrift.Entity
+  }
+  { Child, Parent } where
+    { service_ = C } = Child ;
+    thrift.ServiceParent { child = C, parent = P };
+    { service_ = P } = Parent
+
 }

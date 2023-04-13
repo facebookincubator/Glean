@@ -94,6 +94,10 @@ predicate DeclarationName:
     decl: Declaration
   }
 
+predicate ServiceParent : { child : ServiceName, parent : ServiceName }
+
+predicate ServiceChild : { parent : ServiceName, child : ServiceName }
+
 }
 
 schema thrift.5 : thrift.4 {}
