@@ -41,7 +41,12 @@ instance Search Thrift.Declaration where
           None{} -> case (init pieces, last pieces) of
             (morePieces, serviceName) -> do
               let path = joinFragments morePieces
-              searchSymbolId toks $ searchFunctionName path serviceName name
+              moreResult <- searchSymbolId toks $ searchFunctionName
+                  path serviceName name
+              case moreResult of
+                None{} ->
+                  searchSymbolId toks $ searchThriftFile (joinFragments toks)
+                r -> return r
           r -> return r
 
 -- A basic entity lookup:  this will find named decls, exceptions, constants and
@@ -96,3 +101,15 @@ searchFunctionName path servicename name =
       end),
     entityLocation (alt @"thrift" (alt @"decl" decl)) file rangespan lname
   ]
+
+searchThriftFile :: Text -> Angle (ResultLocation Thrift.Declaration)
+searchThriftFile path = vars $ \(file :: Angle Src.File)
+  (thriftFile :: Angle Thrift.File) (decl :: Angle Thrift.Declaration)
+       (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
+    tuple (decl, file, rangespan, lname) `where_` [
+      file .= predicate @Src.File (string path),
+      thriftFile .= predicate @Thrift.File file,
+      decl .= sig (alt @"include_"
+              (asPredicate thriftFile) :: Angle Thrift.Declaration),
+      entityLocation (alt @"thrift" (alt @"decl" decl)) file rangespan lname
+    ]
