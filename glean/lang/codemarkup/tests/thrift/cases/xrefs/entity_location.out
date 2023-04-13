@@ -2391,6 +2391,30 @@
   {
     "key": {
       "entity": {
+        "thrift": { "decl": { "include_": { "key": { "key": "all.thrift" } } } }
+      },
+      "location": {
+        "file": { "key": "all.thrift" },
+        "location": { "span": { "length": 0, "start": 0 } },
+        "name": "all.thrift"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": { "decl": { "include_": { "key": { "key": "lib.thrift" } } } }
+      },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": { "span": { "length": 0, "start": 0 } },
+        "name": "lib.thrift"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
         "thrift": {
           "decl": {
             "named": {

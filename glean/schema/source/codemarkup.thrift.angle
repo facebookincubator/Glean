@@ -32,11 +32,16 @@ predicate ThriftEntityLocation:
     entity: code.thrift.Entity,
     location: codemarkup.types.Location,
   }
- { { decl = Decl }, { Name, File, { range = Range }, nothing } } where
-    thrift.DeclarationNameSpan { Decl, Ident, thrift.File File, Loc };
-    thrift.Identifier Name = Ident;
-    { LB, CB, LE, CE } = Loc;
-    { File, LB, CB, LE, CE } = Range;
+  { { decl = Decl }, { Name, File, RangeSpan, nothing } } where
+    ( thrift.DeclarationNameSpan { Decl, Ident, thrift.File File, Loc };
+      thrift.Identifier Name = Ident;
+      { LB, CB, LE, CE } = Loc;
+      { range = { File, LB, CB, LE, CE } } = RangeSpan;
+    ) | (
+      { include_ = thrift.File File } = Decl;
+      src.File Name = File;
+      { span = {0,0} } = RangeSpan;
+    )
 
 #
 # Finding references in a file
@@ -98,9 +103,14 @@ predicate ThriftContainsChildEntity :
     child: code.thrift.Entity
   }
   { { decl = Parent }, { decl = Child } } where
-    { service_ = P } = Parent;
-    F = thrift.FunctionName { service_ = P };
-    { function_ = F } = Child
+    ( { service_ = P } = Parent;
+      F = thrift.FunctionName { service_ = P };
+      { function_ = F } = Child
+    ) | (
+      { include_ = F } = Parent;
+      QN = thrift.QualName { file = F };
+      thrift.DeclarationName { qname = QN, decl = Child }
+    )
 
 predicate ThriftContainsParentEntity :
   {
@@ -108,9 +118,17 @@ predicate ThriftContainsParentEntity :
     parent: code.thrift.Entity
   }
   { { decl = Child }, { decl = Parent } } where
-    { function_ = F } = Child;
-    thrift.FunctionName { service_ = P } = F;
-    { service_ = P } = Parent
+    ( { function_ = F } = Child;
+      thrift.FunctionName { service_ = P } = F;
+      { service_ = P } = Parent
+    ) | (
+      ( { exception_ = { name = QName } } ) |
+      ( { service_ = { name = QName } } ) |
+      ( { constant = { name = QName } } ) |
+      ( { named = { name = { name = QName } } } ) = Child;
+      { file = File } = QName;
+      { include_ = File } = Parent
+    )
 
 predicate ThriftExtendsChildEntity :
   {
