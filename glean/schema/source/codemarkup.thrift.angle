@@ -67,6 +67,28 @@ predicate ThriftFileEntityXRefLocations:
   { Name, TargetFile, { range = TargetRange }, nothing } = TargetLocation;
 
 #
+# Kinds and annotations
+#
+
+predicate ThriftEntityKind:
+  {
+    entity: code.thrift.Entity,
+    kind: codemarkup.types.SymbolKind
+  }
+  { { decl = Decl }, Kind } where
+    ({ include_ = _ } = Decl; File = Kind) |
+    ({ function_ = _ } = Decl; Function = Kind) |
+    ({ enumValue = _ } = Decl; Enumerator = Kind) |
+    ({ constant = _ } = Decl; Constant = Kind) |
+    ({ named = { name = { kind = typedef_ } } } = Decl; Type = Kind) |
+    ({ named = { name = { kind = enum_ } } } = Decl; Enum_ = Kind) |
+    ({ named = { name = { kind = struct_ } } } = Decl; Struct = Kind) |
+    ({ named = { name = { kind = union_ } } } = Decl; Union = Kind) |
+    # we don't have a great symbol kinds for thesse
+    ({ exception_ = _ } = Decl; Value = Kind) |
+    ({ service_ = _ } = Decl ; Class_ = Kind);
+
+#
 # Extends relationships
 #
 

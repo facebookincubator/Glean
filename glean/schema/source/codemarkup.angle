@@ -42,7 +42,8 @@ predicate EntityKind:
     (codemarkup.erlang.ErlangEntityKind { E, Kind }; { erlang = E } = Entity) |
     (codemarkup.lsif.EntityInfo { E, { kind = Kind }}; { lsif = E } = Entity) |
     (codemarkup.flow.FlowEntityKind { E, Kind }; { flow = E } = Entity) |
-    (codemarkup.java.JavaEntityKind { E, Kind }; { java = E } = Entity)
+    (codemarkup.java.JavaEntityKind { E, Kind }; { java = E } = Entity) |
+    (codemarkup.thrift.ThriftEntityKind { E, Kind }; { thrift = E } = Entity);
 
 # Retrieve information about an entity
 predicate EntityInfo:
