@@ -4,6 +4,7 @@ schema buck.4 {
 import src.1
 
 # A target locator (subdir//path:name), subdir can be empty
+# 'subdir' is actually a buck cell name.
 predicate Locator :
   {
     subdir : maybe string,
@@ -377,15 +378,18 @@ type FailureReason = enum {
   # Failed to create Compilation database
   FailedCdb |
   # Failed to run a buck query on this target
-  QueryFailed
+  QueryFailed |
+  Unclassified
 }
 
 predicate IndexerName: string
 
-predicate IndexFailure :
+# The original definition of 'IndexFailure' was not evolvable, so we lost
+# this nice name
+predicate IndexFailureX :
   {
     # Source of the error
-    source : Target,
+    source : {locator: Locator | buildFile: src.File },
     # Any string to identify an Indexer which added this predicate
     indexer : IndexerName,
     # Predefined classification of errors
