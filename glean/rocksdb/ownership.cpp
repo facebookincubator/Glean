@@ -32,7 +32,7 @@ std::vector<size_t> DatabaseImpl::loadOwnershipUnitCounters() {
     binary::Input key(byteRange(iter->key()));
     auto id = key.trustedNat();
     if (id == first_unit_id + result.size()) {
-      result.push_back(0);
+      result.push_back(1);
     } else if (id + 1 == first_unit_id + result.size()) {
       ++result.back();
     } else {

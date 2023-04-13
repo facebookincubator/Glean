@@ -683,6 +683,32 @@ deriveTest = TestCase $
       predicate @Glean.Test.SkipRevEdge wild
     assertEqual "derived 6" 1 (length results)
 
+restartIndexing :: Test
+restartIndexing = TestCase $
+  withTestEnv [] $ \env -> do
+    let repo = Repo "base" "0"
+    kickOffTestDB env repo id
+    writeFactsIntoDB env repo [ Glean.Test.allPredicates ] $ do
+      withUnit "A" $
+        makeFact_ @Glean.Test.Node (Glean.Test.Node_key "a")
+    closeDatabase env repo
+    -- After closing and re-opening, add more facts to the "A" unit.
+    -- This tests loadOwnershipUnitCounters()
+    writeFactsIntoDB env repo [ Glean.Test.allPredicates ] $ do
+      withUnit "A" $
+        makeFact_ @Glean.Test.Node (Glean.Test.Node_key "b")
+    completeTestDB env repo
+
+    results <- runQuery_ env repo $ recursive $ query $
+      predicate @Glean.Test.Node $ rec $ field @"label" "a" end
+    case results of
+      [Glean.Test.Node id _] -> do
+        ownerExpr <- factOwnership env repo (Fid id)
+        assertBool "Node owner" $ case ownerExpr of
+          Just (OrOwners [Unit "A"]) -> True
+          _ -> False
+      _ -> assertFailure "query failed"
+
 main :: IO ()
 main = do
   if System.Info.arch == "x86_64"
@@ -699,4 +725,5 @@ main_ = withUnitTest $ testRunner $ TestList
   , TestLabel "deriveTest" deriveTest
   , TestLabel "stackedIncrementalTest" stackedIncrementalTest
   , TestLabel "stackedIncrementalTest2" stackedIncrementalTest2
+  , TestLabel "restartIndexing" restartIndexing
   ]
