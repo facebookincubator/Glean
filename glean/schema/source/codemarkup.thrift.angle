@@ -31,12 +31,11 @@ predicate ThriftEntityLocation:
     entity: code.thrift.Entity,
     location: codemarkup.types.Location,
   }
- { Declaration, { Name, FileS, { range = Range }, nothing } } where
-    thrift.DeclarationNameSpan { Declaration, Identifier, FileT, Loc };
-    Identifier = thrift.Identifier Name;
-    FileT = thrift.File FileS;
+ { Decl, { Name, File, { range = Range }, nothing } } where
+    thrift.DeclarationNameSpan { Decl, Ident, thrift.File File, Loc };
+    thrift.Identifier Name = Ident;
     { LB, CB, LE, CE } = Loc;
-    { lineBegin = LB, columnBegin = CB, lineEnd = LE, columnEnd = CE } = Range;
+    { File, LB, CB, LE, CE } = Range;
 
 #
 # Finding references in a file

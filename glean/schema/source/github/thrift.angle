@@ -66,15 +66,34 @@ predicate DeclarationNameSpan :
     span: Loc,
   }
 
-  ### Stubs
+### Stubs
 
-  predicate TypeSpecification : {
-    named : NamedType
+predicate TypeSpecification : {
+  named : NamedType
+}
+
+predicate StructuredAnnotation : {
+  type_ : TypeSpecification,
+}
+
+predicate SearchByName:
+  {
+    name: Identifier,
+    qname: QualName,
   }
 
-  predicate StructuredAnnotation : {
-    type_ : TypeSpecification,
+predicate NameLowerCase:
+  {
+    nameStr: string,
+    name: Identifier
   }
+
+predicate DeclarationName:
+  {
+    qname: QualName,
+    decl: Declaration
+  }
+
 }
 
 schema thrift.5 : thrift.4 {}

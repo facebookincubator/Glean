@@ -44,7 +44,8 @@ predicate SearchByNameAndLanguage:
     ( Cpp = Language; CxxSearchByName { Name, Entity } ) |
     ( Haskell = Language; HsSearchByName { Name, Entity } ) |
     ( Erlang = Language; ErlangSearchByName { Name, Entity } ) |
-    ( Rust = Language; RustSearchByName { Name, Entity } );
+    ( Rust = Language; RustSearchByName { Name, Entity } ) |
+    ( Thrift = Language; ThriftSearchByName { Name, Entity } );
     code.EntityLanguage { Entity, Language }; # double check the entity lang
 
 # global symbol search normalized to lower case
@@ -61,7 +62,8 @@ predicate SearchByLowerCaseNameAndLanguage:
     ( Cpp = Language; CxxSearchByLowerCaseName { Name, Entity } ) |
     ( Haskell = Language; HsSearchByLowerCaseName { Name, Entity } ) |
     ( Erlang = Language; ErlangSearchByLowerCaseName { Name, Entity } ) |
-    ( Rust = Language; RustSearchByLowerCaseName { Name, Entity } );
+    ( Rust = Language; RustSearchByLowerCaseName { Name, Entity } ) |
+    ( Thrift = Language; ThriftSearchByLowerCaseName { Name, Entity } );
     code.EntityLanguage { Entity, Language }; # double check the entity lang
 
 # scoped search (experimental!)
@@ -401,6 +403,33 @@ predicate CxxSearchByNameAndScopeFact:
     if ({ decl = Decl } = Ent) # just definitions , not decls
       then ( search.cxx.DeclIsDefn { Decl, Defn }; { defn = Defn } = DefnE )
       else ( Ent = DefnE );
+
+predicate ThriftSearchByName:
+  {
+    name: string,
+    entity: code.Entity
+  }
+  { Name, Entity } where
+    Ident = thrift.Identifier Name;
+    ThriftSearchByNameFact { Ident, Entity }
+
+predicate ThriftSearchByLowerCaseName:
+  {
+    name: string,
+    entity: code.Entity
+  }
+  { NameStr, Entity } where
+    thrift.NameLowerCase { NameStr, Ident };
+    ThriftSearchByNameFact { Ident, Entity }
+
+predicate ThriftSearchByNameFact:
+  {
+    name: thrift.Identifier,
+    entity: code.Entity
+  }
+  { Ident, { thrift = Decl }} where
+    thrift.SearchByName { Ident, QName };
+    thrift.DeclarationName { QName, Decl }
 
 predicate HsSearchByName:
   {
