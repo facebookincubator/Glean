@@ -434,6 +434,10 @@ predicate ContainsParentEntity :
       { flow = C } = Child;
       codemarkup.flow.FlowContainsParentEntity { C, P };
       { flow = P } = Parent
+    ) | (
+      { thrift = C } = Child;
+      codemarkup.thrift.ThriftContainsParentEntity { C, P };
+      { thrift = P } = Parent
     )
 
 # A parent `contains` a child
@@ -458,6 +462,10 @@ predicate ContainsChildEntity :
       { flow = P } = Parent;
       codemarkup.flow.FlowContainsChildEntity { P, C };
       { flow = C } = Child
+    ) | (
+      { thrift = P } = Parent;
+      codemarkup.thrift.ThriftContainsChildEntity { P, C };
+      { thrift = C } = Child
     )
 
 #

@@ -427,7 +427,7 @@ predicate ThriftSearchByNameFact:
     name: thrift.Identifier,
     entity: code.Entity
   }
-  { Ident, { thrift = Decl }} where
+  { Ident, { thrift = { decl = Decl } }} where
     thrift.SearchByName { Ident, QName };
     thrift.DeclarationName { QName, Decl }
 

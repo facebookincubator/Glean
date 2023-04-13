@@ -89,9 +89,10 @@ import qualified Glean.Glass.SymbolId.Pp as Pp
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Schema.CodeLsif.Types as Lsif
 
+import Glean.Schema.CodeErlang.Types as Erlang ( Entity(Entity_decl) )
 import Glean.Schema.CodeHack.Types as Hack ( Entity(Entity_decl) )
 import Glean.Schema.CodePython.Types as Python ( Entity(Entity_decl) )
-import Glean.Schema.CodeErlang.Types as Erlang ( Entity(Entity_decl) )
+import Glean.Schema.CodeThrift.Types as Thrift ( Entity(Entity_decl) )
 
 -- Introduce a SymbolId. This is essentially the semantic "path to this symbol
 -- in the Codex style. www/php/Glean/getLatestRepo
@@ -255,7 +256,7 @@ instance Symbol Code.Entity where
     Code.Entity_java x -> toSymbolWithPath x p
     Code.Entity_pp x -> toSymbolWithPath x p
     Code.Entity_rust x -> toSymbolWithPath x p
-    Code.Entity_thrift x -> toSymbolWithPath x p
+    Code.Entity_thrift (Thrift.Entity_decl x) -> toSymbolWithPath x p
     Code.Entity_lsif ent -> case ent of -- enumerate all variants for lsif
       Lsif.Entity_erlang se -> toSymbolWithPath se p
       Lsif.Entity_fsharp se -> toSymbolWithPath se p
@@ -292,8 +293,8 @@ entityToAngle e = case e of
     alt @"erlang" (alt @"decl" (toAngle x))
   Code.Entity_buck x -> Right $
     alt @"buck" (toAngle x)
-  Code.Entity_thrift x -> Right $
-    alt @"thrift" (toAngle x)
+  Code.Entity_thrift (Thrift.Entity_decl x) -> Right $
+    alt @"thrift" (alt @"decl" (toAngle x))
   -- lsif languages, enumerate all lang constructors
   Code.Entity_lsif se -> alt @"lsif" <$> case se of
       Lsif.Entity_erlang x -> Right $ alt @"erlang" (toAngle x)
@@ -320,7 +321,7 @@ instance ToQName Code.Entity where
     Code.Entity_cxx x -> toQName x
     Code.Entity_erlang x -> toQName x
     Code.Entity_java x -> toQName x
-    Code.Entity_thrift x -> toQName x
+    Code.Entity_thrift (Thrift.Entity_decl x) -> toQName x
     Code.Entity_lsif se -> case se of -- enumerate all cases for lsif
       Lsif.Entity_erlang x -> toQName x
       Lsif.Entity_fsharp x -> toQName x

@@ -1,9 +1,10 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
 schema codemarkup.thrift.4 {
-import src.1
-import code.thrift.4
+
+import code.thrift.5
 import codemarkup.types.1
+import src.1
 import thrift.7
 
 #
@@ -15,10 +16,10 @@ predicate ThriftResolveLocation:
     location: codemarkup.types.Location,
     entity: code.thrift.Entity,
   }
-  { { Name, FileS, { range = Range }, nothing }, Declaration } where
+  { { Name, FileS, { range = Range }, nothing }, { decl = Decl } } where
     FileT = thrift.File FileS;
-    thrift.FileDeclaration { FileT, Declaration };
-    thrift.DeclarationNameSpan { Declaration, Identifier, FileT, {LB, CB, LE, CE} };
+    thrift.FileDeclaration { FileT, Decl };
+    thrift.DeclarationNameSpan { Decl, Identifier, FileT, {LB, CB, LE, CE} };
     Identifier = thrift.Identifier Name;
     { file = FileS, lineBegin = LB, columnBegin = CB, lineEnd = LE, columnEnd = CE } = Range;
 
@@ -31,7 +32,7 @@ predicate ThriftEntityLocation:
     entity: code.thrift.Entity,
     location: codemarkup.types.Location,
   }
- { Decl, { Name, File, { range = Range }, nothing } } where
+ { { decl = Decl }, { Name, File, { range = Range }, nothing } } where
     thrift.DeclarationNameSpan { Decl, Ident, thrift.File File, Loc };
     thrift.Identifier Name = Ident;
     { LB, CB, LE, CE } = Loc;
@@ -50,7 +51,7 @@ predicate ThriftFileEntityXRefLocations:
  {
    File,
    { target = TargetLocation, source = { range = SourceRange } },
-   XRefTarget
+   { decl = XRefTarget }
   }
   where
   FileT = thrift.File File;
@@ -69,12 +70,32 @@ predicate ThriftFileEntityXRefLocations:
 # Extends relationships
 #
 
+predicate ThriftContainsChildEntity :
+  {
+    parent: code.thrift.Entity,
+    child: code.thrift.Entity
+  }
+  { { decl = Parent }, { decl = Child } } where
+    { service_ = P } = Parent;
+    F = thrift.FunctionName { service_ = P };
+    { function_ = F } = Child
+
+predicate ThriftContainsParentEntity :
+  {
+    child: code.thrift.Entity,
+    parent: code.thrift.Entity
+  }
+  { { decl = Child }, { decl = Parent } } where
+    { function_ = F } = Child;
+    thrift.FunctionName { service_ = P } = F;
+    { service_ = P } = Parent
+
 predicate ThriftExtendsChildEntity :
   {
     parent: code.thrift.Entity,
     child: code.thrift.Entity
   }
-  { Parent, Child } where
+  { { decl = Parent }, { decl = Child } } where
     { service_ = P } = Parent;
     thrift.ServiceChild { parent = P, child = C };
     { service_ = C } = Child
@@ -84,7 +105,7 @@ predicate ThriftExtendsParentEntity :
     child: code.thrift.Entity,
     parent: code.thrift.Entity
   }
-  { Child, Parent } where
+  { { decl = Child }, { decl = Parent } } where
     { service_ = C } = Child ;
     thrift.ServiceParent { child = C, parent = P };
     { service_ = P } = Parent

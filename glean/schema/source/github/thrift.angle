@@ -43,6 +43,7 @@ type XRefTarget =
     service_ : ServiceName |
     constant : Constant |
     enumValue : EnumValue |
+    function_ : FunctionName |
   }
 
 predicate FileDeclaration : { file: File, decl: Declaration }
@@ -98,8 +99,16 @@ predicate ServiceParent : { child : ServiceName, parent : ServiceName }
 
 predicate ServiceChild : { parent : ServiceName, child : ServiceName }
 
+predicate FunctionName :
+  {
+    service_ : ServiceName,
+    name : Identifier,
+    locName : Loc,
+  }
+
 }
 
 schema thrift.5 : thrift.4 {}
 schema thrift.6 : thrift.5 {}
 schema thrift.7 : thrift.6 {}
+schema thrift.8 : thrift.7 {}

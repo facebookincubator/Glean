@@ -14,7 +14,6 @@ module Glean.Glass.Search.Thrift
   ( {- instances -}
   ) where
 
-import Data.Coerce ( coerce )
 import Data.Text ( Text )
 
 import Glean.Angle as Angle
@@ -23,31 +22,39 @@ import Glean.Glass.Search.Class
 import Glean.Glass.Query ( entityLocation )
 import Glean.Glass.Utils ( joinFragments )
 
-import qualified Glean.Schema.CodeThrift.Types as Thrift
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import qualified Glean.Schema.Thrift.Types as Thrift
+import qualified Glean.Schema.CodeThrift.Types as Thrift
 import qualified Glean.Schema.Src.Types as Src
 
 instance Search Thrift.Entity where
+  symbolSearch toks = fmap Thrift.Entity_decl <$> symbolSearch toks
+
+instance Search Thrift.Declaration where
   symbolSearch toks = case toks of
     [] -> return $ None "Thrift.symbolSearch: empty query"
     _ -> case (init toks, last toks) of
       (pieces, name) -> do
         let path = joinFragments pieces
-        searchSymbolId toks $ searchQName path name
+        result <- searchSymbolId toks $ searchQName path name
+        case result of
+          None{} -> case (init pieces, last pieces) of
+            (morePieces, serviceName) -> do
+              let path = joinFragments morePieces
+              searchSymbolId toks $ searchFunctionName path serviceName name
+          r -> return r
 
 -- A basic entity lookup:  this will find named decls, exceptions, constants and
 -- service names, which are indexd by QualName
 -- The separate thrift.File fact is slightly annoying.
-searchQName :: Text -> Text -> Angle (ResultLocation Thrift.Entity)
+searchQName :: Text -> Text -> Angle (ResultLocation Thrift.Declaration)
 searchQName path name =
-  vars $ \(ent :: Angle Thrift.Entity) (file :: Angle Src.File)
+  vars $ \(file :: Angle Src.File)
      (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text)
      (qname :: Angle Thrift.QualName)
-     (thriftFile :: Angle Thrift.File)
-     (decl :: Angle Thrift.Declaration) ->
+     (thriftFile :: Angle Thrift.File) (decl :: Angle Thrift.Declaration) ->
 
-  tuple (ent, file, rangespan, lname) `where_` [
+  tuple (decl, file, rangespan, lname) `where_` [
     file .= predicate @Src.File (string path),
     thriftFile .= predicate @Thrift.File file,
     qname .= predicate @Thrift.QualName (
@@ -61,11 +68,31 @@ searchQName path name =
         field @"qname" (asPredicate qname) $
         field @"decl" decl
       end),
-    ent .= cast decl,
-    entityLocation (alt @"thrift" ent) file rangespan lname
+    entityLocation (alt @"thrift" (alt @"decl" decl)) file rangespan lname
   ]
 
--- we are coercing (silently) thrift.Declaration to code.thrift.Entity
--- these are the same shape but defined in two places
-cast :: Angle Thrift.Declaration -> Angle Thrift.Entity
-cast = coerce
+searchFunctionName
+  :: Text -> Text -> Text -> Angle (ResultLocation Thrift.Declaration)
+searchFunctionName path servicename name =
+  vars $ \(file :: Angle Src.File)
+     (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text)
+     (qname :: Angle Thrift.QualName)
+     (thriftFile :: Angle Thrift.File) (decl :: Angle Thrift.Declaration) ->
+
+  tuple (decl, file, rangespan, lname) `where_` [
+    file .= predicate @Src.File (string path),
+    thriftFile .= predicate @Thrift.File file,
+    qname .= predicate @Thrift.QualName (
+      rec $
+        field @"file" (asPredicate thriftFile) $
+        field @"name" (string servicename)
+      end
+    ),
+    wild .= predicate @Thrift.FunctionDeclarationName (
+      rec $
+        field @"qname" (asPredicate qname) $
+        field @"name" (string name) $
+        field @"decl" decl
+      end),
+    entityLocation (alt @"thrift" (alt @"decl" decl)) file rangespan lname
+  ]

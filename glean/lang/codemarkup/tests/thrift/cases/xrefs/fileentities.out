@@ -4,24 +4,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "DefinitionKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "DefinitionKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 12,
-                "endLine": 215,
-                "startCol": 3,
-                "startLine": 215
-              },
-              "name": { "key": "Definition" }
+                },
+                "locName": {
+                  "endCol": 12,
+                  "endLine": 215,
+                  "startCol": 3,
+                  "startLine": 215
+                },
+                "name": { "key": "Definition" }
+              }
             }
           }
         }
@@ -46,24 +48,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "DefinitionKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "DefinitionKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 13,
-                "endLine": 216,
-                "startCol": 3,
-                "startLine": 216
-              },
-              "name": { "key": "Declaration" }
+                },
+                "locName": {
+                  "endCol": 13,
+                  "endLine": 216,
+                  "startCol": 3,
+                  "startLine": 216
+                },
+                "name": { "key": "Declaration" }
+              }
             }
           }
         }
@@ -88,24 +92,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "Language" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 5,
-                "endLine": 199,
-                "startCol": 3,
-                "startLine": 199
-              },
-              "name": { "key": "Cpp" }
+                },
+                "locName": {
+                  "endCol": 5,
+                  "endLine": 199,
+                  "startCol": 3,
+                  "startLine": 199
+                },
+                "name": { "key": "Cpp" }
+              }
             }
           }
         }
@@ -130,24 +136,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "Language" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 6,
-                "endLine": 201,
-                "startCol": 3,
-                "startLine": 201
-              },
-              "name": { "key": "Hack" }
+                },
+                "locName": {
+                  "endCol": 6,
+                  "endLine": 201,
+                  "startCol": 3,
+                  "startLine": 201
+                },
+                "name": { "key": "Hack" }
+              }
             }
           }
         }
@@ -172,24 +180,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "Language" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 6,
-                "endLine": 203,
-                "startCol": 3,
-                "startLine": 203
-              },
-              "name": { "key": "Java" }
+                },
+                "locName": {
+                  "endCol": 6,
+                  "endLine": 203,
+                  "startCol": 3,
+                  "startLine": 203
+                },
+                "name": { "key": "Java" }
+              }
             }
           }
         }
@@ -214,24 +224,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "Language" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 6,
-                "endLine": 208,
-                "startCol": 3,
-                "startLine": 208
-              },
-              "name": { "key": "Rust" }
+                },
+                "locName": {
+                  "endCol": 6,
+                  "endLine": 208,
+                  "startCol": 3,
+                  "startLine": 208
+                },
+                "name": { "key": "Rust" }
+              }
             }
           }
         }
@@ -256,24 +268,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "Language" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 6,
-                "endLine": 209,
-                "startCol": 3,
-                "startLine": 209
-              },
-              "name": { "key": "Buck" }
+                },
+                "locName": {
+                  "endCol": 6,
+                  "endLine": 209,
+                  "startCol": 3,
+                  "startLine": 209
+                },
+                "name": { "key": "Buck" }
+              }
             }
           }
         }
@@ -298,24 +312,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "Language" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 8,
-                "endLine": 205,
-                "startCol": 3,
-                "startLine": 205
-              },
-              "name": { "key": "Python" }
+                },
+                "locName": {
+                  "endCol": 8,
+                  "endLine": 205,
+                  "startCol": 3,
+                  "startLine": 205
+                },
+                "name": { "key": "Python" }
+              }
             }
           }
         }
@@ -340,24 +356,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "Language" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 8,
-                "endLine": 207,
-                "startCol": 3,
-                "startLine": 207
-              },
-              "name": { "key": "Thrift" }
+                },
+                "locName": {
+                  "endCol": 8,
+                  "endLine": 207,
+                  "startCol": 3,
+                  "startLine": 207
+                },
+                "name": { "key": "Thrift" }
+              }
             }
           }
         }
@@ -382,24 +400,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "Language" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 9,
-                "endLine": 202,
-                "startCol": 3,
-                "startLine": 202
-              },
-              "name": { "key": "Haskell" }
+                },
+                "locName": {
+                  "endCol": 9,
+                  "endLine": 202,
+                  "startCol": 3,
+                  "startLine": 202
+                },
+                "name": { "key": "Haskell" }
+              }
             }
           }
         }
@@ -424,24 +444,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "Language" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 12,
-                "endLine": 200,
-                "startCol": 3,
-                "startLine": 200
-              },
-              "name": { "key": "JavaScript" }
+                },
+                "locName": {
+                  "endCol": 12,
+                  "endLine": 200,
+                  "startCol": 3,
+                  "startLine": 200
+                },
+                "name": { "key": "JavaScript" }
+              }
             }
           }
         }
@@ -466,24 +488,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "Language" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 12,
-                "endLine": 204,
-                "startCol": 3,
-                "startLine": 204
-              },
-              "name": { "key": "ObjectiveC" }
+                },
+                "locName": {
+                  "endCol": 12,
+                  "endLine": 204,
+                  "startCol": 3,
+                  "startLine": 204
+                },
+                "name": { "key": "ObjectiveC" }
+              }
             }
           }
         }
@@ -508,24 +532,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "Language" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 14,
-                "endLine": 206,
-                "startCol": 3,
-                "startLine": 206
-              },
-              "name": { "key": "PreProcessor" }
+                },
+                "locName": {
+                  "endCol": 14,
+                  "endLine": 206,
+                  "startCol": 3,
+                  "startLine": 206
+                },
+                "name": { "key": "PreProcessor" }
+              }
             }
           }
         }
@@ -550,24 +576,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 5,
-                "endLine": 185,
-                "startCol": 3,
-                "startLine": 185
-              },
-              "name": { "key": "Key" }
+                },
+                "locName": {
+                  "endCol": 5,
+                  "endLine": 185,
+                  "startCol": 3,
+                  "startLine": 185
+                },
+                "name": { "key": "Key" }
+              }
             }
           }
         }
@@ -592,24 +620,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 6,
-                "endLine": 165,
-                "startCol": 3,
-                "startLine": 165
-              },
-              "name": { "key": "Type" }
+                },
+                "locName": {
+                  "endCol": 6,
+                  "endLine": 165,
+                  "startCol": 3,
+                  "startLine": 165
+                },
+                "name": { "key": "Type" }
+              }
             }
           }
         }
@@ -634,24 +664,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 6,
-                "endLine": 167,
-                "startCol": 3,
-                "startLine": 167
-              },
-              "name": { "key": "File" }
+                },
+                "locName": {
+                  "endCol": 6,
+                  "endLine": 167,
+                  "startCol": 3,
+                  "startLine": 167
+                },
+                "name": { "key": "File" }
+              }
             }
           }
         }
@@ -676,24 +708,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 6,
-                "endLine": 175,
-                "startCol": 3,
-                "startLine": 175
-              },
-              "name": { "key": "Enum" }
+                },
+                "locName": {
+                  "endCol": 6,
+                  "endLine": 175,
+                  "startCol": 3,
+                  "startLine": 175
+                },
+                "name": { "key": "Enum" }
+              }
             }
           }
         }
@@ -718,24 +752,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 6,
-                "endLine": 186,
-                "startCol": 3,
-                "startLine": 186
-              },
-              "name": { "key": "Null" }
+                },
+                "locName": {
+                  "endCol": 6,
+                  "endLine": 186,
+                  "startCol": 3,
+                  "startLine": 186
+                },
+                "name": { "key": "Null" }
+              }
             }
           }
         }
@@ -760,24 +796,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 7,
-                "endLine": 166,
-                "startCol": 3,
-                "startLine": 166
-              },
-              "name": { "key": "Value" }
+                },
+                "locName": {
+                  "endCol": 7,
+                  "endLine": 166,
+                  "startCol": 3,
+                  "startLine": 166
+                },
+                "name": { "key": "Value" }
+              }
             }
           }
         }
@@ -802,24 +840,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 7,
-                "endLine": 173,
-                "startCol": 3,
-                "startLine": 173
-              },
-              "name": { "key": "Field" }
+                },
+                "locName": {
+                  "endCol": 7,
+                  "endLine": 173,
+                  "startCol": 3,
+                  "startLine": 173
+                },
+                "name": { "key": "Field" }
+              }
             }
           }
         }
@@ -844,24 +884,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 7,
-                "endLine": 183,
-                "startCol": 3,
-                "startLine": 183
-              },
-              "name": { "key": "Array" }
+                },
+                "locName": {
+                  "endCol": 7,
+                  "endLine": 183,
+                  "startCol": 3,
+                  "startLine": 183
+                },
+                "name": { "key": "Array" }
+              }
             }
           }
         }
@@ -886,24 +928,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 7,
-                "endLine": 189,
-                "startCol": 3,
-                "startLine": 189
-              },
-              "name": { "key": "Event" }
+                },
+                "locName": {
+                  "endCol": 7,
+                  "endLine": 189,
+                  "startCol": 3,
+                  "startLine": 189
+                },
+                "name": { "key": "Event" }
+              }
             }
           }
         }
@@ -928,24 +972,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 7,
-                "endLine": 192,
-                "startCol": 3,
-                "startLine": 192
-              },
-              "name": { "key": "Union" }
+                },
+                "locName": {
+                  "endCol": 7,
+                  "endLine": 192,
+                  "startCol": 3,
+                  "startLine": 192
+                },
+                "name": { "key": "Union" }
+              }
             }
           }
         }
@@ -970,24 +1016,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 7,
-                "endLine": 193,
-                "startCol": 3,
-                "startLine": 193
-              },
-              "name": { "key": "Macro" }
+                },
+                "locName": {
+                  "endCol": 7,
+                  "endLine": 193,
+                  "startCol": 3,
+                  "startLine": 193
+                },
+                "name": { "key": "Macro" }
+              }
             }
           }
         }
@@ -1012,24 +1060,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 8,
-                "endLine": 168,
-                "startCol": 3,
-                "startLine": 168
-              },
-              "name": { "key": "Module" }
+                },
+                "locName": {
+                  "endCol": 8,
+                  "endLine": 168,
+                  "startCol": 3,
+                  "startLine": 168
+                },
+                "name": { "key": "Module" }
+              }
             }
           }
         }
@@ -1054,24 +1104,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 8,
-                "endLine": 170,
-                "startCol": 3,
-                "startLine": 170
-              },
-              "name": { "key": "Class_" }
+                },
+                "locName": {
+                  "endCol": 8,
+                  "endLine": 170,
+                  "startCol": 3,
+                  "startLine": 170
+                },
+                "name": { "key": "Class_" }
+              }
             }
           }
         }
@@ -1096,24 +1148,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 8,
-                "endLine": 171,
-                "startCol": 3,
-                "startLine": 171
-              },
-              "name": { "key": "Method" }
+                },
+                "locName": {
+                  "endCol": 8,
+                  "endLine": 171,
+                  "startCol": 3,
+                  "startLine": 171
+                },
+                "name": { "key": "Method" }
+              }
             }
           }
         }
@@ -1138,24 +1192,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 8,
-                "endLine": 180,
-                "startCol": 3,
-                "startLine": 180
-              },
-              "name": { "key": "String" }
+                },
+                "locName": {
+                  "endCol": 8,
+                  "endLine": 180,
+                  "startCol": 3,
+                  "startLine": 180
+                },
+                "name": { "key": "String" }
+              }
             }
           }
         }
@@ -1180,24 +1236,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 8,
-                "endLine": 181,
-                "startCol": 3,
-                "startLine": 181
-              },
-              "name": { "key": "Number" }
+                },
+                "locName": {
+                  "endCol": 8,
+                  "endLine": 181,
+                  "startCol": 3,
+                  "startLine": 181
+                },
+                "name": { "key": "Number" }
+              }
             }
           }
         }
@@ -1222,24 +1280,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 8,
-                "endLine": 184,
-                "startCol": 3,
-                "startLine": 184
-              },
-              "name": { "key": "Object" }
+                },
+                "locName": {
+                  "endCol": 8,
+                  "endLine": 184,
+                  "startCol": 3,
+                  "startLine": 184
+                },
+                "name": { "key": "Object" }
+              }
             }
           }
         }
@@ -1264,24 +1324,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 8,
-                "endLine": 188,
-                "startCol": 3,
-                "startLine": 188
-              },
-              "name": { "key": "Struct" }
+                },
+                "locName": {
+                  "endCol": 8,
+                  "endLine": 188,
+                  "startCol": 3,
+                  "startLine": 188
+                },
+                "name": { "key": "Struct" }
+              }
             }
           }
         }
@@ -1306,24 +1368,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 9,
-                "endLine": 164,
-                "startCol": 3,
-                "startLine": 164
-              },
-              "name": { "key": "Package" }
+                },
+                "locName": {
+                  "endCol": 9,
+                  "endLine": 164,
+                  "startCol": 3,
+                  "startLine": 164
+                },
+                "name": { "key": "Package" }
+              }
             }
           }
         }
@@ -1348,24 +1412,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 9,
-                "endLine": 182,
-                "startCol": 3,
-                "startLine": 182
-              },
-              "name": { "key": "Boolean" }
+                },
+                "locName": {
+                  "endCol": 9,
+                  "endLine": 182,
+                  "startCol": 3,
+                  "startLine": 182
+                },
+                "name": { "key": "Boolean" }
+              }
             }
           }
         }
@@ -1390,24 +1456,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 10,
-                "endLine": 172,
-                "startCol": 3,
-                "startLine": 172
-              },
-              "name": { "key": "Property" }
+                },
+                "locName": {
+                  "endCol": 10,
+                  "endLine": 172,
+                  "startCol": 3,
+                  "startLine": 172
+                },
+                "name": { "key": "Property" }
+              }
             }
           }
         }
@@ -1432,24 +1500,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 10,
-                "endLine": 177,
-                "startCol": 3,
-                "startLine": 177
-              },
-              "name": { "key": "Function" }
+                },
+                "locName": {
+                  "endCol": 10,
+                  "endLine": 177,
+                  "startCol": 3,
+                  "startLine": 177
+                },
+                "name": { "key": "Function" }
+              }
             }
           }
         }
@@ -1474,24 +1544,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 10,
-                "endLine": 178,
-                "startCol": 3,
-                "startLine": 178
-              },
-              "name": { "key": "Variable" }
+                },
+                "locName": {
+                  "endCol": 10,
+                  "endLine": 178,
+                  "startCol": 3,
+                  "startLine": 178
+                },
+                "name": { "key": "Variable" }
+              }
             }
           }
         }
@@ -1516,24 +1588,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 10,
-                "endLine": 179,
-                "startCol": 3,
-                "startLine": 179
-              },
-              "name": { "key": "Constant" }
+                },
+                "locName": {
+                  "endCol": 10,
+                  "endLine": 179,
+                  "startCol": 3,
+                  "startLine": 179
+                },
+                "name": { "key": "Constant" }
+              }
             }
           }
         }
@@ -1558,24 +1632,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 10,
-                "endLine": 190,
-                "startCol": 3,
-                "startLine": 190
-              },
-              "name": { "key": "Operator" }
+                },
+                "locName": {
+                  "endCol": 10,
+                  "endLine": 190,
+                  "startCol": 3,
+                  "startLine": 190
+                },
+                "name": { "key": "Operator" }
+              }
             }
           }
         }
@@ -1600,24 +1676,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 11,
-                "endLine": 169,
-                "startCol": 3,
-                "startLine": 169
-              },
-              "name": { "key": "Namespace" }
+                },
+                "locName": {
+                  "endCol": 11,
+                  "endLine": 169,
+                  "startCol": 3,
+                  "startLine": 169
+                },
+                "name": { "key": "Namespace" }
+              }
             }
           }
         }
@@ -1642,24 +1720,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 11,
-                "endLine": 176,
-                "startCol": 3,
-                "startLine": 176
-              },
-              "name": { "key": "Interface" }
+                },
+                "locName": {
+                  "endCol": 11,
+                  "endLine": 176,
+                  "startCol": 3,
+                  "startLine": 176
+                },
+                "name": { "key": "Interface" }
+              }
             }
           }
         }
@@ -1684,24 +1764,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 12,
-                "endLine": 187,
-                "startCol": 3,
-                "startLine": 187
-              },
-              "name": { "key": "Enumerator" }
+                },
+                "locName": {
+                  "endCol": 12,
+                  "endLine": 187,
+                  "startCol": 3,
+                  "startLine": 187
+                },
+                "name": { "key": "Enumerator" }
+              }
             }
           }
         }
@@ -1726,24 +1808,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 13,
-                "endLine": 174,
-                "startCol": 3,
-                "startLine": 174
-              },
-              "name": { "key": "Constructor" }
+                },
+                "locName": {
+                  "endCol": 13,
+                  "endLine": 174,
+                  "startCol": 3,
+                  "startLine": 174
+                },
+                "name": { "key": "Constructor" }
+              }
             }
           }
         }
@@ -1768,24 +1852,26 @@
     "key": {
       "entity": {
         "thrift": {
-          "enumValue": {
-            "key": {
-              "enum_": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
                   }
-                }
-              },
-              "locName": {
-                "endCol": 15,
-                "endLine": 191,
-                "startCol": 3,
-                "startLine": 191
-              },
-              "name": { "key": "TypeParameter" }
+                },
+                "locName": {
+                  "endCol": 15,
+                  "endLine": 191,
+                  "startCol": 3,
+                  "startLine": 191
+                },
+                "name": { "key": "TypeParameter" }
+              }
             }
           }
         }
@@ -1810,956 +1896,15 @@
     "key": {
       "entity": {
         "thrift": {
-          "exception_": {
-            "key": {
-              "locName": {
-                "endCol": 25,
-                "endLine": 139,
-                "startCol": 11,
-                "startLine": 139
-              },
-              "name": {
-                "key": {
-                  "file": { "key": { "key": "lib.thrift" } },
-                  "name": { "key": "ServerException" }
-                }
-              }
-            }
-          }
-        }
-      },
-      "file": { "key": "lib.thrift" },
-      "location": {
-        "file": { "key": "lib.thrift" },
-        "location": {
-          "range": {
-            "columnBegin": 11,
-            "columnEnd": 25,
-            "file": { "key": "lib.thrift" },
-            "lineBegin": 139,
-            "lineEnd": 139
-          }
-        },
-        "name": "ServerException"
-      }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 12,
-                "endLine": 26,
-                "startCol": 8,
-                "startLine": 26
-              },
-              "name": {
-                "kind": 2,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "Range" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "file": { "key": "lib.thrift" },
-      "location": {
-        "file": { "key": "lib.thrift" },
-        "location": {
-          "range": {
-            "columnBegin": 8,
-            "columnEnd": 12,
-            "file": { "key": "lib.thrift" },
-            "lineBegin": 26,
-            "lineEnd": 26
-          }
-        },
-        "name": "Range"
-      }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 13,
-                "endLine": 198,
-                "startCol": 6,
-                "startLine": 198
-              },
-              "name": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "Language" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "file": { "key": "lib.thrift" },
-      "location": {
-        "file": { "key": "lib.thrift" },
-        "location": {
-          "range": {
-            "columnBegin": 6,
-            "columnEnd": 13,
-            "file": { "key": "lib.thrift" },
-            "lineBegin": 198,
-            "lineEnd": 198
-          }
-        },
-        "name": "Language"
-      }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 14,
-                "endLine": 105,
-                "startCol": 8,
-                "startLine": 105
-              },
-              "name": {
-                "kind": 2,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolX" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "file": { "key": "lib.thrift" },
-      "location": {
-        "file": { "key": "lib.thrift" },
-        "location": {
-          "range": {
-            "columnBegin": 8,
-            "columnEnd": 14,
-            "file": { "key": "lib.thrift" },
-            "lineBegin": 105,
-            "lineEnd": 105
-          }
-        },
-        "name": "SymbolX"
-      }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 15,
-                "endLine": 33,
-                "startCol": 8,
-                "startLine": 33
-              },
-              "name": {
-                "kind": 2,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "ByteSpan" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "file": { "key": "lib.thrift" },
-      "location": {
-        "file": { "key": "lib.thrift" },
-        "location": {
-          "range": {
-            "columnBegin": 8,
-            "columnEnd": 15,
-            "file": { "key": "lib.thrift" },
-            "lineBegin": 33,
-            "lineEnd": 33
-          }
-        },
-        "name": "ByteSpan"
-      }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 15,
-                "endLine": 38,
-                "startCol": 8,
-                "startLine": 38
-              },
-              "name": {
-                "kind": 2,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "Location" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "file": { "key": "lib.thrift" },
-      "location": {
-        "file": { "key": "lib.thrift" },
-        "location": {
-          "range": {
-            "columnBegin": 8,
-            "columnEnd": 15,
-            "file": { "key": "lib.thrift" },
-            "lineBegin": 38,
-            "lineEnd": 38
-          }
-        },
-        "name": "Location"
-      }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 15,
-                "endLine": 70,
-                "startCol": 7,
-                "startLine": 70
-              },
-              "name": {
-                "kind": 3,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "Attribute" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "file": { "key": "lib.thrift" },
-      "location": {
-        "file": { "key": "lib.thrift" },
-        "location": {
-          "range": {
-            "columnBegin": 7,
-            "columnEnd": 15,
-            "file": { "key": "lib.thrift" },
-            "lineBegin": 70,
-            "lineEnd": 70
-          }
-        },
-        "name": "Attribute"
-      }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 15,
-                "endLine": 163,
-                "startCol": 6,
-                "startLine": 163
-              },
-              "name": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolKind" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "file": { "key": "lib.thrift" },
-      "location": {
-        "file": { "key": "lib.thrift" },
-        "location": {
-          "range": {
-            "columnBegin": 6,
-            "columnEnd": 15,
-            "file": { "key": "lib.thrift" },
-            "lineBegin": 163,
-            "lineEnd": 163
-          }
-        },
-        "name": "SymbolKind"
-      }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 16,
-                "endLine": 20,
-                "startCol": 8,
-                "startLine": 20
-              },
-              "name": {
-                "kind": 2,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "LineRange" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "file": { "key": "lib.thrift" },
-      "location": {
-        "file": { "key": "lib.thrift" },
-        "location": {
-          "range": {
-            "columnBegin": 8,
-            "columnEnd": 16,
-            "file": { "key": "lib.thrift" },
-            "lineBegin": 20,
-            "lineEnd": 20
-          }
-        },
-        "name": "LineRange"
-      }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 17,
-                "endLine": 115,
-                "startCol": 8,
-                "startLine": 115
-              },
-              "name": {
-                "kind": 2,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolPath" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "file": { "key": "lib.thrift" },
-      "location": {
-        "file": { "key": "lib.thrift" },
-        "location": {
-          "range": {
-            "columnBegin": 8,
-            "columnEnd": 17,
-            "file": { "key": "lib.thrift" },
-            "lineBegin": 115,
-            "lineEnd": 115
-          }
-        },
-        "name": "SymbolPath"
-      }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 19,
-                "endLine": 16,
-                "startCol": 16,
-                "startLine": 16
-              },
-              "name": {
-                "kind": 0,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "Path" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "file": { "key": "lib.thrift" },
-      "location": {
-        "file": { "key": "lib.thrift" },
-        "location": {
-          "range": {
-            "columnBegin": 16,
-            "columnEnd": 19,
-            "file": { "key": "lib.thrift" },
-            "lineBegin": 16,
-            "lineEnd": 16
-          }
-        },
-        "name": "Path"
-      }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 19,
-                "endLine": 143,
-                "startCol": 16,
-                "startLine": 143
-              },
-              "name": {
-                "kind": 0,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "Name" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "file": { "key": "lib.thrift" },
-      "location": {
-        "file": { "key": "lib.thrift" },
-        "location": {
-          "range": {
-            "columnBegin": 16,
-            "columnEnd": 19,
-            "file": { "key": "lib.thrift" },
-            "lineBegin": 143,
-            "lineEnd": 143
-          }
-        },
-        "name": "Name"
-      }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 19,
-                "endLine": 214,
-                "startCol": 6,
-                "startLine": 214
-              },
-              "name": {
-                "kind": 1,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "DefinitionKind" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "file": { "key": "lib.thrift" },
-      "location": {
-        "file": { "key": "lib.thrift" },
-        "location": {
-          "range": {
-            "columnBegin": 6,
-            "columnEnd": 19,
-            "file": { "key": "lib.thrift" },
-            "lineBegin": 214,
-            "lineEnd": 214
-          }
-        },
-        "name": "DefinitionKind"
-      }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 20,
-                "endLine": 46,
-                "startCol": 8,
-                "startLine": 46
-              },
-              "name": {
-                "kind": 2,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "LocationRange" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "file": { "key": "lib.thrift" },
-      "location": {
-        "file": { "key": "lib.thrift" },
-        "location": {
-          "range": {
-            "columnBegin": 8,
-            "columnEnd": 20,
-            "file": { "key": "lib.thrift" },
-            "lineBegin": 46,
-            "lineEnd": 46
-          }
-        },
-        "name": "LocationRange"
-      }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 20,
-                "endLine": 145,
-                "startCol": 8,
-                "startLine": 145
-              },
-              "name": {
-                "kind": 2,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "QualifiedName" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "file": { "key": "lib.thrift" },
-      "location": {
-        "file": { "key": "lib.thrift" },
-        "location": {
-          "range": {
-            "columnBegin": 8,
-            "columnEnd": 20,
-            "file": { "key": "lib.thrift" },
-            "lineBegin": 145,
-            "lineEnd": 145
-          }
-        },
-        "name": "QualifiedName"
-      }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 20,
-                "endLine": 157,
-                "startCol": 8,
-                "startLine": 157
-              },
-              "name": {
-                "kind": 2,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SearchContext" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "file": { "key": "lib.thrift" },
-      "location": {
-        "file": { "key": "lib.thrift" },
-        "location": {
-          "range": {
-            "columnBegin": 8,
-            "columnEnd": 20,
-            "file": { "key": "lib.thrift" },
-            "lineBegin": 157,
-            "lineEnd": 157
-          }
-        },
-        "name": "SearchContext"
-      }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 21,
-                "endLine": 54,
-                "startCol": 8,
-                "startLine": 54
-              },
-              "name": {
-                "kind": 2,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "RequestOptions" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "file": { "key": "lib.thrift" },
-      "location": {
-        "file": { "key": "lib.thrift" },
-        "location": {
-          "range": {
-            "columnBegin": 8,
-            "columnEnd": 21,
-            "file": { "key": "lib.thrift" },
-            "lineBegin": 54,
-            "lineEnd": 54
-          }
-        },
-        "name": "RequestOptions"
-      }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 21,
-                "endLine": 80,
-                "startCol": 8,
-                "startLine": 80
-              },
-              "name": {
-                "kind": 2,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "KeyedAttribute" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "file": { "key": "lib.thrift" },
-      "location": {
-        "file": { "key": "lib.thrift" },
-        "location": {
-          "range": {
-            "columnBegin": 8,
-            "columnEnd": 21,
-            "file": { "key": "lib.thrift" },
-            "lineBegin": 80,
-            "lineEnd": 80
-          }
-        },
-        "name": "KeyedAttribute"
-      }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 23,
-                "endLine": 14,
-                "startCol": 16,
-                "startLine": 14
-              },
-              "name": {
-                "kind": 0,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "RepoName" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "file": { "key": "lib.thrift" },
-      "location": {
-        "file": { "key": "lib.thrift" },
-        "location": {
-          "range": {
-            "columnBegin": 16,
-            "columnEnd": 23,
-            "file": { "key": "lib.thrift" },
-            "lineBegin": 14,
-            "lineEnd": 14
-          }
-        },
-        "name": "RepoName"
-      }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 23,
-                "endLine": 18,
-                "startCol": 16,
-                "startLine": 18
-              },
-              "name": {
-                "kind": 0,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "Revision" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "file": { "key": "lib.thrift" },
-      "location": {
-        "file": { "key": "lib.thrift" },
-        "location": {
-          "range": {
-            "columnBegin": 16,
-            "columnEnd": 23,
-            "file": { "key": "lib.thrift" },
-            "lineBegin": 18,
-            "lineEnd": 18
-          }
-        },
-        "name": "Revision"
-      }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 23,
-                "endLine": 68,
-                "startCol": 16,
-                "startLine": 68
-              },
-              "name": {
-                "kind": 0,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolId" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "file": { "key": "lib.thrift" },
-      "location": {
-        "file": { "key": "lib.thrift" },
-        "location": {
-          "range": {
-            "columnBegin": 16,
-            "columnEnd": 23,
-            "file": { "key": "lib.thrift" },
-            "lineBegin": 68,
-            "lineEnd": 68
-          }
-        },
-        "name": "SymbolId"
-      }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 24,
-                "endLine": 97,
-                "startCol": 8,
-                "startLine": 97
-              },
-              "name": {
-                "kind": 2,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "DefinitionSymbolX" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "file": { "key": "lib.thrift" },
-      "location": {
-        "file": { "key": "lib.thrift" },
-        "location": {
-          "range": {
-            "columnBegin": 8,
-            "columnEnd": 24,
-            "file": { "key": "lib.thrift" },
-            "lineBegin": 97,
-            "lineEnd": 97
-          }
-        },
-        "name": "DefinitionSymbolX"
-      }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 24,
-                "endLine": 150,
-                "startCol": 8,
-                "startLine": 150
-              },
-              "name": {
-                "kind": 2,
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SymbolDescription" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "file": { "key": "lib.thrift" },
-      "location": {
-        "file": { "key": "lib.thrift" },
-        "location": {
-          "range": {
-            "columnBegin": 8,
-            "columnEnd": 24,
-            "file": { "key": "lib.thrift" },
-            "lineBegin": 150,
-            "lineEnd": 150
-          }
-        },
-        "name": "SymbolDescription"
-      }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 25,
-                "endLine": 139,
-                "startCol": 11,
-                "startLine": 139
-              },
-              "name": {
-                "kind": 2,
+          "decl": {
+            "exception_": {
+              "key": {
+                "locName": {
+                  "endCol": 25,
+                  "endLine": 139,
+                  "startCol": 11,
+                  "startLine": 139
+                },
                 "name": {
                   "key": {
                     "file": { "key": { "key": "lib.thrift" } },
@@ -2791,20 +1936,1521 @@
     "key": {
       "entity": {
         "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 25,
-                "endLine": 226,
-                "startCol": 8,
-                "startLine": 226
-              },
-              "name": {
-                "kind": 2,
-                "name": {
+          "decl": {
+            "function_": {
+              "key": {
+                "locName": {
+                  "endCol": 14,
+                  "endLine": 252,
+                  "startCol": 9,
+                  "startLine": 252
+                },
+                "name": { "key": "jumpTo" },
+                "service_": {
                   "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SearchByNameResult" }
+                    "locName": {
+                      "endCol": 20,
+                      "endLine": 241,
+                      "startCol": 9,
+                      "startLine": 241
+                    },
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "lib.thrift" } },
+                        "name": { "key": "GlassService" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 9,
+            "columnEnd": 14,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 252,
+            "lineEnd": 252
+          }
+        },
+        "name": "jumpTo"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "function_": {
+              "key": {
+                "locName": {
+                  "endCol": 24,
+                  "endLine": 266,
+                  "startCol": 12,
+                  "startLine": 266
+                },
+                "name": { "key": "resolveSymbol" },
+                "service_": {
+                  "key": {
+                    "locName": {
+                      "endCol": 20,
+                      "endLine": 241,
+                      "startCol": 9,
+                      "startLine": 241
+                    },
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "lib.thrift" } },
+                        "name": { "key": "GlassService" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 12,
+            "columnEnd": 24,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 266,
+            "lineEnd": 266
+          }
+        },
+        "name": "resolveSymbol"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "function_": {
+              "key": {
+                "locName": {
+                  "endCol": 31,
+                  "endLine": 256,
+                  "startCol": 18,
+                  "startLine": 256
+                },
+                "name": { "key": "findReferences" },
+                "service_": {
+                  "key": {
+                    "locName": {
+                      "endCol": 20,
+                      "endLine": 241,
+                      "startCol": 9,
+                      "startLine": 241
+                    },
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "lib.thrift" } },
+                        "name": { "key": "GlassService" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 18,
+            "columnEnd": 31,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 256,
+            "lineEnd": 256
+          }
+        },
+        "name": "findReferences"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "function_": {
+              "key": {
+                "locName": {
+                  "endCol": 33,
+                  "endLine": 275,
+                  "startCol": 22,
+                  "startLine": 275
+                },
+                "name": { "key": "searchByName" },
+                "service_": {
+                  "key": {
+                    "locName": {
+                      "endCol": 20,
+                      "endLine": 241,
+                      "startCol": 9,
+                      "startLine": 241
+                    },
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "lib.thrift" } },
+                        "name": { "key": "GlassService" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 22,
+            "columnEnd": 33,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 275,
+            "lineEnd": 275
+          }
+        },
+        "name": "searchByName"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "function_": {
+              "key": {
+                "locName": {
+                  "endCol": 34,
+                  "endLine": 270,
+                  "startCol": 21,
+                  "startLine": 270
+                },
+                "name": { "key": "describeSymbol" },
+                "service_": {
+                  "key": {
+                    "locName": {
+                      "endCol": 20,
+                      "endLine": 241,
+                      "startCol": 9,
+                      "startLine": 241
+                    },
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "lib.thrift" } },
+                        "name": { "key": "GlassService" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 21,
+            "columnEnd": 34,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 270,
+            "lineEnd": 270
+          }
+        },
+        "name": "describeSymbol"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "function_": {
+              "key": {
+                "locName": {
+                  "endCol": 39,
+                  "endLine": 280,
+                  "startCol": 22,
+                  "startLine": 280
+                },
+                "name": { "key": "searchByNamePrefix" },
+                "service_": {
+                  "key": {
+                    "locName": {
+                      "endCol": 20,
+                      "endLine": 241,
+                      "startCol": 9,
+                      "startLine": 241
+                    },
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "lib.thrift" } },
+                        "name": { "key": "GlassService" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 22,
+            "columnEnd": 39,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 280,
+            "lineEnd": 280
+          }
+        },
+        "name": "searchByNamePrefix"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "function_": {
+              "key": {
+                "locName": {
+                  "endCol": 41,
+                  "endLine": 247,
+                  "startCol": 23,
+                  "startLine": 247
+                },
+                "name": { "key": "documentSymbolIndex" },
+                "service_": {
+                  "key": {
+                    "locName": {
+                      "endCol": 20,
+                      "endLine": 241,
+                      "startCol": 9,
+                      "startLine": 241
+                    },
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "lib.thrift" } },
+                        "name": { "key": "GlassService" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 23,
+            "columnEnd": 41,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 247,
+            "lineEnd": 247
+          }
+        },
+        "name": "documentSymbolIndex"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "function_": {
+              "key": {
+                "locName": {
+                  "endCol": 41,
+                  "endLine": 261,
+                  "startCol": 23,
+                  "startLine": 261
+                },
+                "name": { "key": "findReferenceRanges" },
+                "service_": {
+                  "key": {
+                    "locName": {
+                      "endCol": 20,
+                      "endLine": 241,
+                      "startCol": 9,
+                      "startLine": 241
+                    },
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "lib.thrift" } },
+                        "name": { "key": "GlassService" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 23,
+            "columnEnd": 41,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 261,
+            "lineEnd": 261
+          }
+        },
+        "name": "findReferenceRanges"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "function_": {
+              "key": {
+                "locName": {
+                  "endCol": 41,
+                  "endLine": 285,
+                  "startCol": 26,
+                  "startLine": 285
+                },
+                "name": { "key": "searchBySymbolId" },
+                "service_": {
+                  "key": {
+                    "locName": {
+                      "endCol": 20,
+                      "endLine": 241,
+                      "startCol": 9,
+                      "startLine": 241
+                    },
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "lib.thrift" } },
+                        "name": { "key": "GlassService" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 26,
+            "columnEnd": 41,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 285,
+            "lineEnd": 285
+          }
+        },
+        "name": "searchBySymbolId"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "function_": {
+              "key": {
+                "locName": {
+                  "endCol": 47,
+                  "endLine": 242,
+                  "startCol": 29,
+                  "startLine": 242
+                },
+                "name": { "key": "documentSymbolListX" },
+                "service_": {
+                  "key": {
+                    "locName": {
+                      "endCol": 20,
+                      "endLine": 241,
+                      "startCol": 9,
+                      "startLine": 241
+                    },
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "lib.thrift" } },
+                        "name": { "key": "GlassService" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 29,
+            "columnEnd": 47,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 242,
+            "lineEnd": 242
+          }
+        },
+        "name": "documentSymbolListX"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 12,
+                  "endLine": 26,
+                  "startCol": 8,
+                  "startLine": 26
+                },
+                "name": {
+                  "kind": 2,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Range" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 8,
+            "columnEnd": 12,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 26,
+            "lineEnd": 26
+          }
+        },
+        "name": "Range"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 13,
+                  "endLine": 198,
+                  "startCol": 6,
+                  "startLine": 198
+                },
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 6,
+            "columnEnd": 13,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 198,
+            "lineEnd": 198
+          }
+        },
+        "name": "Language"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 14,
+                  "endLine": 105,
+                  "startCol": 8,
+                  "startLine": 105
+                },
+                "name": {
+                  "kind": 2,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolX" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 8,
+            "columnEnd": 14,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 105,
+            "lineEnd": 105
+          }
+        },
+        "name": "SymbolX"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 15,
+                  "endLine": 33,
+                  "startCol": 8,
+                  "startLine": 33
+                },
+                "name": {
+                  "kind": 2,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "ByteSpan" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 8,
+            "columnEnd": 15,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 33,
+            "lineEnd": 33
+          }
+        },
+        "name": "ByteSpan"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 15,
+                  "endLine": 38,
+                  "startCol": 8,
+                  "startLine": 38
+                },
+                "name": {
+                  "kind": 2,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Location" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 8,
+            "columnEnd": 15,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 38,
+            "lineEnd": 38
+          }
+        },
+        "name": "Location"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 15,
+                  "endLine": 70,
+                  "startCol": 7,
+                  "startLine": 70
+                },
+                "name": {
+                  "kind": 3,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Attribute" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 7,
+            "columnEnd": 15,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 70,
+            "lineEnd": 70
+          }
+        },
+        "name": "Attribute"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 15,
+                  "endLine": 163,
+                  "startCol": 6,
+                  "startLine": 163
+                },
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 6,
+            "columnEnd": 15,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 163,
+            "lineEnd": 163
+          }
+        },
+        "name": "SymbolKind"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 16,
+                  "endLine": 20,
+                  "startCol": 8,
+                  "startLine": 20
+                },
+                "name": {
+                  "kind": 2,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "LineRange" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 8,
+            "columnEnd": 16,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 20,
+            "lineEnd": 20
+          }
+        },
+        "name": "LineRange"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 17,
+                  "endLine": 115,
+                  "startCol": 8,
+                  "startLine": 115
+                },
+                "name": {
+                  "kind": 2,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolPath" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 8,
+            "columnEnd": 17,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 115,
+            "lineEnd": 115
+          }
+        },
+        "name": "SymbolPath"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 19,
+                  "endLine": 16,
+                  "startCol": 16,
+                  "startLine": 16
+                },
+                "name": {
+                  "kind": 0,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Path" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 16,
+            "columnEnd": 19,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 16,
+            "lineEnd": 16
+          }
+        },
+        "name": "Path"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 19,
+                  "endLine": 143,
+                  "startCol": 16,
+                  "startLine": 143
+                },
+                "name": {
+                  "kind": 0,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Name" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 16,
+            "columnEnd": 19,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 143,
+            "lineEnd": 143
+          }
+        },
+        "name": "Name"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 19,
+                  "endLine": 214,
+                  "startCol": 6,
+                  "startLine": 214
+                },
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "DefinitionKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 6,
+            "columnEnd": 19,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 214,
+            "lineEnd": 214
+          }
+        },
+        "name": "DefinitionKind"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 20,
+                  "endLine": 46,
+                  "startCol": 8,
+                  "startLine": 46
+                },
+                "name": {
+                  "kind": 2,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "LocationRange" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 8,
+            "columnEnd": 20,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 46,
+            "lineEnd": 46
+          }
+        },
+        "name": "LocationRange"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 20,
+                  "endLine": 145,
+                  "startCol": 8,
+                  "startLine": 145
+                },
+                "name": {
+                  "kind": 2,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "QualifiedName" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 8,
+            "columnEnd": 20,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 145,
+            "lineEnd": 145
+          }
+        },
+        "name": "QualifiedName"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 20,
+                  "endLine": 157,
+                  "startCol": 8,
+                  "startLine": 157
+                },
+                "name": {
+                  "kind": 2,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SearchContext" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 8,
+            "columnEnd": 20,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 157,
+            "lineEnd": 157
+          }
+        },
+        "name": "SearchContext"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 21,
+                  "endLine": 54,
+                  "startCol": 8,
+                  "startLine": 54
+                },
+                "name": {
+                  "kind": 2,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "RequestOptions" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 8,
+            "columnEnd": 21,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 54,
+            "lineEnd": 54
+          }
+        },
+        "name": "RequestOptions"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 21,
+                  "endLine": 80,
+                  "startCol": 8,
+                  "startLine": 80
+                },
+                "name": {
+                  "kind": 2,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "KeyedAttribute" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 8,
+            "columnEnd": 21,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 80,
+            "lineEnd": 80
+          }
+        },
+        "name": "KeyedAttribute"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 23,
+                  "endLine": 14,
+                  "startCol": 16,
+                  "startLine": 14
+                },
+                "name": {
+                  "kind": 0,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "RepoName" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 16,
+            "columnEnd": 23,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 14,
+            "lineEnd": 14
+          }
+        },
+        "name": "RepoName"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 23,
+                  "endLine": 18,
+                  "startCol": 16,
+                  "startLine": 18
+                },
+                "name": {
+                  "kind": 0,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Revision" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 16,
+            "columnEnd": 23,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 18,
+            "lineEnd": 18
+          }
+        },
+        "name": "Revision"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 23,
+                  "endLine": 68,
+                  "startCol": 16,
+                  "startLine": 68
+                },
+                "name": {
+                  "kind": 0,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolId" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 16,
+            "columnEnd": 23,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 68,
+            "lineEnd": 68
+          }
+        },
+        "name": "SymbolId"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 24,
+                  "endLine": 97,
+                  "startCol": 8,
+                  "startLine": 97
+                },
+                "name": {
+                  "kind": 2,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "DefinitionSymbolX" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 8,
+            "columnEnd": 24,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 97,
+            "lineEnd": 97
+          }
+        },
+        "name": "DefinitionSymbolX"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 24,
+                  "endLine": 150,
+                  "startCol": 8,
+                  "startLine": 150
+                },
+                "name": {
+                  "kind": 2,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolDescription" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 8,
+            "columnEnd": 24,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 150,
+            "lineEnd": 150
+          }
+        },
+        "name": "SymbolDescription"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 25,
+                  "endLine": 139,
+                  "startCol": 11,
+                  "startLine": 139
+                },
+                "name": {
+                  "kind": 2,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "ServerException" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 11,
+            "columnEnd": 25,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 139,
+            "lineEnd": 139
+          }
+        },
+        "name": "ServerException"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 25,
+                  "endLine": 226,
+                  "startCol": 8,
+                  "startLine": 226
+                },
+                "name": {
+                  "kind": 2,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SearchByNameResult" }
+                    }
                   }
                 }
               }
@@ -2832,20 +3478,22 @@
     "key": {
       "entity": {
         "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 26,
-                "endLine": 131,
-                "startCol": 8,
-                "startLine": 131
-              },
-              "name": {
-                "kind": 2,
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 26,
+                  "endLine": 131,
+                  "startCol": 8,
+                  "startLine": 131
+                },
                 "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "DocumentSymbolIndex" }
+                  "kind": 2,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "DocumentSymbolIndex" }
+                    }
                   }
                 }
               }
@@ -2873,20 +3521,22 @@
     "key": {
       "entity": {
         "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 26,
-                "endLine": 221,
-                "startCol": 8,
-                "startLine": 221
-              },
-              "name": {
-                "kind": 2,
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 26,
+                  "endLine": 221,
+                  "startCol": 8,
+                  "startLine": 221
+                },
                 "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SearchByNameRequest" }
+                  "kind": 2,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SearchByNameRequest" }
+                    }
                   }
                 }
               }
@@ -2914,20 +3564,22 @@
     "key": {
       "entity": {
         "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 28,
-                "endLine": 87,
-                "startCol": 8,
-                "startLine": 87
-              },
-              "name": {
-                "kind": 2,
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 28,
+                  "endLine": 87,
+                  "startCol": 8,
+                  "startLine": 87
+                },
                 "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "ReferenceRangeSymbolX" }
+                  "kind": 2,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "ReferenceRangeSymbolX" }
+                    }
                   }
                 }
               }
@@ -2955,20 +3607,22 @@
     "key": {
       "entity": {
         "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 29,
-                "endLine": 60,
-                "startCol": 8,
-                "startLine": 60
-              },
-              "name": {
-                "kind": 2,
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 29,
+                  "endLine": 60,
+                  "startCol": 8,
+                  "startLine": 60
+                },
                 "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "DocumentSymbolsRequest" }
+                  "kind": 2,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "DocumentSymbolsRequest" }
+                    }
                   }
                 }
               }
@@ -2996,20 +3650,22 @@
     "key": {
       "entity": {
         "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 29,
-                "endLine": 231,
-                "startCol": 8,
-                "startLine": 231
-              },
-              "name": {
-                "kind": 2,
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 29,
+                  "endLine": 231,
+                  "startCol": 8,
+                  "startLine": 231
+                },
                 "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "SearchBySymbolIdResult" }
+                  "kind": 2,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SearchBySymbolIdResult" }
+                    }
                   }
                 }
               }
@@ -3037,20 +3693,22 @@
     "key": {
       "entity": {
         "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 32,
-                "endLine": 123,
-                "startCol": 8,
-                "startLine": 123
-              },
-              "name": {
-                "kind": 2,
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 32,
+                  "endLine": 123,
+                  "startCol": 8,
+                  "startLine": 123
+                },
                 "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "DocumentSymbolListXResult" }
+                  "kind": 2,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "DocumentSymbolListXResult" }
+                    }
                   }
                 }
               }
@@ -3078,20 +3736,22 @@
     "key": {
       "entity": {
         "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 41,
-                "endLine": 78,
-                "startCol": 32,
-                "startLine": 78
-              },
-              "name": {
-                "kind": 0,
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 41,
+                  "endLine": 78,
+                  "startCol": 32,
+                  "startLine": 78
+                },
                 "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "Attributes" }
+                  "kind": 0,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Attributes" }
+                    }
                   }
                 }
               }
@@ -3119,20 +3779,22 @@
     "key": {
       "entity": {
         "thrift": {
-          "named": {
-            "key": {
-              "locName": {
-                "endCol": 42,
-                "endLine": 85,
-                "startCol": 30,
-                "startLine": 85
-              },
-              "name": {
-                "kind": 0,
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 42,
+                  "endLine": 85,
+                  "startCol": 30,
+                  "startLine": 85
+                },
                 "name": {
-                  "key": {
-                    "file": { "key": { "key": "lib.thrift" } },
-                    "name": { "key": "AttributeList" }
+                  "kind": 0,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "AttributeList" }
+                    }
                   }
                 }
               }
@@ -3160,18 +3822,20 @@
     "key": {
       "entity": {
         "thrift": {
-          "service_": {
-            "key": {
-              "locName": {
-                "endCol": 19,
-                "endLine": 235,
-                "startCol": 9,
-                "startLine": 235
-              },
-              "name": {
-                "key": {
-                  "file": { "key": { "key": "lib.thrift" } },
-                  "name": { "key": "ZeroService" }
+          "decl": {
+            "service_": {
+              "key": {
+                "locName": {
+                  "endCol": 19,
+                  "endLine": 235,
+                  "startCol": 9,
+                  "startLine": 235
+                },
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "lib.thrift" } },
+                    "name": { "key": "ZeroService" }
+                  }
                 }
               }
             }
@@ -3198,18 +3862,20 @@
     "key": {
       "entity": {
         "thrift": {
-          "service_": {
-            "key": {
-              "locName": {
-                "endCol": 19,
-                "endLine": 238,
-                "startCol": 9,
-                "startLine": 238
-              },
-              "name": {
-                "key": {
-                  "file": { "key": { "key": "lib.thrift" } },
-                  "name": { "key": "BaseService" }
+          "decl": {
+            "service_": {
+              "key": {
+                "locName": {
+                  "endCol": 19,
+                  "endLine": 238,
+                  "startCol": 9,
+                  "startLine": 238
+                },
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "lib.thrift" } },
+                    "name": { "key": "BaseService" }
+                  }
                 }
               }
             }
@@ -3236,18 +3902,20 @@
     "key": {
       "entity": {
         "thrift": {
-          "service_": {
-            "key": {
-              "locName": {
-                "endCol": 20,
-                "endLine": 241,
-                "startCol": 9,
-                "startLine": 241
-              },
-              "name": {
-                "key": {
-                  "file": { "key": { "key": "lib.thrift" } },
-                  "name": { "key": "GlassService" }
+          "decl": {
+            "service_": {
+              "key": {
+                "locName": {
+                  "endCol": 20,
+                  "endLine": 241,
+                  "startCol": 9,
+                  "startLine": 241
+                },
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "lib.thrift" } },
+                    "name": { "key": "GlassService" }
+                  }
                 }
               }
             }
