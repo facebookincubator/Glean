@@ -13,7 +13,6 @@ module Glean.Database.Backup.Backend
   , Backends
   ) where
 
-import qualified Data.ByteString.Lazy as LBS
 import Data.HashMap.Strict (HashMap)
 import Data.Map (Map)
 import Data.Text (Text)
@@ -38,7 +37,7 @@ class Site a where
     -> Repo -- ^ repo to back up
     -> Map String String -- ^ DB properties
     -> Maybe Int -- ^ Backup TTL in seconds (if supported by Site)
-    -> LBS.ByteString -- ^ serialized DB
+    -> FilePath  -- ^ serialized DB
     -> IO Data
   inspect :: a -> Repo -> IO (Map String String)
   restore :: a -> Repo -> FilePath -> IO (Map String String)

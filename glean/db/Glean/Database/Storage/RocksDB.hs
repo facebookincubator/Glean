@@ -13,7 +13,6 @@ module Glean.Database.Storage.RocksDB
 
 import Control.Exception
 import Control.Monad
-import qualified Data.ByteString.Lazy as LBS
 import qualified Data.HashMap.Strict as HashMap
 import Data.Int
 import Data.List (unzip4)
@@ -244,8 +243,7 @@ instance Storage RocksDB where
     withTempFile $ \tarFile -> do
       tar ["-cf", tarFile, "-C", scratch, "backup"]
       size <- getFileSize tarFile
-      bytes <- LBS.readFile tarFile
-      process bytes (Data $ fromIntegral size)
+      process tarFile (Data $ fromIntegral size)
     where
       path = scratch </> "backup"
 

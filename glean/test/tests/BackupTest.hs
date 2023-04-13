@@ -42,6 +42,7 @@ import Glean.Types as Thrift
 import Glean.Util.ConfigProvider
 import Glean.Util.ThriftSource as ThriftSource
 import Glean.Util.Trace
+import Glean.Util.IO (withTempFileContents)
 import Glean.Internal.Types (Completeness(Complete))
 import qualified Data.Map.Strict as Map
 import qualified Data.ByteString.Lazy.Char8 as LBS
@@ -173,7 +174,8 @@ makeDB TestEnv{testEnv = env} now (TestDbSpec repo good age deps) = do
   when good $ finalizeWait env repo
 
 makeDB TestEnv{testBackup} now CloudTestDbSpec{..} =
-  void $ Backup.backup testBackup testDbRepo props Nothing mempty
+  withTempFileContents ("" :: String) $ \path ->
+  void $ Backup.backup testBackup testDbRepo props Nothing path
   where
     dbtime = utcTimeToPosixEpochTime (created testDbAge now)
     props = Map.fromList [

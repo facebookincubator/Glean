@@ -17,7 +17,6 @@ module Glean.Database.Backup.Mock
 
 import Control.Exception
 import Control.Monad
-import qualified Data.ByteString.Lazy as LB
 import Data.Maybe
 import qualified Data.Text as Text
 import System.Directory
@@ -44,10 +43,10 @@ instance Backend MockBackend where
   fromPath _ = Just . mockSite . Text.unpack
 
 instance Site MockSite where
-  backup (MockSite path) repo props _ttl bytes = do
+  backup (MockSite path) repo props _ttl file = do
     let repo_path = repoPath path repo
     createDirectoryIfMissing True (takeDirectory repo_path)
-    LB.writeFile repo_path bytes
+    copyFile file repo_path
     size <- Posix.fileSize <$> Posix.getFileStatus repo_path
     writeFile (repo_path <.> "props") (show props)
     return Data { dataSize = fromIntegral size }

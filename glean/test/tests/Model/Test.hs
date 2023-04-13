@@ -138,6 +138,7 @@ import Glean.Util.ShardManager (
  )
 import Glean.Util.Some (Some (Some))
 import qualified Glean.Util.ThriftSource as ThriftSource
+import Glean.Util.IO (withTempFileContents)
 import Model.Command (
   Command (..),
   ShardingAssignmentChange (ShardAdded, ShardRemoved),
@@ -409,8 +410,9 @@ noWait = Wait []
    Returns a sequence of waits, one for each subsequent run of the janitor
 -}
 mutateSystem :: HasCallStack => MockedEnv -> Command -> IO Wait
-mutateSystem env (NewRemoteDB repo meta) = do
-  void $ Site.backup (mockSite $ backupDir env) repo props Nothing mempty
+mutateSystem env (NewRemoteDB repo meta) =
+  withTempFileContents ("" :: String) $ \path -> do
+  void $ Site.backup (mockSite $ backupDir env) repo props Nothing path
   -- Force fetch backups to run again next time
   atomically $ writeTVar (envCachedRestorableDBs $ mockedEnv env) Nothing
   return $ waitOne $ waitForDeletions (mockedEnv env)

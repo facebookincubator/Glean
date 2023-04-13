@@ -209,7 +209,7 @@ doBackup env@Env{..} repo prefix site =
       maybeOwnership <- readTVarIO odbOwnership
       mapM getOwnershipStats maybeOwnership
     Backend.Data{..} <- withScratchDirectory envStorage repo $ \scratch ->
-      Storage.backup odbHandle scratch $ \bytes Data{dataSize} -> do
+      Storage.backup odbHandle scratch $ \path Data{dataSize} -> do
         say logInfo "uploading"
         policy <- ServerConfig.databaseBackupPolicy_repos
           . ServerConfig.config_backup <$> Observed.get envServerConfig
@@ -226,7 +226,7 @@ doBackup env@Env{..} repo prefix site =
                     ,..}
                 _ -> metaCompleteness meta
         }
-        Backend.backup site repo (metaToProps metaWithBytes) ttl bytes
+        Backend.backup site repo (metaToProps metaWithBytes) ttl path
     let locator = toRepoLocator prefix site repo
     Logger.logDBStatistics env repo stats ownershipStats dataSize locator
     say logInfo "finished"

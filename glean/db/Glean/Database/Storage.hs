@@ -18,7 +18,6 @@ module Glean.Database.Storage
   ) where
 
 import Data.ByteString (ByteString)
-import qualified Data.ByteString.Lazy as Lazy
 import Data.HashMap.Strict (HashMap)
 import qualified Data.Vector.Storable as VS
 
@@ -183,7 +182,7 @@ class CanLookup (Database s) => Storage s where
   backup
     :: Database s  -- ^ database
     -> FilePath  -- ^ scratch directory
-    -> (Lazy.ByteString -> Data -> IO a)
+    -> (FilePath -> Data -> IO a)
           -- ^ function which expects the serialised database
     -> IO a
 
