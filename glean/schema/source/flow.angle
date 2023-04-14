@@ -380,7 +380,7 @@ predicate DeclarationLocation :
       ( TypeDeclarationInfo { typeDeclaration = D, span = { just = Range } };
         Range = flow.Range { module = { file = F }, span = S }
       ) | (
-        ! TypeDeclarationInfo { typeDeclaration = D, span = _ };
+        ! TypeDeclarationInfo { typeDeclaration = D, span = { just = _ } };
         TypeDeclaration { loc = { module = { file = F }, span = S } } = D
       )
   )
