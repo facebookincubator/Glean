@@ -8,6 +8,7 @@
 
 module Glean.Write.SendAndRebaseQueue
   ( SendAndRebaseQueueSettings(..)
+  , SendAndRebaseQueue
   , withSendAndRebaseQueue
   , writeSendAndRebaseQueue
   ) where

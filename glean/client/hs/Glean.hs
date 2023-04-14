@@ -159,6 +159,7 @@ module Glean
   , withSender
   , SchemaPredicates
   , Sender
+  , SendAndRebaseQueue
   , sendAndRebaseQueueOptions
   , SendAndRebaseQueueSettings(..)
   , sendQueueOptions
