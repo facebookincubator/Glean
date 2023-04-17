@@ -1,4 +1,4 @@
-query: search.code.SearchByLowerCaseName { name = "createtemprepo" }
+query: search.code.LsifSearchByLowerCaseName { name = "createtemprepo" }
 perf: True
 transform: [gensort, []]
 

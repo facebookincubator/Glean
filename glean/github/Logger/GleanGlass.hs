@@ -55,3 +55,6 @@ setRepoHash _ = GleanGlassLogger
 
 setMethod :: Text -> GleanGlassLogger
 setMethod _ = GleanGlassLogger
+
+setTruncated :: Bool -> GleanGlassLogger
+setTruncated _ = GleanGlassLogger

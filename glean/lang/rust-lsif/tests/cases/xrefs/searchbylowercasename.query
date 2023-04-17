@@ -1,4 +1,4 @@
-query: search.code.SearchByLowerCaseName { name = "sum_f1" }
+query: search.code.LsifSearchByLowerCaseName { name = "sum_f1" }
 perf: True
 transform: [gensort, []]
 
