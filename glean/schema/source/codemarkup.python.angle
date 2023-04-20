@@ -284,9 +284,15 @@ predicate PythonExtendsChildEntity :
     child: code.python.Entity
   }
   { Parent, Child } where
-    { decl = {cls = ParentClassDecl} } = Parent;
-    python.BaseClassToDerived { base = ParentClassDecl, derived = ChildClassDecl };
-    { decl = { cls = ChildClassDecl } } = Child;
+    (
+      { decl = {cls = ParentClassDecl} } = Parent;
+      python.BaseClassToDerived { base = ParentClassDecl, derived = ChildClassDecl };
+      { decl = { cls = ChildClassDecl } } = Child;
+    ) | (
+      { decl = { func = ParentMethodDecl} } = Parent;
+      python.MethodOverriden { ParentMethodDecl, ChildMethodDecl };
+      { decl = { func = ChildMethodDecl } } = Child;
+    )
 
 
 #
