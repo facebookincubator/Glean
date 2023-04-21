@@ -1,0 +1,101 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "main" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "parameters": [ ], "returns": { "key": "int" } }
+                    },
+                    "source": {
+                      "columnBegin": 1,
+                      "columnEnd": 1,
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 11,
+                      "lineEnd": 15
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "columnBegin": 1,
+            "columnEnd": 1,
+            "file": { "key": "test.cpp" },
+            "lineBegin": 11,
+            "lineEnd": 15
+          }
+        },
+        "name": "main",
+        "span": { "length": 4, "start": 244 }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "test" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "parameters": [ ], "returns": { "key": "void" } }
+                    },
+                    "source": {
+                      "columnBegin": 1,
+                      "columnEnd": 13,
+                      "file": { "key": "test.h" },
+                      "lineBegin": 10,
+                      "lineEnd": 10
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "test.h" },
+        "location": {
+          "range": {
+            "columnBegin": 1,
+            "columnEnd": 13,
+            "file": { "key": "test.h" },
+            "lineBegin": 10,
+            "lineEnd": 10
+          }
+        },
+        "name": "test",
+        "span": { "length": 4, "start": 239 }
+      }
+    }
+  }
+]

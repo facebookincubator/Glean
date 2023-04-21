@@ -19,6 +19,7 @@ module Glean.Derive.Digest.Lib (
 import Control.Exception (catch, throwIO)
 import Control.Monad (forM, when, void)
 import Control.Monad.IO.Class (liftIO)
+import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as Map
 import Data.Foldable (for_, minimumBy)
 import Data.Function (on)
@@ -30,7 +31,6 @@ import qualified Data.Text as T
 import Data.Text.Encoding (encodeUtf8)
 import qualified Data.Text.IO as T
 import Data.Traversable (for)
-import Data.Tuple.Extra (thd3)
 import System.Directory (getCurrentDirectory)
 import System.IO.Error (isDoesNotExistError)
 
@@ -45,7 +45,7 @@ import Glean (
   makeFact,
   basicWriter,
   runHaxl,
-  search_,
+  search_, getFirstResult, keys
  )
 import Glean.Angle (
   Angle,
@@ -60,7 +60,7 @@ import Glean.Angle (
   where_,
   wild,
   (.=),
-  string,
+  string
  )
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Schema.Codemarkup as Code
@@ -72,6 +72,8 @@ import Glean.Haxl.Repos (RepoHaxl)
 import qualified Glean.Glass.SymbolId()
 import qualified Glean.Glass.Types as Glass
 import Glean.Glass.SymbolId.Class (toQName, ToQName)
+import Glean.Util.Range (srcRangeToFileLocation)
+import Data.Maybe (fromMaybe)
 
 type SourceCode = Text
 type Digest = Text
@@ -83,9 +85,15 @@ data Config = Config
   , indexOnly :: Maybe (NonEmpty FileFact)
   }
 
+data FileData = FileData
+  { locations
+    :: HashMap (Code.Entity, Maybe Glass.Name) (NonEmpty Code.RangeSpan)
+  , lines :: Maybe Src.FileLines_key
+  }
+
 derive :: Backend b => b -> Repo -> Config -> IO ()
 derive backend repo Config{..} = {-# SCC "derive-digests" #-} do
-  locationsByFile <- {-# SCC "query" #-} runHaxl backend repo $ do
+  dataByFile <- {-# SCC "query" #-} runHaxl backend repo $ do
     locations <- case indexOnly of
       Nothing -> Glean.search_ $ query codeLocations
       Just files ->
@@ -98,37 +106,61 @@ derive backend repo Config{..} = {-# SCC "derive-digests" #-} do
         n <- toName e
         return (f,r,e,n)
 
-    return $ Map.fromListWith (Map.unionWith (<>))
-      [ (f, Map.singleton (e,n) (range :| []))
-      | (f, range, e, n) <- locationsWithNames]
+    let locationsByFile = Map.fromListWith (Map.unionWith (<>))
+          [ (f, locations)
+          | (f, range, e, n) <- locationsWithNames
+          , let locations = Map.singleton (e,n) (range :| [])]
+    fileLines <- Map.fromList <$> traverse
+      (\f -> (f,) <$> Glean.getFirstResult (keys (query (queryFileLines f))))
+      (Map.keys locationsByFile)
+    let result = Map.intersectionWith FileData locationsByFile fileLines
+    return result
 
-  factsByFile <- {-# SCC "digest" #-}
-    forM (Map.toList locationsByFile) $ \(f, locations) -> do
-      contents <- do
-        let fpath = pathAdaptor $ T.unpack f
-        T.readFile fpath `catch` \e ->
-          if isDoesNotExistError e
-            then do
-              cwd <- getCurrentDirectory
-              throwIO $ userError $ fpath <> " not found in " <> cwd
-            else throwIO e
-      entities <- forM (Map.toList locations) $ \((entity, name), ranges) -> do
+  locationsByFile <- {-# SCC "digest" #-}
+    fmap (Map.fromListWith (<>) . concat) $
+    forM (Map.toList dataByFile) $ \(f, FileData{..}) -> do
+      let
+        -- Partially applied for performance on Range-based languages (Clang)
+        toLocation = rangeSpanToFileLocation fileFact lines
+        fileFact = Src.File 0 (Just f)
+      forM (Map.toList locations) $ \((entity, name), ranges) -> do
         when (length ranges > 1) $
           logWarning $
             "Multiple ranges found for entity, " <>
             "picking the earliest starting one: " <>
             show entity
         let range = minimumBy (compare `on` rangeStart) ranges
-        return (entity, name, range)
-      let sorted_entities = sortOn thd3 entities
-          facts = loop 0 contents sorted_entities
-          loop pos ptr ((entity, name, range) : rest) =
-            let ptr' = T.drop (pos' - pos) ptr
-                pos' = rangeStart range
-                !digest = hashFunction name (T.take (rangeLength range) ptr')
-            in (entity, digest) : loop pos' ptr' rest
-          loop _ _ [] = []
-      return (f, facts)
+            loc = toLocation range
+            locFile = fromMaybe f $
+              Src.file_key $ Src.fileLocation_file loc
+        return (locFile, [(f, entity, name, loc)])
+
+  facts <- forM (Map.toList locationsByFile) $ \(f, locations) -> do
+    contents <- do
+      let fpath = pathAdaptor $ T.unpack f
+      T.readFile fpath `catch` \e ->
+        if isDoesNotExistError e
+          then do
+            cwd <- getCurrentDirectory
+            throwIO $ userError $ fpath <> " not found in " <> cwd
+          else throwIO e
+    let sorted_entities = sortOn startPos locations
+        startPos (_, _, _, Src.FileLocation{..}) =
+          Src.byteSpan_start fileLocation_span
+        facts = loop 0 contents sorted_entities
+        loop pos ptr ((srcF, entity, name, Src.FileLocation{..}) : rest) =
+          let ptr' = T.drop (pos' - pos) ptr
+              pos' = natToInt $ Src.byteSpan_start fileLocation_span
+              len =  natToInt $ Src.byteSpan_length fileLocation_span
+              !digest =
+                hashFunction name (T.take len ptr')
+          in (srcF, entity, digest) : loop pos' ptr' rest
+        loop _ _ [] = []
+    return facts
+
+  let factsByFile = Map.toList $ Map.fromListWith (<>)
+        [ (srcF, [(entity, digest)])
+        | (srcF, entity, digest) <- concat facts]
 
   {-# SCC "write" #-} liftIO $
     basicWriter backend repo [Src.allPredicates, Code.allPredicates] $ do
@@ -139,18 +171,35 @@ derive backend repo Config{..} = {-# SCC "derive-digests" #-} do
             let key = Code.FileEntityDigest_key srcFile entity
             void $ newFact @_ @Code.FileEntityDigest key digest
 
+rangeSpanToFileLocation
+  :: Src.File
+  -> Maybe Src.FileLines_key
+  -> Code.RangeSpan
+  -> Src.FileLocation
+rangeSpanToFileLocation f mbFileLines = \case
+  Code.RangeSpan_EMPTY -> error "EMPTY"
+  Code.RangeSpan_span sp ->
+    Src.FileLocation {
+      fileLocation_file= f,
+      fileLocation_span=sp
+      }
+  Code.RangeSpan_range range -> toFileLocation range
+  where
+    toFileLocation =
+      maybe
+        (error "Missing src.FileLines")
+        (srcRangeToFileLocation . map natToInt . Src.fileLines_key_lengths)
+        mbFileLines
+
 rangeStart :: Code.RangeSpan -> Int
 rangeStart (Code.RangeSpan_span Src.ByteSpan{..}) =
-  fromIntegral $ unNat byteSpan_start
+  natToInt byteSpan_start
 rangeStart (Code.RangeSpan_range Src.Range{..}) =
-  fromIntegral $ unNat range_lineBegin
+  natToInt range_lineBegin
 rangeStart Code.RangeSpan_EMPTY = 0
 
-rangeLength :: Code.RangeSpan -> Int
-rangeLength (Code.RangeSpan_span Src.ByteSpan{..}) =
-  fromIntegral $ unNat byteSpan_length
-rangeLength (Code.RangeSpan_range Src.Range{..}) = error "TODO"
-rangeLength Code.RangeSpan_EMPTY = 0
+natToInt :: Num c => Nat -> c
+natToInt = fromIntegral . unNat
 
 codeLocations :: Angle (Text, Code.RangeSpan, Code.Entity)
 codeLocations =
@@ -190,6 +239,10 @@ codeLocationsForFile fileFact =
                         end
                     )
                ]
+
+queryFileLines :: FileFact -> Angle Src.FileLines
+queryFileLines fileFact =
+   predicate @Src.FileLines (rec $ field @"file" (string fileFact) end)
 
 toName
   :: ToQName Code.Entity => Code.Entity

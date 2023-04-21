@@ -17,8 +17,10 @@ import Data.List.NonEmpty (nonEmpty)
 import Data.Text (pack)
 import System.FilePath ((</>), splitFileName, joinPath, splitPath)
 
+import Util.OptParse (commandParser)
 import Util.Timing
 
+import qualified Glean.Clang.Test as Clang
 import Glean.Indexer
 import Glean.Indexer.List (cmdLineParser)
 import Glean.Regression.Snapshot.Driver
@@ -30,18 +32,23 @@ import TextShow (showt)
 import qualified Glean.Glass.Types as Glass
 
 data Options = Options
-  { runIndexerOptions :: RunIndexer
+  { runIndexerOrCpp :: Either RunIndexer Clang.Options
   , deriveConfig :: Config
   }
 
 optionsParser :: Parser Options
 optionsParser = do
-  runIndexerOptions <- cmdLineParser
+  runIndexerOrCpp <-
+    (Right <$> commandParser "cpp"
+                (progDesc "Use the Clang indexer")
+                (indexerOptParser $ driverIndexer Clang.driver))
+      <|>
+    (Left <$> cmdLineParser)
   hashDigests <- switch (long "hash-digests")
   stripDepth <- option auto (long "strip" <> help "strip depth" <> value 0)
   indexOnly <- many (pack <$> strOption(long "index-only"))
   return Options{
-    runIndexerOptions = runIndexerOptions,
+    runIndexerOrCpp = runIndexerOrCpp,
     deriveConfig = Config{
       hashFunction = \name ->
         (if hashDigests then showt . hash else id) .
@@ -60,19 +67,28 @@ stripPath depth path = stripped_body </> file
     stripped_body = joinPath $ drop depth $ splitPath body
 
 driver :: Driver Options
-driver = driverFromIndexer
-  Indexer {
-    indexerShortName = "multiple",
-    indexerDescription = "Choose an indexer to run",
-    indexerOptParser = optionsParser ,
-    indexerRun = runIndexerOptions <> deriveDigests
-    }
+driver = (driverFromIndexer indexer)
+  { driverGroups = \opts -> case runIndexerOrCpp opts of
+      Right clangOpts -> driverGroups Clang.driver clangOpts
+      Left _ -> []
+  }
   where
-    deriveDigests opts backend repo params =
+    indexer = Indexer
+      { indexerShortName = "multiple",
+        indexerDescription = "Choose an indexer to run",
+        indexerOptParser = optionsParser ,
+        indexerRun = \opts -> case runIndexerOrCpp opts of
+          Right clangOpts ->
+            indexerRun (driverIndexer Clang.driver) clangOpts <>
+            deriveDigests (deriveConfig opts)
+          Left runIndexerOptions ->
+            runIndexerOptions <> deriveDigests (deriveConfig opts)
+      }
+    deriveDigests config backend repo params =
       void $ reportAndShowTime "derive digests" $ derive backend repo
-        (deriveConfig opts)
+        config
           { pathAdaptor =
-            (indexerRoot params </>) . pathAdaptor (deriveConfig opts)
+            (indexerRoot params </>) . pathAdaptor config
           }
 
 main :: IO ()
