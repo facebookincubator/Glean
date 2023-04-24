@@ -152,7 +152,7 @@ runRepoFile
   -> RequestOptions
   -> IO t
 runRepoFile sym fn env req opts =
-  withRepoFile sym env req repo file $ \(dbs,_) mlang ->
+  withRepoFile sym env (req, opts) repo file $ \(dbs,_) mlang ->
     fn repos req opts
         (GleanBackend (Glass.gleanBackend env) dbs)
         (Glass.snapshotBackend env)

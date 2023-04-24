@@ -54,6 +54,13 @@ instance ActionLog GleanGlassLogger where
 class LogRequest a where
   logRequest :: a -> GleanGlassLogger
 
+instance LogRequest (DocumentSymbolsRequest, RequestOptions)  where
+  logRequest (d, RequestOptions{..}) = logRequest d <> options
+    where
+    options = case requestOptions_revision of
+      Nothing -> mempty
+      Just revision -> Logger.setRevision $ unRevision revision
+
 instance LogRequest DocumentSymbolsRequest where
   logRequest = logDocumentSymbolsRequestSG Logger.setFilepath Logger.setRepo
 
