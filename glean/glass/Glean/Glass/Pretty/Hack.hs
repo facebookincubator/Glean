@@ -239,10 +239,10 @@ ppEnumClass IsClass = space <> "class"
 ppName :: Name -> Doc Ann
 ppName (Name n) = pretty n
 
+-- | We never qualify names in generated signatures now
 ppQualName :: QualName -> Doc Ann
 ppQualName (QualName ([], name)) = pretty name
-ppQualName (QualName (namespace, name)) =
-  surround "\\" (ppQual (Qual namespace)) (pretty name)
+ppQualName (QualName (_namespace, name)) = pretty name
 
 ppQual :: Qual -> Doc Ann
 ppQual (Qual namespace) = concatWith (surround "\\") (pretty <$> namespace)

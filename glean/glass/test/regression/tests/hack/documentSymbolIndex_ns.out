@@ -48,7 +48,7 @@
                             "aString": "NS"
                         },
                         "symbolSignature": {
-                            "aString": "class NS\\NamespaceClass"
+                            "aString": "class NamespaceClass"
                         }
                     },
                     "range": {
@@ -132,7 +132,7 @@
                             "aString": "NS\\InnerNS"
                         },
                         "symbolSignature": {
-                            "aString": "function NS\\InnerNS\\deep_function(): void"
+                            "aString": "function deep_function(): void"
                         }
                     },
                     "range": {
