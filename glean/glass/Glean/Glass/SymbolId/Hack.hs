@@ -9,7 +9,9 @@
 {-# LANGUAGE TypeApplications #-}
 {-# OPTIONS_GHC -Wno-orphans #-}
 
-module Glean.Glass.SymbolId.Hack ( {- instances -} ) where
+module Glean.Glass.SymbolId.Hack (
+    {- instances and -} hackGlobalNamespaceAliases
+  ) where
 
 import Control.Monad (forM)
 import qualified Data.Map.Strict as Map
@@ -228,6 +230,8 @@ instance ToQName Hack.QName_key where
       Right (Name p, Name ps) -> Right (nameStr, Name (ps <> "\\" <> p))
       Left e -> Left e
 
+-- Memoize implementation of short namespace lookup
+--
 hackGlobalNamespaceAliases
   :: RepoHaxl u w (Map.Map (Glean.IdOf Hack.NamespaceQName) Text)
 hackGlobalNamespaceAliases = do

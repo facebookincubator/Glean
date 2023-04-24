@@ -56,6 +56,7 @@ import Control.Monad.Extra ( when, whenJust )
 import Control.Monad.Trans (MonadTrans(lift))
 import Control.Monad.Trans.Maybe (MaybeT (..))
 import Control.Monad.Trans.Writer.Strict ( execWriter, tell )
+import qualified Data.Map.Strict as Map
 
 import Glean.Glass.SymbolId ( toSymbolId )
 import Glean.Glass.Types ( SymbolId(..), RepoName(..) )
@@ -63,13 +64,14 @@ import Glean.Glass.Base ( GleanPath(..) )
 import Glean.Glass.Path ( fromGleanPath )
 import Glean.Util.ToAngle ( ToAngle(toAngle) )
 import Glean.Glass.Utils
+import qualified Glean.Glass.SymbolId.Hack as Hack
 
 import qualified Glean
 import Glean.Angle as Angle
 import qualified Glean.Haxl.Repos as Glean
 import qualified Glean.Schema.Hack.Types as Hack
 import qualified Glean.Schema.Src.Types as Src
-import Glean.Schema.CodeHack.Types as Hack ( Entity(..) )
+import Glean.Schema.CodeHack.Types as Hack
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import qualified Glean.Schema.Codemarkup.Types as Code
@@ -608,31 +610,18 @@ qName Hack.QName{..} = do
 
 namespaceQName :: Maybe Hack.NamespaceQName -> Glean.MaybeTRepoHaxl u w [Text]
 namespaceQName Nothing = return []
-namespaceQName (Just name) = do
-  let Hack.NamespaceDeclaration_key{..} = Hack.NamespaceDeclaration_key name
-  alias <- lift $ fetchDataRecursive $ predicate @Hack.GlobalNamespaceAlias $
-      rec $
-        field @"to"
-          (Angle.asPredicate $ Angle.factId
-          $ Glean.getId namespaceDeclaration_key_name)
-      end
-  case alias of
-    Just Hack.GlobalNamespaceAlias
-      { globalNamespaceAlias_key = Just Hack.GlobalNamespaceAlias_key
-          { globalNamespaceAlias_key_from=from
-          }
-      } -> do
-        name <- liftMaybe $ Hack.name_key from
-        return [name]
-    _ -> return $ fromMaybe [] $ namespaceQNameInner (Just name) []
+namespaceQName (Just nsqname) = do
+  aliases <- lift Hack.hackGlobalNamespaceAliases
+  pure $ case Map.lookup (Glean.getId nsqname) aliases of
+    Just shortName -> [shortName]
+    Nothing -> fromMaybe [] $ namespaceQNameInner (Just nsqname) []
   where
-    namespaceQNameInner
-      :: Maybe Hack.NamespaceQName -> [Text] -> Maybe [Text]
+    namespaceQNameInner :: Maybe Hack.NamespaceQName -> [Text] -> Maybe [Text]
     namespaceQNameInner Nothing children = Just children
     namespaceQNameInner (Just Hack.NamespaceQName{..}) children = do
-    Hack.NamespaceQName_key{..} <- namespaceQName_key
-    parent <- Hack.name_key namespaceQName_key_name
-    namespaceQNameInner namespaceQName_key_parent (parent:children)
+      Hack.NamespaceQName_key{..} <- namespaceQName_key
+      parent <- Hack.name_key namespaceQName_key_name
+      namespaceQNameInner namespaceQName_key_parent (parent:children)
 
 modifiersForFunction :: Hack.FunctionDefinition_key -> FunctionMod
 modifiersForFunction Hack.FunctionDefinition_key{..} =
