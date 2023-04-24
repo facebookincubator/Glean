@@ -1,0 +1,31 @@
+
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+# common predicates between java and kotlin used for interopobility
+schema javakotlin.alpha.1 {
+  import src.1
+
+predicate Name : string
+
+predicate Path : {
+  base : Name,
+  container : maybe Path,
+}
+
+predicate Type : {
+  primitive: string |
+  object: Path |
+  array: Type |
+}
+
+predicate QName : {
+  name: Name,
+  context: Path,
+}
+
+predicate MethodName : {
+  name: QName,
+  signature: [Type]
+}
+
+}

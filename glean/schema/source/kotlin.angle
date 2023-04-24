@@ -1,0 +1,43 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+# common predicates between java and kotlin used for interopobility
+schema kotlin.alpha.1 {
+  import javakotlin.alpha.1
+  import src.1
+
+predicate DeclarationLocation : {
+    file : src.File,
+    span : src.ByteSpan
+}
+
+predicate Type :
+  {
+    type : javakotlin.alpha.Type,
+    location : maybe DeclarationLocation,
+    typeArgs: [TypeArg],
+    isNullable: bool
+  }
+
+predicate TypeArg: {
+  type: Type
+}
+
+  # A variable declaration
+predicate VariableDeclaration :
+  {
+    name: javakotlin.alpha.QName,
+    type : Type,
+    location : DeclarationLocation,
+  }
+
+
+# A method declaration
+predicate MethodDeclaration :
+  {
+    name : javakotlin.alpha.MethodName,
+    parameters : [VariableDeclaration],
+    returnType : Type,
+    loc : src.Loc,
+  }
+
+}
