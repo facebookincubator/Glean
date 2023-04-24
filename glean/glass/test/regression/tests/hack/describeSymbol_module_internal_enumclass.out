@@ -39,7 +39,7 @@
         },
         "pretty_comments": [],
         "repo_hash": "testhash",
-        "signature": "internal enum class EnumClassExample",
+        "signature": "internal enum class EnumClassExample : InterfaceThis",
         "sym": "test/php/EnumClassExample",
         "sym_location": {
             "filepath": "www/ModuleMember.php",

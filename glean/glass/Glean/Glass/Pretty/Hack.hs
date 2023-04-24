@@ -180,16 +180,15 @@ prettyDecl _ sym (ClassConst name) =
 prettyDecl _ sym (Module name) =
   "module" <+> annotate (SymId sym) (ppName name)
 
-prettyDecl _ sym (Enum name Regular (EnumBase ty1) internal) =
+prettyDecl _ sym (Enum name enumKind (EnumBase ty1) internal) =
   ppModuleInternal internal <>
-    "enum" <+> annotate (SymId sym) (ppQualName name) <+> ":" <+> ppType ty1
-prettyDecl _ sym (Enum name Regular (Constrained ty1 ty2) internal) =
+    "enum" <> ppEnumClass enumKind <+>
+      annotate (SymId sym) (ppQualName name) <+> ":" <+> ppType ty1
+prettyDecl _ sym (Enum name enumKind (Constrained ty1 ty2) internal) =
   ppModuleInternal internal <>
-    "enum" <+> annotate (SymId sym) (ppQualName name) <+>
+    "enum" <> ppEnumClass enumKind <+>
+      annotate (SymId sym) (ppQualName name) <+>
        ":" <+> ppConstraintTypes ty1 ty2
-prettyDecl _ sym (Enum name IsClass _ internal) =
-  ppModuleInternal internal <> "enum" <+> "class" <+>
-    annotate (SymId sym) (ppQualName name)
 
 prettyDecl _ sym (Class modifiers name typeParams) =
   ppClassModifiers modifiers <> "class" <+>
@@ -230,6 +229,10 @@ prettyDecl _ _sym (Typedef name typeParams Type_ internal) =
 prettyDecl _ _sym (Typedef name typeParams Newtype_ internal) =
   ppModuleInternal internal <>
     "newtype" <+> ppQualName name <> ppTypeParams typeParams
+
+ppEnumClass :: EnumKind -> Doc Ann
+ppEnumClass Regular = emptyDoc
+ppEnumClass IsClass = space <> "class"
 
 ppName :: Name -> Doc Ann
 ppName (Name n) = pretty n
