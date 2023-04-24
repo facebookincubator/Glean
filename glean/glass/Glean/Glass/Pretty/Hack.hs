@@ -273,10 +273,7 @@ ppFinal NotFinal = mempty
 
 ppSignature :: LayoutOptions -> Doc Ann -> Signature -> Doc Ann
 ppSignature opts head (Signature returnType typeParams params ctxs xrefs) =
-    if fitsOnOneLine then
-      onelineSig
-    else
-      multilineSig
+    if fitsOnOneLine then onelineSig else multilineSig
   where
     onelineTypeParams = if null typeParams then emptyDoc else cat
       [ "<"
@@ -609,19 +606,23 @@ qName Hack.QName{..} = do
  return (namespace, name)
 
 namespaceQName :: Maybe Hack.NamespaceQName -> Glean.MaybeTRepoHaxl u w [Text]
-namespaceQName Nothing = return []
-namespaceQName (Just nsqname) = do
-  aliases <- lift Hack.hackGlobalNamespaceAliases
-  pure $ case Map.lookup (Glean.getId nsqname) aliases of
-    Just shortName -> [shortName]
-    Nothing -> fromMaybe [] $ namespaceQNameInner (Just nsqname) []
+namespaceQName nsqname = go nsqname []
   where
-    namespaceQNameInner :: Maybe Hack.NamespaceQName -> [Text] -> Maybe [Text]
-    namespaceQNameInner Nothing children = Just children
-    namespaceQNameInner (Just Hack.NamespaceQName{..}) children = do
-      Hack.NamespaceQName_key{..} <- namespaceQName_key
-      parent <- Hack.name_key namespaceQName_key_name
-      namespaceQNameInner namespaceQName_key_parent (parent:children)
+    go Nothing acc = return acc
+    go (Just nsqname@Hack.NamespaceQName{..}) acc = do
+      mshortname <- lift $ shortenGlobalAlias nsqname
+      case mshortname of -- if this one is global alias, we're done.
+        Just name -> return (name : acc)
+        Nothing -> do -- else collect name and try parent
+          Hack.NamespaceQName_key{..} <- liftMaybe namespaceQName_key
+          name <- liftMaybe $ Hack.name_key namespaceQName_key_name
+          go namespaceQName_key_parent (name : acc)
+
+-- in a (recursive) hack.NamespaceQName, occurences of global namespace
+-- aliases should be shortened wherever they occur.
+shortenGlobalAlias :: Hack.NamespaceQName -> Glean.RepoHaxl u w (Maybe Text)
+shortenGlobalAlias nsqname = Map.lookup (Glean.getId nsqname) <$>
+  Hack.hackGlobalNamespaceAliases
 
 modifiersForFunction :: Hack.FunctionDefinition_key -> FunctionMod
 modifiersForFunction Hack.FunctionDefinition_key{..} =
