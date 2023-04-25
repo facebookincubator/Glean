@@ -54,5 +54,6 @@ getSnapshot
   -> RepoName
   -> Path
   -> Revision
+  -> Bool
   -> IO (Maybe Types.DocumentSymbolListXResult)
-getSnapshot _ _ _ _ = return Nothing
+getSnapshot _ _ _ _ _ = return Nothing

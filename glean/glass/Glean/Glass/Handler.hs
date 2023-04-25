@@ -907,10 +907,10 @@ fetchSymbolsAndAttributes
   -> Maybe Language
   -> IO (DocumentSymbolListXResult, Maybe ErrorLogger)
 fetchSymbolsAndAttributes latest req opts be snapshotbe mlang =
-  case (trySnapshot, mrevision) of
-    (True, Just revision) -> do
+  case (mrevision, mlang) of
+    (Just revision, Just Language_Hack) -> do
       Async.withAsync getFromGlean $ \gleanRes -> do
-        msnapshot <- getSnapshot snapshotbe repo file revision
+        msnapshot <- getSnapshot snapshotbe repo file revision trySnapshot
         case msnapshot of
           Just queryResult -> return (queryResult, Nothing)
           Nothing -> Async.wait gleanRes
