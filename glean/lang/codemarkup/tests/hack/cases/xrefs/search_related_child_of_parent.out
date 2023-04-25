@@ -40,9 +40,10 @@
         "location": {
           "name": "RefClass",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 226, "length": 760 } }
+          "location": { "span": { "start": 226, "length": 785 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -87,7 +88,8 @@
           "file": { "key": "www/SourceClass.php" },
           "location": { "span": { "start": 706, "length": 139 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -132,7 +134,8 @@
           "file": { "key": "www/SourceClass.php" },
           "location": { "span": { "start": 253, "length": 451 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -175,9 +178,58 @@
         "location": {
           "name": "RefClass",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 226, "length": 760 } }
+          "location": { "span": { "start": 226, "length": 785 } }
         }
-      }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 1,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "trait": {
+                  "key": {
+                    "name": {
+                      "key": { "name": { "key": "SourceSecretTrait" } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "SourceSecretTrait",
+          "file": { "key": "www/SourceTrait.php" },
+          "location": { "span": { "start": 460, "length": 107 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "RefClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "RefClass",
+          "file": { "key": "www/RefClass.php" },
+          "location": { "span": { "start": 226, "length": 785 } }
+        }
+      },
+      "style": 0
     }
   },
   {
@@ -220,9 +272,10 @@
         "location": {
           "name": "RefClass",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 226, "length": 760 } }
+          "location": { "span": { "start": 226, "length": 785 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -277,7 +330,8 @@
           "file": { "key": "www/SourceClass.php" },
           "location": { "span": { "start": 745, "length": 98 } }
         }
-      }
+      },
+      "style": 0
     }
   }
 ]

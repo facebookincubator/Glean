@@ -9,6 +9,7 @@
 
 class RefClass extends SourceClass implements SourceInterface {
   use SourceTrait;
+  use SourceSecretTrait;
 
   const int JAZZ = 39;
 

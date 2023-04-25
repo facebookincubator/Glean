@@ -405,6 +405,29 @@
         "decl": {
           "method": {
             "key": {
+              "name": { "key": "quokka" },
+              "container": {
+                "trait": {
+                  "key": {
+                    "name": {
+                      "key": { "name": { "key": "SourceSecretTrait" } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "hack": {
+        "decl": {
+          "method": {
+            "key": {
               "name": { "key": "quux" },
               "container": {
                 "interface_": {

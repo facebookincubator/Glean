@@ -39,7 +39,7 @@
                     "columnBegin": 1,
                     "columnEnd": 2,
                     "lineBegin": 10,
-                    "lineEnd": 36
+                    "lineEnd": 37
                 },
                 "sym": "test/php/RefClass"
             },
@@ -79,8 +79,8 @@
                 "range": {
                     "columnBegin": 15,
                     "columnEnd": 25,
-                    "lineBegin": 15,
-                    "lineEnd": 15
+                    "lineBegin": 16,
+                    "lineEnd": 16
                 },
                 "sym": "test/php/RefClass/:prop/raz"
             },
@@ -120,8 +120,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 23,
-                    "lineBegin": 13,
-                    "lineEnd": 13
+                    "lineBegin": 14,
+                    "lineEnd": 14
                 },
                 "sym": "test/php/RefClass/JAZZ"
             },
@@ -161,8 +161,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 4,
-                    "lineBegin": 29,
-                    "lineEnd": 35
+                    "lineBegin": 30,
+                    "lineEnd": 36
                 },
                 "sym": "test/php/RefClass/bar"
             },
@@ -202,8 +202,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 4,
-                    "lineBegin": 21,
-                    "lineEnd": 23
+                    "lineBegin": 22,
+                    "lineEnd": 24
                 },
                 "sym": "test/php/RefClass/bazza"
             },
@@ -243,8 +243,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 4,
-                    "lineBegin": 17,
-                    "lineEnd": 19
+                    "lineBegin": 18,
+                    "lineEnd": 20
                 },
                 "sym": "test/php/RefClass/foo"
             },
@@ -284,8 +284,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 4,
-                    "lineBegin": 25,
-                    "lineEnd": 27
+                    "lineBegin": 26,
+                    "lineEnd": 28
                 },
                 "sym": "test/php/RefClass/lotsofkeywords"
             }
@@ -327,8 +327,8 @@
                 "range": {
                     "columnBegin": 40,
                     "columnEnd": 48,
-                    "lineBegin": 32,
-                    "lineEnd": 32
+                    "lineBegin": 33,
+                    "lineEnd": 33
                 },
                 "sym": "test/php/Position",
                 "target": {
@@ -378,8 +378,8 @@
                 "range": {
                     "columnBegin": 46,
                     "columnEnd": 54,
-                    "lineBegin": 34,
-                    "lineEnd": 34
+                    "lineBegin": 35,
+                    "lineEnd": 35
                 },
                 "sym": "test/php/Position",
                 "target": {
@@ -429,8 +429,8 @@
                 "range": {
                     "columnBegin": 56,
                     "columnEnd": 62,
-                    "lineBegin": 34,
-                    "lineEnd": 34
+                    "lineBegin": 35,
+                    "lineEnd": 35
                 },
                 "sym": "test/php/Position/Center",
                 "target": {
@@ -480,8 +480,8 @@
                 "range": {
                     "columnBegin": 50,
                     "columnEnd": 55,
-                    "lineBegin": 32,
-                    "lineEnd": 32
+                    "lineBegin": 33,
+                    "lineEnd": 33
                 },
                 "sym": "test/php/Position/Right",
                 "target": {
@@ -531,8 +531,8 @@
                 "range": {
                     "columnBegin": 23,
                     "columnEnd": 26,
-                    "lineBegin": 33,
-                    "lineEnd": 33
+                    "lineBegin": 34,
+                    "lineEnd": 34
                 },
                 "sym": "test/php/RefClass/:prop/raz",
                 "target": {
@@ -540,8 +540,8 @@
                     "range": {
                         "columnBegin": 15,
                         "columnEnd": 19,
-                        "lineBegin": 15,
-                        "lineEnd": 15
+                        "lineBegin": 16,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 }
@@ -582,8 +582,8 @@
                 "range": {
                     "columnBegin": 67,
                     "columnEnd": 71,
-                    "lineBegin": 31,
-                    "lineEnd": 31
+                    "lineBegin": 32,
+                    "lineEnd": 32
                 },
                 "sym": "test/php/RefClass/JAZZ",
                 "target": {
@@ -591,8 +591,8 @@
                     "range": {
                         "columnBegin": 13,
                         "columnEnd": 17,
-                        "lineBegin": 13,
-                        "lineEnd": 13
+                        "lineBegin": 14,
+                        "lineEnd": 14
                     },
                     "repository": "test"
                 }
@@ -633,8 +633,8 @@
                 "range": {
                     "columnBegin": 36,
                     "columnEnd": 41,
-                    "lineBegin": 33,
-                    "lineEnd": 33
+                    "lineBegin": 34,
+                    "lineEnd": 34
                 },
                 "sym": "test/php/RefClass/bazza",
                 "target": {
@@ -642,8 +642,8 @@
                     "range": {
                         "columnBegin": 19,
                         "columnEnd": 24,
-                        "lineBegin": 21,
-                        "lineEnd": 21
+                        "lineBegin": 22,
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 }
@@ -684,8 +684,8 @@
                 "range": {
                     "columnBegin": 65,
                     "columnEnd": 68,
-                    "lineBegin": 32,
-                    "lineEnd": 32
+                    "lineBegin": 33,
+                    "lineEnd": 33
                 },
                 "sym": "test/php/RefClass/foo",
                 "target": {
@@ -693,8 +693,8 @@
                     "range": {
                         "columnBegin": 26,
                         "columnEnd": 29,
-                        "lineBegin": 17,
-                        "lineEnd": 17
+                        "lineBegin": 18,
+                        "lineEnd": 18
                     },
                     "repository": "test"
                 }
@@ -786,57 +786,6 @@
                 "range": {
                     "columnBegin": 23,
                     "columnEnd": 34,
-                    "lineBegin": 29,
-                    "lineEnd": 29
-                },
-                "sym": "test/php/SourceClass",
-                "target": {
-                    "filepath": "www/SourceClass.php",
-                    "range": {
-                        "columnBegin": 7,
-                        "columnEnd": 18,
-                        "lineBegin": 14,
-                        "lineEnd": 14
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aInteger": 7
-                        },
-                        "key": "symbolKind"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "SourceClass"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": ""
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "class SourceClass"
-                        },
-                        "key": "symbolSignature"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 3
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 19,
-                    "columnEnd": 30,
                     "lineBegin": 30,
                     "lineEnd": 30
                 },
@@ -886,8 +835,8 @@
                     }
                 ],
                 "range": {
-                    "columnBegin": 26,
-                    "columnEnd": 37,
+                    "columnBegin": 19,
+                    "columnEnd": 30,
                     "lineBegin": 31,
                     "lineEnd": 31
                 },
@@ -937,10 +886,61 @@
                     }
                 ],
                 "range": {
+                    "columnBegin": 26,
+                    "columnEnd": 37,
+                    "lineBegin": 32,
+                    "lineEnd": 32
+                },
+                "sym": "test/php/SourceClass",
+                "target": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 18,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 7
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "SourceClass"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "class SourceClass"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
                     "columnBegin": 46,
                     "columnEnd": 57,
-                    "lineBegin": 33,
-                    "lineEnd": 33
+                    "lineBegin": 34,
+                    "lineEnd": 34
                 },
                 "sym": "test/php/SourceClass",
                 "target": {
@@ -990,8 +990,8 @@
                 "range": {
                     "columnBegin": 54,
                     "columnEnd": 57,
-                    "lineBegin": 31,
-                    "lineEnd": 31
+                    "lineBegin": 32,
+                    "lineEnd": 32
                 },
                 "sym": "test/php/SourceClass/:prop/daz",
                 "target": {
@@ -1041,8 +1041,8 @@
                 "range": {
                     "columnBegin": 39,
                     "columnEnd": 42,
-                    "lineBegin": 31,
-                    "lineEnd": 31
+                    "lineBegin": 32,
+                    "lineEnd": 32
                 },
                 "sym": "test/php/SourceClass/BAZ",
                 "target": {
@@ -1092,8 +1092,8 @@
                 "range": {
                     "columnBegin": 36,
                     "columnEnd": 37,
-                    "lineBegin": 29,
-                    "lineEnd": 29
+                    "lineBegin": 30,
+                    "lineEnd": 30
                 },
                 "sym": "test/php/SourceClass/T",
                 "target": {
@@ -1154,6 +1154,57 @@
                         "columnEnd": 26,
                         "lineBegin": 10,
                         "lineEnd": 10
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 31
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "SourceSecretTrait"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "trait SourceSecretTrait"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 7,
+                    "columnEnd": 24,
+                    "lineBegin": 12,
+                    "lineEnd": 12
+                },
+                "sym": "test/php/SourceSecretTrait",
+                "target": {
+                    "filepath": "www/SourceTrait.php",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 24,
+                        "lineBegin": 21,
+                        "lineEnd": 21
                     },
                     "repository": "test"
                 }
@@ -1245,8 +1296,8 @@
                 "range": {
                     "columnBegin": 23,
                     "columnEnd": 27,
-                    "lineBegin": 32,
-                    "lineEnd": 32
+                    "lineBegin": 33,
+                    "lineEnd": 33
                 },
                 "sym": "test/php/SourceTrait/quux",
                 "target": {
@@ -1296,8 +1347,8 @@
                 "range": {
                     "columnBegin": 59,
                     "columnEnd": 67,
-                    "lineBegin": 33,
-                    "lineEnd": 33
+                    "lineBegin": 34,
+                    "lineEnd": 34
                 },
                 "sym": "test/php/SuperClass/superAdd",
                 "target": {
@@ -1347,8 +1398,8 @@
                 "range": {
                     "columnBegin": 22,
                     "columnEnd": 27,
-                    "lineBegin": 18,
-                    "lineEnd": 18
+                    "lineBegin": 19,
+                    "lineEnd": 19
                 },
                 "sym": "test/php/const/WALDO",
                 "target": {
@@ -1398,8 +1449,8 @@
                 "range": {
                     "columnBegin": 74,
                     "columnEnd": 79,
-                    "lineBegin": 31,
-                    "lineEnd": 31
+                    "lineBegin": 32,
+                    "lineEnd": 32
                 },
                 "sym": "test/php/const/WALDO",
                 "target": {
@@ -1449,8 +1500,8 @@
                 "range": {
                     "columnBegin": 12,
                     "columnEnd": 17,
-                    "lineBegin": 18,
-                    "lineEnd": 18
+                    "lineBegin": 19,
+                    "lineEnd": 19
                 },
                 "sym": "test/php/fun/corge",
                 "target": {
@@ -1500,8 +1551,8 @@
                 "range": {
                     "columnBegin": 16,
                     "columnEnd": 21,
-                    "lineBegin": 22,
-                    "lineEnd": 22
+                    "lineBegin": 23,
+                    "lineEnd": 23
                 },
                 "sym": "test/php/fun/corge",
                 "target": {
@@ -1551,8 +1602,8 @@
                 "range": {
                     "columnBegin": 16,
                     "columnEnd": 21,
-                    "lineBegin": 31,
-                    "lineEnd": 31
+                    "lineBegin": 32,
+                    "lineEnd": 32
                 },
                 "sym": "test/php/fun/corge",
                 "target": {
@@ -1602,8 +1653,8 @@
                 "range": {
                     "columnBegin": 66,
                     "columnEnd": 71,
-                    "lineBegin": 34,
-                    "lineEnd": 34
+                    "lineBegin": 35,
+                    "lineEnd": 35
                 },
                 "sym": "test/php/fun/corge",
                 "target": {

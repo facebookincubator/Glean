@@ -412,6 +412,24 @@
             "container": {
               "trait": {
                 "key": {
+                  "name": { "key": { "name": { "key": "SourceSecretTrait" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 30, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "trait": {
+                "key": {
                   "name": { "key": { "name": { "key": "SourceTrait" } } }
                 }
               }
@@ -868,6 +886,31 @@
                   "class_": {
                     "key": {
                       "name": { "key": { "name": { "key": "SubClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 7, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "quokka" },
+                "container": {
+                  "trait": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "SourceSecretTrait" } }
+                      }
                     }
                   }
                 }

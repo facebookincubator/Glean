@@ -341,6 +341,30 @@
             "container": {
               "trait": {
                 "key": {
+                  "name": { "key": { "name": { "key": "SourceSecretTrait" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": {
+        "hack": {
+          "attributes": [
+            { "key": { "name": { "key": "HideFromDocs" }, "parameters": [ ] } }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "trait": {
+                "key": {
                   "name": { "key": { "name": { "key": "SourceTrait" } } }
                 }
               }
@@ -804,6 +828,31 @@
           ]
         }
       }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "quokka" },
+                "container": {
+                  "trait": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "SourceSecretTrait" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
     }
   },
   {

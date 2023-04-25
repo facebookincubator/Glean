@@ -418,7 +418,7 @@
                         "columnBegin": 1,
                         "columnEnd": 2,
                         "lineBegin": 10,
-                        "lineEnd": 36
+                        "lineEnd": 37
                     },
                     "repository": "test"
                 },
@@ -436,7 +436,7 @@
                         "columnBegin": 1,
                         "columnEnd": 2,
                         "lineBegin": 10,
-                        "lineEnd": 36
+                        "lineEnd": 37
                     },
                     "repository": "test"
                 },
@@ -465,8 +465,8 @@
                     "range": {
                         "columnBegin": 15,
                         "columnEnd": 25,
-                        "lineBegin": 15,
-                        "lineEnd": 15
+                        "lineBegin": 16,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 },
@@ -483,8 +483,8 @@
                     "range": {
                         "columnBegin": 15,
                         "columnEnd": 25,
-                        "lineBegin": 15,
-                        "lineEnd": 15
+                        "lineBegin": 16,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 },
@@ -514,8 +514,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 4,
-                        "lineBegin": 29,
-                        "lineEnd": 35
+                        "lineBegin": 30,
+                        "lineEnd": 36
                     },
                     "repository": "test"
                 },
@@ -532,8 +532,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 4,
-                        "lineBegin": 29,
-                        "lineEnd": 35
+                        "lineBegin": 30,
+                        "lineEnd": 36
                     },
                     "repository": "test"
                 },
@@ -563,8 +563,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 4,
-                        "lineBegin": 21,
-                        "lineEnd": 23
+                        "lineBegin": 22,
+                        "lineEnd": 24
                     },
                     "repository": "test"
                 },
@@ -581,8 +581,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 4,
-                        "lineBegin": 21,
-                        "lineEnd": 23
+                        "lineBegin": 22,
+                        "lineEnd": 24
                     },
                     "repository": "test"
                 },
@@ -612,8 +612,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 4,
-                        "lineBegin": 17,
-                        "lineEnd": 19
+                        "lineBegin": 18,
+                        "lineEnd": 20
                     },
                     "repository": "test"
                 },
@@ -632,8 +632,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 4,
-                        "lineBegin": 17,
-                        "lineEnd": 19
+                        "lineBegin": 18,
+                        "lineEnd": 20
                     },
                     "repository": "test"
                 },
@@ -663,8 +663,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 4,
-                        "lineBegin": 25,
-                        "lineEnd": 27
+                        "lineBegin": 26,
+                        "lineEnd": 28
                     },
                     "repository": "test"
                 },
@@ -685,8 +685,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 4,
-                        "lineBegin": 25,
-                        "lineEnd": 27
+                        "lineBegin": 26,
+                        "lineEnd": 28
                     },
                     "repository": "test"
                 },
@@ -1365,6 +1365,55 @@
                         "columnEnd": 37,
                         "lineBegin": 16,
                         "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 20
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceTrait.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 22,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "SourceSecretTrait",
+                    "localName": "quokka"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/php/SourceSecretTrait/quokka",
+                "sym_location": {
+                    "filepath": "www/SourceTrait.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 22,
+                        "lineEnd": 24
                     },
                     "repository": "test"
                 },
@@ -2353,7 +2402,7 @@
                         "columnBegin": 1,
                         "columnEnd": 2,
                         "lineBegin": 10,
-                        "lineEnd": 36
+                        "lineEnd": 37
                     },
                     "repository": "test"
                 },
@@ -2375,8 +2424,8 @@
                     "range": {
                         "columnBegin": 15,
                         "columnEnd": 25,
-                        "lineBegin": 15,
-                        "lineEnd": 15
+                        "lineBegin": 16,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 },
@@ -2405,8 +2454,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 4,
-                        "lineBegin": 29,
-                        "lineEnd": 35
+                        "lineBegin": 30,
+                        "lineEnd": 36
                     },
                     "repository": "test"
                 },
@@ -2435,8 +2484,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 4,
-                        "lineBegin": 21,
-                        "lineEnd": 23
+                        "lineBegin": 22,
+                        "lineEnd": 24
                     },
                     "repository": "test"
                 },
@@ -2465,8 +2514,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 4,
-                        "lineBegin": 17,
-                        "lineEnd": 19
+                        "lineBegin": 18,
+                        "lineEnd": 20
                     },
                     "repository": "test"
                 },
@@ -2495,8 +2544,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 4,
-                        "lineBegin": 25,
-                        "lineEnd": 27
+                        "lineBegin": 26,
+                        "lineEnd": 28
                     },
                     "repository": "test"
                 },
@@ -2827,6 +2876,36 @@
                     "exactness": 2
                 },
                 "symbol": "test/php/SourceInterface/quux"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SourceSecretTrait"
+                    },
+                    "symbol": "test/php/SourceSecretTrait"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceTrait.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 22,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "name": "quokka",
+                "qname": {
+                    "container": "SourceSecretTrait",
+                    "localName": "quokka"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SourceSecretTrait/quokka"
             },
             {
                 "context": {

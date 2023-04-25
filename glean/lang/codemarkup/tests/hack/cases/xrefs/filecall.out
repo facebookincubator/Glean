@@ -3,7 +3,7 @@
   {
     "key": {
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 410, "length": 5 },
+      "span": { "start": 435, "length": 5 },
       "arguments": [ ],
       "callee_xref": {
         "hack": {
@@ -19,7 +19,7 @@
   {
     "key": {
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 481, "length": 5 },
+      "span": { "start": 506, "length": 5 },
       "arguments": [ ],
       "callee_xref": {
         "hack": {
@@ -35,7 +35,7 @@
   {
     "key": {
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 692, "length": 5 },
+      "span": { "start": 717, "length": 5 },
       "arguments": [ ],
       "callee_xref": {
         "hack": {
@@ -51,8 +51,8 @@
   {
     "key": {
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 772, "length": 11 },
-      "arguments": [ { "span": { "start": 784, "length": 8 } } ],
+      "span": { "start": 797, "length": 11 },
+      "arguments": [ { "span": { "start": 809, "length": 8 } } ],
       "callee_xref": {
         "hack": {
           "decl": {
@@ -71,7 +71,7 @@
           }
         }
       },
-      "dispatch_arg": { "span": { "start": 772, "length": 5 } },
+      "dispatch_arg": { "span": { "start": 797, "length": 5 } },
       "receiver_type": {
         "hack": {
           "decl": {
@@ -88,7 +88,7 @@
   {
     "key": {
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 814, "length": 10 },
+      "span": { "start": 839, "length": 10 },
       "arguments": [ ],
       "callee_xref": {
         "hack": {
@@ -124,7 +124,7 @@
   {
     "key": {
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 856, "length": 12 },
+      "span": { "start": 881, "length": 12 },
       "arguments": [ ],
       "callee_xref": {
         "hack": {
@@ -144,7 +144,7 @@
           }
         }
       },
-      "dispatch_arg": { "span": { "start": 856, "length": 5 } },
+      "dispatch_arg": { "span": { "start": 881, "length": 5 } },
       "receiver_type": {
         "hack": {
           "decl": {
@@ -161,10 +161,10 @@
   {
     "key": {
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 873, "length": 21 },
+      "span": { "start": 898, "length": 21 },
       "arguments": [
-        { "span": { "start": 895, "length": 1 } },
-        { "span": { "start": 898, "length": 6 } }
+        { "span": { "start": 920, "length": 1 } },
+        { "span": { "start": 923, "length": 6 } }
       ],
       "callee_xref": {
         "hack": {
@@ -202,7 +202,7 @@
   {
     "key": {
       "file": { "key": "www/RefClass.php" },
-      "span": { "start": 972, "length": 5 },
+      "span": { "start": 997, "length": 5 },
       "arguments": [ ],
       "callee_xref": {
         "hack": {

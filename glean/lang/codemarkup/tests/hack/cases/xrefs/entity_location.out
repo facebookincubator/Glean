@@ -22,7 +22,7 @@
       },
       "location": {
         "file": { "key": "www/RefClass.php" },
-        "location": { "span": { "length": 20, "start": 312 } },
+        "location": { "span": { "length": 20, "start": 337 } },
         "name": "JAZZ"
       }
     }
@@ -201,7 +201,7 @@
       },
       "location": {
         "file": { "key": "www/RefClass.php" },
-        "location": { "span": { "length": 760, "start": 226 } },
+        "location": { "span": { "length": 785, "start": 226 } },
         "name": "RefClass"
       }
     }
@@ -485,6 +485,28 @@
         "file": { "key": "www/SourceInterface.php" },
         "location": { "span": { "length": 134, "start": 226 } },
         "name": "SourceInterface"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "trait": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceSecretTrait" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/SourceTrait.php" },
+        "location": { "span": { "length": 107, "start": 460 } },
+        "name": "SourceSecretTrait"
       }
     }
   },
@@ -997,7 +1019,7 @@
       },
       "location": {
         "file": { "key": "www/RefClass.php" },
-        "location": { "span": { "length": 390, "start": 594 } },
+        "location": { "span": { "length": 390, "start": 619 } },
         "name": "bar"
       }
     }
@@ -1024,7 +1046,7 @@
       },
       "location": {
         "file": { "key": "www/RefClass.php" },
-        "location": { "span": { "length": 59, "start": 434 } },
+        "location": { "span": { "length": 59, "start": 459 } },
         "name": "bazza"
       }
     }
@@ -1051,7 +1073,7 @@
       },
       "location": {
         "file": { "key": "www/RefClass.php" },
-        "location": { "span": { "length": 67, "start": 363 } },
+        "location": { "span": { "length": 67, "start": 388 } },
         "name": "foo"
       }
     }
@@ -1078,7 +1100,7 @@
       },
       "location": {
         "file": { "key": "www/RefClass.php" },
-        "location": { "span": { "length": 93, "start": 497 } },
+        "location": { "span": { "length": 93, "start": 522 } },
         "name": "lotsofkeywords"
       }
     }
@@ -1394,6 +1416,35 @@
                 "container": {
                   "trait": {
                     "key": {
+                      "name": {
+                        "key": { "name": { "key": "SourceSecretTrait" } }
+                      }
+                    }
+                  }
+                },
+                "name": { "key": "quokka" }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/SourceTrait.php" },
+        "location": { "span": { "length": 60, "start": 505 } },
+        "name": "quokka"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "container": {
+                  "trait": {
+                    "key": {
                       "name": { "key": { "name": { "key": "SourceTrait" } } }
                     }
                   }
@@ -1537,7 +1588,7 @@
       },
       "location": {
         "file": { "key": "www/RefClass.php" },
-        "location": { "span": { "length": 10, "start": 348 } },
+        "location": { "span": { "length": 10, "start": 373 } },
         "name": "raz"
       }
     }

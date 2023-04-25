@@ -1,0 +1,3 @@
+query: codemarkup.hack.HackExtendsParentEntityConcise { child = { decl = _ } , parent = { decl = _ } }
+perf: true
+transform: [gensort, []]

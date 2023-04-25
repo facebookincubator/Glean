@@ -352,16 +352,32 @@ predicate HackExtendsParentEntity :
     parent : code.hack.Entity
   }
   { { decl = Child }, { decl = Parent } } where
-    (
-      { container = C } = Child;
+    ( { container = C } = Child;
       hack.ContainerParent { C, P };
       { container = P } = Parent
-    ) |
-    (
+    ) | (
       hack.MethodOverrides { derived=C, base=P };
       { method = C } = Child;
       { method = P } = Parent
     )
+
+# Inherited parents but drop those with "HideFromDocs" annotations
+# Used to reduce the search space to "interesting" containers only
+predicate HackExtendsParentEntityConcise:
+  {
+    child : code.hack.Entity,
+    parent : code.hack.Entity
+  }
+  { Child, Parent } where
+    HackExtendsParentEntity { Child, Parent };
+    !(EntityHasHideFromDocsAttr Parent)
+
+# Asserts the entity has the "HideFromDocs" attribute
+# (this is an example of where efficient set membership would be useful)
+predicate EntityHasHideFromDocsAttr: code.hack.Entity
+  Entity where
+    HackAnnotation { Entity, { attributes = As } };
+    hack.UserAttribute { name = "HideFromDocs" } = As[..]
 
 # documentation spans
 predicate HackEntityDocumentation :

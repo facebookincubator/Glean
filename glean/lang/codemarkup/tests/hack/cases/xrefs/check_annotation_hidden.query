@@ -1,0 +1,4 @@
+query: |
+  E = { decl = _ } : code.hack.Entity; codemarkup.hack.EntityHasHideFromDocsAttr E
+perf: true
+transform: [gensort, []]

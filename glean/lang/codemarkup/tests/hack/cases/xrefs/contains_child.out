@@ -1250,6 +1250,43 @@
             "container": {
               "trait": {
                 "key": {
+                  "name": { "key": { "name": { "key": "SourceSecretTrait" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "quokka" },
+                "container": {
+                  "trait": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "SourceSecretTrait" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "trait": {
+                "key": {
                   "name": { "key": { "name": { "key": "SourceTrait" } } }
                 }
               }

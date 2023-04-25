@@ -389,6 +389,24 @@ predicate ExtendsParentEntity :
       { thrift = P } = Parent
     )
 
+# This implements the ExtendsParentEntity relation, but for "interesting"
+# parents only. I.e. with this you are allowed to implement server-side
+# filtering of containers we wouldn't include as they are boring. E.g. because
+# they are tests, code gen'd or verbose.
+predicate ExtendsParentEntityConcise :
+  {
+    child: code.Entity,
+    parent: code.Entity
+  }
+  { Child, Parent } where
+    if ( { hack = C } = Child )
+    then (
+      codemarkup.hack.HackExtendsParentEntityConcise { C, P };
+      { hack = P } = Parent;
+    ) else ( # generic implementation
+      ExtendsParentEntity { Child, Parent };
+    )
+
 # A parent `is extended by` a child
 predicate ExtendsChildEntity :
   {
@@ -491,18 +509,35 @@ type RelationType = enum {
   ContainsParentOfChild |
 }
 
+# we can prune some of the relationships by hiding "uninteresting" results
+type SearchStyle = enum {
+  ShowAll |
+  HideUninteresting | # perhaps us to drop language specific uninteresting cases
+}
+
 # find parent/child semantic relationships
 predicate SearchRelatedEntities:
   {
-    query: RelationType,
+    query: RelationType, # extends or contains, parent or child direction
     parent: ParentEntity,
-    child: ChildEntity
+    child: ChildEntity,
+    style: SearchStyle, # all results or hide uninteresting
   }
-  { Query, {parent = P, location = PLoc}, {child = C, location = CLoc} } where
-    ( ExtendsParentOfChild = Query; ExtendsParentEntity { C, P }) | # child key
-    ( ExtendsChildOfParent = Query; ExtendsChildEntity { P, C } ) | # parent key
-    ( ContainsParentOfChild = Query; ContainsParentEntity { C, P }) | # child key
-    ( ContainsChildOfParent = Query; ContainsChildEntity { P, C }); # parent key
+  { Query, {parent = P, location = PLoc}, {child = C, location = CLoc}, Style } where
+    ( ShowAll = Style;
+      ( ExtendsParentOfChild = Query;
+        ExtendsParentEntity { C, P }) | # child key
+      ( ExtendsChildOfParent = Query;
+        ExtendsChildEntity { P, C } ) | # parent key
+      ( ContainsParentOfChild = Query;
+        ContainsParentEntity { C, P }) | # child key
+      ( ContainsChildOfParent = Query;
+        ContainsChildEntity { P, C }); # parent key
+    ) | (
+      HideUninteresting = Style; # only one hide unteresting relation style atm
+      ExtendsParentOfChild = Query;
+      ExtendsParentEntityConcise { C, P }
+    );
     codemarkup.EntityLocation {C, CLoc};
     codemarkup.EntityLocation {P, PLoc};
 

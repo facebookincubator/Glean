@@ -327,6 +327,59 @@
                 "type_xrefs": []
             },
             {
+                "annotations": [
+                    {
+                        "name": "HideFromDocs",
+                        "source": "HideFromDocs"
+                    }
+                ],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 31,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceTrait.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 20,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "SourceSecretTrait"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/php/SourceSecretTrait",
+                "sym_location": {
+                    "filepath": "www/SourceTrait.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 20,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
                 "annotations": [],
                 "comments": [],
                 "contains_relation": {
@@ -609,6 +662,29 @@
                     "exactness": 2
                 },
                 "symbol": "test/php/SourceInterface"
+            },
+            {
+                "kind": 31,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceTrait.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 20,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "name": "SourceSecretTrait",
+                "qname": {
+                    "container": "",
+                    "localName": "SourceSecretTrait"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SourceSecretTrait"
             },
             {
                 "kind": 31,

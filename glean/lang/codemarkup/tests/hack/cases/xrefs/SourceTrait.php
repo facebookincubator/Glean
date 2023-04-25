@@ -16,3 +16,10 @@ trait SourceTrait {
     return $i + $i + 7;
   }
 }
+
+<<HideFromDocs>>
+trait SourceSecretTrait {
+  public function quokka(int $i): int {
+    return $i * 2;
+  }
+}

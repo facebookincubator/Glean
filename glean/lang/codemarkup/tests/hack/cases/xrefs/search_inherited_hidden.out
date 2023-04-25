@@ -1,0 +1,71 @@
+[
+  "@generated",
+  {
+    "key": {
+      "child": {
+        "decl": {
+          "container": {
+            "class_": {
+              "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
+            }
+          }
+        }
+      },
+      "parent": {
+        "decl": {
+          "container": {
+            "class_": {
+              "key": { "name": { "key": { "name": { "key": "SourceClass" } } } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "decl": {
+          "container": {
+            "class_": {
+              "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
+            }
+          }
+        }
+      },
+      "parent": {
+        "decl": {
+          "container": {
+            "interface_": {
+              "key": {
+                "name": { "key": { "name": { "key": "SourceInterface" } } }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "decl": {
+          "container": {
+            "class_": {
+              "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
+            }
+          }
+        }
+      },
+      "parent": {
+        "decl": {
+          "container": {
+            "trait": {
+              "key": { "name": { "key": { "name": { "key": "SourceTrait" } } } }
+            }
+          }
+        }
+      }
+    }
+  }
+]

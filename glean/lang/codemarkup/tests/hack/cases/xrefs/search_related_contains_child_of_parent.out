@@ -57,7 +57,8 @@
           "file": { "key": "www/Namespace2.php" },
           "location": { "span": { "start": 312, "length": 54 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -107,7 +108,8 @@
           "file": { "key": "www/SourceClass.php" },
           "location": { "span": { "start": 1174, "length": 80 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -167,7 +169,8 @@
           "file": { "key": "www/Namespace.php" },
           "location": { "span": { "start": 268, "length": 47 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -190,7 +193,7 @@
         "location": {
           "name": "RefClass",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 226, "length": 760 } }
+          "location": { "span": { "start": 226, "length": 785 } }
         }
       },
       "child": {
@@ -215,9 +218,10 @@
         "location": {
           "name": "JAZZ",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 312, "length": 20 } }
+          "location": { "span": { "start": 337, "length": 20 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -240,7 +244,7 @@
         "location": {
           "name": "RefClass",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 226, "length": 760 } }
+          "location": { "span": { "start": 226, "length": 785 } }
         }
       },
       "child": {
@@ -265,9 +269,10 @@
         "location": {
           "name": "bar",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 594, "length": 390 } }
+          "location": { "span": { "start": 619, "length": 390 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -290,7 +295,7 @@
         "location": {
           "name": "RefClass",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 226, "length": 760 } }
+          "location": { "span": { "start": 226, "length": 785 } }
         }
       },
       "child": {
@@ -315,9 +320,10 @@
         "location": {
           "name": "bazza",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 434, "length": 59 } }
+          "location": { "span": { "start": 459, "length": 59 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -340,7 +346,7 @@
         "location": {
           "name": "RefClass",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 226, "length": 760 } }
+          "location": { "span": { "start": 226, "length": 785 } }
         }
       },
       "child": {
@@ -365,9 +371,10 @@
         "location": {
           "name": "foo",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 363, "length": 67 } }
+          "location": { "span": { "start": 388, "length": 67 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -390,7 +397,7 @@
         "location": {
           "name": "RefClass",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 226, "length": 760 } }
+          "location": { "span": { "start": 226, "length": 785 } }
         }
       },
       "child": {
@@ -415,9 +422,10 @@
         "location": {
           "name": "lotsofkeywords",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 497, "length": 93 } }
+          "location": { "span": { "start": 522, "length": 93 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -440,7 +448,7 @@
         "location": {
           "name": "RefClass",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 226, "length": 760 } }
+          "location": { "span": { "start": 226, "length": 785 } }
         }
       },
       "child": {
@@ -465,9 +473,10 @@
         "location": {
           "name": "raz",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 348, "length": 10 } }
+          "location": { "span": { "start": 373, "length": 10 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -517,7 +526,8 @@
           "file": { "key": "www/ModuleMember.php" },
           "location": { "span": { "start": 427, "length": 74 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -567,7 +577,8 @@
           "file": { "key": "www/SourceClass.php" },
           "location": { "span": { "start": 322, "length": 18 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -617,7 +628,8 @@
           "file": { "key": "www/SourceClass.php" },
           "location": { "span": { "start": 392, "length": 71 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -667,7 +679,8 @@
           "file": { "key": "www/SourceClass.php" },
           "location": { "span": { "start": 531, "length": 62 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -717,7 +730,8 @@
           "file": { "key": "www/SourceClass.php" },
           "location": { "span": { "start": 645, "length": 57 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -767,7 +781,8 @@
           "file": { "key": "www/SourceClass.php" },
           "location": { "span": { "start": 378, "length": 9 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -817,7 +832,8 @@
           "file": { "key": "www/SourceClass.php" },
           "location": { "span": { "start": 344, "length": 19 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -867,7 +883,8 @@
           "file": { "key": "www/SourceClass.php" },
           "location": { "span": { "start": 745, "length": 98 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -917,7 +934,8 @@
           "file": { "key": "www/SuperClass.php" },
           "location": { "span": { "start": 248, "length": 20 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -967,7 +985,8 @@
           "file": { "key": "www/SuperClass.php" },
           "location": { "span": { "start": 352, "length": 60 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -1017,7 +1036,8 @@
           "file": { "key": "www/SuperClass.php" },
           "location": { "span": { "start": 272, "length": 76 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -1069,7 +1089,8 @@
           "file": { "key": "www/SourceClass.php" },
           "location": { "span": { "start": 901, "length": 52 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -1121,7 +1142,8 @@
           "file": { "key": "www/SourceClass.php" },
           "location": { "span": { "start": 992, "length": 93 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -1173,7 +1195,8 @@
           "file": { "key": "www/SourceClass.php" },
           "location": { "span": { "start": 944, "length": 5 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -1221,7 +1244,8 @@
           "file": { "key": "www/TopLevel.php" },
           "location": { "span": { "start": 341, "length": 6 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -1269,7 +1293,8 @@
           "file": { "key": "www/TopLevel.php" },
           "location": { "span": { "start": 380, "length": 6 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -1317,7 +1342,8 @@
           "file": { "key": "www/TopLevel.php" },
           "location": { "span": { "start": 355, "length": 4 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -1365,7 +1391,8 @@
           "file": { "key": "www/TopLevel.php" },
           "location": { "span": { "start": 367, "length": 5 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -1413,7 +1440,8 @@
           "file": { "key": "www/TopLevel.php" },
           "location": { "span": { "start": 330, "length": 3 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -1461,7 +1489,8 @@
           "file": { "key": "www/SourceEnum.php" },
           "location": { "span": { "start": 255, "length": 1 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -1509,7 +1538,8 @@
           "file": { "key": "www/SourceEnum.php" },
           "location": { "span": { "start": 266, "length": 1 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -1557,7 +1587,8 @@
           "file": { "key": "www/SourceEnum.php" },
           "location": { "span": { "start": 312, "length": 5 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -1605,7 +1636,8 @@
           "file": { "key": "www/SourceEnum.php" },
           "location": { "span": { "start": 325, "length": 5 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -1653,7 +1685,8 @@
           "file": { "key": "www/SourceEnum.php" },
           "location": { "span": { "start": 338, "length": 5 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -1705,7 +1738,8 @@
           "file": { "key": "www/SourceInterface.php" },
           "location": { "span": { "start": 257, "length": 24 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -1757,7 +1791,8 @@
           "file": { "key": "www/SourceInterface.php" },
           "location": { "span": { "start": 285, "length": 34 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -1809,7 +1844,63 @@
           "file": { "key": "www/SourceInterface.php" },
           "location": { "span": { "start": 323, "length": 34 } }
         }
-      }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "trait": {
+                  "key": {
+                    "name": {
+                      "key": { "name": { "key": "SourceSecretTrait" } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "SourceSecretTrait",
+          "file": { "key": "www/SourceTrait.php" },
+          "location": { "span": { "start": 460, "length": 107 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "method": {
+                "key": {
+                  "name": { "key": "quokka" },
+                  "container": {
+                    "trait": {
+                      "key": {
+                        "name": {
+                          "key": { "name": { "key": "SourceSecretTrait" } }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "quokka",
+          "file": { "key": "www/SourceTrait.php" },
+          "location": { "span": { "start": 505, "length": 60 } }
+        }
+      },
+      "style": 0
     }
   },
   {
@@ -1859,7 +1950,8 @@
           "file": { "key": "www/SourceTrait.php" },
           "location": { "span": { "start": 248, "length": 58 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -1909,7 +2001,8 @@
           "file": { "key": "www/SourceTrait.php" },
           "location": { "span": { "start": 381, "length": 75 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -1948,7 +2041,8 @@
           "file": { "key": "www/ModuleMember.php" },
           "location": { "span": { "start": 393, "length": 110 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -1987,7 +2081,8 @@
           "file": { "key": "www/ModuleMember.php" },
           "location": { "span": { "start": 505, "length": 54 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -2026,7 +2121,8 @@
           "file": { "key": "www/ModuleMember.php" },
           "location": { "span": { "start": 561, "length": 35 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -2065,7 +2161,8 @@
           "file": { "key": "www/ModuleMember.php" },
           "location": { "span": { "start": 598, "length": 31 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -2100,7 +2197,8 @@
           "file": { "key": "www/ModuleMember.php" },
           "location": { "span": { "start": 252, "length": 44 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -2135,7 +2233,8 @@
           "file": { "key": "www/ModuleMember.php" },
           "location": { "span": { "start": 298, "length": 66 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -2170,7 +2269,8 @@
           "file": { "key": "www/ModuleMember.php" },
           "location": { "span": { "start": 366, "length": 25 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -2226,7 +2326,8 @@
           "file": { "key": "www/Namespace.php" },
           "location": { "span": { "start": 343, "length": 41 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -2272,7 +2373,8 @@
           "file": { "key": "www/Namespace2.php" },
           "location": { "span": { "start": 278, "length": 90 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -2318,7 +2420,8 @@
           "file": { "key": "www/Namespace.php" },
           "location": { "span": { "start": 241, "length": 76 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -2362,7 +2465,8 @@
           "file": { "key": "www/Namespace.php" },
           "location": { "span": { "start": 329, "length": 10 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -2408,7 +2512,8 @@
           "file": { "key": "www/Namespace2.php" },
           "location": { "span": { "start": 278, "length": 90 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -2454,7 +2559,8 @@
           "file": { "key": "www/Namespace.php" },
           "location": { "span": { "start": 241, "length": 76 } }
         }
-      }
+      },
+      "style": 0
     }
   },
   {
@@ -2498,7 +2604,8 @@
           "file": { "key": "www/Namespace.php" },
           "location": { "span": { "start": 329, "length": 10 } }
         }
-      }
+      },
+      "style": 0
     }
   }
 ]

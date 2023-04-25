@@ -1,0 +1,9 @@
+query: |
+  codemarkup.SearchRelatedEntities {
+    query = ExtendsParentOfChild,
+    child = { child = { hack = { decl = _ } } },
+    parent = { parent = { hack = { decl = _ } } },
+    style = ShowAll
+  }
+perf: true
+transform: [gensort, []]

@@ -126,6 +126,29 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
+                        "lineBegin": 20,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "name": "SourceSecretTrait",
+                "qname": {
+                    "container": "",
+                    "localName": "SourceSecretTrait"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SourceSecretTrait"
+            },
+            {
+                "kind": 31,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceTrait.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
                         "lineBegin": 10,
                         "lineEnd": 18
                     },
