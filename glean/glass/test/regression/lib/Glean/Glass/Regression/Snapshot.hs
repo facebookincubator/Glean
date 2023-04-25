@@ -174,7 +174,8 @@ evalQuery glassEnv qFile Query{..} oFile = case action of
   "searchRelated" -> withObjectAndSymbolId qFile oFile args
     (Glass.searchRelated glassEnv)
   "searchRelatedNeighborhood" -> withSymbolId oFile args
-    (\sym opts -> Glass.searchRelatedNeighborhood glassEnv sym opts def)
+    (\sym opts -> Glass.searchRelatedNeighborhood glassEnv sym opts
+       def { relatedNeighborhoodRequest_hide_uninteresting = True } )
   "fileIncludeLocations" -> withObjectArgs qFile oFile args
     (Glass.fileIncludeLocations glassEnv)
 

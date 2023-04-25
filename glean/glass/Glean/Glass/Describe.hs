@@ -151,4 +151,4 @@ describeEntity scmRevs ent SymbolResult{..} = do
       pure RelationDescription{..}
       where
         describeRelation relation = Search.searchRelatedEntities 2
-          Search.NotRecursive relation relatedBy ent repo
+          Search.ShowAll Search.NotRecursive relation relatedBy ent repo

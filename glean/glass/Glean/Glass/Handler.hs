@@ -1356,7 +1356,7 @@ runErrorLog env cmd err = ErrorsLogger.runLog (Glass.logger env) $
 parentContainer
   :: RepoName -> Code.Entity -> Glean.RepoHaxl u w (Maybe SymbolContext)
 parentContainer repo ent = do
-  parents <- Search.searchRelatedEntities 2 NotRecursive
+  parents <- Search.searchRelatedEntities 2 Search.ShowAll NotRecursive
     RelationDirection_Parent RelationType_Contains ent repo
   let mParent = Search.parentRL <$> listToMaybe parents
   case mParent of
@@ -1408,6 +1408,7 @@ searchRelated env@Glass.Env{..} sym RequestOptions{..}
         (entityPairs, descriptions) <- withRepo (entityRepo entity) $ do
           edgePairs <- withRepo (entityRepo entity) $ do
               Search.searchRelatedEntities limit
+                Search.ShowAll
                 searchRecursively
                 searchRelatedRequest_relation
                 searchRelatedRequest_relatedBy

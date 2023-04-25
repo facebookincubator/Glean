@@ -15,6 +15,7 @@ module Glean.Glass.SearchRelated
   ( searchRelatedEntities
   , searchRecursiveEntities
   , Recursive(..)
+  , SearchStyle(..)
   , RelatedLocatedEntities(..)
   , RelatedEntities(..)
   , LocatedEntity
@@ -51,6 +52,11 @@ data Recursive
   | NotRecursive
   deriving Eq
 
+-- | Whether to hide uninteresting things
+data SearchStyle
+  = ShowAll
+  | HideUninteresting
+
 -- | Pairs of edges of related entities
 data RelatedEntities = RelatedEntities
   { parentEntity :: !Code.Entity
@@ -82,18 +88,33 @@ edgesToTopoMap edges = HM.fromListWith HashSet.union
 --
 searchRelatedEntities
   :: Int
+  -> SearchStyle
   -> Recursive
   -> RelationDirection
   -> RelationType
   -> Code.Entity
   -> RepoName
   -> RepoHaxl u w [RelatedLocatedEntities]
-searchRelatedEntities limit recurse dir rel entity repo =
+searchRelatedEntities limit hide recurse dir rel entity repo =
   toSymbolIds repo =<<
-    searchRelation limit limit recurse rel dir [entity] HashSet.empty
+    searchRelation limit limit hide recurse rel dir [entity] HashSet.empty
+
+-- | For internal searches, we don't need the symbol id. So we can be slightly
+-- more efficient. TODO: we could also avoid the location in the result entirely
+-- used for lucky search/context resolution
+searchRecursiveEntities
+  :: Int -> RelationDirection -> RelationType -> Code.Entity
+  -> RepoHaxl u w [RelatedEntities]
+searchRecursiveEntities limit dir rel entity =
+  searchRelation limit limit ShowAll Recursive rel dir [entity] HashSet.empty
 
 -- | Lift entity search results into pairs of entities that we found,
 -- along with their location and symbol id
+--
+-- TODO: we will be recomputing these for some symbols many times,
+-- and in some cases we are dropping them as well. Can we defer this until
+-- later?
+--
 toSymbolIds
   :: RepoName -> [RelatedEntities] -> RepoHaxl u w [RelatedLocatedEntities]
 toSymbolIds repo edges = mapM locatePairs edges
@@ -108,14 +129,6 @@ toSymbolIds repo edges = mapM locatePairs edges
       path <- GleanPath <$> Glean.keyOf file
       toSymbolId (fromGleanPath repo path) entity
 
--- | For internal searches ,we don't need the symbol id. So we can be slightly
--- more efficient.
-searchRecursiveEntities
-  :: Int -> RelationDirection -> RelationType -> Code.Entity
-  -> RepoHaxl u w [RelatedEntities]
-searchRecursiveEntities limit dir rel entity = do
-  searchRelation limit limit Recursive rel dir [entity] HashSet.empty
-
 --
 -- Search driver, expand search until done, returning pairs of edges
 -- of entity relationships.
@@ -123,55 +136,57 @@ searchRecursiveEntities limit dir rel entity = do
 searchRelation
   :: Int
   -> Int
+  -> SearchStyle
   -> Recursive
   -> RelationType
   -> RelationDirection
   -> [Code.Entity]
   -> HashSet RelatedEntities
   -> RepoHaxl u w [RelatedEntities]
-searchRelation
-  totalLimit limit recursive relation direction toVisit visited = do
-    angle <- forM toVisit $ \entity ->
-      case entityToAngle entity of
-        Right angle -> return angle
-        Left t -> throwM (ServerException t)
-    justVisited <- case (relation, direction) of
-      (RelationType_Extends, RelationDirection_Parent) -> runSearchRelated
-        totalLimit angle Code.RelationType_ExtendsParentOfChild
-      (RelationType_Extends, RelationDirection_Child) -> runSearchRelated
-        totalLimit angle Code.RelationType_ExtendsChildOfParent
-      (RelationType_Contains, RelationDirection_Parent) -> runSearchRelated
-        totalLimit angle Code.RelationType_ContainsParentOfChild
-      (RelationType_Contains, RelationDirection_Child) -> runSearchRelated
-        totalLimit angle Code.RelationType_ContainsChildOfParent
-      _ -> pure [] -- unknown thrift case
-    let
-      newlyVisited = HashSet.fromList justVisited `HashSet.difference` visited
-      visited' = visited `HashSet.union` newlyVisited
-      toVisit = HashSet.toList $ case direction of
-        RelationDirection_Parent -> HashSet.map parentEntity newlyVisited
-        RelationDirection_Child -> HashSet.map childEntity newlyVisited
-        _ -> HashSet.empty -- unknown direction
-      recLimit = limit - length visited'
-    if
-      recursive == Recursive &&
-      recLimit > 0 &&
-      recLimit < limit &&
-      not (null toVisit)
-    then
-      searchRelation
-        totalLimit recLimit recursive relation direction toVisit visited'
-    else
-      pure $ HashSet.toList visited'
+searchRelation totalLimit limit style recursive relation
+      direction toVisit visited = do
+  angle <- forM toVisit $ \entity ->
+    case entityToAngle entity of
+      Right angle -> return angle
+      Left t -> throwM (ServerException t)
+  justVisited <- case (relation, direction) of
+    (RelationType_Extends, RelationDirection_Parent) -> runSearchRelated
+      totalLimit style angle Code.RelationType_ExtendsParentOfChild
+    (RelationType_Extends, RelationDirection_Child) -> runSearchRelated
+      totalLimit style angle Code.RelationType_ExtendsChildOfParent
+    (RelationType_Contains, RelationDirection_Parent) -> runSearchRelated
+      totalLimit style angle Code.RelationType_ContainsParentOfChild
+    (RelationType_Contains, RelationDirection_Child) -> runSearchRelated
+      totalLimit style angle Code.RelationType_ContainsChildOfParent
+    _ -> pure [] -- unknown thrift case
+  let
+    newlyVisited = HashSet.fromList justVisited `HashSet.difference` visited
+    visited' = visited `HashSet.union` newlyVisited
+    toVisit = HashSet.toList $ case direction of
+      RelationDirection_Parent -> HashSet.map parentEntity newlyVisited
+      RelationDirection_Child -> HashSet.map childEntity newlyVisited
+      _ -> HashSet.empty -- unknown direction
+    recLimit = limit - length visited'
+  if
+    recursive == Recursive &&
+    recLimit > 0 &&
+    recLimit < limit &&
+    not (null toVisit)
+  then
+    searchRelation
+      totalLimit recLimit style recursive relation direction toVisit visited'
+  else
+    pure $ HashSet.toList visited'
 
 runSearchRelated
   :: Int
+  -> SearchStyle
   -> [Angle Code.Entity]
   -> Code.RelationType
   -> RepoHaxl u w [RelatedEntities]
-runSearchRelated limit angle searchType = do
+runSearchRelated limit style angle searchType = do
   (entities, _truncated) <- searchRecursiveWithLimit (Just limit) $
-    searchRelatedEntitiesQ searchType entities
+    searchRelatedEntitiesQ searchType styleType entities
   pure $
     [ RelatedEntities
       { parentEntity = parentEntity_parent
@@ -186,23 +201,34 @@ runSearchRelated limit angle searchType = do
     ]
   where
     entities = elementsOf (array angle)
+    styleType = case style of
+      ShowAll -> Code.SearchStyle_ShowAll
+      HideUninteresting -> Code.SearchStyle_HideUninteresting
 
 --
 -- unified search by relation
 --
 searchRelatedEntitiesQ
-  :: Code.RelationType -> Angle Code.Entity -> Angle Code.SearchRelatedEntities
-searchRelatedEntitiesQ queryTy entity = predicate @Code.SearchRelatedEntities $
-  if queryTy `elem`
-     [Code.RelationType_ExtendsParentOfChild,
-      Code.RelationType_ContainsParentOfChild]
-  then
-    rec $ -- bind to child entity
-      field @"query" (enum queryTy) $
-      field @"child" (rec $ field @"child" entity end)
-    end
-  else
-    rec $ -- search by parent entities
-      field @"query" (enum queryTy) $
-      field @"parent" (rec $ field @"parent" entity end)
-    end
+  :: Code.RelationType
+  -> Code.SearchStyle
+  -> Angle Code.Entity
+  -> Angle Code.SearchRelatedEntities
+searchRelatedEntitiesQ queryTy styleTy entity = case queryTy of
+    Code.RelationType_ExtendsParentOfChild -> keyedByChild
+    Code.RelationType_ContainsParentOfChild -> keyedByChild
+    Code.RelationType_ExtendsChildOfParent -> keyedByParent
+    Code.RelationType_ContainsChildOfParent -> keyedByParent
+    Code.RelationType__UNKNOWN _ -> error "Unkonwn Code.RelationType"
+  where
+    keyedByChild = predicate @Code.SearchRelatedEntities $
+      rec $ -- bind to child entity
+        field @"query" (enum queryTy) $
+        field @"style" (enum styleTy) $
+        field @"child" (rec $ field @"child" entity end)
+      end
+    keyedByParent = predicate @Code.SearchRelatedEntities $
+      rec $ -- search by parent entities
+        field @"query" (enum queryTy) $
+        field @"style" (enum styleTy) $
+        field @"parent" (rec $ field @"parent" entity end)
+      end

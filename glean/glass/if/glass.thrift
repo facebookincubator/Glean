@@ -508,6 +508,7 @@ struct RelatedNeighborhoodRequest {
   1: i32 children_limit = 5000; // max direct children
   2: i32 inherited_limit = 500; // max inherited, per parent
   3: i32 parent_depth = 500; // max count of extend or containing parents
+  4: bool hide_uninteresting = false; // whether to drop 'uninteresting' nodes
 }
 
 // Consider capping the number of symbols in a single angle query before

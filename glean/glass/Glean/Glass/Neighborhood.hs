@@ -75,7 +75,11 @@ searchNeighborhood limit
     -- all contained symbols of inherited parents
     -- n.b. not all are actually in scope after we resolve names
     (eFull, edges, kinds) <- inheritedNLevel limit
-        (fromIntegral relatedNeighborhoodRequest_inherited_limit) entity repo
+        (fromIntegral relatedNeighborhoodRequest_inherited_limit)
+        (if relatedNeighborhoodRequest_hide_uninteresting
+          then Search.HideUninteresting
+          else Search.ShowAll)
+        entity repo
     -- now filter out any names that are shadowed
     let (!eFinal,!overrides) = partitionInheritedScopes lang sym edges
           kinds a eFull
@@ -151,6 +155,7 @@ childrenContains1Level :: Int -> SearchRelatedList u w
 childrenContains1Level limit baseEntity repo = map Search.childRL <$>
   Search.searchRelatedEntities
     limit
+    Search.ShowAll
     Search.NotRecursive
     RelationDirection_Child
     RelationType_Contains
@@ -164,6 +169,7 @@ childrenExtends1Level :: Int -> SearchRelatedList u w
 childrenExtends1Level limit baseEntity repo = map Search.childRL <$>
   Search.searchRelatedEntities
     limit
+    Search.ShowAll
     Search.NotRecursive
     RelationDirection_Child
     RelationType_Extends
@@ -175,6 +181,7 @@ parentExtends1Level :: Int -> SearchRelatedList u w
 parentExtends1Level limit baseEntity repo = map Search.parentRL <$>
   Search.searchRelatedEntities
     limit
+    Search.ShowAll
     Search.NotRecursive
     RelationDirection_Parent
     RelationType_Extends
@@ -185,6 +192,7 @@ parentExtends1Level limit baseEntity repo = map Search.parentRL <$>
 parentContainsNLevel :: Int -> SearchRelatedQuery u w
 parentContainsNLevel limit baseEntity repo = Search.searchRelatedEntities
   limit
+  Search.ShowAll
   Search.Recursive
   RelationDirection_Parent
   RelationType_Contains
@@ -192,15 +200,16 @@ parentContainsNLevel limit baseEntity repo = Search.searchRelatedEntities
   repo
 
 -- Inherited symbols: the contained children of N levels of extended parents
-inheritedNLevel :: Int -> Int -> Code.Entity -> RepoName
+inheritedNLevel :: Int -> Int -> Search.SearchStyle -> Code.Entity -> RepoName
     -> RepoHaxl u w
         ([InheritedContainer]
           ,HashMap SymbolId (HashSet SymbolId)
           ,HashMap SymbolId SymbolKind
           )
-inheritedNLevel memberLimit inheritedLimit baseEntity repo = do
+inheritedNLevel memberLimit inheritedLimit concise baseEntity repo = do
   topoEdges <- Search.searchRelatedEntities
     inheritedLimit
+    concise
     Search.Recursive
     RelationDirection_Parent
     RelationType_Extends
