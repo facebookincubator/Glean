@@ -106,6 +106,13 @@ predicate FunctionName :
     locName : Loc,
   }
 
+predicate FunctionDeclarationName:
+  {
+    qname: QualName,
+    name: Identifier,
+    decl: Declaration
+  }
+
 }
 
 schema thrift.5 : thrift.4 {}

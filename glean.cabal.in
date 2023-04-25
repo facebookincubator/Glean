@@ -1,4 +1,4 @@
-cabal-version:       3.4
+cabal-version:       3.6
 
 -- Copyright (c) Facebook, Inc. and its affiliates.
 
@@ -99,6 +99,7 @@ common deps
         thrift-lib,
         HUnit,
         safe,
+        safe-exceptions,
         scientific,
         text-show,
         uuid,
@@ -328,7 +329,6 @@ library util
         Glean.Util.RetryRecvTimeout
         Glean.Util.Service
         Glean.Util.ShardManager
-        Glean.Util.ShowSchemaId
         Glean.Util.Some
         Glean.Util.ThriftService
         Glean.Util.ThriftSource
@@ -341,7 +341,6 @@ library util
         glean:stubs,
         glean:config,
         glean:if-glean-hs,
-        glean:schema,
         primitive,
         network
 
@@ -409,6 +408,7 @@ library core
         Glean.Angle.Lexer
         Glean.Angle.Parser
         Glean.Angle.Types
+        Glean.Display
         Glean.Query.Angle
         Glean.Repo.Text
         Glean.Schema.Resolve
@@ -545,6 +545,7 @@ library client-hs
     build-depends:
         pretty,
         aeson-pretty,
+        mangle,
         glean:if-glean-hs,
         glean:util,
         glean:core,
@@ -831,6 +832,7 @@ library lib
         Glean.Util.XRefs
         Glean.Util.Same
         Glean.Util.SchemaRepos
+        Glean.Util.ShowSchemaId
         Glean.Write.SimpleAsync
     build-depends:
         glean:client-hs,
@@ -1153,10 +1155,12 @@ library glass-lib
         Glean.Glass.Base
         Glean.Glass.Comments
         Glean.Glass.Config
+        Glean.Glass.Describe
         Glean.Glass.Env
         Glean.Glass.Handler
         Glean.Glass.Logging
         Glean.Glass.Main
+        Glean.Glass.Neighborhood
         Glean.Glass.Options
         Glean.Glass.Path
         Glean.Glass.Pretty.Cxx
@@ -1180,7 +1184,9 @@ library glass-lib
         Glean.Glass.Search.Haskell
         Glean.Glass.Search.LSIF
         Glean.Glass.Search.Python
+        Glean.Glass.Search.Thrift
         Glean.Glass.SearchRelated
+        Glean.Glass.SnapshotBackend
         Glean.Glass.SymbolId
         Glean.Glass.SymbolId.Buck
         Glean.Glass.SymbolId.Class
@@ -1188,6 +1194,7 @@ library glass-lib
         Glean.Glass.SymbolId.Erlang
         Glean.Glass.SymbolId.Flow
         Glean.Glass.SymbolId.Hack
+        Glean.Glass.SymbolId.Java
         Glean.Glass.SymbolId.Hs
         Glean.Glass.SymbolId.LSIF
         Glean.Glass.SymbolId.Pp
@@ -1978,6 +1985,7 @@ test-suite schematest
         glean:db,
         glean:config,
         glean:if-glean-hs,
+        glean:if-internal-hs,
         glean:lib,
         glean:util,
 
