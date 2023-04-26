@@ -133,7 +133,10 @@ import Glean.Glass.SearchRelated
       Recursive(NotRecursive) )
 import Glean.Glass.Neighborhood ( searchNeighborhood )
 
-import Glean.Glass.SnapshotBackend ( getSnapshot, SnapshotBackend )
+import Glean.Glass.SnapshotBackend
+  ( getSnapshot,
+    SnapshotBackend,
+    SnapshotStatus(..) )
 
 -- | Runner for methods that are keyed by a file path
 -- TODO : do the plumbing via a class rather than function composition
@@ -169,8 +172,8 @@ documentSymbolListX
   -> DocumentSymbolsRequest
   -> RequestOptions
   -> IO DocumentSymbolListXResult
-documentSymbolListX = runRepoFile "documentSymbolListX"
-  fetchSymbolsAndAttributes
+documentSymbolListX env r opts = fst <$> runRepoFile "documentSymbolListX"
+  fetchSymbolsAndAttributes env r opts
 
 -- | Same as documentSymbolList() but construct a line-indexed map for easy
 -- cursor/position lookup, and add extra metadata
@@ -179,7 +182,8 @@ documentSymbolIndex
   -> DocumentSymbolsRequest
   -> RequestOptions
   -> IO DocumentSymbolIndex
-documentSymbolIndex = runRepoFile "documentSymbolIndex" fetchDocumentSymbolIndex
+documentSymbolIndex env r opts = fst <$> runRepoFile "documentSymbolIndex"
+  fetchDocumentSymbolIndex env r opts
 
 -- | Return the first success
 firstOrErrors
@@ -905,17 +909,18 @@ fetchSymbolsAndAttributes
   -> GleanBackend b
   -> SnapshotBackend
   -> Maybe Language
-  -> IO (DocumentSymbolListXResult, Maybe ErrorLogger)
+  -> IO ((DocumentSymbolListXResult, SnapshotStatus), Maybe ErrorLogger)
 fetchSymbolsAndAttributes latest req opts be snapshotbe mlang =
   case (mrevision, mlang) of
     (Just revision, Just Language_Hack) -> do
       Async.withAsync getFromGlean $ \gleanRes -> do
-        msnapshot <- getSnapshot snapshotbe repo file revision trySnapshot
-        case msnapshot of
-          Just queryResult -> return (queryResult, Nothing)
-          Nothing -> Async.wait gleanRes
-    _ -> getFromGlean
+        esnapshot <- getSnapshot snapshotbe repo file revision trySnapshot
+        case esnapshot of
+          Right queryResult -> return ((queryResult, Success), Nothing)
+          Left status -> addStatus status <$> Async.wait gleanRes
+    _ -> addStatus Unrequested <$> getFromGlean
   where
+    addStatus st (res, mlogger) = ((res, st), mlogger)
     getFromGlean = fetchSymbolsAndAttributesGlean latest req opts be mlang
     file = documentSymbolsRequest_filepath req
     repo = documentSymbolsRequest_repository req
@@ -1043,17 +1048,17 @@ fetchDocumentSymbolIndex
   -> GleanBackend b
   -> SnapshotBackend
   -> Maybe Language
-  -> IO (DocumentSymbolIndex, Maybe ErrorLogger)
+  -> IO ((DocumentSymbolIndex, SnapshotStatus), Maybe ErrorLogger)
 fetchDocumentSymbolIndex latest req opts be snapshotbe mlang = do
-  (DocumentSymbolListXResult refs defs revision truncated, merr1) <-
+  ((DocumentSymbolListXResult refs defs revision truncated, status), merr1) <-
     fetchSymbolsAndAttributes latest req opts be snapshotbe mlang
 
-  return $ (,merr1) DocumentSymbolIndex {
+  return ((DocumentSymbolIndex {
     documentSymbolIndex_symbols = toSymbolIndex refs defs,
     documentSymbolIndex_revision = revision,
     documentSymbolIndex_size = fromIntegral (length defs + length refs),
     documentSymbolIndex_truncated = truncated
-  }
+  }, status), merr1)
 
 -- Work out if we have extra attribute dbs and then run the queries
 getSymbolAttributes

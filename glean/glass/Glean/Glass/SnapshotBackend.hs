@@ -36,6 +36,10 @@ import Glean.Glass.Types (
 type SnapshotTier = ()
 type SnapshotBackend = ()
 
+data SnapshotStatus =
+  Unrequested | DbError | InternalError | Timeout |
+  NotFound | Success
+
 snapshotDefaultTier :: SnapshotTier
 snapshotDefaultTier = ()
 
@@ -55,5 +59,5 @@ getSnapshot
   -> Path
   -> Revision
   -> Bool
-  -> IO (Maybe Types.DocumentSymbolListXResult)
-getSnapshot _ _ _ _ _ = return Nothing
+  -> IO (Either SnapshotStatus Types.DocumentSymbolListXResult)
+getSnapshot _ _ _ _ _ = return $ Left Unrequested

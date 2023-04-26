@@ -59,5 +59,8 @@ setMethod _ = GleanGlassLogger
 setRevision :: Text -> GleanGlassLogger
 setRevision _ = GleanGlassLogger
 
+setSnapshot :: Text -> GleanGlassLogger
+setSnapshot _ = GleanGlassLogger
+
 setTruncated :: Bool -> GleanGlassLogger
 setTruncated _ = GleanGlassLogger

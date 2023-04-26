@@ -41,6 +41,7 @@ import Glean.Glass.Query (FeelingLuckyResult(..), RepoSearchResult)
 import qualified Data.Text as Text
 import Data.List.NonEmpty ( NonEmpty(..), toList )
 import qualified Data.List.NonEmpty as NE
+import Glean.Glass.SnapshotBackend ( SnapshotStatus(..) )
 
 instance ActionLog GleanGlassLogger where
   successLog = Logger.setSuccess True
@@ -87,9 +88,10 @@ instance LogRequest FileIncludeLocationRequest where
 class LogResult a where
   logResult :: (a, GleanGlassLogger) -> GleanGlassLogger
 
-instance LogResult DocumentSymbolListXResult where
-  logResult (DocumentSymbolListXResult{..}, log) =
+instance LogResult (DocumentSymbolListXResult, SnapshotStatus) where
+  logResult ((DocumentSymbolListXResult{..}, st), log) =
     log <>
+    logSnapshotStatus st <>
     Logger.setTruncated documentSymbolListXResult_truncated <>
     Logger.setItemCount (length documentSymbolListXResult_references +
       length documentSymbolListXResult_definitions)
@@ -100,6 +102,13 @@ instance LogResult FileIncludeLocationResults where
        (map (length . fileIncludeXRef_includes)
           (unXRefFileList fileIncludeLocationResults_references)
        ))
+
+instance LogResult (DocumentSymbolIndex, SnapshotStatus) where
+  logResult ((DocumentSymbolIndex{..}, st), log) =
+    log <>
+    logSnapshotStatus st <>
+    Logger.setItemCount (fromIntegral documentSymbolIndex_size) <>
+      Logger.setTruncated documentSymbolIndex_truncated
 
 instance LogResult DocumentSymbolIndex where
   logResult (DocumentSymbolIndex{..}, log) =
@@ -350,3 +359,12 @@ logSymbolSearchRequestSG logQuery logRepo SymbolSearchRequest{..} =
     Just r -> logRepo r <> logQuery symbolSearchRequest_name
   where
     repo = unRepoName <$> symbolSearchRequest_repo_name
+
+logSnapshotStatus :: SnapshotStatus -> GleanGlassLogger
+logSnapshotStatus st = case st of
+  Unrequested -> mempty
+  DbError -> Logger.setSnapshot "DB error"
+  InternalError -> Logger.setSnapshot "Internal error"
+  Timeout -> Logger.setSnapshot "Timeout"
+  NotFound -> Logger.setSnapshot  "Not found"
+  Success -> Logger.setSnapshot  "Success"
