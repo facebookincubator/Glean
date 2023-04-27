@@ -67,7 +67,7 @@ import qualified Glean
 import qualified Glean.BuildInfo as BuildInfo
 import Glean.Angle.Types as SchemaTypes
 import Glean.Display
-import Glean.Remote (clientInfo)
+import Glean.Remote (clientInfo, thriftBackendClientConfig)
 import Glean.Database.Ownership
 import Glean.Database.Open
 import Glean.Database.Schema.ComputeIds (
@@ -75,6 +75,8 @@ import Glean.Database.Schema.ComputeIds (
 import Glean.Database.Config (parseSchemaDir, SchemaIndex(..),
   ProcessedSchema(..))
 import qualified Glean.Database.Config as DB (Config(..))
+import Glean.Database.Storage (describe)
+import Glean.Database.Types (Env(..))
 import Glean.Indexer
 import Glean.Indexer.List
 import Glean.LocalOrRemote as Glean hiding (options, withBackend)
@@ -90,6 +92,7 @@ import qualified Glean.Types as Thrift
 #if FACEBOOK
 import Glean.Util.CxxXRef
 #endif
+import Glean.Util.Service
 import Glean.Util.ShellPrint
 import Glean.Util.Some
 import qualified Glean.Util.ThriftSource as ThriftSource
@@ -1298,11 +1301,23 @@ completion line@(left,_) =
   where
   (firstWord,rest) = break isSpace $ dropWhile isSpace $ reverse left
 
+reportService :: LocalOrRemote backend => backend -> Eval ()
+reportService backend = case backendKind backend of
+  BackendEnv Env{..} -> do
+    output $  "Using local DBs from " <> pretty (describe envStorage)
+  BackendThrift thrift -> do
+    case Glean.clientConfig_serv (thriftBackendClientConfig thrift) of
+      Tier tier -> output $ "Using service " <> pretty tier
+      HostPort host port ->
+        output $ "Using service at " <> pretty host <> ":" <> pretty port
+      _ -> error "shouldn't happen"
+
 evalMain :: Config -> Eval ()
 evalMain cfg = do
   case cfgQuery cfg of
     [] -> do
       hello
+      reportService . backend =<< getState
       output "type :help for help."
       initialize cfg
       home <- liftIO $ lookupEnv "HOME"
