@@ -70,6 +70,7 @@ public:
       tbatch.firstId() = s.first.toThrift();
       tbatch.count() = s.count;
       tbatch.facts() = s.facts.moveToFbString();
+      tbatch.owned() = batch.serializeOwnership();
       cbatch.batch() = std::move(tbatch);
 
       future = std::make_unique<folly::Future<thrift::Subst>>(

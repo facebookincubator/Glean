@@ -14,6 +14,7 @@
 #pragma once
 
 #include <tuple>
+#include <boost/icl/interval_set.hpp>
 #include <boost/operators.hpp>
 #include <boost/variant.hpp>
 #include <folly/Format.h>
@@ -428,13 +429,12 @@ public:
     return inventory->predicates[i];
   }
 
-  Id define(Pid ty, rts::Fact::Clause clause) {
-    return facts.define(ty, clause);
-  }
+  Id define(Pid ty, rts::Fact::Clause clause);
 
   void rebase(const rts::Substitution&);
 
   rts::FactSet::Serialized serialize() const;
+  std::map<std::string, std::vector<int64_t>> serializeOwnership() const;
 
   FactStats bufferStats() const {
     return FactStats{buffer.factMemory(), buffer.size()};
@@ -450,6 +450,13 @@ public:
 
   CacheStats cacheStats();
 
+  Id firstFreeId() const { return facts.firstFreeId(); }
+
+  void beginUnit(std::string);
+  void endUnit();
+
+  void logEnd() const;
+
 private:
   const SchemaInventory *inventory;
   std::shared_ptr<rts::LookupCache::Stats> stats;
@@ -457,6 +464,20 @@ private:
   rts::LookupCache::Anchor anchor;
   rts::FactSet buffer;
   rts::Stacked<rts::Define> facts;
+
+  struct Owned {
+    std::string unit;
+    boost::icl::interval_set<Id> facts;
+    Id start;
+    Id finish;
+  };
+
+  std::deque<Owned> owned;
+  Owned *current = nullptr;
+  size_t seen_units = 0;
+  mutable size_t last_serialized_units = 0;
+  mutable size_t total_serialized_units = 0;
+  std::set<std::string> unique_units;
 };
 
 /// A typed instantiation of an Inventory for a particular Schema.
@@ -580,6 +601,9 @@ public:
   using BatchBase::bufferStats;
   using BatchBase::CacheStats;
   using BatchBase::cacheStats;
+  using BatchBase::beginUnit;
+  using BatchBase::endUnit;
+  using BatchBase::logEnd;
 };
 
 }

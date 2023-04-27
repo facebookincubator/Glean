@@ -50,9 +50,28 @@ std::vector<Id> transformIntervals(const std::vector<Id>& intervals, F&& add) {
   }
   return results;
 }
+
 }
 
-std::vector<Id> Substitution::substIntervals(const std::vector<Id>& intervals) const {
+void Substitution::rebaseInterval(boost::icl::interval_set<Id>& is, size_t offset, Id start, Id end) const {
+  if (end < base) {
+    is.add({start, end});
+  } else {
+    if (start >= finish()) {
+      is.add({start + offset, end + offset});
+    }
+    for (Id id = start; id <= end; ++id) {
+      if (id >= finish()) {
+        is.add(id + offset);
+      } else {
+        is.add(subst(id));
+      }
+    }
+  };
+}
+
+std::vector<Id> Substitution::substIntervals(
+    const std::vector<Id>& intervals) const {
   return transformIntervals(
       intervals, [&](boost::icl::interval_set<Id>& is, Id start, Id end) {
         if (end < base || start >= finish()) {
@@ -65,26 +84,14 @@ std::vector<Id> Substitution::substIntervals(const std::vector<Id>& intervals) c
       });
 }
 
-std::vector<Id> Substitution::rebaseIntervals(const std::vector<Id>& intervals) const {
+std::vector<Id> Substitution::rebaseIntervals(
+    const std::vector<Id>& intervals) const {
   const auto new_start = firstFreeId();
   const auto offset = distance(finish(), new_start);
   return transformIntervals(
       intervals,
       [&, offset](boost::icl::interval_set<Id>& is, Id start, Id end) {
-        if (end < base) {
-          is.add({start, end});
-        } else {
-          if (start >= finish()) {
-            is.add({start + offset, end + offset});
-          }
-          for (Id id = start; id <= end; ++id) {
-            if (id >= finish()) {
-              is.add(id + offset);
-            } else {
-              is.add(subst(id));
-            }
-          }
-        }
+        rebaseInterval(is, offset, start, end);
       });
 }
 
@@ -100,6 +107,15 @@ boost::icl::interval_set<Id> Substitution::substIntervals(const boost::icl::inte
     }
   }
   return result;
+}
+
+boost::icl::interval_set<Id> Substitution::rebaseIntervals(const boost::icl::interval_set<Id>& intervals) const {
+  boost::icl::interval_set<Id> is;
+  const auto offset = distance(finish(), firstFreeId());
+  for (auto ival : intervals) {
+    rebaseInterval(is, offset, ival.lower(), ival.upper());
+  }
+  return is;
 }
 
 Substitution Substitution::compose(

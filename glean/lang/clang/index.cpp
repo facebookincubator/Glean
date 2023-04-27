@@ -72,6 +72,7 @@ DEFINE_int32(stop_after, 0, "stop after N files");
 DEFINE_int32(max_rss, 6291456, "stop after RSS reaches this size (kB)");
 DEFINE_bool(dry_run, false, "don't send data");
 DEFINE_bool(fact_stats, true, "log fact statistics");
+DEFINE_bool(ownership, false, "index fact ownership");
 DEFINE_uint64(fact_cache, 805306368, "set maximum fact cache size");
 DEFINE_uint64(fact_buffer, 201326592, "set maximum fact buffer size");
 DEFINE_uint32(log_every, 1, "log every N translation units");
@@ -371,6 +372,9 @@ struct SourceIndexer {
     }
 
   bool index(const SourceFile& source) {
+    if (FLAGS_ownership) {
+        batch.beginUnit(source.target + "@" + source.file);
+    }
     auto pcdb = cdb.load(source);
     ClangCfg cfg{
       ClangDB::Env{
@@ -429,7 +433,11 @@ struct SourceIndexer {
       }
       return stripped;
     });
-    return tool.run(&factory) == 0;
+    auto ok = tool.run(&factory) == 0;
+    if (FLAGS_ownership) {
+      batch.endUnit();
+    }
+    return ok;
   }
 
 private:
@@ -719,6 +727,8 @@ int main(int argc, char **argv) {
       config.sender->flush(indexer.batch.base());
     });
   }
+
+  indexer.batch.logEnd();
 
   config.counters.fact_buffer_size->store(0);
   config.counters.fact_cache_size->store(0);

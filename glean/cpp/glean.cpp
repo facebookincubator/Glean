@@ -9,6 +9,7 @@
 #include <folly/gen/Base.h>
 #include <folly/FBString.h>
 #include <iterator>
+#include <algorithm>
 #include "glean/cpp/glean.h"
 #include "glean/rts/sanity.h"
 
@@ -34,13 +35,58 @@ rts::FactSet::Serialized BatchBase::serialize() const {
   return buffer.serialize();
 }
 
+std::map<std::string, std::vector<int64_t>> BatchBase::serializeOwnership() const {
+  std::map<std::string, std::vector<int64_t>> ow;
+  for (const auto& p : owned) {
+    std::vector<int64_t> ids;
+    ids.reserve(p.facts.iterative_size() * 2);
+    for (auto ival : p.facts) {
+      ids.push_back(ival.lower().toThrift());
+      ids.push_back(ival.upper().toThrift());
+    }
+    ow.insert({p.unit, std::move(ids)});
+  }
+  if(ow.size() != owned.size()) {
+    LOG(ERROR) << "unexpected number of serialized units "
+      << ow.size() << " vs. " << owned.size();
+    std::vector<std::string> us;
+    for (const auto& p : owned) {
+      us.push_back(p.unit);
+    }
+    std::sort(us.begin(), us.end());
+    std::string buf;
+    for (const auto& s : us) {
+      buf += s;
+      buf += ' ';
+    }
+    LOG(FATAL) << buf;
+  }
+  last_serialized_units = owned.size();
+  total_serialized_units += owned.size();
+  return ow;
+}
+
 void BatchBase::rebase(const rts::Substitution& subst) {
+  const auto boundary = subst.finish();
   GLEAN_SANITY_CHECK(subst.sanityCheck(false));
   cache.withBulkStore([&](auto& store) {
     buffer = buffer.rebase(inventory->inventory, subst, store);
     facts = rts::Stacked<rts::Define>(&anchor, &buffer);
   });
   GLEAN_SANITY_CHECK(buffer.sanityCheck());
+  auto p = std::find_if(
+    owned.begin(),
+    owned.end(),
+    [boundary](const auto& p) { return p.finish > boundary; }
+  );
+  if (p - owned.begin() != last_serialized_units) {
+    LOG(ERROR) << "serialized " << last_serialized_units << " but rebasing "
+      << (p - owned.begin());
+  }
+  for (auto i = p; i != owned.end(); ++i) {
+    i->facts = subst.rebaseIntervals(i->facts);
+  }
+  owned.erase(owned.begin(), p);
 }
 
 BatchBase::CacheStats BatchBase::cacheStats() {
@@ -60,6 +106,38 @@ BatchBase::CacheStats BatchBase::cacheStats() {
     + values[rts::LookupCache::Stats::factById_misses]
     + values[rts::LookupCache::Stats::factById_failures];
   return res;
+}
+
+void BatchBase::beginUnit(std::string unit) {
+  owned.push_back({std::move(unit), {}, buffer.firstFreeId(), Id::invalid()});
+  current = &owned.back();
+}
+
+void BatchBase::endUnit() {
+  if (current) {
+    LOG(INFO) << current->unit << ": " << current->facts.size() << " / " << current->facts.iterative_size();
+    current->finish = buffer.firstFreeId();
+    current = nullptr;
+    ++seen_units;
+  } else {
+    LOG(ERROR) << "mismatched endUnit";
+  }
+}
+
+Id BatchBase::define(Pid ty, rts::Fact::Clause clause) {
+  const auto id = facts.define(ty, clause);
+  if (id) {
+    if (current != nullptr) {
+      current->facts.add(id);
+    } else {
+      LOG(WARNING) << "define outside unit";
+    }
+  }
+  return id;
+}
+
+void BatchBase::logEnd() const {
+  LOG(INFO) << "saw " << seen_units << " units, serialized " << total_serialized_units;
 }
 
 }

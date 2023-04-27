@@ -51,7 +51,12 @@ public:
   // the transformation done by FactSet::rebase().
   std::vector<Id> rebaseIntervals(const std::vector<Id>& intervals) const;
 
+  // These are just like the functions above but return a boost::icl::interval_set<Id>
+  // instead of a std::vector<Id>.
   boost::icl::interval_set<Id> substIntervals(
+      const boost::icl::interval_set<Id>& intervals) const;
+
+  boost::icl::interval_set<Id> rebaseIntervals(
       const boost::icl::interval_set<Id>& intervals) const;
 
   Id start() const {
@@ -94,6 +99,8 @@ public:
 private:
   Id base;
   std::vector<Id> items;
+
+  void rebaseInterval(boost::icl::interval_set<Id>& is, size_t offset, Id start, Id end) const;
 };
 
 }
