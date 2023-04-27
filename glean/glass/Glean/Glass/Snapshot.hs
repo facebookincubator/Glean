@@ -25,36 +25,33 @@ import qualified Glean.Glass.Handler as Handler
 import qualified Glean.Glass.Types as Types
 import qualified Glean.Snapshot.Types as Types
 import Options.Applicative
-    ( fullDesc,
-      help,
-      info,
-      long,
-      short,
-      metavar,
-      progDesc,
-      strOption,
-      strArgument,
-      optional,
-      helper,
-      Parser,
-      ParserInfo,
-      some )
-import Data.Text (Text)
-import qualified Data.Text as Text
+    ( fullDesc, help, info, long, short, metavar, progDesc, strOption,
+      strArgument, optional, helper, Parser, ParserInfo, some,
+      Parser, auto, help, long, option, showDefault, value )
+import Data.Text (Text, unpack, pack)
 import System.FilePath.Posix (splitDirectories, joinPath)
-import Control.Monad ( forM )
+import Control.Monad ( forM_ )
 import Data.Proxy ( Proxy(..) )
 import Thrift.Protocol.Compact (Compact)
 import Thrift.Protocol ( serializeGen )
-import Data.ByteString as BS ( writeFile )
+import qualified Data.ByteString as BS
+import Control.Monad.Catch ( try )
+import Data.Int ( Int64 )
+import Control.Exception (SomeException)
+import Util.Log.String ( logError )
+import Data.Maybe (fromMaybe)
+
+import qualified Database.MySQL.Simple as DB
+import Facebook.Db ( withConnection, InstanceRequirement(Master) )
+import qualified Data.Text.Encoding as TE
 
 type FileToSnapshot = (Types.RepoName, Types.Path)
 
 splitPath :: Text -> FileToSnapshot
-splitPath path = (Types.RepoName $ Text.pack first,
-                  Types.Path $ Text.pack $ joinPath rest)
+splitPath path = (Types.RepoName $ pack first,
+                  Types.Path $ pack $ joinPath rest)
   where
-    first : rest = splitDirectories $ Text.unpack path
+    first : rest = splitDirectories $ unpack path
 
 fileToSnapshot :: Parser FileToSnapshot
 fileToSnapshot =  splitPath <$> strArgument (metavar "FILE [FILE]..."
@@ -70,30 +67,106 @@ optRev = optional $ Types.Revision <$> strOption
         <> metavar "REVISION"
         <> help "An optional revision to be used in the snapshot" )
 
-outputString :: Parser FilePath
-outputString = strOption
+thresholdParser :: Parser (Maybe Int)
+thresholdParser = optional $ option auto (
+        long "threshold"
+        <> short 't'
+        <> metavar "THRESHOLD"
+        <> help "Snapshot bigger than THRESHOLD KB aren't uploaded")
+
+outputString :: Parser (Maybe FilePath)
+outputString = optional $ strOption
   (  long "output"
   <> short 'o'
   <> metavar "FILE"
-  <> help "serialized snapshot"
+  <> help "Don't upload snapshot, save to file instead"
   )
+
+newtype SnapshotTier = SnapshotTier Text
+
+snapshotTierParser :: Parser SnapshotTier
+snapshotTierParser = SnapshotTier <$> (option auto (mconcat
+  [ long "snapshot-tier"
+  , help "snapshot tier"
+  , value "xdb.glass_snapshot_dev"
+  , showDefault
+  ]) :: Parser Text)
 
 data Config = Config
   { glassConfig :: Glass.Config -- TODO we don't need all these options
   , files :: [FileToSnapshot]
-  , output :: FilePath
+  , output :: Maybe FilePath
   , rev :: Maybe Types.Revision
+  , tier :: SnapshotTier
+  , threshold :: Maybe Int
   }
 
 
 configParser :: Parser Config
 configParser =
-  Config <$> Glass.configParser <*> filesToSnapshot <*> outputString <*> optRev
+  Config <$> Glass.configParser <*> filesToSnapshot <*> outputString <*>
+  optRev <*> snapshotTierParser <*> thresholdParser
 
 options :: ParserInfo Config
 options = info (helper <*> configParser) (fullDesc <>
-    progDesc ("pre-computes the DocumentSymbolListX queries for input files, "
-    <> "generates a serialized thrift value Snapshot"))
+    progDesc ("pre-computes the DocumentSymbolListX results for input files, "
+    <> "and upload to XDB tier"))
+
+buildSnapshot
+  :: Glass.Env
+  -> Maybe Types.Revision
+  -> FileToSnapshot
+  -> IO (BS.ByteString, Types.Revision, Int)
+buildSnapshot env rev (repo, path) = do
+    let opts = Types.RequestOptions Nothing Nothing Nothing
+    let req = Types.DocumentSymbolsRequest repo path Nothing True
+    symList <- Handler.documentSymbolListX env req opts
+    let symbolList = case rev of
+          Nothing -> symList
+          Just r -> symList { Types.documentSymbolListXResult_revision = r }
+    let defs = length $ Types.documentSymbolListXResult_definitions symbolList
+    let refs = length $ Types.documentSymbolListXResult_references symbolList
+    let revision = Types.documentSymbolListXResult_revision symbolList
+    let snapshots = Types.Snapshot
+          [Types.DocumentSymbolListXQuery req opts symbolList]
+    let ser = serializeGen (Proxy :: Proxy Compact) snapshots
+    let snapshotSizeKB = BS.length ser `div` 1000
+    printf "Building snapshot %s %s: %d defs %d refs %dKB\n"
+      (Types.unPath path) (Types.unRevision revision) defs refs
+      snapshotSizeKB
+    return (ser, revision, snapshotSizeKB)
+
+uploadToXdb
+  :: SnapshotTier
+  -> Types.RepoName
+  -> Types.Revision
+  -> Types.Path
+  -> BS.ByteString
+  -> IO ()
+uploadToXdb
+  (SnapshotTier xdbTier)
+  (Types.RepoName repo)
+  (Types.Revision rev)
+  (Types.Path path)
+  snapshot = do
+    let num_rows :: IO Int64 = withConnection (TE.encodeUtf8 xdbTier) Master $
+          \conn -> do
+          DB.execute conn
+            "INSERT IGNORE INTO snapshot (repo, revision, file, snapshot)\
+            \VALUES (?, ?, ?, ?)"
+            (repo, rev, path, snapshot)
+    res <- try num_rows
+    case res of
+      Right 1 -> do
+        printf "Successfully uploaded\n"
+        return ()
+      Right 0 ->
+        logError "Value already present"
+      Right _ ->
+        logError "Couldn't upload "
+      Left (exc::SomeException) -> do
+         logError "Couldn't upload "
+         logError $ "Db error: " ++ show exc
 
 main :: IO ()
 main =
@@ -104,20 +177,15 @@ main =
     (Glass.snapshotTier glassConfig)
     (Glass.configKey glassConfig)
     (Glass.refreshFreq glassConfig) $ \env@Glass.Env{..} ->
-  do
-    let opts = Types.RequestOptions Nothing Nothing Nothing
-    snapShotItems <- forM files $ \(repo, path) -> do
-      -- TODO move this loop to the Haxl monad for automatic parallelism
-      let req = Types.DocumentSymbolsRequest repo path Nothing True
-      symList <- Handler.documentSymbolListX env req opts
-      let symbolList = case rev of
-            Nothing -> symList
-            Just r -> symList { Types.documentSymbolListXResult_revision = r }
-      let defs = length $ Types.documentSymbolListXResult_definitions symbolList
-      let refs = length $ Types.documentSymbolListXResult_references symbolList
-      let revision = Types.documentSymbolListXResult_revision symbolList
-      printf "%s %s %s: %d defs %d refs\n" (Types.unRepoName repo)
-        (Types.unPath path) (Types.unRevision revision) defs refs
-      return $ Types.DocumentSymbolListXQuery req opts symbolList
-    let snapShots = Types.Snapshot snapShotItems
-    BS.writeFile output $ serializeGen (Proxy :: Proxy Compact) snapShots
+      case (output, files) of
+        (Nothing, _) -> forM_ files $ \file@(repo, path) -> do
+            (ser, rev_, snapshotSizeKB) <- buildSnapshot env rev file
+            if snapshotSizeKB < fromMaybe maxBound threshold then
+              uploadToXdb tier repo rev_ path ser
+            else
+              printf "Too big, don't upload\n"
+        (Just output_, [file]) -> do
+          (ser, _, _) <- buildSnapshot env rev file
+          BS.writeFile output_ ser
+        _ -> fail "Exactly one file must be provided when generating an output\
+                  \ file"
