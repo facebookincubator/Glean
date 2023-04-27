@@ -379,11 +379,11 @@ options = do
       help "Directory containing databases")
     dbTmp = tmpDataStore <$ flag' () (
       long "db-tmp" <>
-      help "Store databases in a temporary directory")
+      help "Store databases in a temporary directory (default)")
     dbMem = memoryDataStore <$ flag' () (
       long "db-memory" <>
       help "Store databases in memory")
-  cfgDataStore <- dbRoot <|> dbTmp <|> dbMem
+  cfgDataStore <- dbRoot <|> dbTmp <|> dbMem <|> pure tmpDataStore
   ~(cfgSchemaDir, cfgSchemaSource) <- schemaSourceOption
   _ignored_for_backwards_compat <- switch (long "db-schema-override")
   cfgSchemaId <- fmap (fmap SchemaId) $ optional $ option auto
