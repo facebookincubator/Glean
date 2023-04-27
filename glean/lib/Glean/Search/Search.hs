@@ -48,6 +48,7 @@ import Glean.Schema.CodeHs.Types as Hs
 import Glean.Schema.CodePp.Types as Pp
 import Glean.Schema.Cxx1.Types as Cxx
 import Glean.Schema.Hack.Types as Hack
+import Glean.Schema.Pp1.Types as Pp
 import Glean.Schema.SearchCxx.Types as Cxx
 import Glean.Schema.SearchHack.Types as Hack
 import Glean.Schema.SearchPp.Types as Pp
@@ -246,9 +247,10 @@ findCxxDecls lim backend repo SearchQuery{..} refs = do
               then
                 searchQuery (string ident)
               else
-                var $ \n -> searchQuery n `where_`
-                  [ wild .= declByName (alt @"name" n)
-                  ]
+                var $ \(n :: Angle Cxx.Name) ->
+                  searchQuery (asPredicate n) `where_`
+                    [ wild .= declByName (alt @"name" (asPredicate n))
+                    ]
 
       let cppEntities = map Cxx.searchByNameAndScope_key_entity results
 
@@ -270,8 +272,9 @@ findCxxDecls lim backend repo SearchQuery{..} refs = do
                     -- TODO: extend this to include all selectors with ident
                     -- as the *first* (rather than *only) component
                   else
-                    var $ \s -> searchQuery s `where_`
-                      [ wild .= declByName (alt @"selector" s) ]
+                    var $ \(s :: Angle Cxx.ObjcSelector) ->
+                      searchQuery (asPredicate s) `where_`
+                        [ wild .= declByName (alt @"selector" (asPredicate s)) ]
 
       let objcMethodEntities = map Cxx.searchBySelector_key_entity objcMethods
 
@@ -316,11 +319,11 @@ findCxxDecls lim backend repo SearchQuery{..} refs = do
               then
                 searchQuery (string ident)
               else
-                var $ \m ->
-                  searchQuery m `where_`
+                var $ \(m :: Angle Pp.Macro) ->
+                  searchQuery (asPredicate m) `where_`
                     [ wild .=  predicate @Cxx.DeclByName (rec $
                         field @"name_lowercase" (string (Text.toLower ident)) $
-                        field @"ident" (alt @"macro" m)
+                        field @"ident" (alt @"macro" (asPredicate m))
                         end)
                     ]
       let entities = map Pp.searchByName_key_entity results
