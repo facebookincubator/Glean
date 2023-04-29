@@ -23,6 +23,7 @@ import qualified Glean.Schema.Python.Types as Py
 import qualified Glean.Schema.Thrift.Types as Thrift
 
 import qualified Glean.Schema.CodeCxx.Types as Cxx
+import qualified Glean.Schema.CodePp.Types as Pp
 import qualified Glean.Schema.CodeBuck.Types as Buck
 import qualified Glean.Schema.CodeFlow.Types as Flow
 import qualified Glean.Schema.CodeHs.Types as Hs
@@ -40,6 +41,15 @@ class ToAngle a where
 -- | Generically get an Angle key query
 mkKey :: Glean.Predicate p => p -> Angle (Glean.KeyType p)
 mkKey x = asPredicate (factId (Glean.getId x))
+
+-- C pre-processor
+
+instance ToAngle Pp.Entity where
+  toAngle e = case e of
+    Pp.Entity_define x -> alt @"define" (mkKey x)
+    Pp.Entity_undef x -> alt @"undef" (mkKey x)
+    Pp.Entity_include_ x -> alt @"include_" (mkKey x)
+    Pp.Entity_EMPTY -> error "unknown code.pp.Entity"
 
 -- Cxx
 

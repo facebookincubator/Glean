@@ -1484,6 +1484,288 @@
                 },
                 "sym_other_locations": [],
                 "type_xrefs": []
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 30,
+                "language": 8,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 10,
+                        "lineBegin": 87,
+                        "lineEnd": 87
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "test.cpp",
+                    "localName": "A"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/pp/test.cpp/A",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 10,
+                        "lineBegin": 87,
+                        "lineEnd": 87
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 30,
+                "language": 8,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 10,
+                        "lineBegin": 88,
+                        "lineEnd": 88
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "test.cpp",
+                    "localName": "B"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/pp/test.cpp/B",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 10,
+                        "lineBegin": 88,
+                        "lineEnd": 88
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 30,
+                "language": 8,
+                "location": {
+                    "filepath": "test.h",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 10,
+                        "lineBegin": 9,
+                        "lineEnd": 9
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "test.h",
+                    "localName": "C"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/pp/test.h/C",
+                "sym_location": {
+                    "filepath": "test.h",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 10,
+                        "lineBegin": 9,
+                        "lineEnd": 9
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 30,
+                "language": 8,
+                "location": {
+                    "filepath": "test2.h",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 10,
+                        "lineBegin": 9,
+                        "lineEnd": 9
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "test2.h",
+                    "localName": "D"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/pp/test2.h/D",
+                "sym_location": {
+                    "filepath": "test2.h",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 10,
+                        "lineBegin": 9,
+                        "lineEnd": 9
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 30,
+                "language": 8,
+                "location": {
+                    "filepath": "test2.h",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 12,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "test2.h",
+                    "localName": "FOO"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/pp/test2.h/FOO",
+                "sym_location": {
+                    "filepath": "test2.h",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 12,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 30,
+                "language": 8,
+                "location": {
+                    "filepath": "test3.h",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 10,
+                        "lineBegin": 9,
+                        "lineEnd": 9
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "test3.h",
+                    "localName": "D"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/pp/test3.h/D",
+                "sym_location": {
+                    "filepath": "test3.h",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 10,
+                        "lineBegin": 9,
+                        "lineEnd": 9
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
             }
         ],
         "symbols": [
@@ -2290,6 +2572,144 @@
                     "exactness": 2
                 },
                 "symbol": "test/cpp//maybe/nothing"
+            },
+            {
+                "kind": 30,
+                "language": 8,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 10,
+                        "lineBegin": 87,
+                        "lineEnd": 87
+                    },
+                    "repository": "test"
+                },
+                "name": "A",
+                "qname": {
+                    "container": "test.cpp",
+                    "localName": "A"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/pp/test.cpp/A"
+            },
+            {
+                "kind": 30,
+                "language": 8,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 10,
+                        "lineBegin": 88,
+                        "lineEnd": 88
+                    },
+                    "repository": "test"
+                },
+                "name": "B",
+                "qname": {
+                    "container": "test.cpp",
+                    "localName": "B"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/pp/test.cpp/B"
+            },
+            {
+                "kind": 30,
+                "language": 8,
+                "location": {
+                    "filepath": "test.h",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 10,
+                        "lineBegin": 9,
+                        "lineEnd": 9
+                    },
+                    "repository": "test"
+                },
+                "name": "C",
+                "qname": {
+                    "container": "test.h",
+                    "localName": "C"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/pp/test.h/C"
+            },
+            {
+                "kind": 30,
+                "language": 8,
+                "location": {
+                    "filepath": "test2.h",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 10,
+                        "lineBegin": 9,
+                        "lineEnd": 9
+                    },
+                    "repository": "test"
+                },
+                "name": "D",
+                "qname": {
+                    "container": "test2.h",
+                    "localName": "D"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/pp/test2.h/D"
+            },
+            {
+                "kind": 30,
+                "language": 8,
+                "location": {
+                    "filepath": "test2.h",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 12,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "name": "FOO",
+                "qname": {
+                    "container": "test2.h",
+                    "localName": "FOO"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/pp/test2.h/FOO"
+            },
+            {
+                "kind": 30,
+                "language": 8,
+                "location": {
+                    "filepath": "test3.h",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 10,
+                        "lineBegin": 9,
+                        "lineEnd": 9
+                    },
+                    "repository": "test"
+                },
+                "name": "D",
+                "qname": {
+                    "container": "test3.h",
+                    "localName": "D"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/pp/test3.h/D"
             }
         ]
     }

@@ -732,6 +732,7 @@ type DeclIdent =
     selector : ObjcSelector |
   }
 
+# Search for declaration kind and identifiers by lower case
 predicate DeclByName :
   {
     name_lowercase : string,

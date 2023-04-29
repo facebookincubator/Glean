@@ -48,6 +48,29 @@
                     "exactness": 2
                 },
                 "symbol": "test/cpp//foo/foo"
+            },
+            {
+                "kind": 30,
+                "language": 8,
+                "location": {
+                    "filepath": "test2.h",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 12,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "name": "FOO",
+                "qname": {
+                    "container": "test2.h",
+                    "localName": "FOO"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/pp/test2.h/FOO"
             }
         ]
     }

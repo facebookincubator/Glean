@@ -806,6 +806,144 @@
                     "exactness": 2
                 },
                 "symbol": "test/cpp//maybe/nothing"
+            },
+            {
+                "kind": 30,
+                "language": 8,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 10,
+                        "lineBegin": 87,
+                        "lineEnd": 87
+                    },
+                    "repository": "test"
+                },
+                "name": "A",
+                "qname": {
+                    "container": "test.cpp",
+                    "localName": "A"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/pp/test.cpp/A"
+            },
+            {
+                "kind": 30,
+                "language": 8,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 10,
+                        "lineBegin": 88,
+                        "lineEnd": 88
+                    },
+                    "repository": "test"
+                },
+                "name": "B",
+                "qname": {
+                    "container": "test.cpp",
+                    "localName": "B"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/pp/test.cpp/B"
+            },
+            {
+                "kind": 30,
+                "language": 8,
+                "location": {
+                    "filepath": "test.h",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 10,
+                        "lineBegin": 9,
+                        "lineEnd": 9
+                    },
+                    "repository": "test"
+                },
+                "name": "C",
+                "qname": {
+                    "container": "test.h",
+                    "localName": "C"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/pp/test.h/C"
+            },
+            {
+                "kind": 30,
+                "language": 8,
+                "location": {
+                    "filepath": "test2.h",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 10,
+                        "lineBegin": 9,
+                        "lineEnd": 9
+                    },
+                    "repository": "test"
+                },
+                "name": "D",
+                "qname": {
+                    "container": "test2.h",
+                    "localName": "D"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/pp/test2.h/D"
+            },
+            {
+                "kind": 30,
+                "language": 8,
+                "location": {
+                    "filepath": "test2.h",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 12,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "name": "FOO",
+                "qname": {
+                    "container": "test2.h",
+                    "localName": "FOO"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/pp/test2.h/FOO"
+            },
+            {
+                "kind": 30,
+                "language": 8,
+                "location": {
+                    "filepath": "test3.h",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 10,
+                        "lineBegin": 9,
+                        "lineEnd": 9
+                    },
+                    "repository": "test"
+                },
+                "name": "D",
+                "qname": {
+                    "container": "test3.h",
+                    "localName": "D"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/pp/test3.h/D"
             }
         ]
     }

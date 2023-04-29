@@ -1,0 +1,135 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": "a",
+      "language": 1,
+      "entity": {
+        "pp": {
+          "define": {
+            "key": {
+              "macro": { "key": "A" },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 87,
+                "columnBegin": 9,
+                "lineEnd": 87,
+                "columnEnd": 9
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "b",
+      "language": 1,
+      "entity": {
+        "pp": {
+          "define": {
+            "key": {
+              "macro": { "key": "B" },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 88,
+                "columnBegin": 9,
+                "lineEnd": 88,
+                "columnEnd": 9
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "c",
+      "language": 1,
+      "entity": {
+        "pp": {
+          "define": {
+            "key": {
+              "macro": { "key": "C" },
+              "source": {
+                "file": { "key": "test.h" },
+                "lineBegin": 9,
+                "columnBegin": 9,
+                "lineEnd": 9,
+                "columnEnd": 9
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "d",
+      "language": 1,
+      "entity": {
+        "pp": {
+          "define": {
+            "key": {
+              "macro": { "key": "D" },
+              "source": {
+                "file": { "key": "test2.h" },
+                "lineBegin": 9,
+                "columnBegin": 9,
+                "lineEnd": 9,
+                "columnEnd": 9
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "d",
+      "language": 1,
+      "entity": {
+        "pp": {
+          "define": {
+            "key": {
+              "macro": { "key": "D" },
+              "source": {
+                "file": { "key": "test3.h" },
+                "lineBegin": 9,
+                "columnBegin": 9,
+                "lineEnd": 9,
+                "columnEnd": 9
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "foo",
+      "language": 1,
+      "entity": {
+        "pp": {
+          "define": {
+            "key": {
+              "macro": { "key": "FOO" },
+              "source": {
+                "file": { "key": "test2.h" },
+                "lineBegin": 10,
+                "columnBegin": 9,
+                "lineEnd": 10,
+                "columnEnd": 11
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

@@ -16,13 +16,11 @@ module Glean.Glass.SymbolId.Pp (
 import Data.Text ( Text )
 
 import Glean.Glass.SymbolId.Class
-    ( ToSymbolParent(..), toSymbolPredicate, Symbol(..) )
 
 import qualified Glean
 import qualified Glean.Haxl.Repos as Glean
-import Glean.Glass.Utils ( pathFragments )
+import Glean.Glass.Utils
 import Glean.Glass.Types as Glass
-    ( SymbolKind(SymbolKind_File, SymbolKind_Macro) )
 
 import qualified Glean.Schema.CodePp.Types as Pp
 import qualified Glean.Schema.Pp1.Types as Pp1
@@ -62,3 +60,28 @@ ppEntityKind e = case e of
   Pp.Entity_undef{} -> return (Just SymbolKind_Macro)
   Pp.Entity_include_{} -> return (Just SymbolKind_File)
   Pp.Entity_EMPTY -> return Nothing
+
+instance ToQName Pp.Entity where
+  toQName e = case e of
+    Pp.Entity_define e -> do
+      Pp1.Define_key macro source <- Glean.keyOf e
+      macroQName macro source
+    Pp.Entity_undef e -> do
+      Pp1.Undef_key macro source <- Glean.keyOf e
+      macroQName macro source
+    Pp.Entity_include_ f -> do -- Not sure we need #include entities
+      path <- Glean.keyOf f
+      return $ case reverse (pathFragments path) of
+        [] -> Left "QName not supported for empty #include path"
+        (h:t) -> Right (Name h, Name (joinFragments (reverse t)))
+    Pp.Entity_EMPTY -> return $ Left "unknown code.pp.Entity"
+
+macroQName
+  :: Pp1.Macro -> Src.Range
+  -> Glean.RepoHaxl u w (Either Text (Name, Name))
+macroQName macro source = do
+  toks <- toSymbolMacro macro source
+  return $ case reverse toks of
+    [] -> Left "macroQName: empty"
+    [name] -> Right (Name name, Name "")
+    (name : base : _) -> Right (Name name, Name base)

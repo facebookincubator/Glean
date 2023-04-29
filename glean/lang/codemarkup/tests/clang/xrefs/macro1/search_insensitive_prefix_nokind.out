@@ -296,5 +296,42 @@
       "kind": 24,
       "language": 0
     }
+  },
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "foo",
+      "entity": {
+        "pp": {
+          "define": {
+            "key": {
+              "macro": { "key": "FOO" },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 9,
+                "columnBegin": 9,
+                "lineEnd": 9,
+                "columnEnd": 11
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "FOO",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 9,
+            "columnBegin": 9,
+            "lineEnd": 9,
+            "columnEnd": 11
+          }
+        }
+      },
+      "kind": 29,
+      "language": 1
+    }
   }
 ]

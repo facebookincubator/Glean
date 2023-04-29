@@ -2073,6 +2073,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "A"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "test.cpp"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 30
                         },
                         "key": "symbolKind"
@@ -2100,6 +2112,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "B"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "test.cpp"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aInteger": 30
@@ -4143,6 +4167,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "test.h"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 4
                         },
                         "key": "symbolKind"
@@ -4182,6 +4218,18 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "test.h"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 4
                         },
                         "key": "symbolKind"
@@ -4219,6 +4267,18 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "FOO"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "test2.h"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aInteger": 30

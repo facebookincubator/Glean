@@ -354,6 +354,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 8
+                        },
+                        "symbolName": {
+                            "aString": "FOO"
+                        },
+                        "symbolParent": {
+                            "aString": "test2.h"
                         }
                     },
                     "range": {
@@ -2739,6 +2745,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 8
+                        },
+                        "symbolName": {
+                            "aString": "test.h"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         }
                     },
                     "range": {
@@ -2771,6 +2783,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 8
+                        },
+                        "symbolName": {
+                            "aString": "A"
+                        },
+                        "symbolParent": {
+                            "aString": "test.cpp"
                         }
                     },
                     "range": {
@@ -2793,6 +2811,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 8
+                        },
+                        "symbolName": {
+                            "aString": "B"
+                        },
+                        "symbolParent": {
+                            "aString": "test.cpp"
                         }
                     },
                     "range": {
@@ -2815,6 +2839,12 @@
                         },
                         "symbolLanguage": {
                             "aInteger": 8
+                        },
+                        "symbolName": {
+                            "aString": "test.h"
+                        },
+                        "symbolParent": {
+                            "aString": ""
                         }
                     },
                     "range": {

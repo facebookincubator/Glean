@@ -450,7 +450,8 @@ searchSymbol env@Glass.Env{..} req@SymbolSearchRequest{..} RequestOptions{..} =
     sScope = if symbolSearchOptions_namespaceSearch then Scope else NoScope
     sString = Text.strip symbolSearchRequest_name -- drop leading whitespace
     sKinds = map symbolKindFromSymbolKind (Set.elems symbolSearchRequest_kinds)
-    sLangs = mapMaybe languageToCodeLang (Set.elems languageSet)
+    sLangs = languageExpandCpp $ mapMaybe languageToCodeLang
+      (Set.elems languageSet)
     sFeelingLucky =
       if symbolSearchOptions_feelingLucky then FeelingLucky else Normal
     querySpec = Query.SearchQuery{..}

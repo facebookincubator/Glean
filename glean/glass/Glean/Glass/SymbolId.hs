@@ -23,6 +23,7 @@ module Glean.Glass.SymbolId
   , entityDefinitionType
   , entityKind
   , languageToCodeLang
+  , languageExpandCpp
 
   -- * Lookups and language names
   , toShortCode
@@ -237,6 +238,13 @@ languageToCodeLang l = case l of
   Language_Go -> Just Code.Language_Go
   Language__UNKNOWN{} -> Nothing
 
+-- | Search queries for C++ should always imply the PreProcessor too
+languageExpandCpp :: [Code.Language] -> [Code.Language]
+languageExpandCpp [] = []
+languageExpandCpp (Code.Language_Cpp : rest) = Code.Language_Cpp :
+  Code.Language_PreProcessor : rest
+languageExpandCpp (lang : rest) = lang : languageExpandCpp rest
+
 -- | An encoded Entity.
 --
 -- e.g. Glean/getRepoName -- method
@@ -287,6 +295,8 @@ entityToAngle e = case e of
     alt @"flow" (toAngle x)
   Code.Entity_cxx x -> Right $
     alt @"cxx" (toAngle x)
+  Code.Entity_pp x -> Right $
+    alt @"pp" (toAngle x)
   Code.Entity_hs x -> Right $
     alt @"hs" (toAngle x)
   Code.Entity_erlang (Erlang.Entity_decl x) -> Right $
@@ -319,6 +329,7 @@ instance ToQName Code.Entity where
     Code.Entity_hack (Hack.Entity_decl x) -> toQName x
     Code.Entity_flow x -> toQName x
     Code.Entity_cxx x -> toQName x
+    Code.Entity_pp x -> toQName x
     Code.Entity_erlang x -> toQName x
     Code.Entity_java x -> toQName x
     Code.Entity_thrift (Thrift.Entity_decl x) -> toQName x

@@ -42,6 +42,7 @@ predicate SearchByNameAndLanguage:
     ( JavaScript = Language; FlowSearchByName { Name, Entity } ) |
     ( Java = Language; JavaSearchByName { Name, Entity } ) |
     ( Cpp = Language; CxxSearchByName { Name, Entity } ) |
+    ( PreProcessor = Language; PpSearchByName { Name, Entity } ) |
     ( Haskell = Language; HsSearchByName { Name, Entity } ) |
     ( Erlang = Language; ErlangSearchByName { Name, Entity } ) |
     ( Rust = Language; RustSearchByName { Name, Entity } ) |
@@ -60,6 +61,7 @@ predicate SearchByLowerCaseNameAndLanguage:
     ( Python = Language; PythonSearchByLowerCaseName { Name, Entity } ) |
     ( JavaScript = Language; FlowSearchByLowerCaseName { Name, Entity } ) |
     ( Cpp = Language; CxxSearchByLowerCaseName { Name, Entity } ) |
+    ( PreProcessor = Language; PpSearchByLowerCaseName { Name, Entity } ) |
     ( Haskell = Language; HsSearchByLowerCaseName { Name, Entity } ) |
     ( Erlang = Language; ErlangSearchByLowerCaseName { Name, Entity } ) |
     ( Rust = Language; RustSearchByLowerCaseName { Name, Entity } ) |
@@ -403,6 +405,33 @@ predicate CxxSearchByNameAndScopeFact:
     if ({ decl = Decl } = Ent) # just definitions , not decls
       then ( search.cxx.DeclIsDefn { Decl, Defn }; { defn = Defn } = DefnE )
       else ( Ent = DefnE );
+
+predicate PpSearchByName:
+  {
+    name: string,
+    entity: code.Entity
+  }
+  { NameStr, Entity } where
+    Macro = pp1.Macro NameStr;
+    PpSearchByMacroFact { macro = Macro, entity = Entity };
+
+# n.b. this reuses the stored, derived lower case pp1.Macro in cxx1.DeclByName
+predicate PpSearchByLowerCaseName:
+  {
+    name: string,
+    entity: code.Entity
+  }
+  { NameStr, Entity } where
+    cxx1.DeclByName { name_lowercase = NameStr, ident = { macro = Macro } };
+    PpSearchByMacroFact { macro = Macro, entity = Entity };
+
+predicate PpSearchByMacroFact:
+  {
+    macro: pp1.Macro,
+    entity : code.Entity
+  }
+  { Macro, { pp = { define = Defn } } } where
+    Defn = pp1.Define { macro = Macro }
 
 predicate ThriftSearchByName:
   {
