@@ -109,7 +109,7 @@ parseVertex o = do
     "packageInformation" -> PackageInformation
       <$> o .: "name"
       <*> o .: "manager"
-      <*> o .: "version"
+      <*> (fromMaybe "" <$> (o .:? "version"))
     "hoverResult" -> do
       result <- o .: "result"
       cs <- result .: "contents"
