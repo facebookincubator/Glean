@@ -332,6 +332,7 @@ instance ToQName Code.Entity where
     Code.Entity_pp x -> toQName x
     Code.Entity_erlang x -> toQName x
     Code.Entity_java x -> toQName x
+    Code.Entity_rust x -> toQName x
     Code.Entity_thrift (Thrift.Entity_decl x) -> toQName x
     Code.Entity_lsif se -> case se of -- enumerate all cases for lsif
       Lsif.Entity_erlang x -> toQName x

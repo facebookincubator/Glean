@@ -11,6 +11,7 @@
 module Glean.Glass.SymbolId.Rust ({- instances -}) where
 
 import Glean.Glass.SymbolId.Class
+import Glean.Glass.Types as Glass
 
 import qualified Glean
 -- import Glean.Angle
@@ -100,3 +101,15 @@ instance Symbol Rust.Name where
   toSymbol name = do
     n <- Glean.keyOf name
     return [n]
+
+instance ToQName Rust.Entity where
+  toQName (Rust.Entity_definition defn) = toQName defn
+  toQName Rust.Entity_EMPTY = return $ Left "unknown code.rust.Entity"
+
+instance ToQName Rust.Def where
+  toQName defn = do
+    toks <- toSymbol defn
+    case reverse toks of
+      [] -> return $ Right (Glass.Name "anonymous", Glass.Name "")
+      [name] -> return $ Right (Glass.Name name, Glass.Name "")
+      name:parent:_ -> return $ Right (Glass.Name name, Glass.Name parent)
