@@ -1123,6 +1123,18 @@ library lsif
         aeson,
         split,
 
+-- SCIP support.
+--
+-- Haskell bindings and spec https://github.com/sourcegraph/scip
+--
+library if-proto-scip-hs
+    import: fb-haskell, deps
+    exposed-modules:
+        Proto.Scip,
+        Proto.Scip_Fields
+    hs-source-dirs: glean/lang/scip/proto
+    build-depends: proto-lens-runtime
+
 -- -----------------------------------------------------------------------------
 -- Glass services
 
