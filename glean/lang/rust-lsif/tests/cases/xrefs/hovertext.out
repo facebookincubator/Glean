@@ -72,7 +72,9 @@
   },
   {
     "key": {
-      "text": { "key": "\u000a```rust\u000au64\u000a```" },
+      "text": {
+        "key": "\u000a```rust\u000au64\u000a```\u000a\u000a---\u000a\u000aThe 64-bit unsigned integer type."
+      },
       "language": 30
     }
   }
