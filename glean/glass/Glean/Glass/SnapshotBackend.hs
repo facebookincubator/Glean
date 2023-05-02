@@ -19,6 +19,7 @@ module Glean.Glass.SnapshotBackend
   , SnapshotTier
   , snapshotTierParser
   , snapshotDefaultTier
+  , SnapshotStatus(..)
   ) where
 
 import Data.Text ( Text )
