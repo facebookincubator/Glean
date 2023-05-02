@@ -129,8 +129,6 @@ Id BatchBase::define(Pid ty, rts::Fact::Clause clause) {
   if (id) {
     if (current != nullptr) {
       current->facts.add(id);
-    } else {
-      LOG(WARNING) << "define outside unit";
     }
   }
   return id;
