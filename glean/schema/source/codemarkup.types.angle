@@ -14,6 +14,19 @@ type RangeSpan =
     range : src.Range # cxx and lsif compat
   }
 
+predicate RangeSpanContains :
+  {
+    rangeSpan : RangeSpan,
+    contains : RangeSpan
+  }
+  { RS1, RS2 } where
+    ({ span = S1 } = RS1;
+     { span = S2 } = RS2;
+     src.ByteSpanContains { S1, S2 }) |
+    ({ range = R1 } = RS1;
+     { range = R2 } = RS2;
+     src.RangeContains { R1, R2 })
+
 # XRefs from source to target declaration or definition
 type XRefLocation =
   {

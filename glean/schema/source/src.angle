@@ -76,6 +76,19 @@ predicate ByteSpanContains :
     Start1<=Start2;
     End2<=End1
 
+predicate RangeContains :
+  {
+    fileLines : Range,
+    contains: Range
+  }
+  {S1, S2} where
+    {F, LB1, CB1, LE1, CE1} = S1;
+    {F, LB2, CB2, LE2, CE2} = S2;
+    LB1 <= LB2;
+    LE2 <= LE1;
+    (LB1 < LB2 | CB1 <= CB2);
+    (LE2 < LE1 | CE2 <= CE1)
+
 # Multiple relative-offset bytespans
 type ByteSpans = [RelByteSpan]
 
