@@ -11,6 +11,8 @@ module InventoryTest
   ) where
 
 import Control.Concurrent.Async ( forConcurrently )
+import qualified Data.HashMap.Strict as HM
+import Data.HashMap.Strict (HashMap)
 import qualified Data.Map as Map
 import Test.HUnit
 
@@ -29,9 +31,12 @@ serializeTest :: Inventory -> IO ()
 serializeTest inventory = assertBool "roundtrip" $
   Inventory.deserialize (Inventory.serialize inventory) == inventory
 
-mkSchema :: SchemaIndex -> IO DbSchema
-mkSchema schemaIndex =
-  newDbSchema Nothing schemaIndex LatestSchemaAll readWriteContent
+mkSchema
+  :: (forall k v . HashMap k v -> [(k,v)])
+  -> SchemaIndex
+  -> IO DbSchema
+mkSchema toList schemaIndex =
+  newDbSchemaForTesting toList Nothing schemaIndex LatestSchemaAll readWriteContent
 
 main :: IO ()
 main = withUnitTest $ do
@@ -39,10 +44,10 @@ main = withUnitTest $ do
 
   testRunner $ TestList
     [ TestLabel "serialize" $ TestCase $ do
-        inventory <- schemaInventory <$> mkSchema schema
+        inventory <- schemaInventory <$> mkSchema HM.toList schema
         serializeTest inventory
     , TestLabel "serializeDeleted" $ TestCase $ do
-        dbSchema <- mkSchema schema
+        dbSchema <- mkSchema HM.toList schema
         let -- inventory serialization/deserialization should work if there
             -- are gaps in the Pid range.
             stored = toStoredSchema dbSchema
@@ -54,7 +59,9 @@ main = withUnitTest $ do
         serializeTest (schemaInventory newDbSchema)
     , TestLabel "determinism" $ TestList
       [ TestLabel "permuted schema files" $
-          deterministicOnFilesTest schemaSourceDir
+        deterministicOnFilesTest schemaSourceDir
+      , TestLabel "permuted HashMaps" $
+        deterministicOnHashMaps schemaSourceDir
       ]
     ]
 
@@ -63,8 +70,21 @@ deterministicOnFilesTest schemaSourceDir = TestCase $ do
   files <- listDirectoryRecursive schemaSourceDir
   permutedFiles <- mapM catSchemaFiles (permuteList files)
   schemas <-
-    mapM ( either error mkSchema . processOneSchema mempty) permutedFiles
+    mapM
+      (either error (mkSchema HM.toList) . processOneSchema mempty)
+      permutedFiles
   testDeterminism schemas
+
+deterministicOnHashMaps :: FilePath -> Test
+deterministicOnHashMaps schemaSourceDir = TestCase $ do
+  files <- catSchemaFiles =<< listDirectoryRecursive schemaSourceDir
+  schemas1 <-
+    either error (mkSchema HM.toList . (`SchemaIndex` [])) $
+      processSchemaForTesting HM.toList mempty files
+  schemas2 <-
+    either error (mkSchema (reverse . HM.toList) . (`SchemaIndex` [])) $
+      processSchemaForTesting (reverse . HM.toList) mempty files
+  testDeterminism [schemas1, schemas2]
 
 --------------------------------------------------------------------------------
 

@@ -110,10 +110,11 @@ isDefaultDeriving _ = False
 -- PredicateRef/TypeRef with PredicateId/TypeId inside all the definitions
 
 computeIds
-  :: [ResolvedSchemaRef]
+  :: (forall k v . HashMap k v -> [(k,v)])
+  -> [ResolvedSchemaRef]
   -> Map SchemaId Version
   -> HashedSchema
-computeIds schemas versions = flip evalState emptyRefToIdEnv $ do
+computeIds toList schemas versions = flip evalState emptyRefToIdEnv $ do
   let
     preds = attachDerivations schemas
 
@@ -123,11 +124,11 @@ computeIds schemas versions = flip evalState emptyRefToIdEnv $ do
     edges =
       [ (RefPred def, RefPred (predicateDefRef def), predicateDefRefs def)
       | m <- preds
-      , def <- HashMap.elems m
+      , (_, def) <- toList m
       ] ++
       [ (RefType def, RefType (typeDefRef def), typeDefRefs def)
       | m <- map resolvedSchemaTypes schemas
-      , def <- HashMap.elems m
+      , (_, def) <- toList m
       ]
 
     collectRefs = bifoldMap ((:[]) . RefPred) ((:[]) . RefType)
@@ -181,7 +182,7 @@ computeIds schemas versions = flip evalState emptyRefToIdEnv $ do
       attachDefaultDerivings preds = foldr attach preds
         [ (id, drv)
         | schema <- schemas
-        , (ref, drv) <- HashMap.toList (resolvedSchemaDeriving schema)
+        , (ref, drv) <- toList (resolvedSchemaDeriving schema)
         , isDefaultDeriving drv
         , Just id <- [HashMap.lookup ref (predRefToId env)]
         ]

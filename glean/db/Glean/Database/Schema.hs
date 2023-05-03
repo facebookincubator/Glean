@@ -25,6 +25,8 @@ module Glean.Database.Schema
   , getSchemaInfo
   , renderSchemaSource
   , toStoredVersions
+  -- testing
+  , newDbSchemaForTesting
   ) where
 
 import Control.Applicative ((<|>))
@@ -44,7 +46,7 @@ import qualified Data.HashMap.Strict as HashMap
 import qualified Data.HashMap.Lazy as Lazy.HashMap
 import qualified Data.HashSet as HashSet
 import Data.HashSet (HashSet)
-import Data.List.Extra (firstJust, nubOrd)
+import Data.List.Extra (firstJust, nubOrd, sort)
 import qualified Data.IntMap as IntMap
 import Data.IntMap (IntMap)
 import qualified Data.Map as Map
@@ -192,7 +194,7 @@ newMergedDbSchema schemaCache storedSchema@StoredSchema{..}
 
   -- For the "source", we'll use the current schema source. It doesn't
   -- reflect what's in the DB, but it reflects what you can query for.
-  mkDbSchema schemaCache (Just (storedSchemaPids storedSchema))
+  mkDbSchema HashMap.toList schemaCache (Just (storedSchemaPids storedSchema))
     dbContent fromDB (Just index)
 
 -- | Build a DbSchema from parsed/resolved Schemas. Note that we still need
@@ -204,14 +206,25 @@ newDbSchema
   -> SchemaSelector
   -> DbContent
   -> IO DbSchema
-newDbSchema schemaCache index selector dbContent = do
+newDbSchema = newDbSchemaForTesting HashMap.toList
+
+-- | Testing version of 'newDbSchema' that accepts a custom @HashMap.toList@
+--   function to weed out ordering assumptions
+newDbSchemaForTesting
+  :: (forall k v . HashMap k v -> [(k,v)])
+  -> Maybe (MVar DbSchemaCache)
+  -> SchemaIndex
+  -> SchemaSelector
+  -> DbContent
+  -> IO DbSchema
+newDbSchemaForTesting toList schemaCache index selector dbContent = do
   schema <- case selector of
     SpecificSchemaId id -> case schemaForSchemaId index id of
       Nothing -> throwIO $ ErrorCall $ "schema " <> show id <> " not found"
       Just schema -> return schema
     _otherwise ->
       return (schemaIndexCurrent index)
-  mkDbSchema schemaCache Nothing dbContent schema Nothing
+  mkDbSchema toList schemaCache Nothing dbContent schema Nothing
 
 inventory :: [PredicateDetails] -> Inventory
 inventory ps = Inventory.new
@@ -237,7 +250,7 @@ mkDbSchemaFromSource schemaCache knownPids dbContent source = do
   case processSchema Map.empty source of
     Left str -> throwIO $ ErrorCall str
     Right (ProcessedSchema source resolved hashed) ->
-      mkDbSchema schemaCache knownPids dbContent
+      mkDbSchema HashMap.toList schemaCache knownPids dbContent
         (ProcessedSchema source resolved hashed)
         Nothing
 
@@ -314,13 +327,14 @@ withDbSchemaCache maybeCache maybePids stored maybeIndex mk =
       mk
 
 mkDbSchema
-  :: Maybe (MVar DbSchemaCache)
+  :: (forall k v . HashMap k v -> [(k,v)])
+  -> Maybe (MVar DbSchemaCache)
   -> Maybe (HashMap PredicateRef Pid)
   -> DbContent
   -> ProcessedSchema
   -> Maybe SchemaIndex
   -> IO DbSchema
-mkDbSchema cacheVar knownPids dbContent
+mkDbSchema toList cacheVar knownPids dbContent
     procStored@(ProcessedSchema source _ stored) index = do
 
   -- either fetch a cached DbSchema or build a new one
@@ -369,14 +383,15 @@ mkDbSchema cacheVar knownPids dbContent
       --    (unless this is a new DB, in which case we'll assign fresh Pids)
       --  - predicates in the merged schema get new fresh Pids.
       --
-      -- Note that the Pid assignment is deterministic for a given SchemaId,
-      -- because HashMap.keys returns the PredicateIds sorted by hash, which
-      -- is the low 64 bits of the predicate's Hash.
+      -- Sort the predicates in order to ensure a deterministic result since
+      -- 'toList' does not give us any ordering guarantees
       storedPids = case knownPids of
-        Nothing -> zip (HashMap.keys (hashedPreds stored)) [lowestPid..]
-        Just pidMap -> assign first (HashMap.keys (hashedPreds stored))
+        Nothing ->
+          zip (sort $ fst <$> toList (hashedPreds stored)) [lowestPid..]
+        Just pidMap ->
+          assign first (sort $ fst <$> toList (hashedPreds stored))
           where
-          first = maybe lowestPid succ $ maximumMay (HashMap.elems pidMap)
+          first = maybe lowestPid succ $ maximumMay (snd <$> toList pidMap)
           assign _next [] = []
           assign next (id : ids) =
             case HashMap.lookup (predicateIdRef id) pidMap of
@@ -433,7 +448,7 @@ mkDbSchema cacheVar knownPids dbContent
             <> showRef (predicateRef d)
 
     let
-        predicates = HashMap.elems (tcEnvPredicates tcEnv)
+        predicates = snd <$> toList (tcEnvPredicates tcEnv)
 
         intPid = fromIntegral . fromPid . predicatePid
 
@@ -979,7 +994,8 @@ validateNewSchema ServerConfig.Config{..} newSrc current = do
     Left msg -> throwIO $ Thrift.Exception $ Text.pack msg
     Right resolved -> return resolved
   let
-  curDbSchema <- mkDbSchema Nothing Nothing readWriteContent schema Nothing
+  curDbSchema <-
+    mkDbSchema HashMap.toList Nothing Nothing readWriteContent schema Nothing
   void $ newMergedDbSchema
     Nothing
     (toStoredSchema curDbSchema)

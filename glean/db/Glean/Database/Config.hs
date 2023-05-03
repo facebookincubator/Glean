@@ -31,6 +31,8 @@ module Glean.Database.Config (
   schemaSourceOption,
   parseSchemaDir,
   parseSchemaIndex,
+  -- testing
+  processSchemaForTesting,
 ) where
 
 import Control.Exception
@@ -220,11 +222,20 @@ processSchema
   :: Map SchemaId Version
   -> ByteString
   -> Either String ProcessedSchema
-processSchema versions str =
+processSchema = processSchemaForTesting HashMap.toList
+
+-- | Testing version of 'processSchema' that accepts a custom @HashMap.toList@
+--   function to weed out ordering assumptions
+processSchemaForTesting
+  :: (forall k v . HashMap k v -> [(k,v)])
+  -> Map SchemaId Version
+  -> ByteString
+  -> Either String ProcessedSchema
+processSchemaForTesting toList versions str =
   case parseAndResolveSchema str of
     Left str -> Left str
     Right (ss, r) -> Right $
-      ProcessedSchema ss r (computeIds (schemasResolved r) versions)
+      ProcessedSchema ss r (computeIds toList (schemasResolved r) versions)
 
 processSchemaCached
   :: Map SchemaId Version
@@ -237,7 +248,8 @@ processSchemaCached versions cache str =
     Right (ss, r, newcache) ->
       Right (
         newcache,
-        ProcessedSchema ss r (computeIds (schemasResolved r) versions)
+        ProcessedSchema ss r
+          (computeIds HashMap.toList (schemasResolved r) versions)
       )
 
 -- | Read the schema definition from the ConfigProvider
