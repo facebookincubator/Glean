@@ -54,7 +54,7 @@ data LsifIndexerParams = LsifIndexerParams
   }
 
 -- | Run an LSIF indexer, and convert to a Glean's lsif.angle database
--- returning a single JSON value that can be sent to the Glean server
+-- foramt, returning a single JSON value that can be sent to the Glean server
 runIndexer :: LsifIndexerParams -> IO Aeson.Value
 runIndexer params@LsifIndexerParams{..} = do
   repoDir <- makeAbsolute lsifRoot -- save this before we switch to tmp
@@ -63,7 +63,7 @@ runIndexer params@LsifIndexerParams{..} = do
     runLSIFIndexer params { lsifRoot = repoDir } lsifFile
     processLSIF repoDir lsifFile
 
--- | Run the lsif-tsc indexer on a repository,
+-- | Run a generic lsif-producing indexer on a repository,
 -- put lsif dump output into outputFile
 runLSIFIndexer :: LsifIndexerParams -> FilePath -> IO ()
 runLSIFIndexer LsifIndexerParams{..} outputFile =
