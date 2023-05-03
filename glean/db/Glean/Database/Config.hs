@@ -386,7 +386,7 @@ options = do
   cfgDataStore <- dbRoot <|> dbTmp <|> dbMem <|> pure tmpDataStore
   ~(cfgSchemaDir, cfgSchemaSource) <- schemaSourceOption
   _ignored_for_backwards_compat <- switch (long "db-schema-override")
-  cfgSchemaId <- fmap (fmap SchemaId) $ optional $ option auto
+  cfgSchemaId <- fmap (fmap SchemaId) $ optional $ strOption
     ( long "schema-id"
     <> metavar "ID"
     <> help (
