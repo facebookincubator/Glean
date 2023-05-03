@@ -16,27 +16,31 @@ namespace glean {
 namespace rts {
 
 bool Predicate::operator==(const Predicate& other) const {
-  return id == other.id
-    && name == other.name
-    && version == other.version
-    && *typechecker == *other.typechecker;
+  return id == other.id &&
+      (id == id.invalid() ||
+       (name == other.name && version == other.version &&
+        *typechecker == *other.typechecker && *traverser == *other.traverser));
 }
-
 
 Inventory::Inventory() : first_id(Pid::lowest())
 {}
 
 Inventory::Inventory(std::vector<Predicate> ps) {
   size_t n;
-  first_id = Pid::lowest();
-  auto last_id = first_id;
+  first_id = Pid::invalid();
+  auto last_id = Pid::lowest();
   for (const auto& p : ps) {
-    first_id = std::min(first_id, p.id);
+    assert(p.id);
+    if (!first_id) {
+      first_id = p.id;
+    } else {
+      first_id = std::min(first_id, p.id);
+    }
     last_id = std::max(last_id, p.id+1);
   }
 
   preds = std::vector<Predicate>(
-    distance(first_id, last_id),
+    distance(first_id ? first_id : Pid::lowest(), last_id),
     Predicate{Pid::invalid(), {}, 0, {}});
   for (auto& p : ps) {
     const auto i = distance(first_id, p.id);
@@ -69,8 +73,8 @@ std::string Inventory::serialize() const {
   using namespace serialize;
   put(out, preds.size());
   for (const auto& p : preds) {
+    put(out, p.id);
     if (p.id) {
-      put(out, p.id);
       put(out, p.name);
       put(out, p.version);
       put(out, *p.typechecker);
@@ -89,17 +93,18 @@ Inventory Inventory::deserialize(folly::ByteRange bytes) {
   for (size_t i = 0; i < count; i++) {
     Predicate p;
     get(in, p.id);
-    get(in, p.name);
-    get(in, p.version);
-    p.typechecker = std::make_shared<Subroutine>();
-    p.traverser = std::make_shared<Subroutine>();
-    serialize::get(in, *p.typechecker);
-    serialize::get(in, *p.traverser);
-    preds.push_back(std::move(p));
+    if (p.id) {
+      get(in, p.name);
+      get(in, p.version);
+      p.typechecker = std::make_shared<Subroutine>();
+      p.traverser = std::make_shared<Subroutine>();
+      serialize::get(in, *p.typechecker);
+      serialize::get(in, *p.traverser);
+      preds.push_back(std::move(p));
+    }
   }
   return Inventory(std::move(preds));
 }
-
 }
 }
 }
