@@ -81,7 +81,6 @@ import Glean.Glass.SymbolId.Java ({- instances -})
 import Glean.Glass.SymbolId.LSIF ({- instances -})
 import Glean.Glass.SymbolId.Pp ({- instances -})
 import Glean.Glass.SymbolId.Python ({- instances -})
-import Glean.Glass.SymbolId.Rust ({- instances -})
 import Glean.Glass.SymbolId.Thrift ({- instances -})
 
 import qualified Glean.Glass.SymbolId.Cxx as Cxx
@@ -263,7 +262,6 @@ instance Symbol Code.Entity where
     Code.Entity_hs x -> toSymbolWithPath x p
     Code.Entity_java x -> toSymbolWithPath x p
     Code.Entity_pp x -> toSymbolWithPath x p
-    Code.Entity_rust x -> toSymbolWithPath x p
     Code.Entity_thrift (Thrift.Entity_decl x) -> toSymbolWithPath x p
     Code.Entity_lsif ent -> case ent of -- enumerate all variants for lsif
       Lsif.Entity_erlang se -> toSymbolWithPath se p
@@ -332,7 +330,6 @@ instance ToQName Code.Entity where
     Code.Entity_pp x -> toQName x
     Code.Entity_erlang x -> toQName x
     Code.Entity_java x -> toQName x
-    Code.Entity_rust x -> toQName x
     Code.Entity_thrift (Thrift.Entity_decl x) -> toQName x
     Code.Entity_lsif se -> case se of -- enumerate all cases for lsif
       Lsif.Entity_erlang x -> toQName x
