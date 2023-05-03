@@ -8,6 +8,7 @@
 
 package glean.lang.kotlin.indexer
 
+import glean.lang.kotlin.indexer.glean_utils.buildMethodDeclaration
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtNamedFunction
@@ -32,6 +33,7 @@ class KotlinIndexerTreeVisitor(
   }
 
   override fun visitNamedFunction(function: KtNamedFunction) {
+    indexContext.addMethods(buildMethodDeclaration(function, bindingContext))
     super.visitNamedFunction(function)
   }
 }

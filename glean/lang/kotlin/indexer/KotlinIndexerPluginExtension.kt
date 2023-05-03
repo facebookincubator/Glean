@@ -39,16 +39,13 @@ class KotlinIndexerPluginExtension(
     if (files.isEmpty()) {
       return null
     }
-    files as ArrayList<KtFile>
 
     val context = KotlinIndexContext()
-    for (i in files.indices) {
-      // Filtering out files that have already been generated
-      val oldFile = files[i]
+    for (file in files) {
 
       // Replace text and create new file
       val visitor =
-          KotlinIndexerTreeVisitor(oldFile, messageCollector, bindingTrace.bindingContext, context)
+          KotlinIndexerTreeVisitor(file, messageCollector, bindingTrace.bindingContext, context)
       visitor.buildResult()
     }
 
