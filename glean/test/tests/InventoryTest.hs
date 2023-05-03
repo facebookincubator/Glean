@@ -10,39 +10,75 @@ module InventoryTest
   ( main
   ) where
 
+import Control.Concurrent.Async ( forConcurrently )
 import qualified Data.Map as Map
 import Test.HUnit
 
 import TestRunner
+import Util.IO (listDirectoryRecursive)
 
 import Glean.Database.Config
 import Glean.Database.Schema
 import Glean.Database.Schema.Types
 import Glean.Init
+import Glean.Internal.Types (storedSchema_predicateIds)
 import Glean.RTS.Foreign.Inventory (Inventory)
 import qualified Glean.RTS.Foreign.Inventory as Inventory
-import Glean.Internal.Types
 
-serializeTest :: Inventory -> Test
-serializeTest inventory = TestCase $ assertBool "roundtrip" $
+serializeTest :: Inventory -> IO ()
+serializeTest inventory = assertBool "roundtrip" $
   Inventory.deserialize (Inventory.serialize inventory) == inventory
+
+mkSchema :: SchemaIndex -> IO DbSchema
+mkSchema schemaIndex =
+  newDbSchema Nothing schemaIndex LatestSchemaAll readWriteContent
 
 main :: IO ()
 main = withUnitTest $ do
   schema <- parseSchemaDir schemaSourceDir
-  dbSchema <- newDbSchema Nothing schema LatestSchemaAll readWriteContent
-  let inventory = schemaInventory dbSchema
-
-      -- inventory serialization/deserialization should work if there
-      -- are gaps in the Pid range.
-      stored = toStoredSchema dbSchema
-      pids = storedSchema_predicateIds stored
-      newStored = stored { storedSchema_predicateIds = Map.mapKeys (*2) pids }
-
-  newDbSchema <- fromStoredSchema Nothing newStored readWriteContent
-  let newInventory = schemaInventory newDbSchema
 
   testRunner $ TestList
-    [ TestLabel "serialize" $ serializeTest inventory
-    , TestLabel "serializeDeleted" $ serializeTest newInventory
+    [ TestLabel "serialize" $ TestCase $ do
+        inventory <- schemaInventory <$> mkSchema schema
+        serializeTest inventory
+    , TestLabel "serializeDeleted" $ TestCase $ do
+        dbSchema <- mkSchema schema
+        let -- inventory serialization/deserialization should work if there
+            -- are gaps in the Pid range.
+            stored = toStoredSchema dbSchema
+            pids = storedSchema_predicateIds stored
+            newStored = stored {
+              storedSchema_predicateIds = Map.mapKeys (*2) pids
+              }
+        newDbSchema <- fromStoredSchema Nothing newStored readWriteContent
+        serializeTest (schemaInventory newDbSchema)
+    , TestLabel "determinism" $ TestList
+      [ TestLabel "permuted schema files" $
+          deterministicOnFilesTest schemaSourceDir
+      ]
     ]
+
+deterministicOnFilesTest :: FilePath -> Test
+deterministicOnFilesTest schemaSourceDir = TestCase $ do
+  files <- listDirectoryRecursive schemaSourceDir
+  permutedFiles <- mapM catSchemaFiles (permuteList files)
+  schemas <-
+    mapM ( either error mkSchema . processOneSchema mempty) permutedFiles
+  testDeterminism schemas
+
+--------------------------------------------------------------------------------
+
+testDeterminism :: [DbSchema] -> IO ()
+testDeterminism permutations = do
+  assertBool "Test input is empty or a singleton" (length permutations > 1)
+  inventories <- forConcurrently permutations $ \s -> do
+    let i = schemaInventory s
+    let !serial = Inventory.serialize i
+    return (serial, s)
+  let unique = Map.fromList inventories
+      assertMsg = "Inventory is not deterministic: " <> show (length unique)
+
+  assertBool assertMsg (length unique == 1)
+
+permuteList :: [a] -> [[a]]
+permuteList list = [list, reverse list]
