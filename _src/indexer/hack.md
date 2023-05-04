@@ -47,7 +47,6 @@ hh_server DIR --write-symbol-info JSON \
   --config lazy_decl=true \
   --config lazy_parse=true \
   --config lazy_init2=true \
-  --config enable_enum_classes=true \
   --config enable_enum_supertyping=true
 ```
 
