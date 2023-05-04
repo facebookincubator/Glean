@@ -206,7 +206,6 @@ entityLanguage e = case e of
   Code.Entity_java{} -> Language_Java
   Code.Entity_pp{} -> Language_PreProcessor
   Code.Entity_python{} -> Language_Python
-  Code.Entity_rust{} -> Language_Rust
   Code.Entity_thrift{} -> Language_Thrift
   Code.Entity_buck{} -> Language_Buck
   Code.Entity_erlang{} -> Language_Erlang

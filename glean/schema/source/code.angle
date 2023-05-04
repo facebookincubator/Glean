@@ -12,7 +12,6 @@ import code.java.5
 import code.lsif.2
 import code.pp.1
 import code.python.1
-import code.rust.1
 import code.thrift.5
 import codemarkup.types.1
 
@@ -25,7 +24,6 @@ type Entity =
     python : code.python.Entity |
     hack : code.hack.Entity |
     flow : code.flow.Entity |
-    rust : code.rust.Entity |
     thrift : code.thrift.Entity |
     buck : code.buck.Entity |
     erlang : code.erlang.Entity |
@@ -57,7 +55,6 @@ predicate EntityLanguage:
     ( { python = _ } = Entity; Python = Language ) |
     ( { hack = _ } = Entity; Hack = Language ) |
     ( { flow = _ } = Entity; JavaScript = Language ) |
-    ( { rust = _ } = Entity; Rust = Language ) |
     ( { thrift = _ } = Entity; Thrift = Language ) |
     ( { buck = _ } = Entity; Buck = Language ) |
     ( { erlang = _ } = Entity; Erlang = Language ) |
@@ -78,7 +75,6 @@ predicate EntityLanguageLSIF:
     ( { kotlin = _ } = LSIF; Kotlin = Language ) |
     ( { ocaml = _ } = LSIF; OCaml = Language ) |
     ( { python = _ } = LSIF; Python = Language ) |
-    ( { rust = _ } = LSIF; Rust = Language ) |
     ( { scala = _ } = LSIF; Scala = Language ) |
     ( { swift = _ } = LSIF; Swift = Language ) |
     ( { typescript = _ } = LSIF; TypeScript = Language );

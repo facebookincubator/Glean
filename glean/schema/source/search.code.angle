@@ -15,7 +15,6 @@ import hs.2
 import lsif.2
 import pp1.1
 import python.3
-import rust.1
 import search.cxx.5
 import search.erlang.4
 import search.flow.1
@@ -45,7 +44,6 @@ predicate SearchByNameAndLanguage:
     ( PreProcessor = Language; PpSearchByName { Name, Entity } ) |
     ( Haskell = Language; HsSearchByName { Name, Entity } ) |
     ( Erlang = Language; ErlangSearchByName { Name, Entity } ) |
-    ( Rust = Language; RustSearchByName { Name, Entity } ) |
     ( Thrift = Language; ThriftSearchByName { Name, Entity } );
     code.EntityLanguage { Entity, Language }; # double check the entity lang
 
@@ -64,7 +62,6 @@ predicate SearchByLowerCaseNameAndLanguage:
     ( PreProcessor = Language; PpSearchByLowerCaseName { Name, Entity } ) |
     ( Haskell = Language; HsSearchByLowerCaseName { Name, Entity } ) |
     ( Erlang = Language; ErlangSearchByLowerCaseName { Name, Entity } ) |
-    ( Rust = Language; RustSearchByLowerCaseName { Name, Entity } ) |
     ( Thrift = Language; ThriftSearchByLowerCaseName { Name, Entity } );
     code.EntityLanguage { Entity, Language }; # double check the entity lang
 
@@ -515,23 +512,5 @@ predicate LsifSearchByLowerCaseName:
   { Name, { lsif = Entity } } where
   lsif.NameLowerCase { Name, NameCase };
   lsif.SearchByName { NameCase, Entity }
-
-predicate RustSearchByName:
-  {
-    name: string,
-    entity: code.Entity
-  }
-  { NameStr, { rust = { definition = Entity } } } where
-    Name = rust.Name NameStr;
-    rust.SearchByName { Name, Entity }
-
-predicate RustSearchByLowerCaseName:
-  {
-    name: string,
-    entity: code.Entity
-  }
-  { Name, { rust = { definition = Entity } } } where
-    rust.NameLowerCase { Name, NameCase };
-    rust.SearchByName { NameCase, Entity }
 
 }

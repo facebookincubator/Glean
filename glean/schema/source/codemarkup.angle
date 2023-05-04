@@ -13,7 +13,6 @@ import codemarkup.java.1
 import codemarkup.lsif.3
 import codemarkup.pp.3
 import codemarkup.python.2
-import codemarkup.rust.2
 import codemarkup.thrift.4
 import codemarkup.types.1
 import cxx1.5
@@ -124,8 +123,6 @@ predicate ResolveLocation:
      { pp = E } = Entity) |
     (codemarkup.haskell.HaskellResolveLocation { Location, E };
      { hs = E } = Entity) |
-    (codemarkup.rust.RustResolveLocation { Location, E };
-     { rust = E } = Entity) |
     (codemarkup.buck.BuckResolveLocation { Location, E };
      { buck = E } = Entity) |
     (codemarkup.thrift.ThriftResolveLocation { Location, E };
@@ -153,8 +150,6 @@ predicate EntityLocation:
      { pp = E } = Entity) |
     (codemarkup.haskell.HaskellEntityLocation { E, Location };
      { hs = E } = Entity) |
-    (codemarkup.rust.RustEntityLocation { E, Location };
-     { rust = E } = Entity) |
     (codemarkup.buck.BuckEntityLocation { E, Location };
      { buck = E } = Entity) |
     (codemarkup.thrift.ThriftEntityLocation { E, Location };
@@ -186,8 +181,6 @@ predicate FileEntityXRefLocations:
      { pp = E } = Entity) |
     (codemarkup.haskell.HaskellFileEntityXRefLocations { File, XRef, E };
      { hs = E } = Entity) |
-    (codemarkup.rust.RustFileEntityXRefLocations { File, XRef, E };
-     { rust = E } = Entity) |
     (codemarkup.buck.BuckFileEntityXRefLocations { File, XRef, E };
      { buck = E } = Entity) |
     (codemarkup.thrift.ThriftFileEntityXRefLocations { File, XRef, E };
@@ -218,8 +211,6 @@ predicate FileEntityXRefSpans:
        { cxx = E } = Entity) |
       (codemarkup.haskell.HaskellFileEntityXRefLocations { File, XRef, E };
        { hs = E } = Entity) |
-      (codemarkup.rust.RustFileEntityXRefLocations { File, XRef, E };
-       { rust = E } = Entity) |
       (codemarkup.buck.BuckFileEntityXRefLocations { File, XRef, E };
        { buck = E } = Entity) |
       (codemarkup.thrift.ThriftFileEntityXRefLocations { File, XRef, E };
@@ -281,8 +272,6 @@ predicate EntityReferences:
     (codemarkup.cxx.CxxEntityUses { E, File, Span }; { cxx = E } = Entity) |
     (codemarkup.haskell.HaskellEntityUses { E, File, Span };
      { hs = E } = Entity) |
-    (codemarkup.rust.RustEntityUses { E, File, Span };
-     { rust = E } = Entity) |
     (codemarkup.buck.BuckEntityUses { E, File, Span };
      { buck = E } = Entity) |
     (codemarkup.erlang.ErlangEntityUses { E, File, Span };
