@@ -1199,7 +1199,6 @@ library glass-lib
         Glean.Glass.SymbolId.LSIF
         Glean.Glass.SymbolId.Pp
         Glean.Glass.SymbolId.Python
-        Glean.Glass.SymbolId.Rust
         Glean.Glass.SymbolId.Thrift
         Glean.Glass.SymbolKind
         Glean.Glass.SymbolMap
@@ -2025,9 +2024,10 @@ test-suite inventory
     main-is: InventoryTest.hs
     ghc-options: -main-is InventoryTest
     build-depends:
-        glean:stubs,
         glean:core,
-        glean:db
+        glean:db,
+        glean:if-internal-hs,
+        glean:stubs
 
 test-suite external-controller
     import: test
