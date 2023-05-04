@@ -1199,7 +1199,6 @@ library glass-lib
         Glean.Glass.SymbolId.LSIF
         Glean.Glass.SymbolId.Pp
         Glean.Glass.SymbolId.Python
-        Glean.Glass.SymbolId.Rust
         Glean.Glass.SymbolId.Thrift
         Glean.Glass.SymbolKind
         Glean.Glass.SymbolMap
