@@ -2024,9 +2024,10 @@ test-suite inventory
     main-is: InventoryTest.hs
     ghc-options: -main-is InventoryTest
     build-depends:
-        glean:stubs,
         glean:core,
-        glean:db
+        glean:db,
+        glean:if-internal-hs,
+        glean:stubs
 
 test-suite external-controller
     import: test
