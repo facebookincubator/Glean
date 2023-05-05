@@ -1115,6 +1115,7 @@ library lsif
     exposed-modules:
         Data.LSIF.Angle
         Data.LSIF.Env
+        Data.LSIF.Gen
         Data.LSIF.JSON
         Data.LSIF.Moniker
         Data.LSIF.Types
