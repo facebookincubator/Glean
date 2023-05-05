@@ -128,7 +128,8 @@ data FileInfo = FileInfo {
 
 -- | Get file metadata. Throw if we have no src.File
 -- This is the first point we might encounter an unindexed file path
--- Note: we may not have lineoffsets, but this is not necessarily fatal
+-- Note: we may not have lineoffsets, but this is not necessarily fatal as
+-- they are only needed for bytespan conversions
 getFileAndLines
   :: Glean.Repo -> GleanPath -> Glean.RepoHaxl u w (Either ErrorTy FileInfo)
 getFileAndLines fileRepo path = do

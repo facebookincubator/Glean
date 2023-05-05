@@ -930,7 +930,7 @@ fetchSymbolsAndAttributes latest req opts be snapshotbe mlang =
         Just (FeatureFlags (Just True)) -> True
         _ -> False
 
--- Find all references and definitions in the file
+-- Find all references and definitions in a file that might be in a set of repos
 fetchDocumentSymbols
   :: Glean.Backend b
   => FileReference
@@ -942,10 +942,12 @@ fetchDocumentSymbols
 
 fetchDocumentSymbols (FileReference scsrepo path) mlimit includeRefs b mlang =
   backendRunHaxl b $ do
+    --
+    -- we pick the first db in the list that has the full FileInfo{..}
+    --
     efile <- firstOrErrors $ queryEachRepo $ do
       repo <- Glean.haxlRepo
       getFileAndLines repo path
-
     case efile of
       Left err ->
         return $ (, Just (logError err)) $
@@ -975,7 +977,6 @@ fetchDocumentSymbols (FileReference scsrepo path) mlimit includeRefs b mlang =
       let revision = getRepoHash fileRepo
 
       return (DocumentSymbols {..}, merr)
-
 
 -- | Wrapper for tracking symbol/entity pairs through processing
 data DocumentSymbols = DocumentSymbols
@@ -1279,10 +1280,10 @@ withLogDB
   -> IO res
 withLogDB cmd env req fetch mlanguage run =
   withLog cmd env req $ \log -> do
-    db <- fetch
-    (res,merr) <- run db mlanguage
-    let err = fmap (<> logError db) merr
-    return (res, log <> logRepo db, err)
+    dbs <- fetch
+    (res,merr) <- run dbs mlanguage
+    let err = fmap (<> logError dbs) merr
+    return (res, log <> logRepo dbs, err)
 
 withGleanDBs
   :: (LogError a, LogRequest a, LogResult b)
