@@ -9,9 +9,13 @@
 {-# LANGUAGE CPP, TemplateHaskell #-}
 module Glean.Init (
     withUnitTest,
-    withGflags,
     withOptions,
+    withOptionsGen,
     withUnitTestOptions,
+    InitOptions,
+    parserInfo,
+    setArgs,
+    setPrefs,
   ) where
 
 import Control.Exception
@@ -59,24 +63,39 @@ follyUninit = return ()
 withUnitTest :: IO () -> IO ()
 withUnitTest = id
 
-withGflags :: [String] -> IO a -> IO a
-withGflags args = bracket_ (follyInit args) follyUninit
-
 withOptions :: ParserInfo a -> (a -> IO b) -> IO b
-withOptions = withParser Sys.getArgs
+withOptions p f = withOptionsGen (parserInfo p) f
+
+data InitOptions a = InitOptions
+  { initArgs :: Maybe [String] -- otherwise use getArgs
+  , initPrefs :: PrefsMod
+  , initParser :: ParserInfo a
+  }
+
+parserInfo :: ParserInfo a -> InitOptions a
+parserInfo p =
+  InitOptions { initArgs = Nothing, initPrefs = idm, initParser = p }
+
+type InitSpec a = InitOptions a -> InitOptions a
+
+setPrefs :: PrefsMod -> InitSpec a
+setPrefs m opts = opts { initPrefs = m }
+
+setArgs :: [String] -> InitSpec a
+setArgs a opts = opts { initArgs = Just a }
 
 withUnitTestOptions :: ParserInfo a -> (TestAction -> a -> IO b) -> IO b
 withUnitTestOptions opts f = withOptions opts $ f TestAction
 
-withParser :: IO [String] -> ParserInfo a -> (a -> IO b) -> IO b
-withParser argsIO p act = do
-  args <- argsIO
-  r <- tryAll $ partialParse defaultPrefs p' args
+withOptionsGen :: InitOptions a -> (a -> IO b) -> IO b
+withOptionsGen InitOptions{..} act = do
+  args <- maybe Sys.getArgs pure initArgs
+  r <- tryAll $ partialParse (prefs initPrefs) p' args
   case r of
     Left e -> run (fixHelp args) $ throwIO e
     Right (opts, fbArgs) -> run (fixHelp fbArgs) $ act opts
   where
-    p' = p { infoParser = fbhelper <*> infoParser p }
+    p' = initParser { infoParser = fbhelper <*> infoParser initParser }
     run args act = bracket_ (follyInit args) follyUninit act
     -- Because the C++ flag help is usually a huge amount of spew, we want to
     -- reserve --help for the Haskell options helper, and provide a --help-all

@@ -28,9 +28,7 @@ import qualified Data.Text as Text
 import Options.Applicative
 import Options.Applicative.Help (vcat)
 import System.IO
-import System.Environment
 
-import Util.Control.Exception
 import Util.EventBase
 import Util.IO
 import Util.OptParse
@@ -142,19 +140,15 @@ options = info (((,) <$> parser <*> configOptions) <**> helper <**> helpAll)
 
 
 main :: IO ()
-main = do
-  ((Config{..}, cfgOpts), leftOverArgs) <- do
-    args <- getArgs
-    r <- tryAll $ partialParse (prefs subparserInline) options args
-    case r of
-      Left e -> withGflags ["--help" | "--help-all" <- args] $ throwIO e
-      Right r -> return r
-
+main =
+  let
+    spec = setPrefs subparserInline $ parserInfo options
+  in
+  withOptionsGen spec $ \(Config{..}, cfgOpts) ->
+  withEventBaseDataplane $ \evb ->
+  withConfigProvider cfgOpts $ \cfgAPI ->
   case cfgCommand of
     PluginCommand c ->
-      withGflags (argTransform c leftOverArgs) $
-      withEventBaseDataplane $ \evb ->
-      withConfigProvider cfgOpts $ \cfgAPI ->
       withService evb cfgAPI (withRemoteBackups evb cfgService) c
 
 withRemoteBackups :: EventBaseDataplane -> Glean.Service -> Glean.Service

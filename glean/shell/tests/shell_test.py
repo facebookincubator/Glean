@@ -115,7 +115,7 @@ class GleanShellReload(GleanShellTest):
                 + "}"
                 + "schema all.2 : example.2 {}"
             )
-        self.shellCommand(":reload", "facts")
+        self.shellCommand(":reload", "facts>")
 
         # check that we can query for the new derived predicate
         output = self.shellCommand("example.Foo.2 _", "facts>")
