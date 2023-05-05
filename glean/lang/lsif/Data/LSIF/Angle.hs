@@ -30,11 +30,7 @@ import Control.Monad.Extra ( concatMapM )
 import Control.Monad.State.Strict
 import Data.Aeson
 import Data.Aeson.Types ( Pair )
-import Data.List
-import Data.List.Split
 import Data.Maybe ( catMaybes, fromMaybe, listToMaybe, mapMaybe )
-import Data.HashMap.Strict ( HashMap )
-import qualified Data.HashMap.Strict as HashMap
 import qualified Data.IntMap.Strict as IMap
 import Data.Text ( Text )
 import qualified Data.Text as Text
@@ -44,49 +40,8 @@ import qualified Data.Vector.Unboxed as U
 import Data.LSIF.Types
 import Data.LSIF.Moniker
 import Data.LSIF.Env
+import Data.LSIF.Gen
 import Data.LSIF.JSON ({- instances -})
-
--- | Given a hashmap keyed by predicate names, emit an array of json pred/facts
--- with one entry per predicate. In case we have very large predicats, we chunk
--- them into smaller top level groups, which makes memory mgmt a bit easier
-generateJSON :: HashMap Text [Value] -> [Value]
-generateJSON hm = concat $ mapMaybe (\k -> gen k <$> HashMap.lookup k hm) keys
-  where
-    gen k = emitPredicate . Predicate k
-    keys = sortOn dependencyOrder (HashMap.keys hm)
-
--- | Try to be slightly robust about which version of the lsif facts we generate
-lsifSchemaVersion :: Int
-lsifSchemaVersion = 2
-
-emitPredicate :: Predicate -> [Value]
-emitPredicate (Predicate name facts) =
-  [ object
-    [ "predicate" .= text (name <> "." <> Text.pack (show lsifSchemaVersion))
-    , "facts" .= Array (V.fromList chunk)
-    ]
-  | chunk <- chunksOf 10000 facts
-  ]
-
-dependencyOrder :: Text -> Int
-dependencyOrder p = case p of
-  "lsif.Document" -> 0
-  "lsif.Project" -> 0
-  "lsif.Range" -> 1
-  "lsif.HoverContent" -> 2
-  "lsif.Moniker" -> 3
-  -- these refer to Range
-  "lsif.Definition" -> 10
-  "lsif.Declaration" -> 11
-  -- these refer to Declaration, Range
-  "lsif.Reference" -> 12
-  "lsif.DefinitionHover" ->  13
-  "lsif.DefinitionUse" -> 14
-  "lsif.ProjectDocument" -> 15
-  "lsif.DefinitionMoniker" ->  16
-  "lsif.DefinitionKind" ->  17
-  -- everything else, in the middle
-  _ -> 5
 
 -- Drop projectRoot prefix from URI to yield repo-relative paths for Glean
 -- Some indexers generate uris outside of the repo. In those cases we
@@ -476,11 +431,11 @@ generateMonikerFacts :: Id -> Id -> Parse (Maybe Value)
 generateMonikerFacts fileId defRangeId = do
   mId <- withResultSet defRangeId getMonikerId (pure . Just)
   pure $ pure $ object $ pure $ key $
-    [ "defn" .= (object . pure . key)
+    ( "defn" .= (object . pure . key)
         [ "file" .= fileId
         , "range" .= defRangeId
         ]
-    ] ++
+    ) :
     (case mId of
         Nothing -> []
         Just monikerId -> [ "moniker" .= monikerId ]
@@ -521,40 +476,6 @@ withResultSet id f g = do
 --
 -- JSON-generating utilities
 --
-
-predicate :: Applicative f => Text -> [Pair] -> f [Predicate]
-predicate name facts = pure [Predicate name [object [key facts]]]
-
-predicateId :: Applicative f => Text -> Id -> [Pair] -> f [Predicate]
-predicateId name id_ facts =
-  pure [Predicate name [object [factId id_, key facts ]]]
-
--- LSIF ranges are 0-indexed, exclusive of end col.
--- We want to store as Glean ranges, 1-indexed, inclusive of end col.
-toRange :: Range -> Value
-toRange Range{..} =
-  let colBegin = character start + 1
-       -- n.b. end col should be _inclusive_ of end, and >= col start
-      colEnd = max colBegin ((character end + 1) - 1)
-  in
-    object [
-      "lineBegin" .= (line start + 1),
-      "columnBegin" .= colBegin,
-      "lineEnd" .= (line end + 1),
-      "columnEnd" .= colEnd
-    ]
-
-key :: KeyValue kv => [Pair] -> kv
-key xs = "key" .= object xs
-
-factId :: KeyValue kv => Id -> kv
-factId (Id id_) = "id" .= id_
-
-string :: Text -> Value
-string s = object [ "key" .= s ]
-
-text :: Text -> Value
-text = String
 
 -- | Identifier text string
 toName :: Tag -> Value

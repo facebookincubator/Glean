@@ -6,7 +6,6 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE ApplicativeDo #-}
 module Glean.Indexer.LSIF (
     indexer,
     derive
@@ -31,11 +30,10 @@ newtype LSIF = LSIF
   }
 
 options :: Parser LSIF
-options = do
-  lsifIndexFile <- maybeStrOption (
+options =
+  LSIF <$> maybeStrOption (
     long "input" <>
     help "Optional path to a specific lsif index file")
-  return LSIF{..}
 
 -- | An indexer that just slurps an existing LSIF file. Usage:
 --

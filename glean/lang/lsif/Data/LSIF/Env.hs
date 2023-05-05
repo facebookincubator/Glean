@@ -48,25 +48,18 @@ module Data.LSIF.Env (
 
     -- running a parser and getting results
     Parse,
-    Predicate(..),
-    PredicateMap,
-    insertPredicateMap
 
   ) where
 
 import Control.Monad.State.Strict
-import Data.Aeson
-import Data.HashMap.Strict ( HashMap )
+import Data.Int ( Int64 )
 import Data.IntMap ( IntMap )
-import Data.List ( foldl' )
 import Data.Text ( Text )
-import qualified Data.HashMap.Strict as HashMap
 import qualified Data.IntMap.Strict as IMap
 import qualified Data.Vector as V
-import Data.Int ( Int64 )
 import qualified Data.Vector.Unboxed as U
 
-import Data.LSIF.Types
+import Data.LSIF.Gen ( SymbolKind, Id(..) )
 
 -- Environment used to track things when we analyze the LSIF graph.
 -- We can mostly process LSIF linearly, but for xrefs and related predicates
@@ -121,9 +114,6 @@ data Env =
 
   }
 
-
--- | Tracking output by predicate
-type PredicateMap = HashMap Text [Value]
 
 -- | Run the fact generate with state Env
 type Parse a = forall m . Monad m => StateT Env m a
@@ -259,10 +249,3 @@ lookupIMapEnv f (Id n) = do
   imap <- f <$> get
   pure (IMap.lookup (fromIntegral n) imap)
 
--- A predicate "block", containing multiple facts
-data Predicate = Predicate !Text [Value]
-
-insertPredicateMap :: PredicateMap -> [Predicate] -> PredicateMap
-insertPredicateMap = foldl' ins
-  where
-    ins hm (Predicate name vs) = HashMap.insertWith (++) name vs hm
