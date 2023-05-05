@@ -72,7 +72,6 @@ indexer = Indexer {
           , "lazy_parse=true"
           , "lazy_init2=true"
           , "symbol_write_sym_hash_out=true"
-          , "enable_enum_supertyping=true"
           ] <>
           (case hackOnly of
             Nothing -> []
