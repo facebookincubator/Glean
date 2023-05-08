@@ -1958,7 +1958,8 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
    * ObjC methods *
    ****************/
 
-  Fact<Cxx::ObjcSelector> objcSelector(const clang::Selector& sel) {
+  std::pair<Fact<Cxx::ObjcSelector>, std::vector<std::string>> objcSelector(
+      const clang::Selector& sel) {
     std::vector<std::string> sels;
     if (sel.isUnarySelector()) {
       // It seems that for unary selectors (i.e., selectors which are just a
@@ -1966,11 +1967,12 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       sels.push_back(sel.getAsString());
     } else {
       const size_t n = sel.getNumArgs();
+      sels.reserve(n);
       for (size_t i = 0; i < n; ++i) {
-        sels.push_back(static_cast<std::string>(sel.getNameForSlot(i)));
+        sels.push_back(sel.getNameForSlot(i).str());
       }
     }
-    return db.fact<Cxx::ObjcSelector>(sels);
+    return {db.fact<Cxx::ObjcSelector>(sels), std::move(sels)};
   }
 
   struct ObjcMethodDecl : Declare<ObjcMethodDecl> {
@@ -1990,7 +1992,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         return ObjcMethodDecl
           { {}
           , visitor.db.fact<Cxx::ObjcMethodDeclaration>(
-              visitor.objcSelector(d->getSelector()),
+              visitor.objcSelector(d->getSelector()).first,
               container->id,
               visitor.signature(d->getReturnType(), d->parameters()),
               d->isInstanceMethod(),
@@ -2145,11 +2147,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       ? xref.target.value()
       : unknownTarget(xref.decl);
     const auto wrapped = usingTracker.retarget(xref.primary, raw);
-    folly::Optional<clang::SourceLocation> loc;
-    if (raw == wrapped) {
-      loc = xref.decl->getBeginLoc();
-    }
-    db.xref(range, loc, wrapped);
+    db.xref(range, wrapped, xref.decl->getLocation(), raw == wrapped);
   }
 
   Cxx::XRefTarget unknownTarget(const clang::Decl* decl) {
@@ -2553,12 +2551,12 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     return true;
   }
 
-  bool VisitObjCSelectorExpr(const clang::ObjCSelectorExpr *expr) {
+  bool VisitObjCSelectorExpr(const clang::ObjCSelectorExpr* expr) {
+    auto [fact, selectors] = objcSelector(expr->getSelector());
     db.xref(
-      expr->getSourceRange(),
-      folly::none,
-      Cxx::XRefTarget::objcSelector(objcSelector(expr->getSelector()))
-    );
+        expr->getSourceRange(),
+        Cxx::XRefTarget::objcSelector(fact),
+        std::move(selectors));
     return true;
   }
 

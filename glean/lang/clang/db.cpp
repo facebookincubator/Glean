@@ -49,7 +49,7 @@ std::filesystem::path subpath(
 // 4. Name is relative, but is a symlink to a file *outside* root. In
 //    this case we want to just keep the original relative path.
 //
-Fact<Src::File> ClangDB::fileFromEntry(
+std::pair<Fact<Src::File>, std::filesystem::path> ClangDB::fileFromEntry(
     const clang::FileEntry& entry) {
   auto path = goodPath(root, subpath(subdir, entry.getName().str()));
   auto canon = goodPath(root,
@@ -96,7 +96,7 @@ Fact<Src::File> ClangDB::fileFromEntry(
     LOG(WARNING) << "couldn't get MemoryBuffer for " << path.native();
   }
 
-  return file;
+  return {file, std::move(path)};
 }
 
 void ClangDB::ppevent(
@@ -132,11 +132,12 @@ void ClangDB::enterFile(
     clang::SourceLocation loc, folly::Optional<Include> inc) {
   auto id = sourceManager().getFileID(loc);
   if (auto r = physicalFile(id)) {
-    file_data.push_back(FileData{id, r.value(), {}, {}, {}, folly::none});
-    files.insert({id, &file_data.back()});
+    auto& [file, path] = *r;
+    file_data.push_back({id, std::move(path), file, {}, {}, {}, {}, {}});
+    files.emplace(id, &file_data.back());
     if (inc && inc->entry != nullptr &&
           sourceManager().getFileEntryForID(id) == inc->entry) {
-      include(inc.value(), r.value(), id);
+      include(inc.value(), file, id);
     }
   }
 }
@@ -144,20 +145,47 @@ void ClangDB::enterFile(
 void ClangDB::skipFile(
     folly::Optional<Include> inc, const clang::FileEntry *entry) {
   if (inc && inc->entry != nullptr && inc->entry == entry) {
-    include(inc.value(), fileFromEntry(*entry), folly::none);
+    include(inc.value(), fileFromEntry(*entry).first, folly::none);
+  }
+}
+
+void ClangDB::FileData::xref(
+    Src::ByteSpan span,
+    Cxx::XRefTarget target,
+    CrossRef::SortID sort_id,
+    bool local) {
+  auto [iter, inserted] = xrefs.lookup.try_emplace(target);
+  auto& [_, spans] = *iter;
+  if (!inserted) {
+    spans->push_back(span);
+    return;
+  }
+  auto& xrefs_ = local ? xrefs.fixed : xrefs.variable;
+  xrefs_.push_back({target, std::move(sort_id), {span}});
+  spans = &xrefs_.back().spans;
+}
+
+void ClangDB::xref(
+    clang::SourceRange r,
+    Cxx::XRefTarget target,
+    clang::SourceLocation loc,
+    bool fixed_candidate) {
+  if (auto range = srcRange(r); range.file) {
+    auto target_range = srcRange(loc);
+    range.file->xref(
+        range.span,
+        std::move(target),
+        target_range,
+        fixed_candidate && target_range.file == range.file);
   }
 }
 
 void ClangDB::xref(
     clang::SourceRange r,
-    folly::Optional<clang::SourceLocation> loc,
-    Cxx::XRefTarget target) {
-  auto range = srcRange(r);
-  if (range.file) {
-    range.file->xrefs.push_back(CrossRef{
-      range.span,
-      loc && srcRange(loc.value()).file == range.file,
-      target});
+    Cxx::XRefTarget target,
+    std::vector<std::string> sels) {
+  if (auto range = srcRange(r); range.file) {
+    range.file->xref(range.span, std::move(target), std::move(sels), true);
   }
 }
 
@@ -241,9 +269,7 @@ ClangDB::SourceRange ClangDB::immediateSrcRange(
 
 namespace {
 
-Src::ByteSpans byteSpans(std::vector<Src::ByteSpan> v) {
-  std::sort(v.begin(), v.end());
-  v.erase(std::unique(v.begin(), v.end()), v.end());
+Src::ByteSpans byteSpans(const std::vector<Src::ByteSpan>& v) {
   std::vector<Src::RelByteSpan> spans;
   spans.reserve(v.size());
   size_t offset = 0;
@@ -255,30 +281,49 @@ Src::ByteSpans byteSpans(std::vector<Src::ByteSpan> v) {
   return spans;
 }
 
-using RefMap = std::map<Cxx::XRefTarget, std::vector<Src::ByteSpan>>;
-
-std::vector<Cxx::FixedXRef> finishRefs(RefMap&& map) {
-  std::vector<Cxx::FixedXRef> refs;
-  refs.reserve(map.size());
-  for (auto& x : map) {
-    refs.push_back(Cxx::FixedXRef{
-      x.first,
-      byteSpans(std::move(x.second))});
+std::vector<Cxx::FixedXRef> finishRefs(std::deque<ClangDB::CrossRef>&& xrefs) {
+  for (auto& xref : xrefs) {
+    auto& spans = xref.spans;
+    std::sort(spans.begin(), spans.end());
+    spans.erase(std::unique(spans.begin(), spans.end()), spans.end());
   }
-  map.clear();
-  std::sort(refs.begin(), refs.end(),
-    [](const auto& x, const auto& y) { return x.ranges < y.ranges; });
+  std::stable_sort(
+      xrefs.begin(),
+      xrefs.end(),
+      [](const ClangDB::CrossRef& x, const ClangDB::CrossRef& y) {
+        if (x.spans != y.spans) {
+          return x.spans < y.spans;
+        }
+        if (x.sort_id.index() != y.sort_id.index()) {
+          return x.sort_id.index() < y.sort_id.index();
+        }
+        return folly::variant_match(
+            x.sort_id,
+            [&y_id = y.sort_id](const ClangDB::SourceRange& x) {
+              const auto& y = std::get<ClangDB::SourceRange>(y_id);
+              if (bool(x.file) != bool(y.file)) {
+                return bool(x.file) < bool(y.file);
+              }
+              return x.file && y.file && x.file->path != y.file->path
+                  ? x.file->path < y.file->path
+                  : x.span < y.span;
+            },
+            [&y_id = y.sort_id](const std::vector<std::string>& x) {
+              return x < std::get<std::vector<std::string>>(y_id);
+            });
+      });
+  std::vector<Cxx::FixedXRef> refs;
+  refs.reserve(xrefs.size());
+  for (auto& [target, _, spans] : xrefs) {
+    refs.push_back({std::move(target), byteSpans(spans)});
+  }
+  xrefs.clear();
   return refs;
 }
-
-
 }
 
 void ClangDB::finish() {
-  auto release = [](auto& vec) {
-    typename std::decay<decltype(vec)>::type tmp;
-    tmp.swap(vec);
-  };
+  auto release = [](auto& x) { auto tmp = std::move(x); };
 
   const auto main_id = sourceManager().getMainFileID();
   auto tunit = fact<Buck::TranslationUnit>(
@@ -291,20 +336,9 @@ void ClangDB::finish() {
 
   for (auto& file : folly::range(file_data.rbegin(), file_data.rend())) {
     auto& xrefs = file.xrefs;
-    if (!xrefs.empty()) {
-      RefMap locals;
-      RefMap externals;
-
-      for (const auto& xref : xrefs) {
-        if (xref.local) {
-          locals[xref.target].push_back(xref.span);
-        } else {
-          externals[xref.target].push_back(xref.span);
-        }
-      }
-
-      auto local_refs = finishRefs(std::move(locals));
-      auto external_refs = finishRefs(std::move(externals));
+    if (!xrefs.lookup.empty()) {
+      auto local_refs = finishRefs(std::move(xrefs.fixed));
+      auto external_refs = finishRefs(std::move(xrefs.variable));
 
       std::vector<Cxx::XRefTarget> external_targets;
       std::vector<Src::ByteSpans> external_spans;

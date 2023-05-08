@@ -70,31 +70,30 @@ public:
 
   // Files
 
-  Fact<Src::File> fileFromEntry(const clang::FileEntry& entry);
+  std::pair<Fact<Src::File>, std::filesystem::path> fileFromEntry(
+      const clang::FileEntry& entry);
 
   bool isPhysicalFile(clang::FileID id) {
     return sourceManager().getFileEntryForID(id);
   }
 
-  folly::Optional<Fact<Src::File>> physicalFile(clang::FileID id) {
-    folly::Optional<Fact<Src::File>> res = folly::none;
+  std::optional<std::pair<Fact<Src::File>, std::filesystem::path>> physicalFile(
+      clang::FileID id) {
+    std::optional<std::pair<Fact<Src::File>, std::filesystem::path>> res;
     if (auto data = folly::get_default(files, id, nullptr)) {
-      res = data->fact;
+      res = {data->fact, data->path};
     } else if (auto entry = sourceManager().getFileEntryForID(id)) {
       res = fileFromEntry(*entry);
     }
     if (res) {
-      batch.fact<Src::FileLanguage>(res.value(), getLanguage());
+      batch.fact<Src::FileLanguage>(res->first, getLanguage());
     }
     return res;
   }
 
   Fact<Src::File> file(clang::FileID id) {
-    if (auto x = physicalFile(id)) {
-      return x.value();
-    } else {
-      return batch.fact<Src::File>(std::string("<builtin>"));
-    }
+    auto x = physicalFile(id);
+    return x ? x->first : batch.fact<Src::File>(std::string("<builtin>"));
   }
 
   void IndexFailure(const clang::ASTContext& ctx) {
@@ -141,26 +140,42 @@ public:
 
   using PrePPEvent = std::variant<Cxx::PPEvent, PreInclude>;
 
-  struct CrossRef {
-    Src::ByteSpan span;
-    bool local;
-    Cxx::XRefTarget target;
-  };
-
-  struct FileData {
-    clang::FileID id;
-    Fact<Src::File> fact;
-    std::vector<std::pair<Src::ByteSpan, Cxx::Declaration>> declarations;
-    std::vector<PrePPEvent> events;
-    std::vector<CrossRef> xrefs;
-    folly::Optional<Fact<Cxx::Trace>> trace;
-    folly::Optional<Fact<Cxx::IncludeTree>> include_tree;
-  };
+  struct FileData;
 
   struct SourceRange {
     FileData *file;
     Src::ByteSpan span;
     Src::Range range;
+  };
+
+  struct CrossRef {
+    using SortID = std::variant<SourceRange, std::vector<std::string>>;
+    using Spans = std::vector<Src::ByteSpan>;
+
+    Cxx::XRefTarget target;
+    SortID sort_id;
+    Spans spans;
+  };
+
+  struct FileData {
+    void xref(
+        Src::ByteSpan span,
+        Cxx::XRefTarget target,
+        CrossRef::SortID sort_id,
+        bool local);
+
+    clang::FileID id;
+    std::filesystem::path path;
+    Fact<Src::File> fact;
+    std::vector<std::pair<Src::ByteSpan, Cxx::Declaration>> declarations;
+    std::vector<PrePPEvent> events;
+    struct {
+      std::deque<CrossRef> fixed;
+      std::deque<CrossRef> variable;
+      std::map<Cxx::XRefTarget, CrossRef::Spans*> lookup;
+    } xrefs;
+    folly::Optional<Fact<Cxx::Trace>> trace;
+    folly::Optional<Fact<Cxx::IncludeTree>> include_tree;
   };
 
   void ppevent(
@@ -181,15 +196,21 @@ public:
 
   void xref(
     clang::SourceRange range,
-    folly::Optional<clang::SourceLocation> loc,
-    Cxx::XRefTarget target);
+    Cxx::XRefTarget target,
+    clang::SourceLocation loc,
+    bool fixed_candidate);
+
+  void xref(
+    clang::SourceRange range,
+    Cxx::XRefTarget target,
+    std::vector<std::string> sels);
 
   // Locations
 
   Src::Loc srcLoc(clang::SourceLocation loc);
 
   template<typename T>
-  ClangDB::SourceRange srcRange(T x) {
+  SourceRange srcRange(T x) {
     return immediateSrcRange(sourceManager().getExpansionRange(x));
   }
   SourceRange immediateSrcRange(clang::CharSourceRange r);

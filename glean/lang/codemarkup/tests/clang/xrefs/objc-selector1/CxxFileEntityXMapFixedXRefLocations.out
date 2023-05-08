@@ -28,6 +28,13 @@
                   "ranges": [ { "offset": 325, "length": 1 } ]
                 },
                 {
+                  "target": { "objcSelector": { "key": [ "foo" ] } },
+                  "ranges": [
+                    { "offset": 376, "length": 14 },
+                    { "offset": 35, "length": 14 }
+                  ]
+                },
+                {
                   "target": {
                     "declaration": {
                       "variable": {
@@ -97,15 +104,10 @@
                   "ranges": [ { "offset": 397, "length": 13 } ]
                 }
               ],
-              "variable": [
-                [
-                  { "offset": 376, "length": 14 },
-                  { "offset": 35, "length": 14 }
-                ]
-              ]
+              "variable": [ ]
             }
           },
-          "externals": [ { "objcSelector": { "key": [ "foo" ] } } ]
+          "externals": [ ]
         }
       },
       "xref": {
@@ -209,6 +211,13 @@
                   "ranges": [ { "offset": 325, "length": 1 } ]
                 },
                 {
+                  "target": { "objcSelector": { "key": [ "foo" ] } },
+                  "ranges": [
+                    { "offset": 376, "length": 14 },
+                    { "offset": 35, "length": 14 }
+                  ]
+                },
+                {
                   "target": {
                     "declaration": {
                       "variable": {
@@ -278,15 +287,10 @@
                   "ranges": [ { "offset": 397, "length": 13 } ]
                 }
               ],
-              "variable": [
-                [
-                  { "offset": 376, "length": 14 },
-                  { "offset": 35, "length": 14 }
-                ]
-              ]
+              "variable": [ ]
             }
           },
-          "externals": [ { "objcSelector": { "key": [ "foo" ] } } ]
+          "externals": [ ]
         }
       },
       "xref": {
@@ -364,6 +368,13 @@
                   "ranges": [ { "offset": 325, "length": 1 } ]
                 },
                 {
+                  "target": { "objcSelector": { "key": [ "foo" ] } },
+                  "ranges": [
+                    { "offset": 376, "length": 14 },
+                    { "offset": 35, "length": 14 }
+                  ]
+                },
+                {
                   "target": {
                     "declaration": {
                       "variable": {
@@ -433,15 +444,10 @@
                   "ranges": [ { "offset": 397, "length": 13 } ]
                 }
               ],
-              "variable": [
-                [
-                  { "offset": 376, "length": 14 },
-                  { "offset": 35, "length": 14 }
-                ]
-              ]
+              "variable": [ ]
             }
           },
-          "externals": [ { "objcSelector": { "key": [ "foo" ] } } ]
+          "externals": [ ]
         }
       },
       "xref": {
