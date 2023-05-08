@@ -944,6 +944,7 @@ library indexers
         glean/lang/lsif/indexer
         glean/lang/scip/indexer
         glean/lang/rust-lsif
+        glean/lang/rust-scip
         glean/lang/typescript
         glean/index
         glean/index/list
@@ -959,6 +960,7 @@ library indexers
         Glean.Indexer.LSIF
         Glean.Indexer.SCIP
         Glean.Indexer.RustLsif
+        Glean.Indexer.RustScip
         Glean.Indexer.Typescript
         Glean.Indexer.List
     build-depends:
@@ -2162,6 +2164,18 @@ test-suite glean-snapshot-rust-lsif
     type: exitcode-stdio-1.0
     main-is: Glean/Regression/RustLsif/Main.hs
     ghc-options: -main-is Glean.Regression.RustLsif.Main
+    build-depends:
+        glean:regression-test-lib,
+        glean:indexers
+    if !flag(rust-tests)
+        buildable: False
+
+test-suite glean-snapshot-rust-scip
+    import: fb-haskell, deps
+    hs-source-dirs: glean/lang/rust-scip/tests
+    type: exitcode-stdio-1.0
+    main-is: Glean/Regression/RustScip/Main.hs
+    ghc-options: -main-is Glean.Regression.RustScip.Main
     build-depends:
         glean:regression-test-lib,
         glean:indexers

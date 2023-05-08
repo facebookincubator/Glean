@@ -124,7 +124,7 @@ runScipAll scip = case Proto.decodeMessage scip of
     concat <$> mapM decodeScipDocXRefs (v ^. Scip.documents)
 
 decodeScipMetadata :: Scip.Metadata -> Parse [LSIF.Predicate]
-decodeScipMetadata v = LSIF.predicate "lsif.Metadata.1" $
+decodeScipMetadata v = LSIF.predicate "lsif.Metadata" $
   [ "lsifVersion" .= textShow (v ^. Scip.version)
   , "positionEncoding" .= textShow (v ^. Scip.textDocumentEncoding)
   ] ++ (case v ^. Scip.maybe'toolInfo of
@@ -171,12 +171,12 @@ decodeScipXRefs docId occ = do
       mDefId <- getDefFactId symFullName
       refFacts <- case mDefId of
         Just defId -> do -- emit a reference fact
-          a <- LSIF.predicate "lsif.Reference.1"
+          a <- LSIF.predicate "lsif.Reference"
             [ "file" .= docId
             , "range" .= rangeId
             , "target" .= defId
             ]
-          b <- LSIF.predicate "lsif.DefinitionUse.1"
+          b <- LSIF.predicate "lsif.DefinitionUse"
             [ "target" .= defId
             , "file" .= docId
             , "range" .= rangeId
@@ -201,11 +201,11 @@ decodeScipHovers symInfo = do
     Just defId -> concat <$> do
       forM (symInfo ^. Scip.documentation) $ \docstr -> do
         hoverId <- nextId
-        a <- LSIF.predicateId "lsif.HoverContent.1" hoverId
+        a <- LSIF.predicateId "lsif.HoverContent" hoverId
           [ "text" .= LSIF.string docstr
           , "language" .= fromEnum LSIF.UnknownLanguage -- could parse docstr
           ]
-        b <- LSIF.predicate "lsif.DefinitionHover.1"
+        b <- LSIF.predicate "lsif.DefinitionHover"
           [ "defn" .= defId
           , "hover" .= hoverId
           ]
@@ -224,7 +224,7 @@ decodeScipOccurence docId occ = do
 
       -- emit a definition fact
       defId <- nextId
-      defFact <- LSIF.predicateId "lsif.Definition.1" defId
+      defFact <- LSIF.predicateId "lsif.Definition" defId
         [ "file" .= docId
         , "range" .= rangeId
         ]
@@ -232,12 +232,12 @@ decodeScipOccurence docId occ = do
       kindFact <- case symScipSymbol of
         Nothing -> pure []
         Just Local{} ->
-          LSIF.predicate "lsif.DefinitionKind.1"
+          LSIF.predicate "lsif.DefinitionKind"
             [ "defn" .= defId
             , "kind" .= fromEnum LSIF.Local
             ]
         Just Global{..} ->
-          LSIF.predicate "lsif.DefinitionKind.1"
+          LSIF.predicate "lsif.DefinitionKind"
             [ "defn" .= defId
             , "kind" .= fromEnum (LSIF.kindFromSuffix (suffix descriptor))
             ]
@@ -248,17 +248,17 @@ decodeScipOccurence docId occ = do
       -- we know its a def, so generate the moniker facts
       monikerFacts <- case symScipSymbol of
         Nothing -> do
-          LSIF.predicate "lsif.DefinitionMoniker.1"
+          LSIF.predicate "lsif.DefinitionMoniker"
             [ "defn" .= defId
             ]
         Just Local{} -> do
-          LSIF.predicate "lsif.DefinitionMoniker.1"
+          LSIF.predicate "lsif.DefinitionMoniker"
             [ "defn" .= defId
             ] -- these are anonymous locals with an integer.
 
         Just Global{..} -> do
           monikerId <- nextId
-          monikerFact <- LSIF.predicateId "lsif.Moniker.1" monikerId
+          monikerFact <- LSIF.predicateId "lsif.Moniker" monikerId
             [ "kind" .= fromEnum (
                           if Scip.Import `Set.member` symRoles
                           then LSIF.Import else LSIF.Export )
@@ -266,13 +266,13 @@ decodeScipOccurence docId occ = do
             , "ident" .= LSIF.string symFullName
             ]
 
-          entityFact <- LSIF.predicate "lsif.DefinitionMoniker.1"
+          entityFact <- LSIF.predicate "lsif.DefinitionMoniker"
             [ "defn" .= defId
             , "moniker" .= monikerId
             ]
 
           -- can throw in a (highly duplicated) package information fact
-          pkgInfoFact <- LSIF.predicate "lsif.PackageInformation.1"
+          pkgInfoFact <- LSIF.predicate "lsif.PackageInformation"
             [ "name" .=  pkgname package
             , "manager" .= manager package
             , "version" .= version package
@@ -301,7 +301,7 @@ toLanguage file
   --   is inferred to have the same value as the start line.
 decodeScipRange :: LSIF.Id -> Maybe ScipSymbol -> [Int32] -> Parse [LSIF.Predicate]
 decodeScipRange factId name [lineBegin,colBegin,colEnd] =
-  LSIF.predicateId "lsif.Range.1" factId
+  LSIF.predicateId "lsif.Range" factId
       [ "range" .= LSIF.toRange (LSIF.Range
           (LSIF.Position (toNat lineBegin) (toNat colBegin))
           (LSIF.Position (toNat lineBegin) (toNat colEnd)))
@@ -310,7 +310,7 @@ decodeScipRange factId name [lineBegin,colBegin,colEnd] =
 
   -- : `[startLine, startCharacter, endLine, endCharacter]`
 decodeScipRange factId name [lineBegin,colBegin,lineEnd,colEnd] =
-  LSIF.predicateId "lsif.Range.1" factId
+  LSIF.predicateId "lsif.Range" factId
       [ "range" .= LSIF.toRange (LSIF.Range
           (LSIF.Position (toNat lineBegin) (toNat colBegin))
           (LSIF.Position (toNat lineEnd) (toNat colEnd)))
@@ -322,7 +322,7 @@ decodeScipRange _ _ _ = pure [] -- unknown/invalid range type
 ------------------------------------------------------------------------
 
 mkDocumentFact :: LSIF.Id -> Scip.Document -> Parse [LSIF.Predicate]
-mkDocumentFact id doc = LSIF.predicateId "lsif.Document.1" id
+mkDocumentFact id doc = LSIF.predicateId "lsif.Document" id
   [ "file" .= LSIF.string (doc ^. Scip.relativePath) -- src.File fact
   , "language" .= fromEnum (toLanguage (doc ^. Scip.relativePath))
   ]
