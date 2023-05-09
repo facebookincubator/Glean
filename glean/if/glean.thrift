@@ -9,6 +9,7 @@
 include "glean/github/if/fb303.thrift"
 include "glean/config/recipes/recipes.thrift"
 include "glean/config/server/server_config.thrift"
+include "thrift/annotation/cpp.thrift"
 
 cpp_include "folly/FBString.h"
 
@@ -209,7 +210,8 @@ union Dependencies {
 // Thrift API
 
 // decodes to a term (or a sequence of terms?)
-typedef binary (cpp.type = "folly::fbstring") Value
+@cpp.Type{name = "folly::fbstring"}
+typedef binary Value
 
 // Special value Fact 0 "" "" returned when nothing found
 struct Fact {
@@ -233,7 +235,8 @@ struct Batch {
   // which occur before them in this sequence and to facts in the underlying
   // database with ids below firstId. If ids isn't supplied, the facts here
   // are assumed to have sequential ids starting with firstId.
-  3: binary (cpp.type = "folly::fbstring") facts;
+  @cpp.Type{name = "folly::fbstring"}
+  3: binary facts;
 
   // If supplied, this list contains the ids for the facts in the batch. It
   // must satisfy the following conditions:
@@ -257,9 +260,7 @@ struct Batch {
   //
   // Units do not need to be declared beforehand; a Unit exists if
   // it is the owner of at least one fact.
-  5: map<UnitName, list<Id> (hs.type = "VectorStorable")> (
-    hs.type = "HashMap",
-  ) owned;
+  5: map<UnitName, list_Id_1857> (hs.type = "HashMap") owned;
 }
 
 struct Subst {
@@ -710,7 +711,7 @@ struct UserQueryBatch {
   // Name of the predicate to query
   // (only necessary when using JSON query syntax)
 
-  2: list<string (hs.type = "ByteString")> queries;
+  2: list<string_2619> queries;
   // Query strings; syntax specified by UserQueryOptions.syntax
   // The list of returned UserQueryResults is guaranteed to be
   // the same length as this list
@@ -1263,3 +1264,7 @@ struct PredicateAnnotation {
   1: PredicateName name;
   2: i32 version;
 }
+
+// The following were automatically generated and may benefit from renaming.
+typedef list<Id> (hs.type = "VectorStorable") list_Id_1857
+typedef string (hs.type = "ByteString") string_2619
