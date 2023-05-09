@@ -33,7 +33,7 @@ public:
   };
 
   ThriftSender(
-    std::unique_ptr<thrift::GleanServiceAsyncClient> cli,
+    std::unique_ptr<facebook::glean::thrift::GleanServiceAsyncClient> cli,
     const Config& cfg)
     : client(std::move(cli)), config(cfg) {}
 
@@ -58,14 +58,14 @@ public:
     if (!future) {
       // We aren't waiting on a substitution (either we haven't sent anything
       // yet or we just rebased). Send the next piece.
-      thrift::Repo repo;
+      facebook::glean::thrift::Repo repo;
       repo.name() = config.repo_name;
       repo.hash() = config.repo_hash;
-      thrift::ComputedBatch cbatch;
+      facebook::glean::thrift::ComputedBatch cbatch;
       cbatch.repo() = std::move(repo);
       cbatch.remember() = true;
 
-      thrift::Batch tbatch;
+      facebook::glean::thrift::Batch tbatch;
       auto s = batch.serialize();
       tbatch.firstId() = s.first.toThrift();
       tbatch.count() = s.count;
@@ -73,9 +73,9 @@ public:
       tbatch.owned() = batch.serializeOwnership();
       cbatch.batch() = std::move(tbatch);
 
-      future = std::make_unique<folly::Future<thrift::Subst>>(
+      future = std::make_unique<folly::Future<facebook::glean::thrift::Subst>>(
         send(
-          std::make_shared<thrift::ComputedBatch>(std::move(cbatch)))
+          std::make_shared<facebook::glean::thrift::ComputedBatch>(std::move(cbatch)))
         .via(folly::getGlobalIOExecutor()));
     }
   }
@@ -91,7 +91,7 @@ public:
 private:
   // Communicate with the server, retrying if necessary.
   template<typename F>
-  folly::invoke_result_t<F, thrift::GleanServiceAsyncClient *>
+  folly::invoke_result_t<F, facebook::glean::thrift::GleanServiceAsyncClient *>
       communicate(F f) const {
     // I *think* ...Backoff mutates its closure so we need to create a new one
     // for each communication request.
@@ -121,7 +121,7 @@ private:
 
   // Retry a communication request after a delay.
   template<typename F>
-  auto retry(thrift::BatchRetry&& retry, F f) const {
+  auto retry(facebook::glean::thrift::BatchRetry&& retry, F f) const {
     const auto duration =
       std::chrono::duration_cast<std::chrono::milliseconds>(
         std::chrono::duration<double>(
@@ -135,18 +135,18 @@ private:
   }
 
   // Send the batch and then wait for the substitution
-  folly::Future<thrift::Subst> send(
-      const std::shared_ptr<thrift::ComputedBatch>& batch) const {
+  folly::Future<facebook::glean::thrift::Subst> send(
+      const std::shared_ptr<facebook::glean::thrift::ComputedBatch>& batch) const {
     return communicate([batch](auto client) {
              return client->future_sendBatch(*batch);
            })
-        .thenValue([batch, this](thrift::SendResponse&& response) {
+        .thenValue([batch, this](facebook::glean::thrift::SendResponse&& response) {
           switch (response.getType()) {
-            case thrift::SendResponse::Type::handle:
+            case facebook::glean::thrift::SendResponse::Type::handle:
               // Server accepted the batch, now wait
               return finish(response.get_handle(), batch).semi();
 
-            case thrift::SendResponse::Type::retry:
+            case facebook::glean::thrift::SendResponse::Type::retry:
               // Server asked to retry after a delay
               return retry(
                   response.move_retry(), [batch, this] { return send(batch); });
@@ -155,26 +155,26 @@ private:
               abort("invalid SendResponse");
           }
         })
-        .thenError([](const folly::exception_wrapper& error) -> folly::Future<thrift::Subst> {
+        .thenError([](const folly::exception_wrapper& error) -> folly::Future<facebook::glean::thrift::Subst> {
           LOG(FATAL) << "unexpected error: " << error.what();
         });
   }
 
   // Wait for the substitution for the given handle. Resend the batch if the
   // server forgot the handle.
-  folly::Future<thrift::Subst> finish(
+  folly::Future<facebook::glean::thrift::Subst> finish(
       const std::string& handle,
-      const std::shared_ptr<thrift::ComputedBatch>& batch) const {
+      const std::shared_ptr<facebook::glean::thrift::ComputedBatch>& batch) const {
     return communicate([handle](auto client) {
              return client->future_finishBatch(handle);
            })
-        .thenValue([handle, batch, this](thrift::FinishResponse&& response) {
+        .thenValue([handle, batch, this](facebook::glean::thrift::FinishResponse&& response) {
           switch (response.getType()) {
-            case thrift::FinishResponse::Type::subst:
+            case facebook::glean::thrift::FinishResponse::Type::subst:
               // We're done
               return folly::makeSemiFuture(response.move_subst());
 
-            case thrift::FinishResponse::Type::retry:
+            case facebook::glean::thrift::FinishResponse::Type::retry:
               // Server asked to retry after a delay
               return retry(response.move_retry(), [handle, batch, this] {
                 return finish(handle, batch);
@@ -184,7 +184,7 @@ private:
               abort("invalid FinishResponse");
           }
         })
-        .thenError([handle, batch, this](const folly::exception_wrapper& error) -> folly::SemiFuture<thrift::Subst> {
+        .thenError([handle, batch, this](const folly::exception_wrapper& error) -> folly::SemiFuture<facebook::glean::thrift::Subst> {
           if (error.is_compatible_with<facebook::glean::thrift::UnknownBatchHandle>()) {
             // Server forgot the handle, resend the batch
             LOG(ERROR) << "server reports unknown handle " << handle;
@@ -194,9 +194,9 @@ private:
         });
   }
 
-  const std::unique_ptr<thrift::GleanServiceAsyncClient> client;
+  const std::unique_ptr<facebook::glean::thrift::GleanServiceAsyncClient> client;
   const Config config;
-  std::unique_ptr<folly::Future<thrift::Subst>> future;
+  std::unique_ptr<folly::Future<facebook::glean::thrift::Subst>> future;
 };
 
 }

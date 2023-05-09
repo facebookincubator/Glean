@@ -33,7 +33,7 @@ public:
   void flush(BatchBase& batch) override {
     auto r = batch.serialize();
     binary::Output out;
-    // Serialize as thrift::Batch without using fbthrift. These field
+    // Serialize as facebook::glean::thrift::Batch without using fbthrift. These field
     // numbers and types must match those in glean.thrift.
     serialize::ThriftCompact::put(out, {
         { 1, r.first.toThrift() },
