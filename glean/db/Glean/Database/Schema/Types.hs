@@ -137,10 +137,6 @@ data PredicateTransformation = PredicateTransformation
     -- ^ Transform a pattern into one which can be used to build a prefix for
     -- the available predicate. The resulting pattern cannot be used for
     -- variable binding.
-
-  , transformKey :: Maybe (Bytes -> Register 'BinaryOutputPtr -> Code ())
-  , transformValue :: Maybe (Bytes -> Register 'BinaryOutputPtr -> Code ())
-    -- ^ available -> requested
   }
 
 -- | Whether a prefix will match a fact from beginning to end and therefore can

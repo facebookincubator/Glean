@@ -73,7 +73,6 @@ import Glean.Database.Schema.Types
 import Glean.Display
 import Glean.Query.Transform
   ( transformPattern
-  , transformBytes
   , transformFact
   )
 import Glean.Internal.Types as Internal (StoredSchema(..))
@@ -770,8 +769,6 @@ mkPredicateTransformation detailsFor requestedId availableId
     , tTransformFactBack = transformFact available requested
     , transformKeyPattern   = transformPattern (key requested) (key available)
     , transformValuePattern = transformPattern (val requested) (val available)
-    , transformKey   = transformBytes (key available) (key requested)
-    , transformValue = transformBytes (val available) (val requested)
     }
   where
       key = predicateKeyType
