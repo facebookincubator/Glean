@@ -18,6 +18,7 @@ import Data.List.Extra ( nubSort )
 import Data.Maybe
 import Data.Text (Text)
 import qualified Data.Text as Text
+import GHC.Stack (HasCallStack)
 import System.FilePath
 import TextShow
 
@@ -193,7 +194,7 @@ optionalize name =
   let inner = fromMaybe name (Text.stripPrefix "inner " name)
   in "Prelude.Maybe" <>! inner
 
-die :: String -> String -> a
+die :: HasCallStack => String -> String -> a
 die x y = error ("Error in genSchemaHS in " <> x <> " : " <> y)
 
 (<>!) :: Text -> Text -> Text
@@ -328,7 +329,8 @@ genPredicate mode PredicateDef{..}
 
 -- Make the thriftTy type text, and the needed [Text] blocks
 define_kt
-  :: Mode
+  :: HasCallStack
+  => Mode
   -> NameSpaces
   -> ResolvedType
   -> (NameSpaces, Text)
@@ -345,6 +347,7 @@ define_kt mode here typ name_kt = case typ of
   MaybeTy{} -> alias typ
   PredicateTy{} -> leaf
   NamedTy{} -> alias typ
+  BooleanTy{} -> leaf
   _other -> die "define_kt" (show typ)
  where
    gname = joinDot name_kt
