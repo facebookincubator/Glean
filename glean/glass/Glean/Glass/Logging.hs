@@ -17,6 +17,7 @@ module Glean.Glass.Logging
   , LogError(..)
 
   -- * some types
+  , QueryEachRepoLog(..)
   , ErrorTy(..)
   , ErrorText(..)
   , ErrorLogger
@@ -88,10 +89,15 @@ instance LogRequest FileIncludeLocationRequest where
 class LogResult a where
   logResult :: (a, GleanGlassLogger) -> GleanGlassLogger
 
-instance LogResult (DocumentSymbolListXResult, SnapshotStatus) where
-  logResult ((DocumentSymbolListXResult{..}, st), log) =
+instance (LogResult a, LogResult b) => LogResult (a,b) where
+  logResult ((a,b), log) = logResult (b, logResult (a, log))
+
+instance (LogResult a, LogResult b, LogResult c) => LogResult (a,b,c) where
+  logResult ((a,b,c), log) = logResult(c, logResult (b, logResult (a, log)))
+
+instance LogResult DocumentSymbolListXResult  where
+  logResult (DocumentSymbolListXResult{..}, log) =
     log <>
-    logSnapshotStatus st <>
     Logger.setTruncated documentSymbolListXResult_truncated <>
     Logger.setItemCount (length documentSymbolListXResult_references +
       length documentSymbolListXResult_definitions)
@@ -103,12 +109,21 @@ instance LogResult FileIncludeLocationResults where
           (unXRefFileList fileIncludeLocationResults_references)
        ))
 
-instance LogResult (DocumentSymbolIndex, SnapshotStatus) where
-  logResult ((DocumentSymbolIndex{..}, st), log) =
-    log <>
-    logSnapshotStatus st <>
-    Logger.setItemCount (fromIntegral documentSymbolIndex_size) <>
-      Logger.setTruncated documentSymbolIndex_truncated
+instance LogResult SnapshotStatus where
+  logResult (st, log) =
+    log <> logSnapshotStatus st
+
+data QueryEachRepoLog
+  = FoundMultiple { _discarded :: NonEmpty Glean.Repo}
+  | FoundNone
+  | FoundOne
+  | QueryEachRepoUnrequested
+
+instance LogResult QueryEachRepoLog where
+  logResult(glog, log) = log <> case glog of
+    FoundMultiple repos ->
+      Logger.setRepoOther (map Glean.repo_name $ NE.toList repos)
+    _ -> mempty
 
 instance LogResult DocumentSymbolIndex where
   logResult (DocumentSymbolIndex{..}, log) =

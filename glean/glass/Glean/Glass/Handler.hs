@@ -57,12 +57,14 @@ import Data.List.NonEmpty (NonEmpty(..), toList, nonEmpty)
 import Data.Maybe ( mapMaybe, catMaybes, fromMaybe, listToMaybe )
 import Data.Ord ( comparing )
 import Data.Text ( Text )
+import Data.Tuple.Extra ( fst3 )
 import qualified Data.Set as Set
 import Data.Set ( Set )
 import qualified Control.Concurrent.Async as Async
 import qualified Data.Map.Strict as Map
 import qualified Data.Text as Text
 
+import Haxl.DataSource.Glean (HasRepo)
 import Haxl.Prelude (forM, forM_)
 import Logger.GleanGlass ( GleanGlassLogger )
 import Logger.GleanGlassErrors ( GleanGlassErrorsLogger )
@@ -172,7 +174,7 @@ documentSymbolListX
   -> DocumentSymbolsRequest
   -> RequestOptions
   -> IO DocumentSymbolListXResult
-documentSymbolListX env r opts = fst <$> runRepoFile "documentSymbolListX"
+documentSymbolListX env r opts = fst3 <$> runRepoFile "documentSymbolListX"
   fetchSymbolsAndAttributes env r opts
 
 -- | Same as documentSymbolList() but construct a line-indexed map for easy
@@ -182,17 +184,27 @@ documentSymbolIndex
   -> DocumentSymbolsRequest
   -> RequestOptions
   -> IO DocumentSymbolIndex
-documentSymbolIndex env r opts = fst <$> runRepoFile "documentSymbolIndex"
+documentSymbolIndex env r opts = fst3 <$> runRepoFile "documentSymbolIndex"
   fetchDocumentSymbolIndex env r opts
 
--- | Return the first success
+-- | Given a query, run it on all available repos and return the first success
+--   plus an explainer
 firstOrErrors
-  :: ReposHaxl u w [Either ErrorTy a] -> ReposHaxl u w (Either ErrorTy a)
+  :: (HasRepo u => ReposHaxl u w (Either ErrorTy a))
+  -> ReposHaxl u w (Either ErrorTy (a, QueryEachRepoLog))
 firstOrErrors act = do
-  result <- act
-  let (fail, success) = partitionEithers result
+  results <- queryEachRepo $ do
+    repo <- Glean.haxlRepo
+    result <- act
+    return $ (repo,) <$> result
+  let (fail, success) = partitionEithers results
   return $ case success of
-    x:_ -> Right x
+    (_, x) : rest -> Right
+      ( x
+      , case nonEmpty rest of
+          Nothing -> FoundOne
+          Just otherSuccesses ->  FoundMultiple (fmap fst otherSuccesses)
+      )
     [] -> Left $ AggregateError fail
 
 -- | Return all successes, after de-duplication
@@ -216,13 +228,12 @@ jumpTo
 jumpTo env@Glass.Env{..} req@Location{..} _opts =
   withRepoFile "jumpTo" env req repo file
     (\(gleanDBs,_) _lang -> backendRunHaxl GleanBackend{..} $ do
-      result <-
-        firstOrErrors $ queryEachRepo $ do
+      result <- firstOrErrors $ do
           repo <- Glean.haxlRepo
           resolveLocationToRange repo req
       case result of
         Left err -> throwM $ ServerException $ errorText err
-        Right efile -> return (efile, Nothing))
+        Right (efile, _) -> return (efile, Nothing))
   where
     repo = location_repository
     file = location_filepath
@@ -317,9 +328,10 @@ fileIncludeLocations
   -> RequestOptions
   -> IO FileIncludeLocationResults
 fileIncludeLocations env@Glass.Env{..} req opts =
+  fmap fst $
   withRepoFile "fileIncludeLocations" env req repo rootfile $ \(gleanDBs,_) _ ->
     backendRunHaxl GleanBackend{..} $ do
-      result <- firstOrErrors $ queryEachRepo $ do
+      result <- firstOrErrors $ do
         rev <- getRepoHash <$> Glean.haxlRepo
         efile <- getFile (toGleanPath (SymbolRepoPath repo rootfile))
         case efile of
@@ -329,7 +341,8 @@ fileIncludeLocations env@Glass.Env{..} req opts =
             Right <$> processFileIncludes repo rev includes
       case result of
         Left err -> throwM $ ServerException $ errorText err
-        Right efile -> return (efile, Nothing)
+        Right (efile, gleanDataLog) -> do
+          return ((efile, gleanDataLog), Nothing)
   where
     repo = fileIncludeLocationRequest_repository req
     rootfile = fileIncludeLocationRequest_filepath req
@@ -344,11 +357,11 @@ clangUSRToDefinition
   :: Glass.Env
   -> USR
   -> RequestOptions
-  -> IO USRSymbolDefinition
+  -> IO (USRSymbolDefinition, QueryEachRepoLog)
 clangUSRToDefinition env@Glass.Env{..} usr@(USR hash) _opts = withRepoLanguage
   "clangUSRToDefinition" env usr repo mlang $ \(gleanDBs,_) _ -> do
     backendRunHaxl GleanBackend{..} $ do
-      result <- firstOrErrors $ queryEachRepo $ do
+      result <- firstOrErrors $ do
         rev <- getRepoHash <$> Glean.haxlRepo
         mdefn <- Cxx.usrHashToDeclaration hash
         case mdefn of
@@ -889,11 +902,11 @@ fetchSymbolsAndAttributesGlean
   -> RequestOptions
   -> GleanBackend b
   -> Maybe Language
-  -> IO (DocumentSymbolListXResult, Maybe ErrorLogger)
+  -> IO ((DocumentSymbolListXResult, QueryEachRepoLog), Maybe ErrorLogger)
 fetchSymbolsAndAttributesGlean latest req opts be mlang = do
-  (res1, logs) <- fetchDocumentSymbols file mlimit includeRefs be mlang
+  (res1, gLogs, elogs) <- fetchDocumentSymbols file mlimit includeRefs be mlang
   res2 <- addDynamicAttributes latest file mlimit be res1
-  return (res2, logs)
+  return ((res2, gLogs), elogs)
   where
     file = toFileReference (documentSymbolsRequest_repository req)
       (documentSymbolsRequest_filepath req)
@@ -910,18 +923,20 @@ fetchSymbolsAndAttributes
   -> GleanBackend b
   -> SnapshotBackend
   -> Maybe Language
-  -> IO ((DocumentSymbolListXResult, SnapshotStatus), Maybe ErrorLogger)
+  -> IO ((DocumentSymbolListXResult, SnapshotStatus, QueryEachRepoLog)
+        , Maybe ErrorLogger)
 fetchSymbolsAndAttributes latest req opts be snapshotbe mlang =
   case (mrevision, mlang) of
     (Just revision, Just Language_Hack) -> do
       Async.withAsync getFromGlean $ \gleanRes -> do
         esnapshot <- getSnapshot snapshotbe repo file revision trySnapshot
         case esnapshot of
-          Right queryResult -> return ((queryResult, Success), Nothing)
+          Right queryResult ->
+            return ((queryResult, Success, QueryEachRepoUnrequested), Nothing)
           Left status -> addStatus status <$> Async.wait gleanRes
     _ -> addStatus Unrequested <$> getFromGlean
   where
-    addStatus st (res, mlogger) = ((res, st), mlogger)
+    addStatus st ((res, gleanLog), mlogger) = ((res, st, gleanLog), mlogger)
     getFromGlean = fetchSymbolsAndAttributesGlean latest req opts be mlang
     file = documentSymbolsRequest_filepath req
     repo = documentSymbolsRequest_repository req
@@ -938,26 +953,26 @@ fetchDocumentSymbols
   -> Bool  -- ^ include references?
   -> GleanBackend b
   -> Maybe Language
-  -> IO (DocumentSymbols, Maybe ErrorLogger)
-
+  -> IO (DocumentSymbols, QueryEachRepoLog, Maybe ErrorLogger)
 fetchDocumentSymbols (FileReference scsrepo path) mlimit includeRefs b mlang =
   backendRunHaxl b $ do
     --
     -- we pick the first db in the list that has the full FileInfo{..}
     --
-    efile <- firstOrErrors $ queryEachRepo $ do
+    efile <- firstOrErrors $ do
       repo <- Glean.haxlRepo
       getFileAndLines repo path
     case efile of
-      Left err ->
-        return $ (, Just (logError err)) $
-          DocumentSymbols [] [] (revision b) False
+      Left err -> do
+        let emptyResponse = DocumentSymbols [] [] (revision b) False
+        return (emptyResponse, FoundNone, Just (logError err))
+
         where
           -- Use first db's revision
           revision GleanBackend {gleanDBs = ((_, repo) :| _)} =
             Revision $ Glean.repo_hash repo
 
-      Right FileInfo{..} -> do
+      Right (FileInfo{..}, gleanDataLog) -> do
 
       -- from Glean, fetch xrefs and defs in batches
       (xrefs, defns, truncated) <- withRepo fileRepo $
@@ -975,8 +990,8 @@ fetchDocumentSymbols (FileReference scsrepo path) mlimit includeRefs b mlang =
             (Attributes.fromSymbolId Attributes.SymbolKindAttr)
               kindMap refs1 defs1
       let revision = getRepoHash fileRepo
+      return (DocumentSymbols {..}, gleanDataLog, merr)
 
-      return (DocumentSymbols {..}, merr)
 
 -- | Wrapper for tracking symbol/entity pairs through processing
 data DocumentSymbols = DocumentSymbols
@@ -1050,17 +1065,20 @@ fetchDocumentSymbolIndex
   -> GleanBackend b
   -> SnapshotBackend
   -> Maybe Language
-  -> IO ((DocumentSymbolIndex, SnapshotStatus), Maybe ErrorLogger)
+  -> IO ((DocumentSymbolIndex, SnapshotStatus, QueryEachRepoLog), Maybe ErrorLogger)
 fetchDocumentSymbolIndex latest req opts be snapshotbe mlang = do
-  ((DocumentSymbolListXResult refs defs revision truncated, status), merr1) <-
+  ((result, status, gleanDataLog), merr1) <-
     fetchSymbolsAndAttributes latest req opts be snapshotbe mlang
 
-  return ((DocumentSymbolIndex {
-    documentSymbolIndex_symbols = toSymbolIndex refs defs,
-    documentSymbolIndex_revision = revision,
-    documentSymbolIndex_size = fromIntegral (length defs + length refs),
-    documentSymbolIndex_truncated = truncated
-  }, status), merr1)
+  let DocumentSymbolListXResult refs defs revision truncated = result
+
+      result' = DocumentSymbolIndex {
+        documentSymbolIndex_symbols = toSymbolIndex refs defs,
+        documentSymbolIndex_revision = revision,
+        documentSymbolIndex_size = fromIntegral (length defs + length refs),
+        documentSymbolIndex_truncated = truncated
+  }
+  return ((result', status, gleanDataLog), merr1)
 
 -- Work out if we have extra attribute dbs and then run the queries
 getSymbolAttributes
