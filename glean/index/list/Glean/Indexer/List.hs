@@ -31,8 +31,10 @@ import qualified Glean.Indexer.Buck as Buck
 import qualified Glean.Indexer.Go as Go
 import qualified Glean.Indexer.JavaLsif as JavaLsif
 import qualified Glean.Indexer.RustLsif as RustLsif
+import qualified Glean.Indexer.RustScip as RustScip
 import qualified Glean.Indexer.Typescript as Typescript
 import qualified Glean.Indexer.LSIF as LSIF
+import qualified Glean.Indexer.SCIP as SCIP
 import qualified Glean.Indexer.Haskell as Hs
 
 data SomeIndexer = forall opts . SomeIndexer (Indexer opts)
@@ -51,7 +53,9 @@ indexers =
   , SomeIndexer Go.indexer
   , SomeIndexer JavaLsif.indexer
   , SomeIndexer LSIF.indexer
+  , SomeIndexer SCIP.indexer
   , SomeIndexer RustLsif.indexer
+  , SomeIndexer RustScip.indexer
   , SomeIndexer Typescript.indexer
   ]
 

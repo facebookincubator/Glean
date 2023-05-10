@@ -938,11 +938,13 @@ library indexers
         glean/lang/clang
         glean/lang/flow
         glean/lang/go
-        glean/lang/haskell
         glean/lang/hack
+        glean/lang/haskell
         glean/lang/java-lsif
         glean/lang/lsif/indexer
+        glean/lang/scip/indexer
         glean/lang/rust-lsif
+        glean/lang/rust-scip
         glean/lang/typescript
         glean/index
         glean/index/list
@@ -956,7 +958,9 @@ library indexers
         Glean.Indexer.Haskell
         Glean.Indexer.JavaLsif
         Glean.Indexer.LSIF
+        Glean.Indexer.SCIP
         Glean.Indexer.RustLsif
+        Glean.Indexer.RustScip
         Glean.Indexer.Typescript
         Glean.Indexer.List
     build-depends:
@@ -967,6 +971,7 @@ library indexers
         glean:interprocess,
         glean:lib,
         glean:lsif,
+        glean:scip,
         glean:stubs,
         glean:util,
         thrift-server
@@ -1115,6 +1120,7 @@ library lsif
     exposed-modules:
         Data.LSIF.Angle
         Data.LSIF.Env
+        Data.LSIF.Gen
         Data.LSIF.JSON
         Data.LSIF.Moniker
         Data.LSIF.Types
@@ -1122,6 +1128,18 @@ library lsif
     build-depends:
         aeson,
         split,
+
+library scip
+    import: fb-haskell, fb-cpp, deps
+    hs-source-dirs: glean/lang/scip
+    exposed-modules:
+        Data.SCIP.Angle
+        Glean.SCIP.Driver
+    build-depends:
+        glean:if-proto-scip-hs,
+        glean:lsif,
+        microlens,
+        proto-lens,
 
 -- SCIP support.
 --
@@ -2146,6 +2164,18 @@ test-suite glean-snapshot-rust-lsif
     type: exitcode-stdio-1.0
     main-is: Glean/Regression/RustLsif/Main.hs
     ghc-options: -main-is Glean.Regression.RustLsif.Main
+    build-depends:
+        glean:regression-test-lib,
+        glean:indexers
+    if !flag(rust-tests)
+        buildable: False
+
+test-suite glean-snapshot-rust-scip
+    import: fb-haskell, deps
+    hs-source-dirs: glean/lang/rust-scip/tests
+    type: exitcode-stdio-1.0
+    main-is: Glean/Regression/RustScip/Main.hs
+    ghc-options: -main-is Glean.Regression.RustScip.Main
     build-depends:
         glean:regression-test-lib,
         glean:indexers
