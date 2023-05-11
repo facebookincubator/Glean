@@ -488,6 +488,7 @@ struct SearchBySymbolIdResult {
 enum RelationType {
   Extends = 1, // OOP inheritance
   Contains = 2, // Syntactically nested (usually)
+  Calls = 3, // Callers(Parent) or Callees (Child)
 }
 
 enum RelationDirection {
@@ -519,6 +520,8 @@ const i32 RELATED_SYMBOLS_MAX_LIMIT = 1000;
 struct RelatedSymbols {
   1: SymbolId parent;
   2: SymbolId child;
+  // ranges at which this relationship appears, e.g. call sites
+  3: optional list<LocationRange> ranges;
 }
 
 // Pairs of edges from "parent" to "child" according to relationship

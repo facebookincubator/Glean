@@ -9,8 +9,9 @@
 module Glean.Glass.Range
   (
   -- * working with ranges and bytespans, to and from Glean representations
+     rangeContains
   -- ** high level
-    rangeSpanToLocation
+  , rangeSpanToLocation
   , rangeSpanToLocationRange
   -- ** lower level
   , memoRangeSpanToRange
@@ -28,6 +29,7 @@ module Glean.Glass.Range
   ) where
 
 import Data.Default ( Default(def) )
+import Data.Function (on)
 
 import qualified Glean
 import qualified Glean.Util.Range as Range
@@ -51,6 +53,17 @@ import qualified Haxl.Core.Memo as Haxl
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import Glean.Angle ( query )
 import qualified Glean.Haxl.Repos as Glean
+
+-- | @rangeContains x y@ is True iff the range of y is the same as x, or
+-- inside x.
+rangeContains :: Range -> Range -> Bool
+rangeContains big small =
+  checkLE range_lineBegin range_columnBegin big small &&
+  checkLE range_lineEnd range_columnEnd small big
+  where
+    checkLE line col a b = GT /= compareLineCol line col a b
+    compareLineCol line col a b =
+      (compare `on` line) a b <> (compare `on` col) a b
 
 -- | Convert Glean-side Location markers to the Glass bytespan locations
 -- Like locationRangeFromCodeLocation, memoizes the file offsets needed to do

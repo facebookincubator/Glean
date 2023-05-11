@@ -20,6 +20,9 @@ module Glean.Glass.Query
   -- * Finding refernces to declarations
   , findReferenceRangeSpan
 
+  -- * Finding references for call hierarchy
+  , findReferenceEntities
+
   -- * offsets and conversions to lines
   , fileLines
 
@@ -161,6 +164,53 @@ findReferenceRangeSpan ent =
       )
     ]
 
+-- | Entity-based find-references for call hierarchy.
+--   Returns referencing entities with their location, and the call site
+findReferenceEntities
+  :: Angle Code.Entity
+  -> Angle (Src.File, Code.Entity, Code.Location, Code.RangeSpan)
+findReferenceEntities ent =
+  vars $ \(reffile :: Angle Src.File)
+          (caller :: Angle Code.Entity)
+          (referenceRangespan :: Angle Code.RangeSpan)
+          (callerLocation :: Angle Code.Location)
+          (callerRangespan :: Angle Code.RangeSpan)
+          ->
+    Angle.tuple (reffile, caller, callerLocation, referenceRangespan) `where_`
+    [ wild .= predicate @Code.EntityReferences (
+      rec $
+          field @"target" ent $
+          field @"file" (asPredicate reffile) $
+          field @"range" referenceRangespan
+        end
+      )
+    , wild .= predicate @Code.FileEntityLocations (
+        rec $
+          field @"entity" caller $
+          field @"file" (asPredicate reffile) $
+          field @"location" callerLocation
+        end
+      )
+    , wild .= predicate @Code.FileEntityKinds (
+        rec $
+          field @"entity" caller $
+          field @"file" (asPredicate reffile) $
+          field @"kind"
+            (enum Code.SymbolKind_Constructor .|
+             enum Code.SymbolKind_Function .|
+             enum Code.SymbolKind_Macro .|
+             enum Code.SymbolKind_Method
+            )
+        end
+    )
+    , rec (field @"location" callerRangespan end) .= callerLocation
+    , wild .= predicate @Code.RangeSpanContains (
+        rec $
+          field @"rangeSpan" callerRangespan $
+          field @"contains" referenceRangespan
+        end
+      )
+    ]
 --
 -- Finding entities by name search
 --

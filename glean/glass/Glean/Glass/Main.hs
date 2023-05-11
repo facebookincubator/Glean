@@ -139,6 +139,7 @@ glassHandler env cmd = case cmd of
   SearchRelatedNeighborhood r opts req ->
     Handler.searchRelatedNeighborhood env r opts req
 
+
   -- deprecated
   SearchBySymbolId r opts -> Handler.searchBySymbolId env r opts
 

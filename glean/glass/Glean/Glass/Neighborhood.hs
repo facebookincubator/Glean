@@ -236,7 +236,7 @@ toEntity ((entity, _file, _rangespan, _name), _symId) = entity
 
 symbolIdPairs :: [Search.RelatedLocatedEntities] -> [RelatedSymbols]
 symbolIdPairs = map (\Search.RelatedLocatedEntities{..} ->
-  RelatedSymbols (snd parentRL) (snd childRL))
+  RelatedSymbols (snd parentRL) (snd childRL) Nothing)
 
 inheritedSymbolIdSets :: InheritedContainer -> InheritedSymbols
 inheritedSymbolIdSets (parent, children) = InheritedSymbols {

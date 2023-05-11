@@ -164,7 +164,7 @@ testSearchRelated sym recurse dir rel (parent, child) get =
           then [(parent, arrow, child)]
           else
             map
-              (\(RelatedSymbols p c) -> (p, arrow, c))
+              (\(RelatedSymbols p c _) -> (p, arrow, c))
               searchRelatedResult_edges
       assertEqual
         "searchRelated contains edge" [(parent, arrow, child)] actual
