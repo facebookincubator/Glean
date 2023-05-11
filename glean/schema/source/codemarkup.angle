@@ -560,5 +560,23 @@ predicate EntityComments:
       codemarkup.python.PythonEntityComments { Decl, File, Span, Text }
     )
 
+# Identifies indexed files
+predicate IndexedFile: src.File
+   File where
+    codemarkup.cxx.CxxDataAvailable File |
+    codemarkup.EntityDataAvailable File
+
+
+# Identifies files with indexed entities.
+# You should not use this, instead use codemarkup.IndexedFile
+predicate EntityDataAvailable:  src.File
+    File where
+      src.File _ = File; # bind File as demanded by the schema consistency check
+      # double negation is used to check for existence
+      # (even if the Angle compiler could notice and optimize)
+      !(!(codemarkup.FileEntityLocations { file = File } |
+          codemarkup.FileEntityXRefSpans {file = File }
+        ))
+
 # end
 }

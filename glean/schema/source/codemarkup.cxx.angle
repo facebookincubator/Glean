@@ -758,4 +758,11 @@ predicate CxxEntityDocumentation :
       cxx1.DeclarationComment{ declaration = Decl, file = F, span = S }
     )
 
+predicate CxxDataAvailable : src.File
+  F where
+    src.File _ = F;
+      # double negation is used to check for existence
+      # (even if the Angle compiler could notice and optimize)
+    !(!(cxx1.Trace {file = F}))
+
 }
