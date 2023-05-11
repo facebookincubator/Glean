@@ -271,6 +271,7 @@ errorText e = case e of
   EntitySearchFail t -> t
   EntityNotSupported t -> t
   AttributesError t -> t
+  AggregateError [e] -> errorText e
   AggregateError errs ->
     Text.unlines $ "Multiple errors:": map (("  " <>) . errorText) (nubOrd errs)
 
@@ -280,6 +281,7 @@ class LogError a where
   logError :: a -> GleanGlassErrorsLogger
 
 instance LogError ErrorTy where
+  logError (AggregateError [e]) = logError e
   logError e =
     Errors.setError (errorText e) <>
     Errors.setErrorType (case e of
