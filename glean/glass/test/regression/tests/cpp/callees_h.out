@@ -1,0 +1,421 @@
+[
+    "@generated",
+    {
+        "edges": [
+            {
+                "child": "test/cpp//foo/bar/g/.decl",
+                "parent": "test/cpp//h",
+                "ranges": [
+                    {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 13,
+                            "columnEnd": 14,
+                            "lineBegin": 60,
+                            "lineEnd": 60
+                        },
+                        "repository": "test"
+                    }
+                ]
+            },
+            {
+                "child": "test/cpp//foo/f/.decl",
+                "parent": "test/cpp//h",
+                "ranges": [
+                    {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 8,
+                            "columnEnd": 9,
+                            "lineBegin": 58,
+                            "lineEnd": 58
+                        },
+                        "repository": "test"
+                    }
+                ]
+            },
+            {
+                "child": "test/cpp//foo/foo",
+                "parent": "test/cpp//h",
+                "ranges": [
+                    {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 8,
+                            "columnEnd": 11,
+                            "lineBegin": 59,
+                            "lineEnd": 59
+                        },
+                        "repository": "test"
+                    }
+                ]
+            },
+            {
+                "child": "test/cpp//foo/foo/.decl",
+                "parent": "test/cpp//h",
+                "ranges": [
+                    {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 8,
+                            "columnEnd": 11,
+                            "lineBegin": 59,
+                            "lineEnd": 59
+                        },
+                        "repository": "test"
+                    }
+                ]
+            },
+            {
+                "child": "test/cpp//h",
+                "parent": "test/cpp//h",
+                "ranges": [
+                    {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 5,
+                            "columnEnd": 6,
+                            "lineBegin": 55,
+                            "lineEnd": 55
+                        },
+                        "repository": "test"
+                    }
+                ]
+            },
+            {
+                "child": "test/cpp//h/.decl",
+                "parent": "test/cpp//h",
+                "ranges": [
+                    {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 6,
+                            "columnEnd": 7,
+                            "lineBegin": 54,
+                            "lineEnd": 54
+                        },
+                        "repository": "test"
+                    }
+                ]
+            }
+        ],
+        "symbolDetails": {
+            "test/cpp//foo/bar/g/.decl": {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 9,
+                        "lineBegin": 41,
+                        "lineEnd": 41
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "foo::bar",
+                    "localName": "g"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "void foo::bar::g()",
+                "sym": "test/cpp//foo/bar/g/.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 9,
+                        "lineBegin": 41,
+                        "lineEnd": 41
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            "test/cpp//foo/f/.decl": {
+                "annotations": [],
+                "comments": [
+                    {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 4,
+                            "lineBegin": 18,
+                            "lineEnd": 20
+                        },
+                        "repository": "test"
+                    }
+                ],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 9,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "foo",
+                    "localName": "f"
+                },
+                "pretty_comments": [
+                    {
+                        "location": {
+                            "filepath": "test.cpp",
+                            "range": {
+                                "columnBegin": 1,
+                                "columnEnd": 4,
+                                "lineBegin": 18,
+                                "lineEnd": 20
+                            },
+                            "repository": "test"
+                        }
+                    }
+                ],
+                "repo_hash": "testhash",
+                "signature": "void foo::f()",
+                "sym": "test/cpp//foo/f/.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 9,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            "test/cpp//foo/foo": {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 24,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "foo",
+                    "localName": "foo"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "void foo::foo()",
+                "sym": "test/cpp//foo/foo",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 24,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            "test/cpp//foo/foo/.decl": {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 11,
+                        "lineBegin": 31,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "foo",
+                    "localName": "foo"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "void foo::foo()",
+                "sym": "test/cpp//foo/foo/.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 11,
+                        "lineBegin": 31,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            "test/cpp//h": {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 54,
+                        "lineEnd": 62
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "h"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "void ::h(int i)",
+                "sym": "test/cpp//h",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 54,
+                        "lineEnd": 62
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            "test/cpp//h/.decl": {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 15,
+                        "lineBegin": 52,
+                        "lineEnd": 52
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "h"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "void ::h(int _i)",
+                "sym": "test/cpp//h/.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 15,
+                        "lineBegin": 52,
+                        "lineEnd": 52
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            }
+        }
+    }
+]

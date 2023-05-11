@@ -1,0 +1,140 @@
+[
+    "@generated",
+    {
+        "edges": [
+            {
+                "child": "test/php/fun/corge",
+                "parent": "test/php/RefClass/bazza",
+                "ranges": [
+                    {
+                        "filepath": "www/RefClass.php",
+                        "range": {
+                            "columnBegin": 16,
+                            "columnEnd": 21,
+                            "lineBegin": 23,
+                            "lineEnd": 23
+                        },
+                        "repository": "test"
+                    }
+                ]
+            }
+        ],
+        "symbolDetails": {
+            "test/php/RefClass/bazza": {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 22,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "RefClass",
+                    "localName": "bazza"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "public function bazza(): int",
+                "sym": "test/php/RefClass/bazza",
+                "sym_location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 22,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 5,
+                            "start": 16
+                        },
+                        "type": "test/php/RefClass/bazza"
+                    }
+                ],
+                "visibility": 20
+            },
+            "test/php/fun/corge": {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 3,
+                "location": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 10,
+                        "columnEnd": 15,
+                        "lineBegin": 12,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "corge"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "function corge(): int",
+                "sym": "test/php/fun/corge",
+                "sym_location": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 10,
+                        "columnEnd": 15,
+                        "lineBegin": 12,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 5,
+                            "start": 9
+                        },
+                        "type": "test/php/fun/corge"
+                    }
+                ]
+            }
+        }
+    }
+]
