@@ -136,7 +136,8 @@ data FileInfo = FileInfo {
     fileRepo :: Glean.Repo,
     fileId :: {-# UNPACK #-} !(Glean.IdOf Src.File),
     srcFile :: !Src.File,
-    offsets :: !(Maybe Range.LineOffsets)
+    offsets :: !(Maybe Range.LineOffsets),
+    isIndexed :: !Bool
   }
 
 -- | Get file metadata. Throw if we have no src.File
@@ -146,16 +147,17 @@ data FileInfo = FileInfo {
 getFileAndLines
   :: Glean.Repo -> GleanPath -> Glean.RepoHaxl u w (Either ErrorTy FileInfo)
 getFileAndLines fileRepo path = do
-  efile <- getFile path
-  case efile of
-    Left err -> return $ Left err
-    Right srcFile -> do
+  mfile <- Glean.getFirstResult (query (Query.indexedFile (Query.srcFile path)))
+  case mfile of
+    Nothing -> return $
+      Left $ NoSrcFileFact $ "No src.File fact for " <> gleanPath path
+    Just (srcFile, isIndexed) -> do
       offsets <- memoLineOffsets srcFile
       return $ do
         let fileId = Glean.getId srcFile
         Right FileInfo{..}
 
--- | Just get the src.File fact for a path
+-- | Get the src.File fact for a path
 getFile :: GleanPath -> Glean.RepoHaxl u w (Either ErrorTy Src.File)
 getFile path = do
   mfile <- Glean.getFirstResult (query (Query.srcFile path))

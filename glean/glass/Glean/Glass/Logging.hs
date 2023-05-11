@@ -256,6 +256,7 @@ newtype ErrorText = ErrorText Text
 data ErrorTy
   = NoSrcFileFact !Text
   | NoSrcFileLinesFact !Text
+  | NotIndexedFile !Text
   | EntitySearchFail !Text
   | EntityNotSupported !Text
   | AttributesError !Text
@@ -266,6 +267,7 @@ errorText :: ErrorTy -> Text
 errorText e = case e of
   NoSrcFileFact t -> t
   NoSrcFileLinesFact t -> t
+  NotIndexedFile t -> t
   EntitySearchFail t -> t
   EntityNotSupported t -> t
   AttributesError t -> t
@@ -287,6 +289,7 @@ instance LogError ErrorTy where
       EntityNotSupported{} -> "EntityNotSupported"
       AttributesError{} -> "AttributesError"
       AggregateError{} -> "AggregateError"
+      NotIndexedFile{} -> "NotIndexedFile"
     )
 
 instance LogError Glean.Repo where

@@ -12,6 +12,7 @@ module Glean.Glass.Query
   (
   -- * Files
     srcFile
+  , indexedFile
 
   -- * Working with XRefs
   , fileEntityLocations
@@ -92,6 +93,15 @@ srcFile :: GleanPath -> Angle Src.File
 srcFile (GleanPath path) =
   predicate @Src.File $
     string path
+
+-- Given a 'Src.File' query, extend it to 'Code.IndexedFile'
+indexedFile :: Angle Src.File -> Angle (Src.File, Bool)
+indexedFile query = var $ \file -> var $ \isIndexed ->
+  tuple (file, isIndexed) `where_`
+    [
+     query .= file,
+     isIndexed .= if_ (predicate @Code.IndexedFile file) true false
+    ]
 
 -- | Given a file id, look up the index of line endings
 --

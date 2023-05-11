@@ -965,7 +965,14 @@ fetchDocumentSymbols (FileReference scsrepo path) mlimit includeRefs b mlang =
     --
     efile <- firstOrErrors $ do
       repo <- Glean.haxlRepo
-      getFileAndLines repo path
+      res <- getFileAndLines repo path
+      return $ case res of
+        Left _ -> res
+        Right fi@FileInfo{..}
+          | not isIndexed ->
+            Left $ NotIndexedFile $ "Not indexed: " <> gleanPath path
+          | otherwise -> Right fi
+
     case efile of
       Left err -> do
         let emptyResponse = DocumentSymbols [] [] (revision b) False
