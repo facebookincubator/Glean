@@ -46,6 +46,7 @@ module Glean.Query.Angle
   , elementsOf
   , arrayPrefix
   , unit
+  , if_
   , true
   , false
   , just
@@ -407,6 +408,9 @@ arrayPrefix pats = Angle $ do
 
 unit :: Angle ()
 unit = Angle $ pure (Variable DSL "{}")
+
+if_ :: Angle cond -> Angle a -> Angle a -> Angle a
+if_ cond t e = Angle $ IfPattern DSL <$> gen cond <*> gen t <*> gen e
 
 true :: Angle Bool
 true = Angle $ pure (Variable DSL "true")
