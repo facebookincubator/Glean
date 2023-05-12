@@ -38,14 +38,16 @@ prettyLsifSignature opts (LSIF.SomeEntity_defn dm) = do
 prettyLsifSignature _ _ = pure Nothing
 
 definitionHover :: Glean.IdOf LSIF.Definition -> Angle Text
-definitionHover defnId = var $ \hoverText ->
-  hoverText `where_` [
+definitionHover defnId = vars $ \text hoverText ->
+  text `where_` [
     wild .= predicate @LSIF.DefinitionHover (
       rec $
         field @"defn" (asPredicate (factId defnId)) $
         field @"hover" (
           rec $
-            field @"text" hoverText
+            field @"text" (asPredicate hoverText)
           end)
-      end)
+      end),
+    hoverText .= predicate @LSIF.HoverText text
+
   ]
