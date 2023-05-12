@@ -8,10 +8,10 @@
 
 {-
 
-Convert Data.SCIP  into glean/schema/lsif.angle-compatible data via JSON.
+Convert Data.SCIP into glean/schema/lsif.angle-compatible data via JSON.
 
-Note: this module generates Angle but has no dependency on the lsif schema, to
-make developer iteration quicker.
+Note: this module generates Angle but has no dependency on the Glean LSIF
+schema (which it targets), to make developer iteration quicker.
 
 -}
 
@@ -44,14 +44,15 @@ import qualified Proto.Scip as Scip
 import qualified Proto.Scip_Fields as Scip
 
 import qualified Data.LSIF.Gen as LSIF
-import qualified Data.LSIF.Types as LSIF
 
 import qualified Debug.Trace as Debug
 
 {-
 
-Debug scip files directly via protoc: .e.g
-> protoc --decode scip.Index scip.proto  --proto_path scip < index.scip
+Debug scip files directly via protoc. Assuming you the scip.proto file handy
+From https://github.com/sourcegraph/scip/blob/main/scip.proto
+
+> protoc --decode scip.Index scip.proto  < index.scip
 
 -- approach
 -- iterate over symbols (range vector), and store symbol -> id mapping
@@ -197,7 +198,9 @@ decodeScipHovers symInfo = do
   let symFullName = symInfo ^. Scip.symbol
   mDefId <- getDefFactId symFullName
   case mDefId of
-    Nothing -> Debug.trace (show symFullName) $ pure [] -- impossible?
+    Nothing ->
+      Debug.trace ("decodeScipHovers: warning: no definition fact for: " <>
+         show symFullName) $ pure [] -- impossible?
     Just defId -> concat <$> do
       forM (symInfo ^. Scip.documentation) $ \docstr -> do
         hoverId <- nextId
@@ -283,19 +286,9 @@ decodeScipOccurence docId occ = do
 
     else pure [] -- handle xrefs in second pass
 
-
 -- scip ranges are int32
 toNat :: Int32 -> Int64
 toNat = fromIntegral
-
--- | Generally have to update this for each new scip indexer
--- This will be fixed on the scip indexer side.
-toLanguage :: Text.Text -> LSIF.LanguageId
-toLanguage file
-  | ".ts" `Text.isSuffixOf` file = LSIF.TypeScript
-  | ".tsx" `Text.isSuffixOf` file = LSIF.TypeScript
-  | ".java" `Text.isSuffixOf` file = LSIF.Java
-  | otherwise = LSIF.UnknownLanguage
 
   -- [startLine, startCharacter, endCharacter]`. The end line
   --   is inferred to have the same value as the start line.
@@ -325,7 +318,7 @@ decodeScipRange _ _ _ = pure [] -- unknown/invalid range type
 mkDocumentFact :: LSIF.Id -> Scip.Document -> Parse [LSIF.Predicate]
 mkDocumentFact id doc = LSIF.predicateId "lsif.Document" id
   [ "file" .= LSIF.string (doc ^. Scip.relativePath) -- src.File fact
-  , "language" .= fromEnum (toLanguage (doc ^. Scip.relativePath))
+  , "language" .= fromEnum (LSIF.parseLanguage (doc ^. Scip.language))
   ]
 
 data Occ = Occ

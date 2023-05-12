@@ -14,7 +14,6 @@
 
 module Data.LSIF.Types (
   Fact(..),
-  LanguageId(..),
   ToolInfo(..),
   Scope(..),
   Marker(..),
@@ -33,7 +32,7 @@ import Data.Text ( Text )
 import Data.Vector ( Vector )
 import GHC.Generics ( Generic )
 
-import Data.LSIF.Gen ( Id, MonikerKind, Range, SymbolKind )
+import Data.LSIF.Gen ( Id, MonikerKind, Range, SymbolKind, LanguageId )
 
 -- | LSIF document facts. Fact with id N is at vector index N+1
 newtype LSIF = LSIF (Vector KeyFact)
@@ -206,75 +205,3 @@ data Label
   -- added in lsif-go 1.7.x
   | EdgeSourceGraphDocString
   | EdgeSourceGraphDocChildren
-
-
-
--- From https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#textDocumentItem
--- Text documents have a language identifier to identify a document on the
--- server side when it handles more than one language to avoid re-interpreting
--- the file extension.
---
--- We add a couple of extra languages here
---
-data LanguageId
-  = ABAP  -- "abap"
-  | WindowsBat -- "bat"
-  | BibTeX -- "bibtex"
-  | Clojure -- "clojure"
-  | Coffeescript -- "coffeescript"
-  | C -- "c"
-  | Cpp -- "cpp"
-  | CSharp -- "csharp"
-  | CSS -- "css"
-  | Diff -- "diff"
-  | Dart -- "dart"
-  | Dockerfile -- "dockerfile"
-  | Elixir -- "elixir"
-  | Erlang -- "erlang"
-  | FSharp -- "fsharp"
-  | Git -- "git-commit" and "git-rebase"
-  | Go -- "go"
-  | Groovy -- "groovy"
-  | Handlebars -- "handlebars"
-  | Haskell -- "haskell"
-  | HTML -- "html"
-  | Ini -- "ini"
-  | Java -- "java"
-  | JavaScript -- "javascript"
-  | JavaScriptReact -- "javascriptreact"
-  | JSON -- "json"
-  | LaTeX -- "latex"
-  | Less -- "less"
-  | Lua -- "lua"
-  | Makefile -- "makefile"
-  | Markdown -- "markdown"
-  | ObjectiveC -- "objective-c"
-  | ObjectiveCpp -- "objective-cpp"
-  | Perl -- "perl"
-  | Perl6 -- "perl6"
-  | PHP -- "php"
-  | Powershell -- "powershell"
-  | Pug -- "jade"
-  | Python -- "python"
-  | R -- "r"
-  | Razor -- (cshtml) "razor"
-  | Ruby -- "ruby"
-  | Rust -- "rust"
-  | SCSS -- "scss" (syntax using curly brackets), sass (indented syntax)
-  | Scala -- "scala"
-  | ShaderLab -- "shaderlab"
-  | Shell -- (Bash) "shellscript"
-  | SQL -- "sql"
-  | Swift -- "swift"
-  | TypeScript -- "typescript"
-  | TypeScriptReact -- "typescriptreact"
-  | TeX -- "tex"
-  | VisualBasic -- "vb"
-  | XML -- "xml"
-  | XSL -- "xsl"
-  | YAML -- "yaml"
-  | UnknownLanguage
-  -- extensions from Meta
-  | Kotlin
-  | OCaml
-  deriving (Enum)
