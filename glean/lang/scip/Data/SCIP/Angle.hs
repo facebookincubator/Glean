@@ -25,7 +25,7 @@ module Data.SCIP.Angle (
 import Data.Aeson ( object, KeyValue((.=)) )
 import Lens.Micro ((^.))
 import Data.Bits ( Bits(testBit) )
-import Data.Maybe ( catMaybes )
+import Data.Maybe ( catMaybes, fromMaybe )
 import Util.Text ( textShow, textToInt )
 import Data.Text ( Text )
 import qualified Data.Text as Text
@@ -152,11 +152,17 @@ decodeScipDoc doc = do
 
 decodeScipDocXRefs :: Scip.Document -> Parse [LSIF.Predicate]
 decodeScipDocXRefs doc = do
-  docId <- nextId -- we will have recorded it previously, but glean will de-dup
-  file <- mkDocumentFact docId doc
+  -- why not just look it up here?
+  mDocId <- getDefFactId (doc ^. Scip.relativePath)
+  (docId, mFile) <- case mDocId of
+    Nothing -> do
+      docId <- nextId
+      file <- mkDocumentFact docId doc
+      return (docId, Just file)
+    Just docId -> return (docId, Nothing)
   occs <- concat <$> mapM (decodeScipXRefs docId) (doc ^. Scip.occurrences)
   hovers <- concat <$> mapM decodeScipHovers (doc ^. Scip.symbols)
-  pure $ file <> occs <> hovers
+  pure $ fromMaybe [] mFile <> occs <> hovers
 
 -- we have sym -> id map in env, now generate xref facts
 decodeScipXRefs :: LSIF.Id -> Scip.Occurrence -> Parse [LSIF.Predicate]
@@ -291,7 +297,7 @@ toNat :: Int32 -> Int64
 toNat = fromIntegral
 
   -- [startLine, startCharacter, endCharacter]`. The end line
-  --   is inferred to have the same value as the start line.
+  --  is inferred to have the same value as the start line.
 decodeScipRange
   :: LSIF.Id -> Maybe ScipSymbol -> [Int32] -> Parse [LSIF.Predicate]
 decodeScipRange factId name [lineBegin,colBegin,colEnd] =
@@ -316,10 +322,13 @@ decodeScipRange _ _ _ = pure [] -- unknown/invalid range type
 ------------------------------------------------------------------------
 
 mkDocumentFact :: LSIF.Id -> Scip.Document -> Parse [LSIF.Predicate]
-mkDocumentFact id doc = LSIF.predicateId "lsif.Document" id
-  [ "file" .= LSIF.string (doc ^. Scip.relativePath) -- src.File fact
-  , "language" .= fromEnum (LSIF.parseLanguage (doc ^. Scip.language))
-  ]
+mkDocumentFact id doc = do
+  let filepath = doc ^. Scip.relativePath
+  setDefFact filepath id -- record file -> fact id for xref use later
+  LSIF.predicateId "lsif.Document" id
+    [ "file" .= LSIF.string filepath
+    , "language" .= fromEnum (LSIF.parseLanguage (doc ^. Scip.language))
+    ]
 
 data Occ = Occ
   { symFullName :: Text
