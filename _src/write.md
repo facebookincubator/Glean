@@ -33,12 +33,12 @@ After the data is ingested by the write tier (`glean.write`), it is backed up an
 A database can be created by a client using any of these methods:
 
 1. Programmatically, using one of the APIs listed in [APIs for Writing](#apis-for-writing).
-2. On the command line: invoke the `glean` command-line tool to send data in JSON format, see [ Creating a database using the command line](#creating-a-database-usin).
-3. In the shell, use `glean shell --db-root=<dir>` and then use the command `:load` to create a DB from a JSON file. See [ Loading a DB from JSON in the shell](#loading-a-db-from-json-i).
+2. On the command line: invoke the `glean` command-line tool to send data in JSON format, see [ Creating a database using the command line](#creating-a-database-using-the-command-line).
+3. In the shell, use `glean shell --db-root=<dir>` and then use the command `:load` to create a DB from a JSON file. See [Loading a DB from JSON in the shell](#loading-a-db-from-json-in-the-shell).
 
 <FbInternalOnly>
 
-4. Via Scribe, see [Writing data using Scribe](https://www.internalfb.com/intern/wiki/Glean/Write/#writing-data-using-scrib)
+4. Via Scribe, see [Writing data using Scribe](#writing-data-using-scribe)
 
 </FbInternalOnly>
 
