@@ -698,6 +698,13 @@ compileStatements
             resetOutput (castRegister reg)
             outputRelToAbsByteSpans ptr end (castRegister reg)
           inner
+      compileGen (PrimCall PrimOpUnpackByteSpans [arg]) (Just reg) inner =
+        withTerm vars arg $ \array -> do
+          local $ \ptr end -> do
+            getOutput array ptr end
+            resetOutput (castRegister reg)
+            outputUnpackByteSpans ptr end (castRegister reg)
+          inner
       compileGen PrimCall{} _ _ = error "compileGen: unknown PrimCall"
 
       compileGen (ArrayElementGenerator _ _) Nothing inner = inner
@@ -1525,4 +1532,3 @@ generateQueryCode f = generate Optimised $
       callFun_3_1 newDerivedFact_ ty (castRegister key) (castRegister val) id
   in
     f QueryRegs{..}
-

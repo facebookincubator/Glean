@@ -20,6 +20,9 @@ namespace rts {
 /// Converting relative byte spans to absolute bytespans
 void relToAbsByteSpans(folly::ByteRange, binary::Output&);
 
+/// Converting packed byte spans to absolute bytespans
+void unpackByteSpans(folly::ByteRange range, binary::Output& output);
+
 }
 }
 }

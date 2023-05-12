@@ -854,6 +854,11 @@ primOpType op = case op of
     -- returns an array of pairs as output
     ( [Check (ArrayTy (tupleSchema [NatTy, NatTy]))]
     , ArrayTy (tupleSchema [NatTy, NatTy]) )
+  PrimOpUnpackByteSpans ->
+    -- prim.unpackByteSpans takes an array of (nat, [nat]) as input and
+    -- returns an array of pairs as output
+    ( [Check (ArrayTy (tupleSchema [NatTy, ArrayTy NatTy]))]
+    , ArrayTy (tupleSchema [NatTy, NatTy]) )
   PrimOpGtNat -> binaryNatOp
   PrimOpGeNat -> binaryNatOp
   PrimOpLtNat -> binaryNatOp

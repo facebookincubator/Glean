@@ -287,6 +287,7 @@ data PrimOp
   = PrimOpToLower
   | PrimOpLength
   | PrimOpRelToAbsByteSpans
+  | PrimOpUnpackByteSpans
   | PrimOpGtNat
   | PrimOpGeNat
   | PrimOpLtNat
@@ -831,6 +832,7 @@ instance Display PrimOp where
   display _ PrimOpToLower = "prim.toLower"
   display _ PrimOpLength = "prim.length"
   display _ PrimOpRelToAbsByteSpans = "prim.relToAbsByteSpans"
+  display _ PrimOpUnpackByteSpans = "prim.unpackByteSpans"
   display _ PrimOpGtNat = "prim.gtNat"
   display _ PrimOpGeNat = "prim.geNat"
   display _ PrimOpLtNat = "prim.ltNat"

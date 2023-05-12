@@ -532,6 +532,23 @@ angleTest modify = dbTestCase $ \env repo -> do
       [(Nat 1, Nat 2)],
       [(Nat 1, Nat 2), (Nat 5, Nat 2)]] r
 
+  -- Test prim.unpackByteSpans
+  r <- runQuery_ env repo $ modify $ angleData @[(Nat, Nat)]
+    [s|
+      prim.unpackByteSpans [] |
+      prim.unpackByteSpans [{2, [1]}] |
+      prim.unpackByteSpans [{2, [1, 4]}] |
+      prim.unpackByteSpans [{3, [1, 4]}, {2, [1]}, {3, [2, 4, 3]}]
+    |]
+  print r
+  assertEqual "angle - unpackByteSpans"
+    [ [],
+      [(Nat 1, Nat 2)],
+      [(Nat 1, Nat 2), (Nat 5, Nat 2)],
+      [(Nat 1, Nat 3), (Nat 5, Nat 3),
+       (Nat 6, Nat 2),
+       (Nat 8, Nat 3), (Nat 12, Nat 3), (Nat 15, Nat 3)] ] r
+
   -- Test numeric comparison primitives
   r <- runQuery_ env repo $ angleData @() "prim.gtNat 2 1"
   print r
