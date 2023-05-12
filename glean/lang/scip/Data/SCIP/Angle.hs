@@ -45,8 +45,6 @@ import qualified Proto.Scip_Fields as Scip
 
 import qualified Data.LSIF.Gen as LSIF
 
-import qualified Debug.Trace as Debug
-
 {-
 
 Debug scip files directly via protoc. Assuming you the scip.proto file handy
@@ -152,7 +150,6 @@ decodeScipDoc doc = do
 
 decodeScipDocXRefs :: Scip.Document -> Parse [LSIF.Predicate]
 decodeScipDocXRefs doc = do
-  -- why not just look it up here?
   mDocId <- getDefFactId (doc ^. Scip.relativePath)
   (docId, mFile) <- case mDocId of
     Nothing -> do
@@ -190,11 +187,15 @@ decodeScipXRefs docId occ = do
             ]
           return (a <> b)
 
+      -- discard xrefs to unknown defs
+        Nothing ->
+          pure []
+        -- this has the effect of discarding xrefs to not-yet indexed
+        -- things. It might not be the right way to shard sets.
+        --
         -- if we didn't find a definining occurence, then it is an external
         -- or 3rd party xref. we don't know the precise location
         -- we can likely _guess_ by parsing the symbol descriptor tho..
-        Nothing ->
-          pure []
 
       pure (rangeFact <> refFacts)
     else pure []
@@ -204,9 +205,8 @@ decodeScipHovers symInfo = do
   let symFullName = symInfo ^. Scip.symbol
   mDefId <- getDefFactId symFullName
   case mDefId of
-    Nothing ->
-      Debug.trace ("decodeScipHovers: warning: no definition fact for: " <>
-         show symFullName) $ pure [] -- impossible?
+    Nothing -> -- this is likely the hover text for a third-party xref
+         pure [] -- for now, discard, as we don't have an anchor xref
     Just defId -> concat <$> do
       forM (symInfo ^. Scip.documentation) $ \docstr -> do
         hoverId <- nextId
@@ -227,7 +227,6 @@ decodeScipOccurence docId occ = do
   let Occ{..} = decodeOcc occ
   if Scip.Definition `Set.member` symRoles
     then do
-      -- get the defn range
       rangeId <- nextId
       rangeFact <- decodeScipRange rangeId symScipSymbol (occ ^. Scip.range)
 
