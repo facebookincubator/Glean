@@ -202,8 +202,9 @@ predicate NameDefinition:
     defn: lsif.DefinitionMoniker,
   } stored
   { Name, Defn } where
-    Name != lsif.Name ""; # don't index empty identifiers
     Defn = lsif.DefinitionMoniker { defn = { range = { text = Name }}};
+    lsif.Name NameStr = Name;
+    NameStr != ""
 
 # Associate symbol kinds with some definitions and declarations
 predicate DefinitionKind:
@@ -236,7 +237,7 @@ type Location =
 
 # Tagged entity by language. Tags should match shape of code.lsif.angle
 # We use the lsif.LanguageId tag associated with lsif.Document (provided by the indexer)
-# to work out the language of the entity. List is known active indexers and generic lsif that 
+# to work out the language of the entity. List is known active indexers and generic lsif that
 # people might plausibly try to load
 type Entity =
   {
