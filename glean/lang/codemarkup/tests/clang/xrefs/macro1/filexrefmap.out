@@ -365,6 +365,400 @@
         ],
         [ { "offset": 741, "length": 3 }, { "offset": 18, "length": 11 } ],
         [ { "offset": 750, "length": 3 }, { "offset": 21, "length": 11 } ]
+      ],
+      "bound": [
+        {
+          "target": {
+            "declaration": {
+              "namespace_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 19,
+                    "columnBegin": 1,
+                    "lineEnd": 23,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          },
+          "uses": {
+            "key": {
+              "spans": [
+                {
+                  "length": 1,
+                  "offsets": [ 540, 6, 12, 17, 20, 12, 16, 15, 19, 17 ]
+                },
+                { "length": 11, "offsets": [ 147, 17, 12 ] },
+                { "length": 5, "offsets": [ 17 ] },
+                { "length": 13, "offsets": [ 9 ] },
+                { "length": 18, "offsets": [ 17 ] }
+              ]
+            }
+          }
+        },
+        {
+          "target": {
+            "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "foo" } } },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "N" } } }
+                      }
+                    }
+                  },
+                  "signature": {
+                    "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 20,
+                    "columnBegin": 3,
+                    "lineEnd": 20,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          },
+          "uses": {
+            "key": {
+              "spans": [
+                { "length": 3, "offsets": [ 549, 16 ] },
+                { "length": 11, "offsets": [ 13 ] },
+                { "length": 8, "offsets": [ 82 ] },
+                { "length": 3, "offsets": [ 26, 142 ] },
+                { "length": 5, "offsets": [ 39 ] }
+              ]
+            }
+          }
+        },
+        {
+          "target": {
+            "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "bar" } } },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "N" } } }
+                      }
+                    }
+                  },
+                  "signature": {
+                    "key": {
+                      "returns": { "key": "void" },
+                      "parameters": [
+                        { "name": { "key": "" }, "type": { "key": "int" } }
+                      ]
+                    }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 21,
+                    "columnBegin": 3,
+                    "lineEnd": 21,
+                    "columnEnd": 18
+                  }
+                }
+              }
+            }
+          },
+          "uses": {
+            "key": {
+              "spans": [
+                { "length": 3, "offsets": [ 602 ] },
+                { "length": 11, "offsets": [ 24 ] },
+                { "length": 3, "offsets": [ 219 ] },
+                { "length": 13, "offsets": [ 31 ] },
+                { "length": 18, "offsets": [ 17 ] }
+              ]
+            }
+          }
+        },
+        {
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "var" },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "N" } } }
+                      }
+                    }
+                  },
+                  "type": { "key": "int" },
+                  "kind": {
+                    "global_": { "kind": 0, "attribute": 0, "definition": true }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 22,
+                    "columnBegin": 3,
+                    "lineEnd": 22,
+                    "columnEnd": 9
+                  }
+                }
+              }
+            }
+          },
+          "uses": {
+            "key": {
+              "spans": [
+                { "length": 3, "offsets": [ 614 ] },
+                { "length": 11, "offsets": [ 27 ] },
+                { "length": 3, "offsets": [ 216, 28, 21 ] }
+              ]
+            }
+          }
+        },
+        {
+          "target": {
+            "declaration": {
+              "record_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "Foo" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "kind": { "struct_": { } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 25,
+                    "columnBegin": 1,
+                    "lineEnd": 29,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          },
+          "uses": {
+            "key": { "spans": [ { "length": 3, "offsets": [ 916 ] } ] }
+          }
+        },
+        {
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x" },
+                      "scope": {
+                        "local": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "f" } } },
+                            "scope": { "global_": { } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "Foo" },
+                  "kind": { "local": { "kind": 0, "attribute": 0 } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 57,
+                    "columnBegin": 3,
+                    "lineEnd": 57,
+                    "columnEnd": 7
+                  }
+                }
+              }
+            }
+          },
+          "uses": {
+            "key": {
+              "spans": [
+                { "length": 1, "offsets": [ 926, 11, 16, 19, 16, 21, 11 ] }
+              ]
+            }
+          }
+        },
+        {
+          "target": {
+            "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "foo" } } },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "Foo" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  },
+                  "signature": {
+                    "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                  },
+                  "method": {
+                    "isVirtual": false,
+                    "isConst": false,
+                    "isVolatile": false,
+                    "refQualifier": 0
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 26,
+                    "columnBegin": 3,
+                    "lineEnd": 26,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          },
+          "uses": {
+            "key": {
+              "spans": [
+                { "length": 3, "offsets": [ 928 ] },
+                { "length": 8, "offsets": [ 11 ] },
+                { "length": 11, "offsets": [ 16 ] },
+                { "length": 8, "offsets": [ 19 ] }
+              ]
+            }
+          }
+        },
+        {
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "field" },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "Foo" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "int" },
+                  "kind": { "field": { "mutable_": false } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 28,
+                    "columnBegin": 3,
+                    "lineEnd": 28,
+                    "columnEnd": 11
+                  }
+                }
+              }
+            }
+          },
+          "uses": {
+            "key": {
+              "spans": [
+                { "length": 15, "offsets": [ 990 ] },
+                { "length": 10, "offsets": [ 32 ] }
+              ]
+            }
+          }
+        },
+        {
+          "target": {
+            "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "bar" } } },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "Foo" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  },
+                  "signature": {
+                    "key": {
+                      "returns": { "key": "void" },
+                      "parameters": [
+                        { "name": { "key": "" }, "type": { "key": "int" } }
+                      ]
+                    }
+                  },
+                  "method": {
+                    "isVirtual": false,
+                    "isConst": false,
+                    "isVolatile": false,
+                    "refQualifier": 0
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 27,
+                    "columnBegin": 3,
+                    "lineEnd": 27,
+                    "columnEnd": 18
+                  }
+                }
+              }
+            }
+          },
+          "uses": {
+            "key": { "spans": [ { "length": 8, "offsets": [ 1011 ] } ] }
+          }
+        }
+      ],
+      "free": [
+        {
+          "key": {
+            "spans": [
+              { "length": 3, "offsets": [ 697, 13 ] },
+              { "length": 11, "offsets": [ 10 ] },
+              { "length": 8, "offsets": [ 67 ] },
+              { "length": 3, "offsets": [ 23 ] }
+            ]
+          }
+        },
+        {
+          "key": {
+            "spans": [
+              { "length": 3, "offsets": [ 741 ] },
+              { "length": 11, "offsets": [ 18 ] }
+            ]
+          }
+        },
+        {
+          "key": {
+            "spans": [
+              { "length": 3, "offsets": [ 750 ] },
+              { "length": 11, "offsets": [ 21 ] }
+            ]
+          }
+        }
       ]
     }
   }

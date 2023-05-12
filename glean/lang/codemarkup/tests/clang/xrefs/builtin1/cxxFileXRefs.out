@@ -33,10 +33,42 @@
               "ranges": [ { "offset": 265, "length": 1 } ]
             }
           ],
-          "variable": [ ]
+          "variable": [ ],
+          "bound": [
+            {
+              "target": {
+                "declaration": {
+                  "typeAlias": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "I" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "type": { "key": "__int128_t" },
+                      "kind": 1,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 9,
+                        "columnBegin": 1,
+                        "lineEnd": 9,
+                        "columnEnd": 20
+                      }
+                    }
+                  }
+                }
+              },
+              "uses": {
+                "key": { "spans": [ { "length": 1, "offsets": [ 265 ] } ] }
+              }
+            }
+          ],
+          "free": [ ]
         }
       },
-      "externals": [ ]
+      "externals": [ ],
+      "targets": [ ]
     }
   }
 ]

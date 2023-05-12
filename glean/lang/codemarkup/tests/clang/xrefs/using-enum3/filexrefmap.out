@@ -80,6 +80,86 @@
         [ { "offset": 613, "length": 1 } ],
         [ { "offset": 689, "length": 1 } ],
         [ { "offset": 765, "length": 1 } ]
+      ],
+      "bound": [
+        {
+          "target": {
+            "declaration": {
+              "namespace_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N1" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 9,
+                    "columnBegin": 1,
+                    "lineEnd": 13,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          },
+          "uses": {
+            "key": {
+              "spans": [
+                {
+                  "length": 2,
+                  "offsets": [ 293, 10, 93, 23, 90, 13, 55, 13, 76, 55 ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "target": {
+            "declaration": {
+              "namespace_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N21" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 15,
+                    "columnBegin": 1,
+                    "lineEnd": 24,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          },
+          "uses": {
+            "key": { "spans": [ { "length": 3, "offsets": [ 655 ] } ] }
+          }
+        },
+        {
+          "target": {
+            "declaration": {
+              "namespace_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N22" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 26,
+                    "columnBegin": 1,
+                    "lineEnd": 35,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          },
+          "uses": {
+            "key": { "spans": [ { "length": 3, "offsets": [ 744 ] } ] }
+          }
+        }
+      ],
+      "free": [
+        { "key": { "spans": [ { "length": 1, "offsets": [ 326 ] } ] } },
+        { "key": { "spans": [ { "length": 1, "offsets": [ 439 ] } ] } },
+        { "key": { "spans": [ { "length": 1, "offsets": [ 545 ] } ] } },
+        { "key": { "spans": [ { "length": 1, "offsets": [ 613 ] } ] } },
+        { "key": { "spans": [ { "length": 1, "offsets": [ 689 ] } ] } },
+        { "key": { "spans": [ { "length": 1, "offsets": [ 765 ] } ] } }
       ]
     }
   }

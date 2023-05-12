@@ -108,7 +108,121 @@
           "ranges": [ { "offset": 389, "length": 2 } ]
         }
       ],
-      "variable": [ ]
+      "variable": [ ],
+      "bound": [
+        {
+          "target": {
+            "declaration": {
+              "record_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "S" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "kind": { "struct_": { } },
+                  "source": {
+                    "file": { "key": "main.cpp" },
+                    "lineBegin": 10,
+                    "columnBegin": 1,
+                    "lineEnd": 10,
+                    "columnEnd": 11
+                  }
+                }
+              }
+            }
+          },
+          "uses": {
+            "key": { "spans": [ { "length": 1, "offsets": [ 360 ] } ] }
+          }
+        },
+        {
+          "target": {
+            "declaration": {
+              "typeAlias": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "F1" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "type": { "key": "T" },
+                  "kind": 1,
+                  "source": {
+                    "file": { "key": "main.cpp" },
+                    "lineBegin": 12,
+                    "columnBegin": 22,
+                    "lineEnd": 12,
+                    "columnEnd": 33
+                  }
+                }
+              }
+            }
+          },
+          "uses": {
+            "key": { "spans": [ { "length": 2, "offsets": [ 367 ] } ] }
+          }
+        },
+        {
+          "target": {
+            "declaration": {
+              "typeAlias": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "F2" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "type": { "key": "int" },
+                  "kind": 1,
+                  "source": {
+                    "file": { "key": "main.cpp" },
+                    "lineBegin": 13,
+                    "columnBegin": 22,
+                    "lineEnd": 13,
+                    "columnEnd": 35
+                  }
+                }
+              }
+            }
+          },
+          "uses": {
+            "key": { "spans": [ { "length": 2, "offsets": [ 378 ] } ] }
+          }
+        },
+        {
+          "target": {
+            "declaration": {
+              "typeAlias": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "F3" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "type": { "key": "S<T>" },
+                  "kind": 1,
+                  "source": {
+                    "file": { "key": "main.cpp" },
+                    "lineBegin": 14,
+                    "columnBegin": 22,
+                    "lineEnd": 14,
+                    "columnEnd": 36
+                  }
+                }
+              }
+            }
+          },
+          "uses": {
+            "key": { "spans": [ { "length": 2, "offsets": [ 389 ] } ] }
+          }
+        }
+      ],
+      "free": [ ]
     }
   }
 ]

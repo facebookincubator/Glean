@@ -507,6 +507,13 @@ predicate XRefIndirectTarget :
     target : XRefTarget,
   }
 
+predicate XRefTargets : [XRefTarget]
+
+predicate Uses :
+  {
+    spans : src.PackedByteSpans,
+  }
+
 # Cross-references to a known target
 type FixedXRef =
   {
@@ -514,21 +521,32 @@ type FixedXRef =
     ranges : src.ByteSpans,
   }
 
+type BoundXRef =
+  {
+    target : XRefTarget,
+    uses : Uses,
+  }
+
 # Note that "variable" corresponds to many "externals" in FileXRefs
+# Note that "free" corresponds to many "targets" in FileXRefs
 # Cross-references in a file
 predicate FileXRefMap :
   {
     file : src.File,
     fixed : [FixedXRef],
     variable : [src.ByteSpans],
+    bound : [BoundXRef],
+    free : [Uses],
   }
 
-# Note that "externals" entries correspond to "variable" entries (in the "xmap")
-# Instantiation of a FileCrossRefMap with set of external references
+# Note that "externals" entries correspond to "variable" entries (in the "xmap"),
+# Note that "targets" entries correspond to "free" entries (in the "xmap").
+# Instantiation of a FileXRefMap with set of external references
 predicate FileXRefs :
   {
     xmap : FileXRefMap,
     externals : [XRefTarget],
+    targets : [XRefTargets],
   }
 
 # Uses
@@ -540,6 +558,13 @@ predicate TargetUses :
     target : XRefTarget,
     file : src.File,
     uses : src.ByteSpans,
+  }
+
+predicate XRefTargetUses :
+  {
+    target : XRefTarget,
+    file : src.File,
+    uses : Uses,
   }
 
 # These are all disjoint equivalence classes.  Constructors within an array

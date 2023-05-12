@@ -92,6 +92,35 @@ predicate RangeContains :
 # Multiple relative-offset bytespans
 type ByteSpans = [RelByteSpan]
 
+# Packed representation for a list of byte spans
+#
+# This is represented as a list of relative offsets grouped by length.
+# Each group represents a sequence of byte spans of the same length.
+#
+# Offsets are relative to the previous offset, to the last offset of
+# the previous group if this is the first offset of a group, or to
+# the start of the file if this is the first offset of the first group.
+#
+# Note that we can only group spans of the same length if they are adjacent
+# in the sequence; each span that differs in length from the previous span
+# will result in a new group.
+#
+# For example, given a list of offsets like:
+#
+#   [
+#     { length: 2, offsets: [1] },
+#     { length: 3, offsets: [3, 5] },
+#     { length: 2, offsets: [4] },
+#   ]
+#
+# The full, expanded list of (absolute offset, length) is:
+#
+#   [ (1, 2), (4, 3), (9, 3), (13, 2) ]
+#
+# Use the primitive `prim.unpackByteSpans` to convert this to `[ByteSpan]`.
+type PackedByteSpansGroup = { length : nat, offsets : [nat], }
+type PackedByteSpans = [PackedByteSpansGroup]
+
 # Kind of language supported by Glean
 type Language = enum {
   Buck | C | Cpp | Hack | Haskell  |

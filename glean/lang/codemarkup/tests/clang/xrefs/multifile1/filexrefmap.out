@@ -7,6 +7,11 @@
       "variable": [
         [ { "offset": 234, "length": 1 } ],
         [ { "offset": 241, "length": 1 } ]
+      ],
+      "bound": [ ],
+      "free": [
+        { "key": { "spans": [ { "length": 1, "offsets": [ 234 ] } ] } },
+        { "key": { "spans": [ { "length": 1, "offsets": [ 241 ] } ] } }
       ]
     }
   }

@@ -135,10 +135,149 @@
                   "ranges": [ { "offset": 452, "length": 3 } ]
                 }
               ],
-              "variable": [ ]
+              "variable": [ ],
+              "bound": [
+                {
+                  "target": {
+                    "declaration": {
+                      "objcContainer": {
+                        "key": {
+                          "id": { "protocol": { "key": "Foo" } },
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 9,
+                            "columnBegin": 1,
+                            "lineEnd": 13,
+                            "columnEnd": 4
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 3, "offsets": [ 301, 71 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "foo" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": { "name": { "key": "setFoo" } }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "id<Foo>" },
+                          "kind": { "local": { "kind": 2, "attribute": 0 } },
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 15,
+                            "columnBegin": 13,
+                            "lineEnd": 15,
+                            "columnEnd": 23
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 3, "offsets": [ 316 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "objcMethod": {
+                        "key": {
+                          "selector": { "key": [ "setInt", "setDouble" ] },
+                          "container": { "protocol": { "key": "Foo" } },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "x" },
+                                  "type": { "key": "int" }
+                                },
+                                {
+                                  "name": { "key": "y" },
+                                  "type": { "key": "double" }
+                                }
+                              ]
+                            }
+                          },
+                          "isInstance": true,
+                          "isOptional": false,
+                          "isAccessor": false,
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 11,
+                            "columnBegin": 1,
+                            "lineEnd": 11,
+                            "columnEnd": 42
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [
+                        { "length": 6, "offsets": [ 320 ] },
+                        { "length": 9, "offsets": [ 10 ] },
+                        { "length": 6, "offsets": [ 126 ] },
+                        { "length": 9, "offsets": [ 10 ] }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "foo" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "id<Foo>" },
+                          "kind": { "ivar": { "synthesize": false } },
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 20,
+                            "columnBegin": 3,
+                            "lineEnd": 20,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 3, "offsets": [ 452 ] } ] }
+                  }
+                }
+              ],
+              "free": [ ]
             }
           },
-          "externals": [ ]
+          "externals": [ ],
+          "targets": [ ]
         }
       },
       "xref": {
@@ -353,10 +492,149 @@
                   "ranges": [ { "offset": 452, "length": 3 } ]
                 }
               ],
-              "variable": [ ]
+              "variable": [ ],
+              "bound": [
+                {
+                  "target": {
+                    "declaration": {
+                      "objcContainer": {
+                        "key": {
+                          "id": { "protocol": { "key": "Foo" } },
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 9,
+                            "columnBegin": 1,
+                            "lineEnd": 13,
+                            "columnEnd": 4
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 3, "offsets": [ 301, 71 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "foo" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": { "name": { "key": "setFoo" } }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "id<Foo>" },
+                          "kind": { "local": { "kind": 2, "attribute": 0 } },
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 15,
+                            "columnBegin": 13,
+                            "lineEnd": 15,
+                            "columnEnd": 23
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 3, "offsets": [ 316 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "objcMethod": {
+                        "key": {
+                          "selector": { "key": [ "setInt", "setDouble" ] },
+                          "container": { "protocol": { "key": "Foo" } },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "x" },
+                                  "type": { "key": "int" }
+                                },
+                                {
+                                  "name": { "key": "y" },
+                                  "type": { "key": "double" }
+                                }
+                              ]
+                            }
+                          },
+                          "isInstance": true,
+                          "isOptional": false,
+                          "isAccessor": false,
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 11,
+                            "columnBegin": 1,
+                            "lineEnd": 11,
+                            "columnEnd": 42
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [
+                        { "length": 6, "offsets": [ 320 ] },
+                        { "length": 9, "offsets": [ 10 ] },
+                        { "length": 6, "offsets": [ 126 ] },
+                        { "length": 9, "offsets": [ 10 ] }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "foo" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "id<Foo>" },
+                          "kind": { "ivar": { "synthesize": false } },
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 20,
+                            "columnBegin": 3,
+                            "lineEnd": 20,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 3, "offsets": [ 452 ] } ] }
+                  }
+                }
+              ],
+              "free": [ ]
             }
           },
-          "externals": [ ]
+          "externals": [ ],
+          "targets": [ ]
         }
       },
       "xref": {
@@ -571,10 +849,149 @@
                   "ranges": [ { "offset": 452, "length": 3 } ]
                 }
               ],
-              "variable": [ ]
+              "variable": [ ],
+              "bound": [
+                {
+                  "target": {
+                    "declaration": {
+                      "objcContainer": {
+                        "key": {
+                          "id": { "protocol": { "key": "Foo" } },
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 9,
+                            "columnBegin": 1,
+                            "lineEnd": 13,
+                            "columnEnd": 4
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 3, "offsets": [ 301, 71 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "foo" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": { "name": { "key": "setFoo" } }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "id<Foo>" },
+                          "kind": { "local": { "kind": 2, "attribute": 0 } },
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 15,
+                            "columnBegin": 13,
+                            "lineEnd": 15,
+                            "columnEnd": 23
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 3, "offsets": [ 316 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "objcMethod": {
+                        "key": {
+                          "selector": { "key": [ "setInt", "setDouble" ] },
+                          "container": { "protocol": { "key": "Foo" } },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "x" },
+                                  "type": { "key": "int" }
+                                },
+                                {
+                                  "name": { "key": "y" },
+                                  "type": { "key": "double" }
+                                }
+                              ]
+                            }
+                          },
+                          "isInstance": true,
+                          "isOptional": false,
+                          "isAccessor": false,
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 11,
+                            "columnBegin": 1,
+                            "lineEnd": 11,
+                            "columnEnd": 42
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [
+                        { "length": 6, "offsets": [ 320 ] },
+                        { "length": 9, "offsets": [ 10 ] },
+                        { "length": 6, "offsets": [ 126 ] },
+                        { "length": 9, "offsets": [ 10 ] }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "foo" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "id<Foo>" },
+                          "kind": { "ivar": { "synthesize": false } },
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 20,
+                            "columnBegin": 3,
+                            "lineEnd": 20,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 3, "offsets": [ 452 ] } ] }
+                  }
+                }
+              ],
+              "free": [ ]
             }
           },
-          "externals": [ ]
+          "externals": [ ],
+          "targets": [ ]
         }
       },
       "xref": {
@@ -761,10 +1178,149 @@
                   "ranges": [ { "offset": 452, "length": 3 } ]
                 }
               ],
-              "variable": [ ]
+              "variable": [ ],
+              "bound": [
+                {
+                  "target": {
+                    "declaration": {
+                      "objcContainer": {
+                        "key": {
+                          "id": { "protocol": { "key": "Foo" } },
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 9,
+                            "columnBegin": 1,
+                            "lineEnd": 13,
+                            "columnEnd": 4
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 3, "offsets": [ 301, 71 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "foo" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": { "name": { "key": "setFoo" } }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "id<Foo>" },
+                          "kind": { "local": { "kind": 2, "attribute": 0 } },
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 15,
+                            "columnBegin": 13,
+                            "lineEnd": 15,
+                            "columnEnd": 23
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 3, "offsets": [ 316 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "objcMethod": {
+                        "key": {
+                          "selector": { "key": [ "setInt", "setDouble" ] },
+                          "container": { "protocol": { "key": "Foo" } },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "x" },
+                                  "type": { "key": "int" }
+                                },
+                                {
+                                  "name": { "key": "y" },
+                                  "type": { "key": "double" }
+                                }
+                              ]
+                            }
+                          },
+                          "isInstance": true,
+                          "isOptional": false,
+                          "isAccessor": false,
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 11,
+                            "columnBegin": 1,
+                            "lineEnd": 11,
+                            "columnEnd": 42
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [
+                        { "length": 6, "offsets": [ 320 ] },
+                        { "length": 9, "offsets": [ 10 ] },
+                        { "length": 6, "offsets": [ 126 ] },
+                        { "length": 9, "offsets": [ 10 ] }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "foo" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "id<Foo>" },
+                          "kind": { "ivar": { "synthesize": false } },
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 20,
+                            "columnBegin": 3,
+                            "lineEnd": 20,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 3, "offsets": [ 452 ] } ] }
+                  }
+                }
+              ],
+              "free": [ ]
             }
           },
-          "externals": [ ]
+          "externals": [ ],
+          "targets": [ ]
         }
       },
       "xref": {

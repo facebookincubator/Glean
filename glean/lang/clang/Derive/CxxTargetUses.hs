@@ -53,11 +53,20 @@ deriveUses e cfg writer = do
       generateUses (Just file) uses =
         when (not $ cfgDryRun cfg)
         $ writeFacts writer
-        $ forM_ (HashMap.toList uses) $ \(target, ranges) ->
+        $ forM_ (HashMap.toList uses) $ \(target, ranges) -> do
             makeFact_ @Cxx.TargetUses Cxx.TargetUses_key
               { targetUses_key_target = target
               , targetUses_key_file = file
               , targetUses_key_uses = rangesToRelSpans $ Set.toList ranges
+              }
+            uses <- makeFact @Cxx.Uses Cxx.Uses_key
+              {
+                uses_key_spans = rangesToPackedByteSpans $ Set.toList ranges
+              }
+            makeFact_ @Cxx.XRefTargetUses Cxx.XRefTargetUses_key
+              { xRefTargetUses_key_target = target
+              , xRefTargetUses_key_file = file
+              , xRefTargetUses_key_uses = uses
               }
       generateUses _ _ = return ()
 

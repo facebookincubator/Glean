@@ -310,10 +310,326 @@
                   "ranges": [ { "offset": 782, "length": 14 } ]
                 }
               ],
-              "variable": [ ]
+              "variable": [ ],
+              "bound": [
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "a" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": {
+                                        "local": {
+                                          "key": {
+                                            "name": {
+                                              "key": {
+                                                "name": {
+                                                  "key": "calcSomething"
+                                                }
+                                              }
+                                            },
+                                            "scope": { "global_": { } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 13,
+                            "columnBegin": 9,
+                            "lineEnd": 13,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 513, 123 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "A" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 12,
+                            "columnBegin": 5,
+                            "lineEnd": 20,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 1, "offsets": [ 592 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "B" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 22,
+                            "columnBegin": 5,
+                            "lineEnd": 24,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 1, "offsets": [ 617 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "b" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "struct B" },
+                          "kind": { "local": { "kind": 0, "attribute": 0 } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 26,
+                            "columnBegin": 5,
+                            "lineEnd": 26,
+                            "columnEnd": 19
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 631, 226 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "a_" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "B" },
+                                      "scope": {
+                                        "local": {
+                                          "key": {
+                                            "name": {
+                                              "key": {
+                                                "name": {
+                                                  "key": "calcSomething"
+                                                }
+                                              }
+                                            },
+                                            "scope": { "global_": { } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "struct A" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 23,
+                            "columnBegin": 9,
+                            "lineEnd": 23,
+                            "columnEnd": 19
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 2, "offsets": [ 633 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "c" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "ExplictMethods" },
+                                      "scope": {
+                                        "local": {
+                                          "key": {
+                                            "name": {
+                                              "key": {
+                                                "name": {
+                                                  "key": "calcSomething"
+                                                }
+                                              }
+                                            },
+                                            "scope": { "global_": { } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 30,
+                            "columnBegin": 9,
+                            "lineEnd": 30,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 755, 58 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "ExplictMethods" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 29,
+                            "columnBegin": 5,
+                            "lineEnd": 39,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 14, "offsets": [ 782 ] } ] }
+                  }
+                }
+              ],
+              "free": [ ]
             }
           },
-          "externals": [ ]
+          "externals": [ ],
+          "targets": [ ]
         }
       },
       "xref": {
@@ -779,10 +1095,326 @@
                   "ranges": [ { "offset": 782, "length": 14 } ]
                 }
               ],
-              "variable": [ ]
+              "variable": [ ],
+              "bound": [
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "a" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": {
+                                        "local": {
+                                          "key": {
+                                            "name": {
+                                              "key": {
+                                                "name": {
+                                                  "key": "calcSomething"
+                                                }
+                                              }
+                                            },
+                                            "scope": { "global_": { } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 13,
+                            "columnBegin": 9,
+                            "lineEnd": 13,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 513, 123 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "A" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 12,
+                            "columnBegin": 5,
+                            "lineEnd": 20,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 1, "offsets": [ 592 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "B" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 22,
+                            "columnBegin": 5,
+                            "lineEnd": 24,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 1, "offsets": [ 617 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "b" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "struct B" },
+                          "kind": { "local": { "kind": 0, "attribute": 0 } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 26,
+                            "columnBegin": 5,
+                            "lineEnd": 26,
+                            "columnEnd": 19
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 631, 226 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "a_" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "B" },
+                                      "scope": {
+                                        "local": {
+                                          "key": {
+                                            "name": {
+                                              "key": {
+                                                "name": {
+                                                  "key": "calcSomething"
+                                                }
+                                              }
+                                            },
+                                            "scope": { "global_": { } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "struct A" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 23,
+                            "columnBegin": 9,
+                            "lineEnd": 23,
+                            "columnEnd": 19
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 2, "offsets": [ 633 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "c" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "ExplictMethods" },
+                                      "scope": {
+                                        "local": {
+                                          "key": {
+                                            "name": {
+                                              "key": {
+                                                "name": {
+                                                  "key": "calcSomething"
+                                                }
+                                              }
+                                            },
+                                            "scope": { "global_": { } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 30,
+                            "columnBegin": 9,
+                            "lineEnd": 30,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 755, 58 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "ExplictMethods" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 29,
+                            "columnBegin": 5,
+                            "lineEnd": 39,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 14, "offsets": [ 782 ] } ] }
+                  }
+                }
+              ],
+              "free": [ ]
             }
           },
-          "externals": [ ]
+          "externals": [ ],
+          "targets": [ ]
         }
       },
       "xref": {
@@ -1196,10 +1828,326 @@
                   "ranges": [ { "offset": 782, "length": 14 } ]
                 }
               ],
-              "variable": [ ]
+              "variable": [ ],
+              "bound": [
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "a" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": {
+                                        "local": {
+                                          "key": {
+                                            "name": {
+                                              "key": {
+                                                "name": {
+                                                  "key": "calcSomething"
+                                                }
+                                              }
+                                            },
+                                            "scope": { "global_": { } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 13,
+                            "columnBegin": 9,
+                            "lineEnd": 13,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 513, 123 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "A" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 12,
+                            "columnBegin": 5,
+                            "lineEnd": 20,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 1, "offsets": [ 592 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "B" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 22,
+                            "columnBegin": 5,
+                            "lineEnd": 24,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 1, "offsets": [ 617 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "b" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "struct B" },
+                          "kind": { "local": { "kind": 0, "attribute": 0 } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 26,
+                            "columnBegin": 5,
+                            "lineEnd": 26,
+                            "columnEnd": 19
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 631, 226 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "a_" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "B" },
+                                      "scope": {
+                                        "local": {
+                                          "key": {
+                                            "name": {
+                                              "key": {
+                                                "name": {
+                                                  "key": "calcSomething"
+                                                }
+                                              }
+                                            },
+                                            "scope": { "global_": { } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "struct A" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 23,
+                            "columnBegin": 9,
+                            "lineEnd": 23,
+                            "columnEnd": 19
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 2, "offsets": [ 633 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "c" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "ExplictMethods" },
+                                      "scope": {
+                                        "local": {
+                                          "key": {
+                                            "name": {
+                                              "key": {
+                                                "name": {
+                                                  "key": "calcSomething"
+                                                }
+                                              }
+                                            },
+                                            "scope": { "global_": { } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 30,
+                            "columnBegin": 9,
+                            "lineEnd": 30,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 755, 58 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "ExplictMethods" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 29,
+                            "columnBegin": 5,
+                            "lineEnd": 39,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 14, "offsets": [ 782 ] } ] }
+                  }
+                }
+              ],
+              "free": [ ]
             }
           },
-          "externals": [ ]
+          "externals": [ ],
+          "targets": [ ]
         }
       },
       "xref": {
@@ -1717,10 +2665,326 @@
                   "ranges": [ { "offset": 782, "length": 14 } ]
                 }
               ],
-              "variable": [ ]
+              "variable": [ ],
+              "bound": [
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "a" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": {
+                                        "local": {
+                                          "key": {
+                                            "name": {
+                                              "key": {
+                                                "name": {
+                                                  "key": "calcSomething"
+                                                }
+                                              }
+                                            },
+                                            "scope": { "global_": { } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 13,
+                            "columnBegin": 9,
+                            "lineEnd": 13,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 513, 123 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "A" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 12,
+                            "columnBegin": 5,
+                            "lineEnd": 20,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 1, "offsets": [ 592 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "B" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 22,
+                            "columnBegin": 5,
+                            "lineEnd": 24,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 1, "offsets": [ 617 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "b" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "struct B" },
+                          "kind": { "local": { "kind": 0, "attribute": 0 } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 26,
+                            "columnBegin": 5,
+                            "lineEnd": 26,
+                            "columnEnd": 19
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 631, 226 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "a_" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "B" },
+                                      "scope": {
+                                        "local": {
+                                          "key": {
+                                            "name": {
+                                              "key": {
+                                                "name": {
+                                                  "key": "calcSomething"
+                                                }
+                                              }
+                                            },
+                                            "scope": { "global_": { } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "struct A" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 23,
+                            "columnBegin": 9,
+                            "lineEnd": 23,
+                            "columnEnd": 19
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 2, "offsets": [ 633 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "c" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "ExplictMethods" },
+                                      "scope": {
+                                        "local": {
+                                          "key": {
+                                            "name": {
+                                              "key": {
+                                                "name": {
+                                                  "key": "calcSomething"
+                                                }
+                                              }
+                                            },
+                                            "scope": { "global_": { } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 30,
+                            "columnBegin": 9,
+                            "lineEnd": 30,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 755, 58 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "ExplictMethods" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 29,
+                            "columnBegin": 5,
+                            "lineEnd": 39,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 14, "offsets": [ 782 ] } ] }
+                  }
+                }
+              ],
+              "free": [ ]
             }
           },
-          "externals": [ ]
+          "externals": [ ],
+          "targets": [ ]
         }
       },
       "xref": {
@@ -2094,10 +3358,326 @@
                   "ranges": [ { "offset": 782, "length": 14 } ]
                 }
               ],
-              "variable": [ ]
+              "variable": [ ],
+              "bound": [
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "a" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": {
+                                        "local": {
+                                          "key": {
+                                            "name": {
+                                              "key": {
+                                                "name": {
+                                                  "key": "calcSomething"
+                                                }
+                                              }
+                                            },
+                                            "scope": { "global_": { } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 13,
+                            "columnBegin": 9,
+                            "lineEnd": 13,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 513, 123 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "A" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 12,
+                            "columnBegin": 5,
+                            "lineEnd": 20,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 1, "offsets": [ 592 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "B" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 22,
+                            "columnBegin": 5,
+                            "lineEnd": 24,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 1, "offsets": [ 617 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "b" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "struct B" },
+                          "kind": { "local": { "kind": 0, "attribute": 0 } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 26,
+                            "columnBegin": 5,
+                            "lineEnd": 26,
+                            "columnEnd": 19
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 631, 226 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "a_" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "B" },
+                                      "scope": {
+                                        "local": {
+                                          "key": {
+                                            "name": {
+                                              "key": {
+                                                "name": {
+                                                  "key": "calcSomething"
+                                                }
+                                              }
+                                            },
+                                            "scope": { "global_": { } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "struct A" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 23,
+                            "columnBegin": 9,
+                            "lineEnd": 23,
+                            "columnEnd": 19
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 2, "offsets": [ 633 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "c" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "ExplictMethods" },
+                                      "scope": {
+                                        "local": {
+                                          "key": {
+                                            "name": {
+                                              "key": {
+                                                "name": {
+                                                  "key": "calcSomething"
+                                                }
+                                              }
+                                            },
+                                            "scope": { "global_": { } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 30,
+                            "columnBegin": 9,
+                            "lineEnd": 30,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 755, 58 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "ExplictMethods" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 29,
+                            "columnBegin": 5,
+                            "lineEnd": 39,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 14, "offsets": [ 782 ] } ] }
+                  }
+                }
+              ],
+              "free": [ ]
             }
           },
-          "externals": [ ]
+          "externals": [ ],
+          "targets": [ ]
         }
       },
       "xref": {
@@ -2471,10 +4051,326 @@
                   "ranges": [ { "offset": 782, "length": 14 } ]
                 }
               ],
-              "variable": [ ]
+              "variable": [ ],
+              "bound": [
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "a" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": {
+                                        "local": {
+                                          "key": {
+                                            "name": {
+                                              "key": {
+                                                "name": {
+                                                  "key": "calcSomething"
+                                                }
+                                              }
+                                            },
+                                            "scope": { "global_": { } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 13,
+                            "columnBegin": 9,
+                            "lineEnd": 13,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 513, 123 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "A" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 12,
+                            "columnBegin": 5,
+                            "lineEnd": 20,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 1, "offsets": [ 592 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "B" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 22,
+                            "columnBegin": 5,
+                            "lineEnd": 24,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 1, "offsets": [ 617 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "b" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "struct B" },
+                          "kind": { "local": { "kind": 0, "attribute": 0 } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 26,
+                            "columnBegin": 5,
+                            "lineEnd": 26,
+                            "columnEnd": 19
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 631, 226 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "a_" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "B" },
+                                      "scope": {
+                                        "local": {
+                                          "key": {
+                                            "name": {
+                                              "key": {
+                                                "name": {
+                                                  "key": "calcSomething"
+                                                }
+                                              }
+                                            },
+                                            "scope": { "global_": { } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "struct A" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 23,
+                            "columnBegin": 9,
+                            "lineEnd": 23,
+                            "columnEnd": 19
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 2, "offsets": [ 633 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "c" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "ExplictMethods" },
+                                      "scope": {
+                                        "local": {
+                                          "key": {
+                                            "name": {
+                                              "key": {
+                                                "name": {
+                                                  "key": "calcSomething"
+                                                }
+                                              }
+                                            },
+                                            "scope": { "global_": { } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 30,
+                            "columnBegin": 9,
+                            "lineEnd": 30,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 755, 58 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "ExplictMethods" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 29,
+                            "columnBegin": 5,
+                            "lineEnd": 39,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 14, "offsets": [ 782 ] } ] }
+                  }
+                }
+              ],
+              "free": [ ]
             }
           },
-          "externals": [ ]
+          "externals": [ ],
+          "targets": [ ]
         }
       },
       "xref": {
@@ -2848,10 +4744,326 @@
                   "ranges": [ { "offset": 782, "length": 14 } ]
                 }
               ],
-              "variable": [ ]
+              "variable": [ ],
+              "bound": [
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "a" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": {
+                                        "local": {
+                                          "key": {
+                                            "name": {
+                                              "key": {
+                                                "name": {
+                                                  "key": "calcSomething"
+                                                }
+                                              }
+                                            },
+                                            "scope": { "global_": { } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 13,
+                            "columnBegin": 9,
+                            "lineEnd": 13,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 513, 123 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "A" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 12,
+                            "columnBegin": 5,
+                            "lineEnd": 20,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 1, "offsets": [ 592 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "B" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 22,
+                            "columnBegin": 5,
+                            "lineEnd": 24,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 1, "offsets": [ 617 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "b" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "struct B" },
+                          "kind": { "local": { "kind": 0, "attribute": 0 } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 26,
+                            "columnBegin": 5,
+                            "lineEnd": 26,
+                            "columnEnd": 19
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 631, 226 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "a_" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "B" },
+                                      "scope": {
+                                        "local": {
+                                          "key": {
+                                            "name": {
+                                              "key": {
+                                                "name": {
+                                                  "key": "calcSomething"
+                                                }
+                                              }
+                                            },
+                                            "scope": { "global_": { } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "struct A" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 23,
+                            "columnBegin": 9,
+                            "lineEnd": 23,
+                            "columnEnd": 19
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 2, "offsets": [ 633 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "c" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "ExplictMethods" },
+                                      "scope": {
+                                        "local": {
+                                          "key": {
+                                            "name": {
+                                              "key": {
+                                                "name": {
+                                                  "key": "calcSomething"
+                                                }
+                                              }
+                                            },
+                                            "scope": { "global_": { } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 30,
+                            "columnBegin": 9,
+                            "lineEnd": 30,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 755, 58 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "ExplictMethods" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 29,
+                            "columnBegin": 5,
+                            "lineEnd": 39,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 14, "offsets": [ 782 ] } ] }
+                  }
+                }
+              ],
+              "free": [ ]
             }
           },
-          "externals": [ ]
+          "externals": [ ],
+          "targets": [ ]
         }
       },
       "xref": {
@@ -3215,10 +5427,326 @@
                   "ranges": [ { "offset": 782, "length": 14 } ]
                 }
               ],
-              "variable": [ ]
+              "variable": [ ],
+              "bound": [
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "a" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": {
+                                        "local": {
+                                          "key": {
+                                            "name": {
+                                              "key": {
+                                                "name": {
+                                                  "key": "calcSomething"
+                                                }
+                                              }
+                                            },
+                                            "scope": { "global_": { } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 13,
+                            "columnBegin": 9,
+                            "lineEnd": 13,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 513, 123 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "A" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 12,
+                            "columnBegin": 5,
+                            "lineEnd": 20,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 1, "offsets": [ 592 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "B" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 22,
+                            "columnBegin": 5,
+                            "lineEnd": 24,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 1, "offsets": [ 617 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "b" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "struct B" },
+                          "kind": { "local": { "kind": 0, "attribute": 0 } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 26,
+                            "columnBegin": 5,
+                            "lineEnd": 26,
+                            "columnEnd": 19
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 631, 226 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "a_" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "B" },
+                                      "scope": {
+                                        "local": {
+                                          "key": {
+                                            "name": {
+                                              "key": {
+                                                "name": {
+                                                  "key": "calcSomething"
+                                                }
+                                              }
+                                            },
+                                            "scope": { "global_": { } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "struct A" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 23,
+                            "columnBegin": 9,
+                            "lineEnd": 23,
+                            "columnEnd": 19
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 2, "offsets": [ 633 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "c" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "ExplictMethods" },
+                                      "scope": {
+                                        "local": {
+                                          "key": {
+                                            "name": {
+                                              "key": {
+                                                "name": {
+                                                  "key": "calcSomething"
+                                                }
+                                              }
+                                            },
+                                            "scope": { "global_": { } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 30,
+                            "columnBegin": 9,
+                            "lineEnd": 30,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 755, 58 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "ExplictMethods" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 29,
+                            "columnBegin": 5,
+                            "lineEnd": 39,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 14, "offsets": [ 782 ] } ] }
+                  }
+                }
+              ],
+              "free": [ ]
             }
           },
-          "externals": [ ]
+          "externals": [ ],
+          "targets": [ ]
         }
       },
       "xref": {
@@ -3582,10 +6110,326 @@
                   "ranges": [ { "offset": 782, "length": 14 } ]
                 }
               ],
-              "variable": [ ]
+              "variable": [ ],
+              "bound": [
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "a" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": {
+                                        "local": {
+                                          "key": {
+                                            "name": {
+                                              "key": {
+                                                "name": {
+                                                  "key": "calcSomething"
+                                                }
+                                              }
+                                            },
+                                            "scope": { "global_": { } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 13,
+                            "columnBegin": 9,
+                            "lineEnd": 13,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 513, 123 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "A" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 12,
+                            "columnBegin": 5,
+                            "lineEnd": 20,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 1, "offsets": [ 592 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "B" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 22,
+                            "columnBegin": 5,
+                            "lineEnd": 24,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 1, "offsets": [ 617 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "b" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "struct B" },
+                          "kind": { "local": { "kind": 0, "attribute": 0 } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 26,
+                            "columnBegin": 5,
+                            "lineEnd": 26,
+                            "columnEnd": 19
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 631, 226 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "a_" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "B" },
+                                      "scope": {
+                                        "local": {
+                                          "key": {
+                                            "name": {
+                                              "key": {
+                                                "name": {
+                                                  "key": "calcSomething"
+                                                }
+                                              }
+                                            },
+                                            "scope": { "global_": { } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "struct A" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 23,
+                            "columnBegin": 9,
+                            "lineEnd": 23,
+                            "columnEnd": 19
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 2, "offsets": [ 633 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "c" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "ExplictMethods" },
+                                      "scope": {
+                                        "local": {
+                                          "key": {
+                                            "name": {
+                                              "key": {
+                                                "name": {
+                                                  "key": "calcSomething"
+                                                }
+                                              }
+                                            },
+                                            "scope": { "global_": { } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 30,
+                            "columnBegin": 9,
+                            "lineEnd": 30,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 755, 58 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "ExplictMethods" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 29,
+                            "columnBegin": 5,
+                            "lineEnd": 39,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 14, "offsets": [ 782 ] } ] }
+                  }
+                }
+              ],
+              "free": [ ]
             }
           },
-          "externals": [ ]
+          "externals": [ ],
+          "targets": [ ]
         }
       },
       "xref": {
@@ -3959,10 +6803,326 @@
                   "ranges": [ { "offset": 782, "length": 14 } ]
                 }
               ],
-              "variable": [ ]
+              "variable": [ ],
+              "bound": [
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "a" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "A" },
+                                      "scope": {
+                                        "local": {
+                                          "key": {
+                                            "name": {
+                                              "key": {
+                                                "name": {
+                                                  "key": "calcSomething"
+                                                }
+                                              }
+                                            },
+                                            "scope": { "global_": { } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 13,
+                            "columnBegin": 9,
+                            "lineEnd": 13,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 513, 123 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "A" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 12,
+                            "columnBegin": 5,
+                            "lineEnd": 20,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 1, "offsets": [ 592 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "B" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 22,
+                            "columnBegin": 5,
+                            "lineEnd": 24,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 1, "offsets": [ 617 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "b" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "struct B" },
+                          "kind": { "local": { "kind": 0, "attribute": 0 } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 26,
+                            "columnBegin": 5,
+                            "lineEnd": 26,
+                            "columnEnd": 19
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 631, 226 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "a_" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "B" },
+                                      "scope": {
+                                        "local": {
+                                          "key": {
+                                            "name": {
+                                              "key": {
+                                                "name": {
+                                                  "key": "calcSomething"
+                                                }
+                                              }
+                                            },
+                                            "scope": { "global_": { } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "struct A" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 23,
+                            "columnBegin": 9,
+                            "lineEnd": 23,
+                            "columnEnd": 19
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 2, "offsets": [ 633 ] } ] }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "c" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "ExplictMethods" },
+                                      "scope": {
+                                        "local": {
+                                          "key": {
+                                            "name": {
+                                              "key": {
+                                                "name": {
+                                                  "key": "calcSomething"
+                                                }
+                                              }
+                                            },
+                                            "scope": { "global_": { } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 30,
+                            "columnBegin": 9,
+                            "lineEnd": 30,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 755, 58 ] } ]
+                    }
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "ExplictMethods" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "calcSomething" }
+                                      }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 29,
+                            "columnBegin": 5,
+                            "lineEnd": 39,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "uses": {
+                    "key": { "spans": [ { "length": 14, "offsets": [ 782 ] } ] }
+                  }
+                }
+              ],
+              "free": [ ]
             }
           },
-          "externals": [ ]
+          "externals": [ ],
+          "targets": [ ]
         }
       },
       "xref": {

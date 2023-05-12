@@ -281,7 +281,19 @@ Src::ByteSpans byteSpans(const std::vector<Src::ByteSpan>& v) {
   return spans;
 }
 
-std::vector<Cxx::FixedXRef> finishRefs(std::deque<ClangDB::CrossRef>&& xrefs) {
+Src::PackedByteSpans packByteSpans(const Src::ByteSpans& spans) {
+  Src::PackedByteSpans result;
+  for (const auto& span : spans) {
+    if (result.empty() || span.length != result.back().length) {
+      result.push_back({span.length, {}});
+    }
+    result.back().offsets.push_back(span.offset);
+  }
+  return result;
+}
+
+std::vector<Cxx::FixedXRef> finishRefs(std::deque<ClangDB::CrossRef>&& v) {
+  auto xrefs = std::move(v);
   for (auto& xref : xrefs) {
     auto& spans = xref.spans;
     std::sort(spans.begin(), spans.end());
@@ -312,13 +324,12 @@ std::vector<Cxx::FixedXRef> finishRefs(std::deque<ClangDB::CrossRef>&& xrefs) {
               return x < std::get<std::vector<std::string>>(y_id);
             });
       });
-  std::vector<Cxx::FixedXRef> refs;
-  refs.reserve(xrefs.size());
+  std::vector<Cxx::FixedXRef> result;
+  result.reserve(xrefs.size());
   for (auto& [target, _, spans] : xrefs) {
-    refs.push_back({std::move(target), byteSpans(spans)});
+    result.push_back({std::move(target), byteSpans(spans)});
   }
-  xrefs.clear();
-  return refs;
+  return result;
 }
 }
 
@@ -344,18 +355,50 @@ void ClangDB::finish() {
       std::vector<Src::ByteSpans> external_spans;
       external_targets.reserve(external_refs.size());
       external_spans.reserve(external_refs.size());
-      for (auto& ext : external_refs) {
+      for (const auto& ext : external_refs) {
         external_targets.push_back(ext.target);
-        external_spans.push_back(std::move(ext.ranges));
+        external_spans.push_back(ext.ranges);
       }
+      std::vector<Cxx::BoundXRef> bound;
+      bound.reserve(local_refs.size());
+      for (const auto& [target, ranges] : local_refs) {
+        bound.push_back({target, fact<Cxx::Uses>(packByteSpans(ranges))});
+      }
+
+      struct UnboundXRef {
+        Src::PackedByteSpans spans;
+        std::vector<Cxx::XRefTarget> group;
+      };
+      std::vector<UnboundXRef> unbound;
+      for (auto&& [target, ranges] : std::move(external_refs)) {
+        auto spans = packByteSpans(std::move(ranges));
+        if (unbound.empty() || spans != unbound.back().spans) {
+          unbound.push_back({std::move(spans), {}});
+        }
+        unbound.back().group.push_back(std::move(target));
+      }
+      release(external_refs);
+
+      std::vector<Fact<Cxx::Uses>> free;
+      std::vector<Fact<Cxx::XRefTargets>> targets;
+      free.reserve(unbound.size());
+      targets.reserve(unbound.size());
+      for (auto&& [spans, group] : std::move(unbound)) {
+        free.push_back(fact<Cxx::Uses>(std::move(spans)));
+        targets.push_back(fact<Cxx::XRefTargets>(std::move(group)));
+      }
+      release(unbound);
 
       auto xmap = fact<Cxx::FileXRefMap>(
         file.fact,
         std::move(local_refs),
-        std::move(external_spans));
+        std::move(external_spans),
+        std::move(bound),
+        std::move(free));
       auto fileXRefs = fact<Cxx::FileXRefs>(
         xmap,
-        std::move(external_targets));
+        std::move(external_targets),
+        std::move(targets));
       tunitXRefs.push_back(fileXRefs);
     }
     release(xrefs);

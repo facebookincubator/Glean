@@ -18,6 +18,8 @@ module Glean.Util.Range
   , srcRangeToByteRange
   , relByteSpansToRanges
   , rangesToRelSpans
+  , packedByteSpansToRanges
+  , rangesToPackedByteSpans
   , byteSpanToRange
   , rangeToByteSpan
   -- * comparisons
@@ -445,6 +447,21 @@ rangesToRelSpans = go 0
   go !m (ByteRange{byteRange_begin = begin, byteRange_length = len}: spans) =
     Src.RelByteSpan (toNat (begin-m)) (toNat len) : go begin spans
   go _ [] = []
+
+packedByteSpansToRanges :: Src.PackedByteSpans -> [ByteRange]
+packedByteSpansToRanges = relByteSpansToRanges . packedToRelByteSpans
+  where
+  packedToRelByteSpans = concatMap $ \Src.PackedByteSpansGroup{..} ->
+    map (`Src.RelByteSpan` packedByteSpansGroup_length)
+        packedByteSpansGroup_offsets
+
+rangesToPackedByteSpans :: [ByteRange] -> Src.PackedByteSpans
+rangesToPackedByteSpans = relToPackedByteSpans . rangesToRelSpans
+  where
+  relToPackedByteSpans spans =
+    map (\group -> Src.PackedByteSpansGroup (relByteSpan_length $ head group)
+                                            (map relByteSpan_offset group))
+        (groupBy (\x y -> relByteSpan_length x == relByteSpan_length y) spans)
 
 -- | Convert Src schema bytespans to ranges
 byteSpanToRange :: Src.ByteSpan -> ByteRange

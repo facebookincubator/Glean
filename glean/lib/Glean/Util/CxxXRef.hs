@@ -27,10 +27,13 @@ order (XRef o1 n1 v1) (XRef o2 n2 v2) =
 transformXRefs :: JSValue -> Result JSValue
 transformXRefs v = do
   [ ("xmap", xmap),
-    ("externals", JSArray externals) ] <- keyVals v
+    ("externals", JSArray externals),
+    ("targets", JSArray _) ] <- keyVals v
   [ ("file", file),
     ("fixed", JSArray fixed),
-    ("variable", JSArray variable) ] <- keyVals xmap
+    ("variable", JSArray variable),
+    ("bound", JSArray _),
+    ("free", JSArray _) ] <- keyVals xmap
   fixed_xrefs <- forM fixed $ \x -> do
     [("target", target), ("ranges", JSArray ranges)] <- objVals x
     reoffset 0 <$> mapM (xref target) ranges
