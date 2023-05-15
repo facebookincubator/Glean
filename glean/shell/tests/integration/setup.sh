@@ -8,9 +8,11 @@
 mkdir "$TMPDIR/db"
 
 export GLOG_minloglevel=10
+export FOLLY_LOG_LEVEL=ERROR
 
 "$SERVER" \
     --db-root "$TMPDIR/db" \
+    --logging="$FOLLY_LOG_LEVEL" \
     --write-port "$TMPDIR/port" \
     --schema "$EXAMPLE/schema" &
 
