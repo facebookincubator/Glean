@@ -160,10 +160,11 @@ runRepoFile
   -> IO t
 runRepoFile sym fn env req opts =
   withRepoFile sym env (req, opts) repo file $ \(dbs,_) mlang ->
-    fn repos req opts
-        (GleanBackend (Glass.gleanBackend env) dbs)
-        (Glass.snapshotBackend env)
-          mlang
+    withStrictErrorHandling opts $
+      fn repos req opts
+          (GleanBackend (Glass.gleanBackend env) dbs)
+          (Glass.snapshotBackend env)
+            mlang
   where
     repos = Glass.latestGleanRepos env
     repo = documentSymbolsRequest_repository req
@@ -227,15 +228,17 @@ jumpTo
   -> Location
   -> RequestOptions
   -> IO Range
-jumpTo env@Glass.Env{..} req@Location{..} _opts =
-  withRepoFile "jumpTo" env req repo file
-    (\(gleanDBs,_) _lang -> backendRunHaxl GleanBackend{..} $ do
-      result <- firstOrErrors $ do
-          repo <- Glean.haxlRepo
-          resolveLocationToRange repo req
-      case result of
-        Left err -> throwM $ ServerException $ errorText err
-        Right (efile, _) -> return (efile, Nothing))
+jumpTo env@Glass.Env{..} req@Location{..} opts =
+  withRepoFile "jumpTo" env req repo file $ \(gleanDBs,_) _lang ->
+    withStrictErrorHandling opts $
+      backendRunHaxl GleanBackend{..} $ do
+        result <-
+          firstOrErrors $ do
+            repo <- Glean.haxlRepo
+            resolveLocationToRange repo req
+        case result of
+          Left err -> throwM $ ServerException $ errorText err
+          Right (efile, _) -> return (efile, Nothing)
   where
     repo = location_repository
     file = location_filepath
@@ -246,10 +249,11 @@ findReferences
   -> SymbolId
   -> RequestOptions
   -> IO [Location]
-findReferences env@Glass.Env{..} sym RequestOptions{..} =
+findReferences env@Glass.Env{..} sym opts@RequestOptions{..} =
   withSymbol "findReferences" env sym (\(dbs,_revs,(repo, lang, toks)) ->
-    fetchSymbolReferences repo lang toks limit
-      (GleanBackend gleanBackend dbs))
+    withStrictErrorHandling opts $
+      fetchSymbolReferences repo lang toks limit
+        (GleanBackend gleanBackend dbs))
   where
     limit = fmap fromIntegral requestOptions_limit
 
@@ -259,10 +263,11 @@ findReferenceRanges
   -> SymbolId
   -> RequestOptions
   -> IO [LocationRange]
-findReferenceRanges env@Glass.Env{..} sym RequestOptions{..} =
+findReferenceRanges env@Glass.Env{..} sym opts@RequestOptions{..} =
   withSymbol "findReferenceRanges" env sym $ \(db,_revs,(repo, lang, toks)) ->
-    fetchSymbolReferenceRanges repo lang toks limit
-      (GleanBackend gleanBackend db)
+    withStrictErrorHandling opts $
+      fetchSymbolReferenceRanges repo lang toks limit
+        (GleanBackend gleanBackend db)
   where
     limit = fmap fromIntegral requestOptions_limit
 
@@ -273,9 +278,10 @@ resolveSymbolRange
   -> SymbolId
   -> RequestOptions
   -> IO LocationRange
-resolveSymbolRange env@Glass.Env{..} sym _opts =
+resolveSymbolRange env@Glass.Env{..} sym opts =
   withSymbol "resolveSymbolRange" env sym $ \(db,_revs,(repo, lang, toks)) ->
-    findSymbolLocationRange (GleanBackend gleanBackend db) repo lang toks
+    withStrictErrorHandling opts $
+      findSymbolLocationRange (GleanBackend gleanBackend db) repo lang toks
 
 -- | Describe characteristics of a symbol
 describeSymbol
@@ -283,9 +289,10 @@ describeSymbol
   -> SymbolId
   -> RequestOptions
   -> IO SymbolDescription
-describeSymbol env@Glass.Env{..} symId _opts =
+describeSymbol env@Glass.Env{..} symId opts =
   withSymbol "describeSymbol" env symId $
     \(gleanDBs, scmRevs, (scmRepo, lang, toks)) ->
+    withStrictErrorHandling opts $
       backendRunHaxl GleanBackend{..} $ do
         r <- Search.searchEntity lang toks
         (first :| rest, err) <- case r of
@@ -333,19 +340,20 @@ fileIncludeLocations
 fileIncludeLocations env@Glass.Env{..} req opts =
   fmap fst $
   withRepoFile "fileIncludeLocations" env req repo rootfile $ \(gleanDBs,_) _ ->
-    backendRunHaxl GleanBackend{..} $ do
-      result <- firstOrErrors $ do
-        rev <- getRepoHash <$> Glean.haxlRepo
-        efile <- getFile (toGleanPath (SymbolRepoPath repo rootfile))
-        case efile of
-          Left err -> return (Left err)
-          Right file -> do
-            includes <- Cxx.fileIncludeLocationsForCxx depth mlimit file
-            Right <$> processFileIncludes repo rev includes
-      case result of
-        Left err -> throwM $ ServerException $ errorText err
-        Right (efile, gleanDataLog) -> do
-          return ((efile, gleanDataLog), Nothing)
+    withStrictErrorHandling opts $
+      backendRunHaxl GleanBackend{..} $ do
+        result <- firstOrErrors $ do
+          rev <- getRepoHash <$> Glean.haxlRepo
+          efile <- getFile (toGleanPath (SymbolRepoPath repo rootfile))
+          case efile of
+            Left err -> return (Left err)
+            Right file -> do
+              includes <- Cxx.fileIncludeLocationsForCxx depth mlimit file
+              Right <$> processFileIncludes repo rev includes
+        case result of
+          Left err -> throwM $ ServerException $ errorText err
+          Right (efile, gleanDataLog) ->
+            return ((efile, gleanDataLog), Nothing)
   where
     repo = fileIncludeLocationRequest_repository req
     rootfile = fileIncludeLocationRequest_filepath req
@@ -361,29 +369,30 @@ clangUSRToDefinition
   -> USR
   -> RequestOptions
   -> IO (USRSymbolDefinition, QueryEachRepoLog)
-clangUSRToDefinition env@Glass.Env{..} usr@(USR hash) _opts = withRepoLanguage
+clangUSRToDefinition env@Glass.Env{..} usr@(USR hash) opts = withRepoLanguage
   "clangUSRToDefinition" env usr repo mlang $ \(gleanDBs,_) _ -> do
-    backendRunHaxl GleanBackend{..} $ do
-      result <- firstOrErrors $ do
-        rev <- getRepoHash <$> Glean.haxlRepo
-        mdefn <- Cxx.usrHashToDeclaration hash
-        case mdefn of
-          Nothing -> -- either hash is unknown or decl is already defn
-            pure (Left (GlassExceptionReason_entitySearchFail
-              "No definition result for hash"))
-          Just (Code.Location{..},_entity) -> do
-            range <- rangeSpanToLocationRange repo location_file
-              location_location
-            nameRange <- forM location_span
-              (memoRangeSpanToRange location_file . Code.RangeSpan_span)
-            pure (Right (USRSymbolDefinition {
-              uSRSymbolDefinition_location = range,
-              uSRSymbolDefinition_nameRange = nameRange,
-              uSRSymbolDefinition_revision = rev
-            }))
-      case result of
-        Left err -> throwM $ ServerException $ errorText err
-        Right defn -> return (defn, Nothing)
+    withStrictErrorHandling opts $
+      backendRunHaxl GleanBackend{..} $ do
+        result <- firstOrErrors $ do
+          rev <- getRepoHash <$> Glean.haxlRepo
+          mdefn <- Cxx.usrHashToDeclaration hash
+          case mdefn of
+            Nothing -> -- either hash is unknown or decl is already defn
+              pure (Left (GlassExceptionReason_entitySearchFail
+                "No definition result for hash"))
+            Just (Code.Location{..},_entity) -> do
+              range <- rangeSpanToLocationRange repo location_file
+                location_location
+              nameRange <- forM location_span
+                (memoRangeSpanToRange location_file . Code.RangeSpan_span)
+              pure (Right (USRSymbolDefinition {
+                uSRSymbolDefinition_location = range,
+                uSRSymbolDefinition_nameRange = nameRange,
+                uSRSymbolDefinition_revision = rev
+              }))
+        case result of
+          Left err -> throwM $ ServerException $ errorText err
+          Right defn -> return (defn, Nothing)
   where
     repo = RepoName "fbsource"
     mlang = Just Language_Cpp
@@ -395,23 +404,24 @@ clangUSRToReferenceRanges
   -> USR
   -> RequestOptions
   -> IO [USRSymbolReference]
-clangUSRToReferenceRanges env@Glass.Env{..} usr@(USR hash) _opts =
+clangUSRToReferenceRanges env@Glass.Env{..} usr@(USR hash) opts =
   withRepoLanguage "clangUSRToReferenceRanges" env usr scmRepo mlang $
    \(gleanDBs,_) _ ->
-    backendRunHaxl GleanBackend{..} $ do
-      result <- anyOrErrors $ queryEachRepo $ do
-        repo <- RepoName . Glean.repo_name <$> Glean.haxlRepo
-        refs <- Cxx.usrHashToXRefs mlimit hash
-        res <- forM refs $ \(targetFile, rspan) -> USRSymbolReference <$>
-          rangeSpanToLocationRange repo targetFile rspan
-        pure (Right res)
-      case result of
-        Left err -> throwM $ ServerException $ errorText err
-        Right refs -> return (refs, Nothing)
+    withStrictErrorHandling opts $
+      backendRunHaxl GleanBackend{..} $ do
+        result <- anyOrErrors $ queryEachRepo $ do
+          repo <- RepoName . Glean.repo_name <$> Glean.haxlRepo
+          refs <- Cxx.usrHashToXRefs mlimit hash
+          res <- forM refs $ \(targetFile, rspan) -> USRSymbolReference <$>
+            rangeSpanToLocationRange repo targetFile rspan
+          pure (Right res)
+        case result of
+          Left err -> throwM $ ServerException $ errorText err
+          Right refs -> return (refs, Nothing)
   where
     scmRepo = RepoName "fbsource" -- a "corpus" corresponds to >1 glean index
     mlang = Just Language_Cpp
-    mlimit = fromIntegral <$> requestOptions_limit _opts
+    mlimit = fromIntegral <$> requestOptions_limit opts
 
 -- | Scrub all glean types for export to the client
 -- And flatten to lists for GraphQL.
@@ -1386,6 +1396,22 @@ withSymbol method env@Glass.Env{..} sym fn =
     Nothing
     (\db _mlang -> fn db)
 
+withStrictErrorHandling
+  :: RequestOptions
+  -> IO (res, Maybe ErrorLogger)
+  -> IO (res, Maybe ErrorLogger)
+withStrictErrorHandling opts action = do
+  (res, merr) <- action
+  case merr of
+    Just err
+      | requestOptions_strict opts
+      , Just errTy <- errorTy err
+      -> throwM $
+        GlassException
+          errTy
+          (map (Revision . Glean.repo_hash) $ errorGleanRepo err)
+    _ -> return (res, merr)
+
 runLog :: Glass.Env -> Text -> GleanGlassLogger -> IO ()
 runLog env cmd log = Logger.runLog (Glass.logger env) $
   log <> Logger.setMethod cmd
@@ -1440,10 +1466,11 @@ searchRelated
   -> RequestOptions
   -> SearchRelatedRequest
   -> IO SearchRelatedResult
-searchRelated env@Glass.Env{..} sym RequestOptions{..}
+searchRelated env@Glass.Env{..} sym opts@RequestOptions{..}
     SearchRelatedRequest{..} =
   withSymbol "searchRelated" env sym $
     \(gleanDBs, scmRevs, (repo, lang, toks)) ->
+    withStrictErrorHandling opts $
       backendRunHaxl GleanBackend{..} $ do
         entity <- searchFirstEntity lang toks
         withRepo (entityRepo entity) $ do
@@ -1581,9 +1608,10 @@ searchRelatedNeighborhood
   -> RequestOptions
   -> RelatedNeighborhoodRequest
   -> IO RelatedNeighborhoodResult
-searchRelatedNeighborhood env@Glass.Env{..} sym RequestOptions{..} req =
+searchRelatedNeighborhood env@Glass.Env{..} sym opts@RequestOptions{..} req =
   withSymbol "searchRelatedNeighborhood" env sym $
     \(gleanDBs, scmRevs, (repo, lang, toks)) ->
+    withStrictErrorHandling opts $
       backendRunHaxl GleanBackend{..} $ do
         baseEntity <- searchFirstEntity lang toks
         let lang = entityLanguage (decl baseEntity)

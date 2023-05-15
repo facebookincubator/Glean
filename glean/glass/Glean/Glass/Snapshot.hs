@@ -16,6 +16,7 @@
 module Glean.Glass.Snapshot
   ( main ) where
 
+import Data.Default (def)
 import Text.Printf
 import Glean.Glass.Main ( withEnv )
 import Glean.Init ( withOptions )
@@ -40,7 +41,6 @@ import Data.Int ( Int64 )
 import Control.Exception (SomeException)
 import Util.Log.String ( logError )
 import Data.Maybe (fromMaybe)
-
 import qualified Database.MySQL.Simple as DB
 import Facebook.Db ( withConnection, InstanceRequirement(Master) )
 import qualified Data.Text.Encoding as TE
@@ -118,7 +118,7 @@ buildSnapshot
   -> FileToSnapshot
   -> IO (BS.ByteString, Types.Revision, Int)
 buildSnapshot env rev (repo, path) = do
-    let opts = Types.RequestOptions Nothing Nothing Nothing
+    let opts = def
     let req = Types.DocumentSymbolsRequest repo path Nothing True
     symList <- Handler.documentSymbolListX env req opts
     let symbolList = case rev of

@@ -93,6 +93,9 @@ struct RequestOptions {
 
   // feature flags for internal use
   3: optional FeatureFlags feature_flags;
+
+  // throw exceptions instead of returning empty responses
+  4: bool strict = false;
 }
 
 struct FeatureFlags {
@@ -260,6 +263,13 @@ union GlassExceptionReason {
   5: string entityNotSupported;
   6: string attributesError;
   7: list<GlassExceptionReason> aggregateError;
+}
+
+// Only thrown when strict request option is set
+safe exception GlassException {
+  1: GlassExceptionReason reason;
+  // Revisions queried (nonempty, can be more than one if multiple Glean DBs)
+  2: list<Revision> revisions;
 }
 
 // Type of abstract identifiers
@@ -618,42 +628,43 @@ service GlassService extends fb303.FacebookService {
   DocumentSymbolListXResult documentSymbolListX(
     1: DocumentSymbolsRequest request,
     2: RequestOptions options,
-  ) throws (1: ServerException e);
+  ) throws (1: ServerException e, 2: GlassException g);
 
   // Return a line-index map of resolved symbols, useful for cursor lookup
   DocumentSymbolIndex documentSymbolIndex(
     1: DocumentSymbolsRequest request,
     2: RequestOptions options,
-  ) throws (1: ServerException e);
+  ) throws (1: ServerException e, 2: GlassException g);
 
   // Resolve a location span to a concrete line:col range in a file
   Range jumpTo(1: Location reference, 2: RequestOptions options) throws (
     1: ServerException e,
+    2: GlassException g,
   );
 
   // Find any uses of a definition, generically
   list<Location> findReferences(
     1: SymbolId symbol,
     2: RequestOptions options,
-  ) throws (1: ServerException e);
+  ) throws (1: ServerException e, 2: GlassException g);
 
   // Find any uses of a definition, resolving all locations to line/col ranges
   list<LocationRange> findReferenceRanges(
     1: SymbolId symbol,
     2: RequestOptions options,
-  ) throws (1: ServerException e);
+  ) throws (1: ServerException e, 2: GlassException g);
 
   // Resolve a symbol id to its definition location range
   LocationRange resolveSymbolRange(
     1: SymbolId symbol,
     2: RequestOptions options,
-  ) throws (1: ServerException e);
+  ) throws (1: ServerException e, 2: GlassException g);
 
   // Return details about a symbol, such as its location or type signature
   SymbolDescription describeSymbol(
     1: SymbolId symbol,
     2: RequestOptions options,
-  ) throws (1: ServerException e);
+  ) throws (1: ServerException e, 2: GlassException g);
 
   // Generic symbol search by string query
   SymbolSearchResult searchSymbol(
@@ -695,17 +706,17 @@ service GlassService extends fb303.FacebookService {
   FileIncludeLocationResults fileIncludeLocations(
     1: FileIncludeLocationRequest request,
     2: RequestOptions options,
-  ) throws (1: ServerException e);
+  ) throws (1: ServerException e, 2: GlassException g);
 
   // Resolve declaration USR from ClangD to definition sites
   USRSymbolDefinition clangUSRToDefinition(
     1: USR hash,
     2: RequestOptions options,
-  ) throws (1: ServerException e);
+  ) throws (1: ServerException e, 2: GlassException g);
 
   // Resolve declaration USR from ClangD to xref sites
   list<USRSymbolReference> clangUSRToReferenceRanges(
     1: USR hash,
     2: RequestOptions options,
-  ) throws (1: ServerException e);
+  ) throws (1: ServerException e, 2: GlassException g);
 }
