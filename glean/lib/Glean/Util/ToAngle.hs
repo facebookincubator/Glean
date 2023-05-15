@@ -19,6 +19,7 @@ import qualified Glean.Schema.Erlang.Types as Erlang
 import qualified Glean.Schema.Flow.Types as Flow
 import qualified Glean.Schema.Hack.Types as Hack
 import qualified Glean.Schema.Lsif.Types as Lsif
+import qualified Glean.Schema.Scip.Types as Scip
 import qualified Glean.Schema.Python.Types as Py
 import qualified Glean.Schema.Thrift.Types as Thrift
 
@@ -180,3 +181,7 @@ instance ToAngle Lsif.SomeEntity where
     Lsif.SomeEntity_defn x -> alt @"defn" (mkKey x)
     Lsif.SomeEntity_decl x -> alt @"decl" (mkKey x)
     Lsif.SomeEntity_EMPTY -> error "unknown Lsif.SomeEntity"
+
+instance ToAngle Scip.SomeEntity where
+  toAngle (Scip.SomeEntity defn) = rec $ field @"defn" (mkKey defn) end
+    -- note: singleton type, not a sum.

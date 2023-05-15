@@ -79,6 +79,7 @@ import Glean.Glass.SymbolId.Hack ({- instances -})
 import Glean.Glass.SymbolId.Hs ({- instances -})
 import Glean.Glass.SymbolId.Java ({- instances -})
 import Glean.Glass.SymbolId.LSIF ({- instances -})
+import Glean.Glass.SymbolId.SCIP ({- instances -})
 import Glean.Glass.SymbolId.Pp ({- instances -})
 import Glean.Glass.SymbolId.Python ({- instances -})
 import Glean.Glass.SymbolId.Thrift ({- instances -})
@@ -279,6 +280,10 @@ instance Symbol Code.Entity where
       Lsif.Entity_typescript se -> toSymbolWithPath se p
       Lsif.Entity_EMPTY -> throwM $ SymbolError "Unknown LSIF language"
 
+    Code.Entity_scip ent -> case ent of
+      Scip.Entity_rust se -> toSymbolWithPath se p
+      Scip.Entity_EMPTY -> throwM $ SymbolError "Unknown SCIP language"
+
     -- Code.Entity_lsif (Lsif.Entity_java x) -> toSymbol x
     _ -> throwM $ SymbolError "Language not supported"
 
@@ -319,6 +324,11 @@ entityToAngle e = case e of
       Lsif.Entity_swift x -> Right $ alt @"swift" (toAngle x)
       Lsif.Entity_typescript x -> Right $ alt @"typescript" (toAngle x)
       Lsif.Entity_EMPTY -> Left "toAngle: Unknown LSIF language"
+  -- scip anguages, enumerate all lang constructors
+  Code.Entity_scip se -> alt @"scip" <$> case se of
+      Scip.Entity_rust x -> Right $ alt @"rust" (toAngle x)
+      Scip.Entity_EMPTY -> Left "toAngle: Unknown SCIP language"
+
   _ -> Left $
     "Unsupported language: " <> toShortCode (entityLanguage e)
 
@@ -345,7 +355,10 @@ instance ToQName Code.Entity where
       Lsif.Entity_scala x -> toQName x
       Lsif.Entity_swift x -> toQName x
       Lsif.Entity_typescript x -> toQName x
-      Lsif.Entity_EMPTY -> pure $ Left "LSIF language unsupported"
+      Lsif.Entity_EMPTY -> pure $ Left "LSIF: language unsupported"
+    Code.Entity_scip se -> case se of -- enumerate all cases for lsif
+      Scip.Entity_rust x -> toQName x
+      Scip.Entity_EMPTY -> pure $ Left "SCIP: language unsupported"
     _ -> pure $ Left ("Language unsupported: " <> textShow (entityLanguage e))
 
 instance ToSymbolParent Code.Entity where
