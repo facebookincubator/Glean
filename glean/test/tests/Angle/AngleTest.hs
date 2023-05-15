@@ -278,6 +278,14 @@ angleTest modify = dbTestCase $ \env repo -> do
   assertEqual "angle - resolvable unbound" 6 $
     (length . nub . map Glean.Test.stringPairBox_key) results
 
+  -- another instance of an unbound variable: wildcard as a query
+  results <- runQuery_ env repo $ modify $
+    angle @Glean.Test.StringPair
+      [s| _ : glean.test.StringPair |]
+  print results
+  assertEqual "angle - resolvable unbound 2" 6 $
+    (length . nub . map Glean.Test.stringPair_key) results
+
   -- we should be able to resolve wildcards by adding a fact generator
   -- (query has no results, but we're testing that it doesn't fail with
   -- an unbound variable)

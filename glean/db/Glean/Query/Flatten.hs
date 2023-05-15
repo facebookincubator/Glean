@@ -556,16 +556,19 @@ captureKey ver dbSchema (FlatQuery pat Nothing stmts) ty
   case catMaybes (concatMap NonEmpty.toList captured) of
     [(key, val)] ->
       return (FlatQuery (RTS.Tuple [pat, key, val]) Nothing stmts', returnTy)
-    _ ->
-      return (query (stmts' ++ [singletonGroup lookup]), returnTy)
-      where
-        query = FlatQuery (RTS.Tuple [pat, RTS.Ref (MatchVar keyVar),
+    _ -> do
+      pat' <- case pat of
+        RTS.Ref MatchWild{} -> RTS.Ref . MatchVar <$> fresh ty
+        _other -> return pat
+      let
+        query = FlatQuery (RTS.Tuple [pat', RTS.Ref (MatchVar keyVar),
           maybe (Tuple []) (RTS.Ref . MatchVar) maybeValVar]) Nothing
-        lookup = FlatStatement ty pat
+        lookup = FlatStatement ty pat'
           (FactGenerator pidRef
             (Ref (MatchBind keyVar))
             (Ref (maybe (MatchWild predicateValueType) MatchBind maybeValVar))
             SeekOnAllFacts)
+      return (query (stmts' ++ [singletonGroup lookup]), returnTy)
 
   | otherwise = do
   -- We have

@@ -169,8 +169,12 @@ reorderQuery :: FlatQuery -> R CgQuery
 reorderQuery (FlatQuery pat _ stmts) =
   withScopeFor stmts $ do
     stmts' <- reorderGroups stmts
-    pat' <- fixVars IsExpr pat
-    return (CgQuery pat' stmts')
+    (extra, pat') <- resolved `catchError` \e ->
+      maybeBindUnboundPredicate e resolved
+    return (CgQuery pat' (extra <> stmts'))
+  where
+    resolved = do pat' <- fixVars IsExpr pat; return ([], pat')
+
 
 reorderGroups :: [FlatStatementGroup] -> R [CgStatement]
 reorderGroups groups = do
@@ -681,6 +685,10 @@ reorderStmt stmt@(FlatStatement ty lhs gen)
     | otherwise
     = Nothing
 
+  attemptBindFromType e rstmt = do
+    (extra, stmts) <- maybeBindUnboundPredicate e (([],) <$> rstmt)
+    return (extra <> stmts)
+
   giveUp (s, e) =
     throwError (errMsg s, e)
   errMsg s = Text.pack $ show $ vcat
@@ -688,53 +696,57 @@ reorderStmt stmt@(FlatStatement ty lhs gen)
     , nest 2 $ vcat ["because:", displayDefault s]
     ]
 
-  -- In general if we have X = Y where both X and Y are unbound (or LHS = RHS
-  -- containing unbound variables on both sides) then we have no choice
-  -- but to return an error message. However in the specific case that we
-  -- know the type of X or Y is a predicate then we can add the statement
-  -- X = p _ to bind it and retry.
-  --
-  -- Termination is guaranteed as we strictly decrease the number of unbound
-  -- variables each time
-  attemptBindFromType e f
-    | (_, Just (UnboundVariable var@(Var ty _ _))) <- e
-    , RTS.PredicateRep pid <- RTS.repType ty = tryBindPredicate var pid
-    | otherwise =
-      throwError e
-    where
-    tryBindPredicate var pid = do
-      state <- get
-      details <- case Schema.lookupPid pid $ roDbSchema state of
-          Nothing ->
-            lift $ throwError
-              ( "internal error: bindUnboundPredicates: " <>
-                  Text.pack (show pid)
-              , Nothing )
-
-          Just details@Schema.PredicateDetails{} -> do return details
-
-      bindVar var
-      stmts <- f `catchError` \e' -> attemptBindFromType e' f
-      let
-        pid = Schema.predicatePid details
-        ref = Schema.predicateId details
-        p = PidRef pid ref
-        tyKey = Schema.predicateKeyType details
-        tyValue = Schema.predicateValueType details
-        pat =
-          FactGenerator p
-            (Ref (MatchWild tyKey))
-            (Ref (MatchWild tyValue))
-            SeekOnAllFacts
-      -- V = p {key=_, value=_}
-      -- LHS = RHS
-      return $ CgStatement (Ref (MatchBind var)) pat : stmts
-
-    bindVar :: Var -> R ()
-    bindVar (Var _ v _) = modify $ \s -> s { roScope = bind v $ roScope s }
-
 -- fallback: just convert other statements to CgStatement
 reorderStmt stmt = toCgStatement stmt
+
+-- In general if we have X = Y where both X and Y are unbound (or LHS = RHS
+-- containing unbound variables on both sides) then we have no choice
+-- but to return an error message. However in the specific case that we
+-- know the type of X or Y is a predicate then we can add the statement
+-- X = p _ to bind it and retry.
+--
+-- Termination is guaranteed as we strictly decrease the number of unbound
+-- variables each time
+maybeBindUnboundPredicate
+  :: (Text, Maybe FixBindOrderError)
+  -> R ([CgStatement], a)
+  -> R ([CgStatement], a)
+maybeBindUnboundPredicate e f
+  | (_, Just (UnboundVariable var@(Var ty _ _))) <- e
+  , RTS.PredicateRep pid <- RTS.repType ty = tryBindPredicate var pid
+  | otherwise =
+    throwError e
+  where
+  tryBindPredicate var pid = do
+    state <- get
+    details <- case Schema.lookupPid pid $ roDbSchema state of
+        Nothing ->
+          lift $ throwError
+            ( "internal error: bindUnboundPredicates: " <>
+                Text.pack (show pid)
+            , Nothing )
+
+        Just details@Schema.PredicateDetails{} -> do return details
+
+    bindVar var
+    (stmts, a) <- f `catchError` \e' -> maybeBindUnboundPredicate e' f
+    let
+      pid = Schema.predicatePid details
+      ref = Schema.predicateId details
+      p = PidRef pid ref
+      tyKey = Schema.predicateKeyType details
+      tyValue = Schema.predicateValueType details
+      pat =
+        FactGenerator p
+          (Ref (MatchWild tyKey))
+          (Ref (MatchWild tyValue))
+          SeekOnAllFacts
+    -- V = p {key=_, value=_}
+    -- LHS = RHS
+    return (CgStatement (Ref (MatchBind var)) pat : stmts, a)
+
+  bindVar :: Var -> R ()
+  bindVar (Var _ v _) = modify $ \s -> s { roScope = bind v $ roScope s }
 
 toCgStatement :: FlatStatement -> R [CgStatement]
 toCgStatement stmt = case stmt of
