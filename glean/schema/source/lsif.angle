@@ -3,47 +3,7 @@
 schema lsif.2 {
 
 import src.1
-
-# Indexer tool metadata
-type ToolInfo =
-  {
-    toolName: string,
-    toolArgs: [string],
-    version: maybe string,
-  }
-
-# Tags for entities, so clients can distinguish them.
-# Exactly from https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#symbolKind
-# should match exactly LSIF.JSON.SymbolKind
-#
-# Note: this is not the same as codemarkup.SymbolKind's enum
-#
-type SymbolKind =
-  enum {
-    File | Module | Namespace | Package | Class_ | Method | Property |
-    Field | Constructor | Enum_ | Interface | Function | Variable | Constant | String |
-    Number | Boolean | Array | Object_ | Key | Null | EnumMember | Struct | Event |
-    Operator | TypeParameter | Unknown
-  }
-
-# Language Identifiers
-# from https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#textDocumentItem
-# Text documents have a text language identifier associated with filenames, to
-# identify a document on the server side when it handles more than one language
-# to avoid re-interpreting the file extension
-type LanguageId =
-  enum {
-    ABAP | WindowsBat | BibTeX | Clojure | Coffeescript | C | Cpp | CSharp |
-    CSS | Diff | Dart | Dockerfile | Elixir | Erlang | FSharp | Git | Go |
-    Groovy | Handlebars | Haskell | HTML | Ini | Java | JavaScript |
-    JavaScriptReact | JSON | LaTeX | Less | Lua | Makefile | Markdown |
-    ObjectiveC | ObjectiveCpp | Perl | Perl6 | PHP | Powershell | Pug | Python |
-    R | Razor | Ruby | Rust | SCSS | Scala | ShaderLab | Shell | SQL | Swift |
-    TypeScript | TypeScriptReact | TeX | VisualBasic | XML | XSL | YAML |
-    UnknownLanguage |
-# extend the specification with things
-    Kotlin | OCaml
-  }
+import lsif.types.1
 
 # Opaque identifiers
 predicate Name: string
@@ -65,21 +25,21 @@ predicate HoverText: string
 predicate Document:
   {
     file: src.File,
-    language: lsif.LanguageId
+    language: lsif.types.LanguageId
   }
 
 # LSIF hover cards in markdown
 predicate HoverContent:
   {
     text : lsif.HoverText,
-    language : lsif.LanguageId
+    language : lsif.types.LanguageId
   }
 
 predicate Metadata:
   {
     lsifVersion: string,
     positionEncoding: string,
-    toolInfo: maybe ToolInfo,
+    toolInfo: maybe lsif.types.ToolInfo,
   }
 
 predicate PackageInformation:
@@ -91,7 +51,7 @@ predicate PackageInformation:
 
 predicate Project:
   {
-    kind: lsif.LanguageId
+    kind: lsif.types.LanguageId
   }
 
 # which project is a file a member of
@@ -101,23 +61,11 @@ predicate ProjectDocument:
     project: lsif.Project,
   }
 
-# In LSIF range spans are not keyed by file, we index them separately.
-# Having this as a type compresses better than as a predicate
-# Note: these are 1-indexed, like src.Range, while LSIF native is 0-indexed.
-# The conversion happens in the indexer.
-type RangeSpan =
-  {
-    lineBegin : nat,
-    columnBegin : nat,
-    lineEnd : nat,
-    columnEnd : nat,
-  }
-
 # LSIF ranges. Raw range facts. They correspond to navigation targets
 predicate Range:
   {
-    range: lsif.RangeSpan,
-    fullRange: maybe lsif.RangeSpan,
+    range: lsif.types.RangeSpan,
+    fullRange: maybe lsif.types.RangeSpan,
     text: lsif.Name,
   }
 
@@ -131,7 +79,8 @@ type MonikerKind =
 # Moniker schemes describe which type of moniker protocol is used
 predicate MonikerScheme: string
 
-# The text fragment of the moniker
+# In LSIF, this is the text fragment of the Moniker.
+# In SCIP, this is the globally unique "symbol" identifier
 predicate MonikerId: string
 
 # Monikers are scoped unique symbol identifiers, similar to Glass symbol ids
@@ -192,7 +141,7 @@ predicate MonikerDefinition:
 predicate MonikerSymbolKind:
   {
     moniker : lsif.Moniker,
-    kind : lsif.SymbolKind
+    kind : lsif.types.SymbolKind
   }
 
 # reverse index from identifer to defn (for search)
@@ -210,7 +159,7 @@ predicate NameDefinition:
 predicate DefinitionKind:
   {
     defn: lsif.Definition,
-    kind: lsif.SymbolKind
+    kind: lsif.types.SymbolKind
   }
 
 # Uses of definitions and declarations (inverse of xrefs)
@@ -236,9 +185,9 @@ type Location =
 }
 
 # Tagged entity by language. Tags should match shape of code.lsif.angle
-# We use the lsif.LanguageId tag associated with lsif.Document (provided by the indexer)
-# to work out the language of the entity. List is known active indexers and generic lsif that
-# people might plausibly try to load
+# We use the lsif.types.LanguageId tag associated with lsif.Document (provided
+# by the indexer) to work out the language of the entity. List is known active
+# indexers and generic lsif that people might plausibly try to load
 type Entity =
   {
     erlang : lsif.SomeEntity |
@@ -273,7 +222,7 @@ predicate ResolveLocation:
   { { NameStr, File, SrcRange }, Entity } where
     Defn = lsif.DefinitionMoniker { defn = { { File, Language }, Range }};
     { range = RangeSpan, text = Name NameStr } = Range;
-    lsif.ToSrcRange { File, RangeSpan, SrcRange };
+    lsif.types.ToSrcRange { File, RangeSpan, SrcRange };
     lsif.TagDefinition { Language, Defn, Entity };
 
 # unwrap language tag and lookup the decl/defn directly
@@ -296,7 +245,7 @@ predicate FileEntityXRefLocation:
   }
   { File, SrcRange, Location, Entity } where
     lsif.Reference { { file = File }, { range = RangeSpan }, BaseDefn };
-    lsif.ToSrcRange { File, RangeSpan, SrcRange };
+    lsif.types.ToSrcRange { File, RangeSpan, SrcRange };
     lsif.DefinitionLocation { BaseDefn, Location };
     Defn = lsif.DefinitionMoniker { defn = BaseDefn };
     { file = { language = Language } } = BaseDefn;
@@ -312,7 +261,7 @@ predicate EntityUses:
   { Entity, File, SrcRange } where
     lsif.EntityDefinition { Entity, { defn = Defn }};
     lsif.DefinitionUse { Defn, { file = File }, { range = Range } };
-    lsif.ToSrcRange { File, Range, SrcRange };
+    lsif.types.ToSrcRange { File, Range, SrcRange };
 
 # and for codemarkup.EntityKind
 # either the kind was recorded in the DefinitionKind table, or the Moniker was
@@ -320,7 +269,7 @@ predicate EntityUses:
 predicate EntityKind:
   {
     entity: lsif.Entity,
-    kind: lsif.SymbolKind,
+    kind: lsif.types.SymbolKind,
   }
   { Entity, Kind } where
     lsif.EntityDefinition { Entity, { Defn, Moniker }};
@@ -335,7 +284,7 @@ predicate EntityKind:
 # introduce entity tags
 predicate TagDefinition:
   {
-    language: lsif.LanguageId,
+    language: lsif.types.LanguageId,
     defn: lsif.DefinitionMoniker,
     entity: lsif.Entity,
   }
@@ -375,7 +324,7 @@ predicate EntityDefinition:
     ({ typescript = SE }) = Entity;
     { defn = Defn } = SE;
 
-# Just need to elaborate lsif.RangeSpan with a File key
+# Just need to elaborate lsif.types.RangeSpan with a File key
 predicate DefinitionLocation:
   {
     defn: lsif.Definition,
@@ -383,19 +332,10 @@ predicate DefinitionLocation:
   }
   { Defn, Location } where
     { { file = File }, { RangeSpan, _, Name NameStr } } = Defn;
-    lsif.ToSrcRange { File, RangeSpan, SrcRange };
+    lsif.types.ToSrcRange { File, RangeSpan, SrcRange };
     { NameStr, File, SrcRange } = Location;
 
-# convenience to convert between lsif.RangeSpan and src.Range
-# These are both 1-indexed range types, but lsif doesn't have a File
-predicate ToSrcRange:
-  {
-    file: src.File,
-    lsif: lsif.RangeSpan,
-    range: src.Range,
-  }
-  { File, { A, B, C, D }, SrcRange } where
-    SrcRange = { File, A, B, C, D };
+
 
 # entity search, recovering entities from symbol ids
 
@@ -418,7 +358,7 @@ predicate SearchByExactLocationAndName:
   {
     file : src.File,
     name : lsif.Name,
-    span : lsif.RangeSpan,
+    span : lsif.types.RangeSpan,
     entity : lsif.Entity,
   }
   { File, Name, Range, Entity } where
@@ -430,7 +370,7 @@ predicate SearchByExactLocationAndName:
 predicate SearchByExactLocation:
   {
     file : src.File,
-    span : lsif.RangeSpan,
+    span : lsif.types.RangeSpan,
     entity : lsif.Entity,
   }
   { File, Range, Entity } where

@@ -1,0 +1,70 @@
+# Copyright (c) Meta, Inc. and its affiliates.
+
+schema lsif.types.1 {
+
+import src.1
+
+# Indexer tool metadata
+type ToolInfo =
+  {
+    toolName: string,
+    toolArgs: [string],
+    version: maybe string,
+  }
+
+# Tags for entities, so clients can distinguish them.
+# Exactly from https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#symbolKind
+# should match exactly LSIF.JSON.SymbolKind
+#
+# Note: this is not the same as codemarkup.SymbolKind's enum
+#
+type SymbolKind =
+  enum {
+    File | Module | Namespace | Package | Class_ | Method | Property |
+    Field | Constructor | Enum_ | Interface | Function | Variable | Constant | String |
+    Number | Boolean | Array | Object_ | Key | Null | EnumMember | Struct | Event |
+    Operator | TypeParameter | Unknown
+  }
+
+# Language Identifiers
+# from https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#textDocumentItem
+# Text documents have a text language identifier associated with filenames, to
+# identify a document on the server side when it handles more than one language
+# to avoid re-interpreting the file extension
+type LanguageId =
+  enum {
+    ABAP | WindowsBat | BibTeX | Clojure | Coffeescript | C | Cpp | CSharp |
+    CSS | Diff | Dart | Dockerfile | Elixir | Erlang | FSharp | Git | Go |
+    Groovy | Handlebars | Haskell | HTML | Ini | Java | JavaScript |
+    JavaScriptReact | JSON | LaTeX | Less | Lua | Makefile | Markdown |
+    ObjectiveC | ObjectiveCpp | Perl | Perl6 | PHP | Powershell | Pug | Python |
+    R | Razor | Ruby | Rust | SCSS | Scala | ShaderLab | Shell | SQL | Swift |
+    TypeScript | TypeScriptReact | TeX | VisualBasic | XML | XSL | YAML |
+    UnknownLanguage |
+# extend the specification with things
+    Kotlin | OCaml
+  }
+
+# In LSIF range spans are not keyed by file, we index them separately.
+# Having this as a type compresses better than as a predicate
+# Note: these are 1-indexed, like src.Range, while LSIF native is 0-indexed.
+# The conversion happens in the indexer.
+type RangeSpan =
+  {
+    lineBegin : nat,
+    columnBegin : nat,
+    lineEnd : nat,
+    columnEnd : nat,
+  }
+
+# convenience to convert between lsif.RangeSpan and src.Range
+# These are both 1-indexed range types, but lsif doesn't have a File
+predicate ToSrcRange:
+  {
+    file: src.File,
+    lsif: RangeSpan,
+    range: src.Range,
+  }
+  { File, { A, B, C, D }, SrcRange } where SrcRange = { File, A, B, C, D }
+
+}

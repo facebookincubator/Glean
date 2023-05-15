@@ -5,6 +5,7 @@ import src.1
 import code.lsif.2
 import codemarkup.types.1
 import lsif.2
+import lsif.types.1
 
 #
 # Resolving locations to entities
@@ -75,7 +76,7 @@ predicate EntityInfo:
 # maps vscode lsp kinds to codemarkup kinds, which use different enums
 predicate LsifKindToKind:
   {
-    lsif: lsif.SymbolKind,
+    lsif: lsif.types.SymbolKind,
     kind: codemarkup.types.SymbolKind
   }
   { Lsif, Kind } where

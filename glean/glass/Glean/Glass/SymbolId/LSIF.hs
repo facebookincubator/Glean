@@ -20,6 +20,7 @@ import Util.Text ( textShow )
 import qualified Glean
 import qualified Glean.Haxl.Repos as Glean
 import qualified Glean.Schema.Lsif.Types as Lsif
+import qualified Glean.Schema.LsifTypes.Types as Lsif
 import Glean.Glass.Utils ( pathFragments )
 import Glean.Glass.Types
 
