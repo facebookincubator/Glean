@@ -19,7 +19,7 @@ module Glean.Glass.Logging
   -- * some types
   , QueryEachRepoLog(..)
   , ErrorText(..)
-  , ErrorLogger
+  , ErrorLogger(..)
   , errorText
 
   ) where
@@ -264,14 +264,42 @@ errorText e = case e of
     Text.unlines $ "Multiple errors:": map (("  " <>) . errorText) (nubOrd errs)
   GlassExceptionReason_EMPTY -> ""
 
-type ErrorLogger = GleanGlassErrorsLogger
+data ErrorLogger = ErrorLogger
+  { errorTy :: !(Maybe GlassExceptionReason)
+  , errorGleanRepo :: ![Glean.Repo]
+  , errorsLogger :: !GleanGlassErrorsLogger
+  }
+
+instance Semigroup GlassExceptionReason where
+  GlassExceptionReason_aggregateError e1 <> e2 =
+    GlassExceptionReason_aggregateError (e2 : e1)
+  e1 <> GlassExceptionReason_aggregateError e2 =
+    GlassExceptionReason_aggregateError (e1 : e2)
+  e1 <> e2 = GlassExceptionReason_aggregateError [e1, e2]
+
+instance Semigroup ErrorLogger where
+  e1 <> e2 = ErrorLogger
+    { errorTy = errorTy e1 <> errorTy e2
+    , errorGleanRepo = errorGleanRepo e1 <> errorGleanRepo e2
+    , errorsLogger = errorsLogger e1 <> errorsLogger e2
+    }
+
+instance Monoid ErrorLogger where
+  mempty = ErrorLogger Nothing [] mempty
 
 class LogError a where
-  logError :: a -> GleanGlassErrorsLogger
+  logError :: a -> ErrorLogger
+  logError = logError . logGleanGlassError
+
+  logGleanGlassError :: a -> GleanGlassErrorsLogger
+  logGleanGlassError = errorsLogger . logError
+
+instance LogError GleanGlassErrorsLogger where
+  logError = ErrorLogger Nothing []
 
 instance LogError GlassExceptionReason where
   logError (GlassExceptionReason_aggregateError [e]) = logError e
-  logError e =
+  logError e = ErrorLogger (Just e) [] $
     Errors.setError (errorText e) <>
     Errors.setErrorType (case e of
       GlassExceptionReason_noSrcFileFact{} -> "NoSrcFileFact"
@@ -285,10 +313,12 @@ instance LogError GlassExceptionReason where
     )
 
 instance LogError Glean.Repo where
-  logError = logRepoSG Errors.setRepoName Errors.setRepoHash
+  logError x =
+    ErrorLogger Nothing [x] $
+      logRepoSG Errors.setRepoName Errors.setRepoHash x
 
 instance LogError USR where
-  logError (USR hash) = Errors.setSymbol hash
+  logGleanGlassError (USR hash) = Errors.setSymbol hash
 
 instance LogError (NonEmpty (a, Glean.Repo)) where
   logError = logError . NE.map snd
@@ -296,8 +326,9 @@ instance LogError (NonEmpty (a, Glean.Repo)) where
 instance LogError (NonEmpty Glean.Repo) where
   logError (repo :| []) = logError repo
   logError rs =
-    Errors.setRepoName (commas repo_name rs) <>
-    Errors.setRepoHash (commas (Text.take 12 . repo_hash) rs)
+    ErrorLogger Nothing (NE.toList rs) $
+      Errors.setRepoName (commas repo_name rs) <>
+      Errors.setRepoHash (commas (Text.take 12 . repo_hash) rs)
 
 -- sometimes we return more than just the repo result
 instance LogError (a,Glean.Repo) where
@@ -313,22 +344,23 @@ instance {-# OVERLAPPABLE #-} LogError a => LogError (a,b,c) where
   logError (repo,_,_) = logError repo
 
 instance LogError DocumentSymbolsRequest where
-  logError = logDocumentSymbolsRequestSG Errors.setFilepath Errors.setRepo
+  logGleanGlassError =
+    logDocumentSymbolsRequestSG Errors.setFilepath Errors.setRepo
 
 instance LogError SymbolId where
-  logError = logSymbolSG Errors.setSymbol
+  logGleanGlassError = logSymbolSG Errors.setSymbol
 
 instance LogError SymbolPath where
-  logError = logSymbolPathSG Errors.setFilepath Errors.setRepo
+  logGleanGlassError = logSymbolPathSG Errors.setFilepath Errors.setRepo
 
 instance LogError Location where
-  logError = logLocationSG Errors.setFilepath Errors.setRepo
+  logGleanGlassError = logLocationSG Errors.setFilepath Errors.setRepo
 
 instance LogError SymbolSearchRequest where
-  logError = logSymbolSearchRequestSG Errors.setSymbol Errors.setRepo
+  logGleanGlassError = logSymbolSearchRequestSG Errors.setSymbol Errors.setRepo
 
 instance LogError FileIncludeLocationRequest where
-  logError FileIncludeLocationRequest{..} =
+  logGleanGlassError FileIncludeLocationRequest{..} =
     Errors.setFilepath (unPath fileIncludeLocationRequest_filepath) <>
       Errors.setRepo (unRepoName fileIncludeLocationRequest_repository)
 

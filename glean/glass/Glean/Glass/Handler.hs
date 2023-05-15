@@ -69,7 +69,6 @@ import qualified Data.Text as Text
 import Haxl.DataSource.Glean (HasRepo)
 import Haxl.Prelude (forM, forM_)
 import Logger.GleanGlass ( GleanGlassLogger )
-import Logger.GleanGlassErrors ( GleanGlassErrorsLogger )
 import Util.Logger ( loggingAction )
 import Util.Text ( textShow )
 import Util.List ( uniq, uniqBy )
@@ -892,7 +891,7 @@ withEntity
   -> RepoName
   -> Language
   -> [Text]
-  -> Glean.ReposHaxl u w (a, Maybe GleanGlassErrorsLogger)
+  -> Glean.ReposHaxl u w (a, Maybe ErrorLogger)
 withEntity f scsrepo lang toks = do
   r <- Search.searchEntity lang toks
   (SearchEntity{..}, err) <- case r of
@@ -1391,9 +1390,9 @@ runLog :: Glass.Env -> Text -> GleanGlassLogger -> IO ()
 runLog env cmd log = Logger.runLog (Glass.logger env) $
   log <> Logger.setMethod cmd
 
-runErrorLog :: Glass.Env -> Text -> GleanGlassErrorsLogger -> IO ()
+runErrorLog :: Glass.Env -> Text -> ErrorLogger -> IO ()
 runErrorLog env cmd err = ErrorsLogger.runLog (Glass.logger env) $
-  err <> ErrorsLogger.setMethod cmd
+  errorsLogger err <> ErrorsLogger.setMethod cmd
 
 parentContainer
   :: RepoName -> Code.Entity -> Glean.RepoHaxl u w (Maybe SymbolContext)
