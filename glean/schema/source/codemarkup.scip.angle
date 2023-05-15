@@ -1,0 +1,23 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema codemarkup.scip.1 {
+import src.1
+import code.scip.1
+import codemarkup.types.1
+import scip.1
+import lsif.types.1
+
+#
+# Resolving locations to entities
+#
+
+predicate ScipResolveLocation:
+  {
+    location: codemarkup.types.Location,
+    entity: code.scip.Entity,
+  }
+  { { Name, File, { range = Range }, nothing }, Entity } where
+    scip.ResolveLocation { { File, Range, Name }, Entity };
+
+
+}

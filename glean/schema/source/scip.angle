@@ -52,12 +52,49 @@ predicate Definition:
     location: FileRange
   }
 
+# derive index from locations to definitions
+predicate DefinitionLocation:
+  {
+    file : src.File,
+    range : lsif.types.RangeSpan,
+    defn : Definition
+  } stored { File, Range, Defn } where
+    Defn = scip.Definition { location = FileRange };
+    scip.FileRange { File, Range } = FileRange;
+
 # Uses (xref occurences)
 predicate Reference:
   {
     symbol: Symbol,
     location: FileRange
   }
+
+predicate ReferenceLocation:
+  {
+    file : src.File,
+    range : lsif.types.RangeSpan,
+    xref : Reference,
+  } stored { File, Range, Use } where
+    Use = scip.Reference { location = FileRange };
+    scip.FileRange { File, Range } = FileRange;
+
+# where we know the definition target of a free xref
+# don't think we even need to store these?
+predicate ReferenceTarget:
+  {
+    xref: Reference,
+    target: Definition
+  } { { symbol = Symbol }, Defn } where
+    Defn = scip.Definition { symbol = Symbol }
+
+# find-refs table: inverse of ReferenceTarget
+# don't think we even need to store these?
+predicate DefinitionUses:
+  {
+    target: Definition,
+    xref: Reference
+  } { { symbol = Symbol }, XRef } where
+    XRef = scip.Reference { symbol = Symbol }
 
 # Documentation facts (including type signatures)
 predicate Documentation: string
@@ -67,6 +104,14 @@ predicate SymbolDocumentation:
     symbol: Symbol,
     docs: Documentation
   }
+
+predicate DefinitionDocumentation:
+  {
+    defn: Definition,
+    docs: Documentation
+  }
+  { { symbol = Symbol }, Docs } where
+    scip.SymbolDocumentation { Symbol, Docs }
 
 # Symbol kinds from the `Symbol` semantic encoding
 predicate SymbolKind:
@@ -83,6 +128,14 @@ predicate SymbolName:
     symbol: Symbol,
     name: LocalName
   }
+
+predicate DefinitionName:
+  {
+    defn: Definition,
+    docs: LocalName
+  }
+  { { symbol = Symbol }, Name } where scip.SymbolName { Symbol, Name }
+
 # codemarkup compatibility. Same shape as code.scip.Entity
 type Entity =
   {
@@ -116,5 +169,26 @@ predicate EntityDefinition:
   { Entity, Defn } where
     { rust = SomeEntity } = Entity;
     { defn = Defn } = SomeEntity;
+
+# Symbol locations type. Analog of codemarkup:Location
+type Location =
+  {
+    file : src.File,
+    location : src.Range,
+    name : string,
+}
+
+# analog of codemarkup.ResolveLocation, flattens locations and converts spans
+predicate ResolveLocation:
+  {
+    location: scip.Location,
+    entity: scip.Entity,
+  }
+  { { File, SrcRange, Name }, Entity } where
+    lsif.types.FromSrcRange { SrcRange, File, RangeSpan };
+    scip.DefinitionLocation { File, RangeSpan, Defn };
+    scip.FileLanguage { File, Language };
+    scip.TagDefinition { Language, Defn, Entity };
+    scip.DefinitionName { Defn, scip.LocalName Name }
 
 }

@@ -67,4 +67,13 @@ predicate ToSrcRange:
   }
   { File, { A, B, C, D }, SrcRange } where SrcRange = { File, A, B, C, D }
 
+# Inverse direction of ToSrcRange. Breaks apart the src.Range structure
+predicate FromSrcRange:
+  {
+    range: src.Range,
+    file: src.File,
+    lsif: RangeSpan,
+  }
+  { SrcRange, File, { A, B, C, D } } where SrcRange = { File, A, B, C, D }
+
 }
