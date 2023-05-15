@@ -12,6 +12,7 @@ import code.java.5
 import code.lsif.2
 import code.pp.1
 import code.python.1
+import code.scip.1
 import code.thrift.5
 import codemarkup.types.1
 
@@ -28,6 +29,7 @@ type Entity =
     buck : code.buck.Entity |
     erlang : code.erlang.Entity |
     lsif : code.lsif.Entity |
+    scip : code.scip.Entity |
   }
 
 # language enum values for exactly the set of entity tags (including LSIF)
@@ -58,7 +60,8 @@ predicate EntityLanguage:
     ( { thrift = _ } = Entity; Thrift = Language ) |
     ( { buck = _ } = Entity; Buck = Language ) |
     ( { erlang = _ } = Entity; Erlang = Language ) |
-    ( { lsif = LSIF }  = Entity; EntityLanguageLSIF { LSIF, Language } );
+    ( { lsif = LSIF }  = Entity; EntityLanguageLSIF { LSIF, Language } ) |
+    ( { scip = SCIP }  = Entity; EntityLanguageSCIP { SCIP, Language } );
 
 # (private) helper for the LSIF subset
 predicate EntityLanguageLSIF:
@@ -78,6 +81,15 @@ predicate EntityLanguageLSIF:
     ( { scala = _ } = LSIF; Scala = Language ) |
     ( { swift = _ } = LSIF; Swift = Language ) |
     ( { typescript = _ } = LSIF; TypeScript = Language );
+
+# (private) helper for the SCIP subset
+predicate EntityLanguageSCIP:
+  {
+    entity: code.scip.Entity,
+    language: Language
+  }
+  { SCIP, Language } where
+    { rust = _ } = SCIP; Rust : Language = Language;
 
 type Annotations =
   {

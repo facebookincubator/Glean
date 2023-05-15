@@ -83,5 +83,38 @@ predicate SymbolName:
     symbol: Symbol,
     name: LocalName
   }
+# codemarkup compatibility. Same shape as code.scip.Entity
+type Entity =
+  {
+    rust: SomeEntity |
+  }
+
+# entities are scip.Definitions
+type SomeEntity =
+  {
+    defn: scip.Definition
+  }
+
+# introduce or eliminate the language tag on the generic scip definition
+predicate TagDefinition:
+  {
+    language: lsif.types.LanguageId,
+    defn: scip.Definition,
+    entity: scip.Entity,
+  }
+  { Language, Defn, Entity } where
+    SomeEntity = scip.SomeEntity { defn = Defn };
+    Rust = Language;
+    { rust = SomeEntity } = Entity;
+
+# eliminate entity language tags. inverse of TagDefinition
+predicate EntityDefinition:
+  {
+    entity : scip.Entity,
+    defn : scip.Definition
+  }
+  { Entity, Defn } where
+    { rust = SomeEntity } = Entity;
+    { defn = Defn } = SomeEntity;
 
 }

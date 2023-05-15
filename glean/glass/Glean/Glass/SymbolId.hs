@@ -88,6 +88,7 @@ import qualified Glean.Glass.SymbolId.Pp as Pp
 
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Schema.CodeLsif.Types as Lsif
+import qualified Glean.Schema.CodeScip.Types as Scip
 
 import Glean.Schema.CodeErlang.Types as Erlang ( Entity(Entity_decl) )
 import Glean.Schema.CodeHack.Types as Hack ( Entity(Entity_decl) )
@@ -212,8 +213,9 @@ entityLanguage e = case e of
   Code.Entity_lsif Lsif.Entity_go{} -> Language_Go
   Code.Entity_lsif Lsif.Entity_typescript{} -> Language_TypeScript
   Code.Entity_lsif Lsif.Entity_rust{} -> Language_Rust
-  -- Code.Entity_lsif Lsif.Entity_java{} -> Language_Java
   Code.Entity_lsif _ -> Language__UNKNOWN 0
+  Code.Entity_scip Scip.Entity_rust{} -> Language_Rust
+  Code.Entity_scip _ -> Language__UNKNOWN 0
   Code.Entity_EMPTY -> Language__UNKNOWN 0
 
 -- | Map the user-visible glass.thrift Language enum to the internal Glean
