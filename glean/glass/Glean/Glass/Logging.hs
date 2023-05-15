@@ -18,7 +18,6 @@ module Glean.Glass.Logging
 
   -- * some types
   , QueryEachRepoLog(..)
-  , ErrorTy(..)
   , ErrorText(..)
   , ErrorLogger
   , errorText
@@ -252,46 +251,37 @@ commas f = Text.intercalate "," . map f . toList
 
 newtype ErrorText = ErrorText Text
 
--- | Types of missing data / internal logic errors
-data ErrorTy
-  = NoSrcFileFact !Text
-  | NoSrcFileLinesFact !Text
-  | NotIndexedFile !Text
-  | EntitySearchFail !Text
-  | EntityNotSupported !Text
-  | AttributesError !Text
-  | AggregateError [ErrorTy]
-  deriving (Eq, Ord)
-
-errorText :: ErrorTy -> Text
+errorText :: GlassExceptionReason -> Text
 errorText e = case e of
-  NoSrcFileFact t -> t
-  NoSrcFileLinesFact t -> t
-  NotIndexedFile t -> t
-  EntitySearchFail t -> t
-  EntityNotSupported t -> t
-  AttributesError t -> t
-  AggregateError [e] -> errorText e
-  AggregateError errs ->
+  GlassExceptionReason_noSrcFileFact t -> t
+  GlassExceptionReason_noSrcFileLinesFact t -> t
+  GlassExceptionReason_notIndexedFile t -> t
+  GlassExceptionReason_entitySearchFail t -> t
+  GlassExceptionReason_entityNotSupported t -> t
+  GlassExceptionReason_attributesError t -> t
+  GlassExceptionReason_aggregateError [e] -> errorText e
+  GlassExceptionReason_aggregateError errs ->
     Text.unlines $ "Multiple errors:": map (("  " <>) . errorText) (nubOrd errs)
+  GlassExceptionReason_EMPTY -> ""
 
 type ErrorLogger = GleanGlassErrorsLogger
 
 class LogError a where
   logError :: a -> GleanGlassErrorsLogger
 
-instance LogError ErrorTy where
-  logError (AggregateError [e]) = logError e
+instance LogError GlassExceptionReason where
+  logError (GlassExceptionReason_aggregateError [e]) = logError e
   logError e =
     Errors.setError (errorText e) <>
     Errors.setErrorType (case e of
-      NoSrcFileFact{} -> "NoSrcFileFact"
-      NoSrcFileLinesFact{} -> "NoSrcFileLinesFact"
-      EntitySearchFail{} -> "EntitySearchFail"
-      EntityNotSupported{} -> "EntityNotSupported"
-      AttributesError{} -> "AttributesError"
-      AggregateError{} -> "AggregateError"
-      NotIndexedFile{} -> "NotIndexedFile"
+      GlassExceptionReason_noSrcFileFact{} -> "NoSrcFileFact"
+      GlassExceptionReason_noSrcFileLinesFact{} -> "NoSrcFileLinesFact"
+      GlassExceptionReason_entitySearchFail{} -> "EntitySearchFail"
+      GlassExceptionReason_entityNotSupported{} -> "EntityNotSupported"
+      GlassExceptionReason_attributesError{} -> "AttributesError"
+      GlassExceptionReason_aggregateError{} -> "AggregateError"
+      GlassExceptionReason_notIndexedFile{} -> "NotIndexedFile"
+      GlassExceptionReason_EMPTY{} -> "EMPTY"
     )
 
 instance LogError Glean.Repo where

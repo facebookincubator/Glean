@@ -193,8 +193,8 @@ documentSymbolIndex env r opts = fst3 <$> runRepoFile "documentSymbolIndex"
 -- | Given a query, run it on all available repos and return the first success
 --   plus an explainer
 firstOrErrors
-  :: (HasRepo u => ReposHaxl u w (Either ErrorTy a))
-  -> ReposHaxl u w (Either ErrorTy (a, QueryEachRepoLog))
+  :: (HasRepo u => ReposHaxl u w (Either GlassExceptionReason a))
+  -> ReposHaxl u w (Either GlassExceptionReason (a, QueryEachRepoLog))
 firstOrErrors act = do
   results <- queryEachRepo $ do
     repo <- Glean.haxlRepo
@@ -208,19 +208,19 @@ firstOrErrors act = do
           Nothing -> FoundOne
           Just otherSuccesses ->  FoundMultiple (fmap fst otherSuccesses)
       )
-    [] -> Left $ AggregateError fail
+    [] -> Left $ GlassExceptionReason_aggregateError fail
 
 -- | Return all successes, after de-duplication
 anyOrErrors
   :: Ord a
-  => ReposHaxl u w [Either ErrorTy [a]]
-  -> ReposHaxl u w (Either ErrorTy [a])
+  => ReposHaxl u w [Either GlassExceptionReason [a]]
+  -> ReposHaxl u w (Either GlassExceptionReason [a])
 anyOrErrors act = do
   result <- act
   let (fail, success) = partitionEithers result
   return $ case success of
     xs@(_:_) -> Right (nubOrd (concat xs))
-    [] -> Left $ AggregateError fail
+    [] -> Left $ GlassExceptionReason_aggregateError fail
 
 -- | Given a Location , resolve it to a line:col range in the target file
 jumpTo
@@ -370,7 +370,8 @@ clangUSRToDefinition env@Glass.Env{..} usr@(USR hash) _opts = withRepoLanguage
         mdefn <- Cxx.usrHashToDeclaration hash
         case mdefn of
           Nothing -> -- either hash is unknown or decl is already defn
-            pure (Left (EntitySearchFail "No definition result for hash"))
+            pure (Left (GlassExceptionReason_entitySearchFail
+              "No definition result for hash"))
           Just (Code.Location{..},_entity) -> do
             range <- rangeSpanToLocationRange repo location_file
               location_location
@@ -871,17 +872,18 @@ symbolToAngleEntity
   :: Language
   -> [Text]
   -> ReposHaxl u w
-      (Either GleanGlassErrorsLogger
-        (Glean.Repo, Angle Code.Entity, Maybe ErrorTy))
+      (Either ErrorLogger
+        (Glean.Repo, Angle Code.Entity, Maybe GlassExceptionReason))
 symbolToAngleEntity lang toks = do
   r <- Search.searchEntity lang toks -- search everywhere for something a match
   (SearchEntity{..}, searchErr) <- case r of
     None t -> throwM (ServerException t) -- return [] ?
     One e -> return (e, Nothing)
       -- n.b. picks the first entity only
-    Many { initial = e, message = t } -> return (e, Just (EntitySearchFail t))
+    Many { initial = e, message = t } ->
+      return (e, Just (GlassExceptionReason_entitySearchFail t))
   return $ case entityToAngle decl of
-      Left err -> Left (logError (EntityNotSupported err))
+      Left err -> Left (logError (GlassExceptionReason_entityNotSupported err))
       Right query -> Right (entityRepo, query, searchErr)
 
 -- | Run an action on the result of looking up a symbol id
@@ -896,7 +898,8 @@ withEntity f scsrepo lang toks = do
   (SearchEntity{..}, err) <- case r of
     None t -> throwM (ServerException t)
     One e -> return (e, Nothing)
-    Many { initial = e, message = t } -> return (e, Just (EntitySearchFail t))
+    Many { initial = e, message = t } ->
+      return (e, Just (GlassExceptionReason_entitySearchFail t))
   (, fmap logError err) <$> withRepo entityRepo (f scsrepo file rangespan)
 
 fetchSymbolsAndAttributesGlean
@@ -969,8 +972,9 @@ fetchDocumentSymbols (FileReference scsrepo path) mlimit includeRefs b mlang =
       return $ case res of
         Left _ -> res
         Right fi@FileInfo{..}
-          | not isIndexed ->
-            Left $ NotIndexedFile $ "Not indexed: " <> gleanPath path
+          | not isIndexed -> Left $
+            GlassExceptionReason_notIndexedFile $ "Not indexed: "
+              <> gleanPath path
           | otherwise -> Right fi
 
     case efile of
@@ -1158,7 +1162,9 @@ searchFileAttributes key mlimit fileId = do
                 Attributes.queryFileAttributes key fileId
   case eraw of
     Left (err::SomeException) -- logic errors or transient errors
-      -> return (mempty, Just (logError $ AttributesError $ textShow err))
+      -> return
+        (mempty,
+        Just (logError $ GlassExceptionReason_attributesError $ textShow err))
     Right raw
       -> return (Attributes.toAttrMap key raw, Nothing)
 
@@ -1504,7 +1510,7 @@ searchRelated env@Glass.Env{..} sym RequestOptions{..}
         let SearchEntity{entityRepo, decl, file, name, rangespan} = child
         case entityToAngle decl of
           Left err -> return
-            ([], Just (logError (EntityNotSupported err)))
+            ([], Just (logError (GlassExceptionReason_entityNotSupported err)))
           Right query -> do
             let childRL = ((decl, file, rangespan, name), sym)
                 -- limit until we optimize the query to use DeclarationSource

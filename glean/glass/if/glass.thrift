@@ -252,6 +252,16 @@ exception ServerException {
   1: string message;
 }
 
+union GlassExceptionReason {
+  1: string noSrcFileFact;
+  2: string noSrcFileLinesFact;
+  3: string notIndexedFile;
+  4: string entitySearchFail;
+  5: string entityNotSupported;
+  6: string attributesError;
+  7: list<GlassExceptionReason> aggregateError;
+}
+
 // Type of abstract identifiers
 typedef string Name (hs.newtype)
 

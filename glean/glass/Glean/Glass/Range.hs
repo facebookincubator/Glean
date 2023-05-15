@@ -43,12 +43,11 @@ import Glean.Glass.Types
       ByteSpan(..),
       Location(..),
       RepoName,
-      Range(range_columnEnd, range_lineEnd, range_columnBegin,
-            range_lineBegin) )
+      Range(range_columnEnd, range_lineEnd, range_columnBegin, range_lineBegin),
+      GlassExceptionReason (GlassExceptionReason_noSrcFileFact)
+    )
 import Glean.Glass.Base ( GleanPath(..),  SymbolRepoPath(..))
 import Glean.Glass.Path ( toGleanPath, fromGleanPath )
-import Glean.Glass.Logging
-    ( ErrorTy(NoSrcFileFact) )
 import qualified Haxl.Core.Memo as Haxl
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import Glean.Angle ( query )
@@ -116,7 +115,9 @@ rangeSpanToRange _ Code.RangeSpan_EMPTY =
 -- | Convert a client-side target locator to a specific line/col range
 -- Used to implement location jumpTo
 resolveLocationToRange
-  :: Glean.Repo -> Location -> Glean.RepoHaxl u w (Either ErrorTy Range)
+  :: Glean.Repo
+  -> Location
+  -> Glean.RepoHaxl u w (Either GlassExceptionReason Range)
 resolveLocationToRange repo Location{..} = do
   let path = toGleanPath $ SymbolRepoPath location_repository location_filepath
   efile <- getFileAndLines repo path
@@ -145,12 +146,15 @@ data FileInfo = FileInfo {
 -- Note: we may not have lineoffsets, but this is not necessarily fatal as
 -- they are only needed for bytespan conversions
 getFileAndLines
-  :: Glean.Repo -> GleanPath -> Glean.RepoHaxl u w (Either ErrorTy FileInfo)
+  :: Glean.Repo
+  -> GleanPath
+  -> Glean.RepoHaxl u w (Either GlassExceptionReason FileInfo)
 getFileAndLines fileRepo path = do
   mfile <- Glean.getFirstResult (query (Query.indexedFile (Query.srcFile path)))
   case mfile of
-    Nothing -> return $
-      Left $ NoSrcFileFact $ "No src.File fact for " <> gleanPath path
+    Nothing -> return $ Left $
+      GlassExceptionReason_noSrcFileFact $ "No src.File fact for "
+        <> gleanPath path
     Just (srcFile, isIndexed) -> do
       offsets <- memoLineOffsets srcFile
       return $ do
@@ -158,11 +162,13 @@ getFileAndLines fileRepo path = do
         Right FileInfo{..}
 
 -- | Get the src.File fact for a path
-getFile :: GleanPath -> Glean.RepoHaxl u w (Either ErrorTy Src.File)
+getFile :: GleanPath -> Glean.RepoHaxl u w (Either GlassExceptionReason Src.File)
 getFile path = do
   mfile <- Glean.getFirstResult (query (Query.srcFile path))
   return $ case mfile of
-    Nothing -> Left $ NoSrcFileFact $ "No src.File fact for " <> gleanPath path
+    Nothing -> Left $
+      GlassExceptionReason_noSrcFileFact $ "No src.File fact for "
+        <> gleanPath path
     Just srcFile -> Right srcFile
 
 -- | Glean's Src.Range is inclusive of start/end. Glass is exclusive
