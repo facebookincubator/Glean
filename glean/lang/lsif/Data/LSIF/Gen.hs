@@ -23,8 +23,10 @@ module Data.LSIF.Gen (
     text,
     string,
     generateJSON,
+    generateSCIPJSON,
     insertPredicateMap,
     factId,
+    srcFile,
 
     -- * more shared types
     LanguageId(..),
@@ -87,6 +89,12 @@ key xs = "key" .= object xs
 string :: Text -> Value
 string s = object [ "key" .= s ]
 
+-- | Helper for src.File facts
+srcFile :: Id -> Text -> Predicate
+srcFile id_ path = Predicate "src.File" [
+    object [ factId id_, "key" .= path ]
+  ]
+
 factId :: KeyValue kv => Id -> kv
 factId (Id id_) = "id" .= id_
 
@@ -101,19 +109,35 @@ insertPredicateMap = foldl' ins
 -- predicats, we chunk them into smaller top level groups, which makes memory
 -- mgmt a bit easier
 generateJSON :: PredicateMap -> [Value]
-generateJSON hm = concat $ mapMaybe (\k -> gen k <$> HashMap.lookup k hm) keys
+generateJSON = mkGenerateJSON lsifSchemaVersion lsifDependencyOrder
+
+-- | Given a hashmap keyed by scip redicate names, emit an array of json
+-- pred/facts with one entry per predicate. In case we have very large
+-- predicats, we chunk them into smaller top level groups, which makes memory
+-- mgmt a bit easier
+generateSCIPJSON :: PredicateMap -> [Value]
+generateSCIPJSON = mkGenerateJSON scipSchemaVersion scipDependencyOrder
+
+mkGenerateJSON :: Int -> (Text -> Int) -> PredicateMap -> [Value]
+mkGenerateJSON version ordering hm = concat $
+    mapMaybe (\k -> gen k <$> HashMap.lookup k hm) keys
   where
-    gen k = emitPredicate . Predicate k
-    keys = sortOn dependencyOrder (HashMap.keys hm)
+    gen k = emitPredicate version . Predicate k
+    keys = sortOn ordering (HashMap.keys hm)
 
 -- | Try to be slightly robust about which version of the lsif facts we generate
 lsifSchemaVersion :: Int
 lsifSchemaVersion = 2
 
-emitPredicate :: Predicate -> [Value]
-emitPredicate (Predicate name facts) =
+-- | Try to be slightly robust about which version of the lsif facts we generate
+scipSchemaVersion :: Int
+scipSchemaVersion = 1
+
+-- | We do these in chunks to make parsing simpler
+emitPredicate :: Int -> Predicate -> [Value]
+emitPredicate version (Predicate name facts) =
   [ object
-    [ "predicate" .= text (name <> "." <> Text.pack (show lsifSchemaVersion))
+    [ "predicate" .= text (name <> "." <> Text.pack (show version))
     , "facts" .= Array (V.fromList chunk)
     ]
   | chunk <- chunksOf 10000 facts
@@ -122,8 +146,11 @@ emitPredicate (Predicate name facts) =
 text :: Text -> Value
 text = String
 
-dependencyOrder :: Text -> Int
-dependencyOrder p = case p of
+--
+-- Dependency ordering where we have sharing between facts
+--
+lsifDependencyOrder :: Text -> Int
+lsifDependencyOrder p = case p of
   "lsif.Document" -> 0
   "lsif.Project" -> 0
   "lsif.Range" -> 1
@@ -142,6 +169,24 @@ dependencyOrder p = case p of
   -- everything else, in the middle
   _ -> 5
 
+--
+-- Topological ordering of predicates based on sharing in the indexer json
+-- We have to write fact for A before a reference to the factId for A
+--
+scipDependencyOrder :: Text -> Int
+scipDependencyOrder p = case p of
+  "src.File" -> 0
+  "scip.Range" -> 0
+  "scip.Symbol" -> 0
+  "scip.LocalName" -> 0
+  "scip.Documentation" -> 0
+  "scip.FileLanguage" -> 1 -- refers to src.File
+  "scip.FileRange" -> 2 -- refers to src.File and scip.Range
+  "scip.Definition" -> 3
+  "scip.Reference" -> 3
+  "scip.SymbolDocumentation" -> 3
+  "scip.SymbolName" -> 3
+  _ -> 100
 
 data MonikerKind = Export | Local | Import | Implementation
   deriving (Enum)
@@ -262,7 +307,6 @@ data SymbolKind
     | SkTypeParameter
     | SkUnknown
     deriving (Generic,Enum)
-
 
 -- From https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#textDocumentItem
 -- Text documents have a language identifier to identify a document on the

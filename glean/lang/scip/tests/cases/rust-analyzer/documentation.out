@@ -1,0 +1,1505 @@
+[
+  "@generated",
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo _eq_modulo_pos_derive . EqModuloPos!"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000a_eq_modulo_pos_derive\u000a```\u000a\u000a```rust\u000aproc_macro EqModuloPos\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo _no_pos_hash_derive . NoPosHash!"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000a_no_pos_hash_derive\u000a```\u000a\u000a```rust\u000aproc_macro NoPosHash\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo _ocamlrep_derive . FromOcamlRep!"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000a_ocamlrep_derive\u000a```\u000a\u000a```rust\u000aproc_macro FromOcamlRep\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo _ocamlrep_derive . FromOcamlRepIn!"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000a_ocamlrep_derive\u000a```\u000a\u000a```rust\u000aproc_macro FromOcamlRepIn\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo _ocamlrep_derive . ToOcamlRep!" },
+      "docs": {
+        "key": "\u000a```rust\u000a_ocamlrep_derive\u000a```\u000a\u000a```rust\u000aproc_macro ToOcamlRep\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo _serde_derive-1.0.152 . Deserialize!"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000a_serde_derive_1.0.152\u000a```\u000a\u000a```rust\u000aproc_macro Deserialize\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo _serde_derive-1.0.152 . Serialize!"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000a_serde_derive_1.0.152\u000a```\u000a\u000a```rust\u000aproc_macro Serialize\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo alloc https://github.com/rust-lang/rust/library/alloc fmt/"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000aalloc\u000a```\u000a\u000a```rust\u000amod fmt\u000a```\u000a\u000a---\u000a\u000aUtilities for formatting and printing `String`s.\u000a\u000aThis module contains the runtime support for the [`format`](https://doc.rust-lang.org/nightly/alloc/macros/macro.format.html) syntax extension.\u000aThis macro is implemented in the compiler to emit calls to this module in\u000aorder to format arguments at runtime into strings.\u000a\u000a# Usage\u000a\u000aThe [`format`](https://doc.rust-lang.org/nightly/alloc/macros/macro.format.html) macro is intended to be familiar to those coming from C's\u000a`printf`/`fprintf` functions or Python's `str.format` function.\u000a\u000aSome examples of the [`format`](https://doc.rust-lang.org/nightly/alloc/macros/macro.format.html) extension are:\u000a\u000a```\u000aformat!(\"Hello\");                 // => \"Hello\"\u000aformat!(\"Hello, {}!\", \"world\");   // => \"Hello, world!\"\u000aformat!(\"The number is {}\", 1);   // => \"The number is 1\"\u000aformat!(\"{:?}\", (3, 4));          // => \"(3, 4)\"\u000aformat!(\"{value}\", value=4);      // => \"4\"\u000alet people = \"Rustaceans\";\u000aformat!(\"Hello {people}!\");       // => \"Hello Rustaceans!\"\u000aformat!(\"{} {}\", 1, 2);           // => \"1 2\"\u000aformat!(\"{:04}\", 42);             // => \"0042\" with leading zeros\u000aformat!(\"{:#?}\", (100, 200));     // => \"(\u000a                                  //       100,\u000a                                  //       200,\u000a                                  //     )\"\u000a```\u000a\u000aFrom these, you can see that the first argument is a format string. It is\u000arequired by the compiler for this to be a string literal; it cannot be a\u000avariable passed in (in order to perform validity checking). The compiler\u000awill then parse the format string and determine if the list of arguments\u000aprovided is suitable to pass to this format string.\u000a\u000aTo convert a single value to a string, use the [`to_string`] method. This\u000awill use the [`Display`](https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html) formatting trait.\u000a\u000a## Positional parameters\u000a\u000aEach formatting argument is allowed to specify which value argument it's\u000areferencing, and if omitted it is assumed to be \"the next argument\". For\u000aexample, the format string `{} {} {}` would take three parameters, and they\u000awould be formatted in the same order as they're given. The format string\u000a`{2} {1} {0}`, however, would format arguments in reverse order.\u000a\u000aThings can get a little tricky once you start intermingling the two types of\u000apositional specifiers. The \"next argument\" specifier can be thought of as an\u000aiterator over the argument. Each time a \"next argument\" specifier is seen,\u000athe iterator advances. This leads to behavior like this:\u000a\u000a```\u000aformat!(\"{1} {} {0} {}\", 1, 2); // => \"2 1 1 2\"\u000a```\u000a\u000aThe internal iterator over the argument has not been advanced by the time\u000athe first `{}` is seen, so it prints the first argument. Then upon reaching\u000athe second `{}`, the iterator has advanced forward to the second argument.\u000aEssentially, parameters that explicitly name their argument do not affect\u000aparameters that do not name an argument in terms of positional specifiers.\u000a\u000aA format string is required to use all of its arguments, otherwise it is a\u000acompile-time error. You may refer to the same argument more than once in the\u000aformat string.\u000a\u000a## Named parameters\u000a\u000aRust itself does not have a Python-like equivalent of named parameters to a\u000afunction, but the [`format`](https://doc.rust-lang.org/nightly/alloc/macros/macro.format.html) macro is a syntax extension that allows it to\u000aleverage named parameters. Named parameters are listed at the end of the\u000aargument list and have the syntax:\u000a\u000a```text\u000aidentifier '=' expression\u000a```\u000a\u000aFor example, the following [`format`](https://doc.rust-lang.org/nightly/alloc/macros/macro.format.html) expressions all use named arguments:\u000a\u000a```\u000aformat!(\"{argument}\", argument = \"test\");   // => \"test\"\u000aformat!(\"{name} {}\", 1, name = 2);          // => \"2 1\"\u000aformat!(\"{a} {c} {b}\", a=\"a\", b='b', c=3);  // => \"a 3 b\"\u000a```\u000a\u000aIf a named parameter does not appear in the argument list, `format!` will\u000areference a variable with that name in the current scope.\u000a\u000a```\u000alet argument = 2 + 2;\u000aformat!(\"{argument}\");   // => \"4\"\u000a\u000afn make_string(a: u32, b: &str) -> String {\u000a    format!(\"{b} {a}\")\u000a}\u000amake_string(927, \"label\"); // => \"label 927\"\u000a```\u000a\u000aIt is not valid to put positional parameters (those without names) after\u000aarguments that have names. Like with positional parameters, it is not\u000avalid to provide named parameters that are unused by the format string.\u000a\u000a# Formatting Parameters\u000a\u000aEach argument being formatted can be transformed by a number of formatting\u000aparameters (corresponding to `format_spec` in [the syntax](https://doc.rust-lang.org/nightly/alloc/fmt/index.html#syntax)). These\u000aparameters affect the string representation of what's being formatted.\u000a\u000a## Width\u000a\u000a```\u000a// All of these print \"Hello x    !\"\u000aprintln!(\"Hello {:5}!\", \"x\");\u000aprintln!(\"Hello {:1$}!\", \"x\", 5);\u000aprintln!(\"Hello {1:0$}!\", 5, \"x\");\u000aprintln!(\"Hello {:width$}!\", \"x\", width = 5);\u000alet width = 5;\u000aprintln!(\"Hello {:width$}!\", \"x\");\u000a```\u000a\u000aThis is a parameter for the \"minimum width\" that the format should take up.\u000aIf the value's string does not fill up this many characters, then the\u000apadding specified by fill/alignment will be used to take up the required\u000aspace (see below).\u000a\u000aThe value for the width can also be provided as a [`usize`](https://doc.rust-lang.org/nightly/core/primitive.usize.html) in the list of\u000aparameters by adding a postfix `$`, indicating that the second argument is\u000aa [`usize`](https://doc.rust-lang.org/nightly/core/primitive.usize.html) specifying the width.\u000a\u000aReferring to an argument with the dollar syntax does not affect the \"next\u000aargument\" counter, so it's usually a good idea to refer to arguments by\u000aposition, or use named arguments.\u000a\u000a## Fill/Alignment\u000a\u000a```\u000aassert_eq!(format!(\"Hello {:<5}!\", \"x\"),  \"Hello x    !\");\u000aassert_eq!(format!(\"Hello {:-<5}!\", \"x\"), \"Hello x----!\");\u000aassert_eq!(format!(\"Hello {:^5}!\", \"x\"),  \"Hello   x  !\");\u000aassert_eq!(format!(\"Hello {:>5}!\", \"x\"),  \"Hello     x!\");\u000a```\u000a\u000aThe optional fill character and alignment is provided normally in conjunction with the\u000a[`width`](https://doc.rust-lang.org/nightly/alloc/fmt/index.html#width) parameter. It must be defined before `width`, right after the `:`.\u000aThis indicates that if the value being formatted is smaller than\u000a`width` some extra characters will be printed around it.\u000aFilling comes in the following variants for different alignments:\u000a\u000a* `[fill]<` - the argument is left-aligned in `width` columns\u000a* `[fill]^` - the argument is center-aligned in `width` columns\u000a* `[fill]>` - the argument is right-aligned in `width` columns\u000a\u000aThe default [fill/alignment](https://doc.rust-lang.org/nightly/alloc/fmt/index.html#fillalignment) for non-numerics is a space and\u000aleft-aligned. The\u000adefault for numeric formatters is also a space character but with right-alignment. If\u000athe `0` flag (see below) is specified for numerics, then the implicit fill character is\u000a`0`.\u000a\u000aNote that alignment might not be implemented by some types. In particular, it\u000ais not generally implemented for the `Debug` trait.  A good way to ensure\u000apadding is applied is to format your input, then pad this resulting string\u000ato obtain your output:\u000a\u000a```\u000aprintln!(\"Hello {:^15}!\", format!(\"{:?}\", Some(\"hi\"))); // => \"Hello   Some(\"hi\")   !\"\u000a```\u000a\u000a## Sign/`#`/`0`\u000a\u000a```\u000aassert_eq!(format!(\"Hello {:+}!\", 5), \"Hello +5!\");\u000aassert_eq!(format!(\"{:#x}!\", 27), \"0x1b!\");\u000aassert_eq!(format!(\"Hello {:05}!\", 5),  \"Hello 00005!\");\u000aassert_eq!(format!(\"Hello {:05}!\", -5), \"Hello -0005!\");\u000aassert_eq!(format!(\"{:#010x}!\", 27), \"0x0000001b!\");\u000a```\u000a\u000aThese are all flags altering the behavior of the formatter.\u000a\u000a* `+` - This is intended for numeric types and indicates that the sign\u000a  should always be printed. Positive signs are never printed by\u000a  default, and the negative sign is only printed by default for signed values.\u000a  This flag indicates that the correct sign (`+` or `-`) should always be printed.\u000a* `-` - Currently not used\u000a* `#` - This flag indicates that the \"alternate\" form of printing should\u000a  be used. The alternate forms are:\u000a  * `#?` - pretty-print the [`Debug`](https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html) formatting (adds linebreaks and indentation)\u000a  * `#x` - precedes the argument with a `0x`\u000a  * `#X` - precedes the argument with a `0x`\u000a  * `#b` - precedes the argument with a `0b`\u000a  * `#o` - precedes the argument with a `0o`\u000a* `0` - This is used to indicate for integer formats that the padding to `width` should\u000a  both be done with a `0` character as well as be sign-aware. A format\u000a  like `{:08}` would yield `00000001` for the integer `1`, while the\u000a  same format would yield `-0000001` for the integer `-1`. Notice that\u000a  the negative version has one fewer zero than the positive version.\u000a  Note that padding zeros are always placed after the sign (if any)\u000a  and before the digits. When used together with the `#` flag, a similar\u000a  rule applies: padding zeros are inserted after the prefix but before\u000a  the digits. The prefix is included in the total width.\u000a\u000a## Precision\u000a\u000aFor non-numeric types, this can be considered a \"maximum width\". If the resulting string is\u000alonger than this width, then it is truncated down to this many characters and that truncated\u000avalue is emitted with proper `fill`, `alignment` and `width` if those parameters are set.\u000a\u000aFor integral types, this is ignored.\u000a\u000aFor floating-point types, this indicates how many digits after the decimal point should be\u000aprinted.\u000a\u000aThere are three possible ways to specify the desired `precision`:\u000a\u000a1. An integer `.N`:\u000a   \u000a   the integer `N` itself is the precision.\u000a\u000a1. An integer or name followed by dollar sign `.N$`:\u000a   \u000a   use format *argument* `N` (which must be a `usize`) as the precision.\u000a\u000a1. An asterisk `.*`:\u000a   \u000a   `.*` means that this `{...}` is associated with *two* format inputs rather than one:\u000a   \u000a   * If a format string in the fashion of `{:<spec>.*}` is used, then the first input holds\u000a     the `usize` precision, and the second holds the value to print.\u000a   * If a format string in the fashion of `{<arg>:<spec>.*}` is used, then the `<arg>` part\u000a     refers to the value to print, and the `precision` is taken like it was specified with an\u000a     omitted positional parameter (`{}` instead of `{<arg>:}`).\u000a\u000aFor example, the following calls all print the same thing `Hello x is 0.01000`:\u000a\u000a```\u000a// Hello {arg 0 (\"x\")} is {arg 1 (0.01) with precision specified inline (5)}\u000aprintln!(\"Hello {0} is {1:.5}\", \"x\", 0.01);\u000a\u000a// Hello {arg 1 (\"x\")} is {arg 2 (0.01) with precision specified in arg 0 (5)}\u000aprintln!(\"Hello {1} is {2:.0$}\", 5, \"x\", 0.01);\u000a\u000a// Hello {arg 0 (\"x\")} is {arg 2 (0.01) with precision specified in arg 1 (5)}\u000aprintln!(\"Hello {0} is {2:.1$}\", \"x\", 5, 0.01);\u000a\u000a// Hello {next arg -> arg 0 (\"x\")} is {second of next two args -> arg 2 (0.01) with precision\u000a//                          specified in first of next two args -> arg 1 (5)}\u000aprintln!(\"Hello {} is {:.*}\",    \"x\", 5, 0.01);\u000a\u000a// Hello {arg 1 (\"x\")} is {arg 2 (0.01) with precision\u000a//                          specified in next arg -> arg 0 (5)}\u000aprintln!(\"Hello {1} is {2:.*}\",  5, \"x\", 0.01);\u000a\u000a// Hello {next arg -> arg 0 (\"x\")} is {arg 2 (0.01) with precision\u000a//                          specified in next arg -> arg 1 (5)}\u000aprintln!(\"Hello {} is {2:.*}\",   \"x\", 5, 0.01);\u000a\u000a// Hello {next arg -> arg 0 (\"x\")} is {arg \"number\" (0.01) with precision specified\u000a//                          in arg \"prec\" (5)}\u000aprintln!(\"Hello {} is {number:.prec$}\", \"x\", prec = 5, number = 0.01);\u000a```\u000a\u000aWhile these:\u000a\u000a```\u000aprintln!(\"{}, `{name:.*}` has 3 fractional digits\", \"Hello\", 3, name=1234.56);\u000aprintln!(\"{}, `{name:.*}` has 3 characters\", \"Hello\", 3, name=\"1234.56\");\u000aprintln!(\"{}, `{name:>8.*}` has 3 right-aligned characters\", \"Hello\", 3, name=\"1234.56\");\u000a```\u000a\u000aprint three significantly different things:\u000a\u000a```text\u000aHello, `1234.560` has 3 fractional digits\u000aHello, `123` has 3 characters\u000aHello, `     123` has 3 right-aligned characters\u000a```\u000a\u000a## Localization\u000a\u000aIn some programming languages, the behavior of string formatting functions\u000adepends on the operating system's locale setting. The format functions\u000aprovided by Rust's standard library do not have any concept of locale and\u000awill produce the same results on all systems regardless of user\u000aconfiguration.\u000a\u000aFor example, the following code will always print `1.5` even if the system\u000alocale uses a decimal separator other than a dot.\u000a\u000a```\u000aprintln!(\"The value is {}\", 1.5);\u000a```\u000a\u000a# Escaping\u000a\u000aThe literal characters `{` and `}` may be included in a string by preceding\u000athem with the same character. For example, the `{` character is escaped with\u000a`{{` and the `}` character is escaped with `}}`.\u000a\u000a```\u000aassert_eq!(format!(\"Hello {{}}\"), \"Hello {}\");\u000aassert_eq!(format!(\"{{ Hello\"), \"{ Hello\");\u000a```\u000a\u000a# Syntax\u000a\u000aTo summarize, here you can find the full grammar of format strings.\u000aThe syntax for the formatting language used is drawn from other languages,\u000aso it should not be too alien. Arguments are formatted with Python-like\u000asyntax, meaning that arguments are surrounded by `{}` instead of the C-like\u000a`%`. The actual grammar for the formatting syntax is:\u000a\u000a```text\u000aformat_string := text [ maybe_format text ] *\u000amaybe_format := '{' '{' | '}' '}' | format\u000aformat := '{' [ argument ] [ ':' format_spec ] [ ws ] * '}'\u000aargument := integer | identifier\u000a\u000aformat_spec := [[fill]align][sign]['#']['0'][width]['.' precision]type\u000afill := character\u000aalign := '<' | '^' | '>'\u000asign := '+' | '-'\u000awidth := count\u000aprecision := count | '*'\u000atype := '' | '?' | 'x?' | 'X?' | identifier\u000acount := parameter | integer\u000aparameter := argument '$'\u000a```\u000a\u000aIn the above grammar,\u000a\u000a* `text` must not contain any `'{'` or `'}'` characters,\u000a* `ws` is any character for which [`char::is_whitespace`](`char::is_whitespace`) returns `true`, has no semantic\u000a  meaning and is completely optional,\u000a* `integer` is a decimal integer that may contain leading zeroes and must fit into an `usize` and\u000a* `identifier` is an `IDENTIFIER_OR_KEYWORD` (not an `IDENTIFIER`) as defined by the [Rust language reference](https://doc.rust-lang.org/reference/identifiers.html).\u000a\u000a# Formatting traits\u000a\u000aWhen requesting that an argument be formatted with a particular type, you\u000aare actually requesting that an argument ascribes to a particular trait.\u000aThis allows multiple actual types to be formatted via `{:x}` (like [`i8`](https://doc.rust-lang.org/nightly/core/primitive.i8.html) as\u000awell as [`isize`](https://doc.rust-lang.org/nightly/core/primitive.isize.html)). The current mapping of types to traits is:\u000a\u000a* *nothing* ⇒ [`Display`](https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html)\u000a* `?` ⇒ [`Debug`](https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html)\u000a* `x?` ⇒ [`Debug`](https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html) with lower-case hexadecimal integers\u000a* `X?` ⇒ [`Debug`](https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html) with upper-case hexadecimal integers\u000a* `o` ⇒ [`Octal`](https://doc.rust-lang.org/nightly/core/fmt/trait.Octal.html)\u000a* `x` ⇒ [`LowerHex`](https://doc.rust-lang.org/nightly/core/fmt/trait.LowerHex.html)\u000a* `X` ⇒ [`UpperHex`](https://doc.rust-lang.org/nightly/core/fmt/trait.UpperHex.html)\u000a* `p` ⇒ [`Pointer`](https://doc.rust-lang.org/nightly/core/fmt/trait.Pointer.html)\u000a* `b` ⇒ [`Binary`](https://doc.rust-lang.org/nightly/core/fmt/trait.Binary.html)\u000a* `e` ⇒ [`LowerExp`](https://doc.rust-lang.org/nightly/core/fmt/trait.LowerExp.html)\u000a* `E` ⇒ [`UpperExp`](https://doc.rust-lang.org/nightly/core/fmt/trait.UpperExp.html)\u000a\u000aWhat this means is that any type of argument which implements the\u000a[`fmt::Binary`](https://doc.rust-lang.org/nightly/core/fmt/trait.Binary.html) trait can then be formatted with `{:b}`. Implementations\u000aare provided for these traits for a number of primitive types by the\u000astandard library as well. If no format is specified (as in `{}` or `{:6}`),\u000athen the format trait used is the [`Display`](https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html) trait.\u000a\u000aWhen implementing a format trait for your own type, you will have to\u000aimplement a method of the signature:\u000a\u000a```\u000a# #![allow(dead_code)]\u000a# use std::fmt;\u000a# struct Foo; // our custom type\u000a# impl fmt::Display for Foo {\u000afn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {\u000a# write!(f, \"testing, testing\")\u000a# } }\u000a```\u000a\u000aYour type will be passed as `self` by-reference, and then the function\u000ashould emit output into the Formatter `f` which implements `fmt::Write`. It is up to each\u000aformat trait implementation to correctly adhere to the requested formatting parameters.\u000aThe values of these parameters can be accessed with methods of the\u000a[`Formatter`](https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html) struct. In order to help with this, the [`Formatter`](https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html) struct also\u000aprovides some helper methods.\u000a\u000aAdditionally, the return value of this function is [`fmt::Result`] which is a\u000atype alias of <code>\u000a[Result]\\<(), [std::fmt::Error]\\></code>. Formatting implementations\u000ashould ensure that they propagate errors from the [`Formatter`](https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html) (e.g., when\u000acalling [`write`](https://doc.rust-lang.org/nightly/core/macros/macro.write.html)). However, they should never return errors spuriously. That\u000ais, a formatting implementation must and may only return an error if the\u000apassed-in [`Formatter`](https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html) returns an error. This is because, contrary to what\u000athe function signature might suggest, string formatting is an infallible\u000aoperation. This function only returns a result because writing to the\u000aunderlying stream might fail and it must provide a way to propagate the fact\u000athat an error has occurred back up the stack.\u000a\u000aAn example of implementing the formatting traits would look\u000alike:\u000a\u000a```\u000ause std::fmt;\u000a\u000a#[derive(Debug)]\u000astruct Vector2D {\u000a    x: isize,\u000a    y: isize,\u000a}\u000a\u000aimpl fmt::Display for Vector2D {\u000a    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {\u000a        // The `f` value implements the `Write` trait, which is what the\u000a        // write! macro is expecting. Note that this formatting ignores the\u000a        // various flags provided to format strings.\u000a        write!(f, \"({}, {})\", self.x, self.y)\u000a    }\u000a}\u000a\u000a// Different traits allow different forms of output of a type. The meaning\u000a// of this format is to print the magnitude of a vector.\u000aimpl fmt::Binary for Vector2D {\u000a    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {\u000a        let magnitude = (self.x * self.x + self.y * self.y) as f64;\u000a        let magnitude = magnitude.sqrt();\u000a\u000a        // Respect the formatting flags by using the helper method\u000a        // `pad_integral` on the Formatter object. See the method\u000a        // documentation for details, and the function `pad` can be used\u000a        // to pad strings.\u000a        let decimals = f.precision().unwrap_or(3);\u000a        let string = format!(\"{magnitude:.decimals$}\");\u000a        f.pad_integral(true, \"\", &string)\u000a    }\u000a}\u000a\u000afn main() {\u000a    let myvector = Vector2D { x: 3, y: 4 };\u000a\u000a    println!(\"{myvector}\");       // => \"(3, 4)\"\u000a    println!(\"{myvector:?}\");     // => \"Vector2D {x: 3, y:4}\"\u000a    println!(\"{myvector:10.3b}\"); // => \"     5.000\"\u000a}\u000a```\u000a\u000a### `fmt::Display` vs `fmt::Debug`\u000a\u000aThese two formatting traits have distinct purposes:\u000a\u000a* [`fmt::Display`](https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html) implementations assert that the type can be faithfully\u000a  represented as a UTF-8 string at all times. It is **not** expected that\u000a  all types implement the [`Display`](https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html) trait.\u000a* [`fmt::Debug`](https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html) implementations should be implemented for **all** public types.\u000a  Output will typically represent the internal state as faithfully as possible.\u000a  The purpose of the [`Debug`](https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html) trait is to facilitate debugging Rust code. In\u000a  most cases, using `#[derive(Debug)]` is sufficient and recommended.\u000a\u000aSome examples of the output from both traits:\u000a\u000a```\u000aassert_eq!(format!(\"{} {:?}\", 3, 4), \"3 4\");\u000aassert_eq!(format!(\"{} {:?}\", 'a', 'b'), \"a 'b'\");\u000aassert_eq!(format!(\"{} {:?}\", \"foo\\n\", \"bar\\n\"), \"foo\\n \\\"bar\\\\n\\\"\");\u000a```\u000a\u000a# Related macros\u000a\u000aThere are a number of related macros in the [`format`](https://doc.rust-lang.org/nightly/alloc/macros/macro.format.html) family. The ones that\u000aare currently implemented are:\u000a\u000a```ignore (only-for-syntax-highlight)\u000aformat!      // described above\u000awrite!       // first argument is either a &mut io::Write or a &mut fmt::Write, the destination\u000awriteln!     // same as write but appends a newline\u000aprint!       // the format string is printed to the standard output\u000aprintln!     // same as print but appends a newline\u000aeprint!      // the format string is printed to the standard error\u000aeprintln!    // same as eprint but appends a newline\u000aformat_args! // described below.\u000a```\u000a\u000a### `write!`\u000a\u000a[`write`](https://doc.rust-lang.org/nightly/core/macros/macro.write.html) and [`writeln`](https://doc.rust-lang.org/nightly/core/macros/macro.writeln.html) are two macros which are used to emit the format string\u000ato a specified stream. This is used to prevent intermediate allocations of\u000aformat strings and instead directly write the output. Under the hood, this\u000afunction is actually invoking the [`write_fmt`](https://doc.rust-lang.org/nightly/std/io/trait.Write.html#method.write_fmt) function defined on the\u000a[`std::io::Write`](https://doc.rust-lang.org/nightly/std/io/trait.Write.html) and the [`std::fmt::Write`](https://doc.rust-lang.org/nightly/std/fmt/trait.Write.html) trait. Example usage is:\u000a\u000a```\u000a# #![allow(unused_must_use)]\u000ause std::io::Write;\u000alet mut w = Vec::new();\u000awrite!(&mut w, \"Hello {}!\", \"world\");\u000a```\u000a\u000a### `print!`\u000a\u000aThis and [`println!`](https://doc.rust-lang.org/nightly/std/macro.println.html) emit their output to stdout. Similarly to the [`write`](https://doc.rust-lang.org/nightly/core/macros/macro.write.html)\u000amacro, the goal of these macros is to avoid intermediate allocations when\u000aprinting output. Example usage is:\u000a\u000a```\u000aprint!(\"Hello {}!\", \"world\");\u000aprintln!(\"I have a newline {}\", \"character at the end\");\u000a```\u000a\u000a### `eprint!`\u000a\u000aThe [`eprint!`](https://doc.rust-lang.org/nightly/std/macro.eprint.html) and [`eprintln!`](https://doc.rust-lang.org/nightly/std/macro.eprintln.html) macros are identical to\u000a[`print!`](https://doc.rust-lang.org/nightly/std/macro.print.html) and [`println!`](https://doc.rust-lang.org/nightly/std/macro.println.html), respectively, except they emit their\u000aoutput to stderr.\u000a\u000a### `format_args!`\u000a\u000a[`format_args!`](https://doc.rust-lang.org/nightly/std/macro.format_args.html) is a curious macro used to safely pass around\u000aan opaque object describing the format string. This object\u000adoes not require any heap allocations to create, and it only\u000areferences information on the stack. Under the hood, all of\u000athe related macros are implemented in terms of this. First\u000aoff, some example usage is:\u000a\u000a```\u000a# #![allow(unused_must_use)]\u000ause std::fmt;\u000ause std::io::{self, Write};\u000a\u000alet mut some_writer = io::stdout();\u000awrite!(&mut some_writer, \"{}\", format_args!(\"print with a {}\", \"macro\"));\u000a\u000afn my_fmt_fn(args: fmt::Arguments) {\u000a    write!(&mut io::stdout(), \"{args}\");\u000a}\u000amy_fmt_fn(format_args!(\", or a {} too\", \"function\"));\u000a```\u000a\u000aThe result of the [`format_args!`](https://doc.rust-lang.org/nightly/std/macro.format_args.html) macro is a value of type [`fmt::Arguments`].\u000aThis structure can then be passed to the [`write`] and [`format`] functions\u000ainside this module in order to process the format string.\u000aThe goal of this macro is to even further prevent intermediate allocations\u000awhen dealing with formatting strings.\u000a\u000aFor example, a logging library could use the standard formatting syntax, but\u000ait would internally pass around this structure until it has been determined\u000awhere output should go to."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo alloc https://github.com/rust-lang/rust/library/alloc macros/format!"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000aalloc::macros\u000a```\u000a\u000a```rust\u000amacro_rules! format\u000a```\u000a\u000a---\u000a\u000aCreates a `String` using interpolation of runtime expressions.\u000a\u000aThe first argument `format!` receives is a format string. This must be a string\u000aliteral. The power of the formatting string is in the `{}`s contained.\u000a\u000aAdditional parameters passed to `format!` replace the `{}`s within the\u000aformatting string in the order given unless named or positional parameters\u000aare used; see [`std::fmt`](https://doc.rust-lang.org/nightly/alloc/std/fmt/index.html) for more information.\u000a\u000aA common use for `format!` is concatenation and interpolation of strings.\u000aThe same convention is used with [`print!`](https://doc.rust-lang.org/nightly/alloc/std/macro.print.html) and [`write`] macros,\u000adepending on the intended destination of the string.\u000a\u000aTo convert a single value to a string, use the [`to_string`] method. This\u000awill use the [`Display`] formatting trait.\u000a\u000a# Panics\u000a\u000a`format!` panics if a formatting trait implementation returns an error.\u000aThis indicates an incorrect implementation\u000asince `fmt::Write for String` never returns an error itself.\u000a\u000a# Examples\u000a\u000a```\u000aformat!(\"test\");\u000aformat!(\"hello {}\", \"world!\");\u000aformat!(\"x = {}, y = {y}\", 10, y = 30);\u000alet (x, y) = (1, 2);\u000aformat!(\"{x} + {y} = 3\");\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo alloc https://github.com/rust-lang/rust/library/alloc map/btree/collections/BTreeMap#"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000aalloc::collections::btree::map\u000a```\u000a\u000a```rust\u000apub struct BTreeMap<K, V, A = Global>\u000awhere\u000a    A: Allocator + Clone,\u000a```\u000a\u000a---\u000a\u000aAn ordered map based on a [B-Tree](https://en.wikipedia.org/wiki/B-tree).\u000a\u000aB-Trees represent a fundamental compromise between cache-efficiency and actually minimizing\u000athe amount of work performed in a search. In theory, a binary search tree (BST) is the optimal\u000achoice for a sorted map, as a perfectly balanced BST performs the theoretical minimum amount of\u000acomparisons necessary to find an element (log<sub>2</sub>n). However, in practice the way this\u000ais done is *very* inefficient for modern computer architectures. In particular, every element\u000ais stored in its own individually heap-allocated node. This means that every single insertion\u000atriggers a heap-allocation, and every single comparison should be a cache-miss. Since these\u000aare both notably expensive things to do in practice, we are forced to, at the very least,\u000areconsider the BST strategy.\u000a\u000aA B-Tree instead makes each node contain B-1 to 2B-1 elements in a contiguous array. By doing\u000athis, we reduce the number of allocations by a factor of B, and improve cache efficiency in\u000asearches. However, this does mean that searches will have to do *more* comparisons on average.\u000aThe precise number of comparisons depends on the node search strategy used. For optimal cache\u000aefficiency, one could search the nodes linearly. For optimal comparisons, one could search\u000athe node using binary search. As a compromise, one could also perform a linear search\u000athat initially only checks every i<sup>th</sup> element for some choice of i.\u000a\u000aCurrently, our implementation simply performs naive linear search. This provides excellent\u000aperformance on *small* nodes of elements which are cheap to compare. However in the future we\u000awould like to further explore choosing the optimal search strategy based on the choice of B,\u000aand possibly other factors. Using linear search, searching for a random element is expected\u000ato take B * log(n) comparisons, which is generally worse than a BST. In practice,\u000ahowever, performance is excellent.\u000a\u000aIt is a logic error for a key to be modified in such a way that the key's ordering relative to\u000aany other key, as determined by the [`Ord`](https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html) trait, changes while it is in the map. This is\u000anormally only possible through [`Cell`], [`RefCell`], global state, I/O, or unsafe code.\u000aThe behavior resulting from such a logic error is not specified, but will be encapsulated to the\u000a`BTreeMap` that observed the logic error and not result in undefined behavior. This could\u000ainclude panics, incorrect results, aborts, memory leaks, and non-termination.\u000a\u000aIterators obtained from functions such as [`BTreeMap::iter`](`BTreeMap::iter`), [`BTreeMap::values`](`BTreeMap::values`), or\u000a[`BTreeMap::keys`](`BTreeMap::keys`) produce their items in order by key, and take worst-case logarithmic and\u000aamortized constant time per item returned.\u000a\u000a# Examples\u000a\u000a```\u000ause std::collections::BTreeMap;\u000a\u000a// type inference lets us omit an explicit type signature (which\u000a// would be `BTreeMap<&str, &str>` in this example).\u000alet mut movie_reviews = BTreeMap::new();\u000a\u000a// review some movies.\u000amovie_reviews.insert(\"Office Space\",       \"Deals with real issues in the workplace.\");\u000amovie_reviews.insert(\"Pulp Fiction\",       \"Masterpiece.\");\u000amovie_reviews.insert(\"The Godfather\",      \"Very enjoyable.\");\u000amovie_reviews.insert(\"The Blues Brothers\", \"Eye lyked it a lot.\");\u000a\u000a// check for a specific one.\u000aif !movie_reviews.contains_key(\"Les Misérables\") {\u000a    println!(\"We've got {} reviews, but Les Misérables ain't one.\",\u000a             movie_reviews.len());\u000a}\u000a\u000a// oops, this review has a lot of spelling mistakes, let's delete it.\u000amovie_reviews.remove(\"The Blues Brothers\");\u000a\u000a// look up the values associated with some keys.\u000alet to_find = [\"Up!\", \"Office Space\"];\u000afor movie in &to_find {\u000a    match movie_reviews.get(movie) {\u000a       Some(review) => println!(\"{movie}: {review}\"),\u000a       None => println!(\"{movie} is unreviewed.\")\u000a    }\u000a}\u000a\u000a// Look up the value for a key (will panic if the key is not found).\u000aprintln!(\"Movie review: {}\", movie_reviews[\"Office Space\"]);\u000a\u000a// iterate over everything.\u000afor (movie, review) in &movie_reviews {\u000a    println!(\"{movie}: \\\"{review}\\\"\");\u000a}\u000a```\u000a\u000aA `BTreeMap` with a known list of items can be initialized from an array:\u000a\u000a```\u000ause std::collections::BTreeMap;\u000a\u000alet solar_distance = BTreeMap::from([\u000a    (\"Mercury\", 0.4),\u000a    (\"Venus\", 0.7),\u000a    (\"Earth\", 1.0),\u000a    (\"Mars\", 1.5),\u000a]);\u000a```\u000a\u000a`BTreeMap` implements an [`Entry API`], which allows for complex\u000amethods of getting, setting, updating and removing keys and their values:\u000a\u000a```\u000ause std::collections::BTreeMap;\u000a\u000a// type inference lets us omit an explicit type signature (which\u000a// would be `BTreeMap<&str, u8>` in this example).\u000alet mut player_stats = BTreeMap::new();\u000a\u000afn random_stat_buff() -> u8 {\u000a    // could actually return some random value here - let's just return\u000a    // some fixed value for now\u000a    42\u000a}\u000a\u000a// insert a key only if it doesn't already exist\u000aplayer_stats.entry(\"health\").or_insert(100);\u000a\u000a// insert a key using a function that provides a new value only if it\u000a// doesn't already exist\u000aplayer_stats.entry(\"defence\").or_insert_with(random_stat_buff);\u000a\u000a// update a key, guarding against the key possibly not being set\u000alet stat = player_stats.entry(\"attack\").or_insert(100);\u000a*stat += random_stat_buff();\u000a\u000a// modify an entry before an insert with in-place mutation\u000aplayer_stats.entry(\"mana\").and_modify(|mana| *mana += 200).or_insert(100);\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo alloc https://github.com/rust-lang/rust/library/alloc string/String#"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000aalloc::string\u000a```\u000a\u000a```rust\u000apub struct String\u000a```\u000a\u000a---\u000a\u000aA UTF-8–encoded, growable string.\u000a\u000aThe `String` type is the most common string type that has ownership over the\u000acontents of the string. It has a close relationship with its borrowed\u000acounterpart, the primitive [`str`].\u000a\u000a# Examples\u000a\u000aYou can create a `String` from [a literal string](https://doc.rust-lang.org/nightly/alloc/str/index.html) with [`String::from`]:\u000a\u000a```\u000alet hello = String::from(\"Hello, world!\");\u000a```\u000a\u000aYou can append a [`char`](https://doc.rust-lang.org/nightly/core/primitive.char.html) to a `String` with the [`push`] method, and\u000aappend a [`&str`] with the [`push_str`] method:\u000a\u000a```\u000alet mut hello = String::from(\"Hello, \");\u000a\u000ahello.push('w');\u000ahello.push_str(\"orld!\");\u000a```\u000a\u000aIf you have a vector of UTF-8 bytes, you can create a `String` from it with\u000athe [`from_utf8`] method:\u000a\u000a```\u000a// some bytes, in a vector\u000alet sparkle_heart = vec![240, 159, 146, 150];\u000a\u000a// We know these bytes are valid, so we'll use `unwrap()`.\u000alet sparkle_heart = String::from_utf8(sparkle_heart).unwrap();\u000a\u000aassert_eq!(\"💖\", sparkle_heart);\u000a```\u000a\u000a# UTF-8\u000a\u000a`String`s are always valid UTF-8. If you need a non-UTF-8 string, consider\u000a[`OsString`](https://doc.rust-lang.org/nightly/std/ffi/struct.OsString.html). It is similar, but without the UTF-8 constraint. Because UTF-8\u000ais a variable width encoding, `String`s are typically smaller than an array of\u000athe same `chars`:\u000a\u000a```\u000ause std::mem;\u000a\u000a// `s` is ASCII which represents each `char` as one byte\u000alet s = \"hello\";\u000aassert_eq!(s.len(), 5);\u000a\u000a// A `char` array with the same contents would be longer because\u000a// every `char` is four bytes\u000alet s = ['h', 'e', 'l', 'l', 'o'];\u000alet size: usize = s.into_iter().map(|c| mem::size_of_val(&c)).sum();\u000aassert_eq!(size, 20);\u000a\u000a// However, for non-ASCII strings, the difference will be smaller\u000a// and sometimes they are the same\u000alet s = \"💖💖💖💖💖\";\u000aassert_eq!(s.len(), 20);\u000a\u000alet s = ['💖', '💖', '💖', '💖', '💖'];\u000alet size: usize = s.into_iter().map(|c| mem::size_of_val(&c)).sum();\u000aassert_eq!(size, 20);\u000a```\u000a\u000aThis raises interesting questions as to how `s[i]` should work.\u000aWhat should `i` be here? Several options include byte indices and\u000a`char` indices but, because of UTF-8 encoding, only byte indices\u000awould provide constant time indexing. Getting the `i`th `char`, for\u000aexample, is available using [`chars`]:\u000a\u000a```\u000alet s = \"hello\";\u000alet third_character = s.chars().nth(2);\u000aassert_eq!(third_character, Some('l'));\u000a\u000alet s = \"💖💖💖💖💖\";\u000alet third_character = s.chars().nth(2);\u000aassert_eq!(third_character, Some('💖'));\u000a```\u000a\u000aNext, what should `s[i]` return? Because indexing returns a reference\u000ato underlying data it could be `&u8`, `&[u8]`, or something else similar.\u000aSince we're only providing one index, `&u8` makes the most sense but that\u000amight not be what the user expects and can be explicitly achieved with\u000a[`as_bytes()`]:\u000a\u000a```\u000a// The first byte is 104 - the byte value of `'h'`\u000alet s = \"hello\";\u000aassert_eq!(s.as_bytes()[0], 104);\u000a// or\u000aassert_eq!(s.as_bytes()[0], b'h');\u000a\u000a// The first byte is 240 which isn't obviously useful\u000alet s = \"💖💖💖💖💖\";\u000aassert_eq!(s.as_bytes()[0], 240);\u000a```\u000a\u000aDue to these ambiguities/restrictions, indexing with a `usize` is simply\u000aforbidden:\u000a\u000a```compile_fail,E0277\u000alet s = \"hello\";\u000a\u000a// The following will not compile!\u000aprintln!(\"The first letter of s is {}\", s[0]);\u000a```\u000a\u000aIt is more clear, however, how `&s[i..j]` should work (that is,\u000aindexing with a range). It should accept byte indices (to be constant-time)\u000aand return a `&str` which is UTF-8 encoded. This is also called \"string slicing\".\u000aNote this will panic if the byte indices provided are not character\u000aboundaries - see [`is_char_boundary`] for more details. See the implementations\u000afor [`SliceIndex<str>`] for more details on string slicing. For a non-panicking\u000aversion of string slicing, see [`get`].\u000a\u000aThe [`bytes`] and [`chars`] methods return iterators over the bytes and\u000acodepoints of the string, respectively. To iterate over codepoints along\u000awith byte indices, use [`char_indices`].\u000a\u000a# Deref\u000a\u000a`String` implements <code>\u000a[Deref]\\<Target = [str]\\></code>, and so inherits all of [`str`]'s\u000amethods. In addition, this means that you can pass a `String` to a\u000afunction which takes a [`&str`] by using an ampersand (`&`):\u000a\u000a```\u000afn takes_str(s: &str) { }\u000a\u000alet s = String::from(\"Hello\");\u000a\u000atakes_str(&s);\u000a```\u000a\u000aThis will create a [`&str`] from the `String` and pass it in. This\u000aconversion is very inexpensive, and so generally, functions will accept\u000a[`&str`]s as arguments unless they need a `String` for some specific\u000areason.\u000a\u000aIn certain cases Rust doesn't have enough information to make this\u000aconversion, known as [`Deref`] coercion. In the following example a string\u000aslice [`&'a str`](https://doc.rust-lang.org/nightly/alloc/str/index.html) implements the trait `TraitExample`, and the function\u000a`example_func` takes anything that implements the trait. In this case Rust\u000awould need to make two implicit conversions, which Rust doesn't have the\u000ameans to do. For that reason, the following example will not compile.\u000a\u000a```compile_fail,E0277\u000atrait TraitExample {}\u000a\u000aimpl<'a> TraitExample for &'a str {}\u000a\u000afn example_func<A: TraitExample>(example_arg: A) {}\u000a\u000alet example_string = String::from(\"example_string\");\u000aexample_func(&example_string);\u000a```\u000a\u000aThere are two options that would work instead. The first would be to\u000achange the line `example_func(&example_string);` to\u000a`example_func(example_string.as_str());`, using the method [`as_str()`]\u000ato explicitly extract the string slice containing the string. The second\u000away changes `example_func(&example_string);` to\u000a`example_func(&*example_string);`. In this case we are dereferencing a\u000a`String` to a [`str`], then referencing the [`str`] back to\u000a[`&str`]. The second way is more idiomatic, however both work to do the\u000aconversion explicitly rather than relying on the implicit conversion.\u000a\u000a# Representation\u000a\u000aA `String` is made up of three components: a pointer to some bytes, a\u000alength, and a capacity. The pointer points to an internal buffer `String`\u000auses to store its data. The length is the number of bytes currently stored\u000ain the buffer, and the capacity is the size of the buffer in bytes. As such,\u000athe length will always be less than or equal to the capacity.\u000a\u000aThis buffer is always stored on the heap.\u000a\u000aYou can look at these with the [`as_ptr`], [`len`], and [`capacity`]\u000amethods:\u000a\u000a```\u000ause std::mem;\u000a\u000alet story = String::from(\"Once upon a time...\");\u000a\u000a// Prevent automatically dropping the String's data\u000alet mut story = mem::ManuallyDrop::new(story);\u000a\u000alet ptr = story.as_mut_ptr();\u000alet len = story.len();\u000alet capacity = story.capacity();\u000a\u000a// story has nineteen bytes\u000aassert_eq!(19, len);\u000a\u000a// We can re-build a String out of ptr, len, and capacity. This is all\u000a// unsafe because we are responsible for making sure the components are\u000a// valid:\u000alet s = unsafe { String::from_raw_parts(ptr, len, capacity) } ;\u000a\u000aassert_eq!(String::from(\"Once upon a time...\"), s);\u000a```\u000a\u000aIf a `String` has enough capacity, adding elements to it will not\u000are-allocate. For example, consider this program:\u000a\u000a```\u000alet mut s = String::new();\u000a\u000aprintln!(\"{}\", s.capacity());\u000a\u000afor _ in 0..5 {\u000a    s.push_str(\"hello\");\u000a    println!(\"{}\", s.capacity());\u000a}\u000a```\u000a\u000aThis will output the following:\u000a\u000a```text\u000a0\u000a8\u000a16\u000a16\u000a32\u000a32\u000a```\u000a\u000aAt first, we have no memory allocated at all, but as we append to the\u000astring, it increases its capacity appropriately. If we instead use the\u000a[`with_capacity`] method to allocate the correct capacity initially:\u000a\u000a```\u000alet mut s = String::with_capacity(25);\u000a\u000aprintln!(\"{}\", s.capacity());\u000a\u000afor _ in 0..5 {\u000a    s.push_str(\"hello\");\u000a    println!(\"{}\", s.capacity());\u000a}\u000a```\u000a\u000aWe end up with a different output:\u000a\u000a```text\u000a25\u000a25\u000a25\u000a25\u000a25\u000a25\u000a```\u000a\u000aHere, there's no need to allocate more memory inside the loop."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo alloc https://github.com/rust-lang/rust/library/alloc string/ToString#to_string()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000aalloc::string\u000a```\u000a\u000a```rust\u000afn to_string(&self) -> String\u000a```\u000a\u000a---\u000a\u000aConverts the given value to a `String`.\u000a\u000a# Examples\u000a\u000aBasic usage:\u000a\u000a```\u000alet i = 5;\u000alet five = String::from(\"5\");\u000a\u000aassert_eq!(five, i.to_string());\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo arena_trait . TrivialDrop#" },
+      "docs": {
+        "key": "\u000a```rust\u000aarena_trait\u000a```\u000a\u000a```rust\u000apub trait TrivialDrop\u000a```\u000a\u000a---\u000a\u000aMarker trait for types whose implementation of `Drop` is a no-op.\u000a\u000aUsed to denote types which can be moved into an arena (which does not drop\u000aits contents) without leaking memory.\u000a\u000aMust not be implemented for any type which owns heap memory or otherwise\u000aneeds to run cleanup in its `Drop` implementation (e.g., `Box`, `Vec`,\u000a`std::fs::File`, etc.), or any type containing a field with such a\u000anontrivial `Drop` implementation."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core builtin/macros/assert!"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::macros::builtin\u000a```\u000a\u000a```rust\u000amacro_rules! assert\u000a```\u000a\u000a---\u000a\u000aAsserts that a boolean expression is `true` at runtime.\u000a\u000aThis will invoke the [`panic`](https://doc.rust-lang.org/nightly/core/macros/macro.panic.html) macro if the provided expression cannot be\u000aevaluated to `true` at runtime.\u000a\u000a# Uses\u000a\u000aAssertions are always checked in both debug and release builds, and cannot\u000abe disabled. See [`debug_assert`](https://doc.rust-lang.org/nightly/core/macros/macro.debug_assert.html) for assertions that are not enabled in\u000arelease builds by default.\u000a\u000aUnsafe code may rely on `assert!` to enforce run-time invariants that, if\u000aviolated could lead to unsafety.\u000a\u000aOther use-cases of `assert!` include testing and enforcing run-time\u000ainvariants in safe code (whose violation cannot result in unsafety).\u000a\u000a# Custom Messages\u000a\u000aThis macro has a second form, where a custom panic message can\u000abe provided with or without arguments for formatting. See [`std::fmt`](https://doc.rust-lang.org/nightly/core/macros/std/fmt/index.html)\u000afor syntax for this form. Expressions used as format arguments will only\u000abe evaluated if the assertion fails.\u000a\u000a# Examples\u000a\u000a```\u000a// the panic message for these assertions is the stringified value of the\u000a// expression given.\u000aassert!(true);\u000a\u000afn some_computation() -> bool { true } // a very simple function\u000a\u000aassert!(some_computation());\u000a\u000a// assert with a custom message\u000alet x = true;\u000aassert!(x, \"x wasn't true!\");\u000a\u000alet a = 3; let b = 27;\u000aassert!(a + b == 30, \"a = {}, b = {}\", a, b);\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core builtin/macros/derive!"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::macros::builtin\u000a```\u000a\u000a```rust\u000amacro derive\u000a```\u000a\u000a---\u000a\u000aAttribute macro used to apply derive macros.\u000a\u000aSee [the reference](https://doc.rust-lang.org/nightly/reference/attributes/derive.html) for more info."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core builtin/macros/test!"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::macros::builtin\u000a```\u000a\u000a```rust\u000amacro test\u000a```\u000a\u000a---\u000a\u000aAttribute macro applied to a function to turn it into a unit test.\u000a\u000aSee [the reference](https://doc.rust-lang.org/nightly/reference/attributes/testing.html#the-test-attribute) for more info."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core clone/Clone!"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::clone\u000a```\u000a\u000a```rust\u000amacro Clone\u000a```\u000a\u000a---\u000a\u000aDerive macro generating an impl of the trait `Clone`."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore\u000a```\u000a\u000a```rust\u000amod cmp\u000a```\u000a\u000a---\u000a\u000aUtilities for comparing and ordering values.\u000a\u000aThis module contains various tools for comparing and ordering values. In\u000asummary:\u000a\u000a* [`Eq`](https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html) and [`PartialEq`](https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html) are traits that allow you to define total and\u000a  partial equality between values, respectively. Implementing them overloads\u000a  the `==` and `!=` operators.\u000a* [`Ord`](https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html) and [`PartialOrd`](https://doc.rust-lang.org/nightly/core/cmp/trait.PartialOrd.html) are traits that allow you to define total and\u000a  partial orderings between values, respectively. Implementing them overloads\u000a  the `<`, `<=`, `>`, and `>=` operators.\u000a* [`Ordering`](https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html) is an enum returned by the main functions of [`Ord`](https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html) and\u000a  [`PartialOrd`](https://doc.rust-lang.org/nightly/core/cmp/trait.PartialOrd.html), and describes an ordering.\u000a* [`Reverse`](https://doc.rust-lang.org/nightly/core/cmp/struct.Reverse.html) is a struct that allows you to easily reverse an ordering.\u000a* [`max`] and [`min`] are functions that build off of [`Ord`](https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html) and allow you\u000a  to find the maximum or minimum of two values.\u000a\u000aFor more details, see the respective documentation of each item in the list."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/Eq!"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::cmp\u000a```\u000a\u000a```rust\u000amacro Eq\u000a```\u000a\u000a---\u000a\u000aDerive macro generating an impl of the trait `Eq`."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/Ord!"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::cmp\u000a```\u000a\u000a```rust\u000amacro Ord\u000a```\u000a\u000a---\u000a\u000aDerive macro generating an impl of the trait `Ord`."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/Ord#"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::cmp\u000a```\u000a\u000a```rust\u000apub trait Ord\u000awhere\u000a    Self: Eq + PartialOrd<Self>,\u000a```\u000a\u000a---\u000a\u000aTrait for types that form a [total order](https://en.wikipedia.org/wiki/Total_order).\u000a\u000aImplementations must be consistent with the [`PartialOrd`](https://doc.rust-lang.org/nightly/core/cmp/trait.PartialOrd.html) implementation, and ensure\u000a`max`, `min`, and `clamp` are consistent with `cmp`:\u000a\u000a* `partial_cmp(a, b) == Some(cmp(a, b))`.\u000a* `max(a, b) == max_by(a, b, cmp)` (ensured by the default implementation).\u000a* `min(a, b) == min_by(a, b, cmp)` (ensured by the default implementation).\u000a* For `a.clamp(min, max)`, see the [method docs](https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html#method.clamp)\u000a  (ensured by the default implementation).\u000a\u000aIt's easy to accidentally make `cmp` and `partial_cmp` disagree by\u000aderiving some of the traits and manually implementing others.\u000a\u000a## Corollaries\u000a\u000aFrom the above and the requirements of `PartialOrd`, it follows that `<` defines a strict total order.\u000aThis means that for all `a`, `b` and `c`:\u000a\u000a* exactly one of `a < b`, `a == b` or `a > b` is true; and\u000a* `<` is transitive: `a < b` and `b < c` implies `a < c`. The same must hold for both `==` and `>`.\u000a\u000a## Derivable\u000a\u000aThis trait can be used with `#[derive]`.\u000a\u000aWhen `derive`d on structs, it will produce a\u000a[lexicographic](https://en.wikipedia.org/wiki/Lexicographic_order) ordering\u000abased on the top-to-bottom declaration order of the struct's members.\u000a\u000aWhen `derive`d on enums, variants are ordered by their discriminants.\u000aBy default, the discriminant is smallest for variants at the top, and\u000alargest for variants at the bottom. Here's an example:\u000a\u000a```\u000a#[derive(PartialEq, Eq, PartialOrd, Ord)]\u000aenum E {\u000a    Top,\u000a    Bottom,\u000a}\u000a\u000aassert!(E::Top < E::Bottom);\u000a```\u000a\u000aHowever, manually setting the discriminants can override this default\u000abehavior:\u000a\u000a```\u000a#[derive(PartialEq, Eq, PartialOrd, Ord)]\u000aenum E {\u000a    Top = 2,\u000a    Bottom = 1,\u000a}\u000a\u000aassert!(E::Bottom < E::Top);\u000a```\u000a\u000a## Lexicographical comparison\u000a\u000aLexicographical comparison is an operation with the following properties:\u000a\u000a* Two sequences are compared element by element.\u000a* The first mismatching element defines which sequence is lexicographically less or greater than the other.\u000a* If one sequence is a prefix of another, the shorter sequence is lexicographically less than the other.\u000a* If two sequence have equivalent elements and are of the same length, then the sequences are lexicographically equal.\u000a* An empty sequence is lexicographically less than any non-empty sequence.\u000a* Two empty sequences are lexicographically equal.\u000a\u000a## How can I implement `Ord`?\u000a\u000a`Ord` requires that the type also be [`PartialOrd`](https://doc.rust-lang.org/nightly/core/cmp/trait.PartialOrd.html) and [`Eq`](https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html) (which requires [`PartialEq`](https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html)).\u000a\u000aThen you must define an implementation for [`cmp`]. You may find it useful to use\u000a[`cmp`] on your type's fields.\u000a\u000aHere's an example where you want to sort people by height only, disregarding `id`\u000aand `name`:\u000a\u000a```\u000ause std::cmp::Ordering;\u000a\u000a#[derive(Eq)]\u000astruct Person {\u000a    id: u32,\u000a    name: String,\u000a    height: u32,\u000a}\u000a\u000aimpl Ord for Person {\u000a    fn cmp(&self, other: &Self) -> Ordering {\u000a        self.height.cmp(&other.height)\u000a    }\u000a}\u000a\u000aimpl PartialOrd for Person {\u000a    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {\u000a        Some(self.cmp(other))\u000a    }\u000a}\u000a\u000aimpl PartialEq for Person {\u000a    fn eq(&self, other: &Self) -> bool {\u000a        self.height == other.height\u000a    }\u000a}\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/Ord#cmp()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::cmp::Ord\u000a```\u000a\u000a```rust\u000apub fn cmp(&self, other: &Self) -> Ordering\u000a```\u000a\u000a---\u000a\u000aThis method returns an [`Ordering`](https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html) between `self` and `other`.\u000a\u000aBy convention, `self.cmp(&other)` returns the ordering matching the expression\u000a`self <operator> other` if true.\u000a\u000a# Examples\u000a\u000a```\u000ause std::cmp::Ordering;\u000a\u000aassert_eq!(5.cmp(&10), Ordering::Less);\u000aassert_eq!(10.cmp(&5), Ordering::Greater);\u000aassert_eq!(5.cmp(&5), Ordering::Equal);\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/Ordering#"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::cmp\u000a```\u000a\u000a```rust\u000apub enum Ordering\u000a```\u000a\u000a---\u000a\u000aAn `Ordering` is the result of a comparison between two values.\u000a\u000a# Examples\u000a\u000a```\u000ause std::cmp::Ordering;\u000a\u000alet result = 1.cmp(&2);\u000aassert_eq!(Ordering::Less, result);\u000a\u000alet result = 1.cmp(&1);\u000aassert_eq!(Ordering::Equal, result);\u000a\u000alet result = 2.cmp(&1);\u000aassert_eq!(Ordering::Greater, result);\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/Ordering#then()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::cmp::Ordering\u000a```\u000a\u000a```rust\u000apub const fn then(self, other: Ordering) -> Ordering\u000a```\u000a\u000a---\u000a\u000aChains two orderings.\u000a\u000aReturns `self` when it's not `Equal`. Otherwise returns `other`.\u000a\u000a# Examples\u000a\u000a```\u000ause std::cmp::Ordering;\u000a\u000alet result = Ordering::Equal.then(Ordering::Less);\u000aassert_eq!(result, Ordering::Less);\u000a\u000alet result = Ordering::Less.then(Ordering::Equal);\u000aassert_eq!(result, Ordering::Less);\u000a\u000alet result = Ordering::Less.then(Ordering::Greater);\u000aassert_eq!(result, Ordering::Less);\u000a\u000alet result = Ordering::Equal.then(Ordering::Equal);\u000aassert_eq!(result, Ordering::Equal);\u000a\u000alet x: (i64, i64, i64) = (1, 2, 7);\u000alet y: (i64, i64, i64) = (1, 5, 3);\u000alet result = x.0.cmp(&y.0).then(x.1.cmp(&y.1)).then(x.2.cmp(&y.2));\u000a\u000aassert_eq!(result, Ordering::Less);\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/PartialEq!"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::cmp\u000a```\u000a\u000a```rust\u000amacro PartialEq\u000a```\u000a\u000a---\u000a\u000aDerive macro generating an impl of the trait `PartialEq`."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/PartialOrd!"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::cmp\u000a```\u000a\u000a```rust\u000amacro PartialOrd\u000a```\u000a\u000a---\u000a\u000aDerive macro generating an impl of the trait `PartialOrd`."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/PartialOrd#"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::cmp\u000a```\u000a\u000a```rust\u000apub trait PartialOrd<Rhs = Self>\u000awhere\u000a    Self: PartialEq<Rhs>,\u000a    Rhs: ?Sized,\u000a```\u000a\u000a---\u000a\u000aTrait for types that form a [partial order](https://en.wikipedia.org/wiki/Partial_order).\u000a\u000aThe `lt`, `le`, `gt`, and `ge` methods of this trait can be called using\u000athe `<`, `<=`, `>`, and `>=` operators, respectively.\u000a\u000aThe methods of this trait must be consistent with each other and with those of [`PartialEq`](https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html).\u000aThe following conditions must hold:\u000a\u000a1. `a == b` if and only if `partial_cmp(a, b) == Some(Equal)`.\u000a1. `a < b` if and only if `partial_cmp(a, b) == Some(Less)`\u000a1. `a > b` if and only if `partial_cmp(a, b) == Some(Greater)`\u000a1. `a <= b` if and only if `a < b || a == b`\u000a1. `a >= b` if and only if `a > b || a == b`\u000a1. `a != b` if and only if `!(a == b)`.\u000a\u000aConditions 2–5 above are ensured by the default implementation.\u000aCondition 6 is already ensured by [`PartialEq`](https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html).\u000a\u000aIf [`Ord`](https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html) is also implemented for `Self` and `Rhs`, it must also be consistent with\u000a`partial_cmp` (see the documentation of that trait for the exact requirements). It's\u000aeasy to accidentally make them disagree by deriving some of the traits and manually\u000aimplementing others.\u000a\u000aThe comparison must satisfy, for all `a`, `b` and `c`:\u000a\u000a* transitivity: `a < b` and `b < c` implies `a < c`. The same must hold for both `==` and `>`.\u000a* duality: `a < b` if and only if `b > a`.\u000a\u000aNote that these requirements mean that the trait itself must be implemented symmetrically and\u000atransitively: if `T: PartialOrd<U>` and `U: PartialOrd<V>` then `U: PartialOrd<T>` and `T: PartialOrd<V>`.\u000a\u000a## Corollaries\u000a\u000aThe following corollaries follow from the above requirements:\u000a\u000a* irreflexivity of `<` and `>`: `!(a < a)`, `!(a > a)`\u000a* transitivity of `>`: if `a > b` and `b > c` then `a > c`\u000a* duality of `partial_cmp`: `partial_cmp(a, b) == partial_cmp(b, a).map(Ordering::reverse)`\u000a\u000a## Derivable\u000a\u000aThis trait can be used with `#[derive]`.\u000a\u000aWhen `derive`d on structs, it will produce a\u000a[lexicographic](https://en.wikipedia.org/wiki/Lexicographic_order) ordering\u000abased on the top-to-bottom declaration order of the struct's members.\u000a\u000aWhen `derive`d on enums, variants are ordered by their discriminants.\u000aBy default, the discriminant is smallest for variants at the top, and\u000alargest for variants at the bottom. Here's an example:\u000a\u000a```\u000a#[derive(PartialEq, PartialOrd)]\u000aenum E {\u000a    Top,\u000a    Bottom,\u000a}\u000a\u000aassert!(E::Top < E::Bottom);\u000a```\u000a\u000aHowever, manually setting the discriminants can override this default\u000abehavior:\u000a\u000a```\u000a#[derive(PartialEq, PartialOrd)]\u000aenum E {\u000a    Top = 2,\u000a    Bottom = 1,\u000a}\u000a\u000aassert!(E::Bottom < E::Top);\u000a```\u000a\u000a## How can I implement `PartialOrd`?\u000a\u000a`PartialOrd` only requires implementation of the [`partial_cmp`] method, with the others\u000agenerated from default implementations.\u000a\u000aHowever it remains possible to implement the others separately for types which do not have a\u000atotal order. For example, for floating point numbers, `NaN < 0 == false` and `NaN >= 0 == false` (cf. IEEE 754-2008 section 5.11).\u000a\u000a`PartialOrd` requires your type to be [`PartialEq`](https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html).\u000a\u000aIf your type is [`Ord`](https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html), you can implement [`partial_cmp`] by using [`cmp`]:\u000a\u000a```\u000ause std::cmp::Ordering;\u000a\u000a#[derive(Eq)]\u000astruct Person {\u000a    id: u32,\u000a    name: String,\u000a    height: u32,\u000a}\u000a\u000aimpl PartialOrd for Person {\u000a    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {\u000a        Some(self.cmp(other))\u000a    }\u000a}\u000a\u000aimpl Ord for Person {\u000a    fn cmp(&self, other: &Self) -> Ordering {\u000a        self.height.cmp(&other.height)\u000a    }\u000a}\u000a\u000aimpl PartialEq for Person {\u000a    fn eq(&self, other: &Self) -> bool {\u000a        self.height == other.height\u000a    }\u000a}\u000a```\u000a\u000aYou may also find it useful to use [`partial_cmp`] on your type's fields. Here\u000ais an example of `Person` types who have a floating-point `height` field that\u000ais the only field to be used for sorting:\u000a\u000a```\u000ause std::cmp::Ordering;\u000a\u000astruct Person {\u000a    id: u32,\u000a    name: String,\u000a    height: f64,\u000a}\u000a\u000aimpl PartialOrd for Person {\u000a    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {\u000a        self.height.partial_cmp(&other.height)\u000a    }\u000a}\u000a\u000aimpl PartialEq for Person {\u000a    fn eq(&self, other: &Self) -> bool {\u000a        self.height == other.height\u000a    }\u000a}\u000a```\u000a\u000a# Examples\u000a\u000a```\u000alet x: u32 = 0;\u000alet y: u32 = 1;\u000a\u000aassert_eq!(x < y, true);\u000aassert_eq!(x.lt(&y), true);\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core convert/AsRef#"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::convert\u000a```\u000a\u000a```rust\u000apub trait AsRef<T>\u000awhere\u000a    T: ?Sized,\u000a```\u000a\u000a---\u000a\u000aUsed to do a cheap reference-to-reference conversion.\u000a\u000aThis trait is similar to [`AsMut`](https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html) which is used for converting between mutable references.\u000aIf you need to do a costly conversion it is better to implement [`From`](https://doc.rust-lang.org/nightly/core/convert/trait.From.html) with type\u000a`&T` or write a custom function.\u000a\u000a# Relation to `Borrow`\u000a\u000a`AsRef` has the same signature as [`Borrow`], but [`Borrow`] is different in a few aspects:\u000a\u000a* Unlike `AsRef`, [`Borrow`] has a blanket impl for any `T`, and can be used to accept either\u000a  a reference or a value. (See also note on `AsRef`'s reflexibility below.)\u000a* [`Borrow`] also requires that [`Hash`](https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html), [`Eq`] and [`Ord`] for a borrowed value are\u000a  equivalent to those of the owned value. For this reason, if you want to\u000a  borrow only a single field of a struct you can implement `AsRef`, but not [`Borrow`].\u000a\u000a**Note: This trait must not fail**. If the conversion can fail, use a\u000adedicated method which returns an [`Option<T>`](https://doc.rust-lang.org/nightly/core/option/enum.Option.html) or a [`Result<T, E>`](https://doc.rust-lang.org/nightly/core/result/enum.Result.html).\u000a\u000a# Generic Implementations\u000a\u000a`AsRef` auto-dereferences if the inner type is a reference or a mutable reference\u000a(e.g.: `foo.as_ref()` will work the same if `foo` has type `&mut Foo` or `&&mut Foo`).\u000a\u000aNote that due to historic reasons, the above currently does not hold generally for all\u000a[dereferenceable types], e.g. `foo.as_ref()` will *not* work the same as\u000a`Box::new(foo).as_ref()`. Instead, many smart pointers provide an `as_ref` implementation which\u000asimply returns a reference to the [pointed-to value] (but do not perform a cheap\u000areference-to-reference conversion for that value). However, [`AsRef::as_ref`](https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref) should not be\u000aused for the sole purpose of dereferencing; instead ['`Deref` coercion'](core::ops::Deref#more-on-deref-coercion) can be used:\u000a\u000a```\u000alet x = Box::new(5i32);\u000a// Avoid this:\u000a// let y: &i32 = x.as_ref();\u000a// Better just write:\u000alet y: &i32 = &x;\u000a```\u000a\u000aTypes which implement [`Deref`] should consider implementing `AsRef<T>` as follows:\u000a\u000a```\u000a# use core::ops::Deref;\u000a# struct SomeType;\u000a# impl Deref for SomeType {\u000a#     type Target = [u8];\u000a#     fn deref(&self) -> &[u8] {\u000a#         &[]\u000a#     }\u000a# }\u000aimpl<T> AsRef<T> for SomeType\u000awhere\u000a    T: ?Sized,\u000a    <SomeType as Deref>::Target: AsRef<T>,\u000a{\u000a    fn as_ref(&self) -> &T {\u000a        self.deref().as_ref()\u000a    }\u000a}\u000a```\u000a\u000a# Reflexivity\u000a\u000aIdeally, `AsRef` would be reflexive, i.e. there would be an `impl<T: ?Sized> AsRef<T> for T`\u000awith [`as_ref`] simply returning its argument unchanged.\u000aSuch a blanket implementation is currently *not* provided due to technical restrictions of\u000aRust's type system (it would be overlapping with another existing blanket implementation for\u000a`&T where T: AsRef<U>` which allows `AsRef` to auto-dereference, see \"Generic Implementations\"\u000aabove).\u000a\u000aA trivial implementation of `AsRef<T> for T` must be added explicitly for a particular type `T`\u000awhere needed or desired. Note, however, that not all types from `std` contain such an\u000aimplementation, and those cannot be added by external code due to orphan rules.\u000a\u000a# Examples\u000a\u000aBy using trait bounds we can accept arguments of different types as long as they can be\u000aconverted to the specified type `T`.\u000a\u000aFor example: By creating a generic function that takes an `AsRef<str>` we express that we\u000awant to accept all references that can be converted to [`&str`] as an argument.\u000aSince both [`String`](https://doc.rust-lang.org/nightly/std/string/struct.String.html) and [`&str`] implement `AsRef<str>` we can accept both as input argument.\u000a\u000a```\u000afn is_hello<T: AsRef<str>>(s: T) {\u000a   assert_eq!(\"hello\", s.as_ref());\u000a}\u000a\u000alet s = \"hello\";\u000ais_hello(s);\u000a\u000alet s = \"hello\".to_string();\u000ais_hello(s);\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core convert/AsRef#as_ref()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::convert::AsRef\u000a```\u000a\u000a```rust\u000apub fn as_ref(&self) -> &T\u000a```\u000a\u000a---\u000a\u000aConverts this type into a shared reference of the (usually inferred) input type."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core convert/TryFrom#"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::convert\u000a```\u000a\u000a```rust\u000apub trait TryFrom<T>\u000awhere\u000a    Self: Sized,\u000a```\u000a\u000a---\u000a\u000aSimple and safe type conversions that may fail in a controlled\u000away under some circumstances. It is the reciprocal of [`TryInto`](https://doc.rust-lang.org/nightly/core/convert/trait.TryInto.html).\u000a\u000aThis is useful when you are doing a type conversion that may\u000atrivially succeed but may also need special handling.\u000aFor example, there is no way to convert an [`i64`](https://doc.rust-lang.org/nightly/core/primitive.i64.html) into an [`i32`](https://doc.rust-lang.org/nightly/core/primitive.i32.html)\u000ausing the [`From`](https://doc.rust-lang.org/nightly/core/convert/trait.From.html) trait, because an [`i64`](https://doc.rust-lang.org/nightly/core/primitive.i64.html) may contain a value\u000athat an [`i32`](https://doc.rust-lang.org/nightly/core/primitive.i32.html) cannot represent and so the conversion would lose data.\u000aThis might be handled by truncating the [`i64`](https://doc.rust-lang.org/nightly/core/primitive.i64.html) to an [`i32`](https://doc.rust-lang.org/nightly/core/primitive.i32.html) (essentially\u000agiving the [`i64`](https://doc.rust-lang.org/nightly/core/primitive.i64.html)'s value modulo [`i32::MAX`](`i32::MAX`)) or by simply returning\u000a[`i32::MAX`](`i32::MAX`), or by some other method.  The [`From`](https://doc.rust-lang.org/nightly/core/convert/trait.From.html) trait is intended\u000afor perfect conversions, so the `TryFrom` trait informs the\u000aprogrammer when a type conversion could go bad and lets them\u000adecide how to handle it.\u000a\u000a# Generic Implementations\u000a\u000a* `TryFrom<T> for U` implies [`TryInto`](https://doc.rust-lang.org/nightly/core/convert/trait.TryInto.html)`<U> for T`\u000a* [`try_from`] is reflexive, which means that `TryFrom<T> for T`\u000a  is implemented and cannot fail -- the associated `Error` type for\u000a  calling `T::try_from()` on a value of type `T` is [`Infallible`](https://doc.rust-lang.org/nightly/core/convert/enum.Infallible.html).\u000a  When the [`!`](`!`) type is stabilized [`Infallible`](https://doc.rust-lang.org/nightly/core/convert/enum.Infallible.html) and [`!`](`!`) will be\u000a  equivalent.\u000a\u000a`TryFrom<T>` can be implemented as follows:\u000a\u000a```\u000astruct GreaterThanZero(i32);\u000a\u000aimpl TryFrom<i32> for GreaterThanZero {\u000a    type Error = &'static str;\u000a\u000a    fn try_from(value: i32) -> Result<Self, Self::Error> {\u000a        if value <= 0 {\u000a            Err(\"GreaterThanZero only accepts values greater than zero!\")\u000a        } else {\u000a            Ok(GreaterThanZero(value))\u000a        }\u000a    }\u000a}\u000a```\u000a\u000a# Examples\u000a\u000aAs described, [`i32`](https://doc.rust-lang.org/nightly/core/primitive.i32.html) implements `TryFrom<`[`i64`](https://doc.rust-lang.org/nightly/core/primitive.i64.html)`>`:\u000a\u000a```\u000alet big_number = 1_000_000_000_000i64;\u000a// Silently truncates `big_number`, requires detecting\u000a// and handling the truncation after the fact.\u000alet smaller_number = big_number as i32;\u000aassert_eq!(smaller_number, -727379968);\u000a\u000a// Returns an error because `big_number` is too big to\u000a// fit in an `i32`.\u000alet try_smaller_number = i32::try_from(big_number);\u000aassert!(try_smaller_number.is_err());\u000a\u000a// Returns `Ok(3)`.\u000alet try_successful_smaller_number = i32::try_from(3);\u000aassert!(try_successful_smaller_number.is_ok());\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core default/Default!"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::default\u000a```\u000a\u000a```rust\u000amacro Default\u000a```\u000a\u000a---\u000a\u000aDerive macro generating an impl of the trait `Default`."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core fmt/Debug#"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::fmt\u000a```\u000a\u000a```rust\u000apub trait Debug\u000a```\u000a\u000a---\u000a\u000a`?` formatting.\u000a\u000a`Debug` should format the output in a programmer-facing, debugging context.\u000a\u000aGenerally speaking, you should just `derive` a `Debug` implementation.\u000a\u000aWhen used with the alternate format specifier `#?`, the output is pretty-printed.\u000a\u000aFor more information on formatters, see [the module-level documentation](https://doc.rust-lang.org/nightly/std/fmt/index.html).\u000a\u000aThis trait can be used with `#[derive]` if all fields implement `Debug`. When\u000a`derive`d for structs, it will use the name of the `struct`, then `{`, then a\u000acomma-separated list of each field's name and `Debug` value, then `}`. For\u000a`enum`s, it will use the name of the variant and, if applicable, `(`, then the\u000a`Debug` values of the fields, then `)`.\u000a\u000a# Stability\u000a\u000aDerived `Debug` formats are not stable, and so may change with future Rust\u000aversions. Additionally, `Debug` implementations of types provided by the\u000astandard library (`std`, `core`, `alloc`, etc.) are not stable, and\u000amay also change with future Rust versions.\u000a\u000a# Examples\u000a\u000aDeriving an implementation:\u000a\u000a```\u000a#[derive(Debug)]\u000astruct Point {\u000a    x: i32,\u000a    y: i32,\u000a}\u000a\u000alet origin = Point { x: 0, y: 0 };\u000a\u000aassert_eq!(format!(\"The origin is: {origin:?}\"), \"The origin is: Point { x: 0, y: 0 }\");\u000a```\u000a\u000aManually implementing:\u000a\u000a```\u000ause std::fmt;\u000a\u000astruct Point {\u000a    x: i32,\u000a    y: i32,\u000a}\u000a\u000aimpl fmt::Debug for Point {\u000a    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {\u000a        f.debug_struct(\"Point\")\u000a         .field(\"x\", &self.x)\u000a         .field(\"y\", &self.y)\u000a         .finish()\u000a    }\u000a}\u000a\u000alet origin = Point { x: 0, y: 0 };\u000a\u000aassert_eq!(format!(\"The origin is: {origin:?}\"), \"The origin is: Point { x: 0, y: 0 }\");\u000a```\u000a\u000aThere are a number of helper methods on the [`Formatter`](https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html) struct to help you with manual\u000aimplementations, such as [`debug_struct`].\u000a\u000aTypes that do not wish to use the standard suite of debug representations\u000aprovided by the `Formatter` trait (`debug_struct`, `debug_tuple`,\u000a`debug_list`, `debug_set`, `debug_map`) can do something totally custom by\u000amanually writing an arbitrary representation to the `Formatter`.\u000a\u000a```\u000a# use std::fmt;\u000a# struct Point {\u000a#     x: i32,\u000a#     y: i32,\u000a# }\u000a#\u000aimpl fmt::Debug for Point {\u000a    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {\u000a        write!(f, \"Point [{} {}]\", self.x, self.y)\u000a    }\u000a}\u000a```\u000a\u000a`Debug` implementations using either `derive` or the debug builder API\u000aon [`Formatter`](https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html) support pretty-printing using the alternate flag: `{:#?}`.\u000a\u000aPretty-printing with `#?`:\u000a\u000a```\u000a#[derive(Debug)]\u000astruct Point {\u000a    x: i32,\u000a    y: i32,\u000a}\u000a\u000alet origin = Point { x: 0, y: 0 };\u000a\u000aassert_eq!(format!(\"The origin is: {origin:#?}\"),\u000a\"The origin is: Point {\u000a    x: 0,\u000a    y: 0,\u000a}\");\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core fmt/Display#"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::fmt\u000a```\u000a\u000a```rust\u000apub trait Display\u000a```\u000a\u000a---\u000a\u000aFormat trait for an empty format, `{}`.\u000a\u000aImplementing this trait for a type will automatically implement the\u000a[`ToString`](https://doc.rust-lang.org/nightly/std/string/trait.ToString.html) trait for the type, allowing the usage\u000aof the [`.to_string()`](https://doc.rust-lang.org/nightly/std/string/trait.ToString.html#tymethod.to_string) method. Prefer implementing\u000athe `Display` trait for a type, rather than [`ToString`](https://doc.rust-lang.org/nightly/std/string/trait.ToString.html).\u000a\u000a`Display` is similar to [`Debug`](https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html), but `Display` is for user-facing\u000aoutput, and so cannot be derived.\u000a\u000aFor more information on formatters, see [the module-level documentation](https://doc.rust-lang.org/nightly/std/fmt/index.html).\u000a\u000a# Examples\u000a\u000aImplementing `Display` on a type:\u000a\u000a```\u000ause std::fmt;\u000a\u000astruct Point {\u000a    x: i32,\u000a    y: i32,\u000a}\u000a\u000aimpl fmt::Display for Point {\u000a    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {\u000a        write!(f, \"({}, {})\", self.x, self.y)\u000a    }\u000a}\u000a\u000alet origin = Point { x: 0, y: 0 };\u000a\u000aassert_eq!(format!(\"The origin is: {origin}\"), \"The origin is: (0, 0)\");\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core fmt/Formatter#"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::fmt\u000a```\u000a\u000a```rust\u000apub struct Formatter<'a>\u000a```\u000a\u000a---\u000a\u000aConfiguration for formatting.\u000a\u000aA `Formatter` represents various options related to formatting. Users do not\u000aconstruct `Formatter`s directly; a mutable reference to one is passed to\u000athe `fmt` method of all formatting traits, like [`Debug`](https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html) and [`Display`](https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html).\u000a\u000aTo interact with a `Formatter`, you'll call various methods to change the\u000avarious options related to formatting. For examples, please see the\u000adocumentation of the methods defined on `Formatter` below."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core fmt/[Result]"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::fmt\u000a```\u000a\u000a```rust\u000apub type Result = result::Result<(), Error>\u000a```\u000a\u000a---\u000a\u000aThe type returned by formatter methods.\u000a\u000a# Examples\u000a\u000a```\u000ause std::fmt;\u000a\u000a#[derive(Debug)]\u000astruct Triangle {\u000a    a: f32,\u000a    b: f32,\u000a    c: f32\u000a}\u000a\u000aimpl fmt::Display for Triangle {\u000a    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {\u000a        write!(f, \"({}, {}, {})\", self.a, self.b, self.c)\u000a    }\u000a}\u000a\u000alet pythagorean_triple = Triangle { a: 3.0, b: 4.0, c: 5.0 };\u000a\u000aassert_eq!(format!(\"{pythagorean_triple}\"), \"(3, 4, 5)\");\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core iter/str/SplitN#Iterator#next()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::str::iter::SplitN\u000a```\u000a\u000a```rust\u000afn next(&mut self) -> Option<&'a str>\u000a```\u000a\u000a---\u000a\u000aAdvances the iterator and returns the next value.\u000a\u000aReturns [`None`](https://doc.rust-lang.org/nightly/core/option/enum.Option.html) when iteration is finished. Individual iterator\u000aimplementations may choose to resume iteration, and so calling `next()`\u000aagain may or may not eventually start returning [`Some(Item)`] again at some\u000apoint.\u000a\u000a# Examples\u000a\u000aBasic usage:\u000a\u000a```\u000alet a = [1, 2, 3];\u000a\u000alet mut iter = a.iter();\u000a\u000a// A call to next() returns the next value...\u000aassert_eq!(Some(&1), iter.next());\u000aassert_eq!(Some(&2), iter.next());\u000aassert_eq!(Some(&3), iter.next());\u000a\u000a// ... and then None once it's over.\u000aassert_eq!(None, iter.next());\u000a\u000a// More calls may or may not return `None`. Here, they always will.\u000aassert_eq!(None, iter.next());\u000aassert_eq!(None, iter.next());\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core macros/assert_eq!"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::macros\u000a```\u000a\u000a```rust\u000amacro_rules! assert_eq\u000a```\u000a\u000a---\u000a\u000aAsserts that two expressions are equal to each other (using [`PartialEq`](https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html)).\u000a\u000aOn panic, this macro will print the values of the expressions with their\u000adebug representations.\u000a\u000aLike [`assert`](https://doc.rust-lang.org/nightly/core/macros/builtin/macro.assert.html), this macro has a second form, where a custom\u000apanic message can be provided.\u000a\u000a# Examples\u000a\u000a```\u000alet a = 3;\u000alet b = 1 + 2;\u000aassert_eq!(a, b);\u000a\u000aassert_eq!(a, b, \"we are testing addition with {} and {}\", a, b);\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core macros/fmt/Debug!"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::fmt::macros\u000a```\u000a\u000a```rust\u000amacro Debug\u000a```\u000a\u000a---\u000a\u000aDerive macro generating an impl of the trait `Debug`."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core macros/hash/Hash!"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::hash::macros\u000a```\u000a\u000a```rust\u000amacro Hash\u000a```\u000a\u000a---\u000a\u000aDerive macro generating an impl of the trait `Hash`."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core macros/matches!"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::macros\u000a```\u000a\u000a```rust\u000amacro_rules! matches\u000a```\u000a\u000a---\u000a\u000aReturns whether the given expression matches any of the given patterns.\u000a\u000aLike in a `match` expression, the pattern can be optionally followed by `if`\u000aand a guard expression that has access to names bound by the pattern.\u000a\u000a# Examples\u000a\u000a```\u000alet foo = 'f';\u000aassert!(matches!(foo, 'A'..='Z' | 'a'..='z'));\u000a\u000alet bar = Some(4);\u000aassert!(matches!(bar, Some(x) if x > 2));\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core macros/write!"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::macros\u000a```\u000a\u000a```rust\u000amacro_rules! write\u000a```\u000a\u000a---\u000a\u000aWrites formatted data into a buffer.\u000a\u000aThis macro accepts a 'writer', a format string, and a list of arguments. Arguments will be\u000aformatted according to the specified format string and the result will be passed to the writer.\u000aThe writer may be any value with a `write_fmt` method; generally this comes from an\u000aimplementation of either the [`fmt::Write`] or the [`io::Write`](https://doc.rust-lang.org/nightly/core/std/io/trait.Write.html) trait. The macro\u000areturns whatever the `write_fmt` method returns; commonly a [`fmt::Result`], or an\u000a[`io::Result`](https://doc.rust-lang.org/nightly/core/std/io/type.Result.html).\u000a\u000aSee [`std::fmt`](https://doc.rust-lang.org/nightly/core/std/fmt/index.html) for more information on the format string syntax.\u000a\u000a# Examples\u000a\u000a```\u000ause std::io::Write;\u000a\u000afn main() -> std::io::Result<()> {\u000a    let mut w = Vec::new();\u000a    write!(&mut w, \"test\")?;\u000a    write!(&mut w, \"formatted {}\", \"arguments\")?;\u000a\u000a    assert_eq!(w, b\"testformatted arguments\");\u000a    Ok(())\u000a}\u000a```\u000a\u000aA module can import both `std::fmt::Write` and `std::io::Write` and call `write!` on objects\u000aimplementing either, as objects do not typically implement both. However, the module must\u000aavoid conflict between the trait names, such as by importing them as `_` or otherwise renaming\u000athem:\u000a\u000a```\u000ause std::fmt::Write as _;\u000ause std::io::Write as _;\u000a\u000afn main() -> Result<(), Box<dyn std::error::Error>> {\u000a    let mut s = String::new();\u000a    let mut v = Vec::new();\u000a\u000a    write!(&mut s, \"{} {}\", \"abc\", 123)?; // uses fmt::Write::write_fmt\u000a    write!(&mut v, \"s = {:?}\", s)?; // uses io::Write::write_fmt\u000a    assert_eq!(v, b\"s = \\\"abc 123\\\"\");\u000a    Ok(())\u000a}\u000a```\u000a\u000aIf you also need the trait names themselves, such as to implement one or both on your types,\u000aimport the containing module and then name them with a prefix:\u000a\u000a```\u000a# #![allow(unused_imports)]\u000ause std::fmt::{self, Write as _};\u000ause std::io::{self, Write as _};\u000a\u000astruct Example;\u000a\u000aimpl fmt::Write for Example {\u000a    fn write_str(&mut self, _s: &str) -> core::fmt::Result {\u000a         unimplemented!();\u000a    }\u000a}\u000a```\u000a\u000aNote: This macro can be used in `no_std` setups as well.\u000aIn a `no_std` setup you are responsible for the implementation details of the components.\u000a\u000a```no_run\u000a# extern crate core;\u000ause core::fmt::Write;\u000a\u000astruct Example;\u000a\u000aimpl Write for Example {\u000a    fn write_str(&mut self, _s: &str) -> core::fmt::Result {\u000a         unimplemented!();\u000a    }\u000a}\u000a\u000alet mut m = Example{};\u000awrite!(&mut m, \"Hello World\").expect(\"Not written\");\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core marker/Copy!"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::marker\u000a```\u000a\u000a```rust\u000amacro Copy\u000a```\u000a\u000a---\u000a\u000aDerive macro generating an impl of the trait `Copy`."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/None#"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::option::Option\u000a```\u000a\u000a```rust\u000aNone\u000a```\u000a\u000a---\u000a\u000aNo value."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/Option#"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::option\u000a```\u000a\u000a```rust\u000apub enum Option<T>\u000a```\u000a\u000a---\u000a\u000aThe `Option` type. See [the module level documentation](https://doc.rust-lang.org/nightly/core/option/index.html) for more."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/Option#as_deref()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::option::Option\u000a```\u000a\u000a```rust\u000apub const fn as_deref(&self) -> Option<&T::Target>\u000awhere\u000a    T: Deref,\u000a```\u000a\u000a---\u000a\u000aConverts from `Option<T>` (or `&Option<T>`) to `Option<&T::Target>`.\u000a\u000aLeaves the original Option in-place, creating a new one with a reference\u000ato the original one, additionally coercing the contents via [`Deref`](https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html).\u000a\u000a# Examples\u000a\u000a```\u000alet x: Option<String> = Some(\"hey\".to_owned());\u000aassert_eq!(x.as_deref(), Some(\"hey\"));\u000a\u000alet x: Option<String> = None;\u000aassert_eq!(x.as_deref(), None);\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/Option#is_none()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::option::Option\u000a```\u000a\u000a```rust\u000apub const fn is_none(&self) -> bool\u000a```\u000a\u000a---\u000a\u000aReturns `true` if the option is a [`None`](https://doc.rust-lang.org/nightly/core/option/enum.Option.html) value.\u000a\u000a# Examples\u000a\u000a```\u000alet x: Option<u32> = Some(2);\u000aassert_eq!(x.is_none(), false);\u000a\u000alet x: Option<u32> = None;\u000aassert_eq!(x.is_none(), true);\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/Option#ok_or_else()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::option::Option\u000a```\u000a\u000a```rust\u000apub const fn ok_or_else<E, F>(self, err: F) -> Result<T, E>\u000awhere\u000a    F: FnOnce() -> E + Destruct,\u000a```\u000a\u000a---\u000a\u000aTransforms the `Option<T>` into a [`Result<T, E>`](https://doc.rust-lang.org/nightly/core/result/enum.Result.html), mapping [`Some(v)`] to\u000a[`Ok(v)`] and [`None`](https://doc.rust-lang.org/nightly/core/option/enum.Option.html) to [`Err(err())`].\u000a\u000a# Examples\u000a\u000a```\u000alet x = Some(\"foo\");\u000aassert_eq!(x.ok_or_else(|| 0), Ok(\"foo\"));\u000a\u000alet x: Option<&str> = None;\u000aassert_eq!(x.ok_or_else(|| 0), Err(0));\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/Option#unwrap()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::option::Option\u000a```\u000a\u000a```rust\u000apub const fn unwrap(self) -> T\u000a```\u000a\u000a---\u000a\u000aReturns the contained [`Some`](https://doc.rust-lang.org/nightly/core/option/enum.Option.html) value, consuming the `self` value.\u000a\u000aBecause this function may panic, its use is generally discouraged.\u000aInstead, prefer to use pattern matching and handle the [`None`](https://doc.rust-lang.org/nightly/core/option/enum.Option.html)\u000acase explicitly, or call [`unwrap_or`], [`unwrap_or_else`], or\u000a[`unwrap_or_default`].\u000a\u000a# Panics\u000a\u000aPanics if the self value equals [`None`](https://doc.rust-lang.org/nightly/core/option/enum.Option.html).\u000a\u000a# Examples\u000a\u000a```\u000alet x = Some(\"air\");\u000aassert_eq!(x.unwrap(), \"air\");\u000a```\u000a\u000a```should_panic\u000alet x: Option<&str> = None;\u000aassert_eq!(x.unwrap(), \"air\"); // fails\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/Option#unwrap_or()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::option::Option\u000a```\u000a\u000a```rust\u000apub const fn unwrap_or(self, default: T) -> T\u000awhere\u000a    T: Destruct,\u000a```\u000a\u000a---\u000a\u000aReturns the contained [`Some`](https://doc.rust-lang.org/nightly/core/option/enum.Option.html) value or a provided default.\u000a\u000aArguments passed to `unwrap_or` are eagerly evaluated; if you are passing\u000athe result of a function call, it is recommended to use [`unwrap_or_else`],\u000awhich is lazily evaluated.\u000a\u000a# Examples\u000a\u000a```\u000aassert_eq!(Some(\"car\").unwrap_or(\"bike\"), \"car\");\u000aassert_eq!(None.unwrap_or(\"bike\"), \"bike\");\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/Some#"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::option::Option\u000a```\u000a\u000a```rust\u000aSome(T)\u000a```\u000a\u000a---\u000a\u000aSome value of type `T`."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core result/Err#"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::result::Result\u000a```\u000a\u000a```rust\u000aErr(E)\u000a```\u000a\u000a---\u000a\u000aContains the error value"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core result/Ok#"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::result::Result\u000a```\u000a\u000a```rust\u000aOk(T)\u000a```\u000a\u000a---\u000a\u000aContains the success value"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core result/Result#"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::result\u000a```\u000a\u000a```rust\u000apub enum Result<T, E>\u000a```\u000a\u000a---\u000a\u000a`Result` is a type that represents either success ([`Ok`](https://doc.rust-lang.org/nightly/core/result/enum.Result.html)) or failure ([`Err`](https://doc.rust-lang.org/nightly/core/result/enum.Result.html)).\u000a\u000aSee the [documentation](https://doc.rust-lang.org/nightly/core/result/index.html) for details."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core str/is_empty()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::str\u000a```\u000a\u000a```rust\u000apub const fn is_empty(&self) -> bool\u000a```\u000a\u000a---\u000a\u000aReturns `true` if `self` has a length of zero bytes.\u000a\u000a# Examples\u000a\u000aBasic usage:\u000a\u000a```\u000alet s = \"\";\u000aassert!(s.is_empty());\u000a\u000alet s = \"not empty\";\u000aassert!(!s.is_empty());\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core str/splitn()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000acore::str\u000a```\u000a\u000a```rust\u000apub fn splitn<'a, P>(&'a self, n: usize, pat: P) -> SplitN<'a, P>\u000awhere\u000a    P: Pattern<'a>,\u000a```\u000a\u000a---\u000a\u000aAn iterator over substrings of the given string slice, separated by a\u000apattern, restricted to returning at most `n` items.\u000a\u000aIf `n` substrings are returned, the last substring (the `n`th substring)\u000awill contain the remainder of the string.\u000a\u000aThe [pattern] can be a `&str`, [`char`], a slice of [`char`]s, or a\u000afunction or closure that determines if a character matches.\u000a\u000a# Iterator behavior\u000a\u000aThe returned iterator will not be double ended, because it is\u000anot efficient to support.\u000a\u000aIf the pattern allows a reverse search, the [`rsplitn`] method can be\u000aused.\u000a\u000a# Examples\u000a\u000aSimple patterns:\u000a\u000a```\u000alet v: Vec<&str> = \"Mary had a little lambda\".splitn(3, ' ').collect();\u000aassert_eq!(v, [\"Mary\", \"had\", \"a little lambda\"]);\u000a\u000alet v: Vec<&str> = \"lionXXtigerXleopard\".splitn(3, \"X\").collect();\u000aassert_eq!(v, [\"lion\", \"\", \"tigerXleopard\"]);\u000a\u000alet v: Vec<&str> = \"abcXdef\".splitn(1, 'X').collect();\u000aassert_eq!(v, [\"abcXdef\"]);\u000a\u000alet v: Vec<&str> = \"\".splitn(1, 'X').collect();\u000aassert_eq!(v, [\"\"]);\u000a```\u000a\u000aA more complex pattern, using a closure:\u000a\u000a```\u000alet v: Vec<&str> = \"abc1defXghi\".splitn(2, |c| c == '1' || c == 'X').collect();\u000aassert_eq!(v, [\"abc\", \"defXghi\"]);\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo eq_modulo_pos . EqModuloPos#" },
+      "docs": {
+        "key": "\u000a```rust\u000aeq_modulo_pos\u000a```\u000a\u000a```rust\u000apub trait EqModuloPos\u000a```\u000a\u000a---\u000a\u000aAn implementation of `Eq` which is insensitive to positions\u000a(e.g., `pos::BPos`) and reasons (e.g., `ty::reason::BReason`).\u000a\u000aIf `PartialOrd` or `Ord` are also implemented for `Self`, their methods must\u000abe consistent with `EqModuloPos`. For any two values for which\u000a`eq_modulo_pos` or `eq_modulo_pos_and_reason` returns `false`, it must be\u000athe case that their ordering cannot be changed by modifying positions or\u000areasons inside them."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo no_pos_hash . NoPosHash#" },
+      "docs": {
+        "key": "\u000a```rust\u000ano_pos_hash\u000a```\u000a\u000a```rust\u000apub trait NoPosHash\u000a```\u000a\u000a---\u000a\u000aA type for which we can produce a position-insensitive hash.\u000a\u000aFor incremental typechecking, we are often interested in\u000adetermining whether a declaration or AST has changed in a way that\u000arequires re-typechecking of dependents. Changes which only affect\u000athe `Pos` fields in a declaration do not require rechecking of\u000adependents, so we want to distinguish \"position-only\" changes from\u000aother types of changes.\u000a\u000aIn OCaml, we do this by reallocating the old and new declarations\u000a(or ASTs) with `Pos.none` in every position field, then performing\u000aa polymorphic hash or comparison. In Rust, we could rewrite\u000apositions and then use the `Hash` trait, but we'd like to avoid\u000athe reallocation/clone (besides, we don't have an endo-visitor for\u000aour by-ref types at this time). By comparing the output of hashing\u000awith `Hash` and `NoPosHash`, we can easily determine when a value\u000ahas only changed in positions."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo ocamlrep . Allocator#" },
+      "docs": {
+        "key": "\u000a```rust\u000aocamlrep\u000a```\u000a\u000a```rust\u000apub trait Allocator\u000awhere\u000a    Self: Sized,\u000a```\u000a\u000a---\u000a\u000aAn interface for allocating OCaml values in some allocator-defined memory region."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo ocamlrep . Allocator#add()." },
+      "docs": {
+        "key": "\u000a```rust\u000aocamlrep::Allocator\u000a```\u000a\u000a```rust\u000apub fn add<'a, T>(&'a self, value: &'a T) -> Value<'a>\u000awhere\u000a    T: ToOcamlRep + ?Sized,\u000a```\u000a\u000a---\u000a\u000aConvert the given data structure to an OCaml value. Structural sharing\u000a(via references or `Rc`) will not be preserved unless `add` is invoked\u000awithin an outer invocation of `add_root`.\u000a\u000aTo preserve structural sharing without using `add_root` (and the\u000aoverhead of maintaining a cache that comes with it), consider using\u000a`ocamlrep::rc::RcOc` instead of `Rc`."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo ocamlrep . Allocator#block_with_size()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000aocamlrep::Allocator\u000a```\u000a\u000a```rust\u000apub fn block_with_size(&self, size: usize) -> BlockBuilder<'_>\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo ocamlrep . Allocator#set_field()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000aocamlrep::Allocator\u000a```\u000a\u000a```rust\u000apub fn set_field<'a>(&self, block: &mut BlockBuilder<'a>, index: usize, value: Value<'a>)\u000a```\u000a\u000a---\u000a\u000aWrite the given value to the `index`th field of `block`.\u000a\u000a# Panics\u000a\u000aPanics if `index` is out of bounds for `block` (i.e., greater than or\u000aequal to the block's size)."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo ocamlrep . FromOcamlRep#" },
+      "docs": {
+        "key": "\u000a```rust\u000aocamlrep\u000a```\u000a\u000a```rust\u000apub trait FromOcamlRep\u000awhere\u000a    Self: Sized,\u000a```\u000a\u000a---\u000a\u000aA type which can be reconstructed from an OCaml value.\u000a\u000aTypes which implement both `ToOcamlRep` and `FromOcamlRep` should provide\u000acompatible implementations thereof. In other words, it is expected that for\u000aany value, `T::from_ocamlrep(value.to_ocamlrep(alloc)) == Ok(value)`."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo ocamlrep . FromOcamlRepIn#" },
+      "docs": {
+        "key": "\u000a```rust\u000aocamlrep\u000a```\u000a\u000a```rust\u000apub trait FromOcamlRepIn<'a>\u000awhere\u000a    Self: Sized,\u000a```\u000a\u000a---\u000a\u000aA type which can be reconstructed from an OCaml value.\u000a\u000aTypes which implement both `ToOcamlRep` and `FromOcamlRepIn` should provide\u000acompatible implementations thereof. In other words, it is expected that for\u000aany value, `T::from_ocamlrep_in(value.to_ocamlrep(alloc), bump) == Ok(value)`."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo ocamlrep . ToOcamlRep#" },
+      "docs": {
+        "key": "\u000a```rust\u000aocamlrep\u000a```\u000a\u000a```rust\u000apub trait ToOcamlRep\u000a```\u000a\u000a---\u000a\u000aA data structure that can be converted to an OCaml value.\u000a\u000aTypes which implement both `ToOcamlRep` and `FromOcamlRep` (or\u000a`FromOcamlRepIn`) should provide compatible implementations thereof.\u000aIn other words, it is expected that for any value with type `T`,\u000a`T::from_ocamlrep(value.to_ocamlrep(alloc)) == Ok(value)`."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo ocamlrep . block/BlockBuilder#build()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000aocamlrep::block::BlockBuilder\u000a```\u000a\u000a```rust\u000apub fn build(self) -> Value<'a>\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo ocamlrep . error/FromError#" },
+      "docs": {
+        "key": "\u000a```rust\u000aocamlrep::error\u000a```\u000a\u000a```rust\u000apub enum FromError\u000a```\u000a\u000a---\u000a\u000aReturned by\u000a[`OcamlRep::from_ocamlrep`](https://docs.rs/ocamlrep/*/ocamlrep/error/trait.OcamlRep.html#tymethod.from_ocamlrep) when\u000athe given [`Value`](https://docs.rs/ocamlrep/*/ocamlrep/error/struct.Value.html) cannot be converted to a Rust value\u000aof the expected type."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo ocamlrep . from/" },
+      "docs": {
+        "key": "\u000a```rust\u000aocamlrep\u000a```\u000a\u000a```rust\u000amod from\u000a```\u000a\u000a---\u000a\u000aHelpers for implementing `FromOcamlRep::from_ocamlrep` or\u000a`FromOcamlRepIn::from_ocamlrep_in`."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo ocamlrep . from/expect_tuple()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000aocamlrep::from\u000a```\u000a\u000a```rust\u000apub fn expect_tuple<'a>(value: Value<'a>, size: usize) -> Result<Block<'a>, FromError>\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo ocamlrep . from/field()." },
+      "docs": {
+        "key": "\u000a```rust\u000aocamlrep::from\u000a```\u000a\u000a```rust\u000apub fn field<T>(block: Block<'_>, field: usize) -> Result<T, FromError>\u000awhere\u000a    T: FromOcamlRep,\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo ocamlrep . value/Value#" },
+      "docs": {
+        "key": "\u000a```rust\u000aocamlrep::value\u000a```\u000a\u000a```rust\u000apub struct Value<'a>\u000a```\u000a\u000a---\u000a\u000aA value, as represented by OCaml. Valid, immutable, and immovable for\u000alifetime `'a`.\u000a\u000aEither a tagged integer value or a pointer to a [`Block`](https://docs.rs/ocamlrep/*/ocamlrep/value/struct.Block.html)\u000acontaining fields or binary data."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (alloc)" },
+      "docs": { "key": "\u000a```rust\u000aalloc: &A\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (ctx)" },
+      "docs": { "key": "\u000a```rust\u000actx: &RelativePathCtx\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (deserializer)" },
+      "docs": { "key": "\u000a```rust\u000adeserializer: D\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (f)" },
+      "docs": { "key": "\u000a```rust\u000af: &mut Formatter\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (formatter)" },
+      "docs": { "key": "\u000a```rust\u000aformatter: &mut Formatter\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (other)" },
+      "docs": { "key": "\u000a```rust\u000aother: &RelativePath\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (path)" },
+      "docs": { "key": "\u000a```rust\u000apath: PathBuf\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (prefix)" },
+      "docs": { "key": "\u000a```rust\u000aprefix: Prefix\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (prefix_raw)" },
+      "docs": { "key": "\u000a```rust\u000aprefix_raw: usize\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (s)" },
+      "docs": { "key": "\u000a```rust\u000as: impl AsRef<Path>\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
+      "docs": { "key": "\u000a```rust\u000aself: &Prefix\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
+      "docs": { "key": "\u000a```rust\u000aself: &RelativePath\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
+      "docs": { "key": "\u000a```rust\u000aself: &RelativePathCtx\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
+      "docs": { "key": "\u000a```rust\u000aself: &Visitor\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
+      "docs": { "key": "\u000a```rust\u000aself: Prefix\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
+      "docs": { "key": "\u000a```rust\u000aself: Visitor\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (serializer)" },
+      "docs": { "key": "\u000a```rust\u000aserializer: S\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (value)" },
+      "docs": { "key": "\u000a```rust\u000avalue: &str\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (value)" },
+      "docs": { "key": "\u000a```rust\u000avalue: Value\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . Dummy#" },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::Prefix\u000a```\u000a\u000a```rust\u000aDummy = 2\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . Hhi#" },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::Prefix\u000a```\u000a\u000a```rust\u000aHhi = 1\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . Prefix#" },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path\u000a```\u000a\u000a```rust\u000apub enum Prefix\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . Prefix#Display#fmt()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::Prefix\u000a```\u000a\u000a```rust\u000afn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result\u000a```\u000a\u000a---\u000a\u000aFormats the value using the given formatter.\u000a\u000a# Examples\u000a\u000a```\u000ause std::fmt;\u000a\u000astruct Position {\u000a    longitude: f32,\u000a    latitude: f32,\u000a}\u000a\u000aimpl fmt::Display for Position {\u000a    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {\u000a        write!(f, \"({}, {})\", self.longitude, self.latitude)\u000a    }\u000a}\u000a\u000aassert_eq!(\"(1.987, 2.983)\",\u000a           format!(\"{}\", Position { longitude: 1.987, latitude: 2.983, }));\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . Prefix#TryFrom#[Error]"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path\u000a```\u000a\u000a```rust\u000atype Error = String\u000a```\u000a\u000a---\u000a\u000aThe type returned in the event of a conversion error."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . Prefix#TryFrom#try_from()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::Prefix\u000a```\u000a\u000a```rust\u000afn try_from(prefix_raw: usize) -> Result<Self, String>\u000a```\u000a\u000a---\u000a\u000aPerforms the conversion."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . Prefix#is_hhi()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::Prefix\u000a```\u000a\u000a```rust\u000apub fn is_hhi(self) -> bool\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . RelativePath#" },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path\u000a```\u000a\u000a```rust\u000apub struct RelativePath\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#Debug#fmt()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000afn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result\u000a```\u000a\u000a---\u000a\u000aFormats the value using the given formatter.\u000a\u000a# Examples\u000a\u000a```\u000ause std::fmt;\u000a\u000astruct Position {\u000a    longitude: f32,\u000a    latitude: f32,\u000a}\u000a\u000aimpl fmt::Debug for Position {\u000a    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {\u000a        f.debug_tuple(\"\")\u000a         .field(&self.longitude)\u000a         .field(&self.latitude)\u000a         .finish()\u000a    }\u000a}\u000a\u000alet position = Position { longitude: 1.987, latitude: 2.983 };\u000aassert_eq!(format!(\"{position:?}\"), \"(1.987, 2.983)\");\u000a\u000aassert_eq!(format!(\"{position:#?}\"), \"(\u000a    1.987,\u000a    2.983,\u000a)\");\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#Deserialize#deserialize()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000afn deserialize<D>(deserializer: D) -> Result<Self, D::Error>\u000awhere\u000a    D: serde::Deserializer<'de>,\u000a```\u000a\u000a---\u000a\u000aDeserialize this value from the given Serde deserializer.\u000a\u000aSee the [Implementing `Deserialize`](https://serde.rs/impl-deserialize.html) section of the\u000amanual for more information about how to implement this method."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#Display#fmt()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000afn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result\u000a```\u000a\u000a---\u000a\u000aFormats the value using the given formatter.\u000a\u000a# Examples\u000a\u000a```\u000ause std::fmt;\u000a\u000astruct Position {\u000a    longitude: f32,\u000a    latitude: f32,\u000a}\u000a\u000aimpl fmt::Display for Position {\u000a    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {\u000a        write!(f, \"({}, {})\", self.longitude, self.latitude)\u000a    }\u000a}\u000a\u000aassert_eq!(\"(1.987, 2.983)\",\u000a           format!(\"{}\", Position { longitude: 1.987, latitude: 2.983, }));\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#EMPTY."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path\u000a```\u000a\u000a```rust\u000apub const EMPTY: Self = Self {\u000a        prefix: Prefix::Dummy,\u000a        path: None,\u000a    }\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#FromOcamlRep#from_ocamlrep()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000afn from_ocamlrep(value: ocamlrep::Value<'_>) -> Result<Self, ocamlrep::FromError>\u000a```\u000a\u000a---\u000a\u000aConvert the given ocamlrep Value to a value of type `Self`, if possible."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#Ord#cmp()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000afn cmp(&self, other: &Self) -> std::cmp::Ordering\u000a```\u000a\u000a---\u000a\u000aThis method returns an [`Ordering`](`Ordering`) between `self` and `other`.\u000a\u000aBy convention, `self.cmp(&other)` returns the ordering matching the expression\u000a`self <operator> other` if true.\u000a\u000a# Examples\u000a\u000a```\u000ause std::cmp::Ordering;\u000a\u000aassert_eq!(5.cmp(&10), Ordering::Less);\u000aassert_eq!(10.cmp(&5), Ordering::Greater);\u000aassert_eq!(5.cmp(&5), Ordering::Equal);\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#PartialOrd#partial_cmp()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000afn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering>\u000a```\u000a\u000a---\u000a\u000aThis method returns an ordering between `self` and `other` values if one exists.\u000a\u000a# Examples\u000a\u000a```\u000ause std::cmp::Ordering;\u000a\u000alet result = 1.0.partial_cmp(&2.0);\u000aassert_eq!(result, Some(Ordering::Less));\u000a\u000alet result = 1.0.partial_cmp(&1.0);\u000aassert_eq!(result, Some(Ordering::Equal));\u000a\u000alet result = 2.0.partial_cmp(&1.0);\u000aassert_eq!(result, Some(Ordering::Greater));\u000a```\u000a\u000aWhen comparison is impossible:\u000a\u000a```\u000alet result = f64::NAN.partial_cmp(&1.0);\u000aassert_eq!(result, None);\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#Serialize#serialize()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000afn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>\u000awhere\u000a    S: serde::Serializer,\u000a```\u000a\u000a---\u000a\u000aSerialize this value into the given Serde serializer.\u000a\u000aSee the [Implementing `Serialize`](https://serde.rs/impl-serialize.html) section of the manual for more\u000ainformation about how to implement this method.\u000a\u000a```edition2018\u000ause serde::ser::{Serialize, SerializeStruct, Serializer};\u000a\u000astruct Person {\u000a    name: String,\u000a    age: u8,\u000a    phones: Vec<String>,\u000a}\u000a\u000a// This is what #[derive(Serialize)] would generate.\u000aimpl Serialize for Person {\u000a    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>\u000a    where\u000a        S: Serializer,\u000a    {\u000a        let mut s = serializer.serialize_struct(\"Person\", 3)?;\u000a        s.serialize_field(\"name\", &self.name)?;\u000a        s.serialize_field(\"age\", &self.age)?;\u000a        s.serialize_field(\"phones\", &self.phones)?;\u000a        s.end()\u000a    }\u000a}\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#ToOcamlRep#to_ocamlrep()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000afn to_ocamlrep<'a, A>(&'a self, alloc: &'a A) -> ocamlrep::Value<'a>\u000awhere\u000a    A: ocamlrep::Allocator,\u000a```\u000a\u000a---\u000a\u000aAllocate an OCaml representation of `self` using the given Allocator.\u000a\u000aImplementors of this method must not mutate or drop any values after\u000apassing them to `Allocator::add` (or invoking `to_ocamlrep` on them),\u000aelse `Allocator::memoized` may return incorrect results (this can\u000agenerally only be done using internal-mutability types like `RefCell`,\u000a`Mutex`, or atomics, or by using `unsafe`)."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#has_extension()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000apub fn has_extension(&self, s: impl AsRef<Path>) -> bool\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#is_empty()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000apub fn is_empty(&self) -> bool\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#is_hhi()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000apub fn is_hhi(&self) -> bool\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#make()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000apub fn make(prefix: Prefix, path: PathBuf) -> Self\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#path()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000apub fn path(&self) -> &Path\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#path."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000apath: Option<PathBuf>\u000a```\u000a\u000a---\u000a\u000aRepresentation invariant: the empty path is always encoded as `None`.\u000aThis allows us to construct `RelativePath` in `const` contexts\u000a(because `Path::new` is not a `const fn`)."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#path_str()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000apub fn path_str(&self) -> &str\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#prefix()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000apub fn prefix(&self) -> Prefix\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#prefix."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000aprefix: Prefix\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#to_absolute()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000apub fn to_absolute(&self, ctx: &RelativePathCtx) -> PathBuf\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePathCtx#"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path\u000a```\u000a\u000a```rust\u000apub struct RelativePathCtx\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePathCtx#dummy."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::RelativePathCtx\u000a```\u000a\u000a```rust\u000apub dummy: PathBuf\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePathCtx#hhi."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::RelativePathCtx\u000a```\u000a\u000a```rust\u000apub hhi: PathBuf\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePathCtx#prefix_path()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::RelativePathCtx\u000a```\u000a\u000a```rust\u000apub fn prefix_path(&self, prefix: Prefix) -> &Path\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePathCtx#root."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::RelativePathCtx\u000a```\u000a\u000a```rust\u000apub root: PathBuf\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePathCtx#tmp."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::RelativePathCtx\u000a```\u000a\u000a```rust\u000apub tmp: PathBuf\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . Root#" },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::Prefix\u000a```\u000a\u000a```rust\u000aRoot = 0\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . Tmp#" },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::Prefix\u000a```\u000a\u000a```rust\u000aTmp = 3\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . Visitor#" },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path\u000a```\u000a\u000a```rust\u000astruct Visitor\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . Visitor#Visitor#[Value]"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path\u000a```\u000a\u000a```rust\u000apub(super) type Value = RelativePath\u000a```\u000a\u000a---\u000a\u000aThe value produced by this visitor."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . Visitor#Visitor#expecting()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::Visitor\u000a```\u000a\u000a```rust\u000afn expecting(&self, formatter: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result\u000a```\u000a\u000a---\u000a\u000aFormat a message stating what data this Visitor expects to receive.\u000a\u000aThis is used in error messages. The message should complete the sentence\u000a\"This Visitor expects to receive ...\", for example the message could be\u000a\"an integer between 0 and 64\". The message should not be capitalized and\u000ashould not end with a period.\u000a\u000a```edition2018\u000a# use std::fmt;\u000a#\u000a# struct S {\u000a#     max: usize,\u000a# }\u000a#\u000a# impl<'de> serde::de::Visitor<'de> for S {\u000a#     type Value = ();\u000a#\u000afn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {\u000a    write!(formatter, \"an integer between 0 and {}\", self.max)\u000a}\u000a# }\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . Visitor#Visitor#visit_str()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::Visitor\u000a```\u000a\u000a```rust\u000afn visit_str<E>(self, value: &str) -> Result<RelativePath, E>\u000awhere\u000a    E: serde::de::Error,\u000a```\u000a\u000a---\u000a\u000aThe input contains a string. The lifetime of the string is ephemeral and\u000ait may be destroyed after this method returns.\u000a\u000aThis method allows the `Deserializer` to avoid a copy by retaining\u000aownership of any buffered data. `Deserialize` implementations that do\u000anot benefit from taking ownership of `String` data should indicate that\u000ato the deserializer by using `Deserializer::deserialize_str` rather than\u000a`Deserializer::deserialize_string`.\u000a\u000aIt is never correct to implement `visit_string` without implementing\u000a`visit_str`. Implement neither, both, or just `visit_str`."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . [Map]" },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path\u000a```\u000a\u000a```rust\u000apub type Map<T> = std::collections::BTreeMap<RelativePath, T>\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . map/" },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path\u000a```\u000a\u000a```rust\u000amod map\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . tests/" },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path\u000a```\u000a\u000a```rust\u000amod tests\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . tests/test_invalid_usize_prefix()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::tests\u000a```\u000a\u000a```rust\u000afn test_invalid_usize_prefix()\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . tests/test_valid_usize_prefix()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000arelative_path::tests\u000a```\u000a\u000a```rust\u000afn test_valid_usize_prefix()\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo serde-1.0.152 . de/" },
+      "docs": {
+        "key": "\u000a```rust\u000aserde_1.0.152\u000a```\u000a\u000a```rust\u000amod de\u000a```\u000a\u000a---\u000a\u000aGeneric data structure deserialization framework.\u000a\u000aThe two most important traits in this module are [`Deserialize`](https://docs.rs/serde/1.0.152/serde_1.0.152/trait.Deserialize.html) and\u000a[`Deserializer`](https://docs.rs/serde/1.0.152/serde_1.0.152/trait.Deserializer.html).\u000a\u000a* **A type that implements `Deserialize` is a data structure** that can be\u000a  deserialized from any data format supported by Serde, and conversely\u000a* **A type that implements `Deserializer` is a data format** that can\u000a  deserialize any data structure supported by Serde.\u000a\u000a# The Deserialize trait\u000a\u000aSerde provides [`Deserialize`](https://docs.rs/serde/1.0.152/serde_1.0.152/trait.Deserialize.html) implementations for many Rust primitive and\u000astandard library types. The complete list is below. All of these can be\u000adeserialized using Serde out of the box.\u000a\u000aAdditionally, Serde provides a procedural macro called [`serde_derive`](https://crates.io/crates/serde_derive) to\u000aautomatically generate [`Deserialize`](https://docs.rs/serde/1.0.152/serde_1.0.152/trait.Deserialize.html) implementations for structs and enums\u000ain your program. See the [derive section of the manual](https://serde.rs/derive.html) for how to use this.\u000a\u000aIn rare cases it may be necessary to implement [`Deserialize`](https://docs.rs/serde/1.0.152/serde_1.0.152/trait.Deserialize.html) manually for\u000asome type in your program. See the [Implementing `Deserialize`](https://serde.rs/impl-deserialize.html) section of\u000athe manual for more about this.\u000a\u000aThird-party crates may provide [`Deserialize`](https://docs.rs/serde/1.0.152/serde_1.0.152/trait.Deserialize.html) implementations for types\u000athat they expose. For example the [`linked-hash-map`](https://crates.io/crates/linked-hash-map) crate provides a\u000a[`LinkedHashMap<K, V>`](https://docs.rs/linked-hash-map/*/linked_hash_map/struct.LinkedHashMap.html) type that is deserializable by Serde because the\u000acrate provides an implementation of [`Deserialize`](https://docs.rs/serde/1.0.152/serde_1.0.152/trait.Deserialize.html) for it.\u000a\u000a# The Deserializer trait\u000a\u000a[`Deserializer`](https://docs.rs/serde/1.0.152/serde_1.0.152/trait.Deserializer.html) implementations are provided by third-party crates, for\u000aexample [`serde_json`](https://github.com/serde-rs/json), [`serde_yaml`](https://github.com/dtolnay/serde-yaml) and [`postcard`](https://github.com/jamesmunns/postcard).\u000a\u000aA partial list of well-maintained formats is given on the [Serde\u000awebsite](https://serde.rs/#data-formats).\u000a\u000a# Implementations of Deserialize provided by Serde\u000a\u000aThis is a slightly different set of types than what is supported for\u000aserialization. Some types can be serialized by Serde but not deserialized.\u000aOne example is `OsStr`.\u000a\u000a* **Primitive types**:\u000a  * bool\u000a  * i8, i16, i32, i64, i128, isize\u000a  * u8, u16, u32, u64, u128, usize\u000a  * f32, f64\u000a  * char\u000a* **Compound types**:\u000a  * \\[T; 0\\] through \\[T; 32\\]\u000a  * tuples up to size 16\u000a* **Common standard library types**:\u000a  * String\u000a  * Option\\<T\\>\u000a  * Result\\<T, E\\>\u000a  * PhantomData\\<T\\>\u000a* **Wrapper types**:\u000a  * Box\\<T\\>\u000a  * Box\\<\\[T\\]\\>\u000a  * Box\\<str\\>\u000a  * Cow\\<'a, T\\>\u000a  * Cell\\<T\\>\u000a  * RefCell\\<T\\>\u000a  * Mutex\\<T\\>\u000a  * RwLock\\<T\\>\u000a  * Rc\\<T\\> *(if* features = [\"rc\"](\"rc\") *is enabled)*\u000a  * Arc\\<T\\> *(if* features = [\"rc\"](\"rc\") *is enabled)*\u000a* **Collection types**:\u000a  * BTreeMap\\<K, V\\>\u000a  * BTreeSet\\<T\\>\u000a  * BinaryHeap\\<T\\>\u000a  * HashMap\\<K, V, H\\>\u000a  * HashSet\\<T, H\\>\u000a  * LinkedList\\<T\\>\u000a  * VecDeque\\<T\\>\u000a  * Vec\\<T\\>\u000a* **Zero-copy types**:\u000a  * &str\u000a  * &\\[u8\\]\u000a* **FFI types**:\u000a  * CString\u000a  * Box\\<CStr\\>\u000a  * OsString\u000a* **Miscellaneous standard library types**:\u000a  * Duration\u000a  * SystemTime\u000a  * Path\u000a  * PathBuf\u000a  * Range\\<T\\>\u000a  * RangeInclusive\\<T\\>\u000a  * Bound\\<T\\>\u000a  * num::NonZero\\*\u000a  * `!` *(unstable)*\u000a* **Net types**:\u000a  * IpAddr\u000a  * Ipv4Addr\u000a  * Ipv6Addr\u000a  * SocketAddr\u000a  * SocketAddrV4\u000a  * SocketAddrV6"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo serde-1.0.152 . de/Deserialize#"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000aserde_1.0.152::de\u000a```\u000a\u000a```rust\u000apub trait Deserialize<'de>\u000awhere\u000a    Self: Sized,\u000a```\u000a\u000a---\u000a\u000aA **data structure** that can be deserialized from any data format supported\u000aby Serde.\u000a\u000aSerde provides `Deserialize` implementations for many Rust primitive and\u000astandard library types. The complete list is [here](https://docs.rs/serde/1.0.152/serde_1.0.152/de/index.html). All of these\u000acan be deserialized using Serde out of the box.\u000a\u000aAdditionally, Serde provides a procedural macro called `serde_derive` to\u000aautomatically generate `Deserialize` implementations for structs and enums\u000ain your program. See the [derive section of the manual](https://serde.rs/derive.html) for how to\u000ause this.\u000a\u000aIn rare cases it may be necessary to implement `Deserialize` manually for\u000asome type in your program. See the [Implementing\u000a`Deserialize`](https://serde.rs/impl-deserialize.html) section of the manual for more about this.\u000a\u000aThird-party crates may provide `Deserialize` implementations for types that\u000athey expose. For example the `linked-hash-map` crate provides a\u000a`LinkedHashMap<K, V>` type that is deserializable by Serde because the crate\u000aprovides an implementation of `Deserialize` for it.\u000a\u000a# Lifetime\u000a\u000aThe `'de` lifetime of this trait is the lifetime of data that may be\u000aborrowed by `Self` when deserialized. See the page [Understanding\u000adeserializer lifetimes](https://serde.rs/lifetimes.html) for a more detailed explanation of these lifetimes."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo serde-1.0.152 . de/Deserializer#"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000aserde_1.0.152::de\u000a```\u000a\u000a```rust\u000apub trait Deserializer<'de>\u000awhere\u000a    Self: Sized,\u000a```\u000a\u000a---\u000a\u000aA **data format** that can deserialize any data structure supported by\u000aSerde.\u000a\u000aThe role of this trait is to define the deserialization half of the [Serde\u000adata model](https://serde.rs/data-model.html), which is a way to categorize every Rust data type into one of\u000a29 possible types. Each method of the `Deserializer` trait corresponds to one\u000aof the types of the data model.\u000a\u000aImplementations of `Deserialize` map themselves into this data model by\u000apassing to the `Deserializer` a `Visitor` implementation that can receive\u000athese various types.\u000a\u000aThe types that make up the Serde data model are:\u000a\u000a* **14 primitive types**\u000a  * bool\u000a  * i8, i16, i32, i64, i128\u000a  * u8, u16, u32, u64, u128\u000a  * f32, f64\u000a  * char\u000a* **string**\u000a  * UTF-8 bytes with a length and no null terminator.\u000a  * When serializing, all strings are handled equally. When deserializing,\u000a    there are three flavors of strings: transient, owned, and borrowed.\u000a* **byte array** - \\[u8\\]\u000a  * Similar to strings, during deserialization byte arrays can be\u000a    transient, owned, or borrowed.\u000a* **option**\u000a  * Either none or some value.\u000a* **unit**\u000a  * The type of `()` in Rust. It represents an anonymous value containing\u000a    no data.\u000a* **unit_struct**\u000a  * For example `struct Unit` or `PhantomData<T>`. It represents a named\u000a    value containing no data.\u000a* **unit_variant**\u000a  * For example the `E::A` and `E::B` in `enum E { A, B }`.\u000a* **newtype_struct**\u000a  * For example `struct Millimeters(u8)`.\u000a* **newtype_variant**\u000a  * For example the `E::N` in `enum E { N(u8) }`.\u000a* **seq**\u000a  * A variably sized heterogeneous sequence of values, for example `Vec<T>`\u000a    or `HashSet<T>`. When serializing, the length may or may not be known\u000a    before iterating through all the data. When deserializing, the length\u000a    is determined by looking at the serialized data.\u000a* **tuple**\u000a  * A statically sized heterogeneous sequence of values for which the\u000a    length will be known at deserialization time without looking at the\u000a    serialized data, for example `(u8,)` or `(String, u64, Vec<T>)` or\u000a    `[u64; 10]`.\u000a* **tuple_struct**\u000a  * A named tuple, for example `struct Rgb(u8, u8, u8)`.\u000a* **tuple_variant**\u000a  * For example the `E::T` in `enum E { T(u8, u8) }`.\u000a* **map**\u000a  * A heterogeneous key-value pairing, for example `BTreeMap<K, V>`.\u000a* **struct**\u000a  * A heterogeneous key-value pairing in which the keys are strings and\u000a    will be known at deserialization time without looking at the serialized\u000a    data, for example `struct S { r: u8, g: u8, b: u8 }`.\u000a* **struct_variant**\u000a  * For example the `E::S` in `enum E { S { r: u8, g: u8, b: u8 } }`.\u000a\u000aThe `Deserializer` trait supports two entry point styles which enables\u000adifferent kinds of deserialization.\u000a\u000a1. The `deserialize_any` method. Self-describing data formats like JSON are\u000a   able to look at the serialized data and tell what it represents. For\u000a   example the JSON deserializer may see an opening curly brace (`{`) and\u000a   know that it is seeing a map. If the data format supports\u000a   `Deserializer::deserialize_any`, it will drive the Visitor using whatever\u000a   type it sees in the input. JSON uses this approach when deserializing\u000a   `serde_json::Value` which is an enum that can represent any JSON\u000a   document. Without knowing what is in a JSON document, we can deserialize\u000a   it to `serde_json::Value` by going through\u000a   `Deserializer::deserialize_any`.\u000a\u000a1. The various `deserialize_*` methods. Non-self-describing formats like\u000a   Postcard need to be told what is in the input in order to deserialize it.\u000a   The `deserialize_*` methods are hints to the deserializer for how to\u000a   interpret the next piece of input. Non-self-describing formats are not\u000a   able to deserialize something like `serde_json::Value` which relies on\u000a   `Deserializer::deserialize_any`.\u000a\u000aWhen implementing `Deserialize`, you should avoid relying on\u000a`Deserializer::deserialize_any` unless you need to be told by the\u000aDeserializer what type is in the input. Know that relying on\u000a`Deserializer::deserialize_any` means your data type will be able to\u000adeserialize from self-describing formats only, ruling out Postcard and many\u000aothers.\u000a\u000a# Lifetime\u000a\u000aThe `'de` lifetime of this trait is the lifetime of data that may be\u000aborrowed from the input when deserializing. See the page [Understanding\u000adeserializer lifetimes](https://serde.rs/lifetimes.html) for a more detailed explanation of these lifetimes.\u000a\u000a# Example implementation\u000a\u000aThe [example data format](https://serde.rs/data-format.html) presented on the website contains example code for\u000aa basic JSON `Deserializer`."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo serde-1.0.152 . de/Deserializer#[Error]"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000aserde_1.0.152::de\u000a```\u000a\u000a```rust\u000apub type Error: Error\u000a```\u000a\u000a---\u000a\u000aThe error type that can be returned if some error occurs during\u000adeserialization."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo serde-1.0.152 . de/Deserializer#deserialize_str()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000aserde_1.0.152::de::Deserializer\u000a```\u000a\u000a```rust\u000apub fn deserialize_str<V>(self, visitor: V) -> Result<V::Value, Self::Error>\u000awhere\u000a    V: Visitor<'de>,\u000a```\u000a\u000a---\u000a\u000aHint that the `Deserialize` type is expecting a string value and does\u000anot benefit from taking ownership of buffered data owned by the\u000a`Deserializer`.\u000a\u000aIf the `Visitor` would benefit from taking ownership of `String` data,\u000aindicate this to the `Deserializer` by using `deserialize_string`\u000ainstead."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo serde-1.0.152 . de/Error#" },
+      "docs": {
+        "key": "\u000a```rust\u000aserde_1.0.152::de\u000a```\u000a\u000a```rust\u000apub trait Error\u000awhere\u000a    Self: Sized + StdError,\u000a```\u000a\u000a---\u000a\u000aThe `Error` trait allows `Deserialize` implementations to create descriptive\u000aerror messages belonging to the `Deserializer` against which they are\u000acurrently running.\u000a\u000aEvery `Deserializer` declares an `Error` type that encompasses both\u000ageneral-purpose deserialization errors as well as errors specific to the\u000aparticular deserialization format. For example the `Error` type of\u000a`serde_json` can represent errors like an invalid JSON escape sequence or an\u000aunterminated string literal, in addition to the error cases that are part of\u000athis trait.\u000a\u000aMost deserializers should only need to provide the `Error::custom` method\u000aand inherit the default behavior for the other methods.\u000a\u000a# Example implementation\u000a\u000aThe [example data format](https://serde.rs/data-format.html) presented on the website shows an error\u000atype appropriate for a basic JSON data format."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo serde-1.0.152 . de/Error#invalid_value()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000aserde_1.0.152::de::Error\u000a```\u000a\u000a```rust\u000apub fn invalid_value(unexp: Unexpected, exp: &Expected) -> Self\u000a```\u000a\u000a---\u000a\u000aRaised when a `Deserialize` receives a value of the right type but that\u000ais wrong for some other reason.\u000a\u000aThe `unexp` argument provides information about what value was received.\u000aThis is the value that was present in the input file or other source\u000adata of the Deserializer.\u000a\u000aThe `exp` argument provides information about what value was being\u000aexpected. This is the type that is written in the program.\u000a\u000aFor example if we try to deserialize a String out of some binary data\u000athat is not valid UTF-8, the unexpected value is the bytes and the\u000aexpected value is a string."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo serde-1.0.152 . de/Other#" },
+      "docs": {
+        "key": "\u000a```rust\u000aserde_1.0.152::de::Unexpected\u000a```\u000a\u000a```rust\u000aOther(&'a str)\u000a```\u000a\u000a---\u000a\u000aA message stating what uncategorized thing the input contained that was\u000anot expected.\u000a\u000aThe message should be a noun or noun phrase, not capitalized and without\u000aa period. An example message is \"unoriginal superhero\"."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo serde-1.0.152 . de/Unexpected#" },
+      "docs": {
+        "key": "\u000a```rust\u000aserde_1.0.152::de\u000a```\u000a\u000a```rust\u000apub enum Unexpected<'a>\u000a```\u000a\u000a---\u000a\u000a`Unexpected` represents an unexpected invocation of any one of the `Visitor`\u000atrait methods.\u000a\u000aThis is used as an argument to the `invalid_type`, `invalid_value`, and\u000a`invalid_length` methods of the `Error` trait to build error messages.\u000a\u000a```edition2018\u000a# use std::fmt;\u000a#\u000a# use serde::de::{self, Unexpected, Visitor};\u000a#\u000a# struct Example;\u000a#\u000a# impl<'de> Visitor<'de> for Example {\u000a#     type Value = ();\u000a#\u000a#     fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {\u000a#         write!(formatter, \"definitely not a boolean\")\u000a#     }\u000a#\u000afn visit_bool<E>(self, v: bool) -> Result<Self::Value, E>\u000awhere\u000a    E: de::Error,\u000a{\u000a    Err(de::Error::invalid_type(Unexpected::Bool(v), &self))\u000a}\u000a# }\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo serde-1.0.152 . de/Visitor#" },
+      "docs": {
+        "key": "\u000a```rust\u000aserde_1.0.152::de\u000a```\u000a\u000a```rust\u000apub trait Visitor<'de>\u000awhere\u000a    Self: Sized,\u000a```\u000a\u000a---\u000a\u000aThis trait represents a visitor that walks through a deserializer.\u000a\u000a# Lifetime\u000a\u000aThe `'de` lifetime of this trait is the requirement for lifetime of data\u000athat may be borrowed by `Self::Value`. See the page [Understanding\u000adeserializer lifetimes](https://serde.rs/lifetimes.html) for a more detailed explanation of these lifetimes.\u000a\u000a# Example\u000a\u000a```edition2018\u000a# use std::fmt;\u000a#\u000a# use serde::de::{self, Unexpected, Visitor};\u000a#\u000a/// A visitor that deserializes a long string - a string containing at least\u000a/// some minimum number of bytes.\u000astruct LongString {\u000a    min: usize,\u000a}\u000a\u000aimpl<'de> Visitor<'de> for LongString {\u000a    type Value = String;\u000a\u000a    fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {\u000a        write!(formatter, \"a string containing at least {} bytes\", self.min)\u000a    }\u000a\u000a    fn visit_str<E>(self, s: &str) -> Result<Self::Value, E>\u000a    where\u000a        E: de::Error,\u000a    {\u000a        if s.len() >= self.min {\u000a            Ok(s.to_owned())\u000a        } else {\u000a            Err(de::Error::invalid_value(Unexpected::Str(s), &self))\u000a        }\u000a    }\u000a}\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo serde-1.0.152 . ser/" },
+      "docs": {
+        "key": "\u000a```rust\u000aserde_1.0.152\u000a```\u000a\u000a```rust\u000amod ser\u000a```\u000a\u000a---\u000a\u000aGeneric data structure serialization framework.\u000a\u000aThe two most important traits in this module are [`Serialize`](https://docs.rs/serde/1.0.152/serde_1.0.152/trait.Serialize.html) and\u000a[`Serializer`](https://docs.rs/serde/1.0.152/serde_1.0.152/trait.Serializer.html).\u000a\u000a* **A type that implements `Serialize` is a data structure** that can be\u000a  serialized to any data format supported by Serde, and conversely\u000a* **A type that implements `Serializer` is a data format** that can\u000a  serialize any data structure supported by Serde.\u000a\u000a# The Serialize trait\u000a\u000aSerde provides [`Serialize`](https://docs.rs/serde/1.0.152/serde_1.0.152/trait.Serialize.html) implementations for many Rust primitive and\u000astandard library types. The complete list is below. All of these can be\u000aserialized using Serde out of the box.\u000a\u000aAdditionally, Serde provides a procedural macro called [`serde_derive`](https://crates.io/crates/serde_derive) to\u000aautomatically generate [`Serialize`](https://docs.rs/serde/1.0.152/serde_1.0.152/trait.Serialize.html) implementations for structs and enums\u000ain your program. See the [derive section of the manual](https://serde.rs/derive.html) for how to use this.\u000a\u000aIn rare cases it may be necessary to implement [`Serialize`](https://docs.rs/serde/1.0.152/serde_1.0.152/trait.Serialize.html) manually for\u000asome type in your program. See the [Implementing `Serialize`](https://serde.rs/impl-serialize.html) section of the\u000amanual for more about this.\u000a\u000aThird-party crates may provide [`Serialize`](https://docs.rs/serde/1.0.152/serde_1.0.152/trait.Serialize.html) implementations for types that\u000athey expose. For example the [`linked-hash-map`](https://crates.io/crates/linked-hash-map) crate provides a\u000a[`LinkedHashMap<K, V>`](https://docs.rs/linked-hash-map/*/linked_hash_map/struct.LinkedHashMap.html) type that is serializable by Serde because the crate\u000aprovides an implementation of [`Serialize`](https://docs.rs/serde/1.0.152/serde_1.0.152/trait.Serialize.html) for it.\u000a\u000a# The Serializer trait\u000a\u000a[`Serializer`](https://docs.rs/serde/1.0.152/serde_1.0.152/trait.Serializer.html) implementations are provided by third-party crates, for\u000aexample [`serde_json`](https://github.com/serde-rs/json), [`serde_yaml`](https://github.com/dtolnay/serde-yaml) and [`postcard`](https://github.com/jamesmunns/postcard).\u000a\u000aA partial list of well-maintained formats is given on the [Serde\u000awebsite](https://serde.rs/#data-formats).\u000a\u000a# Implementations of Serialize provided by Serde\u000a\u000a* **Primitive types**:\u000a  * bool\u000a  * i8, i16, i32, i64, i128, isize\u000a  * u8, u16, u32, u64, u128, usize\u000a  * f32, f64\u000a  * char\u000a  * str\u000a  * &T and &mut T\u000a* **Compound types**:\u000a  * \\[T\\]\u000a  * \\[T; 0\\] through \\[T; 32\\]\u000a  * tuples up to size 16\u000a* **Common standard library types**:\u000a  * String\u000a  * Option\\<T\\>\u000a  * Result\\<T, E\\>\u000a  * PhantomData\\<T\\>\u000a* **Wrapper types**:\u000a  * Box\\<T\\>\u000a  * Cow\\<'a, T\\>\u000a  * Cell\\<T\\>\u000a  * RefCell\\<T\\>\u000a  * Mutex\\<T\\>\u000a  * RwLock\\<T\\>\u000a  * Rc\\<T\\> *(if* features = [\"rc\"](\"rc\") *is enabled)*\u000a  * Arc\\<T\\> *(if* features = [\"rc\"](\"rc\") *is enabled)*\u000a* **Collection types**:\u000a  * BTreeMap\\<K, V\\>\u000a  * BTreeSet\\<T\\>\u000a  * BinaryHeap\\<T\\>\u000a  * HashMap\\<K, V, H\\>\u000a  * HashSet\\<T, H\\>\u000a  * LinkedList\\<T\\>\u000a  * VecDeque\\<T\\>\u000a  * Vec\\<T\\>\u000a* **FFI types**:\u000a  * CStr\u000a  * CString\u000a  * OsStr\u000a  * OsString\u000a* **Miscellaneous standard library types**:\u000a  * Duration\u000a  * SystemTime\u000a  * Path\u000a  * PathBuf\u000a  * Range\\<T\\>\u000a  * RangeInclusive\\<T\\>\u000a  * Bound\\<T\\>\u000a  * num::NonZero\\*\u000a  * `!` *(unstable)*\u000a* **Net types**:\u000a  * IpAddr\u000a  * Ipv4Addr\u000a  * Ipv6Addr\u000a  * SocketAddr\u000a  * SocketAddrV4\u000a  * SocketAddrV6"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo serde-1.0.152 . ser/Error#" },
+      "docs": {
+        "key": "\u000a```rust\u000aserde_1.0.152::ser\u000a```\u000a\u000a```rust\u000apub trait Error\u000awhere\u000a    Self: Sized + StdError,\u000a```\u000a\u000a---\u000a\u000aTrait used by `Serialize` implementations to generically construct\u000aerrors belonging to the `Serializer` against which they are\u000acurrently running.\u000a\u000a# Example implementation\u000a\u000aThe [example data format](https://serde.rs/data-format.html) presented on the website shows an error\u000atype appropriate for a basic JSON data format."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo serde-1.0.152 . ser/Error#custom()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000aserde_1.0.152::ser::Error\u000a```\u000a\u000a```rust\u000apub fn custom<T>(msg: T) -> Self\u000awhere\u000a    T: Display,\u000a```\u000a\u000a---\u000a\u000aUsed when a [`Serialize`](https://docs.rs/serde/1.0.152/serde_1.0.152/trait.Serialize.html) implementation encounters any error\u000awhile serializing a type.\u000a\u000aThe message should not be capitalized and should not end with a\u000aperiod.\u000a\u000aFor example, a filesystem [`Path`](https://doc.rust-lang.org/std/path/struct.Path.html) may refuse to serialize\u000aitself if it contains invalid UTF-8 data.\u000a\u000a```edition2018\u000a# struct Path;\u000a#\u000a# impl Path {\u000a#     fn to_str(&self) -> Option<&str> {\u000a#         unimplemented!()\u000a#     }\u000a# }\u000a#\u000ause serde::ser::{self, Serialize, Serializer};\u000a\u000aimpl Serialize for Path {\u000a    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>\u000a    where\u000a        S: Serializer,\u000a    {\u000a        match self.to_str() {\u000a            Some(s) => serializer.serialize_str(s),\u000a            None => Err(ser::Error::custom(\"path contains invalid UTF-8 characters\")),\u000a        }\u000a    }\u000a}\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo serde-1.0.152 . ser/Serialize#" },
+      "docs": {
+        "key": "\u000a```rust\u000aserde_1.0.152::ser\u000a```\u000a\u000a```rust\u000apub trait Serialize\u000a```\u000a\u000a---\u000a\u000aA **data structure** that can be serialized into any data format supported\u000aby Serde.\u000a\u000aSerde provides `Serialize` implementations for many Rust primitive and\u000astandard library types. The complete list is [here](https://docs.rs/serde/1.0.152/serde_1.0.152/ser/index.html). All of\u000athese can be serialized using Serde out of the box.\u000a\u000aAdditionally, Serde provides a procedural macro called [`serde_derive`](https://crates.io/crates/serde_derive) to\u000aautomatically generate `Serialize` implementations for structs and enums in\u000ayour program. See the [derive section of the manual](https://serde.rs/derive.html) for how to use this.\u000a\u000aIn rare cases it may be necessary to implement `Serialize` manually for some\u000atype in your program. See the [Implementing `Serialize`](https://serde.rs/impl-serialize.html) section of the\u000amanual for more about this.\u000a\u000aThird-party crates may provide `Serialize` implementations for types that\u000athey expose. For example the [`linked-hash-map`](https://crates.io/crates/linked-hash-map) crate provides a\u000a[`LinkedHashMap<K, V>`](https://docs.rs/linked-hash-map/*/linked_hash_map/struct.LinkedHashMap.html) type that is serializable by Serde because the crate\u000aprovides an implementation of `Serialize` for it."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo serde-1.0.152 . ser/Serializer#"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000aserde_1.0.152::ser\u000a```\u000a\u000a```rust\u000apub trait Serializer\u000awhere\u000a    Self: Sized,\u000a```\u000a\u000a---\u000a\u000aA **data format** that can serialize any data structure supported by Serde.\u000a\u000aThe role of this trait is to define the serialization half of the [Serde\u000adata model](https://serde.rs/data-model.html), which is a way to categorize every Rust data structure into one\u000aof 29 possible types. Each method of the `Serializer` trait corresponds to\u000aone of the types of the data model.\u000a\u000aImplementations of `Serialize` map themselves into this data model by\u000ainvoking exactly one of the `Serializer` methods.\u000a\u000aThe types that make up the Serde data model are:\u000a\u000a* **14 primitive types**\u000a  * bool\u000a  * i8, i16, i32, i64, i128\u000a  * u8, u16, u32, u64, u128\u000a  * f32, f64\u000a  * char\u000a* **string**\u000a  * UTF-8 bytes with a length and no null terminator.\u000a  * When serializing, all strings are handled equally. When deserializing,\u000a    there are three flavors of strings: transient, owned, and borrowed.\u000a* **byte array** - \\[u8\\]\u000a  * Similar to strings, during deserialization byte arrays can be\u000a    transient, owned, or borrowed.\u000a* **option**\u000a  * Either none or some value.\u000a* **unit**\u000a  * The type of `()` in Rust. It represents an anonymous value containing\u000a    no data.\u000a* **unit_struct**\u000a  * For example `struct Unit` or `PhantomData<T>`. It represents a named\u000a    value containing no data.\u000a* **unit_variant**\u000a  * For example the `E::A` and `E::B` in `enum E { A, B }`.\u000a* **newtype_struct**\u000a  * For example `struct Millimeters(u8)`.\u000a* **newtype_variant**\u000a  * For example the `E::N` in `enum E { N(u8) }`.\u000a* **seq**\u000a  * A variably sized heterogeneous sequence of values, for example\u000a    `Vec<T>` or `HashSet<T>`. When serializing, the length may or may not\u000a    be known before iterating through all the data. When deserializing,\u000a    the length is determined by looking at the serialized data.\u000a* **tuple**\u000a  * A statically sized heterogeneous sequence of values for which the\u000a    length will be known at deserialization time without looking at the\u000a    serialized data, for example `(u8,)` or `(String, u64, Vec<T>)` or\u000a    `[u64; 10]`.\u000a* **tuple_struct**\u000a  * A named tuple, for example `struct Rgb(u8, u8, u8)`.\u000a* **tuple_variant**\u000a  * For example the `E::T` in `enum E { T(u8, u8) }`.\u000a* **map**\u000a  * A heterogeneous key-value pairing, for example `BTreeMap<K, V>`.\u000a* **struct**\u000a  * A heterogeneous key-value pairing in which the keys are strings and\u000a    will be known at deserialization time without looking at the\u000a    serialized data, for example `struct S { r: u8, g: u8, b: u8 }`.\u000a* **struct_variant**\u000a  * For example the `E::S` in `enum E { S { r: u8, g: u8, b: u8 } }`.\u000a\u000aMany Serde serializers produce text or binary data as output, for example\u000aJSON or Postcard. This is not a requirement of the `Serializer` trait, and\u000athere are serializers that do not produce text or binary output. One example\u000ais the `serde_json::value::Serializer` (distinct from the main `serde_json`\u000aserializer) that produces a `serde_json::Value` data structure in memory as\u000aoutput.\u000a\u000a# Example implementation\u000a\u000aThe [example data format](https://serde.rs/data-format.html) presented on the website contains example code for\u000aa basic JSON `Serializer`."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo serde-1.0.152 . ser/Serializer#[Error]"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000aserde_1.0.152::ser\u000a```\u000a\u000a```rust\u000apub type Error: Error\u000a```\u000a\u000a---\u000a\u000aThe error type when some error occurs during serialization."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo serde-1.0.152 . ser/Serializer#[Ok]"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000aserde_1.0.152::ser\u000a```\u000a\u000a```rust\u000apub type Ok\u000a```\u000a\u000a---\u000a\u000aThe output type produced by this `Serializer` during successful\u000aserialization. Most serializers that produce text or binary output\u000ashould set `Ok = ()` and serialize into an [`io::Write`](https://doc.rust-lang.org/std/io/trait.Write.html) or buffer\u000acontained within the `Serializer` instance. Serializers that build\u000ain-memory data structures may be simplified by using `Ok` to propagate\u000athe data structure around."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo serde-1.0.152 . ser/Serializer#serialize_str()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000aserde_1.0.152::ser::Serializer\u000a```\u000a\u000a```rust\u000apub fn serialize_str(self, v: &str) -> Result<Self::Ok, Self::Error>\u000a```\u000a\u000a---\u000a\u000aSerialize a `&str`.\u000a\u000a```edition2018\u000a# use serde::Serializer;\u000a#\u000a# serde::__private_serialize!();\u000a#\u000aimpl Serialize for str {\u000a    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>\u000a    where\u000a        S: Serializer,\u000a    {\u000a        serializer.serialize_str(self)\u000a    }\u000a}\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std collections/"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000astd\u000a```\u000a\u000a```rust\u000amod collections\u000a```\u000a\u000a---\u000a\u000aCollection types.\u000a\u000aRust's standard collection library provides efficient implementations of the\u000amost common general purpose programming data structures. By using the\u000astandard implementations, it should be possible for two libraries to\u000acommunicate without significant data conversion.\u000a\u000aTo get this out of the way: you should probably just use [`Vec`](https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html) or [`HashMap`](https://doc.rust-lang.org/nightly/std/collections/hash/map/struct.HashMap.html).\u000aThese two collections cover most use cases for generic data storage and\u000aprocessing. They are exceptionally good at doing what they do. All the other\u000acollections in the standard library have specific use cases where they are\u000athe optimal choice, but these cases are borderline *niche* in comparison.\u000aEven when `Vec` and `HashMap` are technically suboptimal, they're probably a\u000agood enough choice to get started.\u000a\u000aRust's collections can be grouped into four major categories:\u000a\u000a* Sequences: [`Vec`](https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html), [`VecDeque`](https://doc.rust-lang.org/nightly/alloc/collections/vec_deque/struct.VecDeque.html), [`LinkedList`](https://doc.rust-lang.org/nightly/alloc/collections/linked_list/struct.LinkedList.html)\u000a* Maps: [`HashMap`](https://doc.rust-lang.org/nightly/std/collections/hash/map/struct.HashMap.html), [`BTreeMap`](https://doc.rust-lang.org/nightly/alloc/collections/btree/map/struct.BTreeMap.html)\u000a* Sets: [`HashSet`](https://doc.rust-lang.org/nightly/std/collections/hash/set/struct.HashSet.html), [`BTreeSet`](https://doc.rust-lang.org/nightly/alloc/collections/btree/set/struct.BTreeSet.html)\u000a* Misc: [`BinaryHeap`](https://doc.rust-lang.org/nightly/alloc/collections/binary_heap/struct.BinaryHeap.html)\u000a\u000a# When Should You Use Which Collection?\u000a\u000aThese are fairly high-level and quick break-downs of when each collection\u000ashould be considered. Detailed discussions of strengths and weaknesses of\u000aindividual collections can be found on their own documentation pages.\u000a\u000a### Use a `Vec` when:\u000a\u000a* You want to collect items up to be processed or sent elsewhere later, and\u000a  don't care about any properties of the actual values being stored.\u000a* You want a sequence of elements in a particular order, and will only be\u000a  appending to (or near) the end.\u000a* You want a stack.\u000a* You want a resizable array.\u000a* You want a heap-allocated array.\u000a\u000a### Use a `VecDeque` when:\u000a\u000a* You want a [`Vec`](https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html) that supports efficient insertion at both ends of the\u000a  sequence.\u000a* You want a queue.\u000a* You want a double-ended queue (deque).\u000a\u000a### Use a `LinkedList` when:\u000a\u000a* You want a [`Vec`](https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html) or [`VecDeque`](https://doc.rust-lang.org/nightly/alloc/collections/vec_deque/struct.VecDeque.html) of unknown size, and can't tolerate\u000a  amortization.\u000a* You want to efficiently split and append lists.\u000a* You are *absolutely* certain you *really*, *truly*, want a doubly linked\u000a  list.\u000a\u000a### Use a `HashMap` when:\u000a\u000a* You want to associate arbitrary keys with an arbitrary value.\u000a* You want a cache.\u000a* You want a map, with no extra functionality.\u000a\u000a### Use a `BTreeMap` when:\u000a\u000a* You want a map sorted by its keys.\u000a* You want to be able to get a range of entries on-demand.\u000a* You're interested in what the smallest or largest key-value pair is.\u000a* You want to find the largest or smallest key that is smaller or larger\u000a  than something.\u000a\u000a### Use the `Set` variant of any of these `Map`s when:\u000a\u000a* You just want to remember which keys you've seen.\u000a* There is no meaningful value to associate with your keys.\u000a* You just want a set.\u000a\u000a### Use a `BinaryHeap` when:\u000a\u000a* You want to store a bunch of elements, but only ever want to process the\u000a  \"biggest\" or \"most important\" one at any given time.\u000a* You want a priority queue.\u000a\u000a# Performance\u000a\u000aChoosing the right collection for the job requires an understanding of what\u000aeach collection is good at. Here we briefly summarize the performance of\u000adifferent collections for certain important operations. For further details,\u000asee each type's documentation, and note that the names of actual methods may\u000adiffer from the tables below on certain collections.\u000a\u000aThroughout the documentation, we will follow a few conventions. For all\u000aoperations, the collection's size is denoted by n. If another collection is\u000ainvolved in the operation, it contains m elements. Operations which have an\u000a*amortized* cost are suffixed with a `*`. Operations with an *expected*\u000acost are suffixed with a `~`.\u000a\u000aAll amortized costs are for the potential need to resize when capacity is\u000aexhausted. If a resize occurs it will take *O*(*n*) time. Our collections never\u000aautomatically shrink, so removal operations aren't amortized. Over a\u000asufficiently large series of operations, the average cost per operation will\u000adeterministically equal the given cost.\u000a\u000aOnly [`HashMap`](https://doc.rust-lang.org/nightly/std/collections/hash/map/struct.HashMap.html) has expected costs, due to the probabilistic nature of hashing.\u000aIt is theoretically possible, though very unlikely, for [`HashMap`](https://doc.rust-lang.org/nightly/std/collections/hash/map/struct.HashMap.html) to\u000aexperience worse performance.\u000a\u000a## Sequences\u000a\u000a||get(i)|insert(i)|remove(i)|append|split_off(i)|\u000a|--|------|---------|---------|------|------------|\u000a|[`Vec`](https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html)|*O*(1)|*O*(*n*-*i*)\\*|*O*(*n*-*i*)|*O*(*m*)\\*|*O*(*n*-*i*)|\u000a|[`VecDeque`](https://doc.rust-lang.org/nightly/alloc/collections/vec_deque/struct.VecDeque.html)|*O*(1)|*O*(min(*i*, *n*-*i*))\\*|*O*(min(*i*, *n*-*i*))|*O*(*m*)\\*|*O*(min(*i*, *n*-*i*))|\u000a|[`LinkedList`](https://doc.rust-lang.org/nightly/alloc/collections/linked_list/struct.LinkedList.html)|*O*(min(*i*, *n*-*i*))|*O*(min(*i*, *n*-*i*))|*O*(min(*i*, *n*-*i*))|*O*(1)|*O*(min(*i*, *n*-*i*))|\u000a\u000aNote that where ties occur, [`Vec`](https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html) is generally going to be faster than [`VecDeque`](https://doc.rust-lang.org/nightly/alloc/collections/vec_deque/struct.VecDeque.html), and\u000a[`VecDeque`](https://doc.rust-lang.org/nightly/alloc/collections/vec_deque/struct.VecDeque.html) is generally going to be faster than [`LinkedList`](https://doc.rust-lang.org/nightly/alloc/collections/linked_list/struct.LinkedList.html).\u000a\u000a## Maps\u000a\u000aFor Sets, all operations have the cost of the equivalent Map operation.\u000a\u000a||get|insert|remove|range|append|\u000a|--|---|------|------|-----|------|\u000a|[`HashMap`](https://doc.rust-lang.org/nightly/std/collections/hash/map/struct.HashMap.html)|*O*(1)~|*O*(1)~\\*|*O*(1)~|N/A|N/A|\u000a|[`BTreeMap`](https://doc.rust-lang.org/nightly/alloc/collections/btree/map/struct.BTreeMap.html)|*O*(log(*n*))|*O*(log(*n*))|*O*(log(*n*))|*O*(log(*n*))|*O*(*n*+*m*)|\u000a\u000a# Correct and Efficient Usage of Collections\u000a\u000aOf course, knowing which collection is the right one for the job doesn't\u000ainstantly permit you to use it correctly. Here are some quick tips for\u000aefficient and correct usage of the standard collections in general. If\u000ayou're interested in how to use a specific collection in particular, consult\u000aits documentation for detailed discussion and code examples.\u000a\u000a## Capacity Management\u000a\u000aMany collections provide several constructors and methods that refer to\u000a\"capacity\". These collections are generally built on top of an array.\u000aOptimally, this array would be exactly the right size to fit only the\u000aelements stored in the collection, but for the collection to do this would\u000abe very inefficient. If the backing array was exactly the right size at all\u000atimes, then every time an element is inserted, the collection would have to\u000agrow the array to fit it. Due to the way memory is allocated and managed on\u000amost computers, this would almost surely require allocating an entirely new\u000aarray and copying every single element from the old one into the new one.\u000aHopefully you can see that this wouldn't be very efficient to do on every\u000aoperation.\u000a\u000aMost collections therefore use an *amortized* allocation strategy. They\u000agenerally let themselves have a fair amount of unoccupied space so that they\u000aonly have to grow on occasion. When they do grow, they allocate a\u000asubstantially larger array to move the elements into so that it will take a\u000awhile for another grow to be required. While this strategy is great in\u000ageneral, it would be even better if the collection *never* had to resize its\u000abacking array. Unfortunately, the collection itself doesn't have enough\u000ainformation to do this itself. Therefore, it is up to us programmers to give\u000ait hints.\u000a\u000aAny `with_capacity` constructor will instruct the collection to allocate\u000aenough space for the specified number of elements. Ideally this will be for\u000aexactly that many elements, but some implementation details may prevent\u000athis. See collection-specific documentation for details. In general, use\u000a`with_capacity` when you know exactly how many elements will be inserted, or\u000aat least have a reasonable upper-bound on that number.\u000a\u000aWhen anticipating a large influx of elements, the `reserve` family of\u000amethods can be used to hint to the collection how much room it should make\u000afor the coming items. As with `with_capacity`, the precise behavior of\u000athese methods will be specific to the collection of interest.\u000a\u000aFor optimal performance, collections will generally avoid shrinking\u000athemselves. If you believe that a collection will not soon contain any more\u000aelements, or just really need the memory, the `shrink_to_fit` method prompts\u000athe collection to shrink the backing array to the minimum size capable of\u000aholding its elements.\u000a\u000aFinally, if ever you're interested in what the actual capacity of the\u000acollection is, most collections provide a `capacity` method to query this\u000ainformation on demand. This can be useful for debugging purposes, or for\u000ause with the `reserve` methods.\u000a\u000a## Iterators\u000a\u000aIterators are a powerful and robust mechanism used throughout Rust's\u000astandard libraries. Iterators provide a sequence of values in a generic,\u000asafe, efficient and convenient way. The contents of an iterator are usually\u000a*lazily* evaluated, so that only the values that are actually needed are\u000aever actually produced, and no allocation need be done to temporarily store\u000athem. Iterators are primarily consumed using a `for` loop, although many\u000afunctions also take iterators where a collection or sequence of values is\u000adesired.\u000a\u000aAll of the standard collections provide several iterators for performing\u000abulk manipulation of their contents. The three primary iterators almost\u000aevery collection should provide are `iter`, `iter_mut`, and `into_iter`.\u000aSome of these are not provided on collections where it would be unsound or\u000aunreasonable to provide them.\u000a\u000a`iter` provides an iterator of immutable references to all the contents of a\u000acollection in the most \"natural\" order. For sequence collections like [`Vec`](https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html),\u000athis means the items will be yielded in increasing order of index starting\u000aat 0. For ordered collections like [`BTreeMap`](https://doc.rust-lang.org/nightly/alloc/collections/btree/map/struct.BTreeMap.html), this means that the items\u000awill be yielded in sorted order. For unordered collections like [`HashMap`](https://doc.rust-lang.org/nightly/std/collections/hash/map/struct.HashMap.html),\u000athe items will be yielded in whatever order the internal representation made\u000amost convenient. This is great for reading through all the contents of the\u000acollection.\u000a\u000a```\u000alet vec = vec![1, 2, 3, 4];\u000afor x in vec.iter() {\u000a   println!(\"vec contained {x:?}\");\u000a}\u000a```\u000a\u000a`iter_mut` provides an iterator of *mutable* references in the same order as\u000a`iter`. This is great for mutating all the contents of the collection.\u000a\u000a```\u000alet mut vec = vec![1, 2, 3, 4];\u000afor x in vec.iter_mut() {\u000a   *x += 1;\u000a}\u000a```\u000a\u000a`into_iter` transforms the actual collection into an iterator over its\u000acontents by-value. This is great when the collection itself is no longer\u000aneeded, and the values are needed elsewhere. Using `extend` with `into_iter`\u000ais the main way that contents of one collection are moved into another.\u000a`extend` automatically calls `into_iter`, and takes any <code>T: [IntoIterator]</code>.\u000aCalling `collect` on an iterator itself is also a great way to convert one\u000acollection into another. Both of these methods should internally use the\u000acapacity management tools discussed in the previous section to do this as\u000aefficiently as possible.\u000a\u000a```\u000alet mut vec1 = vec![1, 2, 3, 4];\u000alet vec2 = vec![10, 20, 30, 40];\u000avec1.extend(vec2);\u000a```\u000a\u000a```\u000ause std::collections::VecDeque;\u000a\u000alet vec = [1, 2, 3, 4];\u000alet buf: VecDeque<_> = vec.into_iter().collect();\u000a```\u000a\u000aIterators also provide a series of *adapter* methods for performing common\u000athreads to sequences. Among the adapters are functional favorites like `map`,\u000a`fold`, `skip` and `take`. Of particular interest to collections is the\u000a`rev` adapter, which reverses any iterator that supports this operation. Most\u000acollections provide reversible iterators as the way to iterate over them in\u000areverse order.\u000a\u000a```\u000alet vec = vec![1, 2, 3, 4];\u000afor x in vec.iter().rev() {\u000a   println!(\"vec contained {x:?}\");\u000a}\u000a```\u000a\u000aSeveral other collection methods also return iterators to yield a sequence\u000aof results but avoid allocating an entire collection to store the result in.\u000aThis provides maximum flexibility as `collect` or `extend` can be called to\u000a\"pipe\" the sequence into any collection if desired. Otherwise, the sequence\u000acan be looped over with a `for` loop. The iterator can also be discarded\u000aafter partial use, preventing the computation of the unused items.\u000a\u000a## Entries\u000a\u000aThe `entry` API is intended to provide an efficient mechanism for\u000amanipulating the contents of a map conditionally on the presence of a key or\u000anot. The primary motivating use case for this is to provide efficient\u000aaccumulator maps. For instance, if one wishes to maintain a count of the\u000anumber of times each key has been seen, they will have to perform some\u000aconditional logic on whether this is the first time the key has been seen or\u000anot. Normally, this would require a `find` followed by an `insert`,\u000aeffectively duplicating the search effort on each insertion.\u000a\u000aWhen a user calls `map.entry(key)`, the map will search for the key and\u000athen yield a variant of the `Entry` enum.\u000a\u000aIf a `Vacant(entry)` is yielded, then the key *was not* found. In this case\u000athe only valid operation is to `insert` a value into the entry. When this is\u000adone, the vacant entry is consumed and converted into a mutable reference to\u000athe value that was inserted. This allows for further manipulation of the\u000avalue beyond the lifetime of the search itself. This is useful if complex\u000alogic needs to be performed on the value regardless of whether the value was\u000ajust inserted.\u000a\u000aIf an `Occupied(entry)` is yielded, then the key *was* found. In this case,\u000athe user has several options: they can `get`, `insert` or `remove` the\u000avalue of the occupied entry. Additionally, they can convert the occupied\u000aentry into a mutable reference to its value, providing symmetry to the\u000avacant `insert` case.\u000a\u000a### Examples\u000a\u000aHere are the two primary ways in which `entry` is used. First, a simple\u000aexample where the logic performed on the values is trivial.\u000a\u000a#### Counting the number of times each character in a string occurs\u000a\u000a```\u000ause std::collections::btree_map::BTreeMap;\u000a\u000alet mut count = BTreeMap::new();\u000alet message = \"she sells sea shells by the sea shore\";\u000a\u000afor c in message.chars() {\u000a    *count.entry(c).or_insert(0) += 1;\u000a}\u000a\u000aassert_eq!(count.get(&'s'), Some(&8));\u000a\u000aprintln!(\"Number of occurrences of each character\");\u000afor (char, count) in &count {\u000a    println!(\"{char}: {count}\");\u000a}\u000a```\u000a\u000aWhen the logic to be performed on the value is more complex, we may simply\u000ause the `entry` API to ensure that the value is initialized and perform the\u000alogic afterwards.\u000a\u000a#### Tracking the inebriation of customers at a bar\u000a\u000a```\u000ause std::collections::btree_map::BTreeMap;\u000a\u000a// A client of the bar. They have a blood alcohol level.\u000astruct Person { blood_alcohol: f32 }\u000a\u000a// All the orders made to the bar, by client ID.\u000alet orders = vec![1, 2, 1, 2, 3, 4, 1, 2, 2, 3, 4, 1, 1, 1];\u000a\u000a// Our clients.\u000alet mut blood_alcohol = BTreeMap::new();\u000a\u000afor id in orders {\u000a    // If this is the first time we've seen this customer, initialize them\u000a    // with no blood alcohol. Otherwise, just retrieve them.\u000a    let person = blood_alcohol.entry(id).or_insert(Person { blood_alcohol: 0.0 });\u000a\u000a    // Reduce their blood alcohol level. It takes time to order and drink a beer!\u000a    person.blood_alcohol *= 0.9;\u000a\u000a    // Check if they're sober enough to have another beer.\u000a    if person.blood_alcohol > 0.3 {\u000a        // Too drunk... for now.\u000a        println!(\"Sorry {id}, I have to cut you off\");\u000a    } else {\u000a        // Have another!\u000a        person.blood_alcohol += 0.1;\u000a    }\u000a}\u000a```\u000a\u000a# Insert and complex keys\u000a\u000aIf we have a more complex key, calls to `insert` will\u000anot update the value of the key. For example:\u000a\u000a```\u000ause std::cmp::Ordering;\u000ause std::collections::BTreeMap;\u000ause std::hash::{Hash, Hasher};\u000a\u000a#[derive(Debug)]\u000astruct Foo {\u000a    a: u32,\u000a    b: &'static str,\u000a}\u000a\u000a// we will compare `Foo`s by their `a` value only.\u000aimpl PartialEq for Foo {\u000a    fn eq(&self, other: &Self) -> bool { self.a == other.a }\u000a}\u000a\u000aimpl Eq for Foo {}\u000a\u000a// we will hash `Foo`s by their `a` value only.\u000aimpl Hash for Foo {\u000a    fn hash<H: Hasher>(&self, h: &mut H) { self.a.hash(h); }\u000a}\u000a\u000aimpl PartialOrd for Foo {\u000a    fn partial_cmp(&self, other: &Self) -> Option<Ordering> { self.a.partial_cmp(&other.a) }\u000a}\u000a\u000aimpl Ord for Foo {\u000a    fn cmp(&self, other: &Self) -> Ordering { self.a.cmp(&other.a) }\u000a}\u000a\u000alet mut map = BTreeMap::new();\u000amap.insert(Foo { a: 1, b: \"baz\" }, 99);\u000a\u000a// We already have a Foo with an a of 1, so this will be updating the value.\u000amap.insert(Foo { a: 1, b: \"xyz\" }, 100);\u000a\u000a// The value has been updated...\u000aassert_eq!(map.values().next().unwrap(), &100);\u000a\u000a// ...but the key hasn't changed. b is still \"baz\", not \"xyz\".\u000aassert_eq!(map.keys().next().unwrap().b, \"baz\");\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std os_str/ffi/OsStr#Ord#cmp()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000astd::ffi::os_str::OsStr\u000a```\u000a\u000a```rust\u000afn cmp(&self, other: &OsStr) -> cmp::Ordering\u000a```\u000a\u000a---\u000a\u000aThis method returns an [`Ordering`](`Ordering`) between `self` and `other`.\u000a\u000aBy convention, `self.cmp(&other)` returns the ordering matching the expression\u000a`self <operator> other` if true.\u000a\u000a# Examples\u000a\u000a```\u000ause std::cmp::Ordering;\u000a\u000aassert_eq!(5.cmp(&10), Ordering::Less);\u000aassert_eq!(10.cmp(&5), Ordering::Greater);\u000aassert_eq!(5.cmp(&5), Ordering::Equal);\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std os_str/ffi/OsStr#is_empty()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000astd::ffi::os_str::OsStr\u000a```\u000a\u000a```rust\u000apub fn is_empty(&self) -> bool\u000a```\u000a\u000a---\u000a\u000aChecks whether the `OsStr` is empty.\u000a\u000a# Examples\u000a\u000a```\u000ause std::ffi::OsStr;\u000a\u000alet os_str = OsStr::new(\"\");\u000aassert!(os_str.is_empty());\u000a\u000alet os_str = OsStr::new(\"foo\");\u000aassert!(!os_str.is_empty());\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000astd\u000a```\u000a\u000a```rust\u000amod path\u000a```\u000a\u000a---\u000a\u000aCross-platform path manipulation.\u000a\u000aThis module provides two types, [`PathBuf`](https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html) and [`Path`](https://doc.rust-lang.org/nightly/std/path/struct.Path.html) (akin to [`String`](https://doc.rust-lang.org/nightly/alloc/string/struct.String.html)\u000aand [`str`](https://doc.rust-lang.org/nightly/core/primitive.str.html)), for working with paths abstractly. These types are thin wrappers\u000aaround [`OsString`](https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsString.html) and [`OsStr`](https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsStr.html) respectively, meaning that they work directly\u000aon strings according to the local platform's path syntax.\u000a\u000aPaths can be parsed into [`Component`](https://doc.rust-lang.org/nightly/std/path/enum.Component.html)s by iterating over the structure\u000areturned by the [`components`] method on [`Path`](https://doc.rust-lang.org/nightly/std/path/struct.Path.html). [`Component`](https://doc.rust-lang.org/nightly/std/path/enum.Component.html)s roughly\u000acorrespond to the substrings between path separators (`/` or `\\`). You can\u000areconstruct an equivalent path from components with the [`push`] method on\u000a[`PathBuf`](https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html); note that the paths may differ syntactically by the\u000anormalization described in the documentation for the [`components`] method.\u000a\u000a## Case sensitivity\u000a\u000aUnless otherwise indicated path methods that do not access the filesystem,\u000asuch as [`Path::starts_with`](`Path::starts_with`) and [`Path::ends_with`](`Path::ends_with`), are case sensitive no\u000amatter the platform or filesystem. An exception to this is made for Windows\u000adrive letters.\u000a\u000a## Simple usage\u000a\u000aPath manipulation includes both parsing components from slices and building\u000anew owned paths.\u000a\u000aTo parse a path, you can create a [`Path`](https://doc.rust-lang.org/nightly/std/path/struct.Path.html) slice from a [`str`](https://doc.rust-lang.org/nightly/core/primitive.str.html)\u000aslice and start asking questions:\u000a\u000a```\u000ause std::path::Path;\u000ause std::ffi::OsStr;\u000a\u000alet path = Path::new(\"/tmp/foo/bar.txt\");\u000a\u000alet parent = path.parent();\u000aassert_eq!(parent, Some(Path::new(\"/tmp/foo\")));\u000a\u000alet file_stem = path.file_stem();\u000aassert_eq!(file_stem, Some(OsStr::new(\"bar\")));\u000a\u000alet extension = path.extension();\u000aassert_eq!(extension, Some(OsStr::new(\"txt\")));\u000a```\u000a\u000aTo build or modify paths, use [`PathBuf`](https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html):\u000a\u000a```\u000ause std::path::PathBuf;\u000a\u000a// This way works...\u000alet mut path = PathBuf::from(\"c:\\\\\");\u000a\u000apath.push(\"windows\");\u000apath.push(\"system32\");\u000a\u000apath.set_extension(\"dll\");\u000a\u000a// ... but push is best used if you don't know everything up\u000a// front. If you do, this way is better:\u000alet path: PathBuf = [\"c:\\\\\", \"windows\", \"system32.dll\"].iter().collect();\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/Path#"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000astd::path\u000a```\u000a\u000a```rust\u000apub struct Path\u000a```\u000a\u000a---\u000a\u000aA slice of a path (akin to [`str`](https://doc.rust-lang.org/nightly/core/primitive.str.html)).\u000a\u000aThis type supports a number of operations for inspecting a path, including\u000abreaking the path into its components (separated by `/` on Unix and by either\u000a`/` or `\\` on Windows), extracting the file name, determining whether the path\u000ais absolute, and so on.\u000a\u000aThis is an *unsized* type, meaning that it must always be used behind a\u000apointer like `&` or [`Box`](https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html). For an owned version of this type,\u000asee [`PathBuf`](https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html).\u000a\u000aMore details about the overall approach can be found in\u000athe [documentation](https://doc.rust-lang.org/nightly/std/path/index.html).\u000a\u000a# Examples\u000a\u000a```\u000ause std::path::Path;\u000ause std::ffi::OsStr;\u000a\u000a// Note: this example does work on Windows\u000alet path = Path::new(\"./foo/bar.txt\");\u000a\u000alet parent = path.parent();\u000aassert_eq!(parent, Some(Path::new(\"./foo\")));\u000a\u000alet file_stem = path.file_stem();\u000aassert_eq!(file_stem, Some(OsStr::new(\"bar\")));\u000a\u000alet extension = path.extension();\u000aassert_eq!(extension, Some(OsStr::new(\"txt\")));\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/Path#as_os_str()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000astd::path::Path\u000a```\u000a\u000a```rust\u000apub fn as_os_str(&self) -> &OsStr\u000a```\u000a\u000a---\u000a\u000aYields the underlying [`OsStr`](https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsStr.html) slice.\u000a\u000a# Examples\u000a\u000a```\u000ause std::path::Path;\u000a\u000alet os_str = Path::new(\"foo.txt\").as_os_str();\u000aassert_eq!(os_str, std::ffi::OsStr::new(\"foo.txt\"));\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/Path#display()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000astd::path::Path\u000a```\u000a\u000a```rust\u000apub fn display(&self) -> Display<'_>\u000a```\u000a\u000a---\u000a\u000aReturns an object that implements [`Display`] for safely printing paths\u000athat may contain non-Unicode data. This may perform lossy conversion,\u000adepending on the platform.  If you would like an implementation which\u000aescapes the path please use [`Debug`] instead.\u000a\u000a# Examples\u000a\u000a```\u000ause std::path::Path;\u000a\u000alet path = Path::new(\"/tmp/foo.rs\");\u000a\u000aprintln!(\"{}\", path.display());\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/Path#extension()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000astd::path::Path\u000a```\u000a\u000a```rust\u000apub fn extension(&self) -> Option<&OsStr>\u000a```\u000a\u000a---\u000a\u000aExtracts the extension (without the leading dot) of [`self.file_name`], if possible.\u000a\u000aThe extension is:\u000a\u000a* [`None`](https://doc.rust-lang.org/nightly/core/option/enum.Option.html), if there is no file name;\u000a* [`None`](https://doc.rust-lang.org/nightly/core/option/enum.Option.html), if there is no embedded `.`;\u000a* [`None`](https://doc.rust-lang.org/nightly/core/option/enum.Option.html), if the file name begins with `.` and has no other `.`s within;\u000a* Otherwise, the portion of the file name after the final `.`\u000a\u000a# Examples\u000a\u000a```\u000ause std::path::Path;\u000a\u000aassert_eq!(\"rs\", Path::new(\"foo.rs\").extension().unwrap());\u000aassert_eq!(\"gz\", Path::new(\"foo.tar.gz\").extension().unwrap());\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/Path#join()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000astd::path::Path\u000a```\u000a\u000a```rust\u000apub fn join<P>(&self, path: P) -> PathBuf\u000awhere\u000a    P: AsRef<Path>,\u000a```\u000a\u000a---\u000a\u000aCreates an owned [`PathBuf`](https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html) with `path` adjoined to `self`.\u000a\u000aIf `path` is absolute, it replaces the current path.\u000a\u000aSee [`PathBuf::push`](`PathBuf::push`) for more details on what it means to adjoin a path.\u000a\u000a# Examples\u000a\u000a```\u000ause std::path::{Path, PathBuf};\u000a\u000aassert_eq!(Path::new(\"/etc\").join(\"passwd\"), PathBuf::from(\"/etc/passwd\"));\u000aassert_eq!(Path::new(\"/etc\").join(\"/bin/sh\"), PathBuf::from(\"/bin/sh\"));\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/Path#new()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000astd::path::Path\u000a```\u000a\u000a```rust\u000apub fn new<S>(s: &S) -> &Path\u000awhere\u000a    S: AsRef<OsStr> + ?Sized,\u000a```\u000a\u000a---\u000a\u000aDirectly wraps a string slice as a `Path` slice.\u000a\u000aThis is a cost-free conversion.\u000a\u000a# Examples\u000a\u000a```\u000ause std::path::Path;\u000a\u000aPath::new(\"foo.txt\");\u000a```\u000a\u000aYou can create `Path`s from `String`s, or even other `Path`s:\u000a\u000a```\u000ause std::path::Path;\u000a\u000alet string = String::from(\"foo.txt\");\u000alet from_string = Path::new(&string);\u000alet from_path = Path::new(&from_string);\u000aassert_eq!(from_string, from_path);\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/Path#to_str()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000astd::path::Path\u000a```\u000a\u000a```rust\u000apub fn to_str(&self) -> Option<&str>\u000a```\u000a\u000a---\u000a\u000aYields a [`&str`] slice if the `Path` is valid unicode.\u000a\u000aThis conversion may entail doing a check for UTF-8 validity.\u000aNote that validation is performed because non-UTF-8 strings are\u000aperfectly valid for some OS.\u000a\u000a# Examples\u000a\u000a```\u000ause std::path::Path;\u000a\u000alet path = Path::new(\"foo.txt\");\u000aassert_eq!(path.to_str(), Some(\"foo.txt\"));\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/PathBuf#"
+      },
+      "docs": {
+        "key": "\u000a```rust\u000astd::path\u000a```\u000a\u000a```rust\u000apub struct PathBuf\u000a```\u000a\u000a---\u000a\u000aAn owned, mutable path (akin to [`String`](https://doc.rust-lang.org/nightly/alloc/string/struct.String.html)).\u000a\u000aThis type provides methods like [`push`] and [`set_extension`] that mutate\u000athe path in place. It also implements [`Deref`](https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html) to [`Path`](https://doc.rust-lang.org/nightly/std/path/struct.Path.html), meaning that\u000aall methods on [`Path`](https://doc.rust-lang.org/nightly/std/path/struct.Path.html) slices are available on `PathBuf` values as well.\u000a\u000aMore details about the overall approach can be found in\u000athe [documentation](https://doc.rust-lang.org/nightly/std/path/index.html).\u000a\u000a# Examples\u000a\u000aYou can use [`push`] to build up a `PathBuf` from\u000acomponents:\u000a\u000a```\u000ause std::path::PathBuf;\u000a\u000alet mut path = PathBuf::new();\u000a\u000apath.push(r\"C:\\\");\u000apath.push(\"windows\");\u000apath.push(\"system32\");\u000a\u000apath.set_extension(\"dll\");\u000a```\u000a\u000aHowever, [`push`] is best used for dynamic situations. This is a better way\u000ato do this when you know all of the components ahead of time:\u000a\u000a```\u000ause std::path::PathBuf;\u000a\u000alet path: PathBuf = [r\"C:\\\", \"windows\", \"system32.dll\"].iter().collect();\u000a```\u000a\u000aWe can still do better than this! Since these are all strings, we can use\u000a`From::from`:\u000a\u000a```\u000ause std::path::PathBuf;\u000a\u000alet path = PathBuf::from(r\"C:\\windows\\system32.dll\");\u000a```\u000a\u000aWhich method works best depends on what kind of situation you're in."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/PathBuf#From#from()."
+      },
+      "docs": {
+        "key": "\u000a```rust\u000astd::path::PathBuf\u000a```\u000a\u000a```rust\u000afn from(s: &T) -> PathBuf\u000a```\u000a\u000a---\u000a\u000aConverts a borrowed [`OsStr`](https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsStr.html) to a [`PathBuf`](https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html).\u000a\u000aAllocates a [`PathBuf`](https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html) and copies the data into it."
+      }
+    }
+  }
+]

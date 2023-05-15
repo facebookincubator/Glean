@@ -1,0 +1,87 @@
+# Copyright (c) Meta, Inc. and its affiliates.
+
+schema scip.1 {
+
+import src.1
+import lsif.types.1
+
+# scip.proto:ProtocolVersion
+type ProtocolVersion = enum {
+  UnspecifiedProtocolVersion
+}
+
+# Text encoding of the source files on disk that are referenced from
+# `Document.relative_path`.
+type TextEncoding = enum { UnspecifiedTextEncoding | UTF8 | UTF16 }
+
+# scip.proto:Metadata
+predicate Metadata:
+  {
+    version: ProtocolVersion,
+    toolInfo: maybe lsif.types.ToolInfo,
+    projectRoot: string,
+    textEncoding: TextEncoding,
+  }
+
+# Track SCIP file language
+predicate FileLanguage:
+  {
+    file: src.File,
+    language: lsif.types.LanguageId
+  }
+
+# Occurences in files
+predicate FileRange:
+  {
+    file: src.File,
+    range: lsif.types.RangeSpan,
+  }
+
+# Global (non-local) symbols in SCIP. Globally unique identifiers.
+# Distinct from local (anonymous) variables
+#
+# These are similar in intent to qualified names in Python, or
+# symbol ids in Glass.
+#
+predicate Symbol: string
+
+# Definition occurences
+predicate Definition:
+  {
+    symbol: Symbol,
+    location: FileRange
+  }
+
+# Uses (xref occurences)
+predicate Reference:
+  {
+    symbol: Symbol,
+    location: FileRange
+  }
+
+# Documentation facts (including type signatures)
+predicate Documentation: string
+
+predicate SymbolDocumentation:
+  {
+    symbol: Symbol,
+    docs: Documentation
+  }
+
+# Symbol kinds from the `Symbol` semantic encoding
+predicate SymbolKind:
+  {
+    symbol: Symbol,
+    kind: lsif.types.SymbolKind
+  }
+
+# Parse the "scip.Symbol" to get a local name
+predicate LocalName: string
+
+predicate SymbolName:
+  {
+    symbol: Symbol,
+    name: LocalName
+  }
+
+}

@@ -8,16 +8,20 @@
 
 module Glean.Indexer.SCIP (
     indexer,
+    derive,
   ) where
 
 import Options.Applicative
+import Data.Text ( Text )
+import Control.Monad ( forM_ )
 
+import Glean.Derive
 import Glean.Indexer
 import Glean.Indexer.External
 import Glean.SCIP.Driver as SCIP
+import Glean.Write
 
-import qualified Glean.Indexer.LSIF as LSIF ( derive )
-
+import qualified Glean
 import System.Directory (doesFileExist)
 import Util.OptParse (maybeStrOption)
 
@@ -53,5 +57,16 @@ indexer = Indexer {
           else error "Neither --input nor --root are scip files"
     val <- SCIP.processSCIP scipFile
     sendJsonBatches backend repo "scip" val
-    LSIF.derive backend repo
+    derive backend repo
   }
+
+-- | Derive any SCIP stored predicates
+derive :: Glean.Backend b => b -> Glean.Repo -> IO ()
+derive backend repo = forM_ scipDerivedPredicates $ \pred_ ->
+  derivePredicate backend repo Nothing Nothing
+    (parseRef pred_) Nothing
+
+-- Should correspond to stored predicates in scip.angle
+scipDerivedPredicates :: [Text]
+scipDerivedPredicates =
+  []

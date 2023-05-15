@@ -22,10 +22,9 @@ module Data.SCIP.Angle (
     scipToAngle
   ) where
 
-import Data.Aeson ( object, KeyValue((.=)) )
 import Lens.Micro ((^.))
 import Data.Bits ( Bits(testBit) )
-import Data.Maybe ( catMaybes, fromMaybe )
+import Data.Maybe ( catMaybes ) -- , fromMaybe )
 import Util.Text ( textShow, textToInt )
 import Data.Text ( Text )
 import qualified Data.Text as Text
@@ -39,11 +38,12 @@ import qualified Data.HashMap.Strict as HashMap
 import Control.Monad.State.Strict
 import qualified Data.ProtoLens as Proto
 import qualified Data.Vector as V
+import Data.Aeson
 
 import qualified Proto.Scip as Scip
 import qualified Proto.Scip_Fields as Scip
 
-import qualified Data.LSIF.Gen as LSIF
+import qualified Data.LSIF.Gen as SCIP
 
 {-
 
@@ -52,20 +52,21 @@ From https://github.com/sourcegraph/scip/blob/main/scip.proto
 
 > protoc --decode scip.Index scip.proto  < index.scip
 
--- approach
--- iterate over symbols (range vector), and store symbol -> id mapping
--- iterate over occurences (ranges), and emit defs and xrefs
+The approach is to faithfully capture SCIP keyed by scip.Symbol.
+Then derive xref relationships (and connect hovers to definitions),
+in the Glean side
 
 -}
 
 type Parse a = forall m . Monad m => StateT Env m a
 
 data Env = Env {
-    -- unique supply for new facts
+    -- unique supply for new Glean fact identifiers
     unique :: {-# UNPACK #-}!Int64,
 
-    -- hashmap from symbol strings to their definition fact id
-    defFactId :: !(HashMap Text LSIF.Id)
+    -- hashmap from any raw text fact to the id we generated
+    -- used to do a bit of sharing before emitting to Glean
+    factId :: !(HashMap Text SCIP.Id)
   }
 
 emptyState :: Env
@@ -77,55 +78,169 @@ emptyState = Env
 -- Scip doesn't number facts, but it is still useful for us to do so,
 -- to get more sharing in the output json
 --
-nextId :: Parse LSIF.Id
+nextId :: Parse SCIP.Id
 nextId = do
   !i <- gets unique
   modify $ \e -> e { unique = i + 1 }
-  return (LSIF.Id i)
+  return (SCIP.Id i)
 
-setDefFact :: Text -> LSIF.Id -> Parse ()
+setDefFact :: Text -> SCIP.Id -> Parse ()
 setDefFact sym i = modify $ \e ->
-  e { defFactId = HashMap.insert sym i (defFactId e) }
+  e { factId = HashMap.insert sym i (factId e) }
 
-getDefFactId :: Text -> Parse (Maybe LSIF.Id)
+getDefFactId :: Text -> Parse (Maybe SCIP.Id)
 getDefFactId sym = do
-  hm <- gets defFactId
+  hm <- gets factId
   pure (HashMap.lookup sym hm)
 
+-- | Make a fresh name or return an existing one if we've seen it
+getOrSetFact :: Text -> Parse (SCIP.Id, Bool)
+getOrSetFact sym = do
+  mId <- getDefFactId sym
+  case mId of
+    Nothing -> do
+      id_ <- nextId
+      setDefFact sym id_
+      return (id_, False)
+    Just id_ -> return (id_, True)
+
 --
--- | Parse scip.proto into JSON-encoded Angle facts for the lsif.angle schema
+-- | Parse scip.proto into JSON-encoded Angle facts for the scip.angle schema
 --
 -- Uses the proto-lens interface to scip.proto
 --
--- Rough translation of bindings/go/scip/convert.go
---
 scipToAngle :: B.ByteString -> Aeson.Value
 scipToAngle scip = Aeson.Array $ V.fromList $
-    LSIF.generateJSON (LSIF.insertPredicateMap HashMap.empty (preds1 ++ preds2))
+    SCIP.generateSCIPJSON (SCIP.insertPredicateMap HashMap.empty result)
   where
-    (preds1,symEnv) = runState (runGatherDefs scip) emptyState
-    (preds2,_) = runState (runScipAll scip) symEnv
+    (result,_) = runState (runTranslate scip) emptyState
 
 -- | First pass, grab all the occurences with _role := Definition
 -- build up symbol string -> fact id for all defs
-runGatherDefs :: B.ByteString -> Parse [LSIF.Predicate]
-runGatherDefs scip = case Proto.decodeMessage scip of
+runTranslate :: B.ByteString -> Parse [SCIP.Predicate]
+runTranslate scip = case Proto.decodeMessage scip of
   Left err -> error err
   Right (v :: Scip.Index) -> do
     a <- decodeScipMetadata (v ^. Scip.metadata)
-    b <- concat <$> mapM decodeScipDoc (v ^. Scip.documents)
-    pure (a <> b)
+    bs <- mapM decodeScipDoc (v ^. Scip.documents)
+    return (a <> concat bs)
 
-runScipAll :: B.ByteString -> Parse [LSIF.Predicate]
-runScipAll scip = case Proto.decodeMessage scip of
-  Left err -> error err
-  Right (v :: Scip.Index) ->
-    concat <$> mapM decodeScipDocXRefs (v ^. Scip.documents)
+--
+-- Each document has a repo-relative filepath, defs and refs (symbols and
+-- occurences). Generate fact ids and record symbol id facts as we find them,
+-- then cross-reference with occurences in second pass
+--
+decodeScipDoc :: Scip.Document -> Parse [SCIP.Predicate]
+decodeScipDoc doc = do
+  srcFileId <- nextId
+  let filepath = doc ^. Scip.relativePath
+  setDefFact filepath srcFileId
+  let srcFile = SCIP.srcFile srcFileId filepath
+  langFileId <- nextId
+  let langEnum = fromEnum (SCIP.parseLanguage (doc ^. Scip.language))
+  fileLang <- SCIP.predicateId "scip.FileLanguage" langFileId
+    [ "file" .= srcFileId
+    , "language" .= langEnum
+    ]
+  occs <- mapM (decodeScipOccurence srcFileId) (doc ^. Scip.occurrences)
+  infos <- mapM decodeScipInfo (doc ^. Scip.symbols)
+  return (srcFile : fileLang <> concat (occs <> infos))
 
-decodeScipMetadata :: Scip.Metadata -> Parse [LSIF.Predicate]
-decodeScipMetadata v = LSIF.predicate "lsif.Metadata" $
-  [ "lsifVersion" .= textShow (v ^. Scip.version)
-  , "positionEncoding" .= textShow (v ^. Scip.textDocumentEncoding)
+decodeScipInfo :: Scip.SymbolInformation -> Parse [SCIP.Predicate]
+decodeScipInfo info = do
+  (docIds, docFacts) <- unzip <$> forM scipDocs (\docStr -> do
+    docId <- nextId
+    return (docId, SCIP.Predicate "scip.Documentation" [
+            object [ SCIP.factId docId, "key" .= docStr ]
+          ]))
+  mSymId <- getDefFactId scipSymbol
+  symDocFacts <- case mSymId of
+    Nothing -> return []
+    Just symId -> forM docIds (\docId ->
+        SCIP.predicateId "scip.SymbolDocumentation" docId [
+          "symbol" .= symId,
+          "docs" .= docId
+        ])
+  return (docFacts <> concat symDocFacts)
+
+  where
+    scipSymbol = info ^. Scip.symbol
+    scipDocs = info ^. Scip.documentation
+
+-- | An occurence of a symbol in a given document the optional symbol role
+-- will tell us if it is an xref or a def or other
+decodeScipOccurence :: SCIP.Id -> Scip.Occurrence -> Parse [SCIP.Predicate]
+decodeScipOccurence fileId occ = do
+    fileRangeId <- nextId
+    fileRange <- SCIP.predicateId "scip.FileRange" fileRangeId
+      [ "file" .= fileId
+      , "range" .= decodeScipRange scipRange
+      ]
+    let eSym = symbolFromString scipSymbol
+    symbolFacts <- case eSym of
+          Left err -> error (show err) -- Can't handle this symbol format
+          Right (Local _n) -> pure []
+        -- support for locals not implemented
+        --   pure $ SCIP.Predicate "scip.Local" [
+        --           object [ SCIP.factId symbolId, "key" .= n ]
+        --         ]
+          Right Global{..} -> decodeGlobalOccurence scipSymbol symRoles
+              fileRangeId descriptor
+    return (symbolFacts <> fileRange)
+  where
+    scipRange = occ ^. Scip.range
+    scipSymbol = occ ^. Scip.symbol
+    symRoles = toSymbolRole (occ ^. Scip.symbolRoles)
+
+decodeGlobalOccurence
+  :: Text -> Set Scip.SymbolRole -> SCIP.Id -> Descriptor
+  -> Parse [SCIP.Predicate]
+decodeGlobalOccurence scipSymbol symRoles fileRangeId Descriptor{..} = do
+  (symbolId, seenSymbol) <- getOrSetFact scipSymbol
+  let symbolFact :: [SCIP.Predicate]
+        | seenSymbol = []
+        | otherwise = pure $
+            SCIP.Predicate "scip.Symbol" [
+                object [ SCIP.factId symbolId, "key" .= scipSymbol ]
+            ]
+  let roleFact :: [[SCIP.Predicate]] = if Scip.Definition `Set.member` symRoles
+        then SCIP.predicate "scip.Definition" [
+            "symbol" .= symbolId,
+            "location" .= fileRangeId
+          ]
+        else SCIP.predicate "scip.Reference" [
+            "symbol" .= symbolId,
+            "location" .= fileRangeId
+          ]
+  (nameId, seenName) <- getOrSetFact text
+  let nameFact :: [SCIP.Predicate]
+        | seenName = []
+        | otherwise = pure $
+            SCIP.Predicate "scip.LocalName" [
+                object [ SCIP.factId nameId, "key" .= text ]
+            ]
+  let symbolNameFact :: [[SCIP.Predicate]]
+        | seenSymbol = []
+        | otherwise = SCIP.predicate "scip.SymbolName" [
+              "symbol" .= symbolId,
+              "name" .= nameId
+           ]
+  let kindFact :: [SCIP.Predicate] = concat $
+        case SCIP.kindFromSuffix suffix of
+          SCIP.SkUnknown -> [[]]
+          kind -> SCIP.predicate "scip.SymbolKind" [
+              "symbol" .= symbolId,
+              "kind" .= fromEnum kind
+            ]
+  return $ symbolFact <> concat roleFact <> nameFact <>
+            concat symbolNameFact <> kindFact
+
+-- | For sharding we might want to take a repo-relative anchor here
+-- as it potentially differs to project root when combining SCIP files
+decodeScipMetadata :: Scip.Metadata -> Parse [SCIP.Predicate]
+decodeScipMetadata v = SCIP.predicate "scip.Metadata" $
+  [ "version" .= fromEnum (v ^. Scip.version)
+  , "textEncoding" .= fromEnum (v ^. Scip.textDocumentEncoding)
   ] ++ (case v ^. Scip.maybe'toolInfo of
           Nothing -> []
           Just ti ->
@@ -134,221 +249,26 @@ decodeScipMetadata v = LSIF.predicate "lsif.Metadata" $
               "toolArgs" .= (ti ^. Scip.arguments),
               "version" .= (ti ^. Scip.version)
             ]])
--- note: we don't need projectRoot as filepaths are root-relative in scip
-
---
--- Each document has a repo-relative filepath, defs and refs (symbols and
--- occurences). Generate fact ids and record symbol id facts as we find them,
--- then cross-reference with occurences in second pass
---
-decodeScipDoc :: Scip.Document -> Parse [LSIF.Predicate]
-decodeScipDoc doc = do
-  docId <- nextId
-  file <- mkDocumentFact docId doc
-  occs <- concat <$> mapM (decodeScipOccurence docId) (doc ^. Scip.occurrences)
-  pure $ file <> occs
-
-decodeScipDocXRefs :: Scip.Document -> Parse [LSIF.Predicate]
-decodeScipDocXRefs doc = do
-  mDocId <- getDefFactId (doc ^. Scip.relativePath)
-  (docId, mFile) <- case mDocId of
-    Nothing -> do
-      docId <- nextId
-      file <- mkDocumentFact docId doc
-      return (docId, Just file)
-    Just docId -> return (docId, Nothing)
-  occs <- concat <$> mapM (decodeScipXRefs docId) (doc ^. Scip.occurrences)
-  hovers <- concat <$> mapM decodeScipHovers (doc ^. Scip.symbols)
-  pure $ fromMaybe [] mFile <> occs <> hovers
-
--- we have sym -> id map in env, now generate xref facts
-decodeScipXRefs :: LSIF.Id -> Scip.Occurrence -> Parse [LSIF.Predicate]
-decodeScipXRefs docId occ = do
-  let Occ{..} = decodeOcc occ
-  if Scip.Definition `Set.notMember` symRoles
-    then do
-      -- get the xref range
-      rangeId <- nextId
-      rangeFact <- decodeScipRange rangeId symScipSymbol (occ ^. Scip.range)
-
-      -- look up defn id fact in env
-      mDefId <- getDefFactId symFullName
-      refFacts <- case mDefId of
-        Just defId -> do -- emit a reference fact
-          a <- LSIF.predicate "lsif.Reference"
-            [ "file" .= docId
-            , "range" .= rangeId
-            , "target" .= defId
-            ]
-          b <- LSIF.predicate "lsif.DefinitionUse"
-            [ "target" .= defId
-            , "file" .= docId
-            , "range" .= rangeId
-            ]
-          return (a <> b)
-
-      -- discard xrefs to unknown defs
-        Nothing ->
-          pure []
-        -- this has the effect of discarding xrefs to not-yet indexed
-        -- things. It might not be the right way to shard sets.
-        --
-        -- if we didn't find a definining occurence, then it is an external
-        -- or 3rd party xref. we don't know the precise location
-        -- we can likely _guess_ by parsing the symbol descriptor tho..
-
-      pure (rangeFact <> refFacts)
-    else pure []
-
-decodeScipHovers :: Scip.SymbolInformation -> Parse [LSIF.Predicate]
-decodeScipHovers symInfo = do
-  let symFullName = symInfo ^. Scip.symbol
-  mDefId <- getDefFactId symFullName
-  case mDefId of
-    Nothing -> -- this is likely the hover text for a third-party xref
-         pure [] -- for now, discard, as we don't have an anchor xref
-    Just defId -> concat <$> do
-      forM (symInfo ^. Scip.documentation) $ \docstr -> do
-        hoverId <- nextId
-        a <- LSIF.predicateId "lsif.HoverContent" hoverId
-          [ "text" .= LSIF.string docstr
-          , "language" .= fromEnum LSIF.UnknownLanguage -- could parse docstr
-          ]
-        b <- LSIF.predicate "lsif.DefinitionHover"
-          [ "defn" .= defId
-          , "hover" .= hoverId
-          ]
-        pure (a <> b)
-
--- | an occurence of a symbol in a given document the optional (?) symbol role
--- will tell us if it is an xref or a def or other
-decodeScipOccurence :: LSIF.Id -> Scip.Occurrence -> Parse [LSIF.Predicate]
-decodeScipOccurence docId occ = do
-  let Occ{..} = decodeOcc occ
-  if Scip.Definition `Set.member` symRoles
-    then do
-      rangeId <- nextId
-      rangeFact <- decodeScipRange rangeId symScipSymbol (occ ^. Scip.range)
-
-      -- emit a definition fact
-      defId <- nextId
-      defFact <- LSIF.predicateId "lsif.Definition" defId
-        [ "file" .= docId
-        , "range" .= rangeId
-        ]
-
-      kindFact <- case symScipSymbol of
-        Nothing -> pure []
-        Just Local{} ->
-          LSIF.predicate "lsif.DefinitionKind"
-            [ "defn" .= defId
-            , "kind" .= fromEnum LSIF.Local
-            ]
-        Just Global{..} ->
-          LSIF.predicate "lsif.DefinitionKind"
-            [ "defn" .= defId
-            , "kind" .= fromEnum (LSIF.kindFromSuffix (suffix descriptor))
-            ]
-
-      -- record symbol -> fact id for xref use later
-      setDefFact symFullName defId
-
-      -- we know its a def, so generate the moniker facts
-      monikerFacts <- case symScipSymbol of
-        Nothing -> do
-          LSIF.predicate "lsif.DefinitionMoniker"
-            [ "defn" .= defId
-            ]
-        Just Local{} -> do
-          LSIF.predicate "lsif.DefinitionMoniker"
-            [ "defn" .= defId
-            ] -- these are anonymous locals with an integer.
-
-        Just Global{..} -> do
-          monikerId <- nextId
-          monikerFact <- LSIF.predicateId "lsif.Moniker" monikerId
-            [ "kind" .= fromEnum (
-                          if Scip.Import `Set.member` symRoles
-                          then LSIF.Import else LSIF.Export )
-            , "scheme" .= LSIF.string scheme
-            , "ident" .= LSIF.string symFullName
-            ]
-
-          entityFact <- LSIF.predicate "lsif.DefinitionMoniker"
-            [ "defn" .= defId
-            , "moniker" .= monikerId
-            ]
-
-          -- can throw in a (highly duplicated) package information fact
-          pkgInfoFact <- LSIF.predicate "lsif.PackageInformation"
-            [ "name" .=  pkgname package
-            , "manager" .= manager package
-            , "version" .= version package
-            ]
-
-          pure (monikerFact <> entityFact <> pkgInfoFact)
-      pure (rangeFact <> defFact <> monikerFacts <> kindFact)
-
-    else pure [] -- handle xrefs in second pass
 
 -- scip ranges are int32
 toNat :: Int32 -> Int64
 toNat = fromIntegral
 
-  -- [startLine, startCharacter, endCharacter]`. The end line
-  --  is inferred to have the same value as the start line.
-decodeScipRange
-  :: LSIF.Id -> Maybe ScipSymbol -> [Int32] -> Parse [LSIF.Predicate]
-decodeScipRange factId name [lineBegin,colBegin,colEnd] =
-  LSIF.predicateId "lsif.Range" factId
-      [ "range" .= LSIF.toRange (LSIF.Range
-          (LSIF.Position (toNat lineBegin) (toNat colBegin))
-          (LSIF.Position (toNat lineBegin) (toNat colEnd)))
-      , "text" .= LSIF.string (localIdent name)
-      ]
+-- [startLine, startCharacter, endCharacter]`. The end line
+--  is inferred to have the same value as the start line.
+decodeScipRange :: [Int32] -> Aeson.Value
+decodeScipRange [lineBegin,colBegin,colEnd] =
+  SCIP.toRange (SCIP.Range
+    (SCIP.Position (toNat lineBegin) (toNat colBegin))
+    (SCIP.Position (toNat lineBegin) (toNat colEnd))) -- n.b
+-- : `[startLine, startCharacter, endLine, endCharacter]`
+decodeScipRange [lineBegin,colBegin,lineEnd,colEnd] =
+  SCIP.toRange (SCIP.Range
+    (SCIP.Position (toNat lineBegin) (toNat colBegin))
+    (SCIP.Position (toNat lineEnd) (toNat colEnd)))
+decodeScipRange range = error $
+  "decodeScipRange: unexpected range format: " <> show range
 
-  -- : `[startLine, startCharacter, endLine, endCharacter]`
-decodeScipRange factId name [lineBegin,colBegin,lineEnd,colEnd] =
-  LSIF.predicateId "lsif.Range" factId
-      [ "range" .= LSIF.toRange (LSIF.Range
-          (LSIF.Position (toNat lineBegin) (toNat colBegin))
-          (LSIF.Position (toNat lineEnd) (toNat colEnd)))
-      , "text" .= LSIF.string (localIdent name)
-      ]
-
-decodeScipRange _ _ _ = pure [] -- unknown/invalid range type
-
-------------------------------------------------------------------------
-
-mkDocumentFact :: LSIF.Id -> Scip.Document -> Parse [LSIF.Predicate]
-mkDocumentFact id doc = do
-  let filepath = doc ^. Scip.relativePath
-  setDefFact filepath id -- record file -> fact id for xref use later
-  LSIF.predicateId "lsif.Document" id
-    [ "file" .= LSIF.string filepath
-    , "language" .= fromEnum (LSIF.parseLanguage (doc ^. Scip.language))
-    ]
-
-data Occ = Occ
-  { symFullName :: Text
-  , symRoles :: Set Scip.SymbolRole
-  , symScipSymbol :: Maybe ScipSymbol
-  }
-
-decodeOcc :: Scip.Occurrence -> Occ
-decodeOcc occ = Occ{..}
-  where
-    symFullName = occ ^. Scip.symbol
-    symRoles = toSymbolRole (occ ^. Scip.symbolRoles)
-    symScipSymbol = case symbolFromString symFullName of
-      Left _err -> Nothing
-      Right x -> Just x
-
-------------------------------------------------------------------------
---
--- Parser and ADT for Scip.Symbol strings.
--- These are well structured but stored as strings for reasons
---
 {-
 
 //   <symbol>               ::= <scheme> ' ' <package> ' ' { <descriptor> }
@@ -380,7 +300,7 @@ decodeOcc occ = Occ{..}
 -}
 
 data ScipSymbol
-  = Local Int
+  = Local {-# UNPACK #-}!Int
   | Global
       { scheme :: !Text
       , package :: !Package
@@ -395,9 +315,13 @@ data Package = Package
 
 data Descriptor = Descriptor
   { text:: !Text
-  , suffix :: !LSIF.Suffix
+  , suffix :: !SCIP.Suffix
   }
 
+--
+-- Parser and ADT for Scip.Symbol strings.
+-- These are well structured but stored as strings for reasons
+--
 -- https://github.com/sourcegraph/scip/blob/main/scip.proto#L81
 -- e.g.
 --
@@ -410,7 +334,7 @@ symbolFromString str
   | ("local", rest) <- split normalStr
   = case textToInt rest of
       Left err -> Left (textShow err)
-      Right n -> Right (Local n) -- locals are anonymous
+      Right n -> Right (Local n) -- locals are numbered and anonymous
 
   --  <scheme> ' ' <package> ' ' { <descriptor> }
   | (scheme, rest1) <- split normalStr
@@ -418,7 +342,7 @@ symbolFromString str
   , (manager, rest2) <- split rest1
   , (pkgname, rest3) <- split rest2
   , (version, symStrs) <- split rest3
-  , (text, suffix) <- LSIF.parseSuffix symStrs
+  , (text, suffix) <- SCIP.parseSuffix symStrs
   = Right $ Global scheme Package{..} Descriptor {..}
 
   | otherwise = Left $ "Unknown symbol: " <> str
@@ -431,16 +355,11 @@ symbolFromString str
     split xs = case Text.breakOn " " xs of
       (tok, rest) -> (tok, if Text.null rest then rest else Text.tail rest)
 
--- Extract the identifier name from an encoded symbol
-localIdent :: Maybe ScipSymbol -> Text
-localIdent Nothing = ""
-localIdent (Just Local{}) = ""
-localIdent (Just Global{..}) = Text.takeWhileEnd (/= '/') (text descriptor)
-
 {-
 bitmask in i32
 
 enum SymbolRole {
+  // unused
   UnspecifiedSymbolRole = 0;
   // Is the symbol defined here? If not, then this is a symbol reference.
   Definition = 0x1;
@@ -457,7 +376,7 @@ enum SymbolRole {
 -}
 toSymbolRole :: Int32 -> Set Scip.SymbolRole
 toSymbolRole i = Set.fromList $ catMaybes
-  [ if i == 0 then Just Scip.UnspecifiedSymbolRole else Nothing
+  [ Nothing -- if i == 0 then Just Scip.UnspecifiedSymbolRole else Nothing
   , has 0 Scip.Definition
   , has 1 Scip.Import
   , has 2 Scip.WriteAccess

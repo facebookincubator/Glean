@@ -1,0 +1,1179 @@
+[
+  "@generated",
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo _eq_modulo_pos_derive . EqModuloPos!"
+      },
+      "name": { "key": "EqModuloPos!" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo _no_pos_hash_derive . NoPosHash!"
+      },
+      "name": { "key": "NoPosHash!" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo _ocamlrep_derive . FromOcamlRep!"
+      },
+      "name": { "key": "FromOcamlRep!" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo _ocamlrep_derive . FromOcamlRepIn!"
+      },
+      "name": { "key": "FromOcamlRepIn!" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo _ocamlrep_derive . ToOcamlRep!" },
+      "name": { "key": "ToOcamlRep!" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo _serde_derive-1.0.152 . Deserialize!"
+      },
+      "name": { "key": "Deserialize!" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo _serde_derive-1.0.152 . Serialize!"
+      },
+      "name": { "key": "Serialize!" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo alloc https://github.com/rust-lang/rust/library/alloc fmt/"
+      },
+      "name": { "key": "fmt" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo alloc https://github.com/rust-lang/rust/library/alloc macros/format!"
+      },
+      "name": { "key": "macros/format!" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo alloc https://github.com/rust-lang/rust/library/alloc map/btree/collections/BTreeMap#"
+      },
+      "name": { "key": "map/btree/collections/BTreeMap" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo alloc https://github.com/rust-lang/rust/library/alloc string/String#"
+      },
+      "name": { "key": "string/String" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo alloc https://github.com/rust-lang/rust/library/alloc string/ToString#to_string()."
+      },
+      "name": { "key": "string/ToString#to_string()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo arena_trait . TrivialDrop#" },
+      "name": { "key": "TrivialDrop" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core builtin/macros/assert!"
+      },
+      "name": { "key": "builtin/macros/assert!" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core builtin/macros/derive!"
+      },
+      "name": { "key": "builtin/macros/derive!" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core builtin/macros/test!"
+      },
+      "name": { "key": "builtin/macros/test!" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core clone/Clone!"
+      },
+      "name": { "key": "clone/Clone!" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/"
+      },
+      "name": { "key": "cmp" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/Eq!"
+      },
+      "name": { "key": "cmp/Eq!" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/Ord!"
+      },
+      "name": { "key": "cmp/Ord!" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/Ord#"
+      },
+      "name": { "key": "cmp/Ord" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/Ord#cmp()."
+      },
+      "name": { "key": "cmp/Ord#cmp()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/Ordering#"
+      },
+      "name": { "key": "cmp/Ordering" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/Ordering#then()."
+      },
+      "name": { "key": "cmp/Ordering#then()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/PartialEq!"
+      },
+      "name": { "key": "cmp/PartialEq!" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/PartialOrd!"
+      },
+      "name": { "key": "cmp/PartialOrd!" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/PartialOrd#"
+      },
+      "name": { "key": "cmp/PartialOrd" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core convert/AsRef#"
+      },
+      "name": { "key": "convert/AsRef" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core convert/AsRef#as_ref()."
+      },
+      "name": { "key": "convert/AsRef#as_ref()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core convert/TryFrom#"
+      },
+      "name": { "key": "convert/TryFrom" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core default/Default!"
+      },
+      "name": { "key": "default/Default!" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core fmt/Debug#"
+      },
+      "name": { "key": "fmt/Debug" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core fmt/Display#"
+      },
+      "name": { "key": "fmt/Display" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core fmt/Formatter#"
+      },
+      "name": { "key": "fmt/Formatter" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core fmt/[Result]"
+      },
+      "name": { "key": "fmt/[Result" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core iter/str/SplitN#Iterator#next()."
+      },
+      "name": { "key": "iter/str/SplitN#Iterator#next()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core macros/assert_eq!"
+      },
+      "name": { "key": "macros/assert_eq!" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core macros/fmt/Debug!"
+      },
+      "name": { "key": "macros/fmt/Debug!" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core macros/hash/Hash!"
+      },
+      "name": { "key": "macros/hash/Hash!" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core macros/matches!"
+      },
+      "name": { "key": "macros/matches!" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core macros/write!"
+      },
+      "name": { "key": "macros/write!" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core marker/Copy!"
+      },
+      "name": { "key": "marker/Copy!" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/None#"
+      },
+      "name": { "key": "option/None" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/Option#"
+      },
+      "name": { "key": "option/Option" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/Option#as_deref()."
+      },
+      "name": { "key": "option/Option#as_deref()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/Option#is_none()."
+      },
+      "name": { "key": "option/Option#is_none()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/Option#ok_or_else()."
+      },
+      "name": { "key": "option/Option#ok_or_else()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/Option#unwrap()."
+      },
+      "name": { "key": "option/Option#unwrap()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/Option#unwrap_or()."
+      },
+      "name": { "key": "option/Option#unwrap_or()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/Some#"
+      },
+      "name": { "key": "option/Some" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core result/Err#"
+      },
+      "name": { "key": "result/Err" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core result/Ok#"
+      },
+      "name": { "key": "result/Ok" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core result/Result#"
+      },
+      "name": { "key": "result/Result" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core str/is_empty()."
+      },
+      "name": { "key": "str/is_empty()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core str/splitn()."
+      },
+      "name": { "key": "str/splitn()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo eq_modulo_pos . EqModuloPos#" },
+      "name": { "key": "EqModuloPos" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo no_pos_hash . NoPosHash#" },
+      "name": { "key": "NoPosHash" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo ocamlrep . Allocator#" },
+      "name": { "key": "Allocator" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo ocamlrep . Allocator#add()." },
+      "name": { "key": "Allocator#add()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo ocamlrep . Allocator#block_with_size()."
+      },
+      "name": { "key": "Allocator#block_with_size()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo ocamlrep . Allocator#set_field()."
+      },
+      "name": { "key": "Allocator#set_field()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo ocamlrep . FromOcamlRep#" },
+      "name": { "key": "FromOcamlRep" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo ocamlrep . FromOcamlRepIn#" },
+      "name": { "key": "FromOcamlRepIn" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo ocamlrep . ToOcamlRep#" },
+      "name": { "key": "ToOcamlRep" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo ocamlrep . block/BlockBuilder#build()."
+      },
+      "name": { "key": "block/BlockBuilder#build()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo ocamlrep . error/FromError#" },
+      "name": { "key": "error/FromError" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo ocamlrep . from/" },
+      "name": { "key": "from" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo ocamlrep . from/expect_tuple()."
+      },
+      "name": { "key": "from/expect_tuple()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo ocamlrep . from/field()." },
+      "name": { "key": "from/field()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo ocamlrep . value/Value#" },
+      "name": { "key": "value/Value" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (alloc)" },
+      "name": { "key": "(alloc" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (ctx)" },
+      "name": { "key": "(ctx" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (deserializer)" },
+      "name": { "key": "(deserializer" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (f)" },
+      "name": { "key": "(f" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (formatter)" },
+      "name": { "key": "(formatter" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (other)" },
+      "name": { "key": "(other" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (path)" },
+      "name": { "key": "(path" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (prefix)" },
+      "name": { "key": "(prefix" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (prefix_raw)" },
+      "name": { "key": "(prefix_raw" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (s)" },
+      "name": { "key": "(s" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
+      "name": { "key": "(self" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (serializer)" },
+      "name": { "key": "(serializer" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . (value)" },
+      "name": { "key": "(value" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . Dummy#" },
+      "name": { "key": "Dummy" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . Hhi#" },
+      "name": { "key": "Hhi" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . Prefix#" },
+      "name": { "key": "Prefix" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . Prefix#Display#fmt()."
+      },
+      "name": { "key": "Prefix#Display#fmt()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . Prefix#TryFrom#[Error]"
+      },
+      "name": { "key": "Prefix#TryFrom#[Error" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . Prefix#TryFrom#try_from()."
+      },
+      "name": { "key": "Prefix#TryFrom#try_from()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . Prefix#is_hhi()."
+      },
+      "name": { "key": "Prefix#is_hhi()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . RelativePath#" },
+      "name": { "key": "RelativePath" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#Debug#fmt()."
+      },
+      "name": { "key": "RelativePath#Debug#fmt()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#Deserialize#deserialize()."
+      },
+      "name": { "key": "RelativePath#Deserialize#deserialize()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#Display#fmt()."
+      },
+      "name": { "key": "RelativePath#Display#fmt()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#EMPTY."
+      },
+      "name": { "key": "RelativePath#EMPTY" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#FromOcamlRep#from_ocamlrep()."
+      },
+      "name": { "key": "RelativePath#FromOcamlRep#from_ocamlrep()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#Ord#cmp()."
+      },
+      "name": { "key": "RelativePath#Ord#cmp()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#PartialOrd#partial_cmp()."
+      },
+      "name": { "key": "RelativePath#PartialOrd#partial_cmp()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#Serialize#serialize()."
+      },
+      "name": { "key": "RelativePath#Serialize#serialize()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#ToOcamlRep#to_ocamlrep()."
+      },
+      "name": { "key": "RelativePath#ToOcamlRep#to_ocamlrep()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#has_extension()."
+      },
+      "name": { "key": "RelativePath#has_extension()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#is_empty()."
+      },
+      "name": { "key": "RelativePath#is_empty()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#is_hhi()."
+      },
+      "name": { "key": "RelativePath#is_hhi()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#make()."
+      },
+      "name": { "key": "RelativePath#make()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#path()."
+      },
+      "name": { "key": "RelativePath#path()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#path."
+      },
+      "name": { "key": "RelativePath#path" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#path_str()."
+      },
+      "name": { "key": "RelativePath#path_str()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#prefix()."
+      },
+      "name": { "key": "RelativePath#prefix()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#prefix."
+      },
+      "name": { "key": "RelativePath#prefix" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePath#to_absolute()."
+      },
+      "name": { "key": "RelativePath#to_absolute()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePathCtx#"
+      },
+      "name": { "key": "RelativePathCtx" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePathCtx#dummy."
+      },
+      "name": { "key": "RelativePathCtx#dummy" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePathCtx#hhi."
+      },
+      "name": { "key": "RelativePathCtx#hhi" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePathCtx#prefix_path()."
+      },
+      "name": { "key": "RelativePathCtx#prefix_path()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePathCtx#root."
+      },
+      "name": { "key": "RelativePathCtx#root" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . RelativePathCtx#tmp."
+      },
+      "name": { "key": "RelativePathCtx#tmp" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . Root#" },
+      "name": { "key": "Root" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . Tmp#" },
+      "name": { "key": "Tmp" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . Visitor#" },
+      "name": { "key": "Visitor" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . Visitor#Visitor#[Value]"
+      },
+      "name": { "key": "Visitor#Visitor#[Value" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . Visitor#Visitor#expecting()."
+      },
+      "name": { "key": "Visitor#Visitor#expecting()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . Visitor#Visitor#visit_str()."
+      },
+      "name": { "key": "Visitor#Visitor#visit_str()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . [Map]" },
+      "name": { "key": "[Map" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . map/" },
+      "name": { "key": "map" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path . tests/" },
+      "name": { "key": "tests" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . tests/test_invalid_usize_prefix()."
+      },
+      "name": { "key": "tests/test_invalid_usize_prefix()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path . tests/test_valid_usize_prefix()."
+      },
+      "name": { "key": "tests/test_valid_usize_prefix()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo serde-1.0.152 . de/" },
+      "name": { "key": "de" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo serde-1.0.152 . de/Deserialize#"
+      },
+      "name": { "key": "de/Deserialize" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo serde-1.0.152 . de/Deserializer#"
+      },
+      "name": { "key": "de/Deserializer" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo serde-1.0.152 . de/Deserializer#[Error]"
+      },
+      "name": { "key": "de/Deserializer#[Error" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo serde-1.0.152 . de/Deserializer#deserialize_str()."
+      },
+      "name": { "key": "de/Deserializer#deserialize_str()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo serde-1.0.152 . de/Error#" },
+      "name": { "key": "de/Error" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo serde-1.0.152 . de/Error#invalid_value()."
+      },
+      "name": { "key": "de/Error#invalid_value()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo serde-1.0.152 . de/Other#" },
+      "name": { "key": "de/Other" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo serde-1.0.152 . de/Unexpected#" },
+      "name": { "key": "de/Unexpected" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo serde-1.0.152 . de/Visitor#" },
+      "name": { "key": "de/Visitor" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo serde-1.0.152 . ser/" },
+      "name": { "key": "ser" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo serde-1.0.152 . ser/Error#" },
+      "name": { "key": "ser/Error" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo serde-1.0.152 . ser/Error#custom()."
+      },
+      "name": { "key": "ser/Error#custom()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo serde-1.0.152 . ser/Serialize#" },
+      "name": { "key": "ser/Serialize" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo serde-1.0.152 . ser/Serializer#"
+      },
+      "name": { "key": "ser/Serializer" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo serde-1.0.152 . ser/Serializer#[Error]"
+      },
+      "name": { "key": "ser/Serializer#[Error" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo serde-1.0.152 . ser/Serializer#[Ok]"
+      },
+      "name": { "key": "ser/Serializer#[Ok" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo serde-1.0.152 . ser/Serializer#serialize_str()."
+      },
+      "name": { "key": "ser/Serializer#serialize_str()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std collections/"
+      },
+      "name": { "key": "collections" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std os_str/ffi/OsStr#Ord#cmp()."
+      },
+      "name": { "key": "os_str/ffi/OsStr#Ord#cmp()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std os_str/ffi/OsStr#is_empty()."
+      },
+      "name": { "key": "os_str/ffi/OsStr#is_empty()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/"
+      },
+      "name": { "key": "path" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/Path#"
+      },
+      "name": { "key": "path/Path" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/Path#as_os_str()."
+      },
+      "name": { "key": "path/Path#as_os_str()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/Path#display()."
+      },
+      "name": { "key": "path/Path#display()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/Path#extension()."
+      },
+      "name": { "key": "path/Path#extension()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/Path#join()."
+      },
+      "name": { "key": "path/Path#join()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/Path#new()."
+      },
+      "name": { "key": "path/Path#new()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/Path#to_str()."
+      },
+      "name": { "key": "path/Path#to_str()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/PathBuf#"
+      },
+      "name": { "key": "path/PathBuf" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/PathBuf#From#from()."
+      },
+      "name": { "key": "path/PathBuf#From#from()" }
+    }
+  }
+]

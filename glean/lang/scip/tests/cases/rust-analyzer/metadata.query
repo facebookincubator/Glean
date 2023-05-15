@@ -1,0 +1,4 @@
+query: scip.Metadata _
+perf: True
+transform: [gensort, []]
+
