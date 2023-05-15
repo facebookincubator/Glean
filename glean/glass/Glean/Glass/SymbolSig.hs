@@ -20,11 +20,13 @@ import Data.Text.Prettyprint.Doc
 import qualified Glean.Haxl.Repos as Glean
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Schema.CodeLsif.Types as Lsif
+import qualified Glean.Schema.CodeScip.Types as Scip
 
 import Glean.Glass.Pretty.Cxx as Cxx ( prettyCxxSignature, Qualified(..) )
 import Glean.Glass.Pretty.Flow as Flow ( prettyFlowSignature )
 import Glean.Glass.Pretty.Hack as Hack ( prettyHackSignature )
 import Glean.Glass.Pretty.LSIF as LSIF ( prettyLsifSignature )
+import Glean.Glass.Pretty.SCIP as SCIP ( prettyScipSignature )
 import Glean.Glass.Pretty.Python as Python ( prettyPythonSignature )
 import Glean.Glass.Types
     ( RepoName, SymbolId(..), TypeSymSpan(..), ByteSpan(..) )
@@ -125,6 +127,10 @@ instance ToSymbolSignature Code.Entity where
     Code.Entity_flow x -> Flow.prettyFlowSignature opts x
     -- python pretty signatures
     Code.Entity_python x -> Python.prettyPythonSignature opts repo sym x
+    -- lsif languages, just enumerate completely to stay total
+    Code.Entity_scip e -> case e of
+      Scip.Entity_rust x -> SCIP.prettyScipSignature opts x
+      Scip.Entity_EMPTY -> pure Nothing
     -- lsif languages, just enumerate completely to stay total
     Code.Entity_lsif e -> case e of
       Lsif.Entity_erlang x -> LSIF.prettyLsifSignature opts x
