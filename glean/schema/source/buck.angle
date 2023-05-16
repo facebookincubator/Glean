@@ -394,8 +394,10 @@ predicate IndexFailureX :
     indexer : IndexerName,
     # Predefined classification of errors
     reason: FailureReason,
-    # Additional details
+    # Additional details, we can still group by it
     details: string,
+    # Repro command if available
+    repro: maybe string,
   }
 
  type ArgumentMapping =
