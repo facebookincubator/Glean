@@ -13,6 +13,7 @@
 #include "glean/rts/ownership/triearray.h"
 #include "glean/rts/ownership/uset.h"
 #include "glean/rts/timer.h"
+#include "glean/rts/factset.h"
 
 #if __x86_64__ // AVX required
 #include <folly/experimental/EliasFanoCoding.h>
@@ -23,7 +24,10 @@
 
 #include <folly/container/F14Map.h>
 #include <folly/container/F14Set.h>
+#include <folly/executors/GlobalExecutor.h>
+#include <folly/futures/Future.h>
 #include <folly/Hash.h>
+#include <folly/MPMCQueue.h>
 
 #include <xxhash.h>
 
@@ -286,14 +290,63 @@ FOLLY_NOINLINE void completeOwnership(
     }
   };
 
-  for (auto iter = lookup.enumerateBack(max_id);
-      auto fact = iter->get();
-      iter->next()) {
-    stats.bumpLocal();
-    processFact(fact);
-    refs.clear();
-  }
+  // We process facts in reverse order, so that we only process each fact
+  // once. We fetch the facts in parallel with processing them,
+  // which speeds up the whole process by about 2x. It should be possible
+  // to speed it up further by parallelising the processing.
 
+  using FactPage = std::vector<Fact::unique_ptr>;
+  auto fetchPage = [&](Id min_id, Id max_id) -> FactPage {
+    FactPage page;
+    for (auto iter = lookup.enumerate(min_id, max_id); auto fact = iter->get();
+         iter->next()) {
+      page.emplace_back(Fact::create(iter->get()));
+    }
+    return page;
+  };
+
+  auto processPage = [&](FactPage& page) {
+    Fact::unique_ptr f;
+    auto it = page.end();
+    while (it != page.begin()) {
+      --it;
+      stats.bumpLocal();
+      processFact((*it)->ref());
+      refs.clear();
+    }
+  };
+
+  const uint32_t pageSize = 1024 * 1024;
+
+  using Queue = folly::MPMCQueue<folly::Optional<FactPage>, std::atomic, false>;
+  Queue queue(10);
+  auto executor = folly::getGlobalCPUExecutor();
+
+  folly::Future<folly::Unit> fetcher = folly::via(executor, [&]() {
+    auto pageOf = [](Id id) {
+      return Id::fromWord((id.toWord() / pageSize) * pageSize);
+    };
+    Id last = pageOf(lookup.firstFreeId() - 1);
+    Id first = pageOf(lookup.startingId());
+    for (Id id = last;; id -= pageSize) {
+      VLOG(1) << folly::sformat("fetching page: {}", id.toWord());
+      queue.blockingWrite(fetchPage(id, id + pageSize));
+      if (id == first) {
+        break;
+      }
+    }
+    queue.blockingWrite(folly::none);
+  });
+
+  folly::Optional<FactPage> page;
+  do {
+    queue.blockingRead(page);
+    if (page) {
+      processPage(page.value());
+    }
+  } while (page);
+
+  fetcher.wait();
   stats.dump();
 
   // Propagate ownership sets through facts in the base DB(s), using a priority
