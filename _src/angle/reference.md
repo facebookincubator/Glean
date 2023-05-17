@@ -91,6 +91,14 @@ Terms have the following forms:
 
 > Note: variables mentioned in **term₁** and **term₂** are local to those terms, and may have different types, but only if the variable is not mentioned elsewhere.
 
+&nbsp;&nbsp;`!` *term*
+
+> The negation of a term. Fails if the term matches anything and succeeds otherwise.
+
+&nbsp;&nbsp;`if` *term₁* `then` *term₂* `else` *term₃*
+
+> If *term₁* has matches the `then` branch is taken and *term₃* is never matched against. If *term₁* has no matches then the `else` branch is taken and *term₂* is never matched against.
+
 &nbsp;&nbsp;  *[0-9]+*<br />
 
 > a number matches a value of type `nat` or `byte`
