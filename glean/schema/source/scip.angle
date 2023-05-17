@@ -254,4 +254,16 @@ predicate EntityKind:
     { symbol = Symbol } = Defn;
     scip.SymbolKind { Symbol, Kind }
 
+# symbol lookup. O(1) via symbol definition key
+predicate SearchBySymbol:
+  {
+    symbol : scip.Symbol,
+    entity : scip.Entity,
+  }
+  { Symbol, Entity } where
+    Defn = scip.Definition { symbol = Symbol };
+    { location = { file = File } } = Defn;
+    scip.FileLanguage { File, Language };
+    scip.TagDefinition { Language, Defn, Entity }
+
 }
