@@ -76,4 +76,4 @@ predicate FromSrcRange:
   }
   { SrcRange, File, { A, B, C, D } } where SrcRange = { File, A, B, C, D }
 
-}
+  }

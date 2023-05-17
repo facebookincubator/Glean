@@ -84,7 +84,8 @@ predicate ReferenceTarget:
   {
     xref: Reference,
     target: Definition
-  } { { symbol = Symbol }, Defn } where
+  } { XRef, Defn } where
+    { symbol = Symbol } = XRef;
     Defn = scip.Definition { symbol = Symbol }
 
 # find-refs table: inverse of ReferenceTarget
@@ -93,7 +94,8 @@ predicate DefinitionUses:
   {
     target: Definition,
     xref: Reference
-  } { { symbol = Symbol }, XRef } where
+  } { Defn, XRef} where
+    { symbol = Symbol } = Defn;
     XRef = scip.Reference { symbol = Symbol }
 
 # Documentation facts (including type signatures)
@@ -134,7 +136,9 @@ predicate DefinitionName:
     defn: Definition,
     docs: LocalName
   }
-  { { symbol = Symbol }, Name } where scip.SymbolName { Symbol, Name }
+  { Defn, Name } where
+    { symbol = Symbol } = Defn; # be careful not to inline in to the head
+    scip.SymbolName { Symbol, Name }
 
 # codemarkup compatibility. Same shape as code.scip.Entity
 type Entity =
@@ -189,6 +193,65 @@ predicate ResolveLocation:
     scip.DefinitionLocation { File, RangeSpan, Defn };
     scip.FileLanguage { File, Language };
     scip.TagDefinition { Language, Defn, Entity };
-    scip.DefinitionName { Defn, scip.LocalName Name }
+    scip.DefinitionName { Defn, LocalName };
+    scip.LocalName Name = LocalName
+
+# unwrap language tag and lookup the decl/defn directly
+predicate EntityLocation:
+  {
+    entity: scip.Entity,
+    location: scip.Location,
+  }
+  { Entity, { File, SrcRange, Name } } where
+    scip.EntityDefinition { Entity, Defn };
+    { location = { File, RangeSpan } } = Defn;
+    lsif.types.ToSrcRange { File, RangeSpan, SrcRange };
+    scip.DefinitionName { Defn, LocalName };
+    scip.LocalName Name = LocalName
+
+# xref occurences in a file
+predicate FileEntityXRefLocation:
+  {
+    file: src.File,
+    source: src.Range,
+    target: scip.Location,
+    entity: scip.Entity,
+  }
+  { File, SrcRange, { TargetFile, TargetRange, Name }, Entity } where
+    scip.ReferenceLocation { File, RangeSpan, XRef };
+    lsif.types.ToSrcRange { File, RangeSpan, SrcRange };
+    scip.ReferenceTarget { XRef, Defn }; # only those with valid Defns
+    { location = { TargetFile, TargetRangeSpan } } = Defn;
+    scip.FileLanguage { TargetFile, Language };
+    lsif.types.ToSrcRange { TargetFile, TargetRangeSpan, TargetRange };
+    scip.DefinitionName { Defn, LocalName };
+    scip.LocalName Name = LocalName;
+    scip.TagDefinition { Language, Defn, Entity };
+
+# find-refs
+predicate EntityUses:
+  {
+    target: scip.Entity,
+    file: src.File,
+    range: src.Range,
+  }
+  { Entity, File, SrcRange } where
+    scip.EntityDefinition { Entity, Defn };
+    scip.DefinitionUses { Defn, XRef };
+    { location = { File, RangeSpan } } = XRef;
+    lsif.types.ToSrcRange { File, RangeSpan, SrcRange };
+
+# and for codemarkup.EntityKind
+# we use the kind information from the scip.Symbol tag
+# it would be better if kinds were structured in scip.proto
+predicate EntityKind:
+  {
+    entity: scip.Entity,
+    kind: lsif.types.SymbolKind,
+  }
+  { Entity, Kind } where
+    scip.EntityDefinition { Entity, Defn };
+    { symbol = Symbol } = Defn;
+    scip.SymbolKind { Symbol, Kind }
 
 }

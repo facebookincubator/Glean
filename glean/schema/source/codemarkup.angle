@@ -13,6 +13,7 @@ import codemarkup.java.1
 import codemarkup.lsif.3
 import codemarkup.pp.3
 import codemarkup.python.2
+import codemarkup.scip.1
 import codemarkup.thrift.4
 import codemarkup.types.1
 import cxx1.5
@@ -40,6 +41,7 @@ predicate EntityKind:
     (codemarkup.hack.HackEntityKind { E, Kind }; { hack = E } = Entity) |
     (codemarkup.erlang.ErlangEntityKind { E, Kind }; { erlang = E } = Entity) |
     (codemarkup.lsif.EntityInfo { E, { kind = Kind }}; { lsif = E } = Entity) |
+    (codemarkup.scip.EntityInfo { E, { kind = Kind }}; { scip = E } = Entity) |
     (codemarkup.flow.FlowEntityKind { E, Kind }; { flow = E } = Entity) |
     (codemarkup.java.JavaEntityKind { E, Kind }; { java = E } = Entity) |
     (codemarkup.thrift.ThriftEntityKind { E, Kind }; { thrift = E } = Entity);
@@ -64,7 +66,8 @@ predicate EntityInfo:
     ) |
     (codemarkup.cxx.CxxEntityInfo { E, Info }; { cxx = E } = Entity) |
     (codemarkup.hack.HackEntityInfo { E, Info }; { hack = E } = Entity) |
-    (codemarkup.lsif.EntityInfo { E, Info }; { lsif = E } = Entity)
+    (codemarkup.lsif.EntityInfo { E, Info }; { lsif = E } = Entity) |
+    (codemarkup.scip.EntityInfo { E, Info }; { scip = E } = Entity);
 
 # Source code digests produced by unspecified hash function
 predicate FileEntityDigest:
@@ -130,7 +133,9 @@ predicate ResolveLocation:
     (codemarkup.erlang.ErlangResolveLocation { Location, E };
      { erlang = E } = Entity) |
     (codemarkup.lsif.LsifResolveLocation { Location, E };
-     { lsif = E } = Entity);
+     { lsif = E } = Entity) |
+    (codemarkup.scip.ScipResolveLocation { Location, E };
+     { scip = E } = Entity);
 
 predicate EntityLocation:
   {
@@ -159,7 +164,9 @@ predicate EntityLocation:
     (codemarkup.lsif.LsifEntityLocation { E, Location };
      { lsif = E } = Entity) |
     (codemarkup.java.JavaEntityLocation { E, Location };
-     { java = E } = Entity);
+     { java = E } = Entity) |
+    (codemarkup.scip.ScipEntityLocation { E, Location };
+     { scip = E } = Entity);
 
 # Finding xrefs. All references in a file and their targets
 predicate FileEntityXRefLocations:
@@ -188,7 +195,9 @@ predicate FileEntityXRefLocations:
     (codemarkup.erlang.ErlangFileEntityXRefLocations { File, XRef, E };
      { erlang = E } = Entity) |
     (codemarkup.lsif.LsifFileEntityXRefLocations { File, XRef, E };
-     { lsif = E } = Entity);
+     { lsif = E } = Entity) |
+    (codemarkup.scip.ScipFileEntityXRefLocations { File, XRef, E };
+     { scip = E } = Entity);
 
 # Xrefs without the target location. This can be useful in cases
 # where we don't have a target location, but we don't need it. This
@@ -280,6 +289,10 @@ predicate EntityReferences:
   ) | (
     codemarkup.lsif.LsifEntityUses { E, File, Range };
     { lsif = E } = Entity;
+    { range = Range } = RangeSpan;
+  ) | (
+    codemarkup.scip.ScipEntityUses { E, File, Range };
+    { scip = E } = Entity;
     { range = Range } = RangeSpan;
   )
 
