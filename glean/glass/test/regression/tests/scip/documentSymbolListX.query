@@ -1,0 +1,2 @@
+action: documentSymbolListX
+args: {"include_refs":true,"filepath":"relative_path.rs","repository":"test"}
