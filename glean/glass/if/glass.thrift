@@ -262,12 +262,12 @@ union GlassExceptionReason {
   4: string entitySearchFail;
   5: string entityNotSupported;
   6: string attributesError;
-  7: list<GlassExceptionReason> aggregateError;
 }
 
 // Only thrown when strict request option is set
 safe exception GlassException {
-  1: GlassExceptionReason reason;
+  // Nonempty, can be more than one if multiple Glean DBs
+  1: list<GlassExceptionReason> reasons;
   // Revisions queried (nonempty, can be more than one if multiple Glean DBs)
   2: list<Revision> revisions;
 }

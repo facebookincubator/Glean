@@ -21,6 +21,7 @@ module Glean.Glass.Logging
   , ErrorText(..)
   , ErrorLogger(..)
   , errorText
+  , errorsText
 
   ) where
 
@@ -30,6 +31,7 @@ import Util.Logger ( ActionLog(..) )
 import qualified Logger.GleanGlass as Logger
 import qualified Logger.GleanGlassErrors as Errors
 
+import Control.Applicative ((<|>))
 import Data.List.Extra (nubOrd)
 import Data.Text ( Text )
 import Util.Text ( textShow )
@@ -259,33 +261,30 @@ errorText e = case e of
   GlassExceptionReason_entitySearchFail t -> t
   GlassExceptionReason_entityNotSupported t -> t
   GlassExceptionReason_attributesError t -> t
-  GlassExceptionReason_aggregateError [e] -> errorText e
-  GlassExceptionReason_aggregateError errs ->
-    Text.unlines $ "Multiple errors:": map (("  " <>) . errorText) (nubOrd errs)
   GlassExceptionReason_EMPTY -> ""
 
+errorsText :: NonEmpty GlassExceptionReason -> Text
+errorsText errs =
+  Text.unlines $ "Multiple errors:": map
+    (("  " <>) . errorText)
+    (nubOrd $ NE.toList errs)
+
+
 data ErrorLogger = ErrorLogger
-  { errorTy :: !(Maybe GlassExceptionReason)
+  { errorTy :: ![GlassExceptionReason]
   , errorGleanRepo :: ![Glean.Repo]
   , errorsLogger :: !GleanGlassErrorsLogger
   }
 
-instance Semigroup GlassExceptionReason where
-  GlassExceptionReason_aggregateError e1 <> e2 =
-    GlassExceptionReason_aggregateError (e2 : e1)
-  e1 <> GlassExceptionReason_aggregateError e2 =
-    GlassExceptionReason_aggregateError (e1 : e2)
-  e1 <> e2 = GlassExceptionReason_aggregateError [e1, e2]
-
 instance Semigroup ErrorLogger where
   e1 <> e2 = ErrorLogger
-    { errorTy = errorTy e1 <> errorTy e2
+    { errorTy = errorTy e1 <|> errorTy e2
     , errorGleanRepo = errorGleanRepo e1 <> errorGleanRepo e2
     , errorsLogger = errorsLogger e1 <> errorsLogger e2
     }
 
 instance Monoid ErrorLogger where
-  mempty = ErrorLogger Nothing [] mempty
+  mempty = ErrorLogger [] [] mempty
 
 class LogError a where
   logError :: a -> ErrorLogger
@@ -295,11 +294,10 @@ class LogError a where
   logGleanGlassError = errorsLogger . logError
 
 instance LogError GleanGlassErrorsLogger where
-  logError = ErrorLogger Nothing []
+  logError = ErrorLogger [] []
 
 instance LogError GlassExceptionReason where
-  logError (GlassExceptionReason_aggregateError [e]) = logError e
-  logError e = ErrorLogger (Just e) [] $
+  logError e = ErrorLogger [e] [] $
     Errors.setError (errorText e) <>
     Errors.setErrorType (case e of
       GlassExceptionReason_noSrcFileFact{} -> "NoSrcFileFact"
@@ -307,14 +305,23 @@ instance LogError GlassExceptionReason where
       GlassExceptionReason_entitySearchFail{} -> "EntitySearchFail"
       GlassExceptionReason_entityNotSupported{} -> "EntityNotSupported"
       GlassExceptionReason_attributesError{} -> "AttributesError"
-      GlassExceptionReason_aggregateError{} -> "AggregateError"
       GlassExceptionReason_notIndexedFile{} -> "NotIndexedFile"
       GlassExceptionReason_EMPTY{} -> "EMPTY"
     )
 
+instance LogError (NonEmpty GlassExceptionReason) where
+  logError (e :| []) = logError e
+  logError errors = ErrorLogger (NE.toList errors) [] $
+    Errors.setError errorT <>
+    Errors.setErrorType "AggregateError"
+    where
+      errorT = case errors of
+        e :| [] -> errorText e
+        _ -> errorsText errors
+
 instance LogError Glean.Repo where
   logError x =
-    ErrorLogger Nothing [x] $
+    ErrorLogger [] [x] $
       logRepoSG Errors.setRepoName Errors.setRepoHash x
 
 instance LogError USR where
@@ -326,7 +333,7 @@ instance LogError (NonEmpty (a, Glean.Repo)) where
 instance LogError (NonEmpty Glean.Repo) where
   logError (repo :| []) = logError repo
   logError rs =
-    ErrorLogger Nothing (NE.toList rs) $
+    ErrorLogger [] (NE.toList rs) $
       Errors.setRepoName (commas repo_name rs) <>
       Errors.setRepoHash (commas (Text.take 12 . repo_hash) rs)
 

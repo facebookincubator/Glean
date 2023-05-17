@@ -194,7 +194,8 @@ documentSymbolIndex env r opts = fst3 <$> runRepoFile "documentSymbolIndex"
 --   plus an explainer
 firstOrErrors
   :: (HasRepo u => ReposHaxl u w (Either GlassExceptionReason a))
-  -> ReposHaxl u w (Either GlassExceptionReason (a, QueryEachRepoLog))
+  -> ReposHaxl u w
+      (Either (NonEmpty GlassExceptionReason) (a, QueryEachRepoLog))
 firstOrErrors act = do
   results <- queryEachRepo $ do
     repo <- Glean.haxlRepo
@@ -208,19 +209,19 @@ firstOrErrors act = do
           Nothing -> FoundOne
           Just otherSuccesses ->  FoundMultiple (fmap fst otherSuccesses)
       )
-    [] -> Left $ GlassExceptionReason_aggregateError fail
+    [] -> Left $ fromMaybe (error "unreachable") $ nonEmpty fail
 
 -- | Return all successes, after de-duplication
 anyOrErrors
   :: Ord a
   => ReposHaxl u w [Either GlassExceptionReason [a]]
-  -> ReposHaxl u w (Either GlassExceptionReason [a])
+  -> ReposHaxl u w (Either (NonEmpty GlassExceptionReason) [a])
 anyOrErrors act = do
   result <- act
   let (fail, success) = partitionEithers result
   return $ case success of
     xs@(_:_) -> Right (nubOrd (concat xs))
-    [] -> Left $ GlassExceptionReason_aggregateError fail
+    [] -> Left $ fromMaybe (error "unreachable") $ nonEmpty fail
 
 -- | Given a Location , resolve it to a line:col range in the target file
 jumpTo
@@ -237,7 +238,7 @@ jumpTo env@Glass.Env{..} req@Location{..} opts =
             repo <- Glean.haxlRepo
             resolveLocationToRange repo req
         case result of
-          Left err -> throwM $ ServerException $ errorText err
+          Left err -> throwM $ ServerException $ errorsText err
           Right (efile, _) -> return (efile, Nothing)
   where
     repo = location_repository
@@ -351,7 +352,7 @@ fileIncludeLocations env@Glass.Env{..} req opts =
               includes <- Cxx.fileIncludeLocationsForCxx depth mlimit file
               Right <$> processFileIncludes repo rev includes
         case result of
-          Left err -> throwM $ ServerException $ errorText err
+          Left err -> throwM $ ServerException $ errorsText err
           Right (efile, gleanDataLog) ->
             return ((efile, gleanDataLog), Nothing)
   where
@@ -391,7 +392,7 @@ clangUSRToDefinition env@Glass.Env{..} usr@(USR hash) opts = withRepoLanguage
                 uSRSymbolDefinition_revision = rev
               }))
         case result of
-          Left err -> throwM $ ServerException $ errorText err
+          Left err -> throwM $ ServerException $ errorsText err
           Right defn -> return (defn, Nothing)
   where
     repo = RepoName "fbsource"
@@ -416,7 +417,7 @@ clangUSRToReferenceRanges env@Glass.Env{..} usr@(USR hash) opts =
             rangeSpanToLocationRange repo targetFile rspan
           pure (Right res)
         case result of
-          Left err -> throwM $ ServerException $ errorText err
+          Left err -> throwM $ ServerException $ errorsText err
           Right refs -> return (refs, Nothing)
   where
     scmRepo = RepoName "fbsource" -- a "corpus" corresponds to >1 glean index
@@ -1405,10 +1406,10 @@ withStrictErrorHandling opts action = do
   case merr of
     Just err
       | requestOptions_strict opts
-      , Just errTy <- errorTy err
+      , not $ null $ errorTy err
       -> throwM $
         GlassException
-          errTy
+          (errorTy err)
           (map (Revision . Glean.repo_hash) $ errorGleanRepo err)
     _ -> return (res, merr)
 
@@ -1595,8 +1596,8 @@ searchRelated env@Glass.Env{..} sym opts@RequestOptions{..}
 
     groupLocatedEntitiesOn f locatedEntities =
       [ (locatedEntity, locs)
-      | group <- groupOn (snd . f . fst) locatedEntities
-      , let locatedEntity = fst(head group)
+      | group@((locatedEntity, _) : _) <-
+          groupOn (snd . f . fst) locatedEntities
       , let locs = map snd group
       ]
 --
