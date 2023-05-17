@@ -151,7 +151,7 @@ decodeScipInfo info = do
   (docIds, docFacts) <- unzip <$> forM scipDocs (\docStr -> do
     docId <- nextId
     return (docId, SCIP.Predicate "scip.Documentation" [
-            object [ SCIP.factId docId, "key" .= docStr ]
+            object [ SCIP.factId docId, "key" .= Text.strip docStr ]
           ]))
   mSymId <- getDefFactId scipSymbol
   symDocFacts <- case mSymId of
