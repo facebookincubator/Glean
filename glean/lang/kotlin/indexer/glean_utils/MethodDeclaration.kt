@@ -11,8 +11,17 @@ package glean.lang.kotlin.indexer.glean_utils
 import com.facebook.glean.schema.kotlin_alpha.MethodDeclaration
 import com.facebook.glean.schema.kotlin_alpha.MethodDeclarationKey
 import com.intellij.psi.PsiElement
+import org.jetbrains.kotlin.descriptors.FunctionDescriptor
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.resolve.BindingContext
+import org.jetbrains.kotlin.resolve.bindingContextUtil.getAbbreviatedTypeOrType
+
+private fun getFunctionDescriptor(
+    namedFunction: KtNamedFunction,
+    bindingContext: BindingContext
+): FunctionDescriptor? {
+  return bindingContext[BindingContext.FUNCTION, namedFunction]
+}
 
 fun buildMethodDeclaration(
     function: KtNamedFunction,
@@ -22,12 +31,17 @@ fun buildMethodDeclaration(
   if (function.contractDescription != null) {
     keyBuilder.loc = buildLoc(function.contractDescription!!.psiOrParent as PsiElement)
   }
+
+  val funcDescriptor =
+      getFunctionDescriptor(function, bindingContext)
+          ?: throw Error("Could not get function descriptor")
   keyBuilder.parameters =
-      function.valueParameters.map { ktParameter ->
-        buildVariableDeclaration(ktParameter, bindingContext)
+      funcDescriptor.valueParameters.map { parameter ->
+        buildVariableDeclaration(parameter, bindingContext)
       }
-  if (function.typeReference != null) {
-    keyBuilder.returnType = buildType(function.typeReference!!, bindingContext)
+  val kotlinType = function.typeReference?.getAbbreviatedTypeOrType(bindingContext)
+  if (kotlinType != null) {
+    keyBuilder.returnType = buildType(kotlinType, bindingContext)
   }
   return MethodDeclaration.Builder().setKey(keyBuilder.build()).build()
 }

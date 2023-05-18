@@ -9,9 +9,9 @@
 package glean.lang.kotlin.indexer.glean_utils
 
 import com.facebook.glean.schema.kotlin_alpha.Type
-import org.jetbrains.kotlin.psi.KtTypeReference
 import org.jetbrains.kotlin.resolve.BindingContext
+import org.jetbrains.kotlin.types.KotlinType
 
-fun buildType(typeReference: KtTypeReference, bindingContext: BindingContext): Type {
+fun buildType(typeReference: KotlinType, bindingContext: BindingContext): Type {
   return Type.Builder().build()
 }
