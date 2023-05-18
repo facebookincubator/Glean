@@ -73,11 +73,31 @@ FOLLY_NOINLINE TrieArray<Uset> fillOwnership(
     }
   };
 
+  // A wrapper for OwnershipUnit that owns the memory
+  struct OwnershipUnitCopy : OwnershipUnit {
+    std::vector<OwnershipUnit::Ids> memory;
+  };
+
+  using Queue = folly::MPMCQueue<folly::Optional<OwnershipUnitCopy>, std::atomic, false>;
+  Queue queue(100);
+  auto executor = folly::getGlobalCPUExecutor();
+
+  folly::Future<folly::Unit> fetcher = folly::via(executor, [&]() {
+    while (const auto d = iter->get()) {
+      std::vector<OwnershipUnit::Ids> memory{d->ids.begin(), d->ids.end()};
+      OwnershipUnitCopy c{
+          {d->unit, {memory.data(), memory.size()}}, std::move(memory)};
+      queue.blockingWrite(std::move(c));
+    };
+    queue.blockingWrite(folly::none);
+  });
+
   TrieArray<Uset> utrie;
   uint32_t last_unit = 0;
   uint32_t max_unit = 0;
   Stats stats;
-  while(const auto d = iter->get()) {
+  folly::Optional<OwnershipUnitCopy> d;
+  for (queue.blockingRead(d); d; queue.blockingRead(d)) {
     const auto data = d.value();
     CHECK_GE(data.unit,last_unit);
 
