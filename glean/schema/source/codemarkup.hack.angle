@@ -26,8 +26,8 @@ predicate HackEntityLocation:
     location: codemarkup.types.Location,
   }
   { { decl = D }, { Name, File, { span = Span }, nothing } } where
-    hack.DeclarationSpan { declaration = D, file = File, span = Span };
     hack.DeclarationName D -> (hack.Name Name);
+    hack.DeclarationSpan { declaration = D, file = File, span = Span }
 
 # Finding references in a file
 

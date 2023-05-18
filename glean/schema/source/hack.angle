@@ -601,22 +601,21 @@ predicate NamespaceMember :
 
 # Base name for a declaration (no namespace or container prefix)
 predicate DeclarationName : Declaration -> Name
-  D -> Name where
-    Name =
-      (N where { classConst = X } = D; { name = N } = X) |
-      (N where { container = { class_ = X }} = D; { name = { name = N }} = X) |
-      (N where { container = { enum_ = X }} = D; { name = { name = N }} = X) |
-      (N where { container = { interface_ = X }} = D; { name = { name = N }} = X) |
-      (N where { container = { trait = X }} = D; { name = { name = N }} = X) |
-      (N where { enumerator = X } = D; { name = N } = X) |
-      (N where { function_ = X } = D; { name = { name = N }} = X) |
-      (N where { globalConst = X } = D; { name = { name = N }} = X) |
-      (N where { namespace_ = X } = D; { name = { name = N }} = X) |
-      (N where { method = X } = D; { name = N } = X) |
-      (N where { property_ = X } = D; { name = N } = X) |
-      (N where { typeConst = X } = D; { name = N } = X) |
-      (N where { module = X } = D; { name = N } = X) |
-      (N where { typedef_ = X } = D; { name = { name = N }} = X)
+  D -> N where
+    ({ classConst = { name = N }}) |
+    ({ container = { class_ = { name = { name = N }}}}) |
+    ({ container = { enum_ = { name = { name = N }}}}) |
+    ({ container = { interface_ = { name = { name = N }}}}) |
+    ({ container = { trait = { name = { name = N }}}}) |
+    ({ enumerator = { name = N }}) |
+    ({ function_ = { name = { name = N }}}) |
+    ({ globalConst = { name = { name = N }}}) |
+    ({ namespace_ = { name = { name = N }}}) |
+    ({ method = { name = N }}) |
+    ({ property_ = { name = N }}) |
+    ({ typeConst = { name = N }}) |
+    ({ module = { name = N }}) |
+    ({ typedef_ = { name = { name = N }}}) = D
 
 predicate ContainerDeclarationQName : ContainerDeclaration -> QName
   D -> QName where
