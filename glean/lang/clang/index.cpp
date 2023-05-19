@@ -16,6 +16,7 @@
 #include <clang/Frontend/CompilerInstance.h>
 #include <clang/Frontend/TextDiagnosticPrinter.h>
 #include <clang/Tooling/CommonOptionsParser.h>
+#include <clang/Tooling/JSONCompilationDatabase.h>
 #include <clang/Tooling/Tooling.h>
 #include <llvm/Support/CommandLine.h>
 #include <llvm/Support/ErrorHandling.h>
@@ -180,6 +181,40 @@ struct Counters {
   std::deque<std::atomic<uint64_t>> locals;
 };
 
+/// Load <dir>/compile_commands.json as a CompilationDatabase
+//
+// Use this instead of clang::tooling::CompilationDatabase::loadFromDirectory()
+//
+// We replace directory="." in the CDB with directory="<cwd>", because
+// ClangTool::run() expects to be able to look up the absolute
+// path of the source file in the CDB.
+std::unique_ptr<clang::tooling::CompilationDatabase>
+loadCompilationDatabase(const std::string& dir) {
+  std::string contents;
+  if (!folly::readFile((dir + "/compile_commands.json").c_str(), contents)) {
+    throw std::runtime_error(std::string("couldn't read ") + dir);
+  }
+  auto json = folly::parseJson(contents);
+  auto cwd = std::filesystem::current_path().string();
+  for (auto& item : json) {
+    if (item.isObject() && item["directory"] == ".") {
+      item["directory"] = cwd;
+    }
+  }
+  std::string err;
+  auto cdb = clang::tooling::JSONCompilationDatabase::loadFromBuffer(
+      toJson(json), err, clang::tooling::JSONCommandLineSyntax::AutoDetect);
+  if (!cdb) {
+    throw std::runtime_error("couldn't load " + dir + ": " + err);
+  }
+  // Replicating the behaviour of
+  // JSONCompilationDatabasePlugin::loadFromDirectory()
+  return clang::tooling::inferTargetAndDriverMode(
+      clang::tooling::inferMissingCompileCommands(
+          clang::tooling::expandResponseFiles(
+              std::move(cdb), llvm::vfs::getRealFileSystem())));
+}
+
 struct Config {
   std::filesystem::path root;
   // subdir of root for setting current working directory
@@ -286,12 +321,7 @@ struct Config {
       if (FLAGS_cdb_dir.empty()) {
         fail("missing --cdb-dir");
       }
-      std::string err;
-      std::string dir = FLAGS_cdb_dir.c_str();
-      auto cdb = clang::tooling::CompilationDatabase::loadFromDirectory(dir, err);
-      if (!cdb) {
-        throw std::runtime_error("couldn't load " + dir + ": " + err);
-      }
+      auto cdb = loadCompilationDatabase(FLAGS_cdb_dir);
       for(auto file : cdb->getAllFiles()){
         sources.push_back(SourceFile{
             FLAGS_cdb_target.c_str(),
@@ -344,9 +374,9 @@ public:
     if (!cdb || dir != source.dir) {
       std::string err;
       dir = source.dir;
-      cdb = clang::tooling::CompilationDatabase::loadFromDirectory(dir, err);
+      cdb = loadCompilationDatabase(dir);
       if (!cdb) {
-        throw std::runtime_error("couldn't load " + dir + ": " + err);
+        throw std::runtime_error("couldn't load " + dir);
       }
     }
     return cdb.get();
