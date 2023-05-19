@@ -56,6 +56,7 @@ import Data.Default (def)
 import Data.List as List ( sortOn )
 import Data.List.Extra ( nubOrd, nubOrdOn, groupOn )
 import Data.List.NonEmpty (NonEmpty(..), toList, nonEmpty)
+import qualified Data.List.NonEmpty as NonEmpty
 import Data.Maybe ( mapMaybe, catMaybes, fromMaybe, listToMaybe )
 import Data.Ord ( comparing )
 import Data.Text ( Text )
@@ -222,6 +223,20 @@ anyOrErrors act = do
   return $ case success of
     xs@(_:_) -> Right (nubOrd (concat xs))
     [] -> Left $ fromMaybe (error "unreachable") $ nonEmpty fail
+
+allOrError :: NonEmpty (Either a1 a2) -> Either a1 (NonEmpty a2)
+allOrError = go (Right [])
+  where
+    go
+      :: Either err [ok]
+      -> NonEmpty (Either err ok)
+      -> Either err (NonEmpty ok)
+    go (Left err) _ = Left err
+    go (Right _es) ((Left err) :| _) = Left err
+    go (Right res) ((Right ok) :| []) =
+      Right (ok :| res)
+    go (Right res) ((Right ok) :| (x:xs)) =
+      go (Right (ok:res)) (x :| xs)
 
 -- | Given a Location , resolve it to a line:col range in the target file
 jumpTo
@@ -840,16 +855,17 @@ fetchSymbolReferences
   -> GleanBackend b
   -> IO ([Location], Maybe ErrorLogger)
 fetchSymbolReferences scsrepo lang toks limit b = backendRunHaxl b $ do
-  er <- symbolToAngleEntity lang toks
+  er <- symbolToAngleEntities lang toks
   case er of
     Left err -> return ([], Just err)
-    Right (entityRepo, query, searchErr) -> do
-      locs <- withRepo entityRepo $ do
-        let convert (targetFile, rspan) =
-              rangeSpanToLocation scsrepo targetFile rspan
-        uses <- searchWithLimit limit $ Query.findReferenceRangeSpan query
-        mapM convert uses
-      return (locs, fmap logError searchErr)
+    Right (entities, searchErr) -> do
+      locs <- forM entities $ \(entityRepo, query) ->
+        withRepo entityRepo $ do
+          let convert (targetFile, rspan) =
+                rangeSpanToLocation scsrepo targetFile rspan
+          uses <- searchWithLimit limit $ Query.findReferenceRangeSpan query
+          mapM convert uses
+      return (nubOrd $ concat locs, fmap logError searchErr)
 
 -- | Symbol search for references as ranges.
 fetchSymbolReferenceRanges
@@ -861,40 +877,48 @@ fetchSymbolReferenceRanges
   -> GleanBackend b
   -> IO ([LocationRange], Maybe ErrorLogger)
 fetchSymbolReferenceRanges scsrepo lang toks limit b = backendRunHaxl b $ do
-  er <- symbolToAngleEntity lang toks
+  er <- symbolToAngleEntities lang toks
   case er of
     Left err -> return ([], Just err)
-    Right (entityRepo, query, searchErr) -> do
-      ranges <- withRepo entityRepo $ do
-        let convert (targetFile, rspan) =
-              rangeSpanToLocationRange scsrepo targetFile rspan
-        uses <- searchWithLimit limit $ Query.findReferenceRangeSpan query
-        mapM convert uses
-      return (ranges, fmap logError searchErr)
+    Right (entities, searchErr) -> do
+      ranges <- forM entities $ \(entityRepo, query) ->
+        withRepo entityRepo $ do
+          let convert (targetFile, rspan) =
+                rangeSpanToLocationRange scsrepo targetFile rspan
+          uses <- searchWithLimit limit $ Query.findReferenceRangeSpan query
+          mapM convert uses
+      return (nubOrd $ concat ranges, fmap logError searchErr)
 
--- | Search for a symbol and return an Angle query that identifies the entity
+-- | Search for a symbol and return an Angle query that identifies the entities
 -- Return the angle query and the Glean.repo to which it applies.
 --
 -- Todo: this entity query only works on the db it came from.
 -- Should be in the type
 --
-symbolToAngleEntity
+symbolToAngleEntities
   :: Language
   -> [Text]
   -> ReposHaxl u w
       (Either ErrorLogger
-        (Glean.Repo, Angle Code.Entity, Maybe GlassExceptionReason))
-symbolToAngleEntity lang toks = do
+        (NonEmpty (Glean.Repo, Angle Code.Entity), Maybe GlassExceptionReason))
+symbolToAngleEntities lang toks = do
   r <- Search.searchEntity lang toks -- search everywhere for something a match
-  (SearchEntity{..}, searchErr) <- case r of
+  (entities, searchErr) <- case r of
     None t -> throwM (ServerException t) -- return [] ?
-    One e -> return (e, Nothing)
+    One e -> return (e:|[], Nothing)
       -- n.b. picks the first entity only
-    Many { initial = e, message = t } ->
-      return (e, Just (GlassExceptionReason_entitySearchFail t))
-  return $ case entityToAngle decl of
-      Left err -> Left (logError (GlassExceptionReason_entityNotSupported err))
-      Right query -> Right (entityRepo, query, searchErr)
+    Many { initial = e, rest = es, message = t } ->
+      return (e:|es, Just (GlassExceptionReason_entitySearchFail t))
+  let
+    eithers =
+      NonEmpty.map
+        (\SearchEntity{..} -> (entityRepo,) <$> entityToAngle decl)
+        entities
+
+  return $ case allOrError eithers of
+    Left err -> Left (logError (GlassExceptionReason_entityNotSupported err))
+    Right results -> Right (results, searchErr)
+
 
 -- | Run an action on the result of looking up a symbol id
 withEntity
