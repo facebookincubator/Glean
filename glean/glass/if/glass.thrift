@@ -152,7 +152,7 @@ struct ReferenceRangeSymbolX {
   // local line:col spans in this file
   2: Range range (hs.strict);
 
-  // this points to the (unresolved) definition site
+  // this points to the (resolved) definition site
   3: LocationRange target;
 
   // attributes of this reference
