@@ -78,7 +78,6 @@ data StackedDbOpts
 --
 class Backend a where
   queryFact :: a -> Thrift.Repo -> Thrift.Id -> IO (Maybe Thrift.Fact)
-  firstFreeId :: a -> Thrift.Repo -> IO Thrift.Id
   factIdRange :: a -> Thrift.Repo -> IO Thrift.FactIdRange
   getSchemaInfo :: a -> Thrift.Repo -> Thrift.GetSchemaInfo
     -> IO Thrift.SchemaInfo
@@ -169,7 +168,6 @@ type LogDerivationResult =
 
 instance Backend (Some Backend) where
   queryFact (Some backend) = queryFact backend
-  firstFreeId (Some backend) = firstFreeId backend
   factIdRange (Some backend) = factIdRange backend
   getSchemaInfo (Some backend) = getSchemaInfo backend
   validateSchema (Some backend) = validateSchema backend

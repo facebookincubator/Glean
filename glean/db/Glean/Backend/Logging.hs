@@ -46,9 +46,6 @@ instance Backend LoggingBackend where
   queryFact (LoggingBackend env) repo id =
     loggingAction (runLogRepo "queryFact" env repo) (const mempty) $
       queryFact env repo id
-  firstFreeId (LoggingBackend env) repo =
-    loggingAction (runLogRepo "firstFreeId" env repo) (const mempty) $
-      firstFreeId env repo
   factIdRange (LoggingBackend env) repo =
     loggingAction (runLogRepo "factIdRange" env repo) (const mempty) $
       factIdRange env repo

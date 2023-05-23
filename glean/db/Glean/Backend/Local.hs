@@ -74,9 +74,6 @@ instance Backend Database.Env where
   queryFact env repo id = readDatabase env repo $ \_ db ->
     Lookup.lookupFact db (Fid id)
 
-  firstFreeId env repo =
-    fromFid <$> readDatabase env repo (const Lookup.firstFreeId)
-
   factIdRange env repo = do
     (starting, next) <- readDatabase env repo $ \_ db ->
       (,) <$> Lookup.startingId db <*> Lookup.firstFreeId db

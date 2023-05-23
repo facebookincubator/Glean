@@ -1209,9 +1209,6 @@ service GleanService extends fb303.FacebookService {
     2: UnknownDatabase u,
   );
 
-  // DEPRECATED
-  Id firstFreeId(1: Repo repo) throws (1: Exception e, 2: UnknownDatabase u);
-
   map<Id, PredicateStats> predicateStats(
     1: Repo repo,
     2: PredicateStatsOpts opts,

@@ -121,7 +121,9 @@ instance HasPredicates Writer where
 
 newWriter :: Sender -> WriterSettings -> IO Writer
 newWriter s settings = do
-  first_id <- RTS.Fid <$> Backend.firstFreeId (senderBackend s) (senderRepo s)
+  Thrift.FactIdRange { factIdRange_finish = finish } <-
+    Backend.factIdRange (senderBackend s) (senderRepo s)
+  let first_id = Fid finish
   v <- newMVar =<< newFacts (senderPredicates s) (Just first_id)
   return Writer
     { writerPredicates = senderPredicates s

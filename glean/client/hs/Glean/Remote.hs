@@ -176,7 +176,6 @@ instance Backend ThriftBackend where
     case fact of
       Thrift.Fact 0 _ _ -> return Nothing
       _ -> return (Just fact)
-  firstFreeId t repo = withShard t repo $ GleanService.firstFreeId repo
   factIdRange t repo = withShard t repo $ GleanService.factIdRange repo
   getSchemaInfo t repo req = withShard t repo $
     GleanService.getSchemaInfo repo req

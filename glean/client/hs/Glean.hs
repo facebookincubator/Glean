@@ -67,6 +67,7 @@ module Glean
   , Subst(..)
   , DatabaseNotIncomplete(..)
   , WrongHandle(..)
+  , FactIdRange(..)
 
   -- * Repositories
   , Repo(..)

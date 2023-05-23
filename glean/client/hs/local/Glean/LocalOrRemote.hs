@@ -192,7 +192,6 @@ instance LocalOrRemote Remote.ThriftBackend where
 
 instance Backend (Some LocalOrRemote) where
   queryFact (Some backend) = queryFact backend
-  firstFreeId (Some backend) = firstFreeId backend
   factIdRange (Some backend) = factIdRange backend
   getSchemaInfo (Some backend) = getSchemaInfo backend
   validateSchema (Some backend) = validateSchema backend
