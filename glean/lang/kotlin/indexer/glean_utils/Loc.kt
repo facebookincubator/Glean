@@ -8,15 +8,25 @@
 
 package glean.lang.kotlin.indexer.glean_utils
 
+import com.facebook.glean.schema.src.ByteSpan
 import com.facebook.glean.schema.src.File
 import com.facebook.glean.schema.src.Loc
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
+import glean.lang.kotlin.indexer.normalizePath
 import org.jetbrains.kotlin.diagnostics.PsiDiagnosticUtils
+import org.jetbrains.kotlin.psi.psiUtil.endOffset
 import org.jetbrains.kotlin.psi.psiUtil.startOffset
 
 fun buildFile(file: PsiFile): File {
-  return File.Builder().setKey(file.containingFile.virtualFile.path).build()
+  return File.Builder().setKey(normalizePath(file.containingFile.virtualFile.path)).build()
+}
+
+fun buildSpan(element: PsiElement): ByteSpan {
+  return ByteSpan.Builder()
+      .setStart(element.startOffset.toLong())
+      .setLength((element.endOffset - element.startOffset + 1).toLong())
+      .build()
 }
 
 fun buildLoc(element: PsiElement): Loc? {

@@ -9,8 +9,12 @@
 package glean.lang.kotlin.indexer.glean_utils
 
 import com.facebook.glean.schema.kotlin_alpha.DeclarationLocation
+import com.facebook.glean.schema.kotlin_alpha.DeclarationLocationKey
 import com.intellij.psi.PsiElement
 
 fun buildFileLocation(element: PsiElement): DeclarationLocation {
-  return DeclarationLocation.Builder().build()
+  val key = DeclarationLocationKey.Builder()
+  key.file = buildFile(element.containingFile)
+  key.span = buildSpan(element)
+  return DeclarationLocation.Builder().setKey(key.build()).build()
 }
