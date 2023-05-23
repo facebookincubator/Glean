@@ -27,14 +27,12 @@ class KotlinIndexerPluginExtension(
     private val messageCollector: MessageCollector
 ) : AnalysisHandlerExtension {
 
-  override fun doAnalysis(
-      project: Project,
-      module: ModuleDescriptor,
-      projectContext: ProjectContext,
-      files: Collection<KtFile>,
-      bindingTrace: BindingTrace,
-      componentProvider: ComponentProvider
-  ): AnalysisResult? {
+    override fun analysisCompleted(
+        project: Project,
+        module: ModuleDescriptor,
+        bindingTrace: BindingTrace,
+        files: Collection<KtFile>
+    ): AnalysisResult? {
     // Fail fast: This lets us assume that there is a file farther down
     if (files.isEmpty()) {
       return null
