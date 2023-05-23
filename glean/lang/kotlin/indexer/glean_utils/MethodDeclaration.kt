@@ -43,5 +43,6 @@ fun buildMethodDeclaration(
   if (kotlinType != null) {
     keyBuilder.returnType = buildType(kotlinType, bindingContext)
   }
+  keyBuilder.name = buildMethodName(funcDescriptor)
   return MethodDeclaration.Builder().setKey(keyBuilder.build()).build()
 }

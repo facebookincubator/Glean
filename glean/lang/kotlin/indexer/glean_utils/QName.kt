@@ -24,7 +24,7 @@ fun ParameterDescriptor.qualifiedName(): QName {
   return container.qNameInPath(this.name.toString())
 }
 
-private fun CallableDescriptor.qualifiedName(): QName {
+fun CallableDescriptor.qualifiedName(): QName {
   return this.path().toQName()
 }
 
