@@ -57,7 +57,7 @@ class KotlinIndexerPluginExtension(
       AnalysisResult.compilationError(bindingTrace.bindingContext).throwIfError()
     }
 
-    context.dump(outputDir)
+    context.dump("$outputDir/glean_index.txt")
     return null
   }
 }

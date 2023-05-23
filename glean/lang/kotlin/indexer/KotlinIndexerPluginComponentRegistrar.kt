@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.compiler.plugin.ComponentRegistrar
 import org.jetbrains.kotlin.config.CompilerConfiguration
+import org.jetbrains.kotlin.config.JVMConfigurationKeys
 import org.jetbrains.kotlin.resolve.jvm.extensions.AnalysisHandlerExtension
 
 /**
@@ -29,19 +30,18 @@ class KotlinIndexerPluginComponentRegistrar : ComponentRegistrar {
       project: MockProject,
       configuration: CompilerConfiguration
   ) {
-    val outputDirValue = configuration.get(KotlinIndexerConfigurationKeys.OUTPUT_DIR_KEY)
+    val outputDir = configuration.get(JVMConfigurationKeys.OUTPUT_DIRECTORY)
     checkNotNull(
-        outputDirValue,
-        { "Kotlin Indexer compiler plugin failed. 'outputDir' option is not provided" })
+        outputDir, { "Kotlin Indexer compiler plugin failed. 'outputDir' option is not provided" })
 
     val messageCollector =
         configuration.get(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY, MessageCollector.NONE)
     messageCollector.report(
         CompilerMessageSeverity.LOGGING,
-        "Loaded Kotlin Indexer Plugin, with outputDir = '$outputDirValue'.")
+        "Loaded Kotlin Indexer Plugin, with outputDir = '$outputDir'.")
 
     // Create our plugin
-    val extension = KotlinIndexerPluginExtension(outputDirValue, messageCollector)
+    val extension = KotlinIndexerPluginExtension(outputDir.absolutePath, messageCollector)
 
     // Register it to a specific extension point in the compiler, the analysis part
     AnalysisHandlerExtension.registerExtension(project, extension)
