@@ -607,8 +607,6 @@ struct FileIncludeLocationResults {
 struct USRSymbolDefinition {
   // location of the definition (or fallback to decl)
   2: LocationRange location;
-  // just the name target of the definition in same file as location
-  4: optional Range nameRange;
   // actual revision used for results
   5: Revision revision;
 }

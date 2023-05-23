@@ -399,11 +399,8 @@ clangUSRToDefinition env@Glass.Env{..} usr@(USR hash) opts = withRepoLanguage
             Just (Code.Location{..},_entity) -> do
               range <- rangeSpanToLocationRange repo location_file
                 location_location
-              nameRange <- forM location_span
-                (memoRangeSpanToRange location_file . Code.RangeSpan_span)
               pure (Right (USRSymbolDefinition {
                 uSRSymbolDefinition_location = range,
-                uSRSymbolDefinition_nameRange = nameRange,
                 uSRSymbolDefinition_revision = rev
               }))
         case result of
