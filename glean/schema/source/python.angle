@@ -790,4 +790,43 @@ predicate MethodWithLocalName:
     Contains { { cls = ClassDecl }, { func = MethodDecl } };
     SNameWithDeclaration { { func = MethodDecl }, { local_name = MethodLocalName } };
 
+# Let's imagine:
+# module A has function Foo
+# module B imports Foo from A
+# module C imports Foo from B
+#
+# Q: How to find out what Foo is?
+# A: Resolve its original name and Find it by its original name
+#
+# This is the "Resolve" part of the job
+#
+# manually traverse 5 layers of imports
+predicate ResolveOriginalName:
+  {
+    name: Name,
+    original_name: Name,
+  }
+  { Name, OriginalName } where
+    OriginalName = if (
+      ImportStatementByAsName{ Name, { from_name = Name1 } };
+    ) then (
+      if (
+        ImportStatementByAsName{ Name1, { from_name = Name2 } };
+      ) then (
+        if (
+          ImportStatementByAsName{ Name2, { from_name = Name3 } };
+        ) then (
+          if (
+            ImportStatementByAsName{ Name3, { from_name = Name4 } };
+          ) then (
+            if (
+              ImportStatementByAsName{ Name4, { from_name = Name5 } };
+            ) then (
+              Name5 # returns name 5 even if there are other imports
+            ) else ( Name4 )
+          ) else ( Name3 )
+        ) else ( Name2 )
+      ) else ( Name1 )
+    ) else ( Name );
+
 } # python.4

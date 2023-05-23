@@ -11,6 +11,16 @@
   {
     "key": {
       "python": {
+        "decl": {
+          "cls": { "key": { "name": { "key": "big_lib._inner.BaseClass" } } }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
         "decl": { "cls": { "key": { "name": { "key": "lib.AbstractClass" } } } }
       }
     },
@@ -194,6 +204,21 @@
         "decl": {
           "imp": {
             "key": {
+              "as_name": { "key": "all.BaseClass" },
+              "from_name": { "key": "big_lib.BaseClass" }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "imp": {
+            "key": {
               "as_name": { "key": "all.Helper" },
               "from_name": { "key": "lib.HelperClass" }
             }
@@ -226,6 +251,21 @@
             "key": {
               "as_name": { "key": "all.big_var" },
               "from_name": { "key": "big_lib.big_var" }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "imp": {
+            "key": {
+              "as_name": { "key": "big_lib.BaseClass" },
+              "from_name": { "key": "big_lib._inner.BaseClass" }
             }
           }
         }
@@ -417,6 +457,14 @@
   {
     "key": {
       "python": {
+        "decl": { "module": { "key": { "name": { "key": "big_lib._inner" } } } }
+      }
+    },
+    "value": 1
+  },
+  {
+    "key": {
+      "python": {
         "decl": {
           "module": { "key": { "name": { "key": "big_lib.relative" } } }
         }
@@ -455,6 +503,16 @@
       }
     },
     "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "variable": { "key": { "name": { "key": "big_lib.__all__" } } }
+        }
+      }
+    },
+    "value": 2
   },
   {
     "key": {

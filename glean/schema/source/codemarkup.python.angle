@@ -26,8 +26,27 @@ predicate PythonEntityLocation:
     location: codemarkup.types.Location,
   }
   { { decl = D }, { Name, File, { span = Span }, nothing } } where
-    python.DeclarationLocation { declaration = D, file = File, span = Span };
-    python.DeclarationToName D -> (python.Name Name);
+    if (
+      { imp = ImportStmt } = D;
+    ) then (
+      # for imports just return import location
+      python.DeclarationLocation { declaration = D, file = File, span = Span };
+      { from_name = python.Name Name } = ImportStmt;
+    ) else if (
+      python.DeclarationDefinition {D, _};
+    ) then (
+      # if an entity has definition, just return its location
+      # this should handle imports overriden with locally definded entities
+      python.DeclarationLocation { declaration = D, file = File, span = Span };
+      python.DeclarationToName D -> (python.Name Name);
+    ) else (
+      # for others trying to resolve original name to handle indirect imports
+      python.DeclarationToName D -> SrcName;
+      python.ResolveOriginalName { SrcName, OriginalName };
+      python.DeclarationWithName { OriginalName, OriginalDecl };
+      python.DeclarationLocation { declaration = OriginalDecl, file = File, span = Span };
+      OriginalName = python.Name Name;
+    )
 
 predicate PythonFileEntityXRefLocations:
   {
@@ -49,36 +68,7 @@ predicate PythonFileEntityXRefLocations:
     XRef
   );
   { decl = PyDecl } = Entity;
-  PythonEntityNameAndLocation { Entity, Name, TargetFile, TargetSpan };
-  { Name, TargetFile, { span = TargetSpan }, nothing } = Location;
-
-predicate PythonEntityNameAndLocation:
-  {
-    entity: code.python.Entity,
-    name: string,
-    file: src.File,
-    span: src.ByteSpan,
-  }
-  {Ent, Name, File, Span} where
-  { decl = PyDecl } = Ent;
-  (
-    { cls = D } = PyDecl;
-    D = python.ClassDeclaration { name = PyName };
-  ) | (
-    { func = D } = PyDecl;
-    D = python.FunctionDeclaration { name = PyName };
-  ) | (
-    { variable = D } = PyDecl;
-    D = python.VariableDeclaration { name = PyName };
-  ) | (
-    { imp = D } = PyDecl;
-    D = python.ImportStatement { from_name = PyName };
-  ) | (
-    { module = D } = PyDecl;
-    D = python.Module { name = PyName };
-  );
-  PyName = python.Name Name;
-  python.DeclarationLocation {PyDecl, File, Span};
+  PythonEntityLocation {Entity, Location};
 
 #
 # Language entity uses

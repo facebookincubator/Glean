@@ -6,6 +6,40 @@
       "parent": {
         "parent": {
           "python": {
+            "decl": {
+              "cls": { "key": { "name": { "key": "big_lib.BaseClass" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "big_lib._inner.BaseClass",
+          "file": { "key": "big_lib/_inner.py" },
+          "location": { "span": { "start": 226, "length": 25 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "cls": { "key": { "name": { "key": "all.LocalClass" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "all.LocalClass",
+          "file": { "key": "all.py" },
+          "location": { "span": { "start": 384, "length": 37 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 1,
+      "parent": {
+        "parent": {
+          "python": {
             "decl": { "cls": { "key": { "name": { "key": "lib.Parent1" } } } }
           }
         },

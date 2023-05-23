@@ -16,6 +16,14 @@
     "key": {
       "tuplefield0": { "isAbstract": false, "kind": 4 },
       "tuplefield1": {
+        "module": { "key": { "name": { "key": "big_lib._inner" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 4 },
+      "tuplefield1": {
         "module": { "key": { "name": { "key": "big_lib.relative" } } }
       }
     }
@@ -37,6 +45,14 @@
       "tuplefield0": { "isAbstract": false, "kind": 6 },
       "tuplefield1": {
         "cls": { "key": { "name": { "key": "all.LocalClass" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 6 },
+      "tuplefield1": {
+        "cls": { "key": { "name": { "key": "big_lib._inner.BaseClass" } } }
       }
     }
   },
@@ -80,8 +96,34 @@
       "tuplefield1": {
         "imp": {
           "key": {
+            "as_name": { "key": "all.BaseClass" },
+            "from_name": { "key": "big_lib.BaseClass" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 6 },
+      "tuplefield1": {
+        "imp": {
+          "key": {
             "as_name": { "key": "all.Helper" },
             "from_name": { "key": "lib.HelperClass" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 6 },
+      "tuplefield1": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "big_lib.BaseClass" },
+            "from_name": { "key": "big_lib._inner.BaseClass" }
           }
         }
       }
@@ -360,6 +402,14 @@
     "key": {
       "tuplefield0": { "isAbstract": false, "kind": 14 },
       "tuplefield1": { "variable": { "key": { "name": { "key": "all.var" } } } }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 14 },
+      "tuplefield1": {
+        "variable": { "key": { "name": { "key": "big_lib.__all__" } } }
+      }
     }
   },
   {

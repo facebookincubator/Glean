@@ -20,6 +20,22 @@
     "key": {
       "parent": {
         "python": {
+          "decl": {
+            "cls": { "key": { "name": { "key": "big_lib.BaseClass" } } }
+          }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "all.LocalClass" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
           "decl": { "cls": { "key": { "name": { "key": "lib.Parent1" } } } }
         }
       },

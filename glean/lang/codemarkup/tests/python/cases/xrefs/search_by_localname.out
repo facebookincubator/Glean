@@ -27,6 +27,46 @@
   },
   {
     "key": {
+      "name": { "key": "BaseClass" },
+      "decl": { "cls": { "key": { "name": { "key": "big_lib.BaseClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "BaseClass" },
+      "decl": {
+        "cls": { "key": { "name": { "key": "big_lib._inner.BaseClass" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "BaseClass" },
+      "decl": {
+        "imp": {
+          "key": {
+            "from_name": { "key": "big_lib.BaseClass" },
+            "as_name": { "key": "all.BaseClass" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "BaseClass" },
+      "decl": {
+        "imp": {
+          "key": {
+            "from_name": { "key": "big_lib._inner.BaseClass" },
+            "as_name": { "key": "big_lib.BaseClass" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "name": { "key": "Child" },
       "decl": { "cls": { "key": { "name": { "key": "lib.Child" } } } }
     }
@@ -115,12 +155,26 @@
   },
   {
     "key": {
+      "name": { "key": "__all__" },
+      "decl": {
+        "variable": { "key": { "name": { "key": "big_lib.__all__" } } }
+      }
+    }
+  },
+  {
+    "key": {
       "name": { "key": "__private_method" },
       "decl": {
         "func": {
           "key": { "name": { "key": "lib.HelperClass.__private_method" } }
         }
       }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "_inner" },
+      "decl": { "module": { "key": { "name": { "key": "big_lib._inner" } } } }
     }
   },
   {

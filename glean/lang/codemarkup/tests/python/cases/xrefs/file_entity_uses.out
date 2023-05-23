@@ -3,7 +3,7 @@
   {
     "key": {
       "file": { "key": "all.py" },
-      "span": { "length": 3, "start": 252 },
+      "span": { "length": 3, "start": 263 },
       "target": {
         "python": {
           "decl": { "module": { "key": { "name": { "key": "lib" } } } }
@@ -14,7 +14,7 @@
   {
     "key": {
       "file": { "key": "all.py" },
-      "span": { "length": 8, "start": 413 },
+      "span": { "length": 8, "start": 435 },
       "target": {
         "python": {
           "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
@@ -25,7 +25,7 @@
   {
     "key": {
       "file": { "key": "all.py" },
-      "span": { "length": 8, "start": 462 },
+      "span": { "length": 8, "start": 484 },
       "target": {
         "python": {
           "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
@@ -36,7 +36,7 @@
   {
     "key": {
       "file": { "key": "all.py" },
-      "span": { "length": 11, "start": 263 },
+      "span": { "length": 11, "start": 274 },
       "target": {
         "python": {
           "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }

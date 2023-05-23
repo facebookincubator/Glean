@@ -338,7 +338,7 @@
         "location": {
           "name": "all",
           "file": { "key": "all.py" },
-          "location": { "span": { "start": 0, "length": 483 } }
+          "location": { "span": { "start": 0, "length": 505 } }
         }
       },
       "child": {
@@ -352,7 +352,7 @@
         "location": {
           "name": "all.LocalClass",
           "file": { "key": "all.py" },
-          "location": { "span": { "start": 373, "length": 26 } }
+          "location": { "span": { "start": 384, "length": 37 } }
         }
       },
       "style": 0
@@ -370,7 +370,7 @@
         "location": {
           "name": "all",
           "file": { "key": "all.py" },
-          "location": { "span": { "start": 0, "length": 483 } }
+          "location": { "span": { "start": 0, "length": 505 } }
         }
       },
       "child": {
@@ -382,7 +382,7 @@
         "location": {
           "name": "all.fn",
           "file": { "key": "all.py" },
-          "location": { "span": { "start": 298, "length": 72 } }
+          "location": { "span": { "start": 309, "length": 72 } }
         }
       },
       "style": 0
@@ -400,7 +400,7 @@
         "location": {
           "name": "all",
           "file": { "key": "all.py" },
-          "location": { "span": { "start": 0, "length": 483 } }
+          "location": { "span": { "start": 0, "length": 505 } }
         }
       },
       "child": {
@@ -414,7 +414,7 @@
         "location": {
           "name": "all.__all__",
           "file": { "key": "all.py" },
-          "location": { "span": { "start": 402, "length": 80 } }
+          "location": { "span": { "start": 424, "length": 80 } }
         }
       },
       "style": 0
@@ -432,7 +432,7 @@
         "location": {
           "name": "all",
           "file": { "key": "all.py" },
-          "location": { "span": { "start": 0, "length": 483 } }
+          "location": { "span": { "start": 0, "length": 505 } }
         }
       },
       "child": {
@@ -444,7 +444,7 @@
         "location": {
           "name": "all.var",
           "file": { "key": "all.py" },
-          "location": { "span": { "start": 286, "length": 9 } }
+          "location": { "span": { "start": 297, "length": 9 } }
         }
       },
       "style": 0
@@ -462,7 +462,7 @@
         "location": {
           "name": "big_lib",
           "file": { "key": "big_lib/__init__.py" },
-          "location": { "span": { "start": 0, "length": 433 } }
+          "location": { "span": { "start": 0, "length": 518 } }
         }
       },
       "child": {
@@ -476,7 +476,7 @@
         "location": {
           "name": "big_lib.big_func",
           "file": { "key": "big_lib/__init__.py" },
-          "location": { "span": { "start": 239, "length": 140 } }
+          "location": { "span": { "start": 261, "length": 140 } }
         }
       },
       "style": 0
@@ -494,7 +494,7 @@
         "location": {
           "name": "big_lib",
           "file": { "key": "big_lib/__init__.py" },
-          "location": { "span": { "start": 0, "length": 433 } }
+          "location": { "span": { "start": 0, "length": 518 } }
         }
       },
       "child": {
@@ -508,7 +508,7 @@
         "location": {
           "name": "big_lib.func_sleep",
           "file": { "key": "big_lib/__init__.py" },
-          "location": { "span": { "start": 396, "length": 36 } }
+          "location": { "span": { "start": 418, "length": 36 } }
         }
       },
       "style": 0
@@ -526,7 +526,39 @@
         "location": {
           "name": "big_lib",
           "file": { "key": "big_lib/__init__.py" },
-          "location": { "span": { "start": 0, "length": 433 } }
+          "location": { "span": { "start": 0, "length": 518 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "module": { "key": { "name": { "key": "big_lib._inner" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "big_lib._inner",
+          "file": { "key": "big_lib/_inner.py" },
+          "location": { "span": { "start": 0, "length": 252 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": { "module": { "key": { "name": { "key": "big_lib" } } } }
+          }
+        },
+        "location": {
+          "name": "big_lib",
+          "file": { "key": "big_lib/__init__.py" },
+          "location": { "span": { "start": 0, "length": 518 } }
         }
       },
       "child": {
@@ -558,7 +590,39 @@
         "location": {
           "name": "big_lib",
           "file": { "key": "big_lib/__init__.py" },
-          "location": { "span": { "start": 0, "length": 433 } }
+          "location": { "span": { "start": 0, "length": 518 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "variable": { "key": { "name": { "key": "big_lib.__all__" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "big_lib.__all__",
+          "file": { "key": "big_lib/__init__.py" },
+          "location": { "span": { "start": 457, "length": 60 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": { "module": { "key": { "name": { "key": "big_lib" } } } }
+          }
+        },
+        "location": {
+          "name": "big_lib",
+          "file": { "key": "big_lib/__init__.py" },
+          "location": { "span": { "start": 0, "length": 518 } }
         }
       },
       "child": {
@@ -572,7 +636,43 @@
         "location": {
           "name": "big_lib.big_var",
           "file": { "key": "big_lib/__init__.py" },
-          "location": { "span": { "start": 225, "length": 11 } }
+          "location": { "span": { "start": 247, "length": 11 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": {
+              "module": { "key": { "name": { "key": "big_lib._inner" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "big_lib._inner",
+          "file": { "key": "big_lib/_inner.py" },
+          "location": { "span": { "start": 0, "length": 252 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "cls": {
+                "key": { "name": { "key": "big_lib._inner.BaseClass" } }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "big_lib._inner.BaseClass",
+          "file": { "key": "big_lib/_inner.py" },
+          "location": { "span": { "start": 226, "length": 25 } }
         }
       },
       "style": 0

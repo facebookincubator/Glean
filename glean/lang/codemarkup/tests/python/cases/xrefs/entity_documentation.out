@@ -8,7 +8,7 @@
         }
       },
       "file": { "key": "all.py" },
-      "span": { "length": 49, "start": 312 },
+      "span": { "length": 49, "start": 323 },
       "text": "Another comment\u000a\u000aHere is a comment"
     }
   },
@@ -22,7 +22,7 @@
         }
       },
       "file": { "key": "big_lib/__init__.py" },
-      "span": { "length": 101, "start": 259 },
+      "span": { "length": 101, "start": 281 },
       "text": "A summary\u000a\u000aA comment goes here.\u000aA comment goes there.\u000aA comment over here too."
     }
   }

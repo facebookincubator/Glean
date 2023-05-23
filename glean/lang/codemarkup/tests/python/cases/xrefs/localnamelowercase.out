@@ -7,6 +7,7 @@
       "name": { "key": "__private_method" }
     }
   },
+  { "key": { "lowercase": "_inner", "name": { "key": "_inner" } } },
   {
     "key": {
       "lowercase": "_protected_method",
@@ -30,6 +31,7 @@
     }
   },
   { "key": { "lowercase": "all", "name": { "key": "all" } } },
+  { "key": { "lowercase": "baseclass", "name": { "key": "BaseClass" } } },
   { "key": { "lowercase": "big_func", "name": { "key": "big_func" } } },
   { "key": { "lowercase": "big_lib", "name": { "key": "big_lib" } } },
   { "key": { "lowercase": "big_var", "name": { "key": "big_var" } } },

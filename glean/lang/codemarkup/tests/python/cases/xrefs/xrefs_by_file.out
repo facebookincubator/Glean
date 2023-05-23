@@ -9,10 +9,10 @@
       },
       "file": { "key": "all.py" },
       "xref": {
-        "source": { "span": { "length": 12, "start": 435 } },
+        "source": { "span": { "length": 12, "start": 457 } },
         "target": {
           "file": { "key": "all.py" },
-          "location": { "span": { "length": 26, "start": 373 } },
+          "location": { "span": { "length": 37, "start": 384 } },
           "name": "all.LocalClass"
         }
       }
@@ -22,12 +22,52 @@
     "key": {
       "entity": {
         "python": {
+          "decl": {
+            "cls": { "key": { "name": { "key": "big_lib.BaseClass" } } }
+          }
+        }
+      },
+      "file": { "key": "all.py" },
+      "xref": {
+        "source": { "span": { "length": 9, "start": 229 } },
+        "target": {
+          "file": { "key": "big_lib/_inner.py" },
+          "location": { "span": { "length": 25, "start": 226 } },
+          "name": "big_lib._inner.BaseClass"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "cls": { "key": { "name": { "key": "big_lib.BaseClass" } } }
+          }
+        }
+      },
+      "file": { "key": "all.py" },
+      "xref": {
+        "source": { "span": { "length": 9, "start": 401 } },
+        "target": {
+          "file": { "key": "big_lib/_inner.py" },
+          "location": { "span": { "length": 25, "start": 226 } },
+          "name": "big_lib._inner.BaseClass"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
           "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
         }
       },
       "file": { "key": "all.py" },
       "xref": {
-        "source": { "span": { "length": 8, "start": 413 } },
+        "source": { "span": { "length": 8, "start": 435 } },
         "target": {
           "file": { "key": "lib.py" },
           "location": { "span": { "length": 451, "start": 351 } },
@@ -45,7 +85,7 @@
       },
       "file": { "key": "all.py" },
       "xref": {
-        "source": { "span": { "length": 8, "start": 462 } },
+        "source": { "span": { "length": 8, "start": 484 } },
         "target": {
           "file": { "key": "lib.py" },
           "location": { "span": { "length": 451, "start": 351 } },
@@ -63,7 +103,7 @@
       },
       "file": { "key": "all.py" },
       "xref": {
-        "source": { "span": { "length": 11, "start": 263 } },
+        "source": { "span": { "length": 11, "start": 274 } },
         "target": {
           "file": { "key": "lib.py" },
           "location": { "span": { "length": 451, "start": 351 } },
@@ -81,10 +121,10 @@
       },
       "file": { "key": "all.py" },
       "xref": {
-        "source": { "span": { "length": 4, "start": 449 } },
+        "source": { "span": { "length": 4, "start": 471 } },
         "target": {
           "file": { "key": "all.py" },
-          "location": { "span": { "length": 72, "start": 298 } },
+          "location": { "span": { "length": 72, "start": 309 } },
           "name": "all.fn"
         }
       }
@@ -101,10 +141,10 @@
       },
       "file": { "key": "all.py" },
       "xref": {
-        "source": { "span": { "length": 8, "start": 229 } },
+        "source": { "span": { "length": 8, "start": 240 } },
         "target": {
           "file": { "key": "big_lib/__init__.py" },
-          "location": { "span": { "length": 140, "start": 239 } },
+          "location": { "span": { "length": 140, "start": 261 } },
           "name": "big_lib.big_func"
         }
       }
@@ -121,11 +161,36 @@
       },
       "file": { "key": "all.py" },
       "xref": {
-        "source": { "span": { "length": 10, "start": 423 } },
+        "source": { "span": { "length": 10, "start": 445 } },
         "target": {
           "file": { "key": "big_lib/__init__.py" },
-          "location": { "span": { "length": 140, "start": 239 } },
+          "location": { "span": { "length": 140, "start": 261 } },
           "name": "big_lib.big_func"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "all.BaseClass" },
+                "from_name": { "key": "big_lib.BaseClass" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "all.py" },
+      "xref": {
+        "source": { "span": { "length": 9, "start": 401 } },
+        "target": {
+          "file": { "key": "all.py" },
+          "location": { "span": { "length": 9, "start": 229 } },
+          "name": "big_lib.BaseClass"
         }
       }
     }
@@ -146,10 +211,10 @@
       },
       "file": { "key": "all.py" },
       "xref": {
-        "source": { "span": { "length": 8, "start": 413 } },
+        "source": { "span": { "length": 8, "start": 435 } },
         "target": {
           "file": { "key": "all.py" },
-          "location": { "span": { "length": 11, "start": 263 } },
+          "location": { "span": { "length": 11, "start": 274 } },
           "name": "lib.HelperClass"
         }
       }
@@ -171,10 +236,10 @@
       },
       "file": { "key": "all.py" },
       "xref": {
-        "source": { "span": { "length": 8, "start": 462 } },
+        "source": { "span": { "length": 8, "start": 484 } },
         "target": {
           "file": { "key": "all.py" },
-          "location": { "span": { "length": 11, "start": 263 } },
+          "location": { "span": { "length": 11, "start": 274 } },
           "name": "lib.HelperClass"
         }
       }
@@ -196,10 +261,10 @@
       },
       "file": { "key": "all.py" },
       "xref": {
-        "source": { "span": { "length": 10, "start": 423 } },
+        "source": { "span": { "length": 10, "start": 445 } },
         "target": {
           "file": { "key": "all.py" },
-          "location": { "span": { "length": 8, "start": 229 } },
+          "location": { "span": { "length": 8, "start": 240 } },
           "name": "big_lib.big_func"
         }
       }
@@ -221,11 +286,61 @@
       },
       "file": { "key": "all.py" },
       "xref": {
-        "source": { "span": { "length": 9, "start": 472 } },
+        "source": { "span": { "length": 9, "start": 494 } },
         "target": {
           "file": { "key": "all.py" },
-          "location": { "span": { "length": 7, "start": 239 } },
+          "location": { "span": { "length": 7, "start": 250 } },
           "name": "big_lib.big_var"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "big_lib.BaseClass" },
+                "from_name": { "key": "big_lib._inner.BaseClass" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "all.py" },
+      "xref": {
+        "source": { "span": { "length": 9, "start": 229 } },
+        "target": {
+          "file": { "key": "big_lib/__init__.py" },
+          "location": { "span": { "length": 9, "start": 236 } },
+          "name": "big_lib._inner.BaseClass"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "big_lib.BaseClass" },
+                "from_name": { "key": "big_lib._inner.BaseClass" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "all.py" },
+      "xref": {
+        "source": { "span": { "length": 9, "start": 401 } },
+        "target": {
+          "file": { "key": "big_lib/__init__.py" },
+          "location": { "span": { "length": 9, "start": 236 } },
+          "name": "big_lib._inner.BaseClass"
         }
       }
     }
@@ -242,7 +357,7 @@
         "source": { "span": { "length": 7, "start": 214 } },
         "target": {
           "file": { "key": "big_lib/__init__.py" },
-          "location": { "span": { "length": 433, "start": 0 } },
+          "location": { "span": { "length": 518, "start": 0 } },
           "name": "big_lib"
         }
       }
@@ -257,7 +372,7 @@
       },
       "file": { "key": "all.py" },
       "xref": {
-        "source": { "span": { "length": 3, "start": 252 } },
+        "source": { "span": { "length": 3, "start": 263 } },
         "target": {
           "file": { "key": "lib.py" },
           "location": { "span": { "length": 1034, "start": 0 } },
@@ -275,10 +390,10 @@
       },
       "file": { "key": "all.py" },
       "xref": {
-        "source": { "span": { "length": 5, "start": 455 } },
+        "source": { "span": { "length": 5, "start": 477 } },
         "target": {
           "file": { "key": "all.py" },
-          "location": { "span": { "length": 9, "start": 286 } },
+          "location": { "span": { "length": 9, "start": 297 } },
           "name": "all.var"
         }
       }
@@ -295,10 +410,10 @@
       },
       "file": { "key": "all.py" },
       "xref": {
-        "source": { "span": { "length": 7, "start": 239 } },
+        "source": { "span": { "length": 7, "start": 250 } },
         "target": {
           "file": { "key": "big_lib/__init__.py" },
-          "location": { "span": { "length": 11, "start": 225 } },
+          "location": { "span": { "length": 11, "start": 247 } },
           "name": "big_lib.big_var"
         }
       }
@@ -315,10 +430,10 @@
       },
       "file": { "key": "all.py" },
       "xref": {
-        "source": { "span": { "length": 9, "start": 472 } },
+        "source": { "span": { "length": 9, "start": 494 } },
         "target": {
           "file": { "key": "big_lib/__init__.py" },
-          "location": { "span": { "length": 11, "start": 225 } },
+          "location": { "span": { "length": 11, "start": 247 } },
           "name": "big_lib.big_var"
         }
       }
