@@ -79,7 +79,7 @@ rangeSpanToLocation repo file rangespan = do
   toLocation repo file span
 
 -- | Convert Glean-side range span and file to the Glass range locations, with
--- ranges in exlclusive-end form, and paths adjusted to be repo-relative
+-- ranges in exclusive-end form, and paths adjusted to be repo-relative
 rangeSpanToLocationRange -- locationRangeFromCodeLocation
   :: RepoName
   -> Src.File
