@@ -314,6 +314,25 @@ predicate FileCall :
   | codemarkup.hack.HackFileCall{File, Span, CodeArgs, Callee, DispatchArg, StaticType}
   )
 
+
+# Look up entities that reference the given target.
+# This can be used, for example, to find calling functions
+# (by narrowing the results using `FileEntityKinds`).
+predicate ReferencingEntity :
+  {
+    target: code.Entity,
+    referrer: code.Entity,
+    reference_file: src.File,
+    reference_range: codemarkup.types.RangeSpan,
+    referrer_location: codemarkup.types.Location,
+  }
+  { Target, Referrer, File, Span, RLocation } where
+    EntityReferences { Target, File, Span };
+    FileEntityLocations { File, RLocation, Referrer };
+    { location = RSpan } = RLocation;
+    codemarkup.types.RangeSpanContains { RSpan, Span }
+
+
 #
 # Annotations
 #

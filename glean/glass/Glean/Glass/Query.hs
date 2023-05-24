@@ -184,21 +184,15 @@ findReferenceEntities ent =
           (caller :: Angle Code.Entity)
           (referenceRangespan :: Angle Code.RangeSpan)
           (callerLocation :: Angle Code.Location)
-          (callerRangespan :: Angle Code.RangeSpan)
           ->
     Angle.tuple (reffile, caller, callerLocation, referenceRangespan) `where_`
-    [ wild .= predicate @Code.EntityReferences (
+    [ wild .= predicate @Code.ReferencingEntity (
       rec $
           field @"target" ent $
-          field @"file" (asPredicate reffile) $
-          field @"range" referenceRangespan
-        end
-      )
-    , wild .= predicate @Code.FileEntityLocations (
-        rec $
-          field @"entity" caller $
-          field @"file" (asPredicate reffile) $
-          field @"location" callerLocation
+          field @"referrer" caller $
+          field @"reference_file" (asPredicate reffile) $
+          field @"reference_range" referenceRangespan $
+          field @"referrer_location" callerLocation
         end
       )
     , wild .= predicate @Code.FileEntityKinds (
@@ -213,13 +207,6 @@ findReferenceEntities ent =
             )
         end
     )
-    , rec (field @"location" callerRangespan end) .= callerLocation
-    , wild .= predicate @Code.RangeSpanContains (
-        rec $
-          field @"rangeSpan" callerRangespan $
-          field @"contains" referenceRangespan
-        end
-      )
     ]
 --
 -- Finding entities by name search
