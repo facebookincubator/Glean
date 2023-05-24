@@ -12,8 +12,6 @@ import com.intellij.openapi.project.Project
 import org.jetbrains.kotlin.analyzer.AnalysisResult
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
-import org.jetbrains.kotlin.container.ComponentProvider
-import org.jetbrains.kotlin.context.ProjectContext
 import org.jetbrains.kotlin.descriptors.ModuleDescriptor
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.BindingTrace
@@ -27,12 +25,12 @@ class KotlinIndexerPluginExtension(
     private val messageCollector: MessageCollector
 ) : AnalysisHandlerExtension {
 
-    override fun analysisCompleted(
-        project: Project,
-        module: ModuleDescriptor,
-        bindingTrace: BindingTrace,
-        files: Collection<KtFile>
-    ): AnalysisResult? {
+  override fun analysisCompleted(
+      project: Project,
+      module: ModuleDescriptor,
+      bindingTrace: BindingTrace,
+      files: Collection<KtFile>
+  ): AnalysisResult? {
     // Fail fast: This lets us assume that there is a file farther down
     if (files.isEmpty()) {
       return null

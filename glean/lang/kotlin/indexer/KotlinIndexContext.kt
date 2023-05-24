@@ -22,23 +22,19 @@ class KotlinIndexContext {
   }
 
   fun dump(outputPath: String) {
-    if (this.methods.size > 0) { 
-        val out = FileOutputStream(outputPath) 
-        out.write("[".toByteArray())
+    if (this.methods.size > 0) {
+      val out = FileOutputStream(outputPath)
+      out.write("[".toByteArray())
       // writing only last method for now
-        this.methods.forEachIndexed { index: Int, element: ThriftSerializable ->
-            run {
-                if (index > 0) {
-                    out.write(",".toByteArray())
-                }
-                SerializerUtil.toOutStream(
-                    element,
-                    out,
-                    SerializationProtocol.TSimpleJSONBase64
-                )
-            }
+      this.methods.forEachIndexed { index: Int, element: ThriftSerializable ->
+        run {
+          if (index > 0) {
+            out.write(",".toByteArray())
+          }
+          SerializerUtil.toOutStream(element, out, SerializationProtocol.TSimpleJSONBase64)
         }
-        out.write("]".toByteArray())
+      }
+      out.write("]".toByteArray())
     }
   }
 }
