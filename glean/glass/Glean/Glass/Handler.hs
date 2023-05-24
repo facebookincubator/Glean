@@ -854,7 +854,7 @@ fetchSymbolReferences
 fetchSymbolReferences scsrepo lang toks limit b = backendRunHaxl b $ do
   er <- symbolToAngleEntities lang toks
   case er of
-    Left err -> return ([], Just err)
+    Left err -> return ([], Just (err <> logError (gleanDBs b)))
     Right (entities, searchErr) -> do
       locs <- forM entities $ \(entityRepo, query) ->
         withRepo entityRepo $ do
@@ -875,8 +875,9 @@ fetchSymbolReferenceRanges
   -> IO ([LocationRange], Maybe ErrorLogger)
 fetchSymbolReferenceRanges scsrepo lang toks limit b = backendRunHaxl b $ do
   er <- symbolToAngleEntities lang toks
+  let logDBs x = logError (gleanDBs b) <> x
   case er of
-    Left err -> return ([], Just err)
+    Left err -> return ([], Just $ logDBs err)
     Right (entities, searchErr) -> do
       ranges <- forM entities $ \(entityRepo, query) ->
         withRepo entityRepo $ do
@@ -884,7 +885,7 @@ fetchSymbolReferenceRanges scsrepo lang toks limit b = backendRunHaxl b $ do
                 rangeSpanToLocationRange scsrepo targetFile rspan
           uses <- searchWithLimit limit $ Query.findReferenceRangeSpan query
           mapM convert uses
-      return (nubOrd $ concat ranges, fmap logError searchErr)
+      return (nubOrd $ concat ranges, fmap (logDBs . logError) searchErr)
 
 -- | Search for a symbol and return an Angle query that identifies the entities
 -- Return the angle query and the Glean.repo to which it applies.
@@ -1011,7 +1012,8 @@ fetchDocumentSymbols (FileReference scsrepo path) mlimit includeRefs b mlang =
     case efile of
       Left err -> do
         let emptyResponse = DocumentSymbols [] [] (revision b) False
-        return (emptyResponse, FoundNone, Just (logError err))
+            logs = logError err <> logError (gleanDBs b)
+        return (emptyResponse, FoundNone, Just logs)
 
         where
           -- Use first db's revision
@@ -1175,9 +1177,10 @@ genericFetchFileAttributes
 
 genericFetchFileAttributes key path mlimit = do
   efile <- getFile path
+  repo <- Glean.haxlRepo
   case efile of
     Left err ->
-      return (mempty, Just (logError err))
+      return (mempty, Just (logError err <> logError repo))
     Right fileId -> do
       searchFileAttributes key mlimit (Glean.getId fileId)
 
@@ -1191,11 +1194,13 @@ searchFileAttributes
 searchFileAttributes key mlimit fileId = do
   eraw <- try $ Attributes.searchBy key mlimit $
                 Attributes.queryFileAttributes key fileId
+  repo <- Glean.haxlRepo
   case eraw of
     Left (err::SomeException) -- logic errors or transient errors
       -> return
         (mempty,
-        Just (logError $ GlassExceptionReason_attributesError $ textShow err))
+        Just (logError (GlassExceptionReason_attributesError $ textShow err)
+              <> logError repo))
     Right raw
       -> return (Attributes.toAttrMap key raw, Nothing)
 
@@ -1556,9 +1561,12 @@ searchRelated env@Glass.Env{..} sym opts@RequestOptions{..}
     -- Incoming calls, mapping a symbol to all its callers symbols.
     searchRelatedCalls RelationDirection_Parent child _ = do
         let SearchEntity{entityRepo, decl, file, name, rangespan} = child
+        repo <- Glean.haxlRepo
         case entityToAngle decl of
           Left err -> return
-            ([], Just (logError (GlassExceptionReason_entityNotSupported err)))
+            ([], Just (logError (GlassExceptionReason_entityNotSupported err)
+                      <> logError repo)
+            )
           Right query -> do
             let childRL = ((decl, file, rangespan, name), sym)
                 -- limit until we optimize the query to use DeclarationSource
