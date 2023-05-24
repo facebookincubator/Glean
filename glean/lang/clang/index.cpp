@@ -70,7 +70,7 @@ DEFINE_string(repo_hash, "", "Glean database instance (formely known as hash). U
 DEFINE_int32(max_comm_errors, 30,
   "maximum number of consecutive communication errors");
 DEFINE_int32(stop_after, 0, "stop after N files");
-DEFINE_int32(max_rss, 6291456, "stop after RSS reaches this size (kB)");
+DEFINE_int32(max_rss, 0, "stop after RSS reaches this size (kB)");
 DEFINE_bool(dry_run, false, "don't send data");
 DEFINE_bool(fact_stats, true, "log fact statistics");
 DEFINE_bool(ownership, false, "index fact ownership");
