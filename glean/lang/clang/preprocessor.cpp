@@ -70,7 +70,10 @@ struct PPCallbacks final : public clang::PPCallbacks {
 #endif
       ) override {
 #if LLVM_VERSION_MAJOR >= 15
-    last_include = ClangDB::Include{hashLoc, filenameRange, &file->getFileEntry()};
+    // file may be empty if it was not found (a preprocessor error)
+    if (file) {
+      last_include = ClangDB::Include{hashLoc, filenameRange, &file->getFileEntry()};
+    }
 #else
     last_include = ClangDB::Include{hashLoc, filenameRange, file};
 #endif
