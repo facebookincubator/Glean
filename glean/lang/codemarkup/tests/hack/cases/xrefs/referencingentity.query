@@ -1,0 +1,3 @@
+query: codemarkup.ReferencingEntity { target = { hack = { decl = { function_ = { name = { name = "corge" }}}}}}
+perf: true
+transform: [gensort, []]

@@ -1,0 +1,159 @@
+[
+  "@generated",
+  {
+    "key": {
+      "tuplefield0": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
+              }
+            }
+          }
+        }
+      },
+      "tuplefield1": { "key": "www/RefClass.php" },
+      "tuplefield2": {
+        "name": "RefClass",
+        "file": { "key": "www/RefClass.php" },
+        "location": { "span": { "start": 226, "length": 785 } }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceClass" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "tuplefield1": { "key": "www/SourceClass.php" },
+      "tuplefield2": {
+        "name": "SourceClass",
+        "file": { "key": "www/SourceClass.php" },
+        "location": { "span": { "start": 253, "length": 451 } }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "bar" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "RefClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "tuplefield1": { "key": "www/RefClass.php" },
+      "tuplefield2": {
+        "name": "bar",
+        "file": { "key": "www/RefClass.php" },
+        "location": { "span": { "start": 619, "length": 390 } }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "bar" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "tuplefield1": { "key": "www/SourceClass.php" },
+      "tuplefield2": {
+        "name": "bar",
+        "file": { "key": "www/SourceClass.php" },
+        "location": { "span": { "start": 392, "length": 71 } }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "bazza" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "RefClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "tuplefield1": { "key": "www/RefClass.php" },
+      "tuplefield2": {
+        "name": "bazza",
+        "file": { "key": "www/RefClass.php" },
+        "location": { "span": { "start": 459, "length": 59 } }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "foo" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "RefClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "tuplefield1": { "key": "www/RefClass.php" },
+      "tuplefield2": {
+        "name": "foo",
+        "file": { "key": "www/RefClass.php" },
+        "location": { "span": { "start": 388, "length": 67 } }
+      }
+    }
+  }
+]

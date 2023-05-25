@@ -1,0 +1,10 @@
+query: |
+  { Referrer, File, Location } where
+    codemarkup.ReferencingEntity {
+      target = { hack = { decl = { function_ = { name = { name = "corge" }}}}},
+      referrer = Referrer,
+      reference_file = File,
+      referrer_location = Location,
+    }
+perf: true
+transform: [gensort, []]
