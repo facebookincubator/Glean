@@ -141,6 +141,8 @@ type FileLocation = {
 # Why didn't Glean Indexer index a particular file?
 type IndexFailureReason = enum {
   CompileError |
+  BuildSystemError |
+  Unclassified
 }
 
 # It is a good practice to add all errors directly into db
