@@ -292,7 +292,7 @@ instance Plugin ListCommand where
       listFormat <- shellFormatOpt
       listVerbosity <- flag DbSummarise DbDescribe (
         short 'v' <>
-        long "--verbose" <>
+        long "verbose" <>
         help "include more details in tty/plain formats"
         )
       return List{..}
