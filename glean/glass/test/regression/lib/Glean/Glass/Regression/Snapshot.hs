@@ -38,6 +38,9 @@ import qualified Data.ByteString as S
 import qualified Data.ByteString.Lazy as B
 import qualified Data.Map.Strict as Map
 import qualified Data.Yaml as Yaml
+import Util.List ( uniq )
+import Data.Tuple.Extra
+import Data.Either.Extra
 
 import qualified Thrift.Protocol
 import qualified Thrift.Protocol.JSON as Thrift
@@ -52,6 +55,8 @@ import Glean.Glass.Types as Glass
 import Glean.Glass.Env as Glass ( Env )
 import Glean.Glass.Regression.Util as Glass ( withTestEnv )
 import qualified Glean.Regression.Snapshot.Driver as Glean
+import qualified Glean.Glass.SymbolId as Glass
+import qualified Glean.Glass.SymbolId.Cxx.Parse as Cxx
 
 newtype Cfg =
   Cfg {
@@ -179,7 +184,28 @@ evalQuery glassEnv qFile Query{..} oFile = case action of
   "fileIncludeLocations" -> withObjectArgs qFile oFile args
     (Glass.fileIncludeLocations glassEnv)
 
+  -- this lists all symbol ids in a file and then validates them
+  -- wrapper for validating C++
+  "validateCxxSymbolIds" -> withObjectArgs qFile oFile args
+    (validateCxxSymbols glassEnv)
+
   _ -> error $ "Invalid action: " <> show action
+
+-- | Take all the symbol ids and validate them as C++ symbol id syntax
+-- Return the errors and any successes as records
+validateCxxSymbols
+  :: Env -> DocumentSymbolsRequest -> RequestOptions
+  -> IO [Either [Text] Cxx.SymbolEnv]
+validateCxxSymbols glassEnv req def = do
+  res <- Glass.documentSymbolListX glassEnv req def
+  let defns = map Glass.definitionSymbolX_sym
+        (Glass.documentSymbolListXResult_definitions res)
+      refs = map Glass.referenceRangeSymbolX_sym
+        (Glass.documentSymbolListXResult_references res)
+      syms = uniq (defns ++ refs)
+      toks = map thd3 (filter ((== Language_Cpp) . snd3) -- only cxx ids thx
+                (rights (map Glass.symbolTokens syms)))
+  return (map Cxx.validateSymbolId toks)
 
 decodeObjectAsThriftJson
   :: (Thrift.Protocol.ThriftStruct a, ToJSON a)
@@ -198,7 +224,8 @@ withSymbolId oFile args f = do
   writeResult oFile res
 
 withObjectArgs
- :: (Thrift.Protocol.ThriftStruct req, ToJSON req, ToJSON a, DeterministicResponse a)
+ :: (Thrift.Protocol.ThriftStruct req,
+     ToJSON req, ToJSON a, DeterministicResponse a)
  => FilePath
  -> FilePath
  -> Value
@@ -209,7 +236,8 @@ withObjectArgs qFile oFile args f = do
   writeResult oFile res
 
 withObjectAndSymbolId
- :: (Thrift.Protocol.ThriftStruct req, ToJSON req, ToJSON a, DeterministicResponse a)
+ :: (Thrift.Protocol.ThriftStruct req,
+    ToJSON req, ToJSON a, DeterministicResponse a)
  => FilePath
  -> FilePath
  -> Value
@@ -250,6 +278,9 @@ writeResult oFile res = B.writeFile oFile content
 
 class DeterministicResponse a where
   det :: a -> a
+
+instance DeterministicResponse (Either [Text] Cxx.SymbolEnv) where
+  det = id
 
 instance DeterministicResponse DocumentSymbolListXResult where
   det (DocumentSymbolListXResult refs defs _rev truncated) =

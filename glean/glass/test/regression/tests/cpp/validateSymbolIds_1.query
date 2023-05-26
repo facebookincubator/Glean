@@ -1,0 +1,2 @@
+action: validateCxxSymbolIds
+args: {"include_refs":true,"filepath":"test.cpp","repository":"test"}

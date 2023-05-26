@@ -1,0 +1,701 @@
+[
+    "@generated",
+    [
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "Global",
+                "params": [],
+                "path": "",
+                "scopes": [],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "GlobalClass",
+                "params": [],
+                "path": "",
+                "scopes": [],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "baz",
+                "params": [],
+                "path": "",
+                "scopes": [],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "d",
+                "params": [],
+                "path": "",
+                "scopes": [],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "foo",
+                "params": [],
+                "path": "",
+                "scopes": [],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "h",
+                "params": [],
+                "path": "",
+                "scopes": [],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "h",
+                "params": [],
+                "path": "",
+                "scopes": [],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "maybe",
+                "params": [],
+                "path": "",
+                "scopes": [],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "U",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "baz"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "InU",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "baz",
+                    "U"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "InUClass",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "baz",
+                    "U"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": null,
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "d"
+                ],
+                "tag": "CTorSignature"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": null,
+                "params": [
+                    "char",
+                    "int",
+                    "const char *"
+                ],
+                "path": "",
+                "scopes": [
+                    "d"
+                ],
+                "tag": "CTorSignature"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": null,
+                "params": [
+                    "const char *"
+                ],
+                "path": "",
+                "scopes": [
+                    "d"
+                ],
+                "tag": "CTorSignature"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": null,
+                "params": [
+                    "const char *",
+                    "void (*)()"
+                ],
+                "path": "",
+                "scopes": [
+                    "d"
+                ],
+                "tag": "CTorSignature"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": null,
+                "params": [
+                    "const d &"
+                ],
+                "path": "",
+                "scopes": [
+                    "d"
+                ],
+                "tag": "CTorSignature"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "d"
+                ],
+                "tag": "Constructor"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "c",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "d"
+                ],
+                "tag": "Constructor"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "i",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "d"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "i",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "d"
+                ],
+                "tag": "Constructor"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "p",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "d"
+                ],
+                "tag": "Constructor"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "val",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "d"
+                ],
+                "tag": "Constructor"
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "S",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "foo"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "bar",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "foo"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "f",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "foo"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "foo",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "foo"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "foo",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "foo"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "fooFn",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "foo"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "TypedefDeclInteger",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "foo",
+                    "S"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "UsingDeclInteger",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "foo",
+                    "S"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "T",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "foo",
+                    "bar"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "TypedefDeclShort",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "foo",
+                    "bar"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "UsingDeclShort",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "foo",
+                    "bar"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "g",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "foo",
+                    "bar"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "memberVariableDecl",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "foo",
+                    "bar",
+                    "T"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "four",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "foo",
+                    "foo"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "fooI",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "foo",
+                    "fooFn"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "_i",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "h"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "i",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "h"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "s",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "h"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "t",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "h"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "Nothing",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "maybe"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "Something",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "maybe"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "nothing",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "maybe"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": null,
+                "params": [
+                    "maybe::Nothing::_secret"
+                ],
+                "path": "",
+                "scopes": [
+                    "maybe",
+                    "Nothing"
+                ],
+                "tag": "CTorSignature"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "maybe",
+                    "Nothing"
+                ],
+                "tag": "Constructor"
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "_secret",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "maybe",
+                    "Nothing"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "_magic",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "maybe",
+                    "Nothing",
+                    "_secret"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": null,
+                "params": [
+                    "int"
+                ],
+                "path": "",
+                "scopes": [
+                    "maybe",
+                    "Something"
+                ],
+                "tag": "CTorSignature"
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": null,
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "maybe",
+                    "Something"
+                ],
+                "tag": "Destructor"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "a",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "maybe",
+                    "Something"
+                ],
+                "tag": "Constructor"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "a_",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "maybe",
+                    "Something"
+                ],
+                "tag": null
+            }
+        }
+    ]
+]

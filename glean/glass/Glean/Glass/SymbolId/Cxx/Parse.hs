@@ -6,6 +6,8 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# LANGUAGE DeriveGeneric #-}
+
 module Glean.Glass.SymbolId.Cxx.Parse (
     validateSymbolId,
     SymbolEnv(..),
@@ -13,15 +15,14 @@ module Glean.Glass.SymbolId.Cxx.Parse (
     Name(..)
   ) where
 
+import GHC.Generics
 import Data.Text ( Text )
 import qualified Data.Text as Text
 import Control.Monad.State.Strict
 import Util.Text ( textShow )
+import Data.Aeson.Types ( ToJSON )
 
 -- "lexer"
-
-newtype Name = Name Text
-  deriving (Eq, Show)
 
 -- | Tokenize each fragment
 data Token
@@ -52,14 +53,22 @@ data SymbolEnv = SymbolEnv {
   tag :: Maybe SymbolTag,
   params :: [Name], -- maybe parameter signature
   errors :: [Text] -- any errors we find
-} deriving (Eq, Show)
+} deriving (Eq, Ord, Show, Generic)
+
+newtype Name = Name Text
+  deriving (Eq, Ord, Show, Generic)
 
 -- Any tags that help to classify the sort of symbol we have
 data SymbolTag
   = Constructor
   | CTorSignature -- .ctor with type signature of params
   | Destructor
-  deriving (Eq, Show)
+  deriving (Eq, Ord, Show, Generic)
+
+-- for regression testing
+instance ToJSON Name
+instance ToJSON SymbolTag
+instance ToJSON SymbolEnv
 
 initState :: Text -> SymbolEnv
 initState p = SymbolEnv {
@@ -96,8 +105,8 @@ setErr s = modify' $ \env -> env { errors = s : errors env }
 
 validateSymbolId :: [Text] -> Either [Text] SymbolEnv
 validateSymbolId toks = case toks of
-  [] -> Left ["Cxx.parseSymbolId: empty symbol specification"]
-  [_] -> Left ["Cxx.parseSymbolId: incomplete symbol specification"]
+  [] -> Left ["Cxx.parseSymbolId: empty symbol"]
+  [_] -> Left ["Cxx.parseSymbolId: incomplete symbol:" <> textShow toks]
   path:name:rest ->
     let env = execState
                (parseOneName (tokenize name) (map tokenize rest))

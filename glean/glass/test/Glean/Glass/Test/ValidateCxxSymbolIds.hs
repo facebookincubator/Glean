@@ -13,12 +13,12 @@ module Glean.Glass.Test.ValidateCxxSymbolIds (main) where
 
 import Test.HUnit ( Test(..), (@=?) )
 import Data.Text ( Text )
+import qualified Data.Text as Text
 
 import TestRunner ( testRunner )
 import Glean.Init ( withUnitTest )
 
 import Glean.Glass.SymbolId.Cxx.Parse
-import qualified Glean.Glass.Utils as Utils
 
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
@@ -30,6 +30,8 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "ctor_sig1" ctor_sig1
   , TestLabel "ctor_sig2" ctor_sig2
   , TestLabel "ctor_param" ctor_param
+  , TestLabel "operator_1" operator_decl
+  , TestLabel "anon_ns" anon_ns
   ]
 
 namespace1 :: Test
@@ -72,13 +74,23 @@ ctor_param = test
   (ctor <$> ok_decl "fbcode" ["folly","dynamic"] "t")
   (sym "fbcode/folly/dynamic/.ctor/t/.decl")
 
+operator_decl :: Test
+operator_decl = test
+  (ok_decl "fbcode" ["std", "__shared_ptr_access"] "operator-%3E")
+  (sym "fbcode/std/__shared_ptr_access/operator-%3E/.decl")
+
+anon_ns :: Test
+anon_ns = test
+  (ok "fbcode" ["folly",""] "Test")
+  (sym "fbcode/folly//Test")
+
 -- Helpers
 
 test :: (Eq a, Show a) => a -> a -> Test
 test expected actual = TestCase (expected @=? actual)
 
 sym :: Text -> Either [Text] SymbolEnv
-sym xs = validateSymbolId (Utils.pathFragments xs)
+sym xs = validateSymbolId (Text.split (=='/') xs)
 
 ok :: Text -> [Text] -> Text -> Either [Text] SymbolEnv
 ok path scope name =
