@@ -8,14 +8,28 @@
 
 package glean.lang.kotlin.indexer.glean_utils
 
-import com.facebook.glean.schema.javakotlin_alpha.*
+import com.facebook.glean.schema.javakotlin_alpha.Path as GleanPath
+import com.facebook.glean.schema.javakotlin_alpha.PathKey as GleanPathKey
+import com.facebook.glean.schema.javakotlin_alpha.QName
+import com.facebook.glean.schema.javakotlin_alpha.QNameKey
 import com.facebook.tools.jast.primitiveToShortFormat
-import org.jetbrains.kotlin.descriptors.*
+import org.jetbrains.kotlin.descriptors.CallableDescriptor
+import org.jetbrains.kotlin.descriptors.ClassDescriptor
+import org.jetbrains.kotlin.descriptors.PackageViewDescriptor
+import org.jetbrains.kotlin.descriptors.ParameterDescriptor
+import org.jetbrains.kotlin.descriptors.buildPossiblyInnerType
+import org.jetbrains.kotlin.descriptors.containingPackage
 import org.jetbrains.kotlin.js.descriptorUtils.getJetTypeFqName
 import org.jetbrains.kotlin.js.descriptorUtils.nameIfStandardType
 import org.jetbrains.kotlin.types.KotlinType
 import org.jetbrains.kotlin.types.isFlexible
-import org.jetbrains.kotlin.types.typeUtil.*
+import org.jetbrains.kotlin.types.typeUtil.constituentTypes
+import org.jetbrains.kotlin.types.typeUtil.isAnyOrNullableAny
+import org.jetbrains.kotlin.types.typeUtil.isArrayOfNothing
+import org.jetbrains.kotlin.types.typeUtil.isBoolean
+import org.jetbrains.kotlin.types.typeUtil.isPrimitiveNumberType
+import org.jetbrains.kotlin.types.typeUtil.isTypeParameter
+import org.jetbrains.kotlin.types.typeUtil.isUnit
 import org.jetbrains.kotlin.types.upperIfFlexible
 
 fun ParameterDescriptor.qualifiedName(): QName {
@@ -28,7 +42,7 @@ fun CallableDescriptor.qualifiedName(): QName {
   return this.path().toQName()
 }
 
-private fun CallableDescriptor.path(): Path {
+private fun CallableDescriptor.path(): GleanPath {
   val methodPackage = this.containingPackage()
   val methodDecl = this.containingDeclaration
   val classPath =
@@ -40,9 +54,9 @@ private fun CallableDescriptor.path(): Path {
   return classPath.add(this.name.toString())
 }
 
-fun ClassDescriptor.path(): Path {
+fun ClassDescriptor.path(): GleanPath {
   val container = this.containingDeclaration
-  val containerPath: Path? =
+  val containerPath: GleanPath? =
       if (container is ClassDescriptor) container.path()
       else {
         if (container is PackageViewDescriptor) {
@@ -54,24 +68,24 @@ fun ClassDescriptor.path(): Path {
   return containerPath.add(this.name.toString())
 }
 
-fun PackageViewDescriptor.path(): Path {
+fun PackageViewDescriptor.path(): GleanPath {
   return this.fqName.pathSegments().map { e -> e.toString() }.joinNonEmptyPath()
 }
 
-fun String.path(): Path {
-  val key = PathKey.Builder().setBase(this.toName()).build()
-  return Path.Builder().setKey(key).build()
+fun String.path(): GleanPath {
+  val key = GleanPathKey.Builder().setBase(this.toName()).build()
+  return GleanPath.Builder().setKey(key).build()
 }
 
-fun Path?.add(name: String): Path {
-  val key = PathKey.Builder().setBase(name.toName())
+fun GleanPath?.add(name: String): GleanPath {
+  val key = GleanPathKey.Builder().setBase(name.toName())
   if (this !== null) {
     key.container = this
   }
-  return Path.Builder().setKey(key.build()).build()
+  return GleanPath.Builder().setKey(key.build()).build()
 }
 
-fun Path?.qNameInPath(name: String): QName {
+fun GleanPath?.qNameInPath(name: String): QName {
   val key = QNameKey.Builder().setName(name.toName())
   if (this !== null) {
     key.context = this
@@ -79,27 +93,27 @@ fun Path?.qNameInPath(name: String): QName {
   return QName.Builder().setKey(key.build()).build()
 }
 
-fun List<String>.joinPath(): Path? {
-  var prev: Path? = null
-  for (path in this) {
-    prev = prev?.add(path)
+fun List<String>.joinPath(): GleanPath? {
+  var prev: GleanPath? = null
+  for (pathSegment in this) {
+    prev = prev?.add(pathSegment) ?: pathSegment.path()
   }
   return prev
 }
 
-fun List<String>.joinNonEmptyPath(): Path {
+fun List<String>.joinNonEmptyPath(): GleanPath {
   return this.joinPath() ?: throw Error("joinNonEmptyPath returned null")
 }
 
-fun Path.replaceLast(key: String): Path {
+fun GleanPath.replaceLast(key: String): GleanPath {
   return this.key?.container.add(key)
 }
 
-fun Path.toQName(): QName {
+fun GleanPath.toQName(): QName {
   return this.key?.container.qNameInPath(this.key?.base.toString())
 }
 
-fun KotlinType.path(): Path {
+fun KotlinType.path(): GleanPath {
   if (this.isPrimitiveNumberType() || this.isBoolean() || this.isUnit()) {
     val typ = this.toString().lowercase()
     return primitiveToShortFormat(if (this.isMarkedNullable) typ.substringBefore("?") else typ)
