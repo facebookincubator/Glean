@@ -9,32 +9,15 @@
 package glean.lang.kotlin.indexer
 
 import com.facebook.glean.schema.kotlin_alpha.MethodDeclaration
-import com.facebook.thrift.payload.ThriftSerializable
-import com.facebook.thrift.util.SerializationProtocol
-import com.facebook.thrift.util.SerializerUtil
-import java.io.FileOutputStream
 
 class KotlinIndexContext {
-  private val methods = mutableListOf<MethodDeclaration>()
+  private val predicates = Predicates()
 
   fun addMethods(method: MethodDeclaration) {
-    this.methods.add(method)
+    this.predicates.addPredicate(method)
   }
 
   fun dump(outputPath: String) {
-    if (this.methods.size > 0) {
-      val out = FileOutputStream(outputPath)
-      out.write("[".toByteArray())
-      // writing only last method for now
-      this.methods.forEachIndexed { index: Int, element: ThriftSerializable ->
-        run {
-          if (index > 0) {
-            out.write(",".toByteArray())
-          }
-          SerializerUtil.toOutStream(element, out, SerializationProtocol.TSimpleJSONBase64)
-        }
-      }
-      out.write("]".toByteArray())
-    }
+    this.predicates.serialize(outputPath)
   }
 }
