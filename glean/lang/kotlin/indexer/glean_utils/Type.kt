@@ -36,7 +36,14 @@ fun buildKotlinType(typeReference: KotlinType, bindingContext: BindingContext): 
     typeKey.location = buildFileLocation(typeConstructorElement)
   }
 
-  typeKey.typeArgs = typeReference.arguments.map { t -> t.type.asTypeArg(bindingContext) }
+  val typeArgs: MutableList<TypeArg> = mutableListOf()
+  for (typeArg in typeReference.arguments) {
+    if (typeArg.isStarProjection) {
+      continue
+    }
+    typeArgs.add(typeArg.type.asTypeArg(bindingContext))
+  }
+  typeKey.typeArgs = typeArgs
 
   typeKey.isIsNullable = typeReference.nullability() == TypeNullability.NULLABLE
   return Type.Builder().setKey(typeKey.build()).build()
