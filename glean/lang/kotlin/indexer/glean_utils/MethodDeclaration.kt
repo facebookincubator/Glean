@@ -16,6 +16,9 @@ import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.bindingContextUtil.getAbbreviatedTypeOrType
 
+class MethodDeclarationBuilderError(message: String, functionName: String) :
+    Throwable("Failed to build method declaration for $functionName: $message") {}
+
 private fun getFunctionDescriptor(
     namedFunction: KtNamedFunction,
     bindingContext: BindingContext
@@ -34,7 +37,8 @@ fun buildMethodDeclaration(
 
   val funcDescriptor =
       getFunctionDescriptor(function, bindingContext)
-          ?: throw Error("Could not get function descriptor")
+          ?: throw MethodDeclarationBuilderError(
+              "Could not get function descriptor", function.name ?: "")
   keyBuilder.parameters =
       funcDescriptor.valueParameters.map { parameter ->
         buildVariableDeclaration(parameter, bindingContext)
