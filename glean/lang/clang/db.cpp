@@ -189,24 +189,39 @@ void ClangDB::xref(
   }
 }
 
-clang::SourceRange ClangDB::spellingRange(clang::SourceRange range) const {
-  return clang::SourceRange(
-    sourceManager().getSpellingLoc(range.getBegin()),
-    sourceManager().getSpellingLoc(range.getEnd())
-  );
-}
-
+// This function is used specifically to retrieve the verbatim text of
+// an attribute. The logic is currently a bit fragile, since using
+// the spelling locations of begin and end doesn't necessarily produce
+// the right answer.
+//
+//   #define CK_RENDER __attribute__((annotate("OnRender")))
+//                                    ^^^^^^^^^^^^^^^^^^^^
+//   CK_RENDER int foo() { return 42; }
+//
+// It works for an example like this since the spelling locations end up
+// where we expect. However, it breaks down on more complex cases.
+//
+//   #define ANNOTATE annotate
+//                    ^ begin
+//   #define CK_RENDER __attribute__((ANNOTATE("OnRender")))
+//                                                       ^ end
+//
+//   CK_RENDER int foo() { return 42; }
+//
+// In this example, the `a` in the macro definition of `ANNOTATE` is the begin,
+// producing a span that goes from "begin" to "end" as marked in the code.
+//
+// We'll keep it for now though, since it serves most of the use cases we need.
 clang::StringRef ClangDB::srcText(clang::SourceRange range) const {
-  if (range.getBegin().isMacroID()) {
+  if (range.getBegin().isMacroID() && range.getEnd().isMacroID()) {
     // look for the text of a macro at the macro definition (spelling location)
-    range = spellingRange(range);
+    range.setBegin(sourceManager().getSpellingLoc(range.getBegin()));
+    range.setEnd(sourceManager().getSpellingLoc(range.getEnd()));
   }
-  auto token_range = clang::CharSourceRange::getTokenRange(range);
   return clang::Lexer::getSourceText(
-    token_range,
-    sourceManager(),
-    compilerInstance.getLangOpts()
-  );
+      clang::CharSourceRange::getTokenRange(range),
+      sourceManager(),
+      compilerInstance.getLangOpts());
 }
 
 Src::Loc ClangDB::srcLoc(clang::SourceLocation loc) {

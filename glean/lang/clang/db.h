@@ -215,8 +215,6 @@ public:
   }
   SourceRange immediateSrcRange(clang::CharSourceRange r);
 
-  clang::SourceRange spellingRange(clang::SourceRange range) const;
-
   clang::StringRef srcText(clang::SourceRange range) const;
 
   void finish();
