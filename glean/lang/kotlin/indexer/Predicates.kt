@@ -36,7 +36,7 @@ class Predicates {
     out.write("[".toByteArray())
     var first = true
     for ((type, name) in predicateNames) {
-      val predicates = predicatesMap[type]
+      val predicates = predicatesMap[type] ?: continue
       if (!first) {
         out.write(",".toByteArray())
       }
