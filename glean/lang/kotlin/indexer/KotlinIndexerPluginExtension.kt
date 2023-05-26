@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.descriptors.ModuleDescriptor
 import org.jetbrains.kotlin.psi.KtFile
+import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.BindingTrace
 import org.jetbrains.kotlin.resolve.jvm.extensions.AnalysisHandlerExtension
 
@@ -33,6 +34,15 @@ class KotlinIndexerPluginExtension(
   ): AnalysisResult? {
     // Fail fast: This lets us assume that there is a file farther down
     if (files.isEmpty()) {
+      return null
+    }
+
+    // compiler plugins can be run several times, we need to skip not type checked runs
+    if (files.all { ktFile ->
+      bindingTrace.bindingContext
+          .get(BindingContext.PACKAGE_TO_FILES, ktFile.packageFqName)
+          ?.contains(ktFile) != true
+    }) {
       return null
     }
 
