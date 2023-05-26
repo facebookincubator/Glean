@@ -9,6 +9,7 @@
 package glean.lang.kotlin.indexer
 
 import com.intellij.openapi.project.Project
+import java.io.File
 import org.jetbrains.kotlin.analyzer.AnalysisResult
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
@@ -62,8 +63,9 @@ class KotlinIndexerPluginExtension(
           "Kotlin Indexer Plugin finished but failed with one or more error.")
       AnalysisResult.compilationError(bindingTrace.bindingContext).throwIfError()
     }
-
-    context.dump("$outputDir/glean_index.txt")
+    val metaInfPath = "$outputDir/META-INF"
+    File(metaInfPath).mkdir()
+    context.dump("$metaInfPath/glean-index.json")
     return null
   }
 }
