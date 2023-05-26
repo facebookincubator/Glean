@@ -15,12 +15,14 @@ module Glean.Glass.Search.Cxx
   ) where
 
 import Data.Text ( Text )
-import qualified Data.Text as Text ( null )
+import qualified Data.Text as Text ( null, splitOn )
+import Util.Text
 
 import Glean.Angle as Angle
 import Glean.Haxl.Repos (ReposHaxl)
 
 import Glean.Glass.Search.Class
+    ( ResultLocation, SearchResult(None), Search(..), searchSymbolId )
 import Glean.Glass.Query ( entityLocation )
 
 import qualified Glean.Schema.CodeCxx.Types as Cxx
@@ -37,11 +39,33 @@ instance Search Cxx.Entity where
     return $ None "Cxx.symbolSearch: missing path prefix"
   symbolSearch t@[path,name] = do -- i.e. global variable or container/struct?
     searchDefinitions t path [] name
-  symbolSearch t@(path:rest@(_:_)) = case last rest of
-    ".decl" -> searchDeclarations t path (init rest)
-    ".ctor" -> searchTorDefinitions t path (init rest) (alt @"constructor" wild)
-    ".dtor" -> searchTorDefinitions t path (init rest) (alt @"destructor" wild)
-    name -> searchDefinitions t path (init rest) name
+  --
+  -- all other path/scope/name/(.ctor|.dtor)?/(.decl}?
+  --
+  symbolSearch t@(path:rest@(_:_)) = case break (==".c") rest of
+    -- we specifically know its a constructor with a signature
+    -- This is a hack. To be fixed by proper parser w/ specification
+    (scope, ".c":params) -> case params of
+      [] -> searchCTorSigDefinitions t path scope Nothing
+      [".decl"] -> searchCTorSigDeclarations t path scope Nothing
+      [sig, ".decl"]    -- .c/p1,p2/.decl - is a declaration entity
+        -> searchCTorSigDeclarations t path scope (Just sig)
+      -- .c/p1,p2 defn or .c no params is a definition entity
+      [sig] -> searchCTorSigDefinitions t path scope (Just sig)
+      _ -> return $ None $ -- can't be more than one sig token
+        "Cxx.symbolSearch: ctor signature malformed: " <> textShow params
+
+    -- not a ".c" constructor
+    _ -> case last rest of
+      ".decl" -> searchDeclarations t path (init rest)
+      ".ctor" -> searchTorDefinitions t path (init rest)
+        (alt @"constructor" wild) -- n.b. doesn't handle ctor/.decl !
+      ".dtor" -> searchTorDefinitions t path (init rest)
+        (alt @"destructor" wild)
+
+      -- note: doesn't handle .ctor parameters either. e.g. /.ctor//.decl
+      name -> searchDefinitions t path (init rest) name
+
 
 -- this is the most common path, for e.g. classes and functions
 --
@@ -96,6 +120,18 @@ searchTorDefinitions _ _path [] _ = return $
   None "Cxx.symbolSearch: ctor defns: empty scope" -- no global ctors
 searchTorDefinitions t path rest@(_:_) torLabel = searchSymbolId t $
   lookupTorDefinition path rest torLabel
+
+searchCTorSigDefinitions
+  :: [Text] -> Text -> [Text] -> Maybe Text
+  -> ReposHaxl u w (SearchResult Cxx.Entity)
+searchCTorSigDefinitions t path scope sig = searchSymbolId t $
+  lookupCTorSignatureDefinition path scope (maybe [] (Text.splitOn ",") sig)
+
+searchCTorSigDeclarations
+  :: [Text] -> Text -> [Text] -> Maybe Text
+  -> ReposHaxl u w (SearchResult Cxx.Entity)
+searchCTorSigDeclarations t path scope sig = searchSymbolId t $
+  lookupCTorSignatureDeclaration path scope (maybe [] (Text.splitOn ",") sig)
 
 --
 -- A little `then` or .|. thing for searching until first match
@@ -182,6 +218,40 @@ lookupTorDefinition anchor ns torLabel =
           field @"entity" entity
         end))
       : entityFooter anchor entity codeEntity file rangespan lname
+      )
+
+lookupCTorSignatureDefinition
+  :: Text -> [Text] -> [Text] -> Angle (ResultLocation Cxx.Entity)
+lookupCTorSignatureDefinition anchor ns params =
+  vars $ \(entity :: Angle Cxx.Entity) (codeEntity :: Angle Code.Entity)
+     (file :: Angle Src.File) (rangespan :: Angle Code.RangeSpan)
+       (lname :: Angle Text) ->
+    tuple (entity, file, rangespan, lname) `where_` ((
+      wild .= predicate @SymbolId.LookupFunctionSignatureDefinition (
+        rec $
+          field @"name" (alt @"constructor" wild) $ -- either @alt ctor or dtor
+          field @"scope" (scopeQ (reverse ns)) $
+          field @"signature" (asPredicate (paramTypesQ params)) $
+          field @"entity" entity
+        end))
+      : entityFooter anchor entity codeEntity file rangespan lname
+      )
+
+lookupCTorSignatureDeclaration
+  :: Text -> [Text] -> [Text] -> Angle (ResultLocation Cxx.Entity)
+lookupCTorSignatureDeclaration anchor ns params =
+  vars $ \(decl :: Angle Cxx.Declaration)  (entity :: Angle Cxx.Entity)
+      (codeEntity :: Angle Code.Entity) (file :: Angle Src.File)
+        (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
+    tuple (entity, file, rangespan, lname) `where_` ((
+      wild .= predicate @SymbolId.LookupFunctionSignatureDeclaration (
+        rec $
+          field @"name" (alt @"constructor" wild) $ -- either @alt ctor or dtor
+          field @"scope" (scopeQ (reverse ns)) $
+          field @"signature" (asPredicate (paramTypesQ params)) $
+          field @"decl" decl
+        end))
+      : entityDeclFooter anchor decl entity codeEntity file rangespan lname
       )
 
 --
@@ -368,3 +438,28 @@ scopeQ _ss@(n:ns) =
     end)
   .|
   alt @"local" (functionQName ns n) -- too broad, will yield local (global ..)
+
+--
+-- cxx1.Signature type only of param queries
+--  Fn where S = cxx1.Scope {
+--         recordWithAccess = { record = { name = "dynamic",
+--          scope = { namespace_ = { name = { just =  "folly" } }}}}};
+--   Fn = symbolid.cxx.LookupFunctionDeclaration { name = { constructor = {} },
+--        scope = S, decl = { function_ =
+--  { signature = { parameters = [{"r","folly::dynamic::Array &&"}] }
+-- , source = {file = F } } }}; F = src.File "fbcode/"..
+--
+-- Note: params are in the non-left position, so this should always be used
+-- _after_ matching the FunctionDeclaration
+--
+paramTypesQ :: [Text] -> Angle Cxx.Signature
+paramTypesQ ps = predicate @Cxx.Signature $
+    rec $
+      field @"parameters" (array (map paramQ ps))
+    end
+  where
+    paramQ :: Text -> Angle Cxx.Parameter
+    paramQ tyStr =
+      rec $
+        field @"type" (string tyStr)
+      end

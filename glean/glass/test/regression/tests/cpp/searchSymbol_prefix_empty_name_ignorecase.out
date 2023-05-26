@@ -502,6 +502,29 @@
                 "symbol": "test/cpp//baz/U/InUClass/UCC"
             },
             {
+                "kind": 25,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 102,
+                        "lineEnd": 120
+                    },
+                    "repository": "test"
+                },
+                "name": "d",
+                "qname": {
+                    "container": "",
+                    "localName": "d"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//d"
+            },
+            {
                 "kind": 6,
                 "language": 1,
                 "location": {

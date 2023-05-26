@@ -5,7 +5,7 @@
         "childrenExtended": [],
         "containsParents": [
             {
-                "child": "test/cpp//maybe/Nothing/.ctor",
+                "child": "test/cpp//maybe/Nothing/.c/maybe::Nothing::_secret",
                 "parent": "test/cpp//maybe/Nothing"
             }
         ],
@@ -85,6 +85,54 @@
                 "sym_other_locations": [],
                 "type_xrefs": []
             },
+            "test/cpp//maybe/Nothing/.c/maybe::Nothing::_secret": {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 41,
+                        "lineBegin": 72,
+                        "lineEnd": 72
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "maybe::Nothing",
+                    "localName": "Nothing(maybe::Nothing::_secret)"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "maybe::Nothing::Nothing(maybe::Nothing::_secret)",
+                "sym": "test/cpp//maybe/Nothing/.c/maybe::Nothing::_secret",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 41,
+                        "lineBegin": 72,
+                        "lineEnd": 72
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
             "test/cpp//maybe/Nothing/.ctor": {
                 "comments": [],
                 "contains_relation": {
@@ -113,8 +161,8 @@
                 },
                 "modifiers": [],
                 "name": {
-                    "container": "maybe",
-                    "localName": "Nothing"
+                    "container": "maybe::Nothing",
+                    "localName": "Nothing(maybe::Nothing::_secret)"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",

@@ -16,6 +16,17 @@
           "access": 0
         }
       },
+      "signature": {
+        "key": {
+          "returns": { "key": "void" },
+          "parameters": [
+            {
+              "name": { "key": "" },
+              "type": { "key": "maybe::Nothing::_secret" }
+            }
+          ]
+        }
+      },
       "decl": {
         "function_": {
           "key": {
@@ -84,6 +95,12 @@
           "access": 0
         }
       },
+      "signature": {
+        "key": {
+          "returns": { "key": "void" },
+          "parameters": [ { "name": { "key": "a" }, "type": { "key": "int" } } ]
+        }
+      },
       "decl": {
         "function_": {
           "key": {
@@ -144,6 +161,9 @@
           "access": 0
         }
       },
+      "signature": {
+        "key": { "returns": { "key": "void" }, "parameters": [ ] }
+      },
       "decl": {
         "function_": {
           "key": {
@@ -193,6 +213,14 @@
             "key": { "name": { "key": "d" }, "scope": { "global_": { } } }
           },
           "access": 0
+        }
+      },
+      "signature": {
+        "key": {
+          "returns": { "key": "void" },
+          "parameters": [
+            { "name": { "key": "" }, "type": { "key": "const d &" } }
+          ]
         }
       },
       "decl": {
@@ -249,6 +277,14 @@
             "key": { "name": { "key": "d" }, "scope": { "global_": { } } }
           },
           "access": 0
+        }
+      },
+      "signature": {
+        "key": {
+          "returns": { "key": "void" },
+          "parameters": [
+            { "name": { "key": "val" }, "type": { "key": "const char *" } }
+          ]
         }
       },
       "decl": {
@@ -315,6 +351,9 @@
           "access": 0
         }
       },
+      "signature": {
+        "key": { "returns": { "key": "void" }, "parameters": [ ] }
+      },
       "decl": {
         "function_": {
           "key": {
@@ -363,6 +402,9 @@
     "key": {
       "name": { "key": { "name": { "key": "f" } } },
       "scope": { "namespace_": { "key": { "name": { "key": "foo" } } } },
+      "signature": {
+        "key": { "returns": { "key": "void" }, "parameters": [ ] }
+      },
       "decl": {
         "function_": {
           "key": {
@@ -393,6 +435,9 @@
     "key": {
       "name": { "key": { "name": { "key": "foo" } } },
       "scope": { "namespace_": { "key": { "name": { "key": "foo" } } } },
+      "signature": {
+        "key": { "returns": { "key": "void" }, "parameters": [ ] }
+      },
       "decl": {
         "function_": {
           "key": {
@@ -423,6 +468,9 @@
     "key": {
       "name": { "key": { "name": { "key": "foo" } } },
       "scope": { "namespace_": { "key": { "name": { "key": "foo" } } } },
+      "signature": {
+        "key": { "returns": { "key": "void" }, "parameters": [ ] }
+      },
       "decl": {
         "function_": {
           "key": {
@@ -453,6 +501,14 @@
     "key": {
       "name": { "key": { "name": { "key": "fooFn" } } },
       "scope": { "namespace_": { "key": { "name": { "key": "foo" } } } },
+      "signature": {
+        "key": {
+          "returns": { "key": "int" },
+          "parameters": [
+            { "name": { "key": "fooI" }, "type": { "key": "int" } }
+          ]
+        }
+      },
       "decl": {
         "function_": {
           "key": {
@@ -495,6 +551,9 @@
           }
         }
       },
+      "signature": {
+        "key": { "returns": { "key": "void" }, "parameters": [ ] }
+      },
       "decl": {
         "function_": {
           "key": {
@@ -530,6 +589,14 @@
     "key": {
       "name": { "key": { "name": { "key": "h" } } },
       "scope": { "global_": { } },
+      "signature": {
+        "key": {
+          "returns": { "key": "void" },
+          "parameters": [
+            { "name": { "key": "_i" }, "type": { "key": "int" } }
+          ]
+        }
+      },
       "decl": {
         "function_": {
           "key": {
@@ -563,6 +630,12 @@
     "key": {
       "name": { "key": { "name": { "key": "h" } } },
       "scope": { "global_": { } },
+      "signature": {
+        "key": {
+          "returns": { "key": "void" },
+          "parameters": [ { "name": { "key": "i" }, "type": { "key": "int" } } ]
+        }
+      },
       "decl": {
         "function_": {
           "key": {

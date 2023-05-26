@@ -98,3 +98,23 @@ struct U {
 
 enum Global { GA, GB, GC };
 enum class GlobalClass { GCA, GCB, GCC };
+
+struct d {
+
+ int i;
+
+ public:
+    /**
+     * Default constructor, initializes with nullptr.
+     */
+    d();
+
+    d(char const* val);
+
+    d(char const* val, void (*)());
+
+    d(char c, int i, char const* p);
+
+    d(d const&);
+
+};

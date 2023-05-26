@@ -1,0 +1,77 @@
+[
+    "@generated",
+    {
+        "annotations": [],
+        "comments": [
+            {
+                "filepath": "test.cpp",
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 8,
+                    "lineBegin": 107,
+                    "lineEnd": 109
+                },
+                "repository": "test"
+            }
+        ],
+        "contains_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "extends_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "kind": 8,
+        "language": 1,
+        "location": {
+            "filepath": "test.cpp",
+            "range": {
+                "columnBegin": 5,
+                "columnEnd": 8,
+                "lineBegin": 110,
+                "lineEnd": 110
+            },
+            "repository": "test"
+        },
+        "modifiers": [],
+        "name": {
+            "container": "d",
+            "localName": "d()"
+        },
+        "pretty_comments": [
+            {
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 8,
+                        "lineBegin": 107,
+                        "lineEnd": 109
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "repo_hash": "testhash",
+        "signature": "::d::d()",
+        "sym": "test/cpp//d/.c/.decl",
+        "sym_location": {
+            "filepath": "test.cpp",
+            "range": {
+                "columnBegin": 5,
+                "columnEnd": 8,
+                "lineBegin": 110,
+                "lineEnd": 110
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": [],
+        "type_xrefs": [],
+        "visibility": 20
+    }
+]

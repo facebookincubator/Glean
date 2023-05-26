@@ -2,7 +2,7 @@
     "@generated",
     {
         "revision": "testhash",
-        "size": 76,
+        "size": 91,
         "symbols": {
             "100": [
                 {
@@ -41,6 +41,80 @@
                     "sym": "test/cpp//GlobalClass"
                 }
             ],
+            "102": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 25
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "d"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "struct d"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 8,
+                        "columnEnd": 9,
+                        "lineBegin": 102,
+                        "lineEnd": 102
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 102,
+                        "lineEnd": 120
+                    },
+                    "sym": "test/cpp//d"
+                }
+            ],
+            "104": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "i"
+                        },
+                        "symbolParent": {
+                            "aString": "d"
+                        },
+                        "symbolSignature": {
+                            "aString": "int i"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 6,
+                        "columnEnd": 7,
+                        "lineBegin": 104,
+                        "lineEnd": 104
+                    },
+                    "range": {
+                        "columnBegin": 2,
+                        "columnEnd": 7,
+                        "lineBegin": 104,
+                        "lineEnd": 104
+                    },
+                    "sym": "test/cpp//d/i/.decl"
+                }
+            ],
             "11": [
                 {
                     "attributes": {
@@ -76,6 +150,481 @@
                         "lineEnd": 49
                     },
                     "sym": "test/cpp//foo"
+                }
+            ],
+            "110": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 14
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "d()"
+                        },
+                        "symbolParent": {
+                            "aString": "d"
+                        },
+                        "symbolSignature": {
+                            "aString": "d()"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 110,
+                        "lineEnd": 110
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 8,
+                        "lineBegin": 110,
+                        "lineEnd": 110
+                    },
+                    "sym": "test/cpp//d/.c/.decl"
+                }
+            ],
+            "112": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 14
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "d(const char *)"
+                        },
+                        "symbolParent": {
+                            "aString": "d"
+                        },
+                        "symbolSignature": {
+                            "aString": "d(const char* val)"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 112,
+                        "lineEnd": 112
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 23,
+                        "lineBegin": 112,
+                        "lineEnd": 112
+                    },
+                    "sym": "test/cpp//d/.c/const+char+*/.decl"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "val"
+                        },
+                        "symbolParent": {
+                            "aString": "d::.ctor"
+                        },
+                        "symbolSignature": {
+                            "aString": "const char* val"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 19,
+                        "columnEnd": 22,
+                        "lineBegin": 112,
+                        "lineEnd": 112
+                    },
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 22,
+                        "lineBegin": 112,
+                        "lineEnd": 112
+                    },
+                    "sym": "test/cpp//d/.ctor/val/.decl"
+                }
+            ],
+            "114": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 14
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "d(const char *, void (*)())"
+                        },
+                        "symbolParent": {
+                            "aString": "d"
+                        },
+                        "symbolSignature": {
+                            "aString": "d(const char* val, void (*)())"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 114,
+                        "lineEnd": 114
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 35,
+                        "lineBegin": 114,
+                        "lineEnd": 114
+                    },
+                    "sym": "test/cpp//d/.c/const+char+*,void+%28*%29%28%29/.decl"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "d::.ctor"
+                        },
+                        "symbolSignature": {
+                            "aString": "void (*)()"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 31,
+                        "columnEnd": 32,
+                        "lineBegin": 114,
+                        "lineEnd": 114
+                    },
+                    "range": {
+                        "columnBegin": 24,
+                        "columnEnd": 34,
+                        "lineBegin": 114,
+                        "lineEnd": 114
+                    },
+                    "sym": "test/cpp//d/.ctor//.decl"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "val"
+                        },
+                        "symbolParent": {
+                            "aString": "d::.ctor"
+                        },
+                        "symbolSignature": {
+                            "aString": "const char* val"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 19,
+                        "columnEnd": 22,
+                        "lineBegin": 114,
+                        "lineEnd": 114
+                    },
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 22,
+                        "lineBegin": 114,
+                        "lineEnd": 114
+                    },
+                    "sym": "test/cpp//d/.ctor/val/.decl"
+                }
+            ],
+            "116": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 14
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "d(char, int, const char *)"
+                        },
+                        "symbolParent": {
+                            "aString": "d"
+                        },
+                        "symbolSignature": {
+                            "aString": "d(char c, int i, const char* p)"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 116,
+                        "lineEnd": 116
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 36,
+                        "lineBegin": 116,
+                        "lineEnd": 116
+                    },
+                    "sym": "test/cpp//d/.c/char,int,const+char+*/.decl"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "c"
+                        },
+                        "symbolParent": {
+                            "aString": "d::.ctor"
+                        },
+                        "symbolSignature": {
+                            "aString": "char c"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 12,
+                        "columnEnd": 13,
+                        "lineBegin": 116,
+                        "lineEnd": 116
+                    },
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 13,
+                        "lineBegin": 116,
+                        "lineEnd": 116
+                    },
+                    "sym": "test/cpp//d/.ctor/c/.decl"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "i"
+                        },
+                        "symbolParent": {
+                            "aString": "d::.ctor"
+                        },
+                        "symbolSignature": {
+                            "aString": "int i"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 19,
+                        "columnEnd": 20,
+                        "lineBegin": 116,
+                        "lineEnd": 116
+                    },
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 20,
+                        "lineBegin": 116,
+                        "lineEnd": 116
+                    },
+                    "sym": "test/cpp//d/.ctor/i/.decl"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "p"
+                        },
+                        "symbolParent": {
+                            "aString": "d::.ctor"
+                        },
+                        "symbolSignature": {
+                            "aString": "const char* p"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 34,
+                        "columnEnd": 35,
+                        "lineBegin": 116,
+                        "lineEnd": 116
+                    },
+                    "range": {
+                        "columnBegin": 22,
+                        "columnEnd": 35,
+                        "lineBegin": 116,
+                        "lineEnd": 116
+                    },
+                    "sym": "test/cpp//d/.ctor/p/.decl"
+                }
+            ],
+            "118": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 25
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "d"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "struct d"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 8,
+                        "lineBegin": 118,
+                        "lineEnd": 118
+                    },
+                    "sym": "test/cpp//d",
+                    "target": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 102,
+                            "lineEnd": 120
+                        },
+                        "repository": "test"
+                    },
+                    "targetName": {
+                        "columnBegin": 8,
+                        "columnEnd": 9,
+                        "lineBegin": 102,
+                        "lineEnd": 102
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 14
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "d(const d &)"
+                        },
+                        "symbolParent": {
+                            "aString": "d"
+                        },
+                        "symbolSignature": {
+                            "aString": "d(const d&)"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 118,
+                        "lineEnd": 118
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 16,
+                        "lineBegin": 118,
+                        "lineEnd": 118
+                    },
+                    "sym": "test/cpp//d/.c/const+d+%26/.decl"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "d::.ctor"
+                        },
+                        "symbolSignature": {
+                            "aString": "const d&"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 15,
+                        "columnEnd": 16,
+                        "lineBegin": 118,
+                        "lineEnd": 118
+                    },
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 15,
+                        "lineBegin": 118,
+                        "lineEnd": 118
+                    },
+                    "sym": "test/cpp//d/.ctor//.decl"
                 }
             ],
             "13": [
@@ -2056,10 +2605,10 @@
                             "aInteger": 1
                         },
                         "symbolName": {
-                            "aString": "Nothing"
+                            "aString": "Nothing(maybe::Nothing::_secret)"
                         },
                         "symbolParent": {
-                            "aString": "maybe"
+                            "aString": "maybe::Nothing"
                         },
                         "symbolSignature": {
                             "aString": "Nothing(maybe::Nothing::_secret)"
@@ -2077,7 +2626,7 @@
                         "lineBegin": 72,
                         "lineEnd": 72
                     },
-                    "sym": "test/cpp//maybe/Nothing/.ctor"
+                    "sym": "test/cpp//maybe/Nothing/.c/maybe::Nothing::_secret"
                 },
                 {
                     "attributes": {
@@ -2263,10 +2812,10 @@
                             "aInteger": 1
                         },
                         "symbolName": {
-                            "aString": "Nothing"
+                            "aString": "Nothing(maybe::Nothing::_secret)"
                         },
                         "symbolParent": {
-                            "aString": "maybe"
+                            "aString": "maybe::Nothing"
                         },
                         "symbolSignature": {
                             "aString": "Nothing(maybe::Nothing::_secret)"
@@ -2278,7 +2827,7 @@
                         "lineBegin": 74,
                         "lineEnd": 74
                     },
-                    "sym": "test/cpp//maybe/Nothing/.ctor",
+                    "sym": "test/cpp//maybe/Nothing/.c/maybe::Nothing::_secret",
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
@@ -2503,10 +3052,10 @@
                             "aInteger": 1
                         },
                         "symbolName": {
-                            "aString": "Something"
+                            "aString": "Something(int)"
                         },
                         "symbolParent": {
-                            "aString": "maybe"
+                            "aString": "maybe::Something"
                         },
                         "symbolSignature": {
                             "aString": "Something(int a)"
@@ -2524,7 +3073,7 @@
                         "lineBegin": 78,
                         "lineEnd": 78
                     },
-                    "sym": "test/cpp//maybe/Something/.ctor"
+                    "sym": "test/cpp//maybe/Something/.c/int"
                 },
                 {
                     "attributes": {

@@ -15,7 +15,8 @@ module Glean.Glass.SymbolId.Cxx (
 
   ) where
 
-import Data.Text as Text ( Text, intercalate, break )
+import Data.Text as Text ( Text, intercalate, break, replace )
+import Data.Maybe ( maybeToList )
 import Control.Monad.Catch ( throwM )
 
 import Glean.Glass.SymbolId.Class
@@ -37,6 +38,8 @@ instance Symbol Cxx.Entity where
       Cxx.Entity_defn defn -> toSymbol defn
       -- these are "second class" in that they're less significant in
       -- glass activities than defns, so we tag them to differentiate
+      -- we see a lot of them in xrefs through, where we don't do as much
+      -- decl -> defn conversions
       Cxx.Entity_decl decl -> do
         sym <- toSymbol decl
         pure (sym ++ [".decl"])
@@ -123,8 +126,43 @@ instance Symbol Cxx.EnumDeclaration_key where
     toSymbolPredicate qname
 
 instance Symbol Cxx.FunctionDeclaration_key where
-  toSymbol (Cxx.FunctionDeclaration_key fqname _sig _todo _) =
-     toSymbolPredicate fqname
+  toSymbol (Cxx.FunctionDeclaration_key fqname sig _method _) =
+    toSymbolFunctionDeclaration fqname sig
+
+--
+-- function declarations. Symbol Id format is
+--
+-- scope1 / scope2 / name ( / .decl )?
+-- scope1 / name / .ctor / .decl  -- default constructor
+-- scope1 / name / .ctor / sig_param .. / .decl  -- overloaded by type
+--
+toSymbolFunctionDeclaration
+  :: Cxx.FunctionQName -> Cxx.Signature -> Glean.RepoHaxl u w [Text]
+toSymbolFunctionDeclaration fqname sig = do
+  Cxx.FunctionQName_key fname scope <- Glean.keyOf fqname
+  scopeToks <- toSymbol scope
+  fn <- Glean.keyOf fname
+  nameToks <- case fn of
+    Cxx.FunctionName_key_name x -> toSymbol x
+    Cxx.FunctionName_key_operator_ x -> return [x]
+    Cxx.FunctionName_key_literalOperator x -> return [x]
+    --
+    -- Special handling for overloaded constructors. The most common sort.
+    --
+    -- Note: .c doesn't use the body of the explicit constructors in unions
+    -- e.g.   explicit Data() : nul(nullptr) {}
+    -- nor:   const_dynamic_view() noexcept = default;
+    --
+    -- These will have no signature token. (i.e. not "" token)
+    --
+    Cxx.FunctionName_key_constructor{}-> do
+      Cxx.Signature_key _retTy params <- Glean.keyOf sig
+      mSigStr <- toSymbolSignatureParams params
+      return (".c" : maybeToList mSigStr)
+    Cxx.FunctionName_key_destructor{} -> return [".dtor"]
+    Cxx.FunctionName_key_conversionOperator ty -> pure <$> Glean.keyOf ty
+    Cxx.FunctionName_key_EMPTY -> return []
+  return (scopeToks ++ nameToks)
 
 instance Symbol Cxx.VariableDeclaration_key where
   toSymbol (Cxx.VariableDeclaration_key qname _ty _kind _) =
@@ -154,6 +192,9 @@ instance Symbol Cxx.NamespaceQName_key where
 instance Symbol Cxx.QName_key where
   toSymbol (Cxx.QName_key name scope) = scope <:> name
 
+instance Symbol Cxx.FunctionQName where
+  toSymbol fqn = Glean.keyOf fqn >>= toSymbol
+
 instance Symbol Cxx.FunctionQName_key where
   toSymbol (Cxx.FunctionQName_key name scope) = scope <:> name
 
@@ -163,11 +204,13 @@ instance Symbol Cxx.NamespaceQName where
 instance Symbol Cxx.FunctionName where
   toSymbol k = toSymbolPredicate k
 
-instance Symbol Cxx.Signature where
-  toSymbol k = toSymbolPredicate k
-
-instance Symbol Cxx.Signature_key where
-  toSymbol (Cxx.Signature_key ty _params) = toSymbol ty
+-- For things like constructors where we know the return type is void
+-- we can just focus on the param types
+toSymbolSignatureParams :: [Cxx.Parameter] -> Glean.RepoHaxl u w (Maybe Text)
+toSymbolSignatureParams [] = pure Nothing
+toSymbolSignatureParams params = do
+  sigToks <- mapM (\(Cxx.Parameter _name ty) -> toTypeSymbol ty) params
+  return $ Just (intercalate "," sigToks)
 
 instance Symbol Cxx.FunctionName_key where
   toSymbol k = case k of
@@ -176,7 +219,7 @@ instance Symbol Cxx.FunctionName_key where
     Cxx.FunctionName_key_literalOperator x -> return [x]
     Cxx.FunctionName_key_constructor _ -> return [".ctor"]
     Cxx.FunctionName_key_destructor _ -> return [".dtor"]
-    Cxx.FunctionName_key_conversionOperator x -> toSymbol x
+    Cxx.FunctionName_key_conversionOperator ty -> pure <$> Glean.keyOf ty
     Cxx.FunctionName_key_EMPTY -> return []
 
 instance Symbol Cxx.Scope where
@@ -208,10 +251,16 @@ instance Symbol Cxx.ObjcCategoryId where
 instance Symbol Cxx.ObjcSelector where
   toSymbol k = reverse <$> Glean.keyOf k -- :: [Text] ? order?
 
-instance Symbol Cxx.Type where
-  toSymbol k = do
-    v <- Glean.keyOf k
-    return [v]
+-- Currently we don't encode the parameter name, just its type.
+-- > "folly::dynamic::Array &&"
+toTypeSymbol :: Cxx.Type -> Glean.RepoHaxl u w Text
+toTypeSymbol ty = normalize <$> Glean.keyOf ty
+  where
+    -- For readability in the url encoding we replace %20 with +
+    -- so we can get encodings like:
+    -- > fbsource/cpp/fbcode/folly/dynamic/.c/const+char+*
+    normalize :: Text -> Text
+    normalize = Text.replace " " "+"
 
 -- The cxx schema sometimes uses nothing to represent implicit or anonymous
 -- scopes and names. We need to preserve that rather than elide
@@ -413,9 +462,42 @@ instance ToQName Cxx.Entity where
     return $ case symId of -- this is a hack, should use the real scope/qname
       [] -> Left "C++: toQName: No qualified name for this symbol"
       [name] -> Right (Name name, Name "")
-      x@(_:_) -> case (init x, last x) of
-        (ms, name)
-          | name `elem` [".ctor",".dtor",".decl"] ->
-             case (init ms, last ms) of
-              (ns, name') -> Right (Name name', Name (intercalate "::" ns))
-          | otherwise -> Right (Name name, Name (intercalate "::" ms))
+      x@(_:_) ->
+        -- check .c signature case
+        case Prelude.break (== ".c") x of
+          (scope, ".c":params) -> ctorSignatureQName scope params
+          _ -> case (init x, last x) of
+            (ms, name)
+              | name `elem` [".ctor",".dtor",".decl"] ->
+                case (init ms, last ms) of
+                  (ns, name') -> Right (Name name', Name (intercalate "::" ns))
+              | otherwise -> Right (Name name, Name (intercalate "::" ms))
+
+--
+-- e.g. default constructors:
+-- fbsource/cpp/fbcode/folly/dynamic/.c/.decl
+--
+-- fbsource/cpp/fbcode/folly/dynamic_view/.c
+-- > dynamic_view() in folly::dynamic_view
+--
+-- fbsour..../folly/dynamic_view/.c/const+folly::dynamic_view+%26
+-- > dynamic_view(const folly::dynamic_view &) in folly::dynamic_view
+--
+ctorSignatureQName :: [Text] -> [Text] -> Either Text (Name, Name)
+ctorSignatureQName prefix ps = Right (Name localname, Name scopename)
+  where
+    localname = name <> "(" <> maybe "" denormalize params <> ")"
+    scopename = intercalate "::" scope
+
+    params = case ps of
+      [] -> Nothing
+      [".decl"] -> Nothing
+      [sig,".decl"] -> Just sig
+      [sig] -> Just sig
+      _ -> Nothing -- we never have more than one sig token
+
+    denormalize = Text.replace "+" " " . Text.replace "," ", "
+
+    (scope, name) = case prefix of
+      [n] -> ([n], n)
+      _ -> (prefix, last prefix)

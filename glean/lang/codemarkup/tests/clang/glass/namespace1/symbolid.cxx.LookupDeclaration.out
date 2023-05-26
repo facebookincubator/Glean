@@ -69,6 +69,64 @@
   },
   {
     "key": {
+      "name": { "key": "" },
+      "scope": {
+        "local": {
+          "key": {
+            "name": { "key": { "constructor": { } } },
+            "scope": {
+              "recordWithAccess": {
+                "record": {
+                  "key": { "name": { "key": "d" }, "scope": { "global_": { } } }
+                },
+                "access": 0
+              }
+            }
+          }
+        }
+      },
+      "decl": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "" },
+                "scope": {
+                  "local": {
+                    "key": {
+                      "name": { "key": { "constructor": { } } },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "d" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "type": { "key": "const d &" },
+            "kind": { "local": { "kind": 2, "attribute": 0 } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 114,
+              "columnBegin": 7,
+              "lineEnd": 114,
+              "columnEnd": 14
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "name": { "key": "Global" },
       "scope": { "global_": { } },
       "decl": {
@@ -762,6 +820,29 @@
   },
   {
     "key": {
+      "name": { "key": "d" },
+      "scope": { "global_": { } },
+      "decl": {
+        "record_": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "d" }, "scope": { "global_": { } } }
+            },
+            "kind": { "struct_": { } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 102,
+              "columnBegin": 1,
+              "lineEnd": 116,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "name": { "key": "fooI" },
       "scope": {
         "local": {
@@ -881,6 +962,50 @@
               "columnBegin": 8,
               "lineEnd": 54,
               "columnEnd": 12
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "i" },
+      "scope": {
+        "recordWithAccess": {
+          "record": {
+            "key": { "name": { "key": "d" }, "scope": { "global_": { } } }
+          },
+          "access": 0
+        }
+      },
+      "decl": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "i" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "d" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "type": { "key": "int" },
+            "kind": { "field": { "mutable_": false } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 104,
+              "columnBegin": 2,
+              "lineEnd": 104,
+              "columnEnd": 6
             }
           }
         }
@@ -1055,6 +1180,64 @@
               "columnBegin": 3,
               "lineEnd": 57,
               "columnEnd": 15
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "val" },
+      "scope": {
+        "local": {
+          "key": {
+            "name": { "key": { "constructor": { } } },
+            "scope": {
+              "recordWithAccess": {
+                "record": {
+                  "key": { "name": { "key": "d" }, "scope": { "global_": { } } }
+                },
+                "access": 0
+              }
+            }
+          }
+        }
+      },
+      "decl": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "val" },
+                "scope": {
+                  "local": {
+                    "key": {
+                      "name": { "key": { "constructor": { } } },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "d" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "type": { "key": "const char *" },
+            "kind": { "local": { "kind": 2, "attribute": 0 } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 112,
+              "columnBegin": 7,
+              "lineEnd": 112,
+              "columnEnd": 21
             }
           }
         }

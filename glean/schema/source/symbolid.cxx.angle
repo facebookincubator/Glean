@@ -37,6 +37,18 @@ predicate LookupFunctionDefinition:
     LookupFunctionDeclaration { Name, Scope, Decl };
     DefinitionOfDecl { Decl, Defn }
 
+# Like LookupFunctionDefinition but take an additional signature term
+predicate LookupFunctionSignatureDefinition:
+  {
+    name : cxx1.FunctionName,
+    scope : cxx1.Scope,
+    signature : cxx1.Signature,
+    entity : code.cxx.Entity
+  }
+  { Name, Scope, Sig, Defn } where
+    LookupFunctionSignatureDeclaration { Name, Scope, Sig, Decl };
+    DefinitionOfDecl { Decl, Defn }
+
 predicate LookupNamespaceDefinition:
   {
     name : maybe cxx1.Name,
@@ -90,6 +102,25 @@ predicate LookupFunctionDeclaration:
     FQN = cxx1.FunctionQName { Name, Scope };
     ( D = cxx1.FunctionDeclaration { name = FQN }; { function_ = D }) | (
       D = cxx1.UsingDeclaration { name = FQN }; { usingDeclaration = D }
+    ) = Decl
+
+#
+# By cxx1.FunctionName and cxx1.Scope fact and signature
+#
+# Like LookupFunctionDeclaration but you can provide a signature
+# query as well to choose between overloaded functions/constructors
+#
+predicate LookupFunctionSignatureDeclaration:
+  {
+    name : cxx1.FunctionName,
+    scope : cxx1.Scope,
+    signature : cxx1.Signature,
+    decl : cxx1.Declaration
+  }
+  { Name, Scope, Sig, Decl } where
+    FQN = cxx1.FunctionQName { Name, Scope };
+    ( D = cxx1.FunctionDeclaration { name = FQN, signature = Sig };
+      { function_ = D }
     ) = Decl
 
 # Namespace QNames are also a bit tricky as they can be anonymous

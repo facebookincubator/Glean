@@ -116,12 +116,17 @@ toSymbolId path entity = do
   eqname <- try $ toSymbolWithPath entity (symbolPath path)
   return $ case eqname of
     Left (SymbolError _e) -> symbol [repo, langCode, "SYMBOL_ID_MISSING"]
-    Right spec -> symbol $
-      repo : langCode : map (URI.encodeTextWith isAllowed) spec
+    Right spec -> symbol $ repo : langCode :
+      map (URI.encodeTextWith isAllowed) spec
   where
     symbol = SymbolId . Text.intercalate "/"
     Glass.RepoName repo = symbolRepo path
+
+    -- for readability, we permit these control chars in the symbol id uri
     isAllowed ':' = True
+    isAllowed '+' = True
+    isAllowed ',' = True
+    isAllowed '*' = True
     isAllowed c = URI.isAllowed c
 
 --
@@ -156,8 +161,8 @@ symbolTokens :: SymbolId -> Either Text (RepoName, Language, [Text])
 symbolTokens (SymbolId symid)
   | (repo: code: pieces) <- tokens
   , Just lang <- fromShortCode code
-  = Right (RepoName repo, lang, map URI.decodeText pieces)
-
+  = Right (RepoName repo, lang,
+           map (Text.replace "+" " " . URI.decodeText) pieces)
   | otherwise = Left $ "Invalid symbol: " <> symid
   where
     tokens = Text.split (=='/') symid

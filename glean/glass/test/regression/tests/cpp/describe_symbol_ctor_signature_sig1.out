@@ -1,6 +1,7 @@
 [
     "@generated",
     {
+        "annotations": [],
         "comments": [],
         "contains_relation": {
             "firstChild": "nondeterministic",
@@ -19,33 +20,34 @@
         "location": {
             "filepath": "test.cpp",
             "range": {
-                "columnBegin": 3,
-                "columnEnd": 41,
-                "lineBegin": 72,
-                "lineEnd": 72
+                "columnBegin": 5,
+                "columnEnd": 23,
+                "lineBegin": 112,
+                "lineEnd": 112
             },
             "repository": "test"
         },
         "modifiers": [],
         "name": {
-            "container": "maybe::Nothing",
-            "localName": "Nothing(maybe::Nothing::_secret)"
+            "container": "d",
+            "localName": "d(const char *)"
         },
         "pretty_comments": [],
         "repo_hash": "testhash",
-        "signature": "maybe::Nothing::Nothing(maybe::Nothing::_secret)",
-        "sym": "test/cpp//maybe/Nothing/.c/maybe::Nothing::_secret",
+        "signature": "::d::d(const char* val)",
+        "sym": "test/cpp//d/.c/const+char+*/.decl",
         "sym_location": {
             "filepath": "test.cpp",
             "range": {
-                "columnBegin": 3,
-                "columnEnd": 41,
-                "lineBegin": 72,
-                "lineEnd": 72
+                "columnBegin": 5,
+                "columnEnd": 23,
+                "lineBegin": 112,
+                "lineEnd": 112
             },
             "repository": "test"
         },
         "sym_other_locations": [],
-        "type_xrefs": []
+        "type_xrefs": [],
+        "visibility": 20
     }
 ]
