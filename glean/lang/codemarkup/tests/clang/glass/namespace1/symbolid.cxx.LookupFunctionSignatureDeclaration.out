@@ -258,10 +258,78 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 114,
+              "lineBegin": 118,
               "columnBegin": 5,
-              "lineEnd": 114,
+              "lineEnd": 118,
               "columnEnd": 15
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": { "constructor": { } } },
+      "scope": {
+        "recordWithAccess": {
+          "record": {
+            "key": { "name": { "key": "d" }, "scope": { "global_": { } } }
+          },
+          "access": 0
+        }
+      },
+      "signature": {
+        "key": {
+          "returns": { "key": "void" },
+          "parameters": [
+            { "name": { "key": "c" }, "type": { "key": "char" } },
+            { "name": { "key": "i" }, "type": { "key": "int" } },
+            { "name": { "key": "p" }, "type": { "key": "const char *" } }
+          ]
+        }
+      },
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "constructor": { } } },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "d" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "signature": {
+              "key": {
+                "returns": { "key": "void" },
+                "parameters": [
+                  { "name": { "key": "c" }, "type": { "key": "char" } },
+                  { "name": { "key": "i" }, "type": { "key": "int" } },
+                  { "name": { "key": "p" }, "type": { "key": "const char *" } }
+                ]
+              }
+            },
+            "method": {
+              "isVirtual": false,
+              "isConst": false,
+              "isVolatile": false,
+              "refQualifier": 0
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 116,
+              "columnBegin": 5,
+              "lineEnd": 116,
+              "columnEnd": 35
             }
           }
         }
@@ -329,6 +397,75 @@
               "columnBegin": 5,
               "lineEnd": 112,
               "columnEnd": 22
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": { "constructor": { } } },
+      "scope": {
+        "recordWithAccess": {
+          "record": {
+            "key": { "name": { "key": "d" }, "scope": { "global_": { } } }
+          },
+          "access": 0
+        }
+      },
+      "signature": {
+        "key": {
+          "returns": { "key": "void" },
+          "parameters": [
+            { "name": { "key": "val" }, "type": { "key": "const char *" } },
+            { "name": { "key": "" }, "type": { "key": "void (*)()" } }
+          ]
+        }
+      },
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "constructor": { } } },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "d" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "signature": {
+              "key": {
+                "returns": { "key": "void" },
+                "parameters": [
+                  {
+                    "name": { "key": "val" },
+                    "type": { "key": "const char *" }
+                  },
+                  { "name": { "key": "" }, "type": { "key": "void (*)()" } }
+                ]
+              }
+            },
+            "method": {
+              "isVirtual": false,
+              "isConst": false,
+              "isVolatile": false,
+              "refQualifier": 0
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 114,
+              "columnBegin": 5,
+              "lineEnd": 114,
+              "columnEnd": 34
             }
           }
         }
