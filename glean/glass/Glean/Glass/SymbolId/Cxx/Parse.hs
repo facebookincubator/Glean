@@ -12,7 +12,8 @@ module Glean.Glass.SymbolId.Cxx.Parse (
     validateSymbolId,
     SymbolEnv(..),
     SymbolTag(..),
-    Name(..)
+    Name(..),
+    unName
   ) where
 
 import GHC.Generics
@@ -58,6 +59,10 @@ data SymbolEnv = SymbolEnv {
 newtype Name = Name Text
   deriving (Eq, Ord, Show, Generic)
 
+-- standalone to avoid having it appear in the generic JSON writer
+unName :: Name -> Text
+unName (Name n) = n
+
 -- Any tags that help to classify the sort of symbol we have
 data SymbolTag
   = Constructor
@@ -100,9 +105,8 @@ setErr :: Text -> Parse ()
 setErr s = modify' $ \env -> env { errors = s : errors env }
 
 --
--- Parse the symbol id term
+-- | Parse the symbol id term
 --
-
 validateSymbolId :: [Text] -> Either [Text] SymbolEnv
 validateSymbolId toks = case toks of
   [] -> Left ["Cxx.parseSymbolId: empty symbol"]

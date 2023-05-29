@@ -15,7 +15,7 @@ module Glean.Glass.Search.Cxx
   ) where
 
 import Data.Text ( Text )
-import qualified Data.Text as Text ( null, splitOn )
+import qualified Data.Text as Text
 import Util.Text
 
 import Glean.Angle as Angle
@@ -46,12 +46,12 @@ instance Search Cxx.Entity where
     -- we specifically know its a constructor with a signature
     -- This is a hack. To be fixed by proper parser w/ specification
     (scope, ".c":params) -> case params of
-      [] -> searchCTorSigDefinitions t path scope Nothing
-      [".decl"] -> searchCTorSigDeclarations t path scope Nothing
+      [] -> searchCTorSigDefinitions t path scope []
+      [".decl"] -> searchCTorSigDeclarations t path scope []
       [sig, ".decl"]    -- .c/p1,p2/.decl - is a declaration entity
-        -> searchCTorSigDeclarations t path scope (Just sig)
+        -> searchCTorSigDeclarations t path scope (Text.splitOn "," sig)
       -- .c/p1,p2 defn or .c no params is a definition entity
-      [sig] -> searchCTorSigDefinitions t path scope (Just sig)
+      [sig] -> searchCTorSigDefinitions t path scope (Text.splitOn "," sig)
       _ -> return $ None $ -- can't be more than one sig token
         "Cxx.symbolSearch: ctor signature malformed: " <> textShow params
 
@@ -122,16 +122,16 @@ searchTorDefinitions t path rest@(_:_) torLabel = searchSymbolId t $
   lookupTorDefinition path rest torLabel
 
 searchCTorSigDefinitions
-  :: [Text] -> Text -> [Text] -> Maybe Text
+  :: [Text] -> Text -> [Text] -> [Text]
   -> ReposHaxl u w (SearchResult Cxx.Entity)
 searchCTorSigDefinitions t path scope sig = searchSymbolId t $
-  lookupCTorSignatureDefinition path scope (maybe [] (Text.splitOn ",") sig)
+  lookupCTorSignatureDefinition path scope sig
 
 searchCTorSigDeclarations
-  :: [Text] -> Text -> [Text] -> Maybe Text
+  :: [Text] -> Text -> [Text] -> [Text]
   -> ReposHaxl u w (SearchResult Cxx.Entity)
 searchCTorSigDeclarations t path scope sig = searchSymbolId t $
-  lookupCTorSignatureDeclaration path scope (maybe [] (Text.splitOn ",") sig)
+  lookupCTorSignatureDeclaration path scope sig
 
 --
 -- A little `then` or .|. thing for searching until first match
