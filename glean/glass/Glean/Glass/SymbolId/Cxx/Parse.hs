@@ -151,7 +151,7 @@ parseScopeOrName name (n : ns) = case n of
 --
 parseCtor :: [Token] -> Parse ()
 parseCtor [] = return () -- ctor definition occurence
-parseCtor [TDecl] = setDecl -- a ctor decl
+parseCtor [TDecl] = setDecl -- a ctor decl . subsumed by CtorSig.
 parseCtor [TName name, TDecl] = setName name >> setDecl -- ctor parameter decl
 parseCtor rest = setErr $
   "Cxx.parseCtor: unexpected trailing tokens in .ctor signature: " <>

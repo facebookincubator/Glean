@@ -16,7 +16,7 @@ module Glean.Glass.Search.Cxx
 
 import Data.Text ( Text )
 import qualified Data.Text as Text
-import Util.Text
+import Data.Maybe ( fromMaybe )
 
 import Glean.Angle as Angle
 import Glean.Haxl.Repos (ReposHaxl)
@@ -24,6 +24,7 @@ import Glean.Haxl.Repos (ReposHaxl)
 import Glean.Glass.Search.Class
     ( ResultLocation, SearchResult(None), Search(..), searchSymbolId )
 import Glean.Glass.Query ( entityLocation )
+import qualified Glean.Glass.SymbolId.Cxx.Parse as P
 
 import qualified Glean.Schema.CodeCxx.Types as Cxx
 import qualified Glean.Schema.Code.Types as Code
@@ -33,39 +34,34 @@ import qualified Glean.Schema.Src.Types as Src
 import qualified Glean.Schema.SymbolidCxx.Types as SymbolId
 
 instance Search Cxx.Entity where
-  symbolSearch [] =
-    return $ None "Cxx.symbolSearch: empty symbol"
-  symbolSearch [_] = do -- if the file is anchored at root, the path is missing?
-    return $ None "Cxx.symbolSearch: missing path prefix"
-  symbolSearch t@[path,name] = do -- i.e. global variable or container/struct?
-    searchDefinitions t path [] name
-  --
-  -- all other path/scope/name/(.ctor|.dtor)?/(.decl}?
-  --
-  symbolSearch t@(path:rest@(_:_)) = case break (==".c") rest of
-    -- we specifically know its a constructor with a signature
-    -- This is a hack. To be fixed by proper parser w/ specification
-    (scope, ".c":params) -> case params of
-      [] -> searchCTorSigDefinitions t path scope []
-      [".decl"] -> searchCTorSigDeclarations t path scope []
-      [sig, ".decl"]    -- .c/p1,p2/.decl - is a declaration entity
-        -> searchCTorSigDeclarations t path scope (Text.splitOn "," sig)
-      -- .c/p1,p2 defn or .c no params is a definition entity
-      [sig] -> searchCTorSigDefinitions t path scope (Text.splitOn "," sig)
-      _ -> return $ None $ -- can't be more than one sig token
-        "Cxx.symbolSearch: ctor signature malformed: " <> textShow params
+  symbolSearch = cxxSymbolSearch
 
-    -- not a ".c" constructor
-    _ -> case last rest of
-      ".decl" -> searchDeclarations t path (init rest)
-      ".ctor" -> searchTorDefinitions t path (init rest)
-        (alt @"constructor" wild) -- n.b. doesn't handle ctor/.decl !
-      ".dtor" -> searchTorDefinitions t path (init rest)
-        (alt @"destructor" wild)
-
-      -- note: doesn't handle .ctor parameters either. e.g. /.ctor//.decl
-      name -> searchDefinitions t path (init rest) name
-
+cxxSymbolSearch :: [Text] -> ReposHaxl u w (SearchResult Cxx.Entity)
+cxxSymbolSearch t = case P.validateSymbolId t of
+  Left err -> return $ None (Text.unlines err)
+  Right P.SymbolEnv{..} ->
+    let scope = map P.unName scopes
+        sig = map P.unName params
+        mname = fmap P.unName localname
+    in case tag of
+      -- ctors with signatures, ctor params or dtors
+      Just P.CTorSignature -- .c
+        | declaration -> searchCTorSigDeclarations t path scope sig
+        | otherwise -> searchCTorSigDefinitions t path scope sig
+      Just P.Constructor -- these are always params to constructors now. remove
+        | Just name <- mname -- only Nothing in constructor/destructor case
+        -> let scope' = scope <> [".ctor"] -- params are within ctor scope
+           in searchSymbolId t $ if declaration
+            then lookupDeclaration path scope' name
+            else lookupDefinition path scope' name
+      Just P.Destructor -- destructor (".dtor") decls or definitions
+        -> searchSymbolId t $ if declaration
+            then lookupDTorDeclaration path scope
+            else lookupDTorDefinition path scope
+      -- everything else
+      _ -> if declaration
+           then searchDeclarations t path scope (fromMaybe "" mname)
+           else searchDefinitions t path scope (fromMaybe "" mname)
 
 -- this is the most common path, for e.g. classes and functions
 --
@@ -93,33 +89,13 @@ searchDefinitions t path ns name =
 -- declaration entities only
 --
 searchDeclarations
-  :: [Text] -> Text -> [Text] -> ReposHaxl u w (SearchResult Cxx.Entity)
-searchDeclarations _ _path [] =
-  return $ None "Cxx.symbolSearch: empty decl symbol" -- invalid
-searchDeclarations t path rest@(_:_) =
-  --
-  -- n.b. could be e.g. the anonymous param decl of a ctor
-  -- represented as */.ctor//.decl
-  --
+  :: [Text] -> Text -> [Text] -> Text -> ReposHaxl u w (SearchResult Cxx.Entity)
+searchDeclarations t path ns name = -- `ns` might be [] for global scope
     searchSymbolId t (lookupDeclaration path ns name)
       .|?
     searchSymbolId t (lookupFunctionDeclaration path ns name)
       .|?
     searchSymbolId t (lookupNamespaceDeclaration path ns name)
-  where
-    name = last rest
-    ns = init rest
-
---
--- constructor or destructor definitions only
---
-searchTorDefinitions
-  :: [Text] -> Text -> [Text] -> Angle Cxx.FunctionName_key
-  -> ReposHaxl u w (SearchResult Cxx.Entity)
-searchTorDefinitions _ _path [] _ = return $
-  None "Cxx.symbolSearch: ctor defns: empty scope" -- no global ctors
-searchTorDefinitions t path rest@(_:_) torLabel = searchSymbolId t $
-  lookupTorDefinition path rest torLabel
 
 searchCTorSigDefinitions
   :: [Text] -> Text -> [Text] -> [Text]
@@ -203,17 +179,30 @@ lookupEnumerator anchor ns parent name =
       : entityFooter anchor entity codeEntity file rangespan lname
       )
 
-lookupTorDefinition
-  :: Text -> [Text] -> Angle Cxx.FunctionName_key
-  -> Angle (ResultLocation Cxx.Entity)
-lookupTorDefinition anchor ns torLabel =
+lookupDTorDeclaration :: Text -> [Text] -> Angle (ResultLocation Cxx.Entity)
+lookupDTorDeclaration anchor ns =
+  vars $ \(decl :: Angle Cxx.Declaration) (entity :: Angle Cxx.Entity)
+     (codeEntity :: Angle Code.Entity) (file :: Angle Src.File)
+     (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
+    tuple (entity, file, rangespan, lname) `where_` ((
+      wild .= predicate @SymbolId.LookupFunctionDeclaration (
+        rec $
+          field @"name" (alt @"destructor" wild) $
+          field @"scope" (scopeQ (reverse ns)) $
+          field @"decl" decl
+        end))
+      : entityDeclFooter anchor decl entity codeEntity file rangespan lname
+      )
+
+lookupDTorDefinition :: Text -> [Text] -> Angle (ResultLocation Cxx.Entity)
+lookupDTorDefinition anchor ns =
   vars $ \(entity :: Angle Cxx.Entity) (codeEntity :: Angle Code.Entity)
      (file :: Angle Src.File) (rangespan :: Angle Code.RangeSpan)
        (lname :: Angle Text) ->
     tuple (entity, file, rangespan, lname) `where_` ((
       wild .= predicate @SymbolId.LookupFunctionDefinition (
         rec $
-          field @"name" torLabel $ -- either @alt ctor or dtor
+          field @"name" (alt @"destructor" wild) $
           field @"scope" (scopeQ (reverse ns)) $
           field @"entity" entity
         end))
@@ -270,7 +259,8 @@ lookupCTorSignatureDeclaration anchor ns params =
 -- n.b. a lot of variables are not considered "Definitions" (e.g. local/auto)
 -- so they are only discoverable through decl search
 --
-lookupDeclaration :: Text -> [Text] -> Text -> Angle (ResultLocation Cxx.Entity)
+lookupDeclaration
+  :: Text -> [Text] -> Text -> Angle (ResultLocation Cxx.Entity)
 lookupDeclaration anchor ns name =
   vars $ \ (decl :: Angle Cxx.Declaration) (entity :: Angle Cxx.Entity)
     (codeEntity :: Angle Code.Entity) (file :: Angle Src.File)
@@ -406,12 +396,12 @@ namespaceQName ns n =
   end
 
 functionQName :: [Text] -> Text -> Angle Cxx.FunctionQName_key
-functionQName ns ".ctor" =
+functionQName ns ".ctor" = -- hard coded tokens. fix.
   rec $
     field @"name" (alt @"constructor" wild) $
     field @"scope" (scopeQ ns)
   end
-functionQName ns ".dtor" =
+functionQName ns ".dtor" = -- hard coded tokens
   rec $
     field @"name" (alt @"destructor" wild) $
     field @"scope" (scopeQ ns)

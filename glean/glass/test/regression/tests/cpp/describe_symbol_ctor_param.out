@@ -1,0 +1,62 @@
+[
+    "@generated",
+    {
+        "comments": [],
+        "contains_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "extends_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "kind": 15,
+        "language": 1,
+        "location": {
+            "filepath": "test.cpp",
+            "range": {
+                "columnBegin": 7,
+                "columnEnd": 22,
+                "lineBegin": 112,
+                "lineEnd": 112
+            },
+            "repository": "test"
+        },
+        "modifiers": [],
+        "name": {
+            "container": "d::.ctor",
+            "localName": "val"
+        },
+        "pretty_comments": [],
+        "repo_hash": "testhash",
+        "signature": "const char* val",
+        "sym": "test/cpp//d/.ctor/val/.decl",
+        "sym_location": {
+            "filepath": "test.cpp",
+            "range": {
+                "columnBegin": 7,
+                "columnEnd": 22,
+                "lineBegin": 112,
+                "lineEnd": 112
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": [
+            {
+                "filepath": "test.cpp",
+                "range": {
+                    "columnBegin": 7,
+                    "columnEnd": 22,
+                    "lineBegin": 114,
+                    "lineEnd": 114
+                },
+                "repository": "test"
+            }
+        ],
+        "type_xrefs": []
+    }
+]
