@@ -17,6 +17,7 @@ import org.jetbrains.kotlin.descriptors.CallableDescriptor
 import org.jetbrains.kotlin.descriptors.ClassDescriptor
 import org.jetbrains.kotlin.descriptors.PackageViewDescriptor
 import org.jetbrains.kotlin.descriptors.ParameterDescriptor
+import org.jetbrains.kotlin.descriptors.annotations.Annotations
 import org.jetbrains.kotlin.descriptors.buildPossiblyInnerType
 import org.jetbrains.kotlin.descriptors.containingPackage
 import org.jetbrains.kotlin.js.descriptorUtils.getJetTypeFqName
@@ -30,6 +31,7 @@ import org.jetbrains.kotlin.types.typeUtil.isBoolean
 import org.jetbrains.kotlin.types.typeUtil.isPrimitiveNumberType
 import org.jetbrains.kotlin.types.typeUtil.isTypeParameter
 import org.jetbrains.kotlin.types.typeUtil.isUnit
+import org.jetbrains.kotlin.types.typeUtil.replaceAnnotations
 import org.jetbrains.kotlin.types.upperIfFlexible
 
 fun ParameterDescriptor.qualifiedName(): QName {
@@ -114,6 +116,11 @@ fun GleanPath.toQName(): QName {
 }
 
 fun KotlinType.path(): GleanPath {
+  // we do not include annotations into names
+  if (!this.annotations.isEmpty()) {
+    return this.replaceAnnotations(Annotations.EMPTY).path()
+  }
+
   if (this.isPrimitiveNumberType() || this.isBoolean() || this.isUnit()) {
     val typ = this.toString().lowercase()
     return primitiveToShortFormat(if (this.isMarkedNullable) typ.substringBefore("?") else typ)

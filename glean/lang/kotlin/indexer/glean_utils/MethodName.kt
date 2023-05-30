@@ -8,15 +8,26 @@
 
 package glean.lang.kotlin.indexer.glean_utils
 
-import com.facebook.glean.schema.javakotlin_alpha.*
+import com.facebook.glean.schema.javakotlin_alpha.MethodName
+import com.facebook.glean.schema.javakotlin_alpha.MethodNameKey
+import com.facebook.glean.schema.javakotlin_alpha.Type
+import com.facebook.glean.schema.javakotlin_alpha.TypeKey
 import com.facebook.tools.jast.primitiveToShortFormat
 import org.jetbrains.kotlin.descriptors.FunctionDescriptor
+import org.jetbrains.kotlin.descriptors.annotations.Annotations
 import org.jetbrains.kotlin.descriptors.buildPossiblyInnerType
 import org.jetbrains.kotlin.js.descriptorUtils.getJetTypeFqName
 import org.jetbrains.kotlin.js.descriptorUtils.nameIfStandardType
 import org.jetbrains.kotlin.types.KotlinType
 import org.jetbrains.kotlin.types.isFlexible
-import org.jetbrains.kotlin.types.typeUtil.*
+import org.jetbrains.kotlin.types.typeUtil.constituentTypes
+import org.jetbrains.kotlin.types.typeUtil.isAnyOrNullableAny
+import org.jetbrains.kotlin.types.typeUtil.isArrayOfNothing
+import org.jetbrains.kotlin.types.typeUtil.isBoolean
+import org.jetbrains.kotlin.types.typeUtil.isPrimitiveNumberType
+import org.jetbrains.kotlin.types.typeUtil.isTypeParameter
+import org.jetbrains.kotlin.types.typeUtil.isUnit
+import org.jetbrains.kotlin.types.typeUtil.replaceAnnotations
 import org.jetbrains.kotlin.types.upperIfFlexible
 
 fun buildMethodName(function: FunctionDescriptor): MethodName {
@@ -29,6 +40,11 @@ fun buildMethodName(function: FunctionDescriptor): MethodName {
 }
 
 fun KotlinType.gleanType(): TypeKey {
+  // we do not include annotations into names
+  if (!this.annotations.isEmpty()) {
+    return this.replaceAnnotations(Annotations.EMPTY).gleanType()
+  }
+
   if (this.isPrimitiveNumberType() || this.isBoolean() || this.isUnit()) {
     val type = this.toString().lowercase()
     return TypeKey.fromPrimitive(
