@@ -656,7 +656,7 @@
                     "module": {
                       "key": { "file": { "key": "test/es_exports.js.flow" } }
                     },
-                    "span": { "length": 3, "start": 396 }
+                    "span": { "length": 3, "start": 291 }
                   }
                 },
                 "name": { "key": "bar" }
@@ -667,7 +667,7 @@
       },
       "location": {
         "file": { "key": "test/es_exports.js.flow" },
-        "location": { "span": { "length": 3, "start": 396 } },
+        "location": { "span": { "length": 3, "start": 291 } },
         "name": "bar"
       }
     }
