@@ -362,14 +362,14 @@
                 "nameRange": {
                     "columnBegin": 8,
                     "columnEnd": 9,
-                    "lineBegin": 102,
-                    "lineEnd": 102
+                    "lineBegin": 107,
+                    "lineEnd": 107
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 102,
-                    "lineEnd": 120
+                    "lineBegin": 107,
+                    "lineEnd": 127
                 },
                 "sym": "test/cpp//d"
             },
@@ -415,14 +415,14 @@
                 "nameRange": {
                     "columnBegin": 5,
                     "columnEnd": 6,
-                    "lineBegin": 110,
-                    "lineEnd": 110
+                    "lineBegin": 115,
+                    "lineEnd": 115
                 },
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 8,
-                    "lineBegin": 110,
-                    "lineEnd": 110
+                    "lineBegin": 115,
+                    "lineEnd": 115
                 },
                 "sym": "test/cpp//d/.c/.decl"
             },
@@ -468,14 +468,14 @@
                 "nameRange": {
                     "columnBegin": 5,
                     "columnEnd": 6,
-                    "lineBegin": 116,
-                    "lineEnd": 116
+                    "lineBegin": 121,
+                    "lineEnd": 121
                 },
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 36,
-                    "lineBegin": 116,
-                    "lineEnd": 116
+                    "lineBegin": 121,
+                    "lineEnd": 121
                 },
                 "sym": "test/cpp//d/.c/char,int,const+char+*/.decl"
             },
@@ -521,14 +521,14 @@
                 "nameRange": {
                     "columnBegin": 5,
                     "columnEnd": 6,
-                    "lineBegin": 114,
-                    "lineEnd": 114
+                    "lineBegin": 119,
+                    "lineEnd": 119
                 },
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 35,
-                    "lineBegin": 114,
-                    "lineEnd": 114
+                    "lineBegin": 119,
+                    "lineEnd": 119
                 },
                 "sym": "test/cpp//d/.c/const+char+*,void+%28*%29%28%29/.decl"
             },
@@ -574,14 +574,14 @@
                 "nameRange": {
                     "columnBegin": 5,
                     "columnEnd": 6,
-                    "lineBegin": 112,
-                    "lineEnd": 112
+                    "lineBegin": 117,
+                    "lineEnd": 117
                 },
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 23,
-                    "lineBegin": 112,
-                    "lineEnd": 112
+                    "lineBegin": 117,
+                    "lineEnd": 117
                 },
                 "sym": "test/cpp//d/.c/const+char+*/.decl"
             },
@@ -627,16 +627,69 @@
                 "nameRange": {
                     "columnBegin": 5,
                     "columnEnd": 6,
-                    "lineBegin": 118,
-                    "lineEnd": 118
+                    "lineBegin": 123,
+                    "lineEnd": 123
                 },
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 16,
-                    "lineBegin": 118,
-                    "lineEnd": 118
+                    "lineBegin": 123,
+                    "lineEnd": 123
                 },
                 "sym": "test/cpp//d/.c/const+d+%26/.decl"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "d(pear<int, bool> &, char)"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "d"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "d(pear<int, bool>& p, char cp)"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "nameRange": {
+                    "columnBegin": 5,
+                    "columnEnd": 6,
+                    "lineBegin": 125,
+                    "lineEnd": 125
+                },
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 35,
+                    "lineBegin": 125,
+                    "lineEnd": 125
+                },
+                "sym": "test/cpp//d/.c/pear%3Cint%20+bool%3E+%26,char/.decl"
             },
             {
                 "attributes": [
@@ -680,14 +733,14 @@
                 "nameRange": {
                     "columnBegin": 31,
                     "columnEnd": 32,
-                    "lineBegin": 114,
-                    "lineEnd": 114
+                    "lineBegin": 119,
+                    "lineEnd": 119
                 },
                 "range": {
                     "columnBegin": 24,
                     "columnEnd": 34,
-                    "lineBegin": 114,
-                    "lineEnd": 114
+                    "lineBegin": 119,
+                    "lineEnd": 119
                 },
                 "sym": "test/cpp//d/.ctor//.decl"
             },
@@ -733,14 +786,14 @@
                 "nameRange": {
                     "columnBegin": 15,
                     "columnEnd": 16,
-                    "lineBegin": 118,
-                    "lineEnd": 118
+                    "lineBegin": 123,
+                    "lineEnd": 123
                 },
                 "range": {
                     "columnBegin": 7,
                     "columnEnd": 15,
-                    "lineBegin": 118,
-                    "lineEnd": 118
+                    "lineBegin": 123,
+                    "lineEnd": 123
                 },
                 "sym": "test/cpp//d/.ctor//.decl"
             },
@@ -786,16 +839,69 @@
                 "nameRange": {
                     "columnBegin": 12,
                     "columnEnd": 13,
-                    "lineBegin": 116,
-                    "lineEnd": 116
+                    "lineBegin": 121,
+                    "lineEnd": 121
                 },
                 "range": {
                     "columnBegin": 7,
                     "columnEnd": 13,
-                    "lineBegin": 116,
-                    "lineEnd": 116
+                    "lineBegin": 121,
+                    "lineEnd": 121
                 },
                 "sym": "test/cpp//d/.ctor/c/.decl"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "cp"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "d::.ctor"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "char cp"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "nameRange": {
+                    "columnBegin": 32,
+                    "columnEnd": 34,
+                    "lineBegin": 125,
+                    "lineEnd": 125
+                },
+                "range": {
+                    "columnBegin": 27,
+                    "columnEnd": 34,
+                    "lineBegin": 125,
+                    "lineEnd": 125
+                },
+                "sym": "test/cpp//d/.ctor/cp/.decl"
             },
             {
                 "attributes": [
@@ -839,14 +945,14 @@
                 "nameRange": {
                     "columnBegin": 19,
                     "columnEnd": 20,
-                    "lineBegin": 116,
-                    "lineEnd": 116
+                    "lineBegin": 121,
+                    "lineEnd": 121
                 },
                 "range": {
                     "columnBegin": 15,
                     "columnEnd": 20,
-                    "lineBegin": 116,
-                    "lineEnd": 116
+                    "lineBegin": 121,
+                    "lineEnd": 121
                 },
                 "sym": "test/cpp//d/.ctor/i/.decl"
             },
@@ -892,14 +998,67 @@
                 "nameRange": {
                     "columnBegin": 34,
                     "columnEnd": 35,
-                    "lineBegin": 116,
-                    "lineEnd": 116
+                    "lineBegin": 121,
+                    "lineEnd": 121
                 },
                 "range": {
                     "columnBegin": 22,
                     "columnEnd": 35,
-                    "lineBegin": 116,
-                    "lineEnd": 116
+                    "lineBegin": 121,
+                    "lineEnd": 121
+                },
+                "sym": "test/cpp//d/.ctor/p/.decl"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "p"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "d::.ctor"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pear<int, bool>& p"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "nameRange": {
+                    "columnBegin": 24,
+                    "columnEnd": 25,
+                    "lineBegin": 125,
+                    "lineEnd": 125
+                },
+                "range": {
+                    "columnBegin": 7,
+                    "columnEnd": 25,
+                    "lineBegin": 125,
+                    "lineEnd": 125
                 },
                 "sym": "test/cpp//d/.ctor/p/.decl"
             },
@@ -945,14 +1104,14 @@
                 "nameRange": {
                     "columnBegin": 19,
                     "columnEnd": 22,
-                    "lineBegin": 112,
-                    "lineEnd": 112
+                    "lineBegin": 117,
+                    "lineEnd": 117
                 },
                 "range": {
                     "columnBegin": 7,
                     "columnEnd": 22,
-                    "lineBegin": 112,
-                    "lineEnd": 112
+                    "lineBegin": 117,
+                    "lineEnd": 117
                 },
                 "sym": "test/cpp//d/.ctor/val/.decl"
             },
@@ -998,14 +1157,14 @@
                 "nameRange": {
                     "columnBegin": 19,
                     "columnEnd": 22,
-                    "lineBegin": 114,
-                    "lineEnd": 114
+                    "lineBegin": 119,
+                    "lineEnd": 119
                 },
                 "range": {
                     "columnBegin": 7,
                     "columnEnd": 22,
-                    "lineBegin": 114,
-                    "lineEnd": 114
+                    "lineBegin": 119,
+                    "lineEnd": 119
                 },
                 "sym": "test/cpp//d/.ctor/val/.decl"
             },
@@ -1051,14 +1210,14 @@
                 "nameRange": {
                     "columnBegin": 6,
                     "columnEnd": 7,
-                    "lineBegin": 104,
-                    "lineEnd": 104
+                    "lineBegin": 109,
+                    "lineEnd": 109
                 },
                 "range": {
                     "columnBegin": 2,
                     "columnEnd": 7,
-                    "lineBegin": 104,
-                    "lineEnd": 104
+                    "lineBegin": 109,
+                    "lineEnd": 109
                 },
                 "sym": "test/cpp//d/i/.decl"
             },
@@ -2815,6 +2974,59 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "pear"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct pear"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "nameRange": {
+                    "columnBegin": 10,
+                    "columnEnd": 14,
+                    "lineBegin": 105,
+                    "lineEnd": 105
+                },
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 14,
+                    "lineBegin": 105,
+                    "lineEnd": 105
+                },
+                "sym": "test/cpp//pear/.decl"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
                             "aString": "A"
                         },
                         "key": "symbolName"
@@ -2937,8 +3149,8 @@
                 "range": {
                     "columnBegin": 7,
                     "columnEnd": 8,
-                    "lineBegin": 118,
-                    "lineEnd": 118
+                    "lineBegin": 123,
+                    "lineEnd": 123
                 },
                 "sym": "test/cpp//d",
                 "target": {
@@ -2946,16 +3158,16 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 102,
-                        "lineEnd": 120
+                        "lineBegin": 107,
+                        "lineEnd": 127
                     },
                     "repository": "test"
                 },
                 "targetName": {
                     "columnBegin": 8,
                     "columnEnd": 9,
-                    "lineBegin": 102,
-                    "lineEnd": 102
+                    "lineBegin": 107,
+                    "lineEnd": 107
                 }
             },
             {
@@ -4972,6 +5184,69 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "pear"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct pear"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 7,
+                    "columnEnd": 11,
+                    "lineBegin": 125,
+                    "lineEnd": 125
+                },
+                "sym": "test/cpp//pear/.decl",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 14,
+                        "lineBegin": 105,
+                        "lineEnd": 105
+                    },
+                    "repository": "test"
+                },
+                "targetName": {
+                    "columnBegin": 10,
+                    "columnEnd": 14,
+                    "lineBegin": 105,
+                    "lineEnd": 105
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
                             "aString": "test.h"
                         },
                         "key": "symbolName"
@@ -5002,8 +5277,8 @@
                     }
                 ],
                 "range": {
-                    "columnBegin": 2,
-                    "columnEnd": 19,
+                    "columnBegin": 1,
+                    "columnEnd": 18,
                     "lineBegin": 9,
                     "lineEnd": 9
                 },

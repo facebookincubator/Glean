@@ -91,6 +91,17 @@
         },
         {
             "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "pear",
+                "params": [],
+                "path": "",
+                "scopes": [],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
                 "declaration": false,
                 "errors": [],
                 "localname": "U",
@@ -210,6 +221,22 @@
             "Right": {
                 "declaration": true,
                 "errors": [],
+                "localname": null,
+                "params": [
+                    "pear<int, bool> &",
+                    "char"
+                ],
+                "path": "",
+                "scopes": [
+                    "d"
+                ],
+                "tag": "CTorSignature"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
                 "localname": "",
                 "params": [],
                 "path": "",
@@ -224,6 +251,19 @@
                 "declaration": true,
                 "errors": [],
                 "localname": "c",
+                "params": [],
+                "path": "",
+                "scopes": [
+                    "d"
+                ],
+                "tag": "Constructor"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "cp",
                 "params": [],
                 "path": "",
                 "scopes": [

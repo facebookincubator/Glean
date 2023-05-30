@@ -21,28 +21,28 @@
             "filepath": "test.cpp",
             "range": {
                 "columnBegin": 5,
-                "columnEnd": 23,
-                "lineBegin": 117,
-                "lineEnd": 117
+                "columnEnd": 35,
+                "lineBegin": 125,
+                "lineEnd": 125
             },
             "repository": "test"
         },
         "modifiers": [],
         "name": {
             "container": "d",
-            "localName": "d(const char *)"
+            "localName": "d(pear<int, bool> &, char)"
         },
         "pretty_comments": [],
         "repo_hash": "testhash",
-        "signature": "::d::d(const char* val)",
-        "sym": "test/cpp//d/.c/const+char+*/.decl",
+        "signature": "::d::d(pear<int, bool>& p, char cp)",
+        "sym": "test/cpp//d/.c/pear%3Cint%20+bool%3E+%26,char/.decl",
         "sym_location": {
             "filepath": "test.cpp",
             "range": {
                 "columnBegin": 5,
-                "columnEnd": 23,
-                "lineBegin": 117,
-                "lineEnd": 117
+                "columnEnd": 35,
+                "lineBegin": 125,
+                "lineEnd": 125
             },
             "repository": "test"
         },

@@ -161,8 +161,7 @@ symbolTokens :: SymbolId -> Either Text (RepoName, Language, [Text])
 symbolTokens (SymbolId symid)
   | (repo: code: pieces) <- tokens
   , Just lang <- fromShortCode code
-  = Right (RepoName repo, lang,
-           map (Text.replace "+" " " . URI.decodeText) pieces)
+  = Right (RepoName repo, lang, map URI.decodeText pieces)
   | otherwise = Left $ "Invalid symbol: " <> symid
   where
     tokens = Text.split (=='/') symid

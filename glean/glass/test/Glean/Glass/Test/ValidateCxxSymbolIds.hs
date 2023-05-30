@@ -32,6 +32,7 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "ctor_param" ctor_param
   , TestLabel "operator_1" operator_decl
   , TestLabel "anon_ns" anon_ns
+  , TestLabel "nested comma" ctor_sig3_nested_comma
   ]
 
 namespace1 :: Test
@@ -68,6 +69,13 @@ ctor_sig2 :: Test
 ctor_sig2 = test
   (ok_ctor_sig_decl "fbcode" ["folly","dynamic"] ["int *","char *"])
   (sym "fbcode/folly/dynamic/.c/int+*,char+*/.decl")
+
+-- test nested comma escaping
+ctor_sig3_nested_comma :: Test
+ctor_sig3_nested_comma = test
+  (ok_ctor_sig_decl "fbcode" ["folly","dynamic"]
+    ["int *","std::pair<char *, bool>"])
+  (sym "fbcode/folly/dynamic/.c/int+*,std::pair<char+* +bool>/.decl")
 
 ctor_param :: Test
 ctor_param = test

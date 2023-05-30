@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
- #include "test.h"
+#include "test.h"
 
 namespace foo {
 
@@ -99,6 +99,11 @@ struct U {
 enum Global { GA, GB, GC };
 enum class GlobalClass { GCA, GCB, GCC };
 
+template<
+    class T1,
+    class T2
+> struct pear;
+
 struct d {
 
  int i;
@@ -116,5 +121,7 @@ struct d {
     d(char c, int i, char const* p);
 
     d(d const&);
+
+    d(pear<int, bool>& p, char cp);
 
 };

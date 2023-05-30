@@ -27,7 +27,7 @@ import Data.Aeson.Types ( ToJSON )
 
 -- | Tokenize each fragment
 data Token
-  = TName !Name
+  = TName !Text
   | TDecl
   | TCtor
   | TDtor
@@ -39,7 +39,16 @@ tokenize ".decl" = TDecl
 tokenize ".ctor" = TCtor
 tokenize ".dtor" = TDtor
 tokenize ".c" = TCtorSignature
-tokenize n = TName (Name $ Text.replace "+" " " n)
+tokenize n = TName n
+
+name :: Text -> Name
+name = Name . Text.replace "+" " "
+
+-- | in type signatures literal "," (as in std::pair<a, b>) is replaced with " "
+-- to avoid the "," param seperator
+sig :: Text -> Name
+sig = name . Text.replace " " ","
+
 
 -- "parser"
 
@@ -86,14 +95,14 @@ initState p = SymbolEnv {
     errors = []
   }
 
-pushScope :: Name -> Parse ()
-pushScope s = modify' $ \env -> env { scopes = s : scopes env }
+pushScope :: Text -> Parse ()
+pushScope s = modify' $ \env -> env { scopes = name s : scopes env }
 
-pushParam :: Name -> Parse ()
-pushParam s = modify' $ \env -> env { params = s : params env }
+pushParam :: Text -> Parse ()
+pushParam s = modify' $ \env -> env { params = sig s : params env }
 
-setName :: Name -> Parse ()
-setName n = modify' $ \env -> env { localname = Just n }
+setName :: Text -> Parse ()
+setName n = modify' $ \env -> env { localname = Just (name n) }
 
 setTag :: SymbolTag -> Parse ()
 setTag t = modify' $ \env -> env { tag = Just t }
@@ -128,7 +137,7 @@ parseOneName tok _ = setErr $
   "Cxx.parseScopedSymbol: expected identifier, found tag:" <> textShow tok
 
 -- | scope* name (tag*)
-parseScopeOrName :: Name -> [Token] -> Parse ()
+parseScopeOrName :: Text -> [Token] -> Parse ()
 parseScopeOrName name [] = setName name -- last identifier is always name
 parseScopeOrName name (n : ns) = case n of
   TName n -> pushScope name >> parseScopeOrName n ns
@@ -168,14 +177,16 @@ parseCtorSig :: [Token] -> Parse ()
 -- constructor with no params
 parseCtorSig [] = return ()
 -- one or more param signatures
-parseCtorSig [TName (Name name)] = mapM_ (pushParam . Name) params
+parseCtorSig [TName name] = mapM_ pushParam params
   where
     params = Text.splitOn "," name
+
 -- nullary construct decl
 parseCtorSig [TDecl] = setDecl
+
 -- one or more param signatures decl
-parseCtorSig [TName (Name name), TDecl] =
-    mapM_ (pushParam . Name) params >> setDecl
+parseCtorSig [TName name, TDecl] =
+    mapM_ pushParam params >> setDecl
   where
     params = Text.splitOn "," name
 parseCtorSig rest = setErr $

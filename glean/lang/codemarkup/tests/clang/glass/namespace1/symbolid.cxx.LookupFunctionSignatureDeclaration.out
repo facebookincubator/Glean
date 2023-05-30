@@ -194,9 +194,9 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 110,
+              "lineBegin": 115,
               "columnBegin": 5,
-              "lineEnd": 110,
+              "lineEnd": 115,
               "columnEnd": 7
             }
           }
@@ -258,9 +258,9 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 118,
+              "lineBegin": 123,
               "columnBegin": 5,
-              "lineEnd": 118,
+              "lineEnd": 123,
               "columnEnd": 15
             }
           }
@@ -326,10 +326,79 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 116,
+              "lineBegin": 121,
               "columnBegin": 5,
-              "lineEnd": 116,
+              "lineEnd": 121,
               "columnEnd": 35
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": { "constructor": { } } },
+      "scope": {
+        "recordWithAccess": {
+          "record": {
+            "key": { "name": { "key": "d" }, "scope": { "global_": { } } }
+          },
+          "access": 0
+        }
+      },
+      "signature": {
+        "key": {
+          "returns": { "key": "void" },
+          "parameters": [
+            { "name": { "key": "p" }, "type": { "key": "pear<int, bool> &" } },
+            { "name": { "key": "cp" }, "type": { "key": "char" } }
+          ]
+        }
+      },
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "constructor": { } } },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "d" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "signature": {
+              "key": {
+                "returns": { "key": "void" },
+                "parameters": [
+                  {
+                    "name": { "key": "p" },
+                    "type": { "key": "pear<int, bool> &" }
+                  },
+                  { "name": { "key": "cp" }, "type": { "key": "char" } }
+                ]
+              }
+            },
+            "method": {
+              "isVirtual": false,
+              "isConst": false,
+              "isVolatile": false,
+              "refQualifier": 0
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 125,
+              "columnBegin": 5,
+              "lineEnd": 125,
+              "columnEnd": 34
             }
           }
         }
@@ -393,9 +462,9 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 112,
+              "lineBegin": 117,
               "columnBegin": 5,
-              "lineEnd": 112,
+              "lineEnd": 117,
               "columnEnd": 22
             }
           }
@@ -462,9 +531,9 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 114,
+              "lineBegin": 119,
               "columnBegin": 5,
-              "lineEnd": 114,
+              "lineEnd": 119,
               "columnEnd": 34
             }
           }

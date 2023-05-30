@@ -15,7 +15,7 @@ module Glean.Glass.SymbolId.Cxx (
 
   ) where
 
-import Data.Text as Text ( Text, intercalate, break, replace )
+import Data.Text as Text ( Text, intercalate, break, replace, splitOn )
 import Data.Maybe ( maybeToList )
 import Control.Monad.Catch ( throwM )
 
@@ -254,13 +254,22 @@ instance Symbol Cxx.ObjcSelector where
 -- Currently we don't encode the parameter name, just its type.
 -- > "folly::dynamic::Array &&"
 toTypeSymbol :: Cxx.Type -> Glean.RepoHaxl u w Text
-toTypeSymbol ty = normalize <$> Glean.keyOf ty
+toTypeSymbol ty = escape . normalize <$> Glean.keyOf ty
   where
     -- For readability in the url encoding we replace %20 with +
     -- so we can get encodings like:
     -- > fbsource/cpp/fbcode/folly/dynamic/.c/const+char+*
+    --
+    -- reversed in Cxx.Parse.tokenize
+    --
     normalize :: Text -> Text
     normalize = Text.replace " " "+"
+    --
+    -- We also need to escape any comma literals, as that's our separate char
+    -- e.g. 'std::pair<a, b>' has to go through unscathed
+    --
+    escape :: Text -> Text
+    escape = Text.replace "," " "
 
 -- The cxx schema sometimes uses nothing to represent implicit or anonymous
 -- scopes and names. We need to preserve that rather than elide
@@ -496,7 +505,11 @@ ctorSignatureQName prefix ps = Right (Name localname, Name scopename)
       [sig] -> Just sig
       _ -> Nothing -- we never have more than one sig token
 
-    denormalize = Text.replace "+" " " . Text.replace "," ", "
+    denormalize =
+          intercalate ", "
+        . map (Text.replace "+" " " .
+               Text.replace " " ",")
+        . Text.splitOn ","
 
     (scope, name) = case prefix of
       [n] -> ([n], n)
