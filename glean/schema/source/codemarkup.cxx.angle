@@ -765,4 +765,19 @@ predicate CxxDataAvailable : src.File
       # (even if the Angle compiler could notice and optimize)
     !(!(cxx1.Trace {file = F}))
 
+predicate CxxEntityUSR :
+  {
+    entity : code.cxx.Entity,
+    usr : cxx1.USR,
+  }
+  { E, U } where
+    (  { defn = Defn } = E;
+        cxx1.DefToBaseDecl { Defn, DeclBase };
+        cxx1.DeclFamilyOf { DeclBase, Decl };
+        cxx1.DeclarationToUSR { Decl,  U };
+    ) | (
+      { decl = Decl } = E;
+      cxx1.DeclFamilyOf { Decl, DeclFam };
+      cxx1.DeclarationToUSR { DeclFam, U };
+    )
 }

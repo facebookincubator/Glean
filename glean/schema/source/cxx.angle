@@ -250,6 +250,15 @@ predicate USRToDeclaration:
     declaration : Declaration,
   }
 
+
+# For quicker lookup of Entity -> USR
+predicate DeclarationToUSR :
+  {
+    declaration : Declaration,
+    usr : USR
+  }
+  stored { D, U } where USRToDeclaration { U, D }
+
 # Objective C interface-implementation relationship
 predicate ObjcImplements :
   {

@@ -28,4 +28,5 @@ codemarkupDerivePasses =
   Lib.allManualPasses ++
   [DeriveGeneric "cxx1.DeclByName"
   ,DeriveGeneric "cxx1.FunctionDeclAttribute"
+  ,DeriveGeneric "cxx1.DeclarationToUSR"
   ]
