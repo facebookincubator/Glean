@@ -14,7 +14,10 @@
             "columnEnd": 1
           }
         },
-        "span": { "start": 296, "length": 1 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 296, "length": 1 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -176,7 +179,10 @@
             "columnEnd": 1
           }
         },
-        "span": { "start": 398, "length": 1 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 398, "length": 1 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -338,7 +344,10 @@
             "columnEnd": 44
           }
         },
-        "span": { "start": 261, "length": 1 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 261, "length": 1 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -386,7 +395,10 @@
             "columnEnd": 14
           }
         },
-        "span": { "start": 329, "length": 3 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 329, "length": 3 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -441,7 +453,10 @@
             "columnEnd": 19
           }
         },
-        "span": { "start": 759, "length": 3 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 759, "length": 3 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -496,7 +511,10 @@
             "columnEnd": 16
           }
         },
-        "span": { "start": 438, "length": 3 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 438, "length": 3 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -551,7 +569,10 @@
             "columnEnd": 32
           }
         },
-        "span": { "start": 666, "length": 3 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 666, "length": 3 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -606,7 +627,10 @@
             "columnEnd": 19
           }
         },
-        "span": { "start": 759, "length": 3 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 759, "length": 3 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -661,7 +685,10 @@
             "columnEnd": 15
           }
         },
-        "span": { "start": 794, "length": 3 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 794, "length": 3 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -716,7 +743,10 @@
             "columnEnd": 17
           }
         },
-        "span": { "start": 591, "length": 3 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 591, "length": 3 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -771,7 +801,10 @@
             "columnEnd": 17
           }
         },
-        "span": { "start": 591, "length": 3 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 591, "length": 3 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -826,7 +859,10 @@
             "columnEnd": 17
           }
         },
-        "span": { "start": 591, "length": 3 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 591, "length": 3 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -881,7 +917,10 @@
             "columnEnd": 58
           }
         },
-        "span": { "start": 726, "length": 3 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 726, "length": 3 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -936,7 +975,10 @@
             "columnEnd": 41
           }
         },
-        "span": { "start": 837, "length": 3 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 837, "length": 3 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -991,7 +1033,10 @@
             "columnEnd": 1
           }
         },
-        "span": { "start": 848, "length": 1 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 848, "length": 1 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -1040,7 +1085,10 @@
             "columnEnd": 16
           }
         },
-        "span": { "start": 313, "length": 3 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 313, "length": 3 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -1095,7 +1143,10 @@
             "columnEnd": 16
           }
         },
-        "span": { "start": 420, "length": 3 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 420, "length": 3 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -1150,7 +1201,10 @@
             "columnEnd": 34
           }
         },
-        "span": { "start": 632, "length": 3 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 632, "length": 3 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -1205,7 +1259,10 @@
             "columnEnd": 15
           }
         },
-        "span": { "start": 777, "length": 3 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 777, "length": 3 }
+        }
       },
       "tuplefield1": {
         "cxx": {

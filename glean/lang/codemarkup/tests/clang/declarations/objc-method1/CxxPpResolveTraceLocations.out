@@ -14,7 +14,10 @@
             "columnEnd": 4
           }
         },
-        "span": { "start": 232, "length": 1 }
+        "destination": {
+          "file": { "key": "test.m" },
+          "span": { "start": 232, "length": 1 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -178,7 +181,10 @@
             "columnEnd": 10
           }
         },
-        "span": { "start": 235, "length": 1 }
+        "destination": {
+          "file": { "key": "test.m" },
+          "span": { "start": 235, "length": 1 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -221,7 +227,10 @@
             "columnEnd": 18
           }
         },
-        "span": { "start": 246, "length": 1 }
+        "destination": {
+          "file": { "key": "test.m" },
+          "span": { "start": 246, "length": 1 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -269,7 +278,10 @@
             "columnEnd": 17
           }
         },
-        "span": { "start": 262, "length": 1 }
+        "destination": {
+          "file": { "key": "test.m" },
+          "span": { "start": 262, "length": 1 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -309,7 +321,10 @@
             "columnEnd": 18
           }
         },
-        "span": { "start": 282, "length": 1 }
+        "destination": {
+          "file": { "key": "test.m" },
+          "span": { "start": 282, "length": 1 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -349,7 +364,10 @@
             "columnEnd": 18
           }
         },
-        "span": { "start": 315, "length": 1 }
+        "destination": {
+          "file": { "key": "test.m" },
+          "span": { "start": 315, "length": 1 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -389,7 +407,10 @@
             "columnEnd": 31
           }
         },
-        "span": { "start": 295, "length": 1 }
+        "destination": {
+          "file": { "key": "test.m" },
+          "span": { "start": 295, "length": 1 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -429,7 +450,10 @@
             "columnEnd": 28
           }
         },
-        "span": { "start": 325, "length": 1 }
+        "destination": {
+          "file": { "key": "test.m" },
+          "span": { "start": 325, "length": 1 }
+        }
       },
       "tuplefield1": {
         "cxx": {

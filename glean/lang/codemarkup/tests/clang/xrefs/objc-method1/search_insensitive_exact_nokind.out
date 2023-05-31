@@ -76,7 +76,10 @@
             "columnEnd": 4
           }
         },
-        "span": { "start": 231, "length": 3 }
+        "destination": {
+          "file": { "key": "test.mm" },
+          "span": { "start": 231, "length": 3 }
+        }
       },
       "language": 0
     }

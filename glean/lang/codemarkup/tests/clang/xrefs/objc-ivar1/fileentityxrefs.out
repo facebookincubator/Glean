@@ -16,7 +16,10 @@
               "columnEnd": 8
             }
           },
-          "span": { "start": 242, "length": 2 }
+          "destination": {
+            "file": { "key": "test.m" },
+            "span": { "start": 242, "length": 2 }
+          }
         },
         "source": { "span": { "start": 356, "length": 2 } }
       },

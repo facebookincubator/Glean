@@ -15,7 +15,10 @@
             "columnEnd": 1
           }
         },
-        "span": { "start": 231, "length": 2 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 231, "length": 2 }
+        }
       },
       "entity": {
         "cxx": {
@@ -153,7 +156,10 @@
             "columnEnd": 1
           }
         },
-        "span": { "start": 417, "length": 2 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 417, "length": 2 }
+        }
       },
       "entity": {
         "cxx": {
@@ -227,7 +233,10 @@
             "columnEnd": 1
           }
         },
-        "span": { "start": 520, "length": 2 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 520, "length": 2 }
+        }
       },
       "entity": {
         "cxx": {
@@ -301,7 +310,10 @@
             "columnEnd": 42
           }
         },
-        "span": { "start": 272, "length": 3 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 272, "length": 3 }
+        }
       },
       "entity": {
         "cxx": {
@@ -349,7 +361,10 @@
             "columnEnd": 46
           }
         },
-        "span": { "start": 316, "length": 3 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 316, "length": 3 }
+        }
       },
       "entity": {
         "cxx": {
@@ -397,7 +412,10 @@
             "columnEnd": 38
           }
         },
-        "span": { "start": 354, "length": 3 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 354, "length": 3 }
+        }
       },
       "entity": {
         "cxx": {
@@ -445,7 +463,10 @@
             "columnEnd": 1
           }
         },
-        "span": { "start": 448, "length": 1 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 448, "length": 1 }
+        }
       },
       "entity": {
         "cxx": {
@@ -497,7 +518,10 @@
             "columnEnd": 1
           }
         },
-        "span": { "start": 547, "length": 1 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 547, "length": 1 }
+        }
       },
       "entity": {
         "cxx": {

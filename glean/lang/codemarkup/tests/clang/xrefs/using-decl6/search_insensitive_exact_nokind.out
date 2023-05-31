@@ -82,7 +82,10 @@
             "columnEnd": 12
           }
         },
-        "span": { "start": 241, "length": 3 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 241, "length": 3 }
+        }
       },
       "kind": 11,
       "language": 0

@@ -288,12 +288,15 @@ cxxXRefTargetToLocation declLocMap (Cxx.XRefTarget_declaration decl) = do
        mlocation <- fetchDataRecursive $ cxxDeclarationLocation (toAngle decl)
        case mlocation of
           Nothing -> return Nothing
-          Just (range, name, span) -> do
+          Just (range, name, file, span) -> do
             let location = Code.Location {
                 Code.location_name = name,
                 Code.location_file = Src.range_file range,
                 Code.location_location = Code.RangeSpan_range range,
-                Code.location_span = Just span
+                Code.location_destination = Just Src.FileLocation {
+                  Src.fileLocation_file = file,
+                  Src.fileLocation_span = span
+                }
               }
             return $ Just location
 
@@ -315,7 +318,7 @@ cxxXRefTargetToLocation _ (Cxx.XRefTarget_enumerator enumerator) = do
       Code.location_name = nameStr,
       Code.location_file = Src.range_file range,
       Code.location_location = Code.RangeSpan_range range,
-      Code.location_span = Nothing
+      Code.location_destination = Nothing
     }
   return $ Just (entity, location)
 
@@ -444,17 +447,19 @@ cxxFileEntityTraceDeclToDefXRefLocations traceId =
 -- Get location information for a Cxx Declaration
 --
 cxxDeclarationLocation :: Angle Cxx.Declaration
-  -> Angle (Src.Range, Text, Src.ByteSpan)
+  -> Angle (Src.Range, Text, Src.File, Src.ByteSpan)
 cxxDeclarationLocation decl =
   vars $ \(source :: Angle Src.Range)
           (name :: Angle Text)
+          (file :: Angle Src.File)
           (span :: Angle Src.ByteSpan) ->
-  tuple (source, name, span) `where_` [
+  tuple (source, name, file, span) `where_` [
     wild .= predicate @Cxx.DeclarationLocationNameSpan (
       rec $
         field @"decl" decl $
         field @"source" source $
         field @"name" name $
+        field @"file" (asPredicate file) $
         field @"span" span
       end)
     ]

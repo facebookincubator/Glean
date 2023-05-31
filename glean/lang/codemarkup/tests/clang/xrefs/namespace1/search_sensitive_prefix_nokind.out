@@ -114,7 +114,10 @@
             "columnEnd": 1
           }
         },
-        "span": { "start": 231, "length": 3 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 231, "length": 3 }
+        }
       },
       "kind": 5,
       "language": 0

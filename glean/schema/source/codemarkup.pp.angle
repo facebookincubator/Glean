@@ -34,9 +34,9 @@ predicate PpResolveLocation:
     location: codemarkup.types.Location,
     entity: code.pp.Entity,
   }
-  { { Str, File, Range, Span }, Entity } where
+  { { Str, File, Range, Destination }, Entity } where
     Trace = cxx1.Trace { file = File };
-    PpResolveTraceLocation { Trace, { Str, File, Range, Span }, Entity };
+    PpResolveTraceLocation { Trace, { Str, File, Range, Destination }, Entity };
 
 # Keyed by trace, find all locations and entities tied to that (file) trace
 # just #defines definitions at the moment

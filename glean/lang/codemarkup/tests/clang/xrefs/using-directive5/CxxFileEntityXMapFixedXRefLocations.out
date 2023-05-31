@@ -230,7 +230,10 @@
               "columnEnd": 1
             }
           },
-          "span": { "start": 231, "length": 2 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 231, "length": 2 }
+          }
         },
         "source": { "span": { "start": 260, "length": 2 } }
       },
@@ -514,7 +517,10 @@
               "columnEnd": 1
             }
           },
-          "span": { "start": 278, "length": 2 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 278, "length": 2 }
+          }
         },
         "source": { "span": { "start": 316, "length": 2 } }
       },

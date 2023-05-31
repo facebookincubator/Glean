@@ -14,7 +14,10 @@
             "columnEnd": 4
           }
         },
-        "span": { "start": 287, "length": 3 }
+        "destination": {
+          "file": { "key": "test.m" },
+          "span": { "start": 287, "length": 3 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -56,7 +59,10 @@
             "columnEnd": 4
           }
         },
-        "span": { "start": 232, "length": 1 }
+        "destination": {
+          "file": { "key": "test.m" },
+          "span": { "start": 232, "length": 1 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -130,7 +136,10 @@
             "columnEnd": 1
           }
         },
-        "span": { "start": 302, "length": 4 }
+        "destination": {
+          "file": { "key": "test.m" },
+          "span": { "start": 302, "length": 4 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -184,7 +193,10 @@
             "columnEnd": 36
           }
         },
-        "span": { "start": 234, "length": 1 }
+        "destination": {
+          "file": { "key": "test.m" },
+          "span": { "start": 234, "length": 1 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -235,7 +247,10 @@
             "columnEnd": 35
           }
         },
-        "span": { "start": 268, "length": 1 }
+        "destination": {
+          "file": { "key": "test.m" },
+          "span": { "start": 268, "length": 1 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -275,7 +290,10 @@
             "columnEnd": 14
           }
         },
-        "span": { "start": 310, "length": 1 }
+        "destination": {
+          "file": { "key": "test.m" },
+          "span": { "start": 310, "length": 1 }
+        }
       },
       "tuplefield1": {
         "cxx": {

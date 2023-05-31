@@ -14,7 +14,10 @@
             "columnEnd": 20
           }
         },
-        "span": { "start": 227, "length": 1 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 227, "length": 1 }
+        }
       },
       "tuplefield1": {
         "cxx": {
@@ -54,7 +57,10 @@
             "columnEnd": 1
           }
         },
-        "span": { "start": 249, "length": 1 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 249, "length": 1 }
+        }
       },
       "tuplefield1": {
         "cxx": {

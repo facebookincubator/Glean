@@ -539,7 +539,10 @@
               "columnEnd": 50
             }
           },
-          "span": { "start": 317, "length": 3 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 317, "length": 3 }
+          }
         },
         "source": { "span": { "start": 340, "length": 3 } }
       },
@@ -1114,7 +1117,10 @@
               "columnEnd": 50
             }
           },
-          "span": { "start": 317, "length": 3 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 317, "length": 3 }
+          }
         },
         "source": { "span": { "start": 393, "length": 3 } }
       },
@@ -1689,7 +1695,10 @@
               "columnEnd": 34
             }
           },
-          "span": { "start": 265, "length": 3 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 265, "length": 3 }
+          }
         },
         "source": { "span": { "start": 344, "length": 3 } }
       },
@@ -2264,7 +2273,10 @@
               "columnEnd": 1
             }
           },
-          "span": { "start": 231, "length": 2 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 231, "length": 2 }
+          }
         },
         "source": { "span": { "start": 378, "length": 2 } }
       },
@@ -2910,7 +2922,10 @@
               "columnEnd": 1
             }
           },
-          "span": { "start": 231, "length": 2 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 231, "length": 2 }
+          }
         },
         "source": { "span": { "start": 389, "length": 2 } }
       },
@@ -3556,7 +3571,10 @@
               "columnEnd": 1
             }
           },
-          "span": { "start": 231, "length": 2 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 231, "length": 2 }
+          }
         },
         "source": { "span": { "start": 438, "length": 2 } }
       },

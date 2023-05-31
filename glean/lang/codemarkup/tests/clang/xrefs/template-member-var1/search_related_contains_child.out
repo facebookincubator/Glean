@@ -40,7 +40,10 @@
               "columnEnd": 1
             }
           },
-          "span": { "start": 296, "length": 1 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 296, "length": 1 }
+          }
         }
       },
       "child": {
@@ -97,7 +100,10 @@
               "columnEnd": 14
             }
           },
-          "span": { "start": 329, "length": 3 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 329, "length": 3 }
+          }
         }
       },
       "style": 0
@@ -143,7 +149,10 @@
               "columnEnd": 1
             }
           },
-          "span": { "start": 296, "length": 1 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 296, "length": 1 }
+          }
         }
       },
       "child": {
@@ -196,7 +205,10 @@
               "columnEnd": 58
             }
           },
-          "span": { "start": 726, "length": 3 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 726, "length": 3 }
+          }
         }
       },
       "style": 0
@@ -242,7 +254,10 @@
               "columnEnd": 1
             }
           },
-          "span": { "start": 296, "length": 1 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 296, "length": 1 }
+          }
         }
       },
       "child": {
@@ -299,7 +314,10 @@
               "columnEnd": 16
             }
           },
-          "span": { "start": 313, "length": 3 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 313, "length": 3 }
+          }
         }
       },
       "style": 0
@@ -345,7 +363,10 @@
               "columnEnd": 1
             }
           },
-          "span": { "start": 398, "length": 1 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 398, "length": 1 }
+          }
         }
       },
       "child": {
@@ -402,7 +423,10 @@
               "columnEnd": 16
             }
           },
-          "span": { "start": 438, "length": 3 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 438, "length": 3 }
+          }
         }
       },
       "style": 0
@@ -448,7 +472,10 @@
               "columnEnd": 1
             }
           },
-          "span": { "start": 398, "length": 1 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 398, "length": 1 }
+          }
         }
       },
       "child": {
@@ -501,7 +528,10 @@
               "columnEnd": 41
             }
           },
-          "span": { "start": 837, "length": 3 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 837, "length": 3 }
+          }
         }
       },
       "style": 0
@@ -547,7 +577,10 @@
               "columnEnd": 1
             }
           },
-          "span": { "start": 398, "length": 1 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 398, "length": 1 }
+          }
         }
       },
       "child": {
@@ -604,7 +637,10 @@
               "columnEnd": 16
             }
           },
-          "span": { "start": 420, "length": 3 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 420, "length": 3 }
+          }
         }
       },
       "style": 0

@@ -63,7 +63,10 @@
             "columnEnd": 3
           }
         },
-        "span": { "start": 368, "length": 3 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 368, "length": 3 }
+        }
       },
       "kind": 7,
       "language": 0
@@ -190,7 +193,10 @@
             "columnEnd": 1
           }
         },
-        "span": { "start": 343, "length": 3 }
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 343, "length": 3 }
+        }
       },
       "kind": 24,
       "language": 0

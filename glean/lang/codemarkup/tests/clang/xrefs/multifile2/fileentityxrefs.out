@@ -16,7 +16,10 @@
               "columnEnd": 11
             }
           },
-          "span": { "start": 228, "length": 1 }
+          "destination": {
+            "file": { "key": "a.h" },
+            "span": { "start": 228, "length": 1 }
+          }
         },
         "source": { "span": { "start": 261, "length": 1 } }
       },
@@ -68,7 +71,10 @@
               "columnEnd": 11
             }
           },
-          "span": { "start": 239, "length": 1 }
+          "destination": {
+            "file": { "key": "a.h" },
+            "span": { "start": 239, "length": 1 }
+          }
         },
         "source": { "span": { "start": 268, "length": 1 } }
       },
@@ -121,7 +127,10 @@
               "columnEnd": 11
             }
           },
-          "span": { "start": 228, "length": 1 }
+          "destination": {
+            "file": { "key": "b.h" },
+            "span": { "start": 228, "length": 1 }
+          }
         },
         "source": { "span": { "start": 248, "length": 1 } }
       },

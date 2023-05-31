@@ -14,9 +14,9 @@ predicate CxxResolveLocation:
     location: codemarkup.types.Location,
     entity: code.cxx.Entity,
   }
-  { { Str, File, Range, Span }, Entity } where
+  { { Str, File, Range, Destination }, Entity } where
     Trace = cxx1.Trace { file = File };
-    CxxResolveTraceLocation { Trace, { Str, File, Range, Span }, Entity };
+    CxxResolveTraceLocation { Trace, { Str, File, Range, Destination }, Entity };
 
 # Resolve locations for Cxx, but for only a specific trace
 # We'll need to pick the trace on the client
@@ -31,8 +31,9 @@ predicate CxxResolveTraceLocation:
     # regular decls
     (
       Decl = Decls[..];
-      cxx1.DeclarationLocationNameSpan { Decl, Range, Str, _, Span };
-      Location = codemarkup.types.Location { Str, File, { range = Range }, { just = Span } };
+      cxx1.DeclarationLocationNameSpan { Decl, Range, Str, NameFile, NameSpan };
+      Destination = { just = { NameFile, NameSpan } };
+      Location = codemarkup.types.Location { Str, File, { range = Range }, Destination };
       CxxResolveDeclarationToEntity { Decl, Entity };
     )
 
@@ -85,21 +86,21 @@ predicate CxxEntityLocation:
     entity: code.cxx.Entity,
     location: codemarkup.types.Location,
   }
-  { Entity , { Name, File, { range = Range }, MSpan } } where
+  { Entity , { Name, File, { range = Range }, Destination } } where
     ( { decl = Decl } = Entity;
-      cxx1.DeclarationLocationNameSpan { Decl, Range, Name, _, Span };
+      cxx1.DeclarationLocationNameSpan { Decl, Range, Name, NameFile, NameSpan };
       { file = File } = Range;
-      { just = Span } = MSpan;
+      { just = { NameFile, NameSpan } } = Destination;
     ) | (
       { defn = Defn } = Entity;
       cxx1.DefToBaseDecl { Defn, Decl };
-      cxx1.DeclarationLocationNameSpan { Decl, Range, Name, _, Span };
+      cxx1.DeclarationLocationNameSpan { Decl, Range, Name, NameFile, NameSpan };
       { file = File } = Range;
-      { just = Span } = MSpan;
+      { just = { NameFile, NameSpan } } = Destination;
     ) | (
       { enumerator = { name = cxx1.Name Name, source = Range } } = Entity;
       { file = File } = Range;
-      nothing = MSpan; # we only have the range for enumerators
+      nothing = Destination; # we only have the range for enumerators
     );
 
 # Finding references in a file
@@ -132,7 +133,7 @@ predicate CxxFileEntityXMapFixedXRefLocations:
     CxxXRefTargetLocation { XRefTarget, Entity, Location };
     Spans = prim.relToAbsByteSpans Uses;
     Span = Spans[..];
-    { Location, { span = Span }} = XRef;
+    { Location, { span = Span } } = XRef;
 
 # Helper to (partially) process XRefTargets to entities and xrefs
 predicate CxxXRefTargetLocation:
@@ -144,9 +145,10 @@ predicate CxxXRefTargetLocation:
   { XRefTarget, Entity, Location } where
     # fixed declaration entities
     ( { declaration = Decl } = XRefTarget;
-      cxx1.DeclarationLocationNameSpan { Decl, Range, Name, _, Span };
+      cxx1.DeclarationLocationNameSpan { Decl, Range, Name, NameFile, NameSpan };
       { file = TargetFile } = Range;
-      { Name, TargetFile, { range = Range }, { just = Span } } = Location;
+      Destination = { just = { NameFile, NameSpan } };
+      { Name, TargetFile, { range = Range }, Destination } = Location;
       CxxResolveDeclarationToEntity { Decl, Entity };
     ) | (
     # or jump through the decl sometimes to a def
@@ -200,9 +202,10 @@ predicate CxxDeclToDefXRefTargetLocation:
     code.cxx.DeclToDef { Decl1, Defn };
     cxx1.DefToBaseDecl { Defn , Decl2 };
     Decl1 != Decl2; # Filter out (many) self refs
-    cxx1.DeclarationLocationNameSpan { Decl2, Range, Name, _, Span };
+    cxx1.DeclarationLocationNameSpan { Decl2, Range, Name, NameFile, NameSpan };
     { file = TargetFile } = Range;
-    { Name, TargetFile, { range = Range }, { just = Span } } = Location;
+    Destination = { just = { NameFile, NameSpan } };
+    { Name, TargetFile, { range = Range }, Destination } = Location;
     { defn = Defn } = Entity;
 
 # For a given Decl, find any DeclFamily entries
@@ -216,9 +219,10 @@ predicate CxxDefToDeclFamilyXRefTargetLocation:
   { Decl1, Entity, Location } where
     cxx1.DeclFamilyOf { decl = Decl1, family = Decl2 };
     Decl1 != Decl2; # filter out many self-refs
-    cxx1.DeclarationLocationNameSpan { Decl2, Range, Name, _, Span };
+    cxx1.DeclarationLocationNameSpan { Decl2, Range, Name, NameFile, NameSpan };
     { file = TargetFile } = Range;
-    { Name, TargetFile, { range = Range }, { just = Span } } = Location;
+    Destination = { just = { NameFile, NameSpan } };
+    { Name, TargetFile, { range = Range }, Destination } = Location;
     { decl = Decl2 } = Entity;
 
 # Bulk fetch any declaration locations associated with the xref targets
@@ -233,9 +237,10 @@ predicate CxxFileEntityXMapVariableXRefDeclLocations:
   { Trace, Decl, Location } where
     cxx1.FileXRefs { externals = Targets } = Trace;
     { declaration = Decl } = Targets[..];
-    cxx1.DeclarationLocationNameSpan { Decl, Range, Name, _, Span };
+    cxx1.DeclarationLocationNameSpan { Decl, Range, Name, NameFile, NameSpan };
     { file = TargetFile } = Range;
-    { Name, TargetFile, { range = Range }, { just = Span } } = Location;
+    Destination = { just = { NameFile, NameSpan } };
+    { Name, TargetFile, { range = Range }, Destination } = Location;
 
 # Bulk fetch any definitions associated with the external decls in the filexrefs
 predicate CxxFileEntityXMapVariableXRefDeclToDefs:

@@ -56,8 +56,10 @@ type Location =
     file: src.File,
     location : RangeSpan,
 
-    # An optional byte span of the name itself rather than the entire entity.
-    span: maybe src.ByteSpan,
+    # An optional destination of the location rather than the entire entity.
+    # This is commonly the name of a declaration, potentially in a different
+    # file in the case where the declaration is within a macro definition.
+    destination: maybe src.FileLocation,
   }
 
 # Symbols have visibility attributes

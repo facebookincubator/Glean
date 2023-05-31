@@ -16,7 +16,10 @@
               "columnEnd": 4
             }
           },
-          "span": { "start": 232, "length": 1 }
+          "destination": {
+            "file": { "key": "test.m" },
+            "span": { "start": 232, "length": 1 }
+          }
         },
         "source": { "span": { "start": 289, "length": 1 } }
       },
@@ -118,7 +121,10 @@
               "columnEnd": 11
             }
           },
-          "span": { "start": 235, "length": 1 }
+          "destination": {
+            "file": { "key": "test.m" },
+            "span": { "start": 235, "length": 1 }
+          }
         },
         "source": { "span": { "start": 314, "length": 3 } }
       },
@@ -165,7 +171,10 @@
               "columnEnd": 11
             }
           },
-          "span": { "start": 235, "length": 1 }
+          "destination": {
+            "file": { "key": "test.m" },
+            "span": { "start": 235, "length": 1 }
+          }
         },
         "source": { "span": { "start": 335, "length": 3 } }
       },
@@ -212,7 +221,10 @@
               "columnEnd": 24
             }
           },
-          "span": { "start": 247, "length": 1 }
+          "destination": {
+            "file": { "key": "test.m" },
+            "span": { "start": 247, "length": 1 }
+          }
         },
         "source": { "span": { "start": 301, "length": 3 } }
       },
@@ -264,7 +276,10 @@
               "columnEnd": 24
             }
           },
-          "span": { "start": 247, "length": 1 }
+          "destination": {
+            "file": { "key": "test.m" },
+            "span": { "start": 247, "length": 1 }
+          }
         },
         "source": { "span": { "start": 314, "length": 3 } }
       },
@@ -316,7 +331,10 @@
               "columnEnd": 13
             }
           },
-          "span": { "start": 292, "length": 1 }
+          "destination": {
+            "file": { "key": "test.m" },
+            "span": { "start": 292, "length": 1 }
+          }
         },
         "source": { "span": { "start": 299, "length": 1 } }
       },
@@ -370,7 +388,10 @@
               "columnEnd": 13
             }
           },
-          "span": { "start": 292, "length": 1 }
+          "destination": {
+            "file": { "key": "test.m" },
+            "span": { "start": 292, "length": 1 }
+          }
         },
         "source": { "span": { "start": 312, "length": 1 } }
       },
@@ -424,7 +445,10 @@
               "columnEnd": 13
             }
           },
-          "span": { "start": 292, "length": 1 }
+          "destination": {
+            "file": { "key": "test.m" },
+            "span": { "start": 292, "length": 1 }
+          }
         },
         "source": { "span": { "start": 333, "length": 1 } }
       },

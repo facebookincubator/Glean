@@ -39,7 +39,10 @@
               "columnEnd": 1
             }
           },
-          "span": { "start": 247, "length": 2 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 247, "length": 2 }
+          }
         }
       },
       "child": {
@@ -98,7 +101,10 @@
               "columnEnd": 24
             }
           },
-          "span": { "start": 417, "length": 3 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 417, "length": 3 }
+          }
         }
       },
       "style": 0
@@ -143,7 +149,10 @@
               "columnEnd": 1
             }
           },
-          "span": { "start": 247, "length": 2 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 247, "length": 2 }
+          }
         }
       },
       "child": {
@@ -202,7 +211,10 @@
               "columnEnd": 1
             }
           },
-          "span": { "start": 682, "length": 3 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 682, "length": 3 }
+          }
         }
       },
       "style": 0
@@ -247,7 +259,10 @@
               "columnEnd": 1
             }
           },
-          "span": { "start": 247, "length": 2 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 247, "length": 2 }
+          }
         }
       },
       "child": {
@@ -294,7 +309,10 @@
               "columnEnd": 1
             }
           },
-          "span": { "start": 445, "length": 3 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 445, "length": 3 }
+          }
         }
       },
       "style": 0
@@ -344,7 +362,10 @@
               "columnEnd": 31
             }
           },
-          "span": { "start": 263, "length": 2 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 263, "length": 2 }
+          }
         }
       },
       "child": {
@@ -396,7 +417,10 @@
               "columnEnd": 28
             }
           },
-          "span": { "start": 275, "length": 3 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 275, "length": 3 }
+          }
         }
       },
       "style": 0

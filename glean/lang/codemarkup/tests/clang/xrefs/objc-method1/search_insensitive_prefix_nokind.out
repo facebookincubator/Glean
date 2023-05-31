@@ -76,7 +76,10 @@
             "columnEnd": 4
           }
         },
-        "span": { "start": 231, "length": 3 }
+        "destination": {
+          "file": { "key": "test.mm" },
+          "span": { "start": 231, "length": 3 }
+        }
       },
       "language": 0
     }
@@ -122,7 +125,10 @@
             "columnEnd": 1
           }
         },
-        "span": { "start": 431, "length": 1 }
+        "destination": {
+          "file": { "key": "test.mm" },
+          "span": { "start": 431, "length": 1 }
+        }
       },
       "kind": 7,
       "language": 0

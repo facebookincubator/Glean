@@ -254,7 +254,10 @@
               "columnEnd": 4
             }
           },
-          "span": { "start": 287, "length": 3 }
+          "destination": {
+            "file": { "key": "test.m" },
+            "span": { "start": 287, "length": 3 }
+          }
         },
         "source": { "span": { "start": 334, "length": 9 } }
       },
@@ -536,7 +539,10 @@
               "columnEnd": 4
             }
           },
-          "span": { "start": 232, "length": 1 }
+          "destination": {
+            "file": { "key": "test.m" },
+            "span": { "start": 232, "length": 1 }
+          }
         },
         "source": { "span": { "start": 307, "length": 1 } }
       },
@@ -850,7 +856,10 @@
               "columnEnd": 36
             }
           },
-          "span": { "start": 234, "length": 1 }
+          "destination": {
+            "file": { "key": "test.m" },
+            "span": { "start": 234, "length": 1 }
+          }
         },
         "source": { "span": { "start": 320, "length": 13 } }
       },
@@ -1138,7 +1147,10 @@
               "columnEnd": 14
             }
           },
-          "span": { "start": 310, "length": 1 }
+          "destination": {
+            "file": { "key": "test.m" },
+            "span": { "start": 310, "length": 1 }
+          }
         },
         "source": { "span": { "start": 318, "length": 1 } }
       },

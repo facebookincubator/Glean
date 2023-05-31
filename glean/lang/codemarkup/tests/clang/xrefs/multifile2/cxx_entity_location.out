@@ -44,7 +44,10 @@
             "columnEnd": 5
           }
         },
-        "span": { "start": 263, "length": 1 }
+        "destination": {
+          "file": { "key": "a.h" },
+          "span": { "start": 263, "length": 1 }
+        }
       }
     }
   },
@@ -92,7 +95,10 @@
             "columnEnd": 5
           }
         },
-        "span": { "start": 250, "length": 1 }
+        "destination": {
+          "file": { "key": "b.h" },
+          "span": { "start": 250, "length": 1 }
+        }
       }
     }
   },
@@ -139,7 +145,10 @@
             "columnEnd": 11
           }
         },
-        "span": { "start": 239, "length": 1 }
+        "destination": {
+          "file": { "key": "a.h" },
+          "span": { "start": 239, "length": 1 }
+        }
       }
     }
   },
@@ -186,7 +195,10 @@
             "columnEnd": 1
           }
         },
-        "span": { "start": 253, "length": 1 }
+        "destination": {
+          "file": { "key": "a.h" },
+          "span": { "start": 253, "length": 1 }
+        }
       }
     }
   },
@@ -233,7 +245,10 @@
             "columnEnd": 1
           }
         },
-        "span": { "start": 240, "length": 1 }
+        "destination": {
+          "file": { "key": "b.h" },
+          "span": { "start": 240, "length": 1 }
+        }
       }
     }
   },
@@ -279,7 +294,10 @@
             "columnEnd": 11
           }
         },
-        "span": { "start": 228, "length": 1 }
+        "destination": {
+          "file": { "key": "b.h" },
+          "span": { "start": 228, "length": 1 }
+        }
       }
     }
   },
@@ -325,7 +343,10 @@
             "columnEnd": 11
           }
         },
-        "span": { "start": 228, "length": 1 }
+        "destination": {
+          "file": { "key": "a.h" },
+          "span": { "start": 228, "length": 1 }
+        }
       }
     }
   }

@@ -47,7 +47,10 @@
               "columnEnd": 1
             }
           },
-          "span": { "start": 445, "length": 3 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 445, "length": 3 }
+          }
         }
       },
       "child": {
@@ -124,7 +127,10 @@
               "columnEnd": 26
             }
           },
-          "span": { "start": 489, "length": 3 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 489, "length": 3 }
+          }
         }
       },
       "style": 0

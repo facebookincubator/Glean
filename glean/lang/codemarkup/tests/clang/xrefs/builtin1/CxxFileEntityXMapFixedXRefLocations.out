@@ -86,7 +86,10 @@
               "columnEnd": 20
             }
           },
-          "span": { "start": 227, "length": 1 }
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 227, "length": 1 }
+          }
         },
         "source": { "span": { "start": 265, "length": 1 } }
       },

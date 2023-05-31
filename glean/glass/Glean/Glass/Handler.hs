@@ -1216,10 +1216,21 @@ toReferenceSymbol repoName file srcOffsets (Code.XRefLocation {..}, entity) = do
   sym <- toSymbolId (fromGleanPath repoName path) entity
   attributes <- getStaticAttributes entity repoName sym
 
-  target <- rangeSpanToLocationRange repoName location_file
-    location_location
-  targetNameRange <- forM location_span
-    (memoRangeSpanToRange location_file . Code.RangeSpan_span)
+  target <- rangeSpanToLocationRange repoName location_file location_location
+  targetDestination <- forM location_destination $ \Src.FileLocation{..} ->
+    let rangeSpan = Code.RangeSpan_span fileLocation_span in
+    rangeSpanToLocationRange repoName fileLocation_file rangeSpan
+  let targetNameRange = targetDestination >>= \LocationRange{..} ->
+        if locationRange_repository == targetRepo &&
+           locationRange_filepath == targetFile &&
+           rangeContains locationRange_range targetRange
+        then Just targetRange else Nothing
+        where
+          LocationRange {
+            locationRange_repository = targetRepo,
+            locationRange_filepath = targetFile,
+            locationRange_range = targetRange
+          } = target
 
   return $ (entity,) $
     ReferenceRangeSymbolX sym range target attributes targetNameRange
@@ -1239,13 +1250,23 @@ toDefinitionSymbol
   -> Glean.RepoHaxl u w (Code.Entity, DefinitionSymbolX)
 toDefinitionSymbol repoName file offsets (Code.Location {..}, entity) = do
   path <- GleanPath <$> Glean.keyOf file
-  sym <- toSymbolId (fromGleanPath repoName path) entity
+  let symbolRepoPath@(SymbolRepoPath symbolRepo symbolPath) =
+        fromGleanPath repoName path
+  sym <- toSymbolId symbolRepoPath entity
   attributes <- getStaticAttributes entity repoName sym
+  destination <- forM location_destination $
+    \Src.FileLocation{..} ->
+      let rangeSpan = Code.RangeSpan_span fileLocation_span in
+      rangeSpanToLocationRange repoName fileLocation_file rangeSpan
+  let nameRange = destination >>= \LocationRange{..} ->
+        if symbolRepo == locationRange_repository &&
+           symbolPath == locationRange_filepath &&
+           rangeContains range locationRange_range
+        then Just locationRange_range else Nothing
+
   return $ (entity,) $ DefinitionSymbolX sym range attributes nameRange
   where
     range = rangeSpanToRange offsets location_location
-    nameRange = rangeSpanToRange offsets . Code.RangeSpan_span <$>
-      location_span
 
 -- | Decorate an entity with 'static' attributes.
 -- These are static in that they are derivable from the entity and

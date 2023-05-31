@@ -41,7 +41,10 @@
             "columnEnd": 11
           }
         },
-        "span": { "start": 235, "length": 1 }
+        "destination": {
+          "file": { "key": "test.m" },
+          "span": { "start": 235, "length": 1 }
+        }
       },
       "kind": 7,
       "language": 0
