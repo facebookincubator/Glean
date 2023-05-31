@@ -126,7 +126,7 @@ getFileLines e cfg = do
       Just k -> return k
       Nothing -> throwIO $ ErrorCall "internal error: getFileLines"
     let
-      fileId = getId . Src.fileLines_key_file $ key
+      fileId = getId $ Src.fileLines_key_file key
       !offsets = lengthsToLineOffsets key
     return $! PredMap.insert fileId offsets fileliness
 
@@ -448,7 +448,7 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
             variableTargets =
               [ (range, targetDecls)
               | (spans, extTargets) <- matched
-              , let !targetDecls = Set.toList . Set.fromList $
+              , let !targetDecls = Set.toList $ Set.fromList $
                       [ decl
                       | (Cxx.XRefTarget_declaration decl)
                              <- mapMaybe (resolve indirects)
