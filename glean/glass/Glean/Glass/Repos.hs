@@ -188,14 +188,16 @@ fromSCSRepo r hint
 --
 filetype :: Path -> Maybe Language
 filetype (Path file)
-  | ".h" `Text.isSuffixOf` file = Just Language_Cpp
+  | ".c" `Text.isSuffixOf` file = Just Language_Cpp
+  | ".cc" `Text.isSuffixOf` file = Just Language_Cpp
   | ".cpp" `Text.isSuffixOf` file = Just Language_Cpp
   | ".cxx" `Text.isSuffixOf` file = Just Language_Cpp
-  | ".cc" `Text.isSuffixOf` file = Just Language_Cpp
-  | ".c" `Text.isSuffixOf` file = Just Language_Cpp
+  | ".c++" `Text.isSuffixOf` file = Just Language_Cpp
+  | ".h" `Text.isSuffixOf` file = Just Language_Cpp
   | ".hh" `Text.isSuffixOf` file = Just Language_Cpp
   | ".hpp" `Text.isSuffixOf` file = Just Language_Cpp
   | ".hxx" `Text.isSuffixOf` file = Just Language_Cpp
+  | ".h++" `Text.isSuffixOf` file = Just Language_Cpp
   | ".mm" `Text.isSuffixOf` file = Just Language_Cpp
   | ".m" `Text.isSuffixOf` file = Just Language_Cpp
   | ".tcc" `Text.isSuffixOf` file = Just Language_Cpp
