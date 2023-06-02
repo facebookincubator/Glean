@@ -10,25 +10,27 @@
 
 module Glean.Glass.SymbolId.Cxx.Parse (
     validateSymbolId,
+    compileSymbolEnv, -- valid symbol ids can be compiled to a search term
     SymbolEnv(..),
     SymbolTag(..),
     Name(..),
     Qualifier(..),
     RefQualifier(..),
-    unName
+    unName,
+    CxxSymbolExpr(..)
 
     -- testing
     , toQualifier
   ) where
 
-import GHC.Generics
-import Data.Text ( Text )
-import qualified Data.Text as Text
 import Control.Monad.State.Strict
+import Data.Aeson.Types ( ToJSON )
+import Data.Set ( Set )
+import Data.Text ( Text )
+import GHC.Generics
 import Util.Text ( textShow )
 import qualified Data.Set as Set
-import Data.Set ( Set )
-import Data.Aeson.Types ( ToJSON )
+import qualified Data.Text as Text
 
 -- "lexer"
 
@@ -107,6 +109,93 @@ instance ToJSON SymbolEnv
 instance ToJSON Qualifier
 instance ToJSON RefQualifier
 
+-- Compile SymbolEnv to a typed ADT that makes bugs harder
+data CxxSymbolExpr
+  = CxxConstructor {
+      cPath :: Text,
+      cScope :: [Name],
+      cParams :: [Name],
+      cDecl :: Bool
+    }
+  | CxxDestructor {
+      cPath :: Text,
+      cScope :: [Name],
+      cDecl :: Bool
+    }
+  | CxxFunction {
+      cPath :: Text,
+      cScope :: [Name],
+      cName :: Name,
+      cParams :: [Name],
+      cQuals :: Set Qualifier,
+      cDecl :: Bool
+    }
+  -- Legacy: constructor params (TODO replace with general local var case)
+  | CxxLegacyCTorParams {
+      cPath :: Text,
+      cScope :: [Name],
+      cName :: Name,
+      cDecl :: Bool
+    }
+  -- Fall back: any symbol
+  | CxxAny {
+      cPath :: Text,
+      cScope :: [Name],
+      cName :: Name,
+      cDecl :: Bool
+    }
+
+--
+-- Refine the parsed symbol tokens into a more precise symbol id query ADT
+--
+compileSymbolEnv :: SymbolEnv -> Either Text CxxSymbolExpr
+compileSymbolEnv env@SymbolEnv{..} = case tag of
+  Just CTorSignature ->
+    Right $ CxxConstructor { -- .c
+        cPath = path,
+        cScope = scopes,
+        cParams = params,
+        cDecl = declaration
+    }
+  Just Destructor -> -- .dtor
+    Right $ CxxDestructor {
+        cPath = path,
+        cScope = scopes,
+        cDecl = declaration
+    }
+  Just Function  -- .f
+    | Just name <- localname ->
+      Right $ CxxFunction {
+          cPath = path,
+          cScope = scopes,
+          cName = name,
+          cParams = params,
+          cQuals = qualifiers,
+          cDecl = declaration
+      }
+    | otherwise ->
+      Left $ "compileSymbolEnv: Function missing local name: " <> textShow env
+  Just Constructor -- legacy .ctor params, aka local vars in ctor scope
+    | Just name <- localname ->
+    Right $ CxxLegacyCTorParams {
+        cPath = path,
+        cScope = scopes,
+        cName = name,
+        cDecl = declaration
+    }
+    | otherwise ->
+      Left "compileSymbolEnv: constructor params missing local name"
+  Nothing
+    | Just name <- localname ->
+      Right $ CxxAny {
+          cPath = path,
+          cScope = scopes,
+          cName = name,
+          cDecl = declaration
+      }
+    | otherwise ->
+      Left "compileSymbolEnv: CxxAny: missing local name for entity"
+
 initState :: Text -> SymbolEnv
 initState p = SymbolEnv {
     path = p,
@@ -156,7 +245,6 @@ validateSymbolId toks = case toks of
     in case errors env of
         [] -> Right $ env { scopes = reverse (scopes env)
                           , params = reverse (params env)
-                          , qualifiers = qualifiers env
                           }
         errs -> Left errs
 
