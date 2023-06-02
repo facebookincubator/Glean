@@ -233,6 +233,57 @@ Src::Loc ClangDB::srcLoc(clang::SourceLocation loc) {
   };
 }
 
+ClangDB::FullSourceRange ClangDB::fullSrcRange(clang::SourceRange range) {
+  const auto& sm = sourceManager();
+  auto loc = range.getBegin();
+  auto expansion = immediateSrcRange(sm.getExpansionRange(range));
+  if (loc.isFileID()) {
+    return expansion;
+  }
+  std::pair<SourceRange, std::optional<SourceRange>> result = {expansion, {}};
+  if (loc != range.getEnd()) {
+    // If the range is not a single token, we keep the range as-is.
+    //
+    //   #define TYPE int
+    //   #define VAR_x TYPE x
+    //
+    //   VAR_x;
+    //
+    // The range of the expanded `int x` spans multiple tokens. The spelling
+    // location of the location of `i` is within the definition of `TYPE`,
+    // and the spelling location of `x` is within the definition of `VAR_x`.
+    //
+    // The spelling range of multiple tokens, especially involving macro
+    // arguments gets to be a rather complex problem. We also don't have
+    // a compelling use case yet, so we punt for now.
+    return result;
+  }
+  auto spelling = immediateSrcRange([&sm, loc] {
+    if (!sm.isWrittenInScratchSpace(sm.getSpellingLoc(loc))) {
+      return sm.getExpansionRange(sm.getSpellingLoc(loc));
+    }
+    // If spelling location is in scratch space, this is a result of a paste.
+    //
+    //   #define PASTE(x,y) x##y
+    //   #define MACRO(x) x
+    //
+    //   MACRO(PASTE(foo,bar))
+    //         ^^^^^^^^^^^^^^
+    //
+    // We walk up the parent context since there can be several levels of
+    // pasting.
+    auto l = loc;
+    do {
+      l = sm.getImmediateMacroCallerLoc(l);
+    } while (sm.isWrittenInScratchSpace(sm.getSpellingLoc(l)));
+    return sm.getExpansionRange(l);
+  }());
+  if (expansion.file != spelling.file || expansion.span != spelling.span) {
+    result.second = spelling;
+  }
+  return result;
+}
+
 ClangDB::SourceRange ClangDB::immediateSrcRange(
     clang::CharSourceRange range) {
   const auto [file_id, begin_offset] =

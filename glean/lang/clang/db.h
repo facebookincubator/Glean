@@ -148,6 +148,12 @@ public:
     Src::Range range;
   };
 
+  using FullSourceRange = std::variant<
+      SourceRange, // normal range
+      std::pair<
+          SourceRange, // expansion range
+          std::optional<SourceRange>>>; // spelling range
+
   struct CrossRef {
     using SortID = std::variant<SourceRange, std::vector<std::string>>;
     using Spans = std::vector<Src::ByteSpan>;
@@ -213,6 +219,11 @@ public:
   SourceRange srcRange(T x) {
     return immediateSrcRange(sourceManager().getExpansionRange(x));
   }
+
+  FullSourceRange fullSrcRange(clang::SourceRange range);
+
+public:
+
   SourceRange immediateSrcRange(clang::CharSourceRange r);
 
   clang::StringRef srcText(clang::SourceRange range) const;
