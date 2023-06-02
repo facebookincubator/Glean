@@ -16,7 +16,6 @@ module Glean.Glass.Search.Cxx
 
 import Data.Text ( Text )
 import qualified Data.Text as Text
-import Data.Maybe ( fromMaybe )
 import Data.Set ( Set )
 import qualified Data.Set as Set
 
@@ -40,37 +39,40 @@ instance Search Cxx.Entity where
 
 cxxSymbolSearch :: [Text] -> ReposHaxl u w (SearchResult Cxx.Entity)
 cxxSymbolSearch t = case P.validateSymbolId t of
-  Left err -> return $ None (Text.unlines err)
-  Right P.SymbolEnv{..} ->
-    let scope = map P.unName scopes
-        parameters = map P.unName params
-        mname = fmap P.unName localname
-    in case tag of
-      -- ctors with signatures, ctor params or dtors
-      Just P.CTorSignature -- .c
-        | declaration -> searchCTorSigDeclarations t path scope parameters
-        | otherwise -> searchCTorSigDefinitions t path scope parameters
-      Just P.Constructor -- these are always params to constructors now. remove
-        | Just name <- mname -- only Nothing in constructor/destructor case
-        -> let scope' = scope <> [".ctor"] -- params are within ctor scope
-           in searchSymbolId t $ if declaration
-            then lookupDeclaration path scope' name
-            else lookupDefinition path scope' name
-      Just P.Destructor -- destructor (".dtor") decls or definitions
-        -> searchSymbolId t $ if declaration
-            then lookupDTorDeclaration path scope
-            else lookupDTorDefinition path scope
-      Just P.Function -- ".f" functions with complete signatures
-        | Just name <- mname -- again, never Nothing (no anonymous functions?)
-        -> searchSymbolId t $ if declaration
-            then lookupFunctionSignatureDeclaration
-                      path scope name parameters qualifiers
-            else lookupFunctionSignatureDefinition
-                   path scope name parameters qualifiers
-      -- everything else
-      _ -> if declaration
-           then searchDeclarations t path scope (fromMaybe "" mname)
-           else searchDefinitions t path scope (fromMaybe "" mname)
+  Left errs -> return $ None (Text.unlines errs)
+  Right env -> case P.compileSymbolEnv env of
+    Left err -> return $ None err
+    Right exp -> case exp of
+      P.CxxDecl e -> cxxSymbolExprEvalDecl t e
+      P.CxxDefn e -> cxxSymbolExprEvalDefn t e
+
+cxxSymbolExprEvalDecl
+  :: [Text] -> P.CxxSymbolExpr -> ReposHaxl u w (SearchResult Cxx.Entity)
+cxxSymbolExprEvalDecl t exp = case exp of
+  P.CxxConstructor{..} -> searchSymbolId t $
+    lookupCTorSignatureDeclaration cPath cScope cParams
+  P.CxxDestructor{..} -> searchSymbolId t $
+    lookupDTorDeclaration cPath cScope
+  P.CxxFunction{..} -> searchSymbolId t $
+    lookupFunctionSignatureDeclaration cPath cScope cName cParams cQuals
+  P.CxxLegacyCTorParams{..} ->
+    let scope' = cScope <> [P.Name ".ctor"] -- hack into scope query builder
+    in searchSymbolId t $ lookupDeclaration cPath scope' cName
+  P.CxxAny{..} -> searchDeclarations t cPath cScope cName
+
+cxxSymbolExprEvalDefn
+  :: [Text] -> P.CxxSymbolExpr -> ReposHaxl u w (SearchResult Cxx.Entity)
+cxxSymbolExprEvalDefn t exp = case exp of
+  P.CxxConstructor{..} -> searchSymbolId t $
+    lookupCTorSignatureDefinition cPath cScope cParams
+  P.CxxDestructor{..} -> searchSymbolId t $
+    lookupDTorDefinition cPath cScope
+  P.CxxFunction{..} -> searchSymbolId t $
+    lookupFunctionSignatureDefinition cPath cScope cName cParams cQuals
+  P.CxxLegacyCTorParams{..} ->
+    let scope' = cScope <> [P.Name ".ctor"] -- hack into scope query builder
+    in searchSymbolId t $ lookupDefinition cPath scope' cName
+  P.CxxAny{..} -> searchDefinitions t cPath cScope cName
 
 -- this is the most common path, for e.g. classes and functions
 --
@@ -82,7 +84,8 @@ cxxSymbolSearch t = case P.validateSymbolId t of
 -- enumerators (fields of enums) are also in this path
 --
 searchDefinitions
-  :: [Text] -> Text -> [Text] -> Text -> ReposHaxl u w (SearchResult Cxx.Entity)
+  :: [Text] -> Text -> [P.Name] -> P.Name
+  -> ReposHaxl u w (SearchResult Cxx.Entity)
 searchDefinitions t path ns name =
   searchSymbolId t (lookupDefinition path ns name)
     .|?
@@ -98,25 +101,14 @@ searchDefinitions t path ns name =
 -- declaration entities only
 --
 searchDeclarations
-  :: [Text] -> Text -> [Text] -> Text -> ReposHaxl u w (SearchResult Cxx.Entity)
+  :: [Text] -> Text -> [P.Name] -> P.Name
+  -> ReposHaxl u w (SearchResult Cxx.Entity)
 searchDeclarations t path ns name = -- `ns` might be [] for global scope
-    searchSymbolId t (lookupDeclaration path ns name)
-      .|?
-    searchSymbolId t (lookupFunctionDeclaration path ns name)
-      .|?
-    searchSymbolId t (lookupNamespaceDeclaration path ns name)
-
-searchCTorSigDefinitions
-  :: [Text] -> Text -> [Text] -> [Text]
-  -> ReposHaxl u w (SearchResult Cxx.Entity)
-searchCTorSigDefinitions t path scope sig = searchSymbolId t $
-  lookupCTorSignatureDefinition path scope sig
-
-searchCTorSigDeclarations
-  :: [Text] -> Text -> [Text] -> [Text]
-  -> ReposHaxl u w (SearchResult Cxx.Entity)
-searchCTorSigDeclarations t path scope sig = searchSymbolId t $
-  lookupCTorSignatureDeclaration path scope sig
+  searchSymbolId t (lookupDeclaration path ns name)
+    .|?
+  searchSymbolId t (lookupFunctionDeclaration path ns name)
+    .|?
+  searchSymbolId t (lookupNamespaceDeclaration path ns name)
 
 --
 -- A little `then` or .|. thing for searching until first match
@@ -136,32 +128,33 @@ a .|? b = do
 --
 -- Records, Variables, Enum, TypeAlias, Using Directives.
 --
-lookupDefinition :: Text -> [Text] -> Text -> Angle (ResultLocation Cxx.Entity)
-lookupDefinition = lookupEntityFn $ \name ns entity ->
+lookupDefinition
+  :: Text -> [P.Name] -> P.Name -> Angle (ResultLocation Cxx.Entity)
+lookupDefinition = lookupEntityFn $ \(P.Name name) ns entity ->
   predicate @SymbolId.LookupDefinition (
     rec $
       field @"name" (string name) $
-      field @"scope" (scopeQ (reverse ns)) $
+      field @"scope" (scopeQ (reverse (P.unNames ns))) $
       field @"entity" entity
     end)
 
 lookupFunctionDefinition
-  :: Text -> [Text] -> Text -> Angle (ResultLocation Cxx.Entity)
-lookupFunctionDefinition = lookupEntityFn $ \name ns entity ->
+  :: Text -> [P.Name] -> P.Name -> Angle (ResultLocation Cxx.Entity)
+lookupFunctionDefinition = lookupEntityFn $ \(P.Name name) ns entity ->
   predicate @SymbolId.LookupFunctionDefinition (
     rec $
       field @"name" (functionName name) $
-      field @"scope" (scopeQ (reverse ns)) $
+      field @"scope" (scopeQ (reverse (P.unNames ns))) $
       field @"entity" entity
     end)
 
 lookupNamespaceDefinition
-  :: Text -> [Text] -> Text -> Angle (ResultLocation Cxx.Entity)
-lookupNamespaceDefinition = lookupEntityFn $ \name ns entity ->
+  :: Text -> [P.Name] -> P.Name -> Angle (ResultLocation Cxx.Entity)
+lookupNamespaceDefinition = lookupEntityFn $ \(P.Name name) ns entity ->
   predicate @SymbolId.LookupNamespaceDefinition (
     rec $
       field @"name" (maybeName name) $
-      field @"parent" (namespaceParentQName (reverse ns)) $
+      field @"parent" (namespaceParentQName (reverse (P.unNames ns))) $
       field @"entity" entity
     end)
 
@@ -171,8 +164,8 @@ lookupNamespaceDefinition = lookupEntityFn $ \name ns entity ->
 -- know the field, and also the parent enum name and scope.
 --
 lookupEnumerator
-  :: Text -> [Text] -> Text -> Text -> Angle (ResultLocation Cxx.Entity)
-lookupEnumerator anchor ns parent name =
+  :: Text -> [P.Name] -> P.Name -> P.Name -> Angle (ResultLocation Cxx.Entity)
+lookupEnumerator anchor ns (P.Name parent) (P.Name name) =
   vars $ \ (decl :: Angle Cxx.Enumerator) (entity :: Angle Cxx.Entity)
     (codeEntity :: Angle Code.Entity) (file :: Angle Src.File)
       (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
@@ -181,14 +174,15 @@ lookupEnumerator anchor ns parent name =
         rec $
           field @"name" (string name) $
           field @"parent" (string parent) $
-          field @"scope" (scopeQ (reverse ns)) $
+          field @"scope" (scopeQ (reverse scopes)) $
           field @"decl" (asPredicate decl)
         end))
       : (alt @"enumerator" (asPredicate decl) .= sig entity)
       : entityFooter anchor entity codeEntity file rangespan lname
       )
+  where scopes = P.unNames ns
 
-lookupDTorDeclaration :: Text -> [Text] -> Angle (ResultLocation Cxx.Entity)
+lookupDTorDeclaration :: Text -> [P.Name] -> Angle (ResultLocation Cxx.Entity)
 lookupDTorDeclaration anchor ns =
   vars $ \(decl :: Angle Cxx.Declaration) (entity :: Angle Cxx.Entity)
      (codeEntity :: Angle Code.Entity) (file :: Angle Src.File)
@@ -197,13 +191,14 @@ lookupDTorDeclaration anchor ns =
       wild .= predicate @SymbolId.LookupFunctionDeclaration (
         rec $
           field @"name" (alt @"destructor" wild) $
-          field @"scope" (scopeQ (reverse ns)) $
+          field @"scope" (scopeQ (reverse scopes)) $
           field @"decl" decl
         end))
       : entityDeclFooter anchor decl entity codeEntity file rangespan lname
       )
+  where scopes = P.unNames ns
 
-lookupDTorDefinition :: Text -> [Text] -> Angle (ResultLocation Cxx.Entity)
+lookupDTorDefinition :: Text -> [P.Name] -> Angle (ResultLocation Cxx.Entity)
 lookupDTorDefinition anchor ns =
   vars $ \(entity :: Angle Cxx.Entity) (codeEntity :: Angle Code.Entity)
      (file :: Angle Src.File) (rangespan :: Angle Code.RangeSpan)
@@ -212,15 +207,16 @@ lookupDTorDefinition anchor ns =
       wild .= predicate @SymbolId.LookupFunctionDefinition (
         rec $
           field @"name" (alt @"destructor" wild) $
-          field @"scope" (scopeQ (reverse ns)) $
+          field @"scope" (scopeQ (reverse scopes)) $
           field @"entity" entity
         end))
       : entityFooter anchor entity codeEntity file rangespan lname
       )
+  where scopes = P.unNames ns
 
 lookupCTorSignatureDefinition
-  :: Text -> [Text] -> [Text] -> Angle (ResultLocation Cxx.Entity)
-lookupCTorSignatureDefinition anchor ns params =
+  :: Text -> [P.Name] -> [P.Name] -> Angle (ResultLocation Cxx.Entity)
+lookupCTorSignatureDefinition anchor ns ps =
   vars $ \(entity :: Angle Cxx.Entity) (codeEntity :: Angle Code.Entity)
      (file :: Angle Src.File) (rangespan :: Angle Code.RangeSpan)
       (lname :: Angle Text) ->
@@ -228,15 +224,18 @@ lookupCTorSignatureDefinition anchor ns params =
       wild .= predicate @SymbolId.LookupFunctionSignatureDefinition (
         rec $
           field @"name" (alt @"constructor" wild) $ -- either @alt ctor or dtor
-          field @"scope" (scopeQ (reverse ns)) $
+          field @"scope" (scopeQ (reverse scopes)) $
           field @"signature" (asPredicate (paramTypesQ params)) $
           field @"entity" entity
         end)
       ] <> entityFooter anchor entity codeEntity file rangespan lname)
+  where
+    scopes = P.unNames ns
+    params = P.unNames ps
 
 lookupCTorSignatureDeclaration
-  :: Text -> [Text] -> [Text] -> Angle (ResultLocation Cxx.Entity)
-lookupCTorSignatureDeclaration anchor ns params =
+  :: Text -> [P.Name] -> [P.Name] -> Angle (ResultLocation Cxx.Entity)
+lookupCTorSignatureDeclaration anchor ns ps =
   vars $ \(decl :: Angle Cxx.Declaration)  (entity :: Angle Cxx.Entity)
       (codeEntity :: Angle Code.Entity) (file :: Angle Src.File)
         (rangespan :: Angle Code.RangeSpan)
@@ -245,16 +244,19 @@ lookupCTorSignatureDeclaration anchor ns params =
       wild .= predicate @SymbolId.LookupFunctionSignatureDeclaration (
         rec $
           field @"name" (alt @"constructor" wild) $ -- either @alt ctor or dtor
-          field @"scope" (scopeQ (reverse ns)) $
+          field @"scope" (scopeQ (reverse scopes)) $
           field @"signature" (asPredicate (paramTypesQ params)) $
           field @"decl" decl
         end)
       ] <> entityDeclFooter anchor decl entity codeEntity file rangespan lname)
+  where
+    scopes = P.unNames ns
+    params = P.unNames ps
 
 lookupFunctionSignatureDeclaration
-  :: Text -> [Text] -> Text -> [Text] -> Set P.Qualifier
+  :: Text -> [P.Name] -> P.Name -> [P.Name] -> Set P.Qualifier
   -> Angle (ResultLocation Cxx.Entity)
-lookupFunctionSignatureDeclaration anchor ns name params quals =
+lookupFunctionSignatureDeclaration anchor ns (P.Name name) ps quals =
   vars $ \(decl :: Angle Cxx.Declaration)  (entity :: Angle Cxx.Entity)
       (codeEntity :: Angle Code.Entity) (file :: Angle Src.File)
         (rangespan :: Angle Code.RangeSpan)
@@ -266,17 +268,20 @@ lookupFunctionSignatureDeclaration anchor ns name params quals =
       wild .= predicate @SymbolId.LookupFunctionSignatureQualifierDeclaration (
         rec $
           field @"name" (asPredicate fname) $
-          field @"scope" (scopeQ (reverse ns)) $
+          field @"scope" (scopeQ (reverse scopes)) $
           field @"signature" (asPredicate (paramTypesQ params)) $
           field @"qualifiers" (qualifiersQ quals) $
           field @"decl" decl
         end)
     ] <> entityDeclFooter anchor decl entity codeEntity file rangespan lname)
+  where
+    scopes = P.unNames ns
+    params = P.unNames ps
 
 lookupFunctionSignatureDefinition
-  :: Text -> [Text] -> Text -> [Text] -> Set P.Qualifier
+  :: Text -> [P.Name] -> P.Name -> [P.Name] -> Set P.Qualifier
   -> Angle (ResultLocation Cxx.Entity)
-lookupFunctionSignatureDefinition anchor ns name params quals =
+lookupFunctionSignatureDefinition anchor ns (P.Name name) ps quals =
   vars $ \(entity :: Angle Cxx.Entity) (codeEntity :: Angle Code.Entity)
       (file :: Angle Src.File) (rangespan :: Angle Code.RangeSpan)
         (fname :: Angle Cxx.FunctionName) (n :: Angle Cxx.Name)
@@ -287,12 +292,15 @@ lookupFunctionSignatureDefinition anchor ns name params quals =
       wild .= predicate @SymbolId.LookupFunctionSignatureQualifierDefinition (
         rec $
           field @"name" (asPredicate fname) $
-          field @"scope" (scopeQ (reverse ns)) $
+          field @"scope" (scopeQ (reverse scopes)) $
           field @"signature" (asPredicate (paramTypesQ params)) $
           field @"qualifiers" (qualifiersQ quals) $
           field @"entity" entity
         end)
       ] <> entityFooter anchor entity codeEntity file rangespan lname)
+  where
+    scopes = P.unNames ns
+    params = P.unNames ps
 
 --
 -- We have four variants, and two ways to resolve each
@@ -311,8 +319,8 @@ lookupFunctionSignatureDefinition anchor ns name params quals =
 -- so they are only discoverable through decl search
 --
 lookupDeclaration
-  :: Text -> [Text] -> Text -> Angle (ResultLocation Cxx.Entity)
-lookupDeclaration anchor ns name =
+  :: Text -> [P.Name] -> P.Name -> Angle (ResultLocation Cxx.Entity)
+lookupDeclaration anchor ns (P.Name name) =
   vars $ \ (decl :: Angle Cxx.Declaration) (entity :: Angle Cxx.Entity)
     (codeEntity :: Angle Code.Entity) (file :: Angle Src.File)
       (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
@@ -320,11 +328,12 @@ lookupDeclaration anchor ns name =
       wild .= predicate @SymbolId.LookupDeclaration (
         rec $
           field @"name" (string name) $
-          field @"scope" (scopeQ (reverse ns)) $
+          field @"scope" (scopeQ (reverse scopes)) $
           field @"decl" decl
         end))
       : entityDeclFooter anchor decl entity codeEntity file rangespan lname
       )
+  where scopes = P.unNames ns
 
 --
 -- Declarations of functions, including regular named functions, operators,
@@ -335,8 +344,8 @@ lookupDeclaration anchor ns name =
 -- but are not FunctionName-indexed
 --
 lookupFunctionDeclaration
-  :: Text -> [Text] -> Text -> Angle (ResultLocation Cxx.Entity)
-lookupFunctionDeclaration anchor ns name =
+  :: Text -> [P.Name] -> P.Name -> Angle (ResultLocation Cxx.Entity)
+lookupFunctionDeclaration anchor ns (P.Name name) =
   vars $ \ (decl :: Angle Cxx.Declaration) (entity :: Angle Cxx.Entity)
     (codeEntity :: Angle Code.Entity) (file :: Angle Src.File)
       (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
@@ -345,19 +354,20 @@ lookupFunctionDeclaration anchor ns name =
         rec $
           field @"name" (functionName name) $
           -- scopeQuery: too generic? can this ever be local or a function?
-          field @"scope" (scopeQ (reverse ns)) $
+          field @"scope" (scopeQ (reverse scopes)) $
           field @"decl" decl
         end))
       : entityDeclFooter anchor decl entity codeEntity file rangespan lname
       )
+  where scopes = P.unNames ns
 
 --
 -- Namespaces are a bit like regular scopes but they can be anonymous.
 -- This is a "" in the symbol id, corresponding to a nothing in the query
 --
 lookupNamespaceDeclaration
-  :: Text -> [Text] -> Text -> Angle (ResultLocation Cxx.Entity)
-lookupNamespaceDeclaration anchor ns name =
+  :: Text -> [P.Name] -> P.Name -> Angle (ResultLocation Cxx.Entity)
+lookupNamespaceDeclaration anchor ns (P.Name name) =
   vars $ \ (decl :: Angle Cxx.Declaration) (entity :: Angle Cxx.Entity)
     (codeEntity :: Angle Code.Entity) (file :: Angle Src.File)
       (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
@@ -365,11 +375,12 @@ lookupNamespaceDeclaration anchor ns name =
       wild .= predicate @SymbolId.LookupNamespaceDeclaration (
         rec $
           field @"name" (maybeName name) $
-          field @"parent" (namespaceParentQName (reverse ns)) $
+          field @"parent" (namespaceParentQName (reverse scopes)) $
           field @"decl" decl
         end))
       : entityDeclFooter anchor decl entity codeEntity file rangespan lname
       )
+  where scopes = P.unNames ns
 
 --
 -- AngleStatement helpers, to generate query fragments
@@ -383,8 +394,8 @@ lookupEntityFn ::
       -> Angle Code.RangeSpan
       -> Angle Text
       -> Angle (Cxx.Entity, Src.File, Code.RangeSpan, Text)) r
-  => (Text -> [Text] -> Angle Cxx.Entity -> Angle t)
-  -> Text -> [Text] -> Text -> r
+  => (P.Name -> [P.Name] -> Angle Cxx.Entity -> Angle t)
+  -> Text -> [P.Name] -> P.Name -> r
 lookupEntityFn pred anchor ns name =
   vars $ \(entity :: Angle Cxx.Entity) (codeEntity :: Angle Code.Entity)
       (file :: Angle Src.File) (rangespan :: Angle Code.RangeSpan)
