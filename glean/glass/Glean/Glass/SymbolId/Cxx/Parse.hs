@@ -32,6 +32,7 @@ data Token
   | TCtor
   | TDtor
   | TCtorSignature
+  | TFunction
   deriving Show
 
 tokenize :: Text -> Token
@@ -39,6 +40,7 @@ tokenize ".decl" = TDecl
 tokenize ".ctor" = TCtor
 tokenize ".dtor" = TDtor
 tokenize ".c" = TCtorSignature
+tokenize ".f" = TFunction
 tokenize n = TName n
 
 name :: Text -> Name
@@ -48,7 +50,6 @@ name = Name . Text.replace "+" " "
 -- to avoid the "," param seperator
 sig :: Text -> Name
 sig = name . Text.replace " " ","
-
 
 -- "parser"
 
@@ -62,6 +63,7 @@ data SymbolEnv = SymbolEnv {
   declaration :: Bool, -- .decl tag occurs
   tag :: Maybe SymbolTag,
   params :: [Name], -- maybe parameter signature
+  returns :: Maybe Name, -- return type (e.g. for overloaded functions)
   errors :: [Text] -- any errors we find
 } deriving (Eq, Ord, Show, Generic)
 
@@ -73,10 +75,12 @@ unName :: Name -> Text
 unName (Name n) = n
 
 -- Any tags that help to classify the sort of symbol we have
+-- These will be variants of an ADT
 data SymbolTag
   = Constructor
   | CTorSignature -- .ctor with type signature of params
   | Destructor
+  | Function
   deriving (Eq, Ord, Show, Generic)
 
 -- for regression testing
@@ -92,6 +96,7 @@ initState p = SymbolEnv {
     declaration = False,
     tag = Nothing,
     params = [],
+    returns = Nothing,
     errors = []
   }
 
@@ -103,6 +108,9 @@ pushParam s = modify' $ \env -> env { params = sig s : params env }
 
 setName :: Text -> Parse ()
 setName n = modify' $ \env -> env { localname = Just (name n) }
+
+pushRetTy :: Text -> Parse ()
+pushRetTy s = modify' $ \env -> env { returns = Just (sig s) }
 
 setTag :: SymbolTag -> Parse ()
 setTag t = modify' $ \env -> env { tag = Just t }
@@ -144,6 +152,8 @@ parseScopeOrName name (n : ns) = case n of
   TCtor -> pushScope name >> setTag Constructor >> parseCtor ns
   TDtor -> pushScope name >> setTag Destructor >> parseDtor ns
   TCtorSignature -> pushScope name >> setTag CTorSignature >> parseCtorSig ns
+  TFunction ->
+    setName name >> setTag Function >> parseFunctionSig ns
   TDecl -> do
     setName name >> setDecl
     case ns of
@@ -179,7 +189,7 @@ parseCtorSig [] = return ()
 -- one or more param signatures
 parseCtorSig [TName name] = mapM_ pushParam params
   where
-    params = Text.splitOn "," name
+    params = splitCommas name
 
 -- nullary construct decl
 parseCtorSig [TDecl] = setDecl
@@ -188,7 +198,39 @@ parseCtorSig [TDecl] = setDecl
 parseCtorSig [TName name, TDecl] =
     mapM_ pushParam params >> setDecl
   where
-    params = Text.splitOn "," name
+    params = splitCommas name
 parseCtorSig rest = setErr $
   "Cxx.parseCtorSig: unexpected trailing tokens in .ctor signature: " <>
     textShow rest
+
+--
+-- Function signatures always have a return type
+--
+parseFunctionSig :: [Token] -> Parse ()
+parseFunctionSig [] = setErr
+  "Cxx.parseFunctionSig: missing type signature for function"
+parseFunctionSig [TDecl] = setErr $
+  "Cxx.parseFunctionSig: missing type signature for function decl"
+parseFunctionSig [TName name] = do
+  setFunctionSigPieces name
+parseFunctionSig [TName name, TDecl] = do
+  setFunctionSigPieces name >> setDecl
+parseFunctionSig rest = setErr $
+  "Cxx.parseCtorSig: unexpected trailing tokens in .ctor signature: " <>
+    textShow rest
+
+setFunctionSigPieces :: Text -> Parse ()
+setFunctionSigPieces name = case types of
+  [] ->  setErr "Cxx.parseFunctionSig: empty signature token"
+  [ty] -> pushRetTy ty
+  _ -> do
+    let params = init types
+        ty = last types
+    mapM_ pushParam params
+    pushRetTy ty
+  where
+    types = splitCommas name
+
+-- | type signatures are a single token separated by commas
+splitCommas :: Text -> [Text]
+splitCommas = Text.splitOn ","

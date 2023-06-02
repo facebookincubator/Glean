@@ -1749,7 +1749,7 @@
                     "lineBegin": 41,
                     "lineEnd": 41
                 },
-                "sym": "test/cpp//foo/bar/g/.decl"
+                "sym": "test/cpp//foo/bar/g/.f/void/.decl"
             },
             {
                 "attributes": [
@@ -1802,7 +1802,7 @@
                     "lineBegin": 21,
                     "lineEnd": 21
                 },
-                "sym": "test/cpp//foo/f/.decl"
+                "sym": "test/cpp//foo/f/.f/void/.decl"
             },
             {
                 "attributes": [
@@ -1855,7 +1855,7 @@
                     "lineBegin": 24,
                     "lineEnd": 27
                 },
-                "sym": "test/cpp//foo/foo"
+                "sym": "test/cpp//foo/foo/.f/void"
             },
             {
                 "attributes": [
@@ -1908,7 +1908,7 @@
                     "lineBegin": 31,
                     "lineEnd": 31
                 },
-                "sym": "test/cpp//foo/foo/.decl"
+                "sym": "test/cpp//foo/foo/.f/void/.decl"
             },
             {
                 "attributes": [
@@ -2014,7 +2014,7 @@
                     "lineBegin": 45,
                     "lineEnd": 47
                 },
-                "sym": "test/cpp//foo/fooFn"
+                "sym": "test/cpp//foo/fooFn/.f/int,int"
             },
             {
                 "attributes": [
@@ -2120,7 +2120,7 @@
                     "lineBegin": 54,
                     "lineEnd": 62
                 },
-                "sym": "test/cpp//h"
+                "sym": "test/cpp//h/.f/int,void"
             },
             {
                 "attributes": [
@@ -2173,7 +2173,7 @@
                     "lineBegin": 52,
                     "lineEnd": 52
                 },
-                "sym": "test/cpp//h/.decl"
+                "sym": "test/cpp//h/.f/int,void/.decl"
             },
             {
                 "attributes": [
@@ -3782,7 +3782,7 @@
                     "lineBegin": 60,
                     "lineEnd": 60
                 },
-                "sym": "test/cpp//foo/bar/g/.decl",
+                "sym": "test/cpp//foo/bar/g/.f/void/.decl",
                 "target": {
                     "filepath": "test.cpp",
                     "range": {
@@ -3845,7 +3845,7 @@
                     "lineBegin": 58,
                     "lineEnd": 58
                 },
-                "sym": "test/cpp//foo/f/.decl",
+                "sym": "test/cpp//foo/f/.f/void/.decl",
                 "target": {
                     "filepath": "test.cpp",
                     "range": {
@@ -3908,7 +3908,7 @@
                     "lineBegin": 31,
                     "lineEnd": 31
                 },
-                "sym": "test/cpp//foo/foo",
+                "sym": "test/cpp//foo/foo/.f/void",
                 "target": {
                     "filepath": "test.cpp",
                     "range": {
@@ -3971,7 +3971,7 @@
                     "lineBegin": 59,
                     "lineEnd": 59
                 },
-                "sym": "test/cpp//foo/foo",
+                "sym": "test/cpp//foo/foo/.f/void",
                 "target": {
                     "filepath": "test.cpp",
                     "range": {
@@ -4034,7 +4034,7 @@
                     "lineBegin": 24,
                     "lineEnd": 24
                 },
-                "sym": "test/cpp//foo/foo/.decl",
+                "sym": "test/cpp//foo/foo/.f/void/.decl",
                 "target": {
                     "filepath": "test.cpp",
                     "range": {
@@ -4097,7 +4097,7 @@
                     "lineBegin": 31,
                     "lineEnd": 31
                 },
-                "sym": "test/cpp//foo/foo/.decl",
+                "sym": "test/cpp//foo/foo/.f/void/.decl",
                 "target": {
                     "filepath": "test.cpp",
                     "range": {
@@ -4160,7 +4160,7 @@
                     "lineBegin": 59,
                     "lineEnd": 59
                 },
-                "sym": "test/cpp//foo/foo/.decl",
+                "sym": "test/cpp//foo/foo/.f/void/.decl",
                 "target": {
                     "filepath": "test.cpp",
                     "range": {
@@ -4286,7 +4286,7 @@
                     "lineBegin": 52,
                     "lineEnd": 52
                 },
-                "sym": "test/cpp//h",
+                "sym": "test/cpp//h/.f/int,void",
                 "target": {
                     "filepath": "test.cpp",
                     "range": {
@@ -4349,7 +4349,7 @@
                     "lineBegin": 55,
                     "lineEnd": 55
                 },
-                "sym": "test/cpp//h",
+                "sym": "test/cpp//h/.f/int,void",
                 "target": {
                     "filepath": "test.cpp",
                     "range": {
@@ -4412,7 +4412,7 @@
                     "lineBegin": 52,
                     "lineEnd": 52
                 },
-                "sym": "test/cpp//h/.decl",
+                "sym": "test/cpp//h/.f/int,void/.decl",
                 "target": {
                     "filepath": "test.cpp",
                     "range": {
@@ -4475,7 +4475,7 @@
                     "lineBegin": 54,
                     "lineEnd": 54
                 },
-                "sym": "test/cpp//h/.decl",
+                "sym": "test/cpp//h/.f/int,void/.decl",
                 "target": {
                     "filepath": "test.cpp",
                     "range": {

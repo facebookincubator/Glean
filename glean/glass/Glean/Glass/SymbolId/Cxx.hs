@@ -143,25 +143,37 @@ toSymbolFunctionDeclaration fqname sig = do
   scopeToks <- toSymbol scope
   fn <- Glean.keyOf fname
   nameToks <- case fn of
-    Cxx.FunctionName_key_name x -> toSymbol x
+    -- functions: name/.f/p1,p2,retTy(/.decl)?
+    --
+    -- tbd. nullary/void functions
+    --
+    Cxx.FunctionName_key_name n -> do
+      nameStr <- Glean.keyOf n
+      Cxx.Signature_key retTy params <- Glean.keyOf sig
+      sigStr <- toSymbolSignature params retTy
+      return [nameStr,".f",sigStr]
+
     Cxx.FunctionName_key_operator_ x -> return [x]
     Cxx.FunctionName_key_literalOperator x -> return [x]
+
     --
-    -- Special handling for overloaded constructors. The most common sort.
+    -- constructors: class/.c/p1,p2(/.decl)?
     --
     -- Note: .c doesn't use the body of the explicit constructors in unions
     -- e.g.   explicit Data() : nul(nullptr) {}
     -- nor:   const_dynamic_view() noexcept = default;
     --
-    -- These will have no signature token. (i.e. not "" token)
+    -- Nullary constructors have no signature token.
     --
     Cxx.FunctionName_key_constructor{}-> do
       Cxx.Signature_key _retTy params <- Glean.keyOf sig
       mSigStr <- toSymbolSignatureParams params
       return (".c" : maybeToList mSigStr)
+
     Cxx.FunctionName_key_destructor{} -> return [".dtor"]
     Cxx.FunctionName_key_conversionOperator ty -> pure <$> Glean.keyOf ty
     Cxx.FunctionName_key_EMPTY -> return []
+
   return (scopeToks ++ nameToks)
 
 instance Symbol Cxx.VariableDeclaration_key where
@@ -211,6 +223,16 @@ toSymbolSignatureParams [] = pure Nothing
 toSymbolSignatureParams params = do
   sigToks <- mapM (\(Cxx.Parameter _name ty) -> toTypeSymbol ty) params
   return $ Just (intercalate "," sigToks)
+
+-- For overloaded functions we need the full type signature to get the semantic
+-- encoding sufficiently unique. There is _always_ a return type, so that's the
+-- last element
+toSymbolSignature :: [Cxx.Parameter] -> Cxx.Type -> Glean.RepoHaxl u w Text
+toSymbolSignature [] retTy = toTypeSymbol retTy
+toSymbolSignature params retTy = do
+  sigToks <- mapM (\(Cxx.Parameter _name ty) -> toTypeSymbol ty) params
+  retTyStr <- toTypeSymbol retTy
+  return $ intercalate "," sigToks <> "," <> retTyStr
 
 instance Symbol Cxx.FunctionName_key where
   toSymbol k = case k of
@@ -464,7 +486,9 @@ toSymbolDefnKind k = case k of
 --
 -- Qualified names for C++
 --
-
+-- Todo: rewrite this entirely based on induction on the entity type
+-- make sure the generated scope/local name fragments match clangd
+--
 instance ToQName Cxx.Entity where
   toQName e = do
     symId <- toSymbolWithPath e (Path mempty) -- we already had the symbolid tho
@@ -475,12 +499,14 @@ instance ToQName Cxx.Entity where
         -- check .c signature case
         case Prelude.break (== ".c") x of
           (scope, ".c":params) -> ctorSignatureQName scope params
-          _ -> case (init x, last x) of
-            (ms, name)
-              | name `elem` [".ctor",".dtor",".decl"] ->
-                case (init ms, last ms) of
-                  (ns, name') -> Right (Name name', Name (intercalate "::" ns))
-              | otherwise -> Right (Name name, Name (intercalate "::" ms))
+          _ -> case Prelude.break (== ".f") x of
+            (scope, ".f":params) -> functionSignatureQName scope params
+            _ -> case (init x, last x) of
+              (ms, name)
+                | name `elem` [".ctor",".dtor",".decl"]
+                -> let (ns, name') = (init ms, last ms)
+                   in Right (Name name', Name (intercalate "::" ns))
+                | otherwise -> Right (Name name, Name (intercalate "::" ms))
 
 --
 -- e.g. default constructors:
@@ -495,22 +521,40 @@ instance ToQName Cxx.Entity where
 ctorSignatureQName :: [Text] -> [Text] -> Either Text (Name, Name)
 ctorSignatureQName prefix ps = Right (Name localname, Name scopename)
   where
-    localname = name <> "(" <> maybe "" denormalize params <> ")"
+    localname = name <> formatParams (sigOf ps)
     scopename = intercalate "::" scope
-
-    params = case ps of
-      [] -> Nothing
-      [".decl"] -> Nothing
-      [sig,".decl"] -> Just sig
-      [sig] -> Just sig
-      _ -> Nothing -- we never have more than one sig token
-
-    denormalize =
-          intercalate ", "
-        . map (Text.replace "+" " " .
-               Text.replace " " ",")
-        . Text.splitOn ","
-
     (scope, name) = case prefix of
       [n] -> ([n], n)
       _ -> (prefix, last prefix)
+
+sigOf :: [Text] -> Maybe Text
+sigOf ps = case ps of
+  [] -> Nothing
+  [".decl"] -> Nothing
+  [sig,".decl"] -> Just sig
+  [sig] -> Just sig
+  _ -> Nothing -- we never have more than one sig token
+
+--
+-- function names
+--
+functionSignatureQName :: [Text] -> [Text] -> Either Text (Name, Name)
+functionSignatureQName [] _ = Left "functionSignatureQName: empty function name"
+functionSignatureQName prefix _ps = Right (Name localname, Name scopename)
+  where
+    localname = name {- not sure we want rtypes in function names -}
+    scopename = intercalate "::" scope
+
+    (scope, name) = case prefix of
+      [n] -> ([], n) -- global function
+      _ -> (init prefix, last prefix)
+
+formatParams :: Maybe Text -> Text
+formatParams params = "(" <> maybe "" denormalize params <> ")"
+
+denormalize :: Text -> Text
+denormalize =
+      intercalate ", "
+    . map (Text.replace "+" " " .
+            Text.replace " " ",")
+    . Text.splitOn ","

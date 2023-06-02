@@ -15,7 +15,7 @@
                 "parent": "test/cpp//foo/bar/.decl"
             },
             {
-                "child": "test/cpp//foo/bar/g/.decl",
+                "child": "test/cpp//foo/bar/g/.f/void/.decl",
                 "parent": "test/cpp//foo/bar/.decl"
             }
         ],

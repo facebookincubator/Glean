@@ -41,13 +41,14 @@ cxxSymbolSearch t = case P.validateSymbolId t of
   Left err -> return $ None (Text.unlines err)
   Right P.SymbolEnv{..} ->
     let scope = map P.unName scopes
-        sig = map P.unName params
+        parameters = map P.unName params
+        mreturns = fmap P.unName returns
         mname = fmap P.unName localname
     in case tag of
       -- ctors with signatures, ctor params or dtors
       Just P.CTorSignature -- .c
-        | declaration -> searchCTorSigDeclarations t path scope sig
-        | otherwise -> searchCTorSigDefinitions t path scope sig
+        | declaration -> searchCTorSigDeclarations t path scope parameters
+        | otherwise -> searchCTorSigDefinitions t path scope parameters
       Just P.Constructor -- these are always params to constructors now. remove
         | Just name <- mname -- only Nothing in constructor/destructor case
         -> let scope' = scope <> [".ctor"] -- params are within ctor scope
@@ -58,6 +59,14 @@ cxxSymbolSearch t = case P.validateSymbolId t of
         -> searchSymbolId t $ if declaration
             then lookupDTorDeclaration path scope
             else lookupDTorDefinition path scope
+      Just P.Function -- ".f" functions with complete signatures
+        | Just retTy <- mreturns -- again, cannot be unset. enforce in ADT
+        , Just name <- mname -- again, never Nothing (no anonymous functions?)
+        -> searchSymbolId t $ if declaration
+            then lookupFunctionSignatureDeclaration
+                   path scope name parameters retTy
+            else lookupFunctionSignatureDefinition
+                   path scope name parameters retTy
       -- everything else
       _ -> if declaration
            then searchDeclarations t path scope (fromMaybe "" mname)
@@ -241,6 +250,43 @@ lookupCTorSignatureDeclaration anchor ns params =
           field @"decl" decl
         end))
       : entityDeclFooter anchor decl entity codeEntity file rangespan lname
+      )
+
+lookupFunctionSignatureDeclaration
+  :: Text -> [Text] -> Text -> [Text] -> Text
+  -> Angle (ResultLocation Cxx.Entity)
+lookupFunctionSignatureDeclaration anchor ns name params returns =
+  vars $ \(decl :: Angle Cxx.Declaration)  (entity :: Angle Cxx.Entity)
+      (codeEntity :: Angle Code.Entity) (file :: Angle Src.File)
+        (asig :: Angle Cxx.Signature) (rangespan :: Angle Code.RangeSpan)
+        (lname :: Angle Text) ->
+    tuple (entity, file, rangespan, lname) `where_` ([
+      asig .= signatureQ params returns,
+      wild .= predicate @SymbolId.LookupFunctionSignatureDeclaration (
+        rec $
+          field @"name" (alt @"name" (string name)) $
+          field @"scope" (scopeQ (reverse ns)) $
+          field @"signature" (asPredicate asig) $
+          field @"decl" decl
+        end)
+    ] <> entityDeclFooter anchor decl entity codeEntity file rangespan lname)
+
+lookupFunctionSignatureDefinition
+  :: Text -> [Text] -> Text -> [Text] -> Text
+  -> Angle (ResultLocation Cxx.Entity)
+lookupFunctionSignatureDefinition anchor ns name params returns =
+  vars $ \(entity :: Angle Cxx.Entity) (codeEntity :: Angle Code.Entity)
+      (file :: Angle Src.File) (rangespan :: Angle Code.RangeSpan)
+        (lname :: Angle Text) ->
+    tuple (entity, file, rangespan, lname) `where_` ((
+      wild .= predicate @SymbolId.LookupFunctionSignatureDefinition (
+        rec $
+          field @"name" (alt @"name" (string name)) $
+          field @"scope" (scopeQ (reverse ns)) $
+          field @"signature" (asPredicate (signatureQ params returns)) $
+          field @"entity" entity
+        end))
+      : entityFooter anchor entity codeEntity file rangespan lname
       )
 
 --
@@ -445,6 +491,20 @@ scopeQ _ss@(n:ns) =
 paramTypesQ :: [Text] -> Angle Cxx.Signature
 paramTypesQ ps = predicate @Cxx.Signature $
     rec $
+      field @"parameters" (array (map paramQ ps))
+    end
+  where
+    paramQ :: Text -> Angle Cxx.Parameter
+    paramQ tyStr =
+      rec $
+        field @"type" (string tyStr)
+      end
+
+-- Full signature with return type
+signatureQ :: [Text] -> Text -> Angle Cxx.Signature
+signatureQ ps returns = predicate @Cxx.Signature $
+    rec $
+      field @"returns" (string returns) $
       field @"parameters" (array (map paramQ ps))
     end
   where

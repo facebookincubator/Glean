@@ -82,7 +82,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "sym": "test/cpp//foo/foo",
+                "sym": "test/cpp//foo/foo/.f/void",
                 "sym_location": {
                     "filepath": "test.cpp",
                     "range": {
@@ -129,7 +129,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "sym": "test/cpp//foo/fooFn",
+                "sym": "test/cpp//foo/fooFn/.f/int,int",
                 "sym_location": {
                     "filepath": "test.cpp",
                     "range": {
@@ -189,7 +189,7 @@
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/cpp//foo/foo"
+                "symbol": "test/cpp//foo/foo/.f/void"
             },
             {
                 "kind": 14,
@@ -212,7 +212,7 @@
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/cpp//foo/fooFn"
+                "symbol": "test/cpp//foo/fooFn/.f/int,int"
             }
         ]
     }

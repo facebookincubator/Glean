@@ -47,7 +47,7 @@
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/cpp//foo/foo"
+                "symbol": "test/cpp//foo/foo/.f/void"
             },
             {
                 "kind": 14,
@@ -70,7 +70,7 @@
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/cpp//foo/fooFn"
+                "symbol": "test/cpp//foo/fooFn/.f/int,int"
             },
             {
                 "kind": 30,

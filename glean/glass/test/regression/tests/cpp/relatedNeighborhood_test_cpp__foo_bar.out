@@ -5,7 +5,7 @@
             "test/cpp//foo/bar/T/.decl",
             "test/cpp//foo/bar/TypedefDeclShort/.decl",
             "test/cpp//foo/bar/UsingDeclShort/.decl",
-            "test/cpp//foo/bar/g/.decl"
+            "test/cpp//foo/bar/g/.f/void/.decl"
         ],
         "childrenExtended": [],
         "containsParents": [],
@@ -205,7 +205,7 @@
                 "sym_other_locations": [],
                 "type_xrefs": []
             },
-            "test/cpp//foo/bar/g/.decl": {
+            "test/cpp//foo/bar/g/.f/void/.decl": {
                 "annotations": [],
                 "comments": [],
                 "contains_relation": {
@@ -240,7 +240,7 @@
                 "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "void foo::bar::g()",
-                "sym": "test/cpp//foo/bar/g/.decl",
+                "sym": "test/cpp//foo/bar/g/.f/void/.decl",
                 "sym_location": {
                     "filepath": "test.cpp",
                     "range": {

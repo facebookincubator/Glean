@@ -33,6 +33,9 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "operator_1" operator_decl
   , TestLabel "anon_ns" anon_ns
   , TestLabel "nested comma" ctor_sig3_nested_comma
+  , TestLabel "const_fn" const_fn
+  , TestLabel "unary_fn" unary_fn
+  , TestLabel "binary_fn" binary_fn
   ]
 
 namespace1 :: Test
@@ -92,6 +95,21 @@ anon_ns = test
   (ok "fbcode" ["folly",""] "Test")
   (sym "fbcode/folly//Test")
 
+const_fn :: Test
+const_fn = test
+  (fun_sig [] "bool" <$> ok_decl "fbcode" ["folly", "dynamic"] "foo")
+  (sym "fbcode/folly/dynamic/foo/.f/bool/.decl")
+
+unary_fn :: Test
+unary_fn = test
+  (fun_sig ["bool"] "bool" <$> ok_decl "fbcode" ["folly", "dynamic"] "foo")
+  (sym "fbcode/folly/dynamic/foo/.f/bool,bool/.decl")
+
+binary_fn :: Test
+binary_fn = test
+  (fun_sig ["bool","bool"] "void" <$> ok_decl "fbcode" ["folly", "dynamic"] "foo")
+  (sym "fbcode/folly/dynamic/foo/.f/bool,bool,void/.decl")
+
 -- Helpers
 
 test :: (Eq a, Show a) => a -> a -> Test
@@ -109,6 +127,7 @@ ok path scope name =
       declaration = False,
       tag = Nothing,
       params = [],
+      returns = Nothing,
       errors = []
     }
 
@@ -129,3 +148,10 @@ ctor e = e { tag = Just Constructor }
 
 ctor_sig :: SymbolEnv -> SymbolEnv
 ctor_sig e = e { tag = Just CTorSignature, localname = Nothing }
+
+fun_sig :: [Text] -> Text -> SymbolEnv -> SymbolEnv
+fun_sig params retty e =
+   e { tag = Just Function
+     , params = map Name params
+     , returns = Just (Name retty)
+     }
