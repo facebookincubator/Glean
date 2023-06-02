@@ -141,6 +141,35 @@
         },
         {
             "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "bozzo",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "scopes": [
+                    "Q"
+                ],
+                "tag": "Function"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "bozzo",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "scopes": [
+                    "Q",
+                    "QQ"
+                ],
+                "tag": "Function"
+            }
+        },
+        {
+            "Right": {
                 "declaration": true,
                 "errors": [],
                 "localname": "getDouble",
@@ -200,6 +229,132 @@
                     "QQ"
                 ],
                 "tag": "Function"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "thango",
+                "params": [
+                    "int",
+                    "Q::QQ &"
+                ],
+                "path": "",
+                "qualifiers": [
+                    {
+                        "contents": "LValue",
+                        "tag": "RefQual"
+                    }
+                ],
+                "scopes": [
+                    "Q",
+                    "QQ"
+                ],
+                "tag": "Function"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "thango",
+                "params": [
+                    "int",
+                    "Q::QQ &&"
+                ],
+                "path": "",
+                "qualifiers": [
+                    {
+                        "contents": "RValue",
+                        "tag": "RefQual"
+                    }
+                ],
+                "scopes": [
+                    "Q",
+                    "QQ"
+                ],
+                "tag": "Function"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "thango",
+                "params": [
+                    "int",
+                    "const Q::QQ &"
+                ],
+                "path": "",
+                "qualifiers": [
+                    {
+                        "tag": "Const"
+                    },
+                    {
+                        "contents": "LValue",
+                        "tag": "RefQual"
+                    }
+                ],
+                "scopes": [
+                    "Q",
+                    "QQ"
+                ],
+                "tag": "Function"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "thingo",
+                "params": [
+                    "pear<int, char>",
+                    "Q::QQ &&"
+                ],
+                "path": "",
+                "qualifiers": [
+                    {
+                        "tag": "Const"
+                    }
+                ],
+                "scopes": [
+                    "Q",
+                    "QQ"
+                ],
+                "tag": "Function"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "scopes": [
+                    "Q",
+                    "QQ",
+                    "thango"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "scopes": [
+                    "Q",
+                    "QQ",
+                    "thingo"
+                ],
+                "tag": null
             }
         },
         {

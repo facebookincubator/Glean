@@ -1,7 +1,6 @@
 [
     "@generated",
     {
-        "annotations": [],
         "comments": [],
         "contains_relation": {
             "firstChild": "nondeterministic",
@@ -15,39 +14,38 @@
             "hasMoreChildren": false,
             "hasMoreParents": false
         },
-        "kind": 8,
+        "kind": 14,
         "language": 1,
         "location": {
             "filepath": "test.cpp",
             "range": {
-                "columnBegin": 5,
-                "columnEnd": 26,
-                "lineBegin": 138,
-                "lineEnd": 138
+                "columnBegin": 3,
+                "columnEnd": 27,
+                "lineBegin": 131,
+                "lineEnd": 131
             },
             "repository": "test"
         },
         "modifiers": [],
         "name": {
-            "container": "Q::QQ",
-            "localName": "getDouble"
+            "container": "Q",
+            "localName": "bozzo"
         },
         "pretty_comments": [],
         "repo_hash": "testhash",
-        "signature": "double& Q::QQ::getDouble()",
-        "sym": "test/cpp//Q/QQ/getDouble/.f//lvalue/.decl",
+        "signature": "void Q::bozzo()",
+        "sym": "test/cpp//Q/bozzo/.f/",
         "sym_location": {
             "filepath": "test.cpp",
             "range": {
-                "columnBegin": 5,
-                "columnEnd": 26,
-                "lineBegin": 138,
-                "lineEnd": 138
+                "columnBegin": 3,
+                "columnEnd": 27,
+                "lineBegin": 131,
+                "lineEnd": 131
             },
             "repository": "test"
         },
         "sym_other_locations": [],
-        "type_xrefs": [],
-        "visibility": 20
+        "type_xrefs": []
     }
 ]

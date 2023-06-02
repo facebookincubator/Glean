@@ -2,7 +2,7 @@
     "@generated",
     {
         "revision": "testhash",
-        "size": 101,
+        "size": 120,
         "symbols": {
             "100": [
                 {
@@ -830,7 +830,7 @@
                         "columnBegin": 1,
                         "columnEnd": 2,
                         "lineBegin": 129,
-                        "lineEnd": 137
+                        "lineEnd": 148
                     },
                     "sym": "test/cpp//Q"
                 }
@@ -879,6 +879,43 @@
                             "aInteger": 1
                         },
                         "symbolKind": {
+                            "aInteger": 14
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "bozzo"
+                        },
+                        "symbolParent": {
+                            "aString": "Q"
+                        },
+                        "symbolSignature": {
+                            "aString": "void bozzo()"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 8,
+                        "columnEnd": 13,
+                        "lineBegin": 131,
+                        "lineEnd": 131
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 27,
+                        "lineBegin": 131,
+                        "lineEnd": 131
+                    },
+                    "sym": "test/cpp//Q/bozzo/.f/"
+                }
+            ],
+            "133": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
                             "aInteger": 25
                         },
                         "symbolLanguage": {
@@ -897,19 +934,56 @@
                     "nameRange": {
                         "columnBegin": 10,
                         "columnEnd": 12,
-                        "lineBegin": 131,
-                        "lineEnd": 131
+                        "lineBegin": 133,
+                        "lineEnd": 133
                     },
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 4,
-                        "lineBegin": 131,
-                        "lineEnd": 135
+                        "lineBegin": 133,
+                        "lineEnd": 146
                     },
                     "sym": "test/cpp//Q/QQ"
                 }
             ],
-            "132": [
+            "135": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 14
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "bozzo"
+                        },
+                        "symbolParent": {
+                            "aString": "Q::QQ"
+                        },
+                        "symbolSignature": {
+                            "aString": "void bozzo()"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 10,
+                        "columnEnd": 15,
+                        "lineBegin": 135,
+                        "lineEnd": 135
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 17,
+                        "lineBegin": 135,
+                        "lineEnd": 135
+                    },
+                    "sym": "test/cpp//Q/QQ/bozzo/.f//.decl"
+                }
+            ],
+            "137": [
                 {
                     "attributes": {
                         "symbolDefinitionType": {
@@ -934,19 +1008,19 @@
                     "nameRange": {
                         "columnBegin": 12,
                         "columnEnd": 21,
-                        "lineBegin": 132,
-                        "lineEnd": 132
+                        "lineBegin": 137,
+                        "lineEnd": 137
                     },
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 30,
-                        "lineBegin": 132,
-                        "lineEnd": 132
+                        "lineBegin": 137,
+                        "lineEnd": 137
                     },
                     "sym": "test/cpp//Q/QQ/getDouble/.f//const,lvalue/.decl"
                 }
             ],
-            "133": [
+            "138": [
                 {
                     "attributes": {
                         "symbolDefinitionType": {
@@ -971,19 +1045,19 @@
                     "nameRange": {
                         "columnBegin": 13,
                         "columnEnd": 22,
-                        "lineBegin": 133,
-                        "lineEnd": 133
+                        "lineBegin": 138,
+                        "lineEnd": 138
                     },
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 26,
-                        "lineBegin": 133,
-                        "lineEnd": 133
+                        "lineBegin": 138,
+                        "lineEnd": 138
                     },
                     "sym": "test/cpp//Q/QQ/getDouble/.f//lvalue/.decl"
                 }
             ],
-            "134": [
+            "139": [
                 {
                     "attributes": {
                         "symbolDefinitionType": {
@@ -1008,14 +1082,14 @@
                     "nameRange": {
                         "columnBegin": 12,
                         "columnEnd": 21,
-                        "lineBegin": 134,
-                        "lineEnd": 134
+                        "lineBegin": 139,
+                        "lineEnd": 139
                     },
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 26,
-                        "lineBegin": 134,
-                        "lineEnd": 134
+                        "lineBegin": 139,
+                        "lineEnd": 139
                     },
                     "sym": "test/cpp//Q/QQ/getDouble/.f//rvalue/.decl"
                 }
@@ -1055,6 +1129,581 @@
                         "lineEnd": 14
                     },
                     "sym": "test/cpp//foo/S/TypedefDeclInteger/.decl"
+                }
+            ],
+            "141": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 25
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "QQ"
+                        },
+                        "symbolParent": {
+                            "aString": "Q"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct QQ"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 21,
+                        "columnEnd": 23,
+                        "lineBegin": 141,
+                        "lineEnd": 141
+                    },
+                    "sym": "test/cpp//Q/QQ",
+                    "target": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 3,
+                            "columnEnd": 4,
+                            "lineBegin": 133,
+                            "lineEnd": 146
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 14
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "thango"
+                        },
+                        "symbolParent": {
+                            "aString": "Q::QQ"
+                        },
+                        "symbolSignature": {
+                            "aString": "int thango(int, const Q::QQ&) const"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 9,
+                        "columnEnd": 15,
+                        "lineBegin": 141,
+                        "lineEnd": 141
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 38,
+                        "lineBegin": 141,
+                        "lineEnd": 141
+                    },
+                    "sym": "test/cpp//Q/QQ/thango/.f/int,const+Q::QQ+%26/const,lvalue/.decl"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "Q::QQ::thango"
+                        },
+                        "symbolSignature": {
+                            "aString": "int"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 19,
+                        "lineBegin": 141,
+                        "lineEnd": 141
+                    },
+                    "sym": "test/cpp//Q/QQ/thango//.decl"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "Q::QQ::thango"
+                        },
+                        "symbolSignature": {
+                            "aString": "const Q::QQ&"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 21,
+                        "columnEnd": 30,
+                        "lineBegin": 141,
+                        "lineEnd": 141
+                    },
+                    "sym": "test/cpp//Q/QQ/thango//.decl"
+                }
+            ],
+            "142": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 25
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "QQ"
+                        },
+                        "symbolParent": {
+                            "aString": "Q"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct QQ"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 22,
+                        "columnEnd": 24,
+                        "lineBegin": 142,
+                        "lineEnd": 142
+                    },
+                    "sym": "test/cpp//Q/QQ",
+                    "target": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 3,
+                            "columnEnd": 4,
+                            "lineBegin": 133,
+                            "lineEnd": 146
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 14
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "thango"
+                        },
+                        "symbolParent": {
+                            "aString": "Q::QQ"
+                        },
+                        "symbolSignature": {
+                            "aString": "int& thango(int, Q::QQ&)"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 10,
+                        "columnEnd": 16,
+                        "lineBegin": 142,
+                        "lineEnd": 142
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 28,
+                        "lineBegin": 142,
+                        "lineEnd": 142
+                    },
+                    "sym": "test/cpp//Q/QQ/thango/.f/int,Q::QQ+%26/lvalue/.decl"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "Q::QQ::thango"
+                        },
+                        "symbolSignature": {
+                            "aString": "int"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 17,
+                        "columnEnd": 20,
+                        "lineBegin": 142,
+                        "lineEnd": 142
+                    },
+                    "sym": "test/cpp//Q/QQ/thango//.decl"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "Q::QQ::thango"
+                        },
+                        "symbolSignature": {
+                            "aString": "Q::QQ&"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 22,
+                        "columnEnd": 25,
+                        "lineBegin": 142,
+                        "lineEnd": 142
+                    },
+                    "sym": "test/cpp//Q/QQ/thango//.decl"
+                }
+            ],
+            "143": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 25
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "QQ"
+                        },
+                        "symbolParent": {
+                            "aString": "Q"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct QQ"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 21,
+                        "columnEnd": 23,
+                        "lineBegin": 143,
+                        "lineEnd": 143
+                    },
+                    "sym": "test/cpp//Q/QQ",
+                    "target": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 3,
+                            "columnEnd": 4,
+                            "lineBegin": 133,
+                            "lineEnd": 146
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 14
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "thango"
+                        },
+                        "symbolParent": {
+                            "aString": "Q::QQ"
+                        },
+                        "symbolSignature": {
+                            "aString": "int thango(int, Q::QQ&&)"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 9,
+                        "columnEnd": 15,
+                        "lineBegin": 143,
+                        "lineEnd": 143
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 29,
+                        "lineBegin": 143,
+                        "lineEnd": 143
+                    },
+                    "sym": "test/cpp//Q/QQ/thango/.f/int,Q::QQ+%26%26/rvalue/.decl"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "Q::QQ::thango"
+                        },
+                        "symbolSignature": {
+                            "aString": "int"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 19,
+                        "lineBegin": 143,
+                        "lineEnd": 143
+                    },
+                    "sym": "test/cpp//Q/QQ/thango//.decl"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "Q::QQ::thango"
+                        },
+                        "symbolSignature": {
+                            "aString": "Q::QQ&&"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 21,
+                        "columnEnd": 25,
+                        "lineBegin": 143,
+                        "lineEnd": 143
+                    },
+                    "sym": "test/cpp//Q/QQ/thango//.decl"
+                }
+            ],
+            "145": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 25
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "QQ"
+                        },
+                        "symbolParent": {
+                            "aString": "Q"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct QQ"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 32,
+                        "columnEnd": 34,
+                        "lineBegin": 145,
+                        "lineEnd": 145
+                    },
+                    "sym": "test/cpp//Q/QQ",
+                    "target": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 3,
+                            "columnEnd": 4,
+                            "lineBegin": 133,
+                            "lineEnd": 146
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 14
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "thingo"
+                        },
+                        "symbolParent": {
+                            "aString": "Q::QQ"
+                        },
+                        "symbolSignature": {
+                            "aString": "int thingo(pear<int, char>, Q::QQ&&) const"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 9,
+                        "columnEnd": 15,
+                        "lineBegin": 145,
+                        "lineEnd": 145
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 43,
+                        "lineBegin": 145,
+                        "lineEnd": 145
+                    },
+                    "sym": "test/cpp//Q/QQ/thingo/.f/pear%3Cint%20+char%3E,Q::QQ+%26%26/const/.decl"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "Q::QQ::thingo"
+                        },
+                        "symbolSignature": {
+                            "aString": "pear<int, char>"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 30,
+                        "lineBegin": 145,
+                        "lineEnd": 145
+                    },
+                    "sym": "test/cpp//Q/QQ/thingo//.decl"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "Q::QQ::thingo"
+                        },
+                        "symbolSignature": {
+                            "aString": "Q::QQ&&"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 32,
+                        "columnEnd": 36,
+                        "lineBegin": 145,
+                        "lineEnd": 145
+                    },
+                    "sym": "test/cpp//Q/QQ/thingo//.decl"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 25
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "pear"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "struct pear"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 20,
+                        "lineBegin": 145,
+                        "lineEnd": 145
+                    },
+                    "sym": "test/cpp//pear/.decl",
+                    "target": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 3,
+                            "columnEnd": 14,
+                            "lineBegin": 105,
+                            "lineEnd": 105
+                        },
+                        "repository": "test"
+                    }
                 }
             ],
             "15": [

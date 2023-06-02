@@ -238,7 +238,7 @@
                         "columnBegin": 1,
                         "columnEnd": 2,
                         "lineBegin": 129,
-                        "lineEnd": 137
+                        "lineEnd": 148
                     },
                     "repository": "test"
                 },
@@ -260,8 +260,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 4,
-                        "lineBegin": 131,
-                        "lineEnd": 135
+                        "lineBegin": 133,
+                        "lineEnd": 146
                     },
                     "repository": "test"
                 },
@@ -274,6 +274,29 @@
                     "exactness": 2
                 },
                 "symbol": "test/cpp//Q/QQ"
+            },
+            {
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 27,
+                        "lineBegin": 131,
+                        "lineEnd": 131
+                    },
+                    "repository": "test"
+                },
+                "name": "bozzo",
+                "qname": {
+                    "container": "Q",
+                    "localName": "bozzo"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//Q/bozzo/.f/"
             },
             {
                 "kind": 6,

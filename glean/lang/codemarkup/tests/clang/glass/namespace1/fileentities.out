@@ -200,6 +200,550 @@
     "key": {
       "file": { "key": "test.cpp" },
       "location": {
+        "name": "",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 141,
+            "columnBegin": 16,
+            "lineEnd": 141,
+            "columnEnd": 18
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 1882, "length": 1 }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "thango" } } },
+                          "scope": {
+                            "recordWithAccess": {
+                              "record": {
+                                "key": {
+                                  "name": { "key": "QQ" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "Q" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "access": 0
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 141,
+                  "columnBegin": 16,
+                  "lineEnd": 141,
+                  "columnEnd": 18
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
+        "name": "",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 141,
+            "columnBegin": 21,
+            "lineEnd": 141,
+            "columnEnd": 29
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 1893, "length": 1 }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "thango" } } },
+                          "scope": {
+                            "recordWithAccess": {
+                              "record": {
+                                "key": {
+                                  "name": { "key": "QQ" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "Q" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "access": 0
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "const Q::QQ &" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 141,
+                  "columnBegin": 21,
+                  "lineEnd": 141,
+                  "columnEnd": 29
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
+        "name": "",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 142,
+            "columnBegin": 17,
+            "lineEnd": 142,
+            "columnEnd": 19
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 1922, "length": 1 }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "thango" } } },
+                          "scope": {
+                            "recordWithAccess": {
+                              "record": {
+                                "key": {
+                                  "name": { "key": "QQ" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "Q" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "access": 0
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 142,
+                  "columnBegin": 17,
+                  "lineEnd": 142,
+                  "columnEnd": 19
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
+        "name": "",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 142,
+            "columnBegin": 22,
+            "lineEnd": 142,
+            "columnEnd": 24
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 1927, "length": 1 }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "thango" } } },
+                          "scope": {
+                            "recordWithAccess": {
+                              "record": {
+                                "key": {
+                                  "name": { "key": "QQ" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "Q" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "access": 0
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "Q::QQ &" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 142,
+                  "columnBegin": 22,
+                  "lineEnd": 142,
+                  "columnEnd": 24
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
+        "name": "",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 143,
+            "columnBegin": 16,
+            "lineEnd": 143,
+            "columnEnd": 18
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 1950, "length": 1 }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "thango" } } },
+                          "scope": {
+                            "recordWithAccess": {
+                              "record": {
+                                "key": {
+                                  "name": { "key": "QQ" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "Q" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "access": 0
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 143,
+                  "columnBegin": 16,
+                  "lineEnd": 143,
+                  "columnEnd": 18
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
+        "name": "",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 143,
+            "columnBegin": 21,
+            "lineEnd": 143,
+            "columnEnd": 24
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 1956, "length": 1 }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "thango" } } },
+                          "scope": {
+                            "recordWithAccess": {
+                              "record": {
+                                "key": {
+                                  "name": { "key": "QQ" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "Q" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "access": 0
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "Q::QQ &&" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 143,
+                  "columnBegin": 21,
+                  "lineEnd": 143,
+                  "columnEnd": 24
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
+        "name": "",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 145,
+            "columnBegin": 16,
+            "lineEnd": 145,
+            "columnEnd": 29
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 1992, "length": 1 }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "thingo" } } },
+                          "scope": {
+                            "recordWithAccess": {
+                              "record": {
+                                "key": {
+                                  "name": { "key": "QQ" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "Q" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "access": 0
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "pear<int, char>" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 145,
+                  "columnBegin": 16,
+                  "lineEnd": 145,
+                  "columnEnd": 29
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
+        "name": "",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 145,
+            "columnBegin": 32,
+            "lineEnd": 145,
+            "columnEnd": 35
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 1998, "length": 1 }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "thingo" } } },
+                          "scope": {
+                            "recordWithAccess": {
+                              "record": {
+                                "key": {
+                                  "name": { "key": "QQ" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "Q" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "access": 0
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "Q::QQ &&" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 145,
+                  "columnBegin": 32,
+                  "lineEnd": 145,
+                  "columnEnd": 35
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
         "name": "A",
         "file": { "key": "test.cpp" },
         "location": {
@@ -1098,7 +1642,7 @@
             "file": { "key": "test.cpp" },
             "lineBegin": 129,
             "columnBegin": 1,
-            "lineEnd": 137,
+            "lineEnd": 148,
             "columnEnd": 1
           }
         },
@@ -1119,13 +1663,42 @@
                       "file": { "key": "test.cpp" },
                       "lineBegin": 129,
                       "columnBegin": 1,
-                      "lineEnd": 137,
+                      "lineEnd": 148,
                       "columnEnd": 1
                     }
                   }
                 },
                 "members": {
                   "key": [
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "bozzo" } } },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "Q" } }
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [ ]
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 131,
+                            "columnBegin": 3,
+                            "lineEnd": 131,
+                            "columnEnd": 26
+                          }
+                        }
+                      }
+                    },
                     {
                       "record_": {
                         "key": {
@@ -1142,9 +1715,9 @@
                           "kind": { "struct_": { } },
                           "source": {
                             "file": { "key": "test.cpp" },
-                            "lineBegin": 131,
+                            "lineBegin": 133,
                             "columnBegin": 3,
-                            "lineEnd": 135,
+                            "lineEnd": 146,
                             "columnEnd": 3
                           }
                         }
@@ -1168,15 +1741,15 @@
         "location": {
           "range": {
             "file": { "key": "test.cpp" },
-            "lineBegin": 131,
+            "lineBegin": 133,
             "columnBegin": 3,
-            "lineEnd": 135,
+            "lineEnd": 146,
             "columnEnd": 3
           }
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 1725, "length": 2 }
+          "span": { "start": 1753, "length": 2 }
         }
       },
       "entity": {
@@ -1197,9 +1770,9 @@
                     "kind": { "struct_": { } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 131,
+                      "lineBegin": 133,
                       "columnBegin": 3,
-                      "lineEnd": 135,
+                      "lineEnd": 146,
                       "columnEnd": 3
                     }
                   }
@@ -1207,6 +1780,51 @@
                 "bases": [ ],
                 "members": {
                   "key": [
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "bozzo" } } },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "QQ" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": { "name": { "key": "Q" } }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [ ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": false,
+                            "isConst": false,
+                            "isVolatile": false,
+                            "refQualifier": 0
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 135,
+                            "columnBegin": 5,
+                            "lineEnd": 135,
+                            "columnEnd": 16
+                          }
+                        }
+                      }
+                    },
                     {
                       "function_": {
                         "key": {
@@ -1246,9 +1864,9 @@
                           },
                           "source": {
                             "file": { "key": "test.cpp" },
-                            "lineBegin": 132,
+                            "lineBegin": 137,
                             "columnBegin": 5,
-                            "lineEnd": 132,
+                            "lineEnd": 137,
                             "columnEnd": 29
                           }
                         }
@@ -1293,9 +1911,9 @@
                           },
                           "source": {
                             "file": { "key": "test.cpp" },
-                            "lineBegin": 133,
+                            "lineBegin": 138,
                             "columnBegin": 5,
-                            "lineEnd": 133,
+                            "lineEnd": 138,
                             "columnEnd": 25
                           }
                         }
@@ -1340,10 +1958,234 @@
                           },
                           "source": {
                             "file": { "key": "test.cpp" },
-                            "lineBegin": 134,
+                            "lineBegin": 139,
                             "columnBegin": 5,
-                            "lineEnd": 134,
+                            "lineEnd": 139,
                             "columnEnd": 25
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": {
+                                "key": { "name": { "key": "thango" } }
+                              },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "QQ" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": { "name": { "key": "Q" } }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "int" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "int" }
+                                },
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "const Q::QQ &" }
+                                }
+                              ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": false,
+                            "isConst": true,
+                            "isVolatile": false,
+                            "refQualifier": 1
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 141,
+                            "columnBegin": 5,
+                            "lineEnd": 141,
+                            "columnEnd": 37
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": {
+                                "key": { "name": { "key": "thango" } }
+                              },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "QQ" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": { "name": { "key": "Q" } }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "int &" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "int" }
+                                },
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "Q::QQ &" }
+                                }
+                              ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": false,
+                            "isConst": false,
+                            "isVolatile": false,
+                            "refQualifier": 1
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 142,
+                            "columnBegin": 5,
+                            "lineEnd": 142,
+                            "columnEnd": 27
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": {
+                                "key": { "name": { "key": "thango" } }
+                              },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "QQ" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": { "name": { "key": "Q" } }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "int" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "int" }
+                                },
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "Q::QQ &&" }
+                                }
+                              ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": false,
+                            "isConst": false,
+                            "isVolatile": false,
+                            "refQualifier": 2
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 143,
+                            "columnBegin": 5,
+                            "lineEnd": 143,
+                            "columnEnd": 28
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": {
+                                "key": { "name": { "key": "thingo" } }
+                              },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "QQ" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": { "name": { "key": "Q" } }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "int" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "pear<int, char>" }
+                                },
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "Q::QQ &&" }
+                                }
+                              ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": false,
+                            "isConst": true,
+                            "isVolatile": false,
+                            "refQualifier": 0
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 145,
+                            "columnBegin": 5,
+                            "lineEnd": 145,
+                            "columnEnd": 42
                           }
                         }
                       }
@@ -2665,6 +3507,129 @@
                       }
                     }
                   ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
+        "name": "bozzo",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 131,
+            "columnBegin": 3,
+            "lineEnd": 131,
+            "columnEnd": 26
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 1723, "length": 5 }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "bozzo" } } },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "Q" } } }
+                        }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 131,
+                      "columnBegin": 3,
+                      "lineEnd": 131,
+                      "columnEnd": 26
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
+        "name": "bozzo",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 135,
+            "columnBegin": 5,
+            "lineEnd": 135,
+            "columnEnd": 16
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 1768, "length": 5 }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "bozzo" } } },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "QQ" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "Q" } }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "method": {
+                  "isVirtual": false,
+                  "isConst": false,
+                  "isVolatile": false,
+                  "refQualifier": 0
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 135,
+                  "columnBegin": 5,
+                  "lineEnd": 135,
+                  "columnEnd": 16
                 }
               }
             }
@@ -4441,15 +5406,15 @@
         "location": {
           "range": {
             "file": { "key": "test.cpp" },
-            "lineBegin": 132,
+            "lineBegin": 137,
             "columnBegin": 5,
-            "lineEnd": 132,
+            "lineEnd": 137,
             "columnEnd": 29
           }
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 1741, "length": 9 }
+          "span": { "start": 1789, "length": 9 }
         }
       },
       "entity": {
@@ -4488,9 +5453,9 @@
                 },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 132,
+                  "lineBegin": 137,
                   "columnBegin": 5,
-                  "lineEnd": 132,
+                  "lineEnd": 137,
                   "columnEnd": 29
                 }
               }
@@ -4509,15 +5474,15 @@
         "location": {
           "range": {
             "file": { "key": "test.cpp" },
-            "lineBegin": 133,
+            "lineBegin": 138,
             "columnBegin": 5,
-            "lineEnd": 133,
+            "lineEnd": 138,
             "columnEnd": 25
           }
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 1773, "length": 9 }
+          "span": { "start": 1821, "length": 9 }
         }
       },
       "entity": {
@@ -4556,9 +5521,9 @@
                 },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 133,
+                  "lineBegin": 138,
                   "columnBegin": 5,
-                  "lineEnd": 133,
+                  "lineEnd": 138,
                   "columnEnd": 25
                 }
               }
@@ -4577,15 +5542,15 @@
         "location": {
           "range": {
             "file": { "key": "test.cpp" },
-            "lineBegin": 134,
+            "lineBegin": 139,
             "columnBegin": 5,
-            "lineEnd": 134,
+            "lineEnd": 139,
             "columnEnd": 25
           }
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 1799, "length": 9 }
+          "span": { "start": 1847, "length": 9 }
         }
       },
       "entity": {
@@ -4624,9 +5589,9 @@
                 },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 134,
+                  "lineBegin": 139,
                   "columnBegin": 5,
-                  "lineEnd": 134,
+                  "lineEnd": 139,
                   "columnEnd": 25
                 }
               }
@@ -5440,6 +6405,308 @@
                   "columnBegin": 3,
                   "lineEnd": 57,
                   "columnEnd": 15
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
+        "name": "thango",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 141,
+            "columnBegin": 5,
+            "lineEnd": 141,
+            "columnEnd": 37
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 1872, "length": 6 }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "thango" } } },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "QQ" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "Q" } }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": {
+                    "returns": { "key": "int" },
+                    "parameters": [
+                      { "name": { "key": "" }, "type": { "key": "int" } },
+                      {
+                        "name": { "key": "" },
+                        "type": { "key": "const Q::QQ &" }
+                      }
+                    ]
+                  }
+                },
+                "method": {
+                  "isVirtual": false,
+                  "isConst": true,
+                  "isVolatile": false,
+                  "refQualifier": 1
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 141,
+                  "columnBegin": 5,
+                  "lineEnd": 141,
+                  "columnEnd": 37
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
+        "name": "thango",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 142,
+            "columnBegin": 5,
+            "lineEnd": 142,
+            "columnEnd": 27
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 1912, "length": 6 }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "thango" } } },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "QQ" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "Q" } }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": {
+                    "returns": { "key": "int &" },
+                    "parameters": [
+                      { "name": { "key": "" }, "type": { "key": "int" } },
+                      { "name": { "key": "" }, "type": { "key": "Q::QQ &" } }
+                    ]
+                  }
+                },
+                "method": {
+                  "isVirtual": false,
+                  "isConst": false,
+                  "isVolatile": false,
+                  "refQualifier": 1
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 142,
+                  "columnBegin": 5,
+                  "lineEnd": 142,
+                  "columnEnd": 27
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
+        "name": "thango",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 143,
+            "columnBegin": 5,
+            "lineEnd": 143,
+            "columnEnd": 28
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 1940, "length": 6 }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "thango" } } },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "QQ" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "Q" } }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": {
+                    "returns": { "key": "int" },
+                    "parameters": [
+                      { "name": { "key": "" }, "type": { "key": "int" } },
+                      { "name": { "key": "" }, "type": { "key": "Q::QQ &&" } }
+                    ]
+                  }
+                },
+                "method": {
+                  "isVirtual": false,
+                  "isConst": false,
+                  "isVolatile": false,
+                  "refQualifier": 2
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 143,
+                  "columnBegin": 5,
+                  "lineEnd": 143,
+                  "columnEnd": 28
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
+        "name": "thingo",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 145,
+            "columnBegin": 5,
+            "lineEnd": 145,
+            "columnEnd": 42
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 1971, "length": 6 }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "thingo" } } },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "QQ" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "Q" } }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": {
+                    "returns": { "key": "int" },
+                    "parameters": [
+                      {
+                        "name": { "key": "" },
+                        "type": { "key": "pear<int, char>" }
+                      },
+                      { "name": { "key": "" }, "type": { "key": "Q::QQ &&" } }
+                    ]
+                  }
+                },
+                "method": {
+                  "isVirtual": false,
+                  "isConst": true,
+                  "isVolatile": false,
+                  "refQualifier": 0
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 145,
+                  "columnBegin": 5,
+                  "lineEnd": 145,
+                  "columnEnd": 42
                 }
               }
             }

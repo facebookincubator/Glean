@@ -233,7 +233,7 @@ parseFunctionSig [] = pure ()
 -- nullary construct decl
 parseFunctionSig [TDecl] =
   setDecl
-parseFunctionSig [TName name] = do -- single set of params
+parseFunctionSig [TName name] = do -- single set of params (or trailing "/")
   mapM_ pushParam (splitCommas name)
 parseFunctionSig [TName name, TDecl] = do -- decl variant
   mapM_ pushParam (splitCommas name) >> setDecl

@@ -105,7 +105,7 @@ anon_ns = test
 const_fn :: Test
 const_fn = test
   (fun_sig [] [] <$> ok "fbcode" ["folly", "dynamic"] "foo")
-  (sym "fbcode/folly/dynamic/foo/.f")
+  (sym "fbcode/folly/dynamic/foo/.f/")
 
 const_fn_decl :: Test
 const_fn_decl = test

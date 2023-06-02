@@ -128,10 +128,21 @@ struct d {
 
 namespace Q {
 
+  void bozzo() { return; }
+
   struct QQ {
+
+    void bozzo();
+
     double getDouble() const&;
     double& getDouble() &;
     double getDouble() &&;
+
+    int thango(int, QQ const&) const&;
+    int& thango(int, QQ&) &;
+    int thango(int, QQ&&) &&;
+
+    int thingo(pear<int,char>, QQ&&) const;
   };
 
 }

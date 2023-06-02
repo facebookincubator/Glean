@@ -101,6 +101,53 @@
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 27,
+                        "lineBegin": 131,
+                        "lineEnd": 131
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "Q",
+                    "localName": "bozzo"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/cpp//Q/bozzo/.f/",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 27,
+                        "lineBegin": 131,
+                        "lineEnd": 131
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
                     "hasMoreChildren": true,
                     "hasMoreParents": false
                 },
@@ -425,6 +472,29 @@
                     "exactness": 2
                 },
                 "symbol": "test/cpp//GlobalClass"
+            },
+            {
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 27,
+                        "lineBegin": 131,
+                        "lineEnd": 131
+                    },
+                    "repository": "test"
+                },
+                "name": "bozzo",
+                "qname": {
+                    "container": "Q",
+                    "localName": "bozzo"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//Q/bozzo/.f/"
             },
             {
                 "kind": 12,

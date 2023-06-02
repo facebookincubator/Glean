@@ -216,6 +216,43 @@
   },
   {
     "key": {
+      "name": { "key": { "name": { "key": "bozzo" } } },
+      "scope": { "namespace_": { "key": { "name": { "key": "Q" } } } },
+      "entity": {
+        "defn": {
+          "function_": {
+            "key": {
+              "declaration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "bozzo" } } },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "Q" } } }
+                      }
+                    }
+                  },
+                  "signature": {
+                    "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 131,
+                    "columnBegin": 3,
+                    "lineEnd": 131,
+                    "columnEnd": 26
+                  }
+                }
+              },
+              "isInline": false
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "name": { "key": { "name": { "key": "foo" } } },
       "scope": { "namespace_": { "key": { "name": { "key": "foo" } } } },
       "entity": {

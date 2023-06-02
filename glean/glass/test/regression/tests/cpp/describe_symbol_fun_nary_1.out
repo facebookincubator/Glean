@@ -21,28 +21,30 @@
             "filepath": "test.cpp",
             "range": {
                 "columnBegin": 5,
-                "columnEnd": 26,
-                "lineBegin": 138,
-                "lineEnd": 138
+                "columnEnd": 38,
+                "lineBegin": 141,
+                "lineEnd": 141
             },
             "repository": "test"
         },
-        "modifiers": [],
+        "modifiers": [
+            6
+        ],
         "name": {
             "container": "Q::QQ",
-            "localName": "getDouble"
+            "localName": "thango"
         },
         "pretty_comments": [],
         "repo_hash": "testhash",
-        "signature": "double& Q::QQ::getDouble()",
-        "sym": "test/cpp//Q/QQ/getDouble/.f//lvalue/.decl",
+        "signature": "int Q::QQ::thango(int, const Q::QQ&) const",
+        "sym": "test/cpp//Q/QQ/thango/.f/int,const+Q::QQ+%26/const,lvalue/.decl",
         "sym_location": {
             "filepath": "test.cpp",
             "range": {
                 "columnBegin": 5,
-                "columnEnd": 26,
-                "lineBegin": 138,
-                "lineEnd": 138
+                "columnEnd": 38,
+                "lineBegin": 141,
+                "lineEnd": 141
             },
             "repository": "test"
         },
