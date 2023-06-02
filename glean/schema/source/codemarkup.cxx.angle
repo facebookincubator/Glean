@@ -326,11 +326,18 @@ predicate CxxDeclKind:
     kind: codemarkup.types.SymbolKind,
   }
   { Decl, Kind } where
-    ({ function_ = { method = MM } } = Decl;
-       ({ just = _ } = MM; Method = Kind) |
-       (nothing = MM; Function = Kind)
-    ) |
-    (
+    ({ function_ = { name = FQN, method = MM } } = Decl;
+      { name = FN } = FQN;
+      ( { constructor = _ } = FN; Constructor = Kind ) |
+      ( { destructor = _ } = FN; Constructor = Kind ) |
+      ( { operator_ = _ } = FN; Operator = Kind ) |
+      ( { literalOperator = _ } = FN; Operator = Kind ) |
+      ( { conversionOperator = _ } = FN; Operator = Kind ) |
+      ( { name = _ } = FN;
+        ( { just = _ } = MM; Method = Kind ) |
+        ( nothing = MM; Function = Kind )
+      )
+    ) | (
       ({ enum_ = _ } = Decl; Enum_ = Kind ) |
       ({ namespace_ = _ } = Decl; Namespace = Kind ) |
       ({ objcMethod = _ } = Decl; Method = Kind ) |

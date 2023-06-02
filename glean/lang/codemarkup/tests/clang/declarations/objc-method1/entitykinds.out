@@ -1,0 +1,239 @@
+[
+  "@generated",
+  {
+    "key": {
+      "decl": {
+        "objcMethod": {
+          "key": {
+            "selector": { "key": [ "f1" ] },
+            "container": { "interface_": { "key": "I" } },
+            "signature": {
+              "key": { "returns": { "key": "int" }, "parameters": [ ] }
+            },
+            "isInstance": true,
+            "isOptional": false,
+            "isAccessor": false,
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 11,
+              "columnBegin": 1,
+              "lineEnd": 11,
+              "columnEnd": 10
+            }
+          }
+        }
+      },
+      "kind": 7
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "objcMethod": {
+          "key": {
+            "selector": { "key": [ "f2" ] },
+            "container": { "interface_": { "key": "I" } },
+            "signature": {
+              "key": {
+                "returns": { "key": "id" },
+                "parameters": [
+                  { "name": { "key": "x" }, "type": { "key": "int" } }
+                ]
+              }
+            },
+            "isInstance": true,
+            "isOptional": false,
+            "isAccessor": false,
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 12,
+              "columnBegin": 1,
+              "lineEnd": 12,
+              "columnEnd": 18
+            }
+          }
+        }
+      },
+      "kind": 7
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "objcMethod": {
+          "key": {
+            "selector": { "key": [ "f3a", "f3b" ] },
+            "container": { "interface_": { "key": "I" } },
+            "signature": {
+              "key": {
+                "returns": { "key": "id" },
+                "parameters": [
+                  { "name": { "key": "x" }, "type": { "key": "int" } },
+                  { "name": { "key": "y" }, "type": { "key": "int" } }
+                ]
+              }
+            },
+            "isInstance": true,
+            "isOptional": false,
+            "isAccessor": false,
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 13,
+              "columnBegin": 1,
+              "lineEnd": 13,
+              "columnEnd": 32
+            }
+          }
+        }
+      },
+      "kind": 7
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "objcMethod": {
+          "key": {
+            "selector": { "key": [ "f4a", "" ] },
+            "container": { "interface_": { "key": "I" } },
+            "signature": {
+              "key": {
+                "returns": { "key": "id" },
+                "parameters": [
+                  { "name": { "key": "x" }, "type": { "key": "int" } },
+                  { "name": { "key": "y" }, "type": { "key": "int" } }
+                ]
+              }
+            },
+            "isInstance": true,
+            "isOptional": false,
+            "isAccessor": false,
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 14,
+              "columnBegin": 1,
+              "lineEnd": 14,
+              "columnEnd": 29
+            }
+          }
+        }
+      },
+      "kind": 7
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "x" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "int" },
+            "kind": { "local": { "kind": 2, "attribute": 0 } },
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 12,
+              "columnBegin": 12,
+              "lineEnd": 12,
+              "columnEnd": 17
+            }
+          }
+        }
+      },
+      "kind": 14
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "x" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "int" },
+            "kind": { "local": { "kind": 2, "attribute": 0 } },
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 13,
+              "columnBegin": 13,
+              "lineEnd": 13,
+              "columnEnd": 18
+            }
+          }
+        }
+      },
+      "kind": 14
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "x" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "int" },
+            "kind": { "local": { "kind": 2, "attribute": 0 } },
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 14,
+              "columnBegin": 13,
+              "lineEnd": 14,
+              "columnEnd": 18
+            }
+          }
+        }
+      },
+      "kind": 14
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "y" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "int" },
+            "kind": { "local": { "kind": 2, "attribute": 0 } },
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 13,
+              "columnBegin": 26,
+              "lineEnd": 13,
+              "columnEnd": 31
+            }
+          }
+        }
+      },
+      "kind": 14
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "y" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "int" },
+            "kind": { "local": { "kind": 2, "attribute": 0 } },
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 14,
+              "columnBegin": 23,
+              "lineEnd": 14,
+              "columnEnd": 28
+            }
+          }
+        }
+      },
+      "kind": 14
+    }
+  }
+]

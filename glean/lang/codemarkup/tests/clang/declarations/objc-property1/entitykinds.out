@@ -1,0 +1,51 @@
+[
+  "@generated",
+  {
+    "key": {
+      "decl": {
+        "objcProperty": {
+          "key": {
+            "name": { "key": "i" },
+            "container": { "interface_": { "key": "A" } },
+            "type": { "key": "int" },
+            "isInstance": true,
+            "isOptional": false,
+            "isReadOnly": false,
+            "isAtomic": false,
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 13,
+              "columnBegin": 1,
+              "lineEnd": 13,
+              "columnEnd": 35
+            }
+          }
+        }
+      },
+      "kind": 8
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "_i" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "int" },
+            "kind": { "ivar": { "synthesize": false } },
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 10,
+              "columnBegin": 3,
+              "lineEnd": 10,
+              "columnEnd": 8
+            }
+          }
+        }
+      },
+      "kind": 14
+    }
+  }
+]

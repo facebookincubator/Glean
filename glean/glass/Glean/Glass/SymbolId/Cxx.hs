@@ -452,6 +452,8 @@ cxxEntityKind e = case e of
   Cxx.Entity_EMPTY -> return Nothing
 
 -- to match idelsp/GleanLSPConverter.php
+-- Glean-side implementation in codemarkup.cxx.angle. This exists to
+-- avoid O(n) symbolkind calls on document open
 toSymbolDeclKind
   :: Cxx.Declaration -> Glean.RepoHaxl u w (Maybe Glass.SymbolKind)
 toSymbolDeclKind e = case e of
@@ -460,13 +462,30 @@ toSymbolDeclKind e = case e of
   Cxx.Declaration_usingDirective{} -> return Nothing -- unknown
   Cxx.Declaration_record_ x -> toSymbolRecordKind x
   Cxx.Declaration_enum_{} -> return $ Just SymbolKind_Enum
-  Cxx.Declaration_function_{} -> return $ Just SymbolKind_Function
+  Cxx.Declaration_function_ fn ->
+    Just <$> (toSymbolFunctionDeclKind =<< Glean.keyOf fn)
   Cxx.Declaration_variable{} -> return $ Just SymbolKind_Variable
   Cxx.Declaration_objcContainer{} -> return Nothing
   Cxx.Declaration_objcMethod{} -> return $ Just SymbolKind_Method
   Cxx.Declaration_objcProperty{} -> return $ Just SymbolKind_Property
   Cxx.Declaration_typeAlias{} -> return $ Just SymbolKind_Class_
   Cxx.Declaration_EMPTY -> return Nothing
+
+toSymbolFunctionDeclKind
+  :: Cxx.FunctionDeclaration_key -> Glean.RepoHaxl u w Glass.SymbolKind
+toSymbolFunctionDeclKind (Cxx.FunctionDeclaration_key fqname _ mmethod _) = do
+  Cxx.FunctionQName_key fname _ <- Glean.keyOf fqname
+  name <- Glean.keyOf fname
+  pure $ case name of
+    Cxx.FunctionName_key_name{} -> case mmethod of
+      Just{} -> SymbolKind_Method
+      _ -> SymbolKind_Function
+    Cxx.FunctionName_key_constructor{} -> SymbolKind_Constructor
+    Cxx.FunctionName_key_destructor{} -> SymbolKind_Constructor
+    Cxx.FunctionName_key_operator_{} -> SymbolKind_Operator
+    Cxx.FunctionName_key_literalOperator{} -> SymbolKind_Operator
+    Cxx.FunctionName_key_conversionOperator{} -> SymbolKind_Operator
+    Cxx.FunctionName_key_EMPTY -> SymbolKind_Function
 
 toSymbolRecordKind
   :: Cxx.RecordDeclaration
