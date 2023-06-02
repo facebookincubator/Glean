@@ -44,6 +44,7 @@ data Token
   | TDtor
   | TCtorSignature
   | TFunction
+  | TOperator
   deriving Show
 
 tokenize :: Text -> Token
@@ -52,15 +53,19 @@ tokenize ".ctor" = TCtor
 tokenize ".d" = TDtor
 tokenize ".c" = TCtorSignature
 tokenize ".f" = TFunction
+tokenize ".o" = TOperator
 tokenize n = TName n
 
 name :: Text -> Name
-name = Name . Text.replace "+" " "
+name = Name
 
 -- | in type signatures literal "," (as in std::pair<a, b>) is replaced with " "
 -- to avoid the "," param seperator
+--
+-- And spaces are replaced with +
+--
 sig :: Text -> Name
-sig = name . Text.replace " " ","
+sig = Name . Text.replace "+" " " . Text.replace " " ","
 
 -- "parser"
 
@@ -102,6 +107,7 @@ data SymbolTag
   | CTorSignature -- .ctor with type signature of params
   | Destructor
   | Function
+  | Operator
   deriving (Eq, Ord, Show, Generic)
 
 -- for regression testing
@@ -131,6 +137,13 @@ data CxxSymbolExpr
       cScope :: [Name]
     }
   | CxxFunction {
+      cPath :: Text,
+      cScope :: [Name],
+      cName :: Name,
+      cParams :: [Name],
+      cQuals :: Set Qualifier
+    }
+  | CxxOperator {
       cPath :: Text,
       cScope :: [Name],
       cName :: Name,
@@ -180,6 +193,18 @@ compileSymbolEnv env@SymbolEnv{..} = case tag of
       }
     | otherwise ->
       Left $ "compileSymbolEnv: Function missing local name: " <> textShow env
+  Just Operator -- .o
+    | Just name <- localname ->
+      Right $ tagged declaration $ CxxOperator {
+          cPath = path,
+          cScope = scopes,
+          cName = name,
+          cParams = params,
+          cQuals = qualifiers
+      }
+    | otherwise ->
+      Left $ "compileSymbolEnv: Operator missing name: " <> textShow env
+
   Just Constructor -- legacy .ctor params, aka local vars in ctor scope
     | Just name <- localname ->
     Right $ tagged declaration $ CxxLegacyCTorParams {
@@ -266,6 +291,7 @@ parseScopeOrName name (n : ns) = case n of
   TDtor -> pushScope name >> setTag Destructor >> parseDtor ns
   TCtorSignature -> pushScope name >> setTag CTorSignature >> parseCtorSig ns
   TFunction -> setName name >> setTag Function >> parseFunctionSig ns
+  TOperator -> setName name >> setTag Operator >> parseFunctionSig ns
   TDecl -> do
     setName name >> setDecl
     case ns of

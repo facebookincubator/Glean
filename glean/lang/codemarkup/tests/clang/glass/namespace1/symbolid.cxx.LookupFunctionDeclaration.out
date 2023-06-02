@@ -1328,5 +1328,220 @@
         }
       }
     }
+  },
+  {
+    "key": {
+      "name": { "key": { "operator_": "operator++" } },
+      "scope": {
+        "recordWithAccess": {
+          "record": {
+            "key": {
+              "name": { "key": "OO" },
+              "scope": { "namespace_": { "key": { "name": { "key": "Q" } } } }
+            }
+          },
+          "access": 0
+        }
+      },
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "operator_": "operator++" } },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "OO" },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "Q" } } }
+                        }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "Q::OO &" }, "parameters": [ ] }
+            },
+            "method": {
+              "isVirtual": false,
+              "isConst": false,
+              "isVolatile": false,
+              "refQualifier": 0
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 154,
+              "columnBegin": 5,
+              "lineEnd": 154,
+              "columnEnd": 20
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": { "operator_": "operator=" } },
+      "scope": {
+        "recordWithAccess": {
+          "record": {
+            "key": {
+              "name": { "key": "OO" },
+              "scope": { "namespace_": { "key": { "name": { "key": "Q" } } } }
+            }
+          },
+          "access": 0
+        }
+      },
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "operator_": "operator=" } },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "OO" },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "Q" } } }
+                        }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "signature": {
+              "key": {
+                "returns": { "key": "Q::OO &" },
+                "parameters": [
+                  { "name": { "key": "" }, "type": { "key": "Q::OO &&" } }
+                ]
+              }
+            },
+            "method": {
+              "isVirtual": false,
+              "isConst": false,
+              "isVolatile": false,
+              "refQualifier": 0
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 157,
+              "columnBegin": 5,
+              "lineEnd": 157,
+              "columnEnd": 32
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": { "operator_": "operator=" } },
+      "scope": {
+        "recordWithAccess": {
+          "record": {
+            "key": {
+              "name": { "key": "OO" },
+              "scope": { "namespace_": { "key": { "name": { "key": "Q" } } } }
+            }
+          },
+          "access": 0
+        }
+      },
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "operator_": "operator=" } },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "OO" },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "Q" } } }
+                        }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "signature": {
+              "key": {
+                "returns": { "key": "Q::OO &" },
+                "parameters": [
+                  { "name": { "key": "" }, "type": { "key": "const Q::OO &" } }
+                ]
+              }
+            },
+            "method": {
+              "isVirtual": false,
+              "isConst": false,
+              "isVolatile": false,
+              "refQualifier": 0
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 156,
+              "columnBegin": 5,
+              "lineEnd": 156,
+              "columnEnd": 28
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": { "operator_": "operator==" } },
+      "scope": { "namespace_": { "key": { "name": { "key": "Q" } } } },
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "operator_": "operator==" } },
+                "scope": { "namespace_": { "key": { "name": { "key": "Q" } } } }
+              }
+            },
+            "signature": {
+              "key": {
+                "returns": { "key": "bool" },
+                "parameters": [
+                  {
+                    "name": { "key": "a" },
+                    "type": { "key": "const Q::OO &" }
+                  },
+                  { "name": { "key": "b" }, "type": { "key": "const Q::OO &" } }
+                ]
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 152,
+              "columnBegin": 5,
+              "lineEnd": 152,
+              "columnEnd": 52
+            }
+          }
+        }
+      }
+    }
   }
 ]

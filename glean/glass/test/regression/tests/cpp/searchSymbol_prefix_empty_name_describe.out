@@ -400,7 +400,7 @@
                         "columnBegin": 1,
                         "columnEnd": 2,
                         "lineBegin": 129,
-                        "lineEnd": 150
+                        "lineEnd": 161
                     },
                     "repository": "test"
                 },
@@ -418,7 +418,54 @@
                         "columnBegin": 1,
                         "columnEnd": 2,
                         "lineBegin": 129,
-                        "lineEnd": 150
+                        "lineEnd": 161
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": true,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 25,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 150,
+                        "lineEnd": 159
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "Q",
+                    "localName": "OO"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/cpp//Q/OO",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 150,
+                        "lineEnd": 159
                     },
                     "repository": "test"
                 },
@@ -2192,7 +2239,7 @@
                         "columnBegin": 1,
                         "columnEnd": 2,
                         "lineBegin": 129,
-                        "lineEnd": 150
+                        "lineEnd": 161
                     },
                     "repository": "test"
                 },
@@ -2205,6 +2252,29 @@
                     "exactness": 2
                 },
                 "symbol": "test/cpp//Q"
+            },
+            {
+                "kind": 25,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 150,
+                        "lineEnd": 159
+                    },
+                    "repository": "test"
+                },
+                "name": "OO",
+                "qname": {
+                    "container": "Q",
+                    "localName": "OO"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//Q/OO"
             },
             {
                 "kind": 25,

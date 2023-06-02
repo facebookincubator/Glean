@@ -147,4 +147,15 @@ namespace Q {
     ~QQ() noexcept;
   };
 
+  struct OO {
+
+    friend bool operator==(OO const& a, OO const& b);
+
+    OO& operator++();
+
+    OO& operator=(OO const&);
+    OO& operator=(OO&&) noexcept;
+
+  };
+
 }

@@ -55,6 +55,8 @@ cxxSymbolExprEvalDecl t exp = case exp of
     lookupDTorDeclaration cPath cScope
   P.CxxFunction{..} -> searchSymbolId t $
     lookupFunctionSignatureDeclaration cPath cScope cName cParams cQuals
+  P.CxxOperator{..} -> searchSymbolId t $
+    lookupOperatorSignatureDeclaration cPath cScope cName cParams cQuals
   P.CxxLegacyCTorParams{..} ->
     let scope' = cScope <> [P.Name ".ctor"] -- hack into scope query builder
     in searchSymbolId t $ lookupDeclaration cPath scope' cName
@@ -69,6 +71,8 @@ cxxSymbolExprEvalDefn t exp = case exp of
     lookupDTorDefinition cPath cScope
   P.CxxFunction{..} -> searchSymbolId t $
     lookupFunctionSignatureDefinition cPath cScope cName cParams cQuals
+  P.CxxOperator{..} -> searchSymbolId t $
+    lookupOperatorSignatureDefinition cPath cScope cName cParams cQuals
   P.CxxLegacyCTorParams{..} ->
     let scope' = cScope <> [P.Name ".ctor"] -- hack into scope query builder
     in searchSymbolId t $ lookupDefinition cPath scope' cName
@@ -289,6 +293,54 @@ lookupFunctionSignatureDefinition anchor ns (P.Name name) ps quals =
     tuple (entity, file, rangespan, lname) `where_` ([
       n .= predicate @Cxx.Name (string name),
       fname .= predicate @Cxx.FunctionName (alt @"name" (asPredicate n)),
+      wild .= predicate @SymbolId.LookupFunctionSignatureQualifierDefinition (
+        rec $
+          field @"name" (asPredicate fname) $
+          field @"scope" (scopeQ (reverse scopes)) $
+          field @"signature" (asPredicate (paramTypesQ params)) $
+          field @"qualifiers" (qualifiersQ quals) $
+          field @"entity" entity
+        end)
+      ] <> entityFooter anchor entity codeEntity file rangespan lname)
+  where
+    scopes = P.unNames ns
+    params = P.unNames ps
+
+--
+-- Like functions, but there's no Name fact to bind
+--
+lookupOperatorSignatureDeclaration
+  :: Text -> [P.Name] -> P.Name -> [P.Name] -> Set P.Qualifier
+  -> Angle (ResultLocation Cxx.Entity)
+lookupOperatorSignatureDeclaration anchor ns (P.Name o) ps quals =
+  vars $ \(decl :: Angle Cxx.Declaration)  (entity :: Angle Cxx.Entity)
+      (codeEntity :: Angle Code.Entity) (file :: Angle Src.File)
+        (rangespan :: Angle Code.RangeSpan)
+        (fname :: Angle Cxx.FunctionName) (lname :: Angle Text) ->
+    tuple (entity, file, rangespan, lname) `where_` ([
+      fname .= predicate @Cxx.FunctionName (alt @"operator_" (string o)),
+      wild .= predicate @SymbolId.LookupFunctionSignatureQualifierDeclaration (
+        rec $
+          field @"name" (asPredicate fname) $
+          field @"scope" (scopeQ (reverse scopes)) $
+          field @"signature" (asPredicate (paramTypesQ params)) $
+          field @"qualifiers" (qualifiersQ quals) $
+          field @"decl" decl
+        end)
+    ] <> entityDeclFooter anchor decl entity codeEntity file rangespan lname)
+  where
+    scopes = P.unNames ns
+    params = P.unNames ps
+
+lookupOperatorSignatureDefinition
+  :: Text -> [P.Name] -> P.Name -> [P.Name] -> Set P.Qualifier
+  -> Angle (ResultLocation Cxx.Entity)
+lookupOperatorSignatureDefinition anchor ns (P.Name o) ps quals =
+  vars $ \(entity :: Angle Cxx.Entity) (codeEntity :: Angle Code.Entity)
+      (file :: Angle Src.File) (rangespan :: Angle Code.RangeSpan)
+        (fname :: Angle Cxx.FunctionName) (lname :: Angle Text) ->
+    tuple (entity, file, rangespan, lname) `where_` ([
+      fname .= predicate @Cxx.FunctionName (alt @"operator_" (string o)),
       wild .= predicate @SymbolId.LookupFunctionSignatureQualifierDefinition (
         rec $
           field @"name" (asPredicate fname) $

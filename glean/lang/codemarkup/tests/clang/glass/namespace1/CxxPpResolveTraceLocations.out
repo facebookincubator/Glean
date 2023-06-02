@@ -732,6 +732,140 @@
   {
     "key": {
       "tuplefield0": {
+        "name": "",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 156,
+            "columnBegin": 19,
+            "lineEnd": 156,
+            "columnEnd": 27
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 2154, "length": 1 }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": { "key": { "operator_": "operator=" } },
+                          "scope": {
+                            "recordWithAccess": {
+                              "record": {
+                                "key": {
+                                  "name": { "key": "OO" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "Q" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "access": 0
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "const Q::OO &" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 156,
+                  "columnBegin": 19,
+                  "lineEnd": 156,
+                  "columnEnd": 27
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 157,
+            "columnBegin": 19,
+            "lineEnd": 157,
+            "columnEnd": 22
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 2179, "length": 1 }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": { "key": { "operator_": "operator=" } },
+                          "scope": {
+                            "recordWithAccess": {
+                              "record": {
+                                "key": {
+                                  "name": { "key": "OO" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "Q" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "access": 0
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "Q::OO &&" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 157,
+                  "columnBegin": 19,
+                  "lineEnd": 157,
+                  "columnEnd": 22
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
         "name": "A",
         "file": { "key": "test.cpp" },
         "location": {
@@ -1748,6 +1882,207 @@
   {
     "key": {
       "tuplefield0": {
+        "name": "OO",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 150,
+            "columnBegin": 3,
+            "lineEnd": 159,
+            "columnEnd": 3
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 2043, "length": 2 }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "defn": {
+            "record_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "OO" },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "Q" } } }
+                        }
+                      }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 150,
+                      "columnBegin": 3,
+                      "lineEnd": 159,
+                      "columnEnd": 3
+                    }
+                  }
+                },
+                "bases": [ ],
+                "members": {
+                  "key": [
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "operator_": "operator++" } },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "OO" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": { "name": { "key": "Q" } }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "Q::OO &" },
+                              "parameters": [ ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": false,
+                            "isConst": false,
+                            "isVolatile": false,
+                            "refQualifier": 0
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 154,
+                            "columnBegin": 5,
+                            "lineEnd": 154,
+                            "columnEnd": 20
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "operator_": "operator=" } },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "OO" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": { "name": { "key": "Q" } }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "Q::OO &" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "const Q::OO &" }
+                                }
+                              ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": false,
+                            "isConst": false,
+                            "isVolatile": false,
+                            "refQualifier": 0
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 156,
+                            "columnBegin": 5,
+                            "lineEnd": 156,
+                            "columnEnd": 28
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "operator_": "operator=" } },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "OO" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": { "name": { "key": "Q" } }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "Q::OO &" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "Q::OO &&" }
+                                }
+                              ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": false,
+                            "isConst": false,
+                            "isVolatile": false,
+                            "refQualifier": 0
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 157,
+                            "columnBegin": 5,
+                            "lineEnd": 157,
+                            "columnEnd": 32
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
         "name": "Q",
         "file": { "key": "test.cpp" },
         "location": {
@@ -1755,7 +2090,7 @@
             "file": { "key": "test.cpp" },
             "lineBegin": 129,
             "columnBegin": 1,
-            "lineEnd": 150,
+            "lineEnd": 161,
             "columnEnd": 1
           }
         },
@@ -1776,7 +2111,7 @@
                       "file": { "key": "test.cpp" },
                       "lineBegin": 129,
                       "columnBegin": 1,
-                      "lineEnd": 150,
+                      "lineEnd": 161,
                       "columnEnd": 1
                     }
                   }
@@ -1831,6 +2166,30 @@
                             "lineBegin": 133,
                             "columnBegin": 3,
                             "lineEnd": 148,
+                            "columnEnd": 3
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "OO" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "Q" } }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 150,
+                            "columnBegin": 3,
+                            "lineEnd": 159,
                             "columnEnd": 3
                           }
                         }
@@ -3355,6 +3714,61 @@
   {
     "key": {
       "tuplefield0": {
+        "name": "a",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 152,
+            "columnBegin": 28,
+            "lineEnd": 152,
+            "columnEnd": 38
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 2086, "length": 1 }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "a" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": { "key": { "operator_": "operator==" } },
+                          "scope": {
+                            "namespace_": { "key": { "name": { "key": "Q" } } }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "const Q::OO &" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 152,
+                  "columnBegin": 28,
+                  "lineEnd": 152,
+                  "columnEnd": 38
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
         "name": "a_",
         "file": { "key": "test.cpp" },
         "location": {
@@ -3404,6 +3818,61 @@
                   "columnBegin": 3,
                   "lineEnd": 77,
                   "columnEnd": 8
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "b",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 152,
+            "columnBegin": 41,
+            "lineEnd": 152,
+            "columnEnd": 51
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 2099, "length": 1 }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "b" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": { "key": { "operator_": "operator==" } },
+                          "scope": {
+                            "namespace_": { "key": { "name": { "key": "Q" } } }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "const Q::OO &" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 152,
+                  "columnBegin": 41,
+                  "lineEnd": 152,
+                  "columnEnd": 51
                 }
               }
             }
@@ -6300,6 +6769,281 @@
                   "columnBegin": 1,
                   "lineEnd": 74,
                   "columnEnd": 51
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "operator++",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 154,
+            "columnBegin": 5,
+            "lineEnd": 154,
+            "columnEnd": 20
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 2112, "length": 8 }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "operator_": "operator++" } },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "OO" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "Q" } }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "Q::OO &" }, "parameters": [ ] }
+                },
+                "method": {
+                  "isVirtual": false,
+                  "isConst": false,
+                  "isVolatile": false,
+                  "refQualifier": 0
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 154,
+                  "columnBegin": 5,
+                  "lineEnd": 154,
+                  "columnEnd": 20
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "operator=",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 156,
+            "columnBegin": 5,
+            "lineEnd": 156,
+            "columnEnd": 28
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 2135, "length": 8 }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "operator_": "operator=" } },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "OO" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "Q" } }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": {
+                    "returns": { "key": "Q::OO &" },
+                    "parameters": [
+                      {
+                        "name": { "key": "" },
+                        "type": { "key": "const Q::OO &" }
+                      }
+                    ]
+                  }
+                },
+                "method": {
+                  "isVirtual": false,
+                  "isConst": false,
+                  "isVolatile": false,
+                  "refQualifier": 0
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 156,
+                  "columnBegin": 5,
+                  "lineEnd": 156,
+                  "columnEnd": 28
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "operator=",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 157,
+            "columnBegin": 5,
+            "lineEnd": 157,
+            "columnEnd": 32
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 2165, "length": 8 }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "operator_": "operator=" } },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "OO" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "Q" } }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": {
+                    "returns": { "key": "Q::OO &" },
+                    "parameters": [
+                      { "name": { "key": "" }, "type": { "key": "Q::OO &&" } }
+                    ]
+                  }
+                },
+                "method": {
+                  "isVirtual": false,
+                  "isConst": false,
+                  "isVolatile": false,
+                  "refQualifier": 0
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 157,
+                  "columnBegin": 5,
+                  "lineEnd": 157,
+                  "columnEnd": 32
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "operator==",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 152,
+            "columnBegin": 5,
+            "lineEnd": 152,
+            "columnEnd": 52
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 2065, "length": 8 }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "operator_": "operator==" } },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "Q" } } }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": {
+                    "returns": { "key": "bool" },
+                    "parameters": [
+                      {
+                        "name": { "key": "a" },
+                        "type": { "key": "const Q::OO &" }
+                      },
+                      {
+                        "name": { "key": "b" },
+                        "type": { "key": "const Q::OO &" }
+                      }
+                    ]
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 152,
+                  "columnBegin": 5,
+                  "lineEnd": 152,
+                  "columnEnd": 52
                 }
               }
             }

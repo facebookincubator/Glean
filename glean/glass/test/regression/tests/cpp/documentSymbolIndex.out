@@ -2,7 +2,7 @@
     "@generated",
     {
         "revision": "testhash",
-        "size": 122,
+        "size": 138,
         "symbols": {
             "100": [
                 {
@@ -830,7 +830,7 @@
                         "columnBegin": 1,
                         "columnEnd": 2,
                         "lineBegin": 129,
-                        "lineEnd": 150
+                        "lineEnd": 161
                     },
                     "sym": "test/cpp//Q"
                 }
@@ -1817,6 +1817,592 @@
                         "lineEnd": 15
                     },
                     "sym": "test/cpp//foo/S/UsingDeclInteger/.decl"
+                }
+            ],
+            "150": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 25
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "OO"
+                        },
+                        "symbolParent": {
+                            "aString": "Q"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct OO"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 10,
+                        "columnEnd": 12,
+                        "lineBegin": 150,
+                        "lineEnd": 150
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 150,
+                        "lineEnd": 159
+                    },
+                    "sym": "test/cpp//Q/OO"
+                }
+            ],
+            "152": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 25
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "OO"
+                        },
+                        "symbolParent": {
+                            "aString": "Q"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct OO"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 28,
+                        "columnEnd": 30,
+                        "lineBegin": 152,
+                        "lineEnd": 152
+                    },
+                    "sym": "test/cpp//Q/OO",
+                    "target": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 3,
+                            "columnEnd": 4,
+                            "lineBegin": 150,
+                            "lineEnd": 159
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 25
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "OO"
+                        },
+                        "symbolParent": {
+                            "aString": "Q"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct OO"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 41,
+                        "columnEnd": 43,
+                        "lineBegin": 152,
+                        "lineEnd": 152
+                    },
+                    "sym": "test/cpp//Q/OO",
+                    "target": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 3,
+                            "columnEnd": 4,
+                            "lineBegin": 150,
+                            "lineEnd": 159
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 27
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "operator==(const Q::OO &, const Q::OO &)"
+                        },
+                        "symbolParent": {
+                            "aString": "Q"
+                        },
+                        "symbolSignature": {
+                            "aString": "bool operator==(const Q::OO& a, const Q::OO& b)"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 17,
+                        "columnEnd": 25,
+                        "lineBegin": 152,
+                        "lineEnd": 152
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 53,
+                        "lineBegin": 152,
+                        "lineEnd": 152
+                    },
+                    "sym": "test/cpp//Q/operator%3D%3D/.o/const+Q::OO+%26,const+Q::OO+%26/.decl"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "a"
+                        },
+                        "symbolParent": {
+                            "aString": "Q::operator=="
+                        },
+                        "symbolSignature": {
+                            "aString": "const Q::OO& a"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 38,
+                        "columnEnd": 39,
+                        "lineBegin": 152,
+                        "lineEnd": 152
+                    },
+                    "range": {
+                        "columnBegin": 28,
+                        "columnEnd": 39,
+                        "lineBegin": 152,
+                        "lineEnd": 152
+                    },
+                    "sym": "test/cpp//Q/operator%3D%3D/a/.decl"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "b"
+                        },
+                        "symbolParent": {
+                            "aString": "Q::operator=="
+                        },
+                        "symbolSignature": {
+                            "aString": "const Q::OO& b"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 51,
+                        "columnEnd": 52,
+                        "lineBegin": 152,
+                        "lineEnd": 152
+                    },
+                    "range": {
+                        "columnBegin": 41,
+                        "columnEnd": 52,
+                        "lineBegin": 152,
+                        "lineEnd": 152
+                    },
+                    "sym": "test/cpp//Q/operator%3D%3D/b/.decl"
+                }
+            ],
+            "154": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 25
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "OO"
+                        },
+                        "symbolParent": {
+                            "aString": "Q"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct OO"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 7,
+                        "lineBegin": 154,
+                        "lineEnd": 154
+                    },
+                    "sym": "test/cpp//Q/OO",
+                    "target": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 3,
+                            "columnEnd": 4,
+                            "lineBegin": 150,
+                            "lineEnd": 159
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 27
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "operator++()"
+                        },
+                        "symbolParent": {
+                            "aString": "Q::OO"
+                        },
+                        "symbolSignature": {
+                            "aString": "Q::OO& operator++()"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 9,
+                        "columnEnd": 17,
+                        "lineBegin": 154,
+                        "lineEnd": 154
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 21,
+                        "lineBegin": 154,
+                        "lineEnd": 154
+                    },
+                    "sym": "test/cpp//Q/OO/operator++/.o//.decl"
+                }
+            ],
+            "156": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 25
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "OO"
+                        },
+                        "symbolParent": {
+                            "aString": "Q"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct OO"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 7,
+                        "lineBegin": 156,
+                        "lineEnd": 156
+                    },
+                    "sym": "test/cpp//Q/OO",
+                    "target": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 3,
+                            "columnEnd": 4,
+                            "lineBegin": 150,
+                            "lineEnd": 159
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 25
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "OO"
+                        },
+                        "symbolParent": {
+                            "aString": "Q"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct OO"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 19,
+                        "columnEnd": 21,
+                        "lineBegin": 156,
+                        "lineEnd": 156
+                    },
+                    "sym": "test/cpp//Q/OO",
+                    "target": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 3,
+                            "columnEnd": 4,
+                            "lineBegin": 150,
+                            "lineEnd": 159
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 27
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "operator=(const Q::OO &)"
+                        },
+                        "symbolParent": {
+                            "aString": "Q::OO"
+                        },
+                        "symbolSignature": {
+                            "aString": "Q::OO& operator=(const Q::OO&)"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 9,
+                        "columnEnd": 17,
+                        "lineBegin": 156,
+                        "lineEnd": 156
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 29,
+                        "lineBegin": 156,
+                        "lineEnd": 156
+                    },
+                    "sym": "test/cpp//Q/OO/operator%3D/.o/const+Q::OO+%26/.decl"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "Q::OO::operator="
+                        },
+                        "symbolSignature": {
+                            "aString": "const Q::OO&"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 19,
+                        "columnEnd": 28,
+                        "lineBegin": 156,
+                        "lineEnd": 156
+                    },
+                    "sym": "test/cpp//Q/OO/operator%3D//.decl"
+                }
+            ],
+            "157": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 25
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "OO"
+                        },
+                        "symbolParent": {
+                            "aString": "Q"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct OO"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 7,
+                        "lineBegin": 157,
+                        "lineEnd": 157
+                    },
+                    "sym": "test/cpp//Q/OO",
+                    "target": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 3,
+                            "columnEnd": 4,
+                            "lineBegin": 150,
+                            "lineEnd": 159
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 25
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "OO"
+                        },
+                        "symbolParent": {
+                            "aString": "Q"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct OO"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 19,
+                        "columnEnd": 21,
+                        "lineBegin": 157,
+                        "lineEnd": 157
+                    },
+                    "sym": "test/cpp//Q/OO",
+                    "target": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 3,
+                            "columnEnd": 4,
+                            "lineBegin": 150,
+                            "lineEnd": 159
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 27
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "operator=(Q::OO &&)"
+                        },
+                        "symbolParent": {
+                            "aString": "Q::OO"
+                        },
+                        "symbolSignature": {
+                            "aString": "Q::OO& operator=(Q::OO&&)"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 9,
+                        "columnEnd": 17,
+                        "lineBegin": 157,
+                        "lineEnd": 157
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 33,
+                        "lineBegin": 157,
+                        "lineEnd": 157
+                    },
+                    "sym": "test/cpp//Q/OO/operator%3D/.o/Q::OO+%26%26/.decl"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": ""
+                        },
+                        "symbolParent": {
+                            "aString": "Q::OO::operator="
+                        },
+                        "symbolSignature": {
+                            "aString": "Q::OO&&"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 19,
+                        "columnEnd": 23,
+                        "lineBegin": 157,
+                        "lineEnd": 157
+                    },
+                    "sym": "test/cpp//Q/OO/operator%3D//.decl"
                 }
             ],
             "21": [

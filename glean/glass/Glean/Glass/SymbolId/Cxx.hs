@@ -151,12 +151,15 @@ toSymbolFunctionDeclaration fqname sig mquals = do
     --
     Cxx.FunctionName_key_name n -> do
       nameStr <- Glean.keyOf n
-      Cxx.Signature_key _retTy params <- Glean.keyOf sig
-      mSigStr <- toSymbolSignatureParams params
-      let mQualifiersStr = toSymbolQualifiers =<< mquals
-      return $ [nameStr,".f",fromMaybe "" mSigStr] ++ maybeToList mQualifiersStr
+      sigText <- sigAndQualifiers sig mquals
+      return $ [nameStr,".f"] ++ sigText
+    --
+    -- operators are basically identical to functions in their richness
+    --
+    Cxx.FunctionName_key_operator_ opStr -> do
+      sigText <- sigAndQualifiers sig mquals
+      return $ [opStr,".o"] ++ sigText
 
-    Cxx.FunctionName_key_operator_ x -> return [x]
     Cxx.FunctionName_key_literalOperator x -> return [x]
 
     --
@@ -182,6 +185,15 @@ toSymbolFunctionDeclaration fqname sig mquals = do
     Cxx.FunctionName_key_EMPTY -> return []
 
   return (scopeToks ++ nameToks)
+
+-- standardise how we render parameters & cv or ref qualifiers
+sigAndQualifiers
+  :: Cxx.Signature -> Maybe Cxx.MethodSignature -> Glean.RepoHaxl u w [Text]
+sigAndQualifiers sig mquals = do
+  Cxx.Signature_key _retTy params <- Glean.keyOf sig
+  mSigStr <- toSymbolSignatureParams params
+  let mQualifiersStr = toSymbolQualifiers =<< mquals
+  return $ fromMaybe "" mSigStr : maybeToList mQualifiersStr
 
 instance Symbol Cxx.VariableDeclaration_key where
   toSymbol (Cxx.VariableDeclaration_key qname _ty _kind _) =
@@ -532,8 +544,9 @@ instance ToQName Cxx.Entity where
         -- check .c signature case
         case Prelude.break (== ".c") x of
           (scope, ".c":params) -> ctorSignatureQName scope params
-          _ -> case Prelude.break (== ".f") x of
-            (scope, ".f":params) -> functionSignatureQName scope params
+          _ -> case Prelude.break (\x -> x `elem` [".f",".o"]) x of
+            (scope, ".f":params) -> functionSignatureQName False scope params
+            (scope, ".o":params) -> functionSignatureQName True scope params
             _ -> case Prelude.break (== ".d") x of
               (scope, ".d":_anything) -> dtorQName scope
               _ -> case (init x, last x) of
@@ -592,10 +605,12 @@ qualsOf ps = case ps of
 --
 -- function names
 --
-functionSignatureQName :: [Text] -> [Text] -> Either Text (Name, Name)
-functionSignatureQName [] _ = Left "functionSignatureQName: empty function name"
-functionSignatureQName _ [] = Left "functionSignatureQName: empty signature"
-functionSignatureQName prefix ps0 = Right (Name localname, Name scopename)
+functionSignatureQName :: Bool -> [Text] -> [Text] -> Either Text (Name, Name)
+functionSignatureQName _ [] _ =
+  Left "functionSignatureQName: empty function name"
+functionSignatureQName _ _ [] =
+  Left "functionSignatureQName: empty signature"
+functionSignatureQName isOp prefix ps0 = Right (Name localname, Name scopename)
   where
     (params, quals) = case qualsOf ps0 of
       Nothing -> (Nothing , Nothing)
@@ -603,10 +618,10 @@ functionSignatureQName prefix ps0 = Right (Name localname, Name scopename)
       Just (ps, Just qs) -> (Just (denormalize ps), Just (denormalize qs))
 
     localname = name <> case params of
-      Nothing -> ""
-      Just [] -> ""
+      Nothing -> if isOp then "()" else ""
+      Just [] -> if isOp then "()" else ""
       Just [""] -> case pprQuals quals of -- foo() const&
-        "" -> ""
+        "" -> if isOp then "()" else ""
         qs -> "()" <> qs
 
       Just tys -> "(" <> Text.intercalate ", " tys <> ")" <> pprQuals quals

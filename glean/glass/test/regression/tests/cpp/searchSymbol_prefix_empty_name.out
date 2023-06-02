@@ -238,7 +238,7 @@
                         "columnBegin": 1,
                         "columnEnd": 2,
                         "lineBegin": 129,
-                        "lineEnd": 150
+                        "lineEnd": 161
                     },
                     "repository": "test"
                 },
@@ -251,6 +251,29 @@
                     "exactness": 2
                 },
                 "symbol": "test/cpp//Q"
+            },
+            {
+                "kind": 25,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 150,
+                        "lineEnd": 159
+                    },
+                    "repository": "test"
+                },
+                "name": "OO",
+                "qname": {
+                    "container": "Q",
+                    "localName": "OO"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//Q/OO"
             },
             {
                 "kind": 25,

@@ -129,6 +129,20 @@
             "Right": {
                 "declaration": false,
                 "errors": [],
+                "localname": "OO",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "scopes": [
+                    "Q"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
                 "localname": "QQ",
                 "params": [],
                 "path": "",
@@ -151,6 +165,88 @@
                     "Q"
                 ],
                 "tag": "Function"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "operator==",
+                "params": [
+                    "const Q::OO &",
+                    "const Q::OO &"
+                ],
+                "path": "",
+                "qualifiers": [],
+                "scopes": [
+                    "Q"
+                ],
+                "tag": "Operator"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "operator++",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "scopes": [
+                    "Q",
+                    "OO"
+                ],
+                "tag": "Operator"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "operator=",
+                "params": [
+                    "Q::OO &&"
+                ],
+                "path": "",
+                "qualifiers": [],
+                "scopes": [
+                    "Q",
+                    "OO"
+                ],
+                "tag": "Operator"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "operator=",
+                "params": [
+                    "const Q::OO &"
+                ],
+                "path": "",
+                "qualifiers": [],
+                "scopes": [
+                    "Q",
+                    "OO"
+                ],
+                "tag": "Operator"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "scopes": [
+                    "Q",
+                    "OO",
+                    "operator="
+                ],
+                "tag": null
             }
         },
         {
@@ -368,6 +464,36 @@
                     "Q",
                     "QQ",
                     "thingo"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "a",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "scopes": [
+                    "Q",
+                    "operator=="
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "b",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "scopes": [
+                    "Q",
+                    "operator=="
                 ],
                 "tag": null
             }
