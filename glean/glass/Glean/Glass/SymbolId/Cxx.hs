@@ -173,7 +173,11 @@ toSymbolFunctionDeclaration fqname sig mquals = do
       mSigStr <- toSymbolSignatureParams params
       return (".c" : maybeToList mSigStr)
 
-    Cxx.FunctionName_key_destructor{} -> return [".dtor"]
+    --
+    --  tbd: virtual vs non virtual ?
+    --
+    Cxx.FunctionName_key_destructor{} -> return [".d"]
+
     Cxx.FunctionName_key_conversionOperator ty -> pure <$> Glean.keyOf ty
     Cxx.FunctionName_key_EMPTY -> return []
 
@@ -250,7 +254,7 @@ instance Symbol Cxx.FunctionName_key where
     Cxx.FunctionName_key_operator_ x -> return [x]
     Cxx.FunctionName_key_literalOperator x -> return [x]
     Cxx.FunctionName_key_constructor _ -> return [".ctor"]
-    Cxx.FunctionName_key_destructor _ -> return [".dtor"]
+    Cxx.FunctionName_key_destructor _ -> return [".d"]
     Cxx.FunctionName_key_conversionOperator ty -> pure <$> Glean.keyOf ty
     Cxx.FunctionName_key_EMPTY -> return []
 
@@ -530,12 +534,14 @@ instance ToQName Cxx.Entity where
           (scope, ".c":params) -> ctorSignatureQName scope params
           _ -> case Prelude.break (== ".f") x of
             (scope, ".f":params) -> functionSignatureQName scope params
-            _ -> case (init x, last x) of
-              (ms, name)
-                | name `elem` [".ctor",".dtor",".decl"]
-                -> let (ns, name') = (init ms, last ms)
-                   in Right (Name name', Name (intercalate "::" ns))
-                | otherwise -> Right (Name name, Name (intercalate "::" ms))
+            _ -> case Prelude.break (== ".d") x of
+              (scope, ".d":_anything) -> dtorQName scope
+              _ -> case (init x, last x) of
+                (ms, name)
+                  | name `elem` [".ctor",".decl"]
+                  -> let (ns, name') = (init ms, last ms)
+                    in Right (Name name', Name (intercalate "::" ns))
+                  | otherwise -> Right (Name name, Name (intercalate "::" ms))
 
 --
 -- e.g. default constructors:
@@ -551,6 +557,15 @@ ctorSignatureQName :: [Text] -> [Text] -> Either Text (Name, Name)
 ctorSignatureQName prefix ps = Right (Name localname, Name scopename)
   where
     localname = name <> formatParams (sigOf ps)
+    scopename = intercalate "::" scope
+    (scope, name) = case prefix of
+      [n] -> ([n], n)
+      _ -> (prefix, last prefix)
+
+dtorQName :: [Text] -> Either Text (Name, Name)
+dtorQName prefix = Right (Name localname, Name scopename)
+  where
+    localname = "~" <> name <> "()"
     scopename = intercalate "::" scope
     (scope, name) = case prefix of
       [n] -> ([n], n)

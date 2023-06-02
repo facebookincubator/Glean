@@ -2,7 +2,7 @@
     "@generated",
     {
         "revision": "testhash",
-        "size": 120,
+        "size": 122,
         "symbols": {
             "100": [
                 {
@@ -830,7 +830,7 @@
                         "columnBegin": 1,
                         "columnEnd": 2,
                         "lineBegin": 129,
-                        "lineEnd": 148
+                        "lineEnd": 150
                     },
                     "sym": "test/cpp//Q"
                 }
@@ -941,7 +941,7 @@
                         "columnBegin": 3,
                         "columnEnd": 4,
                         "lineBegin": 133,
-                        "lineEnd": 146
+                        "lineEnd": 148
                     },
                     "sym": "test/cpp//Q/QQ"
                 }
@@ -1166,7 +1166,7 @@
                             "columnBegin": 3,
                             "columnEnd": 4,
                             "lineBegin": 133,
-                            "lineEnd": 146
+                            "lineEnd": 148
                         },
                         "repository": "test"
                     }
@@ -1300,7 +1300,7 @@
                             "columnBegin": 3,
                             "columnEnd": 4,
                             "lineBegin": 133,
-                            "lineEnd": 146
+                            "lineEnd": 148
                         },
                         "repository": "test"
                     }
@@ -1434,7 +1434,7 @@
                             "columnBegin": 3,
                             "columnEnd": 4,
                             "lineBegin": 133,
-                            "lineEnd": 146
+                            "lineEnd": 148
                         },
                         "repository": "test"
                     }
@@ -1568,7 +1568,7 @@
                             "columnBegin": 3,
                             "columnEnd": 4,
                             "lineBegin": 133,
-                            "lineEnd": 146
+                            "lineEnd": 148
                         },
                         "repository": "test"
                     }
@@ -1704,6 +1704,82 @@
                         },
                         "repository": "test"
                     }
+                }
+            ],
+            "147": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 25
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "QQ"
+                        },
+                        "symbolParent": {
+                            "aString": "Q"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct QQ"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 8,
+                        "lineBegin": 147,
+                        "lineEnd": 147
+                    },
+                    "sym": "test/cpp//Q/QQ",
+                    "target": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 3,
+                            "columnEnd": 4,
+                            "lineBegin": 133,
+                            "lineEnd": 148
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 11
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "~QQ()"
+                        },
+                        "symbolParent": {
+                            "aString": "Q::QQ"
+                        },
+                        "symbolSignature": {
+                            "aString": "~QQ()"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 147,
+                        "lineEnd": 147
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 19,
+                        "lineBegin": 147,
+                        "lineEnd": 147
+                    },
+                    "sym": "test/cpp//Q/QQ/.d/.decl"
                 }
             ],
             "15": [
@@ -4072,10 +4148,10 @@
                             "aInteger": 1
                         },
                         "symbolName": {
-                            "aString": "Something"
+                            "aString": "~Something()"
                         },
                         "symbolParent": {
-                            "aString": "maybe"
+                            "aString": "maybe::Something"
                         },
                         "symbolSignature": {
                             "aString": "~Something()"
@@ -4093,7 +4169,7 @@
                         "lineBegin": 79,
                         "lineEnd": 79
                     },
-                    "sym": "test/cpp//maybe/Something/.dtor"
+                    "sym": "test/cpp//maybe/Something/.d"
                 }
             ],
             "85": [

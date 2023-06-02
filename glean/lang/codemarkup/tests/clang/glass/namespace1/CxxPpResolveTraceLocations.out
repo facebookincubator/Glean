@@ -1755,7 +1755,7 @@
             "file": { "key": "test.cpp" },
             "lineBegin": 129,
             "columnBegin": 1,
-            "lineEnd": 148,
+            "lineEnd": 150,
             "columnEnd": 1
           }
         },
@@ -1776,7 +1776,7 @@
                       "file": { "key": "test.cpp" },
                       "lineBegin": 129,
                       "columnBegin": 1,
-                      "lineEnd": 148,
+                      "lineEnd": 150,
                       "columnEnd": 1
                     }
                   }
@@ -1830,7 +1830,7 @@
                             "file": { "key": "test.cpp" },
                             "lineBegin": 133,
                             "columnBegin": 3,
-                            "lineEnd": 146,
+                            "lineEnd": 148,
                             "columnEnd": 3
                           }
                         }
@@ -1855,7 +1855,7 @@
             "file": { "key": "test.cpp" },
             "lineBegin": 133,
             "columnBegin": 3,
-            "lineEnd": 146,
+            "lineEnd": 148,
             "columnEnd": 3
           }
         },
@@ -1884,7 +1884,7 @@
                       "file": { "key": "test.cpp" },
                       "lineBegin": 133,
                       "columnBegin": 3,
-                      "lineEnd": 146,
+                      "lineEnd": 148,
                       "columnEnd": 3
                     }
                   }
@@ -2298,6 +2298,51 @@
                             "columnBegin": 5,
                             "lineEnd": 145,
                             "columnEnd": 42
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "destructor": { } } },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "QQ" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": { "name": { "key": "Q" } }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [ ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": false,
+                            "isConst": false,
+                            "isVolatile": false,
+                            "refQualifier": 0
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 147,
+                            "columnBegin": 5,
+                            "lineEnd": 147,
+                            "columnEnd": 18
                           }
                         }
                       }
@@ -4873,6 +4918,73 @@
                   }
                 },
                 "isInline": false
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "destructor",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 147,
+            "columnBegin": 5,
+            "lineEnd": 147,
+            "columnEnd": 18
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 2012, "length": 1 }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "destructor": { } } },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "QQ" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "Q" } }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "method": {
+                  "isVirtual": false,
+                  "isConst": false,
+                  "isVolatile": false,
+                  "refQualifier": 0
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 147,
+                  "columnBegin": 5,
+                  "lineEnd": 147,
+                  "columnEnd": 18
+                }
               }
             }
           }

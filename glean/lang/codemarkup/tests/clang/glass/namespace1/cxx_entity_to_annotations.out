@@ -332,6 +332,57 @@
               "key": {
                 "name": {
                   "key": {
+                    "name": { "key": { "destructor": { } } },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "QQ" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "Q" } }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "method": {
+                  "isVirtual": false,
+                  "isConst": false,
+                  "isVolatile": false,
+                  "refQualifier": 0
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 147,
+                  "columnBegin": 5,
+                  "lineEnd": 147,
+                  "columnEnd": 18
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "cxx": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
                     "name": { "key": { "name": { "key": "bozzo" } } },
                     "scope": {
                       "recordWithAccess": {

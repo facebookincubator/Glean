@@ -1,0 +1,53 @@
+[
+    "@generated",
+    {
+        "annotations": [],
+        "comments": [],
+        "contains_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "extends_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "kind": 11,
+        "language": 1,
+        "location": {
+            "filepath": "test.cpp",
+            "range": {
+                "columnBegin": 5,
+                "columnEnd": 19,
+                "lineBegin": 147,
+                "lineEnd": 147
+            },
+            "repository": "test"
+        },
+        "modifiers": [],
+        "name": {
+            "container": "Q::QQ",
+            "localName": "~QQ()"
+        },
+        "pretty_comments": [],
+        "repo_hash": "testhash",
+        "signature": "Q::QQ::~QQ()",
+        "sym": "test/cpp//Q/QQ/.d/.decl",
+        "sym_location": {
+            "filepath": "test.cpp",
+            "range": {
+                "columnBegin": 5,
+                "columnEnd": 19,
+                "lineBegin": 147,
+                "lineEnd": 147
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": [],
+        "type_xrefs": [],
+        "visibility": 20
+    }
+]

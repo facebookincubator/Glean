@@ -49,7 +49,7 @@ data Token
 tokenize :: Text -> Token
 tokenize ".decl" = TDecl
 tokenize ".ctor" = TCtor
-tokenize ".dtor" = TDtor
+tokenize ".d" = TDtor
 tokenize ".c" = TCtorSignature
 tokenize ".f" = TFunction
 tokenize n = TName n
@@ -292,7 +292,7 @@ parseDtor :: [Token] -> Parse ()
 parseDtor [] = return ()
 parseDtor [TDecl] = setDecl
 parseDtor rest = setErr $
-  "Cxx.parseDtor: unexpected trailing tokens in .dtor signature: " <>
+  "Cxx.parseDtor: unexpected trailing tokens in destructor: " <>
     textShow rest
 
 parseCtorSig :: [Token] -> Parse ()

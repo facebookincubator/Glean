@@ -157,6 +157,21 @@
             "Right": {
                 "declaration": true,
                 "errors": [],
+                "localname": null,
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "scopes": [
+                    "Q",
+                    "QQ"
+                ],
+                "tag": "Destructor"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
                 "localname": "bozzo",
                 "params": [],
                 "path": "",

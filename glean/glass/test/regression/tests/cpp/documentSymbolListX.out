@@ -157,7 +157,7 @@
                     "columnBegin": 1,
                     "columnEnd": 2,
                     "lineBegin": 129,
-                    "lineEnd": 148
+                    "lineEnd": 150
                 },
                 "sym": "test/cpp//Q"
             },
@@ -210,9 +210,62 @@
                     "columnBegin": 3,
                     "columnEnd": 4,
                     "lineBegin": 133,
-                    "lineEnd": 146
+                    "lineEnd": 148
                 },
                 "sym": "test/cpp//Q/QQ"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "~QQ()"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Q::QQ"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "~QQ()"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 11
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "nameRange": {
+                    "columnBegin": 5,
+                    "columnEnd": 6,
+                    "lineBegin": 147,
+                    "lineEnd": 147
+                },
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 19,
+                    "lineBegin": 147,
+                    "lineEnd": 147
+                },
+                "sym": "test/cpp//Q/QQ/.d/.decl"
             },
             {
                 "attributes": [
@@ -3762,13 +3815,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "Something"
+                            "aString": "~Something()"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "maybe"
+                            "aString": "maybe::Something"
                         },
                         "key": "symbolParent"
                     },
@@ -3809,7 +3862,7 @@
                     "lineBegin": 79,
                     "lineEnd": 79
                 },
-                "sym": "test/cpp//maybe/Something/.dtor"
+                "sym": "test/cpp//maybe/Something/.d"
             },
             {
                 "attributes": [
@@ -4106,7 +4159,7 @@
                         "columnBegin": 3,
                         "columnEnd": 4,
                         "lineBegin": 133,
-                        "lineEnd": 146
+                        "lineEnd": 148
                     },
                     "repository": "test"
                 }
@@ -4163,7 +4216,7 @@
                         "columnBegin": 3,
                         "columnEnd": 4,
                         "lineBegin": 133,
-                        "lineEnd": 146
+                        "lineEnd": 148
                     },
                     "repository": "test"
                 }
@@ -4220,7 +4273,7 @@
                         "columnBegin": 3,
                         "columnEnd": 4,
                         "lineBegin": 133,
-                        "lineEnd": 146
+                        "lineEnd": 148
                     },
                     "repository": "test"
                 }
@@ -4277,7 +4330,64 @@
                         "columnBegin": 3,
                         "columnEnd": 4,
                         "lineBegin": 133,
-                        "lineEnd": 146
+                        "lineEnd": 148
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "QQ"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Q"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct QQ"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 6,
+                    "columnEnd": 8,
+                    "lineBegin": 147,
+                    "lineEnd": 147
+                },
+                "sym": "test/cpp//Q/QQ",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 133,
+                        "lineEnd": 148
                     },
                     "repository": "test"
                 }

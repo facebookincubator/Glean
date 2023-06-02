@@ -143,6 +143,8 @@ namespace Q {
     int thango(int, QQ&&) &&;
 
     int thingo(pear<int,char>, QQ&&) const;
+
+    ~QQ() noexcept;
   };
 
 }
