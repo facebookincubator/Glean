@@ -996,7 +996,7 @@
                             "aInteger": 1
                         },
                         "symbolName": {
-                            "aString": "getDouble"
+                            "aString": "getDouble() const&"
                         },
                         "symbolParent": {
                             "aString": "Q::QQ"
@@ -1033,7 +1033,7 @@
                             "aInteger": 1
                         },
                         "symbolName": {
-                            "aString": "getDouble"
+                            "aString": "getDouble() &"
                         },
                         "symbolParent": {
                             "aString": "Q::QQ"
@@ -1070,7 +1070,7 @@
                             "aInteger": 1
                         },
                         "symbolName": {
-                            "aString": "getDouble"
+                            "aString": "getDouble() &&"
                         },
                         "symbolParent": {
                             "aString": "Q::QQ"
@@ -1183,7 +1183,7 @@
                             "aInteger": 1
                         },
                         "symbolName": {
-                            "aString": "thango"
+                            "aString": "thango(int, const Q::QQ &) const&"
                         },
                         "symbolParent": {
                             "aString": "Q::QQ"
@@ -1317,7 +1317,7 @@
                             "aInteger": 1
                         },
                         "symbolName": {
-                            "aString": "thango"
+                            "aString": "thango(int, Q::QQ &) &"
                         },
                         "symbolParent": {
                             "aString": "Q::QQ"
@@ -1451,7 +1451,7 @@
                             "aInteger": 1
                         },
                         "symbolName": {
-                            "aString": "thango"
+                            "aString": "thango(int, Q::QQ &&) &&"
                         },
                         "symbolParent": {
                             "aString": "Q::QQ"
@@ -1585,7 +1585,7 @@
                             "aInteger": 1
                         },
                         "symbolName": {
-                            "aString": "thingo"
+                            "aString": "thingo(pear<int, char>, Q::QQ &&) const"
                         },
                         "symbolParent": {
                             "aString": "Q::QQ"
@@ -2279,7 +2279,7 @@
                             "aInteger": 1
                         },
                         "symbolName": {
-                            "aString": "fooFn"
+                            "aString": "fooFn(int)"
                         },
                         "symbolParent": {
                             "aString": "foo"
@@ -2392,7 +2392,7 @@
                             "aInteger": 1
                         },
                         "symbolName": {
-                            "aString": "h"
+                            "aString": "h(int)"
                         },
                         "symbolParent": {
                             "aString": ""
@@ -2431,7 +2431,7 @@
                             "aInteger": 1
                         },
                         "symbolName": {
-                            "aString": "h"
+                            "aString": "h(int)"
                         },
                         "symbolParent": {
                             "aString": ""
@@ -2466,7 +2466,7 @@
                             "aInteger": 1
                         },
                         "symbolName": {
-                            "aString": "h"
+                            "aString": "h(int)"
                         },
                         "symbolParent": {
                             "aString": ""
@@ -2542,7 +2542,7 @@
                             "aInteger": 1
                         },
                         "symbolName": {
-                            "aString": "h"
+                            "aString": "h(int)"
                         },
                         "symbolParent": {
                             "aString": ""
@@ -2577,7 +2577,7 @@
                             "aInteger": 1
                         },
                         "symbolName": {
-                            "aString": "h"
+                            "aString": "h(int)"
                         },
                         "symbolParent": {
                             "aString": ""
@@ -2653,7 +2653,7 @@
                             "aInteger": 1
                         },
                         "symbolName": {
-                            "aString": "h"
+                            "aString": "h(int)"
                         },
                         "symbolParent": {
                             "aString": ""

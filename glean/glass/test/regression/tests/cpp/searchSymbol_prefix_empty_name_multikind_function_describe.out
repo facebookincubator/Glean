@@ -125,7 +125,7 @@
                 "modifiers": [],
                 "name": {
                     "container": "foo",
-                    "localName": "fooFn"
+                    "localName": "fooFn(int)"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
@@ -172,7 +172,7 @@
                 "modifiers": [],
                 "name": {
                     "container": "",
-                    "localName": "h"
+                    "localName": "h(int)"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
@@ -254,7 +254,7 @@
                 "name": "fooFn",
                 "qname": {
                     "container": "foo",
-                    "localName": "fooFn"
+                    "localName": "fooFn(int)"
                 },
                 "score": {
                     "exactness": 2
@@ -277,7 +277,7 @@
                 "name": "h",
                 "qname": {
                     "container": "",
-                    "localName": "h"
+                    "localName": "h(int)"
                 },
                 "score": {
                     "exactness": 2

@@ -30,7 +30,7 @@
         "modifiers": [],
         "name": {
             "container": "Q::QQ",
-            "localName": "thango"
+            "localName": "thango(int, Q::QQ &&) &&"
         },
         "pretty_comments": [],
         "repo_hash": "testhash",

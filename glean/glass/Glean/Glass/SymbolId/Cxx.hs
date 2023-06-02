@@ -564,20 +564,51 @@ sigOf ps = case ps of
   [sig] -> Just sig
   _ -> Nothing -- we never have more than one sig token
 
+qualsOf :: [Text] -> Maybe (Text, Maybe Text)
+qualsOf ps = case ps of
+  [] -> Nothing
+  [".decl"] -> Nothing
+  [sig] -> Just (sig, Nothing)
+  [sig,".decl"] -> Just (sig, Nothing)
+  [sig,quals] -> Just (sig, Just quals)
+  [sig,quals,".decl"] -> Just (sig, Just quals)
+  _ -> Nothing -- we never have more than two sig tokens
+
 --
 -- function names
 --
 functionSignatureQName :: [Text] -> [Text] -> Either Text (Name, Name)
 functionSignatureQName [] _ = Left "functionSignatureQName: empty function name"
 functionSignatureQName _ [] = Left "functionSignatureQName: empty signature"
-functionSignatureQName prefix ps = Right (Name localname, Name scopename)
+functionSignatureQName prefix ps0 = Right (Name localname, Name scopename)
   where
-    params = denormalize <$> sigOf ps
+    (params, quals) = case qualsOf ps0 of
+      Nothing -> (Nothing , Nothing)
+      Just (ps, Nothing) -> (Just (denormalize ps), Nothing)
+      Just (ps, Just qs) -> (Just (denormalize ps), Just (denormalize qs))
 
-    localname = name <> case init <$> params of
+    localname = name <> case params of
       Nothing -> ""
       Just [] -> ""
-      Just tys -> "(" <> Text.intercalate ", " tys <> ")"
+      Just [""] -> case pprQuals quals of -- foo() const&
+        "" -> ""
+        qs -> "()" <> qs
+
+      Just tys -> "(" <> Text.intercalate ", " tys <> ")" <> pprQuals quals
+
+    pprQuals :: Maybe [Text] -> Text
+    pprQuals Nothing = ""
+    pprQuals (Just []) = ""
+    pprQuals (Just qs) = " " <> pprCv <> pprRef
+      where
+        pprCv :: Text
+        pprCv | "const" `elem` qs = "const"
+              | otherwise = mempty
+
+        pprRef :: Text
+        pprRef | "lvalue" `elem` qs = "&"
+               | "rvalue" `elem` qs = "&&"
+               | otherwise = mempty
 
     scopename = intercalate "::" scope
 

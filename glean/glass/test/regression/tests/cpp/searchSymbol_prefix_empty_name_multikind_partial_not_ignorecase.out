@@ -65,7 +65,7 @@
                 "name": "fooFn",
                 "qname": {
                     "container": "foo",
-                    "localName": "fooFn"
+                    "localName": "fooFn(int)"
                 },
                 "score": {
                     "exactness": 2
@@ -88,7 +88,7 @@
                 "name": "h",
                 "qname": {
                     "container": "",
-                    "localName": "h"
+                    "localName": "h(int)"
                 },
                 "score": {
                     "exactness": 2

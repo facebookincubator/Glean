@@ -271,7 +271,7 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "getDouble"
+                            "aString": "getDouble() const&"
                         },
                         "key": "symbolName"
                     },
@@ -324,7 +324,7 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "getDouble"
+                            "aString": "getDouble() &"
                         },
                         "key": "symbolName"
                     },
@@ -377,7 +377,7 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "getDouble"
+                            "aString": "getDouble() &&"
                         },
                         "key": "symbolName"
                     },
@@ -430,7 +430,7 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "thango"
+                            "aString": "thango(int, Q::QQ &&) &&"
                         },
                         "key": "symbolName"
                     },
@@ -483,7 +483,7 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "thango"
+                            "aString": "thango(int, Q::QQ &) &"
                         },
                         "key": "symbolName"
                     },
@@ -536,7 +536,7 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "thango"
+                            "aString": "thango(int, const Q::QQ &) const&"
                         },
                         "key": "symbolName"
                     },
@@ -871,7 +871,7 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "thingo"
+                            "aString": "thingo(pear<int, char>, Q::QQ &&) const"
                         },
                         "key": "symbolName"
                     },
@@ -2920,7 +2920,7 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "fooFn"
+                            "aString": "fooFn(int)"
                         },
                         "key": "symbolName"
                     },
@@ -3026,7 +3026,7 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "h"
+                            "aString": "h(int)"
                         },
                         "key": "symbolName"
                     },
@@ -3079,7 +3079,7 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "h"
+                            "aString": "h(int)"
                         },
                         "key": "symbolName"
                     },
@@ -5312,7 +5312,7 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "h"
+                            "aString": "h(int)"
                         },
                         "key": "symbolName"
                     },
@@ -5369,7 +5369,7 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "h"
+                            "aString": "h(int)"
                         },
                         "key": "symbolName"
                     },
@@ -5426,7 +5426,7 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "h"
+                            "aString": "h(int)"
                         },
                         "key": "symbolName"
                     },
@@ -5483,7 +5483,7 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "h"
+                            "aString": "h(int)"
                         },
                         "key": "symbolName"
                     },

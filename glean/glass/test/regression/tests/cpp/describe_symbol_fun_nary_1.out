@@ -32,7 +32,7 @@
         ],
         "name": {
             "container": "Q::QQ",
-            "localName": "thango"
+            "localName": "thango(int, const Q::QQ &) const&"
         },
         "pretty_comments": [],
         "repo_hash": "testhash",

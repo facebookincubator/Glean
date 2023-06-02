@@ -78,7 +78,7 @@
                 "modifiers": [],
                 "name": {
                     "container": "foo",
-                    "localName": "fooFn"
+                    "localName": "fooFn(int)"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
@@ -137,7 +137,7 @@
                 "name": "fooFn",
                 "qname": {
                     "container": "foo",
-                    "localName": "fooFn"
+                    "localName": "fooFn(int)"
                 },
                 "score": {
                     "exactness": 2

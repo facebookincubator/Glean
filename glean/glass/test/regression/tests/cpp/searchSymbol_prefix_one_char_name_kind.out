@@ -42,7 +42,7 @@
                 "name": "fooFn",
                 "qname": {
                     "container": "foo",
-                    "localName": "fooFn"
+                    "localName": "fooFn(int)"
                 },
                 "score": {
                     "exactness": 2

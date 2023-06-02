@@ -32,7 +32,7 @@
         ],
         "name": {
             "container": "Q::QQ",
-            "localName": "getDouble"
+            "localName": "getDouble() const&"
         },
         "pretty_comments": [],
         "repo_hash": "testhash",
