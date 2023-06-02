@@ -1223,8 +1223,8 @@ toReferenceSymbol repoName file srcOffsets (Code.XRefLocation {..}, entity) = do
   let targetNameRange = targetDestination >>= \LocationRange{..} ->
         if locationRange_repository == targetRepo &&
            locationRange_filepath == targetFile &&
-           rangeContains locationRange_range targetRange
-        then Just targetRange else Nothing
+           rangeContains targetRange locationRange_range
+        then Just locationRange_range else Nothing
         where
           LocationRange {
             locationRange_repository = targetRepo,
