@@ -16,7 +16,7 @@ module Glean.Glass.SymbolId.Cxx (
   ) where
 
 import Data.Text as Text ( Text, intercalate, break, replace, splitOn )
-import Data.Maybe ( maybeToList )
+import Data.Maybe
 import Control.Monad.Catch ( throwM )
 
 import Glean.Glass.SymbolId.Class
@@ -126,8 +126,8 @@ instance Symbol Cxx.EnumDeclaration_key where
     toSymbolPredicate qname
 
 instance Symbol Cxx.FunctionDeclaration_key where
-  toSymbol (Cxx.FunctionDeclaration_key fqname sig _method _) =
-    toSymbolFunctionDeclaration fqname sig
+  toSymbol (Cxx.FunctionDeclaration_key fqname sig quals _) =
+    toSymbolFunctionDeclaration fqname sig quals
 
 --
 -- function declarations. Symbol Id format is
@@ -137,21 +137,24 @@ instance Symbol Cxx.FunctionDeclaration_key where
 -- scope1 / name / .ctor / sig_param .. / .decl  -- overloaded by type
 --
 toSymbolFunctionDeclaration
-  :: Cxx.FunctionQName -> Cxx.Signature -> Glean.RepoHaxl u w [Text]
-toSymbolFunctionDeclaration fqname sig = do
+  :: Cxx.FunctionQName
+  -> Cxx.Signature
+  -> Maybe Cxx.MethodSignature
+  -> Glean.RepoHaxl u w [Text]
+toSymbolFunctionDeclaration fqname sig mquals = do
   Cxx.FunctionQName_key fname scope <- Glean.keyOf fqname
   scopeToks <- toSymbol scope
   fn <- Glean.keyOf fname
   nameToks <- case fn of
-    -- functions: name/.f/p1,p2,retTy(/.decl)?
     --
-    -- tbd. nullary/void functions
+    -- functions: name/.f/p1,p2(/const,volatile,lvalue)?(/.decl)?
     --
     Cxx.FunctionName_key_name n -> do
       nameStr <- Glean.keyOf n
-      Cxx.Signature_key retTy params <- Glean.keyOf sig
-      sigStr <- toSymbolSignature params retTy
-      return [nameStr,".f",sigStr]
+      Cxx.Signature_key _retTy params <- Glean.keyOf sig
+      mSigStr <- toSymbolSignatureParams params
+      let mQualifiersStr = toSymbolQualifiers =<< mquals
+      return $ [nameStr,".f",fromMaybe "" mSigStr] ++ maybeToList mQualifiersStr
 
     Cxx.FunctionName_key_operator_ x -> return [x]
     Cxx.FunctionName_key_literalOperator x -> return [x]
@@ -224,15 +227,22 @@ toSymbolSignatureParams params = do
   sigToks <- mapM (\(Cxx.Parameter _name ty) -> toTypeSymbol ty) params
   return $ Just (intercalate "," sigToks)
 
--- For overloaded functions we need the full type signature to get the semantic
--- encoding sufficiently unique. There is _always_ a return type, so that's the
--- last element
-toSymbolSignature :: [Cxx.Parameter] -> Cxx.Type -> Glean.RepoHaxl u w Text
-toSymbolSignature [] retTy = toTypeSymbol retTy
-toSymbolSignature params retTy = do
-  sigToks <- mapM (\(Cxx.Parameter _name ty) -> toTypeSymbol ty) params
-  retTyStr <- toTypeSymbol retTy
-  return $ intercalate "," sigToks <> "," <> retTyStr
+-- nb. no `mutable`
+toSymbolQualifiers :: Cxx.MethodSignature -> Maybe Text
+toSymbolQualifiers Cxx.MethodSignature{..} = case spec of
+    [] -> Nothing
+    xs -> Just (Text.intercalate "," xs)
+  where
+    spec = catMaybes
+      [ if methodSignature_isVirtual then Just "virtual" else Nothing
+      , if methodSignature_isConst then Just "const" else Nothing
+      , if methodSignature_isVolatile then Just "volatile" else Nothing
+      , case methodSignature_refQualifier of
+          Cxx.RefQualifier_LValue -> Just "lvalue" -- &
+          Cxx.RefQualifier_RValue -> Just "rvalue" -- &&
+          Cxx.RefQualifier_None_ -> Nothing
+          Cxx.RefQualifier__UNKNOWN{} -> Nothing
+      ]
 
 instance Symbol Cxx.FunctionName_key where
   toSymbol k = case k of

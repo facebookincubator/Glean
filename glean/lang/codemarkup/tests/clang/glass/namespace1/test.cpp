@@ -125,3 +125,13 @@ struct d {
     d(pear<int, bool>& p, char cp);
 
 };
+
+namespace Q {
+
+  struct QQ {
+    double getDouble() const&;
+    double& getDouble() &;
+    double getDouble() &&;
+  };
+
+}

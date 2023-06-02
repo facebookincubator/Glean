@@ -14,6 +14,8 @@ module Glean.Glass.Test.ValidateCxxSymbolIds (main) where
 import Test.HUnit ( Test(..), (@=?) )
 import Data.Text ( Text )
 import qualified Data.Text as Text
+import qualified Data.Set as Set
+import Data.Maybe
 
 import TestRunner ( testRunner )
 import Glean.Init ( withUnitTest )
@@ -34,7 +36,12 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "anon_ns" anon_ns
   , TestLabel "nested comma" ctor_sig3_nested_comma
   , TestLabel "const_fn" const_fn
+  , TestLabel "const_fn_decl" const_fn_decl
+  , TestLabel "const_fn_decl_qual" const_fn_decl_qual
+  , TestLabel "const_fn_decl_qual2" const_fn_decl_qual2
+  , TestLabel "const_fn_decl_qual_rvalue" const_fn_decl_qual_rvalue
   , TestLabel "unary_fn" unary_fn
+  , TestLabel "unary_fn_decl_qual2" unary_fn_decl_qual2
   , TestLabel "binary_fn" binary_fn
   ]
 
@@ -97,18 +104,44 @@ anon_ns = test
 
 const_fn :: Test
 const_fn = test
-  (fun_sig [] "bool" <$> ok_decl "fbcode" ["folly", "dynamic"] "foo")
-  (sym "fbcode/folly/dynamic/foo/.f/bool/.decl")
+  (fun_sig [] [] <$> ok "fbcode" ["folly", "dynamic"] "foo")
+  (sym "fbcode/folly/dynamic/foo/.f")
+
+const_fn_decl :: Test
+const_fn_decl = test
+  (fun_sig [] [] <$> ok_decl "fbcode" ["folly", "dynamic"] "foo")
+  (sym "fbcode/folly/dynamic/foo/.f//.decl")
+
+const_fn_decl_qual :: Test
+const_fn_decl_qual = test
+  (fun_sig [] ["const"] <$> ok_decl "fbcode" ["folly", "dynamic"] "foo")
+  (sym "fbcode/folly/dynamic/foo/.f//const/.decl")
+
+const_fn_decl_qual_rvalue :: Test
+const_fn_decl_qual_rvalue = test
+  (fun_sig [] ["rvalue"] <$> ok_decl "fbcode" ["folly", "dynamic"] "foo")
+  (sym "fbcode/folly/dynamic/foo/.f//rvalue/.decl")
+
+const_fn_decl_qual2 :: Test
+const_fn_decl_qual2 = test
+  (fun_sig [] ["const","lvalue"] <$> ok_decl "fbcode" ["folly", "dynamic"] "foo")
+  (sym "fbcode/folly/dynamic/foo/.f//const,lvalue/.decl")
+
+unary_fn_decl_qual2 :: Test
+unary_fn_decl_qual2 = test
+  (fun_sig ["const folly::dynamic &"] ["const","lvalue"] <$>
+    ok_decl "fbcode" ["folly", "dynamic"] "foo") (sym
+      "fbcode/folly/dynamic/foo/.f/const+folly::dynamic+&/const,lvalue/.decl")
 
 unary_fn :: Test
 unary_fn = test
-  (fun_sig ["bool"] "bool" <$> ok_decl "fbcode" ["folly", "dynamic"] "foo")
-  (sym "fbcode/folly/dynamic/foo/.f/bool,bool/.decl")
+  (fun_sig ["bool"] [] <$> ok_decl "fbcode" ["folly", "dynamic"] "foo")
+  (sym "fbcode/folly/dynamic/foo/.f/bool/.decl")
 
 binary_fn :: Test
 binary_fn = test
-  (fun_sig ["bool","bool"] "void" <$> ok_decl "fbcode" ["folly", "dynamic"] "foo")
-  (sym "fbcode/folly/dynamic/foo/.f/bool,bool,void/.decl")
+  (fun_sig ["bool","bool"] [] <$> ok_decl "fbcode" ["folly", "dynamic"] "foo")
+  (sym "fbcode/folly/dynamic/foo/.f/bool,bool/.decl")
 
 -- Helpers
 
@@ -127,7 +160,7 @@ ok path scope name =
       declaration = False,
       tag = Nothing,
       params = [],
-      returns = Nothing,
+      qualifiers = mempty,
       errors = []
     }
 
@@ -149,9 +182,9 @@ ctor e = e { tag = Just Constructor }
 ctor_sig :: SymbolEnv -> SymbolEnv
 ctor_sig e = e { tag = Just CTorSignature, localname = Nothing }
 
-fun_sig :: [Text] -> Text -> SymbolEnv -> SymbolEnv
-fun_sig params retty e =
+fun_sig :: [Text] -> [Text] -> SymbolEnv -> SymbolEnv
+fun_sig params quals e =
    e { tag = Just Function
      , params = map Name params
-     , returns = Just (Name retty)
+     , qualifiers = Set.fromList (mapMaybe toQualifier quals)
      }

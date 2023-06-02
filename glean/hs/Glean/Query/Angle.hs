@@ -49,6 +49,7 @@ module Glean.Query.Angle
   , if_
   , true
   , false
+  , bool
   , just
   , nothing
   , display
@@ -417,6 +418,11 @@ true = Angle $ pure (Variable DSL "true")
 
 false :: Angle Bool
 false = Angle $ pure (Variable DSL "false")
+
+-- | Lift a boolean literal into Angle
+bool :: Bool -> Angle Bool
+bool True = true
+bool False = false
 
 just :: Angle a -> Angle (Maybe a)
 just x = Angle $ do

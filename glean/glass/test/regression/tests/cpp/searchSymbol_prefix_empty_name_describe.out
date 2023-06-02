@@ -399,6 +399,100 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
+                        "lineBegin": 129,
+                        "lineEnd": 137
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "Q"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/cpp//Q",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 129,
+                        "lineEnd": 137
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": true,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 25,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 131,
+                        "lineEnd": 135
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "Q",
+                    "localName": "QQ"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/cpp//Q/QQ",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 131,
+                        "lineEnd": 135
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 6,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
                         "lineBegin": 90,
                         "lineEnd": 97
                     },
@@ -1116,7 +1210,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "sym": "test/cpp//foo/foo/.f/void",
+                "sym": "test/cpp//foo/foo/.f/",
                 "sym_location": {
                     "filepath": "test.cpp",
                     "range": {
@@ -1159,11 +1253,11 @@
                 "modifiers": [],
                 "name": {
                     "container": "foo",
-                    "localName": "fooFn(int)"
+                    "localName": "fooFn"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "sym": "test/cpp//foo/fooFn/.f/int,int",
+                "sym": "test/cpp//foo/fooFn/.f/int",
                 "sym_location": {
                     "filepath": "test.cpp",
                     "range": {
@@ -1206,11 +1300,11 @@
                 "modifiers": [],
                 "name": {
                     "container": "",
-                    "localName": "h(int)"
+                    "localName": "h"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "sym": "test/cpp//h/.f/int,void",
+                "sym": "test/cpp//h/.f/int",
                 "sym_location": {
                     "filepath": "test.cpp",
                     "range": {
@@ -2050,6 +2144,52 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
+                        "lineBegin": 129,
+                        "lineEnd": 137
+                    },
+                    "repository": "test"
+                },
+                "name": "Q",
+                "qname": {
+                    "container": "",
+                    "localName": "Q"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//Q"
+            },
+            {
+                "kind": 25,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 131,
+                        "lineEnd": 135
+                    },
+                    "repository": "test"
+                },
+                "name": "QQ",
+                "qname": {
+                    "container": "Q",
+                    "localName": "QQ"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//Q/QQ"
+            },
+            {
+                "kind": 6,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
                         "lineBegin": 90,
                         "lineEnd": 97
                     },
@@ -2450,7 +2590,7 @@
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/cpp//foo/foo/.f/void"
+                "symbol": "test/cpp//foo/foo/.f/"
             },
             {
                 "kind": 14,
@@ -2468,12 +2608,12 @@
                 "name": "fooFn",
                 "qname": {
                     "container": "foo",
-                    "localName": "fooFn(int)"
+                    "localName": "fooFn"
                 },
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/cpp//foo/fooFn/.f/int,int"
+                "symbol": "test/cpp//foo/fooFn/.f/int"
             },
             {
                 "kind": 14,
@@ -2491,12 +2631,12 @@
                 "name": "h",
                 "qname": {
                     "container": "",
-                    "localName": "h(int)"
+                    "localName": "h"
                 },
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/cpp//h/.f/int,void"
+                "symbol": "test/cpp//h/.f/int"
             },
             {
                 "kind": 6,

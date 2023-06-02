@@ -35,7 +35,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "sym": "test/cpp//foo/foo/.f/void",
+                "sym": "test/cpp//foo/foo/.f/",
                 "sym_location": {
                     "filepath": "test.cpp",
                     "range": {
@@ -78,11 +78,11 @@
                 "modifiers": [],
                 "name": {
                     "container": "foo",
-                    "localName": "fooFn(int)"
+                    "localName": "fooFn"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "sym": "test/cpp//foo/fooFn/.f/int,int",
+                "sym": "test/cpp//foo/fooFn/.f/int",
                 "sym_location": {
                     "filepath": "test.cpp",
                     "range": {
@@ -119,7 +119,7 @@
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/cpp//foo/foo/.f/void"
+                "symbol": "test/cpp//foo/foo/.f/"
             },
             {
                 "kind": 14,
@@ -137,12 +137,12 @@
                 "name": "fooFn",
                 "qname": {
                     "container": "foo",
-                    "localName": "fooFn(int)"
+                    "localName": "fooFn"
                 },
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/cpp//foo/fooFn/.f/int,int"
+                "symbol": "test/cpp//foo/fooFn/.f/int"
             }
         ]
     }

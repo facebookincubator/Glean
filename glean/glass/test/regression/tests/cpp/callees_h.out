@@ -3,7 +3,7 @@
     {
         "edges": [
             {
-                "child": "test/cpp//foo/bar/g/.f/void/.decl",
+                "child": "test/cpp//foo/bar/g/.f//.decl",
                 "parent": "test/cpp//h",
                 "ranges": [
                     {
@@ -19,7 +19,7 @@
                 ]
             },
             {
-                "child": "test/cpp//foo/f/.f/void/.decl",
+                "child": "test/cpp//foo/f/.f//.decl",
                 "parent": "test/cpp//h",
                 "ranges": [
                     {
@@ -35,7 +35,7 @@
                 ]
             },
             {
-                "child": "test/cpp//foo/foo/.f/void",
+                "child": "test/cpp//foo/foo/.f/",
                 "parent": "test/cpp//h",
                 "ranges": [
                     {
@@ -51,7 +51,7 @@
                 ]
             },
             {
-                "child": "test/cpp//foo/foo/.f/void/.decl",
+                "child": "test/cpp//foo/foo/.f//.decl",
                 "parent": "test/cpp//h",
                 "ranges": [
                     {
@@ -67,7 +67,7 @@
                 ]
             },
             {
-                "child": "test/cpp//h/.f/int,void",
+                "child": "test/cpp//h/.f/int",
                 "parent": "test/cpp//h",
                 "ranges": [
                     {
@@ -83,7 +83,7 @@
                 ]
             },
             {
-                "child": "test/cpp//h/.f/int,void/.decl",
+                "child": "test/cpp//h/.f/int/.decl",
                 "parent": "test/cpp//h",
                 "ranges": [
                     {
@@ -100,7 +100,7 @@
             }
         ],
         "symbolDetails": {
-            "test/cpp//foo/bar/g/.f/void/.decl": {
+            "test/cpp//foo/bar/g/.f//.decl": {
                 "annotations": [],
                 "comments": [],
                 "contains_relation": {
@@ -135,7 +135,7 @@
                 "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "void foo::bar::g()",
-                "sym": "test/cpp//foo/bar/g/.f/void/.decl",
+                "sym": "test/cpp//foo/bar/g/.f//.decl",
                 "sym_location": {
                     "filepath": "test.cpp",
                     "range": {
@@ -149,7 +149,7 @@
                 "sym_other_locations": [],
                 "type_xrefs": []
             },
-            "test/cpp//foo/f/.f/void/.decl": {
+            "test/cpp//foo/f/.f//.decl": {
                 "annotations": [],
                 "comments": [
                     {
@@ -208,7 +208,7 @@
                 ],
                 "repo_hash": "testhash",
                 "signature": "void foo::f()",
-                "sym": "test/cpp//foo/f/.f/void/.decl",
+                "sym": "test/cpp//foo/f/.f//.decl",
                 "sym_location": {
                     "filepath": "test.cpp",
                     "range": {
@@ -222,7 +222,7 @@
                 "sym_other_locations": [],
                 "type_xrefs": []
             },
-            "test/cpp//foo/foo/.f/void": {
+            "test/cpp//foo/foo/.f/": {
                 "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
@@ -256,7 +256,7 @@
                 "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "void foo::foo()",
-                "sym": "test/cpp//foo/foo/.f/void",
+                "sym": "test/cpp//foo/foo/.f/",
                 "sym_location": {
                     "filepath": "test.cpp",
                     "range": {
@@ -270,7 +270,7 @@
                 "sym_other_locations": [],
                 "type_xrefs": []
             },
-            "test/cpp//foo/foo/.f/void/.decl": {
+            "test/cpp//foo/foo/.f//.decl": {
                 "annotations": [],
                 "comments": [],
                 "contains_relation": {
@@ -305,7 +305,7 @@
                 "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "void foo::foo()",
-                "sym": "test/cpp//foo/foo/.f/void/.decl",
+                "sym": "test/cpp//foo/foo/.f//.decl",
                 "sym_location": {
                     "filepath": "test.cpp",
                     "range": {
@@ -348,7 +348,7 @@
                 "modifiers": [],
                 "name": {
                     "container": "",
-                    "localName": "h(int)"
+                    "localName": "h"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
@@ -367,7 +367,7 @@
                 "sym_other_locations": [],
                 "type_xrefs": []
             },
-            "test/cpp//h/.f/int,void": {
+            "test/cpp//h/.f/int": {
                 "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
@@ -396,12 +396,12 @@
                 "modifiers": [],
                 "name": {
                     "container": "",
-                    "localName": "h(int)"
+                    "localName": "h"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "void ::h(int i)",
-                "sym": "test/cpp//h/.f/int,void",
+                "sym": "test/cpp//h/.f/int",
                 "sym_location": {
                     "filepath": "test.cpp",
                     "range": {
@@ -415,7 +415,7 @@
                 "sym_other_locations": [],
                 "type_xrefs": []
             },
-            "test/cpp//h/.f/int,void/.decl": {
+            "test/cpp//h/.f/int/.decl": {
                 "annotations": [],
                 "comments": [],
                 "contains_relation": {
@@ -445,12 +445,12 @@
                 "modifiers": [],
                 "name": {
                     "container": "",
-                    "localName": "h(int)"
+                    "localName": "h"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "void ::h(int _i)",
-                "sym": "test/cpp//h/.f/int,void/.decl",
+                "sym": "test/cpp//h/.f/int/.decl",
                 "sym_location": {
                     "filepath": "test.cpp",
                     "range": {

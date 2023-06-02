@@ -1,6 +1,7 @@
 [
     "@generated",
     {
+        "annotations": [],
         "comments": [],
         "contains_relation": {
             "firstChild": "nondeterministic",
@@ -20,28 +21,28 @@
             "filepath": "test.cpp",
             "range": {
                 "columnBegin": 1,
-                "columnEnd": 2,
-                "lineBegin": 54,
-                "lineEnd": 62
+                "columnEnd": 9,
+                "lineBegin": 41,
+                "lineEnd": 41
             },
             "repository": "test"
         },
         "modifiers": [],
         "name": {
-            "container": "",
-            "localName": "h"
+            "container": "foo::bar",
+            "localName": "g"
         },
         "pretty_comments": [],
         "repo_hash": "testhash",
-        "signature": "void ::h(int i)",
-        "sym": "test/cpp//h",
+        "signature": "void foo::bar::g()",
+        "sym": "test/cpp//foo/bar/g/.f//.decl",
         "sym_location": {
             "filepath": "test.cpp",
             "range": {
                 "columnBegin": 1,
-                "columnEnd": 2,
-                "lineBegin": 54,
-                "lineEnd": 62
+                "columnEnd": 9,
+                "lineBegin": 41,
+                "lineEnd": 41
             },
             "repository": "test"
         },

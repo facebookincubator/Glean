@@ -753,6 +753,186 @@
   },
   {
     "key": {
+      "name": { "key": "QQ" },
+      "scope": { "namespace_": { "key": { "name": { "key": "Q" } } } },
+      "entity": {
+        "defn": {
+          "record_": {
+            "key": {
+              "declaration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "QQ" },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "Q" } } }
+                      }
+                    }
+                  },
+                  "kind": { "struct_": { } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 131,
+                    "columnBegin": 3,
+                    "lineEnd": 135,
+                    "columnEnd": 3
+                  }
+                }
+              },
+              "bases": [ ],
+              "members": {
+                "key": [
+                  {
+                    "function_": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": {
+                              "key": { "name": { "key": "getDouble" } }
+                            },
+                            "scope": {
+                              "recordWithAccess": {
+                                "record": {
+                                  "key": {
+                                    "name": { "key": "QQ" },
+                                    "scope": {
+                                      "namespace_": {
+                                        "key": { "name": { "key": "Q" } }
+                                      }
+                                    }
+                                  }
+                                },
+                                "access": 0
+                              }
+                            }
+                          }
+                        },
+                        "signature": {
+                          "key": {
+                            "returns": { "key": "double" },
+                            "parameters": [ ]
+                          }
+                        },
+                        "method": {
+                          "isVirtual": false,
+                          "isConst": true,
+                          "isVolatile": false,
+                          "refQualifier": 1
+                        },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 132,
+                          "columnBegin": 5,
+                          "lineEnd": 132,
+                          "columnEnd": 29
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "function_": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": {
+                              "key": { "name": { "key": "getDouble" } }
+                            },
+                            "scope": {
+                              "recordWithAccess": {
+                                "record": {
+                                  "key": {
+                                    "name": { "key": "QQ" },
+                                    "scope": {
+                                      "namespace_": {
+                                        "key": { "name": { "key": "Q" } }
+                                      }
+                                    }
+                                  }
+                                },
+                                "access": 0
+                              }
+                            }
+                          }
+                        },
+                        "signature": {
+                          "key": {
+                            "returns": { "key": "double &" },
+                            "parameters": [ ]
+                          }
+                        },
+                        "method": {
+                          "isVirtual": false,
+                          "isConst": false,
+                          "isVolatile": false,
+                          "refQualifier": 1
+                        },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 133,
+                          "columnBegin": 5,
+                          "lineEnd": 133,
+                          "columnEnd": 25
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "function_": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": {
+                              "key": { "name": { "key": "getDouble" } }
+                            },
+                            "scope": {
+                              "recordWithAccess": {
+                                "record": {
+                                  "key": {
+                                    "name": { "key": "QQ" },
+                                    "scope": {
+                                      "namespace_": {
+                                        "key": { "name": { "key": "Q" } }
+                                      }
+                                    }
+                                  }
+                                },
+                                "access": 0
+                              }
+                            }
+                          }
+                        },
+                        "signature": {
+                          "key": {
+                            "returns": { "key": "double" },
+                            "parameters": [ ]
+                          }
+                        },
+                        "method": {
+                          "isVirtual": false,
+                          "isConst": false,
+                          "isVolatile": false,
+                          "refQualifier": 2
+                        },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 134,
+                          "columnBegin": 5,
+                          "lineEnd": 134,
+                          "columnEnd": 25
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "name": { "key": "S" },
       "scope": { "namespace_": { "key": { "name": { "key": "foo" } } } },
       "entity": {

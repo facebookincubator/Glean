@@ -13,7 +13,12 @@ module Glean.Glass.SymbolId.Cxx.Parse (
     SymbolEnv(..),
     SymbolTag(..),
     Name(..),
+    Qualifier(..),
+    RefQualifier(..),
     unName
+
+    -- testing
+    , toQualifier
   ) where
 
 import GHC.Generics
@@ -21,6 +26,8 @@ import Data.Text ( Text )
 import qualified Data.Text as Text
 import Control.Monad.State.Strict
 import Util.Text ( textShow )
+import qualified Data.Set as Set
+import Data.Set ( Set )
 import Data.Aeson.Types ( ToJSON )
 
 -- "lexer"
@@ -63,11 +70,21 @@ data SymbolEnv = SymbolEnv {
   declaration :: Bool, -- .decl tag occurs
   tag :: Maybe SymbolTag,
   params :: [Name], -- maybe parameter signature
-  returns :: Maybe Name, -- return type (e.g. for overloaded functions)
+  qualifiers :: Set Qualifier, -- optional list of qualifiers (const, &&, etc)
   errors :: [Text] -- any errors we find
 } deriving (Eq, Ord, Show, Generic)
 
 newtype Name = Name Text
+  deriving (Eq, Ord, Show, Generic)
+
+data Qualifier
+  = Virtual
+  | Const
+  | Volatile
+  | RefQual RefQualifier
+  deriving (Eq, Ord, Show, Generic)
+
+data RefQualifier = LValue | RValue
   deriving (Eq, Ord, Show, Generic)
 
 -- standalone to avoid having it appear in the generic JSON writer
@@ -87,6 +104,8 @@ data SymbolTag
 instance ToJSON Name
 instance ToJSON SymbolTag
 instance ToJSON SymbolEnv
+instance ToJSON Qualifier
+instance ToJSON RefQualifier
 
 initState :: Text -> SymbolEnv
 initState p = SymbolEnv {
@@ -96,7 +115,7 @@ initState p = SymbolEnv {
     declaration = False,
     tag = Nothing,
     params = [],
-    returns = Nothing,
+    qualifiers = mempty,
     errors = []
   }
 
@@ -109,8 +128,10 @@ pushParam s = modify' $ \env -> env { params = sig s : params env }
 setName :: Text -> Parse ()
 setName n = modify' $ \env -> env { localname = Just (name n) }
 
-pushRetTy :: Text -> Parse ()
-pushRetTy s = modify' $ \env -> env { returns = Just (sig s) }
+pushQualifier :: Qualifier -> Parse ()
+pushQualifier q = modify' $ \env ->
+    env { qualifiers = Set.insert q (qualifiers env)
+  }
 
 setTag :: SymbolTag -> Parse ()
 setTag t = modify' $ \env -> env { tag = Just t }
@@ -135,6 +156,7 @@ validateSymbolId toks = case toks of
     in case errors env of
         [] -> Right $ env { scopes = reverse (scopes env)
                           , params = reverse (params env)
+                          , qualifiers = qualifiers env
                           }
         errs -> Left errs
 
@@ -152,8 +174,7 @@ parseScopeOrName name (n : ns) = case n of
   TCtor -> pushScope name >> setTag Constructor >> parseCtor ns
   TDtor -> pushScope name >> setTag Destructor >> parseDtor ns
   TCtorSignature -> pushScope name >> setTag CTorSignature >> parseCtorSig ns
-  TFunction ->
-    setName name >> setTag Function >> parseFunctionSig ns
+  TFunction -> setName name >> setTag Function >> parseFunctionSig ns
   TDecl -> do
     setName name >> setDecl
     case ns of
@@ -207,30 +228,44 @@ parseCtorSig rest = setErr $
 -- Function signatures always have a return type
 --
 parseFunctionSig :: [Token] -> Parse ()
-parseFunctionSig [] = setErr
-  "Cxx.parseFunctionSig: missing type signature for function"
-parseFunctionSig [TDecl] = setErr $
-  "Cxx.parseFunctionSig: missing type signature for function decl"
-parseFunctionSig [TName name] = do
-  setFunctionSigPieces name
-parseFunctionSig [TName name, TDecl] = do
-  setFunctionSigPieces name >> setDecl
+-- nullary definition
+parseFunctionSig [] = pure ()
+-- nullary construct decl
+parseFunctionSig [TDecl] =
+  setDecl
+parseFunctionSig [TName name] = do -- single set of params
+  mapM_ pushParam (splitCommas name)
+parseFunctionSig [TName name, TDecl] = do -- decl variant
+  mapM_ pushParam (splitCommas name) >> setDecl
+
+parseFunctionSig [TName name, TName quals] = do -- set of params and quals
+  mapM_ pushParam (splitCommas name)
+  mapM_ parseQualifier (splitCommas quals)
+parseFunctionSig [TName name, TName quals, TDecl] = do -- decl variant
+  mapM_ pushParam (splitCommas name)
+  mapM_ parseQualifier (splitCommas quals)
+  setDecl
+
 parseFunctionSig rest = setErr $
   "Cxx.parseCtorSig: unexpected trailing tokens in .ctor signature: " <>
     textShow rest
 
-setFunctionSigPieces :: Text -> Parse ()
-setFunctionSigPieces name = case types of
-  [] ->  setErr "Cxx.parseFunctionSig: empty signature token"
-  [ty] -> pushRetTy ty
-  _ -> do
-    let params = init types
-        ty = last types
-    mapM_ pushParam params
-    pushRetTy ty
-  where
-    types = splitCommas name
-
 -- | type signatures are a single token separated by commas
 splitCommas :: Text -> [Text]
-splitCommas = Text.splitOn ","
+splitCommas "" = []
+splitCommas xs = Text.splitOn "," xs
+
+parseQualifier :: Text -> Parse ()
+parseQualifier s = case toQualifier s of
+  Just x -> pushQualifier x
+  Nothing -> setErr $ "parseQualifier: invalid qualifier: " <> s
+
+-- | Parse cv qualfier encodings
+toQualifier :: Text -> Maybe Qualifier
+toQualifier s = case s of
+  "virtual" -> Just Virtual
+  "const" -> Just Const
+  "volatile" -> Just Volatile
+  "lvalue" -> Just (RefQual LValue)
+  "rvalue" -> Just (RefQual RValue)
+  _ -> Nothing

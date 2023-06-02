@@ -17,6 +17,8 @@ module Glean.Glass.Search.Cxx
 import Data.Text ( Text )
 import qualified Data.Text as Text
 import Data.Maybe ( fromMaybe )
+import Data.Set ( Set )
+import qualified Data.Set as Set
 
 import Glean.Angle as Angle
 import Glean.Haxl.Repos (ReposHaxl)
@@ -42,7 +44,6 @@ cxxSymbolSearch t = case P.validateSymbolId t of
   Right P.SymbolEnv{..} ->
     let scope = map P.unName scopes
         parameters = map P.unName params
-        mreturns = fmap P.unName returns
         mname = fmap P.unName localname
     in case tag of
       -- ctors with signatures, ctor params or dtors
@@ -60,13 +61,12 @@ cxxSymbolSearch t = case P.validateSymbolId t of
             then lookupDTorDeclaration path scope
             else lookupDTorDefinition path scope
       Just P.Function -- ".f" functions with complete signatures
-        | Just retTy <- mreturns -- again, cannot be unset. enforce in ADT
-        , Just name <- mname -- again, never Nothing (no anonymous functions?)
+        | Just name <- mname -- again, never Nothing (no anonymous functions?)
         -> searchSymbolId t $ if declaration
             then lookupFunctionSignatureDeclaration
-                   path scope name parameters retTy
+                      path scope name parameters qualifiers
             else lookupFunctionSignatureDefinition
-                   path scope name parameters retTy
+                   path scope name parameters qualifiers
       -- everything else
       _ -> if declaration
            then searchDeclarations t path scope (fromMaybe "" mname)
@@ -223,71 +223,78 @@ lookupCTorSignatureDefinition
 lookupCTorSignatureDefinition anchor ns params =
   vars $ \(entity :: Angle Cxx.Entity) (codeEntity :: Angle Code.Entity)
      (file :: Angle Src.File) (rangespan :: Angle Code.RangeSpan)
-       (lname :: Angle Text) ->
-    tuple (entity, file, rangespan, lname) `where_` ((
+      (asig :: Angle Cxx.Signature) (lname :: Angle Text) ->
+    tuple (entity, file, rangespan, lname) `where_` ([
+      asig .= paramTypesQ params,
       wild .= predicate @SymbolId.LookupFunctionSignatureDefinition (
         rec $
           field @"name" (alt @"constructor" wild) $ -- either @alt ctor or dtor
           field @"scope" (scopeQ (reverse ns)) $
-          field @"signature" (asPredicate (paramTypesQ params)) $
+          field @"signature" (asPredicate asig) $
           field @"entity" entity
-        end))
-      : entityFooter anchor entity codeEntity file rangespan lname
-      )
+        end)
+      ] <> entityFooter anchor entity codeEntity file rangespan lname)
 
 lookupCTorSignatureDeclaration
   :: Text -> [Text] -> [Text] -> Angle (ResultLocation Cxx.Entity)
 lookupCTorSignatureDeclaration anchor ns params =
   vars $ \(decl :: Angle Cxx.Declaration)  (entity :: Angle Cxx.Entity)
       (codeEntity :: Angle Code.Entity) (file :: Angle Src.File)
-        (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
-    tuple (entity, file, rangespan, lname) `where_` ((
+        (asig :: Angle Cxx.Signature) (rangespan :: Angle Code.RangeSpan)
+        (lname :: Angle Text) ->
+    tuple (entity, file, rangespan, lname) `where_` ([
+      asig .= paramTypesQ params,
       wild .= predicate @SymbolId.LookupFunctionSignatureDeclaration (
         rec $
           field @"name" (alt @"constructor" wild) $ -- either @alt ctor or dtor
           field @"scope" (scopeQ (reverse ns)) $
-          field @"signature" (asPredicate (paramTypesQ params)) $
+          field @"signature" (asPredicate asig) $
           field @"decl" decl
-        end))
-      : entityDeclFooter anchor decl entity codeEntity file rangespan lname
-      )
+        end)
+      ] <> entityDeclFooter anchor decl entity codeEntity file rangespan lname)
 
 lookupFunctionSignatureDeclaration
-  :: Text -> [Text] -> Text -> [Text] -> Text
+  :: Text -> [Text] -> Text -> [Text] -> Set P.Qualifier
   -> Angle (ResultLocation Cxx.Entity)
-lookupFunctionSignatureDeclaration anchor ns name params returns =
+lookupFunctionSignatureDeclaration anchor ns name params quals =
   vars $ \(decl :: Angle Cxx.Declaration)  (entity :: Angle Cxx.Entity)
       (codeEntity :: Angle Code.Entity) (file :: Angle Src.File)
-        (asig :: Angle Cxx.Signature) (rangespan :: Angle Code.RangeSpan)
+        (rangespan :: Angle Code.RangeSpan)
+        (fname :: Angle Cxx.FunctionName) (n :: Angle Cxx.Name)
         (lname :: Angle Text) ->
     tuple (entity, file, rangespan, lname) `where_` ([
-      asig .= signatureQ params returns,
-      wild .= predicate @SymbolId.LookupFunctionSignatureDeclaration (
+      n .= predicate @Cxx.Name (string name),
+      fname .= predicate @Cxx.FunctionName (alt @"name" (asPredicate n)),
+      wild .= predicate @SymbolId.LookupFunctionSignatureQualifierDeclaration (
         rec $
-          field @"name" (alt @"name" (string name)) $
+          field @"name" (asPredicate fname) $
           field @"scope" (scopeQ (reverse ns)) $
-          field @"signature" (asPredicate asig) $
+          field @"signature" (asPredicate (paramTypesQ params)) $
+          field @"qualifiers" (qualifiersQ quals) $
           field @"decl" decl
         end)
     ] <> entityDeclFooter anchor decl entity codeEntity file rangespan lname)
 
 lookupFunctionSignatureDefinition
-  :: Text -> [Text] -> Text -> [Text] -> Text
+  :: Text -> [Text] -> Text -> [Text] -> Set P.Qualifier
   -> Angle (ResultLocation Cxx.Entity)
-lookupFunctionSignatureDefinition anchor ns name params returns =
+lookupFunctionSignatureDefinition anchor ns name params quals =
   vars $ \(entity :: Angle Cxx.Entity) (codeEntity :: Angle Code.Entity)
       (file :: Angle Src.File) (rangespan :: Angle Code.RangeSpan)
+        (fname :: Angle Cxx.FunctionName) (n :: Angle Cxx.Name)
         (lname :: Angle Text) ->
-    tuple (entity, file, rangespan, lname) `where_` ((
-      wild .= predicate @SymbolId.LookupFunctionSignatureDefinition (
+    tuple (entity, file, rangespan, lname) `where_` ([
+      n .= predicate @Cxx.Name (string name),
+      fname .= predicate @Cxx.FunctionName (alt @"name" (asPredicate n)),
+      wild .= predicate @SymbolId.LookupFunctionSignatureQualifierDefinition (
         rec $
-          field @"name" (alt @"name" (string name)) $
+          field @"name" (asPredicate fname) $
           field @"scope" (scopeQ (reverse ns)) $
-          field @"signature" (asPredicate (signatureQ params returns)) $
+          field @"signature" (asPredicate (paramTypesQ params)) $
+          field @"qualifiers" (qualifiersQ quals) $
           field @"entity" entity
-        end))
-      : entityFooter anchor entity codeEntity file rangespan lname
-      )
+        end)
+      ] <> entityFooter anchor entity codeEntity file rangespan lname)
 
 --
 -- We have four variants, and two ways to resolve each
@@ -500,16 +507,30 @@ paramTypesQ ps = predicate @Cxx.Signature $
         field @"type" (string tyStr)
       end
 
--- Full signature with return type
-signatureQ :: [Text] -> Text -> Angle Cxx.Signature
-signatureQ ps returns = predicate @Cxx.Signature $
-    rec $
-      field @"returns" (string returns) $
-      field @"parameters" (array (map paramQ ps))
-    end
-  where
-    paramQ :: Text -> Angle Cxx.Parameter
-    paramQ tyStr =
+--
+-- function signature qualifiers (const &&, volatile etc)
+--
+qualifiersQ :: Set P.Qualifier -> Angle (Maybe Cxx.MethodSignature)
+qualifiersQ qs
+  | Set.null qs    -- if there's no qualifiers its either nothing or all false
+  = sig nothing .| just (
       rec $
-        field @"type" (string tyStr)
+        field @"isVirtual" false $
+        field @"isConst" false $
+        field @"isVolatile" false $
+        field @"refQualifier" (enum Cxx.RefQualifier_None_)
+      end)
+  | otherwise   -- its definitely set
+  = just $ sig $
+      rec $
+        field @"isVirtual" (bool $ P.Virtual `Set.member` qs) $
+        field @"isConst" (bool $ P.Const `Set.member` qs) $
+        field @"isVolatile" (bool $ P.Volatile `Set.member` qs) $
+        field @"refQualifier" (enum
+          (if P.RefQual P.LValue `Set.member` qs
+            then Cxx.RefQualifier_LValue
+            else if P.RefQual P.RValue `Set.member` qs
+            then Cxx.RefQualifier_RValue
+            else Cxx.RefQualifier_None_
+          ))
       end

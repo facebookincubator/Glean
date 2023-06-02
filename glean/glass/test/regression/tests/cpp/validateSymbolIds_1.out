@@ -8,7 +8,7 @@
                 "localname": "Global",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [],
                 "tag": null
             }
@@ -20,7 +20,19 @@
                 "localname": "GlobalClass",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
+                "scopes": [],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "Q",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
                 "scopes": [],
                 "tag": null
             }
@@ -32,7 +44,7 @@
                 "localname": "baz",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [],
                 "tag": null
             }
@@ -44,7 +56,7 @@
                 "localname": "d",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [],
                 "tag": null
             }
@@ -56,7 +68,7 @@
                 "localname": "foo",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [],
                 "tag": null
             }
@@ -70,7 +82,7 @@
                     "int"
                 ],
                 "path": "",
-                "returns": "void",
+                "qualifiers": [],
                 "scopes": [],
                 "tag": "Function"
             }
@@ -84,7 +96,7 @@
                     "int"
                 ],
                 "path": "",
-                "returns": "void",
+                "qualifiers": [],
                 "scopes": [],
                 "tag": "Function"
             }
@@ -96,7 +108,7 @@
                 "localname": "maybe",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [],
                 "tag": null
             }
@@ -108,9 +120,86 @@
                 "localname": "pear",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [],
                 "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "QQ",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "scopes": [
+                    "Q"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "getDouble",
+                "params": [],
+                "path": "",
+                "qualifiers": [
+                    {
+                        "tag": "Const"
+                    },
+                    {
+                        "contents": "LValue",
+                        "tag": "RefQual"
+                    }
+                ],
+                "scopes": [
+                    "Q",
+                    "QQ"
+                ],
+                "tag": "Function"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "getDouble",
+                "params": [],
+                "path": "",
+                "qualifiers": [
+                    {
+                        "contents": "LValue",
+                        "tag": "RefQual"
+                    }
+                ],
+                "scopes": [
+                    "Q",
+                    "QQ"
+                ],
+                "tag": "Function"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "getDouble",
+                "params": [],
+                "path": "",
+                "qualifiers": [
+                    {
+                        "contents": "RValue",
+                        "tag": "RefQual"
+                    }
+                ],
+                "scopes": [
+                    "Q",
+                    "QQ"
+                ],
+                "tag": "Function"
             }
         },
         {
@@ -120,7 +209,7 @@
                 "localname": "U",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "baz"
                 ],
@@ -134,7 +223,7 @@
                 "localname": "InU",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "baz",
                     "U"
@@ -149,7 +238,7 @@
                 "localname": "InUClass",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "baz",
                     "U"
@@ -164,7 +253,7 @@
                 "localname": null,
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "d"
                 ],
@@ -182,7 +271,7 @@
                     "const char *"
                 ],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "d"
                 ],
@@ -198,7 +287,7 @@
                     "const char *"
                 ],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "d"
                 ],
@@ -215,7 +304,7 @@
                     "void (*)()"
                 ],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "d"
                 ],
@@ -231,7 +320,7 @@
                     "const d &"
                 ],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "d"
                 ],
@@ -248,7 +337,7 @@
                     "char"
                 ],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "d"
                 ],
@@ -262,7 +351,7 @@
                 "localname": "",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "d"
                 ],
@@ -276,7 +365,7 @@
                 "localname": "c",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "d"
                 ],
@@ -290,7 +379,7 @@
                 "localname": "cp",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "d"
                 ],
@@ -304,7 +393,7 @@
                 "localname": "i",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "d"
                 ],
@@ -318,7 +407,7 @@
                 "localname": "i",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "d"
                 ],
@@ -332,7 +421,7 @@
                 "localname": "p",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "d"
                 ],
@@ -346,7 +435,7 @@
                 "localname": "val",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "d"
                 ],
@@ -360,7 +449,7 @@
                 "localname": "S",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "foo"
                 ],
@@ -374,7 +463,7 @@
                 "localname": "bar",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "foo"
                 ],
@@ -388,7 +477,7 @@
                 "localname": "f",
                 "params": [],
                 "path": "",
-                "returns": "void",
+                "qualifiers": [],
                 "scopes": [
                     "foo"
                 ],
@@ -402,7 +491,7 @@
                 "localname": "foo",
                 "params": [],
                 "path": "",
-                "returns": "void",
+                "qualifiers": [],
                 "scopes": [
                     "foo"
                 ],
@@ -416,7 +505,7 @@
                 "localname": "foo",
                 "params": [],
                 "path": "",
-                "returns": "void",
+                "qualifiers": [],
                 "scopes": [
                     "foo"
                 ],
@@ -432,7 +521,7 @@
                     "int"
                 ],
                 "path": "",
-                "returns": "int",
+                "qualifiers": [],
                 "scopes": [
                     "foo"
                 ],
@@ -446,7 +535,7 @@
                 "localname": "TypedefDeclInteger",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "foo",
                     "S"
@@ -461,7 +550,7 @@
                 "localname": "UsingDeclInteger",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "foo",
                     "S"
@@ -476,7 +565,7 @@
                 "localname": "T",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "foo",
                     "bar"
@@ -491,7 +580,7 @@
                 "localname": "TypedefDeclShort",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "foo",
                     "bar"
@@ -506,7 +595,7 @@
                 "localname": "UsingDeclShort",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "foo",
                     "bar"
@@ -521,7 +610,7 @@
                 "localname": "g",
                 "params": [],
                 "path": "",
-                "returns": "void",
+                "qualifiers": [],
                 "scopes": [
                     "foo",
                     "bar"
@@ -536,7 +625,7 @@
                 "localname": "memberVariableDecl",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "foo",
                     "bar",
@@ -552,7 +641,7 @@
                 "localname": "four",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "foo",
                     "foo"
@@ -567,7 +656,7 @@
                 "localname": "fooI",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "foo",
                     "fooFn"
@@ -582,7 +671,7 @@
                 "localname": "_i",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "h"
                 ],
@@ -596,7 +685,7 @@
                 "localname": "i",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "h"
                 ],
@@ -610,7 +699,7 @@
                 "localname": "s",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "h"
                 ],
@@ -624,7 +713,7 @@
                 "localname": "t",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "h"
                 ],
@@ -638,7 +727,7 @@
                 "localname": "Nothing",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "maybe"
                 ],
@@ -652,7 +741,7 @@
                 "localname": "Something",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "maybe"
                 ],
@@ -666,7 +755,7 @@
                 "localname": "nothing",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "maybe"
                 ],
@@ -682,7 +771,7 @@
                     "maybe::Nothing::_secret"
                 ],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "maybe",
                     "Nothing"
@@ -697,7 +786,7 @@
                 "localname": "",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "maybe",
                     "Nothing"
@@ -712,7 +801,7 @@
                 "localname": "_secret",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "maybe",
                     "Nothing"
@@ -727,7 +816,7 @@
                 "localname": "_magic",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "maybe",
                     "Nothing",
@@ -745,7 +834,7 @@
                     "int"
                 ],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "maybe",
                     "Something"
@@ -760,7 +849,7 @@
                 "localname": null,
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "maybe",
                     "Something"
@@ -775,7 +864,7 @@
                 "localname": "a",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "maybe",
                     "Something"
@@ -790,7 +879,7 @@
                 "localname": "a_",
                 "params": [],
                 "path": "",
-                "returns": null,
+                "qualifiers": [],
                 "scopes": [
                     "maybe",
                     "Something"

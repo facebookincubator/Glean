@@ -21,27 +21,27 @@
             "range": {
                 "columnBegin": 1,
                 "columnEnd": 2,
-                "lineBegin": 54,
-                "lineEnd": 62
+                "lineBegin": 45,
+                "lineEnd": 47
             },
             "repository": "test"
         },
         "modifiers": [],
         "name": {
-            "container": "",
-            "localName": "h"
+            "container": "foo",
+            "localName": "fooFn"
         },
         "pretty_comments": [],
         "repo_hash": "testhash",
-        "signature": "void ::h(int i)",
-        "sym": "test/cpp//h",
+        "signature": "int foo::fooFn(int fooI)",
+        "sym": "test/cpp//foo/fooFn/.f/int",
         "sym_location": {
             "filepath": "test.cpp",
             "range": {
                 "columnBegin": 1,
                 "columnEnd": 2,
-                "lineBegin": 54,
-                "lineEnd": 62
+                "lineBegin": 45,
+                "lineEnd": 47
             },
             "repository": "test"
         },

@@ -49,6 +49,19 @@ predicate LookupFunctionSignatureDefinition:
     LookupFunctionSignatureDeclaration { Name, Scope, Sig, Decl };
     DefinitionOfDecl { Decl, Defn }
 
+# Like LookupFunctionDefinition but take an additional signature term
+predicate LookupFunctionSignatureQualifierDefinition:
+  {
+    name : cxx1.FunctionName,
+    scope : cxx1.Scope,
+    signature : cxx1.Signature,
+    qualifiers : maybe cxx1.MethodSignature,
+    entity : code.cxx.Entity
+  }
+  { Name, Scope, Sig, Quals, Defn } where
+    LookupFunctionSignatureQualifierDeclaration {Name, Scope, Sig, Quals, Decl};
+    DefinitionOfDecl { Decl, Defn }
+
 predicate LookupNamespaceDefinition:
   {
     name : maybe cxx1.Name,
@@ -120,6 +133,26 @@ predicate LookupFunctionSignatureDeclaration:
   { Name, Scope, Sig, Decl } where
     FQN = cxx1.FunctionQName { Name, Scope };
     ( D = cxx1.FunctionDeclaration { name = FQN, signature = Sig };
+      { function_ = D }
+    ) = Decl
+
+#
+# Like LookupFunctionSignature Declaration but you can provide a set of
+# method qualifiers (e.g. cv or ref qualifiers) to help choose between even
+# more overloaded things
+#
+predicate LookupFunctionSignatureQualifierDeclaration:
+  {
+    name : cxx1.FunctionName,
+    scope : cxx1.Scope,
+    signature : cxx1.Signature,
+    qualifiers : maybe cxx1.MethodSignature,
+    decl : cxx1.Declaration
+  }
+  { Name, Scope, Sig, Quals, Decl } where
+    FQN = cxx1.FunctionQName { Name, Scope };
+    ( D = cxx1.FunctionDeclaration
+            { name = FQN, signature = Sig, method = Quals };
       { function_ = D }
     ) = Decl
 

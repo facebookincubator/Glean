@@ -2,6 +2,25 @@
   "@generated",
   {
     "key": {
+      "name": { "key": "Q" },
+      "decl": {
+        "namespace_": {
+          "key": {
+            "name": { "key": { "name": { "key": "Q" } } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 129,
+              "columnBegin": 1,
+              "lineEnd": 137,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "name": { "key": "bar" },
       "parent": { "key": { "name": { "key": "foo" } } },
       "decl": {

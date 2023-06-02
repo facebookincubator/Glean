@@ -82,7 +82,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "sym": "test/cpp//foo/foo/.f/void",
+                "sym": "test/cpp//foo/foo/.f/",
                 "sym_location": {
                     "filepath": "test.cpp",
                     "range": {
@@ -142,7 +142,7 @@
                 "score": {
                     "exactness": 0
                 },
-                "symbol": "test/cpp//foo/foo/.f/void"
+                "symbol": "test/cpp//foo/foo/.f/"
             }
         ]
     }

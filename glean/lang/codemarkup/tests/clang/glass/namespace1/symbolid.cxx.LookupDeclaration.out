@@ -361,6 +361,32 @@
   },
   {
     "key": {
+      "name": { "key": "QQ" },
+      "scope": { "namespace_": { "key": { "name": { "key": "Q" } } } },
+      "decl": {
+        "record_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "QQ" },
+                "scope": { "namespace_": { "key": { "name": { "key": "Q" } } } }
+              }
+            },
+            "kind": { "struct_": { } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 131,
+              "columnBegin": 3,
+              "lineEnd": 135,
+              "columnEnd": 3
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "name": { "key": "S" },
       "scope": { "namespace_": { "key": { "name": { "key": "foo" } } } },
       "decl": {

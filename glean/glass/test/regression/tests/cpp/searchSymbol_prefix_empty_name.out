@@ -237,6 +237,52 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
+                        "lineBegin": 129,
+                        "lineEnd": 137
+                    },
+                    "repository": "test"
+                },
+                "name": "Q",
+                "qname": {
+                    "container": "",
+                    "localName": "Q"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//Q"
+            },
+            {
+                "kind": 25,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 131,
+                        "lineEnd": 135
+                    },
+                    "repository": "test"
+                },
+                "name": "QQ",
+                "qname": {
+                    "container": "Q",
+                    "localName": "QQ"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//Q/QQ"
+            },
+            {
+                "kind": 6,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
                         "lineBegin": 90,
                         "lineEnd": 97
                     },
@@ -637,7 +683,7 @@
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/cpp//foo/foo/.f/void"
+                "symbol": "test/cpp//foo/foo/.f/"
             },
             {
                 "kind": 14,
@@ -655,12 +701,12 @@
                 "name": "fooFn",
                 "qname": {
                     "container": "foo",
-                    "localName": "fooFn(int)"
+                    "localName": "fooFn"
                 },
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/cpp//foo/fooFn/.f/int,int"
+                "symbol": "test/cpp//foo/fooFn/.f/int"
             },
             {
                 "kind": 14,
@@ -678,12 +724,12 @@
                 "name": "h",
                 "qname": {
                     "container": "",
-                    "localName": "h(int)"
+                    "localName": "h"
                 },
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/cpp//h/.f/int,void"
+                "symbol": "test/cpp//h/.f/int"
             },
             {
                 "kind": 6,
