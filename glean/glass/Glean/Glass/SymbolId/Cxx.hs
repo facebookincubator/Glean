@@ -540,9 +540,16 @@ sigOf ps = case ps of
 --
 functionSignatureQName :: [Text] -> [Text] -> Either Text (Name, Name)
 functionSignatureQName [] _ = Left "functionSignatureQName: empty function name"
-functionSignatureQName prefix _ps = Right (Name localname, Name scopename)
+functionSignatureQName _ [] = Left "functionSignatureQName: empty signature"
+functionSignatureQName prefix ps = Right (Name localname, Name scopename)
   where
-    localname = name {- not sure we want rtypes in function names -}
+    params = denormalize <$> sigOf ps
+
+    localname = name <> case init <$> params of
+      Nothing -> ""
+      Just [] -> ""
+      Just tys -> "(" <> Text.intercalate ", " tys <> ")"
+
     scopename = intercalate "::" scope
 
     (scope, name) = case prefix of
@@ -550,11 +557,11 @@ functionSignatureQName prefix _ps = Right (Name localname, Name scopename)
       _ -> (init prefix, last prefix)
 
 formatParams :: Maybe Text -> Text
-formatParams params = "(" <> maybe "" denormalize params <> ")"
+formatParams params =
+  "(" <> maybe "" (Text.intercalate ", " . denormalize) params <> ")"
 
-denormalize :: Text -> Text
+denormalize :: Text -> [Text]
 denormalize =
-      intercalate ", "
-    . map (Text.replace "+" " " .
+      map (Text.replace "+" " " .
             Text.replace " " ",")
     . Text.splitOn ","

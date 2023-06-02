@@ -1967,7 +1967,7 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "fooFn"
+                            "aString": "fooFn(int)"
                         },
                         "key": "symbolName"
                     },
@@ -2073,7 +2073,7 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "h"
+                            "aString": "h(int)"
                         },
                         "key": "symbolName"
                     },
@@ -2126,7 +2126,7 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "h"
+                            "aString": "h(int)"
                         },
                         "key": "symbolName"
                     },
@@ -4245,7 +4245,7 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "h"
+                            "aString": "h(int)"
                         },
                         "key": "symbolName"
                     },
@@ -4308,7 +4308,7 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "h"
+                            "aString": "h(int)"
                         },
                         "key": "symbolName"
                     },
@@ -4371,7 +4371,7 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "h"
+                            "aString": "h(int)"
                         },
                         "key": "symbolName"
                     },
@@ -4434,7 +4434,7 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "h"
+                            "aString": "h(int)"
                         },
                         "key": "symbolName"
                     },
