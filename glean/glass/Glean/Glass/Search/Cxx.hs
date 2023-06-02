@@ -223,14 +223,13 @@ lookupCTorSignatureDefinition
 lookupCTorSignatureDefinition anchor ns params =
   vars $ \(entity :: Angle Cxx.Entity) (codeEntity :: Angle Code.Entity)
      (file :: Angle Src.File) (rangespan :: Angle Code.RangeSpan)
-      (asig :: Angle Cxx.Signature) (lname :: Angle Text) ->
+      (lname :: Angle Text) ->
     tuple (entity, file, rangespan, lname) `where_` ([
-      asig .= paramTypesQ params,
       wild .= predicate @SymbolId.LookupFunctionSignatureDefinition (
         rec $
           field @"name" (alt @"constructor" wild) $ -- either @alt ctor or dtor
           field @"scope" (scopeQ (reverse ns)) $
-          field @"signature" (asPredicate asig) $
+          field @"signature" (asPredicate (paramTypesQ params)) $
           field @"entity" entity
         end)
       ] <> entityFooter anchor entity codeEntity file rangespan lname)
@@ -240,15 +239,14 @@ lookupCTorSignatureDeclaration
 lookupCTorSignatureDeclaration anchor ns params =
   vars $ \(decl :: Angle Cxx.Declaration)  (entity :: Angle Cxx.Entity)
       (codeEntity :: Angle Code.Entity) (file :: Angle Src.File)
-        (asig :: Angle Cxx.Signature) (rangespan :: Angle Code.RangeSpan)
+        (rangespan :: Angle Code.RangeSpan)
         (lname :: Angle Text) ->
     tuple (entity, file, rangespan, lname) `where_` ([
-      asig .= paramTypesQ params,
       wild .= predicate @SymbolId.LookupFunctionSignatureDeclaration (
         rec $
           field @"name" (alt @"constructor" wild) $ -- either @alt ctor or dtor
           field @"scope" (scopeQ (reverse ns)) $
-          field @"signature" (asPredicate asig) $
+          field @"signature" (asPredicate (paramTypesQ params)) $
           field @"decl" decl
         end)
       ] <> entityDeclFooter anchor decl entity codeEntity file rangespan lname)
