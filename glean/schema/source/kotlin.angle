@@ -38,6 +38,18 @@ predicate MethodDeclaration :
     parameters : [VariableDeclaration],
     returnType : Type,
     loc : src.Loc,
+    container: maybe Declaration
+  }
+
+ type Declaration = {
+  class_ : ClassDeclaration |
+  # More to be added later
+}
+ predicate ClassDeclaration :
+  {
+    name : javakotlin.alpha.QName,
+    implements_ : [javakotlin.alpha.QName],
+    location : DeclarationLocation,
   }
 
 }
