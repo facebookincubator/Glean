@@ -22,6 +22,7 @@ import org.jetbrains.kotlin.descriptors.buildPossiblyInnerType
 import org.jetbrains.kotlin.descriptors.containingPackage
 import org.jetbrains.kotlin.js.descriptorUtils.getJetTypeFqName
 import org.jetbrains.kotlin.js.descriptorUtils.nameIfStandardType
+import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.types.KotlinType
 import org.jetbrains.kotlin.types.isFlexible
 import org.jetbrains.kotlin.types.typeUtil.constituentTypes
@@ -33,6 +34,10 @@ import org.jetbrains.kotlin.types.typeUtil.isTypeParameter
 import org.jetbrains.kotlin.types.typeUtil.isUnit
 import org.jetbrains.kotlin.types.typeUtil.replaceAnnotations
 import org.jetbrains.kotlin.types.upperIfFlexible
+
+fun KtClass.qualifiedName(): QName? {
+  return this.fqName?.pathSegments()?.map { segment -> segment.toString() }?.joinPath()?.toQName()
+}
 
 fun ParameterDescriptor.qualifiedName(): QName {
   val methodDecl = this.containingDeclaration

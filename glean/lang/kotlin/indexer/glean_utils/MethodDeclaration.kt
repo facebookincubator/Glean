@@ -8,10 +8,12 @@
 
 package glean.lang.kotlin.indexer.glean_utils
 
+import com.facebook.glean.schema.kotlin_alpha.Declaration
 import com.facebook.glean.schema.kotlin_alpha.MethodDeclaration
 import com.facebook.glean.schema.kotlin_alpha.MethodDeclarationKey
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.descriptors.FunctionDescriptor
+import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.bindingContextUtil.getAbbreviatedTypeOrType
@@ -33,6 +35,13 @@ fun buildMethodDeclaration(
   val keyBuilder = MethodDeclarationKey.Builder()
   (function as? PsiElement)?.let {
     keyBuilder.loc = buildLoc(it)
+  }
+
+  val ktClassBody = function.parent
+  val parentClass = ktClassBody?.parent as? KtClass
+  if (parentClass != null) {
+    keyBuilder.container =
+        Declaration.fromClass_(buildClassDeclaration(parentClass, bindingContext))
   }
 
   val funcDescriptor =
