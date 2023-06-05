@@ -16,8 +16,8 @@ import java.io.FileOutputStream
 import java.io.OutputStream
 
 class Predicates {
-  private val KOTLIN_SCHEMA_VERSION = 6
-  private val KOTLIN_SCHEMA_NAME = "kotlin_alpha"
+  private val KOTLIN_SCHEMA_VERSION = 1
+  private val KOTLIN_SCHEMA_NAME = "kotlin.alpha"
   private val METHOD_DECLARATION_PREDICATE_NAME =
       "$KOTLIN_SCHEMA_NAME.MethodDeclaration.$KOTLIN_SCHEMA_VERSION"
 
@@ -31,20 +31,25 @@ class Predicates {
     list.add(value)
   }
 
-  fun serialize(outputPath: String) {
-    val out = FileOutputStream(outputPath)
-    out.write("[".toByteArray())
-    var first = true
-    for ((type, name) in predicateNames) {
-      val predicates = predicatesMap[type] ?: continue
-      if (!first) {
-        out.write(",".toByteArray())
-      }
-      first = false
+  fun OutputStream.writeBites(text: String) {
+    write(text.toByteArray())
+  }
 
-      serializePredicate(out, predicates as List<ThriftSerializable>, name)
+  fun serialize(outputPath: String) {
+    with(FileOutputStream(outputPath)) {
+      writeBites("[")
+      var first = true
+      for ((type, name) in predicateNames) {
+        val predicates = predicatesMap[type] ?: continue
+        if (!first) {
+          writeBites(",")
+        }
+        first = false
+
+        serializePredicate(this, predicates as List<ThriftSerializable>, name)
+      }
+      writeBites("]")
     }
-    out.write("]".toByteArray())
   }
 
   private fun serializePredicate(
@@ -52,21 +57,23 @@ class Predicates {
       predicates: List<ThriftSerializable>,
       name: String
   ) {
-    out.write("{".toByteArray())
-    out.write("\"predicate\": \"$name\", ".toByteArray())
-    out.write("\"facts\": ".toByteArray())
+    with(out) {
+      writeBites("{")
+      writeBites("\"predicate\":\"$name\",")
+      writeBites("\"facts\":")
 
-    out.write("[".toByteArray())
-    // writing only last method for now
-    predicates.forEachIndexed { index: Int, element: ThriftSerializable ->
-      run {
-        if (index > 0) {
-          out.write(",".toByteArray())
+      writeBites("[")
+      // writing only last method for now
+      predicates.forEachIndexed { index: Int, element: ThriftSerializable ->
+        run {
+          if (index > 0) {
+            writeBites(",")
+          }
+          SerializerUtil.toOutStream(element, out, SerializationProtocol.TSimpleJSONBase64)
         }
-        SerializerUtil.toOutStream(element, out, SerializationProtocol.TSimpleJSONBase64)
       }
+      writeBites("]")
+      writeBites("}")
     }
-    out.write("]".toByteArray())
-    out.write("}".toByteArray())
   }
 }
