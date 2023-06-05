@@ -1580,14 +1580,40 @@ searchRelated env@Glass.Env{..} sym opts@RequestOptions{..}
           ([(RelatedLocatedEntities, Maybe [LocationRange])], Maybe ErrorLogger)
     searchRelatedCalls RelationDirection__UNKNOWN{} _ _ = error "unreachable"
     -- Incoming calls, mapping a symbol to all its callers symbols.
+    searchRelatedCalls RelationDirection_Parent child Language_Cpp = do
+      -- For C++ we use a more efficient predicate, albeit without call sites
+      let SearchEntity{entityRepo, decl, file, name, rangespan} = child
+      case entityToAngle decl of
+        Left err -> do
+          repo <- Glean.haxlRepo
+          return ([], Just (logError (GlassExceptionReason_entityNotSupported err)
+                    <> logError repo)
+            )
+        Right query -> do
+          let childRL = ((decl, file, rangespan, name), sym)
+              limit = fromIntegral <$> requestOptions_limit
+              repo = RepoName (Glean.repo_name entityRepo)
+          results <- searchWithLimit limit $
+            Query.findReferenceEntitiesFast query
+          callers <- forM results $ \(entity, loc) -> do
+            let path = Code.location_file loc
+            gleanPath <- GleanPath <$> Glean.keyOf path
+            symbol <- toSymbolId (fromGleanPath repo gleanPath) entity
+            let name = Code.location_name loc
+                range = Code.location_location loc
+                parentRL = ((entity, path, range, name), symbol)
+            return Search.RelatedLocatedEntities{..}
+          return ((,Nothing) <$> callers, Nothing)
+
     searchRelatedCalls RelationDirection_Parent child _ = do
         let SearchEntity{entityRepo, decl, file, name, rangespan} = child
-        repo <- Glean.haxlRepo
         case entityToAngle decl of
-          Left err -> return
-            ([], Just (logError (GlassExceptionReason_entityNotSupported err)
+          Left err -> do
+            repo <- Glean.haxlRepo
+            return
+              ([], Just (logError (GlassExceptionReason_entityNotSupported err)
                       <> logError repo)
-            )
+              )
           Right query -> do
             let childRL = ((decl, file, rangespan, name), sym)
                 -- limit until we optimize the query to use DeclarationSource

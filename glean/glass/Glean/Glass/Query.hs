@@ -23,6 +23,7 @@ module Glean.Glass.Query
 
   -- * Finding references for call hierarchy
   , findReferenceEntities
+  , findReferenceEntitiesFast
 
   -- * offsets and conversions to lines
   , fileLines
@@ -176,6 +177,8 @@ findReferenceRangeSpan ent =
 
 -- | Entity-based find-references for call hierarchy.
 --   Returns referencing entities with their location, and the call site
+--   Beware: O(NM) on the number of referencing entites
+--           and the xrefs in their source files
 findReferenceEntities
   :: Angle Code.Entity
   -> Angle (Src.File, Code.Entity, Code.Location, Code.RangeSpan)
@@ -208,6 +211,25 @@ findReferenceEntities ent =
         end
     )
     ]
+
+-- | Like 'findReferenceEntities' but faster
+--   Available only for fbsource and www.hack
+--   Does not return call site locations
+findReferenceEntitiesFast
+  :: Angle Code.Entity -> Angle (Code.Entity, Code.Location)
+findReferenceEntitiesFast target =
+  vars $ \(caller :: Angle Code.Entity) (location :: Angle Code.Location) ->
+    Angle.tuple (caller, location) `where_`
+      [ wild .= predicate @Code.EntitySource (rec $
+          field @"target" target $
+          field @"source" caller
+          end)
+      , wild .= predicate @Code.EntityLocation (rec $
+          field @"entity" caller $
+          field @"location" location
+          end)
+      ]
+
 --
 -- Finding entities by name search
 --
