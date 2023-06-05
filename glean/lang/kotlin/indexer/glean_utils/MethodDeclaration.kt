@@ -31,8 +31,8 @@ fun buildMethodDeclaration(
     bindingContext: BindingContext
 ): MethodDeclaration {
   val keyBuilder = MethodDeclarationKey.Builder()
-  if (function.contractDescription != null) {
-    keyBuilder.loc = buildLoc(function.contractDescription!!.psiOrParent as PsiElement)
+  (function as? PsiElement)?.let {
+    keyBuilder.loc = buildLoc(it)
   }
 
   val funcDescriptor =
