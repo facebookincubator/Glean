@@ -47,7 +47,7 @@ import Glean.Query.Thrift
 import Glean.Types
 import Glean.Typed
 
-#ifdef FACEBOOK
+#ifdef GLEAN_FACEBOOK
 #define MIN_VERSION_haxl(a,b,c) 1
 #endif
 

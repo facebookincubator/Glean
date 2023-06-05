@@ -24,7 +24,7 @@ import qualified Glean.Indexer.Cpp as Cpp
 import qualified Glean.Indexer.External as External
 import qualified Glean.Indexer.Flow as Flow
 import qualified Glean.Indexer.Hack as Hack
-#ifdef FACEBOOK
+#ifdef GLEAN_FACEBOOK
 import qualified Glean.Indexer.Python as Python
 import qualified Glean.Indexer.Buck as Buck
 #endif
@@ -45,7 +45,7 @@ indexers =
   , SomeIndexer External.externalIndexer
   , SomeIndexer Flow.indexer
   , SomeIndexer Hack.indexer
-#ifdef FACEBOOK
+#ifdef GLEAN_FACEBOOK
   , SomeIndexer Python.indexer
   , SomeIndexer Buck.indexer
 #endif

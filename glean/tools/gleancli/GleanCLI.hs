@@ -64,7 +64,7 @@ import GleanCLI.Query
 import GleanCLI.Types
 import GleanCLI.Write
 
-#if FACEBOOK
+#if GLEAN_FACEBOOK
 import GleanCLI.Facebook
 import qualified Glean.Database.Backup.Manifold as Manifold
 #endif
@@ -107,7 +107,7 @@ plugins =
   , plugin @CompleteCommand
   , plugin @IndexCommand
   , plugin @ScriptCommand
-#if FACEBOOK
+#if GLEAN_FACEBOOK
   , plugin @FacebookPlugin
 #endif
   ]
@@ -153,7 +153,7 @@ main =
 
 withRemoteBackups :: EventBaseDataplane -> Glean.Service -> Glean.Service
 withRemoteBackups _evb svc = case svc of
-#if FACEBOOK
+#if GLEAN_FACEBOOK
   Glean.Local cfg log -> Glean.Local (Manifold.withManifoldBackups _evb cfg) log
 #endif
   _other -> svc

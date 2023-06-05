@@ -27,7 +27,7 @@ import Control.Monad ( when, void, unless )
 import Data.HashSet (HashSet, toList)
 import qualified Data.HashSet as HashSet
 import Data.List (sort)
-#if FACEBOOK
+#if GLEAN_FACEBOOK
 import Data.Maybe
 #endif
 import qualified Data.Set as Set
@@ -36,7 +36,7 @@ import Glean.Backend.Types (dbShard)
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Catalog.Filter as Catalog
 import Glean.Database.Types ( Env(..) )
-#if FACEBOOK
+#if GLEAN_FACEBOOK
 import Glean.Impl.ShardManager
 #endif
 import Glean.Server.Config (Config, cfgPort, cfgPublishShards)
@@ -86,7 +86,7 @@ shardManagerConfig _mbPort catalog smCfgServerConfig callback = do
                       ServerConfig.staticShardsPolicy_shards assignment
               _ ->
                 return Nothing
-#if FACEBOOK
+#if GLEAN_FACEBOOK
     ServerConfig.ShardingPolicy_shard_manager policy -> do
       let smCliArgs = ShardManagerClientArgs
             { serviceName = ServerConfig.shardManagerPolicy_service_name policy

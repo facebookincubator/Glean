@@ -17,7 +17,7 @@
 
 #include <folly/Optional.h>
 
-#if FACEBOOK
+#if GLEAN_FACEBOOK
 namespace facebook::logger {
   class GleanClangIndexerLogger;
 }
@@ -27,7 +27,7 @@ namespace facebook {
 namespace glean {
 namespace clangx {
 
-#if FACEBOOK
+#if GLEAN_FACEBOOK
 using Logger = facebook::logger::GleanClangIndexerLogger;
 #else
 class Logger {

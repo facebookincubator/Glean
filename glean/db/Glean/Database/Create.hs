@@ -26,7 +26,7 @@ import qualified Data.UUID as Guid ( toText )
 import qualified Data.UUID.V4 as Guid ( nextRandom )
 import TextShow
 
-#ifdef FACEBOOK
+#ifdef GLEAN_FACEBOOK
 import Facebook.Process
 #endif
 import Util.Defer
@@ -286,7 +286,7 @@ serverProperties = return (HashMap.fromList rev)
 
 facebookServerProperties :: IO DatabaseProperties
 facebookServerProperties = do
-#if FACEBOOK
+#if GLEAN_FACEBOOK
   twJob <- getTupperwareJob
   return $ HashMap.fromList
     (case twJob of

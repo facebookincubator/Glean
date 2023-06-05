@@ -15,7 +15,7 @@
 #include <rocksdb/table.h>
 #include <rocksdb/statistics.h>
 
-#ifdef FACEBOOK
+#ifdef GLEAN_FACEBOOK
 #include "glean/facebook/rocksdb/rocksdb.h"
 #endif
 

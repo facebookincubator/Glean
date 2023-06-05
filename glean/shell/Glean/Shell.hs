@@ -89,7 +89,7 @@ import Glean.Shell.Terminal
 import Glean.Shell.Types
 import Glean.Shell.Error (Ann, BadQuery(..), prettyBadQuery)
 import qualified Glean.Types as Thrift
-#if FACEBOOK
+#if GLEAN_FACEBOOK
 import Glean.Util.CxxXRef
 #endif
 import Glean.Util.Service
@@ -600,7 +600,7 @@ fromJSONQuery (JSONQuery ide deprecatedRec stored pat) = do
     -- debugging of xref issues easier by presenting xref data in an
     -- easier-to-comprehend format.
     (pred, trans)
-#if FACEBOOK
+#if GLEAN_FACEBOOK
       | ide == "xrefs" = ("cxx1.FileXRefs", Just transformXRefs)
 #endif
       | otherwise = (ide, Nothing)

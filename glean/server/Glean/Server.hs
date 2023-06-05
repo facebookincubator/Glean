@@ -23,13 +23,13 @@ import Util.EventBase
 import Util.Log
 import Util.STM
 
-#if FACEBOOK
+#if GLEAN_FACEBOOK
 import Logger.IO
 import Glean.Facebook.Logger.Server
 import Glean.Facebook.Logger.Database
 #endif
 
-#ifdef FACEBOOK
+#ifdef GLEAN_FACEBOOK
 import qualified Glean.Database.Backup.Manifold as Manifold
 #endif
 
@@ -53,18 +53,18 @@ main =
   withConfigOptions (O.info options O.fullDesc) $ \(cfg0, cfgOpts) ->
   withEventBaseDataplane $ \evb ->
   withConfigProvider cfgOpts $ \(configAPI :: ConfigAPI) ->
-#if FACEBOOK
+#if GLEAN_FACEBOOK
   withLogger configAPI $ \logger ->
 #endif
   let dbCfg = (cfgDBConfig cfg0){
         cfgShardManager = shardManagerConfig (cfgPort cfg)
-#if FACEBOOK
+#if GLEAN_FACEBOOK
         , cfgServerLogger = Some (GleanServerFacebookLogger logger)
         , cfgDatabaseLogger = Some (GleanDatabaseFacebookLogger logger)
 #endif
       }
 
-#if FACEBOOK
+#if GLEAN_FACEBOOK
       cfg = cfg0{cfgDBConfig = Manifold.withManifoldBackups evb dbCfg}
 #else
       cfg = cfg0{cfgDBConfig = dbCfg}

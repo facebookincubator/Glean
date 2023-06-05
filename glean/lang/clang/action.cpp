@@ -8,7 +8,7 @@
 
 #include "glean/lang/clang/action.h"
 
-#if FACEBOOK
+#if GLEAN_FACEBOOK
 #include "glean/facebook/lang/clang/logger.h"
 #include "common/fbwhoami/FbWhoAmI.h"
 #else
@@ -33,7 +33,7 @@ ActionLogger::ActionLogger(const std::string& name,
   enabled = log;
   if (enabled) {
     (*logger)
-#if FACEBOOK
+#if GLEAN_FACEBOOK
       .setClusterRegion(facebook::FbWhoAmI::getRegion())
 #endif
       .setTask(task)
