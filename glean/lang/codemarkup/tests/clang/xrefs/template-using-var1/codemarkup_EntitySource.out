@@ -1,0 +1,369 @@
+[
+  "@generated",
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "foo" },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                },
+                "type": { "key": "const int" },
+                "kind": {
+                  "global_": { "kind": 0, "attribute": 2, "definition": true }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 11,
+                  "columnBegin": 22,
+                  "lineEnd": 11,
+                  "columnEnd": 42
+                }
+              }
+            }
+          }
+        }
+      },
+      "source": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "g" } } },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N2" } } }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 21,
+                  "columnBegin": 1,
+                  "lineEnd": 26,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "foo" },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                },
+                "type": { "key": "const int" },
+                "kind": {
+                  "global_": { "kind": 0, "attribute": 2, "definition": true }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 11,
+                  "columnBegin": 22,
+                  "lineEnd": 11,
+                  "columnEnd": 42
+                }
+              }
+            }
+          }
+        }
+      },
+      "source": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "g" } } },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N3" } } }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 33,
+                  "columnBegin": 1,
+                  "lineEnd": 38,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "foo" },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                },
+                "type": { "key": "const int" },
+                "kind": {
+                  "global_": { "kind": 0, "attribute": 2, "definition": true }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 12,
+                  "columnBegin": 1,
+                  "lineEnd": 12,
+                  "columnEnd": 46
+                }
+              }
+            }
+          }
+        }
+      },
+      "source": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "g" } } },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N2" } } }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 21,
+                  "columnBegin": 1,
+                  "lineEnd": 26,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "foo" },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                },
+                "type": { "key": "const int" },
+                "kind": {
+                  "global_": { "kind": 0, "attribute": 2, "definition": true }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 12,
+                  "columnBegin": 1,
+                  "lineEnd": 12,
+                  "columnEnd": 46
+                }
+              }
+            }
+          }
+        }
+      },
+      "source": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "g" } } },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N3" } } }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 33,
+                  "columnBegin": 1,
+                  "lineEnd": 38,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "foo" },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                },
+                "type": { "key": "const int" },
+                "kind": {
+                  "global_": { "kind": 0, "attribute": 2, "definition": true }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 13,
+                  "columnBegin": 1,
+                  "lineEnd": 13,
+                  "columnEnd": 38
+                }
+              }
+            }
+          }
+        }
+      },
+      "source": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "g" } } },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N2" } } }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 21,
+                  "columnBegin": 1,
+                  "lineEnd": 26,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "foo" },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                },
+                "type": { "key": "const int" },
+                "kind": {
+                  "global_": { "kind": 0, "attribute": 2, "definition": true }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 13,
+                  "columnBegin": 1,
+                  "lineEnd": 13,
+                  "columnEnd": 38
+                }
+              }
+            }
+          }
+        }
+      },
+      "source": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "g" } } },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N3" } } }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 33,
+                  "columnBegin": 1,
+                  "lineEnd": 38,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

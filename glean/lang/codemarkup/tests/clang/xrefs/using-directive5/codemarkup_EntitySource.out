@@ -1,0 +1,72 @@
+[
+  "@generated",
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "defn": {
+            "record_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "T" },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "N1" } } }
+                        }
+                      }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 11,
+                      "columnBegin": 1,
+                      "lineEnd": 11,
+                      "columnEnd": 11
+                    }
+                  }
+                },
+                "bases": [ ],
+                "members": { "key": [ ] }
+              }
+            }
+          }
+        }
+      },
+      "source": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "foo" } } },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "N21" },
+                          "parent": { "key": { "name": { "key": "N2" } } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 22,
+                  "columnBegin": 1,
+                  "lineEnd": 24,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

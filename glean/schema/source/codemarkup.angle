@@ -332,6 +332,24 @@ predicate ReferencingEntity :
     { location = RSpan } = RLocation;
     codemarkup.types.RangeSpanContains { RSpan, Span }
 
+# Lookup entities referring to the given target
+# Less general version of ReferencingEntity that omits the reference range
+predicate EntitySource:
+  {
+    target: code.Entity,
+    source: code.Entity,
+  }
+  { Target, Referrer} where
+    ( {cxx = CxxTarget} = Target ;
+      codemarkup.cxx.CxxEntitySource { CxxTarget, CxxReferrer};
+      {cxx = CxxReferrer} = Referrer
+    ) | (
+      {hack = HackTarget} = Target ;
+      codemarkup.hack.HackEntitySource { HackTarget, HackReferrer};
+      {hack = HackReferrer} = Referrer
+
+    )
+
 
 #
 # Annotations

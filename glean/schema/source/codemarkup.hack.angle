@@ -603,4 +603,12 @@ predicate ConvertStaticType :
      nothing,
      nothing
   }
+
+predicate HackEntitySource:
+  {
+    target: code.hack.Entity,
+    source: code.hack.Entity,
+  }
+  { {decl=Decl}, {decl=Source}} where
+    hack.DeclarationSource { Decl, Source };
 }

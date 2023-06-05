@@ -792,4 +792,28 @@ predicate CxxEntityUSR :
       cxx1.DeclFamilyOf { Decl, DeclFam };
       cxx1.DeclarationToUSR { DeclFam, U };
     )
+
+predicate CxxDeclarationSource:
+  {
+    target: cxx1.Declaration,
+    referrer: code.cxx.Entity,
+  }
+  { Target, Referrer} where
+    cxx1.DeclarationSources { target = Target, sources = Sources };
+    Source = Sources[..];
+    { decl = Source } = Referrer;
+
+predicate CxxEntitySource:
+  {
+    target: code.cxx.Entity,
+    source: code.cxx.Entity,
+  }
+  { Target, Referrer} where
+    ( {decl = Decl} = Target ;
+      CxxDeclarationSource { Decl, Referrer}
+    ) | (
+      {defn = Def } = Target;
+      cxx1.DefToBaseDecl { Def, Decl };
+      CxxDeclarationSource{ Decl, Referrer}
+    )
 }
