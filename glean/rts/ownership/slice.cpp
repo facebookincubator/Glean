@@ -132,7 +132,7 @@ std::unique_ptr<Slice> slice(
       }
     }
     do {
-      if (members[reader.value() - first]) {
+      if (members.at(reader.value() - first)) {
         VLOG(5) << folly::sformat("orVisible: visible({})", reader.value());
         return true;
       }
@@ -173,7 +173,7 @@ std::unique_ptr<Slice> slice(
       }
     }
     do {
-      if (!members[reader.value() - first]) {
+      if (!members.at(reader.value() - first)) {
         VLOG(5) << folly::sformat("andVisible: invisible({})", reader.value());
         return false;
       }
