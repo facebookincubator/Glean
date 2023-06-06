@@ -2,7 +2,7 @@
     "@generated",
     {
         "revision": "testhash",
-        "size": 143,
+        "size": 156,
         "symbols": {
             "100": [
                 {
@@ -39,6 +39,93 @@
                         "lineEnd": 100
                     },
                     "sym": "test/cpp//GlobalClass"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 24
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "GCA"
+                        },
+                        "symbolParent": {
+                            "aString": "GlobalClass"
+                        },
+                        "symbolSignature": {
+                            "aString": "GCA"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 26,
+                        "columnEnd": 29,
+                        "lineBegin": 100,
+                        "lineEnd": 100
+                    },
+                    "sym": "test/cpp//GlobalClass/GCA"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 24
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "GCB"
+                        },
+                        "symbolParent": {
+                            "aString": "GlobalClass"
+                        },
+                        "symbolSignature": {
+                            "aString": "GCB"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 31,
+                        "columnEnd": 34,
+                        "lineBegin": 100,
+                        "lineEnd": 100
+                    },
+                    "sym": "test/cpp//GlobalClass/GCB"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 24
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "GCC"
+                        },
+                        "symbolParent": {
+                            "aString": "GlobalClass"
+                        },
+                        "symbolSignature": {
+                            "aString": "GCC"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 36,
+                        "columnEnd": 39,
+                        "lineBegin": 100,
+                        "lineEnd": 100
+                    },
+                    "sym": "test/cpp//GlobalClass/GCC"
                 }
             ],
             "105": [
@@ -4530,6 +4617,35 @@
                         "lineEnd": 70
                     },
                     "sym": "test/cpp//maybe/Nothing/_secret"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 24
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "_magic"
+                        },
+                        "symbolParent": {
+                            "aString": "maybe::Nothing::_secret"
+                        },
+                        "symbolSignature": {
+                            "aString": "_magic"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 24,
+                        "columnEnd": 30,
+                        "lineBegin": 70,
+                        "lineEnd": 70
+                    },
+                    "sym": "test/cpp//maybe/Nothing/_secret/_magic"
                 }
             ],
             "72": [
@@ -5458,6 +5574,93 @@
                         "lineEnd": 93
                     },
                     "sym": "test/cpp//baz/U/InU"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 24
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "UA"
+                        },
+                        "symbolParent": {
+                            "aString": "baz::U::InU"
+                        },
+                        "symbolSignature": {
+                            "aString": "UA"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 16,
+                        "lineBegin": 93,
+                        "lineEnd": 93
+                    },
+                    "sym": "test/cpp//baz/U/InU/UA"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 24
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "UB"
+                        },
+                        "symbolParent": {
+                            "aString": "baz::U::InU"
+                        },
+                        "symbolSignature": {
+                            "aString": "UB"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 18,
+                        "columnEnd": 20,
+                        "lineBegin": 93,
+                        "lineEnd": 93
+                    },
+                    "sym": "test/cpp//baz/U/InU/UB"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 24
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "UC"
+                        },
+                        "symbolParent": {
+                            "aString": "baz::U::InU"
+                        },
+                        "symbolSignature": {
+                            "aString": "UC"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 22,
+                        "columnEnd": 24,
+                        "lineBegin": 93,
+                        "lineEnd": 93
+                    },
+                    "sym": "test/cpp//baz/U/InU/UC"
                 }
             ],
             "94": [
@@ -5495,6 +5698,93 @@
                         "lineEnd": 94
                     },
                     "sym": "test/cpp//baz/U/InUClass"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 24
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "UCA"
+                        },
+                        "symbolParent": {
+                            "aString": "baz::U::InUClass"
+                        },
+                        "symbolSignature": {
+                            "aString": "UCA"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 25,
+                        "columnEnd": 28,
+                        "lineBegin": 94,
+                        "lineEnd": 94
+                    },
+                    "sym": "test/cpp//baz/U/InUClass/UCA"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 24
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "UCB"
+                        },
+                        "symbolParent": {
+                            "aString": "baz::U::InUClass"
+                        },
+                        "symbolSignature": {
+                            "aString": "UCB"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 30,
+                        "columnEnd": 33,
+                        "lineBegin": 94,
+                        "lineEnd": 94
+                    },
+                    "sym": "test/cpp//baz/U/InUClass/UCB"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 24
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "UCC"
+                        },
+                        "symbolParent": {
+                            "aString": "baz::U::InUClass"
+                        },
+                        "symbolSignature": {
+                            "aString": "UCC"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 35,
+                        "columnEnd": 38,
+                        "lineBegin": 94,
+                        "lineEnd": 94
+                    },
+                    "sym": "test/cpp//baz/U/InUClass/UCC"
                 }
             ],
             "99": [
@@ -5532,6 +5822,93 @@
                         "lineEnd": 99
                     },
                     "sym": "test/cpp//Global"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 24
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "GA"
+                        },
+                        "symbolParent": {
+                            "aString": "Global"
+                        },
+                        "symbolSignature": {
+                            "aString": "GA"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 17,
+                        "lineBegin": 99,
+                        "lineEnd": 99
+                    },
+                    "sym": "test/cpp//Global/GA"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 24
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "GB"
+                        },
+                        "symbolParent": {
+                            "aString": "Global"
+                        },
+                        "symbolSignature": {
+                            "aString": "GB"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 19,
+                        "columnEnd": 21,
+                        "lineBegin": 99,
+                        "lineEnd": 99
+                    },
+                    "sym": "test/cpp//Global/GB"
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 24
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "GC"
+                        },
+                        "symbolParent": {
+                            "aString": "Global"
+                        },
+                        "symbolSignature": {
+                            "aString": "GC"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 25,
+                        "lineBegin": 99,
+                        "lineEnd": 99
+                    },
+                    "sym": "test/cpp//Global/GC"
                 }
             ]
         },

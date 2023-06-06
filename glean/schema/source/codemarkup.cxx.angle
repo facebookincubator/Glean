@@ -28,13 +28,22 @@ predicate CxxResolveTraceLocation:
   }
   { Trace, Location, Entity } where
     Trace = cxx1.Trace { file = File, declarations = cxx1.Declarations Decls };
-    # regular decls
+    Decl = Decls[..];
+    # most declarations (their definition if present)
     (
-      Decl = Decls[..];
       cxx1.DeclarationLocationNameSpan { Decl, Range, Str, NameFile, NameSpan };
       Destination = { just = { NameFile, NameSpan } };
       Location = codemarkup.types.Location { Str, File, { range = Range }, Destination };
       CxxResolveDeclarationToEntity { Decl, Entity };
+    ) | (
+      # if decl is an enum defn its enumerator (fields) should also be present
+      { enum_ = EnumDecl } = Decl;
+      cxx1.EnumDefinition { declaration = EnumDecl, enumerators = Es };
+      Enumerator = Es[..];
+      { cxx1.Name Name, _, Range } = Enumerator;
+      { file = File } = Range;
+      Location = codemarkup.types.Location { Name, File, { range = Range }, nothing };
+      { enumerator = Enumerator } = Entity;
     )
 
 # For a given declaration, match to proper code.cxx.Entity. It will be

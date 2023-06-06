@@ -7773,5 +7773,740 @@
         }
       }
     }
+  },
+  {
+    "key": {
+      "entity": {
+        "enumerator": {
+          "key": {
+            "name": { "key": "GA" },
+            "enumeration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "Global" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "isScoped": false,
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 99,
+                  "columnBegin": 1,
+                  "lineEnd": 99,
+                  "columnEnd": 26
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 99,
+              "columnBegin": 15,
+              "lineEnd": 99,
+              "columnEnd": 16
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "GA",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 99,
+            "columnBegin": 15,
+            "lineEnd": 99,
+            "columnEnd": 16
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "enumerator": {
+          "key": {
+            "name": { "key": "GB" },
+            "enumeration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "Global" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "isScoped": false,
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 99,
+                  "columnBegin": 1,
+                  "lineEnd": 99,
+                  "columnEnd": 26
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 99,
+              "columnBegin": 19,
+              "lineEnd": 99,
+              "columnEnd": 20
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "GB",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 99,
+            "columnBegin": 19,
+            "lineEnd": 99,
+            "columnEnd": 20
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "enumerator": {
+          "key": {
+            "name": { "key": "GC" },
+            "enumeration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "Global" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "isScoped": false,
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 99,
+                  "columnBegin": 1,
+                  "lineEnd": 99,
+                  "columnEnd": 26
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 99,
+              "columnBegin": 23,
+              "lineEnd": 99,
+              "columnEnd": 24
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "GC",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 99,
+            "columnBegin": 23,
+            "lineEnd": 99,
+            "columnEnd": 24
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "enumerator": {
+          "key": {
+            "name": { "key": "GCA" },
+            "enumeration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "GlobalClass" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "isScoped": true,
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 100,
+                  "columnBegin": 1,
+                  "lineEnd": 100,
+                  "columnEnd": 40
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 100,
+              "columnBegin": 26,
+              "lineEnd": 100,
+              "columnEnd": 28
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "GCA",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 100,
+            "columnBegin": 26,
+            "lineEnd": 100,
+            "columnEnd": 28
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "enumerator": {
+          "key": {
+            "name": { "key": "GCB" },
+            "enumeration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "GlobalClass" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "isScoped": true,
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 100,
+                  "columnBegin": 1,
+                  "lineEnd": 100,
+                  "columnEnd": 40
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 100,
+              "columnBegin": 31,
+              "lineEnd": 100,
+              "columnEnd": 33
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "GCB",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 100,
+            "columnBegin": 31,
+            "lineEnd": 100,
+            "columnEnd": 33
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "enumerator": {
+          "key": {
+            "name": { "key": "GCC" },
+            "enumeration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "GlobalClass" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "isScoped": true,
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 100,
+                  "columnBegin": 1,
+                  "lineEnd": 100,
+                  "columnEnd": 40
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 100,
+              "columnBegin": 36,
+              "lineEnd": 100,
+              "columnEnd": 38
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "GCC",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 100,
+            "columnBegin": 36,
+            "lineEnd": 100,
+            "columnEnd": 38
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "enumerator": {
+          "key": {
+            "name": { "key": "UA" },
+            "enumeration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "InU" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "U" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "baz" } }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "isScoped": false,
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 93,
+                  "columnBegin": 3,
+                  "lineEnd": 93,
+                  "columnEnd": 25
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 93,
+              "columnBegin": 14,
+              "lineEnd": 93,
+              "columnEnd": 15
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "UA",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 93,
+            "columnBegin": 14,
+            "lineEnd": 93,
+            "columnEnd": 15
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "enumerator": {
+          "key": {
+            "name": { "key": "UB" },
+            "enumeration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "InU" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "U" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "baz" } }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "isScoped": false,
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 93,
+                  "columnBegin": 3,
+                  "lineEnd": 93,
+                  "columnEnd": 25
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 93,
+              "columnBegin": 18,
+              "lineEnd": 93,
+              "columnEnd": 19
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "UB",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 93,
+            "columnBegin": 18,
+            "lineEnd": 93,
+            "columnEnd": 19
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "enumerator": {
+          "key": {
+            "name": { "key": "UC" },
+            "enumeration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "InU" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "U" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "baz" } }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "isScoped": false,
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 93,
+                  "columnBegin": 3,
+                  "lineEnd": 93,
+                  "columnEnd": 25
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 93,
+              "columnBegin": 22,
+              "lineEnd": 93,
+              "columnEnd": 23
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "UC",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 93,
+            "columnBegin": 22,
+            "lineEnd": 93,
+            "columnEnd": 23
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "enumerator": {
+          "key": {
+            "name": { "key": "UCA" },
+            "enumeration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "InUClass" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "U" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "baz" } }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "isScoped": true,
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 94,
+                  "columnBegin": 3,
+                  "lineEnd": 94,
+                  "columnEnd": 39
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 94,
+              "columnBegin": 25,
+              "lineEnd": 94,
+              "columnEnd": 27
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "UCA",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 94,
+            "columnBegin": 25,
+            "lineEnd": 94,
+            "columnEnd": 27
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "enumerator": {
+          "key": {
+            "name": { "key": "UCB" },
+            "enumeration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "InUClass" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "U" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "baz" } }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "isScoped": true,
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 94,
+                  "columnBegin": 3,
+                  "lineEnd": 94,
+                  "columnEnd": 39
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 94,
+              "columnBegin": 30,
+              "lineEnd": 94,
+              "columnEnd": 32
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "UCB",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 94,
+            "columnBegin": 30,
+            "lineEnd": 94,
+            "columnEnd": 32
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "enumerator": {
+          "key": {
+            "name": { "key": "UCC" },
+            "enumeration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "InUClass" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "U" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "baz" } }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "isScoped": true,
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 94,
+                  "columnBegin": 3,
+                  "lineEnd": 94,
+                  "columnEnd": 39
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 94,
+              "columnBegin": 35,
+              "lineEnd": 94,
+              "columnEnd": 37
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "UCC",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 94,
+            "columnBegin": 35,
+            "lineEnd": 94,
+            "columnEnd": 37
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "enumerator": {
+          "key": {
+            "name": { "key": "_magic" },
+            "enumeration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "_secret" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "Nothing" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "maybe" } }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "isScoped": true,
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 70,
+                  "columnBegin": 3,
+                  "lineEnd": 70,
+                  "columnEnd": 31
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 70,
+              "columnBegin": 24,
+              "lineEnd": 70,
+              "columnEnd": 29
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "_magic",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 70,
+            "columnBegin": 24,
+            "lineEnd": 70,
+            "columnEnd": 29
+          }
+        }
+      }
+    }
   }
 ]

@@ -139,6 +139,96 @@
             "Right": {
                 "declaration": false,
                 "errors": [],
+                "localname": "GA",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "returns": null,
+                "scopes": [
+                    "Global"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "GB",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "returns": null,
+                "scopes": [
+                    "Global"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "GC",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "returns": null,
+                "scopes": [
+                    "Global"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "GCA",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "returns": null,
+                "scopes": [
+                    "GlobalClass"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "GCB",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "returns": null,
+                "scopes": [
+                    "GlobalClass"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "GCC",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "returns": null,
+                "scopes": [
+                    "GlobalClass"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
                 "localname": "OO",
                 "params": [],
                 "path": "",
@@ -670,6 +760,108 @@
                 "scopes": [
                     "baz",
                     "U"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "UA",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "returns": null,
+                "scopes": [
+                    "baz",
+                    "U",
+                    "InU"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "UB",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "returns": null,
+                "scopes": [
+                    "baz",
+                    "U",
+                    "InU"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "UC",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "returns": null,
+                "scopes": [
+                    "baz",
+                    "U",
+                    "InU"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "UCA",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "returns": null,
+                "scopes": [
+                    "baz",
+                    "U",
+                    "InUClass"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "UCB",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "returns": null,
+                "scopes": [
+                    "baz",
+                    "U",
+                    "InUClass"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "UCC",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "returns": null,
+                "scopes": [
+                    "baz",
+                    "U",
+                    "InUClass"
                 ],
                 "tag": null
             }
