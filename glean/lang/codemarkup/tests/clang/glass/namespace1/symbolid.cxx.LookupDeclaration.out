@@ -1047,7 +1047,7 @@
               "file": { "key": "test.cpp" },
               "lineBegin": 150,
               "columnBegin": 3,
-              "lineEnd": 159,
+              "lineEnd": 160,
               "columnEnd": 3
             }
           }
@@ -2054,6 +2054,51 @@
   },
   {
     "key": {
+      "name": { "key": "len" },
+      "scope": {
+        "local": {
+          "key": {
+            "name": { "key": { "literalOperator": "operator\"\"_glean" } },
+            "scope": { "namespace_": { "key": { "name": { "key": "Q" } } } }
+          }
+        }
+      },
+      "decl": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "len" },
+                "scope": {
+                  "local": {
+                    "key": {
+                      "name": {
+                        "key": { "literalOperator": "operator\"\"_glean" }
+                      },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "Q" } } }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "type": { "key": "unsigned long" },
+            "kind": { "local": { "kind": 2, "attribute": 0 } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 163,
+              "columnBegin": 28,
+              "lineEnd": 163,
+              "columnEnd": 44
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "name": { "key": "memberVariableDecl" },
       "scope": {
         "recordWithAccess": {
@@ -2318,6 +2363,51 @@
               "columnBegin": 3,
               "lineEnd": 56,
               "columnEnd": 10
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "str" },
+      "scope": {
+        "local": {
+          "key": {
+            "name": { "key": { "literalOperator": "operator\"\"_glean" } },
+            "scope": { "namespace_": { "key": { "name": { "key": "Q" } } } }
+          }
+        }
+      },
+      "decl": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "str" },
+                "scope": {
+                  "local": {
+                    "key": {
+                      "name": {
+                        "key": { "literalOperator": "operator\"\"_glean" }
+                      },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "Q" } } }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "type": { "key": "const char32_t *" },
+            "kind": { "local": { "kind": 2, "attribute": 0 } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 163,
+              "columnBegin": 7,
+              "lineEnd": 163,
+              "columnEnd": 25
             }
           }
         }

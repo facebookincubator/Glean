@@ -236,6 +236,66 @@
   },
   {
     "key": {
+      "name": { "key": { "literalOperator": "operator\"\"_glean" } },
+      "scope": { "namespace_": { "key": { "name": { "key": "Q" } } } },
+      "signature": {
+        "key": {
+          "returns": { "key": "void" },
+          "parameters": [
+            { "name": { "key": "str" }, "type": { "key": "const char32_t *" } },
+            { "name": { "key": "len" }, "type": { "key": "unsigned long" } }
+          ]
+        }
+      },
+      "entity": {
+        "defn": {
+          "function_": {
+            "key": {
+              "declaration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": {
+                        "key": { "literalOperator": "operator\"\"_glean" }
+                      },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "Q" } } }
+                      }
+                    }
+                  },
+                  "signature": {
+                    "key": {
+                      "returns": { "key": "void" },
+                      "parameters": [
+                        {
+                          "name": { "key": "str" },
+                          "type": { "key": "const char32_t *" }
+                        },
+                        {
+                          "name": { "key": "len" },
+                          "type": { "key": "unsigned long" }
+                        }
+                      ]
+                    }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 162,
+                    "columnBegin": 3,
+                    "lineEnd": 165,
+                    "columnEnd": 3
+                  }
+                }
+              },
+              "isInline": false
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "name": { "key": { "name": { "key": "bozzo" } } },
       "scope": { "namespace_": { "key": { "name": { "key": "Q" } } } },
       "signature": {

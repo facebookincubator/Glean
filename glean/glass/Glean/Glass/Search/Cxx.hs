@@ -318,7 +318,7 @@ lookupOperatorSignatureDeclaration anchor ns (P.Name o) ps quals =
         (rangespan :: Angle Code.RangeSpan)
         (fname :: Angle Cxx.FunctionName) (lname :: Angle Text) ->
     tuple (entity, file, rangespan, lname) `where_` ([
-      fname .= predicate @Cxx.FunctionName (alt @"operator_" (string o)),
+      fname .= predicate @Cxx.FunctionName (operatorQ o),
       wild .= predicate @SymbolId.LookupFunctionSignatureQualifierDeclaration (
         rec $
           field @"name" (asPredicate fname) $
@@ -340,7 +340,7 @@ lookupOperatorSignatureDefinition anchor ns (P.Name o) ps quals =
       (file :: Angle Src.File) (rangespan :: Angle Code.RangeSpan)
         (fname :: Angle Cxx.FunctionName) (lname :: Angle Text) ->
     tuple (entity, file, rangespan, lname) `where_` ([
-      fname .= predicate @Cxx.FunctionName (alt @"operator_" (string o)),
+      fname .= predicate @Cxx.FunctionName (operatorQ o),
       wild .= predicate @SymbolId.LookupFunctionSignatureQualifierDefinition (
         rec $
           field @"name" (asPredicate fname) $
@@ -486,6 +486,11 @@ functionName name =
   alt @"operator_" (string name) .|
   alt @"literalOperator" (string name) .|
   alt @"conversionOperator" (string name)
+
+operatorQ :: Text -> Angle Cxx.FunctionName_key
+operatorQ name =
+  alt @"operator_" (string name) .|
+  alt @"literalOperator" (string name)
 
 --
 -- For namespaces, which may have anonymous components

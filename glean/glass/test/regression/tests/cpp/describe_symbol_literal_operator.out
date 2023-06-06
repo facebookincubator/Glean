@@ -1,0 +1,51 @@
+[
+    "@generated",
+    {
+        "comments": [],
+        "contains_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "extends_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "kind": 27,
+        "language": 1,
+        "location": {
+            "filepath": "test.cpp",
+            "range": {
+                "columnBegin": 3,
+                "columnEnd": 4,
+                "lineBegin": 162,
+                "lineEnd": 165
+            },
+            "repository": "test"
+        },
+        "modifiers": [],
+        "name": {
+            "container": "Q",
+            "localName": "operator\"\"_glean(const char32_t *, unsigned long)"
+        },
+        "pretty_comments": [],
+        "repo_hash": "testhash",
+        "signature": "void Q::operator\"\"_glean(const char32_t* str, unsigned long len)",
+        "sym": "test/cpp//Q/operator%22%22_glean/.o/const+char32_t+*,unsigned+long",
+        "sym_location": {
+            "filepath": "test.cpp",
+            "range": {
+                "columnBegin": 3,
+                "columnEnd": 4,
+                "lineBegin": 162,
+                "lineEnd": 165
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": [],
+        "type_xrefs": []
+    }
+]

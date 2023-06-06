@@ -14,7 +14,7 @@
                     "file": { "key": "test.cpp" },
                     "lineBegin": 129,
                     "columnBegin": 1,
-                    "lineEnd": 161,
+                    "lineEnd": 167,
                     "columnEnd": 1
                   }
                 }
@@ -92,7 +92,47 @@
                           "file": { "key": "test.cpp" },
                           "lineBegin": 150,
                           "columnBegin": 3,
-                          "lineEnd": 159,
+                          "lineEnd": 160,
+                          "columnEnd": 3
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "function_": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": {
+                              "key": { "literalOperator": "operator\"\"_glean" }
+                            },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "Q" } }
+                              }
+                            }
+                          }
+                        },
+                        "signature": {
+                          "key": {
+                            "returns": { "key": "void" },
+                            "parameters": [
+                              {
+                                "name": { "key": "str" },
+                                "type": { "key": "const char32_t *" }
+                              },
+                              {
+                                "name": { "key": "len" },
+                                "type": { "key": "unsigned long" }
+                              }
+                            ]
+                          }
+                        },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 162,
+                          "columnBegin": 3,
+                          "lineEnd": 165,
                           "columnEnd": 3
                         }
                       }

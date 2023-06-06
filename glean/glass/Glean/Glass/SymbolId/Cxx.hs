@@ -160,7 +160,9 @@ toSymbolFunctionDeclaration fqname sig mquals = do
       sigText <- sigAndQualifiers sig mquals
       return $ [opStr,".o"] ++ sigText
 
-    Cxx.FunctionName_key_literalOperator x -> return [x]
+    Cxx.FunctionName_key_literalOperator opStr -> do
+      sigText <- sigAndQualifiers sig mquals
+      return $ [opStr,".o"] ++ sigText
 
     --
     -- constructors: class/.c/p1,p2(/.decl)?

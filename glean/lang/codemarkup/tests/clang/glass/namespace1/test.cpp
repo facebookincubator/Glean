@@ -156,6 +156,12 @@ namespace Q {
     OO& operator=(OO const&);
     OO& operator=(OO&&) noexcept;
 
+
   };
+
+  constexpr void operator"" _glean(
+      char32_t const* str, unsigned long len) noexcept {
+    return;
+  }
 
 }

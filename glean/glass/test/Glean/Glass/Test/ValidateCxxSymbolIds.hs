@@ -33,6 +33,7 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "ctor_sig2" ctor_sig2
   , TestLabel "ctor_param" ctor_param
   , TestLabel "operator_1" operator_decl
+  , TestLabel "literal_operator_1" literal_operator_defn
   , TestLabel "anon_ns" anon_ns
   , TestLabel "nested comma" ctor_sig3_nested_comma
   , TestLabel "const_fn" const_fn
@@ -96,6 +97,12 @@ operator_decl :: Test
 operator_decl = test
   (ok_decl "fbcode" ["std", "__shared_ptr_access"] "operator-%3E")
   (sym "fbcode/std/__shared_ptr_access/operator-%3E/.decl")
+
+literal_operator_defn :: Test
+literal_operator_defn = test
+  (op_sig ["const char *", "size_t"] [] <$>
+    ok "fbcode" ["folly", "literals"] "operator%22%22_sp")
+  (sym "fbcode/folly/literals/operator%22%22_sp/.o/const+char+*,size_t")
 
 anon_ns :: Test
 anon_ns = test
@@ -185,6 +192,13 @@ ctor_sig e = e { tag = Just CTorSignature, localname = Nothing }
 fun_sig :: [Text] -> [Text] -> SymbolEnv -> SymbolEnv
 fun_sig params quals e =
    e { tag = Just Function
+     , params = map Name params
+     , qualifiers = Set.fromList (mapMaybe toQualifier quals)
+     }
+
+op_sig :: [Text] -> [Text] -> SymbolEnv -> SymbolEnv
+op_sig params quals e =
+   e { tag = Just Operator
      , params = map Name params
      , qualifiers = Set.fromList (mapMaybe toQualifier quals)
      }

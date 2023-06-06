@@ -3241,6 +3241,61 @@
             "key": {
               "name": {
                 "key": {
+                  "name": { "key": "len" },
+                  "scope": {
+                    "local": {
+                      "key": {
+                        "name": {
+                          "key": { "literalOperator": "operator\"\"_glean" }
+                        },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "Q" } } }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "type": { "key": "unsigned long" },
+              "kind": { "local": { "kind": 2, "attribute": 0 } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 163,
+                "columnBegin": 28,
+                "lineEnd": 163,
+                "columnEnd": 44
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "len",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 163,
+            "columnBegin": 28,
+            "lineEnd": 163,
+            "columnEnd": 44
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 2276, "length": 3 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
                   "name": { "key": "memberVariableDecl" },
                   "scope": {
                     "recordWithAccess": {
@@ -3513,6 +3568,61 @@
         "destination": {
           "file": { "key": "test.cpp" },
           "span": { "start": 787, "length": 1 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "str" },
+                  "scope": {
+                    "local": {
+                      "key": {
+                        "name": {
+                          "key": { "literalOperator": "operator\"\"_glean" }
+                        },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "Q" } } }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "type": { "key": "const char32_t *" },
+              "kind": { "local": { "kind": 2, "attribute": 0 } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 163,
+                "columnBegin": 7,
+                "lineEnd": 163,
+                "columnEnd": 25
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "str",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 163,
+            "columnBegin": 7,
+            "lineEnd": 163,
+            "columnEnd": 25
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 2257, "length": 3 }
         }
       }
     }
@@ -4698,6 +4808,72 @@
                 "key": {
                   "name": {
                     "key": {
+                      "name": {
+                        "key": { "literalOperator": "operator\"\"_glean" }
+                      },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "Q" } } }
+                      }
+                    }
+                  },
+                  "signature": {
+                    "key": {
+                      "returns": { "key": "void" },
+                      "parameters": [
+                        {
+                          "name": { "key": "str" },
+                          "type": { "key": "const char32_t *" }
+                        },
+                        {
+                          "name": { "key": "len" },
+                          "type": { "key": "unsigned long" }
+                        }
+                      ]
+                    }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 162,
+                    "columnBegin": 3,
+                    "lineEnd": 165,
+                    "columnEnd": 3
+                  }
+                }
+              },
+              "isInline": false
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "operator\"\"_glean",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 162,
+            "columnBegin": 3,
+            "lineEnd": 165,
+            "columnEnd": 3
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 2216, "length": 8 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "defn": {
+          "function_": {
+            "key": {
+              "declaration": {
+                "key": {
+                  "name": {
+                    "key": {
                       "name": { "key": { "name": { "key": "bozzo" } } },
                       "scope": {
                         "namespace_": { "key": { "name": { "key": "Q" } } }
@@ -4917,7 +5093,7 @@
                     "file": { "key": "test.cpp" },
                     "lineBegin": 129,
                     "columnBegin": 1,
-                    "lineEnd": 161,
+                    "lineEnd": 167,
                     "columnEnd": 1
                   }
                 }
@@ -4995,7 +5171,47 @@
                           "file": { "key": "test.cpp" },
                           "lineBegin": 150,
                           "columnBegin": 3,
-                          "lineEnd": 159,
+                          "lineEnd": 160,
+                          "columnEnd": 3
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "function_": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": {
+                              "key": { "literalOperator": "operator\"\"_glean" }
+                            },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "Q" } }
+                              }
+                            }
+                          }
+                        },
+                        "signature": {
+                          "key": {
+                            "returns": { "key": "void" },
+                            "parameters": [
+                              {
+                                "name": { "key": "str" },
+                                "type": { "key": "const char32_t *" }
+                              },
+                              {
+                                "name": { "key": "len" },
+                                "type": { "key": "unsigned long" }
+                              }
+                            ]
+                          }
+                        },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 162,
+                          "columnBegin": 3,
+                          "lineEnd": 165,
                           "columnEnd": 3
                         }
                       }
@@ -5015,7 +5231,7 @@
             "file": { "key": "test.cpp" },
             "lineBegin": 129,
             "columnBegin": 1,
-            "lineEnd": 161,
+            "lineEnd": 167,
             "columnEnd": 1
           }
         },
@@ -5760,7 +5976,7 @@
                     "file": { "key": "test.cpp" },
                     "lineBegin": 150,
                     "columnBegin": 3,
-                    "lineEnd": 159,
+                    "lineEnd": 160,
                     "columnEnd": 3
                   }
                 }
@@ -5927,7 +6143,7 @@
             "file": { "key": "test.cpp" },
             "lineBegin": 150,
             "columnBegin": 3,
-            "lineEnd": 159,
+            "lineEnd": 160,
             "columnEnd": 3
           }
         },

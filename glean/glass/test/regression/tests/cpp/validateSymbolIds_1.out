@@ -169,6 +169,23 @@
         },
         {
             "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "operator\"\"_glean",
+                "params": [
+                    "const char32_t *",
+                    "unsigned long"
+                ],
+                "path": "",
+                "qualifiers": [],
+                "scopes": [
+                    "Q"
+                ],
+                "tag": "Operator"
+            }
+        },
+        {
+            "Right": {
                 "declaration": true,
                 "errors": [],
                 "localname": "operator==",
@@ -464,6 +481,36 @@
                     "Q",
                     "QQ",
                     "thingo"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "len",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "scopes": [
+                    "Q",
+                    "operator\"\"_glean"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "str",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "scopes": [
+                    "Q",
+                    "operator\"\"_glean"
                 ],
                 "tag": null
             }

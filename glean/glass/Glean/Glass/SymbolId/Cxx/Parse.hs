@@ -177,7 +177,7 @@ compileSymbolEnv env@SymbolEnv{..} = case tag of
         cScope = scopes,
         cParams = params
     }
-  Just Destructor -> -- .dtor
+  Just Destructor -> -- .d
     Right $ tagged declaration $ CxxDestructor {
         cPath = path,
         cScope = scopes
@@ -193,6 +193,7 @@ compileSymbolEnv env@SymbolEnv{..} = case tag of
       }
     | otherwise ->
       Left $ "compileSymbolEnv: Function missing local name: " <> textShow env
+
   Just Operator -- .o
     | Just name <- localname ->
       Right $ tagged declaration $ CxxOperator {
