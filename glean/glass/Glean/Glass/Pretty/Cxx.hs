@@ -228,7 +228,7 @@ hasReturn (Cxx.FunctionQName _ mkey) = case mkey of
     Just key -> case key of
       Cxx.FunctionName_key_name _ -> True
       Cxx.FunctionName_key_literalOperator _ -> True -- TODO: check it
-      Cxx.FunctionName_key_conversionOperator _ -> True -- TODO: check it
+      Cxx.FunctionName_key_conversionOperator _ -> False
       Cxx.FunctionName_key_operator_ _ -> True
       Cxx.FunctionName_key_constructor _ -> False
       Cxx.FunctionName_key_destructor _ -> False

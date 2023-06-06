@@ -36,7 +36,7 @@
         },
         "pretty_comments": [],
         "repo_hash": "testhash",
-        "signature": "T& Q::OO::T&() const",
+        "signature": "Q::OO::T&() const",
         "sym": "test/cpp//Q/OO/.t/T+%26/const,lvalue/.decl",
         "sym_location": {
             "filepath": "test.cpp",
