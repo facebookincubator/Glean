@@ -2,7 +2,7 @@
     "@generated",
     {
         "revision": "testhash",
-        "size": 5,
+        "size": 3,
         "symbols": {
             "10": [
                 {
@@ -86,62 +86,6 @@
                         "lineEnd": 15
                     },
                     "sym": "test/php/NS/NamespaceClass/class_function"
-                }
-            ],
-            "18": [
-                {
-                    "attributes": {
-                        "symbolKind": {
-                            "aInteger": 6
-                        },
-                        "symbolLanguage": {
-                            "aInteger": 3
-                        },
-                        "symbolName": {
-                            "aString": "InnerNS"
-                        },
-                        "symbolParent": {
-                            "aString": "NS"
-                        },
-                        "symbolSignature": {
-                            "aString": "namespace NS\\InnerNS"
-                        }
-                    },
-                    "range": {
-                        "columnBegin": 11,
-                        "columnEnd": 21,
-                        "lineBegin": 18,
-                        "lineEnd": 18
-                    },
-                    "sym": "test/php/ns/NS/InnerNS"
-                }
-            ],
-            "20": [
-                {
-                    "attributes": {
-                        "symbolKind": {
-                            "aInteger": 14
-                        },
-                        "symbolLanguage": {
-                            "aInteger": 3
-                        },
-                        "symbolName": {
-                            "aString": "deep_function"
-                        },
-                        "symbolParent": {
-                            "aString": "NS\\InnerNS"
-                        },
-                        "symbolSignature": {
-                            "aString": "function deep_function(): void"
-                        }
-                    },
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 42,
-                        "lineBegin": 20,
-                        "lineEnd": 20
-                    },
-                    "sym": "test/php/fun/NS/InnerNS/deep_function"
                 }
             ]
         },

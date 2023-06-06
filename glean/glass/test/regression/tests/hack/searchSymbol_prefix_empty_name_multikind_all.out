@@ -1238,12 +1238,12 @@
                 "kind": 14,
                 "language": 3,
                 "location": {
-                    "filepath": "www/Namespace.php",
+                    "filepath": "www/Namespace3.php",
                     "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 42,
-                        "lineBegin": 20,
-                        "lineEnd": 20
+                        "columnBegin": 3,
+                        "columnEnd": 36,
+                        "lineBegin": 12,
+                        "lineEnd": 12
                     },
                     "repository": "test"
                 },

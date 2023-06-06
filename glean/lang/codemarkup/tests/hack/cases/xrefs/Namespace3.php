@@ -7,10 +7,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-namespace NS;
+namespace NS\InnerNS {
 
-class NamespaceClass {
-    public function class_function(): void {
+  function deep_function(): void {}
 
-    }
 }

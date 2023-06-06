@@ -2295,8 +2295,8 @@
         },
         "location": {
           "name": "InnerNS",
-          "file": { "key": "www/Namespace.php" },
-          "location": { "span": { "start": 329, "length": 10 } }
+          "file": { "key": "www/Namespace3.php" },
+          "location": { "span": { "start": 236, "length": 10 } }
         }
       },
       "child": {
@@ -2323,8 +2323,8 @@
         },
         "location": {
           "name": "deep_function",
-          "file": { "key": "www/Namespace.php" },
-          "location": { "span": { "start": 343, "length": 41 } }
+          "file": { "key": "www/Namespace3.php" },
+          "location": { "span": { "start": 252, "length": 33 } }
         }
       },
       "style": 0
@@ -2462,8 +2462,8 @@
         },
         "location": {
           "name": "InnerNS",
-          "file": { "key": "www/Namespace.php" },
-          "location": { "span": { "start": 329, "length": 10 } }
+          "file": { "key": "www/Namespace3.php" },
+          "location": { "span": { "start": 236, "length": 10 } }
         }
       },
       "style": 0
@@ -2601,8 +2601,8 @@
         },
         "location": {
           "name": "InnerNS",
-          "file": { "key": "www/Namespace.php" },
-          "location": { "span": { "start": 329, "length": 10 } }
+          "file": { "key": "www/Namespace3.php" },
+          "location": { "span": { "start": 236, "length": 10 } }
         }
       },
       "style": 0

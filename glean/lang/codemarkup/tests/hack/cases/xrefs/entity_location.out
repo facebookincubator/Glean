@@ -846,8 +846,8 @@
         }
       },
       "location": {
-        "file": { "key": "www/Namespace.php" },
-        "location": { "span": { "length": 41, "start": 343 } },
+        "file": { "key": "www/Namespace3.php" },
+        "location": { "span": { "length": 33, "start": 252 } },
         "name": "deep_function"
       }
     }
@@ -1524,8 +1524,8 @@
         }
       },
       "location": {
-        "file": { "key": "www/Namespace.php" },
-        "location": { "span": { "length": 10, "start": 329 } },
+        "file": { "key": "www/Namespace3.php" },
+        "location": { "span": { "length": 10, "start": 236 } },
         "name": "InnerNS"
       }
     }
