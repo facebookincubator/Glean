@@ -22,10 +22,12 @@ private fun getSuperTypesFromClass(ktClass: KtClass, context: BindingContext): L
 }
 
 fun buildClassDeclaration(decl: KtClass, context: BindingContext): GleanClassDeclaration {
-  val key = GleanClassDeclarationKey.Builder().apply {
-    name = decl.qualifiedName()
-    location = buildFileLocation(decl.psiOrParent)
-    implements_ = getSuperTypesFromClass(decl, context).map { kotlinType -> kotlinType.path().toQName() }
-  }
+  val key =
+      GleanClassDeclarationKey.Builder().apply {
+        name = decl.qualifiedName()
+        location = buildFileLocation(decl.psiOrParent)
+        implements_ =
+            getSuperTypesFromClass(decl, context).map { kotlinType -> kotlinType.path().toQName() }
+      }
   return GleanClassDeclaration.Builder().setKey(key.build()).build()
 }

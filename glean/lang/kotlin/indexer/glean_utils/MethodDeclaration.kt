@@ -33,9 +33,7 @@ fun buildMethodDeclaration(
     bindingContext: BindingContext
 ): MethodDeclaration {
   val keyBuilder = MethodDeclarationKey.Builder()
-  (function as? PsiElement)?.let {
-    keyBuilder.loc = buildLoc(it)
-  }
+  (function as? PsiElement)?.let { keyBuilder.loc = buildLoc(it) }
 
   val ktClassBody = function.parent
   val parentClass = ktClassBody?.parent as? KtClass
