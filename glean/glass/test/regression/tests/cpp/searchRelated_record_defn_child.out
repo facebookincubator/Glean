@@ -106,7 +106,8 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": []
+                "type_xrefs": [],
+                "visibility": 20
             },
             "test/cpp//baz/U/InUClass": {
                 "comments": [],
@@ -154,7 +155,8 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": []
+                "type_xrefs": [],
+                "visibility": 20
             }
         }
     }

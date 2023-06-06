@@ -409,14 +409,32 @@ predicate CxxVisibility:
     entity: code.cxx.Entity,
     visibility: codemarkup.types.Visibility,
   }
-  { { decl = Decl }, Visibility } where
-    (
-      ({ function_ = {name={scope=Scope} } } = Decl) |
-      ({ enum_ = {name={scope=Scope} } } = Decl) |
-      ({ record_ = {name={scope=Scope} } } = Decl)
+  { Entity, Visibility } where
+    ( { decl = Decl } = Entity;
+      CxxDeclVisibility { Decl, Visibility }
+    ) | (
+      { defn = Defn } = Entity;
+      CxxDefnVisibility { Defn, Visibility }
     );
-    ({recordWithAccess={access=Access}}=Scope;{}:{});
+
+predicate CxxDeclVisibility:
+  {
+    decl: cxx1.Declaration,
+    visibility: codemarkup.types.Visibility
+  }
+  { Decl, Visibility } where
+    cxx1.DeclarationScope { Decl, Scope };
+    { recordWithAccess = { access = Access } } = Scope;
     FromCxxVisibility { Access, Visibility }
+
+predicate CxxDefnVisibility:
+  {
+    decl: code.cxx.Definition,
+    visibility: codemarkup.types.Visibility
+  }
+  { Defn, Visibility } where
+    cxx1.DefToBaseDecl { Defn, Decl };
+    CxxDeclVisibility { Decl, Visibility }
 
 # helper from C++ visibility to the codemarkup.types version
 predicate FromCxxVisibility:

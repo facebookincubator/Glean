@@ -105,7 +105,8 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": []
+                "type_xrefs": [],
+                "visibility": 20
             },
             "test/cpp//foo/S/UsingDeclInteger/.decl": {
                 "comments": [],
@@ -153,7 +154,8 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": []
+                "type_xrefs": [],
+                "visibility": 20
             }
         }
     }
