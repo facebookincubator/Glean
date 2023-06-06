@@ -1047,7 +1047,7 @@
               "file": { "key": "test.cpp" },
               "lineBegin": 150,
               "columnBegin": 3,
-              "lineEnd": 160,
+              "lineEnd": 164,
               "columnEnd": 3
             }
           }
@@ -2087,9 +2087,9 @@
             "kind": { "local": { "kind": 2, "attribute": 0 } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 163,
+              "lineBegin": 167,
               "columnBegin": 28,
-              "lineEnd": 163,
+              "lineEnd": 167,
               "columnEnd": 44
             }
           }
@@ -2404,9 +2404,9 @@
             "kind": { "local": { "kind": 2, "attribute": 0 } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 163,
+              "lineBegin": 167,
               "columnBegin": 7,
-              "lineEnd": 163,
+              "lineEnd": 167,
               "columnEnd": 25
             }
           }

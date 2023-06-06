@@ -44,6 +44,9 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "unary_fn" unary_fn
   , TestLabel "unary_fn_decl_qual2" unary_fn_decl_qual2
   , TestLabel "binary_fn" binary_fn
+  , TestLabel "conv_fn_1" conv_fn_1
+  , TestLabel "conv_fn_2" conv_fn_2
+  , TestLabel "conv_fn_3" conv_fn_3
   ]
 
 namespace1 :: Test
@@ -150,6 +153,24 @@ binary_fn = test
   (fun_sig ["bool","bool"] [] <$> ok_decl "fbcode" ["folly", "dynamic"] "foo")
   (sym "fbcode/folly/dynamic/foo/.f/bool,bool/.decl")
 
+conv_fn_1 :: Test
+conv_fn_1 = test
+  (conv_sig "T" ["const", "lvalue"] <$>
+    anon_defn "fbcode" ["foo", "anything"]) (sym
+      "fbcode/foo/anything/.t/T/const,lvalue")
+
+conv_fn_2 :: Test
+conv_fn_2 = test
+  (conv_sig "T" ["const", "rvalue"] <$>
+    anon_defn "fbcode" ["foo", "anything"]) (sym
+      "fbcode/foo/anything/.t/T/const,rvalue")
+
+conv_fn_3 :: Test
+conv_fn_3 = test
+  (conv_sig "T &" [] <$>
+    anon_defn "fbcode" ["foo", "anything"]) (sym
+      "fbcode/foo/anything/.t/T+&")
+
 -- Helpers
 
 test :: (Eq a, Show a) => a -> a -> Test
@@ -160,13 +181,18 @@ sym xs = validateSymbolId (Text.split (=='/') xs)
 
 ok :: Text -> [Text] -> Text -> Either [Text] SymbolEnv
 ok path scope name =
+  (\e -> e { localname = Just (Name name) } ) <$> anon_defn path scope
+
+anon_defn :: Text -> [Text] -> Either [Text] SymbolEnv
+anon_defn path scope =
   Right $ SymbolEnv {
       path = path,
       scopes = map Name scope,
-      localname = Just (Name name),
+      localname = Nothing,
       declaration = False,
       tag = Nothing,
       params = [],
+      returns = Nothing,
       qualifiers = mempty,
       errors = []
     }
@@ -200,5 +226,13 @@ op_sig :: [Text] -> [Text] -> SymbolEnv -> SymbolEnv
 op_sig params quals e =
    e { tag = Just Operator
      , params = map Name params
+     , qualifiers = Set.fromList (mapMaybe toQualifier quals)
+     }
+
+conv_sig :: Text -> [Text] -> SymbolEnv -> SymbolEnv
+conv_sig retTy quals e =
+   e { tag = Just TypeConversionOperator
+     , localname = Nothing
+     , returns = Just (Name retTy)
      , qualifiers = Set.fromList (mapMaybe toQualifier quals)
      }

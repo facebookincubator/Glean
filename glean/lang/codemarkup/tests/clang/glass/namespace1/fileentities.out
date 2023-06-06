@@ -1778,7 +1778,7 @@
             "file": { "key": "test.cpp" },
             "lineBegin": 150,
             "columnBegin": 3,
-            "lineEnd": 160,
+            "lineEnd": 164,
             "columnEnd": 3
           }
         },
@@ -1807,7 +1807,7 @@
                       "file": { "key": "test.cpp" },
                       "lineBegin": 150,
                       "columnBegin": 3,
-                      "lineEnd": 160,
+                      "lineEnd": 164,
                       "columnEnd": 3
                     }
                   }
@@ -1959,6 +1959,104 @@
                           }
                         }
                       }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "conversionOperator": { "key": "T &" }
+                                }
+                              },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "OO" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": { "name": { "key": "Q" } }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "T &" },
+                              "parameters": [ ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": false,
+                            "isConst": true,
+                            "isVolatile": false,
+                            "refQualifier": 2
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 160,
+                            "columnBegin": 5,
+                            "lineEnd": 160,
+                            "columnEnd": 35
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "conversionOperator": { "key": "T &" }
+                                }
+                              },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "OO" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": { "name": { "key": "Q" } }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "T &" },
+                              "parameters": [ ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": false,
+                            "isConst": true,
+                            "isVolatile": false,
+                            "refQualifier": 1
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 162,
+                            "columnBegin": 5,
+                            "lineEnd": 162,
+                            "columnEnd": 34
+                          }
+                        }
+                      }
                     }
                   ]
                 }
@@ -1980,7 +2078,7 @@
             "file": { "key": "test.cpp" },
             "lineBegin": 129,
             "columnBegin": 1,
-            "lineEnd": 167,
+            "lineEnd": 171,
             "columnEnd": 1
           }
         },
@@ -2001,7 +2099,7 @@
                       "file": { "key": "test.cpp" },
                       "lineBegin": 129,
                       "columnBegin": 1,
-                      "lineEnd": 167,
+                      "lineEnd": 171,
                       "columnEnd": 1
                     }
                   }
@@ -2079,7 +2177,7 @@
                             "file": { "key": "test.cpp" },
                             "lineBegin": 150,
                             "columnBegin": 3,
-                            "lineEnd": 160,
+                            "lineEnd": 164,
                             "columnEnd": 3
                           }
                         }
@@ -2119,9 +2217,9 @@
                           },
                           "source": {
                             "file": { "key": "test.cpp" },
-                            "lineBegin": 162,
+                            "lineBegin": 166,
                             "columnBegin": 3,
-                            "lineEnd": 165,
+                            "lineEnd": 169,
                             "columnEnd": 3
                           }
                         }
@@ -3060,6 +3158,146 @@
                       }
                     }
                   ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
+        "name": "T &",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 160,
+            "columnBegin": 5,
+            "lineEnd": 160,
+            "columnEnd": 35
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 2232, "length": 8 }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": {
+                      "key": { "conversionOperator": { "key": "T &" } }
+                    },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "OO" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "Q" } }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "T &" }, "parameters": [ ] }
+                },
+                "method": {
+                  "isVirtual": false,
+                  "isConst": true,
+                  "isVolatile": false,
+                  "refQualifier": 2
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 160,
+                  "columnBegin": 5,
+                  "lineEnd": 160,
+                  "columnEnd": 35
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
+        "name": "T &",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 162,
+            "columnBegin": 5,
+            "lineEnd": 162,
+            "columnEnd": 34
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 2295, "length": 8 }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": {
+                      "key": { "conversionOperator": { "key": "T &" } }
+                    },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "OO" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "Q" } }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "T &" }, "parameters": [ ] }
+                },
+                "method": {
+                  "isVirtual": false,
+                  "isConst": true,
+                  "isVolatile": false,
+                  "refQualifier": 1
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 162,
+                  "columnBegin": 5,
+                  "lineEnd": 162,
+                  "columnEnd": 34
                 }
               }
             }
@@ -6525,15 +6763,15 @@
         "location": {
           "range": {
             "file": { "key": "test.cpp" },
-            "lineBegin": 163,
+            "lineBegin": 167,
             "columnBegin": 28,
-            "lineEnd": 163,
+            "lineEnd": 167,
             "columnEnd": 44
           }
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 2276, "length": 3 }
+          "span": { "start": 2401, "length": 3 }
         }
       },
       "entity": {
@@ -6562,9 +6800,9 @@
                 "kind": { "local": { "kind": 2, "attribute": 0 } },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 163,
+                  "lineBegin": 167,
                   "columnBegin": 28,
-                  "lineEnd": 163,
+                  "lineEnd": 167,
                   "columnEnd": 44
                 }
               }
@@ -6827,15 +7065,15 @@
         "location": {
           "range": {
             "file": { "key": "test.cpp" },
-            "lineBegin": 162,
+            "lineBegin": 166,
             "columnBegin": 3,
-            "lineEnd": 165,
+            "lineEnd": 169,
             "columnEnd": 3
           }
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 2216, "length": 8 }
+          "span": { "start": 2341, "length": 8 }
         }
       },
       "entity": {
@@ -6872,9 +7110,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 162,
+                      "lineBegin": 166,
                       "columnBegin": 3,
-                      "lineEnd": 165,
+                      "lineEnd": 169,
                       "columnEnd": 3
                     }
                   }
@@ -7403,15 +7641,15 @@
         "location": {
           "range": {
             "file": { "key": "test.cpp" },
-            "lineBegin": 163,
+            "lineBegin": 167,
             "columnBegin": 7,
-            "lineEnd": 163,
+            "lineEnd": 167,
             "columnEnd": 25
           }
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 2257, "length": 3 }
+          "span": { "start": 2382, "length": 3 }
         }
       },
       "entity": {
@@ -7440,9 +7678,9 @@
                 "kind": { "local": { "kind": 2, "attribute": 0 } },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 163,
+                  "lineBegin": 167,
                   "columnBegin": 7,
-                  "lineEnd": 163,
+                  "lineEnd": 167,
                   "columnEnd": 25
                 }
               }

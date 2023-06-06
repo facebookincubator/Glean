@@ -45,6 +45,7 @@ data Token
   | TCtorSignature
   | TFunction
   | TOperator
+  | TConversionOperator
   deriving Show
 
 tokenize :: Text -> Token
@@ -54,6 +55,7 @@ tokenize ".d" = TDtor
 tokenize ".c" = TCtorSignature
 tokenize ".f" = TFunction
 tokenize ".o" = TOperator
+tokenize ".t" = TConversionOperator
 tokenize n = TName n
 
 name :: Text -> Name
@@ -79,6 +81,7 @@ data SymbolEnv = SymbolEnv {
   declaration :: Bool, -- .decl tag occurs
   tag :: Maybe SymbolTag,
   params :: [Name], -- maybe parameter signature
+  returns :: Maybe Name, -- return type name where present
   qualifiers :: Set Qualifier, -- optional list of qualifiers (const, &&, etc)
   errors :: [Text] -- any errors we find
 } deriving (Eq, Ord, Show, Generic)
@@ -108,6 +111,7 @@ data SymbolTag
   | Destructor
   | Function
   | Operator
+  | TypeConversionOperator
   deriving (Eq, Ord, Show, Generic)
 
 -- for regression testing
@@ -149,7 +153,14 @@ data CxxSymbolExpr
       cName :: Name,
       cParams :: [Name],
       cQuals :: Set Qualifier
+
     }
+  | CxxTypeConversionOperator {
+      cPath :: Text,
+      cScope :: [Name],
+      cReturns :: Name,
+      cQuals :: Set Qualifier
+  }
   -- Legacy: constructor params (TODO replace with general local var case)
   | CxxLegacyCTorParams {
       cPath :: Text,
@@ -206,6 +217,18 @@ compileSymbolEnv env@SymbolEnv{..} = case tag of
     | otherwise ->
       Left $ "compileSymbolEnv: Operator missing name: " <> textShow env
 
+  Just TypeConversionOperator -- .t
+    | Just returnTy <- returns ->
+      Right $ tagged declaration $ CxxTypeConversionOperator {
+          cPath = path,
+          cScope = scopes,
+          cReturns = returnTy,
+          cQuals = qualifiers
+      }
+    | otherwise ->
+      Left $ "compileSymbolEnv: Type conversion operator: missing type: "
+        <> textShow env
+
   Just Constructor -- legacy .ctor params, aka local vars in ctor scope
     | Just name <- localname ->
     Right $ tagged declaration $ CxxLegacyCTorParams {
@@ -233,6 +256,7 @@ initState p = SymbolEnv {
     declaration = False,
     tag = Nothing,
     params = [],
+    returns = Nothing,
     qualifiers = mempty,
     errors = []
   }
@@ -242,6 +266,9 @@ pushScope s = modify' $ \env -> env { scopes = name s : scopes env }
 
 pushParam :: Text -> Parse ()
 pushParam s = modify' $ \env -> env { params = sig s : params env }
+
+setReturnType :: Text -> Parse ()
+setReturnType s = modify' $ \env -> env { returns = Just (sig s) }
 
 setName :: Text -> Parse ()
 setName n = modify' $ \env -> env { localname = Just (name n) }
@@ -293,6 +320,8 @@ parseScopeOrName name (n : ns) = case n of
   TCtorSignature -> pushScope name >> setTag CTorSignature >> parseCtorSig ns
   TFunction -> setName name >> setTag Function >> parseFunctionSig ns
   TOperator -> setName name >> setTag Operator >> parseFunctionSig ns
+  TConversionOperator ->
+    pushScope name >> setTag TypeConversionOperator >> parseTypeOperatorSig ns
   TDecl -> do
     setName name >> setDecl
     case ns of
@@ -343,7 +372,29 @@ parseCtorSig rest = setErr $
     textShow rest
 
 --
--- Function signatures always have a return type
+-- Type conversion operators: a single return type and optional qualifiers
+--
+parseTypeOperatorSig :: [Token] -> Parse ()
+parseTypeOperatorSig [] = setErr $
+  "Cxx.parseTypeOperatorSig: missing type name for conversion symbol"
+parseTypeOperatorSig [TDecl] = setErr $
+  "Cxx.parseTypeOperatorSig: missing type name for conversion decl symbol"
+parseTypeOperatorSig [TName name] = -- return type only, no qualifiers
+  setReturnType name
+parseTypeOperatorSig [TName name, TDecl] =
+  setReturnType name >> setDecl
+parseTypeOperatorSig [TName name, TName quals] = -- return type and quals
+  setReturnType name >> mapM_ parseQualifier (splitCommas quals)
+parseTypeOperatorSig [TName name, TName quals, TDecl] = do -- decl variant
+  setReturnType name
+  mapM_ parseQualifier (splitCommas quals)
+  setDecl
+parseTypeOperatorSig rest = setErr $
+  "Cxx.parseTypeOperatorSig: unexpected trailing tokens in operator: " <>
+    textShow rest
+
+--
+-- Function signatures always have parameter types if non-nullary
 --
 parseFunctionSig :: [Token] -> Parse ()
 -- nullary definition
@@ -351,6 +402,7 @@ parseFunctionSig [] = pure ()
 -- nullary construct decl
 parseFunctionSig [TDecl] =
   setDecl
+
 parseFunctionSig [TName name] = do -- single set of params (or trailing "/")
   mapM_ pushParam (splitCommas name)
 parseFunctionSig [TName name, TDecl] = do -- decl variant

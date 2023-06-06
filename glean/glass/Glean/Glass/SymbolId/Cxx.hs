@@ -183,7 +183,16 @@ toSymbolFunctionDeclaration fqname sig mquals = do
     --
     Cxx.FunctionName_key_destructor{} -> return [".d"]
 
-    Cxx.FunctionName_key_conversionOperator ty -> pure <$> Glean.keyOf ty
+    --
+    -- type conversion operators are denoted by their return type.
+    -- the name of the conversion operator is an arbitrary type expr, so has to
+    -- be encoded properly to work. They're otherwise anonymous.
+    --
+    Cxx.FunctionName_key_conversionOperator ty -> do
+      tyToks <- toTypeSymbol ty
+      let mQualifiersStr = toSymbolQualifiers =<< mquals
+      return (".t" : tyToks : maybeToList mQualifiersStr)
+
     Cxx.FunctionName_key_EMPTY -> return []
 
   return (scopeToks ++ nameToks)
@@ -551,12 +560,14 @@ instance ToQName Cxx.Entity where
             (scope, ".o":params) -> functionSignatureQName True scope params
             _ -> case Prelude.break (== ".d") x of
               (scope, ".d":_anything) -> dtorQName scope
-              _ -> case (init x, last x) of
-                (ms, name)
-                  | name `elem` [".ctor",".decl"]
-                  -> let (ns, name') = (init ms, last ms)
-                    in Right (Name name', Name (intercalate "::" ns))
-                  | otherwise -> Right (Name name, Name (intercalate "::" ms))
+              _ -> case Prelude.break (== ".t") x of
+                (scope, ".t":retTy:rest) -> tyConvQName scope retTy rest
+                _ -> case (init x, last x) of
+                  (ms, name)
+                    | name `elem` [".ctor",".decl"]
+                    -> let (ns, name') = (init ms, last ms)
+                      in Right (Name name', Name (intercalate "::" ns))
+                    | otherwise -> Right (Name name, Name (intercalate "::" ms))
 
 --
 -- e.g. default constructors:
@@ -585,6 +596,19 @@ dtorQName prefix = Right (Name localname, Name scopename)
     (scope, name) = case prefix of
       [n] -> ([n], n)
       _ -> (prefix, last prefix)
+
+tyConvQName :: [Text] -> Text -> [Text] -> Either Text (Name, Name)
+tyConvQName prefix retTyStr rest = Right (Name localname, Name scopename)
+  where
+    retTy = uncode retTyStr
+    quals = case rest of
+      [] -> Nothing
+      [".decl"] -> Nothing
+      [quals] -> Just (denormalize quals)
+      [quals,".decl"] -> Just (denormalize quals)
+      _ -> Nothing
+    localname = retTy <> "()" <> pprQuals quals
+    scopename = intercalate "::" prefix
 
 sigOf :: [Text] -> Maybe Text
 sigOf ps = case ps of
@@ -628,32 +652,31 @@ functionSignatureQName isOp prefix ps0 = Right (Name localname, Name scopename)
 
       Just tys -> "(" <> Text.intercalate ", " tys <> ")" <> pprQuals quals
 
-    pprQuals :: Maybe [Text] -> Text
-    pprQuals Nothing = ""
-    pprQuals (Just []) = ""
-    pprQuals (Just qs) = " " <> pprCv <> pprRef
-      where
-        pprCv :: Text
-        pprCv | "const" `elem` qs = "const"
-              | otherwise = mempty
-
-        pprRef :: Text
-        pprRef | "lvalue" `elem` qs = "&"
-               | "rvalue" `elem` qs = "&&"
-               | otherwise = mempty
-
     scopename = intercalate "::" scope
 
     (scope, name) = case prefix of
       [n] -> ([], n) -- global function
       _ -> (init prefix, last prefix)
 
+pprQuals :: Maybe [Text] -> Text
+pprQuals Nothing = ""
+pprQuals (Just []) = ""
+pprQuals (Just qs) = " " <> pprCv <> pprRef
+  where
+    pprCv :: Text
+    pprCv | "const" `elem` qs = "const"
+          | otherwise = mempty
+    pprRef :: Text
+    pprRef | "lvalue" `elem` qs = "&"
+           | "rvalue" `elem` qs = "&&"
+           | otherwise = mempty
+
 formatParams :: Maybe Text -> Text
 formatParams params =
   "(" <> maybe "" (Text.intercalate ", " . denormalize) params <> ")"
 
 denormalize :: Text -> [Text]
-denormalize =
-      map (Text.replace "+" " " .
-            Text.replace " " ",")
-    . Text.splitOn ","
+denormalize = map uncode . Text.splitOn ","
+
+uncode :: Text -> Text
+uncode = Text.replace "+" " " .  Text.replace " " ","

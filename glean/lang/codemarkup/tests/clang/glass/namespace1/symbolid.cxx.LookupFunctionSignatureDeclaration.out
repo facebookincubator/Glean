@@ -543,6 +543,124 @@
   },
   {
     "key": {
+      "name": { "key": { "conversionOperator": { "key": "T &" } } },
+      "scope": {
+        "recordWithAccess": {
+          "record": {
+            "key": {
+              "name": { "key": "OO" },
+              "scope": { "namespace_": { "key": { "name": { "key": "Q" } } } }
+            }
+          },
+          "access": 0
+        }
+      },
+      "signature": {
+        "key": { "returns": { "key": "T &" }, "parameters": [ ] }
+      },
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "conversionOperator": { "key": "T &" } } },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "OO" },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "Q" } } }
+                        }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "T &" }, "parameters": [ ] }
+            },
+            "method": {
+              "isVirtual": false,
+              "isConst": true,
+              "isVolatile": false,
+              "refQualifier": 1
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 162,
+              "columnBegin": 5,
+              "lineEnd": 162,
+              "columnEnd": 34
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": { "conversionOperator": { "key": "T &" } } },
+      "scope": {
+        "recordWithAccess": {
+          "record": {
+            "key": {
+              "name": { "key": "OO" },
+              "scope": { "namespace_": { "key": { "name": { "key": "Q" } } } }
+            }
+          },
+          "access": 0
+        }
+      },
+      "signature": {
+        "key": { "returns": { "key": "T &" }, "parameters": [ ] }
+      },
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "conversionOperator": { "key": "T &" } } },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "OO" },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "Q" } } }
+                        }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "T &" }, "parameters": [ ] }
+            },
+            "method": {
+              "isVirtual": false,
+              "isConst": true,
+              "isVolatile": false,
+              "refQualifier": 2
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 160,
+              "columnBegin": 5,
+              "lineEnd": 160,
+              "columnEnd": 35
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "name": { "key": { "destructor": { } } },
       "scope": {
         "recordWithAccess": {
@@ -702,9 +820,9 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 162,
+              "lineBegin": 166,
               "columnBegin": 3,
-              "lineEnd": 165,
+              "lineEnd": 169,
               "columnEnd": 3
             }
           }

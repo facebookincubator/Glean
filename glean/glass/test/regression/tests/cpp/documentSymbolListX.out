@@ -157,7 +157,7 @@
                     "columnBegin": 1,
                     "columnEnd": 2,
                     "lineBegin": 129,
-                    "lineEnd": 167
+                    "lineEnd": 171
                 },
                 "sym": "test/cpp//Q"
             },
@@ -210,9 +210,115 @@
                     "columnBegin": 3,
                     "columnEnd": 4,
                     "lineBegin": 150,
-                    "lineEnd": 160
+                    "lineEnd": 164
                 },
                 "sym": "test/cpp//Q/OO"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "T &() const&"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Q::OO"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "T& T&() const"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 27
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "nameRange": {
+                    "columnBegin": 15,
+                    "columnEnd": 23,
+                    "lineBegin": 162,
+                    "lineEnd": 162
+                },
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 35,
+                    "lineBegin": 162,
+                    "lineEnd": 162
+                },
+                "sym": "test/cpp//Q/OO/.t/T+%26/const,lvalue/.decl"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "T &() const&&"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Q::OO"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "T& T&() const"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 27
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "nameRange": {
+                    "columnBegin": 15,
+                    "columnEnd": 23,
+                    "lineBegin": 160,
+                    "lineEnd": 160
+                },
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 36,
+                    "lineBegin": 160,
+                    "lineEnd": 160
+                },
+                "sym": "test/cpp//Q/OO/.t/T+%26/const,rvalue/.decl"
             },
             {
                 "attributes": [
@@ -1468,14 +1574,14 @@
                 "nameRange": {
                     "columnBegin": 18,
                     "columnEnd": 26,
-                    "lineBegin": 162,
-                    "lineEnd": 162
+                    "lineBegin": 166,
+                    "lineEnd": 166
                 },
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 4,
-                    "lineBegin": 162,
-                    "lineEnd": 165
+                    "lineBegin": 166,
+                    "lineEnd": 169
                 },
                 "sym": "test/cpp//Q/operator%22%22_glean/.o/const+char32_t+*,unsigned+long"
             },
@@ -1521,14 +1627,14 @@
                 "nameRange": {
                     "columnBegin": 42,
                     "columnEnd": 45,
-                    "lineBegin": 163,
-                    "lineEnd": 163
+                    "lineBegin": 167,
+                    "lineEnd": 167
                 },
                 "range": {
                     "columnBegin": 28,
                     "columnEnd": 45,
-                    "lineBegin": 163,
-                    "lineEnd": 163
+                    "lineBegin": 167,
+                    "lineEnd": 167
                 },
                 "sym": "test/cpp//Q/operator%22%22_glean/len/.decl"
             },
@@ -1574,14 +1680,14 @@
                 "nameRange": {
                     "columnBegin": 23,
                     "columnEnd": 26,
-                    "lineBegin": 163,
-                    "lineEnd": 163
+                    "lineBegin": 167,
+                    "lineEnd": 167
                 },
                 "range": {
                     "columnBegin": 7,
                     "columnEnd": 26,
-                    "lineBegin": 163,
-                    "lineEnd": 163
+                    "lineBegin": 167,
+                    "lineEnd": 167
                 },
                 "sym": "test/cpp//Q/operator%22%22_glean/str/.decl"
             },
@@ -4783,7 +4889,7 @@
                         "columnBegin": 3,
                         "columnEnd": 4,
                         "lineBegin": 150,
-                        "lineEnd": 160
+                        "lineEnd": 164
                     },
                     "repository": "test"
                 },
@@ -4846,7 +4952,7 @@
                         "columnBegin": 3,
                         "columnEnd": 4,
                         "lineBegin": 150,
-                        "lineEnd": 160
+                        "lineEnd": 164
                     },
                     "repository": "test"
                 },
@@ -4909,7 +5015,7 @@
                         "columnBegin": 3,
                         "columnEnd": 4,
                         "lineBegin": 150,
-                        "lineEnd": 160
+                        "lineEnd": 164
                     },
                     "repository": "test"
                 },
@@ -4972,7 +5078,7 @@
                         "columnBegin": 3,
                         "columnEnd": 4,
                         "lineBegin": 150,
-                        "lineEnd": 160
+                        "lineEnd": 164
                     },
                     "repository": "test"
                 },
@@ -5035,7 +5141,7 @@
                         "columnBegin": 3,
                         "columnEnd": 4,
                         "lineBegin": 150,
-                        "lineEnd": 160
+                        "lineEnd": 164
                     },
                     "repository": "test"
                 },
@@ -5098,7 +5204,7 @@
                         "columnBegin": 3,
                         "columnEnd": 4,
                         "lineBegin": 150,
-                        "lineEnd": 160
+                        "lineEnd": 164
                     },
                     "repository": "test"
                 },
@@ -5161,7 +5267,7 @@
                         "columnBegin": 3,
                         "columnEnd": 4,
                         "lineBegin": 150,
-                        "lineEnd": 160
+                        "lineEnd": 164
                     },
                     "repository": "test"
                 },

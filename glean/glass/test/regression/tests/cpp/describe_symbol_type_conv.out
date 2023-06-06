@@ -1,6 +1,7 @@
 [
     "@generated",
     {
+        "annotations": [],
         "comments": [],
         "contains_relation": {
             "firstChild": "nondeterministic",
@@ -19,33 +20,36 @@
         "location": {
             "filepath": "test.cpp",
             "range": {
-                "columnBegin": 3,
-                "columnEnd": 4,
-                "lineBegin": 166,
-                "lineEnd": 169
+                "columnBegin": 5,
+                "columnEnd": 36,
+                "lineBegin": 160,
+                "lineEnd": 160
             },
             "repository": "test"
         },
-        "modifiers": [],
+        "modifiers": [
+            6
+        ],
         "name": {
-            "container": "Q",
-            "localName": "operator\"\"_glean(const char32_t *, unsigned long)"
+            "container": "Q::OO",
+            "localName": "T &() const&&"
         },
         "pretty_comments": [],
         "repo_hash": "testhash",
-        "signature": "void Q::operator\"\"_glean(const char32_t* str, unsigned long len)",
-        "sym": "test/cpp//Q/operator%22%22_glean/.o/const+char32_t+*,unsigned+long",
+        "signature": "T& Q::OO::T&() const",
+        "sym": "test/cpp//Q/OO/.t/T+%26/const,rvalue/.decl",
         "sym_location": {
             "filepath": "test.cpp",
             "range": {
-                "columnBegin": 3,
-                "columnEnd": 4,
-                "lineBegin": 166,
-                "lineEnd": 169
+                "columnBegin": 5,
+                "columnEnd": 36,
+                "lineBegin": 160,
+                "lineEnd": 160
             },
             "repository": "test"
         },
         "sym_other_locations": [],
-        "type_xrefs": []
+        "type_xrefs": [],
+        "visibility": 20
     }
 ]

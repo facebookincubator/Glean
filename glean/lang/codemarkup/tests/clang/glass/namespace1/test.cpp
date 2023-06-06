@@ -156,6 +156,10 @@ namespace Q {
     OO& operator=(OO const&);
     OO& operator=(OO&&) noexcept;
 
+    template <typename T>
+    constexpr operator T&() const&&;
+    template <typename T>
+    constexpr operator T&() const&;
 
   };
 
