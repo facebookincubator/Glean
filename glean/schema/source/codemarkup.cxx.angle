@@ -208,6 +208,7 @@ predicate CxxDeclToDefXRefTargetLocation:
     location: codemarkup.types.Location
   }
   { Decl1, Entity, Location } where
+    CxxResolveDeclarationToEntity { Decl1, { decl = _ } };
     code.cxx.DeclToDef { Decl1, Defn };
     cxx1.DefToBaseDecl { Defn , Decl2 };
     Decl1 != Decl2; # Filter out (many) self refs
@@ -226,6 +227,7 @@ predicate CxxDefToDeclFamilyXRefTargetLocation:
     location: codemarkup.types.Location,
   }
   { Decl1, Entity, Location } where
+    CxxResolveDeclarationToEntity { Decl1, { defn = _ } };
     cxx1.DeclFamilyOf { decl = Decl1, family = Decl2 };
     Decl1 != Decl2; # filter out many self-refs
     cxx1.DeclarationLocationNameSpan { Decl2, Range, Name, NameFile, NameSpan };

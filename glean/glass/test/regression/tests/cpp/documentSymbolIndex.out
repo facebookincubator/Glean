@@ -2,7 +2,7 @@
     "@generated",
     {
         "revision": "testhash",
-        "size": 156,
+        "size": 154,
         "symbols": {
             "100": [
                 {
@@ -3037,51 +3037,6 @@
                         "lineEnd": 31
                     },
                     "sym": "test/cpp//foo/foo/.f//.decl"
-                },
-                {
-                    "attributes": {
-                        "symbolDefinitionType": {
-                            "aInteger": 2
-                        },
-                        "symbolKind": {
-                            "aInteger": 14
-                        },
-                        "symbolLanguage": {
-                            "aInteger": 1
-                        },
-                        "symbolName": {
-                            "aString": "foo"
-                        },
-                        "symbolParent": {
-                            "aString": "foo"
-                        },
-                        "symbolSignature": {
-                            "aString": "void foo()"
-                        }
-                    },
-                    "range": {
-                        "columnBegin": 6,
-                        "columnEnd": 9,
-                        "lineBegin": 31,
-                        "lineEnd": 31
-                    },
-                    "sym": "test/cpp//foo/foo/.f//.decl",
-                    "target": {
-                        "filepath": "test.cpp",
-                        "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 2,
-                            "lineBegin": 24,
-                            "lineEnd": 27
-                        },
-                        "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 6,
-                        "columnEnd": 9,
-                        "lineBegin": 24,
-                        "lineEnd": 24
-                    }
                 }
             ],
             "33": [
@@ -3505,51 +3460,6 @@
                         "lineEnd": 52
                     },
                     "sym": "test/cpp//h/.f/int/.decl"
-                },
-                {
-                    "attributes": {
-                        "symbolDefinitionType": {
-                            "aInteger": 2
-                        },
-                        "symbolKind": {
-                            "aInteger": 14
-                        },
-                        "symbolLanguage": {
-                            "aInteger": 1
-                        },
-                        "symbolName": {
-                            "aString": "h(int)"
-                        },
-                        "symbolParent": {
-                            "aString": ""
-                        },
-                        "symbolSignature": {
-                            "aString": "void h(int i)"
-                        }
-                    },
-                    "range": {
-                        "columnBegin": 6,
-                        "columnEnd": 7,
-                        "lineBegin": 52,
-                        "lineEnd": 52
-                    },
-                    "sym": "test/cpp//h/.f/int/.decl",
-                    "target": {
-                        "filepath": "test.cpp",
-                        "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 2,
-                            "lineBegin": 54,
-                            "lineEnd": 62
-                        },
-                        "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 6,
-                        "columnEnd": 7,
-                        "lineBegin": 54,
-                        "lineEnd": 54
-                    }
                 },
                 {
                     "attributes": {
