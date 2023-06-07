@@ -495,7 +495,7 @@ toSymbolDeclKind e = case e of
   Cxx.Declaration_objcContainer{} -> return Nothing
   Cxx.Declaration_objcMethod{} -> return $ Just SymbolKind_Method
   Cxx.Declaration_objcProperty{} -> return $ Just SymbolKind_Property
-  Cxx.Declaration_typeAlias{} -> return $ Just SymbolKind_Class_
+  Cxx.Declaration_typeAlias{} -> return $ Just SymbolKind_Type
   Cxx.Declaration_EMPTY -> return Nothing
 
 toSymbolFunctionDeclKind
