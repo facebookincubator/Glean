@@ -14,7 +14,7 @@ module Glean.Glass.Query.Cxx
     documentSymbolsForCxx,
     fileIncludeLocationsForCxx,
     usrHashToDeclaration,
-    usrHashToXRefs
+    usrHashToXRefs,
   ) where
 
 import Data.Maybe ( catMaybes )
@@ -658,7 +658,7 @@ usrToXref :: Text -> Angle ( Src.File, Code.RangeSpan)
 usrToXref usrhash =
   vars $ \(reffile :: Angle Src.File) (rangespan :: Angle Code.RangeSpan)
           (decl :: Angle Cxx.Declaration) ->
-    tuple (reffile, rangespan)  `where_` [
+    tuple (reffile, rangespan) `where_` [
       wild .= predicate @Cxx.USRToDeclaration (
         rec $
           field @"hash" (string usrhash) $

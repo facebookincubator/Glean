@@ -7,6 +7,7 @@
 -}
 
 {-# OPTIONS_GHC -Wno-orphans #-}
+{-# LANGUAGE TypeApplications #-}
 
 module Glean.Glass.SymbolId.Cxx (
     {- instances -}
@@ -30,6 +31,11 @@ import qualified Glean.Schema.Cxx1.Types as Cxx
 
 import Glean.Schema.CodeCxx.Types as Cxx
     ( Entity(..), Definition(..) )
+
+import Glean.Angle
+import qualified Glean.Schema.CodemarkupCxx.Types as Code
+import Glean.Util.ToAngle (ToAngle(toAngle))
+import Glean.Glass.Utils (fetchData)
 
 instance Symbol Cxx.Entity where
   toSymbol _ = throwM $ SymbolError "Cxx.Entity: use toSymbolWithPath"
@@ -416,6 +422,9 @@ instance ToSymbolParent Cxx.TypeAliasDeclaration_key  where
   toSymbolParent (Cxx.TypeAliasDeclaration_key qname _ _ _) =
     cxxParentQNameScope qname
 
+instance ToNativeSymbol Cxx.Entity where
+  toNativeSymbol = entityToUsr
+
 cxxEnumDeclParentName
   :: Cxx.EnumDeclaration_key -> Glean.RepoHaxl u w (Maybe Name)
 cxxEnumDeclParentName (Cxx.EnumDeclaration_key qname _scoped _type _) =
@@ -680,3 +689,16 @@ denormalize = map uncode . Text.splitOn ","
 
 uncode :: Text -> Text
 uncode = Text.replace "+" " " .  Text.replace " " ","
+
+--
+-- Look up the USR if present
+--
+entityToUsr :: Cxx.Entity -> Glean.RepoHaxl u w (Maybe Text)
+entityToUsr ent = fetchData $ vars $ \(usr :: Angle Text) ->
+  usr `where_` [
+    wild .= predicate @Code.CxxEntityUSR (
+        rec $
+          field @"entity" (toAngle ent) $
+          field @"usr" usr
+        end)
+  ]

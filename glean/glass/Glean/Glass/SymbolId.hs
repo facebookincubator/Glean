@@ -40,7 +40,7 @@ module Glean.Glass.SymbolId
   -- reexports
   , SymbolRepoPath(..)
 
-  ) where
+  ,nativeSymbol) where
 
 import Control.Monad.Catch ( throwM, try )
 import Data.Maybe ( fromMaybe )
@@ -69,7 +69,8 @@ import Glean.Glass.SymbolId.Class
     ( Symbol(..),
       SymbolError(SymbolError),
       ToQName(..),
-      ToSymbolParent(..) )
+      ToSymbolParent(..),
+      ToNativeSymbol(..) )
 
 import Glean.Glass.SymbolId.Buck ({- instances -})
 import Glean.Glass.SymbolId.Cxx ({- instances -})
@@ -382,3 +383,8 @@ entityKind :: Code.Entity -> Glean.RepoHaxl u w (Maybe Glass.SymbolKind)
 entityKind (Code.Entity_cxx e) = Cxx.cxxEntityKind e
 entityKind (Code.Entity_pp e) = Pp.ppEntityKind e
 entityKind _ = return Nothing
+
+
+nativeSymbol :: Code.Entity -> Glean.RepoHaxl u w (Maybe Text)
+nativeSymbol (Code.Entity_cxx e) = toNativeSymbol e
+nativeSymbol _ = return Nothing

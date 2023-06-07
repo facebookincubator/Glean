@@ -33,6 +33,9 @@
                     "container": "Q",
                     "localName": "bozzo"
                 },
+                "native_sym": {
+                    "sym": "63C2D5C1168C3B1E"
+                },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/cpp//Q/bozzo/.f/",
@@ -79,6 +82,9 @@
                 "name": {
                     "container": "foo",
                     "localName": "foo"
+                },
+                "native_sym": {
+                    "sym": "679BA3377BCEEEAA"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
@@ -127,6 +133,9 @@
                     "container": "foo",
                     "localName": "fooFn(int)"
                 },
+                "native_sym": {
+                    "sym": "229289F3B2374F63"
+                },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/cpp//foo/fooFn/.f/int",
@@ -173,6 +182,9 @@
                 "name": {
                     "container": "",
                     "localName": "h(int)"
+                },
+                "native_sym": {
+                    "sym": "BBD3198879108CE7"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",

@@ -353,6 +353,7 @@ struct SymbolDescription {
   15: set<Modifier> modifiers;
   16: list<TypeSymSpan> type_xrefs;
   17: list<SymbolComment> pretty_comments; // comment text in markdown format
+  18: optional NativeSymbol native_sym;
 }
 
 // Processed comment and original span
@@ -618,6 +619,12 @@ struct USRSymbolDefinition {
 # future additions to API.
 struct USRSymbolReference {
   1: LocationRange location;
+}
+
+# A Native Symbol can be one of many things for a given language. For C++ its a
+# clang USR, for scip indexers its the scip symbol.
+struct NativeSymbol {
+  1: string sym;
 }
 
 // Glass symbol service

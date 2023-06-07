@@ -40,6 +40,9 @@
                     "container": "foo",
                     "localName": "foo"
                 },
+                "native_sym": {
+                    "sym": "679BA3377BCEEEAA"
+                },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "void foo::foo()",

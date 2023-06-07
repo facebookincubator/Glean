@@ -31,6 +31,9 @@
             "container": "foo",
             "localName": "fooFn(int)"
         },
+        "native_sym": {
+            "sym": "229289F3B2374F63"
+        },
         "pretty_comments": [],
         "repo_hash": "testhash",
         "signature": "int foo::fooFn(int fooI)",

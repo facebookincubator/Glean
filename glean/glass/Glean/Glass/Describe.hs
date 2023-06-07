@@ -22,7 +22,7 @@ import Glean.Haxl.Repos as Glean ( RepoHaxl )
 
 import Glean.Glass.Range ( rangeSpanToLocationRange )
 import Glean.Glass.Types
-import Glean.Glass.SymbolId ( toQualifiedName, entityLanguage )
+import Glean.Glass.SymbolId ( toQualifiedName, entityLanguage, nativeSymbol )
 import Glean.Glass.SymbolKind ( findSymbolKind )
 import Glean.Glass.Search ( CodeEntityLocation(..) )
 import Glean.Glass.SymbolSig ( toSymbolSignatureText )
@@ -30,11 +30,12 @@ import Glean.Glass.Annotations ( getAnnotationsForEntity )
 import Glean.Glass.Visibility ( getInfoForEntity )
 import Glean.Glass.Comments ( getCommentsForEntity )
 import Glean.Glass.Repos ( ScmRevisions, getRepoHashForLocation )
-import Glean.Glass.Utils ( eThrow, fst4 )
+import Glean.Glass.Utils ( eThrow, fst4)
 import Glean.Glass.Pretty.Cxx as Cxx (Qualified(..))
 import qualified Glean.Glass.SearchRelated as Search
 
 import qualified Glean.Schema.Code.Types as Code
+import qualified Glean.Glass.Types as Glass
 
 -- Helper to fill out symbol description metadata uniformly
 mkSymbolDescription
@@ -112,6 +113,7 @@ describeEntity scmRevs ent SymbolResult{..} = do
     relationDescription RelationType_Extends
   symbolDescription_contains_relation <-
     relationDescription RelationType_Contains
+  symbolDescription_native_sym <- fmap Glass.NativeSymbol <$> nativeSymbol ent
   pure SymbolDescription{..}
   where
     symbolDescription_sym = symbolResult_symbol

@@ -33,6 +33,9 @@
                     "container": "foo",
                     "localName": "foo"
                 },
+                "native_sym": {
+                    "sym": "679BA3377BCEEEAA"
+                },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/cpp//foo/foo/.f/",
@@ -79,6 +82,9 @@
                 "name": {
                     "container": "foo",
                     "localName": "fooFn(int)"
+                },
+                "native_sym": {
+                    "sym": "229289F3B2374F63"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",

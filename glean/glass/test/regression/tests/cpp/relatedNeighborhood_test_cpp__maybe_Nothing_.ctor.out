@@ -116,6 +116,9 @@
                     "container": "maybe::Nothing",
                     "localName": "Nothing(maybe::Nothing::_secret)"
                 },
+                "native_sym": {
+                    "sym": "B048DD8A95DF1F4C"
+                },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "maybe::Nothing::Nothing(maybe::Nothing::_secret)",

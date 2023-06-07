@@ -28,7 +28,7 @@ module Glean.Glass.SymbolId.Class (
   , (<:>)
   , symbolPairToQName
 
-  ) where
+  ,ToNativeSymbol(..)) where
 
 import Data.Text (Text, intercalate)
 import Control.Exception ( Exception(..) )
@@ -80,6 +80,9 @@ class Symbol a => ToQName a where
 -- first level parent identifier
 class ToSymbolParent a where
   toSymbolParent :: a -> Glean.RepoHaxl u w (Maybe Name)
+
+class ToNativeSymbol a where
+  toNativeSymbol :: a -> Glean.RepoHaxl u w (Maybe Text)
 
 type SymbolKeyType p =
   ( Typeable p

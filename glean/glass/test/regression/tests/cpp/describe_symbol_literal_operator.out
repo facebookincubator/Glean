@@ -31,6 +31,9 @@
             "container": "Q",
             "localName": "operator\"\"_glean(const char32_t *, unsigned long)"
         },
+        "native_sym": {
+            "sym": "79DFDDA2C0956966"
+        },
         "pretty_comments": [],
         "repo_hash": "testhash",
         "signature": "void Q::operator\"\"_glean(const char32_t* str, unsigned long len)",
