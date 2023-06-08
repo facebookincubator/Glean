@@ -25,6 +25,7 @@ import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.Maybe
 import Data.Text.Prettyprint.Doc hiding ((<>))
+import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import qualified Data.Vector.Storable as Vector
@@ -319,7 +320,7 @@ writeJsonFact
               jsonToTerm b ty val
               return $! n+1
             Nothing -> do
-              lift $ defaultValue b ty
+              lift $ defaultValue b (name, ty)
               return n
       n <- foldM doField 0 fields
       -- ensure that all the fields mentioned in the fact are valid
@@ -369,23 +370,24 @@ writeJsonFact
   -- Thrift might omit fields from the output if they have the
   -- default value, so we have to reconstruct the default value
   -- here.
-  defaultValue :: Builder -> Type -> IO ()
-  defaultValue b typ = case typ of
+  defaultValue :: Builder -> (Text, Type) -> IO ()
+  defaultValue b (fieldName, typ) = case typ of
     ByteTy -> invoke $ glean_push_value_byte b 0
     NatTy -> invoke $ glean_push_value_nat b 0
     StringTy -> invoke $ glean_push_value_string b nullPtr 0
     ArrayTy{} -> invoke $ glean_push_value_array b 0
     RecordTy fields ->
-      mapM_ (defaultValue b) [ty | FieldDef _ ty <- fields ]
+      mapM_ (defaultValue b) [(nm, ty) | FieldDef nm ty <- fields ]
     SumTy (FieldDef _ ty : _) -> do
       invoke $ glean_push_value_selector b 0
-      defaultValue b ty
-    NamedTy (ExpandedType _ ty) -> defaultValue b ty
+      defaultValue b (fieldName, ty)
+    NamedTy (ExpandedType _ ty) -> defaultValue b (fieldName, ty)
     PredicateTy{} -> throwError $ "no default for a predicate reference; "
-      ++ "JSON might be missing a predicate ref, "
-      ++ "or include one in an unexpected location"
+      ++ "JSON might be missing a predicate ref for field "
+      ++ show fieldName
+      ++ ", or include one in an unexpected location"
     EnumeratedTy{} -> invoke $ glean_push_value_selector b 0
-    MaybeTy ty -> defaultValue b (lowerMaybe ty)
+    MaybeTy ty -> defaultValue b (fieldName, lowerMaybe ty)
     BooleanTy -> invoke $ glean_push_value_selector b 0
     _otherwise -> throwError $ "internal: defaultValue: " <> show typ
 
