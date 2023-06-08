@@ -540,9 +540,11 @@ toSymbolDefnKind k = case k of
   Cxx.Definition_record_ x -> do
     Cxx.RecordDefinition_key decl _ _ <- Glean.keyOf x
     toSymbolRecordKind decl
-  Cxx.Definition_function_{} -> return $ Just SymbolKind_Function
+  Cxx.Definition_function_ f -> do
+    Cxx.FunctionDefinition_key decl _ <- Glean.keyOf f
+    Just <$> (toSymbolFunctionDeclKind =<< Glean.keyOf decl)
   Cxx.Definition_enum_{} -> return $ Just SymbolKind_Enum
-  Cxx.Definition_objcMethod{} -> return Nothing
+  Cxx.Definition_objcMethod{} -> return $ Just SymbolKind_Method
   Cxx.Definition_objcContainer{} -> return Nothing
   Cxx.Definition_variable{} -> return $ Just SymbolKind_Variable
   Cxx.Definition_namespace_{} -> return $ Just SymbolKind_Namespace
