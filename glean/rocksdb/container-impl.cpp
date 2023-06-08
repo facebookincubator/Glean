@@ -52,7 +52,7 @@ const Family Family::factOwners("factOwners", [](auto& opts){
 const Family Family::factOwnerPages("factOwnerPages", [](auto& opts) {
   opts.OptimizeForPointLookup(10); });
 
-#ifndef FACEBOOK
+#ifndef GLEAN_FACEBOOK
 namespace {
 rocksdb::Status openRocksDB(
     const rocksdb::Options& options,
