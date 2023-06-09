@@ -1524,7 +1524,7 @@ searchRelated env@Glass.Env{..} sym opts@RequestOptions{..}
         withRepo (entityRepo entity) $ do
           (entityPairs, merr) <- case searchRelatedRequest_relatedBy of
             RelationType_Calls ->
-              searchRelatedCalls searchRelatedRequest_relation entity lang
+              searchRelatedCalls repo searchRelatedRequest_relation entity lang
             _ -> do
               relatedLocatedEntities <-
                       Search.searchRelatedEntities limit
@@ -1573,16 +1573,17 @@ searchRelated env@Glass.Env{..} sym opts@RequestOptions{..}
 
     -- Implements Call hierarchy (check LSP spec)
     searchRelatedCalls
-      :: RelationDirection
+      :: RepoName
+      -> RelationDirection
       -> SearchEntity Code.Entity
       -> Language
       -> RepoHaxl u w
           ([(RelatedLocatedEntities, Maybe [LocationRange])], Maybe ErrorLogger)
-    searchRelatedCalls RelationDirection__UNKNOWN{} _ _ = error "unreachable"
+    searchRelatedCalls _ RelationDirection__UNKNOWN{} _ _ = error "unreachable"
     -- Incoming calls, mapping a symbol to all its callers symbols.
-    searchRelatedCalls RelationDirection_Parent child Language_Cpp = do
+    searchRelatedCalls repoName RelationDirection_Parent child Language_Cpp = do
       -- For C++ we use a more efficient predicate, albeit without call sites
-      let SearchEntity{entityRepo, decl, file, name, rangespan} = child
+      let SearchEntity{decl, file, name, rangespan} = child
       case entityToAngle decl of
         Left err -> do
           repo <- Glean.haxlRepo
@@ -1592,21 +1593,20 @@ searchRelated env@Glass.Env{..} sym opts@RequestOptions{..}
         Right query -> do
           let childRL = ((decl, file, rangespan, name), sym)
               limit = fromIntegral <$> requestOptions_limit
-              repo = RepoName (Glean.repo_name entityRepo)
           results <- searchWithLimit limit $
             Query.findReferenceEntitiesFast query
           callers <- forM results $ \(entity, loc) -> do
             let path = Code.location_file loc
             gleanPath <- GleanPath <$> Glean.keyOf path
-            symbol <- toSymbolId (fromGleanPath repo gleanPath) entity
+            symbol <- toSymbolId (fromGleanPath repoName gleanPath) entity
             let name = Code.location_name loc
                 range = Code.location_location loc
                 parentRL = ((entity, path, range, name), symbol)
             return Search.RelatedLocatedEntities{..}
           return ((,Nothing) <$> callers, Nothing)
 
-    searchRelatedCalls RelationDirection_Parent child _ = do
-        let SearchEntity{entityRepo, decl, file, name, rangespan} = child
+    searchRelatedCalls repoName RelationDirection_Parent child _ = do
+        let SearchEntity{decl, file, name, rangespan} = child
         case entityToAngle decl of
           Left err -> do
             repo <- Glean.haxlRepo
@@ -1619,34 +1619,32 @@ searchRelated env@Glass.Env{..} sym opts@RequestOptions{..}
                 -- limit until we optimize the query to use DeclarationSource
                 limit = maybe 100 (min 100 . fromIntegral) requestOptions_limit
                 timeLimit = 2000 -- ms
-                repo = RepoName (Glean.repo_name entityRepo)
             results <- searchWithTimeLimit (Just limit) timeLimit $
               Query.findReferenceEntities query
             callers <- forM results $ \(path, entity, loc, callSite) -> do
               gleanPath <- GleanPath <$> Glean.keyOf path
-              symbol <- toSymbolId (fromGleanPath repo gleanPath) entity
+              symbol <- toSymbolId (fromGleanPath repoName gleanPath) entity
               let name = Code.location_name loc
                   range = Code.location_location loc
                   parentRL = ((entity, path, range, name), symbol)
-              location <- rangeSpanToLocationRange repo path callSite
+              location <- rangeSpanToLocationRange repoName path callSite
               return (Search.RelatedLocatedEntities{..}, location)
             let groups = groupLocatedEntitiesOn parentRL callers
             return (second Just <$> groups, Nothing)
 
     -- | Outgoing calls, maps a symbol to all the symbols it references.
-    searchRelatedCalls RelationDirection_Child parent lang = do
-      let SearchEntity{decl, entityRepo, file, name, rangespan} = parent
-          repo = RepoName (Glean.repo_name entityRepo)
+    searchRelatedCalls repoName RelationDirection_Child parent lang = do
+      let SearchEntity{decl, file, name, rangespan} = parent
           parentRL = ((decl, file, rangespan, name), sym)
       parentRange <-
-        locationRange_range <$> rangeSpanToLocationRange repo file rangespan
+        locationRange_range <$> rangeSpanToLocationRange repoName file rangespan
       (xrefs, _, _) <-
         documentSymbolsForLanguage Nothing (Just lang) True (Glean.getId file)
       xrefsRanges <- forM xrefs $ \(Code.XRefLocation{..}, entity) -> do
         gleanPath <- GleanPath <$>
           Glean.keyOf (Code.location_file xRefLocation_target)
-        symbol <- toSymbolId (fromGleanPath repo gleanPath) entity
-        sourceRange <- rangeSpanToLocationRange repo file xRefLocation_source
+        symbol <- toSymbolId (fromGleanPath repoName gleanPath) entity
+        sourceRange <- rangeSpanToLocationRange repoName file xRefLocation_source
         kind <- findSymbolKind entity
         return (sourceRange, symbol, kind)
       let callees =
