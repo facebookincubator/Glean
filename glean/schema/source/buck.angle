@@ -372,12 +372,12 @@ predicate LocatorReverseDep :
 # e.g. when BUCK/TARGET file is broken
 predicate FailureSources :
   {
-    error : buck.IndexFailureX,
     source : src.File,
+    error : buck.IndexFailureX,
   }
-  { Error, Src} where
-  Error = buck.IndexFailureX { source = {locator = Locator}};
-  buck.FileToTarget { source = Src,locator = Locator}
+  { Src, Error } where
+  buck.FileToTarget { source = Src,locator = Locator};
+  Error = buck.IndexFailureX { source = {locator = Locator}}
 
 type FailureReason = enum {
   # config was intentionally skipped
