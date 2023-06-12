@@ -1,7 +1,7 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
 # common predicates between java and kotlin used for interopobility
-schema kotlin.alpha.1 {
+schema kotlin.alpha.2 {
   import javakotlin.alpha.1
   import src.1
 
@@ -36,7 +36,7 @@ predicate MethodDeclaration :
   {
     name : javakotlin.alpha.MethodName,
     parameters : [VariableDeclaration],
-    returnType : Type,
+    returnType : maybe Type,
     loc : src.Loc,
     container: maybe Declaration
   }
