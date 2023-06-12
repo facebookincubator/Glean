@@ -24,7 +24,7 @@ import System.Time.Extra (sleep)
 import Text.Printf (printf)
 
 import Util.Control.Exception (tryBracket)
-import Util.Log (logWarning, vlog)
+import Util.Log.String
 import Util.STM
 
 import Glean.Backend.Types (Backend)
@@ -261,6 +261,9 @@ data SendQueueSettings = SendQueueSettings
 
     -- | How to retry failures
   , sendQueueRetry :: RetryPolicy
+
+    -- | Optionally log stats every 10s
+  , sendQueueLogStats :: Bool
   }
 
 instance Show SendQueueSettings where
@@ -273,6 +276,7 @@ instance Default SendQueueSettings where
     , sendQueueThreads = 1
     , sendQueueLog = const $ return ()
     , sendQueueRetry = defaultRetryPolicy
+    , sendQueueLogStats = False
     }
 
 withSendQueue
@@ -286,7 +290,7 @@ withSendQueue backend repo settings@SendQueueSettings{..} action =
   mask $ \restore -> do
     q <- newSendQueue sendQueueMaxMemory sendQueueMaxBatches
     let retryBackend = backendRetryWrites backend sendQueueRetry
-    Async.withAsync (forever $ logQueueStats q >> sleep 10) $ \_ -> do
+    withStats sendQueueLogStats q $ do
       snd <$> Async.concurrently
         (Async.mapConcurrently_ id
           $ restore (pollFromWaitQueue retryBackend settings q)
@@ -296,8 +300,15 @@ withSendQueue backend repo settings@SendQueueSettings{..} action =
         (restore (action q)
           `finally` atomically (closeSendQueue q))
 
-logQueueStats :: SendQueue -> IO ()
-logQueueStats SendQueue{..} = do
-  count <- readTVarIO sqCount
-  memory <- readTVarIO sqMemory
-  vlog 1 $ printf "count:%d/%d memory:%d/%d" count sqMaxCount memory sqMaxMemory
+withStats :: Bool -> SendQueue -> IO a -> IO a
+withStats on SendQueue{..} act = do
+  verbose <- vlogIsOn 1
+  if on || verbose
+    then Async.withAsync (forever $ logQueueStats >> sleep 10) $ \_ -> act
+    else act
+  where
+  logQueueStats = do
+    count <- readTVarIO sqCount
+    memory <- readTVarIO sqMemory
+    logInfo $ printf "count:%d/%d memory:%d/%d"
+      count sqMaxCount memory sqMaxMemory
