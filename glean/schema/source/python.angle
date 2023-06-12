@@ -599,7 +599,7 @@ predicate IsAbstract: Declaration
     DerivedClassToBase { ClassDecl, Base };
     { name = "abc.ABC" } = Base;
     # ABCMeta is not supported, because doesn't have this data
-    # [perf note] find the base classes first and then check to see
+    # (perf note): find the base classes first and then check to see
     # whether the name is "abc.ABC", don't find all the "abc.ABC"
     # classes first.
   ) | (
@@ -830,3 +830,5 @@ predicate ResolveOriginalName:
     ) else ( Name );
 
 } # python.4
+
+schema python.4 evolves python.3
