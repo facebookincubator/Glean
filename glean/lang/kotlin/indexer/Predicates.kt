@@ -16,7 +16,7 @@ import java.io.FileOutputStream
 import java.io.OutputStream
 
 class Predicates {
-  private val KOTLIN_SCHEMA_VERSION = 1
+  private val KOTLIN_SCHEMA_VERSION = 2
   private val KOTLIN_SCHEMA_NAME = "kotlin.alpha"
   private val METHOD_DECLARATION_PREDICATE_NAME =
       "$KOTLIN_SCHEMA_NAME.MethodDeclaration.$KOTLIN_SCHEMA_VERSION"
