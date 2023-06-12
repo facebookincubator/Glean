@@ -28,10 +28,12 @@ import Util.Log (logWarning, vlog)
 import Util.STM
 
 import Glean.Backend.Types (Backend)
+import Glean.Backend.Retry
 import qualified Glean.Backend.Types as Backend
 import qualified Glean.Types as Thrift
 import Glean.Write.SendBatch
 import Glean.Util.Time
+import Glean.Util.RetryChannelException
 
 
 -- | An event that happens in a 'SendQueue' and can be logged
@@ -256,6 +258,9 @@ data SendQueueSettings = SendQueueSettings
 
     -- | A function called whenever a 'SendQueueEvent' occurs
   , sendQueueLog :: SendQueueEvent -> IO ()
+
+    -- | How to retry failures
+  , sendQueueRetry :: RetryPolicy
   }
 
 instance Show SendQueueSettings where
@@ -267,6 +272,7 @@ instance Default SendQueueSettings where
     , sendQueueMaxBatches = 10000
     , sendQueueThreads = 1
     , sendQueueLog = const $ return ()
+    , sendQueueRetry = defaultRetryPolicy
     }
 
 withSendQueue
@@ -279,13 +285,14 @@ withSendQueue
 withSendQueue backend repo settings@SendQueueSettings{..} action =
   mask $ \restore -> do
     q <- newSendQueue sendQueueMaxMemory sendQueueMaxBatches
+    let retryBackend = backendRetryWrites backend sendQueueRetry
     Async.withAsync (forever $ logQueueStats q >> sleep 10) $ \_ -> do
       snd <$> Async.concurrently
         (Async.mapConcurrently_ id
-          $ restore (pollFromWaitQueue backend settings q)
+          $ restore (pollFromWaitQueue retryBackend settings q)
           : replicate
               sendQueueThreads
-              (restore (sendFromQueue backend repo settings q)))
+              (restore (sendFromQueue retryBackend repo settings q)))
         (restore (action q)
           `finally` atomically (closeSendQueue q))
 

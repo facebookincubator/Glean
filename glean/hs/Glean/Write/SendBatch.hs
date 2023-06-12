@@ -20,16 +20,10 @@ module Glean.Write.SendBatch
 import Control.Exception
 import Data.Default
 import qualified Data.Text as Text
-import System.Random
 import System.Time.Extra
 
 import Glean.Backend.Types
 import qualified Glean.Types as Thrift
-import Glean.Util.RetryRecvTimeout
-import Util.Log.Text (logWarning)
-
-numRetries :: Word
-numRetries = 5
 
 sendBatch
   :: Backend be
@@ -42,10 +36,13 @@ sendBatch backend repo batch = do
   waitBatch backend handle
 
 sendBatchAsync
-  :: Backend be => be -> Thrift.Repo -> Thrift.Batch -> IO Thrift.Handle
+  :: Backend be
+  => be
+  -> Thrift.Repo
+  -> Thrift.Batch
+  -> IO Thrift.Handle
 sendBatchAsync backend repo batch = do
-  r <- retryServerQueueTimeout logWarningAndBackoff numRetries $
-    enqueueBatch backend $ Thrift.ComputedBatch repo True batch
+  r <- enqueueBatch backend $ Thrift.ComputedBatch repo True batch
   case r of
     Thrift.SendResponse_handle h -> return h
     Thrift.SendResponse_retry (Thrift.BatchRetry r) ->
@@ -67,8 +64,7 @@ sendJsonBatch backend repo batches opts = do
     else waitBatch backend handle
   where
     send = do
-      r <- try $ retryServerQueueTimeout logWarningAndBackoff numRetries $
-        enqueueJsonBatch backend repo
+      r <- try $ enqueueJsonBatch backend repo
         Thrift.SendJsonBatch
           { Thrift.sendJsonBatch_batches = batches
           , Thrift.sendJsonBatch_options = opts
@@ -84,25 +80,17 @@ retry secs action = do
   sleep $ max secs 1
   action
 
-waitBatch :: Backend be => be -> Thrift.Handle -> IO Thrift.Subst
+waitBatch
+  :: Backend be
+  => be
+  -> Thrift.Handle
+  -> IO Thrift.Subst
 waitBatch backend handle = do
-  e <- try $
-    retryServerQueueTimeout logWarningAndBackoff numRetries $
-    pollBatch backend handle
+  e <- try $ pollBatch backend handle
   case e of
-    Left Thrift.Retry{..} -> retry retry_seconds $ waitBatch backend handle
+    Left Thrift.Retry{..} ->
+      retry retry_seconds $ waitBatch backend handle
     Right r -> case r of
       Thrift.FinishResponse_subst subst -> return subst
       Thrift.FinishResponse_retry (Thrift.BatchRetry r) ->
         retry r $ waitBatch backend handle
-
-maxBackOffSeconds :: Seconds
-maxBackOffSeconds = 10
-
--- | Logs a warning message and sleeps
---   a random amount of time between 1 and 'maxBackOffSeconds'
-logWarningAndBackoff :: Text.Text -> IO ()
-logWarningAndBackoff msg = do
-  logWarning msg
-  randomBackoff <- randomRIO (1, maxBackOffSeconds)
-  sleep randomBackoff

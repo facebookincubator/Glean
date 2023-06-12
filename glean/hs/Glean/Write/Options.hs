@@ -27,6 +27,7 @@ import Util.Log
 import Glean.Write.Async (WriterSettings(..), WriterEvent(..))
 import Glean.Write.SendQueue (SendQueueSettings(..))
 import Glean.Write.SendAndRebaseQueue (SendAndRebaseQueueSettings(..))
+import Glean.Util.RetryChannelException
 
 
 sendQueueOptions :: O.Parser SendQueueSettings
@@ -49,11 +50,21 @@ sendQueueOptions = do
     <> O.value 1024
     <> O.showDefault
     <> O.help "maximum number of batches in send queue"
+  sendQueueRetry <- fmap toRetryPolicy $ O.option O.auto $
+    O.long "send-retries"
+    <> O.metavar "N"
+    <> O.value 20
+    <> O.showDefault
+    <> O.help "number of retries, default 20"
   return def
     { sendQueueThreads
     , sendQueueMaxMemory
     , sendQueueMaxBatches
+    , sendQueueRetry
     }
+  where
+  toRetryPolicy n = defaultRetryPolicy { maxRetries = n }
+
 
 sendAndRebaseQueueOptions :: O.Parser SendAndRebaseQueueSettings
 sendAndRebaseQueueOptions = do
