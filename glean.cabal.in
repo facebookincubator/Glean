@@ -327,6 +327,7 @@ library util
         Glean.Util.Periodic
         Glean.Util.Process
         Glean.Util.RetryRecvTimeout
+        Glean.Util.RetryChannelException
         Glean.Util.Service
         Glean.Util.ShardManager
         Glean.Util.Some
