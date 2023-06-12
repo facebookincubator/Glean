@@ -64,8 +64,8 @@ type Callback = Either SomeException Thrift.Subst -> STM ()
 data Wait = Wait
   { waitHandle :: !Thrift.Handle  -- ^ handle from GleanService
   , waitStart :: !TimePoint  -- ^ When this 'Wait' was constructed
-  , waitSize :: !Int  -- ^ length of Thrift.batch_facts
   , waitCallback :: !Callback  -- ^ use-once callback with result.
+  , waitOriginalBatch :: !Thrift.Batch  -- ^ the batch, so we can resend it
   }
 
 data SendQueue = SendQueue
@@ -75,7 +75,7 @@ data SendQueue = SendQueue
     -- | Batches we've sent and are now waiting for the server to commit
   , sqWaitQueue :: TQueue Wait
 
-    -- | Memory used by batches in sqOutQueue
+    -- | Memory used by batches in sqOutQueue and sqWaitQueue
   , sqMemory :: TVar Int
 
     -- | Number of batches in flight (in sqOutQueue and sqWaitQueue)
@@ -104,6 +104,19 @@ newSendQueue max_mem max_count = SendQueue
   <*> pure max_count
   <*> newTVarIO Open
 
+releaseBatch :: SendQueue -> Int -> STM ()
+releaseBatch sq size = do
+  modifyTVar' (sqCount sq) $ \n -> n - 1
+  modifyTVar' (sqMemory sq) $ \n -> n - size
+
+acquireBatch :: SendQueue -> Int -> STM ()
+acquireBatch sq size = do
+  mem <- readTVar $ sqMemory sq
+  count <- readTVar $ sqCount sq
+  when (mem > sqMaxMemory sq || count > sqMaxCount sq) retry
+  writeTVar (sqMemory sq) $! mem + size
+  writeTVar (sqCount sq) $! count + 1
+
 writeSendQueue :: SendQueue -> Thrift.Batch -> Callback -> STM ()
 writeSendQueue sq batch callback = do
   status <- readTVar $ sqStatus sq
@@ -112,12 +125,8 @@ writeSendQueue sq batch callback = do
     Closed -> throwSTM WriteQueueClosed
     Failed exc -> throwSTM exc
   let !size = BS.length $ Thrift.batch_facts batch
-  mem <- readTVar $ sqMemory sq
-  count <- readTVar $ sqCount sq
-  when (mem > sqMaxMemory sq || count > sqMaxCount sq) retry
+  acquireBatch sq size
   writeTQueue (sqOutQueue sq) (batch, callback)
-  writeTVar (sqMemory sq) $! mem + size
-  writeTVar (sqCount sq) $! count + 1
 
 closeSendQueue :: SendQueue -> STM ()
 closeSendQueue sq = do
@@ -146,8 +155,6 @@ readSendQueue sq = do
   where
     get = do
       (batch, callback) <- readTQueue $ sqOutQueue sq
-      let size = BS.length $ Thrift.batch_facts batch
-      modifyTVar' (sqMemory sq) $ \n -> n - size
       return $ Just (batch, callback)
 
 readWaitQueue :: SendQueue -> STM (Maybe Wait)
@@ -179,14 +186,23 @@ pollFromWaitQueue backend settings sq = do
       _ -> return ())
     $ \r ->
     case r of
-      Just wait -> do
-        subst <- waitBatch backend $ waitHandle wait
-        atomically $ do
-          waitCallback wait $ Right subst
-          modifyTVar' (sqCount sq) $ \n -> n - 1
-        elapsed <- getElapsedTime $ waitStart wait
-        sendQueueLog settings $ SendQueueSent (waitSize wait) elapsed
-        return True
+      Just Wait{..} -> do
+        result <- try $ waitBatch backend waitHandle
+        let size = BS.length $ Thrift.batch_facts waitOriginalBatch
+        case result of
+          Left e@Thrift.UnknownBatchHandle{} -> do
+            logWarning $ "Server forgot batch; resending (" <> show e <> ")"
+            atomically $ do
+              releaseBatch sq size  -- guarantees writeSendQueue won't block
+              writeSendQueue sq waitOriginalBatch waitCallback
+              return True
+          Right subst -> do
+            atomically $ do
+              waitCallback $ Right subst
+              releaseBatch sq size
+            elapsed <- getElapsedTime waitStart
+            sendQueueLog settings $ SendQueueSent size elapsed
+            return True
 
       Nothing -> return False
 
@@ -214,14 +230,13 @@ sendFromQueue backend repo settings sq = do
     case r of
       Just (batch, callback) -> do
         sendQueueLog settings $ SendQueueSending batch
-        let !n = BS.length $ Thrift.batch_facts batch
         start <- getTimePoint
         handle <- sendBatchAsync backend repo batch
         atomically $ writeTQueue (sqWaitQueue sq) Wait
           { waitHandle = handle
           , waitStart = start
-          , waitSize = n
           , waitCallback = callback
+          , waitOriginalBatch = batch
           }
         return True
 
