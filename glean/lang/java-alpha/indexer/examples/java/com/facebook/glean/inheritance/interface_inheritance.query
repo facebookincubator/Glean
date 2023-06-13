@@ -1,0 +1,2 @@
+query: java.InterfaceInheritance { interface_name = { type = "com.facebook.glean.inheritance.IPolygon" }, subclass = S }; S
+transform: [gensort, []]

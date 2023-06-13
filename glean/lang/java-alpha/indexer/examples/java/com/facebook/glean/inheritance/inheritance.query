@@ -1,0 +1,2 @@
+query: java.Inheritance { base = { type = "com.facebook.glean.inheritance.Drawable" }, subclass = S }; S
+transform: [gensort, []]
