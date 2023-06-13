@@ -13,26 +13,16 @@ import com.facebook.glean.schema.javakotlin_alpha.PathKey as GleanPathKey
 import com.facebook.glean.schema.javakotlin_alpha.QName
 import com.facebook.glean.schema.javakotlin_alpha.QNameKey
 import com.facebook.tools.jast.primitiveToShortFormat
-import org.jetbrains.kotlin.descriptors.CallableDescriptor
-import org.jetbrains.kotlin.descriptors.ClassDescriptor
-import org.jetbrains.kotlin.descriptors.PackageViewDescriptor
-import org.jetbrains.kotlin.descriptors.ParameterDescriptor
+import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.descriptors.annotations.Annotations
-import org.jetbrains.kotlin.descriptors.buildPossiblyInnerType
-import org.jetbrains.kotlin.descriptors.containingPackage
+import org.jetbrains.kotlin.descriptors.impl.PackageFragmentDescriptorImpl
 import org.jetbrains.kotlin.js.descriptorUtils.getJetTypeFqName
 import org.jetbrains.kotlin.js.descriptorUtils.nameIfStandardType
+import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.types.KotlinType
 import org.jetbrains.kotlin.types.isFlexible
-import org.jetbrains.kotlin.types.typeUtil.constituentTypes
-import org.jetbrains.kotlin.types.typeUtil.isAnyOrNullableAny
-import org.jetbrains.kotlin.types.typeUtil.isArrayOfNothing
-import org.jetbrains.kotlin.types.typeUtil.isBoolean
-import org.jetbrains.kotlin.types.typeUtil.isPrimitiveNumberType
-import org.jetbrains.kotlin.types.typeUtil.isTypeParameter
-import org.jetbrains.kotlin.types.typeUtil.isUnit
-import org.jetbrains.kotlin.types.typeUtil.replaceAnnotations
+import org.jetbrains.kotlin.types.typeUtil.*
 import org.jetbrains.kotlin.types.upperIfFlexible
 
 fun KtClass.qualifiedName(): QName? {
@@ -64,19 +54,23 @@ private fun CallableDescriptor.path(): GleanPath {
 fun ClassDescriptor.path(): GleanPath {
   val container = this.containingDeclaration
   val containerPath: GleanPath? =
-      if (container is ClassDescriptor) container.path()
-      else {
-        if (container is PackageViewDescriptor) {
-          container.path()
-        } else {
+      when (container) {
+        is ClassDescriptor -> container.path()
+        is PackageViewDescriptor -> container.path()
+        is PackageFragmentDescriptorImpl -> container.fqName.path()
+        else -> {
           null
         }
       }
   return containerPath.add(this.name.toString())
 }
 
+fun FqName.path(): GleanPath {
+  return this.pathSegments().map { e -> e.toString() }.joinNonEmptyPath()
+}
+
 fun PackageViewDescriptor.path(): GleanPath {
-  return this.fqName.pathSegments().map { e -> e.toString() }.joinNonEmptyPath()
+  return this.fqName.path()
 }
 
 fun String.path(): GleanPath {
