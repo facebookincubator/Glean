@@ -1222,7 +1222,7 @@ service GleanService extends fb303.FacebookService {
   DeleteDatabaseResult deleteDatabase(1: Repo repo) throws (
     1: Exception e,
     2: UnknownDatabase u,
-  );
+  ) (priority = 'HIGH');
 
   void restore(1: string locator) throws (1: InvalidLocator e);
 
