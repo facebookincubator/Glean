@@ -5,6 +5,7 @@ package com.facebook.glean.descriptors;
 import com.facebook.glean.IndexerContext;
 import com.facebook.glean.descriptors.exceptions.DescriptorException;
 import com.facebook.glean.descriptors.utils.ElementUtils;
+import com.facebook.glean.descriptors.utils.SignatureGenerator;
 import com.facebook.glean.descriptors.utils.TypeUtils;
 import com.facebook.glean.schema.java_alpha.ArrayType;
 import com.facebook.glean.schema.java_alpha.ArrayTypeKey;
@@ -204,6 +205,7 @@ public class TypeDescriptor {
                   .setBaseType(
                       BaseType.fromPrimitive(PrimitiveTypeDescriptor.describe(ic, primitive)))
                   .setTypeArgs(EMPTY_LIST)
+                  .setInteropType(SignatureGenerator.assembleForType(ic, typeMirror))
                   .build())
           .build();
     }
@@ -222,6 +224,7 @@ public class TypeDescriptor {
               new TypeKey.Builder()
                   .setBaseType(BaseType.fromVariable(typeVariable))
                   .setTypeArgs(EMPTY_LIST)
+                  .setInteropType(SignatureGenerator.assembleForType(ic, typeMirror))
                   .build())
           .build();
     }
@@ -250,6 +253,7 @@ public class TypeDescriptor {
               new TypeKey.Builder()
                   .setBaseType(BaseType.fromArray(arrayType))
                   .setTypeArgs(EMPTY_LIST)
+                  .setInteropType(SignatureGenerator.assembleForType(ic, typeMirror))
                   .build())
           .build();
     }
@@ -281,6 +285,8 @@ public class TypeDescriptor {
                 new TypeKey.Builder()
                     .setTypeArgs(typeArgs)
                     .setBaseType(BaseType.fromObject(dType))
+                    .setInteropType(
+                        SignatureGenerator.assembleForType(ic, declaredTypeElement.asType()))
                     .build())
             .build();
       } else {
@@ -293,6 +299,8 @@ public class TypeDescriptor {
                         BaseType.fromObject(
                             ObjectTypeDescriptor.describe(
                                 ic, source, declaredTypeElement, optSpan)))
+                    .setInteropType(
+                        SignatureGenerator.assembleForType(ic, declaredTypeElement.asType()))
                     .build())
             .build();
       }
