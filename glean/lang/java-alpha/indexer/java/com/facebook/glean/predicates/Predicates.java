@@ -22,28 +22,29 @@ public class Predicates {
   public static final int JAVA_SCHEMA_VERSION = 1;
 
   public final Predicate<LocalDeclaration> localDeclarationPredicate =
-      new ListPredicate<>("java_alpha.LocalDeclaration." + JAVA_SCHEMA_VERSION);
+      new ListPredicate<>("java.alpha.LocalDeclaration." + JAVA_SCHEMA_VERSION);
   public final Predicate<FieldDeclaration> fieldDeclarationPredicate =
-      new ListPredicate<>("java_alpha.FieldDeclaration." + JAVA_SCHEMA_VERSION);
-  public final Predicate<ConstructorDeclaration> constructorDeclarationPredicate =
-      new ListPredicate<>("java_alpha.ConstructorDeclaration." + JAVA_SCHEMA_VERSION);
+      new ListPredicate<>("java.alpha.FieldDeclaration." + JAVA_SCHEMA_VERSION);
   public final Predicate<ParameterDeclaration> parameterDeclarationPredicate =
       new ListPredicate<>("java.alpha.ParameterDeclaration." + JAVA_SCHEMA_VERSION);
+  public final Predicate<ConstructorDeclaration> constructorDeclarationPredicate =
+      new ListPredicate<>("java.alpha.ConstructorDeclaration." + JAVA_SCHEMA_VERSION);
   public final Predicate<MethodDeclaration> methodDeclarationPredicate =
-      new ListPredicate<>("java_alpha.MethodDeclaration." + JAVA_SCHEMA_VERSION);
+      new ListPredicate<>("java.alpha.MethodDeclaration." + JAVA_SCHEMA_VERSION);
   public final Predicate<InterfaceDeclaration> interfaceDeclarationPredicate =
-      new ListPredicate<>("java_alpha.InterfaceDeclaration." + JAVA_SCHEMA_VERSION);
+      new ListPredicate<>("java.alpha.InterfaceDeclaration." + JAVA_SCHEMA_VERSION);
   public final Predicate<ClassDeclaration> classDeclarationPredicate =
-      new ListPredicate<>("java_alpha.ClassDeclaration." + JAVA_SCHEMA_VERSION);
+      new ListPredicate<>("java.alpha.ClassDeclaration." + JAVA_SCHEMA_VERSION);
   public final Predicate<EnumDeclaration> enumDeclarationPredicate =
-      new ListPredicate<>("java_alpha.EnumDeclaration." + JAVA_SCHEMA_VERSION);
+      new ListPredicate<>("java.alpha.EnumDeclaration." + JAVA_SCHEMA_VERSION);
   public final Predicate<ImportDeclaration> importDeclarationPredicate =
-      new ListPredicate<>("java_alpha.ImportDeclaration." + JAVA_SCHEMA_VERSION);
+      new ListPredicate<>("java.alpha.ImportDeclaration." + JAVA_SCHEMA_VERSION);
   public final Predicate<PackageDeclaration> packageDeclarationPredicate =
-      new ListPredicate<>("java_alpha.PackageDeclaration." + JAVA_SCHEMA_VERSION);
-  public final XRefPredicate xRefPredicate = new XRefPredicate("java.XRef." + JAVA_SCHEMA_VERSION);
+      new ListPredicate<>("java.alpha.PackageDeclaration." + JAVA_SCHEMA_VERSION);
+  public final XRefPredicate xRefPredicate =
+      new XRefPredicate("java.alpha.XRef." + JAVA_SCHEMA_VERSION);
   public final Predicate<FileXRefs> fileXRefsPredicate =
-      new ListPredicate<>("java_alpha.FileXRefs." + JAVA_SCHEMA_VERSION);
+      new ListPredicate<>("java.alpha.FileXRefs." + JAVA_SCHEMA_VERSION);
 
   private final List<Predicate> allPredicates =
       Arrays.asList(

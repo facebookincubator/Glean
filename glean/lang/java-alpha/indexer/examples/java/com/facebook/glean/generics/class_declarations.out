@@ -1,0 +1,172 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": {
+        "key": {
+          "name": { "key": "Entry" },
+          "context": {
+            "key": {
+              "base": { "key": "Map" },
+              "container": {
+                "key": {
+                  "base": { "key": "generics" },
+                  "container": {
+                    "key": {
+                      "base": { "key": "glean" },
+                      "container": {
+                        "key": {
+                          "base": { "key": "facebook" },
+                          "container": { "key": { "base": { "key": "com" } } }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": [ 6 ],
+      "implements_": [ ],
+      "annotations": [ ],
+      "container": {
+        "class_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "Map" },
+                "context": {
+                  "key": {
+                    "base": { "key": "generics" },
+                    "container": {
+                      "key": {
+                        "base": { "key": "glean" },
+                        "container": {
+                          "key": {
+                            "base": { "key": "facebook" },
+                            "container": { "key": { "base": { "key": "com" } } }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "modifiers": [ 6 ],
+            "implements_": [ ],
+            "annotations": [ ],
+            "typeParams": [
+              {
+                "key": {
+                  "name": { "key": "K" },
+                  "extends_": [ ],
+                  "span": { "start": 130, "length": 1 }
+                }
+              },
+              {
+                "key": {
+                  "name": { "key": "V" },
+                  "extends_": [ ],
+                  "span": { "start": 133, "length": 1 }
+                }
+              }
+            ],
+            "span": { "start": 113, "length": 827 },
+            "file": {
+              "key": "fbsource/fbcode/glean/lang/javaalpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+            }
+          }
+        }
+      },
+      "typeParams": [ ],
+      "span": { "start": 676, "length": 140 },
+      "file": {
+        "key": "fbsource/fbcode/glean/lang/javaalpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+      }
+    }
+  },
+  {
+    "key": {
+      "name": {
+        "key": {
+          "name": { "key": "Main" },
+          "context": {
+            "key": {
+              "base": { "key": "generics" },
+              "container": {
+                "key": {
+                  "base": { "key": "glean" },
+                  "container": {
+                    "key": {
+                      "base": { "key": "facebook" },
+                      "container": { "key": { "base": { "key": "com" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": [ 6 ],
+      "implements_": [ ],
+      "annotations": [ ],
+      "typeParams": [ ],
+      "span": { "start": 137, "length": 322 },
+      "file": {
+        "key": "fbsource/fbcode/glean/lang/javaalpha/indexer/examples/java/com/facebook/glean/generics/Main.java"
+      }
+    }
+  },
+  {
+    "key": {
+      "name": {
+        "key": {
+          "name": { "key": "Map" },
+          "context": {
+            "key": {
+              "base": { "key": "generics" },
+              "container": {
+                "key": {
+                  "base": { "key": "glean" },
+                  "container": {
+                    "key": {
+                      "base": { "key": "facebook" },
+                      "container": { "key": { "base": { "key": "com" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": [ 6 ],
+      "implements_": [ ],
+      "annotations": [ ],
+      "typeParams": [
+        {
+          "key": {
+            "name": { "key": "K" },
+            "extends_": [ ],
+            "span": { "start": 130, "length": 1 }
+          }
+        },
+        {
+          "key": {
+            "name": { "key": "V" },
+            "extends_": [ ],
+            "span": { "start": 133, "length": 1 }
+          }
+        }
+      ],
+      "span": { "start": 113, "length": 827 },
+      "file": {
+        "key": "fbsource/fbcode/glean/lang/javaalpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+      }
+    }
+  }
+]

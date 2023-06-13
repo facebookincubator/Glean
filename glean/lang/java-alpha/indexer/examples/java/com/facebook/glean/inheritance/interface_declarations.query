@@ -1,2 +1,2 @@
-query: java.InterfaceDeclaration _
+query: java.alpha.InterfaceDeclaration _
 transform: [gensort, []]

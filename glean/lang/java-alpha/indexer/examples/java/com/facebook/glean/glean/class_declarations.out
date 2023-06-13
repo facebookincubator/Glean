@@ -1,0 +1,102 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": {
+        "key": {
+          "name": { "key": "Glean" },
+          "context": {
+            "key": {
+              "base": { "key": "glean" },
+              "container": {
+                "key": {
+                  "base": { "key": "glean" },
+                  "container": {
+                    "key": {
+                      "base": { "key": "facebook" },
+                      "container": { "key": { "base": { "key": "com" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": [ 6 ],
+      "implements_": [ ],
+      "annotations": [
+        {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "Deprecated" },
+                "context": {
+                  "key": {
+                    "base": { "key": "lang" },
+                    "container": { "key": { "base": { "key": "java" } } }
+                  }
+                }
+              }
+            },
+            "constructor": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "Deprecated" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "lang" },
+                        "container": { "key": { "base": { "key": "java" } } }
+                      }
+                    }
+                  }
+                },
+                "signature": [ ]
+              }
+            },
+            "span": { "start": 110, "length": 11 }
+          }
+        }
+      ],
+      "typeParams": [ ],
+      "span": { "start": 110, "length": 354 },
+      "file": {
+        "key": "fbsource/fbcode/glean/lang/javaalpha/indexer/examples/java/com/facebook/glean/glean/Glean.java"
+      }
+    }
+  },
+  {
+    "key": {
+      "name": {
+        "key": {
+          "name": { "key": "POJO" },
+          "context": {
+            "key": {
+              "base": { "key": "glean" },
+              "container": {
+                "key": {
+                  "base": { "key": "glean" },
+                  "container": {
+                    "key": {
+                      "base": { "key": "facebook" },
+                      "container": { "key": { "base": { "key": "com" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": [ 6 ],
+      "implements_": [ ],
+      "annotations": [ ],
+      "typeParams": [ ],
+      "span": { "start": 110, "length": 898 },
+      "file": {
+        "key": "fbsource/fbcode/glean/lang/javaalpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
+      }
+    }
+  }
+]

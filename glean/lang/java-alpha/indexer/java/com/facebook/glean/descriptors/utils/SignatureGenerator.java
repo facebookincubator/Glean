@@ -32,7 +32,8 @@ public class SignatureGenerator {
     }
     Symbol declaredTypeSymbol = ElementUtils.getSymbol(ic, declaredTpeElement);
     String qualifiedName = declaredTypeSymbol.getQualifiedName().toString();
-    Path path = PathDescriptor.describe(ic, qualifiedName);
+    PathDescriptor.NameAndPath namePath = PathDescriptor.structurePath(ic, qualifiedName);
+    Path path = PathDescriptor.describe(ic, namePath.simple, namePath.path);
     return new Type.Builder().setKey(TypeKey.fromObject(path)).build();
   }
 

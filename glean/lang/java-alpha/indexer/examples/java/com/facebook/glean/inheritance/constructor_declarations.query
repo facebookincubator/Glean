@@ -1,2 +1,2 @@
-query: java.ConstructorDeclaration _
+query: java.alpha.ConstructorDeclaration _
 transform: [gensort, []]

@@ -1,2 +1,2 @@
-query: java.MethodDeclaration _
+query: java.alpha.MethodDeclaration _
 transform: [gensort, []]

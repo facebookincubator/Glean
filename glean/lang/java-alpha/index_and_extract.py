@@ -17,7 +17,7 @@ from xplat.glean.utils import shell_exec
 
 
 def build_target_with_debug_logs(target: str) -> str:
-    cmd = f"buck build -c javac.random_seed={int(time.time())} {target} --show-output --local"
+    cmd = f"buck1 build -c javac.random_seed={int(time.time())} {target} --show-output --local"
     env = os.environ.copy()
     env["GLEAN_DEBUG_LOGGING"] = "True"
     stdout = shell_exec(cmd, env=env)
@@ -77,7 +77,7 @@ def main() -> None:
     )
     parsed_args = parser.parse_args()
 
-    target = f"{parsed_args.target}-java-11"
+    target = f"{parsed_args.target}-java11"
     print(f"Building target: {target}")
 
     jar_path = build_target_with_debug_logs(target)

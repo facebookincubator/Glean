@@ -1,2 +1,2 @@
-query: java.ClassDeclaration _
+query: java.alpha.ClassDeclaration _
 transform: [gensort, []]
