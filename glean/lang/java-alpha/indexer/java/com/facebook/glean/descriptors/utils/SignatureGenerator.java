@@ -37,7 +37,8 @@ public class SignatureGenerator {
   }
 
   private static Type assembleJavaLangObject(IndexerContext ic) {
-    Path path = PathDescriptor.describe(ic, "java.lang.Object");
+    PathDescriptor.NameAndPath namePath = PathDescriptor.structurePath(ic, "java.lang.Object");
+    Path path = PathDescriptor.describe(ic, namePath.simple, namePath.path);
     return new Type.Builder().setKey(TypeKey.fromObject(path)).build();
   }
 

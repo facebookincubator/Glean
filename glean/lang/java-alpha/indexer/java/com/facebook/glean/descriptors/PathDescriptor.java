@@ -11,8 +11,8 @@ import javax.lang.model.element.TypeElement;
 public class PathDescriptor {
 
   public static class NameAndPath {
-    Name simple;
-    Path path;
+    public Name simple;
+    public Path path;
 
     NameAndPath(Name simple, Path path) {
       this.simple = simple;

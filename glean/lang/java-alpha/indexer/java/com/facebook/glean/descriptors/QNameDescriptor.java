@@ -81,18 +81,35 @@ public class QNameDescriptor {
       throw new DescriptorException(
           ic, enclosingElement, "enclosingElement for non-local variable not a TypeElement");
     }
-    String fqn =
-        (variableElement.getKind() == ElementKind.FIELD
-                || variableElement.getKind() == ElementKind.ENUM_CONSTANT)
-            ? QNameDescriptor.getClassFQN(ic, (TypeElement) enclosingElement) + '.' + name
-            : null;
+    String fqn = null;
+    if (variableElement.getKind() == ElementKind.FIELD
+        || variableElement.getKind() == ElementKind.ENUM_CONSTANT) {
+      fqn = QNameDescriptor.getClassFQN(ic, (TypeElement) enclosingElement) + '.' + name;
+    } else if (variableElement.getKind() == ElementKind.PARAMETER
+        || variableElement.getKind() == ElementKind.LOCAL_VARIABLE
+            && enclosingElement instanceof ExecutableElement) {
+      String execName = enclosingElement.getSimpleName().toString();
+      if (enclosingElement.getEnclosingElement() != null
+          && enclosingElement.getEnclosingElement() instanceof TypeElement) {
+        fqn =
+            QNameDescriptor.getClassFQN(ic, (TypeElement) enclosingElement.getEnclosingElement())
+                + '.'
+                + execName;
+      } else {
+        fqn = execName;
+      }
+    }
     Path path = null;
-    if (fqn != null) {
+    if (fqn != null && enclosingElement instanceof TypeElement) {
       NameAndPath enclosingTypeNameAndPath =
           PathDescriptor.structureTypeName(ic, (TypeElement) enclosingElement);
       path =
           PathDescriptor.describe(
               ic, enclosingTypeNameAndPath.simple, enclosingTypeNameAndPath.path);
+    } else if (fqn != null) {
+      NameAndPath enclosingMethodAndPath = PathDescriptor.structurePath(ic, fqn);
+      path =
+          PathDescriptor.describe(ic, enclosingMethodAndPath.simple, enclosingMethodAndPath.path);
     }
 
     QName qName = QNameDescriptor.buildQName(NameDescriptor.describe(ic, name), path);

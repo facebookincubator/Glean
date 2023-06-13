@@ -48,6 +48,7 @@ public class EnumDescriptor {
             .setModifiers(modifiers)
             .setAnnotations(annotations)
             .setImplements_(implements_)
+            .setContainer(container)
             .setSpan(span)
             .setFile(ClassUtils.buildFile(ic))
             .build();
