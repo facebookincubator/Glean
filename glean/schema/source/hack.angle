@@ -97,6 +97,7 @@ type Parameter =
     defaultValue : maybe string,
     attributes : [UserAttribute],
     typeInfo : maybe TypeInfo,
+    readonly : maybe ReadonlyKind,
   }
 
 # Type signature of function or method
@@ -131,6 +132,8 @@ type Constraint =
     constraintKind : ConstraintKind,
     type: Type,
   }
+
+type ReadonlyKind = enum { Readonly }
 
 # User-defined attribute
 predicate UserAttribute :
@@ -365,6 +368,8 @@ predicate MethodDefinition :
     isStatic : bool,
     attributes : [UserAttribute],
     typeParams : [TypeParameter],
+    isReadonlyThis : maybe bool,
+    readonlyRet : maybe ReadonlyKind,
   }
 
 # Definition of a Hack property (container member variable)
@@ -416,6 +421,7 @@ predicate FunctionDefinition :
     attributes : [UserAttribute],
     typeParams : [TypeParameter],
     module_ : maybe ModuleMembership,
+    readonlyRet : maybe ReadonlyKind,
   }
 
 # Types of definitions in Hack

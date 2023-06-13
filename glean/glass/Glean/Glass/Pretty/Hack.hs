@@ -766,7 +766,8 @@ toConstraintKind Hack.ConstraintKind_Super = Super
 toConstraintKind (Hack.ConstraintKind__UNKNOWN _) = Equal
 
 toParameter :: Hack.Parameter -> Parameter
-toParameter (Hack.Parameter name mtype inout variadic mdefaultValue _ typeInfo) =
+toParameter
+  (Hack.Parameter name mtype inout variadic mdefaultValue _ typeInfo _) =
   let (type_, xrefs) = toTypeAndXRefs mtype typeInfo
   in Parameter
       (toName name)
