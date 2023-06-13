@@ -112,7 +112,8 @@ predicate DefinitionDocumentation:
     defn: Definition,
     docs: Documentation
   }
-  { { symbol = Symbol }, Docs } where
+  { Defn, Docs } where
+    { symbol = Symbol } = Defn; # be careful not to inline to the head
     scip.SymbolDocumentation { Symbol, Docs }
 
 # Symbol kinds from the `Symbol` semantic encoding
