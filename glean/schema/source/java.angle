@@ -321,3 +321,298 @@ predicate DefinitionLocation:
     { simple = { just = Name NameStr } } = QN;
 
 }
+
+# Schema for Java that interops with Kotlin.
+# Intentionally a breaking change from java.6
+schema java.alpha.1 {
+  import src.1
+  import javakotlin.alpha.1
+
+type Modifier =
+  enum {
+    abstract_ |
+    default_ |
+    final_ |
+    native_ |
+    private_ |
+    protected_ |
+    public_ |
+    static_ |
+    strictfp_ |
+    synchronized_ |
+    transient_ |
+    volatile_ |
+  }
+
+predicate PrimitiveType :
+  {
+    type : string,
+  }
+
+predicate TypeVar :
+  {
+    type : javakotlin.alpha.Name,
+    span : src.ByteSpan,
+  }
+
+predicate ObjectType :
+  {
+    type : javakotlin.alpha.QName,
+    span : src.ByteSpan,
+  }
+
+predicate ArrayType :
+  {
+    contents : Type,
+    span : src.ByteSpan,
+  }
+
+# Giving a type structure
+type BaseType =
+  {
+    object : ObjectType |
+    primitive : PrimitiveType |
+    variable : TypeVar |
+    array : ArrayType |
+  }
+
+predicate Type :
+  {
+    baseType : BaseType,
+    typeArgs : [TypeArg],
+    interopType : javakotlin.alpha.Type,
+    span : src.ByteSpan,
+  }
+
+predicate TypeArg :
+  {
+    type: Type |
+    wildcard: Wildcard |
+  }
+
+# https://docs.oracle.com/javase/specs/jls/se8/html/jls-4.html#jls-4.5.1
+type Wildcard =
+  {
+    extends_: Type |
+    super_: Type |
+    unbounded: bool |
+  }
+
+predicate TypeParam :
+  {
+    name: javakotlin.alpha.Name,
+    extends_: [Type],
+    span : src.ByteSpan,
+  }
+
+predicate Annotation :
+  {
+    name : javakotlin.alpha.QName,
+    constructor : javakotlin.alpha.MethodName,
+    constant : maybe string,
+    span : src.ByteSpan,
+  }
+
+predicate ParameterDeclaration :
+  {
+    name: javakotlin.alpha.QName,
+    type: Type,
+    annotations: [Annotation],
+    modifier : [Modifier],
+    span : src.ByteSpan,
+  }
+
+# A local variable, not parameter
+predicate LocalDeclaration :
+  {
+    name: javakotlin.alpha.QName,
+    type: Type,
+    annotations : [Annotation],
+    # Maybe get a restricted set here
+    modifier : [Modifier],
+    container : ExecutableDefinition,
+    span : src.ByteSpan,
+  }
+
+predicate FieldDeclaration :
+  {
+    name: javakotlin.alpha.QName,
+    type : Type,
+    annotations : [Annotation],
+    modifiers : [Modifier],
+    container : Definition,
+    span : src.ByteSpan,
+  }
+
+# Will add a type combining Local and Field later
+
+# A constructor declaration
+predicate ConstructorDeclaration :
+  {
+    name: javakotlin.alpha.MethodName,
+    parameters : [ParameterDeclaration],
+    annotations : [Annotation],
+    modifiers : [Modifier],
+    typeParams: [TypeParam],
+    throws_ : [Type],
+    container : Definition,
+    span : src.ByteSpan,
+  }
+
+# A method declaration
+predicate MethodDeclaration :
+  {
+    name : javakotlin.alpha.MethodName,
+    parameters : [ParameterDeclaration],
+    returnType : Type,
+    annotations : [Annotation],
+    modifiers : [Modifier],
+    typeParams: [TypeParam],
+    throws_ : [Type],
+    container : Definition,
+    span : src.ByteSpan,
+  }
+
+# An interface declaration
+predicate InterfaceDeclaration :
+  {
+    name: javakotlin.alpha.QName,
+    annotations : [Annotation],
+    modifiers : [Modifier],
+    extends_ : [Type],
+    container : maybe Definition,
+    typeParams: [TypeParam],
+    span : src.ByteSpan,
+    file : src.File,
+  }
+
+# A class declaration
+predicate ClassDeclaration :
+  {
+    name : javakotlin.alpha.QName,
+    modifiers : [Modifier],
+    extends_ : maybe Type,
+    implements_ : [Type],
+    annotations : [Annotation],
+    container : maybe Definition,
+    typeParams: [TypeParam],
+    span : src.ByteSpan,
+    file : src.File,
+  }
+
+predicate EnumDeclaration :
+  {
+    name: javakotlin.alpha.QName,
+    annotations : [Annotation],
+    modifiers : [Modifier],
+    implements_ : [Type],
+    container : maybe Definition,
+    span : src.ByteSpan,
+    file : src.File,
+  }
+
+type Definition =
+  {
+    class_ : ClassDeclaration |
+    interface_ : InterfaceDeclaration |
+    enum_ : EnumDeclaration |
+  }
+
+type ExecutableDefinition =
+  {
+    constructor : ConstructorDeclaration |
+    method : MethodDeclaration |
+  }
+
+# An import, whether specific, an entire package, or static
+predicate ImportDeclaration :
+  {
+    # These strings should be name
+    name : javakotlin.alpha.Name,
+    import_on_demand : bool,
+    static_member : maybe string,
+    path : javakotlin.alpha.Path,
+    location: src.ByteSpan,
+  }
+
+# The package specification for a file
+predicate PackageDeclaration :
+  {
+    # This should be Name, in the future
+    name : javakotlin.alpha.Name,
+    annotation: [Annotation],
+    # Path is not required in a package
+    path : maybe javakotlin.alpha.Path,
+    location : src.ByteSpan,
+  }
+
+# Code that is referenced elsewhere, including by an import
+type XRefTarget =
+  {
+    definition_: javakotlin.alpha.QName |
+    ctor_: javakotlin.alpha.MethodName |
+    method_: javakotlin.alpha.MethodName |
+    field_: javakotlin.alpha.QName |
+  }
+
+
+# References to target code
+predicate XRef :
+  {
+    target: XRefTarget,
+    ranges: [src.ByteSpan],
+  }
+
+# Cross-references to a target within a file
+predicate FileXRefs :
+  {
+    file : src.File,
+    xrefs : [XRef],
+  }
+
+predicate AnnotatedClass :
+  {
+    annotation : Annotation,
+    class_ : ClassDeclaration,
+  } stored { Annotation, Class_ } where
+      Class_ = ClassDeclaration { annotations = As };
+      Annotation = As[..]
+
+predicate Inheritance :
+  {
+    base: Type,
+    subclass: ClassDeclaration,
+  }
+  stored { Base, Subclass } where
+    Subclass = ClassDeclaration { extends_ = { just = Base } }
+
+predicate InterfaceInheritance :
+  {
+    interface_name: Type,
+    subclass: ClassDeclaration,
+  }
+  stored { InterfaceName, Subclass } where
+    Subclass = ClassDeclaration { implements_ = Implements_ };
+    InterfaceName = Implements_[..];
+
+predicate XRefFile :
+{
+  xref: XRef,
+  file: src.File,
+}
+  stored {Xref, File} where
+    FileXRefs {file = File, xrefs = Xs};
+    Xref = Xs[..];
+
+# Find locations of a definition
+predicate DefinitionLocation:
+  {
+    defn : java.alpha.Definition,
+    name : javakotlin.alpha.QName,
+    file : src.File,
+    span : src.ByteSpan,
+  } { Defn, QN, File, Span } where
+    ( { class_ = { name = QN, span = Span, file = File } } = Defn ) |
+    ( { interface_ = { name = QN, span = Span, file = File } } = Defn ) |
+    ( { enum_ = { name = QN, span = Span, file = File } } = Defn );
+}
