@@ -55,6 +55,7 @@ public class InterfaceDescriptor {
             .setTypeParams(typeParams)
             .setContainer(container)
             .setSpan(span)
+            .setFile(ClassUtils.buildFile(ic))
             .build();
 
     InterfaceDeclaration interfaceDeclaration =

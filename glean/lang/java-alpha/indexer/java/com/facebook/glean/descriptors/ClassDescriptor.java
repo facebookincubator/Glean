@@ -57,6 +57,7 @@ public class ClassDescriptor {
             .setTypeParams(typeParams)
             .setContainer(container)
             .setSpan(span)
+            .setFile(ClassUtils.buildFile(ic))
             .build();
 
     ClassDeclaration classDeclaration = new ClassDeclaration.Builder().setKey(key).build();

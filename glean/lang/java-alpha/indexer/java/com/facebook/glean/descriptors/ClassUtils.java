@@ -3,6 +3,7 @@
 package com.facebook.glean.descriptors;
 
 import com.facebook.glean.IndexerContext;
+import com.facebook.glean.Utils;
 import com.facebook.glean.descriptors.exceptions.DescriptorException;
 import com.facebook.glean.descriptors.utils.TypeUtils;
 import com.facebook.glean.schema.java_alpha.Annotation;
@@ -14,6 +15,7 @@ import com.facebook.glean.schema.java_alpha.Modifier;
 import com.facebook.glean.schema.java_alpha.Type;
 import com.facebook.glean.schema.java_alpha.TypeParam;
 import com.facebook.glean.schema.javakotlin_alpha.QName;
+import com.facebook.glean.schema.src.File;
 import com.sun.source.tree.ClassTree;
 import com.sun.source.tree.MethodTree;
 import com.sun.source.tree.ModifiersTree;
@@ -101,6 +103,14 @@ public class ClassUtils {
                 .collect(Collectors.toList());
     ic.logger.decreaseIndent();
     return implements_;
+  }
+
+  public static File buildFile(IndexerContext ic) {
+    File file =
+        new File.Builder()
+            .setKey(Utils.normalizePath(ic.cu.getSourceFile().toUri().getPath()))
+            .build();
+    return file;
   }
 
   private static boolean checkKind(Element element, ElementKind kind) {

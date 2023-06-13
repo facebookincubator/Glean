@@ -49,6 +49,7 @@ public class EnumDescriptor {
             .setAnnotations(annotations)
             .setImplements_(implements_)
             .setSpan(span)
+            .setFile(ClassUtils.buildFile(ic))
             .build();
 
     EnumDeclaration enumDeclaration = new EnumDeclaration.Builder().setKey(key).build();
