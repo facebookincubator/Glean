@@ -394,7 +394,14 @@ instance Plugin WriteCommand where
       dbSchema <- loadDbSchema backend repo
       logMessages <- newTQueueIO
       let inventory = schemaInventory dbSchema
-      Glean.withSendAndRebaseQueue backend repo inventory useLocalCache $
+          queueSettings = useLocalCache
+            { sendAndRebaseQueueAllowRemoteReferences =
+                case fileFormat of
+                  -- we expect binary batches to be self-contained.
+                  BinaryFormat -> False
+                  JsonFormat -> True
+            }
+      Glean.withSendAndRebaseQueue backend repo inventory queueSettings $
         \queue ->
           stream max (forM_ files) $ \file -> do
             batch <- case fileFormat of

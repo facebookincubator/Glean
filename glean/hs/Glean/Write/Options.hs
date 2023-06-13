@@ -80,6 +80,7 @@ sendAndRebaseQueueOptions = do
     , sendAndRebaseQueueFactCacheSize
     , sendAndRebaseQueueSenders =
         sendQueueThreads sendAndRebaseQueueSendQueueSettings
+    , sendAndRebaseQueueAllowRemoteReferences = False
     }
 
 

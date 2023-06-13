@@ -7,6 +7,7 @@
 -}
 
 {-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE QuasiQuotes #-}
 module SendAndRebaseQueueTest
   ( main
   ) where
@@ -15,6 +16,10 @@ import Control.Exception
 import Control.Monad
 import Data.Default
 import Data.List
+import Data.ByteString (ByteString)
+import Data.String.Interpolate (i)
+import qualified Data.Text as Text
+import qualified Data.Text.Encoding as Text
 import Test.HUnit
 
 import TestRunner
@@ -24,12 +29,15 @@ import Glean.Backend.Types (loadPredicates)
 import Glean.Backend.Local (Env, loadDbSchema)
 import Glean.Database.Ownership
 import Glean.Database.Schema (schemaInventory)
+import Glean.Database.Schema.Types (DbSchema)
 import Glean.Database.Test
 import Glean.Init
 import Glean.Query.Angle
 import qualified Glean.Schema.GleanTest as Glean.Test
 import qualified Glean.Schema.GleanTest.Types as Glean.Test
 import Glean.Typed (buildBatch)
+import qualified Glean.Types as Thrift
+import Glean.Write.JSON ( buildJsonBatch )
 
 mkGraph
   :: Env
@@ -75,7 +83,8 @@ settings log = SendAndRebaseQueueSettings {
   sendAndRebaseQueueSendQueueSettings = def {
     sendQueueLog = log },
   sendAndRebaseQueueFactCacheSize = 1024*1024,
-  sendAndRebaseQueueSenders = 1
+  sendAndRebaseQueueSenders = 1,
+  sendAndRebaseQueueAllowRemoteReferences = True
   }
 
 sendAndRebaseQueueTest :: Test
@@ -116,6 +125,10 @@ sendAndRebaseQueueTest = TestCase $
         mkA2 b c
       writeSendAndRebaseQueue queue batch3 (const $ return ())
 
+    withSendAndRebaseQueue env base inventory (settings mempty) $ \queue -> do
+      batch <- mkReferencingBase env base dbSchema
+      writeSendAndRebaseQueue queue batch (const $ return ())
+
     completeTestDB env base
 
     -- check the owners of Node "b"
@@ -131,6 +144,28 @@ sendAndRebaseQueueTest = TestCase $
               sort [x,y,z] == ["A","B","X"]
             _otherwise -> False
       _ -> assertFailure "query failed"
+  where
+    mkReferencingBase env repo schema = do
+      id_ <- baseNodeId env repo
+      let id = show $ fromFid $ idOf id_
+      mkBatch schema (PredicateRef "glean.test.Edge" 5)
+        [ bs [i| { "key": { "parent": #{id}, "child": #{id} } }|]]
+
+    bs = Text.encodeUtf8 . Text.pack
+
+    baseNodeId env repo = do
+      [fact] <- runQuery_ env repo $ angle @Glean.Test.Node $ Text.pack
+        [i| glean.test.Node { label = "d" } |]
+      return $ getId fact
+
+    mkBatch :: DbSchema -> PredicateRef -> [ByteString] -> IO Thrift.Batch
+    mkBatch schema ref facts = buildJsonBatch schema Nothing [jsonBatch]
+      where
+        jsonBatch = JsonFactBatch
+          { jsonFactBatch_predicate = ref
+          , jsonFactBatch_facts = facts
+          , jsonFactBatch_unit = Nothing
+          }
 
 -- | Check that errors from the sender get propagated properly
 sendAndRebaseQueueFailureTest :: Test

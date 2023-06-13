@@ -30,6 +30,7 @@ import Glean.Backend.Types (Backend)
 import Glean.FFI (release)
 import qualified Glean.Write.SendQueue as SendQueue
 import Glean.Write.SendQueue (SendQueue)
+import Glean.RTS.Constants (firstAnonId)
 import Glean.RTS.Foreign.Define
 import Glean.RTS.Foreign.Stacked
 import qualified Glean.RTS.Foreign.Lookup as Lookup
@@ -83,10 +84,18 @@ data SendAndRebaseQueue = SendAndRebaseQueue
 
   , srqStats :: !LookupCache.Stats
     -- ^ Cache statistics
+
+  , srqAllowRemoteReferences :: Bool
+    -- ^ Allow batches to reference remote facts that are not in the cache.
   }
 
-newSendAndRebaseQueue :: SendQueue -> Inventory -> Int -> IO SendAndRebaseQueue
-newSendAndRebaseQueue sendQueue inventory cacheMem = do
+newSendAndRebaseQueue
+  :: Bool
+  -> SendQueue
+  -> Inventory
+  -> Int
+  -> IO SendAndRebaseQueue
+newSendAndRebaseQueue allowRemote sendQueue inventory cacheMem = do
   stats <- LookupCache.newStats
   SendAndRebaseQueue
     <$> pure sendQueue
@@ -95,6 +104,7 @@ newSendAndRebaseQueue sendQueue inventory cacheMem = do
     <*> pure inventory
     <*> LookupCache.new (fromIntegral cacheMem) 1 stats
     <*> pure stats
+    <*> pure allowRemote
 
 -- | Settings for a 'SendAndRebase'
 data SendAndRebaseQueueSettings = SendAndRebaseQueueSettings
@@ -106,19 +116,24 @@ data SendAndRebaseQueueSettings = SendAndRebaseQueueSettings
 
     -- | Number of senders
   , sendAndRebaseQueueSenders :: !Int
+
+    -- | Allow facts in the batch to make reference to facts in the remote
+    -- server that may not be in the local cache.
+  , sendAndRebaseQueueAllowRemoteReferences :: Bool
   }
 
 rebase
-  :: Inventory
+  :: Bool
+  -> Inventory
   -> Thrift.Batch
   -> LookupCache
   -> FactSet.FactSet
   -> IO (FactSet.FactSet, Ownership)
-rebase inventory batch cache base = do
+rebase  allowRemoteRefs inventory batch cache base = do
   LookupCache.withCache Lookup.EmptyLookup cache LookupCache.LRU $ \lookup -> do
     factSet <- Lookup.firstFreeId base >>= FactSet.new
     let define = stacked (stacked lookup base) factSet
-    subst <- defineBatch define inventory batch False
+    subst <- defineBatch define inventory batch allowRemoteRefs
     let owned = substOwnership subst (Thrift.batch_owned batch)
     nextId <- Lookup.firstFreeId factSet
     return (factSet, Ownership owned nextId)
@@ -200,7 +215,12 @@ senderSendOrAppend
   -> IO ()
 senderSendOrAppend srq sender batch callback = do
   modifyMVar_ (sFacts sender) $ \(base, ownership) -> do
-    (facts, owned) <- rebase (srqInventory srq) batch (srqFacts srq) base
+    (facts, owned) <- rebase
+      (srqAllowRemoteReferences srq)
+      (srqInventory srq)
+      batch
+      (srqFacts srq)
+      base
     FactSet.append base facts
     atomically $ writeTQueue (sCallbacks sender) callback
     assert (case ownership of
@@ -228,11 +248,13 @@ withSendAndRebaseQueue
   -> SendAndRebaseQueueSettings
   -> (SendAndRebaseQueue -> IO a)
   -> IO a
-withSendAndRebaseQueue backend repo inventory settings action =
+withSendAndRebaseQueue backend repo inventory settings action = do
+  vlog 1 $ "Allow remote refs: " <> show sendAndRebaseQueueAllowRemoteReferences
   SendQueue.withSendQueue backend repo sendAndRebaseQueueSendQueueSettings $
     \sendQueue -> do
       srq <-
         newSendAndRebaseQueue
+          sendAndRebaseQueueAllowRemoteReferences
           sendQueue
           inventory
           sendAndRebaseQueueFactCacheSize
@@ -243,7 +265,7 @@ withSendAndRebaseQueue backend repo inventory settings action =
       SendAndRebaseQueueSettings{..} = settings
       createSenderPool srq =
         forM_ senderIds $ \i -> do
-          factset <- FactSet.new $ Fid Thrift.fIRST_FREE_ID
+          factset <- FactSet.new baseId
           worker <- Sender i
             <$> newTMVarIO Nothing
             <*> newMVar (factset, [])
@@ -255,6 +277,16 @@ withSendAndRebaseQueue backend repo inventory settings action =
           sender <- atomically $ tryReadTQueue (srqSenders srq)
           forM_ sender $ senderRebaseAndFlush True srq
       senderIds = take sendAndRebaseQueueSenders [1..]
+
+      baseId = if sendAndRebaseQueueAllowRemoteReferences
+        then firstLocalId
+        else Fid Thrift.fIRST_FREE_ID
+
+      -- Higher than Ids in the remote db to avoid remote fact references
+      -- from being mistaken for local fact references.
+      -- Lower than Ids in JSON batches to avoid references within the
+      -- batch from being mistaken for references to the local db.
+      firstLocalId = Fid (firstAnonId `div` 2)
 
 
 writeSendAndRebaseQueue
