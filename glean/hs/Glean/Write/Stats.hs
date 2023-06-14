@@ -6,7 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-module Glean.Database.Stats (
+module Glean.Write.Stats (
   Stats, new, Bump, bump, tick,
   mutatorLatency, mutatorInput, mutatorThroughput, mutatorDedupedThroughput,
   mutatorDupThroughput,

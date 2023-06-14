@@ -36,7 +36,6 @@ import Glean.Database.Catalog (Catalog)
 import Glean.Database.Config
 import Glean.Database.Meta
 import Glean.Database.Schema.Types
-import Glean.Database.Stats (Stats)
 import Glean.Database.Storage (Database, Storage, describe)
 import Glean.Database.Work.Heartbeat (Heartbeats)
 import Glean.Database.Work.Queue (WorkQueue)
@@ -59,6 +58,7 @@ import Glean.Util.Some
 import Glean.Util.Time
 import Glean.Util.Trace (Listener)
 import Glean.Util.Warden
+import Glean.Write.Stats (Stats)
 
 -- Write caches
 data Writing = Writing

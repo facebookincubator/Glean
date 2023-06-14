@@ -84,7 +84,8 @@ settings log = SendAndRebaseQueueSettings {
     sendQueueLog = log },
   sendAndRebaseQueueFactCacheSize = 1024*1024,
   sendAndRebaseQueueSenders = 1,
-  sendAndRebaseQueueAllowRemoteReferences = True
+  sendAndRebaseQueueAllowRemoteReferences = True,
+  sendAndRebaseQueueStats = Nothing
   }
 
 sendAndRebaseQueueTest :: Test

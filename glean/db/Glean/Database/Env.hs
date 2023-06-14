@@ -31,7 +31,6 @@ import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Config
 import Glean.Database.Close
 import Glean.Database.Janitor
-import qualified Glean.Database.Stats as Stats
 import Glean.Database.Open
 import qualified Glean.Database.Storage as Storage
 import Glean.Database.Types
@@ -48,6 +47,7 @@ import Glean.Util.ShardManager (SomeShardManager)
 import Glean.Util.ThriftSource as ThriftSource
 import Glean.Util.Time
 import qualified Glean.Util.Warden as Warden
+import qualified Glean.Write.Stats as Stats
 
 -- | Initialize an Env for working with Glean databases
 withDatabases

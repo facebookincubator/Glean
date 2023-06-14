@@ -26,7 +26,6 @@ import Util.STM
 import Glean.Database.Open
 import Glean.Database.Exception
 import Glean.Database.Repo
-import qualified Glean.Database.Stats as Stats
 import qualified Glean.Database.Storage as Storage
 import Glean.Database.Schema
 import Glean.Database.Types
@@ -43,6 +42,7 @@ import Glean.Types (Repo)
 import qualified Glean.Types as Thrift
 import Glean.Util.Metric
 import Glean.Util.Mutex
+import qualified Glean.Write.Stats as Stats
 
 -- | What we are going to write into the DB
 data WriteContent = WriteContent

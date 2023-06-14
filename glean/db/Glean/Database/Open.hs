@@ -47,7 +47,6 @@ import Glean.Database.Catalog.Filter (Locality(..))
 import Glean.Database.Data
 import Glean.Database.Exception
 import Glean.Database.Repo
-import qualified Glean.Database.Stats as Stats
 import Glean.Database.Storage as Storage
 import Glean.Database.Meta (Meta(..))
 import Glean.Database.Schema
@@ -71,6 +70,7 @@ import Glean.Util.Mutex
 import qualified Glean.Util.Observed as Observed
 import Glean.Util.Time
 import qualified Glean.Util.Warden as Warden
+import qualified Glean.Write.Stats as Stats
 
 withOpenDatabase :: HasCallStack => Env -> Repo -> (OpenDB -> IO a) -> IO a
 withOpenDatabase env@Env{..} repo action =

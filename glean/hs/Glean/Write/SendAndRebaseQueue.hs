@@ -17,7 +17,9 @@ import Control.Concurrent
 import Control.DeepSeq
 import Control.Exception
 import Control.Monad
+import qualified Data.ByteString as BS
 import Data.Coerce
+import Data.Word
 import Data.Vector.Storable (Vector)
 import qualified Data.Vector.Storable as Vector
 import Data.HashMap.Strict (HashMap)
@@ -31,16 +33,18 @@ import Glean.FFI (release)
 import qualified Glean.Write.SendQueue as SendQueue
 import Glean.Write.SendQueue (SendQueue)
 import Glean.RTS.Constants (firstAnonId)
+import Glean.Write.Stats as Stats
 import Glean.RTS.Foreign.Define
 import Glean.RTS.Foreign.Stacked
 import qualified Glean.RTS.Foreign.Lookup as Lookup
 import qualified Glean.RTS.Foreign.LookupCache as LookupCache
-import Glean.RTS.Foreign.LookupCache (LookupCache)
+import Glean.RTS.Foreign.LookupCache (LookupCache, countFailuresAsMisses)
 import qualified Glean.RTS.Foreign.FactSet as FactSet
 import Glean.RTS.Foreign.FactSet (FactSet)
 import Glean.RTS.Foreign.Inventory (Inventory)
 import Glean.RTS.Foreign.Subst
 import Glean.RTS.Types (Fid(..))
+import Glean.Util.Metric
 import qualified Glean.Types as Thrift
 
 -- | When the send operation fails or is completed this is called once.
@@ -56,6 +60,8 @@ data Ownership = Ownership
 data Sender = Sender
   { sId :: Integer
   , sSubstVar :: TMVar (Maybe Thrift.Subst)
+  , sSent :: TVar Point
+    -- ^ Records the size and time the last batch was sent, for stats
   , sFacts :: MVar (FactSet, [Ownership])
     -- ^ [Ownership] is the ownership assignments for facts in the
     -- FactSet, in descending order by ownershipEnd (newest at the
@@ -70,7 +76,7 @@ data SendAndRebaseQueue = SendAndRebaseQueue
   { srqSendQueue :: !SendQueue
     -- ^ Underlying send queue
 
-  , srqRebaseQueue :: TQueue (Thrift.Batch, Callback)
+  , srqRebaseQueue :: TQueue (Thrift.Batch, Callback, Point)
     -- ^ Batches we haven't rebased yet
 
   , srqSenders :: TQueue Sender
@@ -82,29 +88,34 @@ data SendAndRebaseQueue = SendAndRebaseQueue
   , srqFacts :: !LookupCache
     -- ^ Cache the ids of facts stored on the server
 
-  , srqStats :: !LookupCache.Stats
-    -- ^ Cache statistics
-
   , srqAllowRemoteReferences :: Bool
     -- ^ Allow batches to reference remote facts that are not in the cache.
+
+  , srqCacheStats :: !LookupCache.Stats
+    -- ^ Stats for the Lookup cache
+
+  , srqStats :: Maybe Stats
+    -- ^ How to report stats.
   }
 
 newSendAndRebaseQueue
   :: Bool
   -> SendQueue
   -> Inventory
+  -> Maybe Stats
   -> Int
   -> IO SendAndRebaseQueue
-newSendAndRebaseQueue allowRemote sendQueue inventory cacheMem = do
-  stats <- LookupCache.newStats
+newSendAndRebaseQueue allowRemote sendQueue inventory stats cacheMem = do
+  cacheStats <- LookupCache.newStats
   SendAndRebaseQueue
     <$> pure sendQueue
     <*> newTQueueIO
     <*> newTQueueIO
     <*> pure inventory
-    <*> LookupCache.new (fromIntegral cacheMem) 1 stats
-    <*> pure stats
+    <*> LookupCache.new (fromIntegral cacheMem) 1 cacheStats
     <*> pure allowRemote
+    <*> pure cacheStats
+    <*> pure stats
 
 -- | Settings for a 'SendAndRebase'
 data SendAndRebaseQueueSettings = SendAndRebaseQueueSettings
@@ -120,6 +131,9 @@ data SendAndRebaseQueueSettings = SendAndRebaseQueueSettings
     -- | Allow facts in the batch to make reference to facts in the remote
     -- server that may not be in the local cache.
   , sendAndRebaseQueueAllowRemoteReferences :: Bool
+
+    -- | How to log stats. Obatin this with 'Glean.Write.Stats.new'.
+  , sendAndRebaseQueueStats :: Maybe Stats
   }
 
 rebase
@@ -166,6 +180,8 @@ senderFlush :: SendAndRebaseQueue -> Sender -> IO ()
 senderFlush srq sender = withMVar (sFacts sender) $ \(facts, owned) -> do
   factOnlyBatch <- FactSet.serialize facts
   let batch = factOnlyBatch { Thrift.batch_owned = toBatchOwnership owned }
+  !size <- FactSet.factMemory facts
+  start <- beginTick (fromIntegral size)
   atomically $ do
     callbacks <- flushTQueue (sCallbacks sender)
     SendQueue.writeSendQueue (srqSendQueue srq) batch $ \result -> do
@@ -173,6 +189,7 @@ senderFlush srq sender = withMVar (sFacts sender) $ \(facts, owned) -> do
         Right subst -> putTMVar (sSubstVar sender) (Just subst)
         Left _ -> return ()
       forM_ callbacks ($ void result)
+    writeTVar (sSent sender) start
 
 senderRebaseAndFlush :: Bool -> SendAndRebaseQueue -> Sender -> IO ()
 senderRebaseAndFlush wait srq sender = do
@@ -204,29 +221,59 @@ senderRebaseAndFlush wait srq sender = do
               newOwned = rebaseOwnershipList owned subst boundary
           _ <- evaluate (force (map ownershipUnits newOwned))
           return (newBase, newOwned)
+      -- "Commit throughput" will be write throughput to the server
+      start <- readTVarIO (sSent sender)
+      statBump srq Stats.commitThroughput =<< endTick start
       senderFlush srq sender
     where log msg = vlog 1 $ "Sender " <> show (sId sender) <> ": " <> msg
+
+updateLookupCacheStats :: SendAndRebaseQueue -> IO ()
+updateLookupCacheStats SendAndRebaseQueue{..} =
+  forM_ srqStats $ \stats -> do
+    statValues <- LookupCache.readStatsAndResetCounters srqCacheStats
+    Stats.bump stats Stats.lookupCacheStats (countFailuresAsMisses statValues)
+
+statTick :: SendAndRebaseQueue -> Bump Tick -> Word64 -> IO a -> IO a
+statTick SendAndRebaseQueue{..} bump val act =
+  case srqStats of
+    Nothing -> act
+    Just stats -> Stats.tick stats bump val act
+
+statBump :: SendAndRebaseQueue -> Bump Tick -> Tick -> IO ()
+statBump SendAndRebaseQueue{..} bump val =
+  case srqStats of
+    Nothing -> return ()
+    Just stats -> Stats.bump stats bump val
 
 senderSendOrAppend
   :: SendAndRebaseQueue
   -> Sender
   -> Thrift.Batch
   -> Callback
+  -> Point
   -> IO ()
-senderSendOrAppend srq sender batch callback = do
-  modifyMVar_ (sFacts sender) $ \(base, ownership) -> do
-    (facts, owned) <- rebase
-      (srqAllowRemoteReferences srq)
-      (srqInventory srq)
-      batch
-      (srqFacts srq)
-      base
-    FactSet.append base facts
-    atomically $ writeTQueue (sCallbacks sender) callback
-    assert (case ownership of
-      [] -> True
-      (next:_) -> ownershipEnd owned >= ownershipEnd next) $ return ()
-    return (base, owned : ownership)
+senderSendOrAppend srq sender batch callback latency = do
+  -- "Mutator latency" is the latency between calling writeSendAndRebaseQueue
+  -- and having a free Sender to write the batch.
+  statBump srq Stats.mutatorLatency =<< endTick latency
+  let !size = BS.length $ Thrift.batch_facts batch
+  statTick srq Stats.mutatorThroughput (fromIntegral size) $ do
+    -- "Mutator throughput" is how fast we are appending new facts
+    -- to the FactSet.
+    modifyMVar_ (sFacts sender) $ \(base, ownership) -> do
+      (facts, owned) <- rebase
+        (srqAllowRemoteReferences srq)
+        (srqInventory srq)
+        batch
+        (srqFacts srq)
+        base
+      FactSet.append base facts
+      atomically $ writeTQueue (sCallbacks sender) callback
+      assert (case ownership of
+        [] -> True
+        (next:_) -> ownershipEnd owned >= ownershipEnd next) $ return ()
+      return (base, owned : ownership)
+  updateLookupCacheStats srq
   senderRebaseAndFlush False srq sender
 
 serviceRebaseQueue :: SendAndRebaseQueue -> IO ()
@@ -234,9 +281,9 @@ serviceRebaseQueue srq = do
   next <- atomically $ tryReadTQueue $ srqRebaseQueue srq
   case next of
     Nothing -> return ()
-    Just (batch, callback) -> do
+    Just (batch, callback, point) -> do
       sender <- atomically $ readTQueue $ srqSenders srq
-      senderSendOrAppend srq sender batch callback
+      senderSendOrAppend srq sender batch callback point
       atomically $ writeTQueue (srqSenders srq) sender
       serviceRebaseQueue srq
 
@@ -257,6 +304,7 @@ withSendAndRebaseQueue backend repo inventory settings action = do
           sendAndRebaseQueueAllowRemoteReferences
           sendQueue
           inventory
+          sendAndRebaseQueueStats
           sendAndRebaseQueueFactCacheSize
 
       bracket_ (createSenderPool srq) (deleteSenderPool srq) $
@@ -268,6 +316,7 @@ withSendAndRebaseQueue backend repo inventory settings action = do
           factset <- FactSet.new baseId
           worker <- Sender i
             <$> newTMVarIO Nothing
+            <*> newTVarIO (error "missing sSent")
             <*> newMVar (factset, [])
             <*> newTQueueIO
           atomically $ writeTQueue (srqSenders srq) worker
@@ -295,7 +344,6 @@ writeSendAndRebaseQueue
   -> Callback
   -> IO ()
 writeSendAndRebaseQueue srq batch callback = do
-  atomically $ writeTQueue (srqRebaseQueue srq) (batch, callback)
+  start <- beginTick 1
+  atomically $ writeTQueue (srqRebaseQueue srq) (batch, callback, start)
   serviceRebaseQueue srq
-  stats <- LookupCache.readStatsAndResetCounters $ srqStats srq
-  vlog 1 $ "Cache stats: " <> show stats

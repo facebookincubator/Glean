@@ -10,6 +10,7 @@ module Glean.RTS.Foreign.LookupCache
  ( LookupCache, new, clear, withCache, ReplacementPolicy(..)
  , Stats, StatValues, Stat(..)
  , isCounter, getStat, newStats, readStatsAndResetCounters
+ , countFailuresAsMisses
  )
 where
 
@@ -137,6 +138,17 @@ readStatsAndResetCounters stats = do
       pdata
       (fromIntegral $ VM.length v)
   StatValues <$> V.unsafeFreeze v
+
+-- | Replace miss counts with failure counts. This is useful when the cache is
+-- being used without a base DB, e.g. in SendAndRebaseQueue. In that case there
+-- will always be zero cache misses, and we're interested in failures.
+countFailuresAsMisses :: StatValues -> StatValues
+countFailuresAsMisses stats@(StatValues vec) = StatValues $
+  vec V.//
+    [ (fromEnum IdByKey_misses, getStat stats IdByKey_failures)
+    , (fromEnum TypeById_misses, getStat stats TypeById_failures)
+    , (fromEnum FactById_misses, getStat stats FactById_failures)
+    ]
 
 new :: Word64 -> Int -> Stats -> IO LookupCache
 new capacity shards stats =

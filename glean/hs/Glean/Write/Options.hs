@@ -81,6 +81,7 @@ sendAndRebaseQueueOptions = do
     , sendAndRebaseQueueSenders =
         sendQueueThreads sendAndRebaseQueueSendQueueSettings
     , sendAndRebaseQueueAllowRemoteReferences = False
+    , sendAndRebaseQueueStats = Nothing
     }
 
 
