@@ -102,9 +102,7 @@ withOpenDatabase env@Env{..} repo action =
           deps <- atomically $ metaDependencies <$>
             Catalog.readMeta envCatalog dbRepo
           let
-            onFailure ex = atomically $ do
-              openFailed <- readTVar envOpenFailed
-              writeTVar envOpenFailed $ HashMap.insert dbRepo ex openFailed
+            onFailure ex = atomically $ Catalog.dbFailed envCatalog dbRepo ex
           -- opening a DB has long uninterruptible sections so do it on a
           -- separate thread in case we get cancelled
           opener <-
@@ -348,9 +346,8 @@ schemaUpdated env@Env{..} mbRepo = do
   -- this cache anywhere else.
   when (isNothing mbRepo) $ do
     modifyMVar_ envDbSchemaCache $ \_ -> return HashMap.empty
-    -- reset the record of DB open failures, these might succeed now
-    -- that we've updated the schema.
-    atomically $ writeTVar envOpenFailed HashMap.empty
+    -- previously failed DBs might now open successfully
+    atomically $ Catalog.resetFailed envCatalog
 
   bracket acquire release $ \active -> do
     forM_ active $ \DB{..} -> do

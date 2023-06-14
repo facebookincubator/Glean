@@ -36,6 +36,8 @@ module Glean.Database.Catalog
   , resetElsewhere
   , getLocalDatabases
   , getLocalDatabase
+  , dbFailed
+  , resetFailed
   -- for testing
   , getEntries
   , list'
@@ -61,6 +63,7 @@ import qualified Data.HashMap.Strict as HashMap
 import Data.HashSet (HashSet)
 import qualified Data.HashSet as HashSet
 import Data.Maybe
+import qualified Data.Text as Text
 import Data.Time
 import Data.Typeable
 import GHC.Stack (HasCallStack)
@@ -102,7 +105,7 @@ data EntryF ref = Entry
   }
 
 deriving instance Show (EntryF Identity)
-deriving instance Eq (EntryF Identity)
+-- deriving instance Eq (EntryF Identity)
 
 -- | All databases known to the 'Catalog'.
 type Entries = EntriesF Entry
@@ -119,8 +122,10 @@ data EntriesF entry = Entries
       -- ^ databases that are being restored
   , entriesEphemeral :: HashSet Repo
       -- ^ databases that are being created or deleted
+  , entriesFailed :: HashMap Repo SomeException
+      -- ^ databases that failed to open, and their exceptions
   }
-  deriving (Eq, Show, Functor, Foldable, Traversable)
+  deriving (Show, Functor, Foldable, Traversable)
 
 
 -- | Catalog of database entries
@@ -165,6 +170,8 @@ recalculateStatus Catalog{..} entry = do
     Nothing -> return ()
     Just Entries{..} -> do
       let
+        repo = entryRepo entry
+
         missingStatus repo | repo `HashMap.member` entriesRestoring =
           ItemRestoring
         missingStatus _ = ItemMissing
@@ -175,13 +182,13 @@ recalculateStatus Catalog{..} entry = do
           Just (Thrift.Dependencies_pruned up) ->
             [(Thrift.pruned_base up, Thrift.pruned_guid up)]
           Nothing -> []
-        live = entryRepo entry `HashMap.member` entriesLiveHere
+        live = repo `HashMap.member` entriesLiveHere
       forM_ dependencies $ \(dep, _) -> if live then
           modifyTVar' catRepoDependents $
-            HashMap.insertWith (<>) dep [entryRepo entry]
+            HashMap.insertWith (<>) dep [repo]
         else
           modifyTVar' catRepoDependents $
-            HashMap.adjust (filter (entryRepo entry /=)) dep
+            HashMap.adjust (filter (repo /=)) dep
 
       let
         itemStatusFor :: Thrift.Completeness -> ItemStatus
@@ -203,19 +210,18 @@ recalculateStatus Catalog{..} entry = do
             else
               return missing
 
-
       meta <- readTVar $ entryMeta entry
       oldStatus <- readTVar $ entryStatus entry
       let
-        status = if live then
-            itemStatusFor $ metaCompleteness meta
-          else
-            missingStatus $ entryRepo entry
+        status
+          | Just{} <- HashMap.lookup repo entriesFailed = ItemBroken
+          | live = itemStatusFor $ metaCompleteness meta
+          | otherwise = missingStatus repo
         newStatus = mconcat $ status:dependencyStatuses
 
       when (newStatus /= oldStatus) $ do
         writeTVar (entryStatus entry) newStatus
-        recalculateDepsStatus Catalog{..} (entryRepo entry)
+        recalculateDepsStatus Catalog{..} repo
 
 recalculateDepsStatus :: Catalog -> Repo -> STM ()
 recalculateDepsStatus Catalog{..} repo = do
@@ -309,6 +315,7 @@ open local = do
     , entriesLiveElsewhere = mempty
     , entriesRestoring = mempty
     , entriesEphemeral = mempty
+    , entriesFailed = mempty
     }
   dependents <- newTVarIO mempty
   dirty_queue <- newTQueueIO
@@ -455,6 +462,24 @@ modifyMeta cat repo f = do
   dirtyEntry cat entry
   return new_meta
 
+dbFailed :: Catalog -> Repo -> SomeException -> STM ()
+dbFailed cat repo exception = do
+  Entries{..} <- getEntries cat
+  writeTVar (catEntries cat) $ Just Entries
+    { entriesFailed = HashMap.insert repo exception entriesFailed
+    , ..
+    }
+  entry <- getEntry cat repo
+  recalculateStatus cat entry
+
+resetFailed :: Catalog -> STM ()
+resetFailed cat = do
+  Entries{..} <- getEntries cat
+  writeTVar (catEntries cat) $ Just Entries
+    { entriesFailed = HashMap.empty
+    , ..
+    }
+
 readExpiring :: Catalog -> Repo -> STM (Maybe UTCTime)
 readExpiring cat repo = do
   entry <- getEntry cat repo
@@ -550,10 +575,25 @@ getLocalDatabases cat = do
     entriesLiveElsewhere
   return $ mconcat
     [ HashMap.mapWithKey restoring_db entriesRestoring
-    , local
+    , updateFailed entriesFailed local
     , elsewhere
     ]
   where
+    updateFailed entriesFailed = HashMap.mapWithKey $
+      \repo r@Thrift.GetDatabaseResult{..} ->
+        if
+          | Just exception <- HashMap.lookup repo entriesFailed ->
+            Thrift.GetDatabaseResult {
+              getDatabaseResult_database = getDatabaseResult_database {
+                Thrift.database_broken = Just $ Thrift.DatabaseBroken
+                  { databaseBroken_task = "open"
+                  , databaseBroken_reason = Text.pack (show exception)
+                  }
+                },
+              ..
+            }
+          | otherwise -> r
+
     local_db overrideStatus repo entry = do
       meta <- readTVar $ entryMeta entry
       exp <- readTVar $ entryExpiring entry

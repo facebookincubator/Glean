@@ -34,7 +34,7 @@ data SystemState = SystemState
   , restorableDBs :: HashMap Repo Meta
   , openDBs :: HashSet Repo
   }
-  deriving (Eq, Show)
+  deriving (Show)
 
 readSystemState :: Env -> IO SystemState
 readSystemState Env {..} = do

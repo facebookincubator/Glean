@@ -93,7 +93,7 @@ initialModel backupDir =
     Nothing
 
 emptyEntries :: EntriesF a
-emptyEntries = Entries mempty mempty mempty mempty
+emptyEntries = Entries mempty mempty mempty mempty mempty
 
 mkEntry :: Item -> EntryF Identity
 mkEntry Item {..} =

@@ -217,7 +217,6 @@ data Env = forall storage. Storage storage => Env
   , envActive :: TVar (HashMap Thrift.Repo DB)
   , envDeleting :: TVar (HashMap Thrift.Repo (Async ()))
   , envCompleting :: TVar (HashMap Thrift.Repo (Async ()))
-  , envOpenFailed :: TVar (HashMap Thrift.Repo SomeException)
   , envReadOnly :: Bool
   , envMockWrites :: Bool
   , envStats :: Stats

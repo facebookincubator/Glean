@@ -24,29 +24,37 @@ import TestRunner
 import Glean
 import Glean.Database.Test
 import Glean.Init
-import TestDB
 
 -- | Test that after failing to open a DB we report the DB as broken
 -- in the result of listDatabases
 dbOpenFail :: Test
 dbOpenFail = TestCase $ do
   withSystemTempDirectory "glean-dbtest" $ \root -> do
-    repo <- withTestDB [setRoot root] $ \_ repo -> return repo
+    let base = Repo "dbfail-base" "1"
+        stacked = Repo "dbfail-stacked" "1"
+    withTestEnv [setRoot root] $ \env -> do
+      kickOffTestDB env base id
+      completeTestDB env base
+      kickOffTestDB env stacked $ \x -> x
+        { kickOff_dependencies = Just $ Dependencies_stacked $
+            Stacked (repo_name base) (repo_hash base) Nothing }
+      completeTestDB env stacked
     dbs <- withTestEnv [setRoot root] $ \env -> listDatabases env def
-    assertEqual "exists" [DatabaseStatus_Complete]
+    assertEqual "exists" [DatabaseStatus_Complete, DatabaseStatus_Complete]
       (map database_status (listDatabasesResult_databases dbs))
-    -- now delete the DB contents so it will fail to open
-    withCurrentDirectory (root </> Text.unpack (repo_name repo) </>
-        Text.unpack (repo_hash repo) </> "db") $
+    -- now delete the DB contents for the base DB so it will fail to open
+    withCurrentDirectory (root </> Text.unpack (repo_name base) </>
+        Text.unpack (repo_hash base) </> "db") $
       listDirectory "." >>= mapM_ removeFile
     withTestEnv [setRoot root] $ \env -> do
-      r <- try $ predicateStats env repo ExcludeBase
+      r <- try $ predicateStats env base ExcludeBase
       print r
       assertBool "open failed" $ case r of
         Left (e :: SomeException) -> "No such file" `isInfixOf` show e
         _otherwise -> False
       dbs <- listDatabases env def
-      assertEqual "broken" [DatabaseStatus_Broken]
+      -- stacked DB should be broken too
+      assertEqual "broken" [DatabaseStatus_Broken, DatabaseStatus_Broken]
         (map database_status (listDatabasesResult_databases dbs))
 
 main :: IO ()
