@@ -76,9 +76,6 @@ data SendAndRebaseQueue = SendAndRebaseQueue
   { srqSendQueue :: !SendQueue
     -- ^ Underlying send queue
 
-  , srqRebaseQueue :: TQueue (Thrift.Batch, Callback, Point)
-    -- ^ Batches we haven't rebased yet
-
   , srqSenders :: TQueue Sender
     -- ^ Senders accumulate facts while waiting for a substitution
 
@@ -109,7 +106,6 @@ newSendAndRebaseQueue allowRemote sendQueue inventory stats cacheMem = do
   cacheStats <- LookupCache.newStats
   SendAndRebaseQueue
     <$> pure sendQueue
-    <*> newTQueueIO
     <*> newTQueueIO
     <*> pure inventory
     <*> LookupCache.new (fromIntegral cacheMem) 1 cacheStats
@@ -276,17 +272,6 @@ senderSendOrAppend srq sender batch callback latency = do
   updateLookupCacheStats srq
   senderRebaseAndFlush False srq sender
 
-serviceRebaseQueue :: SendAndRebaseQueue -> IO ()
-serviceRebaseQueue srq = do
-  next <- atomically $ tryReadTQueue $ srqRebaseQueue srq
-  case next of
-    Nothing -> return ()
-    Just (batch, callback, point) -> do
-      sender <- atomically $ readTQueue $ srqSenders srq
-      senderSendOrAppend srq sender batch callback point
-      atomically $ writeTQueue (srqSenders srq) sender
-      serviceRebaseQueue srq
-
 withSendAndRebaseQueue
   :: Backend e
   => e
@@ -344,6 +329,8 @@ writeSendAndRebaseQueue
   -> Callback
   -> IO ()
 writeSendAndRebaseQueue srq batch callback = do
-  start <- beginTick 1
-  atomically $ writeTQueue (srqRebaseQueue srq) (batch, callback, start)
-  serviceRebaseQueue srq
+  point <- beginTick 1
+  bracket
+    (atomically $ readTQueue $ srqSenders srq)
+    (\sender -> atomically $ writeTQueue (srqSenders srq) sender)
+    (\sender -> senderSendOrAppend srq sender batch callback point)
