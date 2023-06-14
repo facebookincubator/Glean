@@ -128,13 +128,19 @@ rebase
   -> FactSet.FactSet
   -> IO (FactSet.FactSet, Ownership)
 rebase inventory batch cache base = do
-  LookupCache.withCache Lookup.EmptyLookup cache LookupCache.LRU $ \lookup -> do
-    factSet <- Lookup.firstFreeId base >>= FactSet.new
-    let define = stacked (stacked lookup base) factSet
-    subst <- defineBatch define inventory batch True
-    let owned = substOwnership subst (Thrift.batch_owned batch)
-    nextId <- Lookup.firstFreeId factSet
-    return (factSet, Ownership owned nextId)
+  LookupCache.withCache Lookup.EmptyLookup cache LookupCache.LRU $ \cache -> do
+    -- when there are multiple senders, the cache may have new facts since
+    -- we previously rebased, and it may contain fact IDs that overlap with
+    -- the current base. So we have to use a snapshot of the cache, restricted
+    -- to fact IDs less than the current base startingId.
+    first_id <- Lookup.startingId base
+    Lookup.withSnapshot cache first_id $ \snapshot -> do
+      factSet <- Lookup.firstFreeId base >>= FactSet.new
+      let define = snapshot `stacked` base `stacked` factSet
+      subst <- defineBatch define inventory batch True
+      let owned = substOwnership subst (Thrift.batch_owned batch)
+      nextId <- Lookup.firstFreeId factSet
+      return (factSet, Ownership owned nextId)
 
 toBatchOwnership :: [Ownership] -> HashMap Thrift.UnitName (Vector Thrift.Id)
 toBatchOwnership =
