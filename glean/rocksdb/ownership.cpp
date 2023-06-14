@@ -191,12 +191,20 @@ std::unique_ptr<Usets> DatabaseImpl::loadOwnershipSets() {
   auto t = makeAutoTimer("loadOwnershipSets");
 
   auto iter = getSetIterator(container_);
-  auto [first, size] = iter->sizes();
+  auto pair = iter->sizes();
+  auto first = pair.first;
+  auto size = pair.second;
 
   auto usets = std::make_unique<Usets>(first + size);
 
   while (const auto pair = iter->get()) {
     auto set = SetU32::fromEliasFano(*pair->second.set);
+    // paranoia: check the set contents make sense
+    set.foreach([first, size](UsetId id) {
+      if (id >= first + size) {
+        rts::error("invalid ownershipSets: id out of range: {}", id);
+      }
+    });
     auto p = usets->add(std::move(set), 0);
     p->id = pair->first;
   }
