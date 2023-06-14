@@ -85,9 +85,6 @@ data SendAndRebaseQueue = SendAndRebaseQueue
   , srqFacts :: !LookupCache
     -- ^ Cache the ids of facts stored on the server
 
-  , srqAllowRemoteReferences :: Bool
-    -- ^ Allow batches to reference remote facts that are not in the cache.
-
   , srqCacheStats :: !LookupCache.Stats
     -- ^ Stats for the Lookup cache
 
@@ -96,20 +93,18 @@ data SendAndRebaseQueue = SendAndRebaseQueue
   }
 
 newSendAndRebaseQueue
-  :: Bool
-  -> SendQueue
+  :: SendQueue
   -> Inventory
   -> Maybe Stats
   -> Int
   -> IO SendAndRebaseQueue
-newSendAndRebaseQueue allowRemote sendQueue inventory stats cacheMem = do
+newSendAndRebaseQueue sendQueue inventory stats cacheMem = do
   cacheStats <- LookupCache.newStats
   SendAndRebaseQueue
     <$> pure sendQueue
     <*> newTQueueIO
     <*> pure inventory
     <*> LookupCache.new (fromIntegral cacheMem) 1 cacheStats
-    <*> pure allowRemote
     <*> pure cacheStats
     <*> pure stats
 
@@ -133,17 +128,16 @@ data SendAndRebaseQueueSettings = SendAndRebaseQueueSettings
   }
 
 rebase
-  :: Bool
-  -> Inventory
+  :: Inventory
   -> Thrift.Batch
   -> LookupCache
   -> FactSet.FactSet
   -> IO (FactSet.FactSet, Ownership)
-rebase  allowRemoteRefs inventory batch cache base = do
+rebase inventory batch cache base = do
   LookupCache.withCache Lookup.EmptyLookup cache LookupCache.LRU $ \lookup -> do
     factSet <- Lookup.firstFreeId base >>= FactSet.new
     let define = stacked (stacked lookup base) factSet
-    subst <- defineBatch define inventory batch allowRemoteRefs
+    subst <- defineBatch define inventory batch True
     let owned = substOwnership subst (Thrift.batch_owned batch)
     nextId <- Lookup.firstFreeId factSet
     return (factSet, Ownership owned nextId)
@@ -258,7 +252,6 @@ senderSendOrAppend srq sender batch callback latency = do
     -- to the FactSet.
     modifyMVar_ (sFacts sender) $ \(base, ownership) -> do
       (facts, owned) <- rebase
-        (srqAllowRemoteReferences srq)
         (srqInventory srq)
         batch
         (srqFacts srq)
@@ -286,7 +279,6 @@ withSendAndRebaseQueue backend repo inventory settings action = do
     \sendQueue -> do
       srq <-
         newSendAndRebaseQueue
-          sendAndRebaseQueueAllowRemoteReferences
           sendQueue
           inventory
           sendAndRebaseQueueStats
