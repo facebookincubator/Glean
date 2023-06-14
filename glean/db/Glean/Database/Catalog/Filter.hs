@@ -124,7 +124,8 @@ everythingF = return ()
 queryableF :: Filter ()
 queryableF =
   inF entryStatusV $
-    HashSet.fromList [ItemComplete , ItemIncomplete, ItemBroken, ItemFinalizing]
+    HashSet.fromList [ItemComplete , ItemIncomplete, ItemFinalizing]
+    -- broken DBs may or may not be queryable.
 
 incompleteQueryableF :: Filter ()
 incompleteQueryableF =
