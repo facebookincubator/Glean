@@ -75,9 +75,16 @@ sendAndRebaseQueueOptions = do
     <> O.value 2000000000
     <> O.showDefault
     <> O.help "size of the cache for sent facts"
+  sendAndRebaseQueueFactBufferSize <- O.option O.auto $
+    O.long "fact-buffer-size"
+    <> O.metavar "N"
+    <> O.value (200*1000*1000)
+    <> O.showDefault
+    <> O.help "size of the buffer for unsent facts per sender"
   return SendAndRebaseQueueSettings
     { sendAndRebaseQueueSendQueueSettings
     , sendAndRebaseQueueFactCacheSize
+    , sendAndRebaseQueueFactBufferSize
     , sendAndRebaseQueueSenders =
         sendQueueThreads sendAndRebaseQueueSendQueueSettings
     , sendAndRebaseQueueAllowRemoteReferences = False

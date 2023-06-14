@@ -90,23 +90,10 @@ data SendAndRebaseQueue = SendAndRebaseQueue
 
   , srqStats :: Maybe Stats
     -- ^ How to report stats.
-  }
 
-newSendAndRebaseQueue
-  :: SendQueue
-  -> Inventory
-  -> Maybe Stats
-  -> Int
-  -> IO SendAndRebaseQueue
-newSendAndRebaseQueue sendQueue inventory stats cacheMem = do
-  cacheStats <- LookupCache.newStats
-  SendAndRebaseQueue
-    <$> pure sendQueue
-    <*> newTQueueIO
-    <*> pure inventory
-    <*> LookupCache.new (fromIntegral cacheMem) 1 cacheStats
-    <*> pure cacheStats
-    <*> pure stats
+  , srqFactBufferSize :: !Int
+    -- ^ Max size of fact buffer
+  }
 
 -- | Settings for a 'SendAndRebase'
 data SendAndRebaseQueueSettings = SendAndRebaseQueueSettings
@@ -115,6 +102,13 @@ data SendAndRebaseQueueSettings = SendAndRebaseQueueSettings
 
     -- | Max memory that the fact cache should use
   , sendAndRebaseQueueFactCacheSize :: !Int
+
+    -- | Max memory that the fact buffer should use (per sender). The
+    -- purpose of this limit is to prevent the buffer from growing
+    -- without bound if the server's write queue is full. When the
+    -- buffer exceeds this limit, writers will start waiting for the
+    -- server. Note that the limit is per sender.
+  , sendAndRebaseQueueFactBufferSize :: !Int
 
     -- | Number of senders
   , sendAndRebaseQueueSenders :: !Int
@@ -247,23 +241,22 @@ senderSendOrAppend srq sender batch callback latency = do
   -- and having a free Sender to write the batch.
   statBump srq Stats.mutatorLatency =<< endTick latency
   let !size = BS.length $ Thrift.batch_facts batch
-  statTick srq Stats.mutatorThroughput (fromIntegral size) $ do
+  newSize <-
     -- "Mutator throughput" is how fast we are appending new facts
     -- to the FactSet.
-    modifyMVar_ (sFacts sender) $ \(base, ownership) -> do
-      (facts, owned) <- rebase
-        (srqInventory srq)
-        batch
-        (srqFacts srq)
-        base
-      FactSet.append base facts
-      atomically $ writeTQueue (sCallbacks sender) callback
-      assert (case ownership of
-        [] -> True
-        (next:_) -> ownershipEnd owned >= ownershipEnd next) $ return ()
-      return (base, owned : ownership)
+    statTick srq Stats.mutatorThroughput (fromIntegral size) $ do
+      modifyMVar (sFacts sender) $ \(base, ownership) -> do
+        (facts, owned) <- rebase (srqInventory srq) batch (srqFacts srq) base
+        FactSet.append base facts
+        atomically $ writeTQueue (sCallbacks sender) callback
+        assert (case ownership of
+          [] -> True
+          (next:_) -> ownershipEnd owned >= ownershipEnd next) $ return ()
+        newSize <- FactSet.factMemory base
+        return ((base, owned : ownership), newSize)
   updateLookupCacheStats srq
-  senderRebaseAndFlush False srq sender
+  let !wait = newSize >= srqFactBufferSize srq
+  senderRebaseAndFlush wait srq sender
 
 withSendAndRebaseQueue
   :: Backend e
@@ -277,13 +270,16 @@ withSendAndRebaseQueue backend repo inventory settings action = do
   vlog 1 $ "Allow remote refs: " <> show sendAndRebaseQueueAllowRemoteReferences
   SendQueue.withSendQueue backend repo sendAndRebaseQueueSendQueueSettings $
     \sendQueue -> do
-      srq <-
-        newSendAndRebaseQueue
-          sendQueue
-          inventory
-          sendAndRebaseQueueStats
-          sendAndRebaseQueueFactCacheSize
-
+      cacheStats <- LookupCache.newStats
+      let cacheSize = fromIntegral sendAndRebaseQueueFactCacheSize
+      srq <- SendAndRebaseQueue
+        <$> pure sendQueue
+        <*> newTQueueIO
+        <*> pure inventory
+        <*> LookupCache.new cacheSize 1 cacheStats
+        <*> pure cacheStats
+        <*> pure sendAndRebaseQueueStats
+        <*> pure sendAndRebaseQueueFactBufferSize
       bracket_ (createSenderPool srq) (deleteSenderPool srq) $
         action srq
     where

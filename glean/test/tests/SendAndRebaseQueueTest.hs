@@ -83,6 +83,7 @@ settings log = SendAndRebaseQueueSettings {
   sendAndRebaseQueueSendQueueSettings = def {
     sendQueueLog = log },
   sendAndRebaseQueueFactCacheSize = 1024*1024,
+  sendAndRebaseQueueFactBufferSize = 1024*1024,
   sendAndRebaseQueueSenders = 1,
   sendAndRebaseQueueAllowRemoteReferences = True,
   sendAndRebaseQueueStats = Nothing
