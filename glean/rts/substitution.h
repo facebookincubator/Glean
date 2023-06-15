@@ -67,15 +67,6 @@ public:
     return base + items.size();
   }
 
-  void set(Id pos, Id id) {
-    CHECK(pos >= start() && pos < finish());
-    items[distance(start(),pos)] = id;
-  }
-
-  void setAt(size_t index, Id id) {
-    items[index] = id;
-  }
-
   Id firstFreeId() const;
 
   static Substitution compose(
@@ -99,8 +90,34 @@ public:
 private:
   Id base;
   std::vector<Id> items;
+  mutable Id firstFreeId_ = Id::invalid(); // lazy cached firstFreeId()
+  friend class MutableSubstitution;
 
   void rebaseInterval(boost::icl::interval_set<Id>& is, size_t offset, Id start, Id end) const;
+};
+
+class MutableSubstitution {
+  public:
+  MutableSubstitution(Id first, size_t size) : subst_(first, size) {}
+  MutableSubstitution(Id first, std::vector<Id> ids) : subst_(first, std::move(ids)) {}
+
+  void set(Id pos, Id id) {
+    CHECK(pos >= subst_.start() && pos < subst_.finish());
+    subst_.items[distance(subst_.start(),pos)] = id;
+  }
+
+  void setAt(size_t index, Id id) {
+    subst_.items[index] = id;
+  }
+
+  Id subst(Id id) const { return subst_.subst(id); }
+
+  Substitution freeze() {
+    return Substitution(subst_.base, subst_.items);
+  }
+
+  private:
+    Substitution subst_;
 };
 
 }

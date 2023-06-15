@@ -29,7 +29,7 @@ Substitution defineBatch(
     error("invalid base id {} in batch", first);
   }
 
-  Substitution subst(first, count);
+  MutableSubstitution subst(first, count);
 
   folly::F14FastMap<Id,Id,folly::Hash> idmap;
 
@@ -101,7 +101,7 @@ Substitution defineBatch(
       error("invalid predicate id {}", ty);
     }
   }
-  return subst;
+  return subst.freeze();
 }
 
 }

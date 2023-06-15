@@ -23,9 +23,12 @@ Substitution::Substitution(Id first, std::vector<Id> ids)
   {}
 
 Id Substitution::firstFreeId() const {
-   const auto i = std::max_element(items.begin(), items.end());
-   return i != items.end() ? std::max(*i+1, finish()) : finish();
- }
+  if (!firstFreeId_) {
+    const auto i = std::max_element(items.begin(), items.end());
+    firstFreeId_ = i != items.end() ? std::max(*i+1, finish()) : finish();
+  }
+  return firstFreeId_;
+}
 
 namespace {
 

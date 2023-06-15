@@ -81,12 +81,12 @@ RC_GTEST_PROP(
     SubstitutionTest,
     setAt,
     (Id start, const std::vector<Id>& ids)) {
-  Substitution subst(start,ids);
+  MutableSubstitution subst(start,ids);
   for (size_t i = 0; i < ids.size(); ++i) {
     subst.setAt(i, ids[ids.size() - i - 1]);
   }
   const std::vector<Id> rev(ids.rbegin(), ids.rend());
-  RC_ASSERT(subst == Substitution(start, rev));
+  RC_ASSERT(subst.freeze() == Substitution(start, rev));
 }
 
 RC_GTEST_PROP(SubstitutionTest, compose1, (const Substitution& subst)) {
