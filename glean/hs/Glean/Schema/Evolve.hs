@@ -20,6 +20,7 @@ module Glean.Schema.Evolve
   , mapVisible
   , VisiblePredicates
   , visibleDefined
+  , canBeStored
   ) where
 
 import Control.Applicative
@@ -105,6 +106,7 @@ directSchemaEvolutions schemas =
         <> ": "
         <> Text.unwords (map showSchemaRef newList)
 
+-- | Visible predicates which can be evolved.
 data VisiblePredicates p = VisiblePredicates
   { visibleDefined :: HashSet p
   , visibleReexported :: HashSet p
@@ -112,9 +114,22 @@ data VisiblePredicates p = VisiblePredicates
 
 visiblePredicates :: ResolvedSchemaRef -> VisiblePredicates PredicateRef
 visiblePredicates ResolvedSchema{..} = VisiblePredicates
-  { visibleDefined = HashMap.keysSet resolvedSchemaPredicates
-  , visibleReexported = HashMap.keysSet resolvedSchemaReExportedPredicates
+  { visibleDefined = evolvable resolvedSchemaPredicates
+  , visibleReexported = evolvable resolvedSchemaReExportedPredicates
   }
+  where
+  evolvable :: HashMap PredicateRef ResolvedPredicateDef -> HashSet PredicateRef
+  evolvable = HashSet.fromList . filter stored . HashMap.keys
+
+  stored ref =
+    maybe True canBeStored $ HashMap.lookup ref resolvedSchemaDeriving
+
+canBeStored :: DerivingInfo a -> Bool
+canBeStored = \case
+  Derive DeriveOnDemand _ -> False
+  Derive DerivedAndStored _ -> True
+  Derive DeriveIfEmpty _ -> True
+  NoDeriving -> True
 
 mapVisible
   :: (Eq q, Hashable q)

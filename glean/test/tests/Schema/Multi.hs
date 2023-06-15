@@ -393,6 +393,7 @@ validateSchemaChanges =
           schema x.1 {
             predicate P : { a: string }
             predicate Q : { a: string | b: nat }
+            predicate R : { a : string } A where P { a = A }
           }
 
           schema all.1 : x.1 {}
@@ -489,6 +490,28 @@ validateSchemaChanges =
           schema all.1 : x.1, x.2, y.1 {}
         |]
 
+      schema_v9 =
+        [s|
+          schema x.1 {
+            predicate P : { a: string }
+            predicate Q : { a: string | b: nat }
+            predicate R : { a : nat } A where Q { b = A }
+          }
+
+          schema all.1 : x.1 {}
+        |]
+
+      schema_v10 =
+        [s|
+          schema x.1 {
+            predicate P : { a: string }
+            predicate Q : { a: string | b: nat }
+            predicate R : { a : nat } stored A where Q { b = A }
+          }
+
+          schema all.1 : x.1 {}
+        |]
+
       withIndex root a b f = do
         saveJSON schema_index_file schema_index
         f schema_index_file
@@ -540,7 +563,12 @@ validateSchemaChanges =
       , validateOK "adding an alternative" schema_v0 schema_v3
       , validateOK "adding a predicate" schema_v0 schema_v4
       , validateOK "adding a type synonym" schema_v0 schema_v5
-      , validateFAIL "changing the type of a field" schema_v0 schema_v6
+      , validateFAIL "changing the type of a field of a stored predicate"
+          schema_v0 schema_v6
+      , validateOK "changing the type of a field of a derived predicate"
+          schema_v0 schema_v9
+      , validateOK "stored and derived predicates don't conflict between versions"
+          schema_v0 schema_v10
       -- this tests only going from schema_v7 to schema_v8 because the
       -- evolves relationship doesn't exist the other way around.
       , validate "change evolved field" schema_v8 schema_v7 isRight

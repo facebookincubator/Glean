@@ -88,7 +88,8 @@ import Glean.Schema.Evolve
   , visiblePredicates
   , VisiblePredicates
   , visibleDefined
-  , mapVisible )
+  , mapVisible
+  , canBeStored )
 import Glean.Schema.Util (showRef, ShowRef)
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Query.Codegen.Types (QueryWithInfo(..))
@@ -587,18 +588,20 @@ mkEvolutions stats byId schemas = do
     return $ predicateStats_count pstats > 0
 
   byPredRef :: Map PredicateRef [PredicateId]
-  byPredRef = predicatesByPredicateRef schemas
+  byPredRef = predicatesByRef schemas
 
   bySchemaRef :: Map SchemaRef (VisiblePredicates PredicateId)
   bySchemaRef = predicatesBySchemaRef schemas
 
-predicatesByPredicateRef :: [ProcessedSchema] -> Map PredicateRef [PredicateId]
-predicatesByPredicateRef schemas =
+-- | Predicates (which can be evolved) by predicate ref
+predicatesByRef :: [ProcessedSchema] -> Map PredicateRef [PredicateId]
+predicatesByRef schemas =
   Set.toList <$>
   Map.fromListWith (<>)
   [ (predicateIdRef pred, Set.singleton pred)
   | processed <- schemas
-  , pred <- HashMap.keys $ hashedPreds (procSchemaHashed processed)
+  , (pred, def) <- HashMap.toList $ hashedPreds $ procSchemaHashed processed
+  , canBeStored (predicateDefDeriving def)
   ]
 
 predicatesBySchemaRef
@@ -1014,14 +1017,12 @@ validateNewSchemaInstance (SchemaIndex curr older) = failOnLeft $ do
   -- be generated.
   mapM_ checkRecursiveDefinitions (schemasResolved $ procSchemaResolved curr)
 
-  let auto = Map.fromList
-        [ (predicateIdRef id, id)
-        | id <- HashMap.keys $ hashedPreds $ procSchemaHashed curr ]
+  let auto = Map.mapMaybe listToMaybe $ predicatesByRef [curr]
 
   direct <- directEvolutions schemas
   evolutions <- calcEvolutions
     predicateIdRef
-    (predicatesByPredicateRef schemas)
+    (predicatesByRef schemas)
     (predicatesBySchemaRef schemas)
     direct
     auto

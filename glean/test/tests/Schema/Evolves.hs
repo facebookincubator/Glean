@@ -1187,44 +1187,18 @@ schemaEvolvesTransformations =
           [RTS.Tuple [RTS.String "A", RTS.Alt 0 (RTS.Tuple [])]]
           facts
 
-  , TestLabel "derived pred fields" $ TestCase $ do
-    withSchemaAndFactsQ
-      [s|
-        schema x.1 {
-          predicate P : { x : nat, y : string }
-          predicate R : { a :nat, b: string }
-            { X, Y } where P { X, Y }
-        }
-        schema x.2 {
-          predicate P : { x : nat, y : string }
-          predicate R : { b: string, a :nat  }
-            { Y, X } where P { X, Y }
-        }
-        schema x.2 evolves x.1
-        schema all.1 : x.1, x.2 {}
-      |]
-      [ mkBatch (PredicateRef "x.P" 2)
-          [ [s|{ "key": { "x": 1, "y": "A" } }|]
-          , [s|{ "key": { "x": 2, "y": "B" } }|]
-          ]
-      ]
-      [s| x.R.1 _ |]
-      $ \byRef response _ -> do
-        facts <- decodeResultsAs (SourceRef "x.R" (Just 1)) byRef response
-        assertEqual "result count" 2 (length facts)
-
   , TestLabel "predicate derivation" $ TestCase $ do
     withSchemaAndFactsQ
       [s|
         schema x.1 {
           predicate P : nat
-          predicate Q : nat
+          predicate Q : string
           predicate R : nat A where P A
         }
         schema x.2 {
           predicate P : nat
-          predicate Q : nat
-          predicate R : nat A where Q A
+          predicate Q : string
+          predicate R : string A where Q A
         }
         schema x.2 evolves x.1
         schema all.1 : x.1, x.2 {}
@@ -1233,8 +1207,8 @@ schemaEvolvesTransformations =
           [ [s|{ "key": 1 }|]
           ]
       , mkBatch (PredicateRef "x.Q" 2)
-          [ [s|{ "key": 3 }|]
-          , [s|{ "key": 4 }|]
+          [ [s|{ "key": "A" }|]
+          , [s|{ "key": "B" }|]
           ]
       ]
       [s| x.R.1 _ |]
