@@ -57,7 +57,9 @@ struct PPCallbacks final : public clang::PPCallbacks {
       clang::StringRef,
       bool,
       clang::CharSourceRange filenameRange,
-#if LLVM_VERSION_MAJOR >= 15
+#if LLVM_VERSION_MAJOR >= 17
+      clang::OptionalFileEntryRef file,
+#elif LLVM_VERSION_MAJOR >= 15
       llvm::Optional<clang::FileEntryRef> file,
 #else
       const clang::FileEntry *file,

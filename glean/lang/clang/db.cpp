@@ -63,8 +63,13 @@ std::pair<Fact<Src::File>, std::filesystem::path> ClangDB::fileFromEntry(
   // define FileLines
   #if LLVM_VERSION_MAJOR >= 12
   auto bufferOpt = sourceManager().getMemoryBufferForFileOrNone(&entry);
+    #if LLVM_VERSION_MAJOR >= 16
+  if (bufferOpt.has_value()) {
+    auto buffer = &(bufferOpt.value());
+    #else
   if (bufferOpt.hasValue()) {
     auto buffer = &(bufferOpt.getValue());
+    #endif
   #else
   bool invalid = false;
   auto buffer = sourceManager().getMemoryBufferForFile(&entry, &invalid);

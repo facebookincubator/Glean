@@ -2274,10 +2274,21 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
   // TODO: It's not clear if/when this is used instead of
   // TraverseTemplateArgumentLoc
+#if LLVM_VERSION_MAJOR >= 17
+  bool TraverseTemplateArguments(
+    llvm::ArrayRef<clang::TemplateArgument> args) {
+#else
   bool TraverseTemplateArguments(
       const clang::TemplateArgument *args, unsigned num) {
+#endif
     return usingTracker.inNameContext(nullptr,
-      [&] { return Base::TraverseTemplateArguments(args, num); });
+      [&] {
+#if LLVM_VERSION_MAJOR >= 17
+        return Base::TraverseTemplateArguments(args);
+#else
+        return Base::TraverseTemplateArguments(args, num);
+#endif
+        });
   }
 
   bool TraverseDecl(clang::Decl *decl) {
