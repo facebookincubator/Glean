@@ -724,4 +724,4 @@ service GlassService extends fb303.FacebookService {
     1: USR hash,
     2: RequestOptions options,
   ) throws (1: ServerException e, 2: GlassException g);
-}
+} (sr.service_name = 'glean.glass')
