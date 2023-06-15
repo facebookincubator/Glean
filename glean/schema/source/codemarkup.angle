@@ -83,8 +83,8 @@ predicate FileEntityLocations:
     entity: code.Entity,
   }
   { File, Location, Entity } where
-    ResolveLocation { Location, Entity };
     codemarkup.types.Location { file = File } = Location;
+    ResolveLocation { Location, Entity };
 
 # All entities defined in a src.File, and their kinds
 predicate FileEntityKinds:

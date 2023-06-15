@@ -403,6 +403,23 @@ predicate ModuleLocation:
       { 0, 0 } = Span;
     )
 
+predicate ModuleLocationByFile :
+  {
+    file: src.File,
+    module_: Module,
+    span: src.ByteSpan,
+    name: string
+  }
+  { File, Mod, Span, Name } where
+    ( flow.FileOfStringModule { File, Name };
+      { string_ = Name } = Mod;
+      { 0, 0 } = Span;
+    ) | (
+      Mod = flow.Module { file = File };
+      src.File Name = File;
+      { 0, 0 } = Span;
+    )
+
 #
 # Working across module import/export boundaries
 #

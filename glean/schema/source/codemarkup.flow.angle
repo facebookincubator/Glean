@@ -19,7 +19,7 @@ predicate FlowResolveLocation:
       flow.DeclarationNameSpan { Decl, Name, Span };
       Name = flow.Name NameStr
     ) | (
-      flow.ModuleLocation { Mod, File, Span, NameStr };
+      flow.ModuleLocationByFile { File, Mod, Span, NameStr };
       { module_ = Mod } = Entity
     )
 
