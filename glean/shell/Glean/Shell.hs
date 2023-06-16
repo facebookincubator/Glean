@@ -462,7 +462,7 @@ helptext mode = vcat
             "Create a DB from file(s) of JSON facts")
       , ("timeout off|<n>",
             "Set the query time budget")
-      , ("expand off|on",
+      , ("expand off|on|<predicate>...",
             "Recursively expand nested facts in the response")
       , ("pager off|on",
             "Enable/disable result paging")
@@ -584,11 +584,11 @@ doJSONStmt (Pattern query) = do
 
 fromJSONQuery :: JSONQuery -> Eval SchemaQuery
 fromJSONQuery (JSONQuery ide deprecatedRec stored pat) = do
-  ExpandResults rec <- expandResults <$> getState
+  exp <- expandResults <$> getState
   when deprecatedRec deprecatedExpansionWarning
   return SchemaQuery
     { sqPredicate = pred
-    , sqRecursive = rec
+    , sqRecursive = exp
     , sqStored = stored
     , sqQuery = pat
     , sqCont = Nothing
@@ -615,11 +615,11 @@ doAngleStmt (Pattern query) = do
 
 fromAngleQuery :: AngleQuery -> Eval SchemaQuery
 fromAngleQuery (AngleQuery deprecatedRec stored pat) = do
-  ExpandResults rec <- expandResults <$> getState
+  exp <- expandResults <$> getState
   when deprecatedRec deprecatedExpansionWarning
   return SchemaQuery
     { sqPredicate = ""
-    , sqRecursive = rec
+    , sqRecursive = exp
     , sqStored = stored
     , sqQuery = pat
     , sqCont = Nothing
@@ -889,11 +889,14 @@ debugCmd str = case words (strip str) of
 expandCmd :: String -> Eval ()
 expandCmd str = case str of
   "" -> do
-    ExpandResults expand <- expandResults <$> getState
-    output $ "result expansion is " <> if expand then "on" else "off"
-  "off" -> Eval $ State.modify $ \s -> s { expandResults = ExpandResults False }
-  "on" -> Eval $ State.modify $ \s -> s { expandResults = ExpandResults True }
-  _ -> liftIO $ throwIO $ ErrorCall "syntax: :expand [off|on]"
+    expand <- expandResults <$> getState
+    output $ case expand of
+      ExpandRecursive -> "result expansion is on"
+      ExpandPredicates ps -> "expanding " <> hsep (map (pretty . showRef) ps)
+  "off" -> Eval $ State.modify $ \s -> s { expandResults = ExpandPredicates [] }
+  "on" -> Eval $ State.modify $ \s -> s { expandResults = ExpandRecursive }
+  other -> Eval $ State.modify $ \s -> s { expandResults = ExpandPredicates $
+    map (parseRef . Text.pack) (words other) }
 
 pagerCmd :: String -> Eval ()
 pagerCmd str = case str of
@@ -904,9 +907,19 @@ pagerCmd str = case str of
   "on" -> Eval $ State.modify $ \s -> s { pager = True }
   _ -> liftIO $ throwIO $ ErrorCall "syntax: :pager [off|on]"
 
+getExpandResults :: Eval (Bool, [Thrift.SourcePredicate])
+getExpandResults =  expandResultsOpts . expandResults <$> getState
+
+expandResultsOpts :: ExpandResults -> (Bool, [Thrift.SourcePredicate])
+expandResultsOpts exp = case exp of
+  ExpandRecursive -> (True, [])
+  ExpandPredicates refs -> (False, ps)
+    where
+    ps = [ Thrift.SourcePredicate name ver | SourceRef name ver <- refs ]
+
 userFact :: Glean.Fid -> Eval ()
 userFact fid = do
-  ExpandResults rec <- expandResults <$> getState
+  (rec, expandPreds) <- getExpandResults
   Thrift.UserQueryResults{..} <- withRepo $ \repo -> withBackend $ \be ->
     liftIO $ Glean.userQueryFacts be repo $
       def { Thrift.userQueryFacts_facts =
@@ -914,7 +927,8 @@ userFact fid = do
           , Thrift.userQueryFacts_options = Just def
             { Thrift.userQueryOptions_no_base64_binary = True
             , Thrift.userQueryOptions_expand_results = True
-            , Thrift.userQueryOptions_recursive = rec }
+            , Thrift.userQueryOptions_recursive = rec
+            , Thrift.userQueryOptions_expand_predicates = expandPreds }
           }
   Thrift.Fact{..} <- withRepo $ \repo -> withBackend $ \be -> do
     r <- liftIO $ Glean.queryFact be repo (fromFid fid)
@@ -946,7 +960,7 @@ asBadQuery syntax query (Thrift.BadQuery err) =
 runUserQuery :: SchemaQuery -> Eval ()
 runUserQuery SchemaQuery
     { sqPredicate = str
-    , sqRecursive = recursive
+    , sqRecursive = exp
     , sqStored = stored
     , sqQuery = rest
     , sqCont = cont
@@ -954,6 +968,7 @@ runUserQuery SchemaQuery
     , sqSyntax = syntax
     , sqOmitResults = omitResults } = do
   let SourceRef pred maybeVer = parseRef (Text.pack str)
+      (recursive, expandPreds) = expandResultsOpts exp
   ShellState{..} <- getState
   schema_id <- getSchemaId
   Thrift.UserQueryResults{..} <- withRepo $ \repo -> withBackend $ \be -> do
@@ -978,6 +993,7 @@ runUserQuery SchemaQuery
                  stats == FullStats
              , Thrift.userQueryOptions_debug = debug
              , Thrift.userQueryOptions_omit_results = omitResults
+             , Thrift.userQueryOptions_expand_predicates = expandPreds
              }
           -- When running locally with --enable-logging, logs are emitted
           -- before the ThriftBackend has a chance to incude client_info in the
@@ -1047,7 +1063,7 @@ runUserQuery SchemaQuery
     s { lastSchemaQuery = userQueryResults_continuation <&>
       \cont -> SchemaQuery
         { sqPredicate = str
-        , sqRecursive = recursive
+        , sqRecursive = exp
         , sqStored = stored
         , sqQuery = rest
         , sqCont = Just cont
@@ -1439,7 +1455,7 @@ instance Plugin ShellCommand where
         , pageWidth =
             (\n -> if n == 0 then Unbounded else AvailablePerLine n 1)
             <$> cfgWidth cfg
-        , expandResults = ExpandResults True
+        , expandResults = ExpandRecursive
         , outputHandle = outh
         , pager = cfgPager cfg
         , debug = def

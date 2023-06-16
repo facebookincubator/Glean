@@ -10,6 +10,7 @@
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE TypeFamilyDependencies #-}
 {-# LANGUAGE InstanceSigs #-}
+{-# LANGUAGE AllowAmbiguousTypes #-}
 -- | Define internal pieces, please import "Glean.Query.Thrift" instead
 module Glean.Query.Thrift.Internal
   ( -- * Types
@@ -24,6 +25,7 @@ module Glean.Query.Thrift.Internal
   , limitTime
   , store
   , allFacts
+  , expanding
     -- ** Query JSON
   , MkQuery(..)
     -- * Support
@@ -198,6 +200,22 @@ recursive (Query q) = Query q'
   where
   q' = q { userQuery_options = Just (fromMaybe def (userQuery_options q))
     { userQueryOptions_recursive = True } }
+
+-- | Instead of 'recursive', pick individual predicates to expand in
+-- the result
+--
+-- e.g.
+--   expanding @My.Predicate1 $ expanding @My.Predicate2 $ query ...
+--
+expanding :: forall p a . Predicate p => Query a -> Query a
+expanding (Query q) = Query q'
+  where
+  old = fromMaybe def (userQuery_options q)
+  PredicateRef name version = getName (Proxy @p)
+  ref = Thrift.SourcePredicate name (Just version)
+  q' = q { userQuery_options = Just old
+    { userQueryOptions_expand_predicates =
+       ref : userQueryOptions_expand_predicates old }}
 
 -- | Set a limit on the number of results returned by a query. This controls
 -- query result page size when streaming.

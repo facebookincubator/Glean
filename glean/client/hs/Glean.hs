@@ -105,6 +105,7 @@ module Glean
   , limit
   , limitBytes
   , limitTime
+  , expanding
   , store
 
   -- ** Inspecting Query

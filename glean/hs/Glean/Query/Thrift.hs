@@ -26,6 +26,7 @@ module Glean.Query.Thrift
   , limit
   , limitBytes
   , limitTime
+  , expanding
   , store
   , allFacts
     -- * Support

@@ -380,3 +380,23 @@ class GleanShellQueryDebug(GleanShellTest):
         output = self.shellCommand("3")
         self.assertIn("ir:", output)
         self.assertIn("bytecode:", output)
+
+
+class GleanShellExpand(GleanShellTest):
+    def test(self):
+        self.shellCommand(":expand off")
+        output = self.shellCommand('glean.test.Tree { node = { label = "a".. }}')
+        self.assertNotIn('{ "label": "d" }', output)
+
+        self.shellCommand(":expand on")
+        output = self.shellCommand('glean.test.Tree { node = { label = "a" }}')
+        self.assertIn('{ "label": "d" }', output)
+
+        self.shellCommand(":expand glean.test.Node")
+        output = self.shellCommand('glean.test.Tree { node = { label = "a".. }}')
+        self.assertIn('{ "label": "a" }', output)
+        self.assertNotIn('{ "label": "d" }', output)
+
+        self.shellCommand(":expand glean.test.Tree")
+        output = self.shellCommand('glean.test.Tree { node = { label = "a" }}')
+        self.assertNotIn('{ "label": "d" }', output)

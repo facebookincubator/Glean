@@ -422,10 +422,12 @@ userQueryFactsImpl
     lookup
     query@Thrift.UserQueryFacts{..} = do
   let opts = fromMaybe def userQueryFacts_options
-      limits = mkQueryRuntimeOptions opts config
 
   schemaSelector <- schemaVersionForQuery env schema config Nothing
       userQueryFacts_schema_id
+
+  expandPids <- optsExpandPids opts schemaSelector schema
+  let limits = mkQueryRuntimeOptions opts config expandPids
 
   trans <- transformationsForQuery schema schemaSelector
 
@@ -684,7 +686,9 @@ userQueryImpl
       let ref = SourceRef userQuery_predicate userQuery_predicate_version
       checkPredicatesMatch schema details ref schemaVersion
 
-    let limits = mkQueryRuntimeOptions opts config
+    expandPids <- optsExpandPids opts schemaVersion schema
+    let limits = mkQueryRuntimeOptions opts config expandPids
+
     nextId <- case Thrift.userQueryOptions_continuation opts of
       Just Thrift.UserQueryCont{..}
         | userQueryCont_nextId > 0 -> return (Fid userQueryCont_nextId)
@@ -845,11 +849,6 @@ userQueryImpl
           , resExecutionTime = Just queryResultsElapsedNs
           }
 
-      limits0 = mkQueryRuntimeOptions opts config
-      getLimits pids
-          | Thrift.userQueryOptions_recursive opts = limits0
-          | otherwise = limits0 { queryDepth = ExpandPartial pids }
-
     let
       mkDefineOwners nextId = if stored
         then do
@@ -867,7 +866,7 @@ userQueryImpl
         defineOwners <- mkDefineOwners nextId
         let stack = stacked lookup derived
             pids = Set.fromList $ Pid <$> userQueryCont_pids
-            limits = getLimits pids
+            limits = mkQueryRuntimeOptions opts config pids
         qResults <- restartCompiled schemaInventory defineOwners stack
           (Just predicatePid) limits (Thrift.userQueryCont_continuation ucont)
         mkResults pids nextId derived qResults defineOwners
@@ -889,7 +888,7 @@ userQueryImpl
             -- 3. Do the nested queries
             nextId <- firstFreeId lookup
             let pids = getExpandPids query
-                limits = getLimits pids
+                limits = mkQueryRuntimeOptions opts config pids
             gens <- either (throwIO . Thrift.BadQuery) return $
               toGenerators schema stored details query
             derived <- FactSet.new nextId
@@ -992,6 +991,19 @@ schemaVersionForQuery env schema ServerConfig.Config{..} repo qid = do
   vlog 1 $ "using selector: " <> show (pretty use)
   return use
 
+optsExpandPids
+  :: Thrift.UserQueryOptions
+  -> SchemaSelector
+  -> DbSchema
+  -> IO (Set Pid)
+optsExpandPids opts schemaVersion dbSchema =
+  fmap Set.fromList $ forM (Thrift.userQueryOptions_expand_predicates opts) $
+    \(Thrift.SourcePredicate name version) -> do
+      let ref = SourceRef name version
+      case lookupPredicateSourceRef ref schemaVersion dbSchema of
+        Left err -> throwIO $ Thrift.BadQuery err
+        Right details -> return (predicatePid details)
+
 data CompilationMode
   = NoExtraSteps
   | IncrementalDerivation (SeekSection -> Pid -> Bool)
@@ -1060,8 +1072,10 @@ withoutFacts results = results
 mkQueryRuntimeOptions
   :: Thrift.UserQueryOptions
   -> ServerConfig.Config
+  -> Set Pid
   -> QueryRuntimeOptions
-mkQueryRuntimeOptions Thrift.UserQueryOptions{..} ServerConfig.Config{..} =
+mkQueryRuntimeOptions
+    Thrift.UserQueryOptions{..} ServerConfig.Config{..} expandPids =
   QueryRuntimeOptions
     { queryMaxResults = userQueryOptions_max_results
         <|> config_default_max_results -- from ServerConfig
@@ -1070,9 +1084,11 @@ mkQueryRuntimeOptions Thrift.UserQueryOptions{..} ServerConfig.Config{..} =
     , queryMaxTimeMs = userQueryOptions_max_time_ms
         <|> config_default_max_time_ms -- from ServerConfig
     , queryWantStats = userQueryOptions_collect_facts_searched
-    , queryDepth = if userQueryOptions_recursive &&
-        not userQueryOptions_omit_results
-        then ExpandRecursive else ResultsOnly
+    , queryDepth = if
+        | userQueryOptions_recursive && not userQueryOptions_omit_results ->
+          ExpandRecursive
+        | not (null expandPids) -> ExpandPartial expandPids
+        | otherwise -> ResultsOnly
     }
 
 

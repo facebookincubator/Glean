@@ -46,6 +46,7 @@ import Glean
 import qualified Glean.Types as Thrift
 import Glean.LocalOrRemote (LocalOrRemote)
 import Glean.Database.Config (ProcessedSchema(..), processSchema)
+import Glean.Schema.Util (SourceRef)
 import Glean.Util.Some
 
 data Statement pat
@@ -53,7 +54,9 @@ data Statement pat
   | Pattern pat
   | FactRef Fid
 
-newtype ExpandResults = ExpandResults Bool
+data ExpandResults
+  = ExpandRecursive
+  | ExpandPredicates [SourceRef]
 
 type Parser = P.Parsec String ()
 
@@ -109,7 +112,7 @@ data ShellMode = ShellJSON | ShellAngle
 
 data SchemaQuery = SchemaQuery
   { sqPredicate :: String
-  , sqRecursive :: Bool
+  , sqRecursive :: ExpandResults
   , sqStored :: Bool
   , sqQuery :: String
   , sqCont :: Maybe Thrift.UserQueryCont

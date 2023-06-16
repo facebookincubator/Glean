@@ -143,6 +143,27 @@ angleDSL modify = dbTestCase $ \env repo -> do
     Left BadQuery{} -> True
     _ -> False
 
+  -- Test "expanding"
+  r <- runQuery_ env repo $ modify $
+    keys $
+    expanding @Glean.Test.Node $
+    Angle.query @Glean.Test.Tree $
+      predicate @Glean.Test.Tree (
+        rec $
+          field @"node" (rec $
+            field @"label" "a"
+          end)
+        end)
+  print r
+  assertBool "angle - expanding" $ case r of
+    [Glean.Test.Tree_key
+      { tree_key_node = Glean.Test.Node
+        { node_key = Just{} }
+      , tree_key_left = Just Glean.Test.Tree { tree_key = Nothing }
+      , tree_key_right = Just Glean.Test.Tree { tree_key = Nothing }
+      }] -> True
+    _ -> False
+
 scopingTest :: Test
 scopingTest = dbTestCase $ \env repo -> do
   r <- try $ runQuery_ env repo $ angle @Glean.Test.Predicate

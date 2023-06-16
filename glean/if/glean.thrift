@@ -52,6 +52,13 @@ struct PredicateRef {
   2: Version version;
 }
 
+// Identifies a predicate by name and optionally version. The server
+// will resolve it a specific predicate using the schema.
+struct SourcePredicate {
+  1: string name;
+  2: optional Version version;
+}
+
 // Identifies a type by name and version
 struct TypeRef {
   1: TypeName name;
@@ -514,6 +521,10 @@ struct UserQueryOptions {
   // Saves the server the work of encoding and sending the response
   // through the wire.
   13: bool omit_results = false;
+
+  // A more fine-grained alternative to recursive = true. Only
+  // fields of a predicate in the list will be fetched.
+  14: list<SourcePredicate> expand_predicates;
 }
 
 struct QueryDebugOptions {
