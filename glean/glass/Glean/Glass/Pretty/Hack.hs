@@ -26,6 +26,7 @@ module Glean.Glass.Pretty.Hack
   , Visibility(..)
   , Static(..)
   , Async(..)
+  , ReadOnly(..)
   , Signature (..)
   , HackType(..)
   , ReturnType(..)
@@ -120,7 +121,8 @@ newtype QualName = QualName ([Text], Text)
 -- to print them in some consistent ordering we enforce the most popular
 data FunctionMod = FunctionMod !Async !ModuleInternal
 data ClassMod    = ClassMod Abstract Final !ModuleInternal
-data MethodMod   = MethodMod Abstract Final Visibility Static Async
+data MethodMod   =
+  MethodMod Abstract Final Visibility Static Async ReadOnly
 data PropertyMod   = PropertyMod Abstract Final Visibility Static
 
 data Abstract = Abstract | NotAbstract deriving Eq
@@ -129,6 +131,7 @@ data Visibility = Public | Protected | Private | Internal
 data Static = Static | NotStatic deriving Eq
 data Async = Async | NotAsync deriving Eq
 data ModuleInternal = IsInternal | NotInternal deriving Eq
+data ReadOnly = IsReadOnly | NotReadOnly deriving Eq
 
 data ByteSpan = ByteSpan
   { start :: {-# UNPACK #-}!Int
@@ -150,7 +153,7 @@ data Constraint = Constraint ConstraintKind HackType
 data TypeParameter = TypeParameter Name Variance Reify [Constraint] [UserAttr]
 data UserAttr = UserAttr Name [Text]
 newtype Context = Context { _unContext :: Text }
-data Signature = Signature ReturnType [TypeParameter] [Parameter]
+data Signature = Signature ReadOnly ReturnType [TypeParameter] [Parameter]
   (Maybe [Context]) XRefs
 data Container
   = ClassContainer | InterfaceContainer | TraitContainer | EnumContainer
@@ -272,7 +275,8 @@ ppFinal Final = "final" <> space
 ppFinal NotFinal = mempty
 
 ppSignature :: LayoutOptions -> Doc Ann -> Signature -> Doc Ann
-ppSignature opts head (Signature returnType typeParams params ctxs xrefs) =
+ppSignature
+  opts head (Signature readOnly returnType typeParams params ctxs xrefs) =
     if fitsOnOneLine then onelineSig else multilineSig
   where
     onelineTypeParams = if null typeParams then emptyDoc else cat
@@ -286,7 +290,7 @@ ppSignature opts head (Signature returnType typeParams params ctxs xrefs) =
       [ onelineTypeParams
       , onelineArgs
       , ppContexts ctxs
-      , ":" <+> ppReturnType returnType xrefs
+      , ":" <> readOnlyKwd <+> ppReturnType returnType xrefs
       ]
     multilineTypeParams = if null typeParams then emptyDoc else vcat
         [ nest 4 $ vcat
@@ -308,11 +312,15 @@ ppSignature opts head (Signature returnType typeParams params ctxs xrefs) =
       <> nest 4 (
         ppContexts ctxs
         <> ":"
+        <> readOnlyKwd
         <+> ppReturnType returnType xrefs
       )
     paramsText = renderStrict $ layoutSmart opts onelineSig
     fitsOnOneLine = not containsNewline
     containsNewline = Text.any (== '\n') paramsText
+    readOnlyKwd = case readOnly of
+      IsReadOnly -> " readonly"
+      NotReadOnly -> ""
 
 ppTypeParams :: [TypeParameter] -> Doc Ann
 ppTypeParams typeParams | null typeParams = emptyDoc
@@ -429,7 +437,8 @@ ppConstraintTypes :: HackType -> HackType -> Doc Ann
 ppConstraintTypes ty1 ty2 = ppType ty1 <+> "as" <+> ppType ty2
 
 ppMethodModifiers :: Container -> MethodMod -> Doc Ann
-ppMethodModifiers container (MethodMod abstract final visibility static async) =
+ppMethodModifiers container
+  (MethodMod abstract final visibility static async readonlyThis) =
   fillSep $ execWriter $ do
     when
       (  abstract == Abstract
@@ -442,6 +451,7 @@ ppMethodModifiers container (MethodMod abstract final visibility static async) =
       Private -> "private"
       Internal -> "internal"
     when (static==Static) $ tell ["static"]
+    when (readonlyThis==IsReadOnly) $ tell ["readonly"]
     when (async==Async) $ tell ["async"]
     tell ["function"]
 
@@ -487,7 +497,7 @@ decl (Hack.Declaration_function_ decl@Hack.FunctionDeclaration{..}) = do
   let typeParams = Hack.functionDefinition_key_typeParams def
   let sign = Hack.functionDefinition_key_signature def
   pure $ Function (modifiersForFunction def) (QualName name)
-    (toSignature typeParams sign)
+    (toSignature typeParams sign (Hack.functionDefinition_key_readonlyRet def))
 decl (Hack.Declaration_module Hack.ModuleDeclaration{..}) = do
   Hack.ModuleDeclaration_key{..} <- liftMaybe moduleDeclaration_key
   name <- liftMaybe $ Hack.name_key moduleDeclaration_key_name
@@ -510,7 +520,7 @@ decl (Hack.Declaration_method decl@Hack.MethodDeclaration{..}) = do
   let sig = Hack.methodDefinition_key_signature def
   let container = containerKind methodDeclaration_key_container
   pure $ Method (modifiersForMethod def) container (Name name)
-    (toSignature typeParams sig)
+    (toSignature typeParams sig (Hack.methodDefinition_key_readonlyRet def))
 decl (Hack.Declaration_property_ prop@Hack.PropertyDeclaration{..}) = do
   Hack.PropertyDeclaration_key{..} <- liftMaybe propertyDeclaration_key
   Hack.PropertyDefinition{..} <- maybeT $ fetchDataRecursive $
@@ -626,7 +636,7 @@ shortenGlobalAlias nsqname = Map.lookup (Glean.getId nsqname) <$>
 
 modifiersForFunction :: Hack.FunctionDefinition_key -> FunctionMod
 modifiersForFunction Hack.FunctionDefinition_key{..} =
-    FunctionMod asyncMod visibility
+  FunctionMod asyncMod visibility
   where
     asyncMod = if functionDefinition_key_isAsync then Async else NotAsync
     visibility = toModuleVisibility functionDefinition_key_module_
@@ -649,6 +659,8 @@ modifiersForMethod Hack.MethodDefinition_key {..} =
   (fromHackVisibility methodDefinition_key_visibility)
   (if methodDefinition_key_isStatic then Static else NotStatic)
   (if methodDefinition_key_isAsync then Async else NotAsync)
+  (if methodDefinition_key_isReadonlyThis == Just True
+     then IsReadOnly else NotReadOnly)
 
 modifiersForProperty :: Hack.PropertyDefinition_key -> PropertyMod
 modifiersForProperty Hack.PropertyDefinition_key {..} =
@@ -693,12 +705,17 @@ toTypeAndXRefs type_ typeInfo = case typeInfo of
 
   _ -> (toType type_, [])
 
-toSignature :: [Hack.TypeParameter] -> Hack.Signature -> Signature
-toSignature typeParams Hack.Signature{..} = case signature_key of
-  Nothing -> Signature (ReturnType unknownType) [] [] Nothing []
+toSignature ::
+  [Hack.TypeParameter] -> Hack.Signature -> Maybe Hack.ReadonlyKind -> Signature
+toSignature typeParams Hack.Signature{..} mbReadOnly = case signature_key of
+  Nothing -> Signature NotReadOnly (ReturnType unknownType) [] [] Nothing []
   Just (Hack.Signature_key retType params mctxs retTypeInfo) ->
    let (type_, xrefs) = toTypeAndXRefs retType retTypeInfo
+       readOnly = case mbReadOnly of
+         Just _ -> IsReadOnly
+         Nothing -> NotReadOnly
    in Signature
+        readOnly
         (ReturnType (unHackType type_))
         (map toTypeParameter typeParams)
         (map toParameter params)
