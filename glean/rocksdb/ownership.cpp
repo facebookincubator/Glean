@@ -6,6 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+#include "common/hs/util/cpp/memory.h"
 #include <glean/rts/ownership/uset.h>
 #include "glean/rocksdb/database-impl.h"
 #include "glean/rts/timer.h"
@@ -132,12 +133,13 @@ std::unique_ptr<rts::OwnershipSetIterator> getSetIterator(ContainerImpl& contain
       if (iter->Valid()) {
         binary::Input key(byteRange(iter->key()));
         auto usetid = key.trustedNat();
-        binary::Input val(byteRange(iter->value()));
+        // EliasFano needs to be able to read 8 bytes past the end of
+        // the data, so we have to copy the bytes to add padding.
+        bytes = hs::ffi::clone_array<uint8_t>(
+          reinterpret_cast<const uint8_t*>(iter->value().data()), iter->value().size(), 8);
+        binary::Input val(bytes.get(), bytes.size());
         exp.op = static_cast<SetOp>(val.trustedNat());
         exp.set = deserializeEliasFano(val);
-        // Note the OwnerSet points to the storage in iter->value(),
-        // so don't iter->Next() until the caller is finished with
-        // the result.
         return std::pair<uint32_t, SetExpr<const OwnerSet*>>(
             usetid, {exp.op, &exp.set});
       } else {
@@ -149,6 +151,7 @@ std::unique_ptr<rts::OwnershipSetIterator> getSetIterator(ContainerImpl& contain
       return {first_, size_};
     }
 
+    hs::ffi::malloced_array<uint8_t> bytes;
     bool initial = true;
     SetExpr<OwnerSet> exp;
     size_t first_, size_;
