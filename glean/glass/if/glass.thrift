@@ -85,7 +85,7 @@ struct LocationRange {
 
 // Generic request options, supported by most calls
 struct RequestOptions {
-  // repo-global revision identifier, otherwise latest index
+  // repo-global preferred revision identifier
   1: optional Revision revision;
 
   // maximum results to return.
@@ -96,10 +96,22 @@ struct RequestOptions {
 
   // throw exceptions instead of returning empty responses
   4: bool strict = false;
+
+  // handling revision preferences:
+  // if revision:
+  //   if revision exists:
+  //     return results
+  //   else if exact_revision:
+  //     fail exactRevisionNotAvailable
+  //   else
+  //     use latest revision
+  // else
+  //   use latest revision
+  5: bool exact_revision = false;
 }
 
 struct FeatureFlags {
-  1: optional bool snapshots;
+  1: optional bool snapshots; // force consideration of snapshots (overrides JK)
 }
 
 // List symbols in a file. Symbols are spans of one or more tokens Glean has
@@ -262,6 +274,7 @@ union GlassExceptionReason {
   4: string entitySearchFail;
   5: string entityNotSupported;
   6: string attributesError;
+  7: string exactRevisionNotAvailable;
 }
 
 // Only thrown when strict request option is set

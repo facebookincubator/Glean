@@ -261,6 +261,7 @@ errorText e = case e of
   GlassExceptionReason_entitySearchFail t -> t
   GlassExceptionReason_entityNotSupported t -> t
   GlassExceptionReason_attributesError t -> t
+  GlassExceptionReason_exactRevisionNotAvailable t -> t
   GlassExceptionReason_EMPTY -> ""
 
 errorsText :: NonEmpty GlassExceptionReason -> Text
@@ -306,6 +307,8 @@ instance LogError GlassExceptionReason where
       GlassExceptionReason_entityNotSupported{} -> "EntityNotSupported"
       GlassExceptionReason_attributesError{} -> "AttributesError"
       GlassExceptionReason_notIndexedFile{} -> "NotIndexedFile"
+      GlassExceptionReason_exactRevisionNotAvailable{} ->
+        "ExactRevisionNotAvaiable"
       GlassExceptionReason_EMPTY{} -> "EMPTY"
     )
 

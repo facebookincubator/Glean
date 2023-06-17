@@ -943,7 +943,8 @@ fetchSymbolsAndAttributesGlean
   -> Maybe Language
   -> IO ((DocumentSymbolListXResult, QueryEachRepoLog), Maybe ErrorLogger)
 fetchSymbolsAndAttributesGlean latest req opts be mlang = do
-  (res1, gLogs, elogs) <- fetchDocumentSymbols file mlimit includeRefs be mlang
+  (res1, gLogs, elogs) <- fetchDocumentSymbols file mlimit
+    specificRev includeRefs be mlang
   res2 <- addDynamicAttributes latest file mlimit be res1
   return ((res2, gLogs), elogs)
   where
@@ -952,6 +953,10 @@ fetchSymbolsAndAttributesGlean latest req opts be mlang = do
     includeRefs = documentSymbolsRequest_include_refs req
     mlimit = Just (fromIntegral (fromMaybe mAXIMUM_SYMBOLS_QUERY_LIMIT
       (requestOptions_limit opts)))
+
+    specificRev = case requestOptions_revision opts of
+      Just rev | requestOptions_exact_revision opts -> ExactOnly rev
+      _ -> AnyRevision
 
 -- Find all symbols and refs in file and add all attributes
 fetchSymbolsAndAttributes
@@ -980,47 +985,62 @@ fetchSymbolsAndAttributes latest req opts be snapshotbe mlang =
     file = documentSymbolsRequest_filepath req
     repo = documentSymbolsRequest_repository req
     mrevision = requestOptions_revision opts
+
     trySnapshot = case requestOptions_feature_flags opts of
         Just (FeatureFlags (Just True)) -> True
         _ -> False
+
+-- | Whether the user requires the exact revision specified
+data RevisionSpecifier = ExactOnly Revision | AnyRevision
+  deriving Show
+
+revisionSpecifierError :: RevisionSpecifier -> Text
+revisionSpecifierError AnyRevision = "AnyRevision"
+revisionSpecifierError (ExactOnly (Revision rev))= "Requested exactly " <> rev
 
 -- Find all references and definitions in a file that might be in a set of repos
 fetchDocumentSymbols
   :: Glean.Backend b
   => FileReference
   -> Maybe Int
+  -> RevisionSpecifier
   -> Bool  -- ^ include references?
   -> GleanBackend b
   -> Maybe Language
   -> IO (DocumentSymbols, QueryEachRepoLog, Maybe ErrorLogger)
-fetchDocumentSymbols (FileReference scsrepo path) mlimit includeRefs b mlang =
-  backendRunHaxl b $ do
-    --
-    -- we pick the first db in the list that has the full FileInfo{..}
-    --
-    efile <- firstOrErrors $ do
-      repo <- Glean.haxlRepo
-      res <- getFileAndLines repo path
-      return $ case res of
-        Left _ -> res
-        Right fi@FileInfo{..}
-          | not isIndexed -> Left $
-            GlassExceptionReason_notIndexedFile $ "Not indexed: "
-              <> gleanPath path
-          | otherwise -> Right fi
+fetchDocumentSymbols (FileReference scsrepo path) mlimit
+    revSpec includeRefs b mlang = backendRunHaxl b $ do
+  --
+  -- we pick the first db in the list that has the full FileInfo{..}
+  -- and in exact_revision mode the rev also has to match precisely
+  --
+  efile <- firstOrErrors $ do
+    repo <- Glean.haxlRepo
+    if not (revisionAcceptable repo)
+      then return $ Left $ GlassExceptionReason_exactRevisionNotAvailable $
+        revisionSpecifierError revSpec
+      else do
+        res <- getFileAndLines repo path
+        return $ case res of
+          Left _ -> res
+          Right fi@FileInfo{..}
+            | not isIndexed -> Left $
+              GlassExceptionReason_notIndexedFile $ "Not indexed: "
+                <> gleanPath path
+            | otherwise -> Right fi
 
-    case efile of
-      Left err -> do
-        let emptyResponse = DocumentSymbols [] [] (revision b) False
-            logs = logError err <> logError (gleanDBs b)
-        return (emptyResponse, FoundNone, Just logs)
+  case efile of
+    Left err -> do
+      let emptyResponse = DocumentSymbols [] [] (revision b) False
+          logs = logError err <> logError (gleanDBs b)
+      return (emptyResponse, FoundNone, Just logs)
 
-        where
-          -- Use first db's revision
-          revision GleanBackend {gleanDBs = ((_, repo) :| _)} =
-            Revision $ Glean.repo_hash repo
+      where
+        -- Use first db's revision
+        revision GleanBackend {gleanDBs = ((_, repo) :| _)} =
+          Revision $ Glean.repo_hash repo
 
-      Right (FileInfo{..}, gleanDataLog) -> do
+    Right (FileInfo{..}, gleanDataLog) -> do
 
       -- from Glean, fetch xrefs and defs in batches
       (xrefs, defns, truncated) <- withRepo fileRepo $
@@ -1040,6 +1060,11 @@ fetchDocumentSymbols (FileReference scsrepo path) mlimit includeRefs b mlang =
       let revision = getRepoHash fileRepo
       return (DocumentSymbols {..}, gleanDataLog, merr)
 
+  where
+    revisionAcceptable :: Glean.Repo -> Bool
+    revisionAcceptable = case revSpec of
+      AnyRevision -> const True
+      ExactOnly (Revision required) -> \repo -> Glean.repo_hash repo == required
 
 -- | Wrapper for tracking symbol/entity pairs through processing
 data DocumentSymbols = DocumentSymbols
