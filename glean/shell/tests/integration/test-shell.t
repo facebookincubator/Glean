@@ -23,7 +23,7 @@
     :limit <n>                                  Set limit on the number of query results
     :load (<file> | <db>/<hash> <file> ...)     Create a DB from file(s) of JSON facts
     :timeout off|<n>                            Set the query time budget
-    :expand off|on                              Recursively expand nested facts in the response
+    :expand off|on|<predicate>...               Recursively expand nested facts in the response
     :pager off|on                               Enable/disable result paging
     :count <query>                              Show only a count of query results, not the results themselves
     :more                                       Fetch more results from the previous query
@@ -283,8 +283,6 @@ Setting `:expand off` disables recursive expansion
 
   $ query ":expand what"
   [>] :expand what (re)
-  glean: syntax: :expand [off|on]
-  [1]
 
 Automatically disable recursive expansion when omit_results is true
   $ "$GLEAN" --service "::1:$PORT" query --repo "$DB" --recursive --omit-results --stats - "example.Parent _"
