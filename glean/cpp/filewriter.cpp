@@ -35,7 +35,7 @@ public:
     binary::Output out;
     // Serialize as facebook::glean::thrift::Batch without using fbthrift. These field
     // numbers and types must match those in glean.thrift.
-    serialize::ThriftCompact::put(out, {
+    serialize::thriftcompact::put(out, {
         { 1, r.first.toThrift() },
         { 2, static_cast<int64_t>(r.count) },
         { 3, folly::ByteRange(r.facts.data(), r.facts.size()) },

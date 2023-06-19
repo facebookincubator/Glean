@@ -157,100 +157,102 @@ void get(binary::Input& i, std::shared_ptr<T>& p) {
 
 /// A Thrift compact serializer that only supports a very
 // small subset of the types.
-struct ThriftCompact {
-  using Nat = int64_t;
-  using Binary = folly::ByteRange;
-  using String = std::string;
-  using List = std::vector<Nat>;  // TODO: generalise
-  using Map = std::map<String, List>;  // TODO: generalise
+namespace thriftcompact {
 
-  using Field = std::variant<Nat, Binary, Map>;
-  using Object = std::vector<std::pair<uint32_t, Field>>;
+using Nat = int64_t;
+using Binary = folly::ByteRange;
+using String = std::string;
+using List = std::vector<Nat>;  // TODO: generalise
+using Map = std::map<String, List>;  // TODO: generalise
 
-  enum Type : uint32_t {
-    NatTy = 6,
-    BinaryTy = 8,
-    StringTy = 8,
-    ListTy = 9,
-    MapTy = 11,
-  };
+using Field = std::variant<Nat, Binary, Map>;
+using Object = std::vector<std::pair<uint32_t, Field>>;
 
-  template<typename T> static Type typeOf();
-  template<> Type typeOf<Nat>() { return NatTy; }
-  template<> Type typeOf<Binary>() { return BinaryTy; }
-  template<> Type typeOf<String>() { return StringTy; }
-  template<> Type typeOf<std::vector<Nat>>() { return ListTy; }
-
-  static void put(binary::Output& out, Nat x) {
-    out.packed(folly::encodeZigZag(x));
-  }
-
-  static void put(binary::Output& out, Binary b) {
-    out.packed(b.size());
-    out.bytes(b.data(), b.size());
-  }
-
-  static void put(binary::Output& out, const String& s) {
-    out.packed(s.size());
-    out.put(binary::byteRange(s));
-  }
-
-  template<typename T>
-  static void put(binary::Output& out, const std::vector<T>& v) {
-    if (v.size() < 15) {
-      out.fixed(uint8_t((v.size() << 4) | typeOf<T>()));
-    } else {
-      out.fixed(uint8_t(0xF0 | typeOf<T>()));
-      out.packed(v.size());
-    }
-    for (const T& i : v) {
-      put(out, i);
-    }
-  }
-
-  template <typename K, typename V>
-  static void put(binary::Output& out, const std::map<K, V>& m) {
-    if (m.size() == 0) {
-      out.fixed(uint8_t(0));
-    } else {
-      out.packed(m.size());
-      out.fixed(uint8_t((typeOf<K>() << 4) | typeOf<V>()));
-      for (const auto& pair : m) {
-        put(out, pair.first);
-        put(out, pair.second);
-      }
-    }
-  }
-
-  static void put(binary::Output& out, const Object& obj) {
-    uint32_t prev = 0;
-    auto field = [&](Type ty, uint32_t num) {
-      auto delta = num - prev;
-      if (delta < 16) {
-        out.fixed(uint8_t(ty + (delta << 4)));
-      } else {
-        out.fixed(uint8_t(ty));
-        out.packed(num);
-      }
-      prev = num;
-    };
-    for (const auto& [num, val] : obj) {
-      if (std::holds_alternative<Nat>(val)) {
-        field(NatTy, num);
-        put(out, std::get<Nat>(val));
-      } else if (std::holds_alternative<Binary>(val)) {
-        field(BinaryTy, num);
-        put(out, std::get<Binary>(val));
-      } else if (std::holds_alternative<Map>(val)) {
-        field(MapTy, num);
-        put(out, std::get<Map>(val));
-      }
-    }
-    out.fixed(uint8_t(0)); // object terminator
-  }
+enum Type : uint32_t {
+  NatTy = 6,
+  BinaryTy = 8,
+  StringTy = 8,
+  ListTy = 9,
+  MapTy = 11,
 };
 
+template<typename T> static Type typeOf();
+template<> Type typeOf<Nat>() { return NatTy; }
+template<> Type typeOf<Binary>() { return BinaryTy; }
+template<> Type typeOf<String>() { return StringTy; }
+template<> Type typeOf<std::vector<Nat>>() { return ListTy; }
+
+inline void put(binary::Output& out, Nat x) {
+  out.packed(folly::encodeZigZag(x));
 }
+
+inline void put(binary::Output& out, Binary b) {
+  out.packed(b.size());
+  out.bytes(b.data(), b.size());
 }
+
+inline void put(binary::Output& out, const String& s) {
+  out.packed(s.size());
+  out.put(binary::byteRange(s));
 }
+
+template<typename T>
+void put(binary::Output& out, const std::vector<T>& v) {
+  if (v.size() < 15) {
+    out.fixed(uint8_t((v.size() << 4) | typeOf<T>()));
+  } else {
+    out.fixed(uint8_t(0xF0 | typeOf<T>()));
+    out.packed(v.size());
+  }
+  for (const T& i : v) {
+    put(out, i);
+  }
 }
+
+template <typename K, typename V>
+void put(binary::Output& out, const std::map<K, V>& m) {
+  if (m.size() == 0) {
+    out.fixed(uint8_t(0));
+  } else {
+    out.packed(m.size());
+    out.fixed(uint8_t((typeOf<K>() << 4) | typeOf<V>()));
+    for (const auto& pair : m) {
+      put(out, pair.first);
+      put(out, pair.second);
+    }
+  }
+}
+
+inline void put(binary::Output& out, const Object& obj) {
+  uint32_t prev = 0;
+  auto field = [&](Type ty, uint32_t num) {
+    auto delta = num - prev;
+    if (delta < 16) {
+      out.fixed(uint8_t(ty + (delta << 4)));
+    } else {
+      out.fixed(uint8_t(ty));
+      out.packed(num);
+    }
+    prev = num;
+  };
+  for (const auto& [num, val] : obj) {
+    if (std::holds_alternative<Nat>(val)) {
+      field(NatTy, num);
+      put(out, std::get<Nat>(val));
+    } else if (std::holds_alternative<Binary>(val)) {
+      field(BinaryTy, num);
+      put(out, std::get<Binary>(val));
+    } else if (std::holds_alternative<Map>(val)) {
+      field(MapTy, num);
+      put(out, std::get<Map>(val));
+    }
+  }
+  out.fixed(uint8_t(0)); // object terminator
+}
+
+} // namespace thriftcompact
+
+} // namespace serialize
+} // namespace rts
+} // namespace glean
+} // namespace facebook
