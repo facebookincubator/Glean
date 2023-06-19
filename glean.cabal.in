@@ -233,6 +233,16 @@ library if-fb303-hs
         Fb303.FacebookService.Client
         Fb303.FacebookService.Service
 
+library thrift-annotation-cpp
+    import: fb-haskell, fb-cpp, deps
+    visibility: private
+    hs-source-dirs:
+        thrift/annotation/gen-hs2
+    exposed-modules:
+        Cpp.Types
+        Scope.Types
+        Thrift.Types
+
 library if-glean-hs
     import: fb-haskell, fb-cpp, deps
     visibility: public
@@ -243,6 +253,7 @@ library if-glean-hs
         Glean.GleanService.Client
         Glean.GleanService.Service
     build-depends:
+        glean:thrift-annotation-cpp,
         glean:config,
         glean:if-fb303-hs
 

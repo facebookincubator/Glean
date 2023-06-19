@@ -238,7 +238,10 @@ THRIFT_GLEAN= \
 	glean/config/recipes/recipes.thrift \
 	glean/config/server/server_config.thrift \
 	glean/config/service.thrift \
-	glean/config/client/client_config.thrift
+	glean/config/client/client_config.thrift \
+	thrift/annotation/cpp.thrift \
+	thrift/annotation/scope.thrift \
+	thrift/annotation/thrift.thrift
 
 .PHONY: thrift-glean-hs
 thrift-glean-hs: thrift-compiler
