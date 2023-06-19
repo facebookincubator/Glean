@@ -32,9 +32,7 @@ fun buildKotlinType(typeReference: KotlinType, bindingContext: BindingContext): 
   val typeKey = TypeKey.Builder()
   typeKey.type = typeReference.javakotlinType()
   val typeConstructorElement = typeReference.constructor.declarationDescriptor?.psiElement
-  if (typeConstructorElement != null) {
-    typeKey.location = buildFileLocation(typeConstructorElement)
-  }
+  typeConstructorElement?.let { buildFileLocation(it) }?.let { typeKey.location = it }
 
   val typeArgs: MutableList<TypeArg> = mutableListOf()
   for (typeArg in typeReference.arguments) {

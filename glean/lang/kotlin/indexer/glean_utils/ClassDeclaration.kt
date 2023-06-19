@@ -25,9 +25,10 @@ fun buildClassDeclaration(decl: KtClass, context: BindingContext): GleanClassDec
   val key =
       GleanClassDeclarationKey.Builder().apply {
         name = decl.qualifiedName()
-        location = buildFileLocation(decl.psiOrParent)
         implements_ =
             getSuperTypesFromClass(decl, context).map { kotlinType -> kotlinType.path().toQName() }
       }
+  buildFileLocation(decl.psiOrParent)?.apply { key.location = this }
+      ?: throw EmptyDeclarationLocation(decl.name ?: "", "class")
   return GleanClassDeclaration.Builder().setKey(key.build()).build()
 }

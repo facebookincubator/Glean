@@ -22,8 +22,7 @@ fun buildVariableDeclaration(
   keyBuilder.name = parameter.qualifiedName()
   keyBuilder.type = buildKotlinType(parameter.type, bindingContext)
   val psiElement = parameter.psiElement
-  if (psiElement !== null) {
-    keyBuilder.location = buildFileLocation(psiElement)
-  }
+  psiElement?.let { buildFileLocation(it)?.let { loc -> keyBuilder.location = loc } }
+      ?: throw EmptyDeclarationLocation(parameter.name.identifier, "variable")
   return VariableDeclaration.Builder().setKey(keyBuilder.build()).build()
 }
