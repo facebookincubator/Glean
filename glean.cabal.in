@@ -415,6 +415,7 @@ library core
         Glean.Write.SendBatch
         Glean.Write.SendQueue
         Glean.Write.SendAndRebaseQueue
+        Glean.Write.Stats
 
         Glean.Angle.Hash
         Glean.Angle.Lexer
@@ -483,7 +484,6 @@ library db
         Glean.Database.Schema
         Glean.Database.Schema.ComputeIds
         Glean.Database.Schema.Types
-        Glean.Database.Stats
         Glean.Database.Storage
         Glean.Database.Storage.Memory
         Glean.Database.Storage.RocksDB
