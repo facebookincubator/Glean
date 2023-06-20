@@ -25,13 +25,16 @@ import org.jetbrains.kotlin.types.isFlexible
 import org.jetbrains.kotlin.types.typeUtil.*
 import org.jetbrains.kotlin.types.upperIfFlexible
 
+private val DEFAULT_CONTAINER = "default"
+
 fun KtClass.qualifiedName(): QName? {
   return this.fqName?.pathSegments()?.map { segment -> segment.toString() }?.joinPath()?.toQName()
 }
 
 fun ParameterDescriptor.qualifiedName(): QName {
   val methodDecl = this.containingDeclaration
-  val container = if (methodDecl is CallableDescriptor) methodDecl.path() else null
+  val container =
+      if (methodDecl is CallableDescriptor) methodDecl.path() else DEFAULT_CONTAINER.path()
   return container.qNameInPath(this.name.toString())
 }
 
@@ -52,17 +55,23 @@ private fun CallableDescriptor.path(): GleanPath {
 }
 
 fun ClassDescriptor.path(): GleanPath {
-  val container = this.containingDeclaration
   val containerPath: GleanPath? =
-      when (container) {
+      when (val container = this.containingDeclaration) {
         is ClassDescriptor -> container.path()
         is PackageViewDescriptor -> container.path()
-        is PackageFragmentDescriptorImpl -> container.fqName.path()
+        is PackageFragmentDescriptorImpl -> {
+          if (container.fqName.isRoot) {
+            null
+          } else {
+            container.fqName.path()
+          }
+        }
         else -> {
           null
         }
       }
-  return containerPath.add(this.name.toString())
+  val container = containerPath ?: DEFAULT_CONTAINER.path()
+  return container.add(this.name.toString())
 }
 
 fun FqName.path(): GleanPath {
@@ -86,11 +95,9 @@ fun GleanPath?.add(name: String): GleanPath {
   return GleanPath.Builder().setKey(key.build()).build()
 }
 
-fun GleanPath?.qNameInPath(name: String): QName {
+fun GleanPath.qNameInPath(name: String): QName {
   val key = QNameKey.Builder().setName(name.toName())
-  if (this !== null) {
-    key.context = this
-  }
+  key.context = this
   return QName.Builder().setKey(key.build()).build()
 }
 
@@ -111,7 +118,8 @@ fun GleanPath.replaceLast(key: String): GleanPath {
 }
 
 fun GleanPath.toQName(): QName {
-  return this.key?.container.qNameInPath(this.key?.base.toString())
+  val container = this.key?.container ?: DEFAULT_CONTAINER.path()
+  return container.qNameInPath(this.key?.base.toString())
 }
 
 fun KotlinType.path(): GleanPath {
