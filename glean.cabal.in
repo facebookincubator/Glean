@@ -689,6 +689,7 @@ library schema
         Glean.Schema.CodePp.Types
         Glean.Schema.CodePython.Types
         Glean.Schema.CodeRust.Types
+        Glean.Schema.CodeScip.Types
         Glean.Schema.CodeThrift.Types
         Glean.Schema.Code.Types
         Glean.Schema.Cxx1.Types
@@ -701,6 +702,7 @@ library schema
         Glean.Schema.Hs.Types
         Glean.Schema.Java.Types
         Glean.Schema.Lsif.Types
+        Glean.Schema.Scip.Types
         Glean.Schema.Pp1.Types
         Glean.Schema.Python.Types
         Glean.Schema.Rust.Types
