@@ -188,6 +188,7 @@ SCHEMAS= \
 	hs \
 	java \
 	lsif \
+	lsif_types \
 	pp1 \
 	python \
 	rust \
