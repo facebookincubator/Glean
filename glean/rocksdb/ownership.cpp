@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#include "common/hs/util/cpp/memory.h"
+#include <cpp/memory.h> // @manual
 #include <glean/rts/ownership/uset.h>
 #include "glean/rocksdb/database-impl.h"
 #include "glean/rts/timer.h"
