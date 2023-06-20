@@ -701,6 +701,7 @@ library schema
         Glean.Schema.Hs.Types
         Glean.Schema.Java.Types
         Glean.Schema.Lsif.Types
+        Glean.Schema.LsifTypes.Types
         Glean.Schema.Pp1.Types
         Glean.Schema.Python.Types
         Glean.Schema.Rust.Types
