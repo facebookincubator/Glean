@@ -16,9 +16,9 @@ from xplat.glean.utils import eprint, shell_exec
 
 
 DEWEY_TAG: str = "glean/lang/java-alpha"
-INDEXER_JAR_FILENAME: str = "indexer.jar"
+INDEXER_JAR_FILENAME: str = "indexer-alpha.jar"
 STABLE_VERSION_FILE: str = os.path.join(
-    XPLAT_ROOT, "glean", "lang", "java-alpha", "stable_version.bzl"
+    XPLAT_ROOT, "glean", "lang", "java", "stable_alpha_version.bzl"
 )
 
 
@@ -34,13 +34,13 @@ def get_head_sha1_hash() -> str:
 
 
 def build_indexer_jar() -> str:
-    cmd = "buck build fbcode//glean/lang/java-alpha:java-alpha --show-output"
+    cmd = "buck build fbcode//glean/lang/java-alpha:java_alpha --show-output"
     stdout = shell_exec(cmd)
     if not stdout:
         raise RuntimeError("Failed to build indexer")
 
     tmp_dir = tempfile.mkdtemp()
-    tmp_dir_jex_path = os.path.join(tmp_dir, "indexer.jex")
+    tmp_dir_jex_path = os.path.join(tmp_dir, "indexer-alpha.jex")
     jex_path = os.path.join(FB_CODE_ROOT, stdout.split(" ")[1].strip())
 
     shutil.copyfile(jex_path, tmp_dir_jex_path)
@@ -52,7 +52,7 @@ def build_indexer_jar() -> str:
         if e.returncode != 1:
             raise e
 
-    return os.path.join(tmp_dir, "java.jar")
+    return os.path.join(tmp_dir, "java_alpha.jar")
 
 
 def upload_to_dewey(hash: str, indexer_jar_path: str) -> None:
@@ -80,17 +80,20 @@ def upload_to_dewey(hash: str, indexer_jar_path: str) -> None:
 
 
 def get_xplat_stable_version() -> str:
-    with open(STABLE_VERSION_FILE, "r") as infile:
-        return infile.read().strip().split("=")[1].strip()
+    if os.path.isfile(STABLE_VERSION_FILE):
+        with open(STABLE_VERSION_FILE, "r") as infile:
+            return infile.read().strip().split("=")[1].strip()
+    else:
+        return ""
 
 
 def update_xplat_stable_version(hash: str) -> None:
     with open(STABLE_VERSION_FILE, "w") as outfile:
-        outfile.write('DEWEY_STABLE_VERSION = "%s"\n' % hash)
+        outfile.write('DEWEY_STABLE_ALPHA_VERSION = "%s"\n' % hash)
 
 
 def verify_xplat_indexer() -> bool:
-    cmd = "buck build fbsource//xplat/glean/lang/java-alpha:verify"
+    cmd = "buck build fbsource//xplat/glean/lang/java:verify"
     try:
         shell_exec(cmd, cwd=FB_SOURCE_ROOT)
         return True
