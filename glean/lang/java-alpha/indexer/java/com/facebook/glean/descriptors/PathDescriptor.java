@@ -29,6 +29,9 @@ public class PathDescriptor {
     for (int i = 0; i < length - 1; i++) {
       outer = PathDescriptor.describe(ic, expandedName[i], outer);
     }
+    if (outer == null) {
+      outer = PathDescriptor.describe(ic, "default", null);
+    }
 
     return new NameAndPath(simple, outer);
   }
