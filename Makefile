@@ -175,6 +175,7 @@ SCHEMAS= \
 	code_pp \
 	code_python \
 	code_rust \
+	code_scip \
 	code_thrift \
 	cxx1 \
 	docmarkup \
@@ -192,6 +193,7 @@ SCHEMAS= \
 	pp1 \
 	python \
 	rust \
+	scip \
 	search_code \
 	search_cxx \
 	search_erlang \
