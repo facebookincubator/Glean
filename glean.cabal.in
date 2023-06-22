@@ -630,13 +630,11 @@ library schema
         Glean.Schema.CodemarkupLsif
         Glean.Schema.CodemarkupPp
         Glean.Schema.CodemarkupPython
-        Glean.Schema.CodemarkupRust
         Glean.Schema.CodemarkupSearch
         Glean.Schema.CodemarkupThrift
         Glean.Schema.CodemarkupTypes
         Glean.Schema.CodePp
         Glean.Schema.CodePython
-        Glean.Schema.CodeRust
         Glean.Schema.CodeThrift
         Glean.Schema.CodeBuck
         Glean.Schema.Cxx1
@@ -651,7 +649,6 @@ library schema
         Glean.Schema.Lsif
         Glean.Schema.Pp1
         Glean.Schema.Python
-        Glean.Schema.Rust
         Glean.Schema.SearchBuck
         Glean.Schema.SearchCode
         Glean.Schema.SearchCxx
@@ -681,14 +678,12 @@ library schema
         Glean.Schema.CodemarkupLsif.Types
         Glean.Schema.CodemarkupPp.Types
         Glean.Schema.CodemarkupPython.Types
-        Glean.Schema.CodemarkupRust.Types
         Glean.Schema.CodemarkupSearch.Types
         Glean.Schema.CodemarkupThrift.Types
         Glean.Schema.Codemarkup.Types
         Glean.Schema.CodemarkupTypes.Types
         Glean.Schema.CodePp.Types
         Glean.Schema.CodePython.Types
-        Glean.Schema.CodeRust.Types
         Glean.Schema.CodeScip.Types
         Glean.Schema.CodeThrift.Types
         Glean.Schema.Code.Types
@@ -706,7 +701,6 @@ library schema
         Glean.Schema.Scip.Types
         Glean.Schema.Pp1.Types
         Glean.Schema.Python.Types
-        Glean.Schema.Rust.Types
         Glean.Schema.SearchBuck.Types
         Glean.Schema.SearchCode.Types
         Glean.Schema.SearchCxx.Types
