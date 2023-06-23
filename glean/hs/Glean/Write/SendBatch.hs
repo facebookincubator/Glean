@@ -14,6 +14,7 @@ module Glean.Write.SendBatch
   ( sendBatch
   , sendBatchAsync
   , sendJsonBatch
+  , sendJsonBatchAsync
   , waitBatch
   ) where
 
@@ -48,6 +49,26 @@ sendBatchAsync backend repo batch = do
     Thrift.SendResponse_retry (Thrift.BatchRetry r) ->
       retry r $ sendBatchAsync backend repo batch
 
+sendJsonBatchAsync
+  :: Backend be
+  => be
+  -> Thrift.Repo
+  -> [Thrift.JsonFactBatch]
+  -> Maybe Thrift.SendJsonBatchOptions
+  -> IO Thrift.Handle
+sendJsonBatchAsync backend repo batches opts = do
+  r <- try $ enqueueJsonBatch backend repo
+    Thrift.SendJsonBatch
+      { Thrift.sendJsonBatch_batches = batches
+      , Thrift.sendJsonBatch_options = opts
+      , Thrift.sendJsonBatch_remember = True }
+  case r of
+    Right Thrift.SendJsonBatchResponse{..} ->
+      return sendJsonBatchResponse_handle
+    Left Thrift.Retry{..} ->
+      retry retry_seconds $
+        sendJsonBatchAsync backend repo batches opts
+
 sendJsonBatch
   :: Backend be
   => be
@@ -56,24 +77,12 @@ sendJsonBatch
   -> Maybe Thrift.SendJsonBatchOptions
   -> IO Thrift.Subst
 sendJsonBatch backend repo batches opts = do
-  handle <- send
+  handle <- sendJsonBatchAsync backend repo batches opts
   -- Cope with talking to an old server where this API was synchronous
   -- and didn't return a handle.
   if Text.null handle
     then return def
     else waitBatch backend handle
-  where
-    send = do
-      r <- try $ enqueueJsonBatch backend repo
-        Thrift.SendJsonBatch
-          { Thrift.sendJsonBatch_batches = batches
-          , Thrift.sendJsonBatch_options = opts
-          , Thrift.sendJsonBatch_remember = True }
-      case r of
-        Right Thrift.SendJsonBatchResponse{..} ->
-          return sendJsonBatchResponse_handle
-        Left Thrift.Retry{..} ->
-          retry retry_seconds send
 
 retry :: Double -> IO a -> IO a
 retry secs action = do

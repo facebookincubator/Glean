@@ -98,6 +98,7 @@ sendAndRebaseQueueTest = TestCase $
 
     let fakeLog event = case event of
           SendQueueSending _batch -> putStrLn "sending"
+          SendQueueSendingJson _batch -> putStrLn "sending"
           SendQueueSent size _t -> putStrLn $  "sent " <> show size
           SendQueueFinished -> putStrLn "finished"
           SendQueueFailed ex -> putStrLn $ "failed: " <> show ex
@@ -181,6 +182,7 @@ sendAndRebaseQueueFailureTest = TestCase $
         msg = "failing in SendQueueSending"
         fakeLog event = case event of
           SendQueueSending _batch -> throwIO $ ErrorCall msg
+          SendQueueSendingJson _batch -> throwIO $ ErrorCall msg
           SendQueueSent size _t -> putStrLn $  "sent " <> show size
           SendQueueFinished -> putStrLn "finished"
           SendQueueFailed ex -> putStrLn $ "failed: " <> show ex

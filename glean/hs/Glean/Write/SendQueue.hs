@@ -13,6 +13,7 @@ module Glean.Write.SendQueue
   , Callback
   , withSendQueue
   , writeSendQueue
+  , writeSendQueueJson
   ) where
 
 import qualified Control.Concurrent.Async as Async
@@ -41,6 +42,9 @@ data SendQueueEvent
   = -- | Started sending a batch
     SendQueueSending Thrift.Batch
 
+    -- | Started sending a JSON batch
+  | SendQueueSendingJson [Thrift.JsonFactBatch]
+
     -- | Finished sending a batch
   | SendQueueSent
       Int -- batch size
@@ -67,12 +71,20 @@ data Wait = Wait
   { waitHandle :: !Thrift.Handle  -- ^ handle from GleanService
   , waitStart :: !TimePoint  -- ^ When this 'Wait' was constructed
   , waitCallback :: !Callback  -- ^ use-once callback with result.
-  , waitOriginalBatch :: !Thrift.Batch  -- ^ the batch, so we can resend it
+  , waitOriginalBatch :: !Batch  -- ^ the batch, so we can resend it
   }
+
+data Batch
+  = BinaryBatch Thrift.Batch
+  | JsonBatch !Int {- size -} [Thrift.JsonFactBatch]
+
+batchSize :: Batch -> Int
+batchSize (BinaryBatch bin) = BS.length $ Thrift.batch_facts bin
+batchSize (JsonBatch sz _) = sz
 
 data SendQueue = SendQueue
   { -- | Batches we haven't sent yet
-    sqOutQueue :: TQueue (Thrift.Batch, Callback)
+    sqOutQueue :: TQueue (Batch, Callback)
 
     -- | Batches we've sent and are now waiting for the server to commit
   , sqWaitQueue :: TQueue Wait
@@ -120,13 +132,27 @@ acquireBatch sq size = do
   writeTVar (sqCount sq) $! count + 1
 
 writeSendQueue :: SendQueue -> Thrift.Batch -> Callback -> STM ()
-writeSendQueue sq batch callback = do
+writeSendQueue sq batch callback =
+  writeSendQueue_ sq (BinaryBatch batch) callback
+
+writeSendQueueJson :: SendQueue -> [Thrift.JsonFactBatch] -> Callback -> STM ()
+writeSendQueueJson sq json callback =
+  writeSendQueue_ sq (JsonBatch size json) callback
+  where
+  -- size is approximate for JSON
+  size = sum (map jsonFactBatchSize json)
+  jsonFactBatchSize Thrift.JsonFactBatch{..} =
+    sum (map BS.length jsonFactBatch_facts) +
+    maybe 0 BS.length jsonFactBatch_unit
+
+writeSendQueue_ :: SendQueue -> Batch -> Callback -> STM ()
+writeSendQueue_ sq batch callback = do
   status <- readTVar $ sqStatus sq
   case status of
     Open -> return ()
     Closed -> throwSTM WriteQueueClosed
     Failed exc -> throwSTM exc
-  let !size = BS.length $ Thrift.batch_facts batch
+  let !size = batchSize batch
   acquireBatch sq size
   writeTQueue (sqOutQueue sq) (batch, callback)
 
@@ -145,7 +171,7 @@ failSendQueue sq exc = do
   ys <- map snd <$> flushTQueue (sqOutQueue sq)
   mapM_ ($ Left exc) (xs ++ ys)
 
-readSendQueue :: SendQueue -> STM (Maybe (Thrift.Batch, Callback))
+readSendQueue :: SendQueue -> STM (Maybe (Batch, Callback))
 readSendQueue sq = do
   status <- readTVar $ sqStatus sq
   case status of
@@ -190,13 +216,14 @@ pollFromWaitQueue backend settings sq = do
     case r of
       Just Wait{..} -> do
         result <- try $ waitBatch backend waitHandle
-        let size = BS.length $ Thrift.batch_facts waitOriginalBatch
+        let !size = batchSize waitOriginalBatch
         case result of
           Left e@Thrift.UnknownBatchHandle{} -> do
             logWarning $ "Server forgot batch; resending (" <> show e <> ")"
             atomically $ do
-              releaseBatch sq size  -- guarantees writeSendQueue won't block
-              writeSendQueue sq waitOriginalBatch waitCallback
+              -- don't writeSendQueue; retries should work even if the
+              -- queue is in the Closed state and shutting down
+              writeTQueue (sqOutQueue sq) (waitOriginalBatch, waitCallback)
               return True
           Right subst -> do
             atomically $ do
@@ -231,9 +258,13 @@ sendFromQueue backend repo settings sq = do
     $ \r ->
     case r of
       Just (batch, callback) -> do
-        sendQueueLog settings $ SendQueueSending batch
+        sendQueueLog settings $ case batch of
+          BinaryBatch bin -> SendQueueSending bin
+          JsonBatch _ json -> SendQueueSendingJson json
         start <- getTimePoint
-        handle <- sendBatchAsync backend repo batch
+        handle <- case batch of
+          BinaryBatch bin -> sendBatchAsync backend repo bin
+          JsonBatch _ json -> sendJsonBatchAsync backend repo json Nothing
         atomically $ writeTQueue (sqWaitQueue sq) Wait
           { waitHandle = handle
           , waitStart = start
