@@ -10,7 +10,6 @@ import com.facebook.glean.descriptors.PackageDescriptor;
 import com.facebook.glean.descriptors.XRefDescriptor;
 import com.facebook.glean.descriptors.debug.DebugUtils;
 import com.facebook.glean.schema.java_alpha.ClassDeclaration;
-import com.facebook.glean.schema.java_alpha.Definition;
 import com.facebook.glean.schema.java_alpha.EnumDeclaration;
 import com.facebook.glean.schema.java_alpha.FileXRefs;
 import com.facebook.glean.schema.java_alpha.FileXRefsKey;
@@ -34,7 +33,6 @@ import com.sun.tools.javac.util.Context;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import javax.tools.FileObject;
 import javax.tools.JavaFileManager;
@@ -53,7 +51,6 @@ public class Indexer implements Plugin {
   public void init(JavacTask task, String... args) {
 
     Map<String, String> environmentVars = System.getenv();
-    Map<String, Definition> definitions = new HashMap<>();
     boolean loggingEnabled = Boolean.parseBoolean(environmentVars.get("GLEAN_DEBUG_LOGGING"));
 
     task.addTaskListener(
@@ -69,7 +66,7 @@ public class Indexer implements Plugin {
             CompilationUnitTree cu = e.getCompilationUnit();
             IndexerContext ic = new IndexerContext(task, cu, loggingEnabled);
 
-            Indexer.indexCompilationUnit(ic, Trees.instance(task), definitions);
+            Indexer.indexCompilationUnit(ic, Trees.instance(task));
             Indexer.flushArtifactsToDisk(ic);
           }
         });
@@ -85,8 +82,7 @@ public class Indexer implements Plugin {
     return fileManager.getFileForOutput(StandardLocation.CLASS_OUTPUT, "META-INF", fileName, null);
   }
 
-  private static void indexCompilationUnit(
-      IndexerContext ic, Trees trees, Map<String, Definition> definitions) {
+  private static void indexCompilationUnit(IndexerContext ic, Trees trees) {
     // When the end position is low, then these compilation units have been
     // synthesized by the compiler and we are safe skipping them as the definitions
     // are contained in other non-synthesized compilation units we will process
@@ -108,16 +104,14 @@ public class Indexer implements Plugin {
                     + tree.getKind().toString());
             switch (tree.getKind()) {
               case CLASS:
-                ClassDeclaration classDeclaration =
-                    ClassDescriptor.describe(ic, tree, null, definitions);
+                ClassDeclaration classDeclaration = ClassDescriptor.describe(ic, tree, null);
                 break;
               case INTERFACE:
                 InterfaceDeclaration interfaceDeclaration =
-                    InterfaceDescriptor.describe(ic, tree, null, definitions);
+                    InterfaceDescriptor.describe(ic, tree, null);
                 break;
               case ENUM:
-                EnumDeclaration enumDeclaration =
-                    EnumDescriptor.describe(ic, tree, null, definitions);
+                EnumDeclaration enumDeclaration = EnumDescriptor.describe(ic, tree, null);
                 break;
               default:
                 break;

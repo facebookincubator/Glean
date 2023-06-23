@@ -3,7 +3,6 @@
 package com.facebook.glean.descriptors;
 
 import com.facebook.glean.IndexerContext;
-import com.facebook.glean.descriptors.utils.QNameUtils;
 import com.facebook.glean.schema.java_alpha.Annotation;
 import com.facebook.glean.schema.java_alpha.ClassDeclaration;
 import com.facebook.glean.schema.java_alpha.ClassDeclarationKey;
@@ -18,23 +17,13 @@ import com.facebook.glean.schema.javakotlin_alpha.QName;
 import com.facebook.glean.schema.src.ByteSpan;
 import com.sun.source.tree.ClassTree;
 import java.util.List;
-import java.util.Map;
 
 public class ClassDescriptor {
-  public static ClassDeclaration describe(
-      IndexerContext ic,
-      ClassTree tree,
-      Definition container,
-      Map<String, Definition> existingDefinitionMap) {
+  public static ClassDeclaration describe(IndexerContext ic, ClassTree tree, Definition container) {
     ic.logger.indentedLog("ClassDeclaration");
     ic.logger.increaseIndent();
 
     QName qName = ClassUtils.buildName(ic, tree);
-    if (QNameUtils.hasFqName(qName)) {
-      if (existingDefinitionMap.containsKey(qName.getKey().toString())) {
-        return existingDefinitionMap.get(qName.getKey().toString()).getClass_();
-      }
-    }
 
     List<Modifier> modifiers = ClassUtils.buildModifiers(ic, tree);
     List<Annotation> annotations = ClassUtils.buildAnnotations(ic, tree);
@@ -63,15 +52,11 @@ public class ClassDescriptor {
     ClassDeclaration classDeclaration = new ClassDeclaration.Builder().setKey(key).build();
     Definition classDef = Definition.fromClass_(classDeclaration);
     ic.predicates.classDeclarationPredicate.addFact(classDeclaration);
-    if (QNameUtils.hasFqName(qName)) {
-      existingDefinitionMap.put(qName.getKey().toString(), classDef);
-    }
 
     List<FieldDeclaration> fields = ClassUtils.buildFields(ic, tree, classDef, false);
     List<ConstructorDeclaration> constructors = ClassUtils.buildConstructors(ic, tree, classDef);
     List<MethodDeclaration> methods = ClassUtils.buildMethods(ic, tree, classDef);
-    List<Definition> innerDefinitions =
-        ClassUtils.buildInnerDefinitions(ic, tree, classDef, existingDefinitionMap);
+    List<Definition> innerDefinitions = ClassUtils.buildInnerDefinitions(ic, tree, classDef);
 
     return classDeclaration;
   }

@@ -3,7 +3,6 @@
 package com.facebook.glean.descriptors;
 
 import com.facebook.glean.IndexerContext;
-import com.facebook.glean.descriptors.utils.QNameUtils;
 import com.facebook.glean.schema.java_alpha.Annotation;
 import com.facebook.glean.schema.java_alpha.Definition;
 import com.facebook.glean.schema.java_alpha.FieldDeclaration;
@@ -17,24 +16,14 @@ import com.facebook.glean.schema.javakotlin_alpha.QName;
 import com.facebook.glean.schema.src.ByteSpan;
 import com.sun.source.tree.ClassTree;
 import java.util.List;
-import java.util.Map;
 
 public class InterfaceDescriptor {
   public static InterfaceDeclaration describe(
-      IndexerContext ic,
-      ClassTree tree,
-      Definition container,
-      Map<String, Definition> existingDefinitionMap) {
+      IndexerContext ic, ClassTree tree, Definition container) {
     ic.logger.indentedLog("InterfaceDeclaration");
     ic.logger.increaseIndent();
 
     QName qName = ClassUtils.buildName(ic, tree);
-
-    if (QNameUtils.hasFqName(qName)) {
-      if (existingDefinitionMap.containsKey(qName.getKey().toString())) {
-        return existingDefinitionMap.get(qName.getKey().toString()).getInterface_();
-      }
-    }
 
     List<Modifier> modifiers = ClassUtils.buildModifiers(ic, tree);
     List<Annotation> annotations = ClassUtils.buildAnnotations(ic, tree);
@@ -62,14 +51,10 @@ public class InterfaceDescriptor {
         new InterfaceDeclaration.Builder().setKey(key).build();
     ic.predicates.interfaceDeclarationPredicate.addFact(interfaceDeclaration);
     Definition interfaceDef = Definition.fromInterface_(interfaceDeclaration);
-    if (QNameUtils.hasFqName(qName)) {
-      existingDefinitionMap.put(qName.getKey().toString(), interfaceDef);
-    }
 
     List<MethodDeclaration> methods = ClassUtils.buildMethods(ic, tree, interfaceDef);
     List<FieldDeclaration> variables = ClassUtils.buildFields(ic, tree, interfaceDef, false);
-    List<Definition> innerDefinitions =
-        ClassUtils.buildInnerDefinitions(ic, tree, interfaceDef, existingDefinitionMap);
+    List<Definition> innerDefinitions = ClassUtils.buildInnerDefinitions(ic, tree, interfaceDef);
 
     return interfaceDeclaration;
   }

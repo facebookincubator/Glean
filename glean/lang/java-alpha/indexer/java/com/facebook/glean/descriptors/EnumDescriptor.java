@@ -3,7 +3,6 @@
 package com.facebook.glean.descriptors;
 
 import com.facebook.glean.IndexerContext;
-import com.facebook.glean.descriptors.utils.QNameUtils;
 import com.facebook.glean.schema.java_alpha.Annotation;
 import com.facebook.glean.schema.java_alpha.Definition;
 import com.facebook.glean.schema.java_alpha.EnumDeclaration;
@@ -16,23 +15,13 @@ import com.facebook.glean.schema.javakotlin_alpha.QName;
 import com.facebook.glean.schema.src.ByteSpan;
 import com.sun.source.tree.ClassTree;
 import java.util.List;
-import java.util.Map;
 
 public class EnumDescriptor {
-  public static EnumDeclaration describe(
-      IndexerContext ic,
-      ClassTree tree,
-      Definition container,
-      Map<String, Definition> existingDefinitionMap) {
+  public static EnumDeclaration describe(IndexerContext ic, ClassTree tree, Definition container) {
     ic.logger.indentedLog("EnumDeclaration");
     ic.logger.increaseIndent();
 
     QName qName = ClassUtils.buildName(ic, tree);
-    if (QNameUtils.hasFqName(qName)) {
-      if (existingDefinitionMap.containsKey(qName.getKey().toString())) {
-        return existingDefinitionMap.get(qName.getKey().toString()).getEnum_();
-      }
-    }
 
     List<Modifier> modifiers = ClassUtils.buildModifiers(ic, tree);
     List<Annotation> annotations = ClassUtils.buildAnnotations(ic, tree);
@@ -56,14 +45,10 @@ public class EnumDescriptor {
     EnumDeclaration enumDeclaration = new EnumDeclaration.Builder().setKey(key).build();
     ic.predicates.enumDeclarationPredicate.addFact(enumDeclaration);
     Definition enumDef = Definition.fromEnum_(enumDeclaration);
-    if (QNameUtils.hasFqName(qName)) {
-      existingDefinitionMap.put(qName.getKey().toString(), enumDef);
-    }
 
     List<FieldDeclaration> variables = ClassUtils.buildFields(ic, tree, enumDef, true);
     List<MethodDeclaration> methods = ClassUtils.buildMethods(ic, tree, enumDef);
-    List<Definition> innerDefinitions =
-        ClassUtils.buildInnerDefinitions(ic, tree, enumDef, existingDefinitionMap);
+    List<Definition> innerDefinitions = ClassUtils.buildInnerDefinitions(ic, tree, enumDef);
 
     return enumDeclaration;
   }

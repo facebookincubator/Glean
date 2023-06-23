@@ -24,7 +24,6 @@ import com.sun.source.tree.VariableTree;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
@@ -183,28 +182,16 @@ public class ClassUtils {
       IndexerContext ic,
       List<Definition> definitions,
       List<Tree> innerList,
-      Map<String, Definition> existingMap,
       DefinitionBuilder updater) {
     for (int i = 0; i < innerList.size(); i++) {
       ClassTree innerDef = (ClassTree) innerList.get(i);
-      TypeElement classElement =
-          (TypeElement) getElement(ic, innerDef.getSimpleName().toString(), innerDef, true);
-      String qualifiedName = classElement.getQualifiedName().toString();
-      if (existingMap.containsKey(qualifiedName)) {
-        definitions.add(existingMap.get(qualifiedName));
-      } else {
-        Definition d = updater.build(ic, innerDef);
-        definitions.add(d);
-        existingMap.put(qualifiedName, d);
-      }
+      Definition d = updater.build(ic, innerDef);
+      definitions.add(d);
     }
   }
 
   public static List<Definition> buildInnerDefinitions(
-      IndexerContext ic,
-      ClassTree tree,
-      Definition container,
-      Map<String, Definition> existingDefinitionMap) {
+      IndexerContext ic, ClassTree tree, Definition container) {
     ic.logger.indentedLog("Inner Definitions");
     ic.logger.increaseIndent();
     List<Tree> innerClassTrees = getMembersOfKind(ic, tree, ElementKind.CLASS);
@@ -219,11 +206,9 @@ public class ClassUtils {
         ic,
         definitions,
         innerClassTrees,
-        existingDefinitionMap,
         new DefinitionBuilder() {
           Definition build(IndexerContext ic, ClassTree def) {
-            return Definition.fromClass_(
-                ClassDescriptor.describe(ic, def, container, existingDefinitionMap));
+            return Definition.fromClass_(ClassDescriptor.describe(ic, def, container));
           }
         });
 
@@ -231,11 +216,9 @@ public class ClassUtils {
         ic,
         definitions,
         innerInterfaceTrees,
-        existingDefinitionMap,
         new DefinitionBuilder() {
           Definition build(IndexerContext ic, ClassTree def) {
-            return Definition.fromInterface_(
-                InterfaceDescriptor.describe(ic, def, container, existingDefinitionMap));
+            return Definition.fromInterface_(InterfaceDescriptor.describe(ic, def, container));
           }
         });
 
@@ -243,11 +226,9 @@ public class ClassUtils {
         ic,
         definitions,
         innerEnumTrees,
-        existingDefinitionMap,
         new DefinitionBuilder() {
           Definition build(IndexerContext ic, ClassTree def) {
-            return Definition.fromEnum_(
-                EnumDescriptor.describe(ic, def, container, existingDefinitionMap));
+            return Definition.fromEnum_(EnumDescriptor.describe(ic, def, container));
           }
         });
 
