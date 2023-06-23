@@ -1,0 +1,47 @@
+[
+  "@generated",
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (acc)" },
+      "docs": { "key": "```rust\u000aacc: u64\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (n)" },
+      "docs": { "key": "```rust\u000an: u64\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo basics 0.1.0 f1_go()." },
+      "docs": {
+        "key": "```rust\u000abasics\u000a```\u000a\u000a```rust\u000afn f1_go(n: u64, acc: u64) -> u64\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo basics 0.1.0 sum_f1()." },
+      "docs": {
+        "key": "```rust\u000abasics\u000a```\u000a\u000a```rust\u000apub fn sum_f1(n: u64) -> u64\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo basics 0.1.0 sum_f2()." },
+      "docs": {
+        "key": "```rust\u000abasics\u000a```\u000a\u000a```rust\u000apub fn sum_f2(n: u64) -> u64\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo basics 0.1.0 sum_f3()." },
+      "docs": {
+        "key": "```rust\u000abasics\u000a```\u000a\u000a```rust\u000apub fn sum_f3(n: u64) -> u64\u000a```"
+      }
+    }
+  }
+]

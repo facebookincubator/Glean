@@ -1,4 +1,4 @@
-query: scip.Definition _
+query: scip.SymbolDocumentation _
 perf: True
 transform: [gensort, []]
 

@@ -1,4 +1,4 @@
-query: scip.Definition _
+query: scip.ReferenceTarget _
 perf: True
 transform: [gensort, []]
 
