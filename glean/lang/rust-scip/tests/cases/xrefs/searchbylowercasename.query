@@ -1,4 +1,0 @@
-query: search.code.LsifSearchByLowerCaseName { name = "sum_f1" }
-perf: True
-transform: [gensort, []]
-

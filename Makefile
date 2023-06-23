@@ -168,6 +168,7 @@ SCHEMAS= \
 	codemarkup_lsif \
 	codemarkup_pp \
 	codemarkup_python \
+	codemarkup_scip \
 	codemarkup_search \
 	codemarkup_thrift \
 	codemarkup_types \
