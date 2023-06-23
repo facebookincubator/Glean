@@ -1,0 +1,4 @@
+query: codemarkup.scip.ScipFileEntityXRefLocations { entity = { rust = { defn = _ } } }
+perf: True
+transform: [gensort, []]
+

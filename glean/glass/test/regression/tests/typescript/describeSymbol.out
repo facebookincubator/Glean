@@ -31,6 +31,7 @@
             "container": "example",
             "localName": "createTempRepo"
         },
+        "pretty_comments": [],
         "repo_hash": "testhash",
         "signature": "function createTempRepo(): {\n    repoDir: string;\n    git: Git;\n}",
         "sym": "test/ts/lsif/example%3AcreateTempRepo",

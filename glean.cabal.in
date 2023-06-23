@@ -630,6 +630,7 @@ library schema
         Glean.Schema.CodemarkupLsif
         Glean.Schema.CodemarkupPp
         Glean.Schema.CodemarkupPython
+        Glean.Schema.CodemarkupScip
         Glean.Schema.CodemarkupSearch
         Glean.Schema.CodemarkupThrift
         Glean.Schema.CodemarkupTypes
@@ -678,6 +679,7 @@ library schema
         Glean.Schema.CodemarkupLsif.Types
         Glean.Schema.CodemarkupPp.Types
         Glean.Schema.CodemarkupPython.Types
+        Glean.Schema.CodemarkupScip.Types
         Glean.Schema.CodemarkupSearch.Types
         Glean.Schema.CodemarkupThrift.Types
         Glean.Schema.Codemarkup.Types
