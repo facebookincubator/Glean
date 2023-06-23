@@ -14,8 +14,9 @@ module Glean.Write.JSON
   , writeJsonBatchByteString
   ) where
 
-import Control.Exception
+import Control.Exception hiding (catch, throw)
 import Control.Monad.Reader
+import Control.Monad.Catch
 import Data.ByteString (ByteString)
 import qualified Data.ByteString.Unsafe as BS
 import Data.Coerce (coerce)
@@ -229,7 +230,7 @@ writeJsonFact
     dbSchema
     Thrift.SendJsonBatchOptions{..}
     details json =
-  void $ factToTerm details json
+  wrapJsonContextM json $ void $ factToTerm details json
   where
 
   factToTerm PredicateDetails{..} json@(J.Object obj) = do
@@ -256,19 +257,33 @@ writeJsonFact
         withBuilder $ \clause -> do
           jsonToTerm clause predicateKeyType key
           key_size <- liftIO $ sizeOfBuilder clause
-          forM_ val $ jsonToTerm clause predicateValueType
+          forM_ val $ \v ->
+            jsonToTerm clause predicateValueType v
           create predicatePid clause key_size
-  factToTerm _ _ = badFact json
+  factToTerm _ json = badFact json
 
-  badFact :: J.Value -> WriteFacts a
-  badFact json = liftIO $ do
-    enc <- J.encode json
-    throwIO $ Thrift.Exception $ Text.pack $ show $ vcat
-      [ "Expecting a fact, which should be of the form:"
-      , indent 2 "{[\"id\" : N, ] \"key\": ... [, \"value\": ...]}"
-      , "but got:"
+  wrapJsonContextM :: J.Value -> WriteFacts a -> WriteFacts a
+  wrapJsonContextM json act =
+    act `catch` \(Thrift.Exception msg) -> do
+      msg' <- wrapJsonContext json (pretty msg)
+      throwM $ Thrift.Exception $ Text.pack $ show msg'
+
+  wrapJsonContext :: MonadIO m => J.Value -> Doc ann -> m (Doc ann)
+  wrapJsonContext json doc = do
+    enc <- liftIO $ J.encode json
+    return $ vcat
+      [ doc
+      , "in JSON term:"
       , indent 2 (pretty (Text.decodeUtf8 enc))
       ]
+
+  badFact :: J.Value -> WriteFacts a
+  badFact json = do
+    msg <- wrapJsonContext json $ vcat
+      [ "Expecting a fact, which should be of the form:"
+      , indent 2 "{[\"id\" : N, ] \"key\": ... [, \"value\": ...]}"
+      ]
+    throwM $ Thrift.Exception $ Text.pack $ show msg
 
   -- Defining a fact with ID 0 means "don't care"; we want this
   -- behaviour because Thrift serialization will use ID 0 when the
@@ -320,7 +335,7 @@ writeJsonFact
               jsonToTerm b ty val
               return $! n+1
             Nothing -> do
-              lift $ defaultValue b (name, ty)
+              lift $ defaultValue b v (name, ty)
               return n
       n <- foldM doField 0 fields
       -- ensure that all the fields mentioned in the fact are valid
@@ -370,40 +385,39 @@ writeJsonFact
   -- Thrift might omit fields from the output if they have the
   -- default value, so we have to reconstruct the default value
   -- here.
-  defaultValue :: Builder -> (Text, Type) -> IO ()
-  defaultValue b (fieldName, typ) = case typ of
+  defaultValue :: Builder -> J.Value -> (Text, Type) -> IO ()
+  defaultValue b json (fieldName, typ) = case typ of
     ByteTy -> invoke $ glean_push_value_byte b 0
     NatTy -> invoke $ glean_push_value_nat b 0
     StringTy -> invoke $ glean_push_value_string b nullPtr 0
     ArrayTy{} -> invoke $ glean_push_value_array b 0
     RecordTy fields ->
-      mapM_ (defaultValue b) [(nm, ty) | FieldDef nm ty <- fields ]
+      mapM_ (defaultValue b json) [(nm, ty) | FieldDef nm ty <- fields ]
     SumTy (FieldDef _ ty : _) -> do
       invoke $ glean_push_value_selector b 0
-      defaultValue b (fieldName, ty)
-    NamedTy (ExpandedType _ ty) -> defaultValue b (fieldName, ty)
-    PredicateTy{} -> throwError $ "no default for a predicate reference; "
-      ++ "JSON might be missing a predicate ref for field "
-      ++ show fieldName
-      ++ ", or include one in an unexpected location"
+      defaultValue b json (fieldName, ty)
+    NamedTy (ExpandedType _ ty) -> defaultValue b json (fieldName, ty)
+    PredicateTy{} -> do
+      msg <- wrapJsonContext json $
+        "Field '" <> pretty fieldName <>
+        "' is missing, but it has a predicate type: " <> displayDefault typ
+      throwError $ show msg
     EnumeratedTy{} -> invoke $ glean_push_value_selector b 0
-    MaybeTy ty -> defaultValue b (fieldName, lowerMaybe ty)
+    MaybeTy ty -> defaultValue b json (fieldName, lowerMaybe ty)
     BooleanTy -> invoke $ glean_push_value_selector b 0
     _otherwise -> throwError $ "internal: defaultValue: " <> show typ
 
   throwError :: MonadIO m => String -> m a
   throwError str = liftIO $ throwIO $ Thrift.Exception $ Text.pack str
 
-  termError typ val = do
-    enc <- liftIO $ J.encode val
-    throwError $ show $ vcat
+  termError typ v = do
+    msg <- wrapJsonContext v $ vcat
       [ "Error in fact. Expecting an expression of type:"
       , indent 2 (displayDefault typ)
       , "which should be of the form:"
       , indent 2 (expecting typ)
-      , "but got:"
-      , indent 2 (pretty (Text.decodeUtf8 enc))
       ]
+    throwError $ show msg
 
   allowed fields = hcat $
     punctuate ", " [ dquotes (pretty f) | FieldDef f _ <- fields ]
