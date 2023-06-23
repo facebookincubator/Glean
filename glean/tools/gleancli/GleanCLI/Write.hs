@@ -9,7 +9,6 @@
 {-# LANGUAGE ApplicativeDo #-}
 module GleanCLI.Write (WriteCommand, FinishCommand) where
 
-import Control.Exception
 import Control.Monad
 import qualified Data.ByteString as B
 import Data.Default
@@ -74,7 +73,8 @@ data WriteCommand
       , finish :: Bool
       , properties :: [(Text,Text)]
       , writeMaxConcurrency :: Int
-      , useLocalCache :: Maybe Glean.SendAndRebaseQueueSettings
+      , useLocalCache :: Bool
+      , sendQueueSettings :: Glean.SendAndRebaseQueueSettings
       , writeFileFormat :: FileFormat
       , updateSchemaForStacked :: Bool
       }
@@ -210,12 +210,6 @@ scribeStartTimeOpt = textOption
   <> "Accepts any format that `date -d` can understand.")
   )
 
-useLocalCacheOptions :: Parser (Maybe Glean.SendAndRebaseQueueSettings)
-useLocalCacheOptions = do
-    useLocalCacheFlag <- useLocalSwitchOpt
-    sendAndRebaseQueue <- Glean.sendAndRebaseQueueOptions
-    return $ if useLocalCacheFlag then Just sendAndRebaseQueue else Nothing
-
 useLocalSwitchOpt :: Parser Bool
 useLocalSwitchOpt = switch
   (  long "use-local-cache"
@@ -297,7 +291,8 @@ instance Plugin WriteCommand where
         properties <- dbPropertiesOpt
         writeHandle <- handleOpt
         writeMaxConcurrency <- maxConcurrencyOpt
-        useLocalCache <- useLocalCacheOptions
+        useLocalCache <- useLocalSwitchOpt
+        sendQueueSettings <- Glean.sendAndRebaseQueueOptions
         writeFileFormat <- fileFormatOpt
         updateSchemaForStacked <- updateSchemaForStackedOpt
         return Write
@@ -323,7 +318,8 @@ instance Plugin WriteCommand where
         finish <- finishOpt
         writeHandle <- handleOpt
         writeMaxConcurrency <- maxConcurrencyOpt
-        useLocalCache <- useLocalCacheOptions
+        useLocalCache <- useLocalSwitchOpt
+        sendQueueSettings <- Glean.sendAndRebaseQueueOptions
         writeFileFormat <- fileFormatOpt
         return Write
           { create=False, writeRepoTime=Nothing
@@ -382,29 +378,23 @@ instance Plugin WriteCommand where
            let writeFail err = die 3 $ "DB write failure: " ++ err in
            maybe (return ()) writeFail mFail)
        (\_ ->
-          write
-            writeRepo
-            writeFiles
-            writeMaxConcurrency
-            scribe
-            useLocalCache
-            writeFileFormat)
+          write Write{..})
     where
-    write repo files max Nothing (Just useLocalCache) fileFormat = do
-      dbSchema <- loadDbSchema backend repo
+    write Write{useLocalCache = True, scribe = Nothing, ..} = do
+      dbSchema <- loadDbSchema backend writeRepo
       logMessages <- newTQueueIO
       let inventory = schemaInventory dbSchema
-          queueSettings = useLocalCache
+          queueSettings = sendQueueSettings
             { sendAndRebaseQueueAllowRemoteReferences =
-                case fileFormat of
+                case writeFileFormat of
                   -- we expect binary batches to be self-contained.
                   BinaryFormat -> False
                   JsonFormat -> True
             }
-      Glean.withSendAndRebaseQueue backend repo inventory queueSettings $
+      Glean.withSendAndRebaseQueue backend writeRepo inventory queueSettings $
         \queue ->
-          stream max (forM_ files) $ \file -> do
-            batch <- case fileFormat of
+          stream writeMaxConcurrency (forM_ writeFiles) $ \file -> do
+            batch <- case writeFileFormat of
               BinaryFormat -> do
                 r <- B.readFile file
                 case deserializeGen (Proxy :: Proxy Compact) r of
@@ -419,22 +409,33 @@ instance Plugin WriteCommand where
             return ()
       atomically (flushTQueue logMessages) >>= mapM_ putStrLn
 
-    write repo files max Nothing Nothing BinaryFormat =
-      stream max (forM_ files) $ \file -> do
-        handleAll (\e -> do throwIO $ ErrorCall $ file <> ": " <> show e) $ do
-          r <- B.readFile file
-          batch <- case deserializeGen (Proxy :: Proxy Compact) r of
-            Left parseError -> die 3 $ "Parse error: " <> parseError
-            Right result -> return result
-          void $ Glean.sendBatch backend repo batch
+    write Write{useLocalCache = False, scribe = Nothing, ..} = do
+      logMessages <- newTQueueIO
+      let settings = sendAndRebaseQueueSendQueueSettings sendQueueSettings
+      Glean.withSendQueue backend writeRepo settings $ \queue ->
+        stream writeMaxConcurrency (forM_ writeFiles) $ \file -> do
+          case writeFileFormat of
+            BinaryFormat -> do
+              r <- B.readFile file
+              case deserializeGen (Proxy :: Proxy Compact) r of
+                Left parseError -> die 3 $ "Parse error: " <> parseError
+                Right batch ->
+                  atomically $ Glean.writeSendQueue queue batch $ \_ ->
+                    writeTQueue logMessages $ "Wrote " <> file
+            JsonFormat -> do
+              batches <- fileToBatches file
+              atomically $ Glean.writeSendQueueJson queue batches $ \_ ->
+                writeTQueue logMessages $ "Wrote " <> file
+          atomically (flushTQueue logMessages) >>= mapM_ putStrLn
+          return ()
+      atomically (flushTQueue logMessages) >>= mapM_ putStrLn
 
-    write repo files max scribe Nothing JsonFormat = do
-      stream max (forM_ files) $ \file -> do
+    write Write{useLocalCache = False, writeFileFormat = JsonFormat,
+        scribe = Just scribeOptions, ..} = do
+      stream writeMaxConcurrency (forM_ writeFiles) $ \file -> do
         batches <- fileToBatches file
-        case scribe of
-          Nothing ->
-            void $ LocalOrRemote.sendJsonBatch backend repo batches Nothing
-          Just ScribeOptions
+        case scribeOptions of
+          ScribeOptions
             { writeFromScribe = WriteFromScribe{..}, .. } ->
               scribeWriteBatches
                 writeFromScribe_category
@@ -445,9 +446,9 @@ instance Plugin WriteCommand where
                 batches
                 scribeCompress
 
-    write _repo _files _max (Just _scribe) (Just _useLocalCache) _  =
+    write Write{useLocalCache = True, scribe = Just _, ..} =
       die 3 "Cannot use a local cache with scribe"
-    write _repo _files _max (Just _scribe) Nothing BinaryFormat  =
+    write Write{scribe = Just _, writeFileFormat = BinaryFormat, ..} =
       die 3 "Cannot use binary format with scribe"
 
     resultToFailure Right{} = Nothing
