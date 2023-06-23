@@ -10,17 +10,17 @@ module Glean.Regression.Snapshot.Result (Result(..), failure)
 where
 
 data Result
-  = Success
+  = Success [FilePath]
   | Failure ([String] -> [String])
 
 instance Semigroup Result where
-  Success <> Success = Success
-  Success <> x = x
-  x <> Success = x
+  Success paths1 <> Success paths2 = Success (paths1 ++ paths2)
+  Success _ <> x = x
+  x <> Success _ = x
   Failure f <> Failure g = Failure $ f . g
 
 failure :: String -> Result
 failure s = Failure (s:)
 
 instance Monoid Result where
-  mempty = Success
+  mempty = Success []

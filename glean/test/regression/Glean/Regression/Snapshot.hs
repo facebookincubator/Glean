@@ -167,7 +167,7 @@ regenerate Outputs{..} = do
   generated <- BSL.readFile outGenerated
   -- this will either overwrite base or generate a group-specific output
   when (base /= Just generated) $ BSL.writeFile outGoldenGroup generated
-  return Success
+  return (Success [outGoldenGroup])
 
 -- | Compare the generated output with the appropriate golden output via `diff`.
 -- This uses 'outGoldenGroup' if it exists and 'outGoldenBase' otherwise.
@@ -179,7 +179,7 @@ diff Outputs{..} = do
     [outGenerated, if spec then outGoldenGroup else outGoldenBase]
     ""
   return $ case e of
-    ExitSuccess -> Success
+    ExitSuccess -> Success []
     ExitFailure n -> failure
       $ takeFileName outGenerated ++
         if n == 1
@@ -199,7 +199,7 @@ toHUnit cfg driver driverOpts base_group group subdir =
   HUnit.TestLabel subdir $ HUnit.TestCase $ do
     r <- executeTest cfg driver driverOpts base_group group diff subdir
     case r of
-      Success -> return ()
+      Success _ -> return ()
       Failure msg -> HUnit.assertFailure $ unlines $ msg []
 
 -- | Convert a 'Driver' into a regression test over --root parameter.
@@ -230,19 +230,29 @@ testAll act cfg driver opts = do
   case cfgReplace cfg of
     Just root -> do
       forM_ tests $ \test -> do
-        -- remove all .out files
-        let path = root </> test
-        xs <- listDirectory path
-        forM_ xs $ \x ->
-          when (takeExtension x == ".out" || takeExtension x == ".perf") $
-            removePathForcibly $ path </> x
         -- regenerate outputs - use the first group as the base
-        forM_ groups $ \group ->
+        results <- forM groups $ \group ->
           executeTest cfg { cfgRoot = root } driver opts
             (head groups) group regenerate test
+        case mconcat results of
+            Failure _ -> return ()
+            Success regenerated -> do
+              removeNonRegenerated root test regenerated
     Nothing -> do
       testRunnerAction act $ HUnit.TestList
         [ (if null g then id else HUnit.TestLabel g)
             $ HUnit.TestList
             $ map (toHUnit cfg driver opts (head groups) g) tests
           | g <- groups ]
+
+    where
+      -- clean-up .out or .perf files which weren't regenerated
+      -- for instance, if a .query file was removed.
+      removeNonRegenerated root test regenerated = do
+          let path = root </> test
+          allFiles <- listDirectory path
+          let allOutFiles = filter
+                (\x -> takeExtension x == ".out" || takeExtension x == ".perf")
+                ((path </>) <$> allFiles)
+          let toDelete = filter (`notElem` regenerated) allOutFiles
+          mapM_ removePathForcibly toDelete
