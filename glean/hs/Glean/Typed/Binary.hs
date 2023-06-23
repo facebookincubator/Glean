@@ -121,7 +121,7 @@ instance Type ByteString where
     size <- FFI.ffiBuf buf $ RTS.glean_pop_value_array begin end
     ptr <- FFI.ffiBuf buf $ RTS.glean_pop_value_bytes begin end size
     BS.unsafePackMallocCStringLen (castPtr ptr, fromIntegral size)
-  sourceType _ = Angle.ArrayTy Angle.NatTy
+  sourceType _ = Angle.ArrayTy Angle.ByteTy
 
 instance Type Text where
   buildRtsValue b s = FFI.withUTF8Text s $ \p n ->
