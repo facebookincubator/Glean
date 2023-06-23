@@ -1,4 +1,4 @@
-query: src.File _
+query: scip.SymbolName _
 perf: True
 transform: [gensort, []]
 

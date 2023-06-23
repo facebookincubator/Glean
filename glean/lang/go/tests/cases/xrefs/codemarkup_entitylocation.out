@@ -1,0 +1,81 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "go": {
+          "defn": {
+            "key": {
+              "symbol": {
+                "key": "scip-go gomod github.com/facebook/time glean github.com/facebook/time/"
+              },
+              "location": {
+                "key": {
+                  "file": { "key": "leaphash.go" },
+                  "range": {
+                    "lineBegin": 11,
+                    "columnBegin": 9,
+                    "lineEnd": 11,
+                    "columnEnd": 16
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "github.com/facebook/time",
+        "file": { "key": "leaphash.go" },
+        "location": {
+          "range": {
+            "file": { "key": "leaphash.go" },
+            "lineBegin": 11,
+            "columnBegin": 9,
+            "lineEnd": 11,
+            "columnEnd": 16
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "go": {
+          "defn": {
+            "key": {
+              "symbol": {
+                "key": "scip-go gomod github.com/facebook/time glean github.com/facebook/time/Compute()."
+              },
+              "location": {
+                "key": {
+                  "file": { "key": "leaphash.go" },
+                  "range": {
+                    "lineBegin": 24,
+                    "columnBegin": 6,
+                    "lineEnd": 24,
+                    "columnEnd": 12
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "github.com/facebook/time/Compute()",
+        "file": { "key": "leaphash.go" },
+        "location": {
+          "range": {
+            "file": { "key": "leaphash.go" },
+            "lineBegin": 24,
+            "columnBegin": 6,
+            "lineEnd": 24,
+            "columnEnd": 12
+          }
+        }
+      }
+    }
+  }
+]

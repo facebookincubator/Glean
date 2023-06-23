@@ -1,4 +1,4 @@
-query: src.File _
+query: scip.DefinitionUses _
 perf: True
 transform: [gensort, []]
 

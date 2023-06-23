@@ -62,13 +62,13 @@ jobs:
       - name: Install indexer (go)
         run: |
           export GOLANG=1.17.8
-          export LSIFGO=1.7.6
+          export SCIPGO=0.1.4
           mkdir go-install; cd go-install
           wget "https://go.dev/dl/go${GOLANG}.linux-amd64.tar.gz"
           tar -C "$HOME/.hsthrift" -xzf  "go${GOLANG}.linux-amd64.tar.gz"
-          wget "https://github.com/sourcegraph/lsif-go/releases/download/v1.7.6/lsif-go_${LSIFGO}_linux_amd64.tar.gz"
-          tar xzf "lsif-go_${LSIFGO}_linux_amd64.tar.gz"
-          mkdir -p "$HOME"/.hsthrift/bin && mv lsif-go "$HOME"/.hsthrift/bin
+          wget "https://github.com/sourcegraph/scip-go/releases/download/v${SCIPGO}/scip-go_${SCIPGO}_linux_amd64.tar.gz"
+          tar xzf "scip-go_${SCIPGO}_linux_amd64.tar.gz"
+          mkdir -p "$HOME"/.hsthrift/bin && mv scip-go "$HOME"/.hsthrift/bin
           echo "$HOME/.hsthrift/go/bin" >> "$GITHUB_PATH"
 
       - name: Install indexer (rust)
