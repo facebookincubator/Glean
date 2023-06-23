@@ -41,6 +41,9 @@ setFilepath _ = GleanGlassLogger
 setRepo :: Text -> GleanGlassLogger
 setRepo _ = GleanGlassLogger
 
+setRepoOther :: [Text] -> GleanGlassLogger
+setRepoOther _ = GleanGlassLogger
+
 setSymbol :: Text -> GleanGlassLogger
 setSymbol _ = GleanGlassLogger
 

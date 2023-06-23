@@ -1208,6 +1208,7 @@ library glass-lib
         Glean.Glass.Pretty.Hack
         Glean.Glass.Pretty.LSIF
         Glean.Glass.Pretty.Python
+        Glean.Glass.Pretty.SCIP
         Glean.Glass.Query
         Glean.Glass.Query.Cxx
         Glean.Glass.Range
@@ -1224,16 +1225,19 @@ library glass-lib
         Glean.Glass.Search.Haskell
         Glean.Glass.Search.LSIF
         Glean.Glass.Search.Python
-        Glean.Glass.Search.Thrift
         Glean.Glass.SearchRelated
+        Glean.Glass.Search.SCIP
+        Glean.Glass.Search.Thrift
         Glean.Glass.SnapshotBackend
         Glean.Glass.SymbolId
         Glean.Glass.SymbolId.Buck
         Glean.Glass.SymbolId.Class
         Glean.Glass.SymbolId.Cxx
+        Glean.Glass.SymbolId.Cxx.Parse
         Glean.Glass.SymbolId.Erlang
         Glean.Glass.SymbolId.Flow
         Glean.Glass.SymbolId.Hack
+        Glean.Glass.SymbolId.SCIP
         Glean.Glass.SymbolId.Java
         Glean.Glass.SymbolId.Hs
         Glean.Glass.SymbolId.LSIF
@@ -1249,6 +1253,7 @@ library glass-lib
         glean:client-hs,
         glean:client-hs-local,
         glean:core,
+        glean:haxl-datasource,
         glean:if-glass-hs,
         glean:if-index-hs,
         glean:lib,
