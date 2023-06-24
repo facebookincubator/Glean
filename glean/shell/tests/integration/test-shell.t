@@ -2,6 +2,7 @@
 
   $ source "$TESTDIR/setup.sh"
   Creating DB using handle fbcode:glean/tools/gleancli:glean@.* (re)
+  Wrote.* (re)
 
   $ function query { "$GLEAN" --service "::1:$PORT" --minloglevel 10 shell --db "$DB" "$(echo -e $1)" ; }
 
