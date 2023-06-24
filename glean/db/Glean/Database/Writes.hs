@@ -281,8 +281,9 @@ enqueueJsonBatch env repo batch = do
   handle <- UUID.toText <$> UUID.nextRandom
   let
     jsonFactBatchSize JsonFactBatch{..} =
-      sum (map ByteString.length jsonFactBatch_facts)
-    size = sum (map jsonFactBatchSize (sendJsonBatch_batches batch)) * 2
+      sum (map ByteString.length jsonFactBatch_facts) +
+      maybe 0 ByteString.length jsonFactBatch_unit
+    size = sum (map jsonFactBatchSize (sendJsonBatch_batches batch))
   write <- enqueueWrite env repo size $
     emptySubst $ writeJsonBatch env repo batch
   when (sendJsonBatch_remember batch) $ rememberWrite env handle write
