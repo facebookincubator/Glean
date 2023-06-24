@@ -19,7 +19,7 @@ module Glean.Regression.Snapshot
   ) where
 
 import Control.Monad
-import qualified Data.ByteString.Lazy as BSL
+import qualified Data.ByteString as BS
 import qualified Data.Map.Strict as Map
 import Data.List
 import Data.Maybe
@@ -162,11 +162,11 @@ regenerate Outputs{..} = do
   base <- do
     ex <- doesFileExist outGoldenBase
     if ex
-      then Just <$> BSL.readFile outGoldenBase
+      then Just <$> BS.readFile outGoldenBase
       else return Nothing
-  generated <- BSL.readFile outGenerated
+  generated <- BS.readFile outGenerated
   -- this will either overwrite base or generate a group-specific output
-  when (base /= Just generated) $ BSL.writeFile outGoldenGroup generated
+  when (base /= Just generated) $ BS.writeFile outGoldenGroup generated
   return (Success [outGoldenGroup])
 
 -- | Compare the generated output with the appropriate golden output via `diff`.
