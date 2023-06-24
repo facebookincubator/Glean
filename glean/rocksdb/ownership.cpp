@@ -119,7 +119,7 @@ void putOwnerSet(
       container.family(Family::ownershipSets), slice(key), slice(value)));
 }
 
-std::unique_ptr<rts::OwnershipSetIterator> getSetIterator(ContainerImpl& container) {
+std::unique_ptr<rts::OwnershipSetIterator> getSetIterator(DatabaseImpl& db) {
   struct SetIterator : rts::OwnershipSetIterator {
     explicit SetIterator(
         size_t first,
@@ -162,8 +162,8 @@ std::unique_ptr<rts::OwnershipSetIterator> getSetIterator(ContainerImpl& contain
     std::unique_ptr<rocksdb::Iterator> iter;
   };
 
-  std::unique_ptr<rocksdb::Iterator> iter(container.db->NewIterator(
-      rocksdb::ReadOptions(), container.family(Family::ownershipSets)));
+  std::unique_ptr<rocksdb::Iterator> iter(db.container_.db->NewIterator(
+      rocksdb::ReadOptions(), db.container_.family(Family::ownershipSets)));
 
   if (!iter) {
     rts::error("rocksdb: couldn't allocate ownership set iterator");
@@ -181,7 +181,7 @@ std::unique_ptr<rts::OwnershipSetIterator> getSetIterator(ContainerImpl& contain
 
   iter->SeekToFirst();
   if (!iter->Valid()) {
-    first = 0;
+    first = db.next_uset_id;
     size = 0;
   } else {
     binary::Input key(byteRange(iter->key()));
@@ -197,7 +197,7 @@ std::unique_ptr<rts::OwnershipSetIterator> getSetIterator(ContainerImpl& contain
 std::unique_ptr<Usets> DatabaseImpl::loadOwnershipSets() {
   auto t = makeAutoTimer("loadOwnershipSets");
 
-  auto iter = getSetIterator(container_);
+  auto iter = getSetIterator(*this);
   auto pair = iter->sizes();
   auto first = pair.first;
   auto size = pair.second;
@@ -209,7 +209,7 @@ std::unique_ptr<Usets> DatabaseImpl::loadOwnershipSets() {
     // paranoia: check the set contents make sense
     set.foreach([first, size](UsetId id) {
       if (id >= first + size) {
-        rts::error("invalid ownershipSets: id out of range: {}", id);
+        rts::error("invalid ownershipSets: id out of range: {} {} {}", id, first, size);
       }
     });
     auto p = usets->add(std::move(set), 0);
@@ -510,7 +510,7 @@ struct StoredOwnership : Ownership {
   }
 
   std::unique_ptr<rts::OwnershipSetIterator> getSetIterator() override {
-    return impl::getSetIterator(db_->container_);
+    return impl::getSetIterator(*db_);
   }
 
   folly::Optional<UnitId> getUnitId(folly::ByteRange unit) override {
