@@ -1,1 +1,1375 @@
-[ "@generated" ]
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "(acc",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 16,
+              "columnBegin": 18,
+              "lineEnd": 16,
+              "columnEnd": 20
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 17,
+            "columnBegin": 17,
+            "lineEnd": 17,
+            "columnEnd": 19
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (acc)" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 16,
+                    "columnBegin": 18,
+                    "lineEnd": 16,
+                    "columnEnd": 20
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "(acc",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 16,
+              "columnBegin": 18,
+              "lineEnd": 16,
+              "columnEnd": 20
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 17,
+            "columnBegin": 43,
+            "lineEnd": 17,
+            "columnEnd": 45
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (acc)" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 16,
+                    "columnBegin": 18,
+                    "lineEnd": 16,
+                    "columnEnd": 20
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "(n",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 12,
+              "columnBegin": 15,
+              "lineEnd": 12,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 13,
+            "columnBegin": 11,
+            "lineEnd": 13,
+            "columnEnd": 11
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (n)" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 12,
+                    "columnBegin": 15,
+                    "lineEnd": 12,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "(n",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 12,
+              "columnBegin": 15,
+              "lineEnd": 12,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 17,
+            "columnBegin": 8,
+            "lineEnd": 17,
+            "columnEnd": 8
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (n)" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 12,
+                    "columnBegin": 15,
+                    "lineEnd": 12,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "(n",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 12,
+              "columnBegin": 15,
+              "lineEnd": 12,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 17,
+            "columnBegin": 36,
+            "lineEnd": 17,
+            "columnEnd": 36
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (n)" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 12,
+                    "columnBegin": 15,
+                    "lineEnd": 12,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "(n",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 12,
+              "columnBegin": 15,
+              "lineEnd": 12,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 17,
+            "columnBegin": 49,
+            "lineEnd": 17,
+            "columnEnd": 49
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (n)" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 12,
+                    "columnBegin": 15,
+                    "lineEnd": 12,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "(n",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 12,
+              "columnBegin": 15,
+              "lineEnd": 12,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 24,
+            "columnBegin": 17,
+            "lineEnd": 24,
+            "columnEnd": 17
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (n)" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 12,
+                    "columnBegin": 15,
+                    "lineEnd": 12,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "(n",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 12,
+              "columnBegin": 15,
+              "lineEnd": 12,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 39,
+            "columnBegin": 18,
+            "lineEnd": 39,
+            "columnEnd": 18
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (n)" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 12,
+                    "columnBegin": 15,
+                    "lineEnd": 12,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "(n",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 16,
+              "columnBegin": 10,
+              "lineEnd": 16,
+              "columnEnd": 10
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 13,
+            "columnBegin": 11,
+            "lineEnd": 13,
+            "columnEnd": 11
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (n)" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 16,
+                    "columnBegin": 10,
+                    "lineEnd": 16,
+                    "columnEnd": 10
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "(n",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 16,
+              "columnBegin": 10,
+              "lineEnd": 16,
+              "columnEnd": 10
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 17,
+            "columnBegin": 8,
+            "lineEnd": 17,
+            "columnEnd": 8
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (n)" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 16,
+                    "columnBegin": 10,
+                    "lineEnd": 16,
+                    "columnEnd": 10
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "(n",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 16,
+              "columnBegin": 10,
+              "lineEnd": 16,
+              "columnEnd": 10
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 17,
+            "columnBegin": 36,
+            "lineEnd": 17,
+            "columnEnd": 36
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (n)" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 16,
+                    "columnBegin": 10,
+                    "lineEnd": 16,
+                    "columnEnd": 10
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "(n",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 16,
+              "columnBegin": 10,
+              "lineEnd": 16,
+              "columnEnd": 10
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 17,
+            "columnBegin": 49,
+            "lineEnd": 17,
+            "columnEnd": 49
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (n)" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 16,
+                    "columnBegin": 10,
+                    "lineEnd": 16,
+                    "columnEnd": 10
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "(n",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 16,
+              "columnBegin": 10,
+              "lineEnd": 16,
+              "columnEnd": 10
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 24,
+            "columnBegin": 17,
+            "lineEnd": 24,
+            "columnEnd": 17
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (n)" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 16,
+                    "columnBegin": 10,
+                    "lineEnd": 16,
+                    "columnEnd": 10
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "(n",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 16,
+              "columnBegin": 10,
+              "lineEnd": 16,
+              "columnEnd": 10
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 39,
+            "columnBegin": 18,
+            "lineEnd": 39,
+            "columnEnd": 18
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (n)" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 16,
+                    "columnBegin": 10,
+                    "lineEnd": 16,
+                    "columnEnd": 10
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "(n",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 22,
+              "columnBegin": 15,
+              "lineEnd": 22,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 13,
+            "columnBegin": 11,
+            "lineEnd": 13,
+            "columnEnd": 11
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (n)" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 22,
+                    "columnBegin": 15,
+                    "lineEnd": 22,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "(n",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 22,
+              "columnBegin": 15,
+              "lineEnd": 22,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 17,
+            "columnBegin": 8,
+            "lineEnd": 17,
+            "columnEnd": 8
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (n)" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 22,
+                    "columnBegin": 15,
+                    "lineEnd": 22,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "(n",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 22,
+              "columnBegin": 15,
+              "lineEnd": 22,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 17,
+            "columnBegin": 36,
+            "lineEnd": 17,
+            "columnEnd": 36
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (n)" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 22,
+                    "columnBegin": 15,
+                    "lineEnd": 22,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "(n",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 22,
+              "columnBegin": 15,
+              "lineEnd": 22,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 17,
+            "columnBegin": 49,
+            "lineEnd": 17,
+            "columnEnd": 49
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (n)" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 22,
+                    "columnBegin": 15,
+                    "lineEnd": 22,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "(n",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 22,
+              "columnBegin": 15,
+              "lineEnd": 22,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 24,
+            "columnBegin": 17,
+            "lineEnd": 24,
+            "columnEnd": 17
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (n)" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 22,
+                    "columnBegin": 15,
+                    "lineEnd": 22,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "(n",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 22,
+              "columnBegin": 15,
+              "lineEnd": 22,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 39,
+            "columnBegin": 18,
+            "lineEnd": 39,
+            "columnEnd": 18
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (n)" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 22,
+                    "columnBegin": 15,
+                    "lineEnd": 22,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "(n",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 37,
+              "columnBegin": 15,
+              "lineEnd": 37,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 13,
+            "columnBegin": 11,
+            "lineEnd": 13,
+            "columnEnd": 11
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (n)" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 37,
+                    "columnBegin": 15,
+                    "lineEnd": 37,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "(n",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 37,
+              "columnBegin": 15,
+              "lineEnd": 37,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 17,
+            "columnBegin": 8,
+            "lineEnd": 17,
+            "columnEnd": 8
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (n)" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 37,
+                    "columnBegin": 15,
+                    "lineEnd": 37,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "(n",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 37,
+              "columnBegin": 15,
+              "lineEnd": 37,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 17,
+            "columnBegin": 36,
+            "lineEnd": 17,
+            "columnEnd": 36
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (n)" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 37,
+                    "columnBegin": 15,
+                    "lineEnd": 37,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "(n",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 37,
+              "columnBegin": 15,
+              "lineEnd": 37,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 17,
+            "columnBegin": 49,
+            "lineEnd": 17,
+            "columnEnd": 49
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (n)" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 37,
+                    "columnBegin": 15,
+                    "lineEnd": 37,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "(n",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 37,
+              "columnBegin": 15,
+              "lineEnd": 37,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 24,
+            "columnBegin": 17,
+            "lineEnd": 24,
+            "columnEnd": 17
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (n)" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 37,
+                    "columnBegin": 15,
+                    "lineEnd": 37,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "(n",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 37,
+              "columnBegin": 15,
+              "lineEnd": 37,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 39,
+            "columnBegin": 18,
+            "lineEnd": 39,
+            "columnEnd": 18
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (n)" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 37,
+                    "columnBegin": 15,
+                    "lineEnd": 37,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "f1_go()",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 16,
+              "columnBegin": 4,
+              "lineEnd": 16,
+              "columnEnd": 8
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 13,
+            "columnBegin": 5,
+            "lineEnd": 13,
+            "columnEnd": 9
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "rust-analyzer cargo basics 0.1.0 f1_go()." },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 16,
+                    "columnBegin": 4,
+                    "lineEnd": 16,
+                    "columnEnd": 8
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "f1_go()",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 16,
+              "columnBegin": 4,
+              "lineEnd": 16,
+              "columnEnd": 8
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 17,
+            "columnBegin": 30,
+            "lineEnd": 17,
+            "columnEnd": 34
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "rust-analyzer cargo basics 0.1.0 f1_go()." },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 16,
+                    "columnBegin": 4,
+                    "lineEnd": 16,
+                    "columnEnd": 8
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

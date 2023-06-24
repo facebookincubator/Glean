@@ -2,8 +2,62 @@
     "@generated",
     {
         "revision": "testhash",
-        "size": 0,
-        "symbols": {},
+        "size": 2,
+        "symbols": {
+            "11": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 1
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 14
+                        },
+                        "symbolName": {
+                            "aString": "github.com/facebook/time/"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 17,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "sym": "test/go/scip-go/gomod/github.com%2Ffacebook%2Ftime/glean/github.com%2Ffacebook%2Ftime%2F"
+                }
+            ],
+            "24": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 14
+                        },
+                        "symbolName": {
+                            "aString": "github.com/facebook/time/Compute()."
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "Compute returns the sha1 sum of all non whitespace characters in data\nexcluding comments. Since it includes logic for special lines specific\nto the leap-second.list format its not a general purpose function and\nshould be only used to verify the integrity of an official leap-second.list\ndocument."
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 13,
+                        "lineBegin": 24,
+                        "lineEnd": 24
+                    },
+                    "sym": "test/go/scip-go/gomod/github.com%2Ffacebook%2Ftime/glean/github.com%2Ffacebook%2Ftime%2FCompute%28%29."
+                }
+            ]
+        },
         "truncated": false
     }
 ]

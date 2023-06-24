@@ -1,7 +1,84 @@
 [
     "@generated",
     {
-        "definitions": [],
+        "definitions": [
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "github.com/facebook/time/"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 9,
+                    "columnEnd": 17,
+                    "lineBegin": 11,
+                    "lineEnd": 11
+                },
+                "sym": "test/go/scip-go/gomod/github.com%2Ffacebook%2Ftime/glean/github.com%2Ffacebook%2Ftime%2F"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "github.com/facebook/time/Compute()."
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Compute returns the sha1 sum of all non whitespace characters in data\nexcluding comments. Since it includes logic for special lines specific\nto the leap-second.list format its not a general purpose function and\nshould be only used to verify the integrity of an official leap-second.list\ndocument."
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 6,
+                    "columnEnd": 13,
+                    "lineBegin": 24,
+                    "lineEnd": 24
+                },
+                "sym": "test/go/scip-go/gomod/github.com%2Ffacebook%2Ftime/glean/github.com%2Ffacebook%2Ftime%2FCompute%28%29."
+            }
+        ],
         "references": [],
         "revision": "testhash",
         "truncated": false
