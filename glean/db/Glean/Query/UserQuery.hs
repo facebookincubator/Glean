@@ -228,6 +228,7 @@ withEncoding
 withEncoding (Thrift.UserQueryEncoding_bin x) f = Just $ f x
 withEncoding (Thrift.UserQueryEncoding_json x) f = Just $ f x
 withEncoding (Thrift.UserQueryEncoding_compact x) f = Just $ f x
+withEncoding (Thrift.UserQueryEncoding_listbin x) f = Just $ f x
 withEncoding _ _ = Nothing
 
 chooseEncoding
@@ -337,6 +338,29 @@ instance Encoding Thrift.UserQueryEncodingBin where
               $ coerce
               $ resFacts res
           , userQueryResultsBin_nestedFacts =
+              Map.fromList
+              $ map (first fromIntegral)
+              $ IntMap.toList
+              $ resNestedFacts res
+          }
+    }
+
+instance Encoding Thrift.UserQueryEncodingListBin where
+  type EncodedFact Thrift.UserQueryEncodingListBin = Thrift.Fact
+
+  shouldExpand _ = False
+
+  serializeFact _ _ _ _ = return
+
+  setResults enc res qres = qres
+    { Thrift.userQueryResults_results = Thrift.UserQueryEncodedResults_listbin
+        Thrift.UserQueryResultsListBin
+          { userQueryResultsListBin_encoding = enc
+          , userQueryResultsListBin_ids =
+              coerce $ Vector.fromList (map fst (resFacts res))
+          , userQueryResultsListBin_facts =
+              Vector.fromList (map snd (resFacts res))
+          , userQueryResultsListBin_nestedFacts =
               Map.fromList
               $ map (first fromIntegral)
               $ IntMap.toList

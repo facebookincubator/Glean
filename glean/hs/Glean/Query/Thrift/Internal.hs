@@ -55,6 +55,7 @@ import Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import Data.Text.Prettyprint.Doc hiding ((<>))
 import qualified Text.JSON
+import qualified Data.Vector as Vector
 import Text.Printf
 
 import Util.Log
@@ -93,6 +94,17 @@ decodeResults results decoder =
             | (id,f) <- Map.toList userQueryResultsBin_nestedFacts ]
       forM (Map.toList userQueryResultsBin_facts) $ \(fid, fact) -> do
         liftIO $ decoder serialized cacheRef (Typed.IdOf (Fid fid)) fact
+
+    UserQueryEncodedResults_listbin UserQueryResultsListBin{..} -> do
+      cacheRef <- newIORef IntMap.empty
+      let serialized = IntMap.fromList
+            [ (fromIntegral id,f)
+            | (id,f) <- Map.toList userQueryResultsListBin_nestedFacts ]
+          fids = Vector.toList userQueryResultsListBin_ids
+          facts = Vector.toList userQueryResultsListBin_facts
+          f fid fact = liftIO $
+            decoder serialized cacheRef (Typed.IdOf (Fid fid)) fact
+      zipWithM f fids facts
 
     _other -> throwIO $ ErrorCall
       "runQueryPage: server returned the wrong encoding"

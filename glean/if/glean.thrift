@@ -539,6 +539,9 @@ struct QueryDebugOptions {
 # Encode results using Glean's internal binary representation
 struct UserQueryEncodingBin {}
 
+# Encode results using Glean's internal binary representation, ordered
+struct UserQueryEncodingListBin {}
+
 # Encode results as JSON
 struct UserQueryEncodingJSON {
   1: bool expand_results = false;
@@ -582,6 +585,7 @@ union UserQueryEncoding {
   1: UserQueryEncodingBin bin;
   2: UserQueryEncodingJSON json;
   3: UserQueryEncodingCompact compact;
+  4: UserQueryEncodingListBin listbin;
 }
 
 struct DerivePredicateQuery {
@@ -784,6 +788,13 @@ struct UserQueryResultsBin {
   3: map<Id, Fact> nestedFacts;
 }
 
+struct UserQueryResultsListBin {
+  1: UserQueryEncodingListBin encoding;
+  2: list<Id> (hs.type = "Vector") ids;
+  3: list<Fact> (hs.type = "Vector") facts;
+  4: map<Id, Fact> nestedFacts;
+}
+
 # Results in JSON
 struct UserQueryResultsJSON {
   1: UserQueryEncodingJSON encoding;
@@ -803,6 +814,7 @@ union UserQueryEncodedResults {
   1: UserQueryResultsBin bin;
   2: UserQueryResultsJSON json;
   3: UserQueryResultsCompact compact;
+  4: UserQueryResultsListBin listbin;
 }
 
 struct UserQueryResults {

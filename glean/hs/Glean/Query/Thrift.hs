@@ -92,7 +92,10 @@ runQueryPage be repo cont (Query query) = do
       { userQuery_options = Just
           (fromMaybe def (userQuery_options query))
             { userQueryOptions_continuation = cont }
-      , userQuery_encodings = [UserQueryEncoding_bin def]
+      , userQuery_encodings = [
+          UserQueryEncoding_listbin def,
+          UserQueryEncoding_bin def
+        ]
       , userQuery_schema_id = schemaId be
       }
   UserQueryResults{..} <- userQuery be repo query'
