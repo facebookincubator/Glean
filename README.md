@@ -37,9 +37,12 @@ There is currently full support for:
 * [Haskell](https://glean.software/docs/indexer/haskell)
 * [JavaScript/Flow](https://glean.software/docs/indexer/flow)
 
-We are actively adding support for:
+We also support the [SCIP](https://github.com/sourcegraph/scip) or [LSIF](https://lsif.dev) code indexing formats, for:
 
-* Rust
+* [Rust (via rust-analyzer)](https://glean.software/docs/indexer/lsif-rust)
+* [Go](https://glean.software/docs/indexer/lsif-go)
+* [TypeScript](https://glean.software/docs/indexer/lsif-typescript)
+* [Java](https://glean.software/docs/indexer/lsif-java)
 
 Indexers for these languages exist but aren't in the open source
 release yet; we hope to make these available in the future:
@@ -47,20 +50,10 @@ release yet; we hope to make these available in the future:
 * Python
 * Objective-C
 * Java
+* Kotlin
 * Erlang
 * Thrift
 * Buck
-
-We have also added support for the [LSIF](https://lsif.dev) code indexing format.
-The following LSIF indexers are supported:
-
-* [TypeScript](https://glean.software/docs/indexer/lsif-typescript)
-* [Go](https://glean.software/docs/indexer/lsif-go)
-* [Rust](https://glean.software/docs/indexer/lsif-rust)
-* [Java](https://glean.software/docs/indexer/lsif-java)
-
-LSIF indexers are more limited than full language indexers, but are sufficient
-for common code navigation and symbol search use cases.
 
 ## License
 

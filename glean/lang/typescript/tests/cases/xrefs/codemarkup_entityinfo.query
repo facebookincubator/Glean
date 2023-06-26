@@ -1,0 +1,4 @@
+query: codemarkup.scip.EntityInfo { entity = { typescript = { defn = _ } } }
+perf: True
+transform: [gensort, []]
+

@@ -1,3 +1,0 @@
-query: I where codemarkup.EntityInfo { entity = { lsif = { typescript = _ } }, info = I }
-perf: True
-transform: [gensort, []]

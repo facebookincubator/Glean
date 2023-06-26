@@ -1,4 +1,0 @@
-query: |
-    {F,X,D} where codemarkup.FileEntityXRefLocations { file = F, xref = X, entity = { lsif = { typescript = { defn = { defn = D } } } } }
-perf: True
-transform: [gensort, []]

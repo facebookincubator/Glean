@@ -1,7 +1,1 @@
-[
-  "@generated",
-  {
-    "key": "@sourcegraph/lsif-tsc/node_modules/typescript-lsif/lib/lib.es5.d.ts"
-  },
-  { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" }
-]
+[ "@generated", { "key": "example.ts" } ]

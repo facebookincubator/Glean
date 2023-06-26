@@ -1,6 +1,0 @@
-query: |
-  D where
-    D = lsif.Definition { file = { file = "glean/lang/typescript/tests/cases/xrefs/example.ts" }, range = { text = "fs" } };
-    lsif.DefinitionMoniker { D, { just = { ident = _ } } };
-perf: True
-transform: [gensort, []]

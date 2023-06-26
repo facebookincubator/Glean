@@ -2,1195 +2,17 @@
   "@generated",
   {
     "key": {
-      "file": {
-        "key": {
-          "file": {
-            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-          },
-          "language": 49
-        }
+      "symbol": {
+        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#"
       },
-      "range": {
+      "location": {
         "key": {
-          "range": {
-            "lineBegin": 16,
-            "columnBegin": 17,
-            "lineEnd": 16,
-            "columnEnd": 21
-          },
-          "text": { "key": "shell" }
-        }
-      },
-      "target": {
-        "key": {
-          "file": {
-            "key": {
-              "file": {
-                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-              },
-              "language": 49
-            }
-          },
-          "range": {
-            "key": {
-              "range": {
-                "lineBegin": 12,
-                "columnBegin": 8,
-                "lineEnd": 12,
-                "columnEnd": 12
-              },
-              "fullRange": {
-                "lineBegin": 12,
-                "columnBegin": 8,
-                "lineEnd": 12,
-                "columnEnd": 12
-              },
-              "text": { "key": "shell" }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": {
-        "key": {
-          "file": {
-            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-          },
-          "language": 49
-        }
-      },
-      "range": {
-        "key": {
-          "range": {
-            "lineBegin": 16,
-            "columnBegin": 46,
-            "lineEnd": 16,
-            "columnEnd": 48
-          },
-          "text": { "key": "dir" }
-        }
-      },
-      "target": {
-        "key": {
-          "file": {
-            "key": {
-              "file": {
-                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-              },
-              "language": 49
-            }
-          },
-          "range": {
-            "key": {
-              "range": {
-                "lineBegin": 15,
-                "columnBegin": 23,
-                "lineEnd": 15,
-                "columnEnd": 25
-              },
-              "fullRange": {
-                "lineBegin": 15,
-                "columnBegin": 15,
-                "lineEnd": 15,
-                "columnEnd": 33
-              },
-              "text": { "key": "dir" }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": {
-        "key": {
-          "file": {
-            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-          },
-          "language": 49
-        }
-      },
-      "range": {
-        "key": {
-          "range": {
-            "lineBegin": 17,
-            "columnBegin": 9,
-            "lineEnd": 17,
-            "columnEnd": 11
-          },
-          "text": { "key": "res" }
-        }
-      },
-      "target": {
-        "key": {
-          "file": {
-            "key": {
-              "file": {
-                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-              },
-              "language": 49
-            }
-          },
-          "range": {
-            "key": {
-              "range": {
-                "lineBegin": 16,
-                "columnBegin": 11,
-                "lineEnd": 16,
-                "columnEnd": 13
-              },
-              "fullRange": {
-                "lineBegin": 16,
-                "columnBegin": 11,
-                "lineEnd": 16,
-                "columnEnd": 64
-              },
-              "text": { "key": "res" }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": {
-        "key": {
-          "file": {
-            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-          },
-          "language": 49
-        }
-      },
-      "range": {
-        "key": {
-          "range": {
-            "lineBegin": 18,
-            "columnBegin": 17,
-            "lineEnd": 18,
-            "columnEnd": 21
-          },
-          "text": { "key": "Error" }
-        }
-      },
-      "target": {
-        "key": {
-          "file": {
-            "key": {
-              "file": {
-                "key": "@sourcegraph/lsif-tsc/node_modules/typescript-lsif/lib/lib.es5.d.ts"
-              },
-              "language": 49
-            }
-          },
-          "range": {
-            "key": {
-              "range": {
-                "lineBegin": 972,
-                "columnBegin": 11,
-                "lineEnd": 972,
-                "columnEnd": 15
-              },
-              "fullRange": {
-                "lineBegin": 972,
-                "columnBegin": 1,
-                "lineEnd": 976,
-                "columnEnd": 1
-              },
-              "text": { "key": "Error" }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": {
-        "key": {
-          "file": {
-            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-          },
-          "language": 49
-        }
-      },
-      "range": {
-        "key": {
-          "range": {
-            "lineBegin": 18,
-            "columnBegin": 17,
-            "lineEnd": 18,
-            "columnEnd": 21
-          },
-          "text": { "key": "Error" }
-        }
-      },
-      "target": {
-        "key": {
-          "file": {
-            "key": {
-              "file": {
-                "key": "@sourcegraph/lsif-tsc/node_modules/typescript-lsif/lib/lib.es5.d.ts"
-              },
-              "language": 49
-            }
-          },
-          "range": {
-            "key": {
-              "range": {
-                "lineBegin": 984,
-                "columnBegin": 13,
-                "lineEnd": 984,
-                "columnEnd": 17
-              },
-              "fullRange": {
-                "lineBegin": 984,
-                "columnBegin": 13,
-                "lineEnd": 984,
-                "columnEnd": 35
-              },
-              "text": { "key": "Error" }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": {
-        "key": {
-          "file": {
-            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-          },
-          "language": 49
-        }
-      },
-      "range": {
-        "key": {
-          "range": {
-            "lineBegin": 18,
-            "columnBegin": 52,
-            "lineEnd": 18,
-            "columnEnd": 54
-          },
-          "text": { "key": "res" }
-        }
-      },
-      "target": {
-        "key": {
-          "file": {
-            "key": {
-              "file": {
-                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-              },
-              "language": 49
-            }
-          },
-          "range": {
-            "key": {
-              "range": {
-                "lineBegin": 16,
-                "columnBegin": 11,
-                "lineEnd": 16,
-                "columnEnd": 13
-              },
-              "fullRange": {
-                "lineBegin": 16,
-                "columnBegin": 11,
-                "lineEnd": 16,
-                "columnEnd": 64
-              },
-              "text": { "key": "res" }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": {
-        "key": {
-          "file": {
-            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-          },
-          "language": 49
-        }
-      },
-      "range": {
-        "key": {
-          "range": {
-            "lineBegin": 19,
-            "columnBegin": 11,
-            "lineEnd": 19,
-            "columnEnd": 13
-          },
-          "text": { "key": "res" }
-        }
-      },
-      "target": {
-        "key": {
-          "file": {
-            "key": {
-              "file": {
-                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-              },
-              "language": 49
-            }
-          },
-          "range": {
-            "key": {
-              "range": {
-                "lineBegin": 16,
-                "columnBegin": 11,
-                "lineEnd": 16,
-                "columnEnd": 13
-              },
-              "fullRange": {
-                "lineBegin": 16,
-                "columnBegin": 11,
-                "lineEnd": 16,
-                "columnEnd": 64
-              },
-              "text": { "key": "res" }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": {
-        "key": {
-          "file": {
-            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-          },
-          "language": 49
-        }
-      },
-      "range": {
-        "key": {
-          "range": {
-            "lineBegin": 20,
-            "columnBegin": 11,
-            "lineEnd": 20,
-            "columnEnd": 13
-          },
-          "text": { "key": "res" }
-        }
-      },
-      "target": {
-        "key": {
-          "file": {
-            "key": {
-              "file": {
-                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-              },
-              "language": 49
-            }
-          },
-          "range": {
-            "key": {
-              "range": {
-                "lineBegin": 16,
-                "columnBegin": 11,
-                "lineEnd": 16,
-                "columnEnd": 13
-              },
-              "fullRange": {
-                "lineBegin": 16,
-                "columnBegin": 11,
-                "lineEnd": 16,
-                "columnEnd": 64
-              },
-              "text": { "key": "res" }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": {
-        "key": {
-          "file": {
-            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-          },
-          "language": 49
-        }
-      },
-      "range": {
-        "key": {
-          "range": {
-            "lineBegin": 23,
-            "columnBegin": 5,
-            "lineEnd": 23,
-            "columnEnd": 9
-          },
-          "text": { "key": "shell" }
-        }
-      },
-      "target": {
-        "key": {
-          "file": {
-            "key": {
-              "file": {
-                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-              },
-              "language": 49
-            }
-          },
-          "range": {
-            "key": {
-              "range": {
-                "lineBegin": 12,
-                "columnBegin": 8,
-                "lineEnd": 12,
-                "columnEnd": 12
-              },
-              "fullRange": {
-                "lineBegin": 12,
-                "columnBegin": 8,
-                "lineEnd": 12,
-                "columnEnd": 12
-              },
-              "text": { "key": "shell" }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": {
-        "key": {
-          "file": {
-            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-          },
-          "language": 49
-        }
-      },
-      "range": {
-        "key": {
-          "range": {
-            "lineBegin": 24,
-            "columnBegin": 12,
-            "lineEnd": 24,
-            "columnEnd": 14
-          },
-          "text": { "key": "dir" }
-        }
-      },
-      "target": {
-        "key": {
-          "file": {
-            "key": {
-              "file": {
-                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-              },
-              "language": 49
-            }
-          },
-          "range": {
-            "key": {
-              "range": {
-                "lineBegin": 15,
-                "columnBegin": 23,
-                "lineEnd": 15,
-                "columnEnd": 25
-              },
-              "fullRange": {
-                "lineBegin": 15,
-                "columnBegin": 15,
-                "lineEnd": 15,
-                "columnEnd": 33
-              },
-              "text": { "key": "dir" }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": {
-        "key": {
-          "file": {
-            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-          },
-          "language": 49
-        }
-      },
-      "range": {
-        "key": {
-          "range": {
-            "lineBegin": 27,
-            "columnBegin": 5,
-            "lineEnd": 27,
-            "columnEnd": 9
-          },
-          "text": { "key": "shell" }
-        }
-      },
-      "target": {
-        "key": {
-          "file": {
-            "key": {
-              "file": {
-                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-              },
-              "language": 49
-            }
-          },
-          "range": {
-            "key": {
-              "range": {
-                "lineBegin": 12,
-                "columnBegin": 8,
-                "lineEnd": 12,
-                "columnEnd": 12
-              },
-              "fullRange": {
-                "lineBegin": 12,
-                "columnBegin": 8,
-                "lineEnd": 12,
-                "columnEnd": 12
-              },
-              "text": { "key": "shell" }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": {
-        "key": {
-          "file": {
-            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-          },
-          "language": 49
-        }
-      },
-      "range": {
-        "key": {
-          "range": {
-            "lineBegin": 27,
-            "columnBegin": 53,
-            "lineEnd": 27,
-            "columnEnd": 55
-          },
-          "text": { "key": "dir" }
-        }
-      },
-      "target": {
-        "key": {
-          "file": {
-            "key": {
-              "file": {
-                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-              },
-              "language": 49
-            }
-          },
-          "range": {
-            "key": {
-              "range": {
-                "lineBegin": 15,
-                "columnBegin": 23,
-                "lineEnd": 15,
-                "columnEnd": 25
-              },
-              "fullRange": {
-                "lineBegin": 15,
-                "columnBegin": 15,
-                "lineEnd": 15,
-                "columnEnd": 33
-              },
-              "text": { "key": "dir" }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": {
-        "key": {
-          "file": {
-            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-          },
-          "language": 49
-        }
-      },
-      "range": {
-        "key": {
-          "range": {
-            "lineBegin": 29,
-            "columnBegin": 5,
-            "lineEnd": 29,
-            "columnEnd": 9
-          },
-          "text": { "key": "shell" }
-        }
-      },
-      "target": {
-        "key": {
-          "file": {
-            "key": {
-              "file": {
-                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-              },
-              "language": 49
-            }
-          },
-          "range": {
-            "key": {
-              "range": {
-                "lineBegin": 12,
-                "columnBegin": 8,
-                "lineEnd": 12,
-                "columnEnd": 12
-              },
-              "fullRange": {
-                "lineBegin": 12,
-                "columnBegin": 8,
-                "lineEnd": 12,
-                "columnEnd": 12
-              },
-              "text": { "key": "shell" }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": {
-        "key": {
-          "file": {
-            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-          },
-          "language": 49
-        }
-      },
-      "range": {
-        "key": {
-          "range": {
-            "lineBegin": 30,
-            "columnBegin": 12,
-            "lineEnd": 30,
-            "columnEnd": 14
-          },
-          "text": { "key": "dir" }
-        }
-      },
-      "target": {
-        "key": {
-          "file": {
-            "key": {
-              "file": {
-                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-              },
-              "language": 49
-            }
-          },
-          "range": {
-            "key": {
-              "range": {
-                "lineBegin": 15,
-                "columnBegin": 23,
-                "lineEnd": 15,
-                "columnEnd": 25
-              },
-              "fullRange": {
-                "lineBegin": 15,
-                "columnBegin": 15,
-                "lineEnd": 15,
-                "columnEnd": 33
-              },
-              "text": { "key": "dir" }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": {
-        "key": {
-          "file": {
-            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-          },
-          "language": 49
-        }
-      },
-      "range": {
-        "key": {
-          "range": {
-            "lineBegin": 35,
-            "columnBegin": 20,
-            "lineEnd": 35,
-            "columnEnd": 24
-          },
-          "text": { "key": "shell" }
-        }
-      },
-      "target": {
-        "key": {
-          "file": {
-            "key": {
-              "file": {
-                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-              },
-              "language": 49
-            }
-          },
-          "range": {
-            "key": {
-              "range": {
-                "lineBegin": 12,
-                "columnBegin": 8,
-                "lineEnd": 12,
-                "columnEnd": 12
-              },
-              "fullRange": {
-                "lineBegin": 12,
-                "columnBegin": 8,
-                "lineEnd": 12,
-                "columnEnd": 12
-              },
-              "text": { "key": "shell" }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": {
-        "key": {
-          "file": {
-            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-          },
-          "language": 49
-        }
-      },
-      "range": {
-        "key": {
-          "range": {
-            "lineBegin": 35,
-            "columnBegin": 55,
-            "lineEnd": 35,
-            "columnEnd": 57
-          },
-          "text": { "key": "dir" }
-        }
-      },
-      "target": {
-        "key": {
-          "file": {
-            "key": {
-              "file": {
-                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-              },
-              "language": 49
-            }
-          },
-          "range": {
-            "key": {
-              "range": {
-                "lineBegin": 15,
-                "columnBegin": 23,
-                "lineEnd": 15,
-                "columnEnd": 25
-              },
-              "fullRange": {
-                "lineBegin": 15,
-                "columnBegin": 15,
-                "lineEnd": 15,
-                "columnEnd": 33
-              },
-              "text": { "key": "dir" }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": {
-        "key": {
-          "file": {
-            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-          },
-          "language": 49
-        }
-      },
-      "range": {
-        "key": {
-          "range": {
-            "lineBegin": 36,
-            "columnBegin": 9,
-            "lineEnd": 36,
-            "columnEnd": 14
-          },
-          "text": { "key": "addRes" }
-        }
-      },
-      "target": {
-        "key": {
-          "file": {
-            "key": {
-              "file": {
-                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-              },
-              "language": 49
-            }
-          },
-          "range": {
-            "key": {
-              "range": {
-                "lineBegin": 35,
-                "columnBegin": 11,
-                "lineEnd": 35,
-                "columnEnd": 16
-              },
-              "fullRange": {
-                "lineBegin": 35,
-                "columnBegin": 11,
-                "lineEnd": 35,
-                "columnEnd": 73
-              },
-              "text": { "key": "addRes" }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": {
-        "key": {
-          "file": {
-            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-          },
-          "language": 49
-        }
-      },
-      "range": {
-        "key": {
-          "range": {
-            "lineBegin": 37,
-            "columnBegin": 17,
-            "lineEnd": 37,
-            "columnEnd": 21
-          },
-          "text": { "key": "Error" }
-        }
-      },
-      "target": {
-        "key": {
-          "file": {
-            "key": {
-              "file": {
-                "key": "@sourcegraph/lsif-tsc/node_modules/typescript-lsif/lib/lib.es5.d.ts"
-              },
-              "language": 49
-            }
-          },
-          "range": {
-            "key": {
-              "range": {
-                "lineBegin": 972,
-                "columnBegin": 11,
-                "lineEnd": 972,
-                "columnEnd": 15
-              },
-              "fullRange": {
-                "lineBegin": 972,
-                "columnBegin": 1,
-                "lineEnd": 976,
-                "columnEnd": 1
-              },
-              "text": { "key": "Error" }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": {
-        "key": {
-          "file": {
-            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-          },
-          "language": 49
-        }
-      },
-      "range": {
-        "key": {
-          "range": {
-            "lineBegin": 37,
-            "columnBegin": 17,
-            "lineEnd": 37,
-            "columnEnd": 21
-          },
-          "text": { "key": "Error" }
-        }
-      },
-      "target": {
-        "key": {
-          "file": {
-            "key": {
-              "file": {
-                "key": "@sourcegraph/lsif-tsc/node_modules/typescript-lsif/lib/lib.es5.d.ts"
-              },
-              "language": 49
-            }
-          },
-          "range": {
-            "key": {
-              "range": {
-                "lineBegin": 984,
-                "columnBegin": 13,
-                "lineEnd": 984,
-                "columnEnd": 17
-              },
-              "fullRange": {
-                "lineBegin": 984,
-                "columnBegin": 13,
-                "lineEnd": 984,
-                "columnEnd": 35
-              },
-              "text": { "key": "Error" }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": {
-        "key": {
-          "file": {
-            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-          },
-          "language": 49
-        }
-      },
-      "range": {
-        "key": {
-          "range": {
-            "lineBegin": 37,
-            "columnBegin": 51,
-            "lineEnd": 37,
-            "columnEnd": 56
-          },
-          "text": { "key": "addRes" }
-        }
-      },
-      "target": {
-        "key": {
-          "file": {
-            "key": {
-              "file": {
-                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-              },
-              "language": 49
-            }
-          },
-          "range": {
-            "key": {
-              "range": {
-                "lineBegin": 35,
-                "columnBegin": 11,
-                "lineEnd": 35,
-                "columnEnd": 16
-              },
-              "fullRange": {
-                "lineBegin": 35,
-                "columnBegin": 11,
-                "lineEnd": 35,
-                "columnEnd": 73
-              },
-              "text": { "key": "addRes" }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": {
-        "key": {
-          "file": {
-            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-          },
-          "language": 49
-        }
-      },
-      "range": {
-        "key": {
-          "range": {
-            "lineBegin": 38,
-            "columnBegin": 11,
-            "lineEnd": 38,
-            "columnEnd": 16
-          },
-          "text": { "key": "addRes" }
-        }
-      },
-      "target": {
-        "key": {
-          "file": {
-            "key": {
-              "file": {
-                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-              },
-              "language": 49
-            }
-          },
-          "range": {
-            "key": {
-              "range": {
-                "lineBegin": 35,
-                "columnBegin": 11,
-                "lineEnd": 35,
-                "columnEnd": 16
-              },
-              "fullRange": {
-                "lineBegin": 35,
-                "columnBegin": 11,
-                "lineEnd": 35,
-                "columnEnd": 73
-              },
-              "text": { "key": "addRes" }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": {
-        "key": {
-          "file": {
-            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-          },
-          "language": 49
-        }
-      },
-      "range": {
-        "key": {
-          "range": {
-            "lineBegin": 39,
-            "columnBegin": 11,
-            "lineEnd": 39,
-            "columnEnd": 16
-          },
-          "text": { "key": "addRes" }
-        }
-      },
-      "target": {
-        "key": {
-          "file": {
-            "key": {
-              "file": {
-                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-              },
-              "language": 49
-            }
-          },
-          "range": {
-            "key": {
-              "range": {
-                "lineBegin": 35,
-                "columnBegin": 11,
-                "lineEnd": 35,
-                "columnEnd": 16
-              },
-              "fullRange": {
-                "lineBegin": 35,
-                "columnBegin": 11,
-                "lineEnd": 35,
-                "columnEnd": 73
-              },
-              "text": { "key": "addRes" }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": {
-        "key": {
-          "file": {
-            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-          },
-          "language": 49
-        }
-      },
-      "range": {
-        "key": {
+          "file": { "key": "example.ts" },
           "range": {
             "lineBegin": 46,
             "columnBegin": 58,
             "lineEnd": 46,
             "columnEnd": 60
-          },
-          "text": { "key": "Git" }
-        }
-      },
-      "target": {
-        "key": {
-          "file": {
-            "key": {
-              "file": {
-                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-              },
-              "language": 49
-            }
-          },
-          "range": {
-            "key": {
-              "range": {
-                "lineBegin": 14,
-                "columnBegin": 7,
-                "lineEnd": 14,
-                "columnEnd": 9
-              },
-              "fullRange": {
-                "lineBegin": 14,
-                "columnBegin": 1,
-                "lineEnd": 42,
-                "columnEnd": 3
-              },
-              "text": { "key": "Git" }
-            }
           }
         }
       }
@@ -1198,207 +20,17 @@
   },
   {
     "key": {
-      "file": {
-        "key": {
-          "file": {
-            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-          },
-          "language": 49
-        }
+      "symbol": {
+        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#`<constructor>`()."
       },
-      "range": {
+      "location": {
         "key": {
-          "range": {
-            "lineBegin": 47,
-            "columnBegin": 19,
-            "lineEnd": 47,
-            "columnEnd": 20
-          },
-          "text": { "key": "fs" }
-        }
-      },
-      "target": {
-        "key": {
-          "file": {
-            "key": {
-              "file": {
-                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-              },
-              "language": 49
-            }
-          },
-          "range": {
-            "key": {
-              "range": {
-                "lineBegin": 9,
-                "columnBegin": 8,
-                "lineEnd": 9,
-                "columnEnd": 9
-              },
-              "fullRange": {
-                "lineBegin": 9,
-                "columnBegin": 8,
-                "lineEnd": 9,
-                "columnEnd": 9
-              },
-              "text": { "key": "fs" }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": {
-        "key": {
-          "file": {
-            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-          },
-          "language": 49
-        }
-      },
-      "range": {
-        "key": {
-          "range": {
-            "lineBegin": 47,
-            "columnBegin": 34,
-            "lineEnd": 47,
-            "columnEnd": 37
-          },
-          "text": { "key": "path" }
-        }
-      },
-      "target": {
-        "key": {
-          "file": {
-            "key": {
-              "file": {
-                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-              },
-              "language": 49
-            }
-          },
-          "range": {
-            "key": {
-              "range": {
-                "lineBegin": 11,
-                "columnBegin": 8,
-                "lineEnd": 11,
-                "columnEnd": 11
-              },
-              "fullRange": {
-                "lineBegin": 11,
-                "columnBegin": 8,
-                "lineEnd": 11,
-                "columnEnd": 11
-              },
-              "text": { "key": "path" }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": {
-        "key": {
-          "file": {
-            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-          },
-          "language": 49
-        }
-      },
-      "range": {
-        "key": {
-          "range": {
-            "lineBegin": 47,
-            "columnBegin": 44,
-            "lineEnd": 47,
-            "columnEnd": 45
-          },
-          "text": { "key": "os" }
-        }
-      },
-      "target": {
-        "key": {
-          "file": {
-            "key": {
-              "file": {
-                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-              },
-              "language": 49
-            }
-          },
-          "range": {
-            "key": {
-              "range": {
-                "lineBegin": 10,
-                "columnBegin": 8,
-                "lineEnd": 10,
-                "columnEnd": 9
-              },
-              "fullRange": {
-                "lineBegin": 10,
-                "columnBegin": 8,
-                "lineEnd": 10,
-                "columnEnd": 9
-              },
-              "text": { "key": "os" }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": {
-        "key": {
-          "file": {
-            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-          },
-          "language": 49
-        }
-      },
-      "range": {
-        "key": {
+          "file": { "key": "example.ts" },
           "range": {
             "lineBegin": 49,
             "columnBegin": 19,
             "lineEnd": 49,
             "columnEnd": 21
-          },
-          "text": { "key": "Git" }
-        }
-      },
-      "target": {
-        "key": {
-          "file": {
-            "key": {
-              "file": {
-                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-              },
-              "language": 49
-            }
-          },
-          "range": {
-            "key": {
-              "range": {
-                "lineBegin": 14,
-                "columnBegin": 7,
-                "lineEnd": 14,
-                "columnEnd": 9
-              },
-              "fullRange": {
-                "lineBegin": 14,
-                "columnBegin": 1,
-                "lineEnd": 42,
-                "columnEnd": 3
-              },
-              "text": { "key": "Git" }
-            }
           }
         }
       }
@@ -1406,51 +38,197 @@
   },
   {
     "key": {
-      "file": {
-        "key": {
-          "file": {
-            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-          },
-          "language": 49
-        }
+      "symbol": {
+        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#`<constructor>`().(dir)"
       },
-      "range": {
+      "location": {
         "key": {
+          "file": { "key": "example.ts" },
           "range": {
-            "lineBegin": 49,
-            "columnBegin": 23,
-            "lineEnd": 49,
-            "columnEnd": 29
-          },
-          "text": { "key": "repoDir" }
+            "lineBegin": 16,
+            "columnBegin": 46,
+            "lineEnd": 16,
+            "columnEnd": 48
+          }
         }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#`<constructor>`().(dir)"
       },
-      "target": {
+      "location": {
         "key": {
-          "file": {
-            "key": {
-              "file": {
-                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-              },
-              "language": 49
-            }
-          },
+          "file": { "key": "example.ts" },
           "range": {
-            "key": {
-              "range": {
-                "lineBegin": 47,
-                "columnBegin": 9,
-                "lineEnd": 47,
-                "columnEnd": 15
-              },
-              "fullRange": {
-                "lineBegin": 47,
-                "columnBegin": 9,
-                "lineEnd": 47,
-                "columnEnd": 73
-              },
-              "text": { "key": "repoDir" }
-            }
+            "lineBegin": 24,
+            "columnBegin": 12,
+            "lineEnd": 24,
+            "columnEnd": 14
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#`<constructor>`().(dir)"
+      },
+      "location": {
+        "key": {
+          "file": { "key": "example.ts" },
+          "range": {
+            "lineBegin": 27,
+            "columnBegin": 53,
+            "lineEnd": 27,
+            "columnEnd": 55
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#`<constructor>`().(dir)"
+      },
+      "location": {
+        "key": {
+          "file": { "key": "example.ts" },
+          "range": {
+            "lineBegin": 30,
+            "columnBegin": 12,
+            "lineEnd": 30,
+            "columnEnd": 14
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#`<constructor>`().(dir)"
+      },
+      "location": {
+        "key": {
+          "file": { "key": "example.ts" },
+          "range": {
+            "lineBegin": 35,
+            "columnBegin": 55,
+            "lineEnd": 35,
+            "columnEnd": 57
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm typescript 4.9.5 lib/`lib.es2022.error.d.ts`/Error#"
+      },
+      "location": {
+        "key": {
+          "file": { "key": "example.ts" },
+          "range": {
+            "lineBegin": 18,
+            "columnBegin": 17,
+            "lineEnd": 18,
+            "columnEnd": 21
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm typescript 4.9.5 lib/`lib.es2022.error.d.ts`/Error#"
+      },
+      "location": {
+        "key": {
+          "file": { "key": "example.ts" },
+          "range": {
+            "lineBegin": 37,
+            "columnBegin": 17,
+            "lineEnd": 37,
+            "columnEnd": 21
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm typescript 4.9.5 lib/`lib.es5.d.ts`/Error#"
+      },
+      "location": {
+        "key": {
+          "file": { "key": "example.ts" },
+          "range": {
+            "lineBegin": 18,
+            "columnBegin": 17,
+            "lineEnd": 18,
+            "columnEnd": 21
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm typescript 4.9.5 lib/`lib.es5.d.ts`/Error#"
+      },
+      "location": {
+        "key": {
+          "file": { "key": "example.ts" },
+          "range": {
+            "lineBegin": 37,
+            "columnBegin": 17,
+            "lineEnd": 37,
+            "columnEnd": 21
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm typescript 4.9.5 lib/`lib.es5.d.ts`/Error."
+      },
+      "location": {
+        "key": {
+          "file": { "key": "example.ts" },
+          "range": {
+            "lineBegin": 18,
+            "columnBegin": 17,
+            "lineEnd": 18,
+            "columnEnd": 21
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm typescript 4.9.5 lib/`lib.es5.d.ts`/Error."
+      },
+      "location": {
+        "key": {
+          "file": { "key": "example.ts" },
+          "range": {
+            "lineBegin": 37,
+            "columnBegin": 17,
+            "lineEnd": 37,
+            "columnEnd": 21
           }
         }
       }

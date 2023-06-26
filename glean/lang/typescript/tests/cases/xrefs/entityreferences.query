@@ -1,3 +1,0 @@
-query: codemarkup.EntityReferences { target = { lsif = { typescript = { defn = { moniker = { just = { kind = Export|Import } } } } } } }
-perf: True
-transform: [gensort, []]

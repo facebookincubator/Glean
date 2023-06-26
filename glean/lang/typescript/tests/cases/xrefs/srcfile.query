@@ -1,2 +1,4 @@
 query: src.File _
+perf: True
 transform: [gensort, []]
+

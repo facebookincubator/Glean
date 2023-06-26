@@ -1,0 +1,4 @@
+query: scip.DefinitionLocation _
+perf: True
+transform: [gensort, []]
+

@@ -1,2 +1,4 @@
-query: lsif.Definition _
+query: scip.Definition _
+perf: True
 transform: [gensort, []]
+

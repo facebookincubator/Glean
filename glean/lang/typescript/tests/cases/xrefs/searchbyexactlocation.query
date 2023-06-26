@@ -1,9 +1,0 @@
-query: |
-    D where
-        lsif.SearchByExactLocation {
-            file = "glean/lang/typescript/tests/cases/xrefs/example.ts",
-            span = { 14, 7, 14, 9 },
-            entity = E };
-        { typescript = { defn = { defn = D } } } = E;
-perf: True
-transform: [gensort, []]

@@ -1,2 +1,2 @@
 action: documentSymbolIndex
-args: {"include_refs":true,"filepath":"glean/lang/typescript/tests/cases/xrefs/example.ts","repository":"test"}
+args: {"include_refs":true,"filepath":"example.ts","repository":"test"}

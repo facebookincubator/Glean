@@ -224,6 +224,7 @@ entityLanguage e = case e of
   -- scip languages
   Code.Entity_scip Scip.Entity_rust{} -> Language_Rust
   Code.Entity_scip Scip.Entity_go{} -> Language_Go
+  Code.Entity_scip Scip.Entity_typescript{} -> Language_TypeScript
   Code.Entity_scip _ -> Language__UNKNOWN 0
   Code.Entity_EMPTY -> Language__UNKNOWN 0
 
@@ -291,6 +292,7 @@ instance Symbol Code.Entity where
     Code.Entity_scip ent -> case ent of
       Scip.Entity_rust se -> toSymbolWithPath se p
       Scip.Entity_go se -> toSymbolWithPath se p
+      Scip.Entity_typescript se -> toSymbolWithPath se p
       Scip.Entity_EMPTY -> throwM $ SymbolError "Unknown SCIP language"
 
     -- Code.Entity_lsif (Lsif.Entity_java x) -> toSymbol x
@@ -337,6 +339,7 @@ entityToAngle e = case e of
   Code.Entity_scip se -> alt @"scip" <$> case se of
       Scip.Entity_rust x -> Right $ alt @"rust" (toAngle x)
       Scip.Entity_go x -> Right $ alt @"go" (toAngle x)
+      Scip.Entity_typescript x -> Right $ alt @"typescript" (toAngle x)
       Scip.Entity_EMPTY -> Left "toAngle: Unknown SCIP language"
 
   _ -> Left $
@@ -369,6 +372,7 @@ instance ToQName Code.Entity where
     Code.Entity_scip se -> case se of -- enumerate all cases for lsif
       Scip.Entity_rust x -> toQName x
       Scip.Entity_go x -> toQName x
+      Scip.Entity_typescript x -> toQName x
       Scip.Entity_EMPTY -> pure $ Left "SCIP: language unsupported"
     _ -> pure $ Left ("Language unsupported: " <> textShow (entityLanguage e))
 
