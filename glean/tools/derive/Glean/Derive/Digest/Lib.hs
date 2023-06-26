@@ -283,4 +283,4 @@ replaceName (Just (Glass.Name n)) (Glass.Name replacement) haystack =
 replaceName Nothing _ haystack = Right haystack
 
 mkIdentifierRegex :: Text -> Text
-mkIdentifierRegex ident = "\\b" <> ident <> "\\b"
+mkIdentifierRegex ident = "\\b\\Q" <> ident <> "\\E\\b"
