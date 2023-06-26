@@ -284,8 +284,8 @@ predicate DeclarationWithName:
   ) | (
     Declaration { variable = { name = N }}
   ) | (
-    ImportStatementByName { as_name = N, from_name = F };
-    Declaration { imp = { from_name = F, as_name = N }}
+    ImportStatementByAsName { name = N, import_ = I };
+    Declaration { imp = I }
   ) | (
     Declaration { module = { name = N }}
   )
@@ -321,8 +321,8 @@ predicate DeclarationByName: Name -> Declaration
   ) | (
     Declaration { variable = { name = N }}
   ) | (
-    ImportStatementByName { as_name = N, from_name = F };
-    Declaration { imp = { from_name = F, as_name = N }}
+    ImportStatementByAsName { name = N, import_ = I };
+    Declaration { imp = I }
   ) | (
     Declaration { module = { name = N }}
   )
