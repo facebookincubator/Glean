@@ -35,7 +35,7 @@ import System.Directory (getCurrentDirectory)
 import System.IO.Error (isDoesNotExistError)
 
 import Util.Log.String (logWarning)
-import Util.Regex (substituteNoLimit)
+import Util.Regex (RegexError, substituteNoLimit_safe)
 
 import Glean (
   Backend,
@@ -266,7 +266,10 @@ toName entity = do
 --
 --   where semanticRename is fully syntax-aware name replacement.
 --   In other words, we want to be able to detect user-driven renames
-replaceName :: Maybe Glass.Name -> Glass.Name -> Text -> Text
+--
+--   NOTE: this function does not quite guarantee the property above,
+--         it's only a best-effort that works in most cases
+replaceName :: Maybe Glass.Name -> Glass.Name -> Text -> Either RegexError Text
 --   Plain search and replace would hardly satisfy the property above, e.g. when
 --   name is very short:
 --
@@ -276,8 +279,8 @@ replaceName :: Maybe Glass.Name -> Glass.Name -> Text -> Text
 --   TODO a better? option would be to use a lexer for common PL identifiers to
 --   tokenize the code and then match-and-replace on the tokens
 replaceName (Just (Glass.Name n)) (Glass.Name replacement) haystack =
-  substituteNoLimit haystack (mkIdentifierRegex n) replacement
-replaceName Nothing _ haystack = haystack
+    substituteNoLimit_safe haystack (mkIdentifierRegex n) replacement
+replaceName Nothing _ haystack = Right haystack
 
 mkIdentifierRegex :: Text -> Text
 mkIdentifierRegex ident = "\\b" <> ident <> "\\b"

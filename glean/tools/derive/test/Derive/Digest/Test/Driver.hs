@@ -52,6 +52,7 @@ optionsParser = do
     deriveConfig = Config{
       hashFunction = \name ->
         (if hashDigests then showt . hash else id) .
+          either (error . show) id .
           replaceName name (Glass.Name "SELF"),
       pathAdaptor = stripPath stripDepth,
       indexOnly = nonEmpty indexOnly

@@ -64,8 +64,11 @@ main = withConfigOptions options $ \(Options {..}, cfg) ->
         let deriveConfig =
               Config
                 { pathAdaptor = stripPath stripDepth
-                , hashFunction = \name ->
-                    showt . hash . replaceName name (Glass.Name "")
+                , hashFunction = \name code ->
+                    showt $ hash $
+                    -- just hash the unrenamed code in case of failure
+                    either (const code) id $
+                    replaceName name (Glass.Name "") code
                 , indexOnly = indexOnly
                 }
         derive backend repo deriveConfig
