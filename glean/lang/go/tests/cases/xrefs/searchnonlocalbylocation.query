@@ -1,3 +1,0 @@
-query: lsif.SearchNonLocalByLocation { file = "glean/lang/go/tests/cases/xrefs/leaphash.go", name = "" }
-perf: True
-transform: [gensort, []]

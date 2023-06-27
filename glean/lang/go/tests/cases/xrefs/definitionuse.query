@@ -1,0 +1,4 @@
+query: scip.DefinitionUses _
+perf: True
+transform: [gensort, []]
+

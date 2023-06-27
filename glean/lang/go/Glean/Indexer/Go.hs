@@ -13,19 +13,19 @@ import Options.Applicative
 
 import Glean.Indexer
 import Glean.Indexer.External
-import Glean.Indexer.LSIF ( derive )
-import Glean.LSIF.Driver as LSIF
+import Glean.Indexer.SCIP ( derive )
+import Glean.SCIP.Driver as SCIP
 
 newtype Go = Go
-  { lsifGoBinary :: FilePath
+  { scipGoBinary :: FilePath
   }
 
 options :: Parser Go
 options = do
-  lsifGoBinary <- strOption $
-    long "lsif-go" <>
-    value "lsif-go" <>
-    help "path to the lsif-go binary"
+  scipGoBinary <- strOption $
+    long "scip-go" <>
+    value "scip-go" <>
+    help "path to the scip-go binary"
   return Go{..}
 
 indexer :: Indexer Go
@@ -34,14 +34,13 @@ indexer = Indexer {
   indexerDescription = "Index Go code",
   indexerOptParser = options,
   indexerRun = \Go{..} backend repo IndexerParams{..} -> do
-    let
-      params = LsifIndexerParams {
-        lsifBinary = lsifGoBinary,
-        lsifArgs = \outFile -> [ "--no-animation", "-o", outFile ],
-        lsifRoot = indexerRoot,
-        lsifStdout = False
+    val <- SCIP.runIndexer ScipIndexerParams {
+        scipBinary = scipGoBinary,
+        scipArgs = \outFile ->
+           ["--module-version=glean", "--no-animation", "-o", outFile ],
+        scipRoot = indexerRoot,
+        scipWritesLocal = False
       }
-    val <- LSIF.runIndexer params
-    sendJsonBatches backend repo (lsifGoBinary <> "/lsif") val
+    sendJsonBatches backend repo (scipGoBinary <> "/scip") val
     derive backend repo
   }

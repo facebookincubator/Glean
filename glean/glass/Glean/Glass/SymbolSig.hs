@@ -127,9 +127,10 @@ instance ToSymbolSignature Code.Entity where
     Code.Entity_flow x -> Flow.prettyFlowSignature opts x
     -- python pretty signatures
     Code.Entity_python x -> Python.prettyPythonSignature opts repo sym x
-    -- lsif languages, just enumerate completely to stay total
+    -- scip languages, just enumerate completely to stay total
     Code.Entity_scip e -> case e of
       Scip.Entity_rust x -> SCIP.prettyScipSignature opts x
+      Scip.Entity_go x -> SCIP.prettyScipSignature opts x
       Scip.Entity_EMPTY -> pure Nothing
     -- lsif languages, just enumerate completely to stay total
     Code.Entity_lsif e -> case e of

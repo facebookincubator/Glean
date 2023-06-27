@@ -6,6 +6,7 @@ import scip.1
 type Entity =
   {
     rust : scip.SomeEntity |
+    go : scip.SomeEntity |
   }
 
 }

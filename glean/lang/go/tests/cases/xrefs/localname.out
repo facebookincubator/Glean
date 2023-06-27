@@ -1,0 +1,89 @@
+[
+  "@generated",
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-go gomod github.com/facebook/time glean github.com/facebook/time/"
+      },
+      "name": { "key": "github.com/facebook/time" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-go gomod github.com/facebook/time glean github.com/facebook/time/Compute()."
+      },
+      "name": { "key": "github.com/facebook/time/Compute()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-go gomod github.com/golang/go/src go1.16 crypto/sha1/"
+      },
+      "name": { "key": "crypto/sha1" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-go gomod github.com/golang/go/src go1.16 crypto/sha1/Sum()."
+      },
+      "name": { "key": "crypto/sha1/Sum()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-go gomod github.com/golang/go/src go1.16 fmt/" },
+      "name": { "key": "fmt" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-go gomod github.com/golang/go/src go1.16 fmt/Sprintf()."
+      },
+      "name": { "key": "fmt/Sprintf()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-go gomod github.com/golang/go/src go1.16 strings/"
+      },
+      "name": { "key": "strings" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-go gomod github.com/golang/go/src go1.16 strings/HasPrefix()."
+      },
+      "name": { "key": "strings/HasPrefix()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-go gomod github.com/golang/go/src go1.16 strings/Index()."
+      },
+      "name": { "key": "strings/Index()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-go gomod github.com/golang/go/src go1.16 strings/Map()."
+      },
+      "name": { "key": "strings/Map()" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-go gomod github.com/golang/go/src go1.16 strings/Split()."
+      },
+      "name": { "key": "strings/Split()" }
+    }
+  }
+]

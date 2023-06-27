@@ -1,3 +1,0 @@
-query: lsif.SearchByExactLocationAndName { file = "glean/lang/go/tests/cases/xrefs/leaphash.go" }
-perf: True
-transform: [gensort, []]

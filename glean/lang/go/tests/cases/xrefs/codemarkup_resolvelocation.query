@@ -1,0 +1,4 @@
+query: codemarkup.scip.ScipResolveLocation { entity = { go = { defn = _ } } }
+perf: True
+transform: [gensort, []]
+

@@ -145,6 +145,7 @@ predicate DefinitionName:
 type Entity =
   {
     rust: SomeEntity |
+    go: SomeEntity |
   }
 
 # entities are scip.Definitions
@@ -162,8 +163,8 @@ predicate TagDefinition:
   }
   { Language, Defn, Entity } where
     SomeEntity = scip.SomeEntity { defn = Defn };
-    Rust = Language;
-    { rust = SomeEntity } = Entity;
+    ( Rust = Language; { rust = SomeEntity }) |
+    ( Go = Language; { go = SomeEntity }) = Entity;
 
 # eliminate entity language tags. inverse of TagDefinition
 predicate EntityDefinition:
@@ -172,8 +173,9 @@ predicate EntityDefinition:
     defn : scip.Definition
   }
   { Entity, Defn } where
-    { rust = SomeEntity } = Entity;
-    { defn = Defn } = SomeEntity;
+    ({ rust = SomeEntity }) |
+    ({ go = SomeEntity }) = Entity;
+    { defn = Defn } = SomeEntity
 
 # Symbol locations type. Analog of codemarkup:Location
 type Location =

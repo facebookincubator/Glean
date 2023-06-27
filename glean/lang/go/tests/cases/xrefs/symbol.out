@@ -1,0 +1,20 @@
+[
+  "@generated",
+  {
+    "key": "scip-go gomod github.com/facebook/time glean github.com/facebook/time/"
+  },
+  {
+    "key": "scip-go gomod github.com/facebook/time glean github.com/facebook/time/Compute()."
+  },
+  { "key": "scip-go gomod github.com/golang/go/src go1.16 crypto/sha1/" },
+  { "key": "scip-go gomod github.com/golang/go/src go1.16 crypto/sha1/Sum()." },
+  { "key": "scip-go gomod github.com/golang/go/src go1.16 fmt/" },
+  { "key": "scip-go gomod github.com/golang/go/src go1.16 fmt/Sprintf()." },
+  { "key": "scip-go gomod github.com/golang/go/src go1.16 strings/" },
+  {
+    "key": "scip-go gomod github.com/golang/go/src go1.16 strings/HasPrefix()."
+  },
+  { "key": "scip-go gomod github.com/golang/go/src go1.16 strings/Index()." },
+  { "key": "scip-go gomod github.com/golang/go/src go1.16 strings/Map()." },
+  { "key": "scip-go gomod github.com/golang/go/src go1.16 strings/Split()." }
+]

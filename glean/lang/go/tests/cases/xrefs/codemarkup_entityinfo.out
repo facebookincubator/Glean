@@ -1,0 +1,57 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "go": {
+          "defn": {
+            "key": {
+              "symbol": {
+                "key": "scip-go gomod github.com/facebook/time glean github.com/facebook/time/"
+              },
+              "location": {
+                "key": {
+                  "file": { "key": "leaphash.go" },
+                  "range": {
+                    "lineBegin": 11,
+                    "columnBegin": 9,
+                    "lineEnd": 11,
+                    "columnEnd": 16
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 0, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "go": {
+          "defn": {
+            "key": {
+              "symbol": {
+                "key": "scip-go gomod github.com/facebook/time glean github.com/facebook/time/Compute()."
+              },
+              "location": {
+                "key": {
+                  "file": { "key": "leaphash.go" },
+                  "range": {
+                    "lineBegin": 24,
+                    "columnBegin": 6,
+                    "lineEnd": 24,
+                    "columnEnd": 12
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 7, "isAbstract": false }
+    }
+  }
+]

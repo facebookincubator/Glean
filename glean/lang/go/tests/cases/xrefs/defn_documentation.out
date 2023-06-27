@@ -1,0 +1,51 @@
+[
+  "@generated",
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "scip-go gomod github.com/facebook/time glean github.com/facebook/time/Compute()."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "leaphash.go" },
+              "range": {
+                "lineBegin": 24,
+                "columnBegin": 6,
+                "lineEnd": 24,
+                "columnEnd": 12
+              }
+            }
+          }
+        }
+      },
+      "docs": {
+        "key": "Compute returns the sha1 sum of all non whitespace characters in data\u000aexcluding comments. Since it includes logic for special lines specific\u000ato the leap-second.list format its not a general purpose function and\u000ashould be only used to verify the integrity of an official leap-second.list\u000adocument."
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "scip-go gomod github.com/facebook/time glean github.com/facebook/time/Compute()."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "leaphash.go" },
+              "range": {
+                "lineBegin": 24,
+                "columnBegin": 6,
+                "lineEnd": 24,
+                "columnEnd": 12
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "```go\u000afunc Compute(data string) string\u000a```" }
+    }
+  }
+]

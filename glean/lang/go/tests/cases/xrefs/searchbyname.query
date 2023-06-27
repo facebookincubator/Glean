@@ -1,3 +1,3 @@
-query: search.code.SearchByNameAndLanguage { name = "filterBlanks" }
+query: search.code.SearchByNameAndLanguage { name = "sum_f1" }
 perf: True
 transform: [gensort, []]

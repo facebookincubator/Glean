@@ -13,7 +13,7 @@ import Options.Applicative
 
 import Glean.Indexer
 import Glean.Indexer.External
-import Glean.Indexer.LSIF ( derive )
+import Glean.Indexer.SCIP ( derive )
 import Glean.SCIP.Driver as SCIP
 
 newtype RustScip = RustScip

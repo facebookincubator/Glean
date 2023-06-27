@@ -1,0 +1,377 @@
+[
+  "@generated",
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-go gomod github.com/golang/go/src go1.16 crypto/sha1/"
+      },
+      "location": {
+        "key": {
+          "file": { "key": "leaphash.go" },
+          "range": {
+            "lineBegin": 14,
+            "columnBegin": 3,
+            "lineEnd": 14,
+            "columnEnd": 13
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-go gomod github.com/golang/go/src go1.16 crypto/sha1/"
+      },
+      "location": {
+        "key": {
+          "file": { "key": "leaphash.go" },
+          "range": {
+            "lineBegin": 56,
+            "columnBegin": 28,
+            "lineEnd": 56,
+            "columnEnd": 31
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-go gomod github.com/golang/go/src go1.16 crypto/sha1/Sum()."
+      },
+      "location": {
+        "key": {
+          "file": { "key": "leaphash.go" },
+          "range": {
+            "lineBegin": 56,
+            "columnBegin": 33,
+            "lineEnd": 56,
+            "columnEnd": 35
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-go gomod github.com/golang/go/src go1.16 fmt/" },
+      "location": {
+        "key": {
+          "file": { "key": "leaphash.go" },
+          "range": {
+            "lineBegin": 15,
+            "columnBegin": 3,
+            "lineEnd": 15,
+            "columnEnd": 5
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-go gomod github.com/golang/go/src go1.16 fmt/" },
+      "location": {
+        "key": {
+          "file": { "key": "leaphash.go" },
+          "range": {
+            "lineBegin": 56,
+            "columnBegin": 10,
+            "lineEnd": 56,
+            "columnEnd": 12
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-go gomod github.com/golang/go/src go1.16 fmt/Sprintf()."
+      },
+      "location": {
+        "key": {
+          "file": { "key": "leaphash.go" },
+          "range": {
+            "lineBegin": 56,
+            "columnBegin": 14,
+            "lineEnd": 56,
+            "columnEnd": 20
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-go gomod github.com/golang/go/src go1.16 strings/"
+      },
+      "location": {
+        "key": {
+          "file": { "key": "leaphash.go" },
+          "range": {
+            "lineBegin": 16,
+            "columnBegin": 3,
+            "lineEnd": 16,
+            "columnEnd": 9
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-go gomod github.com/golang/go/src go1.16 strings/"
+      },
+      "location": {
+        "key": {
+          "file": { "key": "leaphash.go" },
+          "range": {
+            "lineBegin": 25,
+            "columnBegin": 11,
+            "lineEnd": 25,
+            "columnEnd": 17
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-go gomod github.com/golang/go/src go1.16 strings/"
+      },
+      "location": {
+        "key": {
+          "file": { "key": "leaphash.go" },
+          "range": {
+            "lineBegin": 36,
+            "columnBegin": 6,
+            "lineEnd": 36,
+            "columnEnd": 12
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-go gomod github.com/golang/go/src go1.16 strings/"
+      },
+      "location": {
+        "key": {
+          "file": { "key": "leaphash.go" },
+          "range": {
+            "lineBegin": 36,
+            "columnBegin": 43,
+            "lineEnd": 36,
+            "columnEnd": 49
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-go gomod github.com/golang/go/src go1.16 strings/"
+      },
+      "location": {
+        "key": {
+          "file": { "key": "leaphash.go" },
+          "range": {
+            "lineBegin": 39,
+            "columnBegin": 16,
+            "lineEnd": 39,
+            "columnEnd": 22
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-go gomod github.com/golang/go/src go1.16 strings/"
+      },
+      "location": {
+        "key": {
+          "file": { "key": "leaphash.go" },
+          "range": {
+            "lineBegin": 40,
+            "columnBegin": 13,
+            "lineEnd": 40,
+            "columnEnd": 19
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-go gomod github.com/golang/go/src go1.16 strings/"
+      },
+      "location": {
+        "key": {
+          "file": { "key": "leaphash.go" },
+          "range": {
+            "lineBegin": 46,
+            "columnBegin": 18,
+            "lineEnd": 46,
+            "columnEnd": 24
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-go gomod github.com/golang/go/src go1.16 strings/"
+      },
+      "location": {
+        "key": {
+          "file": { "key": "leaphash.go" },
+          "range": {
+            "lineBegin": 51,
+            "columnBegin": 16,
+            "lineEnd": 51,
+            "columnEnd": 22
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-go gomod github.com/golang/go/src go1.16 strings/HasPrefix()."
+      },
+      "location": {
+        "key": {
+          "file": { "key": "leaphash.go" },
+          "range": {
+            "lineBegin": 36,
+            "columnBegin": 14,
+            "lineEnd": 36,
+            "columnEnd": 22
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-go gomod github.com/golang/go/src go1.16 strings/HasPrefix()."
+      },
+      "location": {
+        "key": {
+          "file": { "key": "leaphash.go" },
+          "range": {
+            "lineBegin": 36,
+            "columnBegin": 51,
+            "lineEnd": 36,
+            "columnEnd": 59
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-go gomod github.com/golang/go/src go1.16 strings/HasPrefix()."
+      },
+      "location": {
+        "key": {
+          "file": { "key": "leaphash.go" },
+          "range": {
+            "lineBegin": 40,
+            "columnBegin": 21,
+            "lineEnd": 40,
+            "columnEnd": 29
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-go gomod github.com/golang/go/src go1.16 strings/Index()."
+      },
+      "location": {
+        "key": {
+          "file": { "key": "leaphash.go" },
+          "range": {
+            "lineBegin": 46,
+            "columnBegin": 26,
+            "lineEnd": 46,
+            "columnEnd": 30
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-go gomod github.com/golang/go/src go1.16 strings/Map()."
+      },
+      "location": {
+        "key": {
+          "file": { "key": "leaphash.go" },
+          "range": {
+            "lineBegin": 39,
+            "columnBegin": 24,
+            "lineEnd": 39,
+            "columnEnd": 26
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-go gomod github.com/golang/go/src go1.16 strings/Map()."
+      },
+      "location": {
+        "key": {
+          "file": { "key": "leaphash.go" },
+          "range": {
+            "lineBegin": 51,
+            "columnBegin": 24,
+            "lineEnd": 51,
+            "columnEnd": 26
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-go gomod github.com/golang/go/src go1.16 strings/Split()."
+      },
+      "location": {
+        "key": {
+          "file": { "key": "leaphash.go" },
+          "range": {
+            "lineBegin": 25,
+            "columnBegin": 19,
+            "lineEnd": 25,
+            "columnEnd": 23
+          }
+        }
+      }
+    }
+  }
+]
