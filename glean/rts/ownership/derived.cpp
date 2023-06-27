@@ -24,13 +24,13 @@ void DefineOwnership::derivedFrom(Id id, const std::set<UsetId>& deps) {
   }
 
   SetU32 set = SetU32::from(deps);
+  size_t size = set.size();
 
   UsetId usetid;
-  if (set.size() == 1) {
+  if (size == 1) {
     usetid = *deps.begin();
   } else {
-    auto uset = std::make_unique<Uset>(set, And, 0);
-    size_t size = set.size();
+    auto uset = std::make_unique<Uset>(std::move(set), And, 0);
     // If this set already exists in the DB, it will be de-duplicated
     // when we write these sets in addDefineOwnership().
     auto q = uset.get();
