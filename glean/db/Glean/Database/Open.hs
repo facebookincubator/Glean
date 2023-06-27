@@ -32,6 +32,7 @@ import qualified Data.HashMap.Strict as HashMap
 import Data.IORef
 import Data.Maybe
 import Data.Set (Set)
+import qualified Data.Text as Text
 import Data.Word
 import qualified Data.Set as Set
 import GHC.Stack (HasCallStack)
@@ -240,7 +241,17 @@ withActiveDatabase env@Env{..} repo = bracket
       Just db -> return db
       Nothing -> do
         exists <- Catalog.exists envCatalog [Local] repo
-        when (not exists) $ CallStack.throwSTM $ Thrift.UnknownDatabase repo
+        if not exists
+          then CallStack.throwSTM $ Thrift.UnknownDatabase repo
+          else do
+            meta <- Catalog.readMeta envCatalog repo
+            case metaCompleteness meta of
+              Thrift.Broken (Thrift.DatabaseBroken task reason) ->
+                throwSTM $ dbException repo $ Text.unpack $ Text.unwords $
+                  [ "Broken:" ] ++
+                  [ task <> ":" | not (Text.null task) ] ++
+                  [ reason ]
+              _ -> return ()
         deleting <- HashMap.member repo <$> readTVar envDeleting
         -- TODO: different error?
         when deleting $ CallStack.throwSTM $ Thrift.UnknownDatabase repo
@@ -250,6 +261,8 @@ withActiveDatabase env@Env{..} repo = bracket
     acquireDB db
     return db)
   (atomically . releaseDB env)
+
+
 
 usingActiveDatabase :: Env -> Repo -> (Maybe DB -> IO a) -> IO a
 usingActiveDatabase env repo = bracket
