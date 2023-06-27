@@ -901,7 +901,14 @@ void DatabaseImpl::addDefineOwnership(DefineOwnership& def) {
 
     for (auto uset : def.newSets_) {
       std::set<UsetId> s;
-      uset->exp.set.foreach([&](uint32_t elt) { s.insert(subst(elt)); });
+      uset->exp.set.foreach([&](uint32_t elt) {
+        UsetId newelt = subst(elt);
+        if (newelt >= next_uset_id) {
+          rts::error(
+              "set id out of range: {} {} {}", newelt, next_uset_id, elt);
+        }
+        s.insert(newelt);
+      });
       SetU32 set = SetU32::from(s);
 
       auto newUset = std::make_unique<Uset>(std::move(set), uset->exp.op, 0);
