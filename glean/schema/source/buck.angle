@@ -33,6 +33,14 @@ predicate Target :
     labels : Labels,
   }
 
+# Efficiently lookup by type. Useful for selecting a subset of all
+# targets without enumerating all locators first (e.g. "rust_binary")
+predicate TargetByType:
+  {
+    type_ : Type,
+    target : buck.Target
+  } stored { Type, Target } where Target = buck.Target { type_ = Type }
+
 # Named output use OutputLabel as the key, the 'baz' in the form:
 # //foo:bar[baz]
 predicate OutputLabel : string
