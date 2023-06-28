@@ -241,17 +241,7 @@ withActiveDatabase env@Env{..} repo = bracket
       Just db -> return db
       Nothing -> do
         exists <- Catalog.exists envCatalog [Local] repo
-        if not exists
-          then CallStack.throwSTM $ Thrift.UnknownDatabase repo
-          else do
-            meta <- Catalog.readMeta envCatalog repo
-            case metaCompleteness meta of
-              Thrift.Broken (Thrift.DatabaseBroken task reason) ->
-                throwSTM $ dbException repo $ Text.unpack $ Text.unwords $
-                  [ "Broken:" ] ++
-                  [ task <> ":" | not (Text.null task) ] ++
-                  [ reason ]
-              _ -> return ()
+        when (not exists) $ CallStack.throwSTM $ Thrift.UnknownDatabase repo
         deleting <- HashMap.member repo <$> readTVar envDeleting
         -- TODO: different error?
         when deleting $ CallStack.throwSTM $ Thrift.UnknownDatabase repo
@@ -261,8 +251,6 @@ withActiveDatabase env@Env{..} repo = bracket
     acquireDB db
     return db)
   (atomically . releaseDB env)
-
-
 
 usingActiveDatabase :: Env -> Repo -> (Maybe DB -> IO a) -> IO a
 usingActiveDatabase env repo = bracket
@@ -324,8 +312,16 @@ setupSchema env@Env{..} repo handle mode = do
         stats <- stackStats
         newMergedDbSchema (Just envDbSchemaCache) info schema
           (readOnlyContent stats)
-    Nothing ->
-      dbError repo "DB has no stored schema"
+    Nothing -> do
+      meta <- atomically $ Catalog.readMeta envCatalog repo
+      let failure = case metaCompleteness meta of
+            Thrift.Broken (Thrift.DatabaseBroken task reason) ->
+              Text.unpack $ Text.unwords $
+                [ "Broken:" ] ++
+                [ task <> ":" | not (Text.null task) ] ++
+                [ reason ]
+            _ -> ""
+      dbError repo $ "DB has no stored schema. " <> failure
 
 -- | Update the schema for all open DBs when the prevailing schema has
 -- changed.
