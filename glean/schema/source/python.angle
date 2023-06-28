@@ -300,16 +300,6 @@ predicate NonImportDeclaration: Declaration
 
 #### DEPRECATED SECTION
 
-# DEPRECATED: use ImportStatementByAsName.3
-# This is the inverse of ImportStatement. It allows for efficient queries
-# by alias.
-predicate ImportStatementByName:
-  {
-    as_name: Name,
-    from_name: Name,
-  }
-  stored {AsName, FromName} where ImportStatement {FromName, AsName}
-
 # DEPRECATED: use DeclarationWithName
 # Search for a declaration by (fully qualified) name.
 predicate DeclarationByName: Name -> Declaration
