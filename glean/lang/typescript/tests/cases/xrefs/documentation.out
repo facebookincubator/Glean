@@ -1,0 +1,191 @@
+[
+  "@generated",
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/"
+      },
+      "docs": { "key": "```ts\u000amodule \"example.ts\"\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#"
+      },
+      "docs": { "key": "```ts\u000aclass Git\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#`<constructor>`()."
+      },
+      "docs": { "key": "```ts\u000aconstructor(dir: string): Git\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#`<constructor>`().(dir)"
+      },
+      "docs": { "key": "```ts\u000a(property) dir: string\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#commit()."
+      },
+      "docs": {
+        "key": "```ts\u000a(method) commit(msg: string, date: string, author: string): void\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#commit().(author)"
+      },
+      "docs": { "key": "```ts\u000a(parameter) author: string\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#commit().(date)"
+      },
+      "docs": { "key": "```ts\u000a(parameter) date: string\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#commit().(msg)"
+      },
+      "docs": { "key": "```ts\u000a(parameter) msg: string\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/createTempRepo()."
+      },
+      "docs": {
+        "key": "```ts\u000afunction createTempRepo(): { repoDir: string; git: Git; }\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/createTempRepo().typeLiteral10:git."
+      },
+      "docs": { "key": "```ts\u000a(property) git: Git\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/createTempRepo().typeLiteral10:repoDir."
+      },
+      "docs": { "key": "```ts\u000a(property) repoDir: string\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/cwd0:"
+      },
+      "docs": { "key": "```ts\u000a(property) cwd: string\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/cwd1:"
+      },
+      "docs": { "key": "```ts\u000a(property) cwd: string\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/cwd2:"
+      },
+      "docs": { "key": "```ts\u000a(property) cwd: string\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/cwd3:"
+      },
+      "docs": { "key": "```ts\u000a(property) cwd: string\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/cwd4:"
+      },
+      "docs": { "key": "```ts\u000a(property) cwd: string\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/git0:"
+      },
+      "docs": { "key": "```ts\u000a(property) git: Git\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/repoDir0:"
+      },
+      "docs": { "key": "```ts\u000a(property) repoDir: any\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/silent0:"
+      },
+      "docs": { "key": "```ts\u000a(property) silent: boolean\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/silent1:"
+      },
+      "docs": { "key": "```ts\u000a(property) silent: boolean\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/silent2:"
+      },
+      "docs": { "key": "```ts\u000a(property) silent: boolean\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/silent3:"
+      },
+      "docs": { "key": "```ts\u000a(property) silent: boolean\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/silent4:"
+      },
+      "docs": { "key": "```ts\u000a(property) silent: boolean\u000a```" }
+    }
+  }
+]

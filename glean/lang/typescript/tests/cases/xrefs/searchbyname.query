@@ -1,3 +1,0 @@
-query: search.code.LsifSearchByName { name = "createTempRepo" }
-perf: True
-transform: [gensort, []]

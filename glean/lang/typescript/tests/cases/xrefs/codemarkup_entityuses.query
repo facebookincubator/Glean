@@ -1,0 +1,4 @@
+query: codemarkup.scip.ScipEntityUses { target = { typescript = { defn = _ } } }
+perf: True
+transform: [gensort, []]
+

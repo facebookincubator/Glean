@@ -12,21 +12,21 @@ module Glean.Indexer.Typescript ( indexer ) where
 import Options.Applicative
 
 import Glean.Indexer
-import Glean.Indexer.LSIF ( derive )
+import Glean.Indexer.SCIP ( derive )
 import Glean.Indexer.External
 
-import Glean.LSIF.Driver as LSIF
+import Glean.SCIP.Driver as SCIP
 
 newtype Typescript = Typescript
-  { lsifTypescriptBinary :: FilePath
+  { scipTypescriptBinary :: FilePath
   }
 
 options :: Parser Typescript
 options = do
-  lsifTypescriptBinary <- strOption $
-    long "lsif-tsc" <>
-    value "lsif-tsc" <>
-    help "path to the lsif-tsc binary"
+  scipTypescriptBinary <- strOption $
+    long "scip-typescript" <>
+    value "scip-typescript" <>
+    help "path to the scip-typescipt binary"
   return Typescript{..}
 
 indexer :: Indexer Typescript
@@ -36,13 +36,15 @@ indexer = Indexer {
   indexerOptParser = options,
   indexerRun = \Typescript{..} backend repo IndexerParams{..} -> do
     let
-      params = LsifIndexerParams {
-        lsifBinary = lsifTypescriptBinary,
-        lsifArgs = \outFile -> [ "-p", ".", "--out", outFile ],
-        lsifRoot = indexerRoot,
-        lsifStdout = False
+      params = ScipIndexerParams {
+        scipBinary = scipTypescriptBinary,
+        scipArgs = \outFile ->
+           [ "index", "--no-progress-bar", "--cwd", ".", "--output", outFile ],
+        scipWritesLocal = False,
+        scipRoot = indexerRoot,
+        scipLanguage = Just SCIP.TypeScript
       }
-    val <- LSIF.runIndexer params
-    sendJsonBatches backend repo (lsifTypescriptBinary <> "/lsif") val
+    val <- SCIP.runIndexer params
+    sendJsonBatches backend repo (scipTypescriptBinary <> "/scip") val
     derive backend repo
   }

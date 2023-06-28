@@ -39,5 +39,5 @@ main :: IO ()
 main = withOptions (info (helper <*> options) fullDesc) $ \SCIP{..} -> do
   scipExists <- doesFileExist scipFile
   when (not scipExists) $ error ("Could not find SCIP file at: " <> scipFile)
-  json <- SCIP.processSCIP scipFile
+  json <- SCIP.processSCIP Nothing scipFile
   Util.writeJSON outputFile json

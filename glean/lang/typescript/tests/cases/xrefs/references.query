@@ -1,2 +1,4 @@
-query: lsif.Reference _
+query: scip.Reference _
+perf: True
 transform: [gensort, []]
+

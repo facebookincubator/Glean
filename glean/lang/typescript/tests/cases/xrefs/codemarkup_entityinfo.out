@@ -1,0 +1,300 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "typescript": {
+          "defn": {
+            "key": {
+              "symbol": {
+                "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/"
+              },
+              "location": {
+                "key": {
+                  "file": { "key": "example.ts" },
+                  "range": {
+                    "lineBegin": 1,
+                    "columnBegin": 1,
+                    "lineEnd": 1,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 0, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "typescript": {
+          "defn": {
+            "key": {
+              "symbol": {
+                "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#"
+              },
+              "location": {
+                "key": {
+                  "file": { "key": "example.ts" },
+                  "range": {
+                    "lineBegin": 14,
+                    "columnBegin": 7,
+                    "lineEnd": 14,
+                    "columnEnd": 9
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 6, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "typescript": {
+          "defn": {
+            "key": {
+              "symbol": {
+                "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#`<constructor>`()."
+              },
+              "location": {
+                "key": {
+                  "file": { "key": "example.ts" },
+                  "range": {
+                    "lineBegin": 15,
+                    "columnBegin": 3,
+                    "lineEnd": 15,
+                    "columnEnd": 13
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 7, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "typescript": {
+          "defn": {
+            "key": {
+              "symbol": {
+                "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#`<constructor>`().(dir)"
+              },
+              "location": {
+                "key": {
+                  "file": { "key": "example.ts" },
+                  "range": {
+                    "lineBegin": 15,
+                    "columnBegin": 23,
+                    "lineEnd": 15,
+                    "columnEnd": 25
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 9, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "typescript": {
+          "defn": {
+            "key": {
+              "symbol": {
+                "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#commit()."
+              },
+              "location": {
+                "key": {
+                  "file": { "key": "example.ts" },
+                  "range": {
+                    "lineBegin": 34,
+                    "columnBegin": 3,
+                    "lineEnd": 34,
+                    "columnEnd": 8
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 7, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "typescript": {
+          "defn": {
+            "key": {
+              "symbol": {
+                "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#commit().(author)"
+              },
+              "location": {
+                "key": {
+                  "file": { "key": "example.ts" },
+                  "range": {
+                    "lineBegin": 34,
+                    "columnBegin": 37,
+                    "lineEnd": 34,
+                    "columnEnd": 42
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 9, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "typescript": {
+          "defn": {
+            "key": {
+              "symbol": {
+                "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#commit().(date)"
+              },
+              "location": {
+                "key": {
+                  "file": { "key": "example.ts" },
+                  "range": {
+                    "lineBegin": 34,
+                    "columnBegin": 23,
+                    "lineEnd": 34,
+                    "columnEnd": 26
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 9, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "typescript": {
+          "defn": {
+            "key": {
+              "symbol": {
+                "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#commit().(msg)"
+              },
+              "location": {
+                "key": {
+                  "file": { "key": "example.ts" },
+                  "range": {
+                    "lineBegin": 34,
+                    "columnBegin": 10,
+                    "lineEnd": 34,
+                    "columnEnd": 12
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 9, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "typescript": {
+          "defn": {
+            "key": {
+              "symbol": {
+                "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/createTempRepo()."
+              },
+              "location": {
+                "key": {
+                  "file": { "key": "example.ts" },
+                  "range": {
+                    "lineBegin": 46,
+                    "columnBegin": 17,
+                    "lineEnd": 46,
+                    "columnEnd": 30
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 7, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "typescript": {
+          "defn": {
+            "key": {
+              "symbol": {
+                "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/createTempRepo().typeLiteral10:git."
+              },
+              "location": {
+                "key": {
+                  "file": { "key": "example.ts" },
+                  "range": {
+                    "lineBegin": 46,
+                    "columnBegin": 53,
+                    "lineEnd": 46,
+                    "columnEnd": 55
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 14, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "typescript": {
+          "defn": {
+            "key": {
+              "symbol": {
+                "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/createTempRepo().typeLiteral10:repoDir."
+              },
+              "location": {
+                "key": {
+                  "file": { "key": "example.ts" },
+                  "range": {
+                    "lineBegin": 46,
+                    "columnBegin": 36,
+                    "lineEnd": 46,
+                    "columnEnd": 42
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 14, "isAbstract": false }
+    }
+  }
+]

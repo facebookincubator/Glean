@@ -14,7 +14,7 @@ import Options.Applicative
 import Glean.Indexer
 import Glean.Indexer.External
 import Glean.Indexer.SCIP ( derive )
-import Glean.SCIP.Driver as SCIP
+import qualified Glean.SCIP.Driver as SCIP
 
 newtype Go = Go
   { scipGoBinary :: FilePath
@@ -34,12 +34,13 @@ indexer = Indexer {
   indexerDescription = "Index Go code",
   indexerOptParser = options,
   indexerRun = \Go{..} backend repo IndexerParams{..} -> do
-    val <- SCIP.runIndexer ScipIndexerParams {
+    val <- SCIP.runIndexer SCIP.ScipIndexerParams {
         scipBinary = scipGoBinary,
         scipArgs = \outFile ->
            ["--module-version=glean", "--no-animation", "-o", outFile ],
         scipRoot = indexerRoot,
-        scipWritesLocal = False
+        scipWritesLocal = False,
+        scipLanguage = Just SCIP.Go
       }
     sendJsonBatches backend repo (scipGoBinary <> "/scip") val
     derive backend repo

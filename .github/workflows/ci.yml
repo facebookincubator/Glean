@@ -57,7 +57,7 @@ jobs:
         run: |
           curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
           apt-get install -y nodejs
-          npm install -g @sourcegraph/lsif-tsc
+          npm install -g @sourcegraph/scip-typescript
 
       - name: Install indexer (go)
         run: |

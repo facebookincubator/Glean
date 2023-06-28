@@ -1,0 +1,536 @@
+[
+  "@generated",
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/"
+          },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 1,
+                "columnBegin": 1,
+                "lineEnd": 1,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "```ts\u000amodule \"example.ts\"\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#"
+          },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 14,
+                "columnBegin": 7,
+                "lineEnd": 14,
+                "columnEnd": 9
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "```ts\u000aclass Git\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#`<constructor>`()."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 15,
+                "columnBegin": 3,
+                "lineEnd": 15,
+                "columnEnd": 13
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "```ts\u000aconstructor(dir: string): Git\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#`<constructor>`().(dir)"
+          },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 15,
+                "columnBegin": 23,
+                "lineEnd": 15,
+                "columnEnd": 25
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "```ts\u000a(property) dir: string\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#commit()."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 34,
+                "columnBegin": 3,
+                "lineEnd": 34,
+                "columnEnd": 8
+              }
+            }
+          }
+        }
+      },
+      "docs": {
+        "key": "```ts\u000a(method) commit(msg: string, date: string, author: string): void\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#commit().(author)"
+          },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 34,
+                "columnBegin": 37,
+                "lineEnd": 34,
+                "columnEnd": 42
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "```ts\u000a(parameter) author: string\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#commit().(date)"
+          },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 34,
+                "columnBegin": 23,
+                "lineEnd": 34,
+                "columnEnd": 26
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "```ts\u000a(parameter) date: string\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#commit().(msg)"
+          },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 34,
+                "columnBegin": 10,
+                "lineEnd": 34,
+                "columnEnd": 12
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "```ts\u000a(parameter) msg: string\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/createTempRepo()."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 46,
+                "columnBegin": 17,
+                "lineEnd": 46,
+                "columnEnd": 30
+              }
+            }
+          }
+        }
+      },
+      "docs": {
+        "key": "```ts\u000afunction createTempRepo(): { repoDir: string; git: Git; }\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/createTempRepo().typeLiteral10:git."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 46,
+                "columnBegin": 53,
+                "lineEnd": 46,
+                "columnEnd": 55
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "```ts\u000a(property) git: Git\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/createTempRepo().typeLiteral10:repoDir."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 46,
+                "columnBegin": 36,
+                "lineEnd": 46,
+                "columnEnd": 42
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "```ts\u000a(property) repoDir: string\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/cwd0:"
+          },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 16,
+                "columnBegin": 41,
+                "lineEnd": 16,
+                "columnEnd": 43
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "```ts\u000a(property) cwd: string\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/cwd1:"
+          },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 24,
+                "columnBegin": 7,
+                "lineEnd": 24,
+                "columnEnd": 9
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "```ts\u000a(property) cwd: string\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/cwd2:"
+          },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 27,
+                "columnBegin": 48,
+                "lineEnd": 27,
+                "columnEnd": 50
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "```ts\u000a(property) cwd: string\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/cwd3:"
+          },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 30,
+                "columnBegin": 7,
+                "lineEnd": 30,
+                "columnEnd": 9
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "```ts\u000a(property) cwd: string\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/cwd4:"
+          },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 35,
+                "columnBegin": 45,
+                "lineEnd": 35,
+                "columnEnd": 47
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "```ts\u000a(property) cwd: string\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/git0:"
+          },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 51,
+                "columnBegin": 20,
+                "lineEnd": 51,
+                "columnEnd": 22
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "```ts\u000a(property) git: Git\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/repoDir0:"
+          },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 51,
+                "columnBegin": 11,
+                "lineEnd": 51,
+                "columnEnd": 17
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "```ts\u000a(property) repoDir: any\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/silent0:"
+          },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 16,
+                "columnBegin": 51,
+                "lineEnd": 16,
+                "columnEnd": 56
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "```ts\u000a(property) silent: boolean\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/silent1:"
+          },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 25,
+                "columnBegin": 7,
+                "lineEnd": 25,
+                "columnEnd": 12
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "```ts\u000a(property) silent: boolean\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/silent2:"
+          },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 27,
+                "columnBegin": 58,
+                "lineEnd": 27,
+                "columnEnd": 63
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "```ts\u000a(property) silent: boolean\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/silent3:"
+          },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 31,
+                "columnBegin": 7,
+                "lineEnd": 31,
+                "columnEnd": 12
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "```ts\u000a(property) silent: boolean\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/silent4:"
+          },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 35,
+                "columnBegin": 60,
+                "lineEnd": 35,
+                "columnEnd": 65
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "```ts\u000a(property) silent: boolean\u000a```" }
+    }
+  }
+]

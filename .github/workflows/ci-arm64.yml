@@ -53,7 +53,7 @@ jobs:
           curl -LO "https://nodejs.org/dist/v18.0.0/${NODEARCH}.tar.xz"
           tar -xvf "${NODEARCH}.tar.xz"
           cp -r "${NODEARCH}"/* "$HOME"/.hsthrift/
-          npm install -g @sourcegraph/lsif-tsc
+          npm install -g @sourcegraph/scip-typescript
 
       - name: Install indexer (rust)
         run: |

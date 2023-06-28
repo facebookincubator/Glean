@@ -1,3 +1,0 @@
-query: lsif.SearchNonLocalByLocation { file = "glean/lang/typescript/tests/cases/xrefs/example.ts", name = "createTempRepo" }
-perf: True
-transform: [gensort, []]

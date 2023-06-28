@@ -19,7 +19,8 @@ schema (which it targets), to make developer iteration quicker.
 {-# LANGUAGE OverloadedStrings #-}
 
 module Data.SCIP.Angle (
-    scipToAngle
+    scipToAngle,
+    SCIP.LanguageId(..)
   ) where
 
 import Lens.Micro ((^.))
@@ -109,20 +110,20 @@ getOrSetFact sym = do
 --
 -- Uses the proto-lens interface to scip.proto
 --
-scipToAngle :: B.ByteString -> Aeson.Value
-scipToAngle scip = Aeson.Array $ V.fromList $
+scipToAngle :: Maybe SCIP.LanguageId -> B.ByteString -> Aeson.Value
+scipToAngle mlang scip = Aeson.Array $ V.fromList $
     SCIP.generateSCIPJSON (SCIP.insertPredicateMap HashMap.empty result)
   where
-    (result,_) = runState (runTranslate scip) emptyState
+    (result,_) = runState (runTranslate mlang scip) emptyState
 
 -- | First pass, grab all the occurences with _role := Definition
 -- build up symbol string -> fact id for all defs
-runTranslate :: B.ByteString -> Parse [SCIP.Predicate]
-runTranslate scip = case Proto.decodeMessage scip of
+runTranslate :: Maybe SCIP.LanguageId -> B.ByteString -> Parse [SCIP.Predicate]
+runTranslate mlang scip = case Proto.decodeMessage scip of
   Left err -> error err
   Right (v :: Scip.Index) -> do
     a <- decodeScipMetadata (v ^. Scip.metadata)
-    bs <- mapM decodeScipDoc (v ^. Scip.documents)
+    bs <- mapM (decodeScipDoc mlang) (v ^. Scip.documents)
     return (a <> concat bs)
 
 --
@@ -130,14 +131,20 @@ runTranslate scip = case Proto.decodeMessage scip of
 -- occurences). Generate fact ids and record symbol id facts as we find them,
 -- then cross-reference with occurences in second pass
 --
-decodeScipDoc :: Scip.Document -> Parse [SCIP.Predicate]
-decodeScipDoc doc = do
+decodeScipDoc
+  :: Maybe SCIP.LanguageId -> Scip.Document -> Parse [SCIP.Predicate]
+decodeScipDoc mlang doc = do
   srcFileId <- nextId
   let filepath = doc ^. Scip.relativePath
   setDefFact filepath srcFileId
   let srcFile = SCIP.srcFile srcFileId filepath
   langFileId <- nextId
-  let langEnum = fromEnum (SCIP.parseLanguage (doc ^. Scip.language))
+  let parseLang = SCIP.parseLanguage (doc ^. Scip.language)
+      langEnum = fromEnum $ case parseLang of
+                SCIP.UnknownLanguage
+                  | Just langId <- mlang -> langId -- use default if present
+                  | otherwise -> SCIP.UnknownLanguage
+                x -> x
   fileLang <- SCIP.predicateId "scip.FileLanguage" langFileId
     [ "file" .= srcFileId
     , "language" .= langEnum

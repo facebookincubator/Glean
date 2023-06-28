@@ -7,6 +7,7 @@ type Entity =
   {
     rust : scip.SomeEntity |
     go : scip.SomeEntity |
+    typescript : scip.SomeEntity |
   }
 
 }

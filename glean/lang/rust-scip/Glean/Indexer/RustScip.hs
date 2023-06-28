@@ -38,7 +38,8 @@ indexer = Indexer {
                     scipBinary = rustAnalyzerBinary,
                     scipArgs = const [ "scip", "." ],
                     scipRoot = indexerRoot,
-                    scipWritesLocal = True
+                    scipWritesLocal = True,
+                    scipLanguage = Just SCIP.Rust
                  }
     sendJsonBatches backend repo (rustAnalyzerBinary <> "/scip") val
     derive backend repo
