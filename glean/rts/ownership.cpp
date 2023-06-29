@@ -73,9 +73,10 @@ FOLLY_NOINLINE TrieArray<Uset> fillOwnership(
     }
   };
 
-  // A wrapper for OwnershipUnit that owns the memory
-  struct OwnershipUnitCopy : OwnershipUnit {
-    std::vector<OwnershipUnit::Ids> memory;
+  // A replacement for OwnershipUnit that owns the memory
+  struct OwnershipUnitCopy {
+    UnitId unit;
+    std::vector<OwnershipUnit::Ids> ids;
   };
 
   using Queue = folly::MPMCQueue<folly::Optional<OwnershipUnitCopy>, std::atomic, false>;
@@ -84,9 +85,7 @@ FOLLY_NOINLINE TrieArray<Uset> fillOwnership(
 
   folly::Future<folly::Unit> fetcher = folly::via(executor, [&]() {
     while (const auto d = iter->get()) {
-      std::vector<OwnershipUnit::Ids> memory{d->ids.begin(), d->ids.end()};
-      OwnershipUnitCopy c{
-          {d->unit, {memory.data(), memory.size()}}, std::move(memory)};
+      OwnershipUnitCopy c{d->unit, {d->ids.begin(), d->ids.end()}};
       queue.blockingWrite(std::move(c));
     };
     queue.blockingWrite(folly::none);
@@ -102,8 +101,8 @@ FOLLY_NOINLINE TrieArray<Uset> fillOwnership(
     CHECK_GE(data.unit,last_unit);
 
     utrie.insert(
-      data.ids.begin(),
-      data.ids.end(),
+      data.ids.data(),
+      data.ids.data() + data.ids.size(),
       [&](Uset * FOLLY_NULLABLE prev, uint32_t refs) {
         if (prev != nullptr) {
           if (prev->refs == refs) {
