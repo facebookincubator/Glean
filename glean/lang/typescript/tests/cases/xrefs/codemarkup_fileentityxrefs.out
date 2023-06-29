@@ -5,7 +5,7 @@
       "file": { "key": "example.ts" },
       "xref": {
         "target": {
-          "name": "home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git",
+          "name": "`example.ts`/Git",
           "file": { "key": "example.ts" },
           "location": {
             "range": {
@@ -31,9 +31,7 @@
         "typescript": {
           "defn": {
             "key": {
-              "symbol": {
-                "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#"
-              },
+              "symbol": { "key": "scip-typescript npm . . `example.ts`/Git#" },
               "location": {
                 "key": {
                   "file": { "key": "example.ts" },
@@ -56,7 +54,7 @@
       "file": { "key": "example.ts" },
       "xref": {
         "target": {
-          "name": "home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#`<constructor>`()",
+          "name": "`example.ts`/Git#`<constructor>`()",
           "file": { "key": "example.ts" },
           "location": {
             "range": {
@@ -83,7 +81,7 @@
           "defn": {
             "key": {
               "symbol": {
-                "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#`<constructor>`()."
+                "key": "scip-typescript npm . . `example.ts`/Git#`<constructor>`()."
               },
               "location": {
                 "key": {
@@ -107,7 +105,7 @@
       "file": { "key": "example.ts" },
       "xref": {
         "target": {
-          "name": "home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#`<constructor>`().(dir",
+          "name": "`example.ts`/Git#`<constructor>`().(dir",
           "file": { "key": "example.ts" },
           "location": {
             "range": {
@@ -134,7 +132,7 @@
           "defn": {
             "key": {
               "symbol": {
-                "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#`<constructor>`().(dir)"
+                "key": "scip-typescript npm . . `example.ts`/Git#`<constructor>`().(dir)"
               },
               "location": {
                 "key": {
@@ -158,7 +156,7 @@
       "file": { "key": "example.ts" },
       "xref": {
         "target": {
-          "name": "home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#`<constructor>`().(dir",
+          "name": "`example.ts`/Git#`<constructor>`().(dir",
           "file": { "key": "example.ts" },
           "location": {
             "range": {
@@ -185,7 +183,7 @@
           "defn": {
             "key": {
               "symbol": {
-                "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#`<constructor>`().(dir)"
+                "key": "scip-typescript npm . . `example.ts`/Git#`<constructor>`().(dir)"
               },
               "location": {
                 "key": {
@@ -209,7 +207,7 @@
       "file": { "key": "example.ts" },
       "xref": {
         "target": {
-          "name": "home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#`<constructor>`().(dir",
+          "name": "`example.ts`/Git#`<constructor>`().(dir",
           "file": { "key": "example.ts" },
           "location": {
             "range": {
@@ -236,7 +234,7 @@
           "defn": {
             "key": {
               "symbol": {
-                "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#`<constructor>`().(dir)"
+                "key": "scip-typescript npm . . `example.ts`/Git#`<constructor>`().(dir)"
               },
               "location": {
                 "key": {
@@ -260,7 +258,7 @@
       "file": { "key": "example.ts" },
       "xref": {
         "target": {
-          "name": "home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#`<constructor>`().(dir",
+          "name": "`example.ts`/Git#`<constructor>`().(dir",
           "file": { "key": "example.ts" },
           "location": {
             "range": {
@@ -287,7 +285,7 @@
           "defn": {
             "key": {
               "symbol": {
-                "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#`<constructor>`().(dir)"
+                "key": "scip-typescript npm . . `example.ts`/Git#`<constructor>`().(dir)"
               },
               "location": {
                 "key": {
@@ -311,7 +309,7 @@
       "file": { "key": "example.ts" },
       "xref": {
         "target": {
-          "name": "home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#`<constructor>`().(dir",
+          "name": "`example.ts`/Git#`<constructor>`().(dir",
           "file": { "key": "example.ts" },
           "location": {
             "range": {
@@ -338,7 +336,7 @@
           "defn": {
             "key": {
               "symbol": {
-                "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#`<constructor>`().(dir)"
+                "key": "scip-typescript npm . . `example.ts`/Git#`<constructor>`().(dir)"
               },
               "location": {
                 "key": {

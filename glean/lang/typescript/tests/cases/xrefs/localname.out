@@ -2,232 +2,156 @@
   "@generated",
   {
     "key": {
-      "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/"
-      },
-      "name": {
-        "key": "home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`"
-      }
+      "symbol": { "key": "scip-typescript npm . . `example.ts`/" },
+      "name": { "key": "`example.ts`" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-typescript npm . . `example.ts`/Git#" },
+      "name": { "key": "`example.ts`/Git" }
     }
   },
   {
     "key": {
       "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#"
+        "key": "scip-typescript npm . . `example.ts`/Git#`<constructor>`()."
       },
-      "name": {
-        "key": "home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git"
-      }
+      "name": { "key": "`example.ts`/Git#`<constructor>`()" }
     }
   },
   {
     "key": {
       "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#`<constructor>`()."
+        "key": "scip-typescript npm . . `example.ts`/Git#`<constructor>`().(dir)"
       },
-      "name": {
-        "key": "home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#`<constructor>`()"
-      }
+      "name": { "key": "`example.ts`/Git#`<constructor>`().(dir" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-typescript npm . . `example.ts`/Git#commit()." },
+      "name": { "key": "`example.ts`/Git#commit()" }
     }
   },
   {
     "key": {
       "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#`<constructor>`().(dir)"
+        "key": "scip-typescript npm . . `example.ts`/Git#commit().(author)"
       },
-      "name": {
-        "key": "home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#`<constructor>`().(dir"
-      }
+      "name": { "key": "`example.ts`/Git#commit().(author" }
     }
   },
   {
     "key": {
       "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#commit()."
+        "key": "scip-typescript npm . . `example.ts`/Git#commit().(date)"
       },
-      "name": {
-        "key": "home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#commit()"
-      }
+      "name": { "key": "`example.ts`/Git#commit().(date" }
     }
   },
   {
     "key": {
       "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#commit().(author)"
+        "key": "scip-typescript npm . . `example.ts`/Git#commit().(msg)"
       },
-      "name": {
-        "key": "home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#commit().(author"
-      }
+      "name": { "key": "`example.ts`/Git#commit().(msg" }
     }
   },
   {
     "key": {
       "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#commit().(date)"
+        "key": "scip-typescript npm . . `example.ts`/createTempRepo()."
       },
-      "name": {
-        "key": "home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#commit().(date"
-      }
+      "name": { "key": "`example.ts`/createTempRepo()" }
     }
   },
   {
     "key": {
       "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#commit().(msg)"
+        "key": "scip-typescript npm . . `example.ts`/createTempRepo().typeLiteral10:git."
       },
-      "name": {
-        "key": "home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#commit().(msg"
-      }
+      "name": { "key": "`example.ts`/createTempRepo().typeLiteral10:git" }
     }
   },
   {
     "key": {
       "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/createTempRepo()."
+        "key": "scip-typescript npm . . `example.ts`/createTempRepo().typeLiteral10:repoDir."
       },
-      "name": {
-        "key": "home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/createTempRepo()"
-      }
+      "name": { "key": "`example.ts`/createTempRepo().typeLiteral10:repoDir" }
     }
   },
   {
     "key": {
-      "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/createTempRepo().typeLiteral10:git."
-      },
-      "name": {
-        "key": "home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/createTempRepo().typeLiteral10:git"
-      }
+      "symbol": { "key": "scip-typescript npm . . `example.ts`/cwd0:" },
+      "name": { "key": "`example.ts`/cwd0" }
     }
   },
   {
     "key": {
-      "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/createTempRepo().typeLiteral10:repoDir."
-      },
-      "name": {
-        "key": "home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/createTempRepo().typeLiteral10:repoDir"
-      }
+      "symbol": { "key": "scip-typescript npm . . `example.ts`/cwd1:" },
+      "name": { "key": "`example.ts`/cwd1" }
     }
   },
   {
     "key": {
-      "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/cwd0:"
-      },
-      "name": {
-        "key": "home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/cwd0"
-      }
+      "symbol": { "key": "scip-typescript npm . . `example.ts`/cwd2:" },
+      "name": { "key": "`example.ts`/cwd2" }
     }
   },
   {
     "key": {
-      "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/cwd1:"
-      },
-      "name": {
-        "key": "home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/cwd1"
-      }
+      "symbol": { "key": "scip-typescript npm . . `example.ts`/cwd3:" },
+      "name": { "key": "`example.ts`/cwd3" }
     }
   },
   {
     "key": {
-      "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/cwd2:"
-      },
-      "name": {
-        "key": "home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/cwd2"
-      }
+      "symbol": { "key": "scip-typescript npm . . `example.ts`/cwd4:" },
+      "name": { "key": "`example.ts`/cwd4" }
     }
   },
   {
     "key": {
-      "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/cwd3:"
-      },
-      "name": {
-        "key": "home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/cwd3"
-      }
+      "symbol": { "key": "scip-typescript npm . . `example.ts`/git0:" },
+      "name": { "key": "`example.ts`/git0" }
     }
   },
   {
     "key": {
-      "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/cwd4:"
-      },
-      "name": {
-        "key": "home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/cwd4"
-      }
+      "symbol": { "key": "scip-typescript npm . . `example.ts`/repoDir0:" },
+      "name": { "key": "`example.ts`/repoDir0" }
     }
   },
   {
     "key": {
-      "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/git0:"
-      },
-      "name": {
-        "key": "home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/git0"
-      }
+      "symbol": { "key": "scip-typescript npm . . `example.ts`/silent0:" },
+      "name": { "key": "`example.ts`/silent0" }
     }
   },
   {
     "key": {
-      "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/repoDir0:"
-      },
-      "name": {
-        "key": "home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/repoDir0"
-      }
+      "symbol": { "key": "scip-typescript npm . . `example.ts`/silent1:" },
+      "name": { "key": "`example.ts`/silent1" }
     }
   },
   {
     "key": {
-      "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/silent0:"
-      },
-      "name": {
-        "key": "home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/silent0"
-      }
+      "symbol": { "key": "scip-typescript npm . . `example.ts`/silent2:" },
+      "name": { "key": "`example.ts`/silent2" }
     }
   },
   {
     "key": {
-      "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/silent1:"
-      },
-      "name": {
-        "key": "home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/silent1"
-      }
+      "symbol": { "key": "scip-typescript npm . . `example.ts`/silent3:" },
+      "name": { "key": "`example.ts`/silent3" }
     }
   },
   {
     "key": {
-      "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/silent2:"
-      },
-      "name": {
-        "key": "home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/silent2"
-      }
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/silent3:"
-      },
-      "name": {
-        "key": "home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/silent3"
-      }
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/silent4:"
-      },
-      "name": {
-        "key": "home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/silent4"
-      }
+      "symbol": { "key": "scip-typescript npm . . `example.ts`/silent4:" },
+      "name": { "key": "`example.ts`/silent4" }
     }
   },
   {
