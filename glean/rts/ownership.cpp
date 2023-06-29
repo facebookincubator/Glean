@@ -98,7 +98,7 @@ FOLLY_NOINLINE TrieArray<Uset> fillOwnership(
   Stats stats;
   folly::Optional<OwnershipUnitCopy> d;
   for (queue.blockingRead(d); d; queue.blockingRead(d)) {
-    const auto data = d.value();
+    const auto& data = d.value();
     CHECK_GE(data.unit,last_unit);
 
     utrie.insert(
