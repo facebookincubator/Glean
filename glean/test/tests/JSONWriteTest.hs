@@ -13,13 +13,16 @@ import Control.Monad
 import Data.ByteString (ByteString)
 import qualified Data.ByteString.Char8 as BC
 import Data.Default
+import Data.List (isInfixOf)
 import Data.Proxy
 import Test.HUnit
 
 import TestRunner
 import Thrift.Protocol.JSON
 import Util.String.Quasi
+import Util.Control.Exception (tryAll)
 
+import Glean (factIdRange)
 import Glean.Init
 import Glean.Database.Test
 import Glean.Write.JSON (syncWriteJsonBatch)
@@ -296,6 +299,28 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
   case results of
     [_,_] -> return ()
     _ -> assertFailure "syncWriteJsonBatch - named fact that refers to anon facts"
+
+  -- same key with different values
+  withEmptyTestDB [] $ \env repo -> do
+    let
+      batches =
+        [ mkBatch (getName (Proxy @Glean.Test.KeyValue))
+          [[s| { "key":   { "kstring": "A", "knat" : 1 },
+                 "value": { "vstring": "A", "vnat" : 1 } }
+          |]]
+        , mkBatch (getName (Proxy @Glean.Test.KeyValue))
+          [[s| { "key":   { "kstring": "A", "knat" : 1 },
+                 "value": { "vstring": "B", "vnat" : 2 } }
+          |]]
+        ]
+      label = "syncWriteJsonBatch - same key with different values"
+    FactIdRange _ finish <- factIdRange env repo
+    r <- tryAll $ syncWriteJsonBatch env repo batches options
+    print r
+    case r of
+      Right _ -> assertFailure label
+      Left err -> assertBool label $
+        ("invalid fact redefinition of $" <> show finish) `isInfixOf` show err
 
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList

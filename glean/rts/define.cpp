@@ -85,11 +85,12 @@ Substitution defineBatch(
       binary::Output out;
       uint64_t key_size;
       predicate->typecheck(rename, clause, out, key_size);
-      const auto id =
-        def.define(ty, Fact::Clause::from(out.bytes(), key_size), max_ref);
+      const auto clause = Fact::Clause::from(out.bytes(), key_size);
+      const auto id = def.define(ty, clause, max_ref);
 
       if (!id) {
-        error("invalid fact redefinition ({})", predicate->name);
+        const auto real_id = def.idByKey(ty, clause.key());
+        error("invalid fact redefinition of ${} : {}", real_id, predicate->name);
       }
 
       subst.setAt(i, id);
