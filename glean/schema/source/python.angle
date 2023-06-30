@@ -202,7 +202,7 @@ predicate DeclarationUses:
   stored {Decl, File, Span} where
   XRefsViaNameByFile { File, XRefs };
   { target = Name, source = Span } = XRefs[..];
-  DeclarationByName Name -> Decl;
+  DeclarationWithName {Name, Decl};
 
 predicate DirectXRefsByFile:
   {
@@ -212,7 +212,7 @@ predicate DirectXRefsByFile:
   {File, XRef} where
   XRefsViaNameByFile { File, XRefsViaName };
   { target = Name, source = Source } = XRefsViaName[..];
-  DeclarationByName Name -> Decl;
+  DeclarationWithName {Name, Decl};
   XRef = DirectXRef {target = Decl, source = Source};
 
 type DirectXRef =
