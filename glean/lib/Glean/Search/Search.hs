@@ -20,7 +20,6 @@ module Glean.Search.Search
   , findCxxDecls
   , findHackDecls
   , findHsDecls
-  , findJavaDecls
   ) where
 
 import Control.Monad
@@ -114,8 +113,6 @@ findEntities lim backend SchemaRepos{..} q@SearchQuery{..} refs = do
         mapM (\r -> findCxxDecls lim backend r q refs) cxxRepo
       , ifLang [Src.Language_Haskell] $
         mapM (\r -> findHsDecls lim backend r q) hsRepo
-      , ifLang [Src.Language_Java] $
-        mapM (\r -> findJavaDecls lim backend r q) javaRepo
       , ifLang [Src.Language_Hack] $
         mapM (\r -> findHackDecls lim backend r q) hackRepo
       ]
@@ -135,16 +132,6 @@ findHsDecls lim backend repo SearchQuery{..} = do
     (Glean.recursive (Angle.query q))
   return $
     map (\x -> EntityRefs repo (Code.Entity_hs (Hs.Entity_function_ x)) []) r
-
-
--- | Search for Java declarations
-findJavaDecls
-  :: Maybe Int
-  -> Some Glean.Backend
-  -> Glean.Repo
-  -> SearchQuery
-  -> IO [EntityRefs]
-findJavaDecls _ _ _ _ = return []
 
 
 -- | Search for C/C++/ObjectiveC entities

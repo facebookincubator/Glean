@@ -33,26 +33,24 @@ import Data.Maybe
 --
 -- This will probably get fancier, to reflect SymbolSpecUniverse
 data SchemaRepos x = SchemaRepos
-  { cxxRepo, hsRepo, javaRepo, hackRepo, pythonRepo :: x }
+  { cxxRepo, hsRepo, hackRepo, pythonRepo :: x }
   deriving (Show, Functor, Foldable, Traversable)
 
 instance Semigroup x => Semigroup (SchemaRepos x) where
   s1 <> s2 = SchemaRepos
     { cxxRepo = cxxRepo s1 <> cxxRepo s2
     , hsRepo = hsRepo s1 <> hsRepo s2
-    , javaRepo = javaRepo s1 <> javaRepo s2
     , hackRepo = hackRepo s1 <> hackRepo s2
     , pythonRepo = pythonRepo s1 <> pythonRepo s2
     }
 
 instance Monoid x => Monoid (SchemaRepos x) where
-  mempty = SchemaRepos mempty mempty mempty mempty mempty
+  mempty = SchemaRepos mempty mempty mempty mempty
 
 instance Applicative SchemaRepos where
   pure x = SchemaRepos
     { cxxRepo = x
     , hsRepo = x
-    , javaRepo = x
     , hackRepo = x
     , pythonRepo = x
     }
@@ -60,7 +58,6 @@ instance Applicative SchemaRepos where
   s1 <*> s2 = SchemaRepos
     { cxxRepo = cxxRepo s1 (cxxRepo s2)
     , hsRepo = hsRepo s1 (hsRepo s2)
-    , javaRepo = javaRepo s1 (javaRepo s2)
     , hackRepo = hackRepo s1 (hackRepo s2)
     , pythonRepo = pythonRepo s1 (pythonRepo s2)
     }
@@ -82,7 +79,6 @@ defaultSchemaRepos :: SchemaRepos [RepoName]
 defaultSchemaRepos = SchemaRepos
   { cxxRepo = ["fbsource"]
   , hsRepo = ["sigma_hiedb"]
-  , javaRepo = ["fbsource.fbandroid"]
   , hackRepo = ["www.hack"]
   , pythonRepo = ["instagram.server"]
   }
