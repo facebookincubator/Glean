@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-package glean.lang.kotlin.indexer
+package glean.lang.kotlin.indexer.kotlin_psi_utils
 
 private const val FBSOURCE = "fbsource"
 

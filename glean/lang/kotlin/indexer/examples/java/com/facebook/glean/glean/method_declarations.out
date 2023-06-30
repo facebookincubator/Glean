@@ -6,7 +6,7 @@
         "key": {
           "name": {
             "key": {
-              "name": { "key": "Name{id=0, key=fetch}" },
+              "name": { "key": "fetch" },
               "context": {
                 "key": {
                   "base": { "key": "Glean" },
@@ -89,7 +89,7 @@
           "key": {
             "name": {
               "key": {
-                "name": { "key": "Name{id=0, key=Glean}" },
+                "name": { "key": "Glean" },
                 "context": {
                   "key": {
                     "base": { "key": "glean" },
@@ -128,7 +128,7 @@
         "key": {
           "name": {
             "key": {
-              "name": { "key": "Name{id=0, key=getE}" },
+              "name": { "key": "getE" },
               "context": {
                 "key": {
                   "base": { "key": "ClassA" },
@@ -239,7 +239,7 @@
           "key": {
             "name": {
               "key": {
-                "name": { "key": "Name{id=0, key=ClassA}" },
+                "name": { "key": "ClassA" },
                 "context": {
                   "key": {
                     "base": { "key": "glean" },
@@ -278,7 +278,7 @@
         "key": {
           "name": {
             "key": {
-              "name": { "key": "Name{id=0, key=getList}" },
+              "name": { "key": "getList" },
               "context": {
                 "key": {
                   "base": { "key": "ClassA" },
@@ -433,7 +433,7 @@
           "key": {
             "name": {
               "key": {
-                "name": { "key": "Name{id=0, key=ClassA}" },
+                "name": { "key": "ClassA" },
                 "context": {
                   "key": {
                     "base": { "key": "glean" },
@@ -472,7 +472,7 @@
         "key": {
           "name": {
             "key": {
-              "name": { "key": "Name{id=0, key=isInstanceOfList}" },
+              "name": { "key": "isInstanceOfList" },
               "context": {
                 "key": {
                   "base": { "key": "ClassA" },
@@ -606,7 +606,7 @@
           "key": {
             "name": {
               "key": {
-                "name": { "key": "Name{id=0, key=ClassA}" },
+                "name": { "key": "ClassA" },
                 "context": {
                   "key": {
                     "base": { "key": "glean" },
@@ -645,7 +645,7 @@
         "key": {
           "name": {
             "key": {
-              "name": { "key": "Name{id=0, key=main}" },
+              "name": { "key": "main" },
               "context": {
                 "key": {
                   "base": { "key": "Companion" },

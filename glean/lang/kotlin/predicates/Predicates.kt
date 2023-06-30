@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-package glean.lang.kotlin.indexer
+package glean.lang.kotlin.predicates
 
 import com.facebook.glean.schema.kotlin_alpha.MethodDeclaration
 import com.facebook.thrift.payload.ThriftSerializable
@@ -25,6 +25,12 @@ class Predicates {
 
   private val predicateNames: HashMap<Class<*>, String> =
       hashMapOf(MethodDeclaration::class.java to METHOD_DECLARATION_PREDICATE_NAME)
+
+  fun <T> addPredicate(value: T) where T : GleanPredicate<*> {
+    val gleanType = value.toGleanType()
+    val list = predicatesMap.getOrPut(gleanType.javaClass) { mutableListOf() }
+    list.add(gleanType)
+  }
 
   fun <T> addPredicate(value: T) where T : ThriftSerializable {
     val list = predicatesMap.getOrPut(value.javaClass) { mutableListOf() }

@@ -8,12 +8,13 @@
 
 package glean.lang.kotlin.indexer
 
-import com.facebook.glean.schema.kotlin_alpha.MethodDeclaration
+import glean.lang.kotlin.predicates.MethodDeclarationPredicate
+import glean.lang.kotlin.predicates.Predicates
 
 class KotlinIndexContext {
   private val predicates = Predicates()
 
-  fun addMethods(method: MethodDeclaration) {
+  fun addMethods(method: MethodDeclarationPredicate) {
     this.predicates.addPredicate(method)
   }
 

@@ -8,7 +8,7 @@
 
 package glean.lang.kotlin.indexer
 
-import glean.lang.kotlin.indexer.glean_utils.buildMethodDeclaration
+import glean.lang.kotlin.indexer.kotlin_psi_utils.buildMethodDeclaration
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtNamedFunction

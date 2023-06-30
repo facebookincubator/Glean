@@ -6,12 +6,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-package glean.lang.kotlin.indexer.glean_utils
+package glean.lang.kotlin.indexer.kotlin_psi_utils
 
-import com.facebook.glean.schema.kotlin_alpha.Declaration
-import com.facebook.glean.schema.kotlin_alpha.MethodDeclaration
-import com.facebook.glean.schema.kotlin_alpha.MethodDeclarationKey
 import com.intellij.psi.PsiElement
+import glean.lang.kotlin.predicates.MethodDeclarationPredicate
 import org.jetbrains.kotlin.descriptors.FunctionDescriptor
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtNamedFunction
@@ -31,29 +29,20 @@ private fun getFunctionDescriptor(
 fun buildMethodDeclaration(
     function: KtNamedFunction,
     bindingContext: BindingContext
-): MethodDeclaration {
-  val keyBuilder = MethodDeclarationKey.Builder()
-  (function as? PsiElement)?.let { keyBuilder.loc = buildLoc(it) }
-
-  val ktClassBody = function.parent
-  val parentClass = ktClassBody?.parent as? KtClass
-  if (parentClass != null) {
-    keyBuilder.container =
-        Declaration.fromClass_(buildClassDeclaration(parentClass, bindingContext))
-  }
-
+): MethodDeclarationPredicate {
   val funcDescriptor =
       getFunctionDescriptor(function, bindingContext)
           ?: throw MethodDeclarationBuilderError(
               "Could not get function descriptor", function.name ?: "")
-  keyBuilder.parameters =
+  val kotlinType = function.typeReference?.getAbbreviatedTypeOrType(bindingContext)
+  val ktClassBody = function.parent
+  return MethodDeclarationPredicate(
+      buildMethodName(funcDescriptor),
       funcDescriptor.valueParameters.map { parameter ->
         buildVariableDeclaration(parameter, bindingContext)
-      }
-  val kotlinType = function.typeReference?.getAbbreviatedTypeOrType(bindingContext)
-  if (kotlinType != null) {
-    keyBuilder.returnType = buildKotlinType(kotlinType, bindingContext)
-  }
-  keyBuilder.name = buildMethodName(funcDescriptor)
-  return MethodDeclaration.Builder().setKey(keyBuilder.build()).build()
+      },
+      kotlinType?.let { buildKotlinType(it, bindingContext) },
+      (ktClassBody?.parent as? KtClass)?.let { buildClassDeclaration(it, bindingContext) },
+      (function as? PsiElement)?.let { buildLoc(it) }
+          ?: throw MissingRequiredGleanFieldException("MethodDeclaration.loc"))
 }

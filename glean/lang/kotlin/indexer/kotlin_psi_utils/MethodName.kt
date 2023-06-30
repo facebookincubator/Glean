@@ -6,13 +6,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-package glean.lang.kotlin.indexer.glean_utils
+package glean.lang.kotlin.indexer.kotlin_psi_utils
 
-import com.facebook.glean.schema.javakotlin_alpha.MethodName
-import com.facebook.glean.schema.javakotlin_alpha.MethodNameKey
-import com.facebook.glean.schema.javakotlin_alpha.Type
-import com.facebook.glean.schema.javakotlin_alpha.TypeKey
 import com.facebook.tools.jast.primitiveToShortFormat
+import glean.lang.kotlin.predicates.JavaKotlinTypePredicate
+import glean.lang.kotlin.predicates.MethodNamePredicate
 import org.jetbrains.kotlin.descriptors.FunctionDescriptor
 import org.jetbrains.kotlin.descriptors.annotations.Annotations
 import org.jetbrains.kotlin.descriptors.buildPossiblyInnerType
@@ -30,16 +28,12 @@ import org.jetbrains.kotlin.types.typeUtil.isUnit
 import org.jetbrains.kotlin.types.typeUtil.replaceAnnotations
 import org.jetbrains.kotlin.types.upperIfFlexible
 
-fun buildMethodName(function: FunctionDescriptor): MethodName {
-  val key = MethodNameKey.Builder().setName(function.qualifiedName())
-  key.signature =
-      function.valueParameters
-          .map { p -> Type.Builder().setKey(p.type.gleanType()).build() }
-          .toList()
-  return MethodName.Builder().setKey(key.build()).build()
+fun buildMethodName(function: FunctionDescriptor): MethodNamePredicate {
+  return MethodNamePredicate(
+      function.qualifiedName(), function.valueParameters.map { it.type.gleanType() }.toList())
 }
 
-fun KotlinType.gleanType(): TypeKey {
+fun KotlinType.gleanType(): JavaKotlinTypePredicate {
   // we do not include annotations into names
   if (!this.annotations.isEmpty()) {
     return this.replaceAnnotations(Annotations.EMPTY).gleanType()
@@ -47,18 +41,15 @@ fun KotlinType.gleanType(): TypeKey {
 
   if (this.isPrimitiveNumberType() || this.isBoolean() || this.isUnit()) {
     val type = this.toString().lowercase()
-    return TypeKey.fromPrimitive(
+    return JavaKotlinTypePredicate.StringValue(
         primitiveToShortFormat(if (this.isMarkedNullable) type.substringBefore("?") else type))
   } else {
     if (this.isTypeParameter() || this.isAnyOrNullableAny()) {
-      return TypeKey.fromObject(listOf("java", "lang", "Object").joinNonEmptyPath())
+      return JavaKotlinTypePredicate.PathValue(listOf("java", "lang", "Object").joinNonEmptyPath())
     }
     if (this.isArrayOfNothing()) {
-      val objectType =
-          Type.Builder()
-              .setKey(TypeKey.fromObject(listOf("java", "lang", "Object").joinNonEmptyPath()))
-              .build()
-      return TypeKey.fromArray(objectType)
+      return JavaKotlinTypePredicate.ArrayValue(
+          JavaKotlinTypePredicate.PathValue(listOf("java", "lang", "Object").joinNonEmptyPath()))
     }
     val potentialName = nameIfStandardType
     if (potentialName != null && potentialName.toString() == "Array") {
@@ -75,7 +66,7 @@ fun KotlinType.gleanType(): TypeKey {
     val fqName =
         if (this.isMarkedNullable) fqNameMaybeNullable.substringBefore("?") else fqNameMaybeNullable
     val possiblyInnerType =
-        this.buildPossiblyInnerType() ?: return TypeKey.fromObject(fqName.path())
-    return TypeKey.fromObject(possiblyInnerType.classDescriptor.path())
+        this.buildPossiblyInnerType() ?: return JavaKotlinTypePredicate.PathValue(fqName.path())
+    return JavaKotlinTypePredicate.PathValue(possiblyInnerType.classDescriptor.path())
   }
 }

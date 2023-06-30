@@ -6,15 +6,18 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-package glean.lang.kotlin.indexer.glean_utils
+package glean.lang.kotlin.indexer.kotlin_psi_utils
 
-import com.facebook.glean.schema.javakotlin_alpha.Path as GleanPath
-import com.facebook.glean.schema.javakotlin_alpha.PathKey as GleanPathKey
-import com.facebook.glean.schema.javakotlin_alpha.QName
-import com.facebook.glean.schema.javakotlin_alpha.QNameKey
 import com.facebook.tools.jast.primitiveToShortFormat
-import org.jetbrains.kotlin.descriptors.*
+import glean.lang.kotlin.predicates.PathPredicate
+import glean.lang.kotlin.predicates.QNamePredicate
+import org.jetbrains.kotlin.descriptors.CallableDescriptor
+import org.jetbrains.kotlin.descriptors.ClassDescriptor
+import org.jetbrains.kotlin.descriptors.PackageViewDescriptor
+import org.jetbrains.kotlin.descriptors.ParameterDescriptor
 import org.jetbrains.kotlin.descriptors.annotations.Annotations
+import org.jetbrains.kotlin.descriptors.buildPossiblyInnerType
+import org.jetbrains.kotlin.descriptors.containingPackage
 import org.jetbrains.kotlin.descriptors.impl.PackageFragmentDescriptorImpl
 import org.jetbrains.kotlin.js.descriptorUtils.getJetTypeFqName
 import org.jetbrains.kotlin.js.descriptorUtils.nameIfStandardType
@@ -27,22 +30,22 @@ import org.jetbrains.kotlin.types.upperIfFlexible
 
 private val DEFAULT_CONTAINER = "default"
 
-fun KtClass.qualifiedName(): QName? {
+fun KtClass.qualifiedName(): QNamePredicate? {
   return this.fqName?.pathSegments()?.map { segment -> segment.toString() }?.joinPath()?.toQName()
 }
 
-fun ParameterDescriptor.qualifiedName(): QName {
+fun ParameterDescriptor.qualifiedName(): QNamePredicate {
   val methodDecl = this.containingDeclaration
   val container =
       if (methodDecl is CallableDescriptor) methodDecl.path() else DEFAULT_CONTAINER.path()
-  return container.qNameInPath(this.name.toString())
+  return this.name.toString().qNameInPath(container)
 }
 
-fun CallableDescriptor.qualifiedName(): QName {
+fun CallableDescriptor.qualifiedName(): QNamePredicate {
   return this.path().toQName()
 }
 
-private fun CallableDescriptor.path(): GleanPath {
+private fun CallableDescriptor.path(): PathPredicate {
   val methodPackage = this.containingPackage()
   val methodDecl = this.containingDeclaration
   val classPath =
@@ -51,11 +54,11 @@ private fun CallableDescriptor.path(): GleanPath {
       } else {
         methodPackage?.toString()?.path()
       }
-  return classPath.add(this.name.toString())
+  return this.name.toString().add(classPath)
 }
 
-fun ClassDescriptor.path(): GleanPath {
-  val containerPath: GleanPath? =
+fun ClassDescriptor.path(): PathPredicate {
+  val containerPath: PathPredicate? =
       when (val container = this.containingDeclaration) {
         is ClassDescriptor -> container.path()
         is PackageViewDescriptor -> container.path()
@@ -71,58 +74,46 @@ fun ClassDescriptor.path(): GleanPath {
         }
       }
   val container = containerPath ?: DEFAULT_CONTAINER.path()
-  return container.add(this.name.toString())
+  return this.name.toString().add(container)
 }
 
-fun FqName.path(): GleanPath {
+fun FqName.path(): PathPredicate {
   return this.pathSegments().map { e -> e.toString() }.joinNonEmptyPath()
 }
 
-fun PackageViewDescriptor.path(): GleanPath {
+fun PackageViewDescriptor.path(): PathPredicate {
   return this.fqName.path()
 }
 
-fun String.path(): GleanPath {
-  val key = GleanPathKey.Builder().setBase(this.toName()).build()
-  return GleanPath.Builder().setKey(key).build()
+fun String.path(): PathPredicate {
+  return PathPredicate(this, null)
 }
 
-fun GleanPath?.add(name: String): GleanPath {
-  val key = GleanPathKey.Builder().setBase(name.toName())
-  if (this !== null) {
-    key.container = this
-  }
-  return GleanPath.Builder().setKey(key.build()).build()
+fun String.add(container: PathPredicate?): PathPredicate {
+  return PathPredicate(this, container)
 }
 
-fun GleanPath.qNameInPath(name: String): QName {
-  val key = QNameKey.Builder().setName(name.toName())
-  key.context = this
-  return QName.Builder().setKey(key.build()).build()
+fun String.qNameInPath(path: PathPredicate): QNamePredicate {
+  return QNamePredicate(this, path)
 }
 
-fun List<String>.joinPath(): GleanPath? {
-  var prev: GleanPath? = null
+fun List<String>.joinPath(): PathPredicate? {
+  var prev: PathPredicate? = null
   for (pathSegment in this) {
-    prev = prev?.add(pathSegment) ?: pathSegment.path()
+    prev = pathSegment.add(prev)
   }
   return prev
 }
 
-fun List<String>.joinNonEmptyPath(): GleanPath {
+fun List<String>.joinNonEmptyPath(): PathPredicate {
   return this.joinPath() ?: throw Error("joinNonEmptyPath returned null")
 }
 
-fun GleanPath.replaceLast(key: String): GleanPath {
-  return this.key?.container.add(key)
+fun PathPredicate.toQName(): QNamePredicate {
+  return this.toQName { DEFAULT_CONTAINER.path() }
 }
 
-fun GleanPath.toQName(): QName {
-  val container = this.key?.container ?: DEFAULT_CONTAINER.path()
-  return container.qNameInPath(this.key?.base.toString())
-}
-
-fun KotlinType.path(): GleanPath {
+fun KotlinType.path(): PathPredicate {
   // we do not include annotations into names
   if (!this.annotations.isEmpty()) {
     return this.replaceAnnotations(Annotations.EMPTY).path()
@@ -144,7 +135,7 @@ fun KotlinType.path(): GleanPath {
       val containedTypes = this.constituentTypes()
       if (containedTypes.size == 1) {
         val path = containedTypes.first().path()
-        return path.replaceLast("""[${path.key?.base?.key}""")
+        return path.amendBase { """[$it""" }
       }
     }
     if (this.isFlexible()) {
