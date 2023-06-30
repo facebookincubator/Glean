@@ -39,7 +39,8 @@ indexer = Indexer {
       params = ScipIndexerParams {
         scipBinary = scipTypescriptBinary,
         scipArgs = \outFile ->
-           [ "index", "--no-progress-bar", "--cwd", ".", "--output", outFile ],
+           [ "index", "--no-progress-bar"
+           , "--cwd", indexerRoot, "--output", outFile ],
         scipWritesLocal = False,
         scipRoot = indexerRoot,
         scipLanguage = Just SCIP.TypeScript

@@ -2,24 +2,20 @@
   "@generated",
   {
     "key": {
-      "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/"
-      },
+      "symbol": { "key": "scip-typescript npm . . `example.ts`/" },
       "kind": 3
     }
   },
   {
     "key": {
-      "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#"
-      },
+      "symbol": { "key": "scip-typescript npm . . `example.ts`/Git#" },
       "kind": 4
     }
   },
   {
     "key": {
       "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#`<constructor>`()."
+        "key": "scip-typescript npm . . `example.ts`/Git#`<constructor>`()."
       },
       "kind": 5
     }
@@ -27,7 +23,21 @@
   {
     "key": {
       "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#`<constructor>`().(dir)"
+        "key": "scip-typescript npm . . `example.ts`/Git#`<constructor>`().(dir)"
+      },
+      "kind": 7
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-typescript npm . . `example.ts`/Git#commit()." },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm . . `example.ts`/Git#commit().(author)"
       },
       "kind": 7
     }
@@ -35,7 +45,23 @@
   {
     "key": {
       "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#commit()."
+        "key": "scip-typescript npm . . `example.ts`/Git#commit().(date)"
+      },
+      "kind": 7
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm . . `example.ts`/Git#commit().(msg)"
+      },
+      "kind": 7
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-typescript npm . . `example.ts`/createTempRepo()."
       },
       "kind": 5
     }
@@ -43,39 +69,7 @@
   {
     "key": {
       "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#commit().(author)"
-      },
-      "kind": 7
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#commit().(date)"
-      },
-      "kind": 7
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/Git#commit().(msg)"
-      },
-      "kind": 7
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/createTempRepo()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/createTempRepo().typeLiteral10:git."
+        "key": "scip-typescript npm . . `example.ts`/createTempRepo().typeLiteral10:git."
       },
       "kind": 12
     }
@@ -83,7 +77,7 @@
   {
     "key": {
       "symbol": {
-        "key": "scip-typescript npm . . home/dons/Glean/glean/lang/typescript/tests/cases/xrefs/`example.ts`/createTempRepo().typeLiteral10:repoDir."
+        "key": "scip-typescript npm . . `example.ts`/createTempRepo().typeLiteral10:repoDir."
       },
       "kind": 12
     }

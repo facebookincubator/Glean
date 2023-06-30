@@ -1,8 +1,1238 @@
 [
     "@generated",
     {
-        "definitions": [],
-        "references": [],
+        "definitions": [
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\nmodule \"example.ts\"\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 1,
+                    "lineEnd": 1
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2F"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 7
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/Git#"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\nclass Git\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 7,
+                    "columnEnd": 10,
+                    "lineBegin": 14,
+                    "lineEnd": 14
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2FGit%23"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/Git#`<constructor>`()."
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\nconstructor(dir: string): Git\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 14,
+                    "lineBegin": 15,
+                    "lineEnd": 15
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2FGit%23%60%3Cconstructor%3E%60%28%29."
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/Git#`<constructor>`().(dir)"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) dir: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 23,
+                    "columnEnd": 26,
+                    "lineBegin": 15,
+                    "lineEnd": 15
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2FGit%23%60%3Cconstructor%3E%60%28%29.%28dir%29"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/Git#commit()."
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(method) commit(msg: string, date: string, author: string): void\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 9,
+                    "lineBegin": 34,
+                    "lineEnd": 34
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2FGit%23commit%28%29."
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/Git#commit().(author)"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(parameter) author: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 37,
+                    "columnEnd": 43,
+                    "lineBegin": 34,
+                    "lineEnd": 34
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2FGit%23commit%28%29.%28author%29"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/Git#commit().(date)"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(parameter) date: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 23,
+                    "columnEnd": 27,
+                    "lineBegin": 34,
+                    "lineEnd": 34
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2FGit%23commit%28%29.%28date%29"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/Git#commit().(msg)"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(parameter) msg: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 10,
+                    "columnEnd": 13,
+                    "lineBegin": 34,
+                    "lineEnd": 34
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2FGit%23commit%28%29.%28msg%29"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/createTempRepo()."
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\nfunction createTempRepo(): { repoDir: string; git: Git; }\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 17,
+                    "columnEnd": 31,
+                    "lineBegin": 46,
+                    "lineEnd": 46
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2FcreateTempRepo%28%29."
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/createTempRepo().typeLiteral10:git."
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) git: Git\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 53,
+                    "columnEnd": 56,
+                    "lineBegin": 46,
+                    "lineEnd": 46
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2FcreateTempRepo%28%29.typeLiteral10:git."
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/createTempRepo().typeLiteral10:repoDir."
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) repoDir: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 36,
+                    "columnEnd": 43,
+                    "lineBegin": 46,
+                    "lineEnd": 46
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2FcreateTempRepo%28%29.typeLiteral10:repoDir."
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/cwd0:"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) cwd: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 41,
+                    "columnEnd": 44,
+                    "lineBegin": 16,
+                    "lineEnd": 16
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2Fcwd0:"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/cwd1:"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) cwd: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 7,
+                    "columnEnd": 10,
+                    "lineBegin": 24,
+                    "lineEnd": 24
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2Fcwd1:"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/cwd2:"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) cwd: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 48,
+                    "columnEnd": 51,
+                    "lineBegin": 27,
+                    "lineEnd": 27
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2Fcwd2:"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/cwd3:"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) cwd: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 7,
+                    "columnEnd": 10,
+                    "lineBegin": 30,
+                    "lineEnd": 30
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2Fcwd3:"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/cwd4:"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) cwd: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 45,
+                    "columnEnd": 48,
+                    "lineBegin": 35,
+                    "lineEnd": 35
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2Fcwd4:"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/git0:"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) git: Git\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 20,
+                    "columnEnd": 23,
+                    "lineBegin": 51,
+                    "lineEnd": 51
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2Fgit0:"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/repoDir0:"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) repoDir: any\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 11,
+                    "columnEnd": 18,
+                    "lineBegin": 51,
+                    "lineEnd": 51
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2FrepoDir0:"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/silent0:"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) silent: boolean\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 51,
+                    "columnEnd": 57,
+                    "lineBegin": 16,
+                    "lineEnd": 16
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2Fsilent0:"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/silent1:"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) silent: boolean\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 7,
+                    "columnEnd": 13,
+                    "lineBegin": 25,
+                    "lineEnd": 25
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2Fsilent1:"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/silent2:"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) silent: boolean\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 58,
+                    "columnEnd": 64,
+                    "lineBegin": 27,
+                    "lineEnd": 27
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2Fsilent2:"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/silent3:"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) silent: boolean\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 7,
+                    "columnEnd": 13,
+                    "lineBegin": 31,
+                    "lineEnd": 31
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2Fsilent3:"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/silent4:"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) silent: boolean\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 60,
+                    "columnEnd": 66,
+                    "lineBegin": 35,
+                    "lineEnd": 35
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2Fsilent4:"
+            }
+        ],
+        "references": [
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 7
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/Git#"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\nclass Git\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 58,
+                    "columnEnd": 61,
+                    "lineBegin": 46,
+                    "lineEnd": 46
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2FGit%23",
+                "target": {
+                    "filepath": "example.ts",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 10,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/Git#`<constructor>`()."
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\nconstructor(dir: string): Git\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 19,
+                    "columnEnd": 22,
+                    "lineBegin": 49,
+                    "lineEnd": 49
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2FGit%23%60%3Cconstructor%3E%60%28%29.",
+                "target": {
+                    "filepath": "example.ts",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 14,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/Git#`<constructor>`().(dir)"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) dir: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 46,
+                    "columnEnd": 49,
+                    "lineBegin": 16,
+                    "lineEnd": 16
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2FGit%23%60%3Cconstructor%3E%60%28%29.%28dir%29",
+                "target": {
+                    "filepath": "example.ts",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 26,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/Git#`<constructor>`().(dir)"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) dir: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 12,
+                    "columnEnd": 15,
+                    "lineBegin": 24,
+                    "lineEnd": 24
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2FGit%23%60%3Cconstructor%3E%60%28%29.%28dir%29",
+                "target": {
+                    "filepath": "example.ts",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 26,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/Git#`<constructor>`().(dir)"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) dir: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 53,
+                    "columnEnd": 56,
+                    "lineBegin": 27,
+                    "lineEnd": 27
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2FGit%23%60%3Cconstructor%3E%60%28%29.%28dir%29",
+                "target": {
+                    "filepath": "example.ts",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 26,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/Git#`<constructor>`().(dir)"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) dir: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 12,
+                    "columnEnd": 15,
+                    "lineBegin": 30,
+                    "lineEnd": 30
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2FGit%23%60%3Cconstructor%3E%60%28%29.%28dir%29",
+                "target": {
+                    "filepath": "example.ts",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 26,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/Git#`<constructor>`().(dir)"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) dir: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 55,
+                    "columnEnd": 58,
+                    "lineBegin": 35,
+                    "lineEnd": 35
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2FGit%23%60%3Cconstructor%3E%60%28%29.%28dir%29",
+                "target": {
+                    "filepath": "example.ts",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 26,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
         "revision": "testhash",
         "truncated": false
     }
