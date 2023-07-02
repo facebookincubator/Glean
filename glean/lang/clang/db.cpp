@@ -433,7 +433,12 @@ void ClangDB::finish() {
       std::vector<Cxx::BoundXRef> bound;
       bound.reserve(local_refs.size());
       for (const auto& [target, ranges] : local_refs) {
-        bound.push_back({target, fact<Cxx::Uses>(packByteSpans(ranges))});
+        bound.push_back(
+            {target,
+             fact<Cxx::Uses>(
+                 packByteSpans(ranges),
+                 Src::PackedByteSpans{},
+                 Src::PackedByteSpans{})});
       }
 
       struct UnboundXRef {
@@ -455,7 +460,8 @@ void ClangDB::finish() {
       free.reserve(unbound.size());
       targets.reserve(unbound.size());
       for (auto&& [spans, group] : std::move(unbound)) {
-        free.push_back(fact<Cxx::Uses>(std::move(spans)));
+        free.push_back(fact<Cxx::Uses>(
+            std::move(spans), Src::PackedByteSpans{}, Src::PackedByteSpans{}));
         targets.push_back(fact<Cxx::XRefTargets>(std::move(group)));
       }
       release(unbound);

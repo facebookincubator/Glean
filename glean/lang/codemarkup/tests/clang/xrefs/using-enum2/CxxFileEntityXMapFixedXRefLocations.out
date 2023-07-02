@@ -89,7 +89,11 @@
                     }
                   },
                   "uses": {
-                    "key": { "spans": [ { "length": 2, "offsets": [ 428 ] } ] }
+                    "key": {
+                      "spans": [ { "length": 2, "offsets": [ 428 ] } ],
+                      "expansions": [ ],
+                      "spellings": [ ]
+                    }
                   }
                 },
                 {
@@ -122,12 +126,22 @@
                     }
                   },
                   "uses": {
-                    "key": { "spans": [ { "length": 2, "offsets": [ 432 ] } ] }
+                    "key": {
+                      "spans": [ { "length": 2, "offsets": [ 432 ] } ],
+                      "expansions": [ ],
+                      "spellings": [ ]
+                    }
                   }
                 }
               ],
               "free": [
-                { "key": { "spans": [ { "length": 2, "offsets": [ 449 ] } ] } }
+                {
+                  "key": {
+                    "spans": [ { "length": 2, "offsets": [ 449 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                }
               ]
             }
           },
@@ -467,7 +481,11 @@
                     }
                   },
                   "uses": {
-                    "key": { "spans": [ { "length": 2, "offsets": [ 428 ] } ] }
+                    "key": {
+                      "spans": [ { "length": 2, "offsets": [ 428 ] } ],
+                      "expansions": [ ],
+                      "spellings": [ ]
+                    }
                   }
                 },
                 {
@@ -500,12 +518,22 @@
                     }
                   },
                   "uses": {
-                    "key": { "spans": [ { "length": 2, "offsets": [ 432 ] } ] }
+                    "key": {
+                      "spans": [ { "length": 2, "offsets": [ 432 ] } ],
+                      "expansions": [ ],
+                      "spellings": [ ]
+                    }
                   }
                 }
               ],
               "free": [
-                { "key": { "spans": [ { "length": 2, "offsets": [ 449 ] } ] } }
+                {
+                  "key": {
+                    "spans": [ { "length": 2, "offsets": [ 449 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                }
               ]
             }
           },

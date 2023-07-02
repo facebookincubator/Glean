@@ -10,8 +10,20 @@
       ],
       "bound": [ ],
       "free": [
-        { "key": { "spans": [ { "length": 1, "offsets": [ 234 ] } ] } },
-        { "key": { "spans": [ { "length": 1, "offsets": [ 241 ] } ] } }
+        {
+          "key": {
+            "spans": [ { "length": 1, "offsets": [ 234 ] } ],
+            "expansions": [ ],
+            "spellings": [ ]
+          }
+        },
+        {
+          "key": {
+            "spans": [ { "length": 1, "offsets": [ 241 ] } ],
+            "expansions": [ ],
+            "spellings": [ ]
+          }
+        }
       ]
     }
   }

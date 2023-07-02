@@ -106,7 +106,9 @@
                   "length": 2,
                   "offsets": [ 293, 10, 93, 23, 90, 13, 55, 13, 76, 55 ]
                 }
-              ]
+              ],
+              "expansions": [ ],
+              "spellings": [ ]
             }
           }
         },
@@ -128,7 +130,11 @@
             }
           },
           "uses": {
-            "key": { "spans": [ { "length": 3, "offsets": [ 655 ] } ] }
+            "key": {
+              "spans": [ { "length": 3, "offsets": [ 655 ] } ],
+              "expansions": [ ],
+              "spellings": [ ]
+            }
           }
         },
         {
@@ -149,17 +155,57 @@
             }
           },
           "uses": {
-            "key": { "spans": [ { "length": 3, "offsets": [ 744 ] } ] }
+            "key": {
+              "spans": [ { "length": 3, "offsets": [ 744 ] } ],
+              "expansions": [ ],
+              "spellings": [ ]
+            }
           }
         }
       ],
       "free": [
-        { "key": { "spans": [ { "length": 1, "offsets": [ 326 ] } ] } },
-        { "key": { "spans": [ { "length": 1, "offsets": [ 439 ] } ] } },
-        { "key": { "spans": [ { "length": 1, "offsets": [ 545 ] } ] } },
-        { "key": { "spans": [ { "length": 1, "offsets": [ 613 ] } ] } },
-        { "key": { "spans": [ { "length": 1, "offsets": [ 689 ] } ] } },
-        { "key": { "spans": [ { "length": 1, "offsets": [ 765 ] } ] } }
+        {
+          "key": {
+            "spans": [ { "length": 1, "offsets": [ 326 ] } ],
+            "expansions": [ ],
+            "spellings": [ ]
+          }
+        },
+        {
+          "key": {
+            "spans": [ { "length": 1, "offsets": [ 439 ] } ],
+            "expansions": [ ],
+            "spellings": [ ]
+          }
+        },
+        {
+          "key": {
+            "spans": [ { "length": 1, "offsets": [ 545 ] } ],
+            "expansions": [ ],
+            "spellings": [ ]
+          }
+        },
+        {
+          "key": {
+            "spans": [ { "length": 1, "offsets": [ 613 ] } ],
+            "expansions": [ ],
+            "spellings": [ ]
+          }
+        },
+        {
+          "key": {
+            "spans": [ { "length": 1, "offsets": [ 689 ] } ],
+            "expansions": [ ],
+            "spellings": [ ]
+          }
+        },
+        {
+          "key": {
+            "spans": [ { "length": 1, "offsets": [ 765 ] } ],
+            "expansions": [ ],
+            "spellings": [ ]
+          }
+        }
       ]
     }
   }

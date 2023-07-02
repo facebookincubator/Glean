@@ -109,7 +109,9 @@
                   },
                   "uses": {
                     "key": {
-                      "spans": [ { "length": 1, "offsets": [ 325, 38 ] } ]
+                      "spans": [ { "length": 1, "offsets": [ 325, 38 ] } ],
+                      "expansions": [ ],
+                      "spellings": [ ]
                     }
                   }
                 },
@@ -157,7 +159,11 @@
                     }
                   },
                   "uses": {
-                    "key": { "spans": [ { "length": 1, "offsets": [ 371 ] } ] }
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 371 ] } ],
+                      "expansions": [ ],
+                      "spellings": [ ]
+                    }
                   }
                 }
               ],
@@ -367,7 +373,9 @@
                   },
                   "uses": {
                     "key": {
-                      "spans": [ { "length": 1, "offsets": [ 325, 38 ] } ]
+                      "spans": [ { "length": 1, "offsets": [ 325, 38 ] } ],
+                      "expansions": [ ],
+                      "spellings": [ ]
                     }
                   }
                 },
@@ -415,7 +423,11 @@
                     }
                   },
                   "uses": {
-                    "key": { "spans": [ { "length": 1, "offsets": [ 371 ] } ] }
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 371 ] } ],
+                      "expansions": [ ],
+                      "spellings": [ ]
+                    }
                   }
                 }
               ],
@@ -625,7 +637,9 @@
                   },
                   "uses": {
                     "key": {
-                      "spans": [ { "length": 1, "offsets": [ 325, 38 ] } ]
+                      "spans": [ { "length": 1, "offsets": [ 325, 38 ] } ],
+                      "expansions": [ ],
+                      "spellings": [ ]
                     }
                   }
                 },
@@ -673,7 +687,11 @@
                     }
                   },
                   "uses": {
-                    "key": { "spans": [ { "length": 1, "offsets": [ 371 ] } ] }
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 371 ] } ],
+                      "expansions": [ ],
+                      "spellings": [ ]
+                    }
                   }
                 }
               ],

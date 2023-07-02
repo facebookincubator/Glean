@@ -117,7 +117,11 @@
             }
           },
           "uses": {
-            "key": { "spans": [ { "length": 3, "offsets": [ 340, 53 ] } ] }
+            "key": {
+              "spans": [ { "length": 3, "offsets": [ 340, 53 ] } ],
+              "expansions": [ ],
+              "spellings": [ ]
+            }
           }
         },
         {
@@ -146,7 +150,11 @@
             }
           },
           "uses": {
-            "key": { "spans": [ { "length": 3, "offsets": [ 344 ] } ] }
+            "key": {
+              "spans": [ { "length": 3, "offsets": [ 344 ] } ],
+              "expansions": [ ],
+              "spellings": [ ]
+            }
           }
         },
         {
@@ -167,14 +175,36 @@
             }
           },
           "uses": {
-            "key": { "spans": [ { "length": 2, "offsets": [ 378, 11, 49 ] } ] }
+            "key": {
+              "spans": [ { "length": 2, "offsets": [ 378, 11, 49 ] } ],
+              "expansions": [ ],
+              "spellings": [ ]
+            }
           }
         }
       ],
       "free": [
-        { "key": { "spans": [ { "length": 3, "offsets": [ 397 ] } ] } },
-        { "key": { "spans": [ { "length": 3, "offsets": [ 444 ] } ] } },
-        { "key": { "spans": [ { "length": 3, "offsets": [ 448 ] } ] } }
+        {
+          "key": {
+            "spans": [ { "length": 3, "offsets": [ 397 ] } ],
+            "expansions": [ ],
+            "spellings": [ ]
+          }
+        },
+        {
+          "key": {
+            "spans": [ { "length": 3, "offsets": [ 444 ] } ],
+            "expansions": [ ],
+            "spellings": [ ]
+          }
+        },
+        {
+          "key": {
+            "spans": [ { "length": 3, "offsets": [ 448 ] } ],
+            "expansions": [ ],
+            "spellings": [ ]
+          }
+        }
       ]
     }
   }

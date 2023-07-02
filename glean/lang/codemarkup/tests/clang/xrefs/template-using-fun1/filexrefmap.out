@@ -52,15 +52,43 @@
             }
           },
           "uses": {
-            "key": { "spans": [ { "length": 2, "offsets": [ 366, 71 ] } ] }
+            "key": {
+              "spans": [ { "length": 2, "offsets": [ 366, 71 ] } ],
+              "expansions": [ ],
+              "spellings": [ ]
+            }
           }
         }
       ],
       "free": [
-        { "key": { "spans": [ { "length": 1, "offsets": [ 384, 17 ] } ] } },
-        { "key": { "spans": [ { "length": 1, "offsets": [ 393 ] } ] } },
-        { "key": { "spans": [ { "length": 1, "offsets": [ 458, 17 ] } ] } },
-        { "key": { "spans": [ { "length": 1, "offsets": [ 467 ] } ] } }
+        {
+          "key": {
+            "spans": [ { "length": 1, "offsets": [ 384, 17 ] } ],
+            "expansions": [ ],
+            "spellings": [ ]
+          }
+        },
+        {
+          "key": {
+            "spans": [ { "length": 1, "offsets": [ 393 ] } ],
+            "expansions": [ ],
+            "spellings": [ ]
+          }
+        },
+        {
+          "key": {
+            "spans": [ { "length": 1, "offsets": [ 458, 17 ] } ],
+            "expansions": [ ],
+            "spellings": [ ]
+          }
+        },
+        {
+          "key": {
+            "spans": [ { "length": 1, "offsets": [ 467 ] } ],
+            "expansions": [ ],
+            "spellings": [ ]
+          }
+        }
       ]
     }
   }

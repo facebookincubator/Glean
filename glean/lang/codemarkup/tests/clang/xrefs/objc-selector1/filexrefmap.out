@@ -118,13 +118,21 @@
             }
           },
           "uses": {
-            "key": { "spans": [ { "length": 1, "offsets": [ 325 ] } ] }
+            "key": {
+              "spans": [ { "length": 1, "offsets": [ 325 ] } ],
+              "expansions": [ ],
+              "spellings": [ ]
+            }
           }
         },
         {
           "target": { "objcSelector": { "key": [ "foo" ] } },
           "uses": {
-            "key": { "spans": [ { "length": 14, "offsets": [ 376, 35 ] } ] }
+            "key": {
+              "spans": [ { "length": 14, "offsets": [ 376, 35 ] } ],
+              "expansions": [ ],
+              "spellings": [ ]
+            }
           }
         },
         {
@@ -159,7 +167,11 @@
             }
           },
           "uses": {
-            "key": { "spans": [ { "length": 1, "offsets": [ 395 ] } ] }
+            "key": {
+              "spans": [ { "length": 1, "offsets": [ 395 ] } ],
+              "expansions": [ ],
+              "spellings": [ ]
+            }
           }
         },
         {
@@ -195,7 +207,11 @@
             }
           },
           "uses": {
-            "key": { "spans": [ { "length": 13, "offsets": [ 397 ] } ] }
+            "key": {
+              "spans": [ { "length": 13, "offsets": [ 397 ] } ],
+              "expansions": [ ],
+              "spellings": [ ]
+            }
           }
         }
       ],

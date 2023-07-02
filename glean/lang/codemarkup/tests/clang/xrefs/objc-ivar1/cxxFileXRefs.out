@@ -60,7 +60,11 @@
                 }
               },
               "uses": {
-                "key": { "spans": [ { "length": 2, "offsets": [ 356 ] } ] }
+                "key": {
+                  "spans": [ { "length": 2, "offsets": [ 356 ] } ],
+                  "expansions": [ ],
+                  "spellings": [ ]
+                }
               }
             }
           ],

@@ -60,12 +60,22 @@
                     }
                   },
                   "uses": {
-                    "key": { "spans": [ { "length": 1, "offsets": [ 248 ] } ] }
+                    "key": {
+                      "spans": [ { "length": 1, "offsets": [ 248 ] } ],
+                      "expansions": [ ],
+                      "spellings": [ ]
+                    }
                   }
                 }
               ],
               "free": [
-                { "key": { "spans": [ { "length": 1, "offsets": [ 255 ] } ] } }
+                {
+                  "key": {
+                    "spans": [ { "length": 1, "offsets": [ 255 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                }
               ]
             }
           },

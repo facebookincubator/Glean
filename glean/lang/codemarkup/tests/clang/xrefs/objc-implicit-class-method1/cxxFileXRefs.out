@@ -78,7 +78,11 @@
                 }
               },
               "uses": {
-                "key": { "spans": [ { "length": 1, "offsets": [ 263, 17 ] } ] }
+                "key": {
+                  "spans": [ { "length": 1, "offsets": [ 263, 17 ] } ],
+                  "expansions": [ ],
+                  "spellings": [ ]
+                }
               }
             },
             {
@@ -109,7 +113,11 @@
                 }
               },
               "uses": {
-                "key": { "spans": [ { "length": 3, "offsets": [ 282 ] } ] }
+                "key": {
+                  "spans": [ { "length": 3, "offsets": [ 282 ] } ],
+                  "expansions": [ ],
+                  "spellings": [ ]
+                }
               }
             }
           ],

@@ -60,8 +60,9 @@ deriveUses e cfg writer = do
               , targetUses_key_uses = rangesToRelSpans $ Set.toList ranges
               }
             uses <- makeFact @Cxx.Uses Cxx.Uses_key
-              {
-                uses_key_spans = rangesToPackedByteSpans $ Set.toList ranges
+              { uses_key_spans = rangesToPackedByteSpans $ Set.toList ranges
+              , uses_key_expansions = mempty
+              , uses_key_spellings = mempty
               }
             makeFact_ @Cxx.XRefTargetUses Cxx.XRefTargetUses_key
               { xRefTargetUses_key_target = target

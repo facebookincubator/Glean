@@ -518,9 +518,43 @@ predicate XRefIndirectTarget :
 
 predicate XRefTargets : [XRefTarget]
 
+# Uses of XRefs
+#
+# There are 3 different sources of uses: file, expansion, and spelling.
+# Here's an example for an overview:
+#
+#   void foo() {}
+#
+#   #define FOO foo
+#               ^^^ spelling (1)
+#
+#   #define REF(x) x
+#
+#   void f() {
+#     foo();
+#     ^^^ file (2)
+#
+#     FOO();
+#     ^^^ expansion (3)
+#
+#     REF(foo)();
+#         ^^^  spelling (4)
+#     ^^^^^^^^ expansion (5)
+#   }
+#
+# The "file" uses are non-macro uses such as (2). "expansion" uses are xrefs
+# formed within macro expansions such as (3) and (5). The "spelling" uses are
+# the actual spelled out source location of the "expansion" uses. There are two
+# cases of this, one where the spelling is inside the macro body such as (1),
+# and where the spelling is the macro argument such as (4).
+#
+# An extra wrinkle here is that this predicate captures uses from a single file.
+# Refer to the `SpellingXRefs` predicate for further details.
 predicate Uses :
   {
     spans : src.PackedByteSpans,
+    expansions : src.PackedByteSpans,
+    spellings : src.PackedByteSpans,
   }
 
 # Cross-references to a known target
@@ -556,6 +590,41 @@ predicate FileXRefs :
     xmap : FileXRefMap,
     externals : [XRefTarget],
     targets : [XRefTargets],
+  }
+
+# Captures the spelling xrefs discovered from different files.
+#
+# In general, we discover xrefs within a file while we're indexing that file.
+# Macros are special in that we can discover xrefs for a file from another.
+#
+# Consider the following silly example:
+#
+#   // foo.h
+#   void foo(int) {}
+#   #define FOO foo(42)
+#               ^^^ spelling (1)
+#
+#   // a.cpp
+#   #include "foo.h"
+#   void f() { FOO; }
+#              ^^^ expansion (2)
+#
+# The AST of `foo.h` does not contain any xrefs, since macro definitions do not
+# carry any semantics. We discover the spelling xref from (1) at the use at (2)
+# during the indexing of `a.cpp`.
+#
+# This predicate is used for this type of "external spelling xref" cases.
+#
+# NOTE: We don't group these by file because if we did, we can easily run into
+#       a combinatorial explosion of these facts. For example, consider if
+#       the `foo.h` above contained N macro definitions. Different files can
+#       include `foo.h` and each use an arbitrary subset of the macros. We can
+#       then end up with 2^N of these facts. Indexing per file location should
+#       help to deduplicate the spelling xrefs to absolute targets.
+predicate SpellingXRef :
+  {
+    source : src.FileLocation,
+    target : XRefTarget,
   }
 
 # Uses
