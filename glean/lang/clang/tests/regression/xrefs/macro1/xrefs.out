@@ -5,6 +5,238 @@
       "file": { "key": "test.cpp" },
       "xrefs": [
         {
+          "range": { "begin": 233, "end": 236 },
+          "target": {
+            "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "foo" } } },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "N" } } }
+                      }
+                    }
+                  },
+                  "signature": {
+                    "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 20,
+                    "columnBegin": 3,
+                    "lineEnd": 20,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 233, "end": 236 },
+          "target": {
+            "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "foo" } } },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "Foo" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  },
+                  "signature": {
+                    "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                  },
+                  "method": {
+                    "isVirtual": false,
+                    "isConst": false,
+                    "isVolatile": false,
+                    "refQualifier": 0
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 26,
+                    "columnBegin": 3,
+                    "lineEnd": 26,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 233, "end": 236 },
+          "target": {
+            "indirect": {
+              "key": {
+                "via": {
+                  "usingDirective": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "N" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 32,
+                        "columnBegin": 3,
+                        "lineEnd": 32,
+                        "columnEnd": 19
+                      }
+                    }
+                  }
+                },
+                "target": {
+                  "declaration": {
+                    "function_": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "foo" } } },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "N" } }
+                              }
+                            }
+                          }
+                        },
+                        "signature": {
+                          "key": {
+                            "returns": { "key": "void" },
+                            "parameters": [ ]
+                          }
+                        },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 20,
+                          "columnBegin": 3,
+                          "lineEnd": 20,
+                          "columnEnd": 15
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 344, "end": 345 },
+          "target": {
+            "declaration": {
+              "namespace_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 19,
+                    "columnBegin": 1,
+                    "lineEnd": 23,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 347, "end": 350 },
+          "target": {
+            "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "foo" } } },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "N" } } }
+                      }
+                    }
+                  },
+                  "signature": {
+                    "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 20,
+                    "columnBegin": 3,
+                    "lineEnd": 20,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 372, "end": 373 },
+          "target": {
+            "declaration": {
+              "namespace_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 19,
+                    "columnBegin": 1,
+                    "lineEnd": 23,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 375, "end": 378 },
+          "target": {
+            "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "bar" } } },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "N" } } }
+                      }
+                    }
+                  },
+                  "signature": {
+                    "key": {
+                      "returns": { "key": "void" },
+                      "parameters": [
+                        { "name": { "key": "" }, "type": { "key": "int" } }
+                      ]
+                    }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 21,
+                    "columnBegin": 3,
+                    "lineEnd": 21,
+                    "columnEnd": 18
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
           "range": { "begin": 540, "end": 541 },
           "target": {
             "declaration": {
@@ -84,6 +316,35 @@
                     "columnBegin": 1,
                     "lineEnd": 23,
                     "columnEnd": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 561, "end": 569 },
+          "target": {
+            "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "foo" } } },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "N" } } }
+                      }
+                    }
+                  },
+                  "signature": {
+                    "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 20,
+                    "columnBegin": 3,
+                    "lineEnd": 20,
+                    "columnEnd": 15
                   }
                 }
               }
@@ -187,6 +448,40 @@
           }
         },
         {
+          "range": { "begin": 598, "end": 606 },
+          "target": {
+            "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "bar" } } },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "N" } } }
+                      }
+                    }
+                  },
+                  "signature": {
+                    "key": {
+                      "returns": { "key": "void" },
+                      "parameters": [
+                        { "name": { "key": "" }, "type": { "key": "int" } }
+                      ]
+                    }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 21,
+                    "columnBegin": 3,
+                    "lineEnd": 21,
+                    "columnEnd": 18
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
           "range": { "begin": 602, "end": 605 },
           "target": {
             "declaration": {
@@ -233,6 +528,36 @@
                     "columnBegin": 1,
                     "lineEnd": 23,
                     "columnEnd": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 610, "end": 618 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "var" },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "N" } } }
+                      }
+                    }
+                  },
+                  "type": { "key": "int" },
+                  "kind": {
+                    "global_": { "kind": 0, "attribute": 0, "definition": true }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 22,
+                    "columnBegin": 3,
+                    "lineEnd": 22,
+                    "columnEnd": 9
                   }
                 }
               }
@@ -439,6 +764,35 @@
           }
         },
         {
+          "range": { "begin": 677, "end": 690 },
+          "target": {
+            "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "foo" } } },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "N" } } }
+                      }
+                    }
+                  },
+                  "signature": {
+                    "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 20,
+                    "columnBegin": 3,
+                    "lineEnd": 20,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
           "range": { "begin": 686, "end": 689 },
           "target": {
             "declaration": {
@@ -469,6 +823,65 @@
         },
         {
           "range": { "begin": 697, "end": 700 },
+          "target": {
+            "indirect": {
+              "key": {
+                "via": {
+                  "usingDirective": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "N" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 32,
+                        "columnBegin": 3,
+                        "lineEnd": 32,
+                        "columnEnd": 19
+                      }
+                    }
+                  }
+                },
+                "target": {
+                  "declaration": {
+                    "function_": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "foo" } } },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "N" } }
+                              }
+                            }
+                          }
+                        },
+                        "signature": {
+                          "key": {
+                            "returns": { "key": "void" },
+                            "parameters": [ ]
+                          }
+                        },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 20,
+                          "columnBegin": 3,
+                          "lineEnd": 20,
+                          "columnEnd": 15
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 706, "end": 714 },
           "target": {
             "indirect": {
               "key": {
@@ -645,6 +1058,70 @@
           }
         },
         {
+          "range": { "begin": 737, "end": 745 },
+          "target": {
+            "indirect": {
+              "key": {
+                "via": {
+                  "usingDirective": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "N" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 32,
+                        "columnBegin": 3,
+                        "lineEnd": 32,
+                        "columnEnd": 19
+                      }
+                    }
+                  }
+                },
+                "target": {
+                  "declaration": {
+                    "function_": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "bar" } } },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "N" } }
+                              }
+                            }
+                          }
+                        },
+                        "signature": {
+                          "key": {
+                            "returns": { "key": "void" },
+                            "parameters": [
+                              {
+                                "name": { "key": "" },
+                                "type": { "key": "int" }
+                              }
+                            ]
+                          }
+                        },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 21,
+                          "columnBegin": 3,
+                          "lineEnd": 21,
+                          "columnEnd": 18
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
           "range": { "begin": 741, "end": 744 },
           "target": {
             "indirect": {
@@ -699,6 +1176,67 @@
                           "columnBegin": 3,
                           "lineEnd": 21,
                           "columnEnd": 18
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 746, "end": 754 },
+          "target": {
+            "indirect": {
+              "key": {
+                "via": {
+                  "usingDirective": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "N" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 32,
+                        "columnBegin": 3,
+                        "lineEnd": 32,
+                        "columnEnd": 19
+                      }
+                    }
+                  }
+                },
+                "target": {
+                  "declaration": {
+                    "variable": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": { "key": "var" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "N" } }
+                              }
+                            }
+                          }
+                        },
+                        "type": { "key": "int" },
+                        "kind": {
+                          "global_": {
+                            "kind": 0,
+                            "attribute": 0,
+                            "definition": true
+                          }
+                        },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 22,
+                          "columnBegin": 3,
+                          "lineEnd": 22,
+                          "columnEnd": 9
                         }
                       }
                     }
@@ -954,6 +1492,65 @@
           }
         },
         {
+          "range": { "begin": 801, "end": 814 },
+          "target": {
+            "indirect": {
+              "key": {
+                "via": {
+                  "usingDirective": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "N" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 32,
+                        "columnBegin": 3,
+                        "lineEnd": 32,
+                        "columnEnd": 19
+                      }
+                    }
+                  }
+                },
+                "target": {
+                  "declaration": {
+                    "function_": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "foo" } } },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "N" } }
+                              }
+                            }
+                          }
+                        },
+                        "signature": {
+                          "key": {
+                            "returns": { "key": "void" },
+                            "parameters": [ ]
+                          }
+                        },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 20,
+                          "columnBegin": 3,
+                          "lineEnd": 20,
+                          "columnEnd": 15
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
           "range": { "begin": 810, "end": 813 },
           "target": {
             "indirect": {
@@ -1016,6 +1613,54 @@
           "range": { "begin": 821, "end": 832 },
           "target": {
             "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "foo" } } },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "N" } } }
+                      }
+                    }
+                  },
+                  "signature": {
+                    "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 20,
+                    "columnBegin": 3,
+                    "lineEnd": 20,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 821, "end": 832 },
+          "target": {
+            "declaration": {
+              "namespace_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 19,
+                    "columnBegin": 1,
+                    "lineEnd": 23,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 825, "end": 826 },
+          "target": {
+            "declaration": {
               "namespace_": {
                 "key": {
                   "name": { "key": { "name": { "key": "N" } } },
@@ -1062,6 +1707,59 @@
         },
         {
           "range": { "begin": 838, "end": 849 },
+          "target": {
+            "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "bar" } } },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "N" } } }
+                      }
+                    }
+                  },
+                  "signature": {
+                    "key": {
+                      "returns": { "key": "void" },
+                      "parameters": [
+                        { "name": { "key": "" }, "type": { "key": "int" } }
+                      ]
+                    }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 21,
+                    "columnBegin": 3,
+                    "lineEnd": 21,
+                    "columnEnd": 18
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 838, "end": 849 },
+          "target": {
+            "declaration": {
+              "namespace_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 19,
+                    "columnBegin": 1,
+                    "lineEnd": 23,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 842, "end": 843 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -1115,6 +1813,55 @@
         },
         {
           "range": { "begin": 850, "end": 861 },
+          "target": {
+            "declaration": {
+              "namespace_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 19,
+                    "columnBegin": 1,
+                    "lineEnd": 23,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 850, "end": 861 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "var" },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "N" } } }
+                      }
+                    }
+                  },
+                  "type": { "key": "int" },
+                  "kind": {
+                    "global_": { "kind": 0, "attribute": 0, "definition": true }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 22,
+                    "columnBegin": 3,
+                    "lineEnd": 22,
+                    "columnEnd": 9
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 854, "end": 855 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -1264,6 +2011,55 @@
           }
         },
         {
+          "range": { "begin": 876, "end": 889 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "var" },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "N" } } }
+                      }
+                    }
+                  },
+                  "type": { "key": "int" },
+                  "kind": {
+                    "global_": { "kind": 0, "attribute": 0, "definition": true }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 22,
+                    "columnBegin": 3,
+                    "lineEnd": 22,
+                    "columnEnd": 9
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 882, "end": 883 },
+          "target": {
+            "declaration": {
+              "namespace_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 19,
+                    "columnBegin": 1,
+                    "lineEnd": 23,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
           "range": { "begin": 885, "end": 888 },
           "target": {
             "declaration": {
@@ -1329,6 +2125,55 @@
         },
         {
           "range": { "begin": 893, "end": 911 },
+          "target": {
+            "declaration": {
+              "namespace_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 19,
+                    "columnBegin": 1,
+                    "lineEnd": 23,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 893, "end": 911 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "var" },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "N" } } }
+                      }
+                    }
+                  },
+                  "type": { "key": "int" },
+                  "kind": {
+                    "global_": { "kind": 0, "attribute": 0, "definition": true }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 22,
+                    "columnBegin": 3,
+                    "lineEnd": 22,
+                    "columnEnd": 9
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 899, "end": 900 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -1512,6 +2357,49 @@
         },
         {
           "range": { "begin": 939, "end": 947 },
+          "target": {
+            "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "foo" } } },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "Foo" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  },
+                  "signature": {
+                    "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                  },
+                  "method": {
+                    "isVirtual": false,
+                    "isConst": false,
+                    "isVolatile": false,
+                    "refQualifier": 0
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 26,
+                    "columnBegin": 3,
+                    "lineEnd": 26,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 943, "end": 946 },
           "target": {
             "declaration": {
               "function_": {
@@ -1775,6 +2663,42 @@
           }
         },
         {
+          "range": { "begin": 999, "end": 1004 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "field" },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "Foo" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "int" },
+                  "kind": { "field": { "mutable_": false } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 28,
+                    "columnBegin": 3,
+                    "lineEnd": 28,
+                    "columnEnd": 11
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
           "range": { "begin": 1009, "end": 1010 },
           "target": {
             "declaration": {
@@ -1856,6 +2780,54 @@
           }
         },
         {
+          "range": { "begin": 1015, "end": 1018 },
+          "target": {
+            "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "bar" } } },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "Foo" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  },
+                  "signature": {
+                    "key": {
+                      "returns": { "key": "void" },
+                      "parameters": [
+                        { "name": { "key": "" }, "type": { "key": "int" } }
+                      ]
+                    }
+                  },
+                  "method": {
+                    "isVirtual": false,
+                    "isConst": false,
+                    "isVolatile": false,
+                    "refQualifier": 0
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 27,
+                    "columnBegin": 3,
+                    "lineEnd": 27,
+                    "columnEnd": 18
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
           "range": { "begin": 1020, "end": 1021 },
           "target": {
             "declaration": {
@@ -1890,6 +2862,42 @@
         },
         {
           "range": { "begin": 1022, "end": 1032 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "field" },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "Foo" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "int" },
+                  "kind": { "field": { "mutable_": false } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 28,
+                    "columnBegin": 3,
+                    "lineEnd": 28,
+                    "columnEnd": 11
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 1026, "end": 1031 },
           "target": {
             "declaration": {
               "variable": {

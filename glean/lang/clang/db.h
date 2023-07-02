@@ -160,12 +160,13 @@ public:
 
     Cxx::XRefTarget target;
     SortID sort_id;
-    Spans spans;
+    Spans spans, expansions, spellings;
   };
 
   struct FileData {
     void xref(
         Src::ByteSpan span,
+        CrossRef::Spans CrossRef::*get_spans,
         Cxx::XRefTarget target,
         CrossRef::SortID sort_id,
         bool local);
@@ -176,9 +177,9 @@ public:
     std::vector<std::pair<Src::ByteSpan, Cxx::Declaration>> declarations;
     std::vector<PrePPEvent> events;
     struct {
-      std::deque<CrossRef> fixed;
-      std::deque<CrossRef> variable;
-      std::map<Cxx::XRefTarget, CrossRef::Spans*> lookup;
+      std::deque<CrossRef> bound;
+      std::deque<CrossRef> unbound;
+      std::map<Cxx::XRefTarget, CrossRef*> lookup;
     } xrefs;
     folly::Optional<Fact<Cxx::Trace>> trace;
     folly::Optional<Fact<Cxx::IncludeTree>> include_tree;
@@ -203,13 +204,8 @@ public:
   void xref(
     clang::SourceRange range,
     Cxx::XRefTarget target,
-    clang::SourceLocation loc,
-    bool fixed_candidate);
-
-  void xref(
-    clang::SourceRange range,
-    Cxx::XRefTarget target,
-    std::vector<std::string> sels);
+    CrossRef::SortID sort_id,
+    bool local);
 
   // Locations
 
@@ -249,6 +245,9 @@ public:
   }
 
 private:
+  std::pair<std::vector<Cxx::BoundXRef>, std::vector<Cxx::FixedXRef>>
+  finishRefs(std::deque<CrossRef>&& v);
+
   Fact<Buck::Locator> locator;
   folly::Optional<Fact<Buck::Platform>> platform;
   const std::filesystem::path root;

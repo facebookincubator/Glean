@@ -7,42 +7,6 @@
         {
           "target": {
             "declaration": {
-              "namespace_": {
-                "key": {
-                  "name": { "key": { "name": { "key": "N" } } },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 19,
-                    "columnBegin": 1,
-                    "lineEnd": 23,
-                    "columnEnd": 1
-                  }
-                }
-              }
-            }
-          },
-          "ranges": [
-            { "offset": 540, "length": 1 },
-            { "offset": 6, "length": 1 },
-            { "offset": 12, "length": 1 },
-            { "offset": 17, "length": 1 },
-            { "offset": 20, "length": 1 },
-            { "offset": 12, "length": 1 },
-            { "offset": 16, "length": 1 },
-            { "offset": 15, "length": 1 },
-            { "offset": 19, "length": 1 },
-            { "offset": 17, "length": 1 },
-            { "offset": 147, "length": 11 },
-            { "offset": 17, "length": 11 },
-            { "offset": 12, "length": 11 },
-            { "offset": 17, "length": 5 },
-            { "offset": 9, "length": 13 },
-            { "offset": 17, "length": 18 }
-          ]
-        },
-        {
-          "target": {
-            "declaration": {
               "function_": {
                 "key": {
                   "name": {
@@ -68,13 +32,111 @@
             }
           },
           "ranges": [
-            { "offset": 549, "length": 3 },
-            { "offset": 16, "length": 3 },
+            { "offset": 233, "length": 3 },
+            { "offset": 114, "length": 3 },
+            { "offset": 202, "length": 3 },
+            { "offset": 12, "length": 8 },
+            { "offset": 4, "length": 3 },
             { "offset": 13, "length": 11 },
             { "offset": 82, "length": 8 },
-            { "offset": 26, "length": 3 },
-            { "offset": 142, "length": 3 },
+            { "offset": 17, "length": 13 },
+            { "offset": 9, "length": 3 },
+            { "offset": 135, "length": 11 },
+            { "offset": 7, "length": 3 },
             { "offset": 39, "length": 5 }
+          ]
+        },
+        {
+          "target": {
+            "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "foo" } } },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "Foo" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  },
+                  "signature": {
+                    "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                  },
+                  "method": {
+                    "isVirtual": false,
+                    "isConst": false,
+                    "isVolatile": false,
+                    "refQualifier": 0
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 26,
+                    "columnBegin": 3,
+                    "lineEnd": 26,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          },
+          "ranges": [
+            { "offset": 233, "length": 3 },
+            { "offset": 695, "length": 3 },
+            { "offset": 11, "length": 8 },
+            { "offset": 4, "length": 3 },
+            { "offset": 12, "length": 11 },
+            { "offset": 19, "length": 8 }
+          ]
+        },
+        {
+          "target": {
+            "declaration": {
+              "namespace_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 19,
+                    "columnBegin": 1,
+                    "lineEnd": 23,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          },
+          "ranges": [
+            { "offset": 344, "length": 1 },
+            { "offset": 28, "length": 1 },
+            { "offset": 168, "length": 1 },
+            { "offset": 6, "length": 1 },
+            { "offset": 12, "length": 1 },
+            { "offset": 17, "length": 1 },
+            { "offset": 20, "length": 1 },
+            { "offset": 12, "length": 1 },
+            { "offset": 16, "length": 1 },
+            { "offset": 15, "length": 1 },
+            { "offset": 19, "length": 1 },
+            { "offset": 17, "length": 1 },
+            { "offset": 147, "length": 11 },
+            { "offset": 4, "length": 1 },
+            { "offset": 13, "length": 11 },
+            { "offset": 4, "length": 1 },
+            { "offset": 8, "length": 11 },
+            { "offset": 4, "length": 1 },
+            { "offset": 13, "length": 5 },
+            { "offset": 9, "length": 13 },
+            { "offset": 6, "length": 1 },
+            { "offset": 11, "length": 18 },
+            { "offset": 6, "length": 1 }
           ]
         },
         {
@@ -110,9 +172,12 @@
             }
           },
           "ranges": [
-            { "offset": 602, "length": 3 },
+            { "offset": 375, "length": 3 },
+            { "offset": 223, "length": 8 },
+            { "offset": 4, "length": 3 },
             { "offset": 24, "length": 11 },
-            { "offset": 219, "length": 3 },
+            { "offset": 212, "length": 11 },
+            { "offset": 7, "length": 3 },
             { "offset": 31, "length": 13 },
             { "offset": 17, "length": 18 }
           ]
@@ -146,11 +211,15 @@
             }
           },
           "ranges": [
-            { "offset": 614, "length": 3 },
+            { "offset": 610, "length": 8 },
+            { "offset": 4, "length": 3 },
             { "offset": 27, "length": 11 },
-            { "offset": 216, "length": 3 },
-            { "offset": 28, "length": 3 },
-            { "offset": 21, "length": 3 }
+            { "offset": 209, "length": 11 },
+            { "offset": 7, "length": 3 },
+            { "offset": 19, "length": 13 },
+            { "offset": 9, "length": 3 },
+            { "offset": 8, "length": 18 },
+            { "offset": 13, "length": 3 }
           ]
         },
         {
@@ -222,54 +291,6 @@
         {
           "target": {
             "declaration": {
-              "function_": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": { "name": { "key": "foo" } } },
-                      "scope": {
-                        "recordWithAccess": {
-                          "record": {
-                            "key": {
-                              "name": { "key": "Foo" },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "access": 0
-                        }
-                      }
-                    }
-                  },
-                  "signature": {
-                    "key": { "returns": { "key": "void" }, "parameters": [ ] }
-                  },
-                  "method": {
-                    "isVirtual": false,
-                    "isConst": false,
-                    "isVolatile": false,
-                    "refQualifier": 0
-                  },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 26,
-                    "columnBegin": 3,
-                    "lineEnd": 26,
-                    "columnEnd": 15
-                  }
-                }
-              }
-            }
-          },
-          "ranges": [
-            { "offset": 928, "length": 3 },
-            { "offset": 11, "length": 8 },
-            { "offset": 16, "length": 11 },
-            { "offset": 19, "length": 8 }
-          ]
-        },
-        {
-          "target": {
-            "declaration": {
               "variable": {
                 "key": {
                   "name": {
@@ -303,7 +324,9 @@
           },
           "ranges": [
             { "offset": 990, "length": 15 },
-            { "offset": 32, "length": 10 }
+            { "offset": 9, "length": 5 },
+            { "offset": 23, "length": 10 },
+            { "offset": 4, "length": 5 }
           ]
         },
         {
@@ -352,55 +375,35 @@
               }
             }
           },
-          "ranges": [ { "offset": 1011, "length": 8 } ]
+          "ranges": [
+            { "offset": 1011, "length": 8 },
+            { "offset": 4, "length": 3 }
+          ]
         }
       ],
       "variable": [
         [
-          { "offset": 697, "length": 3 },
-          { "offset": 13, "length": 3 },
+          { "offset": 233, "length": 3 },
+          { "offset": 464, "length": 3 },
+          { "offset": 9, "length": 8 },
+          { "offset": 4, "length": 3 },
           { "offset": 10, "length": 11 },
           { "offset": 67, "length": 8 },
-          { "offset": 23, "length": 3 }
+          { "offset": 14, "length": 13 },
+          { "offset": 9, "length": 3 }
         ],
-        [ { "offset": 741, "length": 3 }, { "offset": 18, "length": 11 } ],
-        [ { "offset": 750, "length": 3 }, { "offset": 21, "length": 11 } ]
+        [
+          { "offset": 737, "length": 8 },
+          { "offset": 4, "length": 3 },
+          { "offset": 18, "length": 11 }
+        ],
+        [
+          { "offset": 746, "length": 8 },
+          { "offset": 4, "length": 3 },
+          { "offset": 21, "length": 11 }
+        ]
       ],
       "bound": [
-        {
-          "target": {
-            "declaration": {
-              "namespace_": {
-                "key": {
-                  "name": { "key": { "name": { "key": "N" } } },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 19,
-                    "columnBegin": 1,
-                    "lineEnd": 23,
-                    "columnEnd": 1
-                  }
-                }
-              }
-            }
-          },
-          "uses": {
-            "key": {
-              "spans": [
-                {
-                  "length": 1,
-                  "offsets": [ 540, 6, 12, 17, 20, 12, 16, 15, 19, 17 ]
-                },
-                { "length": 11, "offsets": [ 147, 17, 12 ] },
-                { "length": 5, "offsets": [ 17 ] },
-                { "length": 13, "offsets": [ 9 ] },
-                { "length": 18, "offsets": [ 17 ] }
-              ],
-              "expansions": [ ],
-              "spellings": [ ]
-            }
-          }
-        },
         {
           "target": {
             "declaration": {
@@ -430,15 +433,19 @@
           },
           "uses": {
             "key": {
-              "spans": [
-                { "length": 3, "offsets": [ 549, 16 ] },
-                { "length": 11, "offsets": [ 13 ] },
+              "spans": [ ],
+              "expansions": [
+                { "length": 3, "offsets": [ 549 ] },
+                { "length": 8, "offsets": [ 12 ] },
+                { "length": 11, "offsets": [ 17 ] },
                 { "length": 8, "offsets": [ 82 ] },
-                { "length": 3, "offsets": [ 26, 142 ] },
-                { "length": 5, "offsets": [ 39 ] }
+                { "length": 13, "offsets": [ 17 ] },
+                { "length": 11, "offsets": [ 144 ] },
+                { "length": 5, "offsets": [ 46 ] }
               ],
-              "expansions": [ ],
-              "spellings": [ ]
+              "spellings": [
+                { "length": 3, "offsets": [ 233, 114, 218, 121, 142 ] }
+              ]
             }
           }
         },
@@ -476,15 +483,14 @@
           },
           "uses": {
             "key": {
-              "spans": [
-                { "length": 3, "offsets": [ 602 ] },
-                { "length": 11, "offsets": [ 24 ] },
-                { "length": 3, "offsets": [ 219 ] },
-                { "length": 13, "offsets": [ 31 ] },
+              "spans": [ ],
+              "expansions": [
+                { "length": 8, "offsets": [ 598 ] },
+                { "length": 11, "offsets": [ 28, 212 ] },
+                { "length": 13, "offsets": [ 38 ] },
                 { "length": 18, "offsets": [ 17 ] }
               ],
-              "expansions": [ ],
-              "spellings": [ ]
+              "spellings": [ { "length": 3, "offsets": [ 375, 227, 243 ] } ]
             }
           }
         },
@@ -518,13 +524,204 @@
           },
           "uses": {
             "key": {
-              "spans": [
-                { "length": 3, "offsets": [ 614 ] },
-                { "length": 11, "offsets": [ 27 ] },
-                { "length": 3, "offsets": [ 216, 28, 21 ] }
+              "spans": [ ],
+              "expansions": [
+                { "length": 8, "offsets": [ 610 ] },
+                { "length": 11, "offsets": [ 31, 209 ] },
+                { "length": 13, "offsets": [ 26 ] },
+                { "length": 18, "offsets": [ 17 ] }
               ],
-              "expansions": [ ],
-              "spellings": [ ]
+              "spellings": [ { "length": 3, "offsets": [ 614, 243, 28, 21 ] } ]
+            }
+          }
+        },
+        {
+          "target": {
+            "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "foo" } } },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "Foo" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  },
+                  "signature": {
+                    "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                  },
+                  "method": {
+                    "isVirtual": false,
+                    "isConst": false,
+                    "isVolatile": false,
+                    "refQualifier": 0
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 26,
+                    "columnBegin": 3,
+                    "lineEnd": 26,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          },
+          "uses": {
+            "key": {
+              "spans": [ ],
+              "expansions": [
+                { "length": 3, "offsets": [ 928 ] },
+                { "length": 8, "offsets": [ 11 ] },
+                { "length": 11, "offsets": [ 16 ] },
+                { "length": 8, "offsets": [ 19 ] }
+              ],
+              "spellings": [ { "length": 3, "offsets": [ 233, 710 ] } ]
+            }
+          }
+        },
+        {
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "field" },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "Foo" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "int" },
+                  "kind": { "field": { "mutable_": false } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 28,
+                    "columnBegin": 3,
+                    "lineEnd": 28,
+                    "columnEnd": 11
+                  }
+                }
+              }
+            }
+          },
+          "uses": {
+            "key": {
+              "spans": [ ],
+              "expansions": [
+                { "length": 15, "offsets": [ 990 ] },
+                { "length": 10, "offsets": [ 32 ] }
+              ],
+              "spellings": [ { "length": 5, "offsets": [ 999, 27 ] } ]
+            }
+          }
+        },
+        {
+          "target": {
+            "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "bar" } } },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "Foo" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  },
+                  "signature": {
+                    "key": {
+                      "returns": { "key": "void" },
+                      "parameters": [
+                        { "name": { "key": "" }, "type": { "key": "int" } }
+                      ]
+                    }
+                  },
+                  "method": {
+                    "isVirtual": false,
+                    "isConst": false,
+                    "isVolatile": false,
+                    "refQualifier": 0
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 27,
+                    "columnBegin": 3,
+                    "lineEnd": 27,
+                    "columnEnd": 18
+                  }
+                }
+              }
+            }
+          },
+          "uses": {
+            "key": {
+              "spans": [ ],
+              "expansions": [ { "length": 8, "offsets": [ 1011 ] } ],
+              "spellings": [ { "length": 3, "offsets": [ 1015 ] } ]
+            }
+          }
+        },
+        {
+          "target": {
+            "declaration": {
+              "namespace_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 19,
+                    "columnBegin": 1,
+                    "lineEnd": 23,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          },
+          "uses": {
+            "key": {
+              "spans": [
+                {
+                  "length": 1,
+                  "offsets": [ 540, 6, 12, 17, 20, 12, 16, 15, 19, 17 ]
+                }
+              ],
+              "expansions": [
+                { "length": 11, "offsets": [ 821, 17, 12 ] },
+                { "length": 5, "offsets": [ 17 ] },
+                { "length": 13, "offsets": [ 9 ] },
+                { "length": 18, "offsets": [ 17 ] }
+              ],
+              "spellings": [
+                { "length": 1, "offsets": [ 344, 28, 453, 17, 12, 28, 17 ] }
+              ]
             }
           }
         },
@@ -599,192 +796,40 @@
               "spellings": [ ]
             }
           }
-        },
-        {
-          "target": {
-            "declaration": {
-              "function_": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": { "name": { "key": "foo" } } },
-                      "scope": {
-                        "recordWithAccess": {
-                          "record": {
-                            "key": {
-                              "name": { "key": "Foo" },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "access": 0
-                        }
-                      }
-                    }
-                  },
-                  "signature": {
-                    "key": { "returns": { "key": "void" }, "parameters": [ ] }
-                  },
-                  "method": {
-                    "isVirtual": false,
-                    "isConst": false,
-                    "isVolatile": false,
-                    "refQualifier": 0
-                  },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 26,
-                    "columnBegin": 3,
-                    "lineEnd": 26,
-                    "columnEnd": 15
-                  }
-                }
-              }
-            }
-          },
-          "uses": {
-            "key": {
-              "spans": [
-                { "length": 3, "offsets": [ 928 ] },
-                { "length": 8, "offsets": [ 11 ] },
-                { "length": 11, "offsets": [ 16 ] },
-                { "length": 8, "offsets": [ 19 ] }
-              ],
-              "expansions": [ ],
-              "spellings": [ ]
-            }
-          }
-        },
-        {
-          "target": {
-            "declaration": {
-              "variable": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": "field" },
-                      "scope": {
-                        "recordWithAccess": {
-                          "record": {
-                            "key": {
-                              "name": { "key": "Foo" },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "access": 0
-                        }
-                      }
-                    }
-                  },
-                  "type": { "key": "int" },
-                  "kind": { "field": { "mutable_": false } },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 28,
-                    "columnBegin": 3,
-                    "lineEnd": 28,
-                    "columnEnd": 11
-                  }
-                }
-              }
-            }
-          },
-          "uses": {
-            "key": {
-              "spans": [
-                { "length": 15, "offsets": [ 990 ] },
-                { "length": 10, "offsets": [ 32 ] }
-              ],
-              "expansions": [ ],
-              "spellings": [ ]
-            }
-          }
-        },
-        {
-          "target": {
-            "declaration": {
-              "function_": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": { "name": { "key": "bar" } } },
-                      "scope": {
-                        "recordWithAccess": {
-                          "record": {
-                            "key": {
-                              "name": { "key": "Foo" },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "access": 0
-                        }
-                      }
-                    }
-                  },
-                  "signature": {
-                    "key": {
-                      "returns": { "key": "void" },
-                      "parameters": [
-                        { "name": { "key": "" }, "type": { "key": "int" } }
-                      ]
-                    }
-                  },
-                  "method": {
-                    "isVirtual": false,
-                    "isConst": false,
-                    "isVolatile": false,
-                    "refQualifier": 0
-                  },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 27,
-                    "columnBegin": 3,
-                    "lineEnd": 27,
-                    "columnEnd": 18
-                  }
-                }
-              }
-            }
-          },
-          "uses": {
-            "key": {
-              "spans": [ { "length": 8, "offsets": [ 1011 ] } ],
-              "expansions": [ ],
-              "spellings": [ ]
-            }
-          }
         }
       ],
       "free": [
         {
           "key": {
-            "spans": [
-              { "length": 3, "offsets": [ 697, 13 ] },
-              { "length": 11, "offsets": [ 10 ] },
+            "spans": [ ],
+            "expansions": [
+              { "length": 3, "offsets": [ 697 ] },
+              { "length": 8, "offsets": [ 9 ] },
+              { "length": 11, "offsets": [ 14 ] },
               { "length": 8, "offsets": [ 67 ] },
-              { "length": 3, "offsets": [ 23 ] }
+              { "length": 13, "offsets": [ 14 ] }
             ],
-            "expansions": [ ],
-            "spellings": [ ]
+            "spellings": [ { "length": 3, "offsets": [ 233, 477, 100 ] } ]
           }
         },
         {
           "key": {
-            "spans": [
-              { "length": 3, "offsets": [ 741 ] },
-              { "length": 11, "offsets": [ 18 ] }
+            "spans": [ ],
+            "expansions": [
+              { "length": 8, "offsets": [ 737 ] },
+              { "length": 11, "offsets": [ 22 ] }
             ],
-            "expansions": [ ],
-            "spellings": [ ]
+            "spellings": [ { "length": 3, "offsets": [ 741 ] } ]
           }
         },
         {
           "key": {
-            "spans": [
-              { "length": 3, "offsets": [ 750 ] },
-              { "length": 11, "offsets": [ 21 ] }
+            "spans": [ ],
+            "expansions": [
+              { "length": 8, "offsets": [ 746 ] },
+              { "length": 11, "offsets": [ 25 ] }
             ],
-            "expansions": [ ],
-            "spellings": [ ]
+            "spellings": [ { "length": 3, "offsets": [ 750 ] } ]
           }
         }
       ]

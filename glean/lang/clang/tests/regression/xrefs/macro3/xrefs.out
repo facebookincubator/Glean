@@ -5,6 +5,33 @@
       "file": { "key": "test.cpp" },
       "xrefs": [
         {
+          "range": { "begin": 396, "end": 419 },
+          "target": {
+            "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "foobar" } } },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "signature": {
+                    "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 16,
+                    "columnBegin": 1,
+                    "lineEnd": 16,
+                    "columnEnd": 16
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
           "range": { "begin": 404, "end": 418 },
           "target": {
             "declaration": {
@@ -32,7 +59,61 @@
           }
         },
         {
+          "range": { "begin": 425, "end": 448 },
+          "target": {
+            "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "foobar" } } },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "signature": {
+                    "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 16,
+                    "columnBegin": 1,
+                    "lineEnd": 16,
+                    "columnEnd": 16
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
           "range": { "begin": 433, "end": 447 },
+          "target": {
+            "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "foobar" } } },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "signature": {
+                    "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 16,
+                    "columnBegin": 1,
+                    "lineEnd": 16,
+                    "columnEnd": 16
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 454, "end": 477 },
           "target": {
             "declaration": {
               "function_": {

@@ -2147,7 +2147,8 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       ? xref.target.value()
       : unknownTarget(xref.decl);
     const auto wrapped = usingTracker.retarget(xref.primary, raw);
-    db.xref(range, wrapped, xref.decl->getLocation(), raw == wrapped);
+    auto sort_id = db.srcRange(xref.decl->getLocation());
+    db.xref(range, wrapped, sort_id, raw == wrapped);
   }
 
   Cxx::XRefTarget unknownTarget(const clang::Decl* decl) {
@@ -2388,33 +2389,6 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     }
   }
 
-  // When using macros, the SourceRange refers to the post expansion range.
-  // This is not useful to users who are looking at the pre-expansion range in
-  // their code.
-  clang::SourceRange fixMacroRange(clang::SourceRange range) {
-    const auto& srcMgr = db.sourceManager();
-    auto loc = range.getBegin();
-    if (!srcMgr.isMacroArgExpansion(loc)) {
-      return range;
-    }
-    // If a macro arg is a result of a paste, its spelling is in scratch space.
-    //
-    // #define PASTE(x,y) x##y
-    // #define MACRO(x) x
-    //
-    // MACRO(PASTE(foo,bar))
-    //
-    // If this is the case, we walk up the parent context
-    // since there can be several level of token pasting.
-    if (srcMgr.isWrittenInScratchSpace(srcMgr.getSpellingLoc(loc))) {
-      do {
-        loc = srcMgr.getImmediateMacroCallerLoc(loc);
-      } while (srcMgr.isWrittenInScratchSpace(srcMgr.getSpellingLoc(loc)));
-      return srcMgr.getExpansionRange(loc).getAsRange();
-    }
-    return srcMgr.getSpellingLoc(loc);
-  }
-
   bool VisitCXXConstructExpr(const clang::CXXConstructExpr* expr) {
     xrefTarget(
         expr->getSourceRange(),
@@ -2426,7 +2400,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     xrefExpr(
         expr->getDecl(),
         expr->getQualifier(),
-        fixMacroRange(expr->getNameInfo().getSourceRange()));
+        expr->getNameInfo().getSourceRange());
     return true;
   }
 
@@ -2567,7 +2541,8 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     db.xref(
         expr->getSourceRange(),
         Cxx::XRefTarget::objcSelector(fact),
-        std::move(selectors));
+        std::move(selectors),
+        true);
     return true;
   }
 

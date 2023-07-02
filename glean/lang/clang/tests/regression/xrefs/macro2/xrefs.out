@@ -5,6 +5,60 @@
       "file": { "key": "test.cpp" },
       "xrefs": [
         {
+          "range": { "begin": 481, "end": 557 },
+          "target": {
+            "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "one" } } },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "signature": {
+                    "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 16,
+                    "columnBegin": 1,
+                    "lineEnd": 18,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 481, "end": 557 },
+          "target": {
+            "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "two" } } },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "signature": {
+                    "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 20,
+                    "columnBegin": 1,
+                    "lineEnd": 22,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
           "range": { "begin": 495, "end": 498 },
           "target": {
             "declaration": {
