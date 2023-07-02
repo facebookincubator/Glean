@@ -252,7 +252,8 @@ matchSourceVector targetss sources =
     [ (s, ts) | ((_, s), ts) <- zip sortedSources $ elems targetsBySource]
 
 -- | Helper: type for @incomingQ@ inside 'deriveFunctionCalls'
-type QueuePackage = (Src.File, [(IdOf Cxx.FileXRefMap, Cxx.FileXRefMap_key)])
+type QueuePackage =
+  (Src.File, [(IdOf Cxx.FileXRefMap, [Cxx.BoundXRef], [Cxx.Uses])])
 
 -- | Make 'Cxx.DeclarationTargets' and then 'Cxx.DeclarationSources' facts
 --
@@ -287,32 +288,39 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
   -- ---------------------------------------------------------------------------
   -- We are limited by the loading of cxx.FileXRefMap facts, start it first
 
+  -- NOTE: We rely on the ordering property of the `allFacts` query.
+  --       Specifically, we expect to encounter `FileXRefMap`s for
+  --       a single file in a single sequence.
   let
     q :: Query Cxx.FileXRefMap
     q = maybe id limit (cfgMaxQueryFacts cfg) $
-       limitBytes (cfgMaxQuerySize cfg) allFacts
+        limitBytes (cfgMaxQuerySize cfg) $
+        expanding @Cxx.Uses allFacts
 
     doFoldEach = do
       fileTargetCountAcc <-
         runQueryEach e (cfgRepo cfg) q (Nothing, [], 0::Int, 0::Int) $
           \ (!mLastFile, !targetssIn, !countIn, !nIn)
-            fact@(Cxx.FileXRefMap _ k) -> do
+            (Cxx.FileXRefMap i k) -> do
             when (mod nIn 10000 == 0) $ logInfo $
               "(file count, FileXRefMap count) progress: "
               ++ show (countIn, nIn)
-            let !i = getId fact
+            let !id = IdOf $ Fid i
             key <- case k of
               Just k -> return k
               Nothing -> throwIO $ ErrorCall
                 "internal error: deriveFunctionCalls"
             let !file = Cxx.fileXRefMap_key_file key
+            let !bound = Cxx.fileXRefMap_key_bound key
+            let !free = Cxx.fileXRefMap_key_free key
             case mLastFile of
               (Just lastFile) | lastFile /= file -> do
                 atomically $ writeTBQueue incomingQ
                   (Just (lastFile, targetssIn))
-                return (Just file, [(i, key)], succ countIn, succ nIn)
+                return (Just file, [(id, bound, free)], succ countIn, succ nIn)
               _ ->
-                return (Just file, (i, key):targetssIn, countIn, succ nIn)
+                return
+                  (Just file, (id, bound, free):targetssIn, countIn, succ nIn)
       (countF, nF) <- case fileTargetCountAcc of
         (Nothing, _empty, countIn, nIn) -> return (countIn, nIn)
         (Just file, targetssIn, countIn, nIn) -> do
@@ -427,36 +435,37 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
 
   let -- This should be called only once per 'IdOf Cxx.FileXRefMap'
       oneFileXRefMap
-        :: (IdOf Cxx.FileXRefMap, Cxx.FileXRefMap_key)
+        :: (IdOf Cxx.FileXRefMap, [Cxx.BoundXRef], [Cxx.Uses])
         -> [(ByteRange, [Cxx.Declaration])]
-      oneFileXRefMap (i, key) =
-        let fixed = Cxx.fileXRefMap_key_fixed key
-
-            fixedTargets =
+      oneFileXRefMap (i, bound, free) =
+        let boundTargets =
               [ (range, [decl])
-              | (Cxx.FixedXRef itarget spans) <- fixed
+              | (Cxx.BoundXRef itarget uses) <- bound
+              , let Cxx.Uses{uses_key = Just Cxx.Uses_key{..}} = uses
               , (Cxx.XRefTarget_declaration decl)
                     <- mapMaybe (resolve indirects) [itarget]
-              , range <- relByteSpansToRanges spans
+              , range <- packedByteSpansToRanges uses_key_spans ++
+                         packedByteSpansToRanges uses_key_expansions
               ]
 
-            matched = zip variable $ V.toList externals
+            matched = zip free $ V.toList targets
               where
-                variable = Cxx.fileXRefMap_key_variable key
-                externals = PredMap.findWithDefault mempty i xrefs
+                targets = PredMap.findWithDefault mempty i xrefs
 
-            variableTargets =
+            freeTargets =
               [ (range, targetDecls)
-              | (spans, extTargets) <- matched
+              | (uses, extTargets) <- matched
+              , let Cxx.Uses{uses_key = Just Cxx.Uses_key{..}} = uses
               , let !targetDecls = Set.toList $ Set.fromList $
                       [ decl
                       | (Cxx.XRefTarget_declaration decl)
                              <- mapMaybe (resolve indirects)
                                 $ HashSet.toList extTargets]
-              , range <- relByteSpansToRanges spans
+              , range <- packedByteSpansToRanges uses_key_spans ++
+                         packedByteSpansToRanges uses_key_expansions
               ]
 
-            newTargets = fixedTargets ++ variableTargets
+            newTargets = boundTargets ++ freeTargets
 
         in newTargets
 
