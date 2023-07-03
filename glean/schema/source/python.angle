@@ -300,23 +300,6 @@ predicate NonImportDeclaration: Declaration
 
 #### DEPRECATED SECTION
 
-# DEPRECATED: use DeclarationWithName
-# Search for a declaration by (fully qualified) name.
-predicate DeclarationByName: Name -> Declaration
-  N -> D where
-  D = (
-    Declaration { cls = { name = N }}
-  ) | (
-    Declaration { func = { name = N }}
-  ) | (
-    Declaration { variable = { name = N }}
-  ) | (
-    ImportStatementByAsName { name = N, import_ = I };
-    Declaration { imp = I }
-  ) | (
-    Declaration { module = { name = N }}
-  )
-
 # DEPRECATED: use DeclarationWithSName
 # Search for a declaration by structured name
 predicate DeclarationBySName: SName -> Declaration
