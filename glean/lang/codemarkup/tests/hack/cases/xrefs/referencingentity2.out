@@ -17,7 +17,11 @@
       "tuplefield2": {
         "name": "RefClass",
         "file": { "key": "www/RefClass.php" },
-        "location": { "span": { "start": 226, "length": 785 } }
+        "location": { "span": { "start": 226, "length": 785 } },
+        "destination": {
+          "file": { "key": "www/RefClass.php" },
+          "span": { "start": 232, "length": 8 }
+        }
       }
     }
   },
@@ -40,7 +44,11 @@
       "tuplefield2": {
         "name": "SourceClass",
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "start": 253, "length": 451 } }
+        "location": { "span": { "start": 253, "length": 451 } },
+        "destination": {
+          "file": { "key": "www/SourceClass.php" },
+          "span": { "start": 286, "length": 11 }
+        }
       }
     }
   },
@@ -68,7 +76,11 @@
       "tuplefield2": {
         "name": "bar",
         "file": { "key": "www/RefClass.php" },
-        "location": { "span": { "start": 619, "length": 390 } }
+        "location": { "span": { "start": 619, "length": 390 } },
+        "destination": {
+          "file": { "key": "www/RefClass.php" },
+          "span": { "start": 635, "length": 3 }
+        }
       }
     }
   },
@@ -96,7 +108,11 @@
       "tuplefield2": {
         "name": "bar",
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "start": 392, "length": 71 } }
+        "location": { "span": { "start": 392, "length": 71 } },
+        "destination": {
+          "file": { "key": "www/SourceClass.php" },
+          "span": { "start": 408, "length": 3 }
+        }
       }
     }
   },
@@ -124,7 +140,11 @@
       "tuplefield2": {
         "name": "bazza",
         "file": { "key": "www/RefClass.php" },
-        "location": { "span": { "start": 459, "length": 59 } }
+        "location": { "span": { "start": 459, "length": 59 } },
+        "destination": {
+          "file": { "key": "www/RefClass.php" },
+          "span": { "start": 475, "length": 5 }
+        }
       }
     }
   },
@@ -152,7 +172,11 @@
       "tuplefield2": {
         "name": "foo",
         "file": { "key": "www/RefClass.php" },
-        "location": { "span": { "start": 388, "length": 67 } }
+        "location": { "span": { "start": 388, "length": 67 } },
+        "destination": {
+          "file": { "key": "www/RefClass.php" },
+          "span": { "start": 411, "length": 3 }
+        }
       }
     }
   }

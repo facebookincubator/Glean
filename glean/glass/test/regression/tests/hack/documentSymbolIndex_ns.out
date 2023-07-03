@@ -23,6 +23,12 @@
                             "aString": "namespace NS"
                         }
                     },
+                    "nameRange": {
+                        "columnBegin": 11,
+                        "columnEnd": 13,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
                     "range": {
                         "columnBegin": 11,
                         "columnEnd": 13,
@@ -51,6 +57,12 @@
                             "aString": "class NamespaceClass"
                         }
                     },
+                    "nameRange": {
+                        "columnBegin": 7,
+                        "columnEnd": 21,
+                        "lineBegin": 12,
+                        "lineEnd": 12
+                    },
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
@@ -78,6 +90,12 @@
                         "symbolSignature": {
                             "aString": "public function class_function(): void"
                         }
+                    },
+                    "nameRange": {
+                        "columnBegin": 21,
+                        "columnEnd": 35,
+                        "lineBegin": 13,
+                        "lineEnd": 13
                     },
                     "range": {
                         "columnBegin": 5,

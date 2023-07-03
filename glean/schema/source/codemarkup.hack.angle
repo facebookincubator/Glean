@@ -12,11 +12,12 @@ predicate HackResolveLocation:
     location: codemarkup.types.Location,
     entity: code.hack.Entity,
   }
-  { { Name, File, { span = Span }, nothing }, { decl = Decl } } where
+  { { Name, File, { span = Span }, {just = {file = File, span = NameSpan}}}, { decl = Decl } } where
     hack.FileDeclarations { file = File, declarations = Ds };
     Decl = Ds[..];
     hack.DeclarationName Decl -> (hack.Name Name);
     hack.DeclarationSpan { declaration = Decl, file = File, span = Span };
+    hack.DeclarationLocation { declaration = Decl, file = File, span = NameSpan };
 
 # Finding entities' locations
 
