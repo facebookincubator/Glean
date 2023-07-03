@@ -21,6 +21,7 @@ import qualified Data.Map.Strict as Map
 
 import Data.Int ( Int64 )
 import Data.List as List ( sortBy, groupBy )
+import Data.Maybe (fromMaybe)
 import Data.Ord ( comparing )
 import Data.Function as List ( on )
 
@@ -96,9 +97,11 @@ referenceToSymbolX ReferenceRangeSymbolX{..} =
   }
 
 -- | Symbols can span multiple lines (e.g. containers). However for the
--- line-index map, we simply tie symbols to the first line they occur on
+-- line-index map, we simply tie symbols to the identifier first line if
+-- available, or just to the first line if not.
 symbolXToStartLine :: SymbolX -> Int64
-symbolXToStartLine SymbolX{..} = range_lineBegin symbolX_range
+symbolXToStartLine SymbolX{..} =
+  range_lineBegin (fromMaybe symbolX_range symbolX_nameRange)
 
 --
 -- Elimination functions for testing
