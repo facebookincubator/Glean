@@ -102,6 +102,8 @@ writeDatabase env repo (WriteContent factBatch maybeOwn) latency =
                         Thrift.batch_owned batch
                   forM_ maybeOwn $ \ownBatch ->
                     Ownership.substDefineOwnership ownBatch subst
+                  -- before commit, because it may modify facts
+                  new_next_id <- Lookup.firstFreeId facts
                   logExceptions (\s -> inRepo repo $ "commit error: " ++ s)
                     $ when (not $ envMockWrites env)
                     $ do
@@ -111,6 +113,11 @@ writeDatabase env repo (WriteContent factBatch maybeOwn) latency =
                             Storage.commit odbHandle facts is
                             forM_ maybeOwn $ \ownBatch ->
                               Storage.addDefineOwnership odbHandle ownBatch
+                  -- update wrNextId only *after* commit, otherwise we
+                  -- will use an incomplete snapshot of the DB in
+                  -- parallel de-dupliation below which leads to correctness
+                  -- bugs.
+                  atomicWriteIORef (wrNextId writing) new_next_id
                   return subst
                 )
 
@@ -192,7 +199,4 @@ renameBatch
   -> IO (FactSet, Subst)
 renameBatch inventory lookup Writing{..} batch trusted = do
   next_id <- readIORef wrNextId
-  (facts, subst) <- FactSet.renameFacts inventory lookup next_id batch trusted
-  new_next_id <- Lookup.firstFreeId facts
-  atomicWriteIORef wrNextId new_next_id
-  return (facts, subst)
+  FactSet.renameFacts inventory lookup next_id batch trusted
