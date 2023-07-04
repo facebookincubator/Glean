@@ -11,7 +11,8 @@ module Glean.Database.Types (
   Write(..),
   Tailer(..), TailerKey, DB(..),
   Env(..), WriteQueues(..), WriteQueue(..), WriteJob(..),
-  Derivation(..)
+  Derivation(..),
+  EnableRecursion(..)
 ) where
 
 import Control.DeepSeq
@@ -198,6 +199,8 @@ instance NFData Derivation where
     `seq` derivationHandle
     `seq`()
 
+newtype EnableRecursion = EnableRecursion Bool
+
 data Env = forall storage. Storage storage => Env
   { envEventBase :: EventBaseDataplane
   , envServerLogger :: Some GleanServerLogger
@@ -241,6 +244,8 @@ data Env = forall storage. Storage storage => Env
       -- ^ Yield the current time. Is normally getCurrentTime but
       -- can be changed for testing
   , envShardManager :: SomeShardManager
+  , envEnableRecursion :: EnableRecursion
+      -- ^ Experimental support for recursive queries. For testing only.
   }
 
 instance Show Env where

@@ -154,6 +154,8 @@ data Config = Config
     -- ^ Logger for recording stats of databases produced
   , cfgBackupBackends :: HashMap Text (Some Backup.Backend)
     -- ^ Backup backends
+  , cfgEnableRecursion :: Bool
+    -- ^ Enable experimental support for recursion
   }
 
 instance Show Config where
@@ -179,6 +181,7 @@ instance Default Config where
     , cfgServerLogger = Some NullGleanServerLogger
     , cfgDatabaseLogger = Some NullGleanDatabaseLogger
     , cfgBackupBackends = HashMap.fromList [("mock", Backup.Mock.mock)]
+    , cfgEnableRecursion = False
     }
 
 data SchemaIndex = SchemaIndex
@@ -415,6 +418,11 @@ options = do
   cfgReadOnly <- switch (long "db-read-only")
   cfgMockWrites <- switch (long "db-mock-writes")
   cfgTailerOpts <- Tailer.options
+  cfgEnableRecursion <- switch
+    ( long "experimental-recursion"
+    <> help "Experimental support for recursive predicates. For testing only"
+    <> internal
+    )
   return Config
     { cfgListener = mempty
     , cfgUpdateSchema = True
