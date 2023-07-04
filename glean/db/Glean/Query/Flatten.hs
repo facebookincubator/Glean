@@ -38,18 +38,20 @@ import Glean.Query.Vars
 import Glean.RTS.Types as RTS
 import Glean.RTS.Term as RTS hiding (Match(..))
 import Glean.Database.Schema.Types
+import Glean.Database.Types (EnableRecursion(..))
 import qualified Glean.Angle.Types as Schema
 import Glean.Schema.Util
 
 -- | Turn 'TypecheckedQuery' into 'FlattenedQuery', by lifting out
 -- nested generators into statements.
 flatten
-  :: DbSchema
+  :: EnableRecursion
+  -> DbSchema
   -> Schema.AngleVersion
   -> Bool -- ^ derive DerivedAndStored predicates
   -> TypecheckedQuery
   -> Except Text FlattenedQuery
-flatten dbSchema ver deriveStored QueryWithInfo{..} =
+flatten rec dbSchema ver deriveStored QueryWithInfo{..} =
   fmap fst $ flip runStateT state $ do
     (flattened, returnType) <- do
       flat <- flattenQuery qiQuery `catchError` flattenFailure
@@ -57,7 +59,7 @@ flatten dbSchema ver deriveStored QueryWithInfo{..} =
     nextVar <- gets flNextVar
     return $ QueryWithInfo flattened nextVar returnType
   where
-      state = initialFlattenState dbSchema qiNumVars deriveStoredPred
+      state = initialFlattenState rec dbSchema qiNumVars deriveStoredPred
 
       deriveStoredPred =
         case derefType qiReturnType of
@@ -219,33 +221,40 @@ flattenFactGen pidRef@(PidRef pid _) kpat vpat = do
   case lookupPid pid dbSchema of
     Nothing -> lift $ throwError $
       "internal error: flatten: " <> Text.pack (show pid)
-    Just details@PredicateDetails{..} ->
+    Just details@PredicateDetails{..} -> do
+      let factGen = (mempty, FactGenerator pidRef kpat vpat SeekOnAllFacts)
       case predicateDeriving of
         Schema.NoDeriving ->
-          return (mempty, FactGenerator pidRef kpat vpat SeekOnAllFacts)
+          return factGen
         Schema.Derive when query
           | Schema.DerivedAndStored <- when
           , Just predicateId /= deriveStored ->
-               return (mempty, FactGenerator pidRef kpat vpat SeekOnAllFacts)
+               return factGen
           | otherwise -> do
-            calling predicateId $ do
+            calling predicateId factGen $ do
               query' <- expandDerivedPredicateCall details kpat vpat query
               (stmts, key, maybeVal) <- flattenQuery' query'
               let val = fromMaybe (Tuple []) maybeVal
               return (stmts, DerivedFactGenerator pidRef key val)
 
--- | Catch recursive derived predicates and throw an error, as a
--- temporary measure until we can handle them.
-calling :: Schema.PredicateId -> F a -> F a
-calling ref inner = do
+calling
+  :: Schema.PredicateId
+  -> a   -- ^ use this value if we already expanded a recursive call.
+  -> F a
+  -> F a
+calling ref seek inner = do
   stack <- gets flStack
-  when (ref `elem` stack) $
-    throwError $ "recursive reference to predicate " <>
-      Text.pack (show (displayDefault ref))
-  modify $ \state -> state { flStack = ref : stack }
-  a <- inner
-  modify $ \state -> state { flStack = stack }
-  return a
+  EnableRecursion enableRecursion <- gets flRecursion
+  if
+    | ref `notElem` stack -> do
+      modify $ \state -> state { flStack = ref : stack }
+      a <- inner
+      modify $ \state -> state { flStack = stack }
+      return a
+    | enableRecursion -> return seek
+    | otherwise ->
+      throwError $ "recursive reference to predicate " <>
+        Text.pack (show (displayDefault ref))
 
 -- | Returns a list of statement*pattern pairs
 --   representing a disjunction @(P1 where S1 | P2 where S2 | ...)@

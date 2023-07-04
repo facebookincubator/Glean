@@ -28,6 +28,7 @@ import Glean.RTS.Types
 import qualified Glean.RTS.Term as RTS
 import Glean.RTS.Term (Term)
 import Glean.Database.Schema
+import Glean.Database.Types (EnableRecursion(..))
 import Glean.Schema.Util
 
 -- | The monad state is the next fresh variable name, and the current
@@ -40,16 +41,18 @@ fresh = do n <- get; put (n+1); return n
 
 -- | Convert a nested query into a TcQuery
 toGenerators
-  :: DbSchema
+  :: EnableRecursion
+  -> DbSchema
   -> Bool -- ^ True <=> derive DerivedAndStored predicates
   -> PredicateDetails
   -> Term (RTS.Match (Nested Fid))
   -> Either Text CodegenQuery
-toGenerators dbSchema deriveStored details term =
+toGenerators rec dbSchema deriveStored details term =
   runExcept $ do
     (query, numVars) <- compileResult
     let typechecked = QueryWithInfo query numVars queryTy
     flat <- flatten
+      rec
       dbSchema
       Angle.latestAngleVersion
       deriveStored

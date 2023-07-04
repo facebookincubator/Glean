@@ -37,6 +37,7 @@ import Data.Text.Prettyprint.Doc hiding ((<>))
 import Glean.Angle.Types hiding (Type)
 import Glean.Query.Codegen.Types
 import Glean.Database.Schema
+import Glean.Database.Types (EnableRecursion(..))
 import Glean.Display
 import Glean.RTS.Types as RTS
 import Glean.Query.Vars
@@ -214,18 +215,21 @@ data FlattenState = FlattenState
   , flStack :: [PredicateId]
     -- ^ Stack of derived predicates, to prevent recursion. (for now,
     -- until we have support for recursion).
+  , flRecursion :: EnableRecursion
   }
 
 initialFlattenState
-  :: DbSchema
+  :: EnableRecursion
+  -> DbSchema
   -> Int
   -> Maybe PredicateId
   -> FlattenState
-initialFlattenState dbSchema nextVar deriveStored = FlattenState
+initialFlattenState rec dbSchema nextVar deriveStored = FlattenState
   { flDbSchema = dbSchema
   , flNextVar = nextVar
   , flDeriveStored = deriveStored
   , flStack = []
+  , flRecursion = rec
   }
 
 type F a = StateT FlattenState (Except Text) a

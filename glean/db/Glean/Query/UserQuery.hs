@@ -657,6 +657,7 @@ userQueryImpl
         _ -> do
           (compileTime, _, (query@QueryWithInfo{..}, ty)) <-
             timeIt $ compileAngleQuery
+              (envEnableRecursion env)
               schemaVersion
               schema
               mode
@@ -914,7 +915,7 @@ userQueryImpl
             let pids = getExpandPids query
                 limits = mkQueryRuntimeOptions opts config pids
             gens <- either (throwIO . Thrift.BadQuery) return $
-              toGenerators schema stored details query
+              toGenerators (envEnableRecursion env) schema stored details query
             derived <- FactSet.new nextId
             defineOwners <- mkDefineOwners nextId
             let stack = stacked lookup derived
@@ -1033,7 +1034,8 @@ data CompilationMode
   | IncrementalDerivation (SeekSection -> Pid -> Bool)
 
 compileAngleQuery
-  :: SchemaSelector
+  :: EnableRecursion
+  -> SchemaSelector
     -- ^ Schema version to resolve unversioned predicates
   -> DbSchema
   -> CompilationMode
@@ -1041,7 +1043,7 @@ compileAngleQuery
   -> ByteString
   -> Bool
   -> IO (CodegenQuery, Type)
-compileAngleQuery ver dbSchema mode source stored = do
+compileAngleQuery rec ver dbSchema mode source stored = do
   parsed <- checkBadQuery Text.pack $ Angle.parseQuery source
   vlog 2 $ "parsed query: " <> show (displayDefault parsed)
 
@@ -1057,7 +1059,7 @@ compileAngleQuery ver dbSchema mode source stored = do
   vlog 2 $ "typechecked query: " <> show (displayDefault (qiQuery typechecked))
 
   flattened <- checkBadQuery id $ runExcept $
-    flatten dbSchema latestAngleVersion stored typechecked
+    flatten rec dbSchema latestAngleVersion stored typechecked
   vlog 2 $ "flattened query: " <> show (displayDefault (qiQuery flattened))
 
   optimised <- checkBadQuery id $ runExcept $ optimise flattened
