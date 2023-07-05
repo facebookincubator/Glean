@@ -231,7 +231,11 @@ predicate FileEntityXRefSpans:
       (codemarkup.erlang.ErlangFileEntityXRefLocations { File, XRef, E };
        { erlang = E } = Entity) |
       (codemarkup.lsif.LsifFileEntityXRefLocations { File, XRef, E };
-       { lsif = E } = Entity);
+       { lsif = E } = Entity) |
+      (codemarkup.scip.ScipFileEntityXRefLocations { File, XRef, E };
+       { scip = E } = Entity) |
+      (codemarkup.java.JavalFileEntityXRefLocations { File, XRef, E };
+      { java = E } = Entity);
       { source = { span = Span }} = XRef
     )
 
