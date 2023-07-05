@@ -298,25 +298,6 @@ predicate NonImportDeclaration: Declaration
   { variable = _ } |
   { module = _ } = D
 
-#### DEPRECATED SECTION
-
-# DEPRECATED: use DeclarationWithSName
-# Search for a declaration by structured name
-predicate DeclarationBySName: SName -> Declaration
-  N -> D where
-  D = (
-    ClassBySName N -> C;
-    Declaration { cls = C }
-  ) | (
-    FunctionBySName N -> F;
-    Declaration { func = F }
-  ) | (
-    VariableBySName N -> V;
-    Declaration { variable = V }
-  ) | (
-    ModuleBySName N -> M;
-    Declaration { module = M }
-  )
 
 # This is the inverse of ImportStatement. It allows for efficient queries
 # by alias. Note that multiple ImportStatements might have the same
