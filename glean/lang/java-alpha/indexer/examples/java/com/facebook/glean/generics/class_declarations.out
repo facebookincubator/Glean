@@ -92,6 +92,44 @@
     "key": {
       "name": {
         "key": {
+          "name": { "key": "Entry" },
+          "context": {
+            "key": {
+              "base": { "key": "Map" },
+              "container": {
+                "key": {
+                  "base": { "key": "generics" },
+                  "container": {
+                    "key": {
+                      "base": { "key": "glean" },
+                      "container": {
+                        "key": {
+                          "base": { "key": "facebook" },
+                          "container": { "key": { "base": { "key": "com" } } }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": [ 6 ],
+      "implements_": [ ],
+      "annotations": [ ],
+      "typeParams": [ ],
+      "span": { "start": 676, "length": 140 },
+      "file": {
+        "key": "fbsource/fbcode/glean/lang/javaalpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+      }
+    }
+  },
+  {
+    "key": {
+      "name": {
+        "key": {
           "name": { "key": "Main" },
           "context": {
             "key": {

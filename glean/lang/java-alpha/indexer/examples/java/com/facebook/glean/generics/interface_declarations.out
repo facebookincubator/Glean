@@ -102,5 +102,58 @@
         "key": "fbsource/fbcode/glean/lang/javaalpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
       }
     }
+  },
+  {
+    "key": {
+      "name": {
+        "key": {
+          "name": { "key": "Foo" },
+          "context": {
+            "key": {
+              "base": { "key": "Map" },
+              "container": {
+                "key": {
+                  "base": { "key": "generics" },
+                  "container": {
+                    "key": {
+                      "base": { "key": "glean" },
+                      "container": {
+                        "key": {
+                          "base": { "key": "facebook" },
+                          "container": { "key": { "base": { "key": "com" } } }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": [ ],
+      "modifiers": [ 6 ],
+      "extends_": [ ],
+      "typeParams": [
+        {
+          "key": {
+            "name": { "key": "K" },
+            "extends_": [ ],
+            "span": { "start": 841, "length": 1 }
+          }
+        },
+        {
+          "key": {
+            "name": { "key": "V" },
+            "extends_": [ ],
+            "span": { "start": 844, "length": 1 }
+          }
+        }
+      ],
+      "span": { "start": 820, "length": 56 },
+      "file": {
+        "key": "fbsource/fbcode/glean/lang/javaalpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+      }
+    }
   }
 ]
