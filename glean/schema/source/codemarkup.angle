@@ -288,7 +288,9 @@ predicate EntityReferences:
     (codemarkup.buck.BuckEntityUses { E, File, Span };
      { buck = E } = Entity) |
     (codemarkup.erlang.ErlangEntityUses { E, File, Span };
-     { erlang = E } = Entity);
+     { erlang = E } = Entity) |
+    (codemarkup.java.JavaEntityUses { E, File, Span };
+     { java = E } = Entity);
     { span = Span } = RangeSpan;
   ) | (
     codemarkup.lsif.LsifEntityUses { E, File, Range };

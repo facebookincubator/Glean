@@ -63,7 +63,9 @@ predicate JavaEntityUses:
     file: src.File,
     span: src.ByteSpan,
   }
-#  { { definition = Def }, File, SrcSpan } where
+  { { decl = Decl }, File, Span } where
+    java.alpha.DeclarationUses { Decl, File, Spans };
+    Span = Spans[..]
 
 # kinds and symbol info
 predicate JavaEntityKind:

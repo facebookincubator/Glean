@@ -228,7 +228,13 @@ predicate PackageDeclaration :
     location : src.ByteSpan,
   }
 
+#
+# Handling xrefs and uses
+#
+
 # Code that is referenced elsewhere, including by an import
+# Note: params and locals aren't yet xref-able
+# These are the unique QName/MethodName compoennt of a Declaration.
 type XRefTarget =
   {
     definition_: javakotlin.alpha.QName |
@@ -260,6 +266,27 @@ predicate XRefTargetDeclaration:
       { field = FDecl } = Decl
     )
 
+# Given a declaration extract its XRefTarget key
+# Reverses the XRefTargetDeclaration mapping
+predicate DeclarationXRefTarget:
+  {
+    decl : Declaration,
+    xref: XRefTarget
+  }
+  { Decl, XRef } where
+    ( { field = { name = QName }} = Decl;
+      { field_ = QName } = XRef ) |
+    ( { ctor = { name = MName } } = Decl;
+      { ctor_ = MName } = XRef ) |
+    ( { method = { name = MName }  } = Decl;
+      { method_ = MName } = XRef ) |
+    ( { interface_ = { name = QName } } = Decl;
+      { definition_ = QName } = XRef ) |
+    ( { enum_ = { name = QName } } = Decl;
+      { definition_ = QName } = XRef ) |
+    ( { class_ = { name = QName } } = Decl;
+      { definition_ = QName } = XRef );
+
 predicate QNameToDefinition:
   {
     name : javakotlin.alpha.QName,
@@ -290,6 +317,27 @@ predicate FileXRefs :
     xrefs : [XRef],
   }
 
+predicate XRefFile :
+  {
+    xref: XRef,
+    file: src.File,
+  }
+    stored {Xref, File} where
+      FileXRefs {file = File, xrefs = Xs};
+      Xref = Xs[..];
+
+# Uses
+predicate DeclarationUses :
+  {
+    target : Declaration,
+    file : src.File,
+    uses : [src.ByteSpan],
+  }
+  { Decl, File, Spans } where
+    DeclarationXRefTarget { Decl, XRefTarget };
+    XRef = XRef { XRefTarget, Spans }; # all xrefs that mention this target
+    XRefFile { XRef, File };
+
 predicate AnnotatedClass :
   {
     annotation : Annotation,
@@ -314,15 +362,6 @@ predicate InterfaceInheritance :
   stored { InterfaceName, Subclass } where
     Subclass = ClassDeclaration { implements_ = Implements_ };
     InterfaceName = Implements_[..];
-
-predicate XRefFile :
-{
-  xref: XRef,
-  file: src.File,
-}
-  stored {Xref, File} where
-    FileXRefs {file = File, xrefs = Xs};
-    Xref = Xs[..];
 
 #
 # codemarkup/glass APIs
