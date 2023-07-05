@@ -40,18 +40,15 @@ import Glean.Pretty.Search ()
 import Glean.Schema.Builtin.Types (schema_id)
 import Glean.Schema.Code.Types as Code
 import Glean.Schema.CodeCxx.Types as Cxx
-import Glean.Schema.CodeJava.Types as Java
 import Glean.Schema.CodePp.Types as Pp
 import Glean.Schema.Cxx1.Types as Cxx
-import qualified Glean.Schema.Java.Types as Java
 import Glean.Schema.Src.Types
 import Glean.Search.Search
 import Glean.Search.Types
 import Glean.Util.ConfigProvider
 import Glean.Util.Declarations
-import Glean.Util.Range (locRange, HasSrcRange(..))
+import Glean.Util.Range (HasSrcRange(..))
 import Glean.Util.Some
-
 
 data Command
   = FindDeclarations
@@ -194,9 +191,6 @@ prettyResults
     isMacro Entity_pp{} = True
     isMacro _ = False
 
-    isJavaClassDecl (Entity_java Java.Entity_class_{}) = True
-    isJavaClassDecl _ = False
-
     isHackDeclaration Entity_hack{} = True
     isHackDeclaration _ = False
 
@@ -210,7 +204,6 @@ prettyResults
       , ("C/C++ enum declaration", isEnumDecl)
       , ("C/C++ enumerator", isEnumerator)
       , ("C preprocessor macro", isMacro)
-      , ("Java class declaration", isJavaClassDecl)
       , ("Hack declaration", isHackDeclaration)
       ]
 
@@ -285,8 +278,6 @@ declToRange decl =
   case decl of
     Code.Entity_cxx cxx -> cxxEntityToRange cxx
     Code.Entity_pp (Pp.Entity_define defn) -> srcRange <$> getFactKey defn
-    Code.Entity_java (Java.Entity_class_ decl) ->
-      locRange . Java.classDeclaration_key_loc <$> getFactKey decl
     _ -> Nothing
   where
   cxxEntityToRange cxx = case cxx of

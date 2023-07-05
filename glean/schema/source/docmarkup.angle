@@ -7,7 +7,7 @@ schema docmarkup.14 {
 import code.24
 import cxx1.5
 import hack.6
-import java.6
+import java.alpha.1
 import src.1
 
 
@@ -63,7 +63,7 @@ predicate EntityByDocAttrKey :
 type GeneralAnnotations = {
   doc : DocAttrs |
   hack : [hack.UserAttribute] |
-  java : [java.Annotation] |
+  java : [java.alpha.Annotation] |
 }
 
 # Derived view mapping language-agnostic symbol to language-agnostic annotation.
@@ -107,8 +107,8 @@ predicate EntityAnnotations :
         { hack = Attrs }
       )
       |
-      ( { java = {class_ = D } } = Entity;
-        { annotations = Annots } = D;
+      ( { java = { decl = D } } = Entity;
+        java.alpha.DeclarationAnnotations { D, Annots };
         1 <= prim.length Annots;
         { java = Annots }
       )

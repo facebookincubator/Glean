@@ -1,17 +1,17 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
 schema code.java.5 {
-import java.6
+
+import java.alpha.1
 
 type Entity =
   {
-    class_ : java.ClassDeclaration |
-    definition_ : java.Definition |
+    decl : java.alpha.Declaration |
   }
 
  type Annotations =
  {
-   annotations : [java.Annotation] |
+   annotations : [java.alpha.Annotation] |
  }
 
 }

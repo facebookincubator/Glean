@@ -36,8 +36,6 @@ module Glean.Util.Range
   , byteOffsetToLineCol
   , byteRangeToRange
   , byteRangesToLineNumbers
-  -- * Src.Loc
-  , locRange
   ) where
 
 import Control.DeepSeq
@@ -59,18 +57,6 @@ import Glean (toNat, fromNat)
 import Glean.Schema.Pp1.Types as Pp
 import Glean.Schema.Src.Types as Src hiding (ByteRange(..))
 import Glean.Schema.Cxx1.Types as Cxx
-
--- | Make a single character Range from a Loc. This utility is needed
--- because the java schema stores 'Src.Loc' and we need to upscale to
--- 'Src.Range'
-locRange :: Src.Loc -> Src.Range
-locRange Src.Loc{..} = Src.Range
-  { range_file = loc_file
-  , range_lineBegin = loc_line
-  , range_columnBegin = loc_column
-  , range_lineEnd = loc_line
-  , range_columnEnd = loc_column
-  }
 
 class HasSrcRange a where
   srcRange :: a -> Src.Range

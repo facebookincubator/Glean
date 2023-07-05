@@ -192,6 +192,7 @@ predicate EnumDeclaration :
     file : src.File,
   }
 
+# just container definitions
 type Definition =
   {
     class_ : ClassDeclaration |
@@ -285,15 +286,81 @@ predicate XRefFile :
     FileXRefs {file = File, xrefs = Xs};
     Xref = Xs[..];
 
-# Find locations of a definition
+#
+# codemarkup/glass APIs
+#
+
+# All entities that we expose to navigation or search
+type Declaration =
+  {
+    param : ParameterDeclaration |
+    local : LocalDeclaration |
+    field : FieldDeclaration |
+    ctor : ConstructorDeclaration |
+    method : MethodDeclaration |
+    interface_ : InterfaceDeclaration |
+    class_ : ClassDeclaration |
+    enum_ : EnumDeclaration
+  }
+
+
+predicate DeclarationAnnotations:
+  {
+    decl : java.alpha.Declaration,
+    annotations : [Annotation]
+  }
+  { Decl, Anns } where
+    ( { param = PDecl } = Decl; { annotations = Anns } = PDecl ) |
+    ( { local = LDecl } = Decl; { annotations = Anns } = LDecl ) |
+    ( { field = FDecl } = Decl; { annotations = Anns } = FDecl ) |
+    ( { ctor = CDecl } = Decl; { annotations = Anns } = CDecl ) |
+    ( { method = MDecl } = Decl; { annotations = Anns } = MDecl ) |
+    ( { interface_ = IDecl } = Decl; { annotations = Anns } = IDecl ) |
+    ( { class_ = CDecl } = Decl; { annotations = Anns } = CDecl ) |
+    ( { enum_ = EDecl } = Decl; { annotations = Anns } = EDecl );
+
 predicate DefinitionLocation:
   {
-    defn : java.alpha.Definition,
-    name : javakotlin.alpha.QName,
+    defn : Definition,
+    name : string,
+    file : src.File,
+    span : src.ByteSpan
+  }
+  { Defn, NameStr, File, Span } where
+    ( { interface_ = IDecl } = Defn;
+      { name = QName, span = Span, file = File } = IDecl;
+    ) | (
+      { class_ = CDecl } = Defn;
+      { name = QName, span = Span, file = File } = CDecl;
+    ) | (
+      { enum_ = EDecl } = Defn;
+      { name = QName, span = Span, file = File } = EDecl;
+    );
+    { name = javakotlin.alpha.Name NameStr } = QName;
+
+predicate DeclarationLocation:
+  {
+    decl : Declaration,
+    name : string,
     file : src.File,
     span : src.ByteSpan,
-  } { Defn, QN, File, Span } where
-    ( { class_ = { name = QN, span = Span, file = File } } = Defn ) |
-    ( { interface_ = { name = QN, span = Span, file = File } } = Defn ) |
-    ( { enum_ = { name = QN, span = Span, file = File } } = Defn );
-}
+  } { Decl, NameStr, File, Span } where
+    ( (
+        { interface_ = IDecl } = Decl;
+        DefinitionLocation { { interface_ = IDecl }, NameStr, File, Span }
+      ) | (
+        { class_ = CDecl } = Decl;
+        DefinitionLocation { { class_ = CDecl }, NameStr, File, Span }
+      ) | (
+        { enum_ = EDecl } = Decl;
+        DefinitionLocation { { enum_ = EDecl }, NameStr, File, Span }
+      )
+    ) | (
+      { method = MDecl } = Decl;
+      { name = MName, span = Span, container = Defn } = MDecl;
+      DefinitionLocation { defn = Defn, file = File };
+      javakotlin.alpha.MethodName { name = QName } = MName;
+      { name = javakotlin.alpha.Name NameStr } = QName
+    )
+
+} # schema

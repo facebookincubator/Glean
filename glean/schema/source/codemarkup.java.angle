@@ -5,7 +5,7 @@ schema codemarkup.java.1 {
 import src.1
 import code.java.5
 import codemarkup.types.1
-import java.6
+import java.alpha.1
 
 #
 # Resolving locations to entities
@@ -28,8 +28,8 @@ predicate JavaEntityLocation:
     location: codemarkup.types.Location,
   }
   { Entity, { Name, File, { span = Span }, nothing } } where
-    { definition_ = Defn } = Entity;
-    java.DefinitionLocation { Defn, Name, File, Span };
+    { decl = Decl } = Entity;
+    java.alpha.DeclarationLocation { Decl, Name, File, Span };
 
 #
 # Finding references in a file
@@ -63,19 +63,14 @@ predicate JavaEntityKind:
     kind: codemarkup.types.SymbolKind
   }
   { Entity, Kind} where
-    ( { class_ = _ } = Entity;
-      Class_ = Kind
-    ) | (
-      { definition_ = Defn } = Entity;
-      ( { class_ = _ } = Defn;
-        Class_ = Kind
-      ) | (
-        { interface_ = _ } = Defn;
-        Interface = Kind
-      ) | (
-        { enum_ = _ } = Defn;
-        Enum_ = Kind
-      )
-    )
+    { decl = Decl } = Entity;
+    ( { param = _ } = Decl; Variable = Kind ) |
+    ( { field = _ } = Decl; Field = Kind ) |
+    ( { local = _ } = Decl; Variable = Kind ) |
+    ( { ctor = _ } = Decl; Constructor = Kind ) |
+    ( { method = _ } = Decl; Method = Kind ) |
+    ( { interface_ = _ } = Decl; Interface = Kind ) |
+    ( { class_ = _ } = Decl; Class_ = Kind ) |
+    ( { enum_ = _ } = Decl; Enum_ = Kind );
 
 }

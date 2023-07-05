@@ -2,24 +2,32 @@
 
 schema search.java.1 {
 
-import java.6
+import javakotlin.alpha.1
+import java.alpha.1
 
 # SearchByName can be used to search for symbols in any context (wildcard
 # context).
 predicate SearchByQName :
   {
-    name : java.QName,
-    defn : java.Definition
+    name : javakotlin.alpha.QName,
+    defn : java.alpha.Declaration
   }
-  { QName, Defn } where
-    ( Decl = java.ClassDeclaration { name = QName };
-      { class_ = Decl } = Defn
+  { QName, Decl } where
+    ( CDecl = java.alpha.ClassDeclaration { name = QName };
+      { class_ = CDecl } = Decl
     ) | (
-      Decl = java.InterfaceDeclaration { name = QName };
-      { interface_ = Decl } = Defn
+      IDecl = java.alpha.InterfaceDeclaration { name = QName };
+      { interface_ = IDecl } = Decl
     ) | (
-      Decl = java.EnumDeclaration { name = QName };
-      { enum_ = Decl } = Defn
-    );
+      EDecl = java.alpha.EnumDeclaration { name = QName };
+      { enum_ = EDecl } = Decl
+    ) | (
+      FDecl = java.alpha.FieldDeclaration { name = QName };
+      { field = FDecl } = Decl
+    ) | (
+      MName = javakotlin.alpha.MethodName { name = QName };
+      MDecl = java.alpha.MethodDeclaration { name = MName };
+      { method = MDecl } = Decl
+    )
 
 }

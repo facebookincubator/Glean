@@ -9,7 +9,8 @@ import code.python.1
 import cxx1.5
 import flow.3
 import hack.6
-import java.6
+import javakotlin.alpha.1
+import java.alpha.1
 import erlang.1
 import hs.2
 import lsif.2
@@ -331,16 +332,17 @@ predicate JavaSearchByName:
     entity: code.Entity,
   }
   { NameStr, Entity } where
-    QName = java.QName { name = NameStr };
+    Name = javakotlin.alpha.Name NameStr;
+    QName = javakotlin.alpha.QName { name = Name };
     JavaSearchByNameWithFact { QName, Entity }
 
 predicate JavaSearchByNameWithFact:
   {
-    name: java.QName,
+    name: javakotlin.alpha.QName,
     entity: code.Entity
   }
-  { QName, { java = { definition_ = Defn } } } where
-    search.java.SearchByQName { QName, Defn };
+  { QName, { java = { decl = Decl } } } where
+    search.java.SearchByQName { QName, Decl };
 
 predicate CxxSearchByName:
   {
