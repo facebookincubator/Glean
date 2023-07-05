@@ -135,7 +135,9 @@ predicate ResolveLocation:
     (codemarkup.lsif.LsifResolveLocation { Location, E };
      { lsif = E } = Entity) |
     (codemarkup.scip.ScipResolveLocation { Location, E };
-     { scip = E } = Entity);
+     { scip = E } = Entity) |
+    (codemarkup.java.JavaResolveLocation { Location, E };
+     { java = E } = Entity);
 
 predicate EntityLocation:
   {

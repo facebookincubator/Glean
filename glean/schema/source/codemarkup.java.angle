@@ -16,7 +16,9 @@ predicate JavaResolveLocation:
     location: codemarkup.types.Location,
     entity: code.java.Entity,
   }
-#  { { Name, File, { span = Span }, nothing }, Defn } where
+  { { Name, File, { span = Span }, nothing }, { decl = Decl } } where
+    java.alpha.FileDeclarations { File, Decl };
+    java.alpha.DeclarationLocation { Decl, Name, File, Span }
 
 #
 # Finding entities' locations

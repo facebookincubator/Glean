@@ -303,7 +303,6 @@ type Declaration =
     enum_ : EnumDeclaration
   }
 
-
 predicate DeclarationAnnotations:
   {
     decl : java.alpha.Declaration,
@@ -362,5 +361,12 @@ predicate DeclarationLocation:
       javakotlin.alpha.MethodName { name = QName } = MName;
       { name = javakotlin.alpha.Name NameStr } = QName
     )
+
+# decls keyed by file (i.e. file entities)
+predicate FileDeclarations:
+  {
+    file : src.File,
+    decl : Declaration
+  } stored { File, Decl } where DeclarationLocation { decl = Decl, file = File }
 
 } # schema
