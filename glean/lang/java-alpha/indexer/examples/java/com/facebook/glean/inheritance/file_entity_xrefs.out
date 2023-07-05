@@ -1,0 +1,112 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": {
+        "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/Rectangle.java"
+      },
+      "xref": {
+        "target": {
+          "name": "draw",
+          "file": {
+            "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/Drawable.java"
+          },
+          "location": { "span": { "start": 249, "length": 51 } }
+        },
+        "source": { "span": { "start": 348, "length": 12 } }
+      },
+      "entity": {
+        "decl": {
+          "method": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "draw" },
+                      "context": {
+                        "key": {
+                          "base": { "key": "Drawable" },
+                          "container": {
+                            "key": {
+                              "base": { "key": "inheritance" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "glean" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "facebook" },
+                                      "container": {
+                                        "key": { "base": { "key": "com" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "signature": [ ]
+                }
+              },
+              "parameters": [ ],
+              "returnType": {
+                "key": {
+                  "baseType": { "primitive": { "key": { "type": "void" } } },
+                  "typeArgs": [ ],
+                  "interopType": { "key": { "primitive": "V" } },
+                  "span": { "start": 0, "length": 0 }
+                }
+              },
+              "annotations": [ ],
+              "modifiers": [ 6 ],
+              "typeParams": [ ],
+              "throws_": [ ],
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "Drawable" },
+                        "context": {
+                          "key": {
+                            "base": { "key": "inheritance" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "glean" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "facebook" },
+                                    "container": {
+                                      "key": { "base": { "key": "com" } }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "modifiers": [ 0, 6 ],
+                    "implements_": [ ],
+                    "annotations": [ ],
+                    "typeParams": [ ],
+                    "span": { "start": 116, "length": 186 },
+                    "file": {
+                      "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/Drawable.java"
+                    }
+                  }
+                }
+              },
+              "span": { "start": 249, "length": 51 }
+            }
+          }
+        }
+      }
+    }
+  }
+]
