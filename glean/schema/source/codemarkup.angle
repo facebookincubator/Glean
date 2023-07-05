@@ -165,10 +165,10 @@ predicate EntityLocation:
      { erlang = E } = Entity) |
     (codemarkup.lsif.LsifEntityLocation { E, Location };
      { lsif = E } = Entity) |
-    (codemarkup.java.JavaEntityLocation { E, Location };
-     { java = E } = Entity) |
     (codemarkup.scip.ScipEntityLocation { E, Location };
-     { scip = E } = Entity);
+     { scip = E } = Entity) |
+    (codemarkup.java.JavaEntityLocation { E, Location };
+     { java = E } = Entity);
 
 # Finding xrefs. All references in a file and their targets
 predicate FileEntityXRefLocations:
@@ -199,7 +199,9 @@ predicate FileEntityXRefLocations:
     (codemarkup.lsif.LsifFileEntityXRefLocations { File, XRef, E };
      { lsif = E } = Entity) |
     (codemarkup.scip.ScipFileEntityXRefLocations { File, XRef, E };
-     { scip = E } = Entity);
+     { scip = E } = Entity) |
+    (codemarkup.java.JavalFileEntityXRefLocations { File, XRef, E };
+     { java = E } = Entity);
 
 # Xrefs without the target location. This can be useful in cases
 # where we don't have a target location, but we don't need it. This

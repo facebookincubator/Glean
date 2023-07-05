@@ -44,7 +44,14 @@ predicate JavalFileEntityXRefLocations:
     xref: codemarkup.types.XRefLocation,
     entity: code.java.Entity,
   }
-#  { File, { Location, { span = SrcSpan } }, { definition = Def } } where
+  { File, { Location, { span = SrcSpan } }, { decl = Decl } } where
+    java.alpha.FileXRefs { File, XRefs };
+    { XRef, Spans } = XRefs[..];
+    SrcSpan = Spans[..];
+    java.alpha.XRefTargetDeclaration { XRef, Decl };
+    java.alpha.DeclarationLocation { Decl, Name, TargetFile, TargetSpan };
+    Location = codemarkup.types.Location
+      { Name, TargetFile, { span = TargetSpan }, nothing };
 
 #
 # Language entity uses

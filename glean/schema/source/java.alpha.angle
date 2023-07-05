@@ -237,6 +237,44 @@ type XRefTarget =
     field_: javakotlin.alpha.QName |
   }
 
+# Lookup the xref entity by its qname and kind
+predicate XRefTargetDeclaration:
+  {
+    xref: XRefTarget,
+    decl : Declaration
+  }
+  { XRef, Decl } where
+    ( { definition_ = QName } = XRef;
+      QNameToDefinition { QName, Decl }
+    ) | (
+      { ctor_ = MName } = XRef;
+      CDecl = ConstructorDeclaration { name = MName };
+      { ctor = CDecl } = Decl
+    ) | (
+      { method_ = MName } = XRef;
+      MDecl = MethodDeclaration { name = MName };
+      { method = MDecl } = Decl
+    ) | (
+      { field_ = QName } = XRef;
+      FDecl = FieldDeclaration { name = QName };
+      { field = FDecl } = Decl
+    )
+
+predicate QNameToDefinition:
+  {
+    name : javakotlin.alpha.QName,
+    defn : java.alpha.Declaration
+  }
+  { QName, Decl } where
+    ( CDecl = ClassDeclaration { name = QName };
+      { class_ = CDecl } = Decl
+    ) | (
+      IDecl = InterfaceDeclaration { name = QName };
+      { interface_ = IDecl } = Decl
+    ) | (
+      EDecl = EnumDeclaration { name = QName };
+      { enum_ = EDecl } = Decl
+    );
 
 # References to target code
 predicate XRef :
