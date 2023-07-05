@@ -2,28 +2,27 @@
 
 package com.facebook.glean;
 
+import java.util.regex.*;
+
 public class Utils {
-  private static final String FBSOURCE = "fbsource";
+  // e.g. to match 'fbsource/147-16788900/fbandroid/*'
+  private static final Pattern NOISE = Pattern.compile("^[0-9]+-[0-9]+/");
 
+  // to match any remnant repo anchors
+  // e.g.
+  // '/data/sandcastle/boxes/eden-trunk-hg-fbcode-fbsource/''
+  // or
+  // '/data/sandcastle/boxes/fbsource/'
+  //
+  private static final Pattern FBSOURCE = Pattern.compile("^/.*[/-]fbsource/");
+
+  // what we need is to pass an indexerRoot through...
+
+  /** Input paths are absolute, and need to be made relative and de-noised */
   public static String normalizePath(String path) {
-    // Paths may contain fbsource more than once, fbsource-, or, number dash directory
-    int fbSourceStartIndex = path.indexOf(FBSOURCE);
-    String pathWithoutFbSource = path;
-    while (fbSourceStartIndex != -1) {
-      pathWithoutFbSource = pathWithoutFbSource.substring(fbSourceStartIndex + FBSOURCE.length());
-      fbSourceStartIndex = pathWithoutFbSource.indexOf(FBSOURCE);
-    }
-
-    String[] splitPath = pathWithoutFbSource.split("[0-9]*-[0-9]*");
-    String cleanPath =
-        splitPath.length == 1
-            ? splitPath[0]
-            : (splitPath.length < 1) ? path : String.join("", splitPath);
-    String finalPath =
-        cleanPath.startsWith(FBSOURCE)
-            ? cleanPath
-            : FBSOURCE + (cleanPath.startsWith("//") ? cleanPath.substring(1) : cleanPath);
-
-    return finalPath;
+    Matcher n = FBSOURCE.matcher(path);
+    String cleanPath = n.replaceFirst("");
+    Matcher m = NOISE.matcher(cleanPath);
+    return m.replaceFirst("");
   }
 }
