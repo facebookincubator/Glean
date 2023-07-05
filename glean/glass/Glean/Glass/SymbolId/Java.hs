@@ -144,7 +144,7 @@ instance ToQName Java.QName_key where
   toQName Java.QName_key{..} = do
     nameStr <- Glean.keyOf qName_key_name
     context <- flattenContext =<< Glean.keyOf qName_key_context
-    return $ Right (Name (Text.intercalate "." (reverse context)), Name nameStr)
+    return $ Right (Name nameStr, Name (Text.intercalate "." (reverse context)))
 
 flattenContext :: Java.Path_key -> RepoHaxl u w [Text]
 flattenContext Java.Path_key{..} = do

@@ -22,6 +22,7 @@ import qualified Glean.Schema.Lsif.Types as Lsif
 import qualified Glean.Schema.Scip.Types as Scip
 import qualified Glean.Schema.Python.Types as Py
 import qualified Glean.Schema.Thrift.Types as Thrift
+import qualified Glean.Schema.JavaAlpha.Types as Java
 
 import qualified Glean.Schema.CodeCxx.Types as Cxx
 import qualified Glean.Schema.CodePp.Types as Pp
@@ -174,7 +175,20 @@ instance ToAngle Thrift.XRefTarget where
   toAngle (Thrift.XRefTarget_function_ x) = alt @"function_" (mkKey x)
   toAngle Thrift.XRefTarget_EMPTY = error "unknown Entity"
 
--- LSIF languages
+-- Java
+
+instance ToAngle Java.Declaration where
+  toAngle (Java.Declaration_class_ x) = alt @"class_" (mkKey x)
+  toAngle (Java.Declaration_interface_ x) = alt @"interface_" (mkKey x)
+  toAngle (Java.Declaration_enum_ x) = alt @"enum_" (mkKey x)
+  toAngle (Java.Declaration_method x) = alt @"method" (mkKey x)
+  toAngle (Java.Declaration_ctor x) = alt @"ctor" (mkKey x)
+  toAngle (Java.Declaration_field x) = alt @"field" (mkKey x)
+  toAngle (Java.Declaration_param x) = alt @"param" (mkKey x)
+  toAngle (Java.Declaration_local x) = alt @"local" (mkKey x)
+  toAngle Java.Declaration_EMPTY = error "unknown Declaration"
+
+-- LSIF and SCIP languages
 
 instance ToAngle Lsif.SomeEntity where
   toAngle e = case e of

@@ -94,6 +94,7 @@ import qualified Glean.Schema.CodeScip.Types as Scip
 
 import Glean.Schema.CodeErlang.Types as Erlang ( Entity(Entity_decl) )
 import Glean.Schema.CodeHack.Types as Hack ( Entity(Entity_decl) )
+import Glean.Schema.CodeJava.Types as Java ( Entity(Entity_decl) )
 import Glean.Schema.CodePython.Types as Python ( Entity(Entity_decl) )
 import Glean.Schema.CodeThrift.Types as Thrift ( Entity(Entity_decl) )
 
@@ -295,7 +296,6 @@ instance Symbol Code.Entity where
       Scip.Entity_typescript se -> toSymbolWithPath se p
       Scip.Entity_EMPTY -> throwM $ SymbolError "Unknown SCIP language"
 
-    -- Code.Entity_lsif (Lsif.Entity_java x) -> toSymbol x
     _ -> throwM $ SymbolError "Language not supported"
 
 -- | Top level with error handler, to catch attempts to query
@@ -318,6 +318,8 @@ entityToAngle e = case e of
     alt @"erlang" (alt @"decl" (toAngle x))
   Code.Entity_buck x -> Right $
     alt @"buck" (toAngle x)
+  Code.Entity_java (Java.Entity_decl x) -> Right $
+    alt @"java" (alt @"decl" (toAngle x))
   Code.Entity_thrift (Thrift.Entity_decl x) -> Right $
     alt @"thrift" (alt @"decl" (toAngle x))
   -- lsif languages, enumerate all lang constructors
