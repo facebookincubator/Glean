@@ -165,6 +165,7 @@ SCHEMAS= \
 	codemarkup_flow \
 	codemarkup_hack \
 	codemarkup_haskell \
+	codemarkup_java \
 	codemarkup_lsif \
 	codemarkup_pp \
 	codemarkup_python \
@@ -187,6 +188,8 @@ SCHEMAS= \
 	hack \
 	hs \
 	java \
+	java_alpha \
+	javakotlin_alpha \
 	lsif \
 	lsif_types \
 	pp1 \
@@ -197,10 +200,12 @@ SCHEMAS= \
 	search_erlang \
 	search_buck \
 	search_hack \
+	search_java \
 	search_hs \
 	search_pp \
 	src \
 	symbolid_cxx \
+	symbolid_java \
 	sys \
 	thrift \
 

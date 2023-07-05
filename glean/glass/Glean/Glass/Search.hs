@@ -33,6 +33,7 @@ import qualified Glean.Glass.Search.Erlang ({- instances -})
 import qualified Glean.Glass.Search.Flow ({- instances -})
 import qualified Glean.Glass.Search.Hack ({- instances -})
 import qualified Glean.Glass.Search.Haskell ({- instances -})
+import qualified Glean.Glass.Search.Java ({- instances -})
 import qualified Glean.Glass.Search.LSIF ({- instances -})
 import qualified Glean.Glass.Search.SCIP ({- instances -})
 import qualified Glean.Glass.Search.Python ({- instances -})
@@ -70,9 +71,9 @@ searchEntity lang toks = case lang of
   Language_Erlang -> fmap Code.Entity_erlang <$> Search.symbolSearch toks
   Language_Buck -> fmap Code.Entity_buck <$> Search.symbolSearch toks
   Language_Thrift -> fmap Code.Entity_thrift <$> Search.symbolSearch toks
+  Language_Java -> fmap Code.Entity_java <$> Search.symbolSearch toks
   -- limited set via lsif
   Language_TypeScript -> fmap Code.Entity_lsif <$> Search.symbolSearch toks
-  Language_Java -> fmap Code.Entity_lsif <$> Search.symbolSearch toks
   -- scip-based indexers
   Language_Rust -> fmap Code.Entity_scip <$> Search.symbolSearch toks
   Language_Go -> fmap Code.Entity_scip <$> Search.symbolSearch toks

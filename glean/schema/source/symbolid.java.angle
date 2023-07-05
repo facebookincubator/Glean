@@ -1,0 +1,51 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema symbolid.java.1 {
+
+import src.1
+import code.java.5
+import codemarkup.types.1
+import java.alpha.1
+import javakotlin.alpha.1
+
+# You can find everything other than methods and ctors via a qname alone
+predicate LookupDeclaration:
+  {
+    qname: javakotlin.alpha.QName,
+    decl : java.alpha.Declaration
+  }
+  { QName, Decl } where
+    ( CDecl = java.alpha.ClassDeclaration { name = QName };
+      { class_ = CDecl } = Decl
+    ) | (
+      IDecl = java.alpha.InterfaceDeclaration { name = QName };
+      { interface_ = IDecl } = Decl
+    ) | (
+      EDecl = java.alpha.EnumDeclaration { name = QName };
+      { enum_ = EDecl } = Decl
+    ) | (
+      FDecl = java.alpha.FieldDeclaration { name = QName };
+      { field = FDecl } = Decl
+    ) | (
+      LDecl = java.alpha.LocalDeclaration { name = QName };
+      { local = LDecl } = Decl
+    ) | (
+      PDecl = java.alpha.ParameterDeclaration { name = QName };
+      { param = PDecl } = Decl
+    );
+
+# Otherwise fetch a method or a ctor.
+predicate LookupMethodDeclaration:
+  {
+    mname: javakotlin.alpha.MethodName,
+    decl : java.alpha.Declaration
+  }
+  { MName, Decl } where
+    ( MDecl = java.alpha.MethodDeclaration { name = MName };
+      { method = MDecl } = Decl
+    ) | (
+      CDecl = java.alpha.ConstructorDeclaration { name = MName };
+      { ctor = CDecl } = Decl
+    );
+
+}
