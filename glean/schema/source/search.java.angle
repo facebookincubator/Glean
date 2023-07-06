@@ -7,7 +7,7 @@ import java.alpha.1
 
 # SearchByName can be used to search for symbols in any context (wildcard
 # context).
-predicate SearchByQName :
+predicate SearchByQName:
   {
     name : javakotlin.alpha.QName,
     defn : java.alpha.Declaration
@@ -25,9 +25,816 @@ predicate SearchByQName :
       FDecl = java.alpha.FieldDeclaration { name = QName };
       { field = FDecl } = Decl
     ) | (
+      PDecl = java.alpha.ParameterDeclaration { name = QName };
+      { param = PDecl } = Decl
+    ) | (
       MName = javakotlin.alpha.MethodName { name = QName };
       MDecl = java.alpha.MethodDeclaration { name = MName };
       { method = MDecl } = Decl
+    )
+
+# Helper to lookup javakotlin.Name based on case sensitivity
+predicate NameCase:
+  {
+    insensitive: bool,
+    namestr : string,
+    name : javakotlin.alpha.Name
+  }
+  { Insensitive, NameStr, Name } where
+    ( true = Insensitive; javakotlin.alpha.NameLowerCase { NameStr, Name } ) |
+    ( false = Insensitive; javakotlin.alpha.Name NameStr = Name );
+
+# Compile a qname query array to a Path
+predicate QueryToScopeCase:
+  {
+    query : [string],
+    insensitive : bool, # if true , search insensitive
+    scopeName : javakotlin.alpha.Path,
+  }
+  { Query, Case, Path } where
+    # zero tuple, can't do much with it. We don't have empty scopes
+    ( [] = Query; true | false = Case; never = Path : javakotlin.alpha.Path ) |
+    # one tuple
+    ( [A] = Query;
+      NameCase { Case, A, AName };
+      Path = javakotlin.alpha.Path { base = AName } ) |
+    # two tuple
+    ( [B, A] = Query;
+      NameCase { Case, A, AName };
+      NameCase { Case, B, BName };
+      CPath = javakotlin.alpha.Path { base = BName };
+      Path = javakotlin.alpha.Path
+        { base = AName, container = { just = BPath } } ) |
+    # three tuple
+    ( [C, B, A] = Query;
+      NameCase { Case, A, AName };
+      NameCase { Case, B, BName };
+      NameCase { Case, C, CName };
+      CPath = javakotlin.alpha.Path { base = CName };
+      BPath = javakotlin.alpha.Path
+        { base = BName, container = { just = CPath } };
+      Path = javakotlin.alpha.Path
+        { base = AName, container = { just = BPath } } ) |
+    # four tuple
+    ( [D, C, B, A] = Query;
+      NameCase { Case, A, AName };
+      NameCase { Case, B, BName };
+      NameCase { Case, C, CName };
+      NameCase { Case, D, DName };
+      DPath = javakotlin.alpha.Path { base = DName };
+      CPath = javakotlin.alpha.Path
+        { base = CName, container = { just = DPath } };
+      BPath = javakotlin.alpha.Path
+        { base = BName, container = { just = CPath } };
+      Path = javakotlin.alpha.Path
+        { base = AName, container = { just = BPath } }) |
+    # five tuple
+    ( [E, D, C, B, A] = Query;
+      NameCase { Case, A, AName };
+      NameCase { Case, B, BName };
+      NameCase { Case, C, CName };
+      NameCase { Case, D, DName };
+      NameCase { Case, E, EName };
+      EPath = javakotlin.alpha.Path { base = EName };
+      DPath = javakotlin.alpha.Path
+        { base = DName, container = { just = EPath } };
+      CPath = javakotlin.alpha.Path
+        { base = CName, container = { just = DPath } };
+      BPath = javakotlin.alpha.Path
+        { base = BName, container = { just = CPath } };
+      Path = javakotlin.alpha.Path
+        { base = AName, container = { just = BPath } } ) |
+    # six tuple
+    ( [F, E, D, C, B, A] = Query;
+      NameCase { Case, A, AName };
+      NameCase { Case, B, BName };
+      NameCase { Case, C, CName };
+      NameCase { Case, D, DName };
+      NameCase { Case, E, EName };
+      NameCase { Case, F, FName };
+      FPath = javakotlin.alpha.Path { base = FName };
+      EPath = javakotlin.alpha.Path
+        { base = EName, container = { just = FPath } };
+      DPath = javakotlin.alpha.Path
+        { base = DName, container = { just = EPath } };
+      CPath = javakotlin.alpha.Path
+        { base = CName, container = { just = DPath } };
+      BPath = javakotlin.alpha.Path
+        { base = BName, container = { just = CPath } };
+      Path = javakotlin.alpha.Path
+        { base = AName, container = { just = BPath } } ) |
+    # seven tuple
+    ( [G, F, E, D, C, B, A] = Query;
+      NameCase { Case, A, AName };
+      NameCase { Case, B, BName };
+      NameCase { Case, C, CName };
+      NameCase { Case, D, DName };
+      NameCase { Case, E, EName };
+      NameCase { Case, F, FName };
+      NameCase { Case, G, GName };
+      GPath = javakotlin.alpha.Path { base = GName };
+      FPath = javakotlin.alpha.Path
+        { base = FName, container = { just = GPath } };
+      EPath = javakotlin.alpha.Path
+        { base = EName, container = { just = FPath } };
+      DPath = javakotlin.alpha.Path
+        { base = DName, container = { just = EPath } };
+      CPath = javakotlin.alpha.Path
+        { base = CName, container = { just = DPath } };
+      BPath = javakotlin.alpha.Path
+        { base = BName, container = { just = CPath } };
+      Path = javakotlin.alpha.Path
+        { base = AName, container = { just = BPath } } ) |
+    # eight tuple
+    ( [H, G, F, E, D, C, B, A] = Query;
+      NameCase { Case, A, AName };
+      NameCase { Case, B, BName };
+      NameCase { Case, C, CName };
+      NameCase { Case, D, DName };
+      NameCase { Case, E, EName };
+      NameCase { Case, F, FName };
+      NameCase { Case, G, GName };
+      NameCase { Case, H, HName };
+      HPath = javakotlin.alpha.Path { base = HName };
+      GPath = javakotlin.alpha.Path
+        { base = GName, container = { just = HPath } };
+      FPath = javakotlin.alpha.Path
+        { base = FName, container = { just = GPath } };
+      EPath = javakotlin.alpha.Path
+        { base = EName, container = { just = FPath } };
+      DPath = javakotlin.alpha.Path
+        { base = DName, container = { just = EPath } };
+      CPath = javakotlin.alpha.Path
+        { base = CName, container = { just = DPath } };
+      BPath = javakotlin.alpha.Path
+        { base = BName, container = { just = CPath } };
+      Path = javakotlin.alpha.Path
+        { base = AName, container = { just = BPath } } ) |
+    # nine tuple
+    ( [I, H, G, F, E, D, C, B, A] = Query;
+      NameCase { Case, A, AName };
+      NameCase { Case, B, BName };
+      NameCase { Case, C, CName };
+      NameCase { Case, D, DName };
+      NameCase { Case, E, EName };
+      NameCase { Case, F, FName };
+      NameCase { Case, G, GName };
+      NameCase { Case, H, HName };
+      NameCase { Case, I, IName };
+      IPath = javakotlin.alpha.Path { base = IName };
+      HPath = javakotlin.alpha.Path
+        { base = HName, container = { just = IPath } };
+      GPath = javakotlin.alpha.Path
+        { base = GName, container = { just = HPath } };
+      FPath = javakotlin.alpha.Path
+        { base = FName, container = { just = GPath } };
+      EPath = javakotlin.alpha.Path
+        { base = EName, container = { just = FPath } };
+      DPath = javakotlin.alpha.Path
+        { base = DName, container = { just = EPath } };
+      CPath = javakotlin.alpha.Path
+        { base = CName, container = { just = DPath } };
+      BPath = javakotlin.alpha.Path
+        { base = BName, container = { just = CPath } };
+      Path = javakotlin.alpha.Path
+        { base = AName, container = { just = BPath } } ) |
+    # ten tuple
+    ( [J, I, H, G, F, E, D, C, B, A] = Query;
+      NameCase { Case, A, AName };
+      NameCase { Case, B, BName };
+      NameCase { Case, C, CName };
+      NameCase { Case, D, DName };
+      NameCase { Case, E, EName };
+      NameCase { Case, F, FName };
+      NameCase { Case, G, GName };
+      NameCase { Case, H, HName };
+      NameCase { Case, I, IName };
+      NameCase { Case, J, JName };
+      JPath = javakotlin.alpha.Path { base = JName };
+      IPath = javakotlin.alpha.Path
+        { base = IName, container = { just = JPath } };
+      HPath = javakotlin.alpha.Path
+        { base = HName, container = { just = IPath } };
+      GPath = javakotlin.alpha.Path
+        { base = GName, container = { just = HPath } };
+      FPath = javakotlin.alpha.Path
+        { base = FName, container = { just = GPath } };
+      EPath = javakotlin.alpha.Path
+        { base = EName, container = { just = FPath } };
+      DPath = javakotlin.alpha.Path
+        { base = DName, container = { just = EPath } };
+      CPath = javakotlin.alpha.Path
+        { base = CName, container = { just = DPath } };
+      BPath = javakotlin.alpha.Path
+        { base = BName, container = { just = CPath } };
+      Path = javakotlin.alpha.Path
+        { base = AName, container = { just = BPath } } ) |
+    # eleven tuple
+    ( [K, J, I, H, G, F, E, D, C, B, A] = Query;
+      NameCase { Case, A, AName };
+      NameCase { Case, B, BName };
+      NameCase { Case, C, CName };
+      NameCase { Case, D, DName };
+      NameCase { Case, E, EName };
+      NameCase { Case, F, FName };
+      NameCase { Case, G, GName };
+      NameCase { Case, H, HName };
+      NameCase { Case, I, IName };
+      NameCase { Case, J, JName };
+      NameCase { Case, K, KName };
+      KPath = javakotlin.alpha.Path { base = KName };
+      JPath = javakotlin.alpha.Path
+        { base = JName, container = { just = KPath } };
+      IPath = javakotlin.alpha.Path
+        { base = IName, container = { just = JPath } };
+      HPath = javakotlin.alpha.Path
+        { base = HName, container = { just = IPath } };
+      GPath = javakotlin.alpha.Path
+        { base = GName, container = { just = HPath } };
+      FPath = javakotlin.alpha.Path
+        { base = FName, container = { just = GPath } };
+      EPath = javakotlin.alpha.Path
+        { base = EName, container = { just = FPath } };
+      DPath = javakotlin.alpha.Path
+        { base = DName, container = { just = EPath } };
+      CPath = javakotlin.alpha.Path
+        { base = CName, container = { just = DPath } };
+      BPath = javakotlin.alpha.Path
+        { base = BName, container = { just = CPath } };
+      Path = javakotlin.alpha.Path
+        { base = AName, container = { just = BPath } } ) |
+    # 12 tuple
+    ( [L, K, J, I, H, G, F, E, D, C, B, A] = Query;
+      NameCase { Case, A, AName };
+      NameCase { Case, B, BName };
+      NameCase { Case, C, CName };
+      NameCase { Case, D, DName };
+      NameCase { Case, E, EName };
+      NameCase { Case, F, FName };
+      NameCase { Case, G, GName };
+      NameCase { Case, H, HName };
+      NameCase { Case, I, IName };
+      NameCase { Case, J, JName };
+      NameCase { Case, K, KName };
+      NameCase { Case, L, LName };
+      LPath = javakotlin.alpha.Path { base = LName };
+      KPath = javakotlin.alpha.Path
+        { base = KName, container = { just = LPath } };
+      JPath = javakotlin.alpha.Path
+        { base = JName, container = { just = KPath } };
+      IPath = javakotlin.alpha.Path
+        { base = IName, container = { just = JPath } };
+      HPath = javakotlin.alpha.Path
+        { base = HName, container = { just = IPath } };
+      GPath = javakotlin.alpha.Path
+        { base = GName, container = { just = HPath } };
+      FPath = javakotlin.alpha.Path
+        { base = FName, container = { just = GPath } };
+      EPath = javakotlin.alpha.Path
+        { base = EName, container = { just = FPath } };
+      DPath = javakotlin.alpha.Path
+        { base = DName, container = { just = EPath } };
+      CPath = javakotlin.alpha.Path
+        { base = CName, container = { just = DPath } };
+      BPath = javakotlin.alpha.Path
+        { base = BName, container = { just = CPath } };
+      Path = javakotlin.alpha.Path
+        { base = AName, container = { just = BPath } } ) |
+    # 13 tuple
+    ( [M, L, K, J, I, H, G, F, E, D, C, B, A] = Query;
+      NameCase { Case, A, AName };
+      NameCase { Case, B, BName };
+      NameCase { Case, C, CName };
+      NameCase { Case, D, DName };
+      NameCase { Case, E, EName };
+      NameCase { Case, F, FName };
+      NameCase { Case, G, GName };
+      NameCase { Case, H, HName };
+      NameCase { Case, I, IName };
+      NameCase { Case, J, JName };
+      NameCase { Case, K, KName };
+      NameCase { Case, L, LName };
+      NameCase { Case, M, MName };
+      MPath = javakotlin.alpha.Path { base = MName };
+      LPath = javakotlin.alpha.Path
+        { base = LName, container = { just = MPath } };
+      KPath = javakotlin.alpha.Path
+        { base = KName, container = { just = LPath } };
+      JPath = javakotlin.alpha.Path
+        { base = JName, container = { just = KPath } };
+      IPath = javakotlin.alpha.Path
+        { base = IName, container = { just = JPath } };
+      HPath = javakotlin.alpha.Path
+        { base = HName, container = { just = IPath } };
+      GPath = javakotlin.alpha.Path
+        { base = GName, container = { just = HPath } };
+      FPath = javakotlin.alpha.Path
+        { base = FName, container = { just = GPath } };
+      EPath = javakotlin.alpha.Path
+        { base = EName, container = { just = FPath } };
+      DPath = javakotlin.alpha.Path
+        { base = DName, container = { just = EPath } };
+      CPath = javakotlin.alpha.Path
+        { base = CName, container = { just = DPath } };
+      BPath = javakotlin.alpha.Path
+        { base = BName, container = { just = CPath } };
+      Path = javakotlin.alpha.Path
+        { base = AName, container = { just = BPath } } ) |
+    # 14 tuple
+    ( [N, M, L, K, J, I, H, G, F, E, D, C, B, A] = Query;
+      NameCase { Case, A, AName };
+      NameCase { Case, B, BName };
+      NameCase { Case, C, CName };
+      NameCase { Case, D, DName };
+      NameCase { Case, E, EName };
+      NameCase { Case, F, FName };
+      NameCase { Case, G, GName };
+      NameCase { Case, H, HName };
+      NameCase { Case, I, IName };
+      NameCase { Case, J, JName };
+      NameCase { Case, K, KName };
+      NameCase { Case, L, LName };
+      NameCase { Case, M, MName };
+      NameCase { Case, N, NName };
+      NPath = javakotlin.alpha.Path { base = NName };
+      MPath = javakotlin.alpha.Path
+        { base = MName, container = { just = NPath } };
+      LPath = javakotlin.alpha.Path
+        { base = LName, container = { just = MPath } };
+      KPath = javakotlin.alpha.Path
+        { base = KName, container = { just = LPath } };
+      JPath = javakotlin.alpha.Path
+        { base = JName, container = { just = KPath } };
+      IPath = javakotlin.alpha.Path
+        { base = IName, container = { just = JPath } };
+      HPath = javakotlin.alpha.Path
+        { base = HName, container = { just = IPath } };
+      GPath = javakotlin.alpha.Path
+        { base = GName, container = { just = HPath } };
+      FPath = javakotlin.alpha.Path
+        { base = FName, container = { just = GPath } };
+      EPath = javakotlin.alpha.Path
+        { base = EName, container = { just = FPath } };
+      DPath = javakotlin.alpha.Path
+        { base = DName, container = { just = EPath } };
+      CPath = javakotlin.alpha.Path
+        { base = CName, container = { just = DPath } };
+      BPath = javakotlin.alpha.Path
+        { base = BName, container = { just = CPath } };
+      Path = javakotlin.alpha.Path
+        { base = AName, container = { just = BPath } } ) |
+    # 15 tuple
+    ( [O, N, M, L, K, J, I, H, G, F, E, D, C, B, A] = Query;
+      NameCase { Case, A, AName };
+      NameCase { Case, B, BName };
+      NameCase { Case, C, CName };
+      NameCase { Case, D, DName };
+      NameCase { Case, E, EName };
+      NameCase { Case, F, FName };
+      NameCase { Case, G, GName };
+      NameCase { Case, H, HName };
+      NameCase { Case, I, IName };
+      NameCase { Case, J, JName };
+      NameCase { Case, K, KName };
+      NameCase { Case, L, LName };
+      NameCase { Case, M, MName };
+      NameCase { Case, N, NName };
+      NameCase { Case, O, OName };
+      OPath = javakotlin.alpha.Path { base = OName };
+      NPath = javakotlin.alpha.Path
+        { base = NName, container = { just = OPath } };
+      MPath = javakotlin.alpha.Path
+        { base = MName, container = { just = NPath } };
+      LPath = javakotlin.alpha.Path
+        { base = LName, container = { just = MPath } };
+      KPath = javakotlin.alpha.Path
+        { base = KName, container = { just = LPath } };
+      JPath = javakotlin.alpha.Path
+        { base = JName, container = { just = KPath } };
+      IPath = javakotlin.alpha.Path
+        { base = IName, container = { just = JPath } };
+      HPath = javakotlin.alpha.Path
+        { base = HName, container = { just = IPath } };
+      GPath = javakotlin.alpha.Path
+        { base = GName, container = { just = HPath } };
+      FPath = javakotlin.alpha.Path
+        { base = FName, container = { just = GPath } };
+      EPath = javakotlin.alpha.Path
+        { base = EName, container = { just = FPath } };
+      DPath = javakotlin.alpha.Path
+        { base = DName, container = { just = EPath } };
+      CPath = javakotlin.alpha.Path
+        { base = CName, container = { just = DPath } };
+      BPath = javakotlin.alpha.Path
+        { base = BName, container = { just = CPath } };
+      Path = javakotlin.alpha.Path
+        { base = AName, container = { just = BPath } } ) |
+    # 16 tuple
+    ( [P, O, N, M, L, K, J, I, H, G, F, E, D, C, B, A] = Query;
+      NameCase { Case, A, AName };
+      NameCase { Case, B, BName };
+      NameCase { Case, C, CName };
+      NameCase { Case, D, DName };
+      NameCase { Case, E, EName };
+      NameCase { Case, F, FName };
+      NameCase { Case, G, GName };
+      NameCase { Case, H, HName };
+      NameCase { Case, I, IName };
+      NameCase { Case, J, JName };
+      NameCase { Case, K, KName };
+      NameCase { Case, L, LName };
+      NameCase { Case, M, MName };
+      NameCase { Case, N, NName };
+      NameCase { Case, O, OName };
+      NameCase { Case, P, PName };
+      PPath = javakotlin.alpha.Path { base = PName };
+      OPath = javakotlin.alpha.Path
+        { base = OName, container = { just = PPath } };
+      NPath = javakotlin.alpha.Path
+        { base = NName, container = { just = OPath } };
+      MPath = javakotlin.alpha.Path
+        { base = MName, container = { just = NPath } };
+      LPath = javakotlin.alpha.Path
+        { base = LName, container = { just = MPath } };
+      KPath = javakotlin.alpha.Path
+        { base = KName, container = { just = LPath } };
+      JPath = javakotlin.alpha.Path
+        { base = JName, container = { just = KPath } };
+      IPath = javakotlin.alpha.Path
+        { base = IName, container = { just = JPath } };
+      HPath = javakotlin.alpha.Path
+        { base = HName, container = { just = IPath } };
+      GPath = javakotlin.alpha.Path
+        { base = GName, container = { just = HPath } };
+      FPath = javakotlin.alpha.Path
+        { base = FName, container = { just = GPath } };
+      EPath = javakotlin.alpha.Path
+        { base = EName, container = { just = FPath } };
+      DPath = javakotlin.alpha.Path
+        { base = DName, container = { just = EPath } };
+      CPath = javakotlin.alpha.Path
+        { base = CName, container = { just = DPath } };
+      BPath = javakotlin.alpha.Path
+        { base = BName, container = { just = CPath } };
+      Path = javakotlin.alpha.Path
+        { base = AName, container = { just = BPath } } ) |
+    # 17 tuple
+    ( [Q, P, O, N, M, L, K, J, I, H, G, F, E, D, C, B, A] = Query;
+      NameCase { Case, A, AName };
+      NameCase { Case, B, BName };
+      NameCase { Case, C, CName };
+      NameCase { Case, D, DName };
+      NameCase { Case, E, EName };
+      NameCase { Case, F, FName };
+      NameCase { Case, G, GName };
+      NameCase { Case, H, HName };
+      NameCase { Case, I, IName };
+      NameCase { Case, J, JName };
+      NameCase { Case, K, KName };
+      NameCase { Case, L, LName };
+      NameCase { Case, M, MName };
+      NameCase { Case, N, NName };
+      NameCase { Case, O, OName };
+      NameCase { Case, P, PName };
+      NameCase { Case, Q, QName };
+      QPath = javakotlin.alpha.Path { base = QName };
+      PPath = javakotlin.alpha.Path
+        { base = PName, container = { just = QPath } };
+      OPath = javakotlin.alpha.Path
+        { base = OName, container = { just = PPath } };
+      NPath = javakotlin.alpha.Path
+        { base = NName, container = { just = OPath } };
+      MPath = javakotlin.alpha.Path
+        { base = MName, container = { just = NPath } };
+      LPath = javakotlin.alpha.Path
+        { base = LName, container = { just = MPath } };
+      KPath = javakotlin.alpha.Path
+        { base = KName, container = { just = LPath } };
+      JPath = javakotlin.alpha.Path
+        { base = JName, container = { just = KPath } };
+      IPath = javakotlin.alpha.Path
+        { base = IName, container = { just = JPath } };
+      HPath = javakotlin.alpha.Path
+        { base = HName, container = { just = IPath } };
+      GPath = javakotlin.alpha.Path
+        { base = GName, container = { just = HPath } };
+      FPath = javakotlin.alpha.Path
+        { base = FName, container = { just = GPath } };
+      EPath = javakotlin.alpha.Path
+        { base = EName, container = { just = FPath } };
+      DPath = javakotlin.alpha.Path
+        { base = DName, container = { just = EPath } };
+      CPath = javakotlin.alpha.Path
+        { base = CName, container = { just = DPath } };
+      BPath = javakotlin.alpha.Path
+        { base = BName, container = { just = CPath } };
+      Path = javakotlin.alpha.Path
+        { base = AName, container = { just = BPath } } ) |
+    # 18 tuple
+    ( [R, Q, P, O, N, M, L, K, J, I, H, G, F, E, D, C, B, A] = Query;
+      NameCase { Case, A, AName };
+      NameCase { Case, B, BName };
+      NameCase { Case, C, CName };
+      NameCase { Case, D, DName };
+      NameCase { Case, E, EName };
+      NameCase { Case, F, FName };
+      NameCase { Case, G, GName };
+      NameCase { Case, H, HName };
+      NameCase { Case, I, IName };
+      NameCase { Case, J, JName };
+      NameCase { Case, K, KName };
+      NameCase { Case, L, LName };
+      NameCase { Case, M, MName };
+      NameCase { Case, N, NName };
+      NameCase { Case, O, OName };
+      NameCase { Case, P, PName };
+      NameCase { Case, Q, QName };
+      NameCase { Case, R, RName };
+      RPath = javakotlin.alpha.Path { base = RName };
+      QPath = javakotlin.alpha.Path
+        { base = QName, container = { just = RPath } };
+      PPath = javakotlin.alpha.Path
+        { base = PName, container = { just = QPath } };
+      OPath = javakotlin.alpha.Path
+        { base = OName, container = { just = PPath } };
+      NPath = javakotlin.alpha.Path
+        { base = NName, container = { just = OPath } };
+      MPath = javakotlin.alpha.Path
+        { base = MName, container = { just = NPath } };
+      LPath = javakotlin.alpha.Path
+        { base = LName, container = { just = MPath } };
+      KPath = javakotlin.alpha.Path
+        { base = KName, container = { just = LPath } };
+      JPath = javakotlin.alpha.Path
+        { base = JName, container = { just = KPath } };
+      IPath = javakotlin.alpha.Path
+        { base = IName, container = { just = JPath } };
+      HPath = javakotlin.alpha.Path
+        { base = HName, container = { just = IPath } };
+      GPath = javakotlin.alpha.Path
+        { base = GName, container = { just = HPath } };
+      FPath = javakotlin.alpha.Path
+        { base = FName, container = { just = GPath } };
+      EPath = javakotlin.alpha.Path
+        { base = EName, container = { just = FPath } };
+      DPath = javakotlin.alpha.Path
+        { base = DName, container = { just = EPath } };
+      CPath = javakotlin.alpha.Path
+        { base = CName, container = { just = DPath } };
+      BPath = javakotlin.alpha.Path
+        { base = BName, container = { just = CPath } };
+      Path = javakotlin.alpha.Path
+        { base = AName, container = { just = BPath } } ) |
+    # 19 tuple
+    ( [S, R, Q, P, O, N, M, L, K, J, I, H, G, F, E, D, C, B, A] = Query;
+      NameCase { Case, A, AName };
+      NameCase { Case, B, BName };
+      NameCase { Case, C, CName };
+      NameCase { Case, D, DName };
+      NameCase { Case, E, EName };
+      NameCase { Case, F, FName };
+      NameCase { Case, G, GName };
+      NameCase { Case, H, HName };
+      NameCase { Case, I, IName };
+      NameCase { Case, J, JName };
+      NameCase { Case, K, KName };
+      NameCase { Case, L, LName };
+      NameCase { Case, M, MName };
+      NameCase { Case, N, NName };
+      NameCase { Case, O, OName };
+      NameCase { Case, P, PName };
+      NameCase { Case, Q, QName };
+      NameCase { Case, R, RName };
+      NameCase { Case, S, SName };
+      SPath = javakotlin.alpha.Path { base = SName };
+      RPath = javakotlin.alpha.Path
+        { base = RName, container = { just = SPath } };
+      QPath = javakotlin.alpha.Path
+        { base = QName, container = { just = RPath } };
+      PPath = javakotlin.alpha.Path
+        { base = PName, container = { just = QPath } };
+      OPath = javakotlin.alpha.Path
+        { base = OName, container = { just = PPath } };
+      NPath = javakotlin.alpha.Path
+        { base = NName, container = { just = OPath } };
+      MPath = javakotlin.alpha.Path
+        { base = MName, container = { just = NPath } };
+      LPath = javakotlin.alpha.Path
+        { base = LName, container = { just = MPath } };
+      KPath = javakotlin.alpha.Path
+        { base = KName, container = { just = LPath } };
+      JPath = javakotlin.alpha.Path
+        { base = JName, container = { just = KPath } };
+      IPath = javakotlin.alpha.Path
+        { base = IName, container = { just = JPath } };
+      HPath = javakotlin.alpha.Path
+        { base = HName, container = { just = IPath } };
+      GPath = javakotlin.alpha.Path
+        { base = GName, container = { just = HPath } };
+      FPath = javakotlin.alpha.Path
+        { base = FName, container = { just = GPath } };
+      EPath = javakotlin.alpha.Path
+        { base = EName, container = { just = FPath } };
+      DPath = javakotlin.alpha.Path
+        { base = DName, container = { just = EPath } };
+      CPath = javakotlin.alpha.Path
+        { base = CName, container = { just = DPath } };
+      BPath = javakotlin.alpha.Path
+        { base = BName, container = { just = CPath } };
+      Path = javakotlin.alpha.Path
+        { base = AName, container = { just = BPath } } ) |
+    # 20 tuple
+    ( [T, S, R, Q, P, O, N, M, L, K, J, I, H, G, F, E, D, C, B, A] = Query;
+      NameCase { Case, A, AName };
+      NameCase { Case, B, BName };
+      NameCase { Case, C, CName };
+      NameCase { Case, D, DName };
+      NameCase { Case, E, EName };
+      NameCase { Case, F, FName };
+      NameCase { Case, G, GName };
+      NameCase { Case, H, HName };
+      NameCase { Case, I, IName };
+      NameCase { Case, J, JName };
+      NameCase { Case, K, KName };
+      NameCase { Case, L, LName };
+      NameCase { Case, M, MName };
+      NameCase { Case, N, NName };
+      NameCase { Case, O, OName };
+      NameCase { Case, P, PName };
+      NameCase { Case, Q, QName };
+      NameCase { Case, R, RName };
+      NameCase { Case, S, SName };
+      NameCase { Case, T, TName };
+      TPath = javakotlin.alpha.Path { base = TName };
+      SPath = javakotlin.alpha.Path
+        { base = SName, container = { just = TPath } };
+      RPath = javakotlin.alpha.Path
+        { base = RName, container = { just = SPath } };
+      QPath = javakotlin.alpha.Path
+        { base = QName, container = { just = RPath } };
+      PPath = javakotlin.alpha.Path
+        { base = PName, container = { just = QPath } };
+      OPath = javakotlin.alpha.Path
+        { base = OName, container = { just = PPath } };
+      NPath = javakotlin.alpha.Path
+        { base = NName, container = { just = OPath } };
+      MPath = javakotlin.alpha.Path
+        { base = MName, container = { just = NPath } };
+      LPath = javakotlin.alpha.Path
+        { base = LName, container = { just = MPath } };
+      KPath = javakotlin.alpha.Path
+        { base = KName, container = { just = LPath } };
+      JPath = javakotlin.alpha.Path
+        { base = JName, container = { just = KPath } };
+      IPath = javakotlin.alpha.Path
+        { base = IName, container = { just = JPath } };
+      HPath = javakotlin.alpha.Path
+        { base = HName, container = { just = IPath } };
+      GPath = javakotlin.alpha.Path
+        { base = GName, container = { just = HPath } };
+      FPath = javakotlin.alpha.Path
+        { base = FName, container = { just = GPath } };
+      EPath = javakotlin.alpha.Path
+        { base = EName, container = { just = FPath } };
+      DPath = javakotlin.alpha.Path
+        { base = DName, container = { just = EPath } };
+      CPath = javakotlin.alpha.Path
+        { base = CName, container = { just = DPath } };
+      BPath = javakotlin.alpha.Path
+        { base = BName, container = { just = CPath } };
+      Path = javakotlin.alpha.Path
+        { base = AName, container = { just = BPath } } ) |
+    # 21 tuple
+    ( [U, T, S, R, Q, P, O, N, M, L, K, J, I, H, G, F, E, D, C, B, A] = Query;
+      NameCase { Case, A, AName };
+      NameCase { Case, B, BName };
+      NameCase { Case, C, CName };
+      NameCase { Case, D, DName };
+      NameCase { Case, E, EName };
+      NameCase { Case, F, FName };
+      NameCase { Case, G, GName };
+      NameCase { Case, H, HName };
+      NameCase { Case, I, IName };
+      NameCase { Case, J, JName };
+      NameCase { Case, K, KName };
+      NameCase { Case, L, LName };
+      NameCase { Case, M, MName };
+      NameCase { Case, N, NName };
+      NameCase { Case, O, OName };
+      NameCase { Case, P, PName };
+      NameCase { Case, Q, QName };
+      NameCase { Case, R, RName };
+      NameCase { Case, S, SName };
+      NameCase { Case, T, TName };
+      NameCase { Case, U, UName };
+      UPath = javakotlin.alpha.Path { base = UName };
+      TPath = javakotlin.alpha.Path
+        { base = TName, container = { just = UPath } };
+      SPath = javakotlin.alpha.Path
+        { base = SName, container = { just = TPath } };
+      RPath = javakotlin.alpha.Path
+        { base = RName, container = { just = SPath } };
+      QPath = javakotlin.alpha.Path
+        { base = QName, container = { just = RPath } };
+      PPath = javakotlin.alpha.Path
+        { base = PName, container = { just = QPath } };
+      OPath = javakotlin.alpha.Path
+        { base = OName, container = { just = PPath } };
+      NPath = javakotlin.alpha.Path
+        { base = NName, container = { just = OPath } };
+      MPath = javakotlin.alpha.Path
+        { base = MName, container = { just = NPath } };
+      LPath = javakotlin.alpha.Path
+        { base = LName, container = { just = MPath } };
+      KPath = javakotlin.alpha.Path
+        { base = KName, container = { just = LPath } };
+      JPath = javakotlin.alpha.Path
+        { base = JName, container = { just = KPath } };
+      IPath = javakotlin.alpha.Path
+        { base = IName, container = { just = JPath } };
+      HPath = javakotlin.alpha.Path
+        { base = HName, container = { just = IPath } };
+      GPath = javakotlin.alpha.Path
+        { base = GName, container = { just = HPath } };
+      FPath = javakotlin.alpha.Path
+        { base = FName, container = { just = GPath } };
+      EPath = javakotlin.alpha.Path
+        { base = EName, container = { just = FPath } };
+      DPath = javakotlin.alpha.Path
+        { base = DName, container = { just = EPath } };
+      CPath = javakotlin.alpha.Path
+        { base = CName, container = { just = DPath } };
+      BPath = javakotlin.alpha.Path
+        { base = BName, container = { just = CPath } };
+      Path = javakotlin.alpha.Path
+        { base = AName, container = { just = BPath } } ) |
+    # 22 tuple, there are no larger...
+    ( [V, U, T, S, R, Q, P, O, N, M, L, K, J, I, H, G, F, E, D, C, B, A] = Query;
+      NameCase { Case, A, AName };
+      NameCase { Case, B, BName };
+      NameCase { Case, C, CName };
+      NameCase { Case, D, DName };
+      NameCase { Case, E, EName };
+      NameCase { Case, F, FName };
+      NameCase { Case, G, GName };
+      NameCase { Case, H, HName };
+      NameCase { Case, I, IName };
+      NameCase { Case, J, JName };
+      NameCase { Case, K, KName };
+      NameCase { Case, L, LName };
+      NameCase { Case, M, MName };
+      NameCase { Case, N, NName };
+      NameCase { Case, O, OName };
+      NameCase { Case, P, PName };
+      NameCase { Case, Q, QName };
+      NameCase { Case, R, RName };
+      NameCase { Case, S, SName };
+      NameCase { Case, T, TName };
+      NameCase { Case, U, UName };
+      NameCase { Case, V, VName };
+      VPath = javakotlin.alpha.Path { base = VName };
+      UPath = javakotlin.alpha.Path
+        { base = UName, container = { just = VPath } };
+      TPath = javakotlin.alpha.Path
+        { base = TName, container = { just = UPath } };
+      SPath = javakotlin.alpha.Path
+        { base = SName, container = { just = TPath } };
+      RPath = javakotlin.alpha.Path
+        { base = RName, container = { just = SPath } };
+      QPath = javakotlin.alpha.Path
+        { base = QName, container = { just = RPath } };
+      PPath = javakotlin.alpha.Path
+        { base = PName, container = { just = QPath } };
+      OPath = javakotlin.alpha.Path
+        { base = OName, container = { just = PPath } };
+      NPath = javakotlin.alpha.Path
+        { base = NName, container = { just = OPath } };
+      MPath = javakotlin.alpha.Path
+        { base = MName, container = { just = NPath } };
+      LPath = javakotlin.alpha.Path
+        { base = LName, container = { just = MPath } };
+      KPath = javakotlin.alpha.Path
+        { base = KName, container = { just = LPath } };
+      JPath = javakotlin.alpha.Path
+        { base = JName, container = { just = KPath } };
+      IPath = javakotlin.alpha.Path
+        { base = IName, container = { just = JPath } };
+      HPath = javakotlin.alpha.Path
+        { base = HName, container = { just = IPath } };
+      GPath = javakotlin.alpha.Path
+        { base = GName, container = { just = HPath } };
+      FPath = javakotlin.alpha.Path
+        { base = FName, container = { just = GPath } };
+      EPath = javakotlin.alpha.Path
+        { base = EName, container = { just = FPath } };
+      DPath = javakotlin.alpha.Path
+        { base = DName, container = { just = EPath } };
+      CPath = javakotlin.alpha.Path
+        { base = CName, container = { just = DPath } };
+      BPath = javakotlin.alpha.Path
+        { base = BName, container = { just = CPath } };
+      Path = javakotlin.alpha.Path
+        { base = AName, container = { just = BPath } };
     )
 
 }

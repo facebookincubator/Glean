@@ -1,0 +1,2 @@
+query: codemarkup.search.SearchByScope { name = "glean", scope = ["glean","glean"], searchcase = Insensitive, language = Java }
+transform: [gensort, []]
