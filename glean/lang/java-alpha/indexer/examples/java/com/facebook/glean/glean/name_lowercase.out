@@ -1,0 +1,55 @@
+[
+  "@generated",
+  { "key": { "nameLowercase": "<init>", "name": { "key": "<init>" } } },
+  { "key": { "nameLowercase": "a", "name": { "key": "a" } } },
+  { "key": { "nameLowercase": "alist", "name": { "key": "aList" } } },
+  { "key": { "nameLowercase": "args", "name": { "key": "args" } } },
+  { "key": { "nameLowercase": "b", "name": { "key": "b" } } },
+  { "key": { "nameLowercase": "c", "name": { "key": "c" } } },
+  { "key": { "nameLowercase": "class", "name": { "key": "Class" } } },
+  { "key": { "nameLowercase": "clazz", "name": { "key": "clazz" } } },
+  { "key": { "nameLowercase": "com", "name": { "key": "com" } } },
+  {
+    "key": {
+      "nameLowercase": "com.facebook.glean.glean",
+      "name": { "key": "com.facebook.glean.glean" }
+    }
+  },
+  { "key": { "nameLowercase": "d", "name": { "key": "d" } } },
+  { "key": { "nameLowercase": "deprecated", "name": { "key": "Deprecated" } } },
+  { "key": { "nameLowercase": "e", "name": { "key": "e" } } },
+  { "key": { "nameLowercase": "f", "name": { "key": "f" } } },
+  { "key": { "nameLowercase": "facebook", "name": { "key": "facebook" } } },
+  { "key": { "nameLowercase": "fetch", "name": { "key": "fetch" } } },
+  { "key": { "nameLowercase": "g", "name": { "key": "g" } } },
+  { "key": { "nameLowercase": "gete", "name": { "key": "getE" } } },
+  { "key": { "nameLowercase": "getlist", "name": { "key": "getList" } } },
+  { "key": { "nameLowercase": "glean", "name": { "key": "Glean" } } },
+  { "key": { "nameLowercase": "glean", "name": { "key": "glean" } } },
+  { "key": { "nameLowercase": "h", "name": { "key": "h" } } },
+  { "key": { "nameLowercase": "i", "name": { "key": "i" } } },
+  {
+    "key": {
+      "nameLowercase": "isinstanceoflist",
+      "name": { "key": "isInstanceOfList" }
+    }
+  },
+  { "key": { "nameLowercase": "java", "name": { "key": "java" } } },
+  { "key": { "nameLowercase": "lang", "name": { "key": "lang" } } },
+  { "key": { "nameLowercase": "list", "name": { "key": "List" } } },
+  { "key": { "nameLowercase": "log_tag", "name": { "key": "LOG_TAG" } } },
+  { "key": { "nameLowercase": "main", "name": { "key": "main" } } },
+  { "key": { "nameLowercase": "object", "name": { "key": "Object" } } },
+  { "key": { "nameLowercase": "object", "name": { "key": "object" } } },
+  { "key": { "nameLowercase": "pojo", "name": { "key": "POJO" } } },
+  { "key": { "nameLowercase": "randomarg", "name": { "key": "randomArg" } } },
+  { "key": { "nameLowercase": "string", "name": { "key": "String" } } },
+  {
+    "key": {
+      "nameLowercase": "suppresswarnings",
+      "name": { "key": "SuppressWarnings" }
+    }
+  },
+  { "key": { "nameLowercase": "this", "name": { "key": "this" } } },
+  { "key": { "nameLowercase": "util", "name": { "key": "util" } } }
+]

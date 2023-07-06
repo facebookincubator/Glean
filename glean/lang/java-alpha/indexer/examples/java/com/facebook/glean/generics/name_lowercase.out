@@ -1,0 +1,58 @@
+[
+  "@generated",
+  { "key": { "nameLowercase": "<init>", "name": { "key": "<init>" } } },
+  { "key": { "nameLowercase": "args", "name": { "key": "args" } } },
+  { "key": { "nameLowercase": "buckets", "name": { "key": "buckets" } } },
+  { "key": { "nameLowercase": "com", "name": { "key": "com" } } },
+  {
+    "key": {
+      "nameLowercase": "com.facebook.glean.generics",
+      "name": { "key": "com.facebook.glean.generics" }
+    }
+  },
+  { "key": { "nameLowercase": "emptymap", "name": { "key": "EmptyMap" } } },
+  { "key": { "nameLowercase": "entry", "name": { "key": "Entry" } } },
+  { "key": { "nameLowercase": "facebook", "name": { "key": "facebook" } } },
+  { "key": { "nameLowercase": "foo", "name": { "key": "Foo" } } },
+  { "key": { "nameLowercase": "generics", "name": { "key": "generics" } } },
+  { "key": { "nameLowercase": "get", "name": { "key": "get" } } },
+  { "key": { "nameLowercase": "getmap", "name": { "key": "getMap" } } },
+  { "key": { "nameLowercase": "glean", "name": { "key": "glean" } } },
+  { "key": { "nameLowercase": "has", "name": { "key": "has" } } },
+  { "key": { "nameLowercase": "hashcode", "name": { "key": "hashCode" } } },
+  { "key": { "nameLowercase": "imap", "name": { "key": "iMap" } } },
+  { "key": { "nameLowercase": "intmap", "name": { "key": "IntMap" } } },
+  { "key": { "nameLowercase": "java", "name": { "key": "java" } } },
+  {
+    "key": {
+      "nameLowercase": "java.util.list",
+      "name": { "key": "java.util.List" }
+    }
+  },
+  { "key": { "nameLowercase": "k", "name": { "key": "K" } } },
+  { "key": { "nameLowercase": "k", "name": { "key": "k" } } },
+  { "key": { "nameLowercase": "key", "name": { "key": "key" } } },
+  { "key": { "nameLowercase": "lang", "name": { "key": "lang" } } },
+  { "key": { "nameLowercase": "list", "name": { "key": "List" } } },
+  { "key": { "nameLowercase": "main", "name": { "key": "Main" } } },
+  { "key": { "nameLowercase": "main", "name": { "key": "main" } } },
+  { "key": { "nameLowercase": "map", "name": { "key": "Map" } } },
+  { "key": { "nameLowercase": "mapkind", "name": { "key": "MapKind" } } },
+  { "key": { "nameLowercase": "mykind", "name": { "key": "myKind" } } },
+  { "key": { "nameLowercase": "object", "name": { "key": "Object" } } },
+  { "key": { "nameLowercase": "put", "name": { "key": "put" } } },
+  { "key": { "nameLowercase": "size", "name": { "key": "size" } } },
+  { "key": { "nameLowercase": "string", "name": { "key": "String" } } },
+  { "key": { "nameLowercase": "stringmap", "name": { "key": "StringMap" } } },
+  { "key": { "nameLowercase": "this", "name": { "key": "this" } } },
+  {
+    "key": {
+      "nameLowercase": "thisreturnsalist",
+      "name": { "key": "thisReturnsAList" }
+    }
+  },
+  { "key": { "nameLowercase": "util", "name": { "key": "util" } } },
+  { "key": { "nameLowercase": "v", "name": { "key": "V" } } },
+  { "key": { "nameLowercase": "v", "name": { "key": "v" } } },
+  { "key": { "nameLowercase": "value", "name": { "key": "value" } } }
+]

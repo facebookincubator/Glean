@@ -59,6 +59,7 @@ predicate SearchByLowerCaseNameAndLanguage:
     ( Hack = Language; HackSearchByLowerCaseName { Name, Entity } ) |
     ( Python = Language; PythonSearchByLowerCaseName { Name, Entity } ) |
     ( JavaScript = Language; FlowSearchByLowerCaseName { Name, Entity } ) |
+    ( Java = Language; JavaSearchByLowerCaseName { Name, Entity } ) |
     ( Cpp = Language; CxxSearchByLowerCaseName { Name, Entity } ) |
     ( PreProcessor = Language; PpSearchByLowerCaseName { Name, Entity } ) |
     ( Haskell = Language; HsSearchByLowerCaseName { Name, Entity } ) |
@@ -333,6 +334,16 @@ predicate JavaSearchByName:
   }
   { NameStr, Entity } where
     Name = javakotlin.alpha.Name NameStr;
+    QName = javakotlin.alpha.QName { name = Name };
+    JavaSearchByNameWithFact { QName, Entity }
+
+predicate JavaSearchByLowerCaseName:
+  {
+    name: string,
+    entity: code.Entity,
+  }
+  { NameStr, Entity } where
+    javakotlin.alpha.NameLowerCase { NameStr, Name };
     QName = javakotlin.alpha.QName { name = Name };
     JavaSearchByNameWithFact { QName, Entity }
 

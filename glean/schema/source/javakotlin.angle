@@ -1,11 +1,21 @@
 
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-# common predicates between java and kotlin used for interopobility
+#
+# common predicates between java and kotlin used for interoperability
+#
 schema javakotlin.alpha.1 {
-  import src.1
+
+import src.1
 
 predicate Name : string
+
+# Lower case normalized names (for case-insensive search)
+predicate NameLowerCase:
+  {
+    nameLowercase : string,
+    name : Name,
+  } stored { prim.toLower Str, N } where N = Name Str
 
 predicate Path : {
   base : Name,

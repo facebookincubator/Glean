@@ -1,0 +1,3047 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "Drawable",
+      "entity": {
+        "java": {
+          "decl": {
+            "class_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "Drawable" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "inheritance" },
+                        "container": {
+                          "key": {
+                            "base": { "key": "glean" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "facebook" },
+                                "container": {
+                                  "key": { "base": { "key": "com" } }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "modifiers": [ 0, 6 ],
+                "implements_": [ ],
+                "annotations": [ ],
+                "typeParams": [ ],
+                "span": { "start": 116, "length": 186 },
+                "file": {
+                  "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/Drawable.java"
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "Drawable",
+        "file": {
+          "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/Drawable.java"
+        },
+        "location": { "span": { "start": 116, "length": 186 } }
+      },
+      "kind": 6,
+      "language": 2
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "IA",
+      "entity": {
+        "java": {
+          "decl": {
+            "interface_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "IA" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "inheritance" },
+                        "container": {
+                          "key": {
+                            "base": { "key": "glean" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "facebook" },
+                                "container": {
+                                  "key": { "base": { "key": "com" } }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "annotations": [ ],
+                "modifiers": [ 6 ],
+                "extends_": [ ],
+                "typeParams": [ ],
+                "span": { "start": 116, "length": 48 },
+                "file": {
+                  "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/IA.java"
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "IA",
+        "file": {
+          "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/IA.java"
+        },
+        "location": { "span": { "start": 116, "length": 48 } }
+      },
+      "kind": 12,
+      "language": 2
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "IB",
+      "entity": {
+        "java": {
+          "decl": {
+            "interface_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "IB" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "inheritance" },
+                        "container": {
+                          "key": {
+                            "base": { "key": "glean" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "facebook" },
+                                "container": {
+                                  "key": { "base": { "key": "com" } }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "annotations": [ ],
+                "modifiers": [ 6 ],
+                "extends_": [ ],
+                "typeParams": [ ],
+                "span": { "start": 116, "length": 48 },
+                "file": {
+                  "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/IB.java"
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "IB",
+        "file": {
+          "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/IB.java"
+        },
+        "location": { "span": { "start": 116, "length": 48 } }
+      },
+      "kind": 12,
+      "language": 2
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "IPolygon",
+      "entity": {
+        "java": {
+          "decl": {
+            "interface_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "IPolygon" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "inheritance" },
+                        "container": {
+                          "key": {
+                            "base": { "key": "glean" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "facebook" },
+                                "container": {
+                                  "key": { "base": { "key": "com" } }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "annotations": [ ],
+                "modifiers": [ 6 ],
+                "extends_": [
+                  {
+                    "key": {
+                      "baseType": {
+                        "object": {
+                          "key": {
+                            "type": {
+                              "key": {
+                                "name": { "key": "IA" },
+                                "context": {
+                                  "key": {
+                                    "base": { "key": "inheritance" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "glean" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "facebook" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "com" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "span": { "start": 150, "length": 2 }
+                          }
+                        }
+                      },
+                      "typeArgs": [ ],
+                      "interopType": {
+                        "key": {
+                          "object": {
+                            "key": {
+                              "base": { "key": "IA" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "inheritance" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "glean" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "facebook" },
+                                          "container": {
+                                            "key": { "base": { "key": "com" } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "span": { "start": 0, "length": 0 }
+                    }
+                  },
+                  {
+                    "key": {
+                      "baseType": {
+                        "object": {
+                          "key": {
+                            "type": {
+                              "key": {
+                                "name": { "key": "IB" },
+                                "context": {
+                                  "key": {
+                                    "base": { "key": "inheritance" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "glean" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "facebook" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "com" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "span": { "start": 154, "length": 2 }
+                          }
+                        }
+                      },
+                      "typeArgs": [ ],
+                      "interopType": {
+                        "key": {
+                          "object": {
+                            "key": {
+                              "base": { "key": "IB" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "inheritance" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "glean" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "facebook" },
+                                          "container": {
+                                            "key": { "base": { "key": "com" } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "span": { "start": 0, "length": 0 }
+                    }
+                  }
+                ],
+                "typeParams": [ ],
+                "span": { "start": 116, "length": 72 },
+                "file": {
+                  "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/IPolygon.java"
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "IPolygon",
+        "file": {
+          "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/IPolygon.java"
+        },
+        "location": { "span": { "start": 116, "length": 72 } }
+      },
+      "kind": 12,
+      "language": 2
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "IX",
+      "entity": {
+        "java": {
+          "decl": {
+            "interface_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "IX" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "inheritance" },
+                        "container": {
+                          "key": {
+                            "base": { "key": "glean" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "facebook" },
+                                "container": {
+                                  "key": { "base": { "key": "com" } }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "annotations": [ ],
+                "modifiers": [ 6 ],
+                "extends_": [ ],
+                "typeParams": [ ],
+                "span": { "start": 116, "length": 48 },
+                "file": {
+                  "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/IX.java"
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "IX",
+        "file": {
+          "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/IX.java"
+        },
+        "location": { "span": { "start": 116, "length": 48 } }
+      },
+      "kind": 12,
+      "language": 2
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "Rectangle",
+      "entity": {
+        "java": {
+          "decl": {
+            "class_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "Rectangle" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "inheritance" },
+                        "container": {
+                          "key": {
+                            "base": { "key": "glean" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "facebook" },
+                                "container": {
+                                  "key": { "base": { "key": "com" } }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "modifiers": [ 6 ],
+                "extends_": {
+                  "key": {
+                    "baseType": {
+                      "object": {
+                        "key": {
+                          "type": {
+                            "key": {
+                              "name": { "key": "Drawable" },
+                              "context": {
+                                "key": {
+                                  "base": { "key": "inheritance" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "glean" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "facebook" },
+                                          "container": {
+                                            "key": { "base": { "key": "com" } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "span": { "start": 147, "length": 8 }
+                        }
+                      }
+                    },
+                    "typeArgs": [ ],
+                    "interopType": {
+                      "key": {
+                        "object": {
+                          "key": {
+                            "base": { "key": "Drawable" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "inheritance" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "span": { "start": 0, "length": 0 }
+                  }
+                },
+                "implements_": [
+                  {
+                    "key": {
+                      "baseType": {
+                        "object": {
+                          "key": {
+                            "type": {
+                              "key": {
+                                "name": { "key": "IPolygon" },
+                                "context": {
+                                  "key": {
+                                    "base": { "key": "inheritance" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "glean" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "facebook" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "com" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "span": { "start": 167, "length": 8 }
+                          }
+                        }
+                      },
+                      "typeArgs": [ ],
+                      "interopType": {
+                        "key": {
+                          "object": {
+                            "key": {
+                              "base": { "key": "IPolygon" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "inheritance" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "glean" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "facebook" },
+                                          "container": {
+                                            "key": { "base": { "key": "com" } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "span": { "start": 0, "length": 0 }
+                    }
+                  },
+                  {
+                    "key": {
+                      "baseType": {
+                        "object": {
+                          "key": {
+                            "type": {
+                              "key": {
+                                "name": { "key": "IX" },
+                                "context": {
+                                  "key": {
+                                    "base": { "key": "inheritance" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "glean" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "facebook" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "com" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "span": { "start": 177, "length": 2 }
+                          }
+                        }
+                      },
+                      "typeArgs": [ ],
+                      "interopType": {
+                        "key": {
+                          "object": {
+                            "key": {
+                              "base": { "key": "IX" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "inheritance" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "glean" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "facebook" },
+                                          "container": {
+                                            "key": { "base": { "key": "com" } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "span": { "start": 0, "length": 0 }
+                    }
+                  }
+                ],
+                "annotations": [ ],
+                "typeParams": [ ],
+                "span": { "start": 116, "length": 527 },
+                "file": {
+                  "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/Rectangle.java"
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "Rectangle",
+        "file": {
+          "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/Rectangle.java"
+        },
+        "location": { "span": { "start": 116, "length": 527 } }
+      },
+      "kind": 6,
+      "language": 2
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "draw",
+      "entity": {
+        "java": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "draw" },
+                        "context": {
+                          "key": {
+                            "base": { "key": "Drawable" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "inheritance" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "signature": [ ]
+                  }
+                },
+                "parameters": [ ],
+                "returnType": {
+                  "key": {
+                    "baseType": { "primitive": { "key": { "type": "void" } } },
+                    "typeArgs": [ ],
+                    "interopType": { "key": { "primitive": "V" } },
+                    "span": { "start": 0, "length": 0 }
+                  }
+                },
+                "annotations": [ ],
+                "modifiers": [ 6 ],
+                "typeParams": [ ],
+                "throws_": [ ],
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "Drawable" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "inheritance" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "glean" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "facebook" },
+                                      "container": {
+                                        "key": { "base": { "key": "com" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "modifiers": [ 0, 6 ],
+                      "implements_": [ ],
+                      "annotations": [ ],
+                      "typeParams": [ ],
+                      "span": { "start": 116, "length": 186 },
+                      "file": {
+                        "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/Drawable.java"
+                      }
+                    }
+                  }
+                },
+                "span": { "start": 249, "length": 51 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "draw",
+        "file": {
+          "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/Drawable.java"
+        },
+        "location": { "span": { "start": 249, "length": 51 } }
+      },
+      "kind": 7,
+      "language": 2
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "getNumSides",
+      "entity": {
+        "java": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "getNumSides" },
+                        "context": {
+                          "key": {
+                            "base": { "key": "IPolygon" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "inheritance" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "signature": [ ]
+                  }
+                },
+                "parameters": [ ],
+                "returnType": {
+                  "key": {
+                    "baseType": { "primitive": { "key": { "type": "int" } } },
+                    "typeArgs": [ ],
+                    "interopType": { "key": { "primitive": "I" } },
+                    "span": { "start": 0, "length": 0 }
+                  }
+                },
+                "annotations": [ ],
+                "modifiers": [ 6 ],
+                "typeParams": [ ],
+                "throws_": [ ],
+                "container": {
+                  "interface_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "IPolygon" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "inheritance" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "glean" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "facebook" },
+                                      "container": {
+                                        "key": { "base": { "key": "com" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "annotations": [ ],
+                      "modifiers": [ 6 ],
+                      "extends_": [
+                        {
+                          "key": {
+                            "baseType": {
+                              "object": {
+                                "key": {
+                                  "type": {
+                                    "key": {
+                                      "name": { "key": "IA" },
+                                      "context": {
+                                        "key": {
+                                          "base": { "key": "inheritance" },
+                                          "container": {
+                                            "key": {
+                                              "base": { "key": "glean" },
+                                              "container": {
+                                                "key": {
+                                                  "base": { "key": "facebook" },
+                                                  "container": {
+                                                    "key": {
+                                                      "base": { "key": "com" }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "span": { "start": 150, "length": 2 }
+                                }
+                              }
+                            },
+                            "typeArgs": [ ],
+                            "interopType": {
+                              "key": {
+                                "object": {
+                                  "key": {
+                                    "base": { "key": "IA" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "inheritance" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "glean" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "facebook" },
+                                                "container": {
+                                                  "key": {
+                                                    "base": { "key": "com" }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "span": { "start": 0, "length": 0 }
+                          }
+                        },
+                        {
+                          "key": {
+                            "baseType": {
+                              "object": {
+                                "key": {
+                                  "type": {
+                                    "key": {
+                                      "name": { "key": "IB" },
+                                      "context": {
+                                        "key": {
+                                          "base": { "key": "inheritance" },
+                                          "container": {
+                                            "key": {
+                                              "base": { "key": "glean" },
+                                              "container": {
+                                                "key": {
+                                                  "base": { "key": "facebook" },
+                                                  "container": {
+                                                    "key": {
+                                                      "base": { "key": "com" }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "span": { "start": 154, "length": 2 }
+                                }
+                              }
+                            },
+                            "typeArgs": [ ],
+                            "interopType": {
+                              "key": {
+                                "object": {
+                                  "key": {
+                                    "base": { "key": "IB" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "inheritance" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "glean" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "facebook" },
+                                                "container": {
+                                                  "key": {
+                                                    "base": { "key": "com" }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "span": { "start": 0, "length": 0 }
+                          }
+                        }
+                      ],
+                      "typeParams": [ ],
+                      "span": { "start": 116, "length": 72 },
+                      "file": {
+                        "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/IPolygon.java"
+                      }
+                    }
+                  }
+                },
+                "span": { "start": 161, "length": 25 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "getNumSides",
+        "file": {
+          "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/IPolygon.java"
+        },
+        "location": { "span": { "start": 161, "length": 25 } }
+      },
+      "kind": 7,
+      "language": 2
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "getNumSides",
+      "entity": {
+        "java": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "getNumSides" },
+                        "context": {
+                          "key": {
+                            "base": { "key": "Rectangle" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "inheritance" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "signature": [ ]
+                  }
+                },
+                "parameters": [ ],
+                "returnType": {
+                  "key": {
+                    "baseType": { "primitive": { "key": { "type": "int" } } },
+                    "typeArgs": [ ],
+                    "interopType": { "key": { "primitive": "I" } },
+                    "span": { "start": 0, "length": 0 }
+                  }
+                },
+                "annotations": [
+                  {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "Override" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "lang" },
+                              "container": {
+                                "key": { "base": { "key": "java" } }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "constructor": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Override" },
+                              "context": {
+                                "key": {
+                                  "base": { "key": "lang" },
+                                  "container": {
+                                    "key": { "base": { "key": "java" } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "signature": [ ]
+                        }
+                      },
+                      "span": { "start": 369, "length": 9 }
+                    }
+                  }
+                ],
+                "modifiers": [ 6 ],
+                "typeParams": [ ],
+                "throws_": [ ],
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "Rectangle" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "inheritance" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "glean" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "facebook" },
+                                      "container": {
+                                        "key": { "base": { "key": "com" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "modifiers": [ 6 ],
+                      "extends_": {
+                        "key": {
+                          "baseType": {
+                            "object": {
+                              "key": {
+                                "type": {
+                                  "key": {
+                                    "name": { "key": "Drawable" },
+                                    "context": {
+                                      "key": {
+                                        "base": { "key": "inheritance" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "glean" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "facebook" },
+                                                "container": {
+                                                  "key": {
+                                                    "base": { "key": "com" }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "span": { "start": 147, "length": 8 }
+                              }
+                            }
+                          },
+                          "typeArgs": [ ],
+                          "interopType": {
+                            "key": {
+                              "object": {
+                                "key": {
+                                  "base": { "key": "Drawable" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "inheritance" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "glean" },
+                                          "container": {
+                                            "key": {
+                                              "base": { "key": "facebook" },
+                                              "container": {
+                                                "key": {
+                                                  "base": { "key": "com" }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "span": { "start": 0, "length": 0 }
+                        }
+                      },
+                      "implements_": [
+                        {
+                          "key": {
+                            "baseType": {
+                              "object": {
+                                "key": {
+                                  "type": {
+                                    "key": {
+                                      "name": { "key": "IPolygon" },
+                                      "context": {
+                                        "key": {
+                                          "base": { "key": "inheritance" },
+                                          "container": {
+                                            "key": {
+                                              "base": { "key": "glean" },
+                                              "container": {
+                                                "key": {
+                                                  "base": { "key": "facebook" },
+                                                  "container": {
+                                                    "key": {
+                                                      "base": { "key": "com" }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "span": { "start": 167, "length": 8 }
+                                }
+                              }
+                            },
+                            "typeArgs": [ ],
+                            "interopType": {
+                              "key": {
+                                "object": {
+                                  "key": {
+                                    "base": { "key": "IPolygon" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "inheritance" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "glean" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "facebook" },
+                                                "container": {
+                                                  "key": {
+                                                    "base": { "key": "com" }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "span": { "start": 0, "length": 0 }
+                          }
+                        },
+                        {
+                          "key": {
+                            "baseType": {
+                              "object": {
+                                "key": {
+                                  "type": {
+                                    "key": {
+                                      "name": { "key": "IX" },
+                                      "context": {
+                                        "key": {
+                                          "base": { "key": "inheritance" },
+                                          "container": {
+                                            "key": {
+                                              "base": { "key": "glean" },
+                                              "container": {
+                                                "key": {
+                                                  "base": { "key": "facebook" },
+                                                  "container": {
+                                                    "key": {
+                                                      "base": { "key": "com" }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "span": { "start": 177, "length": 2 }
+                                }
+                              }
+                            },
+                            "typeArgs": [ ],
+                            "interopType": {
+                              "key": {
+                                "object": {
+                                  "key": {
+                                    "base": { "key": "IX" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "inheritance" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "glean" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "facebook" },
+                                                "container": {
+                                                  "key": {
+                                                    "base": { "key": "com" }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "span": { "start": 0, "length": 0 }
+                          }
+                        }
+                      ],
+                      "annotations": [ ],
+                      "typeParams": [ ],
+                      "span": { "start": 116, "length": 527 },
+                      "file": {
+                        "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/Rectangle.java"
+                      }
+                    }
+                  }
+                },
+                "span": { "start": 369, "length": 56 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "getNumSides",
+        "file": {
+          "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/Rectangle.java"
+        },
+        "location": { "span": { "start": 369, "length": 56 } }
+      },
+      "kind": 7,
+      "language": 2
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "paint",
+      "entity": {
+        "java": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "paint" },
+                        "context": {
+                          "key": {
+                            "base": { "key": "Rectangle" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "inheritance" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "signature": [ ]
+                  }
+                },
+                "parameters": [ ],
+                "returnType": {
+                  "key": {
+                    "baseType": { "primitive": { "key": { "type": "void" } } },
+                    "typeArgs": [ ],
+                    "interopType": { "key": { "primitive": "V" } },
+                    "span": { "start": 0, "length": 0 }
+                  }
+                },
+                "annotations": [ ],
+                "modifiers": [ 6 ],
+                "typeParams": [ ],
+                "throws_": [ ],
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "Rectangle" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "inheritance" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "glean" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "facebook" },
+                                      "container": {
+                                        "key": { "base": { "key": "com" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "modifiers": [ 6 ],
+                      "extends_": {
+                        "key": {
+                          "baseType": {
+                            "object": {
+                              "key": {
+                                "type": {
+                                  "key": {
+                                    "name": { "key": "Drawable" },
+                                    "context": {
+                                      "key": {
+                                        "base": { "key": "inheritance" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "glean" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "facebook" },
+                                                "container": {
+                                                  "key": {
+                                                    "base": { "key": "com" }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "span": { "start": 147, "length": 8 }
+                              }
+                            }
+                          },
+                          "typeArgs": [ ],
+                          "interopType": {
+                            "key": {
+                              "object": {
+                                "key": {
+                                  "base": { "key": "Drawable" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "inheritance" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "glean" },
+                                          "container": {
+                                            "key": {
+                                              "base": { "key": "facebook" },
+                                              "container": {
+                                                "key": {
+                                                  "base": { "key": "com" }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "span": { "start": 0, "length": 0 }
+                        }
+                      },
+                      "implements_": [
+                        {
+                          "key": {
+                            "baseType": {
+                              "object": {
+                                "key": {
+                                  "type": {
+                                    "key": {
+                                      "name": { "key": "IPolygon" },
+                                      "context": {
+                                        "key": {
+                                          "base": { "key": "inheritance" },
+                                          "container": {
+                                            "key": {
+                                              "base": { "key": "glean" },
+                                              "container": {
+                                                "key": {
+                                                  "base": { "key": "facebook" },
+                                                  "container": {
+                                                    "key": {
+                                                      "base": { "key": "com" }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "span": { "start": 167, "length": 8 }
+                                }
+                              }
+                            },
+                            "typeArgs": [ ],
+                            "interopType": {
+                              "key": {
+                                "object": {
+                                  "key": {
+                                    "base": { "key": "IPolygon" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "inheritance" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "glean" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "facebook" },
+                                                "container": {
+                                                  "key": {
+                                                    "base": { "key": "com" }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "span": { "start": 0, "length": 0 }
+                          }
+                        },
+                        {
+                          "key": {
+                            "baseType": {
+                              "object": {
+                                "key": {
+                                  "type": {
+                                    "key": {
+                                      "name": { "key": "IX" },
+                                      "context": {
+                                        "key": {
+                                          "base": { "key": "inheritance" },
+                                          "container": {
+                                            "key": {
+                                              "base": { "key": "glean" },
+                                              "container": {
+                                                "key": {
+                                                  "base": { "key": "facebook" },
+                                                  "container": {
+                                                    "key": {
+                                                      "base": { "key": "com" }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "span": { "start": 177, "length": 2 }
+                                }
+                              }
+                            },
+                            "typeArgs": [ ],
+                            "interopType": {
+                              "key": {
+                                "object": {
+                                  "key": {
+                                    "base": { "key": "IX" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "inheritance" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "glean" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "facebook" },
+                                                "container": {
+                                                  "key": {
+                                                    "base": { "key": "com" }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "span": { "start": 0, "length": 0 }
+                          }
+                        }
+                      ],
+                      "annotations": [ ],
+                      "typeParams": [ ],
+                      "span": { "start": 116, "length": 527 },
+                      "file": {
+                        "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/Rectangle.java"
+                      }
+                    }
+                  }
+                },
+                "span": { "start": 322, "length": 43 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "paint",
+        "file": {
+          "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/Rectangle.java"
+        },
+        "location": { "span": { "start": 322, "length": 43 } }
+      },
+      "kind": 7,
+      "language": 2
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "squawkA",
+      "entity": {
+        "java": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "squawkA" },
+                        "context": {
+                          "key": {
+                            "base": { "key": "IA" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "inheritance" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "signature": [ ]
+                  }
+                },
+                "parameters": [ ],
+                "returnType": {
+                  "key": {
+                    "baseType": { "primitive": { "key": { "type": "void" } } },
+                    "typeArgs": [ ],
+                    "interopType": { "key": { "primitive": "V" } },
+                    "span": { "start": 0, "length": 0 }
+                  }
+                },
+                "annotations": [ ],
+                "modifiers": [ 6 ],
+                "typeParams": [ ],
+                "throws_": [ ],
+                "container": {
+                  "interface_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "IA" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "inheritance" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "glean" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "facebook" },
+                                      "container": {
+                                        "key": { "base": { "key": "com" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "annotations": [ ],
+                      "modifiers": [ 6 ],
+                      "extends_": [ ],
+                      "typeParams": [ ],
+                      "span": { "start": 116, "length": 48 },
+                      "file": {
+                        "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/IA.java"
+                      }
+                    }
+                  }
+                },
+                "span": { "start": 140, "length": 22 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "squawkA",
+        "file": {
+          "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/IA.java"
+        },
+        "location": { "span": { "start": 140, "length": 22 } }
+      },
+      "kind": 7,
+      "language": 2
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "squawkA",
+      "entity": {
+        "java": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "squawkA" },
+                        "context": {
+                          "key": {
+                            "base": { "key": "Rectangle" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "inheritance" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "signature": [ ]
+                  }
+                },
+                "parameters": [ ],
+                "returnType": {
+                  "key": {
+                    "baseType": { "primitive": { "key": { "type": "void" } } },
+                    "typeArgs": [ ],
+                    "interopType": { "key": { "primitive": "V" } },
+                    "span": { "start": 0, "length": 0 }
+                  }
+                },
+                "annotations": [
+                  {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "Override" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "lang" },
+                              "container": {
+                                "key": { "base": { "key": "java" } }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "constructor": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Override" },
+                              "context": {
+                                "key": {
+                                  "base": { "key": "lang" },
+                                  "container": {
+                                    "key": { "base": { "key": "java" } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "signature": [ ]
+                        }
+                      },
+                      "span": { "start": 429, "length": 9 }
+                    }
+                  }
+                ],
+                "modifiers": [ 6 ],
+                "typeParams": [ ],
+                "throws_": [ ],
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "Rectangle" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "inheritance" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "glean" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "facebook" },
+                                      "container": {
+                                        "key": { "base": { "key": "com" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "modifiers": [ 6 ],
+                      "extends_": {
+                        "key": {
+                          "baseType": {
+                            "object": {
+                              "key": {
+                                "type": {
+                                  "key": {
+                                    "name": { "key": "Drawable" },
+                                    "context": {
+                                      "key": {
+                                        "base": { "key": "inheritance" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "glean" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "facebook" },
+                                                "container": {
+                                                  "key": {
+                                                    "base": { "key": "com" }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "span": { "start": 147, "length": 8 }
+                              }
+                            }
+                          },
+                          "typeArgs": [ ],
+                          "interopType": {
+                            "key": {
+                              "object": {
+                                "key": {
+                                  "base": { "key": "Drawable" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "inheritance" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "glean" },
+                                          "container": {
+                                            "key": {
+                                              "base": { "key": "facebook" },
+                                              "container": {
+                                                "key": {
+                                                  "base": { "key": "com" }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "span": { "start": 0, "length": 0 }
+                        }
+                      },
+                      "implements_": [
+                        {
+                          "key": {
+                            "baseType": {
+                              "object": {
+                                "key": {
+                                  "type": {
+                                    "key": {
+                                      "name": { "key": "IPolygon" },
+                                      "context": {
+                                        "key": {
+                                          "base": { "key": "inheritance" },
+                                          "container": {
+                                            "key": {
+                                              "base": { "key": "glean" },
+                                              "container": {
+                                                "key": {
+                                                  "base": { "key": "facebook" },
+                                                  "container": {
+                                                    "key": {
+                                                      "base": { "key": "com" }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "span": { "start": 167, "length": 8 }
+                                }
+                              }
+                            },
+                            "typeArgs": [ ],
+                            "interopType": {
+                              "key": {
+                                "object": {
+                                  "key": {
+                                    "base": { "key": "IPolygon" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "inheritance" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "glean" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "facebook" },
+                                                "container": {
+                                                  "key": {
+                                                    "base": { "key": "com" }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "span": { "start": 0, "length": 0 }
+                          }
+                        },
+                        {
+                          "key": {
+                            "baseType": {
+                              "object": {
+                                "key": {
+                                  "type": {
+                                    "key": {
+                                      "name": { "key": "IX" },
+                                      "context": {
+                                        "key": {
+                                          "base": { "key": "inheritance" },
+                                          "container": {
+                                            "key": {
+                                              "base": { "key": "glean" },
+                                              "container": {
+                                                "key": {
+                                                  "base": { "key": "facebook" },
+                                                  "container": {
+                                                    "key": {
+                                                      "base": { "key": "com" }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "span": { "start": 177, "length": 2 }
+                                }
+                              }
+                            },
+                            "typeArgs": [ ],
+                            "interopType": {
+                              "key": {
+                                "object": {
+                                  "key": {
+                                    "base": { "key": "IX" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "inheritance" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "glean" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "facebook" },
+                                                "container": {
+                                                  "key": {
+                                                    "base": { "key": "com" }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "span": { "start": 0, "length": 0 }
+                          }
+                        }
+                      ],
+                      "annotations": [ ],
+                      "typeParams": [ ],
+                      "span": { "start": 116, "length": 527 },
+                      "file": {
+                        "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/Rectangle.java"
+                      }
+                    }
+                  }
+                },
+                "span": { "start": 429, "length": 68 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "squawkA",
+        "file": {
+          "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/Rectangle.java"
+        },
+        "location": { "span": { "start": 429, "length": 68 } }
+      },
+      "kind": 7,
+      "language": 2
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "squawkB",
+      "entity": {
+        "java": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "squawkB" },
+                        "context": {
+                          "key": {
+                            "base": { "key": "IB" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "inheritance" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "signature": [ ]
+                  }
+                },
+                "parameters": [ ],
+                "returnType": {
+                  "key": {
+                    "baseType": { "primitive": { "key": { "type": "void" } } },
+                    "typeArgs": [ ],
+                    "interopType": { "key": { "primitive": "V" } },
+                    "span": { "start": 0, "length": 0 }
+                  }
+                },
+                "annotations": [ ],
+                "modifiers": [ 6 ],
+                "typeParams": [ ],
+                "throws_": [ ],
+                "container": {
+                  "interface_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "IB" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "inheritance" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "glean" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "facebook" },
+                                      "container": {
+                                        "key": { "base": { "key": "com" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "annotations": [ ],
+                      "modifiers": [ 6 ],
+                      "extends_": [ ],
+                      "typeParams": [ ],
+                      "span": { "start": 116, "length": 48 },
+                      "file": {
+                        "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/IB.java"
+                      }
+                    }
+                  }
+                },
+                "span": { "start": 140, "length": 22 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "squawkB",
+        "file": {
+          "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/IB.java"
+        },
+        "location": { "span": { "start": 140, "length": 22 } }
+      },
+      "kind": 7,
+      "language": 2
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "squawkB",
+      "entity": {
+        "java": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "squawkB" },
+                        "context": {
+                          "key": {
+                            "base": { "key": "Rectangle" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "inheritance" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "signature": [ ]
+                  }
+                },
+                "parameters": [ ],
+                "returnType": {
+                  "key": {
+                    "baseType": { "primitive": { "key": { "type": "void" } } },
+                    "typeArgs": [ ],
+                    "interopType": { "key": { "primitive": "V" } },
+                    "span": { "start": 0, "length": 0 }
+                  }
+                },
+                "annotations": [
+                  {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "Override" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "lang" },
+                              "container": {
+                                "key": { "base": { "key": "java" } }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "constructor": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Override" },
+                              "context": {
+                                "key": {
+                                  "base": { "key": "lang" },
+                                  "container": {
+                                    "key": { "base": { "key": "java" } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "signature": [ ]
+                        }
+                      },
+                      "span": { "start": 501, "length": 9 }
+                    }
+                  }
+                ],
+                "modifiers": [ 6 ],
+                "typeParams": [ ],
+                "throws_": [ ],
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "Rectangle" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "inheritance" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "glean" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "facebook" },
+                                      "container": {
+                                        "key": { "base": { "key": "com" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "modifiers": [ 6 ],
+                      "extends_": {
+                        "key": {
+                          "baseType": {
+                            "object": {
+                              "key": {
+                                "type": {
+                                  "key": {
+                                    "name": { "key": "Drawable" },
+                                    "context": {
+                                      "key": {
+                                        "base": { "key": "inheritance" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "glean" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "facebook" },
+                                                "container": {
+                                                  "key": {
+                                                    "base": { "key": "com" }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "span": { "start": 147, "length": 8 }
+                              }
+                            }
+                          },
+                          "typeArgs": [ ],
+                          "interopType": {
+                            "key": {
+                              "object": {
+                                "key": {
+                                  "base": { "key": "Drawable" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "inheritance" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "glean" },
+                                          "container": {
+                                            "key": {
+                                              "base": { "key": "facebook" },
+                                              "container": {
+                                                "key": {
+                                                  "base": { "key": "com" }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "span": { "start": 0, "length": 0 }
+                        }
+                      },
+                      "implements_": [
+                        {
+                          "key": {
+                            "baseType": {
+                              "object": {
+                                "key": {
+                                  "type": {
+                                    "key": {
+                                      "name": { "key": "IPolygon" },
+                                      "context": {
+                                        "key": {
+                                          "base": { "key": "inheritance" },
+                                          "container": {
+                                            "key": {
+                                              "base": { "key": "glean" },
+                                              "container": {
+                                                "key": {
+                                                  "base": { "key": "facebook" },
+                                                  "container": {
+                                                    "key": {
+                                                      "base": { "key": "com" }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "span": { "start": 167, "length": 8 }
+                                }
+                              }
+                            },
+                            "typeArgs": [ ],
+                            "interopType": {
+                              "key": {
+                                "object": {
+                                  "key": {
+                                    "base": { "key": "IPolygon" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "inheritance" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "glean" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "facebook" },
+                                                "container": {
+                                                  "key": {
+                                                    "base": { "key": "com" }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "span": { "start": 0, "length": 0 }
+                          }
+                        },
+                        {
+                          "key": {
+                            "baseType": {
+                              "object": {
+                                "key": {
+                                  "type": {
+                                    "key": {
+                                      "name": { "key": "IX" },
+                                      "context": {
+                                        "key": {
+                                          "base": { "key": "inheritance" },
+                                          "container": {
+                                            "key": {
+                                              "base": { "key": "glean" },
+                                              "container": {
+                                                "key": {
+                                                  "base": { "key": "facebook" },
+                                                  "container": {
+                                                    "key": {
+                                                      "base": { "key": "com" }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "span": { "start": 177, "length": 2 }
+                                }
+                              }
+                            },
+                            "typeArgs": [ ],
+                            "interopType": {
+                              "key": {
+                                "object": {
+                                  "key": {
+                                    "base": { "key": "IX" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "inheritance" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "glean" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "facebook" },
+                                                "container": {
+                                                  "key": {
+                                                    "base": { "key": "com" }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "span": { "start": 0, "length": 0 }
+                          }
+                        }
+                      ],
+                      "annotations": [ ],
+                      "typeParams": [ ],
+                      "span": { "start": 116, "length": 527 },
+                      "file": {
+                        "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/Rectangle.java"
+                      }
+                    }
+                  }
+                },
+                "span": { "start": 501, "length": 68 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "squawkB",
+        "file": {
+          "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/Rectangle.java"
+        },
+        "location": { "span": { "start": 501, "length": 68 } }
+      },
+      "kind": 7,
+      "language": 2
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "squawkX",
+      "entity": {
+        "java": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "squawkX" },
+                        "context": {
+                          "key": {
+                            "base": { "key": "IX" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "inheritance" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "signature": [ ]
+                  }
+                },
+                "parameters": [ ],
+                "returnType": {
+                  "key": {
+                    "baseType": { "primitive": { "key": { "type": "void" } } },
+                    "typeArgs": [ ],
+                    "interopType": { "key": { "primitive": "V" } },
+                    "span": { "start": 0, "length": 0 }
+                  }
+                },
+                "annotations": [ ],
+                "modifiers": [ 6 ],
+                "typeParams": [ ],
+                "throws_": [ ],
+                "container": {
+                  "interface_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "IX" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "inheritance" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "glean" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "facebook" },
+                                      "container": {
+                                        "key": { "base": { "key": "com" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "annotations": [ ],
+                      "modifiers": [ 6 ],
+                      "extends_": [ ],
+                      "typeParams": [ ],
+                      "span": { "start": 116, "length": 48 },
+                      "file": {
+                        "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/IX.java"
+                      }
+                    }
+                  }
+                },
+                "span": { "start": 140, "length": 22 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "squawkX",
+        "file": {
+          "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/IX.java"
+        },
+        "location": { "span": { "start": 140, "length": 22 } }
+      },
+      "kind": 7,
+      "language": 2
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "squawkX",
+      "entity": {
+        "java": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "squawkX" },
+                        "context": {
+                          "key": {
+                            "base": { "key": "Rectangle" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "inheritance" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "signature": [ ]
+                  }
+                },
+                "parameters": [ ],
+                "returnType": {
+                  "key": {
+                    "baseType": { "primitive": { "key": { "type": "void" } } },
+                    "typeArgs": [ ],
+                    "interopType": { "key": { "primitive": "V" } },
+                    "span": { "start": 0, "length": 0 }
+                  }
+                },
+                "annotations": [
+                  {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "Override" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "lang" },
+                              "container": {
+                                "key": { "base": { "key": "java" } }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "constructor": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Override" },
+                              "context": {
+                                "key": {
+                                  "base": { "key": "lang" },
+                                  "container": {
+                                    "key": { "base": { "key": "java" } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "signature": [ ]
+                        }
+                      },
+                      "span": { "start": 573, "length": 9 }
+                    }
+                  }
+                ],
+                "modifiers": [ 6 ],
+                "typeParams": [ ],
+                "throws_": [ ],
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "Rectangle" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "inheritance" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "glean" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "facebook" },
+                                      "container": {
+                                        "key": { "base": { "key": "com" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "modifiers": [ 6 ],
+                      "extends_": {
+                        "key": {
+                          "baseType": {
+                            "object": {
+                              "key": {
+                                "type": {
+                                  "key": {
+                                    "name": { "key": "Drawable" },
+                                    "context": {
+                                      "key": {
+                                        "base": { "key": "inheritance" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "glean" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "facebook" },
+                                                "container": {
+                                                  "key": {
+                                                    "base": { "key": "com" }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "span": { "start": 147, "length": 8 }
+                              }
+                            }
+                          },
+                          "typeArgs": [ ],
+                          "interopType": {
+                            "key": {
+                              "object": {
+                                "key": {
+                                  "base": { "key": "Drawable" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "inheritance" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "glean" },
+                                          "container": {
+                                            "key": {
+                                              "base": { "key": "facebook" },
+                                              "container": {
+                                                "key": {
+                                                  "base": { "key": "com" }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "span": { "start": 0, "length": 0 }
+                        }
+                      },
+                      "implements_": [
+                        {
+                          "key": {
+                            "baseType": {
+                              "object": {
+                                "key": {
+                                  "type": {
+                                    "key": {
+                                      "name": { "key": "IPolygon" },
+                                      "context": {
+                                        "key": {
+                                          "base": { "key": "inheritance" },
+                                          "container": {
+                                            "key": {
+                                              "base": { "key": "glean" },
+                                              "container": {
+                                                "key": {
+                                                  "base": { "key": "facebook" },
+                                                  "container": {
+                                                    "key": {
+                                                      "base": { "key": "com" }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "span": { "start": 167, "length": 8 }
+                                }
+                              }
+                            },
+                            "typeArgs": [ ],
+                            "interopType": {
+                              "key": {
+                                "object": {
+                                  "key": {
+                                    "base": { "key": "IPolygon" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "inheritance" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "glean" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "facebook" },
+                                                "container": {
+                                                  "key": {
+                                                    "base": { "key": "com" }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "span": { "start": 0, "length": 0 }
+                          }
+                        },
+                        {
+                          "key": {
+                            "baseType": {
+                              "object": {
+                                "key": {
+                                  "type": {
+                                    "key": {
+                                      "name": { "key": "IX" },
+                                      "context": {
+                                        "key": {
+                                          "base": { "key": "inheritance" },
+                                          "container": {
+                                            "key": {
+                                              "base": { "key": "glean" },
+                                              "container": {
+                                                "key": {
+                                                  "base": { "key": "facebook" },
+                                                  "container": {
+                                                    "key": {
+                                                      "base": { "key": "com" }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "span": { "start": 177, "length": 2 }
+                                }
+                              }
+                            },
+                            "typeArgs": [ ],
+                            "interopType": {
+                              "key": {
+                                "object": {
+                                  "key": {
+                                    "base": { "key": "IX" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "inheritance" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "glean" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "facebook" },
+                                                "container": {
+                                                  "key": {
+                                                    "base": { "key": "com" }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "span": { "start": 0, "length": 0 }
+                          }
+                        }
+                      ],
+                      "annotations": [ ],
+                      "typeParams": [ ],
+                      "span": { "start": 116, "length": 527 },
+                      "file": {
+                        "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/Rectangle.java"
+                      }
+                    }
+                  }
+                },
+                "span": { "start": 573, "length": 68 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "squawkX",
+        "file": {
+          "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/inheritance/Rectangle.java"
+        },
+        "location": { "span": { "start": 573, "length": 68 } }
+      },
+      "kind": 7,
+      "language": 2
+    }
+  }
+]

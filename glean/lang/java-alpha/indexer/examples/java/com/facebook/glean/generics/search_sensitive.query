@@ -1,0 +1,2 @@
+query: codemarkup.search.SearchByName { name = _ , searchcase = Sensitive, language = Java }
+transform: [gensort, []]
