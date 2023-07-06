@@ -4,6 +4,7 @@ package com.facebook.glean;
 
 import com.facebook.glean.descriptors.ClassDescriptor;
 import com.facebook.glean.descriptors.EnumDescriptor;
+import com.facebook.glean.descriptors.FileLinesDescriptor;
 import com.facebook.glean.descriptors.ImportDescriptor;
 import com.facebook.glean.descriptors.InterfaceDescriptor;
 import com.facebook.glean.descriptors.PackageDescriptor;
@@ -17,6 +18,7 @@ import com.facebook.glean.schema.java_alpha.ImportDeclaration;
 import com.facebook.glean.schema.java_alpha.InterfaceDeclaration;
 import com.facebook.glean.schema.java_alpha.PackageDeclaration;
 import com.facebook.glean.schema.src.File;
+import com.facebook.glean.schema.src.FileLines;
 import com.sun.source.tree.ClassTree;
 import com.sun.source.tree.CompilationUnitTree;
 import com.sun.source.tree.ImportTree;
@@ -156,6 +158,10 @@ public class Indexer implements Plugin {
     FileXRefs fileXRefs = new FileXRefs.Builder().setKey(fileXRefsKey).build();
     ic.predicates.fileXRefsPredicate.addFact(fileXRefs);
     DebugUtils.debugLogFileXrefs(ic, fileXRefs);
+
+    FileLines fileLines = FileLinesDescriptor.describe(ic);
+    ic.predicates.fileLinesPredicate.addFact(fileLines);
+
     if (ic.loggingEnabled) {
       ic.logger.indentedLog(ic.predicates.serializeAll());
     }

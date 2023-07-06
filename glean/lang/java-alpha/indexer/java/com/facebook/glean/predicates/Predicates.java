@@ -13,6 +13,7 @@ import com.facebook.glean.schema.java_alpha.LocalDeclaration;
 import com.facebook.glean.schema.java_alpha.MethodDeclaration;
 import com.facebook.glean.schema.java_alpha.PackageDeclaration;
 import com.facebook.glean.schema.java_alpha.ParameterDeclaration;
+import com.facebook.glean.schema.src.FileLines;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.List;
 public class Predicates {
 
   public static final int JAVA_SCHEMA_VERSION = 1;
+  public static final int SRC_SCHEMA_VERSION = 1;
 
   public final Predicate<LocalDeclaration> localDeclarationPredicate =
       new ListPredicate<>("java.alpha.LocalDeclaration." + JAVA_SCHEMA_VERSION);
@@ -45,6 +47,8 @@ public class Predicates {
       new XRefPredicate("java.alpha.XRef." + JAVA_SCHEMA_VERSION);
   public final Predicate<FileXRefs> fileXRefsPredicate =
       new ListPredicate<>("java.alpha.FileXRefs." + JAVA_SCHEMA_VERSION);
+  public final Predicate<FileLines> fileLinesPredicate =
+      new ListPredicate<>("src.FileLines." + SRC_SCHEMA_VERSION);
 
   private final List<Predicate> allPredicates =
       Arrays.asList(
@@ -59,7 +63,8 @@ public class Predicates {
           importDeclarationPredicate,
           packageDeclarationPredicate,
           xRefPredicate,
-          fileXRefsPredicate);
+          fileXRefsPredicate,
+          fileLinesPredicate);
 
   public String serializeAll() {
     @SuppressWarnings("unchecked")
