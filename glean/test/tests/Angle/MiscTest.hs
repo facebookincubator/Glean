@@ -46,6 +46,7 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "dsl" $ angleDSL id
   , TestLabel "queryOptions" angleQueryOptions
   , TestLabel "limitBytes" limitTest
+  , TestLabel "fullScans" fullScansTest
   ]
 
 angleDSL :: (forall a . Query a -> Query a) -> Test
@@ -512,3 +513,30 @@ limitTest = dbTestCase $ \env repo -> do
   (results, truncated) <- runQuery env repo $ limitBytes 40 $ recursive $
     Angle.query $ predicate @Glean.Test.Edge wild
   assertBool "limitBytes" (length results == 2 && truncated)
+
+fullScansTest :: Test
+fullScansTest = TestList $
+  [ TestLabel "no full scans" $ TestCase $ withTestDB [] $ \env repo -> do
+      (_, Just stats) <- queryStats env repo $ angleData @Glean.Test.Node
+        [s| glean.test.Node { label = "A".. } |]
+      assertEqual "full scans" [] (userQueryStats_full_scans stats)
+  , TestLabel "one full scan" $ TestCase $ withTestDB [] $ \env repo -> do
+      (_, Just stats) <- queryStats env repo $ angleData @Glean.Test.Edge
+        [s| N = glean.test.Node _;
+            glean.test.Edge { N, _ };
+        |]
+      assertEqual "full scans"
+        [PredicateRef "glean.test.Node" 5 ]
+        (userQueryStats_full_scans stats)
+  , TestLabel "multiple full scans" $ TestCase $ withTestDB [] $ \env repo -> do
+      (_, Just stats) <- queryStats env repo $ angleData @Glean.Test.Edge
+        [s| glean.test.Edge { A, B } where
+            A = glean.test.Node _;
+            B = glean.test.Node _;
+        |]
+      assertEqual "full scans"
+        [ PredicateRef "glean.test.Node" 5
+        , PredicateRef "glean.test.Node" 5
+        ]
+        (userQueryStats_full_scans stats)
+  ]

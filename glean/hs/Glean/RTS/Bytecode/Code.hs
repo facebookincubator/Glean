@@ -14,6 +14,7 @@ module Glean.RTS.Bytecode.Code
   , OutputSupply
   , Many(..)
   , Optimised(..)
+  , Meta(..)
   , literal
   , label
   , issue
@@ -25,6 +26,7 @@ module Glean.RTS.Bytecode.Code
   , castRegister
   , callSite
   , calledFrom
+  , fullScan
   ) where
 
 import Control.Exception (assert)
@@ -51,6 +53,7 @@ import qualified Data.Vector.Storable as VS
 import Data.Word (Word64)
 
 import Glean.Bytecode.Types
+import Glean.RTS.Types (Pid)
 import Glean.RTS.Bytecode.Gen.Instruction
 import Glean.RTS.Bytecode.Supply
 import Glean.RTS.Foreign.Bytecode (Subroutine, subroutine)
@@ -98,6 +101,10 @@ data CodeS = CodeS
 
     -- | Maximum number of binary::Output registers
   , csMaxOutputs :: {-# UNPACK #-} !(Register 'BinaryOutputPtr)
+
+    -- | Predicates we perform full scans on.
+    -- Repeated entries mean multiple scans of the same predicate
+  , csFullScans:: [Pid]
   }
 
 -- | Code gen monad
@@ -220,8 +227,17 @@ calledFrom frames inner = do
     , csNextOutput = csNextOutput }
   return x
 
+-- | Register that a query statement performs a full scan over a predicate.
+fullScan :: Pid -> Code ()
+fullScan pid = Code $ S.modify' $ \s -> s { csFullScans = pid : csFullScans s }
+
 data Optimised = Optimised | Unoptimised
   deriving(Eq,Ord,Enum,Bounded,Show)
+
+-- | Metadata about the subroutine
+newtype Meta = Meta
+  { meta_fullScans :: [Pid]
+  }
 
 -- | Generate a 'Subroutine', allocating input registers as necessary.
 -- Example:
@@ -232,7 +248,7 @@ data Optimised = Optimised | Unoptimised
 --
 generate
   :: (CodeGen RegSupply cg, CodeResult cg ~ ())
-  => Optimised -> cg -> IO (Subroutine t)
+  => Optimised -> cg -> IO (Meta, Subroutine t)
 generate opt cg =
   let (gen, sup) = S.runState (genCode cg) $ regSupply $ register Input 0
       !nextInput = peekSupply sup
@@ -249,7 +265,8 @@ generate opt cg =
         , csNextLocal = register Local 0
         , csMaxLocal = register Local 0
         , csNextOutput = castRegister nextInput
-        , csMaxOutputs = castRegister nextInput } of
+        , csMaxOutputs = castRegister nextInput
+        , csFullScans = mempty } of
     ((), CodeS{..}) -> do
       -- sanity check
       when (not $ null csInsns) $ fail "unterminated basic block"
@@ -285,7 +302,10 @@ generate opt cg =
               (next, insnWords get_reg (get_label next) insn))
             0
             insns
-      subroutine
+
+          meta = Meta csFullScans
+
+      (meta,) <$> subroutine
         (VS.fromListN (length code) code)
         finalInputSize
         (finalInputSize - registerIndex nextInput)

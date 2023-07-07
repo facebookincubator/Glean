@@ -456,7 +456,7 @@ userQueryFactsImpl
   trans <- transformationsForQuery schema schemaSelector
 
   vlog 2 $ "userQueryFactsImpl: " <> show (length userQueryFacts_facts)
-  qResults@QueryResults{..} <- do
+  (qResults@QueryResults{..}, fullScans) <- do
     nextId <- firstFreeId lookup
     -- executeCompiled needs a Define, even though we won't use it
     bracket (FactSet.new nextId) release $ \derived -> do
@@ -468,9 +468,12 @@ userQueryFactsImpl
         appliedTrans <- either (throwIO . Thrift.BadQuery) return $
           userQueryFactsTransformations trans schemaSelector schema query results
         -- use Pids in result facts to apply a suitable transformation if neded.
-        return $ transformResultsBack appliedTrans results
+        return
+          ( transformResultsBack appliedTrans results
+          , compiledQueryFullScans sub
+          )
 
-  stats <- getStats qResults
+  stats <- getStats schema fullScans qResults
 
   let results = Results
         { resFacts = Vector.toList queryResultsFacts
@@ -734,7 +737,8 @@ userQueryImpl
     ( qResults@QueryResults{..}
       , queryDiag
       , bytecodeSize
-      , codegenTime) <-
+      , codegenTime
+      , fullScans ) <-
       case cont of
         Right ucont -> do
           let binaryCont = Thrift.userQueryCont_continuation ucont
@@ -746,7 +750,7 @@ userQueryImpl
               (Just predicatePid)
               limits
               binaryCont
-          return (results, [], B.length binaryCont, 0)
+          return (results, [], B.length binaryCont, 0, [])
 
         Left query -> do
           let
@@ -765,7 +769,8 @@ userQueryImpl
               diags <-
                 evaluate $ force (bytecodeDiag sub) -- don't keep sub alive
               sz <- evaluate $ Bytecode.size (compiledQuerySub sub)
-              return (results, diags, sz, codegenTime)
+              let fullScans = compiledQueryFullScans sub
+              return (results, diags, sz, codegenTime, fullScans)
 
     -- If we're storing derived facts, queue them for writing and
     -- return the handle.
@@ -780,7 +785,7 @@ userQueryImpl
         nextId <- firstFreeId derived
         return $ Just $ mkUserQueryCont (Right returnType) bs nextId
 
-    stats <- getStats qResults
+    stats <- getStats schema fullScans qResults
 
     when (isJust userCont) $
       addStatValueType "glean.query.truncated" 1 Stats.Sum
@@ -835,7 +840,7 @@ userQueryImpl
       stored = Thrift.userQueryOptions_store_derived_facts opts
       pred = showRef (predicateRef details)
 
-      mkResults pids firstId derived qResults defineOwners = do
+      mkResults pids firstId derived qResults defineOwners fullScans = do
         appliedTrans <- either (error . Text.unpack) return $ do
           ktrans <- transformationsFor schema trans predicateKeyType
           vtrans <- transformationsFor schema trans predicateKeyType
@@ -848,7 +853,7 @@ userQueryImpl
             nextId <- firstFreeId derived
             return $ Just $ mkUserQueryCont (Left pids) bs nextId
 
-        stats <- getStats qResults
+        stats <- getStats schema fullScans qResults
         when (isJust userCont) $
           addStatValueType "glean.query.truncated" 1 Stats.Sum
 
@@ -894,7 +899,7 @@ userQueryImpl
             limits = mkQueryRuntimeOptions opts config pids
         qResults <- restartCompiled schemaInventory defineOwners stack
           (Just predicatePid) limits (Thrift.userQueryCont_continuation ucont)
-        mkResults pids nextId derived qResults defineOwners
+        mkResults pids nextId derived qResults defineOwners []
 
       Nothing -> do
         let
@@ -919,12 +924,12 @@ userQueryImpl
             derived <- FactSet.new nextId
             defineOwners <- mkDefineOwners nextId
             let stack = stacked lookup derived
-            qResults <- bracket
+            (fullScans, qResults) <- bracket
               (compileQuery trans bounds gens)
               (release . compiledQuerySub)
-              $ \sub -> executeCompiled schemaInventory defineOwners stack
-                sub limits
-            mkResults pids nextId derived qResults defineOwners
+              $ \sub -> (compiledQueryFullScans sub,) <$>
+                executeCompiled schemaInventory defineOwners stack sub limits
+            mkResults pids nextId derived qResults defineOwners fullScans
 
         -- 1. Decode the JSON
         pat <- case Aeson.eitherDecode (LB.fromStrict userQuery_query) of
@@ -1176,10 +1181,11 @@ checkPredicatesMatch dbSchema details predicate schemaVer = do
 data Stats = Stats
   { statFactCount :: {-# UNPACK #-} !Int
   , statResultCount :: {-# UNPACK #-} !Int
+  , statFullScans :: [PredicateRef]
   }
 
-getStats :: QueryResults -> IO Stats
-getStats QueryResults{..} = do
+getStats :: DbSchema -> [Pid] -> QueryResults -> IO Stats
+getStats schema fullScans QueryResults{..} = do
   let
     results =
       Vector.length queryResultsFacts
@@ -1188,11 +1194,16 @@ getStats QueryResults{..} = do
       Vector.length queryResultsFacts +
       Vector.length queryResultsNestedFacts
 
+    pref pid = case lookupPid pid schema of
+      Nothing -> error "Unknown Pid in getStats"
+      Just details -> predicateIdRef $ predicateId details
+
   addStatValueType "glean.query.facts" facts Stats.Sum
   addStatValueType "glean.query.results" results Stats.Sum
   return $ Stats
     { statFactCount = facts
     , statResultCount  = results
+    , statFullScans = map pref fullScans
     }
 
 withStats :: IO (Results Stats fact) -> IO (Results Thrift.UserQueryStats fact)
@@ -1214,6 +1225,7 @@ withStats io = do
             fmap (round . (* 1000000000)) (resCodegenTime res )
         , Thrift.userQueryStats_execute_time_ns =
             fromIntegral <$> resExecutionTime res
+        , Thrift.userQueryStats_full_scans = statFullScans $ resStats res
         }
   return res{ resStats = stats }
 

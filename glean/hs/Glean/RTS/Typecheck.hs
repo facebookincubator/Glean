@@ -129,7 +129,7 @@ checkType ty = checkSignature ty $ RecordTy []
 --
 checkSignature :: Type -> Type -> IO (Subroutine CompiledTypecheck)
 checkSignature key_ty val_ty =
-  generate Optimised $
+  fmap snd $ generate Optimised $
     \rename clause_begin key_end clause_end -> output $ \out ->
     -- We return the key size in the first local register
     local $ \key_size -> mdo

@@ -198,7 +198,7 @@ compileQuery qtrans bounds (QueryWithInfo query numVars ty) = do
       return (idTerm, resultKey, resultValue, stmts)
     _other -> throwIO $ BadQuery "unsupported query"
 
-  sub <- generateQueryCode $ \ regs@QueryRegs{..} -> do
+  (Meta{..}, sub) <- generateQueryCode $ \ regs@QueryRegs{..} -> do
 
     let outputVars = IntSet.toList $ findOutputs query
     output $ Many (length outputVars) $ \outputRegs -> do
@@ -285,7 +285,7 @@ compileQuery qtrans bounds (QueryWithInfo query numVars ty) = do
         return (Just pid, traverse)
     _other -> throwIO $ ErrorCall "unrecognised query return type"
 
-  return (CompiledQuery sub pid traverse)
+  return (CompiledQuery sub pid traverse meta_fullScans)
 
 isEmptyTy :: Type -> Bool
 isEmptyTy ty
@@ -921,6 +921,7 @@ withPatterns etrans vars kpat vpat act = mdo
     transValPat (matchDef fail) (inlineVars vars vpat) $ \vpat' -> do
     let kchunks = preProcessPat kpat'
         vchunks = preProcessPat vpat'
+    when (emptyPrefix kchunks) (fullScan pid)
     withPrefix kchunks $ \isPointQuery prefix remaining -> do
     let matchKey bytes fail = matchPat bytes fail remaining
         matchVal bytes fail = matchPat bytes fail vchunks
@@ -1377,7 +1378,7 @@ compileQueryFacts facts = do
           if factQuery_recursive then 1 else 0 :: Word64)
       | FactQuery{..} <- facts ]
     finishBuilder builder
-  sub <- generateQueryCode $ \ QueryRegs{..} ->
+  (Meta{..}, sub) <- generateQueryCode $ \ QueryRegs{..} ->
     output $ \kout vout -> local $ \fid pid rec_ ptr end -> do
       loadLiteral input ptr end
       local $ inputNat ptr end -- ignore the size
@@ -1388,7 +1389,7 @@ compileQueryFacts facts = do
       resultWithPid fid kout vout pid rec_
       jumpIfLt ptr end loop
       ret
-  return (CompiledQuery sub Nothing Nothing)
+  return (CompiledQuery sub Nothing Nothing meta_fullScans)
 
 -- -----------------------------------------------------------------------------
 -- The FFI layer for query bytecode subroutines
@@ -1484,7 +1485,7 @@ data QueryRegs s = QueryRegs
 
 generateQueryCode
   :: (forall s . QueryRegs s -> Code ())
-  -> IO (Subroutine CompiledQuery)
+  -> IO (Meta, Subroutine CompiledQuery)
 generateQueryCode f = generate Optimised $
   \ seek_ seekWithinSection_ currentSeek_ endSeek_ next_
     lookupKey_ result_ resultWithPid_ newDerivedFact_

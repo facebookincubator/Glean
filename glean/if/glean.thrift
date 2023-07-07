@@ -778,7 +778,9 @@ struct UserQueryStats {
   9: i64 result_count;
   // the number of top-level facts in the result. Not counting nested facts.
   10: optional i64 codegen_time_ns;
-// time to generate bytecode for the query
+  // time to generate bytecode for the query
+  11: list<PredicateRef> full_scans = [];
+// whether the query performs full predicate scans
 }
 
 # Results in Glean's internal binary representation

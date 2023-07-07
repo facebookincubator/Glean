@@ -83,6 +83,8 @@ data CompiledQuery = CompiledQuery
     -- results to expand nested facts. If the result is not an
     -- existing predicate type then we have to pass in a bespoke
     -- CompiledTraversal subroutine.
+  , compiledQueryFullScans :: [Pid]
+    -- ^ whether the query performs a full predicate scan
   }
 
 executeCompiled
