@@ -698,6 +698,8 @@ library schema
         Glean.Schema.Hack.Types
         Glean.Schema.Hs.Types
         Glean.Schema.Java.Types
+        Glean.Schema.JavaAlpha.Types
+        Glean.Schema.JavakotlinAlpha.Types
         Glean.Schema.Lsif.Types
         Glean.Schema.LsifTypes.Types
         Glean.Schema.Scip.Types
@@ -712,6 +714,7 @@ library schema
         Glean.Schema.SearchPp.Types
         Glean.Schema.Src.Types
         Glean.Schema.SymbolidCxx.Types
+        Glean.Schema.SymbolidJava.Types
         Glean.Schema.Sys.Types
         Glean.Schema.Thrift.Types
     build-depends:
@@ -1224,6 +1227,7 @@ library glass-lib
         Glean.Glass.Search.Flow
         Glean.Glass.Search.Hack
         Glean.Glass.Search.Haskell
+        Glean.Glass.Search.Java
         Glean.Glass.Search.LSIF
         Glean.Glass.Search.Python
         Glean.Glass.SearchRelated
@@ -1521,6 +1525,8 @@ test-suite clang-test-derivebyname
                    Glean.Regression.Driver.DeriveDeclByName
     ghc-options: -main-is Glean.Clang.DeriveByName
     build-depends:
+       glean:if-glean-hs,
+       glean:core,
        glean:regression-test-lib,
        glean:clang-derive-lib,
        glean:indexers,
@@ -1540,6 +1546,8 @@ test-suite clang-test-derivefamilies
                    Glean.Regression.Driver.DeriveDeclFamilies
     ghc-options: -main-is Glean.Clang.DeriveFamilies
     build-depends:
+       glean:if-glean-hs,
+       glean:core,
        glean:regression-test-lib,
        glean:clang-derive-lib,
        glean:indexers,
@@ -1559,6 +1567,8 @@ test-suite clang-test-deriveattributes
                    Glean.Regression.Driver.DeriveFunctionDeclAttribute
     ghc-options: -main-is Glean.Clang.DeriveAttrs
     build-depends:
+       glean:if-glean-hs,
+       glean:core,
        glean:regression-test-lib,
        glean:clang-derive-lib,
        glean:indexers,
@@ -1578,6 +1588,8 @@ test-suite clang-test-derivefuncalls
                    Glean.Regression.Driver.DeriveFunctionCalls
     ghc-options: -main-is Glean.Clang.DeriveFunCalls
     build-depends:
+       glean:if-glean-hs,
+       glean:core,
        glean:regression-test-lib,
        glean:clang-derive-lib,
        glean:indexers,
@@ -1597,6 +1609,8 @@ test-suite clang-test-deriveobjcinherit
                    Glean.Regression.Driver.DeriveObjcInheritance
     ghc-options: -main-is Glean.Clang.DeriveObjCInheritance
     build-depends:
+       glean:if-glean-hs,
+       glean:core,
        glean:regression-test-lib,
        glean:clang-derive-lib,
        glean:indexers,
@@ -1637,6 +1651,8 @@ test-suite clang-test-codemarkup
                    Glean.Regression.Driver.DeriveForCodemarkup
     ghc-options: -main-is Glean.Clang.CodeMarkup
     build-depends:
+       glean:if-glean-hs,
+       glean:core,
        glean:regression-test-lib,
        glean:clang-derive-lib,
        glean:indexers,
@@ -2301,6 +2317,7 @@ test-suite glass-regression-cpp
                   glean:client-hs,
                   glean:client-hs-local,
                   glean:core,
+                  glean:if-glean-hs,
                   glean:db,
                   glean:indexers,
                   glean:lib,
