@@ -6,7 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE TypeApplications #-}
+
 module Derive.Common
   ( getFileXRefs
   , getIndirectTargets
@@ -24,7 +24,6 @@ import qualified Data.Vector as V
 import qualified Data.Vector.Mutable as VM
 
 import Glean
-import Glean.Angle
 import Glean.Typed (PidOf)
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import Glean.Util.PredMap (PredMap)
@@ -72,49 +71,27 @@ resolve _ x = Just x
 
 getFileXRefs :: Backend e => e -> Config -> IO XRefs
 getFileXRefs e cfg = do
-  -- Collect all of the `XRefTargets` facts first rather than expanding them.
-  -- Since there's a lot of sharing of these facts, the cache hit rate is high.
-  targetsMap <- do
-    let q :: Query Cxx.XRefTargets
-        q = maybe id limit (cfgMaxQueryFacts cfg) $
-            limitBytes (cfgMaxQuerySize cfg) allFacts
-    runQueryEach e (cfgRepo cfg) q mempty
-        $ \targetsMap (Cxx.XRefTargets i k) -> do
-      key <- case k of
-        Just k -> return k
-        Nothing -> throwIO $ ErrorCall "internal error: getFileXRefs"
-      return $ PredMap.insert (IdOf $ Fid i) key targetsMap
-
   let
-    q :: Query (Cxx.FileXRefMap, [Cxx.XRefTargets])
+    q :: Query Cxx.FileXRefs
     q = maybe id limit (cfgMaxQueryFacts cfg) $
-        limitBytes (cfgMaxQuerySize cfg) $
-        query $ vars $ \(xmap :: Angle Cxx.FileXRefMap)
-                        (targets :: Angle [Cxx.XRefTargets]) ->
-           tuple (xmap, targets) `where_` [
-             wild .= predicate @Cxx.FileXRefs (
-               rec $
-                 field @"xmap" (asPredicate xmap) $
-                 field @"targets" targets
-               end
-             )
-           ]
+        limitBytes (cfgMaxQuerySize cfg) allFacts
+
   xrefs <- runQueryEach e (cfgRepo cfg) q mempty
-      $ \xrefs (xmap, targetss) -> do
-    let targets =
-          [ HashSet.fromList $ PredMap.findWithDefault
-              (error "missing XRefTargets") (getId targets) targetsMap
-          | targets <- targetss ]
-        id = getId xmap
+      $ \xrefs (Cxx.FileXRefs _ k) -> do
+    key <- case k of
+      Just k -> return k
+      Nothing -> throwIO $ ErrorCall "internal error: getFileXRefs"
+    let exts = Cxx.fileXRefs_key_externals key
+        id = getId (Cxx.fileXRefs_key_xmap key)
     case PredMap.lookup id xrefs of
       Just xs -> do
-        forM_ (zip [0 .. VM.length xs - 1] targets) $ \(i, ts) -> do
+        forM_ (zip [0 .. VM.length xs - 1] exts) $ \(i,ext) -> do
           x <- VM.unsafeRead xs i
-          VM.unsafeWrite xs i $! HashSet.union ts x
+          VM.unsafeWrite xs i $! HashSet.insert ext x
         return xrefs
       Nothing -> do
-        xs <- VM.new (length targets)
-        forM_ (zip [0..] targets) $ \(i, ts) ->
-          VM.unsafeWrite xs i $! ts
+        xs <- VM.new (length exts)
+        forM_ (zip [0..] exts) $ \(i,ext) ->
+          VM.unsafeWrite xs i $! HashSet.singleton ext
         return $ PredMap.insert id xs xrefs
   traverse V.unsafeFreeze xrefs
