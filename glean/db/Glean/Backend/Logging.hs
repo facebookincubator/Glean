@@ -24,6 +24,7 @@ import TextShow (showt)
 
 import Util.Logger
 
+import Glean.Schema.Util (showRef)
 import Glean.Backend.Local ()
 import Glean.Logger.Server as Logger
 import qualified Glean.Database.List as Database
@@ -289,6 +290,7 @@ logQueryStats :: Thrift.UserQueryStats -> GleanServerLog
 logQueryStats Thrift.UserQueryStats{..} = mconcat
   [ Logger.SetResults (fromIntegral userQueryStats_result_count)
   , Logger.SetFacts (fromIntegral userQueryStats_num_facts)
+  , Logger.SetFullScans (showRef <$> userQueryStats_full_scans)
   , maybe mempty (Logger.SetBytecodeSize . fromIntegral)
       userQueryStats_bytecode_size
   , maybe mempty (Logger.SetCompileTimeUs . fromIntegral . (`quot` 1000))

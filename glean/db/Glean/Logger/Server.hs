@@ -39,6 +39,7 @@ data GleanServerLog
   | SetTruncated Bool
   | SetResults Int
   | SetFacts Int
+  | SetFullScans [Text]
   | SetSyntax Text
   | SetType Text
   | SetBytecodeSize Int
