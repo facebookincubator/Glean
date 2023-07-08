@@ -3,6 +3,605 @@
   {
     "key": {
       "searchcase": 1,
+      "name": "buckets",
+      "entity": {
+        "java": {
+          "decl": {
+            "field": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "buckets" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "Map" },
+                        "container": {
+                          "key": {
+                            "base": { "key": "generics" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "glean" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "facebook" },
+                                    "container": {
+                                      "key": { "base": { "key": "com" } }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": {
+                  "key": {
+                    "baseType": {
+                      "array": {
+                        "key": {
+                          "contents": {
+                            "key": {
+                              "baseType": {
+                                "object": {
+                                  "key": {
+                                    "type": {
+                                      "key": {
+                                        "name": { "key": "Object" },
+                                        "context": {
+                                          "key": {
+                                            "base": { "key": "lang" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "java" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "span": { "start": 187, "length": 6 }
+                                  }
+                                }
+                              },
+                              "typeArgs": [ ],
+                              "interopType": {
+                                "key": {
+                                  "object": {
+                                    "key": {
+                                      "base": { "key": "Object" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "lang" },
+                                          "container": {
+                                            "key": { "base": { "key": "java" } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "span": { "start": 0, "length": 0 }
+                            }
+                          },
+                          "span": { "start": 187, "length": 8 }
+                        }
+                      }
+                    },
+                    "typeArgs": [ ],
+                    "interopType": {
+                      "key": {
+                        "array": {
+                          "key": {
+                            "object": {
+                              "key": {
+                                "base": { "key": "Object" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "lang" },
+                                    "container": {
+                                      "key": { "base": { "key": "java" } }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "span": { "start": 0, "length": 0 }
+                  }
+                },
+                "annotations": [ ],
+                "modifiers": [ 2, 4 ],
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "Map" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "generics" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "glean" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "facebook" },
+                                      "container": {
+                                        "key": { "base": { "key": "com" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "modifiers": [ 6 ],
+                      "implements_": [ ],
+                      "annotations": [ ],
+                      "typeParams": [
+                        {
+                          "key": {
+                            "name": { "key": "K" },
+                            "extends_": [ ],
+                            "span": { "start": 130, "length": 1 }
+                          }
+                        },
+                        {
+                          "key": {
+                            "name": { "key": "V" },
+                            "extends_": [ ],
+                            "span": { "start": 133, "length": 1 }
+                          }
+                        }
+                      ],
+                      "span": { "start": 113, "length": 827 },
+                      "file": {
+                        "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+                      }
+                    }
+                  }
+                },
+                "span": { "start": 173, "length": 50 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "buckets",
+        "file": {
+          "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+        },
+        "location": { "span": { "start": 173, "length": 50 } }
+      },
+      "kind": 9,
+      "language": 2
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "emptymap",
+      "entity": {
+        "java": {
+          "decl": {
+            "field": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "EmptyMap" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "MapKind" },
+                        "container": {
+                          "key": {
+                            "base": { "key": "Map" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "generics" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": {
+                  "key": {
+                    "baseType": {
+                      "object": {
+                        "key": {
+                          "type": {
+                            "key": {
+                              "name": { "key": "MapKind" },
+                              "context": {
+                                "key": {
+                                  "base": { "key": "Map" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "generics" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "glean" },
+                                          "container": {
+                                            "key": {
+                                              "base": { "key": "facebook" },
+                                              "container": {
+                                                "key": {
+                                                  "base": { "key": "com" }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "span": { "start": 914, "length": 8 }
+                        }
+                      }
+                    },
+                    "typeArgs": [ ],
+                    "interopType": {
+                      "key": {
+                        "object": {
+                          "key": {
+                            "base": { "key": "MapKind" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "Map" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "generics" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "glean" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "facebook" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "com" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "span": { "start": 0, "length": 0 }
+                  }
+                },
+                "annotations": [ ],
+                "modifiers": [ 2, 6, 7 ],
+                "container": {
+                  "enum_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "MapKind" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "Map" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "generics" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "glean" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "facebook" },
+                                          "container": {
+                                            "key": { "base": { "key": "com" } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "annotations": [ ],
+                      "modifiers": [ ],
+                      "implements_": [ ],
+                      "container": {
+                        "class_": {
+                          "key": {
+                            "name": {
+                              "key": {
+                                "name": { "key": "Map" },
+                                "context": {
+                                  "key": {
+                                    "base": { "key": "generics" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "glean" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "facebook" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "com" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "modifiers": [ 6 ],
+                            "implements_": [ ],
+                            "annotations": [ ],
+                            "typeParams": [
+                              {
+                                "key": {
+                                  "name": { "key": "K" },
+                                  "extends_": [ ],
+                                  "span": { "start": 130, "length": 1 }
+                                }
+                              },
+                              {
+                                "key": {
+                                  "name": { "key": "V" },
+                                  "extends_": [ ],
+                                  "span": { "start": 133, "length": 1 }
+                                }
+                              }
+                            ],
+                            "span": { "start": 113, "length": 827 },
+                            "file": {
+                              "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+                            }
+                          }
+                        }
+                      },
+                      "span": { "start": 880, "length": 58 },
+                      "file": {
+                        "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+                      }
+                    }
+                  }
+                },
+                "span": { "start": 914, "length": 8 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "EmptyMap",
+        "file": {
+          "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+        },
+        "location": { "span": { "start": 914, "length": 8 } }
+      },
+      "kind": 9,
+      "language": 2
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "emptymap",
+      "entity": {
+        "java": {
+          "decl": {
+            "field": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "EmptyMap" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "MapKind" },
+                        "container": {
+                          "key": {
+                            "base": { "key": "Map" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "generics" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": {
+                  "key": {
+                    "baseType": {
+                      "object": {
+                        "key": {
+                          "type": {
+                            "key": {
+                              "name": { "key": "MapKind" },
+                              "context": {
+                                "key": {
+                                  "base": { "key": "Map" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "generics" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "glean" },
+                                          "container": {
+                                            "key": {
+                                              "base": { "key": "facebook" },
+                                              "container": {
+                                                "key": {
+                                                  "base": { "key": "com" }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "span": { "start": 914, "length": 8 }
+                        }
+                      }
+                    },
+                    "typeArgs": [ ],
+                    "interopType": {
+                      "key": {
+                        "object": {
+                          "key": {
+                            "base": { "key": "MapKind" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "Map" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "generics" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "glean" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "facebook" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "com" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "span": { "start": 0, "length": 0 }
+                  }
+                },
+                "annotations": [ ],
+                "modifiers": [ 2, 6, 7 ],
+                "container": {
+                  "enum_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "MapKind" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "Map" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "generics" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "glean" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "facebook" },
+                                          "container": {
+                                            "key": { "base": { "key": "com" } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "annotations": [ ],
+                      "modifiers": [ ],
+                      "implements_": [ ],
+                      "span": { "start": 880, "length": 58 },
+                      "file": {
+                        "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+                      }
+                    }
+                  }
+                },
+                "span": { "start": 914, "length": 8 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "EmptyMap",
+        "file": {
+          "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+        },
+        "location": { "span": { "start": 914, "length": 8 } }
+      },
+      "kind": 9,
+      "language": 2
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
       "name": "entry",
       "entity": {
         "java": {
@@ -1416,6 +2015,1054 @@
   {
     "key": {
       "searchcase": 1,
+      "name": "imap",
+      "entity": {
+        "java": {
+          "decl": {
+            "field": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "iMap" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "Main" },
+                        "container": {
+                          "key": {
+                            "base": { "key": "generics" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "glean" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "facebook" },
+                                    "container": {
+                                      "key": { "base": { "key": "com" } }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": {
+                  "key": {
+                    "baseType": {
+                      "object": {
+                        "key": {
+                          "type": {
+                            "key": {
+                              "name": { "key": "Map" },
+                              "context": {
+                                "key": {
+                                  "base": { "key": "generics" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "glean" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "facebook" },
+                                          "container": {
+                                            "key": { "base": { "key": "com" } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "span": { "start": 168, "length": 3 }
+                        }
+                      }
+                    },
+                    "typeArgs": [
+                      {
+                        "key": {
+                          "type": {
+                            "key": {
+                              "baseType": {
+                                "object": {
+                                  "key": {
+                                    "type": {
+                                      "key": {
+                                        "name": { "key": "String" },
+                                        "context": {
+                                          "key": {
+                                            "base": { "key": "lang" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "java" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "span": { "start": 172, "length": 6 }
+                                  }
+                                }
+                              },
+                              "typeArgs": [ ],
+                              "interopType": {
+                                "key": {
+                                  "object": {
+                                    "key": {
+                                      "base": { "key": "String" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "lang" },
+                                          "container": {
+                                            "key": { "base": { "key": "java" } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "span": { "start": 0, "length": 0 }
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "key": {
+                          "type": {
+                            "key": {
+                              "baseType": {
+                                "object": {
+                                  "key": {
+                                    "type": {
+                                      "key": {
+                                        "name": { "key": "List" },
+                                        "context": {
+                                          "key": {
+                                            "base": { "key": "util" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "java" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "span": { "start": 180, "length": 4 }
+                                  }
+                                }
+                              },
+                              "typeArgs": [
+                                {
+                                  "key": {
+                                    "type": {
+                                      "key": {
+                                        "baseType": {
+                                          "object": {
+                                            "key": {
+                                              "type": {
+                                                "key": {
+                                                  "name": { "key": "String" },
+                                                  "context": {
+                                                    "key": {
+                                                      "base": { "key": "lang" },
+                                                      "container": {
+                                                        "key": {
+                                                          "base": {
+                                                            "key": "java"
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              },
+                                              "span": {
+                                                "start": 185,
+                                                "length": 6
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "typeArgs": [ ],
+                                        "interopType": {
+                                          "key": {
+                                            "object": {
+                                              "key": {
+                                                "base": { "key": "String" },
+                                                "container": {
+                                                  "key": {
+                                                    "base": { "key": "lang" },
+                                                    "container": {
+                                                      "key": {
+                                                        "base": {
+                                                          "key": "java"
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "span": { "start": 0, "length": 0 }
+                                      }
+                                    }
+                                  }
+                                }
+                              ],
+                              "interopType": {
+                                "key": {
+                                  "object": {
+                                    "key": {
+                                      "base": { "key": "List" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "util" },
+                                          "container": {
+                                            "key": { "base": { "key": "java" } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "span": { "start": 0, "length": 0 }
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "interopType": {
+                      "key": {
+                        "object": {
+                          "key": {
+                            "base": { "key": "Map" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "generics" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "span": { "start": 0, "length": 0 }
+                  }
+                },
+                "annotations": [ ],
+                "modifiers": [ 4 ],
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "Main" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "generics" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "glean" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "facebook" },
+                                      "container": {
+                                        "key": { "base": { "key": "com" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "modifiers": [ 6 ],
+                      "implements_": [ ],
+                      "annotations": [ ],
+                      "typeParams": [ ],
+                      "span": { "start": 137, "length": 322 },
+                      "file": {
+                        "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Main.java"
+                      }
+                    }
+                  }
+                },
+                "span": { "start": 160, "length": 51 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "iMap",
+        "file": {
+          "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Main.java"
+        },
+        "location": { "span": { "start": 160, "length": 51 } }
+      },
+      "kind": 9,
+      "language": 2
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "intmap",
+      "entity": {
+        "java": {
+          "decl": {
+            "field": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "IntMap" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "MapKind" },
+                        "container": {
+                          "key": {
+                            "base": { "key": "Map" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "generics" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": {
+                  "key": {
+                    "baseType": {
+                      "object": {
+                        "key": {
+                          "type": {
+                            "key": {
+                              "name": { "key": "MapKind" },
+                              "context": {
+                                "key": {
+                                  "base": { "key": "Map" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "generics" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "glean" },
+                                          "container": {
+                                            "key": {
+                                              "base": { "key": "facebook" },
+                                              "container": {
+                                                "key": {
+                                                  "base": { "key": "com" }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "span": { "start": 928, "length": 6 }
+                        }
+                      }
+                    },
+                    "typeArgs": [ ],
+                    "interopType": {
+                      "key": {
+                        "object": {
+                          "key": {
+                            "base": { "key": "MapKind" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "Map" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "generics" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "glean" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "facebook" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "com" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "span": { "start": 0, "length": 0 }
+                  }
+                },
+                "annotations": [ ],
+                "modifiers": [ 2, 6, 7 ],
+                "container": {
+                  "enum_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "MapKind" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "Map" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "generics" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "glean" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "facebook" },
+                                          "container": {
+                                            "key": { "base": { "key": "com" } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "annotations": [ ],
+                      "modifiers": [ ],
+                      "implements_": [ ],
+                      "container": {
+                        "class_": {
+                          "key": {
+                            "name": {
+                              "key": {
+                                "name": { "key": "Map" },
+                                "context": {
+                                  "key": {
+                                    "base": { "key": "generics" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "glean" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "facebook" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "com" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "modifiers": [ 6 ],
+                            "implements_": [ ],
+                            "annotations": [ ],
+                            "typeParams": [
+                              {
+                                "key": {
+                                  "name": { "key": "K" },
+                                  "extends_": [ ],
+                                  "span": { "start": 130, "length": 1 }
+                                }
+                              },
+                              {
+                                "key": {
+                                  "name": { "key": "V" },
+                                  "extends_": [ ],
+                                  "span": { "start": 133, "length": 1 }
+                                }
+                              }
+                            ],
+                            "span": { "start": 113, "length": 827 },
+                            "file": {
+                              "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+                            }
+                          }
+                        }
+                      },
+                      "span": { "start": 880, "length": 58 },
+                      "file": {
+                        "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+                      }
+                    }
+                  }
+                },
+                "span": { "start": 928, "length": 6 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "IntMap",
+        "file": {
+          "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+        },
+        "location": { "span": { "start": 928, "length": 6 } }
+      },
+      "kind": 9,
+      "language": 2
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "intmap",
+      "entity": {
+        "java": {
+          "decl": {
+            "field": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "IntMap" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "MapKind" },
+                        "container": {
+                          "key": {
+                            "base": { "key": "Map" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "generics" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": {
+                  "key": {
+                    "baseType": {
+                      "object": {
+                        "key": {
+                          "type": {
+                            "key": {
+                              "name": { "key": "MapKind" },
+                              "context": {
+                                "key": {
+                                  "base": { "key": "Map" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "generics" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "glean" },
+                                          "container": {
+                                            "key": {
+                                              "base": { "key": "facebook" },
+                                              "container": {
+                                                "key": {
+                                                  "base": { "key": "com" }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "span": { "start": 928, "length": 6 }
+                        }
+                      }
+                    },
+                    "typeArgs": [ ],
+                    "interopType": {
+                      "key": {
+                        "object": {
+                          "key": {
+                            "base": { "key": "MapKind" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "Map" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "generics" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "glean" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "facebook" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "com" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "span": { "start": 0, "length": 0 }
+                  }
+                },
+                "annotations": [ ],
+                "modifiers": [ 2, 6, 7 ],
+                "container": {
+                  "enum_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "MapKind" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "Map" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "generics" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "glean" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "facebook" },
+                                          "container": {
+                                            "key": { "base": { "key": "com" } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "annotations": [ ],
+                      "modifiers": [ ],
+                      "implements_": [ ],
+                      "span": { "start": 880, "length": 58 },
+                      "file": {
+                        "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+                      }
+                    }
+                  }
+                },
+                "span": { "start": 928, "length": 6 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "IntMap",
+        "file": {
+          "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+        },
+        "location": { "span": { "start": 928, "length": 6 } }
+      },
+      "kind": 9,
+      "language": 2
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "k",
+      "entity": {
+        "java": {
+          "decl": {
+            "field": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "k" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "Entry" },
+                        "container": {
+                          "key": {
+                            "base": { "key": "Map" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "generics" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": {
+                  "key": {
+                    "baseType": {
+                      "variable": {
+                        "key": {
+                          "type": { "key": "K" },
+                          "span": { "start": 714, "length": 1 }
+                        }
+                      }
+                    },
+                    "typeArgs": [ ],
+                    "interopType": {
+                      "key": {
+                        "object": {
+                          "key": {
+                            "base": { "key": "Object" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "lang" },
+                                "container": {
+                                  "key": { "base": { "key": "java" } }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "span": { "start": 0, "length": 0 }
+                  }
+                },
+                "annotations": [ ],
+                "modifiers": [ 2, 6 ],
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "Entry" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "Map" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "generics" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "glean" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "facebook" },
+                                          "container": {
+                                            "key": { "base": { "key": "com" } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "modifiers": [ 6 ],
+                      "implements_": [ ],
+                      "annotations": [ ],
+                      "container": {
+                        "class_": {
+                          "key": {
+                            "name": {
+                              "key": {
+                                "name": { "key": "Map" },
+                                "context": {
+                                  "key": {
+                                    "base": { "key": "generics" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "glean" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "facebook" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "com" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "modifiers": [ 6 ],
+                            "implements_": [ ],
+                            "annotations": [ ],
+                            "typeParams": [
+                              {
+                                "key": {
+                                  "name": { "key": "K" },
+                                  "extends_": [ ],
+                                  "span": { "start": 130, "length": 1 }
+                                }
+                              },
+                              {
+                                "key": {
+                                  "name": { "key": "V" },
+                                  "extends_": [ ],
+                                  "span": { "start": 133, "length": 1 }
+                                }
+                              }
+                            ],
+                            "span": { "start": 113, "length": 827 },
+                            "file": {
+                              "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+                            }
+                          }
+                        }
+                      },
+                      "typeParams": [ ],
+                      "span": { "start": 676, "length": 140 },
+                      "file": {
+                        "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+                      }
+                    }
+                  }
+                },
+                "span": { "start": 701, "length": 17 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "k",
+        "file": {
+          "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+        },
+        "location": { "span": { "start": 701, "length": 17 } }
+      },
+      "kind": 9,
+      "language": 2
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "k",
+      "entity": {
+        "java": {
+          "decl": {
+            "field": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "k" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "Entry" },
+                        "container": {
+                          "key": {
+                            "base": { "key": "Map" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "generics" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": {
+                  "key": {
+                    "baseType": {
+                      "variable": {
+                        "key": {
+                          "type": { "key": "K" },
+                          "span": { "start": 714, "length": 1 }
+                        }
+                      }
+                    },
+                    "typeArgs": [ ],
+                    "interopType": {
+                      "key": {
+                        "object": {
+                          "key": {
+                            "base": { "key": "Object" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "lang" },
+                                "container": {
+                                  "key": { "base": { "key": "java" } }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "span": { "start": 0, "length": 0 }
+                  }
+                },
+                "annotations": [ ],
+                "modifiers": [ 2, 6 ],
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "Entry" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "Map" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "generics" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "glean" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "facebook" },
+                                          "container": {
+                                            "key": { "base": { "key": "com" } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "modifiers": [ 6 ],
+                      "implements_": [ ],
+                      "annotations": [ ],
+                      "typeParams": [ ],
+                      "span": { "start": 676, "length": 140 },
+                      "file": {
+                        "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+                      }
+                    }
+                  }
+                },
+                "span": { "start": 701, "length": 17 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "k",
+        "file": {
+          "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+        },
+        "location": { "span": { "start": 701, "length": 17 } }
+      },
+      "kind": 9,
+      "language": 2
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
       "name": "main",
       "entity": {
         "java": {
@@ -1970,6 +3617,191 @@
   {
     "key": {
       "searchcase": 1,
+      "name": "mykind",
+      "entity": {
+        "java": {
+          "decl": {
+            "field": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "myKind" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "Map" },
+                        "container": {
+                          "key": {
+                            "base": { "key": "generics" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "glean" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "facebook" },
+                                    "container": {
+                                      "key": { "base": { "key": "com" } }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": {
+                  "key": {
+                    "baseType": {
+                      "object": {
+                        "key": {
+                          "type": {
+                            "key": {
+                              "name": { "key": "MapKind" },
+                              "context": {
+                                "key": {
+                                  "base": { "key": "Map" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "generics" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "glean" },
+                                          "container": {
+                                            "key": {
+                                              "base": { "key": "facebook" },
+                                              "container": {
+                                                "key": {
+                                                  "base": { "key": "com" }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "span": { "start": 234, "length": 7 }
+                        }
+                      }
+                    },
+                    "typeArgs": [ ],
+                    "interopType": {
+                      "key": {
+                        "object": {
+                          "key": {
+                            "base": { "key": "MapKind" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "Map" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "generics" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "glean" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "facebook" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "com" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "span": { "start": 0, "length": 0 }
+                  }
+                },
+                "annotations": [ ],
+                "modifiers": [ 4 ],
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "Map" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "generics" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "glean" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "facebook" },
+                                      "container": {
+                                        "key": { "base": { "key": "com" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "modifiers": [ 6 ],
+                      "implements_": [ ],
+                      "annotations": [ ],
+                      "typeParams": [
+                        {
+                          "key": {
+                            "name": { "key": "K" },
+                            "extends_": [ ],
+                            "span": { "start": 130, "length": 1 }
+                          }
+                        },
+                        {
+                          "key": {
+                            "name": { "key": "V" },
+                            "extends_": [ ],
+                            "span": { "start": 133, "length": 1 }
+                          }
+                        }
+                      ],
+                      "span": { "start": 113, "length": 827 },
+                      "file": {
+                        "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+                      }
+                    }
+                  }
+                },
+                "span": { "start": 226, "length": 23 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "myKind",
+        "file": {
+          "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+        },
+        "location": { "span": { "start": 226, "length": 23 } }
+      },
+      "kind": 9,
+      "language": 2
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
       "name": "put",
       "entity": {
         "java": {
@@ -2276,6 +4108,534 @@
   {
     "key": {
       "searchcase": 1,
+      "name": "size",
+      "entity": {
+        "java": {
+          "decl": {
+            "field": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "size" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "Map" },
+                        "container": {
+                          "key": {
+                            "base": { "key": "generics" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "glean" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "facebook" },
+                                    "container": {
+                                      "key": { "base": { "key": "com" } }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": {
+                  "key": {
+                    "baseType": { "primitive": { "key": { "type": "int" } } },
+                    "typeArgs": [ ],
+                    "interopType": { "key": { "primitive": "I" } },
+                    "span": { "start": 0, "length": 0 }
+                  }
+                },
+                "annotations": [ ],
+                "modifiers": [ 2, 4 ],
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "Map" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "generics" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "glean" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "facebook" },
+                                      "container": {
+                                        "key": { "base": { "key": "com" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "modifiers": [ 6 ],
+                      "implements_": [ ],
+                      "annotations": [ ],
+                      "typeParams": [
+                        {
+                          "key": {
+                            "name": { "key": "K" },
+                            "extends_": [ ],
+                            "span": { "start": 130, "length": 1 }
+                          }
+                        },
+                        {
+                          "key": {
+                            "name": { "key": "V" },
+                            "extends_": [ ],
+                            "span": { "start": 133, "length": 1 }
+                          }
+                        }
+                      ],
+                      "span": { "start": 113, "length": 827 },
+                      "file": {
+                        "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+                      }
+                    }
+                  }
+                },
+                "span": { "start": 140, "length": 30 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "size",
+        "file": {
+          "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+        },
+        "location": { "span": { "start": 140, "length": 30 } }
+      },
+      "kind": 9,
+      "language": 2
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "stringmap",
+      "entity": {
+        "java": {
+          "decl": {
+            "field": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "StringMap" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "MapKind" },
+                        "container": {
+                          "key": {
+                            "base": { "key": "Map" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "generics" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": {
+                  "key": {
+                    "baseType": {
+                      "object": {
+                        "key": {
+                          "type": {
+                            "key": {
+                              "name": { "key": "MapKind" },
+                              "context": {
+                                "key": {
+                                  "base": { "key": "Map" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "generics" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "glean" },
+                                          "container": {
+                                            "key": {
+                                              "base": { "key": "facebook" },
+                                              "container": {
+                                                "key": {
+                                                  "base": { "key": "com" }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "span": { "start": 899, "length": 9 }
+                        }
+                      }
+                    },
+                    "typeArgs": [ ],
+                    "interopType": {
+                      "key": {
+                        "object": {
+                          "key": {
+                            "base": { "key": "MapKind" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "Map" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "generics" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "glean" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "facebook" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "com" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "span": { "start": 0, "length": 0 }
+                  }
+                },
+                "annotations": [ ],
+                "modifiers": [ 2, 6, 7 ],
+                "container": {
+                  "enum_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "MapKind" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "Map" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "generics" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "glean" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "facebook" },
+                                          "container": {
+                                            "key": { "base": { "key": "com" } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "annotations": [ ],
+                      "modifiers": [ ],
+                      "implements_": [ ],
+                      "container": {
+                        "class_": {
+                          "key": {
+                            "name": {
+                              "key": {
+                                "name": { "key": "Map" },
+                                "context": {
+                                  "key": {
+                                    "base": { "key": "generics" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "glean" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "facebook" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "com" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "modifiers": [ 6 ],
+                            "implements_": [ ],
+                            "annotations": [ ],
+                            "typeParams": [
+                              {
+                                "key": {
+                                  "name": { "key": "K" },
+                                  "extends_": [ ],
+                                  "span": { "start": 130, "length": 1 }
+                                }
+                              },
+                              {
+                                "key": {
+                                  "name": { "key": "V" },
+                                  "extends_": [ ],
+                                  "span": { "start": 133, "length": 1 }
+                                }
+                              }
+                            ],
+                            "span": { "start": 113, "length": 827 },
+                            "file": {
+                              "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+                            }
+                          }
+                        }
+                      },
+                      "span": { "start": 880, "length": 58 },
+                      "file": {
+                        "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+                      }
+                    }
+                  }
+                },
+                "span": { "start": 899, "length": 9 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "StringMap",
+        "file": {
+          "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+        },
+        "location": { "span": { "start": 899, "length": 9 } }
+      },
+      "kind": 9,
+      "language": 2
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "stringmap",
+      "entity": {
+        "java": {
+          "decl": {
+            "field": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "StringMap" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "MapKind" },
+                        "container": {
+                          "key": {
+                            "base": { "key": "Map" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "generics" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": {
+                  "key": {
+                    "baseType": {
+                      "object": {
+                        "key": {
+                          "type": {
+                            "key": {
+                              "name": { "key": "MapKind" },
+                              "context": {
+                                "key": {
+                                  "base": { "key": "Map" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "generics" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "glean" },
+                                          "container": {
+                                            "key": {
+                                              "base": { "key": "facebook" },
+                                              "container": {
+                                                "key": {
+                                                  "base": { "key": "com" }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "span": { "start": 899, "length": 9 }
+                        }
+                      }
+                    },
+                    "typeArgs": [ ],
+                    "interopType": {
+                      "key": {
+                        "object": {
+                          "key": {
+                            "base": { "key": "MapKind" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "Map" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "generics" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "glean" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "facebook" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "com" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "span": { "start": 0, "length": 0 }
+                  }
+                },
+                "annotations": [ ],
+                "modifiers": [ 2, 6, 7 ],
+                "container": {
+                  "enum_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "MapKind" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "Map" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "generics" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "glean" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "facebook" },
+                                          "container": {
+                                            "key": { "base": { "key": "com" } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "annotations": [ ],
+                      "modifiers": [ ],
+                      "implements_": [ ],
+                      "span": { "start": 880, "length": 58 },
+                      "file": {
+                        "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+                      }
+                    }
+                  }
+                },
+                "span": { "start": 899, "length": 9 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "StringMap",
+        "file": {
+          "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+        },
+        "location": { "span": { "start": 899, "length": 9 } }
+      },
+      "kind": 9,
+      "language": 2
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
       "name": "thisreturnsalist",
       "entity": {
         "java": {
@@ -2464,6 +4824,328 @@
         "location": { "span": { "start": 215, "length": 61 } }
       },
       "kind": 7,
+      "language": 2
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "v",
+      "entity": {
+        "java": {
+          "decl": {
+            "field": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "v" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "Entry" },
+                        "container": {
+                          "key": {
+                            "base": { "key": "Map" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "generics" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": {
+                  "key": {
+                    "baseType": {
+                      "variable": {
+                        "key": {
+                          "type": { "key": "V" },
+                          "span": { "start": 736, "length": 1 }
+                        }
+                      }
+                    },
+                    "typeArgs": [ ],
+                    "interopType": {
+                      "key": {
+                        "object": {
+                          "key": {
+                            "base": { "key": "Object" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "lang" },
+                                "container": {
+                                  "key": { "base": { "key": "java" } }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "span": { "start": 0, "length": 0 }
+                  }
+                },
+                "annotations": [ ],
+                "modifiers": [ 2, 6 ],
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "Entry" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "Map" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "generics" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "glean" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "facebook" },
+                                          "container": {
+                                            "key": { "base": { "key": "com" } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "modifiers": [ 6 ],
+                      "implements_": [ ],
+                      "annotations": [ ],
+                      "container": {
+                        "class_": {
+                          "key": {
+                            "name": {
+                              "key": {
+                                "name": { "key": "Map" },
+                                "context": {
+                                  "key": {
+                                    "base": { "key": "generics" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "glean" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "facebook" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "com" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "modifiers": [ 6 ],
+                            "implements_": [ ],
+                            "annotations": [ ],
+                            "typeParams": [
+                              {
+                                "key": {
+                                  "name": { "key": "K" },
+                                  "extends_": [ ],
+                                  "span": { "start": 130, "length": 1 }
+                                }
+                              },
+                              {
+                                "key": {
+                                  "name": { "key": "V" },
+                                  "extends_": [ ],
+                                  "span": { "start": 133, "length": 1 }
+                                }
+                              }
+                            ],
+                            "span": { "start": 113, "length": 827 },
+                            "file": {
+                              "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+                            }
+                          }
+                        }
+                      },
+                      "typeParams": [ ],
+                      "span": { "start": 676, "length": 140 },
+                      "file": {
+                        "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+                      }
+                    }
+                  }
+                },
+                "span": { "start": 723, "length": 17 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "v",
+        "file": {
+          "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+        },
+        "location": { "span": { "start": 723, "length": 17 } }
+      },
+      "kind": 9,
+      "language": 2
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "v",
+      "entity": {
+        "java": {
+          "decl": {
+            "field": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "v" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "Entry" },
+                        "container": {
+                          "key": {
+                            "base": { "key": "Map" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "generics" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": {
+                  "key": {
+                    "baseType": {
+                      "variable": {
+                        "key": {
+                          "type": { "key": "V" },
+                          "span": { "start": 736, "length": 1 }
+                        }
+                      }
+                    },
+                    "typeArgs": [ ],
+                    "interopType": {
+                      "key": {
+                        "object": {
+                          "key": {
+                            "base": { "key": "Object" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "lang" },
+                                "container": {
+                                  "key": { "base": { "key": "java" } }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "span": { "start": 0, "length": 0 }
+                  }
+                },
+                "annotations": [ ],
+                "modifiers": [ 2, 6 ],
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "Entry" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "Map" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "generics" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "glean" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "facebook" },
+                                          "container": {
+                                            "key": { "base": { "key": "com" } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "modifiers": [ 6 ],
+                      "implements_": [ ],
+                      "annotations": [ ],
+                      "typeParams": [ ],
+                      "span": { "start": 676, "length": 140 },
+                      "file": {
+                        "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+                      }
+                    }
+                  }
+                },
+                "span": { "start": 723, "length": 17 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "v",
+        "file": {
+          "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/generics/Map.java"
+        },
+        "location": { "span": { "start": 723, "length": 17 } }
+      },
+      "kind": 9,
       "language": 2
     }
   }

@@ -452,15 +452,43 @@ predicate DeclarationLocation:
       )
     ) | (
       ( { method = MDecl } = Decl;
-        { name = MName, span = Span, container = Defn } = MDecl;
+        Defn = ExecutableDefinition { method = MDecl };
       ) | (
         { ctor = CDecl } = Decl;
-        { name = MName, span = Span, container = Defn } = CDecl;
+        Defn = ExecutableDefinition { constructor = CDecl };
       );
-      DefinitionLocation { defn = Defn, file = File };
-      javakotlin.alpha.MethodName { name = QName } = MName;
-      { name = javakotlin.alpha.Name NameStr } = QName
+      ExecutableDefnLocation { Defn, NameStr, File, Span }
+
+    ) | (
+      { local = LDecl } = Decl;
+      { name = QName, container = EDefn, span = Span } = LDecl;
+      { name = javakotlin.alpha.Name NameStr } = QName;
+      ExecutableDefnLocation { defn = EDefn, file = File }
+    ) | (
+      { field = FDecl } = Decl;
+      { name = QName, container = Defn, span = Span } = FDecl;
+      { name = javakotlin.alpha.Name NameStr } = QName;
+      DefinitionLocation { defn = Defn, file = File }
     )
+
+# src.File of a method or constructor is the src.File of its parent container
+predicate ExecutableDefnLocation:
+  {
+    defn : ExecutableDefinition,
+    name : string,
+    file : src.File,
+    span : src.ByteSpan
+  }
+  { EDefn, NameStr, File, Span } where
+    ( { method = MDecl } = EDefn;
+      { name = MName, span = Span, container = Defn } = MDecl;
+    ) | (
+      { constructor = CDecl } = EDefn;
+      { name = MName, span = Span, container = Defn } = CDecl;
+    );
+    DefinitionLocation { defn = Defn, file = File };
+    javakotlin.alpha.MethodName { name = QName } = MName;
+    { name = javakotlin.alpha.Name NameStr } = QName
 
 # decls keyed by file (i.e. file entities)
 predicate FileDeclarations:
