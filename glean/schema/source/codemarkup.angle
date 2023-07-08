@@ -61,7 +61,9 @@ predicate EntityInfo:
        (codemarkup.erlang.ErlangEntityKind { E, Kind };
         { erlang = E } = Entity) |
        (codemarkup.flow.FlowEntityKind { E, Kind };
-        { flow = E } = Entity)
+        { flow = E } = Entity) |
+       (codemarkup.java.JavaEntityKind { E, Kind };
+        { java = E } = Entity)
       )
     ) |
     (codemarkup.cxx.CxxEntityInfo { E, Info }; { cxx = E } = Entity) |
@@ -436,6 +438,10 @@ predicate ExtendsParentEntity :
       { thrift = C } = Child;
       codemarkup.thrift.ThriftExtendsParentEntity { C, P };
       { thrift = P } = Parent
+    ) | (
+      { java = C } = Child;
+      codemarkup.java.JavaExtendsParentEntity { C, P };
+      { java = P } = Parent
     )
 
 # This implements the ExtendsParentEntity relation, but for "interesting"
@@ -506,6 +512,10 @@ predicate ContainsParentEntity :
       { thrift = C } = Child;
       codemarkup.thrift.ThriftContainsParentEntity { C, P };
       { thrift = P } = Parent
+    ) | (
+      { java = C } = Child;
+      codemarkup.java.JavaContainsParentEntity { C, P };
+      { java = P } = Parent
     )
 
 # A parent `contains` a child

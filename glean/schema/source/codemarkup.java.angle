@@ -84,4 +84,24 @@ predicate JavaEntityKind:
     ( { class_ = _ } = Decl; Class_ = Kind ) |
     ( { enum_ = _ } = Decl; Enum_ = Kind );
 
+#
+# Relationships
+#
+
+predicate JavaContainsParentEntity:
+  {
+    child: code.java.Entity,
+    parent: code.java.Entity
+  }
+  { { decl = Child }, { decl = Parent } } where
+    java.alpha.ParentDeclaration { Child, Parent };
+
+predicate JavaExtendsParentEntity:
+  {
+    child: code.java.Entity,
+    parent: code.java.Entity
+  }
+  { { decl = Child }, { decl = Parent } } where
+    java.alpha.ExtendsDeclaration { Child, Parent };
+
 }

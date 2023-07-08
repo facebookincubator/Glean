@@ -206,10 +206,30 @@ type ExecutableDefinition =
     method : MethodDeclaration |
   }
 
+# helper for unwrapping the container Definition type
+predicate DeclOfDefn:
+  {
+    defn: Definition,
+    decl: Declaration
+  }
+  { Defn, Decl } where
+    ( { class_ = CDecl } = Defn; { class_ = CDecl } = Decl ) |
+    ( { enum_ = CDecl } = Defn; { enum_ = CDecl } = Decl ) |
+    ( { interface_ = CDecl } = Defn; { interface_ = CDecl } = Decl );
+
+# helper for unwrapping the container ExecutableDefinition type
+predicate DeclOfExecutableDefn:
+  {
+    defn: ExecutableDefinition,
+    decl: Declaration
+  }
+  { Defn, Decl } where
+    ( { constructor = CDecl } = Defn; { ctor = CDecl } = Decl ) |
+    ( { method = MDecl } = Defn; { method = MDecl } = Decl );
+
 # An import, whether specific, an entire package, or static
 predicate ImportDeclaration :
   {
-    # These strings should be name
     name : javakotlin.alpha.Name,
     import_on_demand : bool,
     static_member : maybe string,
@@ -220,7 +240,6 @@ predicate ImportDeclaration :
 # The package specification for a file
 predicate PackageDeclaration :
   {
-    # This should be Name, in the future
     name : javakotlin.alpha.Name,
     annotation: [Annotation],
     # Path is not required in a package
@@ -432,8 +451,12 @@ predicate DeclarationLocation:
         DefinitionLocation { { enum_ = EDecl }, NameStr, File, Span }
       )
     ) | (
-      { method = MDecl } = Decl;
-      { name = MName, span = Span, container = Defn } = MDecl;
+      ( { method = MDecl } = Decl;
+        { name = MName, span = Span, container = Defn } = MDecl;
+      ) | (
+        { ctor = CDecl } = Decl;
+        { name = MName, span = Span, container = Defn } = CDecl;
+      );
       DefinitionLocation { defn = Defn, file = File };
       javakotlin.alpha.MethodName { name = QName } = MName;
       { name = javakotlin.alpha.Name NameStr } = QName
@@ -445,5 +468,51 @@ predicate FileDeclarations:
     file : src.File,
     decl : Declaration
   } stored { File, Decl } where DeclarationLocation { decl = Decl, file = File }
+
+#
+# container relationships
+#
+
+# Container parent (by scope)
+predicate ParentDeclaration:
+  {
+    child: Declaration,
+    parent: Declaration
+  }
+  { Child, Parent } where
+    # can't do param parents yet
+    ( { local = LDecl } = Child;
+      { container = Defn } = LDecl;
+      DeclOfExecutableDefn { Defn, Parent }
+    ) | (
+      ( ( { field = FDecl } = Child; { container = Defn } = FDecl ) |
+        ( { ctor = CDecl } = Child; { container = Defn } = CDecl ) |
+        ( { method = MDecl } = Child; { container = Defn } = MDecl ) |
+        ( { class_ = CDecl } = Child; { container = { just = Defn }} = CDecl) |
+        ( { enum_ = CDecl } = Child; { container = { just = Defn }} = CDecl ) |
+        ( { interface_ = CDecl} = Child; { container = { just = Defn}} = CDecl);
+      );
+      DeclOfDefn { Defn, Parent }
+    )
+
+# extends parent (by inheritance)
+predicate ExtendsDeclaration:
+  {
+    child: Declaration,
+    parent: Declaration
+  }
+  { Child, Parent } where
+    ( { class_ = CDecl } = Child;
+      ( { extends_ = { just = T } } = CDecl ) |
+      ( { implements_ = Ts } = CDecl; T = Ts[..]);
+    ) | (
+      { interface_ = IDecl } = Child;
+      ( { extends_ = Ts } = IDecl; T = Ts[..]);
+    ) | (
+      { enum_ = EDecl } = Child;
+      ( { implements_ = Ts } = EDecl; T = Ts[..]);
+    );
+    Type { baseType = { object = { type = QName } } } = T;
+    QNameToDefinition { QName, Parent }
 
 } # schema
