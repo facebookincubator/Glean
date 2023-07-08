@@ -6,7 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE ApplicativeDo #-}
+{-# LANGUAGE CPP, ApplicativeDo #-}
 module Glean.Indexer.Cpp
   ( indexerWith, indexer, indexerNoDeriv, Clang(..)
   , findExecutableRecursive ) where
@@ -30,6 +30,13 @@ import Util.List (chunk)
 
 import Facebook.Fb303
 import Facebook.Service
+
+#ifdef FBTHRIFT
+import qualified Thrift.Server.CppServer as ThriftServer
+#else
+import qualified Thrift.Server.HTTP as ThriftServer
+#endif
+
 import Glean (sendBatch, clientConfig_serv, showRepo)
 import Glean.Remote (thriftBackendClientConfig)
 import Glean.Indexer
@@ -40,7 +47,6 @@ import qualified Glean.Interprocess.Worklist as Worklist
 
 import qualified Data.ByteString as BS
 import qualified Glean.Handler as GleanHandler
-import qualified Thrift.Server.CppServer as CppServer
 
 data Clang = Clang
   { clangIndexBin     :: Maybe FilePath -- ^ path to @clang-index@ binary
@@ -204,9 +210,9 @@ indexerWith deriveToo = Indexer {
             withBackgroundFacebookService
               (GleanHandler.fb303State state)
               (GleanHandler.handler state)
-              CppServer.defaultOptions
+              ThriftServer.defaultOptions
               $ \server ->
-                go ("localhost:" <> show (CppServer.serverPort server))
+                go ("localhost:" <> show (ThriftServer.serverPort server))
           BackendThrift thrift -> do
             let clientConfig = thriftBackendClientConfig thrift
             go $ serviceToString (clientConfig_serv clientConfig)

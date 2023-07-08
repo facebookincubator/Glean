@@ -210,7 +210,7 @@ SCHEMAS= \
 	thrift \
 
 .PHONY: thrift
-thrift:: thrift-hsthrift-cpp thrift-compiler thrift-hs
+thrift:: thrift-compiler thrift-hs
 
 .PHONY: thrift-hs
 thrift-hs:: thrift-hsthrift-hs thrift-glean-hs
@@ -283,10 +283,6 @@ thrift-schema-hs: thrift-compiler
 	$(THRIFT_COMPILE) --hs glean/if/search.thrift \
 		-o $(CODEGEN_DIR)/$@/glean/if/search
 	rsync -r --checksum $(CODEGEN_DIR)/$@/ .
-
-.PHONY: thrift-hsthrift-cpp
-thrift-hsthrift-cpp::
-	(cd hsthrift && make CABAL="$(CABAL)" thrift-cpp)
 
 # full build up to glass lib
 .PHONY: glass-lib

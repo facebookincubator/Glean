@@ -6,7 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE ApplicativeDo #-}
+{-# LANGUAGE CPP, ApplicativeDo #-}
 
 -- | An 'Indexer' that uses an external process, as opposed to a
 -- library. The indexer might involve running an executable to
@@ -38,8 +38,11 @@ import System.Process
 import Control.Concurrent.Stream (stream)
 import Facebook.Fb303
 import Facebook.Service
-import qualified Thrift.Server.CppServer as CppServer
-import qualified Thrift.Server.Types as Thrift.Server
+#ifdef FBTHRIFT
+import qualified Thrift.Server.CppServer as ThriftServer
+#else
+import qualified Thrift.Server.HTTP as ThriftServer
+#endif
 
 import qualified Glean
 import qualified Glean.LocalOrRemote as LocalOrRemote
@@ -142,8 +145,8 @@ execExternal Ext{..} env repo IndexerParams{..} = do index; derive
           withBackgroundFacebookService
             (GleanHandler.fb303State state)
             (GleanHandler.handler state)
-            Thrift.Server.defaultOptions
-            $ \server -> go ("localhost:" <> show (CppServer.serverPort server))
+            ThriftServer.defaultOptions
+            $ \server -> go ("localhost:" <> show (ThriftServer.serverPort server))
         BackendThrift thrift -> do
           let clientConfig = thriftBackendClientConfig thrift
           go (serviceToString (Glean.clientConfig_serv clientConfig))

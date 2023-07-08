@@ -82,7 +82,7 @@ jobs:
 
     # no hhvm builds yet for jammy/ubuntu 22.00, so we skip the hack indexer
 
-      - name: Fetch hsthrift and build folly, fizz, wangle, fbthrift
+      - name: Fetch hsthrift and build folly
         run: ./install_deps.sh --use-system-libs
       - name: Nuke build artifacts
         run: rm -rf /tmp/fbcode_builder_getdeps-Z__wZGleanZGleanZhsthriftZbuildZfbcode_builder-root/

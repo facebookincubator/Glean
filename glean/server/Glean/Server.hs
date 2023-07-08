@@ -17,8 +17,11 @@ import System.Time.Extra (Seconds)
 import Facebook.Fb303
 import Facebook.Service
 import Fb303Core.Types
-import qualified Thrift.Server.CppServer as CppServer
-import Thrift.Server.Types
+#if FBTHRIFT
+import qualified Thrift.Server.CppServer as ThriftServer
+#else
+import qualified Thrift.Server.HTTP as ThriftServer
+#endif
 import Util.EventBase
 import Util.Log
 import Util.STM
@@ -81,7 +84,7 @@ main =
 
   let
     setAlive server = do
-      let port = CppServer.serverPort server
+      let port = ThriftServer.serverPort server
       atomically $ writeTVar portVar (Just port)
       forM_ (cfgWritePort cfg) $ \path -> writeFile path (show port)
       logInfo $ "server alive on port " ++ show port
@@ -102,7 +105,8 @@ main =
                         (cfgGracefulShutdownTimeout cfg)
 
     waitToStart server = waitForAlive server >> waitForTerminate
-    opts = defaultOptions{ desiredPort = cfgPort cfg }
+    opts = ThriftServer.defaultOptions {
+      ThriftServer.desiredPort = cfgPort cfg }
 
     getPort =
       fromMaybe (error "server hasn't started yet") <$> readTVarIO portVar

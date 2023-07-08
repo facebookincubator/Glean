@@ -88,7 +88,7 @@ jobs:
           ./coursier bootstrap --standalone -o lsif-java com.sourcegraph:lsif-java_2.13:0.8.0-RC1 --main-class com.sourcegraph.lsif_java.LsifJava
           mkdir -p "$HOME"/.hsthrift/bin && cp lsif-java "$HOME"/.hsthrift/bin
 
-      - name: Fetch hsthrift and build folly, fizz, wangle, fbthrift, rocksdb
+      - name: Fetch hsthrift and build folly, rocksdb
         run: ./install_deps.sh
       - name: Nuke build artifacts
         run: rm -rf /tmp/fbcode_builder_getdeps-Z__wZGleanZGleanZhsthriftZbuildZfbcode_builder-root/

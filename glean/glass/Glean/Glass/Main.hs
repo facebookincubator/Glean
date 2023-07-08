@@ -16,7 +16,11 @@ module Glean.Glass.Main
 
 import Facebook.Service ( runFacebookService )
 import Facebook.Fb303 ( fb303Handler, withFb303 )
-import qualified Thrift.Server.Types as Thrift
+#ifdef FBTHRIFT
+import qualified Thrift.Server.CppServer as Thrift
+#else
+import qualified Thrift.Server.HTTP as Thrift
+#endif
 import Util.EventBase ( withEventBaseDataplane )
 import Util.Log.Text ( logInfo )
 import Util.Text ( textShow )
