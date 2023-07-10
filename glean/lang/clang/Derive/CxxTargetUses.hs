@@ -31,15 +31,33 @@ import Glean.Util.Range
 import Derive.Common
 import Derive.Types
 
-type Uses = HashMap.HashMap Cxx.XRefTarget (Set.Set ByteRange)
+data Ranges = Ranges
+  { ranges     :: Set.Set ByteRange
+  , expansions :: Set.Set ByteRange
+  , spellings  :: Set.Set ByteRange
+  }
 
-addUses :: Indirects -> Cxx.FixedXRef -> Uses -> Uses
-addUses indirects (Cxx.FixedXRef target spans)
+instance Semigroup Ranges where
+  (Ranges r e s) <> (Ranges r' e' s') = Ranges (r <> r') (e <> e') (s <> s')
+
+instance Monoid Ranges where
+  mempty = Ranges Set.empty Set.empty Set.empty
+  mappend = (<>)
+
+type Uses = HashMap.HashMap Cxx.XRefTarget Ranges
+
+addUses :: Indirects -> (Cxx.XRefTarget, Cxx.From) -> Uses -> Uses
+addUses indirects (target, Cxx.From{..})
   | Just direct <- resolve indirects target = HashMap.insertWith
       (<>)
       direct
-      (Set.fromList $ relByteSpansToRanges spans)
+      mempty
+        { ranges = spansToRanges from_spans
+        , expansions = spansToRanges from_expansions
+        , spellings = spansToRanges from_spellings
+        }
   | otherwise = id
+  where spansToRanges = Set.fromList . packedByteSpansToRanges
 
 deriveUses :: Backend e => e -> Config -> Writer -> IO ()
 deriveUses e cfg writer = do
@@ -53,27 +71,25 @@ deriveUses e cfg writer = do
       generateUses (Just file) uses =
         when (not $ cfgDryRun cfg)
         $ writeFacts writer
-        $ forM_ (HashMap.toList uses) $ \(target, ranges) -> do
+        $ forM_ (HashMap.toList uses) $ \(target, Ranges{..}) -> do
+            let rangesToSpans = rangesToPackedByteSpans . Set.toList
             makeFact_ @Cxx.TargetUses Cxx.TargetUses_key
               { targetUses_key_target = target
               , targetUses_key_file = file
-              , targetUses_key_uses = rangesToRelSpans $ Set.toList ranges
-              }
-            uses <- makeFact @Cxx.Uses Cxx.Uses_key
-              { uses_key_spans = rangesToPackedByteSpans $ Set.toList ranges
-              , uses_key_expansions = mempty
-              , uses_key_spellings = mempty
-              }
-            makeFact_ @Cxx.XRefTargetUses Cxx.XRefTargetUses_key
-              { xRefTargetUses_key_target = target
-              , xRefTargetUses_key_file = file
-              , xRefTargetUses_key_uses = uses
+              , targetUses_key_uses = rangesToRelSpans $
+                  Set.toList (ranges <> expansions <> spellings)
+              , targetUses_key_from = Cxx.From (rangesToSpans ranges)
+                                               (rangesToSpans expansions)
+                                               (rangesToSpans spellings)
               }
       generateUses _ _ = return ()
 
+      -- NOTE: We rely on the ordering property of the `allFacts` query.
+      --       Specifically, we expect to encounter `FileXRefMap`s for
+      --       a single file in a single sequence.
       q :: Query Cxx.FileXRefMap
       q = maybe id limit (cfgMaxQueryFacts cfg) $
-         limitBytes (cfgMaxQuerySize cfg) allFacts
+          limitBytes (cfgMaxQuerySize cfg) allFacts
 
   (uses, last_file) <- runQueryEach e (cfgRepo cfg) q (mempty, Nothing)
     $ \(uses, last_file) (Cxx.FileXRefMap i k) -> do
@@ -86,16 +102,15 @@ deriveUses e cfg writer = do
         else do
           generateUses last_file uses
           return HashMap.empty
-      let new_uses = foldr (addUses indirects) uses
-            $ Cxx.fileXRefMap_key_fixed key
-            ++ [ Cxx.FixedXRef target offsets
-                | (targets, offsets) <- zip
-                    (V.toList $ PredMap.findWithDefault
-                      mempty
-                      (IdOf $ Fid i)
-                      xrefs)
-                    (Cxx.fileXRefMap_key_variable key)
-                , target <- HashSet.toList targets ]
+      let new_uses = foldr (addUses indirects) uses $
+            [ (target, from)
+            | Cxx.FixedXRef target _ from <- Cxx.fileXRefMap_key_fixed key ]
+            ++
+            [ (target, from)
+            | (targets, from) <- zip
+                (V.toList $ PredMap.findWithDefault mempty (IdOf $ Fid i) xrefs)
+                (Cxx.fileXRefMap_key_froms key)
+            , target <- HashSet.toList targets ]
       return (new_uses, file)
 
   generateUses last_file uses

@@ -32,45 +32,16 @@
                       }
                     }
                   },
-                  "ranges": [ { "offset": 356, "length": 2 } ]
-                }
-              ],
-              "variable": [ ],
-              "bound": [
-                {
-                  "target": {
-                    "declaration": {
-                      "variable": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": "_i" },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "type": { "key": "int" },
-                          "kind": { "ivar": { "synthesize": false } },
-                          "source": {
-                            "file": { "key": "test.m" },
-                            "lineBegin": 10,
-                            "columnBegin": 3,
-                            "lineEnd": 10,
-                            "columnEnd": 8
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "uses": {
-                    "key": {
-                      "spans": [ { "length": 2, "offsets": [ 356 ] } ],
-                      "expansions": [ ],
-                      "spellings": [ ]
-                    }
+                  "ranges": [ { "offset": 356, "length": 2 } ],
+                  "from": {
+                    "spans": [ { "length": 2, "offsets": [ 356 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
                   }
                 }
               ],
-              "free": [ ]
+              "variable": [ ],
+              "froms": [ ]
             }
           },
           "externals": [ ],

@@ -25,44 +25,20 @@
                       }
                     }
                   },
-                  "ranges": [ { "offset": 270, "length": 2 } ]
-                }
-              ],
-              "variable": [ [ { "offset": 308, "length": 1 } ] ],
-              "bound": [
-                {
-                  "target": {
-                    "declaration": {
-                      "namespace_": {
-                        "key": {
-                          "name": { "key": { "name": { "key": "N1" } } },
-                          "source": {
-                            "file": { "key": "test.cpp" },
-                            "lineBegin": 9,
-                            "columnBegin": 1,
-                            "lineEnd": 13,
-                            "columnEnd": 1
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "uses": {
-                    "key": {
-                      "spans": [ { "length": 2, "offsets": [ 270 ] } ],
-                      "expansions": [ ],
-                      "spellings": [ ]
-                    }
-                  }
-                }
-              ],
-              "free": [
-                {
-                  "key": {
-                    "spans": [ { "length": 1, "offsets": [ 308 ] } ],
+                  "ranges": [ { "offset": 270, "length": 2 } ],
+                  "from": {
+                    "spans": [ { "length": 2, "offsets": [ 270 ] } ],
                     "expansions": [ ],
                     "spellings": [ ]
                   }
+                }
+              ],
+              "variable": [ [ { "offset": 308, "length": 1 } ] ],
+              "froms": [
+                {
+                  "spans": [ { "length": 1, "offsets": [ 308 ] } ],
+                  "expansions": [ ],
+                  "spellings": [ ]
                 }
               ]
             }

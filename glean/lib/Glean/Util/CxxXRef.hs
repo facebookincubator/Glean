@@ -32,10 +32,11 @@ transformXRefs v = do
   [ ("file", file),
     ("fixed", JSArray fixed),
     ("variable", JSArray variable),
-    ("bound", JSArray _),
-    ("free", JSArray _) ] <- keyVals xmap
+    ("froms", JSArray _) ] <- keyVals xmap
   fixed_xrefs <- forM fixed $ \x -> do
-    [("target", target), ("ranges", JSArray ranges)] <- objVals x
+    [ ("target", target),
+      ("ranges", JSArray ranges),
+      ("from", JSObject _) ] <- objVals x
     reoffset 0 <$> mapM (xref target) ranges
   when (length variable /= length externals) $ fail "invalid xrefs"
   variable_xrefs <- forM (zip externals variable) $ \(target,v) -> do

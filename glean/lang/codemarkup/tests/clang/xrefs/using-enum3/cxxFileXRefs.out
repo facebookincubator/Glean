@@ -34,7 +34,17 @@
                 { "offset": 13, "length": 2 },
                 { "offset": 76, "length": 2 },
                 { "offset": 55, "length": 2 }
-              ]
+              ],
+              "from": {
+                "spans": [
+                  {
+                    "length": 2,
+                    "offsets": [ 293, 10, 93, 23, 90, 13, 55, 13, 76, 55 ]
+                  }
+                ],
+                "expansions": [ ],
+                "spellings": [ ]
+              }
             },
             {
               "target": {
@@ -53,7 +63,12 @@
                   }
                 }
               },
-              "ranges": [ { "offset": 655, "length": 3 } ]
+              "ranges": [ { "offset": 655, "length": 3 } ],
+              "from": {
+                "spans": [ { "length": 3, "offsets": [ 655 ] } ],
+                "expansions": [ ],
+                "spellings": [ ]
+              }
             },
             {
               "target": {
@@ -72,7 +87,12 @@
                   }
                 }
               },
-              "ranges": [ { "offset": 744, "length": 3 } ]
+              "ranges": [ { "offset": 744, "length": 3 } ],
+              "from": {
+                "spans": [ { "length": 3, "offsets": [ 744 ] } ],
+                "expansions": [ ],
+                "spellings": [ ]
+              }
             }
           ],
           "variable": [
@@ -83,130 +103,36 @@
             [ { "offset": 689, "length": 1 } ],
             [ { "offset": 765, "length": 1 } ]
           ],
-          "bound": [
+          "froms": [
             {
-              "target": {
-                "declaration": {
-                  "namespace_": {
-                    "key": {
-                      "name": { "key": { "name": { "key": "N1" } } },
-                      "source": {
-                        "file": { "key": "test.cpp" },
-                        "lineBegin": 9,
-                        "columnBegin": 1,
-                        "lineEnd": 13,
-                        "columnEnd": 1
-                      }
-                    }
-                  }
-                }
-              },
-              "uses": {
-                "key": {
-                  "spans": [
-                    {
-                      "length": 2,
-                      "offsets": [ 293, 10, 93, 23, 90, 13, 55, 13, 76, 55 ]
-                    }
-                  ],
-                  "expansions": [ ],
-                  "spellings": [ ]
-                }
-              }
+              "spans": [ { "length": 1, "offsets": [ 326 ] } ],
+              "expansions": [ ],
+              "spellings": [ ]
             },
             {
-              "target": {
-                "declaration": {
-                  "namespace_": {
-                    "key": {
-                      "name": { "key": { "name": { "key": "N21" } } },
-                      "source": {
-                        "file": { "key": "test.cpp" },
-                        "lineBegin": 15,
-                        "columnBegin": 1,
-                        "lineEnd": 24,
-                        "columnEnd": 1
-                      }
-                    }
-                  }
-                }
-              },
-              "uses": {
-                "key": {
-                  "spans": [ { "length": 3, "offsets": [ 655 ] } ],
-                  "expansions": [ ],
-                  "spellings": [ ]
-                }
-              }
+              "spans": [ { "length": 1, "offsets": [ 439 ] } ],
+              "expansions": [ ],
+              "spellings": [ ]
             },
             {
-              "target": {
-                "declaration": {
-                  "namespace_": {
-                    "key": {
-                      "name": { "key": { "name": { "key": "N22" } } },
-                      "source": {
-                        "file": { "key": "test.cpp" },
-                        "lineBegin": 26,
-                        "columnBegin": 1,
-                        "lineEnd": 35,
-                        "columnEnd": 1
-                      }
-                    }
-                  }
-                }
-              },
-              "uses": {
-                "key": {
-                  "spans": [ { "length": 3, "offsets": [ 744 ] } ],
-                  "expansions": [ ],
-                  "spellings": [ ]
-                }
-              }
-            }
-          ],
-          "free": [
-            {
-              "key": {
-                "spans": [ { "length": 1, "offsets": [ 326 ] } ],
-                "expansions": [ ],
-                "spellings": [ ]
-              }
+              "spans": [ { "length": 1, "offsets": [ 545 ] } ],
+              "expansions": [ ],
+              "spellings": [ ]
             },
             {
-              "key": {
-                "spans": [ { "length": 1, "offsets": [ 439 ] } ],
-                "expansions": [ ],
-                "spellings": [ ]
-              }
+              "spans": [ { "length": 1, "offsets": [ 613 ] } ],
+              "expansions": [ ],
+              "spellings": [ ]
             },
             {
-              "key": {
-                "spans": [ { "length": 1, "offsets": [ 545 ] } ],
-                "expansions": [ ],
-                "spellings": [ ]
-              }
+              "spans": [ { "length": 1, "offsets": [ 689 ] } ],
+              "expansions": [ ],
+              "spellings": [ ]
             },
             {
-              "key": {
-                "spans": [ { "length": 1, "offsets": [ 613 ] } ],
-                "expansions": [ ],
-                "spellings": [ ]
-              }
-            },
-            {
-              "key": {
-                "spans": [ { "length": 1, "offsets": [ 689 ] } ],
-                "expansions": [ ],
-                "spellings": [ ]
-              }
-            },
-            {
-              "key": {
-                "spans": [ { "length": 1, "offsets": [ 765 ] } ],
-                "expansions": [ ],
-                "spellings": [ ]
-              }
+              "spans": [ { "length": 1, "offsets": [ 765 ] } ],
+              "expansions": [ ],
+              "spellings": [ ]
             }
           ]
         }

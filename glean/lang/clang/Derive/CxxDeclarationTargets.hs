@@ -287,20 +287,23 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
   -- ---------------------------------------------------------------------------
   -- We are limited by the loading of cxx.FileXRefMap facts, start it first
 
+  -- NOTE: We rely on the ordering property of the `allFacts` query.
+  --       Specifically, we expect to encounter `FileXRefMap`s for
+  --       a single file in a single sequence.
   let
     q :: Query Cxx.FileXRefMap
     q = maybe id limit (cfgMaxQueryFacts cfg) $
-       limitBytes (cfgMaxQuerySize cfg) allFacts
+        limitBytes (cfgMaxQuerySize cfg) allFacts
 
     doFoldEach = do
       fileTargetCountAcc <-
         runQueryEach e (cfgRepo cfg) q (Nothing, [], 0::Int, 0::Int) $
           \ (!mLastFile, !targetssIn, !countIn, !nIn)
-            fact@(Cxx.FileXRefMap _ k) -> do
+            (Cxx.FileXRefMap i k) -> do
             when (mod nIn 10000 == 0) $ logInfo $
               "(file count, FileXRefMap count) progress: "
               ++ show (countIn, nIn)
-            let !i = getId fact
+            let !id = IdOf $ Fid i
             key <- case k of
               Just k -> return k
               Nothing -> throwIO $ ErrorCall
@@ -310,9 +313,9 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
               (Just lastFile) | lastFile /= file -> do
                 atomically $ writeTBQueue incomingQ
                   (Just (lastFile, targetssIn))
-                return (Just file, [(i, key)], succ countIn, succ nIn)
+                return (Just file, [(id, key)], succ countIn, succ nIn)
               _ ->
-                return (Just file, (i, key):targetssIn, countIn, succ nIn)
+                return (Just file, (id, key):targetssIn, countIn, succ nIn)
       (countF, nF) <- case fileTargetCountAcc of
         (Nothing, _empty, countIn, nIn) -> return (countIn, nIn)
         (Just file, targetssIn, countIn, nIn) -> do
@@ -430,30 +433,28 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
         :: (IdOf Cxx.FileXRefMap, Cxx.FileXRefMap_key)
         -> [(ByteRange, [Cxx.Declaration])]
       oneFileXRefMap (i, key) =
-        let fixed = Cxx.fileXRefMap_key_fixed key
-
-            fixedTargets =
+        let fixedTargets =
               [ (range, [decl])
-              | (Cxx.FixedXRef itarget spans) <- fixed
+              | Cxx.FixedXRef target _ from <- Cxx.fileXRefMap_key_fixed key
               , (Cxx.XRefTarget_declaration decl)
-                    <- mapMaybe (resolve indirects) [itarget]
-              , range <- relByteSpansToRanges spans
+                    <- mapMaybe (resolve indirects) [target]
+              , range <- fromToSpansAndExpansions from
               ]
 
-            matched = zip variable $ V.toList externals
+            matched = zip froms $ V.toList targets
               where
-                variable = Cxx.fileXRefMap_key_variable key
-                externals = PredMap.findWithDefault mempty i xrefs
+                froms = Cxx.fileXRefMap_key_froms key
+                targets = PredMap.findWithDefault mempty i xrefs
 
             variableTargets =
               [ (range, targetDecls)
-              | (spans, extTargets) <- matched
+              | (from, extTargets) <- matched
               , let !targetDecls = Set.toList $ Set.fromList $
                       [ decl
                       | (Cxx.XRefTarget_declaration decl)
                              <- mapMaybe (resolve indirects)
                                 $ HashSet.toList extTargets]
-              , range <- relByteSpansToRanges spans
+              , range <- fromToSpansAndExpansions from
               ]
 
             newTargets = fixedTargets ++ variableTargets

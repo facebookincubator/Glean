@@ -19,6 +19,8 @@ module Glean.Util.Range
   , relByteSpansToRanges
   , rangesToRelSpans
   , packedByteSpansToRanges
+  , fromToSpansAndExpansions
+  , fromToSpansAndSpellings
   , rangesToPackedByteSpans
   , byteSpanToRange
   , rangeToByteSpan
@@ -45,7 +47,7 @@ import Data.ByteString (ByteString)
 import qualified Data.ByteString.Char8 as B
 import Data.Function (on)
 import Data.List (groupBy, sortBy)
-import Data.List.Extra (chunksOf)
+import Data.List.Extra (chunksOf, merge)
 import Data.Maybe (fromMaybe)
 import qualified Data.String.UTF8 as UTF8 hiding (take)
 import qualified Data.Vector as BoxedVector
@@ -440,6 +442,16 @@ packedByteSpansToRanges = relByteSpansToRanges . packedToRelByteSpans
   packedToRelByteSpans = concatMap $ \Src.PackedByteSpansGroup{..} ->
     map (`Src.RelByteSpan` packedByteSpansGroup_length)
         packedByteSpansGroup_offsets
+
+fromToSpansAndExpansions :: Cxx.From -> [ByteRange]
+fromToSpansAndExpansions Cxx.From{..} =
+  merge (packedByteSpansToRanges from_spans)
+        (packedByteSpansToRanges from_expansions)
+
+fromToSpansAndSpellings :: Cxx.From -> [ByteRange]
+fromToSpansAndSpellings Cxx.From{..} =
+  merge (packedByteSpansToRanges from_spans)
+        (packedByteSpansToRanges from_spellings)
 
 rangesToPackedByteSpans :: [ByteRange] -> Src.PackedByteSpans
 rangesToPackedByteSpans = relToPackedByteSpans . rangesToRelSpans

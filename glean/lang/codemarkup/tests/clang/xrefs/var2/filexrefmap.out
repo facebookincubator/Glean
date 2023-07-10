@@ -43,7 +43,12 @@
             { "offset": 52, "length": 2 },
             { "offset": 25, "length": 2 },
             { "offset": 28, "length": 2 }
-          ]
+          ],
+          "from": {
+            "spans": [ { "length": 2, "offsets": [ 292, 52, 25, 28 ] } ],
+            "expansions": [ ],
+            "spellings": [ ]
+          }
         },
         {
           "target": {
@@ -83,7 +88,12 @@
             { "offset": 300, "length": 2 },
             { "offset": 52, "length": 2 },
             { "offset": 26, "length": 2 }
-          ]
+          ],
+          "from": {
+            "spans": [ { "length": 2, "offsets": [ 300, 52, 26 ] } ],
+            "expansions": [ ],
+            "spellings": [ ]
+          }
         },
         {
           "target": {
@@ -124,7 +134,12 @@
             { "offset": 52, "length": 2 },
             { "offset": 27, "length": 2 },
             { "offset": 20, "length": 2 }
-          ]
+          ],
+          "from": {
+            "spans": [ { "length": 2, "offsets": [ 308, 52, 27, 20 ] } ],
+            "expansions": [ ],
+            "spellings": [ ]
+          }
         },
         {
           "target": {
@@ -154,7 +169,12 @@
             { "offset": 5, "length": 1 },
             { "offset": 62, "length": 1 },
             { "offset": 10, "length": 1 }
-          ]
+          ],
+          "from": {
+            "spans": [ { "length": 1, "offsets": [ 327, 5, 62, 10 ] } ],
+            "expansions": [ ],
+            "spellings": [ ]
+          }
         },
         {
           "target": {
@@ -191,7 +211,12 @@
             { "offset": 342, "length": 1 },
             { "offset": 8, "length": 1 },
             { "offset": 8, "length": 1 }
-          ]
+          ],
+          "from": {
+            "spans": [ { "length": 1, "offsets": [ 342, 8, 8 ] } ],
+            "expansions": [ ],
+            "spellings": [ ]
+          }
         },
         {
           "target": {
@@ -228,248 +253,16 @@
             { "offset": 366, "length": 1 },
             { "offset": 9, "length": 1 },
             { "offset": 9, "length": 1 }
-          ]
+          ],
+          "from": {
+            "spans": [ { "length": 1, "offsets": [ 366, 9, 9 ] } ],
+            "expansions": [ ],
+            "spellings": [ ]
+          }
         }
       ],
       "variable": [ ],
-      "bound": [
-        {
-          "target": {
-            "declaration": {
-              "variable": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": "m1" },
-                      "scope": {
-                        "recordWithAccess": {
-                          "record": {
-                            "key": {
-                              "name": { "key": "T" },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "access": 0
-                        }
-                      }
-                    }
-                  },
-                  "type": { "key": "int" },
-                  "kind": { "field": { "mutable_": false } },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 10,
-                    "columnBegin": 3,
-                    "lineEnd": 10,
-                    "columnEnd": 8
-                  }
-                }
-              }
-            }
-          },
-          "uses": {
-            "key": {
-              "spans": [ { "length": 2, "offsets": [ 292, 52, 25, 28 ] } ],
-              "expansions": [ ],
-              "spellings": [ ]
-            }
-          }
-        },
-        {
-          "target": {
-            "declaration": {
-              "variable": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": "m2" },
-                      "scope": {
-                        "recordWithAccess": {
-                          "record": {
-                            "key": {
-                              "name": { "key": "T" },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "access": 0
-                        }
-                      }
-                    }
-                  },
-                  "type": { "key": "int" },
-                  "kind": { "field": { "mutable_": false, "bitsize": 5 } },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 11,
-                    "columnBegin": 3,
-                    "lineEnd": 11,
-                    "columnEnd": 12
-                  }
-                }
-              }
-            }
-          },
-          "uses": {
-            "key": {
-              "spans": [ { "length": 2, "offsets": [ 300, 52, 26 ] } ],
-              "expansions": [ ],
-              "spellings": [ ]
-            }
-          }
-        },
-        {
-          "target": {
-            "declaration": {
-              "variable": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": "m3" },
-                      "scope": {
-                        "recordWithAccess": {
-                          "record": {
-                            "key": {
-                              "name": { "key": "T" },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "access": 0
-                        }
-                      }
-                    }
-                  },
-                  "type": { "key": "int" },
-                  "kind": { "field": { "mutable_": true } },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 12,
-                    "columnBegin": 3,
-                    "lineEnd": 12,
-                    "columnEnd": 16
-                  }
-                }
-              }
-            }
-          },
-          "uses": {
-            "key": {
-              "spans": [ { "length": 2, "offsets": [ 308, 52, 27, 20 ] } ],
-              "expansions": [ ],
-              "spellings": [ ]
-            }
-          }
-        },
-        {
-          "target": {
-            "declaration": {
-              "record_": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": "T" },
-                      "scope": { "global_": { } }
-                    }
-                  },
-                  "kind": { "struct_": { } },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 9,
-                    "columnBegin": 1,
-                    "lineEnd": 19,
-                    "columnEnd": 1
-                  }
-                }
-              }
-            }
-          },
-          "uses": {
-            "key": {
-              "spans": [ { "length": 1, "offsets": [ 327, 5, 62, 10 ] } ],
-              "expansions": [ ],
-              "spellings": [ ]
-            }
-          }
-        },
-        {
-          "target": {
-            "declaration": {
-              "variable": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": "x" },
-                      "scope": {
-                        "local": {
-                          "key": {
-                            "name": { "key": { "name": { "key": "g" } } },
-                            "scope": { "global_": { } }
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "type": { "key": "T" },
-                  "kind": { "local": { "kind": 2, "attribute": 0 } },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 21,
-                    "columnBegin": 8,
-                    "lineEnd": 21,
-                    "columnEnd": 10
-                  }
-                }
-              }
-            }
-          },
-          "uses": {
-            "key": {
-              "spans": [ { "length": 1, "offsets": [ 342, 8, 8 ] } ],
-              "expansions": [ ],
-              "spellings": [ ]
-            }
-          }
-        },
-        {
-          "target": {
-            "declaration": {
-              "variable": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": "y" },
-                      "scope": {
-                        "local": {
-                          "key": {
-                            "name": { "key": { "name": { "key": "g" } } },
-                            "scope": { "global_": { } }
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "type": { "key": "T *" },
-                  "kind": { "local": { "kind": 2, "attribute": 0 } },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 21,
-                    "columnBegin": 13,
-                    "lineEnd": 21,
-                    "columnEnd": 16
-                  }
-                }
-              }
-            }
-          },
-          "uses": {
-            "key": {
-              "spans": [ { "length": 1, "offsets": [ 366, 9, 9 ] } ],
-              "expansions": [ ],
-              "spellings": [ ]
-            }
-          }
-        }
-      ],
-      "free": [ ]
+      "froms": [ ]
     }
   }
 ]

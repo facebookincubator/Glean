@@ -28,7 +28,12 @@
                   "ranges": [
                     { "offset": 301, "length": 3 },
                     { "offset": 71, "length": 3 }
-                  ]
+                  ],
+                  "from": {
+                    "spans": [ { "length": 3, "offsets": [ 301, 71 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
                 },
                 {
                   "target": {
@@ -63,7 +68,12 @@
                       }
                     }
                   },
-                  "ranges": [ { "offset": 316, "length": 3 } ]
+                  "ranges": [ { "offset": 316, "length": 3 } ],
+                  "from": {
+                    "spans": [ { "length": 3, "offsets": [ 316 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
                 },
                 {
                   "target": {
@@ -106,7 +116,17 @@
                     { "offset": 10, "length": 9 },
                     { "offset": 126, "length": 6 },
                     { "offset": 10, "length": 9 }
-                  ]
+                  ],
+                  "from": {
+                    "spans": [
+                      { "length": 6, "offsets": [ 320 ] },
+                      { "length": 9, "offsets": [ 10 ] },
+                      { "length": 6, "offsets": [ 126 ] },
+                      { "length": 9, "offsets": [ 10 ] }
+                    ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
                 },
                 {
                   "target": {
@@ -132,160 +152,16 @@
                       }
                     }
                   },
-                  "ranges": [ { "offset": 452, "length": 3 } ]
+                  "ranges": [ { "offset": 452, "length": 3 } ],
+                  "from": {
+                    "spans": [ { "length": 3, "offsets": [ 452 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
                 }
               ],
               "variable": [ ],
-              "bound": [
-                {
-                  "target": {
-                    "declaration": {
-                      "objcContainer": {
-                        "key": {
-                          "id": { "protocol": { "key": "Foo" } },
-                          "source": {
-                            "file": { "key": "test.mm" },
-                            "lineBegin": 9,
-                            "columnBegin": 1,
-                            "lineEnd": 13,
-                            "columnEnd": 4
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "uses": {
-                    "key": {
-                      "spans": [ { "length": 3, "offsets": [ 301, 71 ] } ],
-                      "expansions": [ ],
-                      "spellings": [ ]
-                    }
-                  }
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "variable": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": "foo" },
-                              "scope": {
-                                "local": {
-                                  "key": {
-                                    "name": {
-                                      "key": { "name": { "key": "setFoo" } }
-                                    },
-                                    "scope": { "global_": { } }
-                                  }
-                                }
-                              }
-                            }
-                          },
-                          "type": { "key": "id<Foo>" },
-                          "kind": { "local": { "kind": 2, "attribute": 0 } },
-                          "source": {
-                            "file": { "key": "test.mm" },
-                            "lineBegin": 15,
-                            "columnBegin": 13,
-                            "lineEnd": 15,
-                            "columnEnd": 23
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "uses": {
-                    "key": {
-                      "spans": [ { "length": 3, "offsets": [ 316 ] } ],
-                      "expansions": [ ],
-                      "spellings": [ ]
-                    }
-                  }
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "objcMethod": {
-                        "key": {
-                          "selector": { "key": [ "setInt", "setDouble" ] },
-                          "container": { "protocol": { "key": "Foo" } },
-                          "signature": {
-                            "key": {
-                              "returns": { "key": "void" },
-                              "parameters": [
-                                {
-                                  "name": { "key": "x" },
-                                  "type": { "key": "int" }
-                                },
-                                {
-                                  "name": { "key": "y" },
-                                  "type": { "key": "double" }
-                                }
-                              ]
-                            }
-                          },
-                          "isInstance": true,
-                          "isOptional": false,
-                          "isAccessor": false,
-                          "source": {
-                            "file": { "key": "test.mm" },
-                            "lineBegin": 11,
-                            "columnBegin": 1,
-                            "lineEnd": 11,
-                            "columnEnd": 42
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "uses": {
-                    "key": {
-                      "spans": [
-                        { "length": 6, "offsets": [ 320 ] },
-                        { "length": 9, "offsets": [ 10 ] },
-                        { "length": 6, "offsets": [ 126 ] },
-                        { "length": 9, "offsets": [ 10 ] }
-                      ],
-                      "expansions": [ ],
-                      "spellings": [ ]
-                    }
-                  }
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "variable": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": "foo" },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "type": { "key": "id<Foo>" },
-                          "kind": { "ivar": { "synthesize": false } },
-                          "source": {
-                            "file": { "key": "test.mm" },
-                            "lineBegin": 20,
-                            "columnBegin": 3,
-                            "lineEnd": 20,
-                            "columnEnd": 13
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "uses": {
-                    "key": {
-                      "spans": [ { "length": 3, "offsets": [ 452 ] } ],
-                      "expansions": [ ],
-                      "spellings": [ ]
-                    }
-                  }
-                }
-              ],
-              "free": [ ]
+              "froms": [ ]
             }
           },
           "externals": [ ],
@@ -400,7 +276,12 @@
                   "ranges": [
                     { "offset": 301, "length": 3 },
                     { "offset": 71, "length": 3 }
-                  ]
+                  ],
+                  "from": {
+                    "spans": [ { "length": 3, "offsets": [ 301, 71 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
                 },
                 {
                   "target": {
@@ -435,7 +316,12 @@
                       }
                     }
                   },
-                  "ranges": [ { "offset": 316, "length": 3 } ]
+                  "ranges": [ { "offset": 316, "length": 3 } ],
+                  "from": {
+                    "spans": [ { "length": 3, "offsets": [ 316 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
                 },
                 {
                   "target": {
@@ -478,7 +364,17 @@
                     { "offset": 10, "length": 9 },
                     { "offset": 126, "length": 6 },
                     { "offset": 10, "length": 9 }
-                  ]
+                  ],
+                  "from": {
+                    "spans": [
+                      { "length": 6, "offsets": [ 320 ] },
+                      { "length": 9, "offsets": [ 10 ] },
+                      { "length": 6, "offsets": [ 126 ] },
+                      { "length": 9, "offsets": [ 10 ] }
+                    ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
                 },
                 {
                   "target": {
@@ -504,160 +400,16 @@
                       }
                     }
                   },
-                  "ranges": [ { "offset": 452, "length": 3 } ]
+                  "ranges": [ { "offset": 452, "length": 3 } ],
+                  "from": {
+                    "spans": [ { "length": 3, "offsets": [ 452 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
                 }
               ],
               "variable": [ ],
-              "bound": [
-                {
-                  "target": {
-                    "declaration": {
-                      "objcContainer": {
-                        "key": {
-                          "id": { "protocol": { "key": "Foo" } },
-                          "source": {
-                            "file": { "key": "test.mm" },
-                            "lineBegin": 9,
-                            "columnBegin": 1,
-                            "lineEnd": 13,
-                            "columnEnd": 4
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "uses": {
-                    "key": {
-                      "spans": [ { "length": 3, "offsets": [ 301, 71 ] } ],
-                      "expansions": [ ],
-                      "spellings": [ ]
-                    }
-                  }
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "variable": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": "foo" },
-                              "scope": {
-                                "local": {
-                                  "key": {
-                                    "name": {
-                                      "key": { "name": { "key": "setFoo" } }
-                                    },
-                                    "scope": { "global_": { } }
-                                  }
-                                }
-                              }
-                            }
-                          },
-                          "type": { "key": "id<Foo>" },
-                          "kind": { "local": { "kind": 2, "attribute": 0 } },
-                          "source": {
-                            "file": { "key": "test.mm" },
-                            "lineBegin": 15,
-                            "columnBegin": 13,
-                            "lineEnd": 15,
-                            "columnEnd": 23
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "uses": {
-                    "key": {
-                      "spans": [ { "length": 3, "offsets": [ 316 ] } ],
-                      "expansions": [ ],
-                      "spellings": [ ]
-                    }
-                  }
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "objcMethod": {
-                        "key": {
-                          "selector": { "key": [ "setInt", "setDouble" ] },
-                          "container": { "protocol": { "key": "Foo" } },
-                          "signature": {
-                            "key": {
-                              "returns": { "key": "void" },
-                              "parameters": [
-                                {
-                                  "name": { "key": "x" },
-                                  "type": { "key": "int" }
-                                },
-                                {
-                                  "name": { "key": "y" },
-                                  "type": { "key": "double" }
-                                }
-                              ]
-                            }
-                          },
-                          "isInstance": true,
-                          "isOptional": false,
-                          "isAccessor": false,
-                          "source": {
-                            "file": { "key": "test.mm" },
-                            "lineBegin": 11,
-                            "columnBegin": 1,
-                            "lineEnd": 11,
-                            "columnEnd": 42
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "uses": {
-                    "key": {
-                      "spans": [
-                        { "length": 6, "offsets": [ 320 ] },
-                        { "length": 9, "offsets": [ 10 ] },
-                        { "length": 6, "offsets": [ 126 ] },
-                        { "length": 9, "offsets": [ 10 ] }
-                      ],
-                      "expansions": [ ],
-                      "spellings": [ ]
-                    }
-                  }
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "variable": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": "foo" },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "type": { "key": "id<Foo>" },
-                          "kind": { "ivar": { "synthesize": false } },
-                          "source": {
-                            "file": { "key": "test.mm" },
-                            "lineBegin": 20,
-                            "columnBegin": 3,
-                            "lineEnd": 20,
-                            "columnEnd": 13
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "uses": {
-                    "key": {
-                      "spans": [ { "length": 3, "offsets": [ 452 ] } ],
-                      "expansions": [ ],
-                      "spellings": [ ]
-                    }
-                  }
-                }
-              ],
-              "free": [ ]
+              "froms": [ ]
             }
           },
           "externals": [ ],
@@ -772,7 +524,12 @@
                   "ranges": [
                     { "offset": 301, "length": 3 },
                     { "offset": 71, "length": 3 }
-                  ]
+                  ],
+                  "from": {
+                    "spans": [ { "length": 3, "offsets": [ 301, 71 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
                 },
                 {
                   "target": {
@@ -807,7 +564,12 @@
                       }
                     }
                   },
-                  "ranges": [ { "offset": 316, "length": 3 } ]
+                  "ranges": [ { "offset": 316, "length": 3 } ],
+                  "from": {
+                    "spans": [ { "length": 3, "offsets": [ 316 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
                 },
                 {
                   "target": {
@@ -850,7 +612,17 @@
                     { "offset": 10, "length": 9 },
                     { "offset": 126, "length": 6 },
                     { "offset": 10, "length": 9 }
-                  ]
+                  ],
+                  "from": {
+                    "spans": [
+                      { "length": 6, "offsets": [ 320 ] },
+                      { "length": 9, "offsets": [ 10 ] },
+                      { "length": 6, "offsets": [ 126 ] },
+                      { "length": 9, "offsets": [ 10 ] }
+                    ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
                 },
                 {
                   "target": {
@@ -876,160 +648,16 @@
                       }
                     }
                   },
-                  "ranges": [ { "offset": 452, "length": 3 } ]
+                  "ranges": [ { "offset": 452, "length": 3 } ],
+                  "from": {
+                    "spans": [ { "length": 3, "offsets": [ 452 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
                 }
               ],
               "variable": [ ],
-              "bound": [
-                {
-                  "target": {
-                    "declaration": {
-                      "objcContainer": {
-                        "key": {
-                          "id": { "protocol": { "key": "Foo" } },
-                          "source": {
-                            "file": { "key": "test.mm" },
-                            "lineBegin": 9,
-                            "columnBegin": 1,
-                            "lineEnd": 13,
-                            "columnEnd": 4
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "uses": {
-                    "key": {
-                      "spans": [ { "length": 3, "offsets": [ 301, 71 ] } ],
-                      "expansions": [ ],
-                      "spellings": [ ]
-                    }
-                  }
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "variable": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": "foo" },
-                              "scope": {
-                                "local": {
-                                  "key": {
-                                    "name": {
-                                      "key": { "name": { "key": "setFoo" } }
-                                    },
-                                    "scope": { "global_": { } }
-                                  }
-                                }
-                              }
-                            }
-                          },
-                          "type": { "key": "id<Foo>" },
-                          "kind": { "local": { "kind": 2, "attribute": 0 } },
-                          "source": {
-                            "file": { "key": "test.mm" },
-                            "lineBegin": 15,
-                            "columnBegin": 13,
-                            "lineEnd": 15,
-                            "columnEnd": 23
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "uses": {
-                    "key": {
-                      "spans": [ { "length": 3, "offsets": [ 316 ] } ],
-                      "expansions": [ ],
-                      "spellings": [ ]
-                    }
-                  }
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "objcMethod": {
-                        "key": {
-                          "selector": { "key": [ "setInt", "setDouble" ] },
-                          "container": { "protocol": { "key": "Foo" } },
-                          "signature": {
-                            "key": {
-                              "returns": { "key": "void" },
-                              "parameters": [
-                                {
-                                  "name": { "key": "x" },
-                                  "type": { "key": "int" }
-                                },
-                                {
-                                  "name": { "key": "y" },
-                                  "type": { "key": "double" }
-                                }
-                              ]
-                            }
-                          },
-                          "isInstance": true,
-                          "isOptional": false,
-                          "isAccessor": false,
-                          "source": {
-                            "file": { "key": "test.mm" },
-                            "lineBegin": 11,
-                            "columnBegin": 1,
-                            "lineEnd": 11,
-                            "columnEnd": 42
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "uses": {
-                    "key": {
-                      "spans": [
-                        { "length": 6, "offsets": [ 320 ] },
-                        { "length": 9, "offsets": [ 10 ] },
-                        { "length": 6, "offsets": [ 126 ] },
-                        { "length": 9, "offsets": [ 10 ] }
-                      ],
-                      "expansions": [ ],
-                      "spellings": [ ]
-                    }
-                  }
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "variable": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": "foo" },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "type": { "key": "id<Foo>" },
-                          "kind": { "ivar": { "synthesize": false } },
-                          "source": {
-                            "file": { "key": "test.mm" },
-                            "lineBegin": 20,
-                            "columnBegin": 3,
-                            "lineEnd": 20,
-                            "columnEnd": 13
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "uses": {
-                    "key": {
-                      "spans": [ { "length": 3, "offsets": [ 452 ] } ],
-                      "expansions": [ ],
-                      "spellings": [ ]
-                    }
-                  }
-                }
-              ],
-              "free": [ ]
+              "froms": [ ]
             }
           },
           "externals": [ ],
@@ -1116,7 +744,12 @@
                   "ranges": [
                     { "offset": 301, "length": 3 },
                     { "offset": 71, "length": 3 }
-                  ]
+                  ],
+                  "from": {
+                    "spans": [ { "length": 3, "offsets": [ 301, 71 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
                 },
                 {
                   "target": {
@@ -1151,7 +784,12 @@
                       }
                     }
                   },
-                  "ranges": [ { "offset": 316, "length": 3 } ]
+                  "ranges": [ { "offset": 316, "length": 3 } ],
+                  "from": {
+                    "spans": [ { "length": 3, "offsets": [ 316 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
                 },
                 {
                   "target": {
@@ -1194,7 +832,17 @@
                     { "offset": 10, "length": 9 },
                     { "offset": 126, "length": 6 },
                     { "offset": 10, "length": 9 }
-                  ]
+                  ],
+                  "from": {
+                    "spans": [
+                      { "length": 6, "offsets": [ 320 ] },
+                      { "length": 9, "offsets": [ 10 ] },
+                      { "length": 6, "offsets": [ 126 ] },
+                      { "length": 9, "offsets": [ 10 ] }
+                    ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
                 },
                 {
                   "target": {
@@ -1220,160 +868,16 @@
                       }
                     }
                   },
-                  "ranges": [ { "offset": 452, "length": 3 } ]
+                  "ranges": [ { "offset": 452, "length": 3 } ],
+                  "from": {
+                    "spans": [ { "length": 3, "offsets": [ 452 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
                 }
               ],
               "variable": [ ],
-              "bound": [
-                {
-                  "target": {
-                    "declaration": {
-                      "objcContainer": {
-                        "key": {
-                          "id": { "protocol": { "key": "Foo" } },
-                          "source": {
-                            "file": { "key": "test.mm" },
-                            "lineBegin": 9,
-                            "columnBegin": 1,
-                            "lineEnd": 13,
-                            "columnEnd": 4
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "uses": {
-                    "key": {
-                      "spans": [ { "length": 3, "offsets": [ 301, 71 ] } ],
-                      "expansions": [ ],
-                      "spellings": [ ]
-                    }
-                  }
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "variable": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": "foo" },
-                              "scope": {
-                                "local": {
-                                  "key": {
-                                    "name": {
-                                      "key": { "name": { "key": "setFoo" } }
-                                    },
-                                    "scope": { "global_": { } }
-                                  }
-                                }
-                              }
-                            }
-                          },
-                          "type": { "key": "id<Foo>" },
-                          "kind": { "local": { "kind": 2, "attribute": 0 } },
-                          "source": {
-                            "file": { "key": "test.mm" },
-                            "lineBegin": 15,
-                            "columnBegin": 13,
-                            "lineEnd": 15,
-                            "columnEnd": 23
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "uses": {
-                    "key": {
-                      "spans": [ { "length": 3, "offsets": [ 316 ] } ],
-                      "expansions": [ ],
-                      "spellings": [ ]
-                    }
-                  }
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "objcMethod": {
-                        "key": {
-                          "selector": { "key": [ "setInt", "setDouble" ] },
-                          "container": { "protocol": { "key": "Foo" } },
-                          "signature": {
-                            "key": {
-                              "returns": { "key": "void" },
-                              "parameters": [
-                                {
-                                  "name": { "key": "x" },
-                                  "type": { "key": "int" }
-                                },
-                                {
-                                  "name": { "key": "y" },
-                                  "type": { "key": "double" }
-                                }
-                              ]
-                            }
-                          },
-                          "isInstance": true,
-                          "isOptional": false,
-                          "isAccessor": false,
-                          "source": {
-                            "file": { "key": "test.mm" },
-                            "lineBegin": 11,
-                            "columnBegin": 1,
-                            "lineEnd": 11,
-                            "columnEnd": 42
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "uses": {
-                    "key": {
-                      "spans": [
-                        { "length": 6, "offsets": [ 320 ] },
-                        { "length": 9, "offsets": [ 10 ] },
-                        { "length": 6, "offsets": [ 126 ] },
-                        { "length": 9, "offsets": [ 10 ] }
-                      ],
-                      "expansions": [ ],
-                      "spellings": [ ]
-                    }
-                  }
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "variable": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": "foo" },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "type": { "key": "id<Foo>" },
-                          "kind": { "ivar": { "synthesize": false } },
-                          "source": {
-                            "file": { "key": "test.mm" },
-                            "lineBegin": 20,
-                            "columnBegin": 3,
-                            "lineEnd": 20,
-                            "columnEnd": 13
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "uses": {
-                    "key": {
-                      "spans": [ { "length": 3, "offsets": [ 452 ] } ],
-                      "expansions": [ ],
-                      "spellings": [ ]
-                    }
-                  }
-                }
-              ],
-              "free": [ ]
+              "froms": [ ]
             }
           },
           "externals": [ ],

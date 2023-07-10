@@ -177,8 +177,8 @@ public:
     std::vector<std::pair<Src::ByteSpan, Cxx::Declaration>> declarations;
     std::vector<PrePPEvent> events;
     struct {
-      std::deque<CrossRef> bound;
-      std::deque<CrossRef> unbound;
+      std::deque<CrossRef> fixed;
+      std::deque<CrossRef> variable;
       std::map<Cxx::XRefTarget, CrossRef*> lookup;
     } xrefs;
     folly::Optional<Fact<Cxx::Trace>> trace;
@@ -245,9 +245,6 @@ public:
   }
 
 private:
-  std::pair<std::vector<Cxx::BoundXRef>, std::vector<Cxx::FixedXRef>>
-  finishRefs(std::deque<CrossRef>&& v);
-
   Fact<Buck::Locator> locator;
   folly::Optional<Fact<Buck::Platform>> platform;
   const std::filesystem::path root;

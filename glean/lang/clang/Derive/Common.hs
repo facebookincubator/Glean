@@ -71,6 +71,19 @@ resolve _ x = Just x
 
 getFileXRefs :: Backend e => e -> Config -> IO XRefs
 getFileXRefs e cfg = do
+  -- Collect all of the `XRefTargets` facts first rather than expanding them.
+  -- Since there's a lot of sharing of these facts, the cache hit rate is high.
+  targetsMap <- do
+    let q :: Query Cxx.XRefTargets
+        q = maybe id limit (cfgMaxQueryFacts cfg) $
+            limitBytes (cfgMaxQuerySize cfg) allFacts
+    runQueryEach e (cfgRepo cfg) q mempty
+        $ \targetsMap (Cxx.XRefTargets i k) -> do
+      key <- case k of
+        Just k -> return k
+        Nothing -> throwIO $ ErrorCall "internal error: getFileXRefs"
+      return $ PredMap.insert (IdOf $ Fid i) key targetsMap
+
   let
     q :: Query Cxx.FileXRefs
     q = maybe id limit (cfgMaxQueryFacts cfg) $
@@ -81,17 +94,20 @@ getFileXRefs e cfg = do
     key <- case k of
       Just k -> return k
       Nothing -> throwIO $ ErrorCall "internal error: getFileXRefs"
-    let exts = Cxx.fileXRefs_key_externals key
+    let targets =
+          [ HashSet.fromList $ PredMap.findWithDefault
+              (error "missing XRefTargets") (getId targets) targetsMap
+          | targets <- Cxx.fileXRefs_key_targets key ]
         id = getId (Cxx.fileXRefs_key_xmap key)
     case PredMap.lookup id xrefs of
       Just xs -> do
-        forM_ (zip [0 .. VM.length xs - 1] exts) $ \(i,ext) -> do
+        forM_ (zip [0 .. VM.length xs - 1] targets) $ \(i, ts) -> do
           x <- VM.unsafeRead xs i
-          VM.unsafeWrite xs i $! HashSet.insert ext x
+          VM.unsafeWrite xs i $! HashSet.union ts x
         return xrefs
       Nothing -> do
-        xs <- VM.new (length exts)
-        forM_ (zip [0..] exts) $ \(i,ext) ->
-          VM.unsafeWrite xs i $! HashSet.singleton ext
+        xs <- VM.new (length targets)
+        forM_ (zip [0..] targets) $ \(i, ts) ->
+          VM.unsafeWrite xs i $! ts
         return $ PredMap.insert id xs xrefs
   traverse V.unsafeFreeze xrefs

@@ -138,7 +138,7 @@ predicate CxxFileEntityXMapFixedXRefLocations:
   }
   { Trace, XRef, Entity } where
     cxx1.FileXRefs { xmap = { fixed = Fixeds } } = Trace;
-    cxx1.FixedXRef { XRefTarget, Uses } = Fixeds[..];
+    cxx1.FixedXRef { XRefTarget, Uses, _ } = Fixeds[..];
     CxxXRefTargetLocation { XRefTarget, Entity, Location };
     Spans = prim.relToAbsByteSpans Uses;
     Span = Spans[..];
@@ -280,17 +280,17 @@ predicate CxxEntityUses:
   }
   ({ { decl = Decl }, File, Span } where
     cxx1.DeclFamilyOf { Decl, D };
-    cxx1.TargetUses { { declaration = D }, File, Uses };
+    cxx1.TargetUses { { declaration = D }, File, Uses, _ };
     Spans = prim.relToAbsByteSpans Uses;
     Span = Spans[..]) |
   ({ { defn = Defn }, File, Span } where
     CxxEntityDefinitionBase { Defn, DeclBase };
     cxx1.DeclFamilyOf { DeclBase, D };
-    cxx1.TargetUses { { declaration = D }, File, Uses };
+    cxx1.TargetUses { { declaration = D }, File, Uses, _ };
     Spans = prim.relToAbsByteSpans Uses;
     Span = Spans[..]) |
   ({ { enumerator = E }, File, Span } where
-    cxx1.TargetUses { { enumerator = E }, File, Uses };
+    cxx1.TargetUses { { enumerator = E }, File, Uses, _ };
     Spans = prim.relToAbsByteSpans Uses;
     Span = Spans[..])
 

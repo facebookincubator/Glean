@@ -39,7 +39,12 @@
               "ranges": [
                 { "offset": 401, "length": 3 },
                 { "offset": 38, "length": 3 }
-              ]
+              ],
+              "from": {
+                "spans": [ { "length": 3, "offsets": [ 401, 38 ] } ],
+                "expansions": [ ],
+                "spellings": [ ]
+              }
             },
             {
               "target": {
@@ -71,7 +76,12 @@
                   }
                 }
               },
-              "ranges": [ { "offset": 413, "length": 3 } ]
+              "ranges": [ { "offset": 413, "length": 3 } ],
+              "from": {
+                "spans": [ { "length": 3, "offsets": [ 413 ] } ],
+                "expansions": [ ],
+                "spellings": [ ]
+              }
             },
             {
               "target": {
@@ -103,127 +113,16 @@
                   }
                 }
               },
-              "ranges": [ { "offset": 426, "length": 3 } ]
+              "ranges": [ { "offset": 426, "length": 3 } ],
+              "from": {
+                "spans": [ { "length": 3, "offsets": [ 426 ] } ],
+                "expansions": [ ],
+                "spellings": [ ]
+              }
             }
           ],
           "variable": [ ],
-          "bound": [
-            {
-              "target": {
-                "declaration": {
-                  "variable": {
-                    "key": {
-                      "name": {
-                        "key": {
-                          "name": { "key": "foo" },
-                          "scope": { "global_": { } }
-                        }
-                      },
-                      "type": { "key": "const int" },
-                      "kind": {
-                        "global_": {
-                          "kind": 0,
-                          "attribute": 2,
-                          "definition": true
-                        }
-                      },
-                      "source": {
-                        "file": { "key": "test.cpp" },
-                        "lineBegin": 9,
-                        "columnBegin": 22,
-                        "lineEnd": 9,
-                        "columnEnd": 42
-                      }
-                    }
-                  }
-                }
-              },
-              "uses": {
-                "key": {
-                  "spans": [ { "length": 3, "offsets": [ 401, 38 ] } ],
-                  "expansions": [ ],
-                  "spellings": [ ]
-                }
-              }
-            },
-            {
-              "target": {
-                "declaration": {
-                  "variable": {
-                    "key": {
-                      "name": {
-                        "key": {
-                          "name": { "key": "foo" },
-                          "scope": { "global_": { } }
-                        }
-                      },
-                      "type": { "key": "const int" },
-                      "kind": {
-                        "global_": {
-                          "kind": 0,
-                          "attribute": 2,
-                          "definition": true
-                        }
-                      },
-                      "source": {
-                        "file": { "key": "test.cpp" },
-                        "lineBegin": 10,
-                        "columnBegin": 1,
-                        "lineEnd": 10,
-                        "columnEnd": 46
-                      }
-                    }
-                  }
-                }
-              },
-              "uses": {
-                "key": {
-                  "spans": [ { "length": 3, "offsets": [ 413 ] } ],
-                  "expansions": [ ],
-                  "spellings": [ ]
-                }
-              }
-            },
-            {
-              "target": {
-                "declaration": {
-                  "variable": {
-                    "key": {
-                      "name": {
-                        "key": {
-                          "name": { "key": "foo" },
-                          "scope": { "global_": { } }
-                        }
-                      },
-                      "type": { "key": "const int" },
-                      "kind": {
-                        "global_": {
-                          "kind": 0,
-                          "attribute": 2,
-                          "definition": true
-                        }
-                      },
-                      "source": {
-                        "file": { "key": "test.cpp" },
-                        "lineBegin": 11,
-                        "columnBegin": 1,
-                        "lineEnd": 11,
-                        "columnEnd": 38
-                      }
-                    }
-                  }
-                }
-              },
-              "uses": {
-                "key": {
-                  "spans": [ { "length": 3, "offsets": [ 426 ] } ],
-                  "expansions": [ ],
-                  "spellings": [ ]
-                }
-              }
-            }
-          ],
-          "free": [ ]
+          "froms": [ ]
         }
       },
       "externals": [ ],
