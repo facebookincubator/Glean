@@ -409,7 +409,7 @@ predicate HackFileCall :
     hack.FileCall { File, Span, HackArgs, CalleeXRef, HackDispatchArg, HackStaticType };
     ConvertCallArguments { HackArgs, CodeArgs};
     ConvertMaybeCallArguments { HackDispatchArg, DispatchArg };
-    ConvertCallee { CalleeXRef, CalleeEntity };
+    ConvertCalleeForFileCall { File, Span, CalleeXRef, CalleeEntity };
     ConvertStaticType { HackStaticType, StaticType };
   )
 
@@ -592,6 +592,38 @@ predicate ConvertCallee :
      nothing,
      nothing
   }
+
+# T157708437: Unresolved calls with matching resolved entities
+# **Don't use this predicate as it will go away.**
+predicate ConvertCalleeForFileCall :
+  { file: src.File,
+    callee_span: src.ByteSpan,
+    hackCallee : maybe hack.XRefTarget
+  , codeCallee : maybe code.Entity
+  }
+  { File, Span, HackCallee, CodeCallee } where
+  ({ just = { declaration = D } } = HackCallee;
+   hack.FileCall { File, Span, _, HackCallee, _, _ };
+   { just = { hack = { decl = D } } } = CodeCallee ) |
+  ({ just = O } = HackCallee;
+   { occurrence = {method = {name = N} } } = O;
+   hack.FileXRefs { File, XRefs };
+   # Look for resolved occurrences with the same method name in the call
+   { target = {declaration = D }, ranges = Uses } = XRefs[..];
+   { method = { name = N } } = D;
+   Sources = prim.relToAbsByteSpans Uses;
+   S = Sources[..];
+   src.ByteSpanContains { Span, S };
+   # Match them with the unresolved occurrence
+   { target = O, ranges = OUses } = XRefs[..];
+   OSources = prim.relToAbsByteSpans OUses;
+   S = OSources[..];
+   { just = { hack = { decl = D } } } = CodeCallee ) |
+  (
+     nothing = HackCallee;
+     hack.FileCall { File, Span, _, nothing, _, _};
+     nothing = CodeCallee
+  )
 
 predicate ConvertStaticType :
   { hackCallee : maybe hack.Declaration
