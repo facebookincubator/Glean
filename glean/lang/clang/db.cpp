@@ -11,6 +11,9 @@
 #include <folly/Overload.h>
 
 #include "glean/lang/clang/path.h"
+#if GLEAN_FACEBOOK
+#include "glean/facebook/lang/clang/path.h"
+#endif
 
 namespace facebook {
 namespace glean {
@@ -31,7 +34,7 @@ std::filesystem::path subpath(
 }
 
 //
-// To get a good filename we need to deal with 4 cases:
+// To get a good filename we need to deal with the cases below:
 //
 // 1. Name is relative, e.g. "folly/File.h". In this case, prepending
 //    subdir (if set) gives us a path relative to root, and goodPath()
@@ -49,6 +52,10 @@ std::filesystem::path subpath(
 // 4. Name is relative, but is a symlink to a file *outside* root. In
 //    this case we want to just keep the original relative path.
 //
+// 5. (META only) Name is relative and inside buck-out/v2,
+//      e.g. "buck-out/v2/gen/fbcode/<hash>/...".
+//    Replace the buck-out hash with the file contents hash to eliminate dupes
+//
 std::pair<Fact<Src::File>, std::filesystem::path> ClangDB::fileFromEntry(
     const clang::FileEntry& entry) {
   auto path = goodPath(root, subpath(subdir, entry.getName().str()));
@@ -58,6 +65,10 @@ std::pair<Fact<Src::File>, std::filesystem::path> ClangDB::fileFromEntry(
   if (path_prefix.has_value()) {
      path = std::filesystem::path(path_prefix.value()) / path;
   }
+#if GLEAN_FACEBOOK
+  path = goodBuckPath(path);
+#endif
+
   const auto file = batch.fact<Src::File>(path.native());
 
   // define FileLines
