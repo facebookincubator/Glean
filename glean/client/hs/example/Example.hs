@@ -81,7 +81,7 @@ doQuery backend Config{..} repo = do
   --   [-] Not typechecked at compile time
   --   [-] Hard to build queries programmatically
   --   [?] May break if the schema changes
-  results <- Glean.runQuery_ backend repo $ Glean.angle $
+  results <- Glean.runQuery_ backend repo $ Glean.recursive $ Glean.angle $
     "cxx1.FileXRefs { xmap = { file = \"" <> fromString cfgFile <> "\" }}"
   printResults results
 
@@ -91,7 +91,7 @@ doQuery backend Config{..} repo = do
   --   [+] Typechecked at compile time
   --   [+] Easy to build queries programmatically
   --   [+] Does not break when the schema changes
-  results <- Glean.runQuery_ backend repo $ Angle.query $
+  results <- Glean.runQuery_ backend repo $ Glean.recursive $ Angle.query $
     predicate @Cxx.FileXRefs $
       rec $
         field @"xmap" (rec (field @"file" (fromString cfgFile) end))
