@@ -110,7 +110,7 @@ cd Glean
 
 ### Build hsthrift and dependencies
 
-Glean depends on hsthrift, fbthrift, folly, rocksdb and some other core libraries.
+Glean depends on hsthrift, folly, rocksdb and some other core libraries.
 We need to set paths to these that the Glean build can find the thrift compiler
 and associated libraries:
 
