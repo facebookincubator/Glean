@@ -212,7 +212,7 @@ kickOffDatabase env@Env{..} kickOff@Thrift.KickOff{..}
 -- | Returns Just an error, or Nothing if valid
 validateDbName :: Repo -> Maybe String
 validateDbName Repo {repo_hash}
-  | Just c <- Text.find (`elem` (". " :: String)) repo_hash
+  | Just c <- Text.find (`elem` ("\\/. " :: String)) repo_hash
   = Just $ printf "DB instance contains illegal character '%c'" c
   | otherwise = Nothing
 
