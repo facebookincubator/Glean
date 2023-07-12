@@ -6,6 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# LANGUAGE CPP #-}
 module Facebook.Service
   ( runFacebookService
   , withBackgroundFacebookService
@@ -23,7 +24,11 @@ import System.Posix.Signals
 import Fb303Core.Types
 import Facebook.Fb303
 import Thrift.Processor
+#ifdef FBTHRIFT
 import Thrift.Server.CppServer
+#else
+import Thrift.Server.HTTP
+#endif
 
 -- | Runs a facebook service on a CPPServer
 -- Handles fb303 statuses as well as shutting down on process signals

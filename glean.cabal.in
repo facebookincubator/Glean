@@ -92,10 +92,13 @@ flag rust-tests
 flag java-lsif-tests
      default: False
 
+-- use fbthrift as the the server/client transport, or HTTP?
+flag fbthrift
+     default: False
+
 common deps
     build-depends:
         fb-util,
-        thrift-cpp-channel,
         thrift-lib,
         HUnit,
         safe,
@@ -150,8 +153,22 @@ common deps
 common hsc2hs-cpp
     hsc2hs-options: --cc=g++ --lflag=-lstdc++ --cflag=-D__HSC2HS__=1 --cflag=-std=c++17
 
+common thrift-server
+    if flag(fbthrift)
+       ghc-options: -DFBTHRIFT
+       build-depends: thrift-server
+    else
+       build-depends: thrift-http
+
+common thrift-client
+    if flag(fbthrift)
+       ghc-options: -DFBTHRIFT
+       build-depends: thrift-cpp-channel
+    else
+       build-depends: thrift-http
+
 library stubs
-    import: fb-haskell, fb-cpp, deps
+    import: fb-haskell, fb-cpp, deps, thrift-server
     visibility: public
     hs-source-dirs: glean/github
     exposed-modules:
@@ -171,7 +188,6 @@ library stubs
         glean:if-glean-hs,
         glean:if-index-hs,
         mangle,
-        thrift-server,
         template-haskell
 
 library tailer
@@ -298,6 +314,8 @@ library rts
     visibility: public
     include-dirs: .
     CXX_LIB_glean_cpp_rts
+    -- __atomic_is_lock_free missing with clang
+    extra-libraries: atomic
     pkgconfig-depends: libfolly, libunwind, libglog, icu-uc, gflags, libxxhash
 
 library rocksdb
@@ -318,7 +336,7 @@ library rocksdb-stats
         glean:rts,
 
 library util
-    import: fb-haskell, fb-cpp, deps
+    import: fb-haskell, fb-cpp, deps, thrift-client
     visibility: public
     hs-source-dirs: glean/util
     exposed-modules:
@@ -893,7 +911,7 @@ library handler
         glean:config,
 
 executable glean-server
-    import: fb-haskell, fb-cpp, deps, exe
+    import: fb-haskell, fb-cpp, deps, exe, thrift-server
     hs-source-dirs: glean/server
     main-is: Glean/Server.hs
     ghc-options: -main-is Glean.Server
@@ -914,8 +932,7 @@ executable glean-server
         glean:db,
         glean:util,
         haskeline >=0.7.3 && <0.8,
-        json,
-        thrift-server
+        json
 
 library shell-lib
     import: fb-haskell, fb-cpp, deps
@@ -947,7 +964,7 @@ library shell-lib
         split
 
 library indexers
-    import: fb-haskell, fb-cpp, deps
+    import: fb-haskell, fb-cpp, deps, thrift-server
     hs-source-dirs:
         glean/lang/clang
         glean/lang/flow
@@ -987,8 +1004,7 @@ library indexers
         glean:lsif,
         glean:scip,
         glean:stubs,
-        glean:util,
-        thrift-server
+        glean:util
 
 library cli-types
     import: fb-haskell, fb-cpp, deps
@@ -1187,7 +1203,7 @@ library if-glass-hs
 
 -- Glass core library
 library glass-lib
-    import: fb-haskell, fb-cpp, deps
+    import: fb-haskell, fb-cpp, deps, thrift-server
     visibility: public
     default-extensions: CPP
     hs-source-dirs: glean/glass
@@ -1266,9 +1282,8 @@ library glass-lib
         glean:schema,
         glean:stubs,
         glean:util,
-        thrift-server,
         uri-encode,
-        split,
+        split
 
 executable glass-server
     import: fb-haskell, fb-cpp, deps, exe
@@ -1301,6 +1316,7 @@ executable glass-democlient
     build-depends:
         glean:if-glass-hs,
         glean:stubs,
+        glean:util,
 
 -- -----------------------------------------------------------------------------
 -- Benchmarks

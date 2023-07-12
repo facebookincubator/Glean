@@ -40,4 +40,4 @@ if test ! -f glean.cabal; then
 fi
 
 cd hsthrift
-./new_install_deps.sh "${EXTRA_DEPS}" --threads "${THREADS}"
+./new_install_deps.sh --no-fbthrift "${EXTRA_DEPS}" --threads "${THREADS}"

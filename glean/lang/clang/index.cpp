@@ -35,8 +35,6 @@
 #include <folly/init/Init.h>
 #endif
 
-#include "thrift/lib/cpp/transport/TTransportException.h"
-
 #include "glean/cpp/glean.h"
 #include "glean/cpp/sender.h"
 #include "glean/cpp/filewriter.h"

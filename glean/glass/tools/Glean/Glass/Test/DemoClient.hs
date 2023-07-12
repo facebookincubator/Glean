@@ -24,11 +24,12 @@ import Util.Text ( textShow, textToInt )
 import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
 
-import Thrift.Monad as Thrift ( ThriftM )
-import Thrift.Protocol ( Protocol )
-import Thrift.Channel.HeaderChannel
-    ( withHeaderChannel, HeaderConfig(..), HeaderWrappedChannel )
-import Thrift.Protocol.Id ( compactProtocolId )
+import Glean.Impl.ThriftService
+import Glean.Util.ThriftService
+import Glean.Util.Service
+import Thrift.Protocol
+import Thrift.Monad hiding (runThrift)
+import Thrift.Channel
 
 import Util.EventBase ( withEventBaseDataplane )
 
@@ -38,14 +39,8 @@ data Options =
     optHost :: Service
   }
 
-data Service =
-  Service {
-    _svcHost :: Text,
-    _svcPort :: Int
-  }
-
 defService :: Service
-defService = Service "127.0.0.1" 26073
+defService = HostPort "127.0.0.1" 26073
 
 data Command
   = List RepoName Path
@@ -116,7 +111,7 @@ readService = do
     (_, "") -> fail "Not a valid host:port"
     (host, portStr) -> case textToInt portStr of
       Left _ -> fail ("Not a valid port: " <> show portStr)
-      Right port -> return (Service host port)
+      Right port -> return (HostPort host (fromIntegral port))
 
 readSearch :: ReadM Command
 readSearch = do
@@ -152,27 +147,24 @@ defDocumentSymbolsReq = def {
   documentSymbolsRequest_include_refs = False -- just definitions
 }
 
-defCfg :: HeaderConfig GlassService
-defCfg = HeaderConfig
-  { headerHost = "127.0.0.1"
-  , headerPort = 26073
-  , headerProtocolId = compactProtocolId
-  , headerConnTimeout = 15000
-  , headerSendTimeout = 15000
-  , headerRecvTimeout = 15000
-  }
+defCfg :: ThriftServiceOptions
+defCfg = def { processingTimeout = Just 15000 }
 
-type GlassM p a = ThriftM p HeaderWrappedChannel GlassService a
+type GlassM p a = forall c . ClientChannel c => ThriftM p c GlassService a
+
+svc :: ThriftService GlassService
+svc =  mkThriftService defService defCfg
 
 main :: IO ()
 main = Glean.withOptions options $ \Options{..} ->
   withEventBaseDataplane $ \evp -> do
-    res <- withHeaderChannel evp defCfg $ case optCommand of
-              List repo path -> runListSymbols repo path
-              Describe sym -> runDescribe sym
-              FindRefs sym -> runFindRefs sym
-              Resolve sym -> runResolve sym
-              Search repo str -> runSearch repo str
+    res <- runThrift evp svc $
+      case optCommand of
+        List repo path -> runListSymbols repo path
+        Describe sym -> runDescribe sym
+        FindRefs sym -> runFindRefs sym
+        Resolve sym -> runResolve sym
+        Search repo str -> runSearch repo str
     mapM_ Text.putStrLn res
 
 runListSymbols :: Protocol p => RepoName -> Path -> GlassM p [Text]

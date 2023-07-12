@@ -4,12 +4,11 @@ packages:
     hsthrift/common/util/fb-util.cabal
     hsthrift/common/github/fb-stubs.cabal
     hsthrift/common/mangle/mangle.cabal
-    hsthrift/cpp-channel/thrift-cpp-channel.cabal
     hsthrift/lib/thrift-lib.cabal
-    hsthrift/server/thrift-server.cabal
     hsthrift/compiler/thrift-compiler.cabal
     hsthrift/haxl/thrift-haxl.cabal
     hsthrift/tests/thrift-tests.cabal
+    hsthrift/http/thrift-http.cabal
     glean.cabal
     glean/lang/clang/glean-clang.cabal
 
@@ -22,3 +21,9 @@ allow-newer: haskeline:base
 constraints: entropy < 0.4.1.9
 
 index-state: 2022-12-25T00:00:00Z
+
+package glean
+    flags: -fbthrift
+
+package thrift-tests
+    flags: -fbthrift
