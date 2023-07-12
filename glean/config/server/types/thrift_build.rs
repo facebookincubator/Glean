@@ -15,13 +15,13 @@ fn main() {
     let out_dir: &Path = out_dir.as_ref();
     fs::write(
         out_dir.join("cratemap"),
-        "recipes crate",
+        "server_config crate",
     ).expect("Failed to write cratemap");
 
     let conf = {
-        let mut conf = Config::from_env(GenContext::Lib).expect("Failed to instantiate thrift_compiler::Config");
+        let mut conf = Config::from_env(GenContext::Types).expect("Failed to instantiate thrift_compiler::Config");
 
-        let path_from_manifest_to_base: &Path = "../../../..".as_ref();
+        let path_from_manifest_to_base: &Path = "../../../../..".as_ref();
         let cargo_manifest_dir =
             env::var_os("CARGO_MANIFEST_DIR").expect("CARGO_MANIFEST_DIR not provided");
         let cargo_manifest_dir: &Path = cargo_manifest_dir.as_ref();
@@ -43,7 +43,7 @@ fn main() {
 
         conf.base_path(base_path);
 
-        conf.types_crate("glean_recipes__types");
+        conf.types_crate("glean_server_config__types");
 
         let options = "serde";
         if !options.is_empty() {
@@ -63,7 +63,7 @@ fn main() {
     };
 
     let srcs: &[&str] = &[
-        "recipes.thrift"
+        "../server_config.thrift"
     ];
     conf.run(srcs).expect("Failed while running thrift compilation");
 }
