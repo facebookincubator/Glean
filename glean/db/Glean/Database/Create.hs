@@ -7,6 +7,7 @@
 -}
 
 {-# LANGUAGE CPP #-}
+{-# LANGUAGE NamedFieldPuns #-}
 module Glean.Database.Create (
   kickOffDatabase,
   updateProperties,
@@ -25,6 +26,7 @@ import qualified Data.Text as Text
 import qualified Data.UUID as Guid ( toText )
 import qualified Data.UUID.V4 as Guid ( nextRandom )
 import TextShow
+import Text.Printf
 
 #ifdef GLEAN_FACEBOOK
 import Facebook.Process
@@ -62,6 +64,8 @@ import Glean.Util.Observed as Observed
 kickOffDatabase :: Env -> Thrift.KickOff -> IO Thrift.KickOffResponse
 kickOffDatabase env@Env{..} kickOff@Thrift.KickOff{..}
   | envReadOnly = dbError kickOff_repo "can't create database in read only mode"
+  | Just err <- validateDbName kickOff_repo = dbError kickOff_repo $
+    "Can't create database: " <> err
   | otherwise = do
       ServerConfig.Config{..} <- Observed.get envServerConfig
       let
@@ -204,6 +208,13 @@ kickOffDatabase env@Env{..} kickOff@Thrift.KickOff{..}
       Just (Thrift.Dependencies_pruned pruned) ->
         Just (Thrift.Dependencies_pruned pruned { pruned_units = [] })
       _other -> _other
+
+-- | Returns Just an error, or Nothing if valid
+validateDbName :: Repo -> Maybe String
+validateDbName Repo {repo_hash}
+  | Just c <- Text.find (`elem` (". " :: String)) repo_hash
+  = Just $ printf "DB instance contains illegal character '%c'" c
+  | otherwise = Nothing
 
 stackedCreate
   :: Env
