@@ -393,7 +393,7 @@ foreign import ccall unsafe glean_rocksdb_get_unit
   -> Ptr CSize
   -> IO CString
 
-foreign import ccall unsafe glean_rocksdb_store_ownership
+foreign import ccall safe glean_rocksdb_store_ownership
   :: Ptr (Database RocksDB)
   -> Ptr ComputedOwnership
   -> IO CString
