@@ -331,7 +331,7 @@ foreign import ccall safe glean_rocksdb_container_optimize
 foreign import ccall safe glean_rocksdb_container_backup
   :: Container -> CString -> IO CString
 
-foreign import ccall unsafe glean_rocksdb_container_open_database
+foreign import ccall safe glean_rocksdb_container_open_database
   :: Container
   -> Fid
   -> UsetId
