@@ -365,6 +365,7 @@ predicate AnnotatedClass :
       Class_ = ClassDeclaration { annotations = As };
       Annotation = As[..]
 
+# base type has subclass
 predicate Inheritance :
   {
     base: Type,
@@ -373,6 +374,7 @@ predicate Inheritance :
   stored { Base, Subclass } where
     Subclass = ClassDeclaration { extends_ = { just = Base } }
 
+# interface type has these implemented classes
 predicate InterfaceInheritance :
   {
     interface_name: Type,
@@ -381,6 +383,21 @@ predicate InterfaceInheritance :
   stored { InterfaceName, Subclass } where
     Subclass = ClassDeclaration { implements_ = Implements_ };
     InterfaceName = Implements_[..];
+
+# generic scope "contains" relationship.
+# e.g. a class contains methods or inner clases
+predicate ContainsDeclaration:
+  {
+    container: Declaration,
+    member: Declaration
+  } stored { Container, Member } where
+    ( { method = { container = Defn } } ) |
+    ( { ctor = { container = Defn } } ) |
+    ( { field = { container = Defn } } ) |
+    ( { interface_ = { container = { just = Defn } } } ) |
+    ( { enum_ = { container = { just = Defn } } } ) |
+    ( { class_ = { container = { just = Defn } } } ) = Member;
+    DeclOfDefn { Defn, Container }
 
 #
 # codemarkup/glass APIs
@@ -542,5 +559,23 @@ predicate ExtendsDeclaration:
     );
     Type { baseType = { object = { type = QName } } } = T;
     QNameToDefinition { QName, Parent }
+
+# extended by child (inheritance)
+predicate ExtendedByDeclaration:
+  {
+    parent: Declaration,
+    child: Declaration
+  }
+  { Parent, Child } where
+    ( { class_ = { name = QName } } = Parent;
+    ) | (
+      { interface_ = { name = QName } } = Parent;
+    ) | (
+      { enum_ = { name = QName } } = Parent;
+    );
+    T = Type { baseType = { object = { type = QName } } };
+    Inheritance { base = T, subclass = CDecl } |
+    InterfaceInheritance { interface_name = T, subclass = CDecl };
+    { class_ = CDecl } = Child
 
 } # schema

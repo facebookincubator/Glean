@@ -96,6 +96,14 @@ predicate JavaContainsParentEntity:
   { { decl = Child }, { decl = Parent } } where
     java.alpha.ParentDeclaration { Child, Parent };
 
+predicate JavaContainsChildEntity:
+  {
+    parent: code.java.Entity,
+    child: code.java.Entity
+  }
+  { { decl = Parent }, { decl = Child } } where
+    java.alpha.ContainsDeclaration { Parent, Child };
+
 predicate JavaExtendsParentEntity:
   {
     child: code.java.Entity,
@@ -103,5 +111,13 @@ predicate JavaExtendsParentEntity:
   }
   { { decl = Child }, { decl = Parent } } where
     java.alpha.ExtendsDeclaration { Child, Parent };
+
+predicate JavaExtendsChildEntity:
+  {
+    child: code.java.Entity,
+    parent: code.java.Entity
+  }
+  { { decl = Parent }, { decl = Child } } where
+    java.alpha.ExtendedByDeclaration { Parent, Child };
 
 }

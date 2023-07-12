@@ -484,6 +484,10 @@ predicate ExtendsChildEntity :
       { thrift = P } = Parent;
       codemarkup.thrift.ThriftExtendsChildEntity { P, C };
       { thrift = C } = Child
+    ) | (
+      { java = P } = Parent;
+      codemarkup.java.JavaExtendsChildEntity { P, C };
+      { java = C } = Child
     )
 
 # A child `is contained by` a parent
@@ -544,6 +548,10 @@ predicate ContainsChildEntity :
       { thrift = P } = Parent;
       codemarkup.thrift.ThriftContainsChildEntity { P, C };
       { thrift = C } = Child
+    ) | (
+      { java = P } = Parent;
+      codemarkup.java.JavaContainsChildEntity { P, C };
+      { java = C } = Child
     )
 
 #
