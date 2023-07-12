@@ -49,7 +49,8 @@ jobs:
         run: |
           apt-get install -y software-properties-common apt-transport-https
           apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xB4112585D386EB94
-          add-apt-repository https://dl.hhvm.com/ubuntu
+          # NB. https stopped working at some point, certificate failure
+          add-apt-repository http://dl.hhvm.com/ubuntu
           apt-get update
           apt-get install -y hhvm-nightly
 
