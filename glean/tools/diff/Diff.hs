@@ -8,6 +8,7 @@
 
 module Diff (diff, DiffOptions(..), Result(..)) where
 
+import Control.Monad (when)
 import Data.Default (Default(..))
 import Foreign.C.String (CString)
 import Foreign.C.Types (CSize(..))
@@ -21,7 +22,7 @@ import Glean.Database.Schema (schemaInventory)
 import Glean.Database.Open (readDatabase)
 import Glean.Database.Types (Env, odbSchema)
 import Glean.FFI (with)
-import Glean.RTS.Foreign.Inventory (Inventory)
+import Glean.RTS.Foreign.Inventory (Inventory, predicates)
 import Glean.RTS.Foreign.Lookup (withLookup, Lookup)
 
 data DiffOptions =  DiffOptions
@@ -44,12 +45,17 @@ data Result = Result
 
 diff :: Env -> DiffOptions -> Repo -> Repo -> IO Result
 diff env DiffOptions{..} one two =
-  withInventory one $ \_ original_ptr ->
-  withInventory two $ \new_inventory_ptr new_ptr -> do
+  withInventory one $ \one_inventory one_lookup_ptr ->
+  withInventory two $ \two_inventory two_lookup_ptr ->
+  with one_inventory $ \inventory_ptr -> do
+  one_preds <- predicates one_inventory
+  two_preds <- predicates two_inventory
+  when (one_preds /= two_preds) $ error "Incompatible database inventories"
+
   (kept, added, removed) <- invoke $ glean_diff
-    new_inventory_ptr
-    original_ptr
-    new_ptr
+    inventory_ptr
+    one_lookup_ptr
+    two_lookup_ptr
     opt_logAdded
     (fromIntegral opt_batchSize)
   return $ Result
@@ -59,9 +65,8 @@ diff env DiffOptions{..} one two =
   where
     withInventory repo f =
       readDatabase env repo $ \odb lookup ->
-      with (schemaInventory (odbSchema odb)) $ \inventory_ptr ->
       withLookup lookup $ \lookup_ptr ->
-      f inventory_ptr lookup_ptr
+      f (schemaInventory (odbSchema odb)) lookup_ptr
 
 foreign import ccall safe glean_diff
   :: Ptr Inventory

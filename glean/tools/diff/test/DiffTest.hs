@@ -10,6 +10,7 @@
 module DiffTest (main) where
 
 import Data.ByteString (ByteString)
+import Data.List (isPrefixOf)
 import qualified Data.Map.Strict as Map
 import Data.Text (Text)
 import qualified Data.Text as Text
@@ -17,13 +18,16 @@ import qualified Data.Text.Encoding as Text
 import Glean (Repo(..), JsonFactBatch, PredicateRef(..))
 import Data.String.Interpolate (i)
 import Test.HUnit
+import System.IO.Temp (withSystemTempDirectory)
 
 import TestRunner
+import Util.Control.Exception (tryAll)
 
 import Diff (diff, Result(..), DiffOptions(..))
 import Schema.Lib (mkBatch, withSchemaFile)
 import Glean.Angle.Types (latestAngleVersion)
 import Glean.Init (withUnitTest)
+import Glean.Database.Config (fileDataStore, Config(..))
 import Glean.Database.Types (Env)
 import Glean.Database.Test
   ( kickOffTestDB
@@ -71,6 +75,19 @@ diffTest = TestList
       two <- create env "two" facts2
       r <- diff env opts one two
       assertEqual "result" (Result 0 1200 1200) r
+
+  , TestLabel "different inventories" $ TestCase $ do
+      withSystemTempDirectory "glean" $ \tmp -> do
+      let setStore config = config { cfgDataStore = fileDataStore tmp }
+          settings = [setStore]
+          facts' = take 1000 facts
+      one <- withSchema settings schema1 $ \env -> create env "one" facts'
+      two <- withSchema settings schema2 $ \env -> create env "two" facts'
+      r   <- withSchema settings schema2 $ \env -> tryAll $ diff env opts one two
+      print r
+      assertBool "fails" $ case r of
+        Left err -> "Incompatible database inventories" `isPrefixOf` show err
+        _ -> False
   ]
   where
     opts = DiffOptions
@@ -80,12 +97,14 @@ diffTest = TestList
         , opt_batchSize = 100
         }
 
-    withEnv act =
+    withSchema settings schema act =
       withSchemaFile latestAngleVersion schema $ \root file ->
       withTestEnv
-        [ setRoot root
-        , setSchemaPath file ]
+        ([ setRoot root
+        , setSchemaPath file ] ++ settings)
         act
+
+    withEnv act = withSchema [] schema1 act
 
 type Fact = (PredicateRef, ByteString)
 
@@ -104,9 +123,19 @@ create env hash content = do
       . Map.fromListWith (++)
       . map (fmap pure)
 
-schema :: String
-schema =
+schema1 :: String
+schema1 =
   [i| schema x.1 {
+        predicate P : nat
+        predicate Q : { a : P, b : P }
+      }
+      schema all.1 : x.1 {}
+  |]
+
+schema2 :: String
+schema2 =
+  [i| schema x.1 {
+        predicate A : string
         predicate P : nat
         predicate Q : { a : P, b : P }
       }
