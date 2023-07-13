@@ -410,6 +410,9 @@ predicate EntityModifiers:
     ) | (
       { python = E } = Entity;
       codemarkup.python.PythonModifiers { E, Modifiers }
+    ) | (
+      { java = E } = Entity;
+      codemarkup.java.JavaModifiers { E, Modifiers }
     );
 
 #

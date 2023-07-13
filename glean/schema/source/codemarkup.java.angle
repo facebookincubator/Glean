@@ -67,6 +67,45 @@ predicate JavaEntityUses:
     java.alpha.DeclarationUses { Decl, File, Spans };
     Span = Spans[..]
 
+#
+# Modififiers, visibility and kinds
+#
+predicate JavaModifiers:
+  {
+    entity: code.java.Entity,
+    modifiers: codemarkup.types.Modifiers
+  }
+  { { decl = Decl }, Modifiers } where
+    ( { param = PDecl } = Decl; { modifier = Ms } = PDecl ) |
+    ( { local = LDecl } = Decl; { modifier = Ms } = LDecl ) |
+    ( { field = FDecl } = Decl; { modifiers = Ms } = FDecl ) |
+    ( { ctor = CDecl } = Decl; { modifiers = Ms } = CDecl ) |
+    ( { method = MDecl } = Decl; { modifiers = Ms } = MDecl ) |
+    ( { interface_ = IDecl } = Decl; { modifiers = Ms } = IDecl ) |
+    ( { class_ = CDecl } = Decl; { modifiers = Ms } = CDecl ) |
+    ( { enum_ = EDecl } = Decl; { modifiers = Ms } = EDecl );
+    _ = Ms; # defeat binds check
+    IsAbstract = if ( Ms[..] = java.alpha.Modifier abstract_ )
+      then (true) else (false);
+    IsFinal = if ( Ms[..] = java.alpha.Modifier final_ )
+      then (true) else (false);
+    IsStatic = if ( Ms[..] = java.alpha.Modifier static_ )
+      then (true) else (false);
+    IsVolatile =
+      if ( Ms[..] = java.alpha.Modifier volatile_ )
+        then (true) else (false);
+    # also: default, native, strictfp, synchronized, transient
+    { isAbstract = IsAbstract,
+      isFinal = IsFinal,
+      isAsync = false,
+      isStatic = IsStatic,
+      isReadonly = false,
+      isConst = false,
+      isMutable = false,
+      isVolatile = IsVolatile,
+      isVirtual = false,
+      isInline = false } = Modifiers;
+
 # kinds and symbol info
 predicate JavaEntityKind:
   {
@@ -83,6 +122,8 @@ predicate JavaEntityKind:
     ( { interface_ = _ } = Decl; Interface = Kind ) |
     ( { class_ = _ } = Decl; Class_ = Kind ) |
     ( { enum_ = _ } = Decl; Enum_ = Kind );
+
+
 
 #
 # Relationships
