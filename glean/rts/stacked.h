@@ -110,7 +110,7 @@ struct StackedBase : Iface {
     }
   }
 
-  UsetId getOwner(Id id) {
+  UsetId getOwner(Id id) override {
     // The stacked DB may specify the owner for a fact in the base DB
     // due to propagation of ownership from facts in the stacked DB,
     // so we have to check the stacked DB first.
