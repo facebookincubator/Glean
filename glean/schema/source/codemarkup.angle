@@ -394,6 +394,9 @@ predicate EntityVisibility : code.Entity -> codemarkup.types.Visibility
     ) | (
       { python = E } = Entity;
       codemarkup.python.PythonVisibility { E, Visibility }
+    ) | (
+      { java = E } = Entity;
+      codemarkup.java.JavaVisibility { E, Visibility }
     )
 
 # Language keywords like `static` or `final`, or `mutable` ..

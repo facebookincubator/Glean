@@ -70,12 +70,33 @@ predicate JavaEntityUses:
 #
 # Modififiers, visibility and kinds
 #
+
+predicate JavaVisibility:
+  {
+    entity: code.java.Entity,
+    visibility: codemarkup.types.Visibility
+  }
+  { { decl = Decl } , Visibility } where
+    ( { param = PDecl } = Decl; { modifier = Ms } = PDecl ) |
+    ( { local = LDecl } = Decl; { modifier = Ms } = LDecl ) |
+    ( { field = FDecl } = Decl; { modifiers = Ms } = FDecl ) |
+    ( { ctor = CDecl } = Decl; { modifiers = Ms } = CDecl ) |
+    ( { method = MDecl } = Decl; { modifiers = Ms } = MDecl ) |
+    ( { interface_ = IDecl } = Decl; { modifiers = Ms } = IDecl ) |
+    ( { class_ = CDecl } = Decl; { modifiers = Ms } = CDecl ) |
+    ( { enum_ = EDecl } = Decl; { modifiers = Ms } = EDecl );
+    M = Ms[..];
+    ( java.alpha.Modifier private_ = M ; Private ) |
+    ( java.alpha.Modifier protected_ = M ; Protected ) |
+    ( java.alpha.Modifier public_ = M ; Public ) = Visibility;
+
 predicate JavaModifiers:
   {
     entity: code.java.Entity,
     modifiers: codemarkup.types.Modifiers
   }
   { { decl = Decl }, Modifiers } where
+
     ( { param = PDecl } = Decl; { modifier = Ms } = PDecl ) |
     ( { local = LDecl } = Decl; { modifier = Ms } = LDecl ) |
     ( { field = FDecl } = Decl; { modifiers = Ms } = FDecl ) |
