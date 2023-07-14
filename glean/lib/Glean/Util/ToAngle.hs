@@ -23,6 +23,7 @@ import qualified Glean.Schema.Scip.Types as Scip
 import qualified Glean.Schema.Python.Types as Py
 import qualified Glean.Schema.Thrift.Types as Thrift
 import qualified Glean.Schema.JavaAlpha.Types as Java
+import qualified Glean.Schema.KotlinAlpha.Types as Kotlin
 
 import qualified Glean.Schema.CodeCxx.Types as Cxx
 import qualified Glean.Schema.CodePp.Types as Pp
@@ -187,6 +188,14 @@ instance ToAngle Java.Declaration where
   toAngle (Java.Declaration_param x) = alt @"param" (mkKey x)
   toAngle (Java.Declaration_local x) = alt @"local" (mkKey x)
   toAngle Java.Declaration_EMPTY = error "unknown Declaration"
+
+-- Kotlin
+
+instance ToAngle Kotlin.Declaration where
+  toAngle (Kotlin.Declaration_class_ x) = alt @"class_" (mkKey x)
+  toAngle (Kotlin.Declaration_method x) = alt @"method" (mkKey x)
+  toAngle (Kotlin.Declaration_variable x) = alt @"variable" (mkKey x)
+  toAngle Kotlin.Declaration_EMPTY = error "unknown Declaration"
 
 -- LSIF and SCIP languages
 

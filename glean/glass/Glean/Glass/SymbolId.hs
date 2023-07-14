@@ -95,6 +95,7 @@ import qualified Glean.Schema.CodeScip.Types as Scip
 import Glean.Schema.CodeErlang.Types as Erlang ( Entity(Entity_decl) )
 import Glean.Schema.CodeHack.Types as Hack ( Entity(Entity_decl) )
 import Glean.Schema.CodeJava.Types as Java ( Entity(Entity_decl) )
+import Glean.Schema.CodeKotlin.Types as Kotlin ( Entity(Entity_decl) )
 import Glean.Schema.CodePython.Types as Python ( Entity(Entity_decl) )
 import Glean.Schema.CodeThrift.Types as Thrift ( Entity(Entity_decl) )
 
@@ -184,6 +185,7 @@ shortCodeTable =
   , (Language_Go , "go")
   , (Language_TypeScript , "ts")
   , (Language_Java , "java")
+  , (Language_Kotlin , "kotlin")
   ]
 
 languageToCode :: Map.Map Language Text
@@ -275,6 +277,7 @@ instance Symbol Code.Entity where
     Code.Entity_erlang x -> toSymbolWithPath x p
     Code.Entity_hs x -> toSymbolWithPath x p
     Code.Entity_java x -> toSymbolWithPath x p
+    Code.Entity_kotlin x -> toSymbolWithPath x p
     Code.Entity_pp x -> toSymbolWithPath x p
     Code.Entity_thrift (Thrift.Entity_decl x) -> toSymbolWithPath x p
     Code.Entity_lsif ent -> case ent of -- enumerate all variants for lsif
@@ -322,6 +325,8 @@ entityToAngle e = case e of
     alt @"buck" (toAngle x)
   Code.Entity_java (Java.Entity_decl x) -> Right $
     alt @"java" (alt @"decl" (toAngle x))
+  Code.Entity_kotlin (Kotlin.Entity_decl x) -> Right $
+    alt @"kotlin" (alt @"decl" (toAngle x))
   Code.Entity_thrift (Thrift.Entity_decl x) -> Right $
     alt @"thrift" (alt @"decl" (toAngle x))
   -- lsif languages, enumerate all lang constructors
@@ -358,6 +363,7 @@ instance ToQName Code.Entity where
     Code.Entity_pp x -> toQName x
     Code.Entity_erlang x -> toQName x
     Code.Entity_java x -> toQName x
+    Code.Entity_kotlin x -> toQName x
     Code.Entity_thrift (Thrift.Entity_decl x) -> toQName x
     Code.Entity_lsif se -> case se of -- enumerate all cases for lsif
       Lsif.Entity_erlang x -> toQName x
