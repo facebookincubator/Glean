@@ -10,8 +10,8 @@ type Entity =
   }
 
  type Annotations =
- {
-   annotations : [java.alpha.Annotation] |
- }
+  {
+    annotations : [java.alpha.Annotation] |
+  }
 
 }

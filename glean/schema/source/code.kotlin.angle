@@ -1,0 +1,12 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema code.kotlin.1 {
+
+import kotlin.alpha.2
+
+type Entity =
+  {
+    decl : kotlin.alpha.Declaration |
+  }
+
+}

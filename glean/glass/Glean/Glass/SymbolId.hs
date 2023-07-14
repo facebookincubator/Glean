@@ -212,6 +212,7 @@ entityLanguage e = case e of
   Code.Entity_hack{} -> Language_Hack
   Code.Entity_hs{} -> Language_Haskell
   Code.Entity_java{} -> Language_Java
+  Code.Entity_kotlin{} -> Language_Kotlin
   Code.Entity_pp{} -> Language_PreProcessor
   Code.Entity_python{} -> Language_Python
   Code.Entity_thrift{} -> Language_Thrift
@@ -238,6 +239,7 @@ languageToCodeLang l = case l of
   Language_Hack -> Just Code.Language_Hack
   Language_Haskell -> Just Code.Language_Haskell
   Language_Java -> Just Code.Language_Java
+  Language_Kotlin -> Just Code.Language_Kotlin
   Language_ObjectiveC -> Just Code.Language_Cpp -- we don't distinguish these
   Language_Python -> Just Code.Language_Python
   Language_PreProcessor -> Just Code.Language_PreProcessor
@@ -395,7 +397,6 @@ entityKind :: Code.Entity -> Glean.RepoHaxl u w (Maybe Glass.SymbolKind)
 entityKind (Code.Entity_cxx e) = Cxx.cxxEntityKind e
 entityKind (Code.Entity_pp e) = Pp.ppEntityKind e
 entityKind _ = return Nothing
-
 
 nativeSymbol :: Code.Entity -> Glean.RepoHaxl u w (Maybe Text)
 nativeSymbol (Code.Entity_cxx e) = toNativeSymbol e

@@ -30,26 +30,28 @@ predicate VariableDeclaration :
     location : DeclarationLocation,
   }
 
-
 # A method declaration
 predicate MethodDeclaration :
   {
     name : javakotlin.alpha.MethodName,
     parameters : [VariableDeclaration],
     returnType : maybe Type,
-    loc : src.Loc,
+    loc : src.Loc, # this needs to be a src.ByteSpan
     container: maybe Declaration
   }
 
- type Declaration = {
-  class_ : ClassDeclaration |
-  # More to be added later
-}
- predicate ClassDeclaration :
+predicate ClassDeclaration :
   {
     name : javakotlin.alpha.QName,
     implements_ : [javakotlin.alpha.QName],
     location : DeclarationLocation,
   }
+
+# The type of Kotlin symbol entities
+type Declaration = {
+  class_ : ClassDeclaration |
+  method : MethodDeclaration |
+  variable : VariableDeclaration |
+}
 
 }

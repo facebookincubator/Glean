@@ -9,6 +9,7 @@ import code.flow.2
 import code.hack.4
 import code.hs.2
 import code.java.5
+import code.kotlin.1
 import code.lsif.2
 import code.pp.1
 import code.python.1
@@ -21,6 +22,7 @@ type Entity =
     cxx : code.cxx.Entity |
     pp : code.pp.Entity |
     java : code.java.Entity |
+    kotlin : code.kotlin.Entity |
     hs : code.hs.Entity |
     python : code.python.Entity |
     hack : code.hack.Entity |
@@ -53,6 +55,7 @@ predicate EntityLanguage:
     ( { cxx = _ } = Entity; Cpp = Language ) |
     ( { pp = _ } = Entity; PreProcessor = Language ) |
     ( { java = _ } = Entity; Java = Language ) |
+    ( { kotlin = _ } = Entity; Kotlin = Language ) |
     ( { hs = _ } = Entity; Haskell = Language ) |
     ( { python = _ } = Entity; Python = Language ) |
     ( { hack = _ } = Entity; Hack = Language ) |
