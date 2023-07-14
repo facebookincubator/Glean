@@ -1,0 +1,796 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "java": {
+          "decl": {
+            "class_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "Glean" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "glean" },
+                        "container": {
+                          "key": {
+                            "base": { "key": "glean" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "facebook" },
+                                "container": {
+                                  "key": { "base": { "key": "com" } }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "modifiers": [ 6 ],
+                "implements_": [ ],
+                "annotations": [
+                  {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "Deprecated" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "lang" },
+                              "container": {
+                                "key": { "base": { "key": "java" } }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "constructor": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Deprecated" },
+                              "context": {
+                                "key": {
+                                  "base": { "key": "lang" },
+                                  "container": {
+                                    "key": { "base": { "key": "java" } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "signature": [ ]
+                        }
+                      },
+                      "span": { "start": 110, "length": 11 }
+                    }
+                  }
+                ],
+                "typeParams": [ ],
+                "span": { "start": 110, "length": 354 },
+                "file": {
+                  "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/Glean.java"
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": {
+        "java": {
+          "annotations": [
+            {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "Deprecated" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "lang" },
+                        "container": { "key": { "base": { "key": "java" } } }
+                      }
+                    }
+                  }
+                },
+                "constructor": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "Deprecated" },
+                        "context": {
+                          "key": {
+                            "base": { "key": "lang" },
+                            "container": {
+                              "key": { "base": { "key": "java" } }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "signature": [ ]
+                  }
+                },
+                "span": { "start": 110, "length": 11 }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "java": {
+          "decl": {
+            "ctor": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "<init>" },
+                        "context": {
+                          "key": {
+                            "base": { "key": "POJO" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "glean" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "signature": [ ]
+                  }
+                },
+                "parameters": [ ],
+                "annotations": [
+                  {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "Deprecated" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "lang" },
+                              "container": {
+                                "key": { "base": { "key": "java" } }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "constructor": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Deprecated" },
+                              "context": {
+                                "key": {
+                                  "base": { "key": "lang" },
+                                  "container": {
+                                    "key": { "base": { "key": "java" } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "signature": [ ]
+                        }
+                      },
+                      "span": { "start": 460, "length": 11 }
+                    }
+                  }
+                ],
+                "modifiers": [ 6 ],
+                "typeParams": [ ],
+                "throws_": [ ],
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "POJO" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "glean" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "glean" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "facebook" },
+                                      "container": {
+                                        "key": { "base": { "key": "com" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "modifiers": [ 6 ],
+                      "implements_": [ ],
+                      "annotations": [ ],
+                      "typeParams": [ ],
+                      "span": { "start": 110, "length": 898 },
+                      "file": {
+                        "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
+                      }
+                    }
+                  }
+                },
+                "span": { "start": 460, "length": 107 }
+              }
+            }
+          }
+        }
+      },
+      "annotations": {
+        "java": {
+          "annotations": [
+            {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "Deprecated" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "lang" },
+                        "container": { "key": { "base": { "key": "java" } } }
+                      }
+                    }
+                  }
+                },
+                "constructor": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "Deprecated" },
+                        "context": {
+                          "key": {
+                            "base": { "key": "lang" },
+                            "container": {
+                              "key": { "base": { "key": "java" } }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "signature": [ ]
+                  }
+                },
+                "span": { "start": 460, "length": 11 }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "java": {
+          "decl": {
+            "field": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "b" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "POJO" },
+                        "container": {
+                          "key": {
+                            "base": { "key": "glean" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "glean" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "facebook" },
+                                    "container": {
+                                      "key": { "base": { "key": "com" } }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": {
+                  "key": {
+                    "baseType": { "primitive": { "key": { "type": "int" } } },
+                    "typeArgs": [ ],
+                    "interopType": { "key": { "primitive": "I" } },
+                    "span": { "start": 0, "length": 0 }
+                  }
+                },
+                "annotations": [
+                  {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "Deprecated" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "lang" },
+                              "container": {
+                                "key": { "base": { "key": "java" } }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "constructor": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Deprecated" },
+                              "context": {
+                                "key": {
+                                  "base": { "key": "lang" },
+                                  "container": {
+                                    "key": { "base": { "key": "java" } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "signature": [ ]
+                        }
+                      },
+                      "span": { "start": 165, "length": 11 }
+                    }
+                  }
+                ],
+                "modifiers": [ 2, 4, 7 ],
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "POJO" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "glean" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "glean" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "facebook" },
+                                      "container": {
+                                        "key": { "base": { "key": "com" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "modifiers": [ 6 ],
+                      "implements_": [ ],
+                      "annotations": [ ],
+                      "typeParams": [ ],
+                      "span": { "start": 110, "length": 898 },
+                      "file": {
+                        "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
+                      }
+                    }
+                  }
+                },
+                "span": { "start": 165, "length": 43 }
+              }
+            }
+          }
+        }
+      },
+      "annotations": {
+        "java": {
+          "annotations": [
+            {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "Deprecated" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "lang" },
+                        "container": { "key": { "base": { "key": "java" } } }
+                      }
+                    }
+                  }
+                },
+                "constructor": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "Deprecated" },
+                        "context": {
+                          "key": {
+                            "base": { "key": "lang" },
+                            "container": {
+                              "key": { "base": { "key": "java" } }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "signature": [ ]
+                  }
+                },
+                "span": { "start": 165, "length": 11 }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "java": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "fetch" },
+                        "context": {
+                          "key": {
+                            "base": { "key": "Glean" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "glean" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "signature": [ ]
+                  }
+                },
+                "parameters": [ ],
+                "returnType": {
+                  "key": {
+                    "baseType": {
+                      "object": {
+                        "key": {
+                          "type": {
+                            "key": {
+                              "name": { "key": "POJO" },
+                              "context": {
+                                "key": {
+                                  "base": { "key": "glean" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "glean" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "facebook" },
+                                          "container": {
+                                            "key": { "base": { "key": "com" } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "span": { "start": 251, "length": 4 }
+                        }
+                      }
+                    },
+                    "typeArgs": [ ],
+                    "interopType": {
+                      "key": {
+                        "object": {
+                          "key": {
+                            "base": { "key": "POJO" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "glean" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "span": { "start": 0, "length": 0 }
+                  }
+                },
+                "annotations": [
+                  {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "Deprecated" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "lang" },
+                              "container": {
+                                "key": { "base": { "key": "java" } }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "constructor": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Deprecated" },
+                              "context": {
+                                "key": {
+                                  "base": { "key": "lang" },
+                                  "container": {
+                                    "key": { "base": { "key": "java" } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "signature": [ ]
+                        }
+                      },
+                      "span": { "start": 195, "length": 11 }
+                    }
+                  },
+                  {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "SuppressWarnings" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "lang" },
+                              "container": {
+                                "key": { "base": { "key": "java" } }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "constructor": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "SuppressWarnings" },
+                              "context": {
+                                "key": {
+                                  "base": { "key": "lang" },
+                                  "container": {
+                                    "key": { "base": { "key": "java" } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "signature": [ ]
+                        }
+                      },
+                      "span": { "start": 209, "length": 32 }
+                    }
+                  }
+                ],
+                "modifiers": [ 6 ],
+                "typeParams": [ ],
+                "throws_": [ ],
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "Glean" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "glean" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "glean" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "facebook" },
+                                      "container": {
+                                        "key": { "base": { "key": "com" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "modifiers": [ 6 ],
+                      "implements_": [ ],
+                      "annotations": [
+                        {
+                          "key": {
+                            "name": {
+                              "key": {
+                                "name": { "key": "Deprecated" },
+                                "context": {
+                                  "key": {
+                                    "base": { "key": "lang" },
+                                    "container": {
+                                      "key": { "base": { "key": "java" } }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "constructor": {
+                              "key": {
+                                "name": {
+                                  "key": {
+                                    "name": { "key": "Deprecated" },
+                                    "context": {
+                                      "key": {
+                                        "base": { "key": "lang" },
+                                        "container": {
+                                          "key": { "base": { "key": "java" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "signature": [ ]
+                              }
+                            },
+                            "span": { "start": 110, "length": 11 }
+                          }
+                        }
+                      ],
+                      "typeParams": [ ],
+                      "span": { "start": 110, "length": 354 },
+                      "file": {
+                        "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/Glean.java"
+                      }
+                    }
+                  }
+                },
+                "span": { "start": 195, "length": 97 }
+              }
+            }
+          }
+        }
+      },
+      "annotations": {
+        "java": {
+          "annotations": [
+            {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "Deprecated" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "lang" },
+                        "container": { "key": { "base": { "key": "java" } } }
+                      }
+                    }
+                  }
+                },
+                "constructor": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "Deprecated" },
+                        "context": {
+                          "key": {
+                            "base": { "key": "lang" },
+                            "container": {
+                              "key": { "base": { "key": "java" } }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "signature": [ ]
+                  }
+                },
+                "span": { "start": 195, "length": 11 }
+              }
+            },
+            {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "SuppressWarnings" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "lang" },
+                        "container": { "key": { "base": { "key": "java" } } }
+                      }
+                    }
+                  }
+                },
+                "constructor": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "SuppressWarnings" },
+                        "context": {
+                          "key": {
+                            "base": { "key": "lang" },
+                            "container": {
+                              "key": { "base": { "key": "java" } }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "signature": [ ]
+                  }
+                },
+                "span": { "start": 209, "length": 32 }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+]

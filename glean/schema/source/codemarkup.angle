@@ -378,7 +378,8 @@ predicate EntitySource:
 
 
 #
-# Annotations
+# Annotations. decorates, attributes or other symbols/strings associated with
+# symbols. e.g. @nullsafe or <<__Memoize>>
 #
 
 predicate EntityToAnnotations :
@@ -386,13 +387,23 @@ predicate EntityToAnnotations :
     entity: code.Entity,
     annotations : code.Annotations,
   }
-  { E, A } where
-    ( codemarkup.cxx.CxxAnnotation { Ent, Anns };
-      { cxx = Ent } = E; { cxx = Anns } = A ) |
-    ( codemarkup.hack.HackAnnotation{ Ent, Anns };
-     { hack = Ent } = E; { hack = Anns } = A ) |
-    ( codemarkup.python.PythonAnnotation{ Ent, Anns };
-     { python = Ent } = E; { python = Anns } = A );
+  { Entity, Annotations } where
+    ( { cxx = Ent } = Entity;
+      codemarkup.cxx.CxxAnnotation { Ent, Anns };
+      { cxx = Anns } = Annotations
+    ) | (
+      { hack = Ent } = Entity;
+      codemarkup.hack.HackAnnotation { Ent, Anns };
+      { hack = Anns } = Annotations
+    ) | (
+      { python = Ent } = Entity;
+      codemarkup.python.PythonAnnotation { Ent, Anns };
+      { python = Anns } = Annotations
+    ) | (
+      { java = Ent } = Entity;
+      codemarkup.java.JavaAnnotation { Ent, Anns };
+      { java = Anns } = Annotations
+    );
 
 #
 # Visibility and other keywords

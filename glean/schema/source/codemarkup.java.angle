@@ -144,7 +144,15 @@ predicate JavaEntityKind:
     ( { class_ = _ } = Decl; Class_ = Kind ) |
     ( { enum_ = _ } = Decl; Enum_ = Kind );
 
-
+# annotations and attributes
+predicate JavaAnnotation :
+  {
+    entity: code.java.Entity,
+    anns: code.java.Annotations,
+  }
+  { { decl = Decl }, { annotations = Anns } } where
+    java.alpha.DeclarationAnnotations { Decl, Anns };
+    Anns != []; # filter out all the empty results. no match implies empty
 
 #
 # Relationships
