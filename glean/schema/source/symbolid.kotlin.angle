@@ -1,0 +1,35 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema symbolid.kotlin.1 {
+
+import src.1
+import code.kotlin.1
+import codemarkup.types.1
+import kotlin.alpha.2
+import javakotlin.alpha.1
+
+# You can find everything other than methods and ctors via a qname alone
+predicate LookupDeclaration:
+  {
+    qname: javakotlin.alpha.QName,
+    decl : kotlin.alpha.Declaration
+  }
+  { QName, Decl } where
+    ( CDecl = kotlin.alpha.ClassDeclaration { name = QName };
+      { class_ = CDecl } = Decl
+    ) | (
+      VDecl = kotlin.alpha.VariableDeclaration { name = QName };
+      { variable = VDecl } = Decl
+    );
+
+# Otherwise fetch a method or a ctor.
+predicate LookupMethodDeclaration:
+  {
+    mname: javakotlin.alpha.MethodName,
+    decl : kotlin.alpha.Declaration
+  }
+  { MName, Decl } where
+    MDecl = kotlin.alpha.MethodDeclaration { name = MName };
+    { method = MDecl } = Decl
+
+}
