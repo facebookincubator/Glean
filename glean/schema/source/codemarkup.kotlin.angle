@@ -57,6 +57,25 @@ predicate KotlinEntityKind:
     ( { class_ = _ } = Decl; Class_ = Kind ) |
     ( { variable = _ } = Decl; Variable = Kind );
 
+#
+# Relationships
+#
+
+predicate KotlinContainsParentEntity:
+  {
+    child: code.kotlin.Entity,
+    parent: code.kotlin.Entity
+  }
+  { { decl = Child }, { decl = Parent } } where
+    kotlin.alpha.ParentDeclaration { Child, Parent };
+
+predicate KotlinExtendsParentEntity:
+  {
+    child: code.kotlin.Entity,
+    parent: code.kotlin.Entity
+  }
+  { { decl = Child }, { decl = Parent } } where
+    kotlin.alpha.ExtendsDeclaration { Child, Parent };
 
 
 }

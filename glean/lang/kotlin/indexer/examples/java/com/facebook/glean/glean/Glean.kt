@@ -2,7 +2,12 @@
 
 package com.facebook.glean.glean
 
-class Glean {
+open class SuperGlean {}
+
+class Glean : SuperGlean {
+
+  constructor() : super()
+
   fun fetch(): ClassA {
     return ClassA()
   }

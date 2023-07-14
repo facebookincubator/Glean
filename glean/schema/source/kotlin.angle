@@ -102,4 +102,30 @@ predicate DeclarationFileLocation:
       { 0, 1 } = Span; # fake span todo
     )
 
+# entity relationships
+
+# Container parent (by scope)
+predicate ParentDeclaration:
+  {
+    child: Declaration,
+    parent: Declaration
+  }
+  { Child, Parent } where
+    { method = MDecl } = Child;
+    { container = { just = Parent } } = MDecl
+
+# extends parent (classes `implement` interfaces, but we don't have
+# InterfaceDecls currently). So this isn't very useful yet
+predicate ExtendsDeclaration:
+  {
+    child: Declaration,
+    parent: Declaration
+  }
+  { Child, Parent } where
+    { class_ = CDecl } = Child;
+    { implements_ = QNames } = CDecl;
+    QName = QNames[..];
+    PDecl = ClassDeclaration { name = QName }; # don't think this matches
+    { class_ = PDecl } = Parent
+
 }

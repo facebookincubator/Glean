@@ -81,7 +81,7 @@
         "file": {
           "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
         },
-        "line": 6,
+        "line": 11,
         "column": 3
       },
       "container": {
@@ -108,13 +108,37 @@
                 }
               }
             },
-            "implements_": [ ],
+            "implements_": [
+              {
+                "key": {
+                  "name": { "key": "SuperGlean" },
+                  "context": {
+                    "key": {
+                      "base": { "key": "glean" },
+                      "container": {
+                        "key": {
+                          "base": { "key": "glean" },
+                          "container": {
+                            "key": {
+                              "base": { "key": "facebook" },
+                              "container": {
+                                "key": { "base": { "key": "com" } }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ],
             "location": {
               "key": {
                 "file": {
                   "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
                 },
-                "span": { "start": 109, "length": 311 }
+                "span": { "start": 135, "length": 352 }
               }
             }
           }
@@ -775,7 +799,7 @@
                 "file": {
                   "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
                 },
-                "span": { "start": 254, "length": 20 }
+                "span": { "start": 321, "length": 20 }
               }
             }
           }
@@ -785,7 +809,7 @@
         "file": {
           "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
         },
-        "line": 13,
+        "line": 18,
         "column": 5
       }
     }

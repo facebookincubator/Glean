@@ -473,6 +473,10 @@ predicate ExtendsParentEntity :
       { java = C } = Child;
       codemarkup.java.JavaExtendsParentEntity { C, P };
       { java = P } = Parent
+    ) | (
+      { kotlin = C } = Child;
+      codemarkup.kotlin.KotlinExtendsParentEntity { C, P };
+      { kotlin = P } = Parent
     )
 
 # This implements the ExtendsParentEntity relation, but for "interesting"
@@ -551,6 +555,10 @@ predicate ContainsParentEntity :
       { java = C } = Child;
       codemarkup.java.JavaContainsParentEntity { C, P };
       { java = P } = Parent
+    ) | (
+      { kotlin = C } = Child;
+      codemarkup.kotlin.KotlinContainsParentEntity { C, P };
+      { kotlin = P } = Parent
     )
 
 # A parent `contains` a child
