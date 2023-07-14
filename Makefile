@@ -157,6 +157,7 @@ SCHEMAS= \
 	code_hack \
 	code_hs \
 	code_java \
+	code_kotlin \
 	code_lsif \
 	codemarkup \
 	codemarkup_buck \
@@ -190,6 +191,7 @@ SCHEMAS= \
 	java \
 	java_alpha \
 	javakotlin_alpha \
+	kotlin_alpha \
 	lsif \
 	lsif_types \
 	pp1 \
