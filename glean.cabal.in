@@ -738,6 +738,7 @@ library schema
         Glean.Schema.Src.Types
         Glean.Schema.SymbolidCxx.Types
         Glean.Schema.SymbolidJava.Types
+        Glean.Schema.SymbolidKotlin.Types
         Glean.Schema.Sys.Types
         Glean.Schema.Thrift.Types
     build-depends:
@@ -1249,6 +1250,7 @@ library glass-lib
         Glean.Glass.Search.Hack
         Glean.Glass.Search.Haskell
         Glean.Glass.Search.Java
+        Glean.Glass.Search.Kotlin
         Glean.Glass.Search.LSIF
         Glean.Glass.Search.Python
         Glean.Glass.SearchRelated

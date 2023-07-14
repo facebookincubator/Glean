@@ -208,6 +208,7 @@ SCHEMAS= \
 	src \
 	symbolid_cxx \
 	symbolid_java \
+	symbolid_kotlin \
 	sys \
 	thrift \
 
