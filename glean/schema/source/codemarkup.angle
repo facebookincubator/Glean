@@ -10,6 +10,7 @@ import codemarkup.flow.2
 import codemarkup.hack.2
 import codemarkup.haskell.2
 import codemarkup.java.1
+import codemarkup.kotlin.1
 import codemarkup.lsif.3
 import codemarkup.pp.3
 import codemarkup.python.2
@@ -139,7 +140,9 @@ predicate ResolveLocation:
     (codemarkup.scip.ScipResolveLocation { Location, E };
      { scip = E } = Entity) |
     (codemarkup.java.JavaResolveLocation { Location, E };
-     { java = E } = Entity);
+     { java = E } = Entity) |
+    (codemarkup.kotlin.KotlinResolveLocation { Location, E };
+     { kotlin = E } = Entity);
 
 predicate EntityLocation:
   {
@@ -170,7 +173,9 @@ predicate EntityLocation:
     (codemarkup.scip.ScipEntityLocation { E, Location };
      { scip = E } = Entity) |
     (codemarkup.java.JavaEntityLocation { E, Location };
-     { java = E } = Entity);
+     { java = E } = Entity) |
+    (codemarkup.kotlin.KotlinEntityLocation { E, Location };
+     { kotlin = E } = Entity);
 
 # Finding xrefs. All references in a file and their targets
 predicate FileEntityXRefLocations:

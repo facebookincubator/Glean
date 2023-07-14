@@ -1,0 +1,33 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema codemarkup.kotlin.1 {
+
+import src.1
+import code.kotlin.1
+import codemarkup.types.1
+import kotlin.alpha.2
+
+#
+# Resolving locations to entities
+#
+
+predicate KotlinResolveLocation:
+  {
+    location: codemarkup.types.Location,
+    entity: code.kotlin.Entity,
+  }
+  { { Name, File, { span = Span }, nothing }, { decl = Decl } } where
+    kotlin.alpha.FileDeclarations { File, Decl };
+    kotlin.alpha.DeclarationFileLocation { Decl, File, Span, Name };
+
+predicate KotlinEntityLocation:
+  {
+    entity: code.kotlin.Entity,
+    location: codemarkup.types.Location,
+  }
+  { Entity, { Name, File, { span = Span }, nothing } } where
+    { decl = Decl } = Entity;
+    kotlin.alpha.DeclarationFileLocation { Decl, File, Span, Name };
+
+
+}

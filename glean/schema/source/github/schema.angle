@@ -21,6 +21,8 @@ schema all.10 :
   codemarkup.flow.2,
   codemarkup.hack.2,
   codemarkup.haskell.2,
+  codemarkup.java.1,
+  codemarkup.kotlin.1,
   codemarkup.lsif.3,
   codemarkup.pp.3,
   codemarkup.python.2,

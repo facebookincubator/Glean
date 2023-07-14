@@ -5,6 +5,7 @@ schema kotlin.alpha.2 {
   import javakotlin.alpha.1
   import src.1
 
+# table of definitions of things
 predicate DeclarationLocation : {
     file : src.File,
     span : src.ByteSpan
@@ -48,10 +49,57 @@ predicate ClassDeclaration :
   }
 
 # The type of Kotlin symbol entities
-type Declaration = {
-  class_ : ClassDeclaration |
-  method : MethodDeclaration |
-  variable : VariableDeclaration |
-}
+type Declaration =
+  {
+    class_ : ClassDeclaration |
+    method : MethodDeclaration |
+    variable : VariableDeclaration |
+  }
+
+#
+# Re-indexing by file for codemarkup use
+#
+
+predicate FileDeclarations:
+  {
+    file: src.File,
+    decl: Declaration
+  } stored { File, Decl } where
+    ( ( CDecl = ClassDeclaration { location = Loc };
+        { class_ = CDecl }  = Decl;
+      ) | (
+        VDecl = VariableDeclaration { location = Loc };
+        { variable = VDecl } = Decl;
+      );
+      { file = File } = Loc;
+    ) | (
+      MDecl = MethodDeclaration { loc = { file = File } };
+      { method = MDecl } = Decl;
+    )
+
+predicate DeclarationFileLocation:
+  {
+    decl: Declaration,
+    file: src.File,
+    span: src.ByteSpan,
+    name: string,
+  }
+  { Decl, File, Span, NameStr } where
+    ( ( { class_ = CDecl }  = Decl;
+        ClassDeclaration { location = Location, name = QName } = CDecl;
+      ) | (
+        { variable = VDecl } = Decl;
+        VariableDeclaration { location = Location, name = QName } = VDecl;
+      );
+      { File, Span } = Location;
+      { name = javakotlin.alpha.Name NameStr } = QName;
+    ) | (
+      { method = MDecl } = Decl;
+      MethodDeclaration { name = MName, loc = SrcLoc} = MDecl;
+      javakotlin.alpha.MethodName { name = QName } = MName;
+      { name = javakotlin.alpha.Name NameStr } = QName;
+      { file = File } = SrcLoc;
+      { 0, 1 } = Span; # fake span todo
+    )
 
 }
