@@ -11,6 +11,8 @@
 
 module Glean.Glass.Search.Java
   ( {- instances -}
+    toQName,
+    toMName
   ) where
 
 import Data.Text as Text ( Text )
@@ -42,31 +44,6 @@ instance Search Java.Entity where
     where
       toks = reverse skot
 
-toMName :: Text -> NonEmpty Text -> Angle Java.MethodName_key
-toMName name (base :| rest) =
-  rec $
-    field @"name" (toQName name (base :| rest))
-  end
-
-toQName :: Text -> NonEmpty Text -> Angle Java.QName_key
-toQName name (base :| rest) =
-  rec $
-    field @"name" (string name) $
-    field @"context" (toPath base rest)
-  end
-
-toPath :: Text -> [Text] -> Angle Java.Path_key
-toPath base [] =
-  rec $
-    field @"base" (string base) $
-    field @"container" nothing
-  end
-toPath base (x:xs) =
-  rec $
-    field @"base" (string base) $
-    field @"container" (just (predicate (toPath x xs)))
-  end
-
 searchByQName :: Angle Java.QName_key -> Angle (ResultLocation Java.Entity)
 searchByQName qname =
   vars $ \(entity :: Angle Java.Entity) (file :: Angle Src.File)
@@ -97,3 +74,32 @@ searchByMName mname =
       alt @"decl" decl .= sig entity,
       entityLocation (alt @"java" entity) file rangespan lname
     ]
+
+--
+-- Generic to Java and Kotlin
+--
+
+toMName :: Text -> NonEmpty Text -> Angle Java.MethodName_key
+toMName name (base :| rest) =
+  rec $
+    field @"name" (toQName name (base :| rest))
+  end
+
+toQName :: Text -> NonEmpty Text -> Angle Java.QName_key
+toQName name (base :| rest) =
+  rec $
+    field @"name" (string name) $
+    field @"context" (toPath base rest)
+  end
+
+toPath :: Text -> [Text] -> Angle Java.Path_key
+toPath base [] =
+  rec $
+    field @"base" (string base) $
+    field @"container" nothing
+  end
+toPath base (x:xs) =
+  rec $
+    field @"base" (string base) $
+    field @"container" (just (predicate (toPath x xs)))
+  end
