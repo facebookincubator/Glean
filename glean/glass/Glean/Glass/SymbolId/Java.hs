@@ -8,9 +8,11 @@
 
 {-# OPTIONS_GHC -Wno-orphans #-}
 
-module Glean.Glass.SymbolId.Java
-  ({- instances -})
-  where
+module Glean.Glass.SymbolId.Java (
+    flattenContext
+    {- instances -}
+
+  ) where
 
 import qualified Glean
 import Glean.Glass.Types
