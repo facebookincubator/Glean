@@ -29,5 +29,34 @@ predicate KotlinEntityLocation:
     { decl = Decl } = Entity;
     kotlin.alpha.DeclarationFileLocation { Decl, File, Span, Name };
 
+# XRefs : not supported by the Kotlin schema yet
+predicate KotlinFileEntityXRefLocations:
+  {
+    file: src.File,
+    xref: codemarkup.types.XRefLocation,
+    entity: code.kotlin.Entity,
+  } # no implementation
+
+# find-refs: no implementation
+predicate KotlinEntityUses:
+  {
+    target: code.kotlin.Entity,
+    file: src.File,
+    span: src.ByteSpan,
+  } # no implementation
+
+# kinds and symbol info
+predicate KotlinEntityKind:
+  {
+    entity: code.kotlin.Entity,
+    kind: codemarkup.types.SymbolKind
+  }
+  { Entity, Kind} where
+    { decl = Decl } = Entity;
+    ( { method = _ } = Decl; Method = Kind ) |
+    ( { class_ = _ } = Decl; Class_ = Kind ) |
+    ( { variable = _ } = Decl; Variable = Kind );
+
+
 
 }
