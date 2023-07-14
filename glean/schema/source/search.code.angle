@@ -10,7 +10,6 @@ import cxx1.5
 import flow.3
 import hack.6
 import javakotlin.alpha.1
-import java.alpha.1
 import erlang.1
 import hs.2
 import lsif.2
@@ -22,6 +21,7 @@ import search.flow.1
 import search.hack.7
 import search.hs.9
 import search.java.1
+import search.kotlin.1
 import search.python.1
 import thrift.7
 
@@ -41,6 +41,7 @@ predicate SearchByNameAndLanguage:
     ( Python = Language; PythonSearchByName { Name, Entity } ) |
     ( JavaScript = Language; FlowSearchByName { Name, Entity } ) |
     ( Java = Language; JavaSearchByName { Name, Entity } ) |
+    ( Kotlin = Language; KotlinSearchByName { Name, Entity } ) |
     ( Cpp = Language; CxxSearchByName { Name, Entity } ) |
     ( PreProcessor = Language; PpSearchByName { Name, Entity } ) |
     ( Haskell = Language; HsSearchByName { Name, Entity } ) |
@@ -60,6 +61,7 @@ predicate SearchByLowerCaseNameAndLanguage:
     ( Python = Language; PythonSearchByLowerCaseName { Name, Entity } ) |
     ( JavaScript = Language; FlowSearchByLowerCaseName { Name, Entity } ) |
     ( Java = Language; JavaSearchByLowerCaseName { Name, Entity } ) |
+    ( Kotlin = Language; KotlinSearchByLowerCaseName { Name, Entity } ) |
     ( Cpp = Language; CxxSearchByLowerCaseName { Name, Entity } ) |
     ( PreProcessor = Language; PpSearchByLowerCaseName { Name, Entity } ) |
     ( Haskell = Language; HsSearchByLowerCaseName { Name, Entity } ) |
@@ -391,6 +393,34 @@ predicate JavaSearchByScopeWithName:
     QName = javakotlin.alpha.QName { name = Name, context = Path };
     search.java.SearchByQName { QName, Decl };
     { java = { decl = Decl } } = Entity;
+
+predicate KotlinSearchByName:
+  {
+    name: string,
+    entity: code.Entity,
+  }
+  { NameStr, Entity } where
+    Name = javakotlin.alpha.Name NameStr;
+    QName = javakotlin.alpha.QName { name = Name };
+    KotlinSearchByNameWithFact { QName, Entity }
+
+predicate KotlinSearchByLowerCaseName:
+  {
+    name: string,
+    entity: code.Entity,
+  }
+  { NameStr, Entity } where
+    javakotlin.alpha.NameLowerCase { NameStr, Name };
+    QName = javakotlin.alpha.QName { name = Name };
+    KotlinSearchByNameWithFact { QName, Entity }
+
+predicate KotlinSearchByNameWithFact:
+  {
+    name: javakotlin.alpha.QName,
+    entity: code.Entity
+  }
+  { QName, { kotlin = { decl = Decl } } } where
+    search.kotlin.SearchByQName { QName, Decl };
 
 predicate CxxSearchByName:
   {

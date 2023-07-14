@@ -1,0 +1,25 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema search.kotlin.1 {
+
+import javakotlin.alpha.1
+import kotlin.alpha.2
+
+# SearchByQName can be used to search for symbols in any context
+predicate SearchByQName:
+  {
+    name : javakotlin.alpha.QName,
+    defn : kotlin.alpha.Declaration
+  }
+  { QName, Decl } where
+    ( CDecl = kotlin.alpha.ClassDeclaration { name = QName };
+      { class_ = CDecl } = Decl
+    ) | ( VDecl = kotlin.alpha.VariableDeclaration { name = QName };
+      { variable = VDecl } = Decl
+    ) | (
+      MName = javakotlin.alpha.MethodName { name = QName };
+      MDecl = kotlin.alpha.MethodDeclaration { name = MName };
+      { method = MDecl } = Decl
+    )
+
+}

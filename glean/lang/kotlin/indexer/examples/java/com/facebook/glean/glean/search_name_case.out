@@ -1,0 +1,1437 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "args",
+      "entity": {
+        "kotlin": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "args" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "main" },
+                        "container": {
+                          "key": {
+                            "base": { "key": "Companion" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "Glean" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "glean" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "facebook" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "com" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": {
+                  "key": {
+                    "type": {
+                      "key": {
+                        "object": {
+                          "key": {
+                            "base": { "key": "Array" },
+                            "container": {
+                              "key": { "base": { "key": "kotlin" } }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "typeArgs": [
+                      {
+                        "key": {
+                          "type": {
+                            "key": {
+                              "type": {
+                                "key": {
+                                  "object": {
+                                    "key": {
+                                      "base": { "key": "String" },
+                                      "container": {
+                                        "key": { "base": { "key": "kotlin" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "typeArgs": [ ],
+                              "isNullable": false
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "isNullable": false
+                  }
+                },
+                "location": {
+                  "key": {
+                    "file": {
+                      "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
+                    },
+                    "span": { "start": 254, "length": 20 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "args",
+        "file": {
+          "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
+        },
+        "location": { "span": { "start": 254, "length": 20 } }
+      },
+      "kind": 14,
+      "language": 13
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "classa",
+      "entity": {
+        "kotlin": {
+          "decl": {
+            "class_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "ClassA" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "glean" },
+                        "container": {
+                          "key": {
+                            "base": { "key": "glean" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "facebook" },
+                                "container": {
+                                  "key": { "base": { "key": "com" } }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "implements_": [ ],
+                "location": {
+                  "key": {
+                    "file": {
+                      "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                    },
+                    "span": { "start": 109, "length": 739 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "ClassA",
+        "file": {
+          "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+        },
+        "location": { "span": { "start": 109, "length": 739 } }
+      },
+      "kind": 6,
+      "language": 13
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "clazz",
+      "entity": {
+        "kotlin": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "clazz" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "getList" },
+                        "container": {
+                          "key": {
+                            "base": { "key": "ClassA" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "glean" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": {
+                  "key": {
+                    "type": {
+                      "key": {
+                        "object": {
+                          "key": {
+                            "base": { "key": "List" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "collections" },
+                                "container": {
+                                  "key": { "base": { "key": "kotlin" } }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "typeArgs": [
+                      {
+                        "key": {
+                          "type": {
+                            "key": {
+                              "type": {
+                                "key": {
+                                  "object": {
+                                    "key": {
+                                      "base": { "key": "Class" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "lang" },
+                                          "container": {
+                                            "key": { "base": { "key": "java" } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "typeArgs": [ ],
+                              "isNullable": false
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "isNullable": true
+                  }
+                },
+                "location": {
+                  "key": {
+                    "file": {
+                      "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                    },
+                    "span": { "start": 650, "length": 23 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "clazz",
+        "file": {
+          "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+        },
+        "location": { "span": { "start": 650, "length": 23 } }
+      },
+      "kind": 14,
+      "language": 13
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "fetch",
+      "entity": {
+        "kotlin": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "fetch" },
+                        "context": {
+                          "key": {
+                            "base": { "key": "Glean" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "glean" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "signature": [ ]
+                  }
+                },
+                "parameters": [ ],
+                "returnType": {
+                  "key": {
+                    "type": {
+                      "key": {
+                        "object": {
+                          "key": {
+                            "base": { "key": "ClassA" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "glean" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "location": {
+                      "key": {
+                        "file": {
+                          "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                        },
+                        "span": { "start": 109, "length": 739 }
+                      }
+                    },
+                    "typeArgs": [ ],
+                    "isNullable": false
+                  }
+                },
+                "loc": {
+                  "file": {
+                    "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
+                  },
+                  "line": 6,
+                  "column": 3
+                },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "Glean" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "glean" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "glean" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "facebook" },
+                                      "container": {
+                                        "key": { "base": { "key": "com" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "implements_": [ ],
+                      "location": {
+                        "key": {
+                          "file": {
+                            "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
+                          },
+                          "span": { "start": 109, "length": 311 }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "fetch",
+        "file": {
+          "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
+        },
+        "location": { "span": { "start": 0, "length": 1 } }
+      },
+      "kind": 7,
+      "language": 13
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "gete",
+      "entity": {
+        "kotlin": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "getE" },
+                        "context": {
+                          "key": {
+                            "base": { "key": "ClassA" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "glean" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "signature": [ { "key": { "primitive": "I" } } ]
+                  }
+                },
+                "parameters": [
+                  {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "randomArg" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "getE" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "ClassA" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "glean" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "glean" },
+                                          "container": {
+                                            "key": {
+                                              "base": { "key": "facebook" },
+                                              "container": {
+                                                "key": {
+                                                  "base": { "key": "com" }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "type": {
+                        "key": {
+                          "type": { "key": { "primitive": "I" } },
+                          "typeArgs": [ ],
+                          "isNullable": false
+                        }
+                      },
+                      "location": {
+                        "key": {
+                          "file": {
+                            "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                          },
+                          "span": { "start": 718, "length": 15 }
+                        }
+                      }
+                    }
+                  }
+                ],
+                "returnType": {
+                  "key": {
+                    "type": {
+                      "key": {
+                        "object": {
+                          "key": {
+                            "base": { "key": "String" },
+                            "container": {
+                              "key": { "base": { "key": "kotlin" } }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "typeArgs": [ ],
+                    "isNullable": false
+                  }
+                },
+                "loc": {
+                  "file": {
+                    "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                  },
+                  "line": 35,
+                  "column": 3
+                },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "ClassA" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "glean" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "glean" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "facebook" },
+                                      "container": {
+                                        "key": { "base": { "key": "com" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "implements_": [ ],
+                      "location": {
+                        "key": {
+                          "file": {
+                            "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                          },
+                          "span": { "start": 109, "length": 739 }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "getE",
+        "file": {
+          "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+        },
+        "location": { "span": { "start": 0, "length": 1 } }
+      },
+      "kind": 7,
+      "language": 13
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "getlist",
+      "entity": {
+        "kotlin": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "getList" },
+                        "context": {
+                          "key": {
+                            "base": { "key": "ClassA" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "glean" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "signature": [
+                      {
+                        "key": {
+                          "object": {
+                            "key": {
+                              "base": { "key": "List" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "collections" },
+                                  "container": {
+                                    "key": { "base": { "key": "kotlin" } }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                "parameters": [
+                  {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "clazz" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "getList" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "ClassA" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "glean" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "glean" },
+                                          "container": {
+                                            "key": {
+                                              "base": { "key": "facebook" },
+                                              "container": {
+                                                "key": {
+                                                  "base": { "key": "com" }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "type": {
+                        "key": {
+                          "type": {
+                            "key": {
+                              "object": {
+                                "key": {
+                                  "base": { "key": "List" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "collections" },
+                                      "container": {
+                                        "key": { "base": { "key": "kotlin" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "typeArgs": [
+                            {
+                              "key": {
+                                "type": {
+                                  "key": {
+                                    "type": {
+                                      "key": {
+                                        "object": {
+                                          "key": {
+                                            "base": { "key": "Class" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "lang" },
+                                                "container": {
+                                                  "key": {
+                                                    "base": { "key": "java" }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "typeArgs": [ ],
+                                    "isNullable": false
+                                  }
+                                }
+                              }
+                            }
+                          ],
+                          "isNullable": true
+                        }
+                      },
+                      "location": {
+                        "key": {
+                          "file": {
+                            "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                          },
+                          "span": { "start": 650, "length": 23 }
+                        }
+                      }
+                    }
+                  }
+                ],
+                "loc": {
+                  "file": {
+                    "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                  },
+                  "line": 30,
+                  "column": 3
+                },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "ClassA" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "glean" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "glean" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "facebook" },
+                                      "container": {
+                                        "key": { "base": { "key": "com" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "implements_": [ ],
+                      "location": {
+                        "key": {
+                          "file": {
+                            "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                          },
+                          "span": { "start": 109, "length": 739 }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "getList",
+        "file": {
+          "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+        },
+        "location": { "span": { "start": 0, "length": 1 } }
+      },
+      "kind": 7,
+      "language": 13
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "glean",
+      "entity": {
+        "kotlin": {
+          "decl": {
+            "class_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "Glean" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "glean" },
+                        "container": {
+                          "key": {
+                            "base": { "key": "glean" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "facebook" },
+                                "container": {
+                                  "key": { "base": { "key": "com" } }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "implements_": [ ],
+                "location": {
+                  "key": {
+                    "file": {
+                      "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
+                    },
+                    "span": { "start": 109, "length": 311 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "Glean",
+        "file": {
+          "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
+        },
+        "location": { "span": { "start": 109, "length": 311 } }
+      },
+      "kind": 6,
+      "language": 13
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "isinstanceoflist",
+      "entity": {
+        "kotlin": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "isInstanceOfList" },
+                        "context": {
+                          "key": {
+                            "base": { "key": "ClassA" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "glean" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "signature": [
+                      {
+                        "key": {
+                          "object": {
+                            "key": {
+                              "base": { "key": "Object" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "lang" },
+                                  "container": {
+                                    "key": { "base": { "key": "java" } }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                "parameters": [
+                  {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "object" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "isInstanceOfList" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "ClassA" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "glean" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "glean" },
+                                          "container": {
+                                            "key": {
+                                              "base": { "key": "facebook" },
+                                              "container": {
+                                                "key": {
+                                                  "base": { "key": "com" }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "type": {
+                        "key": {
+                          "type": {
+                            "key": {
+                              "object": {
+                                "key": {
+                                  "base": { "key": "Object" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "lang" },
+                                      "container": {
+                                        "key": { "base": { "key": "java" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "typeArgs": [ ],
+                          "isNullable": false
+                        }
+                      },
+                      "location": {
+                        "key": {
+                          "file": {
+                            "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                          },
+                          "span": { "start": 785, "length": 14 }
+                        }
+                      }
+                    }
+                  }
+                ],
+                "returnType": {
+                  "key": {
+                    "type": { "key": { "primitive": "Z" } },
+                    "typeArgs": [ ],
+                    "isNullable": false
+                  }
+                },
+                "loc": {
+                  "file": {
+                    "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                  },
+                  "line": 39,
+                  "column": 3
+                },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "ClassA" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "glean" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "glean" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "facebook" },
+                                      "container": {
+                                        "key": { "base": { "key": "com" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "implements_": [ ],
+                      "location": {
+                        "key": {
+                          "file": {
+                            "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                          },
+                          "span": { "start": 109, "length": 739 }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "isInstanceOfList",
+        "file": {
+          "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+        },
+        "location": { "span": { "start": 0, "length": 1 } }
+      },
+      "kind": 7,
+      "language": 13
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "main",
+      "entity": {
+        "kotlin": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "main" },
+                        "context": {
+                          "key": {
+                            "base": { "key": "Companion" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "Glean" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "glean" },
+                                        "container": {
+                                          "key": {
+                                            "base": { "key": "facebook" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "com" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "signature": [
+                      {
+                        "key": {
+                          "object": {
+                            "key": {
+                              "base": { "key": "Array" },
+                              "container": {
+                                "key": { "base": { "key": "kotlin" } }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                "parameters": [
+                  {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "args" },
+                          "context": {
+                            "key": {
+                              "base": { "key": "main" },
+                              "container": {
+                                "key": {
+                                  "base": { "key": "Companion" },
+                                  "container": {
+                                    "key": {
+                                      "base": { "key": "Glean" },
+                                      "container": {
+                                        "key": {
+                                          "base": { "key": "glean" },
+                                          "container": {
+                                            "key": {
+                                              "base": { "key": "glean" },
+                                              "container": {
+                                                "key": {
+                                                  "base": { "key": "facebook" },
+                                                  "container": {
+                                                    "key": {
+                                                      "base": { "key": "com" }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "type": {
+                        "key": {
+                          "type": {
+                            "key": {
+                              "object": {
+                                "key": {
+                                  "base": { "key": "Array" },
+                                  "container": {
+                                    "key": { "base": { "key": "kotlin" } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "typeArgs": [
+                            {
+                              "key": {
+                                "type": {
+                                  "key": {
+                                    "type": {
+                                      "key": {
+                                        "object": {
+                                          "key": {
+                                            "base": { "key": "String" },
+                                            "container": {
+                                              "key": {
+                                                "base": { "key": "kotlin" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "typeArgs": [ ],
+                                    "isNullable": false
+                                  }
+                                }
+                              }
+                            }
+                          ],
+                          "isNullable": false
+                        }
+                      },
+                      "location": {
+                        "key": {
+                          "file": {
+                            "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
+                          },
+                          "span": { "start": 254, "length": 20 }
+                        }
+                      }
+                    }
+                  }
+                ],
+                "loc": {
+                  "file": {
+                    "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
+                  },
+                  "line": 13,
+                  "column": 5
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "main",
+        "file": {
+          "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
+        },
+        "location": { "span": { "start": 0, "length": 1 } }
+      },
+      "kind": 7,
+      "language": 13
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "object",
+      "entity": {
+        "kotlin": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "object" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "isInstanceOfList" },
+                        "container": {
+                          "key": {
+                            "base": { "key": "ClassA" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "glean" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": {
+                  "key": {
+                    "type": {
+                      "key": {
+                        "object": {
+                          "key": {
+                            "base": { "key": "Object" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "lang" },
+                                "container": {
+                                  "key": { "base": { "key": "java" } }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "typeArgs": [ ],
+                    "isNullable": false
+                  }
+                },
+                "location": {
+                  "key": {
+                    "file": {
+                      "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                    },
+                    "span": { "start": 785, "length": 14 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "object",
+        "file": {
+          "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+        },
+        "location": { "span": { "start": 785, "length": 14 } }
+      },
+      "kind": 14,
+      "language": 13
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "randomarg",
+      "entity": {
+        "kotlin": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "randomArg" },
+                    "context": {
+                      "key": {
+                        "base": { "key": "getE" },
+                        "container": {
+                          "key": {
+                            "base": { "key": "ClassA" },
+                            "container": {
+                              "key": {
+                                "base": { "key": "glean" },
+                                "container": {
+                                  "key": {
+                                    "base": { "key": "glean" },
+                                    "container": {
+                                      "key": {
+                                        "base": { "key": "facebook" },
+                                        "container": {
+                                          "key": { "base": { "key": "com" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": {
+                  "key": {
+                    "type": { "key": { "primitive": "I" } },
+                    "typeArgs": [ ],
+                    "isNullable": false
+                  }
+                },
+                "location": {
+                  "key": {
+                    "file": {
+                      "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                    },
+                    "span": { "start": 718, "length": 15 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "randomArg",
+        "file": {
+          "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+        },
+        "location": { "span": { "start": 718, "length": 15 } }
+      },
+      "kind": 14,
+      "language": 13
+    }
+  }
+]
