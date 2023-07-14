@@ -83,7 +83,8 @@ predicate SearchByScope:
     ( Hack = Language; HackSearchByScope { Name, Scope, Entity } ) |
     ( Python = Language; PythonSearchByScope { Name, Scope, Entity } ) |
     ( JavaScript = Language; FlowSearchByScope { Name, Scope, Entity } ) |
-    ( Java = Language; JavaSearchByScope { Name, Scope, Entity } );
+    ( Java = Language; JavaSearchByScope { Name, Scope, Entity } ) |
+    ( Kotlin = Language; KotlinSearchByScope { Name, Scope, Entity } );
     code.EntityLanguage { Entity, Language };
 
 # lower case by scope
@@ -99,7 +100,8 @@ predicate SearchByLowerCaseScope:
     ( Hack = Language; HackSearchByLowerCaseScope { Name, Scope, Entity } ) |
     ( Python = Language; PythonSearchByLowerCaseScope { Name, Scope, Entity }) |
     ( JavaScript = Language; FlowSearchByLowerCaseScope { Name, Scope, Entity})|
-    ( Java = Language; JavaSearchByLowerCaseScope { Name, Scope, Entity});
+    ( Java = Language; JavaSearchByLowerCaseScope { Name, Scope, Entity}) |
+    ( Kotlin = Language; KotlinSearchByLowerCaseScope { Name, Scope, Entity});
     code.EntityLanguage { Entity, Language };
 
 #
@@ -421,6 +423,41 @@ predicate KotlinSearchByNameWithFact:
   }
   { QName, { kotlin = { decl = Decl } } } where
     search.kotlin.SearchByQName { QName, Decl };
+
+predicate KotlinSearchByScope:
+  {
+    name: string,
+    scope: [string],
+    entity: code.Entity
+  }
+  { NameStr, Query, Entity } where
+    Name = javakotlin.alpha.Name NameStr;
+    Insensitive = false;
+    KotlinSearchByScopeWithName { Name, Insensitive, Query, Entity }
+
+predicate KotlinSearchByLowerCaseScope:
+  {
+    name: string,
+    scope: [string],
+    entity: code.Entity,
+  }
+  { NameStr, Query, Entity } where
+    javakotlin.alpha.NameLowerCase { NameStr, Name };
+    Insensitive = true;
+    KotlinSearchByScopeWithName { Name, Insensitive, Query, Entity }
+
+predicate KotlinSearchByScopeWithName:
+  {
+    name: javakotlin.alpha.Name,
+    insensitive : bool,
+    scope: [string],
+    entity: code.Entity,
+  }
+  { Name, Insensitive, Query, Entity } where
+    search.java.QueryToScopeCase { Query, Insensitive, Path }; # n.b. java
+    QName = javakotlin.alpha.QName { name = Name, context = Path };
+    search.kotlin.SearchByQName { QName, Decl };
+    { kotlin = { decl = Decl } } = Entity;
 
 predicate CxxSearchByName:
   {

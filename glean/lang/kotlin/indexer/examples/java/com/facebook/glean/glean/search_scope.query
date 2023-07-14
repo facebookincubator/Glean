@@ -1,0 +1,3 @@
+query: codemarkup.search.SearchByScope { searchcase = Sensitive, language = Kotlin, name = "ClassA", scope = ["com","facebook","glean","glean"] }
+perf: True
+transform: [gensort, []]
