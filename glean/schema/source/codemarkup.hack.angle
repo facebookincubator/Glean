@@ -406,7 +406,7 @@ predicate HackFileCall :
     receiver_type: maybe code.Entity,
   } {File, Span, CodeArgs, CalleeEntity, DispatchArg, StaticType } where
   (
-    hack.FileCall { File, Span, HackArgs, CalleeXRef, HackDispatchArg, HackStaticType };
+    hack.FileCall { File, Span, HackArgs, CalleeXRef, HackDispatchArg, HackStaticType, _ };
     ConvertCallArguments { HackArgs, CodeArgs};
     ConvertMaybeCallArguments { HackDispatchArg, DispatchArg };
     ConvertCalleeForFileCall { File, Span, CalleeXRef, CalleeEntity };
@@ -603,7 +603,7 @@ predicate ConvertCalleeForFileCall :
   }
   { File, Span, HackCallee, CodeCallee } where
   ({ just = { declaration = D } } = HackCallee;
-   hack.FileCall { File, Span, _, HackCallee, _, _ };
+   hack.FileCall { File, Span, _, HackCallee, _, _, _ };
    { just = { hack = { decl = D } } } = CodeCallee ) |
   ({ just = O } = HackCallee;
    { occurrence = {method = {name = N} } } = O;
@@ -621,7 +621,7 @@ predicate ConvertCalleeForFileCall :
    { just = { hack = { decl = D } } } = CodeCallee ) |
   (
      nothing = HackCallee;
-     hack.FileCall { File, Span, _, nothing, _, _};
+     hack.FileCall { File, Span, _, nothing, _, _, _};
      nothing = CodeCallee
   )
 
