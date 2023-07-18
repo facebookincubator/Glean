@@ -169,28 +169,29 @@ externalXRefs mlimit xrefId = do
   case maybeRawXRefs of
     Nothing -> return ([], False)
     Just (sources, targets) -> do
-      locations <- mapM (cxxXRefTargetToLocation (fst declLocMap)) targets
-      let ranges = relativeByteSpansToRanges sources
+      locations <- mapM (mapM (cxxXRefTargetToLocation (fst declLocMap)))
+        [ xrefs | Cxx.XRefTargets{xRefTargets_key = Just xrefs} <- targets ]
+      let ranges = fromToRanges sources
           declXRefs = zipXRefSourceAndTargets ranges locations
           defnXRefs = zipXRefSourcesAndDefinitions (fst declToDefMap)
                         ranges locations
       return (defnXRefs ++ declXRefs, snd declLocMap || snd declToDefMap)
-
--- N.B. Src.ByteSpans are _relative_ bytespans ([RelByteSpan]), it's misnamed
-relativeByteSpansToRanges :: [Src.ByteSpans] -> [[Src.ByteSpan]]
-relativeByteSpansToRanges =
-  map (map Range.rangeToByteSpan . Range.relByteSpansToRanges)
+  where
+    fromToRanges :: [Cxx.From] -> [[Src.ByteSpan]]
+    fromToRanges =
+      map (map Range.rangeToByteSpan . Range.fromToSpansAndSpellings)
 
 -- Laboriously stitch the unzipped xref source and target into
 -- XRefLocation and Entities again.
 zipXRefSourceAndTargets
   :: [[Src.ByteSpan]]
-  -> [Maybe (Code.Entity, Code.Location)]
+  -> [[Maybe (Code.Entity, Code.Location)]]
   -> [(Code.XRefLocation, Code.Entity)]
 zipXRefSourceAndTargets sources targets =
   [ (xrefFromLocationAndSpan targetLocation span, entity)
-  | (spans, Just (entity, targetLocation) ) <- zip sources targets
+  | (spans, xrefs) <- zip sources targets
   , span <- spans
+  , Just (entity, targetLocation) <- xrefs
   ]
 
 -- Laboriously stitch the unzipped xref source to target _definition_
@@ -198,16 +199,16 @@ zipXRefSourceAndTargets sources targets =
 zipXRefSourcesAndDefinitions
   :: DeclToDefMap
   -> [[Src.ByteSpan]]
-  -> [Maybe (Code.Entity, Code.Location)]
+  -> [[Maybe (Code.Entity, Code.Location)]]
   -> [(Code.XRefLocation, Code.Entity)]
 zipXRefSourcesAndDefinitions declToDefMap sources targets = catMaybes
   [ case Map.lookup decl declToDefMap of
       Nothing -> Nothing
       Just (entity, targetLocation) -> Just
         (xrefFromLocationAndSpan targetLocation span, entity)
-  | (spans, Just (Code.Entity_cxx (Cxx.Entity_decl decl), _) ) <-
-      zip sources targets -- find just the decls
+  | (spans, xrefs) <- zip sources targets -- find just the decls
   , span <- spans
+  , Just (Code.Entity_cxx (Cxx.Entity_decl decl), _) <- xrefs
   ]
 
 xrefFromLocationAndSpan :: Code.Location -> Src.ByteSpan -> Code.XRefLocation
@@ -224,7 +225,7 @@ type DeclToDefMap = Map Cxx.Declaration (Code.Entity, Code.Location)
 -- FileXRefMap fact. There may be additional facts (more xrefs in other traces)
 variableXRefs
   :: Glean.IdOf Cxx.FileXRefs
-  -> Glean.RepoHaxl u w (Maybe ([Src.ByteSpans], [Cxx.XRefTarget]))
+  -> Glean.RepoHaxl u w (Maybe ([Cxx.From], [Cxx.XRefTargets]))
 variableXRefs = fetchDataRecursive . cxxFileEntityXMapVariableXRefLocations
 
 -- | Build lookup table of definitions found from declToDef calls
@@ -412,15 +413,14 @@ cxxFileEntityXMapFixedXRefLocations xrefId =
 --
 cxxFileEntityXMapVariableXRefLocations
   :: Glean.IdOf Cxx.FileXRefs
-  -> Angle ([Src.ByteSpans], [Cxx.XRefTarget])
+  -> Angle ([Cxx.From], [Cxx.XRefTargets])
 cxxFileEntityXMapVariableXRefLocations xrefId =
-  vars $ \(spans :: Angle [Src.ByteSpans])
-      (targets :: Angle [Cxx.XRefTarget]) ->
-    tuple (spans,targets) `where_` [
+  vars $ \(froms :: Angle [Cxx.From]) (targets :: Angle [Cxx.XRefTargets]) ->
+    tuple (froms, targets) `where_` [
       factId xrefId .= predicate @Cxx.FileXRefs (
         rec $
-          field @"xmap" (rec $ field @"variable" spans end) $
-          field @"externals" targets
+          field @"xmap" (rec $ field @"froms" froms end) $
+          field @"targets" targets
         end
       )
     ]

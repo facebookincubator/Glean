@@ -138,10 +138,12 @@ predicate CxxFileEntityXMapFixedXRefLocations:
   }
   { Trace, XRef, Entity } where
     cxx1.FileXRefs { xmap = { fixed = Fixeds } } = Trace;
-    cxx1.FixedXRef { XRefTarget, Uses, _ } = Fixeds[..];
+    cxx1.FixedXRef { XRefTarget, _, From } = Fixeds[..];
     CxxXRefTargetLocation { XRefTarget, Entity, Location };
-    Spans = prim.relToAbsByteSpans Uses;
-    Span = Spans[..];
+    { spans = PackedSpans, spellings = PackedSpellings } = From;
+    Spans = prim.unpackByteSpans PackedSpans;
+    Spellings = prim.unpackByteSpans PackedSpellings;
+    Span = (Spans | Spellings)[..];
     { Location, { span = Span } } = XRef;
 
 # Helper to (partially) process XRefTargets to entities and xrefs
@@ -246,7 +248,8 @@ predicate CxxFileEntityXMapVariableXRefDeclLocations:
     location: codemarkup.types.Location,
   }
   { Trace, Decl, Location } where
-    cxx1.FileXRefs { externals = Targets } = Trace;
+    cxx1.FileXRefs { targets = Ts } = Trace;
+    cxx1.XRefTargets Targets = Ts[..];
     { declaration = Decl } = Targets[..];
     cxx1.DeclarationLocationNameSpan { Decl, Range, Name, NameFile, NameSpan };
     { file = TargetFile } = Range;
@@ -262,7 +265,8 @@ predicate CxxFileEntityXMapVariableXRefDeclToDefs:
     location: codemarkup.types.Location,
   }
   { Trace, Decl, Entity, Location } where
-    cxx1.FileXRefs { externals = Targets } = Trace;
+    cxx1.FileXRefs { targets = Ts } = Trace;
+    cxx1.XRefTargets Targets = Ts[..];
     # decls
     # todo:  more cases: recursion: indirect xrefs could be decls too
     { declaration = Decl } = Targets[..];
@@ -280,19 +284,25 @@ predicate CxxEntityUses:
   }
   ({ { decl = Decl }, File, Span } where
     cxx1.DeclFamilyOf { Decl, D };
-    cxx1.TargetUses { { declaration = D }, File, Uses, _ };
-    Spans = prim.relToAbsByteSpans Uses;
-    Span = Spans[..]) |
+    cxx1.TargetUses { { declaration = D }, File, _, From };
+    { spans = PackedSpans, spellings = PackedSpellings } = From;
+    Spans = prim.unpackByteSpans PackedSpans;
+    Spellings = prim.unpackByteSpans PackedSpellings;
+    Span = (Spans | Spellings)[..]) |
   ({ { defn = Defn }, File, Span } where
     CxxEntityDefinitionBase { Defn, DeclBase };
     cxx1.DeclFamilyOf { DeclBase, D };
-    cxx1.TargetUses { { declaration = D }, File, Uses, _ };
-    Spans = prim.relToAbsByteSpans Uses;
-    Span = Spans[..]) |
+    cxx1.TargetUses { { declaration = D }, File, _, From };
+    { spans = PackedSpans, spellings = PackedSpellings } = From;
+    Spans = prim.unpackByteSpans PackedSpans;
+    Spellings = prim.unpackByteSpans PackedSpellings;
+    Span = (Spans | Spellings)[..]) |
   ({ { enumerator = E }, File, Span } where
-    cxx1.TargetUses { { enumerator = E }, File, Uses, _ };
-    Spans = prim.relToAbsByteSpans Uses;
-    Span = Spans[..])
+    cxx1.TargetUses { { enumerator = E }, File, _, From };
+    { spans = PackedSpans, spellings = PackedSpellings } = From;
+    Spans = prim.unpackByteSpans PackedSpans;
+    Spellings = prim.unpackByteSpans PackedSpellings;
+    Span = (Spans | Spellings)[..])
 
 # For definitions, we find uses of the underlying declaration
 # For classes and anything else with ctors and dtors we also include uses
