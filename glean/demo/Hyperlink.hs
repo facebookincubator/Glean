@@ -8,7 +8,7 @@
 
 -- | run with
 --
--- > ./hyperlink --port=8080
+-- > ./hyperlink --http=8080
 
 {-# LANGUAGE ApplicativeDo, TypeApplications #-}
 module Hyperlink (main) where
@@ -218,18 +218,15 @@ cxxGetHyperlinks :: Text.Text -> Glean.Haxl w [Hyperlink]
 cxxGetHyperlinks path = do  -- ApplicativeDo makes these parallel:
 
   xref_links <- do
-    filexrefs_ <-
-      Glean.search_ $ Angle.query $
+    filexrefs <-
+      Glean.search_ $
+        Glean.expanding @Cxx.FileXRefMap $
+        Glean.expanding @Cxx.XRefTargets $
+        Angle.query $
         predicate @Cxx.FileXRefs $
           rec $
             field @"xmap" (rec $ field @"file" (string path) end)
           end
-    filexrefs <- forM filexrefs_ $ \f -> do
-      xrefs <- Glean.keyOf f
-      xmap <- Glean.keyOf (Cxx.fileXRefs_key_xmap xrefs)
-      return f { Cxx.fileXRefs_key = Just xrefs {
-        Cxx.fileXRefs_key_xmap = (Cxx.fileXRefs_key_xmap xrefs) {
-          Cxx.fileXRefMap_key = Just xmap }}}
 
     let
       crossref (ByteRange{byteRange_begin=b, byteRange_length=l}, tgt) =

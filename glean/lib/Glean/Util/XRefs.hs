@@ -36,7 +36,7 @@ collectXRefTargets allFileXRefs = Set.fromList $ fixedXRefs <> externalXRefs
       | Cxx.FileXRefMap{fileXRefMap_key =
           Just Cxx.FileXRefMap_key{..}} <- uniqMaps
       , Cxx.FixedXRef{..} <- fileXRefMap_key_fixed
-      , span <- relByteSpansToRanges fixedXRef_ranges
+      , span <- fromToSpansAndExpansions fixedXRef_from
       ]
 
     externalXRefs =
@@ -44,8 +44,10 @@ collectXRefTargets allFileXRefs = Set.fromList $ fixedXRefs <> externalXRefs
       | Cxx.FileXRefs{fileXRefs_key = Just Cxx.FileXRefs_key
           { fileXRefs_key_xmap = Cxx.FileXRefMap{
               fileXRefMap_key = Just Cxx.FileXRefMap_key{..}}
-          , fileXRefs_key_externals = externals }} <- allFileXRefs
-      , let ranges = map relByteSpansToRanges fileXRefMap_key_variable
-      , (spans, xref) <- zip ranges externals
+          , fileXRefs_key_targets = targets }} <- allFileXRefs
+      , let ranges = map fromToSpansAndExpansions fileXRefMap_key_froms
+      , (spans, Cxx.XRefTargets{xRefTargets_key = Just xrefs})
+          <- zip ranges targets
       , span <- spans
+      , xref <- xrefs
       ]
