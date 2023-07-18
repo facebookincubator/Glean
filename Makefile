@@ -188,7 +188,6 @@ SCHEMAS= \
 	graphql \
 	hack \
 	hs \
-	java \
 	java_alpha \
 	javakotlin_alpha \
 	kotlin_alpha \

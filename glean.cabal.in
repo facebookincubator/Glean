@@ -665,7 +665,6 @@ library schema
         Glean.Schema.Graphql
         Glean.Schema.Hack
         Glean.Schema.Hs
-        Glean.Schema.Java
         Glean.Schema.JavakotlinAlpha
         Glean.Schema.KotlinAlpha
         Glean.Schema.Lsif
@@ -719,7 +718,6 @@ library schema
         Glean.Schema.Graphql.Types
         Glean.Schema.Hack.Types
         Glean.Schema.Hs.Types
-        Glean.Schema.Java.Types
         Glean.Schema.JavaAlpha.Types
         Glean.Schema.JavakotlinAlpha.Types
         Glean.Schema.KotlinAlpha.Types

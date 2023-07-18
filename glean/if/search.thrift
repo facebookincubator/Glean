@@ -10,7 +10,6 @@ include "glean/if/glean.thrift"
 include "glean/schema/thrift/cxx1.thrift"
 include "glean/schema/thrift/hs.thrift"
 include "glean/schema/thrift/pp1.thrift"
-include "glean/schema/thrift/java.thrift"
 include "glean/schema/thrift/src.thrift"
 
 namespace hs Glean
@@ -37,7 +36,6 @@ union Decl {
   8: cxx1.EnumDeclaration enum_decl;
   9: cxx1.Enumerator enumerator_def;
   10: pp1.Define macro_decl;
-  11: java.ClassDeclaration java_class_decl;
 } (hs.nonempty)
 
 struct DeclRefs {
