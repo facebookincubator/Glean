@@ -13,6 +13,7 @@ module Glean.Haxl.Repos
   , RepoHaxl
   , MaybeTReposHaxl
   , MaybeTRepoHaxl
+  , QueryRepos
   , queryAllRepos
   , withRepo
   , queryEachRepo
