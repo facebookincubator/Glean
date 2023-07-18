@@ -345,6 +345,83 @@ predicate XRefFile :
       FileXRefs {file = File, xrefs = Xs};
       Xref = Xs[..];
 
+#
+# Extracting xref uses and targets from type signature components
+#
+predicate XRefOfType:
+  {
+    type: Type,
+    decl: Declaration,
+    use: src.ByteSpan,
+  }
+  { Type, Decl, Span } where
+    { baseType = Base, typeArgs = _ } = Type;
+    { object = ObjType } = Base;
+    { type = QName , span = Span } = ObjType;
+    QNameToDefinition { QName, Decl }
+
+# If you have a Type, it may also have types contained.
+# Extract all the types in a typeArgs
+predicate TypeOfTypeArgs:
+  {
+    typeWithArgs : Type,
+    type: Type
+  }
+  { TypeWithArgs, Type } where
+     { typeArgs = Tys } = TypeWithArgs;
+     ArgTy = Tys[..];
+     ( { type = Type } = ArgTy ) |
+       ( { wildcard = Wild } = ArgTy;
+       ( { extends_ = Type } ) | ( { super_ = Type } ) = Wild;
+     );
+
+#
+# Extract type components of declarations. These are all uses (i.e. xrefs)
+#
+predicate DeclarationType:
+  {
+    decl: Declaration,
+    type: Type
+  }
+  { Decl, Type } where
+    ( { param = PDecl } = Decl;
+      { type = Ty } = PDecl;
+      ( Ty = Type ) | ( TypeOfTypeArgs { Ty, Type } )
+    ) | (
+      { local = LDecl } = Decl;
+      { type = Ty } = LDecl;
+      ( Ty = Type ) | ( TypeOfTypeArgs { Ty, Type } )
+    ) | (
+      { field = FDecl } = Decl;
+      { type = Ty } = FDecl;
+      ( Ty = Type ) | ( TypeOfTypeArgs { Ty, Type } )
+    ) | (
+      { ctor = CDecl } = Decl;
+      { parameters = PDecls, throws_ = TTypes } = CDecl;
+      Ty = ( { type = T } = PDecls[..]; T ) | ( T = TTypes[..]; T );
+      ( Ty = Type ) | ( TypeOfTypeArgs { Ty, Type } );
+    ) | (
+      { method = MDecl } = Decl;
+      { parameters = PDecls, returnType = RType, throws_ = TTypes } = MDecl;
+      Ty = ( { type = T } = PDecls[..]; T) | ( RType ) | ( T = TTypes[..]; T );
+      ( Ty = Type ) | ( TypeOfTypeArgs { Ty, Type } );
+    ) | (
+      { interface_ = IDecl } = Decl;
+      { extends_ = Types } = IDecl;
+      Ty = Types[..];
+      ( Ty = Type ) | ( TypeOfTypeArgs { Ty, Type } );
+    ) | (
+      { class_ = CDecl } = Decl;
+      { extends_ =  { just = ETy }, implements_ = ITys } = CDecl;
+      Ty = ( ETy ) | ( ITys[..] );
+      ( Ty = Type ) | ( TypeOfTypeArgs { Ty, Type } );
+    ) | (
+      { enum_ = EDecl } = Decl;
+      { implements_ = ITys } = EDecl;
+      Ty = ITys[..];
+      ( Ty = Type ) | ( TypeOfTypeArgs { Ty, Type } );
+    );
+
 # Uses
 predicate DeclarationUses :
   {

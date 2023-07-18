@@ -45,16 +45,27 @@ predicate JavalFileEntityXRefLocations:
     entity: code.java.Entity,
   }
   { File, { Location, { span = SrcSpan } }, { decl = Decl } } where
-    java.alpha.FileXRefs { File, XRefs };
-    { XRef, Spans } = XRefs[..];
-    SrcSpan = Spans[..];
-    java.alpha.XRefTargetDeclaration { XRef, Decl };
-    java.alpha.DeclarationLocation { Decl, Name, TargetFile, TargetSpan };
-    if ( File = TargetFile ) # work around T158599862 self-xrefs
-    then ( SrcSpan != TargetSpan )
-    else ( _ = true );
-    Location = codemarkup.types.Location
-      { Name, TargetFile, { span = TargetSpan }, nothing };
+    ( # "regular" xrefs in the body of code
+      java.alpha.FileXRefs { File, XRefs };
+      { XRef, Spans } = XRefs[..];
+      SrcSpan = Spans[..];
+      java.alpha.XRefTargetDeclaration { XRef, Decl };
+      java.alpha.DeclarationLocation { Decl, Name, TargetFile, TargetSpan };
+      if ( File = TargetFile ) # work around T158599862 self-xrefs
+      then ( SrcSpan != TargetSpan )
+      else ( _ = true );
+      Location = codemarkup.types.Location
+        { Name, TargetFile, { span = TargetSpan }, nothing };
+
+      # xrefs in type signatures and other signature components
+    ) | (
+      java.alpha.FileDeclarations { File, SrcDecl };
+      java.alpha.DeclarationType { SrcDecl, Type };
+      java.alpha.XRefOfType { Type, Decl, SrcSpan };
+      java.alpha.DeclarationLocation { Decl, Name, TargetFile, TargetSpan };
+      Location = codemarkup.types.Location
+        { Name, TargetFile, { span = TargetSpan }, nothing };
+    )
 
 #
 # Language entity uses
