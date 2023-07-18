@@ -50,6 +50,9 @@ predicate JavalFileEntityXRefLocations:
     SrcSpan = Spans[..];
     java.alpha.XRefTargetDeclaration { XRef, Decl };
     java.alpha.DeclarationLocation { Decl, Name, TargetFile, TargetSpan };
+    if ( File = TargetFile ) # work around T158599862 self-xrefs
+    then ( SrcSpan != TargetSpan )
+    else ( _ = true );
     Location = codemarkup.types.Location
       { Name, TargetFile, { span = TargetSpan }, nothing };
 
