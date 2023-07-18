@@ -205,6 +205,9 @@ filetype (Path file)
   | ".flow" `Text.isSuffixOf` file = Just Language_JavaScript
   | ".js" `Text.isSuffixOf` file = Just Language_JavaScript
 
+  | ".java" `Text.isSuffixOf` file = Just Language_Java
+  | ".kt" `Text.isSuffixOf` file = Just Language_Kotlin
+
   | ".hhi" `Text.isSuffixOf` file = Just Language_Hack
   | ".php" `Text.isSuffixOf` file = Just Language_Hack
 
