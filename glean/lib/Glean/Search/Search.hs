@@ -196,14 +196,14 @@ findCxxDecls lim backend repo SearchQuery{..} refs = do
           case targetUses of
             Cxx.TargetUses _ (Just Cxx.TargetUses_key
               { targetUses_key_file = file@(Src.File _ (Just name))
-              , targetUses_key_uses = uses }) -> do
+              , targetUses_key_from = from }) -> do
               -- Load line lengths so we can compute line nos from ranges.
               lines <- fmap fst $ Glean.search $ maybe id limit lim $
                 Angle.query $ predicate @Src.FileLines $ rec $
                   field @"file" (asPredicate (factId (Glean.getId file))) end
               case lines of
                 Src.FileLines _ (Just flk) : _ ->
-                  return $ buildXRef name flk uses
+                  return $ buildXRef name flk from
                 _ -> return $ FileXRef name Nothing
             _ -> error "TargetUses does not pattern match correctly"
 
@@ -323,8 +323,8 @@ findCxxDecls lim backend repo SearchQuery{..} refs = do
     (++) <$> findDeclarations <*> findMacros
 
 
-buildXRef :: Text -> Src.FileLines_key -> [Src.RelByteSpan] -> FileXRef
-buildXRef name flk spans = FileXRef
+buildXRef :: Text -> Src.FileLines_key -> Cxx.From -> FileXRef
+buildXRef name flk from = FileXRef
     { fileXRef_file_name = name
     , fileXRef_line_nos = Just $ map byteRangeToLineNo ranges}
   where
@@ -338,7 +338,7 @@ buildXRef name flk spans = FileXRef
     byteRangeToLineNo = fromIntegral . fst . byteRangeToLineCol
 
     ranges :: [Range.ByteRange]
-    ranges = relByteSpansToRanges spans
+    ranges = fromToSpansAndExpansions from
 
 -- | Small helper type for parsing Hack search queries for `findHackDecls`
 data ParsedHackQuery
