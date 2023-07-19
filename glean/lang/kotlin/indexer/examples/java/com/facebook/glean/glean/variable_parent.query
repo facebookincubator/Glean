@@ -1,0 +1,3 @@
+query: kotlin.alpha.VariableParent _
+perf: True
+transform: [gensort, []]

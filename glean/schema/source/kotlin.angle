@@ -38,8 +38,17 @@ predicate MethodDeclaration :
     parameters : [VariableDeclaration],
     returnType : maybe Type,
     loc : src.Loc, # this needs to be a src.ByteSpan
-    container: maybe Declaration
+    container: maybe Declaration # too imprecise. This is only ever a class
   }
+
+# Parent of variables that are methods. I.e. method contains the variable
+predicate VariableParent:
+  {
+    child: VariableDeclaration,
+    parent: MethodDeclaration,
+  } stored { Child, Parent } where
+    Parent = MethodDeclaration { parameters = Ps };
+    Child = Ps[..];
 
 predicate ClassDeclaration :
   {
@@ -47,6 +56,14 @@ predicate ClassDeclaration :
     implements_ : [javakotlin.alpha.QName],
     location : DeclarationLocation,
   }
+
+# Inverse table of method members of classes
+predicate ClassMember:
+  {
+    parent: ClassDeclaration,
+    child: MethodDeclaration
+  } stored { Parent, Child } where
+    Child = MethodDeclaration { container = { just = { class_ = Parent } } }
 
 # The type of Kotlin symbol entities
 type Declaration =
@@ -111,8 +128,30 @@ predicate ParentDeclaration:
     parent: Declaration
   }
   { Child, Parent } where
-    { method = MDecl } = Child;
-    { container = { just = Parent } } = MDecl
+    ( { method = MDecl } = Child;
+      { container = { just = Parent } } = MDecl
+    ) | (
+      { variable = VDecl } = Child;
+      VariableParent { VDecl, MDecl };
+      { method = MDecl } = Parent
+    )
+
+# Inverse relationship: parent contains child (e.g. class -> method)
+predicate ContainsDeclaration:
+  {
+    parent: Declaration,
+    child: Declaration
+  } { Parent, Child } where
+    ( { method = MDecl } = Parent;
+      { parameters = VDecls } = MDecl;
+      VDecl = VDecls[..];
+      { variable = VDecl } = Child
+    ) | (
+      { class_ = CDecl } = Parent;
+      ClassMember { CDecl, MDecl };
+      { method = MDecl } = Child
+    )
+
 
 # extends parent (classes `implement` interfaces, but we don't have
 # InterfaceDecls currently). So this isn't very useful yet

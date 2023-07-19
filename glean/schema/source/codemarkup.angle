@@ -591,6 +591,10 @@ predicate ContainsChildEntity :
       { java = P } = Parent;
       codemarkup.java.JavaContainsChildEntity { P, C };
       { java = C } = Child
+    ) | (
+      { kotlin = P } = Parent;
+      codemarkup.kotlin.KotlinContainsChildEntity { P, C };
+      { kotlin = C } = Child
     )
 
 #

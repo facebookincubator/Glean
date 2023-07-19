@@ -69,6 +69,14 @@ predicate KotlinContainsParentEntity:
   { { decl = Child }, { decl = Parent } } where
     kotlin.alpha.ParentDeclaration { Child, Parent };
 
+predicate KotlinContainsChildEntity:
+  {
+    parent: code.kotlin.Entity,
+    child: code.kotlin.Entity
+  }
+  { { decl = Parent }, { decl = Child } } where
+    kotlin.alpha.ContainsDeclaration { Parent, Child };
+
 predicate KotlinExtendsParentEntity:
   {
     child: code.kotlin.Entity,
