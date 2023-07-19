@@ -785,7 +785,13 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         visitor.db.declaration(range, result->declaration());
         // The name location retrieval logic should be consistent with ClangD:
         // https://github.com/llvm/llvm-project/blob/a3a2239aaaf6860eaee591c70a016b7c5984edde/clang-tools-extra/clangd/AST.cpp#L167-L172
-        auto nameRange = visitor.db.srcRange(decl->getLocation());
+        auto nameRange = folly::variant_match(
+            visitor.db.fullSrcRange(decl->getLocation()),
+            [](const ClangDB::SourceRange& range) { return range; },
+            [](const auto& range) {
+              const auto& [expansion, spelling] = range;
+              return spelling && spelling->file ? *spelling : expansion;
+            });
         if (nameRange.file) {
           visitor.db.fact<Cxx::DeclarationNameSpan>(
               result->declaration(), nameRange.file->fact, nameRange.span);

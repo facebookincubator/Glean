@@ -647,6 +647,28 @@ predicate DeclToFamily :
     family : DeclFamily,
   }
 
+# Location of the name of a declaration
+#
+# The corresponding declaration may be declared within normal code, or it may
+# be within a macro expansion. If it's a normal declaration, the name span
+# refers to the name portion of the declaration. Otherwise, the name span
+# refers to the spelling location of the name.
+#
+# Example of declaration in normal code
+#
+#   void foo() {}
+#        ^^^ name span
+#   ^^^^^^^^^^^^^ decl range
+#
+# Example of declaration in macro expansion
+#
+#   #define FOO void foo() {}
+#                    ^^^ name span
+#
+#   FOO
+#   ^^^ decl range
+#
+# The name span is commonly the destination for Code Navigation.
 predicate DeclarationNameSpan :
   {
     decl : Declaration,
