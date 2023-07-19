@@ -91,6 +91,7 @@ diffTest = TestList
         -- use a small batchSize to ensure the parallel machinery is
         -- used despite the small amount of facts in the test dbs.
         , opt_batchSize = 100
+        , opt_allowDifferentSchemas = True
         }
 
     withSchema settings schema act =

@@ -8,6 +8,7 @@
 
 module Diff (diff, DiffOptions(..), Result(..)) where
 
+import Control.Monad (when)
 import Data.Default (Default(..))
 import qualified Data.Map.Strict as Map
 import qualified Data.HashMap.Strict as HashMap
@@ -36,12 +37,16 @@ import Glean.Types (iNVALID_ID)
 data DiffOptions =  DiffOptions
   { opt_logAdded :: Bool -- ^ log IDs of added facts
   , opt_batchSize :: Natural -- ^ how many facts to dedupe together
+  , opt_allowDifferentSchemas :: Bool
+    -- ^ diff dbs with different schemas.
+    -- Facts will be compared based on their PredicateId.
   }
 
 instance Default DiffOptions where
   def = DiffOptions
     { opt_logAdded = False
     , opt_batchSize = 10000
+    , opt_allowDifferentSchemas = False
     }
 
 data Result = Result
@@ -54,10 +59,13 @@ data Result = Result
 diff :: Env -> DiffOptions -> Repo -> Repo -> IO Result
 diff env DiffOptions{..} one two =
   withSchema one $ \one_schema one_lookup_ptr ->
-  withSchema two $ \two_schema two_lookup_ptr ->
+  withSchema two $ \two_schema two_lookup_ptr -> do
   let (lowestPid, pidSubst) = pidMappings two_schema one_schema
       inventoryMismatch = byPredId one_schema /= byPredId two_schema
-  in
+
+  when (inventoryMismatch && not opt_allowDifferentSchemas) $
+    error "Databases use different schemas"
+
   with (schemaInventory two_schema) $ \inventory_ptr -> do
   withArray pidSubst $ \pidSubst_ptr -> do
     (kept, added, removed) <- invoke $ glean_diff

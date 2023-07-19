@@ -30,6 +30,7 @@ data Config = Config
   , cfgNew :: Repo
   , cfgLogAdded :: Bool
   , cfgBatchSize :: Maybe Natural
+  , cfgAllowDifferentSchemas :: Bool
   }
 
 options :: ParserInfo Config
@@ -46,6 +47,10 @@ options = info (parser <**> helper)
         long "batch-size" <>
         metavar "N" <>
         help "How many facts to deduplicate together"
+      cfgAllowDifferentSchemas <- switch $
+        long "allow-different-schemas" <>
+        help ("Enable comparisons of DBs which use different schemas."
+            <> " Facts are compared based on PredicateId")
       cfgOriginal <- argument (maybeReader Glean.parseRepo) $
         metavar "NAME/HASH"
       cfgNew <- argument (maybeReader Glean.parseRepo) $
@@ -61,6 +66,7 @@ main =
   let opts = DiffOptions
         { opt_logAdded = cfgLogAdded
         , opt_batchSize = fromMaybe (opt_batchSize def) cfgBatchSize
+        , opt_allowDifferentSchemas = cfgAllowDifferentSchemas
         }
   Result kept added removed <- diff env opts cfgOriginal cfgNew
   putStrLn $ unlines
