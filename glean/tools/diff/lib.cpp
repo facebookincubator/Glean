@@ -169,6 +169,10 @@ extern "C" {
 //
 //
 const char *glean_diff(
+    size_t pids_count,
+    int64_t pids_lowest,
+    const int64_t * pids_first,
+    bool pids_mismatch,
     Inventory *second_inventory,
     Lookup *first_lookup,
     Lookup *second_lookup,
@@ -201,12 +205,28 @@ const char *glean_diff(
 
   enum class SearchResult { Found, NotFound, Invalid };
 
+  const auto toFirst = [&](const Pid pid_second) {
+    if (pids_mismatch) {
+      auto ix = pid_second.toWord() - pids_lowest;
+      assert(ix >= 0 && ix < pids_count);
+      return Pid::fromWord(pids_first[ix]);
+    } else {
+      return pid_second;
+    }
+  };
+
   // Find a fact from 'second' in 'first' and save the id mapping if found. If
   // we don't have mappings for some of the referenced ids, they get mapped to
   // Id::invalid. This guarantees that we won't find any match when searching
   // in the DB.
   const auto find = [&](const std::shared_ptr<Fact>& fact_second) {
-    auto pred = second_inventory->lookupPredicate(fact_second->type());
+    auto pid_second = fact_second->type();
+    auto pid_first = toFirst(pid_second);
+    if (pid_first == Pid::invalid()) {
+      return SearchResult::Invalid;
+    }
+
+    auto pred = second_inventory->lookupPredicate(pid_second);
     CHECK(pred != nullptr);
     binary::Output out;
     uint64_t key_size;
@@ -239,8 +259,7 @@ const char *glean_diff(
     Fact::Clause clause_second = Fact::Clause::from(out.bytes(), key_size);
 
     // assumes that both lookups use the same Pids.
-    Pid type_first = fact_second->type();
-    Id id = first_lookup->idByKey(type_first, clause_second.key());
+    Id id = first_lookup->idByKey(pid_first, clause_second.key());
 
     bool found = false;
     if (id != Id::invalid()) {

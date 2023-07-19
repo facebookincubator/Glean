@@ -10,7 +10,6 @@
 module DiffTest (main) where
 
 import Data.ByteString (ByteString)
-import Data.List (isPrefixOf)
 import qualified Data.Map.Strict as Map
 import Data.Text (Text)
 import qualified Data.Text as Text
@@ -21,7 +20,6 @@ import Test.HUnit
 import System.IO.Temp (withSystemTempDirectory)
 
 import TestRunner
-import Util.Control.Exception (tryAll)
 
 import Diff (diff, Result(..), DiffOptions(..))
 import Schema.Lib (mkBatch, withSchemaFile)
@@ -81,13 +79,11 @@ diffTest = TestList
       let setStore config = config { cfgDataStore = fileDataStore tmp }
           settings = [setStore]
           facts' = take 1000 facts
+          new = (PredicateRef "x.A" 1, bs [i|{ "key": "A" }|])
       one <- withSchema settings schema1 $ \env -> create env "one" facts'
-      two <- withSchema settings schema2 $ \env -> create env "two" facts'
-      r   <- withSchema settings schema2 $ \env -> tryAll $ diff env opts one two
-      print r
-      assertBool "fails" $ case r of
-        Left err -> "Incompatible database inventories" `isPrefixOf` show err
-        _ -> False
+      two <- withSchema settings schema2 $ \env -> create env "two" (new : facts')
+      r   <- withSchema settings schema2 $ \env -> diff env opts one two
+      assertEqual "result" (Result 1000 1 0) r
   ]
   where
     opts = DiffOptions
@@ -152,4 +148,5 @@ facts = concat
   , let one = show n
         two = show (n + 1)
   ]
-  where bs = Text.encodeUtf8 . Text.pack
+bs :: String -> ByteString
+bs = Text.encodeUtf8 . Text.pack

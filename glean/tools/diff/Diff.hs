@@ -8,8 +8,13 @@
 
 module Diff (diff, DiffOptions(..), Result(..)) where
 
-import Control.Monad (when)
 import Data.Default (Default(..))
+import qualified Data.Map.Strict as Map
+import qualified Data.HashMap.Strict as HashMap
+import Data.HashMap.Strict (HashMap)
+import Data.Map.Strict (Map)
+import Foreign (withArray, fromBool)
+import Foreign.C (CBool(..))
 import Foreign.C.String (CString)
 import Foreign.C.Types (CSize(..))
 import Foreign.Ptr (Ptr)
@@ -18,12 +23,15 @@ import Numeric.Natural (Natural)
 import Util.FFI (invoke)
 
 import Glean (Repo)
-import Glean.Database.Schema (schemaInventory)
+import Glean.Angle.Types (PredicateId(..))
+import Glean.Database.Schema (DbSchema(..), PredicateDetails(..), schemaInventory)
 import Glean.Database.Open (readDatabase)
 import Glean.Database.Types (Env, odbSchema)
 import Glean.FFI (with)
-import Glean.RTS.Foreign.Inventory (Inventory, predicates)
+import Glean.RTS.Foreign.Inventory (Inventory)
 import Glean.RTS.Foreign.Lookup (withLookup, Lookup)
+import Glean.RTS.Types (Pid(..))
+import Glean.Types (iNVALID_ID)
 
 data DiffOptions =  DiffOptions
   { opt_logAdded :: Bool -- ^ log IDs of added facts
@@ -45,31 +53,57 @@ data Result = Result
 
 diff :: Env -> DiffOptions -> Repo -> Repo -> IO Result
 diff env DiffOptions{..} one two =
-  withInventory one $ \one_inventory one_lookup_ptr ->
-  withInventory two $ \two_inventory two_lookup_ptr ->
-  with one_inventory $ \inventory_ptr -> do
-  one_preds <- predicates one_inventory
-  two_preds <- predicates two_inventory
-  when (one_preds /= two_preds) $ error "Incompatible database inventories"
-
-  (kept, added, removed) <- invoke $ glean_diff
-    inventory_ptr
-    one_lookup_ptr
-    two_lookup_ptr
-    opt_logAdded
-    (fromIntegral opt_batchSize)
-  return $ Result
-    (fromIntegral kept)
-    (fromIntegral added)
-    (fromIntegral removed)
+  withSchema one $ \one_schema one_lookup_ptr ->
+  withSchema two $ \two_schema two_lookup_ptr ->
+  let (lowestPid, pidSubst) = pidMappings two_schema one_schema
+      inventoryMismatch = byPredId one_schema /= byPredId two_schema
+  in
+  with (schemaInventory two_schema) $ \inventory_ptr -> do
+  withArray pidSubst $ \pidSubst_ptr -> do
+    (kept, added, removed) <- invoke $ glean_diff
+      (fromIntegral $ length pidSubst)
+      lowestPid
+      pidSubst_ptr
+      (fromBool inventoryMismatch)
+      inventory_ptr
+      one_lookup_ptr
+      two_lookup_ptr
+      opt_logAdded
+      (fromIntegral opt_batchSize)
+    return $ Result
+      (fromIntegral kept)
+      (fromIntegral added)
+      (fromIntegral removed)
   where
-    withInventory repo f =
+    -- Mapping from Pid -> Pid
+    pidMappings :: DbSchema -> DbSchema -> (Pid, [Pid])
+    pidMappings from to = (lowest, list)
+      where
+        list = fmap
+          (\pid -> Map.findWithDefault (Pid iNVALID_ID) pid mapping)
+          [lowest .. highest]
+        lowest  = fst $ Map.findMin mapping
+        highest = fst $ Map.findMax mapping
+
+        mapping :: Map Pid Pid
+        mapping = Map.fromList
+          $ HashMap.elems
+          $ HashMap.intersectionWith (,) (byPredId from) (byPredId to)
+
+    byPredId :: DbSchema -> HashMap PredicateId Pid
+    byPredId schema = fmap predicatePid $ predicatesById schema
+
+    withSchema repo f =
       readDatabase env repo $ \odb lookup ->
       withLookup lookup $ \lookup_ptr ->
-      f (schemaInventory (odbSchema odb)) lookup_ptr
+      f (odbSchema odb) lookup_ptr
 
 foreign import ccall safe glean_diff
-  :: Ptr Inventory
+  :: CSize
+  -> Pid
+  -> Ptr Pid
+  -> CBool
+  -> Ptr Inventory
   -> Ptr Lookup
   -> Ptr Lookup
   -> Bool       -- ^ log added
