@@ -90,6 +90,7 @@ predicate RangeContains :
     (LE2 < LE1 | CE2 <= CE1)
 
 # Multiple relative-offset bytespans
+# DEPRECATED
 type ByteSpans = [RelByteSpan]
 
 # Packed representation for a list of byte spans

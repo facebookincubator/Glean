@@ -561,7 +561,7 @@ type From =
 type FixedXRef =
   {
     target : XRefTarget,
-    ranges : src.ByteSpans,
+    ranges : [src.RelByteSpan],
     from : From,
   }
 
@@ -629,7 +629,7 @@ predicate TargetUses :
   {
     target : XRefTarget,
     file : src.File,
-    uses : src.ByteSpans,
+    uses : [src.RelByteSpan],
     from : From,
   }
 

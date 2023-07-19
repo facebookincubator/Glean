@@ -474,7 +474,7 @@ type XRefTarget =
 type XRef =
   {
     target : XRefTarget,
-    ranges : src.ByteSpans
+    ranges : [src.RelByteSpan],
   }
 
 # Cross-references to a target within a file. Note that the bytespan offsets
@@ -520,7 +520,7 @@ predicate TargetUses :
   {
     target : hack.XRefTarget,
     file : src.File,
-    uses : src.ByteSpans,
+    uses : [src.RelByteSpan],
   }
   stored
   { T, File, Uses } where
