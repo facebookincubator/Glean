@@ -36,7 +36,7 @@
                 "location": {
                   "key": {
                     "file": {
-                      "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                      "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
                     },
                     "span": { "start": 109, "length": 739 }
                   }
@@ -49,7 +49,7 @@
       "location": {
         "name": "ClassA",
         "file": {
-          "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+          "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
         },
         "location": { "span": { "start": 109, "length": 739 } }
       },
@@ -117,7 +117,7 @@
                 "location": {
                   "key": {
                     "file": {
-                      "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
+                      "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
                     },
                     "span": { "start": 135, "length": 352 }
                   }
@@ -130,7 +130,7 @@
       "location": {
         "name": "Glean",
         "file": {
-          "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
+          "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
         },
         "location": { "span": { "start": 135, "length": 352 } }
       },
@@ -231,7 +231,7 @@
                 "location": {
                   "key": {
                     "file": {
-                      "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
+                      "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
                     },
                     "span": { "start": 321, "length": 20 }
                   }
@@ -244,7 +244,7 @@
       "location": {
         "name": "args",
         "file": {
-          "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
+          "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
         },
         "location": { "span": { "start": 321, "length": 20 } }
       },
@@ -348,7 +348,7 @@
                 "location": {
                   "key": {
                     "file": {
-                      "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                      "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
                     },
                     "span": { "start": 650, "length": 23 }
                   }
@@ -361,7 +361,7 @@
       "location": {
         "name": "clazz",
         "file": {
-          "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+          "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
         },
         "location": { "span": { "start": 650, "length": 23 } }
       },
@@ -444,7 +444,7 @@
                     "location": {
                       "key": {
                         "file": {
-                          "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                          "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
                         },
                         "span": { "start": 109, "length": 739 }
                       }
@@ -455,7 +455,7 @@
                 },
                 "loc": {
                   "file": {
-                    "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
+                    "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
                   },
                   "line": 11,
                   "column": 3
@@ -514,7 +514,7 @@
                       "location": {
                         "key": {
                           "file": {
-                            "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
+                            "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
                           },
                           "span": { "start": 135, "length": 352 }
                         }
@@ -530,7 +530,7 @@
       "location": {
         "name": "fetch",
         "file": {
-          "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
+          "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
         },
         "location": { "span": { "start": 0, "length": 1 } }
       },
@@ -628,7 +628,7 @@
                       "location": {
                         "key": {
                           "file": {
-                            "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                            "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
                           },
                           "span": { "start": 718, "length": 15 }
                         }
@@ -656,7 +656,7 @@
                 },
                 "loc": {
                   "file": {
-                    "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                    "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
                   },
                   "line": 35,
                   "column": 3
@@ -691,7 +691,7 @@
                       "location": {
                         "key": {
                           "file": {
-                            "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                            "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
                           },
                           "span": { "start": 109, "length": 739 }
                         }
@@ -707,7 +707,7 @@
       "location": {
         "name": "getE",
         "file": {
-          "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+          "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
         },
         "location": { "span": { "start": 0, "length": 1 } }
       },
@@ -869,7 +869,7 @@
                       "location": {
                         "key": {
                           "file": {
-                            "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                            "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
                           },
                           "span": { "start": 650, "length": 23 }
                         }
@@ -879,7 +879,7 @@
                 ],
                 "loc": {
                   "file": {
-                    "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                    "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
                   },
                   "line": 30,
                   "column": 3
@@ -914,7 +914,7 @@
                       "location": {
                         "key": {
                           "file": {
-                            "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                            "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
                           },
                           "span": { "start": 109, "length": 739 }
                         }
@@ -930,7 +930,7 @@
       "location": {
         "name": "getList",
         "file": {
-          "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+          "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
         },
         "location": { "span": { "start": 0, "length": 1 } }
       },
@@ -1062,7 +1062,7 @@
                       "location": {
                         "key": {
                           "file": {
-                            "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                            "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
                           },
                           "span": { "start": 785, "length": 14 }
                         }
@@ -1079,7 +1079,7 @@
                 },
                 "loc": {
                   "file": {
-                    "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                    "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
                   },
                   "line": 39,
                   "column": 3
@@ -1114,7 +1114,7 @@
                       "location": {
                         "key": {
                           "file": {
-                            "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                            "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
                           },
                           "span": { "start": 109, "length": 739 }
                         }
@@ -1130,7 +1130,7 @@
       "location": {
         "name": "isInstanceOfList",
         "file": {
-          "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+          "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
         },
         "location": { "span": { "start": 0, "length": 1 } }
       },
@@ -1289,7 +1289,7 @@
                       "location": {
                         "key": {
                           "file": {
-                            "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
+                            "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
                           },
                           "span": { "start": 321, "length": 20 }
                         }
@@ -1299,7 +1299,7 @@
                 ],
                 "loc": {
                   "file": {
-                    "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
+                    "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
                   },
                   "line": 18,
                   "column": 5
@@ -1312,7 +1312,7 @@
       "location": {
         "name": "main",
         "file": {
-          "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
+          "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
         },
         "location": { "span": { "start": 0, "length": 1 } }
       },
@@ -1388,7 +1388,7 @@
                 "location": {
                   "key": {
                     "file": {
-                      "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                      "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
                     },
                     "span": { "start": 785, "length": 14 }
                   }
@@ -1401,7 +1401,7 @@
       "location": {
         "name": "object",
         "file": {
-          "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+          "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
         },
         "location": { "span": { "start": 785, "length": 14 } }
       },
@@ -1461,7 +1461,7 @@
                 "location": {
                   "key": {
                     "file": {
-                      "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                      "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
                     },
                     "span": { "start": 718, "length": 15 }
                   }
@@ -1474,7 +1474,7 @@
       "location": {
         "name": "randomArg",
         "file": {
-          "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+          "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
         },
         "location": { "span": { "start": 718, "length": 15 } }
       },

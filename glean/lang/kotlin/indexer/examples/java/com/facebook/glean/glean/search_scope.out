@@ -37,7 +37,7 @@
                 "location": {
                   "key": {
                     "file": {
-                      "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                      "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
                     },
                     "span": { "start": 109, "length": 739 }
                   }
@@ -50,7 +50,7 @@
       "location": {
         "name": "ClassA",
         "file": {
-          "key": "fbsource/fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+          "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
         },
         "location": { "span": { "start": 109, "length": 739 } }
       },
