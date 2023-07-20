@@ -23,6 +23,16 @@
                             "aString": "namespace NS"
                         }
                     },
+                    "destination": {
+                        "filepath": "www/Namespace.php",
+                        "range": {
+                            "columnBegin": 11,
+                            "columnEnd": 13,
+                            "lineBegin": 10,
+                            "lineEnd": 10
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 11,
                         "columnEnd": 13,
@@ -57,6 +67,16 @@
                             "aString": "class NamespaceClass"
                         }
                     },
+                    "destination": {
+                        "filepath": "www/Namespace.php",
+                        "range": {
+                            "columnBegin": 7,
+                            "columnEnd": 21,
+                            "lineBegin": 12,
+                            "lineEnd": 12
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 7,
                         "columnEnd": 21,
@@ -90,6 +110,16 @@
                         "symbolSignature": {
                             "aString": "public function class_function(): void"
                         }
+                    },
+                    "destination": {
+                        "filepath": "www/Namespace.php",
+                        "range": {
+                            "columnBegin": 21,
+                            "columnEnd": 35,
+                            "lineBegin": 13,
+                            "lineEnd": 13
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 21,

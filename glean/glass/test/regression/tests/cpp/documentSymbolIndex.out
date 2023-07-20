@@ -26,6 +26,16 @@
                             "aString": "enum class GlobalClass : int"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 12,
+                            "columnEnd": 23,
+                            "lineBegin": 100,
+                            "lineEnd": 100
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 12,
                         "columnEnd": 23,
@@ -150,6 +160,16 @@
                             "aString": "struct pear"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 10,
+                            "columnEnd": 14,
+                            "lineBegin": 105,
+                            "lineEnd": 105
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 10,
                         "columnEnd": 14,
@@ -186,6 +206,16 @@
                         "symbolSignature": {
                             "aString": "struct d"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 8,
+                            "columnEnd": 9,
+                            "lineBegin": 107,
+                            "lineEnd": 107
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 8,
@@ -224,6 +254,16 @@
                             "aString": "int i"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 6,
+                            "columnEnd": 7,
+                            "lineBegin": 109,
+                            "lineEnd": 109
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 6,
                         "columnEnd": 7,
@@ -260,6 +300,16 @@
                         "symbolSignature": {
                             "aString": "namespace foo"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 11,
+                            "columnEnd": 14,
+                            "lineBegin": 11,
+                            "lineEnd": 11
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 11,
@@ -298,6 +348,16 @@
                             "aString": "d()"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 5,
+                            "columnEnd": 6,
+                            "lineBegin": 115,
+                            "lineEnd": 115
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 5,
                         "columnEnd": 6,
@@ -335,6 +395,16 @@
                             "aString": "d(const char* val)"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 5,
+                            "columnEnd": 6,
+                            "lineBegin": 117,
+                            "lineEnd": 117
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 5,
                         "columnEnd": 6,
@@ -369,6 +439,16 @@
                         "symbolSignature": {
                             "aString": "const char* val"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 19,
+                            "columnEnd": 22,
+                            "lineBegin": 117,
+                            "lineEnd": 117
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 19,
@@ -407,6 +487,16 @@
                             "aString": "d(const char* val, void (*)())"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 5,
+                            "columnEnd": 6,
+                            "lineBegin": 119,
+                            "lineEnd": 119
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 5,
                         "columnEnd": 6,
@@ -442,6 +532,16 @@
                             "aString": "void (*)()"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 31,
+                            "columnEnd": 32,
+                            "lineBegin": 119,
+                            "lineEnd": 119
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 31,
                         "columnEnd": 32,
@@ -476,6 +576,16 @@
                         "symbolSignature": {
                             "aString": "const char* val"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 19,
+                            "columnEnd": 22,
+                            "lineBegin": 119,
+                            "lineEnd": 119
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 19,
@@ -514,6 +624,16 @@
                             "aString": "d(char c, int i, const char* p)"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 5,
+                            "columnEnd": 6,
+                            "lineBegin": 121,
+                            "lineEnd": 121
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 5,
                         "columnEnd": 6,
@@ -548,6 +668,16 @@
                         "symbolSignature": {
                             "aString": "char c"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 12,
+                            "columnEnd": 13,
+                            "lineBegin": 121,
+                            "lineEnd": 121
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 12,
@@ -584,6 +714,16 @@
                             "aString": "int i"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 19,
+                            "columnEnd": 20,
+                            "lineBegin": 121,
+                            "lineEnd": 121
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 19,
                         "columnEnd": 20,
@@ -618,6 +758,16 @@
                         "symbolSignature": {
                             "aString": "const char* p"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 34,
+                            "columnEnd": 35,
+                            "lineBegin": 121,
+                            "lineEnd": 121
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 34,
@@ -673,6 +823,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 8,
+                            "columnEnd": 9,
+                            "lineBegin": 107,
+                            "lineEnd": 107
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 8,
                         "columnEnd": 9,
@@ -700,6 +860,16 @@
                         "symbolSignature": {
                             "aString": "d(const d&)"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 5,
+                            "columnEnd": 6,
+                            "lineBegin": 123,
+                            "lineEnd": 123
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 5,
@@ -736,6 +906,16 @@
                             "aString": "const d&"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 15,
+                            "columnEnd": 16,
+                            "lineBegin": 123,
+                            "lineEnd": 123
+                        },
+                        "repository": "test"
+                    },
                     "range": {
                         "columnBegin": 7,
                         "columnEnd": 15,
@@ -766,6 +946,16 @@
                         "symbolSignature": {
                             "aString": "d(pear<int, bool>& p, char cp)"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 5,
+                            "columnEnd": 6,
+                            "lineBegin": 125,
+                            "lineEnd": 125
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 5,
@@ -802,6 +992,16 @@
                             "aString": "char cp"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 32,
+                            "columnEnd": 34,
+                            "lineBegin": 125,
+                            "lineEnd": 125
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 32,
                         "columnEnd": 34,
@@ -836,6 +1036,16 @@
                         "symbolSignature": {
                             "aString": "pear<int, bool>& p"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 24,
+                            "columnEnd": 25,
+                            "lineBegin": 125,
+                            "lineEnd": 125
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 24,
@@ -889,6 +1099,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 10,
+                            "columnEnd": 14,
+                            "lineBegin": 105,
+                            "lineEnd": 105
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 10,
                         "columnEnd": 14,
@@ -918,6 +1138,16 @@
                         "symbolSignature": {
                             "aString": "namespace Q"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 11,
+                            "columnEnd": 12,
+                            "lineBegin": 129,
+                            "lineEnd": 129
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 11,
@@ -956,6 +1186,16 @@
                             "aString": "struct S"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 8,
+                            "columnEnd": 9,
+                            "lineBegin": 13,
+                            "lineEnd": 13
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 8,
                         "columnEnd": 9,
@@ -992,6 +1232,16 @@
                         "symbolSignature": {
                             "aString": "void bozzo()"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 8,
+                            "columnEnd": 13,
+                            "lineBegin": 131,
+                            "lineEnd": 131
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 8,
@@ -1030,6 +1280,16 @@
                             "aString": "struct QQ"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 10,
+                            "columnEnd": 12,
+                            "lineBegin": 133,
+                            "lineEnd": 133
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 10,
                         "columnEnd": 12,
@@ -1066,6 +1326,16 @@
                         "symbolSignature": {
                             "aString": "void bozzo()"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 10,
+                            "columnEnd": 15,
+                            "lineBegin": 135,
+                            "lineEnd": 135
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 10,
@@ -1104,6 +1374,16 @@
                             "aString": "double getDouble() const"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 12,
+                            "columnEnd": 21,
+                            "lineBegin": 137,
+                            "lineEnd": 137
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 12,
                         "columnEnd": 21,
@@ -1140,6 +1420,16 @@
                         "symbolSignature": {
                             "aString": "double& getDouble()"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 13,
+                            "columnEnd": 22,
+                            "lineBegin": 138,
+                            "lineEnd": 138
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 13,
@@ -1178,6 +1468,16 @@
                             "aString": "double getDouble()"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 12,
+                            "columnEnd": 21,
+                            "lineBegin": 139,
+                            "lineEnd": 139
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 12,
                         "columnEnd": 21,
@@ -1214,6 +1514,16 @@
                         "symbolSignature": {
                             "aString": "typedef long TypedefDeclInteger"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 16,
+                            "columnEnd": 34,
+                            "lineBegin": 14,
+                            "lineEnd": 14
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 16,
@@ -1269,6 +1579,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 10,
+                            "columnEnd": 12,
+                            "lineBegin": 133,
+                            "lineEnd": 133
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 10,
                         "columnEnd": 12,
@@ -1296,6 +1616,16 @@
                         "symbolSignature": {
                             "aString": "int thango(int, const Q::QQ&) const"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 9,
+                            "columnEnd": 15,
+                            "lineBegin": 141,
+                            "lineEnd": 141
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 9,
@@ -1332,6 +1662,16 @@
                             "aString": "int"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 19,
+                            "columnEnd": 20,
+                            "lineBegin": 141,
+                            "lineEnd": 141
+                        },
+                        "repository": "test"
+                    },
                     "range": {
                         "columnBegin": 16,
                         "columnEnd": 19,
@@ -1360,6 +1700,16 @@
                         "symbolSignature": {
                             "aString": "const Q::QQ&"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 30,
+                            "columnEnd": 31,
+                            "lineBegin": 141,
+                            "lineEnd": 141
+                        },
+                        "repository": "test"
                     },
                     "range": {
                         "columnBegin": 21,
@@ -1409,6 +1759,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 10,
+                            "columnEnd": 12,
+                            "lineBegin": 133,
+                            "lineEnd": 133
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 10,
                         "columnEnd": 12,
@@ -1436,6 +1796,16 @@
                         "symbolSignature": {
                             "aString": "int& thango(int, Q::QQ&)"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 10,
+                            "columnEnd": 16,
+                            "lineBegin": 142,
+                            "lineEnd": 142
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 10,
@@ -1472,6 +1842,16 @@
                             "aString": "int"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 20,
+                            "columnEnd": 21,
+                            "lineBegin": 142,
+                            "lineEnd": 142
+                        },
+                        "repository": "test"
+                    },
                     "range": {
                         "columnBegin": 17,
                         "columnEnd": 20,
@@ -1500,6 +1880,16 @@
                         "symbolSignature": {
                             "aString": "Q::QQ&"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 25,
+                            "columnEnd": 26,
+                            "lineBegin": 142,
+                            "lineEnd": 142
+                        },
+                        "repository": "test"
                     },
                     "range": {
                         "columnBegin": 22,
@@ -1549,6 +1939,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 10,
+                            "columnEnd": 12,
+                            "lineBegin": 133,
+                            "lineEnd": 133
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 10,
                         "columnEnd": 12,
@@ -1576,6 +1976,16 @@
                         "symbolSignature": {
                             "aString": "int thango(int, Q::QQ&&)"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 9,
+                            "columnEnd": 15,
+                            "lineBegin": 143,
+                            "lineEnd": 143
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 9,
@@ -1612,6 +2022,16 @@
                             "aString": "int"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 19,
+                            "columnEnd": 20,
+                            "lineBegin": 143,
+                            "lineEnd": 143
+                        },
+                        "repository": "test"
+                    },
                     "range": {
                         "columnBegin": 16,
                         "columnEnd": 19,
@@ -1640,6 +2060,16 @@
                         "symbolSignature": {
                             "aString": "Q::QQ&&"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 25,
+                            "columnEnd": 26,
+                            "lineBegin": 143,
+                            "lineEnd": 143
+                        },
+                        "repository": "test"
                     },
                     "range": {
                         "columnBegin": 21,
@@ -1689,6 +2119,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 10,
+                            "columnEnd": 12,
+                            "lineBegin": 133,
+                            "lineEnd": 133
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 10,
                         "columnEnd": 12,
@@ -1716,6 +2156,16 @@
                         "symbolSignature": {
                             "aString": "int thingo(pear<int, char>, Q::QQ&&) const"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 9,
+                            "columnEnd": 15,
+                            "lineBegin": 145,
+                            "lineEnd": 145
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 9,
@@ -1752,6 +2202,16 @@
                             "aString": "pear<int, char>"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 30,
+                            "columnEnd": 31,
+                            "lineBegin": 145,
+                            "lineEnd": 145
+                        },
+                        "repository": "test"
+                    },
                     "range": {
                         "columnBegin": 16,
                         "columnEnd": 30,
@@ -1780,6 +2240,16 @@
                         "symbolSignature": {
                             "aString": "Q::QQ&&"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 36,
+                            "columnEnd": 37,
+                            "lineBegin": 145,
+                            "lineEnd": 145
+                        },
+                        "repository": "test"
                     },
                     "range": {
                         "columnBegin": 32,
@@ -1821,6 +2291,16 @@
                         "filepath": "test.cpp",
                         "range": {
                             "columnBegin": 3,
+                            "columnEnd": 14,
+                            "lineBegin": 105,
+                            "lineEnd": 105
+                        },
+                        "repository": "test"
+                    },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 10,
                             "columnEnd": 14,
                             "lineBegin": 105,
                             "lineEnd": 105
@@ -1874,6 +2354,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 10,
+                            "columnEnd": 12,
+                            "lineBegin": 133,
+                            "lineEnd": 133
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 10,
                         "columnEnd": 12,
@@ -1901,6 +2391,16 @@
                         "symbolSignature": {
                             "aString": "~QQ()"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 5,
+                            "columnEnd": 6,
+                            "lineBegin": 147,
+                            "lineEnd": 147
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 5,
@@ -1939,6 +2439,16 @@
                             "aString": "using UsingDeclInteger = long"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 9,
+                            "columnEnd": 25,
+                            "lineBegin": 15,
+                            "lineEnd": 15
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 9,
                         "columnEnd": 25,
@@ -1975,6 +2485,16 @@
                         "symbolSignature": {
                             "aString": "struct OO"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 10,
+                            "columnEnd": 12,
+                            "lineBegin": 150,
+                            "lineEnd": 150
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 10,
@@ -2030,6 +2550,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 10,
+                            "columnEnd": 12,
+                            "lineBegin": 150,
+                            "lineEnd": 150
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 10,
                         "columnEnd": 12,
@@ -2075,6 +2605,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 10,
+                            "columnEnd": 12,
+                            "lineBegin": 150,
+                            "lineEnd": 150
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 10,
                         "columnEnd": 12,
@@ -2102,6 +2642,16 @@
                         "symbolSignature": {
                             "aString": "bool operator==(const Q::OO& a, const Q::OO& b)"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 17,
+                            "columnEnd": 25,
+                            "lineBegin": 152,
+                            "lineEnd": 152
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 17,
@@ -2138,6 +2688,16 @@
                             "aString": "const Q::OO& a"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 38,
+                            "columnEnd": 39,
+                            "lineBegin": 152,
+                            "lineEnd": 152
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 38,
                         "columnEnd": 39,
@@ -2172,6 +2732,16 @@
                         "symbolSignature": {
                             "aString": "const Q::OO& b"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 51,
+                            "columnEnd": 52,
+                            "lineBegin": 152,
+                            "lineEnd": 152
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 51,
@@ -2227,6 +2797,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 10,
+                            "columnEnd": 12,
+                            "lineBegin": 150,
+                            "lineEnd": 150
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 10,
                         "columnEnd": 12,
@@ -2254,6 +2834,16 @@
                         "symbolSignature": {
                             "aString": "Q::OO& operator++()"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 9,
+                            "columnEnd": 17,
+                            "lineBegin": 154,
+                            "lineEnd": 154
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 9,
@@ -2309,6 +2899,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 10,
+                            "columnEnd": 12,
+                            "lineBegin": 150,
+                            "lineEnd": 150
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 10,
                         "columnEnd": 12,
@@ -2354,6 +2954,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 10,
+                            "columnEnd": 12,
+                            "lineBegin": 150,
+                            "lineEnd": 150
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 10,
                         "columnEnd": 12,
@@ -2381,6 +2991,16 @@
                         "symbolSignature": {
                             "aString": "Q::OO& operator=(const Q::OO&)"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 9,
+                            "columnEnd": 17,
+                            "lineBegin": 156,
+                            "lineEnd": 156
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 9,
@@ -2416,6 +3036,16 @@
                         "symbolSignature": {
                             "aString": "const Q::OO&"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 28,
+                            "columnEnd": 29,
+                            "lineBegin": 156,
+                            "lineEnd": 156
+                        },
+                        "repository": "test"
                     },
                     "range": {
                         "columnBegin": 19,
@@ -2465,6 +3095,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 10,
+                            "columnEnd": 12,
+                            "lineBegin": 150,
+                            "lineEnd": 150
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 10,
                         "columnEnd": 12,
@@ -2510,6 +3150,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 10,
+                            "columnEnd": 12,
+                            "lineBegin": 150,
+                            "lineEnd": 150
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 10,
                         "columnEnd": 12,
@@ -2537,6 +3187,16 @@
                         "symbolSignature": {
                             "aString": "Q::OO& operator=(Q::OO&&)"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 9,
+                            "columnEnd": 17,
+                            "lineBegin": 157,
+                            "lineEnd": 157
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 9,
@@ -2573,6 +3233,16 @@
                             "aString": "Q::OO&&"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 23,
+                            "columnEnd": 24,
+                            "lineBegin": 157,
+                            "lineEnd": 157
+                        },
+                        "repository": "test"
+                    },
                     "range": {
                         "columnBegin": 19,
                         "columnEnd": 23,
@@ -2603,6 +3273,16 @@
                         "symbolSignature": {
                             "aString": "T&() const"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 15,
+                            "columnEnd": 23,
+                            "lineBegin": 160,
+                            "lineEnd": 160
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 15,
@@ -2641,6 +3321,16 @@
                             "aString": "T&() const"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 15,
+                            "columnEnd": 23,
+                            "lineBegin": 162,
+                            "lineEnd": 162
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 15,
                         "columnEnd": 23,
@@ -2677,6 +3367,16 @@
                         "symbolSignature": {
                             "aString": "void operator\"\"_glean(const char32_t* str, unsigned long len)"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 18,
+                            "columnEnd": 26,
+                            "lineBegin": 166,
+                            "lineEnd": 166
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 18,
@@ -2715,6 +3415,16 @@
                             "aString": "unsigned long len"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 42,
+                            "columnEnd": 45,
+                            "lineBegin": 167,
+                            "lineEnd": 167
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 42,
                         "columnEnd": 45,
@@ -2749,6 +3459,16 @@
                         "symbolSignature": {
                             "aString": "const char32_t* str"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 23,
+                            "columnEnd": 26,
+                            "lineBegin": 167,
+                            "lineEnd": 167
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 23,
@@ -2787,6 +3507,16 @@
                             "aString": "void f()"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 6,
+                            "columnEnd": 7,
+                            "lineBegin": 21,
+                            "lineEnd": 21
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 6,
                         "columnEnd": 7,
@@ -2823,6 +3553,16 @@
                         "symbolSignature": {
                             "aString": "void foo()"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 6,
+                            "columnEnd": 9,
+                            "lineBegin": 24,
+                            "lineEnd": 24
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 6,
@@ -2876,6 +3616,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 6,
+                            "columnEnd": 9,
+                            "lineBegin": 31,
+                            "lineEnd": 31
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 6,
                         "columnEnd": 9,
@@ -2905,6 +3655,16 @@
                         "symbolSignature": {
                             "aString": "int four"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 7,
+                            "columnEnd": 11,
+                            "lineBegin": 25,
+                            "lineEnd": 25
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 7,
@@ -2996,6 +3756,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 6,
+                            "columnEnd": 9,
+                            "lineBegin": 24,
+                            "lineEnd": 24
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 6,
                         "columnEnd": 9,
@@ -3023,6 +3793,16 @@
                         "symbolSignature": {
                             "aString": "void foo()"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 6,
+                            "columnEnd": 9,
+                            "lineBegin": 31,
+                            "lineEnd": 31
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 6,
@@ -3061,6 +3841,16 @@
                             "aString": "namespace bar"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 11,
+                            "columnEnd": 14,
+                            "lineBegin": 33,
+                            "lineEnd": 33
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 11,
                         "columnEnd": 14,
@@ -3097,6 +3887,16 @@
                         "symbolSignature": {
                             "aString": "typedef short TypedefDeclShort"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 15,
+                            "columnEnd": 31,
+                            "lineBegin": 35,
+                            "lineEnd": 35
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 15,
@@ -3135,6 +3935,16 @@
                             "aString": "using UsingDeclShort = short"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 7,
+                            "columnEnd": 21,
+                            "lineBegin": 36,
+                            "lineEnd": 36
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 7,
                         "columnEnd": 21,
@@ -3171,6 +3981,16 @@
                         "symbolSignature": {
                             "aString": "struct T"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 8,
+                            "columnEnd": 9,
+                            "lineBegin": 38,
+                            "lineEnd": 38
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 8,
@@ -3209,6 +4029,16 @@
                             "aString": "int memberVariableDecl"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 7,
+                            "columnEnd": 25,
+                            "lineBegin": 39,
+                            "lineEnd": 39
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 7,
                         "columnEnd": 25,
@@ -3245,6 +4075,16 @@
                         "symbolSignature": {
                             "aString": "void g()"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 6,
+                            "columnEnd": 7,
+                            "lineBegin": 41,
+                            "lineEnd": 41
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 6,
@@ -3283,6 +4123,16 @@
                             "aString": "int fooFn(int fooI)"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 5,
+                            "columnEnd": 10,
+                            "lineBegin": 45,
+                            "lineEnd": 45
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 5,
                         "columnEnd": 10,
@@ -3317,6 +4167,16 @@
                         "symbolSignature": {
                             "aString": "int fooI"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 15,
+                            "columnEnd": 19,
+                            "lineBegin": 45,
+                            "lineEnd": 45
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 15,
@@ -3372,6 +4232,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 15,
+                            "columnEnd": 19,
+                            "lineBegin": 45,
+                            "lineEnd": 45
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 15,
                         "columnEnd": 19,
@@ -3419,6 +4289,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 6,
+                            "columnEnd": 7,
+                            "lineBegin": 54,
+                            "lineEnd": 54
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 6,
                         "columnEnd": 7,
@@ -3446,6 +4326,16 @@
                         "symbolSignature": {
                             "aString": "void h(int _i)"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 6,
+                            "columnEnd": 7,
+                            "lineBegin": 52,
+                            "lineEnd": 52
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 6,
@@ -3481,6 +4371,16 @@
                         "symbolSignature": {
                             "aString": "int _i"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 12,
+                            "columnEnd": 14,
+                            "lineBegin": 52,
+                            "lineEnd": 52
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 12,
@@ -3518,6 +4418,16 @@
                         "symbolSignature": {
                             "aString": "void h(int i)"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 6,
+                            "columnEnd": 7,
+                            "lineBegin": 54,
+                            "lineEnd": 54
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 6,
@@ -3571,6 +4481,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 6,
+                            "columnEnd": 7,
+                            "lineBegin": 52,
+                            "lineEnd": 52
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 6,
                         "columnEnd": 7,
@@ -3598,6 +4518,16 @@
                         "symbolSignature": {
                             "aString": "int i"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 12,
+                            "columnEnd": 13,
+                            "lineBegin": 54,
+                            "lineEnd": 54
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 12,
@@ -3653,6 +4583,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 6,
+                            "columnEnd": 7,
+                            "lineBegin": 54,
+                            "lineEnd": 54
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 6,
                         "columnEnd": 7,
@@ -3692,6 +4632,16 @@
                         "filepath": "test.cpp",
                         "range": {
                             "columnBegin": 8,
+                            "columnEnd": 13,
+                            "lineBegin": 54,
+                            "lineEnd": 54
+                        },
+                        "repository": "test"
+                    },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 12,
                             "columnEnd": 13,
                             "lineBegin": 54,
                             "lineEnd": 54
@@ -3745,6 +4695,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 11,
+                            "columnEnd": 14,
+                            "lineBegin": 11,
+                            "lineEnd": 11
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 11,
                         "columnEnd": 14,
@@ -3790,6 +4750,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 8,
+                            "columnEnd": 9,
+                            "lineBegin": 13,
+                            "lineEnd": 13
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 8,
                         "columnEnd": 9,
@@ -3817,6 +4787,16 @@
                         "symbolSignature": {
                             "aString": "foo::S s"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 10,
+                            "columnEnd": 11,
+                            "lineBegin": 56,
+                            "lineEnd": 56
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 10,
@@ -3872,6 +4852,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 11,
+                            "columnEnd": 14,
+                            "lineBegin": 11,
+                            "lineEnd": 11
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 11,
                         "columnEnd": 14,
@@ -3914,6 +4904,16 @@
                             "columnEnd": 2,
                             "lineBegin": 33,
                             "lineEnd": 43
+                        },
+                        "repository": "test"
+                    },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 11,
+                            "columnEnd": 14,
+                            "lineBegin": 33,
+                            "lineEnd": 33
                         },
                         "repository": "test"
                     },
@@ -3962,6 +4962,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 8,
+                            "columnEnd": 9,
+                            "lineBegin": 38,
+                            "lineEnd": 38
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 8,
                         "columnEnd": 9,
@@ -3989,6 +4999,16 @@
                         "symbolSignature": {
                             "aString": "foo::bar::T t"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 15,
+                            "columnEnd": 16,
+                            "lineBegin": 57,
+                            "lineEnd": 57
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 15,
@@ -4044,6 +5064,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 11,
+                            "columnEnd": 14,
+                            "lineBegin": 11,
+                            "lineEnd": 11
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 11,
                         "columnEnd": 14,
@@ -4084,6 +5114,16 @@
                         "range": {
                             "columnBegin": 1,
                             "columnEnd": 9,
+                            "lineBegin": 21,
+                            "lineEnd": 21
+                        },
+                        "repository": "test"
+                    },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 6,
+                            "columnEnd": 7,
                             "lineBegin": 21,
                             "lineEnd": 21
                         },
@@ -4136,6 +5176,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 11,
+                            "columnEnd": 14,
+                            "lineBegin": 11,
+                            "lineEnd": 11
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 11,
                         "columnEnd": 14,
@@ -4181,6 +5231,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 6,
+                            "columnEnd": 9,
+                            "lineBegin": 24,
+                            "lineEnd": 24
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 6,
                         "columnEnd": 9,
@@ -4221,6 +5281,16 @@
                         "range": {
                             "columnBegin": 1,
                             "columnEnd": 11,
+                            "lineBegin": 31,
+                            "lineEnd": 31
+                        },
+                        "repository": "test"
+                    },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 6,
+                            "columnEnd": 9,
                             "lineBegin": 31,
                             "lineEnd": 31
                         },
@@ -4273,6 +5343,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 11,
+                            "columnEnd": 14,
+                            "lineBegin": 11,
+                            "lineEnd": 11
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 11,
                         "columnEnd": 14,
@@ -4318,6 +5398,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 11,
+                            "columnEnd": 14,
+                            "lineBegin": 33,
+                            "lineEnd": 33
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 11,
                         "columnEnd": 14,
@@ -4358,6 +5448,16 @@
                         "range": {
                             "columnBegin": 1,
                             "columnEnd": 9,
+                            "lineBegin": 41,
+                            "lineEnd": 41
+                        },
+                        "repository": "test"
+                    },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 6,
+                            "columnEnd": 7,
                             "lineBegin": 41,
                             "lineEnd": 41
                         },
@@ -4410,6 +5510,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 12,
+                            "columnEnd": 13,
+                            "lineBegin": 54,
+                            "lineEnd": 54
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 12,
                         "columnEnd": 13,
@@ -4439,6 +5549,16 @@
                         "symbolSignature": {
                             "aString": "namespace maybe"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 11,
+                            "columnEnd": 16,
+                            "lineBegin": 64,
+                            "lineEnd": 64
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 11,
@@ -4477,6 +5597,16 @@
                             "aString": "struct Nothing"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 8,
+                            "columnEnd": 15,
+                            "lineBegin": 69,
+                            "lineEnd": 69
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 8,
                         "columnEnd": 15,
@@ -4513,6 +5643,16 @@
                         "symbolSignature": {
                             "aString": "enum class _secret : int"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 14,
+                            "columnEnd": 21,
+                            "lineBegin": 70,
+                            "lineEnd": 70
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 14,
@@ -4580,6 +5720,16 @@
                             "aString": "Nothing(maybe::Nothing::_secret)"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 22,
+                            "columnEnd": 29,
+                            "lineBegin": 72,
+                            "lineEnd": 72
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 22,
                         "columnEnd": 29,
@@ -4614,6 +5764,16 @@
                         "symbolSignature": {
                             "aString": "maybe::Nothing::_secret"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 37,
+                            "columnEnd": 38,
+                            "lineBegin": 72,
+                            "lineEnd": 72
+                        },
+                        "repository": "test"
                     },
                     "range": {
                         "columnBegin": 30,
@@ -4656,6 +5816,16 @@
                         "range": {
                             "columnBegin": 3,
                             "columnEnd": 32,
+                            "lineBegin": 70,
+                            "lineEnd": 70
+                        },
+                        "repository": "test"
+                    },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 14,
+                            "columnEnd": 21,
                             "lineBegin": 70,
                             "lineEnd": 70
                         },
@@ -4708,6 +5878,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 8,
+                            "columnEnd": 15,
+                            "lineBegin": 69,
+                            "lineEnd": 69
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 8,
                         "columnEnd": 15,
@@ -4750,6 +5930,16 @@
                             "columnEnd": 2,
                             "lineBegin": 69,
                             "lineEnd": 73
+                        },
+                        "repository": "test"
+                    },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 8,
+                            "columnEnd": 15,
+                            "lineBegin": 69,
+                            "lineEnd": 69
                         },
                         "repository": "test"
                     },
@@ -4798,6 +5988,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 22,
+                            "columnEnd": 29,
+                            "lineBegin": 72,
+                            "lineEnd": 72
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 22,
                         "columnEnd": 29,
@@ -4838,6 +6038,16 @@
                         "range": {
                             "columnBegin": 3,
                             "columnEnd": 32,
+                            "lineBegin": 70,
+                            "lineEnd": 70
+                        },
+                        "repository": "test"
+                    },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 14,
+                            "columnEnd": 21,
                             "lineBegin": 70,
                             "lineEnd": 70
                         },
@@ -4910,6 +6120,16 @@
                             "aString": "const maybe::Nothing nothing"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 19,
+                            "columnEnd": 26,
+                            "lineBegin": 74,
+                            "lineEnd": 74
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 19,
                         "columnEnd": 26,
@@ -4946,6 +6166,16 @@
                         "symbolSignature": {
                             "aString": "struct Something"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 8,
+                            "columnEnd": 17,
+                            "lineBegin": 76,
+                            "lineEnd": 76
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 8,
@@ -4984,6 +6214,16 @@
                             "aString": "int a_"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 7,
+                            "columnEnd": 9,
+                            "lineBegin": 77,
+                            "lineEnd": 77
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 7,
                         "columnEnd": 9,
@@ -5021,6 +6261,16 @@
                             "aString": "Something(int a)"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 3,
+                            "columnEnd": 12,
+                            "lineBegin": 78,
+                            "lineEnd": 78
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 3,
                         "columnEnd": 12,
@@ -5055,6 +6305,16 @@
                         "symbolSignature": {
                             "aString": "int a"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 17,
+                            "columnEnd": 18,
+                            "lineBegin": 78,
+                            "lineEnd": 78
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 17,
@@ -5108,6 +6368,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 17,
+                            "columnEnd": 18,
+                            "lineBegin": 78,
+                            "lineEnd": 78
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 17,
                         "columnEnd": 18,
@@ -5147,6 +6417,16 @@
                         "filepath": "test.cpp",
                         "range": {
                             "columnBegin": 3,
+                            "columnEnd": 9,
+                            "lineBegin": 77,
+                            "lineEnd": 77
+                        },
+                        "repository": "test"
+                    },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 7,
                             "columnEnd": 9,
                             "lineBegin": 77,
                             "lineEnd": 77
@@ -5200,6 +6480,16 @@
                         },
                         "repository": "test"
                     },
+                    "targetDestination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 8,
+                            "columnEnd": 17,
+                            "lineBegin": 76,
+                            "lineEnd": 76
+                        },
+                        "repository": "test"
+                    },
                     "targetName": {
                         "columnBegin": 8,
                         "columnEnd": 17,
@@ -5227,6 +6517,16 @@
                         "symbolSignature": {
                             "aString": "~Something()"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 3,
+                            "columnEnd": 4,
+                            "lineBegin": 79,
+                            "lineEnd": 79
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 3,
@@ -5397,6 +6697,16 @@
                             "aString": "namespace baz"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 11,
+                            "columnEnd": 14,
+                            "lineBegin": 90,
+                            "lineEnd": 90
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 11,
                         "columnEnd": 14,
@@ -5434,6 +6744,16 @@
                             "aString": "struct U"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 8,
+                            "columnEnd": 9,
+                            "lineBegin": 92,
+                            "lineEnd": 92
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 8,
                         "columnEnd": 9,
@@ -5470,6 +6790,16 @@
                         "symbolSignature": {
                             "aString": "enum InU : int"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 8,
+                            "columnEnd": 11,
+                            "lineBegin": 93,
+                            "lineEnd": 93
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 8,
@@ -5595,6 +6925,16 @@
                             "aString": "enum class InUClass : int"
                         }
                     },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 14,
+                            "columnEnd": 22,
+                            "lineBegin": 94,
+                            "lineEnd": 94
+                        },
+                        "repository": "test"
+                    },
                     "nameRange": {
                         "columnBegin": 14,
                         "columnEnd": 22,
@@ -5718,6 +7058,16 @@
                         "symbolSignature": {
                             "aString": "enum Global : int"
                         }
+                    },
+                    "destination": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 6,
+                            "columnEnd": 12,
+                            "lineBegin": 99,
+                            "lineEnd": 99
+                        },
+                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 6,

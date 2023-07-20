@@ -1257,8 +1257,8 @@ toReferenceSymbol repoName file srcOffsets (Code.XRefLocation {..}, entity) = do
             locationRange_range = targetRange
           } = target
 
-  return $ (entity,) $
-    ReferenceRangeSymbolX sym range target attributes targetNameRange
+  return $ (entity,) $ ReferenceRangeSymbolX
+    sym range target attributes targetNameRange targetDestination
   where
     -- reference target is a Declaration and an Entity
     Code.Location{..} = xRefLocation_target
@@ -1289,7 +1289,8 @@ toDefinitionSymbol repoName file offsets (Code.Location {..}, entity) = do
            rangeContains range locationRange_range
         then Just locationRange_range else Nothing
 
-  return $ (entity,) $ DefinitionSymbolX sym range attributes nameRange
+  return $ (entity,) $ DefinitionSymbolX
+    sym range attributes nameRange destination
   where
     range = rangeSpanToRange offsets location_location
 
