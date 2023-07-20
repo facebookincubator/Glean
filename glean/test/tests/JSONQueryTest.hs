@@ -254,10 +254,10 @@ jsonQueryErrorCases = dbTestCase $ \env repo -> do
     , userQuery_query =
        "{ \"key\": " <>
            "{ \"xmap\": { \"id\": 42 }" <>
-           ", \"externals\": { \"every\": " <>
+           ", \"targets\": { \"every\": { \"key\" : { \"every\": " <>
                 "{ \"any\" : false" <>
                 ", \"objcSelector\" : { \"get\" : {} }" <>
-       "}}}}"
+       "}}}}}}"
     }
   print r
   assertBool "jsonQuery - every must be irrefutable" $

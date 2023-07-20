@@ -27,21 +27,24 @@ order (XRef o1 n1 v1) (XRef o2 n2 v2) =
 transformXRefs :: JSValue -> Result JSValue
 transformXRefs v = do
   [ ("xmap", xmap),
-    ("externals", JSArray externals),
-    ("targets", JSArray _) ] <- keyVals v
+    ("externals", JSArray _),
+    ("targets", JSArray targets) ] <- keyVals v
   [ ("file", file),
     ("fixed", JSArray fixed),
-    ("variable", JSArray variable),
-    ("froms", JSArray _) ] <- keyVals xmap
+    ("variable", JSArray _),
+    ("froms", JSArray froms) ] <- keyVals xmap
   fixed_xrefs <- forM fixed $ \x -> do
     [ ("target", target),
-      ("ranges", JSArray ranges),
-      ("from", JSObject _) ] <- objVals x
-    reoffset 0 <$> mapM (xref target) ranges
-  when (length variable /= length externals) $ fail "invalid xrefs"
-  variable_xrefs <- forM (zip externals variable) $ \(target,v) -> do
-    JSArray ranges <- return v
-    reoffset 0 <$> mapM (xref target) ranges
+      ("ranges", JSArray _),
+      ("from", from) ] <- objVals x
+    spans <- fromToByteSpans from
+    return [ XRef o n target | (o, n) <- spans ]
+  when (length froms /= length targets) $ fail "invalid xrefs"
+  variable_xrefs <- forM (zip targets froms) $ \(t, from) -> do
+    JSObject xrefs <- return t
+    JSArray ts <- valFromObj "key" xrefs
+    spans <- fromToByteSpans from
+    return [ XRef o n t | (o, n) <- spans, t <- ts ]
   return $ makeObj
     [ ("key", JSObject $ toJSObject
         [ ("file", file)
@@ -53,9 +56,22 @@ transformXRefs v = do
         ])
     ]
   where
-    xref target x = do
-      [("offset", JSRational _ o), ("length", JSRational _ n)] <- objVals x
-      return $ XRef (floor o) (floor n) target
+    fromToByteSpans from = do
+      [ ("spans", JSArray packedSpans),
+        ("expansions", JSArray packedExpansions),
+        ("spellings", JSArray packedSpellings) ] <- objVals from
+      spans <- unpackByteSpans packedSpans
+      expansions <- unpackByteSpans packedExpansions
+      spellings <- unpackByteSpans packedSpellings
+      return $ sort $ spans ++ expansions ++ spellings
+
+    unpackByteSpans packedByteSpans = do
+      relByteSpans <- mapM toRelByteSpans packedByteSpans
+      return $ reoffset 0 (concat relByteSpans)
+      where
+      toRelByteSpans x = do
+        [("length", JSRational _ n), ("offsets", JSArray offsets)] <- objVals x
+        return $ map ((, floor n) . (\(JSRational _ o) -> floor o)) offsets
 
     toXRef (XRef o n t) = makeObj
       [ ("range", makeObj
@@ -66,7 +82,7 @@ transformXRefs v = do
       ]
 
     reoffset !_ [] = []
-    reoffset !k (XRef o n t : xs) = XRef (o+k) (o+k+n) t : reoffset (o+k) xs
+    reoffset !k ((o, n) : xs) = (o+k, o+k+n) : reoffset (o+k) xs
 
     objVals :: JSValue -> Result [(String, JSValue)]
     objVals (JSObject obj) = return $ fromJSObject obj

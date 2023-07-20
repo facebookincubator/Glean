@@ -43,9 +43,15 @@ testBatch max backend repo = do
     mapM_ (makeFact @Cxx.FileXRefMap)
       [ def
           { Cxx.fileXRefMap_key_file = file
-          , Cxx.fileXRefMap_key_variable = replicate 20 $ replicate 10 def
-              { Src.relByteSpan_offset = toNat 2
-              , Src.relByteSpan_length = toNat 10
+          , Cxx.fileXRefMap_key_froms = replicate 20 def
+              { Cxx.from_spans =
+                  [ def
+                    { Src.packedByteSpansGroup_offsets = replicate 10 $ toNat 2
+                    , Src.packedByteSpansGroup_length = toNat 10
+                    }
+                  ]
+              , Cxx.from_expansions = []
+              , Cxx.from_spellings = []
               }
           }
         | file <- take (max `div` 20) files ]
