@@ -28,7 +28,7 @@ import qualified Glean.Snapshot.Types as Types
 import Options.Applicative
     ( fullDesc, help, info, long, short, metavar, progDesc, strOption,
       strArgument, optional, helper, Parser, ParserInfo, some,
-      Parser, auto, help, long, option, showDefault, value )
+      Parser, auto, help, long, option, showDefault, value, maybeReader )
 import Data.Text (Text, unpack, pack)
 import System.FilePath.Posix (splitDirectories, joinPath)
 import Control.Monad ( forM_ )
@@ -44,6 +44,7 @@ import Data.Maybe (fromMaybe)
 import qualified Database.MySQL.Simple as DB
 import Facebook.Db ( withConnection, InstanceRequirement(Master) )
 import qualified Data.Text.Encoding as TE
+import qualified Glean
 
 type FileToSnapshot = (Types.RepoName, Types.Path)
 
@@ -92,6 +93,14 @@ snapshotTierParser = SnapshotTier <$> (option auto (mconcat
   , showDefault
   ]) :: Parser Text)
 
+gleanDBNameParser :: Parser (Maybe Glean.Repo)
+gleanDBNameParser =
+  optional $ option (maybeReader Glean.parseRepo)
+    (  long "db"
+    <> metavar "NAME/INSTANCE"
+    <> help "identifies the database"
+    )
+
 data Config = Config
   { glassConfig :: Glass.Config -- TODO we don't need all these options
   , files :: [FileToSnapshot]
@@ -99,13 +108,14 @@ data Config = Config
   , rev :: Maybe Types.Revision
   , tier :: SnapshotTier
   , threshold :: Maybe Int
+  , gleanDBName :: Maybe Glean.Repo
   }
 
 
 configParser :: Parser Config
 configParser =
   Config <$> Glass.configParser <*> filesToSnapshot <*> outputString <*>
-  optRev <*> snapshotTierParser <*> thresholdParser
+  optRev <*> snapshotTierParser <*> thresholdParser <*> gleanDBNameParser
 
 options :: ParserInfo Config
 options = info (helper <*> configParser) (fullDesc <>
@@ -176,7 +186,9 @@ main =
     (Glass.gleanService glassConfig)
     (Glass.snapshotTier glassConfig)
     (Glass.configKey glassConfig)
-    (Glass.refreshFreq glassConfig) $ \env@Glass.Env{..} ->
+    (Glass.refreshFreq glassConfig)
+    gleanDBName
+     $ \env@Glass.Env{..} ->
       case (output, files) of
         (Nothing, _) -> forM_ files $ \file@(repo, path) -> do
             (ser, rev_, snapshotSizeKB) <- buildSnapshot env rev file

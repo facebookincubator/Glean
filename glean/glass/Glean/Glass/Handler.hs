@@ -1325,20 +1325,26 @@ getStaticAttributes e repo sym = do
       Attribute_aInteger (fromIntegral $ fromThriftEnum kind))
 
 -- | Given an SCS repo name, and a candidate path, find latest Glean dbs or
--- throw. Returns the chosen db name and Glean repo handle
+-- throw. Returns the chosen db name and Glean repo handle.
+-- If a Glean.Repo is given, use it instead.
 getGleanRepos
   :: TVar Glean.LatestRepos
   -> TVar ScmRevisions
   -> RepoName
   -> Maybe Language
+  -> Maybe Glean.Repo
   -> IO (NonEmpty (GleanDBName,Glean.Repo), ScmRevisions)
-getGleanRepos latestGleanDBs scmRevisions scsrepo mlanguage = do
-  let gleanDBNames = fromSCSRepo scsrepo mlanguage
-  case gleanDBNames of
-    [] ->  throwIO $ ServerException $ "No repository found for: " <>
-      unRepoName scsrepo <>
-        maybe "" (\x -> " (" <> toShortCode x <> ")") mlanguage
-    (x:xs) -> getSpecificGleanDBs latestGleanDBs scmRevisions (x :| xs)
+getGleanRepos latestGleanDBs scmRevisions scsrepo mlanguage mGleanDB = do
+  case mGleanDB of
+    Nothing ->
+      case fromSCSRepo scsrepo mlanguage of
+        [] ->  throwIO $ ServerException $ "No repository found for: " <>
+          unRepoName scsrepo <>
+            maybe "" (\x -> " (" <> toShortCode x <> ")") mlanguage
+        (x:xs) -> getSpecificGleanDBs latestGleanDBs scmRevisions (x :| xs)
+    Just gleanDB@Glean.Repo{repo_name} -> do
+      scmRevs <- atomically $ do readTVar scmRevisions
+      return ((GleanDBName repo_name, gleanDB) :| [], scmRevs)
 
 -- | If you already know the set of dbs you need, just get them.
 getSpecificGleanDBs
@@ -1432,7 +1438,7 @@ withRepoLanguage
   -> IO b
 withRepoLanguage method env@Glass.Env{..} req repo mlanguage fn = do
   withLogDB method env req
-    (getGleanRepos latestGleanRepos repoScmRevisions repo mlanguage)
+    (getGleanRepos latestGleanRepos repoScmRevisions repo mlanguage gleanDB)
     mlanguage
     fn
 
@@ -1466,6 +1472,7 @@ withSymbol method env@Glass.Env{..} sym fn =
       Right req@(repo, lang, _toks) -> do
         (dbs, revs) <-
           getGleanRepos latestGleanRepos repoScmRevisions repo (Just lang)
+            gleanDB
         return (dbs, revs, req))
     Nothing
     (\db _mlang -> fn db)

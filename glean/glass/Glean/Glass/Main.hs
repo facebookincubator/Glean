@@ -30,6 +30,7 @@ import Logger.IO (withLogger)
 import Data.Text (Text)
 import qualified Data.Text as Text
 
+import qualified Glean
 import Glean.Init ( withOptions )
 import Glean.LocalOrRemote as Glean
   ( Service,
@@ -60,8 +61,8 @@ type Server = Glass.Env -> Glass.Config -> IO ()
 withGlass :: Server -> IO ()
 withGlass f =
   withOptions Glass.options $ \config@Glass.Config{..} ->
-  withEnv serviceName gleanService snapshotTier configKey refreshFreq $ \env ->
-  f env config
+  withEnv serviceName gleanService snapshotTier configKey refreshFreq Nothing $
+    \env -> f env config
 
 -- | Construct a server environment
 withEnv
@@ -70,9 +71,10 @@ withEnv
   -> SnapshotTier
   -> Text
   -> DiffTimePoints
+  -> Maybe Glean.Repo
   -> (Glass.Env -> IO a)
   -> IO a
-withEnv name service snapshotTier _ refreshFreq f =
+withEnv name service snapshotTier _ refreshFreq gleanDB f =
   withEventBaseDataplane $ \evp ->
   withConfigProvider defaultConfigOptions $ \cfgapi ->
   withLogger cfgapi $ \logger ->
@@ -84,6 +86,7 @@ withEnv name service snapshotTier _ refreshFreq f =
       { gleanBackend = Some backend
       , gleanIndexBackend = indexBackend backend
       , snapshotBackend = snapshotBackend snapshotTier
+      , gleanDB = gleanDB
       , ..
       }
 

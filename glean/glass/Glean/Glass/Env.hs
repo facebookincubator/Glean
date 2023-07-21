@@ -56,6 +56,7 @@ data Env = Env
   , repoScmRevisions :: TVar ScmRevisions
   , gleanIndexBackend :: IndexBackend
   , snapshotBackend :: SnapshotBackend
+  , gleanDB :: Maybe Glean.Repo -- if provided, use as target Glean DB
   }
 
 -- | A backend to create incremental databases

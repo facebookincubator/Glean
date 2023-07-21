@@ -33,5 +33,6 @@ withTestEnv backend f =
       { gleanBackend = Some backend
       , gleanIndexBackend = IndexBackend Nothing
       , snapshotBackend = SB.snapshotBackend SB.snapshotDefaultTier
+      , gleanDB = Nothing
       , ..
       }
