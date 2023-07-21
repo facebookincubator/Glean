@@ -99,7 +99,7 @@ prettyEnumerator (Cxx.Enumerator _ mkey) = case mkey of
 -- Instead we could have had potentially:
 -- -> prettyEnum enum_decl <+> "{ " <+> prettyName name <+> " }"
 -- which would have produced something like
--- "enum class biggrep2::FetchResult {  NoSpace  }"
+-- "enum class biggrep::FetchResult {  NoSpace  }"
 --   * Which doesn't have all values of the enum
 --   * but it is easy to read
 --   * and it WILL be correctly cpp-highlighted
