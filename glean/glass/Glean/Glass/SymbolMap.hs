@@ -21,7 +21,6 @@ import qualified Data.Map.Strict as Map
 
 import Data.Int ( Int64 )
 import Data.List as List ( sortBy, groupBy )
-import Data.Maybe (fromMaybe)
 import Data.Ord ( comparing )
 import Data.Function as List ( on )
 
@@ -80,7 +79,7 @@ definitionToSymbolX DefinitionSymbolX{..} =
     symbolX_range = definitionSymbolX_range,
     symbolX_target = Nothing,
     symbolX_attributes = Attributes.attrListToMap definitionSymbolX_attributes,
-    symbolX_nameRange = definitionSymbolX_nameRange,
+    symbolX_nameRange = Nothing,
     symbolX_targetName = Nothing
   }
 
@@ -93,15 +92,14 @@ referenceToSymbolX ReferenceRangeSymbolX{..} =
     symbolX_attributes =
       Attributes.attrListToMap referenceRangeSymbolX_attributes,
     symbolX_nameRange = Nothing,
-    symbolX_targetName = referenceRangeSymbolX_targetName
+    symbolX_targetName = Nothing
   }
 
 -- | Symbols can span multiple lines (e.g. containers). However for the
 -- line-index map, we simply tie symbols to the identifier first line if
 -- available, or just to the first line if not.
 symbolXToStartLine :: SymbolX -> Int64
-symbolXToStartLine SymbolX{..} =
-  range_lineBegin (fromMaybe symbolX_range symbolX_nameRange)
+symbolXToStartLine SymbolX{..} = range_lineBegin symbolX_range
 
 --
 -- Elimination functions for testing
@@ -116,7 +114,7 @@ toReferences m =
       referenceRangeSymbolX_target = actual_target,
       referenceRangeSymbolX_attributes =
         Attributes.attrMapToList symbolX_attributes,
-      referenceRangeSymbolX_targetName = symbolX_targetName
+      referenceRangeSymbolX_targetName = Nothing
     }
   | lines <- Map.elems m
   , SymbolX { symbolX_target = Just actual_target, .. } <- lines
@@ -130,7 +128,7 @@ toDefinitions m =
       definitionSymbolX_range = symbolX_range,
       definitionSymbolX_attributes =
         Attributes.attrMapToList symbolX_attributes,
-      definitionSymbolX_nameRange = symbolX_nameRange
+      definitionSymbolX_nameRange = Nothing
     }
   | lines <- Map.elems m
   , SymbolX { symbolX_target = Nothing, .. } <- lines

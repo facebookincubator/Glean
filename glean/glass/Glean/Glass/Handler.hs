@@ -1240,25 +1240,13 @@ toReferenceSymbol repoName file srcOffsets (Code.XRefLocation {..}, entity) = do
   path <- GleanPath <$> Glean.keyOf file
   sym <- toSymbolId (fromGleanPath repoName path) entity
   attributes <- getStaticAttributes entity repoName sym
+  target <- case location_destination of
+    Just Src.FileLocation{..} -> do -- if we have a best identifier location
+      let rangeSpan = Code.RangeSpan_span fileLocation_span
+      rangeSpanToLocationRange repoName fileLocation_file rangeSpan
+    _ -> rangeSpanToLocationRange repoName location_file location_location
 
-  target <- rangeSpanToLocationRange repoName location_file location_location
-  targetDestination <- forM location_destination $ \Src.FileLocation{..} ->
-    let rangeSpan = Code.RangeSpan_span fileLocation_span in
-    rangeSpanToLocationRange repoName fileLocation_file rangeSpan
-  let targetNameRange = targetDestination >>= \LocationRange{..} ->
-        if locationRange_repository == targetRepo &&
-           locationRange_filepath == targetFile &&
-           rangeContains targetRange locationRange_range
-        then Just locationRange_range else Nothing
-        where
-          LocationRange {
-            locationRange_repository = targetRepo,
-            locationRange_filepath = targetFile,
-            locationRange_range = targetRange
-          } = target
-
-  return $ (entity,) $
-    ReferenceRangeSymbolX sym range target attributes targetNameRange
+  return $ (entity,) $ ReferenceRangeSymbolX sym range target attributes Nothing
   where
     -- reference target is a Declaration and an Entity
     Code.Location{..} = xRefLocation_target
@@ -1279,19 +1267,16 @@ toDefinitionSymbol repoName file offsets (Code.Location {..}, entity) = do
         fromGleanPath repoName path
   sym <- toSymbolId symbolRepoPath entity
   attributes <- getStaticAttributes entity repoName sym
-  destination <- forM location_destination $
-    \Src.FileLocation{..} ->
-      let rangeSpan = Code.RangeSpan_span fileLocation_span in
-      rangeSpanToLocationRange repoName fileLocation_file rangeSpan
-  let nameRange = destination >>= \LocationRange{..} ->
-        if symbolRepo == locationRange_repository &&
-           symbolPath == locationRange_filepath &&
-           rangeContains range locationRange_range
-        then Just locationRange_range else Nothing
+  destination <- forM location_destination $ \Src.FileLocation{..} ->
+    let rangeSpan = Code.RangeSpan_span fileLocation_span in
+    rangeSpanToLocationRange repoName fileLocation_file rangeSpan
+  let range = case destination of
+        Just LocationRange{..} | symbolRepo == locationRange_repository &&
+                                 symbolPath == locationRange_filepath
+          -> locationRange_range
+        _ -> rangeSpanToRange offsets location_location
 
-  return $ (entity,) $ DefinitionSymbolX sym range attributes nameRange
-  where
-    range = rangeSpanToRange offsets location_location
+  return $ (entity,) $ DefinitionSymbolX sym range attributes Nothing
 
 -- | Decorate an entity with 'static' attributes.
 -- These are static in that they are derivable from the entity and

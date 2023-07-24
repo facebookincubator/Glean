@@ -26,15 +26,9 @@
                             "aString": "enum class GlobalClass : int"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 12,
                         "columnEnd": 23,
-                        "lineBegin": 100,
-                        "lineEnd": 100
-                    },
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 41,
                         "lineBegin": 100,
                         "lineEnd": 100
                     },
@@ -150,14 +144,8 @@
                             "aString": "struct pear"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 10,
-                        "columnEnd": 14,
-                        "lineBegin": 105,
-                        "lineEnd": 105
-                    },
                     "range": {
-                        "columnBegin": 3,
+                        "columnBegin": 10,
                         "columnEnd": 14,
                         "lineBegin": 105,
                         "lineEnd": 105
@@ -187,17 +175,11 @@
                             "aString": "struct d"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 8,
                         "columnEnd": 9,
                         "lineBegin": 107,
                         "lineEnd": 107
-                    },
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 107,
-                        "lineEnd": 127
                     },
                     "sym": "test/cpp//d"
                 }
@@ -224,14 +206,8 @@
                             "aString": "int i"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 6,
-                        "columnEnd": 7,
-                        "lineBegin": 109,
-                        "lineEnd": 109
-                    },
                     "range": {
-                        "columnBegin": 2,
+                        "columnBegin": 6,
                         "columnEnd": 7,
                         "lineBegin": 109,
                         "lineEnd": 109
@@ -261,17 +237,11 @@
                             "aString": "namespace foo"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 11,
                         "columnEnd": 14,
                         "lineBegin": 11,
                         "lineEnd": 11
-                    },
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 11,
-                        "lineEnd": 49
                     },
                     "sym": "test/cpp//foo"
                 }
@@ -298,15 +268,9 @@
                             "aString": "d()"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 5,
-                        "columnEnd": 6,
-                        "lineBegin": 115,
-                        "lineEnd": 115
-                    },
                     "range": {
                         "columnBegin": 5,
-                        "columnEnd": 8,
+                        "columnEnd": 6,
                         "lineBegin": 115,
                         "lineEnd": 115
                     },
@@ -335,15 +299,9 @@
                             "aString": "d(const char* val)"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 5,
-                        "columnEnd": 6,
-                        "lineBegin": 117,
-                        "lineEnd": 117
-                    },
                     "range": {
                         "columnBegin": 5,
-                        "columnEnd": 23,
+                        "columnEnd": 6,
                         "lineBegin": 117,
                         "lineEnd": 117
                     },
@@ -370,14 +328,8 @@
                             "aString": "const char* val"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 19,
-                        "columnEnd": 22,
-                        "lineBegin": 117,
-                        "lineEnd": 117
-                    },
                     "range": {
-                        "columnBegin": 7,
+                        "columnBegin": 19,
                         "columnEnd": 22,
                         "lineBegin": 117,
                         "lineEnd": 117
@@ -407,15 +359,9 @@
                             "aString": "d(const char* val, void (*)())"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 5,
-                        "columnEnd": 6,
-                        "lineBegin": 119,
-                        "lineEnd": 119
-                    },
                     "range": {
                         "columnBegin": 5,
-                        "columnEnd": 35,
+                        "columnEnd": 6,
                         "lineBegin": 119,
                         "lineEnd": 119
                     },
@@ -442,15 +388,9 @@
                             "aString": "void (*)()"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 31,
                         "columnEnd": 32,
-                        "lineBegin": 119,
-                        "lineEnd": 119
-                    },
-                    "range": {
-                        "columnBegin": 24,
-                        "columnEnd": 34,
                         "lineBegin": 119,
                         "lineEnd": 119
                     },
@@ -477,14 +417,8 @@
                             "aString": "const char* val"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 19,
-                        "columnEnd": 22,
-                        "lineBegin": 119,
-                        "lineEnd": 119
-                    },
                     "range": {
-                        "columnBegin": 7,
+                        "columnBegin": 19,
                         "columnEnd": 22,
                         "lineBegin": 119,
                         "lineEnd": 119
@@ -514,15 +448,9 @@
                             "aString": "d(char c, int i, const char* p)"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 5,
-                        "columnEnd": 6,
-                        "lineBegin": 121,
-                        "lineEnd": 121
-                    },
                     "range": {
                         "columnBegin": 5,
-                        "columnEnd": 36,
+                        "columnEnd": 6,
                         "lineBegin": 121,
                         "lineEnd": 121
                     },
@@ -549,14 +477,8 @@
                             "aString": "char c"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 12,
-                        "columnEnd": 13,
-                        "lineBegin": 121,
-                        "lineEnd": 121
-                    },
                     "range": {
-                        "columnBegin": 7,
+                        "columnBegin": 12,
                         "columnEnd": 13,
                         "lineBegin": 121,
                         "lineEnd": 121
@@ -584,14 +506,8 @@
                             "aString": "int i"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 19,
-                        "columnEnd": 20,
-                        "lineBegin": 121,
-                        "lineEnd": 121
-                    },
                     "range": {
-                        "columnBegin": 15,
+                        "columnBegin": 19,
                         "columnEnd": 20,
                         "lineBegin": 121,
                         "lineEnd": 121
@@ -619,14 +535,8 @@
                             "aString": "const char* p"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 34,
-                        "columnEnd": 35,
-                        "lineBegin": 121,
-                        "lineEnd": 121
-                    },
                     "range": {
-                        "columnBegin": 22,
+                        "columnBegin": 34,
                         "columnEnd": 35,
                         "lineBegin": 121,
                         "lineEnd": 121
@@ -666,18 +576,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 2,
+                            "columnBegin": 8,
+                            "columnEnd": 9,
                             "lineBegin": 107,
-                            "lineEnd": 127
+                            "lineEnd": 107
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 8,
-                        "columnEnd": 9,
-                        "lineBegin": 107,
-                        "lineEnd": 107
                     }
                 },
                 {
@@ -701,15 +605,9 @@
                             "aString": "d(const d&)"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 5,
-                        "columnEnd": 6,
-                        "lineBegin": 123,
-                        "lineEnd": 123
-                    },
                     "range": {
                         "columnBegin": 5,
-                        "columnEnd": 16,
+                        "columnEnd": 6,
                         "lineBegin": 123,
                         "lineEnd": 123
                     },
@@ -737,8 +635,8 @@
                         }
                     },
                     "range": {
-                        "columnBegin": 7,
-                        "columnEnd": 15,
+                        "columnBegin": 15,
+                        "columnEnd": 16,
                         "lineBegin": 123,
                         "lineEnd": 123
                     },
@@ -767,15 +665,9 @@
                             "aString": "d(pear<int, bool>& p, char cp)"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 5,
-                        "columnEnd": 6,
-                        "lineBegin": 125,
-                        "lineEnd": 125
-                    },
                     "range": {
                         "columnBegin": 5,
-                        "columnEnd": 35,
+                        "columnEnd": 6,
                         "lineBegin": 125,
                         "lineEnd": 125
                     },
@@ -802,14 +694,8 @@
                             "aString": "char cp"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 32,
-                        "columnEnd": 34,
-                        "lineBegin": 125,
-                        "lineEnd": 125
-                    },
                     "range": {
-                        "columnBegin": 27,
+                        "columnBegin": 32,
                         "columnEnd": 34,
                         "lineBegin": 125,
                         "lineEnd": 125
@@ -837,14 +723,8 @@
                             "aString": "pear<int, bool>& p"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 24,
-                        "columnEnd": 25,
-                        "lineBegin": 125,
-                        "lineEnd": 125
-                    },
                     "range": {
-                        "columnBegin": 7,
+                        "columnBegin": 24,
                         "columnEnd": 25,
                         "lineBegin": 125,
                         "lineEnd": 125
@@ -882,18 +762,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 3,
+                            "columnBegin": 10,
                             "columnEnd": 14,
                             "lineBegin": 105,
                             "lineEnd": 105
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 10,
-                        "columnEnd": 14,
-                        "lineBegin": 105,
-                        "lineEnd": 105
                     }
                 }
             ],
@@ -919,17 +793,11 @@
                             "aString": "namespace Q"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 11,
                         "columnEnd": 12,
                         "lineBegin": 129,
                         "lineEnd": 129
-                    },
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 129,
-                        "lineEnd": 171
                     },
                     "sym": "test/cpp//Q"
                 }
@@ -956,17 +824,11 @@
                             "aString": "struct S"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 8,
                         "columnEnd": 9,
                         "lineBegin": 13,
                         "lineEnd": 13
-                    },
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 13,
-                        "lineEnd": 16
                     },
                     "sym": "test/cpp//foo/S"
                 }
@@ -993,15 +855,9 @@
                             "aString": "void bozzo()"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 8,
                         "columnEnd": 13,
-                        "lineBegin": 131,
-                        "lineEnd": 131
-                    },
-                    "range": {
-                        "columnBegin": 3,
-                        "columnEnd": 27,
                         "lineBegin": 131,
                         "lineEnd": 131
                     },
@@ -1030,17 +886,11 @@
                             "aString": "struct QQ"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 10,
                         "columnEnd": 12,
                         "lineBegin": 133,
                         "lineEnd": 133
-                    },
-                    "range": {
-                        "columnBegin": 3,
-                        "columnEnd": 4,
-                        "lineBegin": 133,
-                        "lineEnd": 148
                     },
                     "sym": "test/cpp//Q/QQ"
                 }
@@ -1067,15 +917,9 @@
                             "aString": "void bozzo()"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 10,
                         "columnEnd": 15,
-                        "lineBegin": 135,
-                        "lineEnd": 135
-                    },
-                    "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 17,
                         "lineBegin": 135,
                         "lineEnd": 135
                     },
@@ -1104,15 +948,9 @@
                             "aString": "double getDouble() const"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 12,
                         "columnEnd": 21,
-                        "lineBegin": 137,
-                        "lineEnd": 137
-                    },
-                    "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 30,
                         "lineBegin": 137,
                         "lineEnd": 137
                     },
@@ -1141,15 +979,9 @@
                             "aString": "double& getDouble()"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 13,
                         "columnEnd": 22,
-                        "lineBegin": 138,
-                        "lineEnd": 138
-                    },
-                    "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 26,
                         "lineBegin": 138,
                         "lineEnd": 138
                     },
@@ -1178,15 +1010,9 @@
                             "aString": "double getDouble()"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 12,
                         "columnEnd": 21,
-                        "lineBegin": 139,
-                        "lineEnd": 139
-                    },
-                    "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 26,
                         "lineBegin": 139,
                         "lineEnd": 139
                     },
@@ -1215,14 +1041,8 @@
                             "aString": "typedef long TypedefDeclInteger"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 16,
-                        "columnEnd": 34,
-                        "lineBegin": 14,
-                        "lineEnd": 14
-                    },
                     "range": {
-                        "columnBegin": 3,
+                        "columnBegin": 16,
                         "columnEnd": 34,
                         "lineBegin": 14,
                         "lineEnd": 14
@@ -1262,18 +1082,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 3,
-                            "columnEnd": 4,
+                            "columnBegin": 10,
+                            "columnEnd": 12,
                             "lineBegin": 133,
-                            "lineEnd": 148
+                            "lineEnd": 133
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 10,
-                        "columnEnd": 12,
-                        "lineBegin": 133,
-                        "lineEnd": 133
                     }
                 },
                 {
@@ -1297,15 +1111,9 @@
                             "aString": "int thango(int, const Q::QQ&) const"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 9,
                         "columnEnd": 15,
-                        "lineBegin": 141,
-                        "lineEnd": 141
-                    },
-                    "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 38,
                         "lineBegin": 141,
                         "lineEnd": 141
                     },
@@ -1333,8 +1141,8 @@
                         }
                     },
                     "range": {
-                        "columnBegin": 16,
-                        "columnEnd": 19,
+                        "columnBegin": 19,
+                        "columnEnd": 20,
                         "lineBegin": 141,
                         "lineEnd": 141
                     },
@@ -1362,8 +1170,8 @@
                         }
                     },
                     "range": {
-                        "columnBegin": 21,
-                        "columnEnd": 30,
+                        "columnBegin": 30,
+                        "columnEnd": 31,
                         "lineBegin": 141,
                         "lineEnd": 141
                     },
@@ -1402,18 +1210,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 3,
-                            "columnEnd": 4,
+                            "columnBegin": 10,
+                            "columnEnd": 12,
                             "lineBegin": 133,
-                            "lineEnd": 148
+                            "lineEnd": 133
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 10,
-                        "columnEnd": 12,
-                        "lineBegin": 133,
-                        "lineEnd": 133
                     }
                 },
                 {
@@ -1437,15 +1239,9 @@
                             "aString": "int& thango(int, Q::QQ&)"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 10,
                         "columnEnd": 16,
-                        "lineBegin": 142,
-                        "lineEnd": 142
-                    },
-                    "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 28,
                         "lineBegin": 142,
                         "lineEnd": 142
                     },
@@ -1473,8 +1269,8 @@
                         }
                     },
                     "range": {
-                        "columnBegin": 17,
-                        "columnEnd": 20,
+                        "columnBegin": 20,
+                        "columnEnd": 21,
                         "lineBegin": 142,
                         "lineEnd": 142
                     },
@@ -1502,8 +1298,8 @@
                         }
                     },
                     "range": {
-                        "columnBegin": 22,
-                        "columnEnd": 25,
+                        "columnBegin": 25,
+                        "columnEnd": 26,
                         "lineBegin": 142,
                         "lineEnd": 142
                     },
@@ -1542,18 +1338,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 3,
-                            "columnEnd": 4,
+                            "columnBegin": 10,
+                            "columnEnd": 12,
                             "lineBegin": 133,
-                            "lineEnd": 148
+                            "lineEnd": 133
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 10,
-                        "columnEnd": 12,
-                        "lineBegin": 133,
-                        "lineEnd": 133
                     }
                 },
                 {
@@ -1577,15 +1367,9 @@
                             "aString": "int thango(int, Q::QQ&&)"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 9,
                         "columnEnd": 15,
-                        "lineBegin": 143,
-                        "lineEnd": 143
-                    },
-                    "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 29,
                         "lineBegin": 143,
                         "lineEnd": 143
                     },
@@ -1613,8 +1397,8 @@
                         }
                     },
                     "range": {
-                        "columnBegin": 16,
-                        "columnEnd": 19,
+                        "columnBegin": 19,
+                        "columnEnd": 20,
                         "lineBegin": 143,
                         "lineEnd": 143
                     },
@@ -1642,8 +1426,8 @@
                         }
                     },
                     "range": {
-                        "columnBegin": 21,
-                        "columnEnd": 25,
+                        "columnBegin": 25,
+                        "columnEnd": 26,
                         "lineBegin": 143,
                         "lineEnd": 143
                     },
@@ -1682,18 +1466,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 3,
-                            "columnEnd": 4,
+                            "columnBegin": 10,
+                            "columnEnd": 12,
                             "lineBegin": 133,
-                            "lineEnd": 148
+                            "lineEnd": 133
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 10,
-                        "columnEnd": 12,
-                        "lineBegin": 133,
-                        "lineEnd": 133
                     }
                 },
                 {
@@ -1717,15 +1495,9 @@
                             "aString": "int thingo(pear<int, char>, Q::QQ&&) const"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 9,
                         "columnEnd": 15,
-                        "lineBegin": 145,
-                        "lineEnd": 145
-                    },
-                    "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 43,
                         "lineBegin": 145,
                         "lineEnd": 145
                     },
@@ -1753,8 +1525,8 @@
                         }
                     },
                     "range": {
-                        "columnBegin": 16,
-                        "columnEnd": 30,
+                        "columnBegin": 30,
+                        "columnEnd": 31,
                         "lineBegin": 145,
                         "lineEnd": 145
                     },
@@ -1782,8 +1554,8 @@
                         }
                     },
                     "range": {
-                        "columnBegin": 32,
-                        "columnEnd": 36,
+                        "columnBegin": 36,
+                        "columnEnd": 37,
                         "lineBegin": 145,
                         "lineEnd": 145
                     },
@@ -1820,18 +1592,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 3,
+                            "columnBegin": 10,
                             "columnEnd": 14,
                             "lineBegin": 105,
                             "lineEnd": 105
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 10,
-                        "columnEnd": 14,
-                        "lineBegin": 105,
-                        "lineEnd": 105
                     }
                 }
             ],
@@ -1867,18 +1633,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 3,
-                            "columnEnd": 4,
+                            "columnBegin": 10,
+                            "columnEnd": 12,
                             "lineBegin": 133,
-                            "lineEnd": 148
+                            "lineEnd": 133
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 10,
-                        "columnEnd": 12,
-                        "lineBegin": 133,
-                        "lineEnd": 133
                     }
                 },
                 {
@@ -1902,15 +1662,9 @@
                             "aString": "~QQ()"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 5,
-                        "columnEnd": 6,
-                        "lineBegin": 147,
-                        "lineEnd": 147
-                    },
                     "range": {
                         "columnBegin": 5,
-                        "columnEnd": 19,
+                        "columnEnd": 6,
                         "lineBegin": 147,
                         "lineEnd": 147
                     },
@@ -1939,15 +1693,9 @@
                             "aString": "using UsingDeclInteger = long"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 9,
                         "columnEnd": 25,
-                        "lineBegin": 15,
-                        "lineEnd": 15
-                    },
-                    "range": {
-                        "columnBegin": 3,
-                        "columnEnd": 32,
                         "lineBegin": 15,
                         "lineEnd": 15
                     },
@@ -1976,17 +1724,11 @@
                             "aString": "struct OO"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 10,
                         "columnEnd": 12,
                         "lineBegin": 150,
                         "lineEnd": 150
-                    },
-                    "range": {
-                        "columnBegin": 3,
-                        "columnEnd": 4,
-                        "lineBegin": 150,
-                        "lineEnd": 164
                     },
                     "sym": "test/cpp//Q/OO"
                 }
@@ -2023,18 +1765,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 3,
-                            "columnEnd": 4,
+                            "columnBegin": 10,
+                            "columnEnd": 12,
                             "lineBegin": 150,
-                            "lineEnd": 164
+                            "lineEnd": 150
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 10,
-                        "columnEnd": 12,
-                        "lineBegin": 150,
-                        "lineEnd": 150
                     }
                 },
                 {
@@ -2068,18 +1804,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 3,
-                            "columnEnd": 4,
+                            "columnBegin": 10,
+                            "columnEnd": 12,
                             "lineBegin": 150,
-                            "lineEnd": 164
+                            "lineEnd": 150
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 10,
-                        "columnEnd": 12,
-                        "lineBegin": 150,
-                        "lineEnd": 150
                     }
                 },
                 {
@@ -2103,15 +1833,9 @@
                             "aString": "bool operator==(const Q::OO& a, const Q::OO& b)"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 17,
                         "columnEnd": 25,
-                        "lineBegin": 152,
-                        "lineEnd": 152
-                    },
-                    "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 53,
                         "lineBegin": 152,
                         "lineEnd": 152
                     },
@@ -2138,14 +1862,8 @@
                             "aString": "const Q::OO& a"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 38,
-                        "columnEnd": 39,
-                        "lineBegin": 152,
-                        "lineEnd": 152
-                    },
                     "range": {
-                        "columnBegin": 28,
+                        "columnBegin": 38,
                         "columnEnd": 39,
                         "lineBegin": 152,
                         "lineEnd": 152
@@ -2173,14 +1891,8 @@
                             "aString": "const Q::OO& b"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 51,
-                        "columnEnd": 52,
-                        "lineBegin": 152,
-                        "lineEnd": 152
-                    },
                     "range": {
-                        "columnBegin": 41,
+                        "columnBegin": 51,
                         "columnEnd": 52,
                         "lineBegin": 152,
                         "lineEnd": 152
@@ -2220,18 +1932,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 3,
-                            "columnEnd": 4,
+                            "columnBegin": 10,
+                            "columnEnd": 12,
                             "lineBegin": 150,
-                            "lineEnd": 164
+                            "lineEnd": 150
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 10,
-                        "columnEnd": 12,
-                        "lineBegin": 150,
-                        "lineEnd": 150
                     }
                 },
                 {
@@ -2255,15 +1961,9 @@
                             "aString": "Q::OO& operator++()"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 9,
                         "columnEnd": 17,
-                        "lineBegin": 154,
-                        "lineEnd": 154
-                    },
-                    "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 21,
                         "lineBegin": 154,
                         "lineEnd": 154
                     },
@@ -2302,18 +2002,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 3,
-                            "columnEnd": 4,
+                            "columnBegin": 10,
+                            "columnEnd": 12,
                             "lineBegin": 150,
-                            "lineEnd": 164
+                            "lineEnd": 150
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 10,
-                        "columnEnd": 12,
-                        "lineBegin": 150,
-                        "lineEnd": 150
                     }
                 },
                 {
@@ -2347,18 +2041,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 3,
-                            "columnEnd": 4,
+                            "columnBegin": 10,
+                            "columnEnd": 12,
                             "lineBegin": 150,
-                            "lineEnd": 164
+                            "lineEnd": 150
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 10,
-                        "columnEnd": 12,
-                        "lineBegin": 150,
-                        "lineEnd": 150
                     }
                 },
                 {
@@ -2382,15 +2070,9 @@
                             "aString": "Q::OO& operator=(const Q::OO&)"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 9,
                         "columnEnd": 17,
-                        "lineBegin": 156,
-                        "lineEnd": 156
-                    },
-                    "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 29,
                         "lineBegin": 156,
                         "lineEnd": 156
                     },
@@ -2418,8 +2100,8 @@
                         }
                     },
                     "range": {
-                        "columnBegin": 19,
-                        "columnEnd": 28,
+                        "columnBegin": 28,
+                        "columnEnd": 29,
                         "lineBegin": 156,
                         "lineEnd": 156
                     },
@@ -2458,18 +2140,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 3,
-                            "columnEnd": 4,
+                            "columnBegin": 10,
+                            "columnEnd": 12,
                             "lineBegin": 150,
-                            "lineEnd": 164
+                            "lineEnd": 150
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 10,
-                        "columnEnd": 12,
-                        "lineBegin": 150,
-                        "lineEnd": 150
                     }
                 },
                 {
@@ -2503,18 +2179,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 3,
-                            "columnEnd": 4,
+                            "columnBegin": 10,
+                            "columnEnd": 12,
                             "lineBegin": 150,
-                            "lineEnd": 164
+                            "lineEnd": 150
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 10,
-                        "columnEnd": 12,
-                        "lineBegin": 150,
-                        "lineEnd": 150
                     }
                 },
                 {
@@ -2538,15 +2208,9 @@
                             "aString": "Q::OO& operator=(Q::OO&&)"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 9,
                         "columnEnd": 17,
-                        "lineBegin": 157,
-                        "lineEnd": 157
-                    },
-                    "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 33,
                         "lineBegin": 157,
                         "lineEnd": 157
                     },
@@ -2574,8 +2238,8 @@
                         }
                     },
                     "range": {
-                        "columnBegin": 19,
-                        "columnEnd": 23,
+                        "columnBegin": 23,
+                        "columnEnd": 24,
                         "lineBegin": 157,
                         "lineEnd": 157
                     },
@@ -2604,15 +2268,9 @@
                             "aString": "T&() const"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 15,
                         "columnEnd": 23,
-                        "lineBegin": 160,
-                        "lineEnd": 160
-                    },
-                    "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 36,
                         "lineBegin": 160,
                         "lineEnd": 160
                     },
@@ -2641,15 +2299,9 @@
                             "aString": "T&() const"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 15,
                         "columnEnd": 23,
-                        "lineBegin": 162,
-                        "lineEnd": 162
-                    },
-                    "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 35,
                         "lineBegin": 162,
                         "lineEnd": 162
                     },
@@ -2678,17 +2330,11 @@
                             "aString": "void operator\"\"_glean(const char32_t* str, unsigned long len)"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 18,
                         "columnEnd": 26,
                         "lineBegin": 166,
                         "lineEnd": 166
-                    },
-                    "range": {
-                        "columnBegin": 3,
-                        "columnEnd": 4,
-                        "lineBegin": 166,
-                        "lineEnd": 169
                     },
                     "sym": "test/cpp//Q/operator%22%22_glean/.o/const+char32_t+*,unsigned+long"
                 }
@@ -2715,14 +2361,8 @@
                             "aString": "unsigned long len"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 42,
-                        "columnEnd": 45,
-                        "lineBegin": 167,
-                        "lineEnd": 167
-                    },
                     "range": {
-                        "columnBegin": 28,
+                        "columnBegin": 42,
                         "columnEnd": 45,
                         "lineBegin": 167,
                         "lineEnd": 167
@@ -2750,14 +2390,8 @@
                             "aString": "const char32_t* str"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 23,
-                        "columnEnd": 26,
-                        "lineBegin": 167,
-                        "lineEnd": 167
-                    },
                     "range": {
-                        "columnBegin": 7,
+                        "columnBegin": 23,
                         "columnEnd": 26,
                         "lineBegin": 167,
                         "lineEnd": 167
@@ -2787,15 +2421,9 @@
                             "aString": "void f()"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 6,
                         "columnEnd": 7,
-                        "lineBegin": 21,
-                        "lineEnd": 21
-                    },
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 9,
                         "lineBegin": 21,
                         "lineEnd": 21
                     },
@@ -2824,17 +2452,11 @@
                             "aString": "void foo()"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 6,
                         "columnEnd": 9,
                         "lineBegin": 24,
                         "lineEnd": 24
-                    },
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 24,
-                        "lineEnd": 27
                     },
                     "sym": "test/cpp//foo/foo/.f/"
                 },
@@ -2869,18 +2491,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 11,
+                            "columnBegin": 6,
+                            "columnEnd": 9,
                             "lineBegin": 31,
                             "lineEnd": 31
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 6,
-                        "columnEnd": 9,
-                        "lineBegin": 31,
-                        "lineEnd": 31
                     }
                 }
             ],
@@ -2906,15 +2522,9 @@
                             "aString": "int four"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 7,
                         "columnEnd": 11,
-                        "lineBegin": 25,
-                        "lineEnd": 25
-                    },
-                    "range": {
-                        "columnBegin": 3,
-                        "columnEnd": 23,
                         "lineBegin": 25,
                         "lineEnd": 25
                     },
@@ -2989,18 +2599,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 2,
+                            "columnBegin": 6,
+                            "columnEnd": 9,
                             "lineBegin": 24,
-                            "lineEnd": 27
+                            "lineEnd": 24
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 6,
-                        "columnEnd": 9,
-                        "lineBegin": 24,
-                        "lineEnd": 24
                     }
                 },
                 {
@@ -3024,15 +2628,9 @@
                             "aString": "void foo()"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 6,
                         "columnEnd": 9,
-                        "lineBegin": 31,
-                        "lineEnd": 31
-                    },
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 11,
                         "lineBegin": 31,
                         "lineEnd": 31
                     },
@@ -3061,17 +2659,11 @@
                             "aString": "namespace bar"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 11,
                         "columnEnd": 14,
                         "lineBegin": 33,
                         "lineEnd": 33
-                    },
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 33,
-                        "lineEnd": 43
                     },
                     "sym": "test/cpp//foo/bar"
                 }
@@ -3098,14 +2690,8 @@
                             "aString": "typedef short TypedefDeclShort"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 15,
-                        "columnEnd": 31,
-                        "lineBegin": 35,
-                        "lineEnd": 35
-                    },
                     "range": {
-                        "columnBegin": 1,
+                        "columnBegin": 15,
                         "columnEnd": 31,
                         "lineBegin": 35,
                         "lineEnd": 35
@@ -3135,15 +2721,9 @@
                             "aString": "using UsingDeclShort = short"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 7,
                         "columnEnd": 21,
-                        "lineBegin": 36,
-                        "lineEnd": 36
-                    },
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 29,
                         "lineBegin": 36,
                         "lineEnd": 36
                     },
@@ -3172,17 +2752,11 @@
                             "aString": "struct T"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 8,
                         "columnEnd": 9,
                         "lineBegin": 38,
                         "lineEnd": 38
-                    },
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 38,
-                        "lineEnd": 40
                     },
                     "sym": "test/cpp//foo/bar/T"
                 }
@@ -3209,14 +2783,8 @@
                             "aString": "int memberVariableDecl"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 7,
-                        "columnEnd": 25,
-                        "lineBegin": 39,
-                        "lineEnd": 39
-                    },
                     "range": {
-                        "columnBegin": 3,
+                        "columnBegin": 7,
                         "columnEnd": 25,
                         "lineBegin": 39,
                         "lineEnd": 39
@@ -3246,15 +2814,9 @@
                             "aString": "void g()"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 6,
                         "columnEnd": 7,
-                        "lineBegin": 41,
-                        "lineEnd": 41
-                    },
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 9,
                         "lineBegin": 41,
                         "lineEnd": 41
                     },
@@ -3283,17 +2845,11 @@
                             "aString": "int fooFn(int fooI)"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 5,
                         "columnEnd": 10,
                         "lineBegin": 45,
                         "lineEnd": 45
-                    },
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 45,
-                        "lineEnd": 47
                     },
                     "sym": "test/cpp//foo/fooFn/.f/int"
                 },
@@ -3318,14 +2874,8 @@
                             "aString": "int fooI"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 15,
-                        "columnEnd": 19,
-                        "lineBegin": 45,
-                        "lineEnd": 45
-                    },
                     "range": {
-                        "columnBegin": 11,
+                        "columnBegin": 15,
                         "columnEnd": 19,
                         "lineBegin": 45,
                         "lineEnd": 45
@@ -3365,18 +2915,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 11,
+                            "columnBegin": 15,
                             "columnEnd": 19,
                             "lineBegin": 45,
                             "lineEnd": 45
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 15,
-                        "columnEnd": 19,
-                        "lineBegin": 45,
-                        "lineEnd": 45
                     }
                 }
             ],
@@ -3412,18 +2956,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 2,
+                            "columnBegin": 6,
+                            "columnEnd": 7,
                             "lineBegin": 54,
-                            "lineEnd": 62
+                            "lineEnd": 54
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 6,
-                        "columnEnd": 7,
-                        "lineBegin": 54,
-                        "lineEnd": 54
                     }
                 },
                 {
@@ -3447,15 +2985,9 @@
                             "aString": "void h(int _i)"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 6,
                         "columnEnd": 7,
-                        "lineBegin": 52,
-                        "lineEnd": 52
-                    },
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 15,
                         "lineBegin": 52,
                         "lineEnd": 52
                     },
@@ -3482,14 +3014,8 @@
                             "aString": "int _i"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 12,
-                        "columnEnd": 14,
-                        "lineBegin": 52,
-                        "lineEnd": 52
-                    },
                     "range": {
-                        "columnBegin": 8,
+                        "columnBegin": 12,
                         "columnEnd": 14,
                         "lineBegin": 52,
                         "lineEnd": 52
@@ -3519,17 +3045,11 @@
                             "aString": "void h(int i)"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 6,
                         "columnEnd": 7,
                         "lineBegin": 54,
                         "lineEnd": 54
-                    },
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 54,
-                        "lineEnd": 62
                     },
                     "sym": "test/cpp//h/.f/int"
                 },
@@ -3564,18 +3084,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 15,
+                            "columnBegin": 6,
+                            "columnEnd": 7,
                             "lineBegin": 52,
                             "lineEnd": 52
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 6,
-                        "columnEnd": 7,
-                        "lineBegin": 52,
-                        "lineEnd": 52
                     }
                 },
                 {
@@ -3599,14 +3113,8 @@
                             "aString": "int i"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 12,
-                        "columnEnd": 13,
-                        "lineBegin": 54,
-                        "lineEnd": 54
-                    },
                     "range": {
-                        "columnBegin": 8,
+                        "columnBegin": 12,
                         "columnEnd": 13,
                         "lineBegin": 54,
                         "lineEnd": 54
@@ -3646,18 +3154,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 2,
+                            "columnBegin": 6,
+                            "columnEnd": 7,
                             "lineBegin": 54,
-                            "lineEnd": 62
+                            "lineEnd": 54
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 6,
-                        "columnEnd": 7,
-                        "lineBegin": 54,
-                        "lineEnd": 54
                     }
                 },
                 {
@@ -3691,18 +3193,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 8,
+                            "columnBegin": 12,
                             "columnEnd": 13,
                             "lineBegin": 54,
                             "lineEnd": 54
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 12,
-                        "columnEnd": 13,
-                        "lineBegin": 54,
-                        "lineEnd": 54
                     }
                 }
             ],
@@ -3738,18 +3234,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 2,
+                            "columnBegin": 11,
+                            "columnEnd": 14,
                             "lineBegin": 11,
-                            "lineEnd": 49
+                            "lineEnd": 11
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 11,
-                        "columnEnd": 14,
-                        "lineBegin": 11,
-                        "lineEnd": 11
                     }
                 },
                 {
@@ -3783,18 +3273,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 2,
+                            "columnBegin": 8,
+                            "columnEnd": 9,
                             "lineBegin": 13,
-                            "lineEnd": 16
+                            "lineEnd": 13
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 8,
-                        "columnEnd": 9,
-                        "lineBegin": 13,
-                        "lineEnd": 13
                     }
                 },
                 {
@@ -3818,14 +3302,8 @@
                             "aString": "foo::S s"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 10,
-                        "columnEnd": 11,
-                        "lineBegin": 56,
-                        "lineEnd": 56
-                    },
                     "range": {
-                        "columnBegin": 3,
+                        "columnBegin": 10,
                         "columnEnd": 11,
                         "lineBegin": 56,
                         "lineEnd": 56
@@ -3865,18 +3343,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 2,
+                            "columnBegin": 11,
+                            "columnEnd": 14,
                             "lineBegin": 11,
-                            "lineEnd": 49
+                            "lineEnd": 11
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 11,
-                        "columnEnd": 14,
-                        "lineBegin": 11,
-                        "lineEnd": 11
                     }
                 },
                 {
@@ -3910,18 +3382,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 2,
+                            "columnBegin": 11,
+                            "columnEnd": 14,
                             "lineBegin": 33,
-                            "lineEnd": 43
+                            "lineEnd": 33
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 11,
-                        "columnEnd": 14,
-                        "lineBegin": 33,
-                        "lineEnd": 33
                     }
                 },
                 {
@@ -3955,18 +3421,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 2,
+                            "columnBegin": 8,
+                            "columnEnd": 9,
                             "lineBegin": 38,
-                            "lineEnd": 40
+                            "lineEnd": 38
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 8,
-                        "columnEnd": 9,
-                        "lineBegin": 38,
-                        "lineEnd": 38
                     }
                 },
                 {
@@ -3990,14 +3450,8 @@
                             "aString": "foo::bar::T t"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 15,
-                        "columnEnd": 16,
-                        "lineBegin": 57,
-                        "lineEnd": 57
-                    },
                     "range": {
-                        "columnBegin": 3,
+                        "columnBegin": 15,
                         "columnEnd": 16,
                         "lineBegin": 57,
                         "lineEnd": 57
@@ -4037,18 +3491,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 2,
+                            "columnBegin": 11,
+                            "columnEnd": 14,
                             "lineBegin": 11,
-                            "lineEnd": 49
+                            "lineEnd": 11
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 11,
-                        "columnEnd": 14,
-                        "lineBegin": 11,
-                        "lineEnd": 11
                     }
                 },
                 {
@@ -4082,18 +3530,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 9,
+                            "columnBegin": 6,
+                            "columnEnd": 7,
                             "lineBegin": 21,
                             "lineEnd": 21
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 6,
-                        "columnEnd": 7,
-                        "lineBegin": 21,
-                        "lineEnd": 21
                     }
                 }
             ],
@@ -4129,18 +3571,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 2,
+                            "columnBegin": 11,
+                            "columnEnd": 14,
                             "lineBegin": 11,
-                            "lineEnd": 49
+                            "lineEnd": 11
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 11,
-                        "columnEnd": 14,
-                        "lineBegin": 11,
-                        "lineEnd": 11
                     }
                 },
                 {
@@ -4174,18 +3610,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 2,
+                            "columnBegin": 6,
+                            "columnEnd": 9,
                             "lineBegin": 24,
-                            "lineEnd": 27
+                            "lineEnd": 24
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 6,
-                        "columnEnd": 9,
-                        "lineBegin": 24,
-                        "lineEnd": 24
                     }
                 },
                 {
@@ -4219,18 +3649,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 11,
+                            "columnBegin": 6,
+                            "columnEnd": 9,
                             "lineBegin": 31,
                             "lineEnd": 31
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 6,
-                        "columnEnd": 9,
-                        "lineBegin": 31,
-                        "lineEnd": 31
                     }
                 }
             ],
@@ -4266,18 +3690,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 2,
+                            "columnBegin": 11,
+                            "columnEnd": 14,
                             "lineBegin": 11,
-                            "lineEnd": 49
+                            "lineEnd": 11
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 11,
-                        "columnEnd": 14,
-                        "lineBegin": 11,
-                        "lineEnd": 11
                     }
                 },
                 {
@@ -4311,18 +3729,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 2,
+                            "columnBegin": 11,
+                            "columnEnd": 14,
                             "lineBegin": 33,
-                            "lineEnd": 43
+                            "lineEnd": 33
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 11,
-                        "columnEnd": 14,
-                        "lineBegin": 33,
-                        "lineEnd": 33
                     }
                 },
                 {
@@ -4356,18 +3768,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 9,
+                            "columnBegin": 6,
+                            "columnEnd": 7,
                             "lineBegin": 41,
                             "lineEnd": 41
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 6,
-                        "columnEnd": 7,
-                        "lineBegin": 41,
-                        "lineEnd": 41
                     }
                 }
             ],
@@ -4403,18 +3809,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 8,
+                            "columnBegin": 12,
                             "columnEnd": 13,
                             "lineBegin": 54,
                             "lineEnd": 54
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 12,
-                        "columnEnd": 13,
-                        "lineBegin": 54,
-                        "lineEnd": 54
                     }
                 }
             ],
@@ -4440,17 +3840,11 @@
                             "aString": "namespace maybe"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 11,
                         "columnEnd": 16,
                         "lineBegin": 64,
                         "lineEnd": 64
-                    },
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 64,
-                        "lineEnd": 83
                     },
                     "sym": "test/cpp//maybe"
                 }
@@ -4477,17 +3871,11 @@
                             "aString": "struct Nothing"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 8,
                         "columnEnd": 15,
                         "lineBegin": 69,
                         "lineEnd": 69
-                    },
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 69,
-                        "lineEnd": 73
                     },
                     "sym": "test/cpp//maybe/Nothing"
                 }
@@ -4514,15 +3902,9 @@
                             "aString": "enum class _secret : int"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 14,
                         "columnEnd": 21,
-                        "lineBegin": 70,
-                        "lineEnd": 70
-                    },
-                    "range": {
-                        "columnBegin": 3,
-                        "columnEnd": 32,
                         "lineBegin": 70,
                         "lineEnd": 70
                     },
@@ -4580,15 +3962,9 @@
                             "aString": "Nothing(maybe::Nothing::_secret)"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 22,
                         "columnEnd": 29,
-                        "lineBegin": 72,
-                        "lineEnd": 72
-                    },
-                    "range": {
-                        "columnBegin": 3,
-                        "columnEnd": 41,
                         "lineBegin": 72,
                         "lineEnd": 72
                     },
@@ -4616,8 +3992,8 @@
                         }
                     },
                     "range": {
-                        "columnBegin": 30,
-                        "columnEnd": 37,
+                        "columnBegin": 37,
+                        "columnEnd": 38,
                         "lineBegin": 72,
                         "lineEnd": 72
                     },
@@ -4654,18 +4030,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 3,
-                            "columnEnd": 32,
+                            "columnBegin": 14,
+                            "columnEnd": 21,
                             "lineBegin": 70,
                             "lineEnd": 70
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 14,
-                        "columnEnd": 21,
-                        "lineBegin": 70,
-                        "lineEnd": 70
                     }
                 }
             ],
@@ -4701,18 +4071,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 2,
+                            "columnBegin": 8,
+                            "columnEnd": 15,
                             "lineBegin": 69,
-                            "lineEnd": 73
+                            "lineEnd": 69
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 8,
-                        "columnEnd": 15,
-                        "lineBegin": 69,
-                        "lineEnd": 69
                     }
                 },
                 {
@@ -4746,18 +4110,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 2,
+                            "columnBegin": 8,
+                            "columnEnd": 15,
                             "lineBegin": 69,
-                            "lineEnd": 73
+                            "lineEnd": 69
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 8,
-                        "columnEnd": 15,
-                        "lineBegin": 69,
-                        "lineEnd": 69
                     }
                 },
                 {
@@ -4791,18 +4149,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 3,
-                            "columnEnd": 41,
+                            "columnBegin": 22,
+                            "columnEnd": 29,
                             "lineBegin": 72,
                             "lineEnd": 72
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 22,
-                        "columnEnd": 29,
-                        "lineBegin": 72,
-                        "lineEnd": 72
                     }
                 },
                 {
@@ -4836,18 +4188,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 3,
-                            "columnEnd": 32,
+                            "columnBegin": 14,
+                            "columnEnd": 21,
                             "lineBegin": 70,
                             "lineEnd": 70
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 14,
-                        "columnEnd": 21,
-                        "lineBegin": 70,
-                        "lineEnd": 70
                     }
                 },
                 {
@@ -4910,15 +4256,9 @@
                             "aString": "const maybe::Nothing nothing"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 19,
                         "columnEnd": 26,
-                        "lineBegin": 74,
-                        "lineEnd": 74
-                    },
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 52,
                         "lineBegin": 74,
                         "lineEnd": 74
                     },
@@ -4947,17 +4287,11 @@
                             "aString": "struct Something"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 8,
                         "columnEnd": 17,
                         "lineBegin": 76,
                         "lineEnd": 76
-                    },
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 76,
-                        "lineEnd": 80
                     },
                     "sym": "test/cpp//maybe/Something"
                 }
@@ -4984,14 +4318,8 @@
                             "aString": "int a_"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 7,
-                        "columnEnd": 9,
-                        "lineBegin": 77,
-                        "lineEnd": 77
-                    },
                     "range": {
-                        "columnBegin": 3,
+                        "columnBegin": 7,
                         "columnEnd": 9,
                         "lineBegin": 77,
                         "lineEnd": 77
@@ -5021,15 +4349,9 @@
                             "aString": "Something(int a)"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 3,
-                        "columnEnd": 12,
-                        "lineBegin": 78,
-                        "lineEnd": 78
-                    },
                     "range": {
                         "columnBegin": 3,
-                        "columnEnd": 28,
+                        "columnEnd": 12,
                         "lineBegin": 78,
                         "lineEnd": 78
                     },
@@ -5056,14 +4378,8 @@
                             "aString": "int a"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 17,
-                        "columnEnd": 18,
-                        "lineBegin": 78,
-                        "lineEnd": 78
-                    },
                     "range": {
-                        "columnBegin": 13,
+                        "columnBegin": 17,
                         "columnEnd": 18,
                         "lineBegin": 78,
                         "lineEnd": 78
@@ -5101,18 +4417,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 13,
+                            "columnBegin": 17,
                             "columnEnd": 18,
                             "lineBegin": 78,
                             "lineEnd": 78
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 17,
-                        "columnEnd": 18,
-                        "lineBegin": 78,
-                        "lineEnd": 78
                     }
                 },
                 {
@@ -5146,18 +4456,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 3,
+                            "columnBegin": 7,
                             "columnEnd": 9,
                             "lineBegin": 77,
                             "lineEnd": 77
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 7,
-                        "columnEnd": 9,
-                        "lineBegin": 77,
-                        "lineEnd": 77
                     }
                 }
             ],
@@ -5193,18 +4497,12 @@
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 2,
+                            "columnBegin": 8,
+                            "columnEnd": 17,
                             "lineBegin": 76,
-                            "lineEnd": 80
+                            "lineEnd": 76
                         },
                         "repository": "test"
-                    },
-                    "targetName": {
-                        "columnBegin": 8,
-                        "columnEnd": 17,
-                        "lineBegin": 76,
-                        "lineEnd": 76
                     }
                 },
                 {
@@ -5228,15 +4526,9 @@
                             "aString": "~Something()"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 3,
-                        "columnEnd": 4,
-                        "lineBegin": 79,
-                        "lineEnd": 79
-                    },
                     "range": {
                         "columnBegin": 3,
-                        "columnEnd": 18,
+                        "columnEnd": 4,
                         "lineBegin": 79,
                         "lineEnd": 79
                     },
@@ -5397,17 +4689,11 @@
                             "aString": "namespace baz"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 11,
                         "columnEnd": 14,
                         "lineBegin": 90,
                         "lineEnd": 90
-                    },
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 90,
-                        "lineEnd": 97
                     },
                     "sym": "test/cpp//baz"
                 }
@@ -5434,17 +4720,11 @@
                             "aString": "struct U"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 8,
                         "columnEnd": 9,
                         "lineBegin": 92,
                         "lineEnd": 92
-                    },
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 92,
-                        "lineEnd": 95
                     },
                     "sym": "test/cpp//baz/U"
                 }
@@ -5471,15 +4751,9 @@
                             "aString": "enum InU : int"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 8,
                         "columnEnd": 11,
-                        "lineBegin": 93,
-                        "lineEnd": 93
-                    },
-                    "range": {
-                        "columnBegin": 3,
-                        "columnEnd": 26,
                         "lineBegin": 93,
                         "lineEnd": 93
                     },
@@ -5595,15 +4869,9 @@
                             "aString": "enum class InUClass : int"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 14,
                         "columnEnd": 22,
-                        "lineBegin": 94,
-                        "lineEnd": 94
-                    },
-                    "range": {
-                        "columnBegin": 3,
-                        "columnEnd": 40,
                         "lineBegin": 94,
                         "lineEnd": 94
                     },
@@ -5719,15 +4987,9 @@
                             "aString": "enum Global : int"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 6,
                         "columnEnd": 12,
-                        "lineBegin": 99,
-                        "lineEnd": 99
-                    },
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 27,
                         "lineBegin": 99,
                         "lineEnd": 99
                     },

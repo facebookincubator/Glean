@@ -23,17 +23,11 @@
                             "aString": "class RefClass"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 7,
                         "columnEnd": 15,
                         "lineBegin": 10,
                         "lineEnd": 10
-                    },
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 10,
-                        "lineEnd": 37
                     },
                     "sym": "test/php/RefClass"
                 },
@@ -205,15 +199,9 @@
                             "aString": "const JAZZ"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 13,
                         "columnEnd": 17,
-                        "lineBegin": 14,
-                        "lineEnd": 14
-                    },
-                    "range": {
-                        "columnBegin": 3,
-                        "columnEnd": 23,
                         "lineBegin": 14,
                         "lineEnd": 14
                     },
@@ -239,15 +227,9 @@
                             "aString": "private int raz"
                         }
                     },
-                    "nameRange": {
-                        "columnBegin": 15,
-                        "columnEnd": 19,
-                        "lineBegin": 16,
-                        "lineEnd": 16
-                    },
                     "range": {
                         "columnBegin": 15,
-                        "columnEnd": 25,
+                        "columnEnd": 19,
                         "lineBegin": 16,
                         "lineEnd": 16
                     },
@@ -273,17 +255,11 @@
                             "aString": "public static function foo(): int"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 26,
                         "columnEnd": 29,
                         "lineBegin": 18,
                         "lineEnd": 18
-                    },
-                    "range": {
-                        "columnBegin": 3,
-                        "columnEnd": 4,
-                        "lineBegin": 18,
-                        "lineEnd": 20
                     },
                     "sym": "test/php/RefClass/foo"
                 }
@@ -381,17 +357,11 @@
                             "aString": "public function bazza(): int"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 19,
                         "columnEnd": 24,
                         "lineBegin": 22,
                         "lineEnd": 22
-                    },
-                    "range": {
-                        "columnBegin": 3,
-                        "columnEnd": 4,
-                        "lineBegin": 22,
-                        "lineEnd": 24
                     },
                     "sym": "test/php/RefClass/bazza"
                 }
@@ -453,17 +423,11 @@
                             "aString": "final internal static async function lotsofkeywords(): int"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 40,
                         "columnEnd": 54,
                         "lineBegin": 26,
                         "lineEnd": 26
-                    },
-                    "range": {
-                        "columnBegin": 3,
-                        "columnEnd": 4,
-                        "lineBegin": 26,
-                        "lineEnd": 28
                     },
                     "sym": "test/php/RefClass/lotsofkeywords"
                 }
@@ -487,17 +451,11 @@
                             "aString": "public function bar(SourceClass::T $param): int"
                         }
                     },
-                    "nameRange": {
+                    "range": {
                         "columnBegin": 19,
                         "columnEnd": 22,
                         "lineBegin": 30,
                         "lineEnd": 30
-                    },
-                    "range": {
-                        "columnBegin": 3,
-                        "columnEnd": 4,
-                        "lineBegin": 30,
-                        "lineEnd": 36
                     },
                     "sym": "test/php/RefClass/bar"
                 },
