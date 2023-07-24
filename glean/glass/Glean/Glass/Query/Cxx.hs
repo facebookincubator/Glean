@@ -137,16 +137,26 @@ fileEntityXRefLocations
   -> Glean.IdOf Cxx.Trace
   -> Glean.RepoHaxl u w ([(Code.XRefLocation,Code.Entity)], Bool)
 fileEntityXRefLocations mlimit fileId traceId = do
+  spellingXRefs <- spellingXRefs mlimit fileId
   mresult <- getFirstFileXRefs fileId
-  case mresult of
-    Nothing -> return ([], False)
+  fileXRefs <- case mresult of
+    Nothing -> return []
     Just xrefId -> do
       fixedXRefs <- fixedXRefs mlimit xrefId
       variableXRefs <- externalXRefs mlimit xrefId
       ppxrefs <- ppXRefs mlimit traceId
       defXRefs <- declToDefXRefs mlimit traceId
-      let result = [fixedXRefs, variableXRefs, ppxrefs, defXRefs]
-      return (concatMap fst result, any snd result)
+      return [fixedXRefs, variableXRefs, ppxrefs, defXRefs]
+  let result = spellingXRefs:fileXRefs
+  return (concatMap fst result, any snd result)
+
+-- spelling (easily discoverable) xrefs
+spellingXRefs
+  :: Maybe Int
+  -> Glean.IdOf Src.File
+  -> Glean.RepoHaxl u w ([(Code.XRefLocation, Code.Entity)], Bool)
+spellingXRefs mlimit fileId = searchRecursiveWithLimit mlimit $
+  cxxFileEntitySpellingXRefLocations fileId
 
 -- fixed (easily discoverable) xrefs
 fixedXRefs
@@ -391,6 +401,21 @@ cxxPpResolveTraceLocations traceId =
           entity .= sig (alt @"pp" pp_entity)
         ]
     ]
+
+-- Spelling XRefs associated with a file
+cxxFileEntitySpellingXRefLocations
+  :: Glean.IdOf Src.File
+  -> Angle (Code.XRefLocation, Code.Entity)
+cxxFileEntitySpellingXRefLocations fileId =
+  vars $ \(xref :: Angle Code.XRefLocation) (entity :: Angle Cxx.Entity) ->
+    tuple (xref, sig (alt @"cxx" entity) :: Angle Code.Entity) `where_` [
+      wild .= predicate @Code.CxxFileEntitySpellingXRefLocations (
+        rec $
+          field @"file" (asPredicate (factId fileId)) $
+          field @"xref" xref $
+          field @"entity" entity
+        end)
+      ]
 
 -- Fixed XRefs associated with a file and xmap /xref set
 cxxFileEntityXMapFixedXRefLocations
