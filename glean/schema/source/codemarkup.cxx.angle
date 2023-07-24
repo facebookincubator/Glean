@@ -125,8 +125,12 @@ predicate CxxFileEntityXRefLocations:
     entity: code.cxx.Entity,
   }
   { File, XRef, Entity } where
-    Trace = cxx1.FileXRefs { xmap = { file = File } };
-    CxxFileEntityXMapFixedXRefLocations { Trace, XRef, Entity }
+    (
+      Trace = cxx1.FileXRefs { xmap = { file = File } };
+      CxxFileEntityXMapFixedXRefLocations { Trace, XRef, Entity }
+    ) | (
+      CxxFileEntitySpellingXRefLocations { File, XRef, Entity }
+    )
 
 # Fixed C++ xrefs, keyed by a specific cxx1.FileXRefs fact
 # We will expand any targets as best we can
@@ -144,6 +148,17 @@ predicate CxxFileEntityXMapFixedXRefLocations:
     Spans = prim.unpackByteSpans PackedSpans;
     Spellings = prim.unpackByteSpans PackedSpellings;
     Span = (Spans | Spellings)[..];
+    { Location, { span = Span } } = XRef;
+
+predicate CxxFileEntitySpellingXRefLocations:
+  {
+    file: src.File,
+    xref: codemarkup.types.XRefLocation,
+    entity: code.cxx.Entity,
+  }
+  { File, XRef, Entity } where
+    cxx1.SpellingXRef { { File, Span }, XRefTarget };
+    CxxXRefTargetLocation { XRefTarget, Entity, Location };
     { Location, { span = Span } } = XRef;
 
 # Helper to (partially) process XRefTargets to entities and xrefs

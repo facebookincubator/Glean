@@ -1,0 +1,128 @@
+[
+  "@generated",
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "file": { "key": "test.cpp" },
+          "events": [
+            {
+              "include_": {
+                "include_": {
+                  "key": {
+                    "file": { "key": "a.h" },
+                    "path": { "begin": 230, "end": 235 },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 9,
+                      "columnBegin": 1,
+                      "lineEnd": 9,
+                      "columnEnd": 14
+                    },
+                    "pathSpan": { "start": 230, "length": 5 }
+                  }
+                }
+              }
+            },
+            {
+              "use": {
+                "key": {
+                  "macro": { "key": "REF_NONMACRO" },
+                  "name": { "begin": 285, "end": 297 },
+                  "definition": {
+                    "file": { "key": "a.h" },
+                    "line": 9,
+                    "column": 9
+                  },
+                  "expand": true,
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 16,
+                    "columnBegin": 3,
+                    "lineEnd": 16,
+                    "columnEnd": 14
+                  },
+                  "nameSpan": { "start": 285, "length": 12 }
+                }
+              }
+            },
+            {
+              "use": {
+                "key": {
+                  "macro": { "key": "REF_MACRO" },
+                  "name": { "begin": 319, "end": 328 },
+                  "definition": {
+                    "file": { "key": "a.h" },
+                    "line": 11,
+                    "column": 9
+                  },
+                  "expand": true,
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 20,
+                    "columnBegin": 5,
+                    "lineEnd": 20,
+                    "columnEnd": 13
+                  },
+                  "nameSpan": { "start": 319, "length": 9 }
+                }
+              }
+            },
+            {
+              "use": {
+                "key": {
+                  "macro": { "key": "REF_MACRO" },
+                  "name": { "begin": 335, "end": 344 },
+                  "definition": {
+                    "file": { "key": "a.h" },
+                    "line": 11,
+                    "column": 9
+                  },
+                  "expand": true,
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 21,
+                    "columnBegin": 5,
+                    "lineEnd": 21,
+                    "columnEnd": 13
+                  },
+                  "nameSpan": { "start": 335, "length": 9 }
+                }
+              }
+            },
+            {
+              "use": {
+                "key": {
+                  "macro": { "key": "REF_MACRO" },
+                  "name": { "begin": 351, "end": 360 },
+                  "definition": {
+                    "file": { "key": "a.h" },
+                    "line": 11,
+                    "column": 9
+                  },
+                  "expand": true,
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 22,
+                    "columnBegin": 5,
+                    "lineEnd": 22,
+                    "columnEnd": 13
+                  },
+                  "nameSpan": { "start": 351, "length": 9 }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "range": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 9,
+        "columnBegin": 1,
+        "lineEnd": 9,
+        "columnEnd": 14
+      },
+      "target": { "key": "a.h" }
+    }
+  }
+]

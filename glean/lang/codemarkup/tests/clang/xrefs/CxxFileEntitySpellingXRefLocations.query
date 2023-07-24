@@ -1,0 +1,3 @@
+query: codemarkup.cxx.CxxFileEntitySpellingXRefLocations _
+perf: true
+transform: [gensort, []]

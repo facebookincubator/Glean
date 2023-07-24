@@ -1,0 +1,184 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "fixed": [
+        {
+          "target": {
+            "declaration": {
+              "namespace_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 11,
+                    "columnBegin": 1,
+                    "lineEnd": 13,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          },
+          "ranges": [ { "offset": 285, "length": 12 } ],
+          "from": {
+            "spans": [ ],
+            "expansions": [ { "length": 12, "offsets": [ 285 ] } ],
+            "spellings": [ ]
+          }
+        },
+        {
+          "target": {
+            "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "foo" } } },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "N" } } }
+                      }
+                    }
+                  },
+                  "signature": {
+                    "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 12,
+                    "columnBegin": 3,
+                    "lineEnd": 12,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          },
+          "ranges": [ { "offset": 285, "length": 12 } ],
+          "from": {
+            "spans": [ ],
+            "expansions": [ { "length": 12, "offsets": [ 285 ] } ],
+            "spellings": [ ]
+          }
+        },
+        {
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x" },
+                      "scope": {
+                        "local": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "baz" } } },
+                            "scope": { "global_": { } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "int" },
+                  "kind": { "local": { "kind": 0, "attribute": 0 } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 20,
+                    "columnBegin": 5,
+                    "lineEnd": 20,
+                    "columnEnd": 13
+                  }
+                }
+              }
+            }
+          },
+          "ranges": [ { "offset": 319, "length": 9 } ],
+          "from": {
+            "spans": [ ],
+            "expansions": [ { "length": 9, "offsets": [ 319 ] } ],
+            "spellings": [ ]
+          }
+        },
+        {
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x" },
+                      "scope": {
+                        "local": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "baz" } } },
+                            "scope": { "global_": { } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "int" },
+                  "kind": { "local": { "kind": 0, "attribute": 0 } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 21,
+                    "columnBegin": 5,
+                    "lineEnd": 21,
+                    "columnEnd": 13
+                  }
+                }
+              }
+            }
+          },
+          "ranges": [ { "offset": 335, "length": 9 } ],
+          "from": {
+            "spans": [ ],
+            "expansions": [ { "length": 9, "offsets": [ 335 ] } ],
+            "spellings": [ ]
+          }
+        },
+        {
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x" },
+                      "scope": {
+                        "local": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "baz" } } },
+                            "scope": { "global_": { } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "int" },
+                  "kind": { "local": { "kind": 0, "attribute": 0 } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 22,
+                    "columnBegin": 5,
+                    "lineEnd": 22,
+                    "columnEnd": 13
+                  }
+                }
+              }
+            }
+          },
+          "ranges": [ { "offset": 351, "length": 9 } ],
+          "from": {
+            "spans": [ ],
+            "expansions": [ { "length": 9, "offsets": [ 351 ] } ],
+            "spellings": [ ]
+          }
+        }
+      ],
+      "variable": [ ],
+      "froms": [ ]
+    }
+  }
+]

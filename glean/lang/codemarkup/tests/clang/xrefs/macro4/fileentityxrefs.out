@@ -1,0 +1,482 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "a.h" },
+      "xref": {
+        "target": {
+          "name": "N",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 11,
+              "columnBegin": 1,
+              "lineEnd": 13,
+              "columnEnd": 1
+            }
+          },
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 247, "length": 1 }
+          }
+        },
+        "source": { "span": { "start": 242, "length": 1 } }
+      },
+      "entity": {
+        "cxx": {
+          "defn": {
+            "namespace_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "N" } } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 11,
+                      "columnBegin": 1,
+                      "lineEnd": 13,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "members": {
+                  "key": [
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "foo" } } },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "N" } }
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [ ]
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 12,
+                            "columnBegin": 3,
+                            "lineEnd": 12,
+                            "columnEnd": 15
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "a.h" },
+      "xref": {
+        "target": {
+          "name": "foo",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 12,
+              "columnBegin": 3,
+              "lineEnd": 12,
+              "columnEnd": 15
+            }
+          },
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 258, "length": 3 }
+          }
+        },
+        "source": { "span": { "start": 245, "length": 3 } }
+      },
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "foo" } } },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "N" } } }
+                        }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 12,
+                      "columnBegin": 3,
+                      "lineEnd": 12,
+                      "columnEnd": 15
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "a.h" },
+      "xref": {
+        "target": {
+          "name": "x",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 20,
+              "columnBegin": 5,
+              "lineEnd": 20,
+              "columnEnd": 13
+            }
+          },
+          "destination": {
+            "file": { "key": "a.h" },
+            "span": { "start": 278, "length": 1 }
+          }
+        },
+        "source": { "span": { "start": 301, "length": 1 } }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "x" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "baz" } } },
+                          "scope": { "global_": { } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 0, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 20,
+                  "columnBegin": 5,
+                  "lineEnd": 20,
+                  "columnEnd": 13
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "a.h" },
+      "xref": {
+        "target": {
+          "name": "x",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 21,
+              "columnBegin": 5,
+              "lineEnd": 21,
+              "columnEnd": 13
+            }
+          },
+          "destination": {
+            "file": { "key": "a.h" },
+            "span": { "start": 278, "length": 1 }
+          }
+        },
+        "source": { "span": { "start": 301, "length": 1 } }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "x" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "baz" } } },
+                          "scope": { "global_": { } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 0, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 21,
+                  "columnBegin": 5,
+                  "lineEnd": 21,
+                  "columnEnd": 13
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "a.h" },
+      "xref": {
+        "target": {
+          "name": "x",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 22,
+              "columnBegin": 5,
+              "lineEnd": 22,
+              "columnEnd": 13
+            }
+          },
+          "destination": {
+            "file": { "key": "a.h" },
+            "span": { "start": 278, "length": 1 }
+          }
+        },
+        "source": { "span": { "start": 301, "length": 1 } }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "x" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "baz" } } },
+                          "scope": { "global_": { } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 0, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 22,
+                  "columnBegin": 5,
+                  "lineEnd": 22,
+                  "columnEnd": 13
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "xref": {
+        "target": {
+          "name": "REF_MACRO",
+          "file": { "key": "a.h" },
+          "location": {
+            "range": {
+              "file": { "key": "a.h" },
+              "lineBegin": 11,
+              "columnBegin": 9,
+              "lineEnd": 11,
+              "columnEnd": 17
+            }
+          }
+        },
+        "source": { "span": { "start": 319, "length": 9 } }
+      },
+      "entity": {
+        "pp": {
+          "define": {
+            "key": {
+              "macro": { "key": "REF_MACRO" },
+              "source": {
+                "file": { "key": "a.h" },
+                "lineBegin": 11,
+                "columnBegin": 9,
+                "lineEnd": 11,
+                "columnEnd": 17
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "xref": {
+        "target": {
+          "name": "REF_MACRO",
+          "file": { "key": "a.h" },
+          "location": {
+            "range": {
+              "file": { "key": "a.h" },
+              "lineBegin": 11,
+              "columnBegin": 9,
+              "lineEnd": 11,
+              "columnEnd": 17
+            }
+          }
+        },
+        "source": { "span": { "start": 335, "length": 9 } }
+      },
+      "entity": {
+        "pp": {
+          "define": {
+            "key": {
+              "macro": { "key": "REF_MACRO" },
+              "source": {
+                "file": { "key": "a.h" },
+                "lineBegin": 11,
+                "columnBegin": 9,
+                "lineEnd": 11,
+                "columnEnd": 17
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "xref": {
+        "target": {
+          "name": "REF_MACRO",
+          "file": { "key": "a.h" },
+          "location": {
+            "range": {
+              "file": { "key": "a.h" },
+              "lineBegin": 11,
+              "columnBegin": 9,
+              "lineEnd": 11,
+              "columnEnd": 17
+            }
+          }
+        },
+        "source": { "span": { "start": 351, "length": 9 } }
+      },
+      "entity": {
+        "pp": {
+          "define": {
+            "key": {
+              "macro": { "key": "REF_MACRO" },
+              "source": {
+                "file": { "key": "a.h" },
+                "lineBegin": 11,
+                "columnBegin": 9,
+                "lineEnd": 11,
+                "columnEnd": 17
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "xref": {
+        "target": {
+          "name": "REF_NONMACRO",
+          "file": { "key": "a.h" },
+          "location": {
+            "range": {
+              "file": { "key": "a.h" },
+              "lineBegin": 9,
+              "columnBegin": 9,
+              "lineEnd": 9,
+              "columnEnd": 20
+            }
+          }
+        },
+        "source": { "span": { "start": 285, "length": 12 } }
+      },
+      "entity": {
+        "pp": {
+          "define": {
+            "key": {
+              "macro": { "key": "REF_NONMACRO" },
+              "source": {
+                "file": { "key": "a.h" },
+                "lineBegin": 9,
+                "columnBegin": 9,
+                "lineEnd": 9,
+                "columnEnd": 20
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "xref": {
+        "target": {
+          "name": "a.h",
+          "file": { "key": "a.h" },
+          "location": { "span": { "start": 0, "length": 0 } }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 9,
+            "columnBegin": 1,
+            "lineEnd": 9,
+            "columnEnd": 14
+          }
+        }
+      },
+      "entity": { "pp": { "include_": { "key": "a.h" } } }
+    }
+  }
+]
