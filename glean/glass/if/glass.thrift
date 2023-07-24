@@ -173,11 +173,7 @@ struct ReferenceRangeSymbolX {
   // this points to an optional name range of the `target` rather than
   // the full definition. the range is assumed to be in the same
   // `repository` and `filepath` as the `target` field.
-  5: optional Range targetName; // deprecated, use `targetDestination`
-
-  // this points to an optional destination of the `target` rather than
-  // the full definition.
-  6: optional LocationRange targetDestination;
+  5: optional Range targetName;
 }
 
 // a definition symbol
@@ -192,12 +188,7 @@ struct DefinitionSymbolX {
   3: AttributeList attributes;
 
   // the resolved local line:col spans of the symbol name in this file
-  4: optional Range nameRange (hs.strict); // deprecated, use `destination`
-
-  // the resolved location of the destination of the symbol.
-  // This is commonly the name of a declaration, potentially in a different
-  // file in the case where the declaration is within a macro definition.
-  5: optional LocationRange destination (hs.strict);
+  4: optional Range nameRange (hs.strict);
 }
 
 // sometimes we prefer to combine all symbols in a file, for use later
@@ -215,16 +206,10 @@ struct SymbolX {
   4: Attributes attributes;
 
   // the resolved local line:col spans of the symbol name in this file
-  5: optional Range nameRange (hs.strict); // deprecated, use `destination`
+  5: optional Range nameRange (hs.strict);
 
   // if this is a reference, it will point to the name of its definition
-  6: optional Range targetName; // deprecated, use `targetDestination`
-
-  // the resolved local line:col spans of the symbol name
-  7: optional LocationRange destination (hs.strict);
-
-  // if this is a reference, it will point to the name of its definition
-  8: optional LocationRange targetDestination;
+  6: optional Range targetName;
 }
 
 // Path-based symbol identifer. This is less stable than an SymbolId, and is

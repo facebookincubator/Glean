@@ -23,16 +23,6 @@
                             "aString": "class RefClass"
                         }
                     },
-                    "destination": {
-                        "filepath": "www/RefClass.php",
-                        "range": {
-                            "columnBegin": 7,
-                            "columnEnd": 15,
-                            "lineBegin": 10,
-                            "lineEnd": 10
-                        },
-                        "repository": "test"
-                    },
                     "nameRange": {
                         "columnBegin": 7,
                         "columnEnd": 15,
@@ -215,16 +205,6 @@
                             "aString": "const JAZZ"
                         }
                     },
-                    "destination": {
-                        "filepath": "www/RefClass.php",
-                        "range": {
-                            "columnBegin": 13,
-                            "columnEnd": 17,
-                            "lineBegin": 14,
-                            "lineEnd": 14
-                        },
-                        "repository": "test"
-                    },
                     "nameRange": {
                         "columnBegin": 13,
                         "columnEnd": 17,
@@ -259,16 +239,6 @@
                             "aString": "private int raz"
                         }
                     },
-                    "destination": {
-                        "filepath": "www/RefClass.php",
-                        "range": {
-                            "columnBegin": 15,
-                            "columnEnd": 19,
-                            "lineBegin": 16,
-                            "lineEnd": 16
-                        },
-                        "repository": "test"
-                    },
                     "nameRange": {
                         "columnBegin": 15,
                         "columnEnd": 19,
@@ -302,16 +272,6 @@
                         "symbolSignature": {
                             "aString": "public static function foo(): int"
                         }
-                    },
-                    "destination": {
-                        "filepath": "www/RefClass.php",
-                        "range": {
-                            "columnBegin": 26,
-                            "columnEnd": 29,
-                            "lineBegin": 18,
-                            "lineEnd": 18
-                        },
-                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 26,
@@ -421,16 +381,6 @@
                             "aString": "public function bazza(): int"
                         }
                     },
-                    "destination": {
-                        "filepath": "www/RefClass.php",
-                        "range": {
-                            "columnBegin": 19,
-                            "columnEnd": 24,
-                            "lineBegin": 22,
-                            "lineEnd": 22
-                        },
-                        "repository": "test"
-                    },
                     "nameRange": {
                         "columnBegin": 19,
                         "columnEnd": 24,
@@ -503,16 +453,6 @@
                             "aString": "final internal static async function lotsofkeywords(): int"
                         }
                     },
-                    "destination": {
-                        "filepath": "www/RefClass.php",
-                        "range": {
-                            "columnBegin": 40,
-                            "columnEnd": 54,
-                            "lineBegin": 26,
-                            "lineEnd": 26
-                        },
-                        "repository": "test"
-                    },
                     "nameRange": {
                         "columnBegin": 40,
                         "columnEnd": 54,
@@ -546,16 +486,6 @@
                         "symbolSignature": {
                             "aString": "public function bar(SourceClass::T $param): int"
                         }
-                    },
-                    "destination": {
-                        "filepath": "www/RefClass.php",
-                        "range": {
-                            "columnBegin": 19,
-                            "columnEnd": 22,
-                            "lineBegin": 30,
-                            "lineEnd": 30
-                        },
-                        "repository": "test"
                     },
                     "nameRange": {
                         "columnBegin": 19,
