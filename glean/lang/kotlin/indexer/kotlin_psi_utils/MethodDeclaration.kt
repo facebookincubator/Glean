@@ -44,5 +44,7 @@ fun buildMethodDeclaration(
       kotlinType?.let { buildKotlinType(it, bindingContext) },
       (ktClassBody?.parent as? KtClass)?.let { buildClassDeclaration(it, bindingContext) },
       (function as? PsiElement)?.let { buildLoc(it) }
-          ?: throw MissingRequiredGleanFieldException("MethodDeclaration.loc"))
+          ?: throw MissingRequiredGleanFieldException("MethodDeclaration.loc"),
+      (function as? PsiElement)?.let { buildFileLocation(it) }
+          ?: throw MissingRequiredGleanFieldException("MethodDeclaration.location"))
 }

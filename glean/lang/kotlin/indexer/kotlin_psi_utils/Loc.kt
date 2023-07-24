@@ -25,6 +25,7 @@ fun buildSpan(element: PsiElement): SpanPredicate {
   return SpanPredicate(start = element.startOffset.toLong(), end = element.endOffset.toLong())
 }
 
+// deprecated
 fun buildLoc(element: PsiElement): LocPredicate? {
   if (element.containingFile.viewProvider.document == null) {
     return null

@@ -148,6 +148,14 @@
             "line": 35,
             "column": 3
           },
+          "location": {
+            "key": {
+              "file": {
+                "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+              },
+              "span": { "start": 709, "length": 52 }
+            }
+          },
           "container": {
             "class_": {
               "key": {
@@ -384,6 +392,14 @@
             "line": 30,
             "column": 3
           },
+          "location": {
+            "key": {
+              "file": {
+                "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+              },
+              "span": { "start": 638, "length": 68 }
+            }
+          },
           "container": {
             "class_": {
               "key": {
@@ -599,6 +615,14 @@
             "line": 39,
             "column": 3
           },
+          "location": {
+            "key": {
+              "file": {
+                "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+              },
+              "span": { "start": 764, "length": 82 }
+            }
+          },
           "container": {
             "class_": {
               "key": {
@@ -782,6 +806,14 @@
             },
             "line": 11,
             "column": 3
+          },
+          "location": {
+            "key": {
+              "file": {
+                "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
+              },
+              "span": { "start": 192, "length": 46 }
+            }
           },
           "container": {
             "class_": {

@@ -379,6 +379,14 @@
                   "line": 11,
                   "column": 3
                 },
+                "location": {
+                  "key": {
+                    "file": {
+                      "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
+                    },
+                    "span": { "start": 192, "length": 46 }
+                  }
+                },
                 "container": {
                   "class_": {
                     "key": {
@@ -451,7 +459,7 @@
         "file": {
           "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
         },
-        "location": { "span": { "start": 0, "length": 1 } }
+        "location": { "span": { "start": 192, "length": 46 } }
       },
       "kind": 7,
       "language": 13
@@ -580,6 +588,14 @@
                   "line": 35,
                   "column": 3
                 },
+                "location": {
+                  "key": {
+                    "file": {
+                      "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                    },
+                    "span": { "start": 709, "length": 52 }
+                  }
+                },
                 "container": {
                   "class_": {
                     "key": {
@@ -628,7 +644,7 @@
         "file": {
           "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
         },
-        "location": { "span": { "start": 0, "length": 1 } }
+        "location": { "span": { "start": 709, "length": 52 } }
       },
       "kind": 7,
       "language": 13
@@ -803,6 +819,14 @@
                   "line": 30,
                   "column": 3
                 },
+                "location": {
+                  "key": {
+                    "file": {
+                      "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                    },
+                    "span": { "start": 638, "length": 68 }
+                  }
+                },
                 "container": {
                   "class_": {
                     "key": {
@@ -851,7 +875,7 @@
         "file": {
           "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
         },
-        "location": { "span": { "start": 0, "length": 1 } }
+        "location": { "span": { "start": 638, "length": 68 } }
       },
       "kind": 7,
       "language": 13
@@ -1084,6 +1108,14 @@
                   "line": 39,
                   "column": 3
                 },
+                "location": {
+                  "key": {
+                    "file": {
+                      "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
+                    },
+                    "span": { "start": 764, "length": 82 }
+                  }
+                },
                 "container": {
                   "class_": {
                     "key": {
@@ -1132,7 +1164,7 @@
         "file": {
           "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/ClassA.kt"
         },
-        "location": { "span": { "start": 0, "length": 1 } }
+        "location": { "span": { "start": 764, "length": 82 } }
       },
       "kind": 7,
       "language": 13
@@ -1303,6 +1335,14 @@
                   },
                   "line": 18,
                   "column": 5
+                },
+                "location": {
+                  "key": {
+                    "file": {
+                      "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
+                    },
+                    "span": { "start": 297, "length": 184 }
+                  }
                 }
               }
             }
@@ -1314,7 +1354,7 @@
         "file": {
           "key": "fbcode/glean/lang/kotlin/indexer/examples/java/com/facebook/glean/glean/Glean.kt"
         },
-        "location": { "span": { "start": 0, "length": 1 } }
+        "location": { "span": { "start": 297, "length": 184 } }
       },
       "kind": 7,
       "language": 13

@@ -17,7 +17,8 @@ class MethodDeclarationPredicate(
     private val parameters: List<VariableDeclarationPredicate>,
     private val returnType: KotlinTypePredicate?,
     private val classDeclaration: ClassDeclarationPredicate?,
-    private val loc: LocPredicate
+    private val loc: LocPredicate,
+    private val location: DeclarationLocationPredicate
 ) : GleanPredicate<GleanMethodDeclaration> {
   override fun toGleanType(): GleanMethodDeclaration {
     return GleanMethodDeclaration.Builder()
@@ -33,6 +34,7 @@ class MethodDeclarationPredicate(
                           Declaration.fromClass_(it.toGleanType())
                         }
                     loc = this@MethodDeclarationPredicate.loc.toGleanType()
+                    location = this@MethodDeclarationPredicate.location.toGleanType()
                   }
                   .build()
         }

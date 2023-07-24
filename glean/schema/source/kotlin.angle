@@ -5,11 +5,11 @@ schema kotlin.alpha.2 {
   import javakotlin.alpha.1
   import src.1
 
-# table of definitions of things
-predicate DeclarationLocation : {
+predicate DeclarationLocation :
+  {
     file : src.File,
     span : src.ByteSpan
-}
+  }
 
 predicate Type :
   {
@@ -19,9 +19,10 @@ predicate Type :
     isNullable: bool
   }
 
-predicate TypeArg: {
-  type: Type
-}
+predicate TypeArg:
+  {
+    type: Type
+  }
 
   # A variable declaration
 predicate VariableDeclaration :
@@ -37,8 +38,16 @@ predicate MethodDeclaration :
     name : javakotlin.alpha.MethodName,
     parameters : [VariableDeclaration],
     returnType : maybe Type,
-    loc : src.Loc, # this needs to be a src.ByteSpan
-    container: maybe Declaration # too imprecise. This is only ever a class
+    loc : src.Loc, # deprecated. unused
+    location: maybe DeclarationLocation,
+    container: maybe Declaration
+  }
+
+predicate ClassDeclaration :
+  {
+    name : javakotlin.alpha.QName,
+    implements_ : [javakotlin.alpha.QName],
+    location : DeclarationLocation,
   }
 
 # Parent of variables that are methods. I.e. method contains the variable
@@ -49,13 +58,6 @@ predicate VariableParent:
   } stored { Child, Parent } where
     Parent = MethodDeclaration { parameters = Ps };
     Child = Ps[..];
-
-predicate ClassDeclaration :
-  {
-    name : javakotlin.alpha.QName,
-    implements_ : [javakotlin.alpha.QName],
-    location : DeclarationLocation,
-  }
 
 # Inverse table of method members of classes
 predicate ClassMember:
@@ -82,17 +84,16 @@ predicate FileDeclarations:
     file: src.File,
     decl: Declaration
   } stored { File, Decl } where
-    ( ( CDecl = ClassDeclaration { location = Loc };
-        { class_ = CDecl }  = Decl;
-      ) | (
-        VDecl = VariableDeclaration { location = Loc };
-        { variable = VDecl } = Decl;
-      );
-      { file = File } = Loc;
+    ( CDecl = ClassDeclaration { location = Loc };
+      { class_ = CDecl }  = Decl;
     ) | (
-      MDecl = MethodDeclaration { loc = { file = File } };
-      { method = MDecl } = Decl;
-    )
+      VDecl = VariableDeclaration { location = Loc };
+      { variable = VDecl } = Decl;
+    ) | (
+      MDecl = MethodDeclaration { location = { just = Loc } };
+     { method = MDecl } = Decl;
+    );
+    { file = File } = Loc;
 
 predicate DeclarationFileLocation:
   {
@@ -102,22 +103,18 @@ predicate DeclarationFileLocation:
     name: string,
   }
   { Decl, File, Span, NameStr } where
-    ( ( { class_ = CDecl }  = Decl;
-        ClassDeclaration { location = Location, name = QName } = CDecl;
-      ) | (
-        { variable = VDecl } = Decl;
-        VariableDeclaration { location = Location, name = QName } = VDecl;
-      );
-      { File, Span } = Location;
-      { name = javakotlin.alpha.Name NameStr } = QName;
+    ( { class_ = CDecl }  = Decl;
+      ClassDeclaration { location = Location, name = QName } = CDecl;
+    ) | (
+      { variable = VDecl } = Decl;
+      VariableDeclaration { location = Location, name = QName } = VDecl;
     ) | (
       { method = MDecl } = Decl;
-      MethodDeclaration { name = MName, loc = SrcLoc} = MDecl;
-      javakotlin.alpha.MethodName { name = QName } = MName;
-      { name = javakotlin.alpha.Name NameStr } = QName;
-      { file = File } = SrcLoc;
-      { 0, 1 } = Span; # fake span todo
-    )
+      MethodDeclaration { location = { just = Location }, name = MName} = MDecl;
+      { name = QName } = MName;
+    );
+    { File, Span } = Location;
+    { name = javakotlin.alpha.Name NameStr } = QName
 
 # entity relationships
 
@@ -151,7 +148,6 @@ predicate ContainsDeclaration:
       ClassMember { CDecl, MDecl };
       { method = MDecl } = Child
     )
-
 
 # extends parent (classes `implement` interfaces, but we don't have
 # InterfaceDecls currently). So this isn't very useful yet
