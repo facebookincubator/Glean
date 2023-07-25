@@ -325,9 +325,8 @@ FactSet FactSet::rebase(
     const Substitution& subst,
     Store& global) const {
   const auto new_start = subst.firstFreeId();
-  const auto offset = distance(subst.finish(), new_start);
-  const auto substitute = syscall([&subst, offset](Id id, Pid) {
-    return id < subst.finish() ? subst.subst(id) : id + offset;
+  const auto substitute = syscall([&subst](Id id, Pid) {
+    return subst.subst(id);
   });
 
   const auto split = lower_bound(subst.finish());
@@ -341,14 +340,30 @@ FactSet FactSet::rebase(
     });
   }
 
+  MutableSubstitution localSubst(new_start, distance(new_start, firstFreeId()));
+
+  const auto substituteLocal = syscall([&subst, &localSubst](Id id, Pid) {
+    if (id < subst.finish()) {
+      return subst.subst(id);
+    }
+    return localSubst.subst(id);
+  });
+
   FactSet local(new_start);
-  auto expected = new_start;
   for (auto fact : folly::range(split, end())) {
-    auto r = substituteFact(inventory, substitute, fact);
-    const auto id =
-      local.define(fact.type, Fact::Clause::from(r.first.bytes(), r.second));
-    CHECK(id == expected);
-    ++expected;
+    auto r = substituteFact(inventory, substituteLocal, fact);
+
+    const auto clause = Fact::Clause::from(r.first.bytes(), r.second);
+    const auto old_id = fact.id;
+    auto new_id = local.define(fact.type, clause);
+
+    // in case of same key, but different values after substitution
+    // we ignore the later definition.
+    if (!new_id) {
+      new_id = local.idByKey(fact.type, clause.key());
+    }
+
+    localSubst.set(old_id, new_id);
   }
 
   return local;
