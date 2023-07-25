@@ -1,0 +1,511 @@
+[
+    "@generated",
+    {
+        "definitions": [
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 7
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Glean"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "com.facebook.glean.glean"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 5
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 5,
+                    "lineEnd": 23
+                },
+                "sym": "test/java/com/facebook/glean/glean/Glean"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "LOG_TAG"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "com.facebook.glean.glean.Glean"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 5
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 48,
+                    "lineBegin": 8,
+                    "lineEnd": 8
+                },
+                "sym": "test/java/com/facebook/glean/glean/Glean/LOG_TAG"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "fetch"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "com.facebook.glean.glean.Glean"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 5
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 4,
+                    "lineBegin": 10,
+                    "lineEnd": 14
+                },
+                "sym": "test/java/com/facebook/glean/glean/Glean/fetch"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "main"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "com.facebook.glean.glean.Glean"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 5
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 4,
+                    "lineBegin": 16,
+                    "lineEnd": 22
+                },
+                "sym": "test/java/com/facebook/glean/glean/Glean/main"
+            }
+        ],
+        "references": [
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 7
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Glean"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "com.facebook.glean.glean"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 5
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 10,
+                    "lineBegin": 17,
+                    "lineEnd": 17
+                },
+                "sym": "test/java/com/facebook/glean/glean/Glean",
+                "target": {
+                    "filepath": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/Glean.java",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 5,
+                        "lineEnd": 23
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "fetch"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "com.facebook.glean.glean.Glean"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 5
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 17,
+                    "columnEnd": 30,
+                    "lineBegin": 18,
+                    "lineEnd": 18
+                },
+                "sym": "test/java/com/facebook/glean/glean/Glean/fetch",
+                "target": {
+                    "filepath": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/Glean.java",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 10,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 7
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "POJO"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "com.facebook.glean.glean"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 5
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 10,
+                    "columnEnd": 14,
+                    "lineBegin": 12,
+                    "lineEnd": 12
+                },
+                "sym": "test/java/com/facebook/glean/glean/POJO",
+                "target": {
+                    "filepath": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 5,
+                        "lineEnd": 47
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 7
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "POJO"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "com.facebook.glean.glean"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 5
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 9,
+                    "lineBegin": 18,
+                    "lineEnd": 18
+                },
+                "sym": "test/java/com/facebook/glean/glean/POJO",
+                "target": {
+                    "filepath": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 5,
+                        "lineEnd": 47
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 11
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "<init>"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "com.facebook.glean.glean.POJO"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 5
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 16,
+                    "columnEnd": 20,
+                    "lineBegin": 13,
+                    "lineEnd": 13
+                },
+                "sym": "test/java/com/facebook/glean/glean/POJO/%3Cinit%3E",
+                "target": {
+                    "filepath": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 19,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "getE"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "com.facebook.glean.glean.POJO"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 5
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 16,
+                    "lineBegin": 19,
+                    "lineEnd": 19
+                },
+                "sym": "test/java/com/facebook/glean/glean/POJO/getE",
+                "target": {
+                    "filepath": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 36,
+                        "lineEnd": 38
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "getE"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "com.facebook.glean.glean.POJO"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 5
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 18,
+                    "lineBegin": 20,
+                    "lineEnd": 20
+                },
+                "sym": "test/java/com/facebook/glean/glean/POJO/getE",
+                "target": {
+                    "filepath": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 40,
+                        "lineEnd": 42
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "getList"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "com.facebook.glean.glean.POJO"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 5
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 23,
+                    "lineBegin": 21,
+                    "lineEnd": 21
+                },
+                "sym": "test/java/com/facebook/glean/glean/POJO/getList",
+                "target": {
+                    "filepath": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 31,
+                        "lineEnd": 34
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "revision": "testhash",
+        "truncated": false
+    }
+]

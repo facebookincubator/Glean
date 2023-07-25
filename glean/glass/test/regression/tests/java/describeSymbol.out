@@ -1,0 +1,57 @@
+[
+    "@generated",
+    {
+        "annotations": [
+            {
+                "name": "Deprecated.java.lang",
+                "source": "Deprecated"
+            }
+        ],
+        "comments": [],
+        "contains_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": true,
+            "hasMoreParents": false
+        },
+        "extends_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "kind": 7,
+        "language": 5,
+        "location": {
+            "filepath": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/Glean.java",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 2,
+                "lineBegin": 5,
+                "lineEnd": 23
+            },
+            "repository": "test"
+        },
+        "modifiers": [],
+        "name": {
+            "container": "com.facebook.glean.glean",
+            "localName": "Glean"
+        },
+        "pretty_comments": [],
+        "repo_hash": "testhash",
+        "sym": "test/java/com/facebook/glean/glean/Glean",
+        "sym_location": {
+            "filepath": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/Glean.java",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 2,
+                "lineBegin": 5,
+                "lineEnd": 23
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": [],
+        "type_xrefs": [],
+        "visibility": 20
+    }
+]
