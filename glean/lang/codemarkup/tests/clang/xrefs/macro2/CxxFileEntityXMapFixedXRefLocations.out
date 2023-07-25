@@ -1,0 +1,291 @@
+[
+  "@generated",
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "xmap": {
+            "key": {
+              "file": { "key": "test.cpp" },
+              "fixed": [
+                {
+                  "target": {
+                    "declaration": {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "one" } } },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "int" },
+                              "parameters": [ ]
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 16,
+                            "columnBegin": 1,
+                            "lineEnd": 18,
+                            "columnEnd": 1
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [
+                    { "offset": 481, "length": 76 },
+                    { "offset": 14, "length": 3 }
+                  ],
+                  "from": {
+                    "spans": [ ],
+                    "expansions": [ { "length": 76, "offsets": [ 481 ] } ],
+                    "spellings": [ { "length": 3, "offsets": [ 495 ] } ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "two" } } },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "int" },
+                              "parameters": [ ]
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 20,
+                            "columnBegin": 1,
+                            "lineEnd": 22,
+                            "columnEnd": 1
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [
+                    { "offset": 481, "length": 76 },
+                    { "offset": 29, "length": 3 }
+                  ],
+                  "from": {
+                    "spans": [ ],
+                    "expansions": [ { "length": 76, "offsets": [ 481 ] } ],
+                    "spellings": [ { "length": 3, "offsets": [ 510 ] } ]
+                  }
+                }
+              ],
+              "variable": [ ],
+              "froms": [ ]
+            }
+          },
+          "externals": [ ],
+          "targets": [ ]
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "one",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 16,
+              "columnBegin": 1,
+              "lineEnd": 18,
+              "columnEnd": 1
+            }
+          },
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 406, "length": 3 }
+          }
+        },
+        "source": { "span": { "start": 495, "length": 3 } }
+      },
+      "entity": {
+        "defn": {
+          "function_": {
+            "key": {
+              "declaration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "one" } } },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "signature": {
+                    "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 16,
+                    "columnBegin": 1,
+                    "lineEnd": 18,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "isInline": false
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "xmap": {
+            "key": {
+              "file": { "key": "test.cpp" },
+              "fixed": [
+                {
+                  "target": {
+                    "declaration": {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "one" } } },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "int" },
+                              "parameters": [ ]
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 16,
+                            "columnBegin": 1,
+                            "lineEnd": 18,
+                            "columnEnd": 1
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [
+                    { "offset": 481, "length": 76 },
+                    { "offset": 14, "length": 3 }
+                  ],
+                  "from": {
+                    "spans": [ ],
+                    "expansions": [ { "length": 76, "offsets": [ 481 ] } ],
+                    "spellings": [ { "length": 3, "offsets": [ 495 ] } ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "two" } } },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "int" },
+                              "parameters": [ ]
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 20,
+                            "columnBegin": 1,
+                            "lineEnd": 22,
+                            "columnEnd": 1
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [
+                    { "offset": 481, "length": 76 },
+                    { "offset": 29, "length": 3 }
+                  ],
+                  "from": {
+                    "spans": [ ],
+                    "expansions": [ { "length": 76, "offsets": [ 481 ] } ],
+                    "spellings": [ { "length": 3, "offsets": [ 510 ] } ]
+                  }
+                }
+              ],
+              "variable": [ ],
+              "froms": [ ]
+            }
+          },
+          "externals": [ ],
+          "targets": [ ]
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "two",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 20,
+              "columnBegin": 1,
+              "lineEnd": 22,
+              "columnEnd": 1
+            }
+          },
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 435, "length": 3 }
+          }
+        },
+        "source": { "span": { "start": 510, "length": 3 } }
+      },
+      "entity": {
+        "defn": {
+          "function_": {
+            "key": {
+              "declaration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "two" } } },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "signature": {
+                    "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 20,
+                    "columnBegin": 1,
+                    "lineEnd": 22,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "isInline": false
+            }
+          }
+        }
+      }
+    }
+  }
+]

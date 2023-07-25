@@ -1,0 +1,4469 @@
+[
+  "@generated",
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "file": { "key": "test.cpp" },
+          "declarations": {
+            "key": [
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "foobar" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 16,
+                      "columnBegin": 1,
+                      "lineEnd": 16,
+                      "columnEnd": 16
+                    }
+                  }
+                }
+              },
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "f" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 18,
+                      "columnBegin": 1,
+                      "lineEnd": 24,
+                      "columnEnd": 1
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "preprocessor": {
+            "key": {
+              "file": { "key": "test.cpp" },
+              "events": [
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 9,
+                        "columnBegin": 9,
+                        "lineEnd": 9,
+                        "columnEnd": 13
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "NESTED_PASTE" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 10,
+                        "columnBegin": 9,
+                        "lineEnd": 10,
+                        "columnEnd": 20
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 12,
+                        "columnBegin": 9,
+                        "lineEnd": 12,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 13,
+                        "columnBegin": 9,
+                        "lineEnd": 13,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_3" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 14,
+                        "columnBegin": 9,
+                        "lineEnd": 14,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 396, "end": 403 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 19,
+                        "columnBegin": 3,
+                        "lineEnd": 19,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 396, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 404, "end": 409 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 19,
+                        "columnBegin": 11,
+                        "lineEnd": 19,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 404, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "name": { "begin": 425, "end": 432 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 13,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 3,
+                        "lineEnd": 20,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 425, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 433, "end": 438 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 11,
+                        "lineEnd": 20,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 433, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 425, "end": 448 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 3,
+                        "lineEnd": 20,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 425, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_3" },
+                      "name": { "begin": 454, "end": 461 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 14,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 462, "end": 467 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 11,
+                        "lineEnd": 21,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 462, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "name": { "begin": 454, "end": 477 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 13,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 454, "end": 477 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "NESTED_PASTE" },
+                      "name": { "begin": 484, "end": 496 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 10,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 23,
+                        "columnBegin": 3,
+                        "lineEnd": 23,
+                        "columnEnd": 23
+                      },
+                      "nameSpan": { "start": 484, "length": 12 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 484, "end": 505 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 23,
+                        "columnBegin": 3,
+                        "lineEnd": 23,
+                        "columnEnd": 23
+                      },
+                      "nameSpan": { "start": 484, "length": 21 }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "MACRO_1",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 12,
+              "columnBegin": 9,
+              "lineEnd": 12,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": { "span": { "start": 396, "length": 7 } }
+      },
+      "entity": {
+        "define": {
+          "key": {
+            "macro": { "key": "MACRO_1" },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 12,
+              "columnBegin": 9,
+              "lineEnd": 12,
+              "columnEnd": 15
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "file": { "key": "test.cpp" },
+          "declarations": {
+            "key": [
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "foobar" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 16,
+                      "columnBegin": 1,
+                      "lineEnd": 16,
+                      "columnEnd": 16
+                    }
+                  }
+                }
+              },
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "f" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 18,
+                      "columnBegin": 1,
+                      "lineEnd": 24,
+                      "columnEnd": 1
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "preprocessor": {
+            "key": {
+              "file": { "key": "test.cpp" },
+              "events": [
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 9,
+                        "columnBegin": 9,
+                        "lineEnd": 9,
+                        "columnEnd": 13
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "NESTED_PASTE" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 10,
+                        "columnBegin": 9,
+                        "lineEnd": 10,
+                        "columnEnd": 20
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 12,
+                        "columnBegin": 9,
+                        "lineEnd": 12,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 13,
+                        "columnBegin": 9,
+                        "lineEnd": 13,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_3" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 14,
+                        "columnBegin": 9,
+                        "lineEnd": 14,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 396, "end": 403 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 19,
+                        "columnBegin": 3,
+                        "lineEnd": 19,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 396, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 404, "end": 409 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 19,
+                        "columnBegin": 11,
+                        "lineEnd": 19,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 404, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "name": { "begin": 425, "end": 432 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 13,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 3,
+                        "lineEnd": 20,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 425, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 433, "end": 438 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 11,
+                        "lineEnd": 20,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 433, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 425, "end": 448 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 3,
+                        "lineEnd": 20,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 425, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_3" },
+                      "name": { "begin": 454, "end": 461 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 14,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 462, "end": 467 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 11,
+                        "lineEnd": 21,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 462, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "name": { "begin": 454, "end": 477 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 13,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 454, "end": 477 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "NESTED_PASTE" },
+                      "name": { "begin": 484, "end": 496 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 10,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 23,
+                        "columnBegin": 3,
+                        "lineEnd": 23,
+                        "columnEnd": 23
+                      },
+                      "nameSpan": { "start": 484, "length": 12 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 484, "end": 505 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 23,
+                        "columnBegin": 3,
+                        "lineEnd": 23,
+                        "columnEnd": 23
+                      },
+                      "nameSpan": { "start": 484, "length": 21 }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "MACRO_1",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 12,
+              "columnBegin": 9,
+              "lineEnd": 12,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": { "span": { "start": 425, "length": 23 } }
+      },
+      "entity": {
+        "define": {
+          "key": {
+            "macro": { "key": "MACRO_1" },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 12,
+              "columnBegin": 9,
+              "lineEnd": 12,
+              "columnEnd": 15
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "file": { "key": "test.cpp" },
+          "declarations": {
+            "key": [
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "foobar" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 16,
+                      "columnBegin": 1,
+                      "lineEnd": 16,
+                      "columnEnd": 16
+                    }
+                  }
+                }
+              },
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "f" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 18,
+                      "columnBegin": 1,
+                      "lineEnd": 24,
+                      "columnEnd": 1
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "preprocessor": {
+            "key": {
+              "file": { "key": "test.cpp" },
+              "events": [
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 9,
+                        "columnBegin": 9,
+                        "lineEnd": 9,
+                        "columnEnd": 13
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "NESTED_PASTE" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 10,
+                        "columnBegin": 9,
+                        "lineEnd": 10,
+                        "columnEnd": 20
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 12,
+                        "columnBegin": 9,
+                        "lineEnd": 12,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 13,
+                        "columnBegin": 9,
+                        "lineEnd": 13,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_3" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 14,
+                        "columnBegin": 9,
+                        "lineEnd": 14,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 396, "end": 403 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 19,
+                        "columnBegin": 3,
+                        "lineEnd": 19,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 396, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 404, "end": 409 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 19,
+                        "columnBegin": 11,
+                        "lineEnd": 19,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 404, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "name": { "begin": 425, "end": 432 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 13,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 3,
+                        "lineEnd": 20,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 425, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 433, "end": 438 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 11,
+                        "lineEnd": 20,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 433, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 425, "end": 448 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 3,
+                        "lineEnd": 20,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 425, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_3" },
+                      "name": { "begin": 454, "end": 461 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 14,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 462, "end": 467 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 11,
+                        "lineEnd": 21,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 462, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "name": { "begin": 454, "end": 477 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 13,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 454, "end": 477 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "NESTED_PASTE" },
+                      "name": { "begin": 484, "end": 496 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 10,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 23,
+                        "columnBegin": 3,
+                        "lineEnd": 23,
+                        "columnEnd": 23
+                      },
+                      "nameSpan": { "start": 484, "length": 12 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 484, "end": 505 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 23,
+                        "columnBegin": 3,
+                        "lineEnd": 23,
+                        "columnEnd": 23
+                      },
+                      "nameSpan": { "start": 484, "length": 21 }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "MACRO_1",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 12,
+              "columnBegin": 9,
+              "lineEnd": 12,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": { "span": { "start": 454, "length": 23 } }
+      },
+      "entity": {
+        "define": {
+          "key": {
+            "macro": { "key": "MACRO_1" },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 12,
+              "columnBegin": 9,
+              "lineEnd": 12,
+              "columnEnd": 15
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "file": { "key": "test.cpp" },
+          "declarations": {
+            "key": [
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "foobar" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 16,
+                      "columnBegin": 1,
+                      "lineEnd": 16,
+                      "columnEnd": 16
+                    }
+                  }
+                }
+              },
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "f" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 18,
+                      "columnBegin": 1,
+                      "lineEnd": 24,
+                      "columnEnd": 1
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "preprocessor": {
+            "key": {
+              "file": { "key": "test.cpp" },
+              "events": [
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 9,
+                        "columnBegin": 9,
+                        "lineEnd": 9,
+                        "columnEnd": 13
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "NESTED_PASTE" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 10,
+                        "columnBegin": 9,
+                        "lineEnd": 10,
+                        "columnEnd": 20
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 12,
+                        "columnBegin": 9,
+                        "lineEnd": 12,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 13,
+                        "columnBegin": 9,
+                        "lineEnd": 13,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_3" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 14,
+                        "columnBegin": 9,
+                        "lineEnd": 14,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 396, "end": 403 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 19,
+                        "columnBegin": 3,
+                        "lineEnd": 19,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 396, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 404, "end": 409 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 19,
+                        "columnBegin": 11,
+                        "lineEnd": 19,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 404, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "name": { "begin": 425, "end": 432 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 13,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 3,
+                        "lineEnd": 20,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 425, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 433, "end": 438 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 11,
+                        "lineEnd": 20,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 433, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 425, "end": 448 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 3,
+                        "lineEnd": 20,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 425, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_3" },
+                      "name": { "begin": 454, "end": 461 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 14,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 462, "end": 467 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 11,
+                        "lineEnd": 21,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 462, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "name": { "begin": 454, "end": 477 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 13,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 454, "end": 477 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "NESTED_PASTE" },
+                      "name": { "begin": 484, "end": 496 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 10,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 23,
+                        "columnBegin": 3,
+                        "lineEnd": 23,
+                        "columnEnd": 23
+                      },
+                      "nameSpan": { "start": 484, "length": 12 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 484, "end": 505 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 23,
+                        "columnBegin": 3,
+                        "lineEnd": 23,
+                        "columnEnd": 23
+                      },
+                      "nameSpan": { "start": 484, "length": 21 }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "MACRO_2",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 13,
+              "columnBegin": 9,
+              "lineEnd": 13,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": { "span": { "start": 425, "length": 7 } }
+      },
+      "entity": {
+        "define": {
+          "key": {
+            "macro": { "key": "MACRO_2" },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 13,
+              "columnBegin": 9,
+              "lineEnd": 13,
+              "columnEnd": 15
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "file": { "key": "test.cpp" },
+          "declarations": {
+            "key": [
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "foobar" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 16,
+                      "columnBegin": 1,
+                      "lineEnd": 16,
+                      "columnEnd": 16
+                    }
+                  }
+                }
+              },
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "f" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 18,
+                      "columnBegin": 1,
+                      "lineEnd": 24,
+                      "columnEnd": 1
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "preprocessor": {
+            "key": {
+              "file": { "key": "test.cpp" },
+              "events": [
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 9,
+                        "columnBegin": 9,
+                        "lineEnd": 9,
+                        "columnEnd": 13
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "NESTED_PASTE" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 10,
+                        "columnBegin": 9,
+                        "lineEnd": 10,
+                        "columnEnd": 20
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 12,
+                        "columnBegin": 9,
+                        "lineEnd": 12,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 13,
+                        "columnBegin": 9,
+                        "lineEnd": 13,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_3" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 14,
+                        "columnBegin": 9,
+                        "lineEnd": 14,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 396, "end": 403 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 19,
+                        "columnBegin": 3,
+                        "lineEnd": 19,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 396, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 404, "end": 409 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 19,
+                        "columnBegin": 11,
+                        "lineEnd": 19,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 404, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "name": { "begin": 425, "end": 432 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 13,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 3,
+                        "lineEnd": 20,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 425, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 433, "end": 438 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 11,
+                        "lineEnd": 20,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 433, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 425, "end": 448 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 3,
+                        "lineEnd": 20,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 425, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_3" },
+                      "name": { "begin": 454, "end": 461 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 14,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 462, "end": 467 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 11,
+                        "lineEnd": 21,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 462, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "name": { "begin": 454, "end": 477 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 13,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 454, "end": 477 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "NESTED_PASTE" },
+                      "name": { "begin": 484, "end": 496 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 10,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 23,
+                        "columnBegin": 3,
+                        "lineEnd": 23,
+                        "columnEnd": 23
+                      },
+                      "nameSpan": { "start": 484, "length": 12 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 484, "end": 505 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 23,
+                        "columnBegin": 3,
+                        "lineEnd": 23,
+                        "columnEnd": 23
+                      },
+                      "nameSpan": { "start": 484, "length": 21 }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "MACRO_2",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 13,
+              "columnBegin": 9,
+              "lineEnd": 13,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": { "span": { "start": 454, "length": 23 } }
+      },
+      "entity": {
+        "define": {
+          "key": {
+            "macro": { "key": "MACRO_2" },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 13,
+              "columnBegin": 9,
+              "lineEnd": 13,
+              "columnEnd": 15
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "file": { "key": "test.cpp" },
+          "declarations": {
+            "key": [
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "foobar" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 16,
+                      "columnBegin": 1,
+                      "lineEnd": 16,
+                      "columnEnd": 16
+                    }
+                  }
+                }
+              },
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "f" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 18,
+                      "columnBegin": 1,
+                      "lineEnd": 24,
+                      "columnEnd": 1
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "preprocessor": {
+            "key": {
+              "file": { "key": "test.cpp" },
+              "events": [
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 9,
+                        "columnBegin": 9,
+                        "lineEnd": 9,
+                        "columnEnd": 13
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "NESTED_PASTE" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 10,
+                        "columnBegin": 9,
+                        "lineEnd": 10,
+                        "columnEnd": 20
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 12,
+                        "columnBegin": 9,
+                        "lineEnd": 12,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 13,
+                        "columnBegin": 9,
+                        "lineEnd": 13,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_3" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 14,
+                        "columnBegin": 9,
+                        "lineEnd": 14,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 396, "end": 403 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 19,
+                        "columnBegin": 3,
+                        "lineEnd": 19,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 396, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 404, "end": 409 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 19,
+                        "columnBegin": 11,
+                        "lineEnd": 19,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 404, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "name": { "begin": 425, "end": 432 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 13,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 3,
+                        "lineEnd": 20,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 425, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 433, "end": 438 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 11,
+                        "lineEnd": 20,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 433, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 425, "end": 448 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 3,
+                        "lineEnd": 20,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 425, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_3" },
+                      "name": { "begin": 454, "end": 461 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 14,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 462, "end": 467 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 11,
+                        "lineEnd": 21,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 462, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "name": { "begin": 454, "end": 477 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 13,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 454, "end": 477 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "NESTED_PASTE" },
+                      "name": { "begin": 484, "end": 496 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 10,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 23,
+                        "columnBegin": 3,
+                        "lineEnd": 23,
+                        "columnEnd": 23
+                      },
+                      "nameSpan": { "start": 484, "length": 12 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 484, "end": 505 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 23,
+                        "columnBegin": 3,
+                        "lineEnd": 23,
+                        "columnEnd": 23
+                      },
+                      "nameSpan": { "start": 484, "length": 21 }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "MACRO_3",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 14,
+              "columnBegin": 9,
+              "lineEnd": 14,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": { "span": { "start": 454, "length": 7 } }
+      },
+      "entity": {
+        "define": {
+          "key": {
+            "macro": { "key": "MACRO_3" },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 14,
+              "columnBegin": 9,
+              "lineEnd": 14,
+              "columnEnd": 15
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "file": { "key": "test.cpp" },
+          "declarations": {
+            "key": [
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "foobar" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 16,
+                      "columnBegin": 1,
+                      "lineEnd": 16,
+                      "columnEnd": 16
+                    }
+                  }
+                }
+              },
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "f" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 18,
+                      "columnBegin": 1,
+                      "lineEnd": 24,
+                      "columnEnd": 1
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "preprocessor": {
+            "key": {
+              "file": { "key": "test.cpp" },
+              "events": [
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 9,
+                        "columnBegin": 9,
+                        "lineEnd": 9,
+                        "columnEnd": 13
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "NESTED_PASTE" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 10,
+                        "columnBegin": 9,
+                        "lineEnd": 10,
+                        "columnEnd": 20
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 12,
+                        "columnBegin": 9,
+                        "lineEnd": 12,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 13,
+                        "columnBegin": 9,
+                        "lineEnd": 13,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_3" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 14,
+                        "columnBegin": 9,
+                        "lineEnd": 14,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 396, "end": 403 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 19,
+                        "columnBegin": 3,
+                        "lineEnd": 19,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 396, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 404, "end": 409 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 19,
+                        "columnBegin": 11,
+                        "lineEnd": 19,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 404, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "name": { "begin": 425, "end": 432 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 13,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 3,
+                        "lineEnd": 20,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 425, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 433, "end": 438 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 11,
+                        "lineEnd": 20,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 433, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 425, "end": 448 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 3,
+                        "lineEnd": 20,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 425, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_3" },
+                      "name": { "begin": 454, "end": 461 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 14,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 462, "end": 467 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 11,
+                        "lineEnd": 21,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 462, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "name": { "begin": 454, "end": 477 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 13,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 454, "end": 477 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "NESTED_PASTE" },
+                      "name": { "begin": 484, "end": 496 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 10,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 23,
+                        "columnBegin": 3,
+                        "lineEnd": 23,
+                        "columnEnd": 23
+                      },
+                      "nameSpan": { "start": 484, "length": 12 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 484, "end": 505 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 23,
+                        "columnBegin": 3,
+                        "lineEnd": 23,
+                        "columnEnd": 23
+                      },
+                      "nameSpan": { "start": 484, "length": 21 }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "NESTED_PASTE",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 10,
+              "columnBegin": 9,
+              "lineEnd": 10,
+              "columnEnd": 20
+            }
+          }
+        },
+        "source": { "span": { "start": 484, "length": 12 } }
+      },
+      "entity": {
+        "define": {
+          "key": {
+            "macro": { "key": "NESTED_PASTE" },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 10,
+              "columnBegin": 9,
+              "lineEnd": 10,
+              "columnEnd": 20
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "file": { "key": "test.cpp" },
+          "declarations": {
+            "key": [
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "foobar" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 16,
+                      "columnBegin": 1,
+                      "lineEnd": 16,
+                      "columnEnd": 16
+                    }
+                  }
+                }
+              },
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "f" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 18,
+                      "columnBegin": 1,
+                      "lineEnd": 24,
+                      "columnEnd": 1
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "preprocessor": {
+            "key": {
+              "file": { "key": "test.cpp" },
+              "events": [
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 9,
+                        "columnBegin": 9,
+                        "lineEnd": 9,
+                        "columnEnd": 13
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "NESTED_PASTE" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 10,
+                        "columnBegin": 9,
+                        "lineEnd": 10,
+                        "columnEnd": 20
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 12,
+                        "columnBegin": 9,
+                        "lineEnd": 12,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 13,
+                        "columnBegin": 9,
+                        "lineEnd": 13,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_3" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 14,
+                        "columnBegin": 9,
+                        "lineEnd": 14,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 396, "end": 403 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 19,
+                        "columnBegin": 3,
+                        "lineEnd": 19,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 396, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 404, "end": 409 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 19,
+                        "columnBegin": 11,
+                        "lineEnd": 19,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 404, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "name": { "begin": 425, "end": 432 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 13,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 3,
+                        "lineEnd": 20,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 425, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 433, "end": 438 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 11,
+                        "lineEnd": 20,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 433, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 425, "end": 448 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 3,
+                        "lineEnd": 20,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 425, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_3" },
+                      "name": { "begin": 454, "end": 461 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 14,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 462, "end": 467 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 11,
+                        "lineEnd": 21,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 462, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "name": { "begin": 454, "end": 477 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 13,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 454, "end": 477 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "NESTED_PASTE" },
+                      "name": { "begin": 484, "end": 496 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 10,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 23,
+                        "columnBegin": 3,
+                        "lineEnd": 23,
+                        "columnEnd": 23
+                      },
+                      "nameSpan": { "start": 484, "length": 12 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 484, "end": 505 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 23,
+                        "columnBegin": 3,
+                        "lineEnd": 23,
+                        "columnEnd": 23
+                      },
+                      "nameSpan": { "start": 484, "length": 21 }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "PASTE",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 9,
+              "columnBegin": 9,
+              "lineEnd": 9,
+              "columnEnd": 13
+            }
+          }
+        },
+        "source": { "span": { "start": 404, "length": 5 } }
+      },
+      "entity": {
+        "define": {
+          "key": {
+            "macro": { "key": "PASTE" },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 9,
+              "columnBegin": 9,
+              "lineEnd": 9,
+              "columnEnd": 13
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "file": { "key": "test.cpp" },
+          "declarations": {
+            "key": [
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "foobar" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 16,
+                      "columnBegin": 1,
+                      "lineEnd": 16,
+                      "columnEnd": 16
+                    }
+                  }
+                }
+              },
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "f" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 18,
+                      "columnBegin": 1,
+                      "lineEnd": 24,
+                      "columnEnd": 1
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "preprocessor": {
+            "key": {
+              "file": { "key": "test.cpp" },
+              "events": [
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 9,
+                        "columnBegin": 9,
+                        "lineEnd": 9,
+                        "columnEnd": 13
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "NESTED_PASTE" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 10,
+                        "columnBegin": 9,
+                        "lineEnd": 10,
+                        "columnEnd": 20
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 12,
+                        "columnBegin": 9,
+                        "lineEnd": 12,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 13,
+                        "columnBegin": 9,
+                        "lineEnd": 13,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_3" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 14,
+                        "columnBegin": 9,
+                        "lineEnd": 14,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 396, "end": 403 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 19,
+                        "columnBegin": 3,
+                        "lineEnd": 19,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 396, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 404, "end": 409 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 19,
+                        "columnBegin": 11,
+                        "lineEnd": 19,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 404, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "name": { "begin": 425, "end": 432 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 13,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 3,
+                        "lineEnd": 20,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 425, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 433, "end": 438 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 11,
+                        "lineEnd": 20,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 433, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 425, "end": 448 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 3,
+                        "lineEnd": 20,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 425, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_3" },
+                      "name": { "begin": 454, "end": 461 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 14,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 462, "end": 467 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 11,
+                        "lineEnd": 21,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 462, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "name": { "begin": 454, "end": 477 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 13,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 454, "end": 477 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "NESTED_PASTE" },
+                      "name": { "begin": 484, "end": 496 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 10,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 23,
+                        "columnBegin": 3,
+                        "lineEnd": 23,
+                        "columnEnd": 23
+                      },
+                      "nameSpan": { "start": 484, "length": 12 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 484, "end": 505 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 23,
+                        "columnBegin": 3,
+                        "lineEnd": 23,
+                        "columnEnd": 23
+                      },
+                      "nameSpan": { "start": 484, "length": 21 }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "PASTE",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 9,
+              "columnBegin": 9,
+              "lineEnd": 9,
+              "columnEnd": 13
+            }
+          }
+        },
+        "source": { "span": { "start": 433, "length": 5 } }
+      },
+      "entity": {
+        "define": {
+          "key": {
+            "macro": { "key": "PASTE" },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 9,
+              "columnBegin": 9,
+              "lineEnd": 9,
+              "columnEnd": 13
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "file": { "key": "test.cpp" },
+          "declarations": {
+            "key": [
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "foobar" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 16,
+                      "columnBegin": 1,
+                      "lineEnd": 16,
+                      "columnEnd": 16
+                    }
+                  }
+                }
+              },
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "f" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 18,
+                      "columnBegin": 1,
+                      "lineEnd": 24,
+                      "columnEnd": 1
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "preprocessor": {
+            "key": {
+              "file": { "key": "test.cpp" },
+              "events": [
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 9,
+                        "columnBegin": 9,
+                        "lineEnd": 9,
+                        "columnEnd": 13
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "NESTED_PASTE" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 10,
+                        "columnBegin": 9,
+                        "lineEnd": 10,
+                        "columnEnd": 20
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 12,
+                        "columnBegin": 9,
+                        "lineEnd": 12,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 13,
+                        "columnBegin": 9,
+                        "lineEnd": 13,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_3" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 14,
+                        "columnBegin": 9,
+                        "lineEnd": 14,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 396, "end": 403 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 19,
+                        "columnBegin": 3,
+                        "lineEnd": 19,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 396, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 404, "end": 409 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 19,
+                        "columnBegin": 11,
+                        "lineEnd": 19,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 404, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "name": { "begin": 425, "end": 432 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 13,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 3,
+                        "lineEnd": 20,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 425, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 433, "end": 438 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 11,
+                        "lineEnd": 20,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 433, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 425, "end": 448 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 3,
+                        "lineEnd": 20,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 425, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_3" },
+                      "name": { "begin": 454, "end": 461 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 14,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 462, "end": 467 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 11,
+                        "lineEnd": 21,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 462, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "name": { "begin": 454, "end": 477 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 13,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 454, "end": 477 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "NESTED_PASTE" },
+                      "name": { "begin": 484, "end": 496 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 10,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 23,
+                        "columnBegin": 3,
+                        "lineEnd": 23,
+                        "columnEnd": 23
+                      },
+                      "nameSpan": { "start": 484, "length": 12 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 484, "end": 505 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 23,
+                        "columnBegin": 3,
+                        "lineEnd": 23,
+                        "columnEnd": 23
+                      },
+                      "nameSpan": { "start": 484, "length": 21 }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "PASTE",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 9,
+              "columnBegin": 9,
+              "lineEnd": 9,
+              "columnEnd": 13
+            }
+          }
+        },
+        "source": { "span": { "start": 462, "length": 5 } }
+      },
+      "entity": {
+        "define": {
+          "key": {
+            "macro": { "key": "PASTE" },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 9,
+              "columnBegin": 9,
+              "lineEnd": 9,
+              "columnEnd": 13
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "file": { "key": "test.cpp" },
+          "declarations": {
+            "key": [
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "foobar" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 16,
+                      "columnBegin": 1,
+                      "lineEnd": 16,
+                      "columnEnd": 16
+                    }
+                  }
+                }
+              },
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "f" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 18,
+                      "columnBegin": 1,
+                      "lineEnd": 24,
+                      "columnEnd": 1
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "preprocessor": {
+            "key": {
+              "file": { "key": "test.cpp" },
+              "events": [
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 9,
+                        "columnBegin": 9,
+                        "lineEnd": 9,
+                        "columnEnd": 13
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "NESTED_PASTE" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 10,
+                        "columnBegin": 9,
+                        "lineEnd": 10,
+                        "columnEnd": 20
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 12,
+                        "columnBegin": 9,
+                        "lineEnd": 12,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 13,
+                        "columnBegin": 9,
+                        "lineEnd": 13,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "MACRO_3" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 14,
+                        "columnBegin": 9,
+                        "lineEnd": 14,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 396, "end": 403 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 19,
+                        "columnBegin": 3,
+                        "lineEnd": 19,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 396, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 404, "end": 409 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 19,
+                        "columnBegin": 11,
+                        "lineEnd": 19,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 404, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "name": { "begin": 425, "end": 432 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 13,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 3,
+                        "lineEnd": 20,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 425, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 433, "end": 438 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 11,
+                        "lineEnd": 20,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 433, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 425, "end": 448 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 3,
+                        "lineEnd": 20,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 425, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_3" },
+                      "name": { "begin": 454, "end": 461 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 14,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 7 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 462, "end": 467 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 11,
+                        "lineEnd": 21,
+                        "columnEnd": 24
+                      },
+                      "nameSpan": { "start": 462, "length": 5 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_2" },
+                      "name": { "begin": 454, "end": 477 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 13,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "MACRO_1" },
+                      "name": { "begin": 454, "end": 477 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 12,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 3,
+                        "lineEnd": 21,
+                        "columnEnd": 25
+                      },
+                      "nameSpan": { "start": 454, "length": 23 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "NESTED_PASTE" },
+                      "name": { "begin": 484, "end": 496 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 10,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 23,
+                        "columnBegin": 3,
+                        "lineEnd": 23,
+                        "columnEnd": 23
+                      },
+                      "nameSpan": { "start": 484, "length": 12 }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "PASTE" },
+                      "name": { "begin": 484, "end": 505 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 23,
+                        "columnBegin": 3,
+                        "lineEnd": 23,
+                        "columnEnd": 23
+                      },
+                      "nameSpan": { "start": 484, "length": 21 }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "PASTE",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 9,
+              "columnBegin": 9,
+              "lineEnd": 9,
+              "columnEnd": 13
+            }
+          }
+        },
+        "source": { "span": { "start": 484, "length": 21 } }
+      },
+      "entity": {
+        "define": {
+          "key": {
+            "macro": { "key": "PASTE" },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 9,
+              "columnBegin": 9,
+              "lineEnd": 9,
+              "columnEnd": 13
+            }
+          }
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,34 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "define": {
+          "key": {
+            "macro": { "key": "BLAH" },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 9,
+              "columnBegin": 9,
+              "lineEnd": 9,
+              "columnEnd": 12
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "BLAH",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 9,
+            "columnBegin": 9,
+            "lineEnd": 9,
+            "columnEnd": 12
+          }
+        }
+      }
+    }
+  }
+]

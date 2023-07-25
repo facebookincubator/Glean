@@ -1,0 +1,55 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "fixed": [
+        {
+          "target": {
+            "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "foobar" } } },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "signature": {
+                    "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 16,
+                    "columnBegin": 1,
+                    "lineEnd": 16,
+                    "columnEnd": 16
+                  }
+                }
+              }
+            }
+          },
+          "ranges": [
+            { "offset": 396, "length": 23 },
+            { "offset": 8, "length": 14 },
+            { "offset": 21, "length": 23 },
+            { "offset": 8, "length": 14 },
+            { "offset": 21, "length": 23 },
+            { "offset": 8, "length": 14 },
+            { "offset": 22, "length": 21 }
+          ],
+          "from": {
+            "spans": [ ],
+            "expansions": [
+              { "length": 23, "offsets": [ 396, 29, 29 ] },
+              { "length": 21, "offsets": [ 30 ] }
+            ],
+            "spellings": [ { "length": 14, "offsets": [ 404, 29, 29 ] } ]
+          }
+        }
+      ],
+      "variable": [ ],
+      "froms": [ ]
+    }
+  }
+]

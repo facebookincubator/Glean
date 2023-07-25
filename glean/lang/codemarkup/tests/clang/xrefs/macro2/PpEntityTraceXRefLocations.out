@@ -1,0 +1,155 @@
+[
+  "@generated",
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "file": { "key": "test.cpp" },
+          "declarations": {
+            "key": [
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "one" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 16,
+                      "columnBegin": 1,
+                      "lineEnd": 18,
+                      "columnEnd": 1
+                    }
+                  }
+                }
+              },
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "two" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 20,
+                      "columnBegin": 1,
+                      "lineEnd": 22,
+                      "columnEnd": 1
+                    }
+                  }
+                }
+              },
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "someFunc" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 24,
+                      "columnBegin": 1,
+                      "lineEnd": 31,
+                      "columnEnd": 1
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "preprocessor": {
+            "key": {
+              "file": { "key": "test.cpp" },
+              "events": [
+                {
+                  "define": {
+                    "key": {
+                      "macro": { "key": "BLAH" },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 9,
+                        "columnBegin": 9,
+                        "lineEnd": 9,
+                        "columnEnd": 12
+                      }
+                    }
+                  }
+                },
+                {
+                  "use": {
+                    "key": {
+                      "macro": { "key": "BLAH" },
+                      "name": { "begin": 481, "end": 485 },
+                      "definition": {
+                        "file": { "key": "test.cpp" },
+                        "line": 9,
+                        "column": 9
+                      },
+                      "expand": true,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 25,
+                        "columnBegin": 5,
+                        "lineEnd": 30,
+                        "columnEnd": 5
+                      },
+                      "nameSpan": { "start": 481, "length": 4 }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "BLAH",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 9,
+              "columnBegin": 9,
+              "lineEnd": 9,
+              "columnEnd": 12
+            }
+          }
+        },
+        "source": { "span": { "start": 481, "length": 4 } }
+      },
+      "entity": {
+        "define": {
+          "key": {
+            "macro": { "key": "BLAH" },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 9,
+              "columnBegin": 9,
+              "lineEnd": 9,
+              "columnEnd": 12
+            }
+          }
+        }
+      }
+    }
+  }
+]

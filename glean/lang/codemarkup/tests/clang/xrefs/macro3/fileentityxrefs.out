@@ -1,0 +1,578 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "xref": {
+        "target": {
+          "name": "MACRO_1",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 12,
+              "columnBegin": 9,
+              "lineEnd": 12,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": { "span": { "start": 396, "length": 7 } }
+      },
+      "entity": {
+        "pp": {
+          "define": {
+            "key": {
+              "macro": { "key": "MACRO_1" },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 12,
+                "columnBegin": 9,
+                "lineEnd": 12,
+                "columnEnd": 15
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "xref": {
+        "target": {
+          "name": "MACRO_1",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 12,
+              "columnBegin": 9,
+              "lineEnd": 12,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": { "span": { "start": 425, "length": 23 } }
+      },
+      "entity": {
+        "pp": {
+          "define": {
+            "key": {
+              "macro": { "key": "MACRO_1" },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 12,
+                "columnBegin": 9,
+                "lineEnd": 12,
+                "columnEnd": 15
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "xref": {
+        "target": {
+          "name": "MACRO_1",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 12,
+              "columnBegin": 9,
+              "lineEnd": 12,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": { "span": { "start": 454, "length": 23 } }
+      },
+      "entity": {
+        "pp": {
+          "define": {
+            "key": {
+              "macro": { "key": "MACRO_1" },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 12,
+                "columnBegin": 9,
+                "lineEnd": 12,
+                "columnEnd": 15
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "xref": {
+        "target": {
+          "name": "MACRO_2",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 13,
+              "columnBegin": 9,
+              "lineEnd": 13,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": { "span": { "start": 425, "length": 7 } }
+      },
+      "entity": {
+        "pp": {
+          "define": {
+            "key": {
+              "macro": { "key": "MACRO_2" },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 13,
+                "columnBegin": 9,
+                "lineEnd": 13,
+                "columnEnd": 15
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "xref": {
+        "target": {
+          "name": "MACRO_2",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 13,
+              "columnBegin": 9,
+              "lineEnd": 13,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": { "span": { "start": 454, "length": 23 } }
+      },
+      "entity": {
+        "pp": {
+          "define": {
+            "key": {
+              "macro": { "key": "MACRO_2" },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 13,
+                "columnBegin": 9,
+                "lineEnd": 13,
+                "columnEnd": 15
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "xref": {
+        "target": {
+          "name": "MACRO_3",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 14,
+              "columnBegin": 9,
+              "lineEnd": 14,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": { "span": { "start": 454, "length": 7 } }
+      },
+      "entity": {
+        "pp": {
+          "define": {
+            "key": {
+              "macro": { "key": "MACRO_3" },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 14,
+                "columnBegin": 9,
+                "lineEnd": 14,
+                "columnEnd": 15
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "xref": {
+        "target": {
+          "name": "NESTED_PASTE",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 10,
+              "columnBegin": 9,
+              "lineEnd": 10,
+              "columnEnd": 20
+            }
+          }
+        },
+        "source": { "span": { "start": 484, "length": 12 } }
+      },
+      "entity": {
+        "pp": {
+          "define": {
+            "key": {
+              "macro": { "key": "NESTED_PASTE" },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 10,
+                "columnBegin": 9,
+                "lineEnd": 10,
+                "columnEnd": 20
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "xref": {
+        "target": {
+          "name": "PASTE",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 9,
+              "columnBegin": 9,
+              "lineEnd": 9,
+              "columnEnd": 13
+            }
+          }
+        },
+        "source": { "span": { "start": 404, "length": 5 } }
+      },
+      "entity": {
+        "pp": {
+          "define": {
+            "key": {
+              "macro": { "key": "PASTE" },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 9,
+                "columnBegin": 9,
+                "lineEnd": 9,
+                "columnEnd": 13
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "xref": {
+        "target": {
+          "name": "PASTE",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 9,
+              "columnBegin": 9,
+              "lineEnd": 9,
+              "columnEnd": 13
+            }
+          }
+        },
+        "source": { "span": { "start": 433, "length": 5 } }
+      },
+      "entity": {
+        "pp": {
+          "define": {
+            "key": {
+              "macro": { "key": "PASTE" },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 9,
+                "columnBegin": 9,
+                "lineEnd": 9,
+                "columnEnd": 13
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "xref": {
+        "target": {
+          "name": "PASTE",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 9,
+              "columnBegin": 9,
+              "lineEnd": 9,
+              "columnEnd": 13
+            }
+          }
+        },
+        "source": { "span": { "start": 462, "length": 5 } }
+      },
+      "entity": {
+        "pp": {
+          "define": {
+            "key": {
+              "macro": { "key": "PASTE" },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 9,
+                "columnBegin": 9,
+                "lineEnd": 9,
+                "columnEnd": 13
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "xref": {
+        "target": {
+          "name": "PASTE",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 9,
+              "columnBegin": 9,
+              "lineEnd": 9,
+              "columnEnd": 13
+            }
+          }
+        },
+        "source": { "span": { "start": 484, "length": 21 } }
+      },
+      "entity": {
+        "pp": {
+          "define": {
+            "key": {
+              "macro": { "key": "PASTE" },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 9,
+                "columnBegin": 9,
+                "lineEnd": 9,
+                "columnEnd": 13
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "xref": {
+        "target": {
+          "name": "foobar",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 16,
+              "columnBegin": 1,
+              "lineEnd": 16,
+              "columnEnd": 16
+            }
+          },
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 370, "length": 6 }
+          }
+        },
+        "source": { "span": { "start": 404, "length": 14 } }
+      },
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "foobar" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 16,
+                      "columnBegin": 1,
+                      "lineEnd": 16,
+                      "columnEnd": 16
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "xref": {
+        "target": {
+          "name": "foobar",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 16,
+              "columnBegin": 1,
+              "lineEnd": 16,
+              "columnEnd": 16
+            }
+          },
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 370, "length": 6 }
+          }
+        },
+        "source": { "span": { "start": 433, "length": 14 } }
+      },
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "foobar" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 16,
+                      "columnBegin": 1,
+                      "lineEnd": 16,
+                      "columnEnd": 16
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "xref": {
+        "target": {
+          "name": "foobar",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 16,
+              "columnBegin": 1,
+              "lineEnd": 16,
+              "columnEnd": 16
+            }
+          },
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 370, "length": 6 }
+          }
+        },
+        "source": { "span": { "start": 462, "length": 14 } }
+      },
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "foobar" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 16,
+                      "columnBegin": 1,
+                      "lineEnd": 16,
+                      "columnEnd": 16
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

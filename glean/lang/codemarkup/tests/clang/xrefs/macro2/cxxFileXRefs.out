@@ -1,0 +1,94 @@
+[
+  "@generated",
+  {
+    "key": {
+      "xmap": {
+        "key": {
+          "file": { "key": "test.cpp" },
+          "fixed": [
+            {
+              "target": {
+                "declaration": {
+                  "function_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "one" } } },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "signature": {
+                        "key": {
+                          "returns": { "key": "int" },
+                          "parameters": [ ]
+                        }
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 16,
+                        "columnBegin": 1,
+                        "lineEnd": 18,
+                        "columnEnd": 1
+                      }
+                    }
+                  }
+                }
+              },
+              "ranges": [
+                { "offset": 481, "length": 76 },
+                { "offset": 14, "length": 3 }
+              ],
+              "from": {
+                "spans": [ ],
+                "expansions": [ { "length": 76, "offsets": [ 481 ] } ],
+                "spellings": [ { "length": 3, "offsets": [ 495 ] } ]
+              }
+            },
+            {
+              "target": {
+                "declaration": {
+                  "function_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "two" } } },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "signature": {
+                        "key": {
+                          "returns": { "key": "int" },
+                          "parameters": [ ]
+                        }
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 1,
+                        "lineEnd": 22,
+                        "columnEnd": 1
+                      }
+                    }
+                  }
+                }
+              },
+              "ranges": [
+                { "offset": 481, "length": 76 },
+                { "offset": 29, "length": 3 }
+              ],
+              "from": {
+                "spans": [ ],
+                "expansions": [ { "length": 76, "offsets": [ 481 ] } ],
+                "spellings": [ { "length": 3, "offsets": [ 510 ] } ]
+              }
+            }
+          ],
+          "variable": [ ],
+          "froms": [ ]
+        }
+      },
+      "externals": [ ],
+      "targets": [ ]
+    }
+  }
+]
