@@ -41,7 +41,8 @@ Substitution defineBatch(
   const Id * FOLLY_NULLABLE ids,   // nullptr if there are no named facts
   size_t count,
   folly::ByteRange batch,
-  bool isTrusted = false);
+  bool trustRefs = false,
+  bool ignoreRedef = false);
 }
 }
 }

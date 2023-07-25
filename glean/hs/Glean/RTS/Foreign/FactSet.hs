@@ -19,6 +19,7 @@ module Glean.RTS.Foreign.FactSet
   , append
   , rebase
   , renameFacts
+  , DefineFlags(..)
   ) where
 
 import Control.Exception
@@ -127,12 +128,12 @@ renameFacts
   -> l                  -- ^ where to lookup facts
   -> Fid                -- ^ first free fact id in the database
   -> Thrift.Batch       -- ^ batch to rename
-  -> Bool               -- ^ is trusted batch or not
+  -> DefineFlags        -- ^ flags
   -> IO (FactSet, Subst)
                         -- ^ resulting facts and substitution
-renameFacts inventory base next batch trusted = do
+renameFacts inventory base next batch flags = do
   added <- new next
-  subst <- defineBatch (stacked base added) inventory batch trusted
+  subst <- defineBatch (stacked base added) inventory batch flags
   return (added, subst)
 
 foreign import ccall unsafe glean_factset_new

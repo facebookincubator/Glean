@@ -10,6 +10,7 @@ module Glean.RTS.Foreign.Define
   ( Define(..)
   , CanDefine(..)
   , InvalidRedefinition(..)
+  , DefineFlags(..)
   , defineFact
   , defineBatch
   ) where
@@ -17,6 +18,7 @@ module Glean.RTS.Foreign.Define
 import Control.Exception
 import Control.Monad
 import Data.Coerce (coerce)
+import Data.Default
 import Data.Typeable
 import qualified Data.Vector.Storable as VS
 import Foreign.C.String
@@ -58,6 +60,26 @@ defineFact facts pred clause key_size =
       throwIO $ InvalidRedefinition "invalid fact redefinition"
     return id
 
+data DefineFlags = DefineFlags
+  { trustRefs :: Bool
+    -- ^ Whether to trust that fact references have the right type.
+    -- If the facts have already been typechecked then this can be set
+    -- to True to improve performance.
+  , ignoreRedef :: Bool
+    -- ^ When True, if we see a redefinition of a key/value fact where
+    -- the value is different, just discard the fact. When False,
+    -- redefinition is an error. Redefinition may safely arise in
+    -- cases where we have a cache of remote facts and the values have
+    -- been rebased with respect to different caches: the values may
+    -- be literally different but semantically identical.
+  }
+
+instance Default DefineFlags where
+  def = DefineFlags
+    { trustRefs = False
+    , ignoreRedef = False
+    }
+
 -- Prepare a Thrift batch for writing into the database by renaming and
 -- deduplicating facts.
 defineBatch
@@ -65,9 +87,9 @@ defineBatch
   => a                  -- ^ where to define facts
   -> Inventory          -- ^ inventory
   -> Thrift.Batch       -- ^ batch to rename
-  -> Bool               -- ^ is batch trusted
+  -> DefineFlags        -- ^ flags
   -> IO Subst           -- ^ resulting substitution
-defineBatch facts inventory batch is_trusted =
+defineBatch facts inventory batch DefineFlags{..} =
   withDefine facts $ \p_facts ->
   with inventory $ \p_inventory ->
   withIds $ \ids_ptr ->
@@ -80,7 +102,8 @@ defineBatch facts inventory batch is_trusted =
       (fromIntegral $ Thrift.batch_count batch)
       facts_ptr
       facts_size
-      (fromBool is_trusted)
+      (fromBool trustRefs)
+      (fromBool ignoreRedef)
   where
     withIds f
       | Just ids <- Thrift.batch_ids batch =
@@ -106,6 +129,7 @@ foreign import ccall safe glean_define_batch
   -> CSize
   -> Ptr ()
   -> CSize
+  -> CBool
   -> CBool
   -> Ptr (Ptr Subst)
   -> IO CString

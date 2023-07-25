@@ -260,7 +260,8 @@ const char *glean_define_batch(
   size_t batch_count,
   const void *batch_facts_data,
   size_t batch_facts_size,
-  bool is_trusted,
+  bool trust_refs,
+  bool ignore_redefs,
   Substitution **subst
 );
 

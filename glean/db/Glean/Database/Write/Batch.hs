@@ -16,6 +16,7 @@ import Control.Exception
 import Control.Monad.Extra
 import qualified Data.ByteString as BS
 import Data.Coerce
+import Data.Default
 import Data.IORef
 import Data.Maybe
 import qualified Data.Text as Text
@@ -31,6 +32,7 @@ import Glean.Database.Schema
 import Glean.Database.Types
 import Glean.FFI
 import Glean.RTS.Foreign.FactSet (FactSet)
+import Glean.RTS.Foreign.Define (trustRefs)
 import qualified Glean.RTS.Foreign.FactSet as FactSet
 import Glean.RTS.Foreign.Inventory (Inventory)
 import qualified Glean.RTS.Foreign.Lookup as Lookup
@@ -144,7 +146,7 @@ writeDatabase env repo (WriteContent factBatch maybeOwn) latency =
                   snapshot
                   next_id
                   factBatch
-                  False
+                  def
             )
             (\(deduped_facts, _) -> release deduped_facts)
               -- release the FactSet now that we're done with it, don't wait for
@@ -199,4 +201,4 @@ renameBatch
   -> IO (FactSet, Subst)
 renameBatch inventory lookup Writing{..} batch trusted = do
   next_id <- readIORef wrNextId
-  FactSet.renameFacts inventory lookup next_id batch trusted
+  FactSet.renameFacts inventory lookup next_id batch def { trustRefs = trusted }

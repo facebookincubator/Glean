@@ -9,6 +9,7 @@
 module RenameBench (main) where
 
 import Criterion.Types
+import Data.Default
 
 import Glean.Backend.Local (loadDbSchema)
 import Glean.Database.Test
@@ -33,7 +34,7 @@ main = benchmarkMain $ \run ->
         empty_lookup
         lowestFid
         batch
-        False
+        def
 
   _ <- rename
 

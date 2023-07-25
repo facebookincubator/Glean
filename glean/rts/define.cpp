@@ -24,7 +24,8 @@ Substitution defineBatch(
     const Id * FOLLY_NULLABLE ids,   // nullptr if there are no named facts
     size_t count,
     folly::ByteRange batch,
-    bool isTrusted) {
+    bool trustRefs,
+    bool ignoreRedef) {
   if (first < Id::lowest()) {
     error("invalid base id {} in batch", first);
   }
@@ -40,7 +41,7 @@ Substitution defineBatch(
     const auto real_id = subst.subst(folly::get_default(idmap, id, id));
     // If this is a trusted batch, the previous run (deduplication) should
     // have already performed the validation. Don't call typeById().
-    if (isTrusted) {
+    if (trustRefs) {
       if (real_id > max_ref) {
         max_ref = real_id;
       }
@@ -86,11 +87,15 @@ Substitution defineBatch(
       uint64_t key_size;
       predicate->typecheck(rename, clause, out, key_size);
       const auto clause = Fact::Clause::from(out.bytes(), key_size);
-      const auto id = def.define(ty, clause, max_ref);
+      auto id = def.define(ty, clause, max_ref);
 
       if (!id) {
         const auto real_id = def.idByKey(ty, clause.key());
-        error("invalid fact redefinition of ${} : {}", real_id, predicate->name);
+        if (ignoreRedef) {
+          id = real_id;
+        } else  {
+          error("invalid fact redefinition of ${} : {}", real_id, predicate->name);
+        }
       }
 
       subst.setAt(i, id);

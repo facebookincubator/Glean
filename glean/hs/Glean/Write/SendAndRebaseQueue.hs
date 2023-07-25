@@ -57,9 +57,14 @@ data Ownership = Ownership
      -- ^ exclusive upper bound on the facts covered by ownershipUnits
   }
 
+data WaitSubst
+  = WaitSubstNone
+  | WaitSubstError SomeException
+  | WaitSubstSuccess Thrift.Subst
+
 data Sender = Sender
   { sId :: Integer
-  , sSubstVar :: TMVar (Maybe Thrift.Subst)
+  , sSubstVar :: TMVar WaitSubst
   , sSent :: TVar Point
     -- ^ Records the size and time the last batch was sent, for stats
   , sFacts :: MVar (FactSet, [Ownership])
@@ -137,10 +142,33 @@ rebase inventory batch cache base = do
     Lookup.withSnapshot cache first_id $ \snapshot -> do
       factSet <- Lookup.firstFreeId base >>= FactSet.new
       let define = snapshot `stacked` base `stacked` factSet
-      subst <- defineBatch define inventory batch True
+      subst <- defineBatch define inventory batch DefineFlags
+        { trustRefs = True
+        , ignoreRedef = True  -- see Note [redefinition]
+        }
       let owned = substOwnership subst (Thrift.batch_owned batch)
       nextId <- Lookup.firstFreeId factSet
       return (factSet, Ownership owned nextId)
+
+{- Note [redefinition]
+
+Redefinition is when we have two facts A->B, C->D where A == C but B /= D.
+
+Normally this would be an error, and defineBatch rejects it with an
+error. But it can arise naturally here because when
+typechecking/rebasing A->B we may have used a different cache from
+when we typechecked/rebased C->D. So even though B and D may be
+semantically identical, they are literally different.
+
+It doesn't seem possible to ensure that we always use a consistent
+cache, so it's inevitable that benign fact redefinitions may
+occur. Therefore we ignore redefinitions in `defineBatch`.
+
+Note: this might mean that we are ignoring actual errors and silently
+picking one of the two facts if they really did differ. That's bad,
+but I don't see an alternative.
+
+-}
 
 toBatchOwnership :: [Ownership] -> HashMap Thrift.UnitName (Vector Thrift.Id)
 toBatchOwnership =
@@ -176,8 +204,8 @@ senderFlush srq sender = withMVar (sFacts sender) $ \(facts, owned) -> do
     callbacks <- flushTQueue (sCallbacks sender)
     SendQueue.writeSendQueue (srqSendQueue srq) batch $ \result -> do
       case result of
-        Right subst -> putTMVar (sSubstVar sender) (Just subst)
-        Left _ -> return ()
+        Right subst -> putTMVar (sSubstVar sender) (WaitSubstSuccess subst)
+        Left e -> putTMVar (sSubstVar sender) (WaitSubstError e)
       forM_ callbacks ($ void result)
     writeTVar (sSent sender) start
 
@@ -192,25 +220,34 @@ senderRebaseAndFlush wait srq sender = do
     Nothing -> do -- waiting on subst
       log "Waiting on substitution from server"
       return ()
-    Just Nothing -> do -- first send
+    Just (WaitSubstError e) -> do
+      log "Send failure"
+      atomically $ putTMVar (sSubstVar sender) (WaitSubstError e)
+      throwIO e
+    Just WaitSubstNone -> do -- first send
       log "Sending first batch"
       senderFlush srq sender
-    Just (Just thriftSubst) -> do -- got subst
+    Just (WaitSubstSuccess thriftSubst) -> do -- got subst
       log "Sending next batch"
-      modifyMVar_ (sFacts sender) $ \(base,owned) ->
-        -- eagerly release the subst when we're done
-        bracket (deserialize thriftSubst) release $ \subst -> do
-          newBase <- FactSet.rebase (srqInventory srq) subst (srqFacts srq) base
-          let
-              -- all facts below the boundary have now been written,
-              -- we'll use this to determine which ownership data to
-              -- retain.
-              boundary =
-                Thrift.subst_firstId thriftSubst +
-                fromIntegral (Vector.length (Thrift.subst_ids thriftSubst))
-              newOwned = rebaseOwnershipList owned subst boundary
-          _ <- evaluate (force (map ownershipUnits newOwned))
-          return (newBase, newOwned)
+      handle (\(e :: SomeException) -> do
+          logError (show e)
+          atomically $ putTMVar (sSubstVar sender) (WaitSubstError e)
+          throwIO e) $
+        modifyMVar_ (sFacts sender) $ \(base,owned) ->
+          -- eagerly release the subst when we're done
+          bracket (deserialize thriftSubst) release $ \subst -> do
+            newBase <-
+              FactSet.rebase (srqInventory srq) subst (srqFacts srq) base
+            let
+                -- all facts below the boundary have now been written,
+                -- we'll use this to determine which ownership data to
+                -- retain.
+                boundary =
+                  Thrift.subst_firstId thriftSubst +
+                  fromIntegral (Vector.length (Thrift.subst_ids thriftSubst))
+                newOwned = rebaseOwnershipList owned subst boundary
+            _ <- evaluate (force (map ownershipUnits newOwned))
+            return (newBase, newOwned)
       -- "Commit throughput" will be write throughput to the server
       start <- readTVarIO (sSent sender)
       statBump srq Stats.commitThroughput =<< endTick start
@@ -294,7 +331,7 @@ withSendAndRebaseQueue backend repo inventory settings action = do
         forM_ senderIds $ \i -> do
           factset <- FactSet.new baseId
           worker <- Sender i
-            <$> newTMVarIO Nothing
+            <$> newTMVarIO WaitSubstNone
             <*> newTVarIO (error "missing sSent")
             <*> newMVar (factset, [])
             <*> newTQueueIO

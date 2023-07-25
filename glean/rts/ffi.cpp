@@ -380,7 +380,8 @@ const char *glean_define_batch(
     size_t batch_count,
     const void *batch_facts_data,
     size_t batch_facts_size,
-    bool is_trusted,
+    bool trust_refs,
+    bool ignore_redefs,
     Substitution **subst) {
   return ffi::wrap([=] {
     *subst = new Substitution(
@@ -393,7 +394,8 @@ const char *glean_define_batch(
         folly::ByteRange(
           static_cast<const unsigned char *>(batch_facts_data),
           batch_facts_size),
-        is_trusted));
+        trust_refs,
+        ignore_redefs));
   });
 }
 
