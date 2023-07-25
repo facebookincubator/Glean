@@ -1,0 +1,175 @@
+[
+  "@generated",
+  {
+    "key": {
+      "source": {
+        "file": { "key": "a.h" },
+        "span": { "start": 242, "length": 1 }
+      },
+      "target": {
+        "declaration": {
+          "namespace_": {
+            "key": {
+              "name": { "key": { "name": { "key": "N" } } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 1,
+                "lineEnd": 13,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "file": { "key": "a.h" },
+        "span": { "start": 245, "length": 3 }
+      },
+      "target": {
+        "declaration": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "foo" } } },
+                  "scope": {
+                    "namespace_": { "key": { "name": { "key": "N" } } }
+                  }
+                }
+              },
+              "signature": {
+                "key": { "returns": { "key": "void" }, "parameters": [ ] }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 12,
+                "columnBegin": 3,
+                "lineEnd": 12,
+                "columnEnd": 15
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "file": { "key": "a.h" },
+        "span": { "start": 301, "length": 1 }
+      },
+      "target": {
+        "declaration": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "x" },
+                  "scope": {
+                    "local": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "baz" } } },
+                        "scope": { "global_": { } }
+                      }
+                    }
+                  }
+                }
+              },
+              "type": { "key": "int" },
+              "kind": { "local": { "kind": 0, "attribute": 0 } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 20,
+                "columnBegin": 5,
+                "lineEnd": 20,
+                "columnEnd": 13
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "file": { "key": "a.h" },
+        "span": { "start": 301, "length": 1 }
+      },
+      "target": {
+        "declaration": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "x" },
+                  "scope": {
+                    "local": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "baz" } } },
+                        "scope": { "global_": { } }
+                      }
+                    }
+                  }
+                }
+              },
+              "type": { "key": "int" },
+              "kind": { "local": { "kind": 0, "attribute": 0 } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 21,
+                "columnBegin": 5,
+                "lineEnd": 21,
+                "columnEnd": 13
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "file": { "key": "a.h" },
+        "span": { "start": 301, "length": 1 }
+      },
+      "target": {
+        "declaration": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "x" },
+                  "scope": {
+                    "local": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "baz" } } },
+                        "scope": { "global_": { } }
+                      }
+                    }
+                  }
+                }
+              },
+              "type": { "key": "int" },
+              "kind": { "local": { "kind": 0, "attribute": 0 } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 22,
+                "columnBegin": 5,
+                "lineEnd": 22,
+                "columnEnd": 13
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]
