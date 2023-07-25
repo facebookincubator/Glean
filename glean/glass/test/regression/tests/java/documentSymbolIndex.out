@@ -18,6 +18,9 @@
                         },
                         "symbolParent": {
                             "aString": "com.facebook.glean.glean.Glean"
+                        },
+                        "symbolSignature": {
+                            "aString": "POJO fetch()"
                         }
                     },
                     "range": {
@@ -116,6 +119,9 @@
                         },
                         "symbolParent": {
                             "aString": "com.facebook.glean.glean.Glean"
+                        },
+                        "symbolSignature": {
+                            "aString": "void main([String] args)"
                         }
                     },
                     "range": {
@@ -179,6 +185,9 @@
                         },
                         "symbolParent": {
                             "aString": "com.facebook.glean.glean.Glean"
+                        },
+                        "symbolSignature": {
+                            "aString": "POJO fetch()"
                         }
                     },
                     "range": {
@@ -250,6 +259,9 @@
                         },
                         "symbolParent": {
                             "aString": "com.facebook.glean.glean.POJO"
+                        },
+                        "symbolSignature": {
+                            "aString": "String getE()"
                         }
                     },
                     "range": {
@@ -285,6 +297,9 @@
                         },
                         "symbolParent": {
                             "aString": "com.facebook.glean.glean.POJO"
+                        },
+                        "symbolSignature": {
+                            "aString": "String getE(int randomArg)"
                         }
                     },
                     "range": {
@@ -320,6 +335,9 @@
                         },
                         "symbolParent": {
                             "aString": "com.facebook.glean.glean.POJO"
+                        },
+                        "symbolSignature": {
+                            "aString": "void getList(List clazz)"
                         }
                     },
                     "range": {

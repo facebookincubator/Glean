@@ -100,6 +100,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "POJO fetch()"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 5
                         },
                         "key": "symbolLanguage"
@@ -132,6 +138,12 @@
                             "aString": "com.facebook.glean.glean.Glean"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "void main([String] args)"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -220,6 +232,12 @@
                             "aString": "com.facebook.glean.glean.Glean"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "POJO fetch()"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -415,6 +433,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "String getE()"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 5
                         },
                         "key": "symbolLanguage"
@@ -460,6 +484,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "String getE(int randomArg)"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 5
                         },
                         "key": "symbolLanguage"
@@ -502,6 +532,12 @@
                             "aString": "com.facebook.glean.glean.POJO"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "void getList(List clazz)"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {

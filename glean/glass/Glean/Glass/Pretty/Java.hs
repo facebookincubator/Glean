@@ -58,9 +58,22 @@ data Declaration
       modifiers :: [Java.Modifier],
       enumName :: !Name
     }
+  | Method {
+      modifiers :: [Java.Modifier],
+      methName :: !Name,
+      params :: [Parameter],
+      returnTy :: Maybe Type,
+      throwTys :: [Type]
+    }
 
 -- names
 newtype Name = Name Text
+
+data Parameter =
+  Parameter {
+    pName :: !Name,
+    pType :: Maybe Type
+  }
 
 data Type
   = Type Name (Maybe (Java.Declaration, GleanPath))
@@ -109,14 +122,19 @@ fromAngleDeclaration def = case def of
   Java.Declaration_local e -> Just <$> (fromLocalDeclaration =<< Glean.keyOf e)
   Java.Declaration_field e -> Just <$> (fromFieldDeclaration =<< Glean.keyOf e)
   Java.Declaration_ctor e -> Just <$> (fromCtorDeclaration =<< Glean.keyOf e)
+-}
   Java.Declaration_method e -> Just <$>
     (fromMethodDeclaration =<< Glean.keyOf e)
--}
   Java.Declaration_interface_ e ->
     Just <$> (fromInterfaceDeclaration =<< Glean.keyOf e)
   Java.Declaration_class_ e -> Just <$> (fromClassDeclaration =<< Glean.keyOf e)
   Java.Declaration_enum_ e -> Just <$> (fromEnumDeclaration =<< Glean.keyOf e)
   _ -> pure Nothing
+
+fromMName :: JavaKotlin.MethodName -> Glean.RepoHaxl u w Name
+fromMName mname = do
+  JavaKotlin.MethodName_key qname _sig <- Glean.keyOf mname
+  fromQName qname
 
 fromQName :: JavaKotlin.QName -> Glean.RepoHaxl u w Name
 fromQName qname = do
@@ -166,6 +184,25 @@ fromType Java.Type_key{..} = do
     JavaKotlin.BaseType_EMPTY{} ->
       return Nothing
 
+fromMethodDeclaration
+  :: Java.MethodDeclaration_key -> Glean.RepoHaxl u w Declaration
+fromMethodDeclaration Java.MethodDeclaration_key{..} = do
+  let modifiers = methodDeclaration_key_modifiers
+  methName <- fromMName methodDeclaration_key_name
+  params <- mapM (fromParamDeclaration <=< Glean.keyOf)
+    methodDeclaration_key_parameters
+  returnTy <- fromType =<< Glean.keyOf methodDeclaration_key_returnType
+  throwTys <- catMaybes <$> mapM (fromType <=< Glean.keyOf)
+    methodDeclaration_key_throws_
+  return Method {..}
+
+fromParamDeclaration
+  :: Java.ParameterDeclaration_key -> Glean.RepoHaxl u w Parameter
+fromParamDeclaration Java.ParameterDeclaration_key{..} = do
+  pName <- fromQName parameterDeclaration_key_name
+  pType <- fromType =<< Glean.keyOf parameterDeclaration_key_type
+  return Parameter {..}
+
 fromClassDeclaration
   :: Java.ClassDeclaration_key -> Glean.RepoHaxl u w Declaration
 fromClassDeclaration Java.ClassDeclaration_key{..} = do
@@ -207,6 +244,17 @@ pprDeclaration self (Interface mods name tys) =
 pprDeclaration self (Enum mods name) =
   hsep (map pprModifier mods) <+>
   "enum" <+> annotate (SymId self) (pprName name)
+pprDeclaration self (Method _mods name params retTy _throwTys) =
+  hsep [
+    -- hsep (map pprModifier mods),
+    maybe emptyDoc pprType retTy,
+    annotate (SymId self) (pprName name) <> case params of
+      [] -> "()"
+      _ -> "(" <> hsep (punctuate comma (map pprParam params)) <> ")"
+  ]
+
+pprParam :: Parameter -> Doc Ann
+pprParam (Parameter name mty) = maybe emptyDoc pprType mty <+> pprName name
 
 pprModifier :: Java.Modifier -> Doc Ann
 pprModifier m = case m of
