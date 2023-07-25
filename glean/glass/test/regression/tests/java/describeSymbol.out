@@ -39,6 +39,7 @@
         },
         "pretty_comments": [],
         "repo_hash": "testhash",
+        "signature": "public class Glean",
         "sym": "test/java/com/facebook/glean/glean/Glean",
         "sym_location": {
             "filepath": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/Glean.java",
@@ -51,7 +52,15 @@
             "repository": "test"
         },
         "sym_other_locations": [],
-        "type_xrefs": [],
+        "type_xrefs": [
+            {
+                "span": {
+                    "length": 5,
+                    "start": 13
+                },
+                "type": "test/java/com/facebook/glean/glean/Glean"
+            }
+        ],
         "visibility": 20
     }
 ]

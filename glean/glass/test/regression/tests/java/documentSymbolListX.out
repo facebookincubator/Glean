@@ -24,6 +24,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "public class Glean"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 5
                         },
                         "key": "symbolLanguage"
@@ -166,6 +172,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "public class Glean"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 5
                         },
                         "key": "symbolLanguage"
@@ -256,6 +268,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "public class POJO"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 5
                         },
                         "key": "symbolLanguage"
@@ -298,6 +316,12 @@
                             "aString": "com.facebook.glean.glean"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "public class POJO"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
