@@ -301,23 +301,26 @@ pprDeclaration self (Enum mods name) =
   "enum" <+> annotate (SymId self) (pprName name)
 pprDeclaration self (Method _mods name params retTy throwTys) =
   maybe emptyDoc pprType retTy <+>
-  annotate (SymId self) (pprName name) <> (
-      if null params then "()"
-        else "(" <> hsep (punctuate comma (map pprParam params)) <> ")"
-    ) <> (
+  annotate (SymId self) (pprName name) <> pprParamList params <> (
       if null throwTys then emptyDoc
         else hang 4 (space <> "throws"
            <+> hsep (punctuate comma (map pprType throwTys)))
     )
-pprDeclaration self (CTor _mods parent params throwTys) =
-  annotate (SymId self) (pprType parent) <> (
-      if null params then "()"
-        else "(" <> hsep (punctuate comma (map pprParam params)) <> ")"
-    ) <> (
+pprDeclaration _self (CTor _mods parent params throwTys) =
+  pprType parent <> pprParamList params <> (
       if null throwTys then emptyDoc
-        else hang 4 (space <> "throws"
+        else nest 4 (space <> "throws"
            <+> hsep (punctuate comma (map pprType throwTys)))
     )
+
+pprParamList :: [Parameter] -> Doc Ann
+pprParamList [] = "()"
+pprParamList ps
+ | length ps < 5 = "(" <> hsep (punctuate comma (map pprParam ps)) <> ")"
+ | otherwise = vcat [
+      nest 4 (vcat ("(" : punctuate comma (map pprParam ps))),
+      ")"
+    ]
 
 pprParam :: Parameter -> Doc Ann
 pprParam (Parameter name mty []) = maybe emptyDoc pprType mty <+> pprName name
@@ -351,8 +354,8 @@ pprTypeParam (TypeParam nm exts) = pprName nm <+> "extends" <+>
 
 pprType :: Type -> Doc Ann
 pprType (Type nm Nothing) = pprName nm
-pprType (Type nm (Just (decl, file))) = annotate (BareDecl decl file) $
-  pprName nm
+pprType (Type nm (Just (decl, file))) =
+  annotate (BareDecl decl file) $ pprName nm
 pprType (ArrayType nm) = "[" <> pprType nm <> "]"
 
 pprName :: Name -> Doc Ann
