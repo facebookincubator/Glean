@@ -244,14 +244,16 @@ pprDeclaration self (Interface mods name tys) =
 pprDeclaration self (Enum mods name) =
   hsep (map pprModifier mods) <+>
   "enum" <+> annotate (SymId self) (pprName name)
-pprDeclaration self (Method _mods name params retTy _throwTys) =
-  hsep [
-    -- hsep (map pprModifier mods),
-    maybe emptyDoc pprType retTy,
-    annotate (SymId self) (pprName name) <> case params of
-      [] -> "()"
-      _ -> "(" <> hsep (punctuate comma (map pprParam params)) <> ")"
-  ]
+pprDeclaration self (Method _mods name params retTy throwTys) =
+  maybe emptyDoc pprType retTy <+>
+  annotate (SymId self) (pprName name) <> (
+      if null params then "()"
+        else "(" <> hsep (punctuate comma (map pprParam params)) <> ")"
+    ) <> (
+      if null throwTys then emptyDoc
+        else hang 4 (space <> "throws"
+           <+> hsep (punctuate comma (map pprType throwTys)))
+    )
 
 pprParam :: Parameter -> Doc Ann
 pprParam (Parameter name mty) = maybe emptyDoc pprType mty <+> pprName name
