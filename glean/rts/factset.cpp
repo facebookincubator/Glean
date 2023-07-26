@@ -340,7 +340,11 @@ FactSet FactSet::rebase(
     });
   }
 
-  MutableSubstitution localSubst(new_start, distance(new_start, firstFreeId()));
+  const auto subst_start =
+    std::max(startingId(), std::min(subst.finish(), firstFreeId()));
+  const auto subst_end = firstFreeId();
+
+  MutableSubstitution localSubst(subst_start, distance(subst_start, subst_end));
 
   const auto substituteLocal = syscall([&subst, &localSubst](Id id, Pid) {
     if (id < subst.finish()) {
