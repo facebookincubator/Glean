@@ -124,7 +124,7 @@
                             "aString": "com.facebook.glean.glean.Glean"
                         },
                         "symbolSignature": {
-                            "aString": "void main([String] args)"
+                            "aString": "void main(String[] args)"
                         }
                     },
                     "range": {
@@ -340,7 +340,7 @@
                             "aString": "com.facebook.glean.glean.POJO"
                         },
                         "symbolSignature": {
-                            "aString": "void getList(List clazz)"
+                            "aString": "void getList(List<? extends Class> clazz)"
                         }
                     },
                     "range": {

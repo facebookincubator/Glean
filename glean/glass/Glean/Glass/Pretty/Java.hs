@@ -85,8 +85,19 @@ data Parameter =
 newtype Annotation = Annotation Name
 
 data Type
-  = Type Name (Maybe (Java.Declaration, GleanPath))
+  = Type {
+      typeName :: Name,
+      typeArgs :: [TypeArg],
+      typeXRefs :: Maybe (Java.Declaration, GleanPath)
+    }
   | ArrayType Type
+
+data TypeArg = TypeArg Type | TypeArgWild WildCardType
+
+data WildCardType
+  = Extends Type
+  | Super Type
+  | UnboundedWildcard
 
 -- types
 data TypeParam = TypeParam {
@@ -161,28 +172,44 @@ fromTypeParam Java.TypeParam_key{..} = do
     mapM (fromType <=< Glean.keyOf) typeParam_key_extends_
   return TypeParam{..}
 
+fromTypeArg :: Java.TypeArg_key -> Glean.RepoHaxl u w (Maybe TypeArg)
+fromTypeArg (Java.TypeArg_key_type ty) = do
+  theTy <- fromType =<< Glean.keyOf ty
+  return (TypeArg <$> theTy)
+fromTypeArg (Java.TypeArg_key_wildcard card) = case card of
+  Java.Wildcard_extends_ ty -> do
+    mty <- fromType =<< Glean.keyOf ty
+    return (TypeArgWild . Extends <$> mty)
+  Java.Wildcard_super_ ty -> do
+    mty <- fromType =<< Glean.keyOf ty
+    return (TypeArgWild . Super <$> mty)
+  Java.Wildcard_unbounded _b -> pure (Just (TypeArgWild UnboundedWildcard))
+  Java.Wildcard_EMPTY{} -> pure Nothing
+fromTypeArg Java.TypeArg_key_EMPTY{} = pure Nothing
+
 -- todo: type args and interop types
 fromType :: Java.Type_key -> Glean.RepoHaxl u w (Maybe Type)
 fromType Java.Type_key{..} = do
+  typeArgs <- catMaybes <$> mapM (fromTypeArg <=< Glean.keyOf) type_key_typeArgs
   case type_key_baseType of
     Java.BaseType_object oTy -> do
       Java.ObjectType_key{..} <- Glean.keyOf oTy
-      name <- fromQName objectType_key_type
+      typeName <- fromQName objectType_key_type
       mDecl <- fetchDataRecursive $
         qnameToDecl (Glean.getId objectType_key_type)
-      anns <- case mDecl of
+      typeXRefs <- case mDecl of
         Nothing -> pure Nothing
         Just (decl, srcFile) -> do
           file <- GleanPath <$> Glean.keyOf srcFile
           return (Just (decl, file))
-      return (Just (Type name anns))
+      return (Just Type{..})
     Java.BaseType_primitive pTy  -> do
       Java.PrimitiveType_key{..} <- Glean.keyOf pTy
-      return (Just (Type (Name primitiveType_key_type) Nothing))
+      return (Just (Type (Name primitiveType_key_type) typeArgs Nothing))
     Java.BaseType_variable vTy -> do
       Java.TypeVar_key{..} <- Glean.keyOf vTy
       nameStr <- Name <$> Glean.keyOf typeVar_key_type
-      return (Just (Type nameStr Nothing))
+      return (Just (Type nameStr typeArgs Nothing))
     Java.BaseType_array aTy -> do
       Java.ArrayType_key{..} <- Glean.keyOf aTy
       typeFact <- Glean.keyOf arrayType_key_contents
@@ -233,7 +260,7 @@ fromCtorDeclaration Java.ConstructorDeclaration_key{..} = do
 
         Java.Definition_EMPTY{} -> pure Nothing
 
-  parent <- Type pNameStr <$> case mParentDecl of
+  parent <- Type pNameStr [] <$> case mParentDecl of
         Nothing -> pure Nothing
         Just (decl, srcFile) -> do
           path <- GleanPath <$> Glean.keyOf srcFile
@@ -352,11 +379,20 @@ pprTypeParam (TypeParam nm []) = pprName nm
 pprTypeParam (TypeParam nm exts) = pprName nm <+> "extends" <+>
   hsep (punctuate comma (map pprType exts))
 
+pprTypeArg :: TypeArg -> Doc Ann
+pprTypeArg (TypeArg ty) = pprType ty
+pprTypeArg (TypeArgWild card) = case card of
+  Extends ty -> "?" <+> "extends" <+> pprType ty
+  Super ty -> "?" <+> "super" <+> pprType ty
+  UnboundedWildcard -> "?"
+
 pprType :: Type -> Doc Ann
-pprType (Type nm Nothing) = pprName nm
-pprType (Type nm (Just (decl, file))) =
+pprType (Type nm [] Nothing) = pprName nm
+pprType (Type nm args Nothing) = pprName nm <>
+  hcat ("<" : punctuate comma (map pprTypeArg args) ++ [">"])
+pprType (Type nm _args (Just (decl, file))) =
   annotate (BareDecl decl file) $ pprName nm
-pprType (ArrayType nm) = "[" <> pprType nm <> "]"
+pprType (ArrayType nm) = pprType nm <> "[]"
 
 pprName :: Name -> Doc Ann
 pprName (Name name) = pretty name

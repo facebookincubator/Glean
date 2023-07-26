@@ -141,7 +141,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "void main([String] args)"
+                            "aString": "void main(String[] args)"
                         },
                         "key": "symbolSignature"
                     },
@@ -541,7 +541,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "void getList(List clazz)"
+                            "aString": "void getList(List<? extends Class> clazz)"
                         },
                         "key": "symbolSignature"
                     },
