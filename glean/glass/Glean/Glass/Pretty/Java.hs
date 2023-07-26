@@ -65,6 +65,12 @@ data Declaration
       returnTy :: Maybe Type,
       throwTys :: [Type]
     }
+  | CTor {
+      modifiers :: [Java.Modifier],
+      parent :: Type,
+      params :: [Parameter],
+      throwTys :: [Type]
+    }
 
 -- names
 newtype Name = Name Text
@@ -121,8 +127,8 @@ fromAngleDeclaration def = case def of
   Java.Declaration_param e -> Just <$> (fromParamDeclaration =<< Glean.keyOf e)
   Java.Declaration_local e -> Just <$> (fromLocalDeclaration =<< Glean.keyOf e)
   Java.Declaration_field e -> Just <$> (fromFieldDeclaration =<< Glean.keyOf e)
-  Java.Declaration_ctor e -> Just <$> (fromCtorDeclaration =<< Glean.keyOf e)
 -}
+  Java.Declaration_ctor e -> Just <$> (fromCtorDeclaration =<< Glean.keyOf e)
   Java.Declaration_method e -> Just <$>
     (fromMethodDeclaration =<< Glean.keyOf e)
   Java.Declaration_interface_ e ->
@@ -196,6 +202,46 @@ fromMethodDeclaration Java.MethodDeclaration_key{..} = do
     methodDeclaration_key_throws_
   return Method {..}
 
+fromCtorDeclaration
+  :: Java.ConstructorDeclaration_key -> Glean.RepoHaxl u w Declaration
+fromCtorDeclaration Java.ConstructorDeclaration_key{..} = do
+  let modifiers = constructorDeclaration_key_modifiers
+
+  JavaKotlin.MethodName_key qname _ <-
+    Glean.keyOf constructorDeclaration_key_name
+  JavaKotlin.QName_key _name path <- Glean.keyOf qname
+  JavaKotlin.Path_key base _ <- Glean.keyOf path
+  pNameStr <- Name <$> Glean.keyOf base
+
+  mParentDecl <- case constructorDeclaration_key_container of
+        Java.Definition_class_ decl -> do
+          key <- Glean.keyOf decl
+          return $ Just (Java.Declaration_class_ decl
+                 ,Java.classDeclaration_key_file key)
+
+        Java.Definition_interface_ decl -> do
+          key <- Glean.keyOf decl
+          return $ Just (Java.Declaration_interface_ decl
+                  ,Java.interfaceDeclaration_key_file key)
+        Java.Definition_enum_ decl -> do
+          key <- Glean.keyOf decl
+          return $ Just (Java.Declaration_enum_ decl
+                  ,Java.enumDeclaration_key_file key)
+
+        Java.Definition_EMPTY{} -> pure Nothing
+
+  parent <- Type pNameStr <$> case mParentDecl of
+        Nothing -> pure Nothing
+        Just (decl, srcFile) -> do
+          path <- GleanPath <$> Glean.keyOf srcFile
+          return (Just (decl, path))
+
+  params <- mapM (fromParamDeclaration <=< Glean.keyOf)
+    constructorDeclaration_key_parameters
+  throwTys <- catMaybes <$> mapM (fromType <=< Glean.keyOf)
+    constructorDeclaration_key_throws_
+  return CTor {..}
+
 fromParamDeclaration
   :: Java.ParameterDeclaration_key -> Glean.RepoHaxl u w Parameter
 fromParamDeclaration Java.ParameterDeclaration_key{..} = do
@@ -247,6 +293,15 @@ pprDeclaration self (Enum mods name) =
 pprDeclaration self (Method _mods name params retTy throwTys) =
   maybe emptyDoc pprType retTy <+>
   annotate (SymId self) (pprName name) <> (
+      if null params then "()"
+        else "(" <> hsep (punctuate comma (map pprParam params)) <> ")"
+    ) <> (
+      if null throwTys then emptyDoc
+        else hang 4 (space <> "throws"
+           <+> hsep (punctuate comma (map pprType throwTys)))
+    )
+pprDeclaration self (CTor _mods parent params throwTys) =
+  annotate (SymId self) (pprType parent) <> (
       if null params then "()"
         else "(" <> hsep (punctuate comma (map pprParam params)) <> ")"
     ) <> (

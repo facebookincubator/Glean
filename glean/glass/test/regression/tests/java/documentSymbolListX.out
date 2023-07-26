@@ -388,6 +388,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "POJO()"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 5
                         },
                         "key": "symbolLanguage"
