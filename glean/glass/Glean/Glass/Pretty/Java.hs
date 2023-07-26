@@ -78,8 +78,11 @@ newtype Name = Name Text
 data Parameter =
   Parameter {
     pName :: !Name,
-    pType :: Maybe Type
+    pType :: Maybe Type,
+    pAnns :: [Annotation]
   }
+
+newtype Annotation = Annotation Name
 
 data Type
   = Type Name (Maybe (Java.Declaration, GleanPath))
@@ -242,11 +245,17 @@ fromCtorDeclaration Java.ConstructorDeclaration_key{..} = do
     constructorDeclaration_key_throws_
   return CTor {..}
 
+fromAnn :: Java.Annotation -> Glean.RepoHaxl u w Annotation
+fromAnn ann = do
+  Java.Annotation_key{..} <- Glean.keyOf ann
+  Annotation <$> fromQName annotation_key_name
+
 fromParamDeclaration
   :: Java.ParameterDeclaration_key -> Glean.RepoHaxl u w Parameter
 fromParamDeclaration Java.ParameterDeclaration_key{..} = do
   pName <- fromQName parameterDeclaration_key_name
   pType <- fromType =<< Glean.keyOf parameterDeclaration_key_type
+  pAnns <- mapM fromAnn parameterDeclaration_key_annotations
   return Parameter {..}
 
 fromClassDeclaration
@@ -311,7 +320,12 @@ pprDeclaration self (CTor _mods parent params throwTys) =
     )
 
 pprParam :: Parameter -> Doc Ann
-pprParam (Parameter name mty) = maybe emptyDoc pprType mty <+> pprName name
+pprParam (Parameter name mty []) = maybe emptyDoc pprType mty <+> pprName name
+pprParam (Parameter name mty anns) =
+  hsep (map pprAnn anns) <+> maybe emptyDoc pprType mty <+> pprName name
+
+pprAnn :: Annotation -> Doc Ann
+pprAnn (Annotation n) = "@" <> pprName n
 
 pprModifier :: Java.Modifier -> Doc Ann
 pprModifier m = case m of
