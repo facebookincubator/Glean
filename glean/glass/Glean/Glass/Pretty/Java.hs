@@ -14,13 +14,10 @@ module Glean.Glass.Pretty.Java
   ) where
 
 import Data.Maybe
--- import Data.Map.Strict ( Map )
--- import qualified Data.Map.Strict as Map
 import Data.Text ( Text )
 import Data.Text.Prettyprint.Doc
 import Control.Monad.Trans.Maybe (MaybeT (..))
 import Control.Monad ( (<=<) )
--- import Util.List ( uniq )
 
 import Glean.Angle as Angle hiding (Type)
 import Glean.Glass.Path ( fromGleanPath )
@@ -33,14 +30,11 @@ import qualified Glean.Haxl.Repos as Glean
 
 import qualified Glean.Schema.Src.Types as Src
 import qualified Glean.Schema.Code.Types as Code
--- import qualified Glean.Schema.Codemarkup.Types as Code
 
 import qualified Glean.Schema.CodeJava.Types as Java (Entity(..))
 import qualified Glean.Schema.JavaAlpha.Types as Java
 import qualified Glean.Schema.JavakotlinAlpha.Types as JavaKotlin
 import qualified Glean.Schema.JavaAlpha.Types as JavaKotlin
-
--- import qualified Debug.Trace as Debug
 
 -- Java signatures
 data Declaration
@@ -70,6 +64,11 @@ data Declaration
       parent :: Type,
       params :: [Parameter],
       throwTys :: [Type]
+    }
+  | Field {
+      modifiers :: [Java.Modifier],
+      fieldName :: !Name,
+      fieldTy :: Maybe Type
     }
 
 -- names
@@ -140,8 +139,8 @@ fromAngleDeclaration def = case def of
 {-
   Java.Declaration_param e -> Just <$> (fromParamDeclaration =<< Glean.keyOf e)
   Java.Declaration_local e -> Just <$> (fromLocalDeclaration =<< Glean.keyOf e)
-  Java.Declaration_field e -> Just <$> (fromFieldDeclaration =<< Glean.keyOf e)
 -}
+  Java.Declaration_field e -> Just <$> (fromFieldDeclaration =<< Glean.keyOf e)
   Java.Declaration_ctor e -> Just <$> (fromCtorDeclaration =<< Glean.keyOf e)
   Java.Declaration_method e -> Just <$>
     (fromMethodDeclaration =<< Glean.keyOf e)
@@ -219,6 +218,14 @@ fromType Java.Type_key{..} = do
         Just ty -> Just (ArrayType ty)
     JavaKotlin.BaseType_EMPTY{} ->
       return Nothing
+
+fromFieldDeclaration
+  :: Java.FieldDeclaration_key -> Glean.RepoHaxl u w Declaration
+fromFieldDeclaration Java.FieldDeclaration_key{..} = do
+  let modifiers = fieldDeclaration_key_modifiers
+  fieldName <- fromQName fieldDeclaration_key_name
+  fieldTy <- fromType =<< Glean.keyOf fieldDeclaration_key_type
+  return Field {..}
 
 fromMethodDeclaration
   :: Java.MethodDeclaration_key -> Glean.RepoHaxl u w Declaration
@@ -339,6 +346,9 @@ pprDeclaration _self (CTor _mods parent params throwTys) =
         else nest 4 (space <> "throws"
            <+> hsep (punctuate comma (map pprType throwTys)))
     )
+pprDeclaration self (Field _mods name fieldTy) =
+  maybe emptyDoc pprType fieldTy <+>
+    annotate (SymId self) (pprName name)
 
 pprParamList :: [Parameter] -> Doc Ann
 pprParamList [] = "()"

@@ -404,6 +404,9 @@
                         },
                         "symbolParent": {
                             "aString": "com.facebook.glean.glean.Glean"
+                        },
+                        "symbolSignature": {
+                            "aString": "String LOG_TAG"
                         }
                     },
                     "range": {

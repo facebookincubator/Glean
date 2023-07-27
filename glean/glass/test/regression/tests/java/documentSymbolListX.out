@@ -65,6 +65,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "String LOG_TAG"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 5
                         },
                         "key": "symbolLanguage"
