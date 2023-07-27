@@ -34,9 +34,6 @@ def getBuildCommand(output_dir):
         + ["fbcode//glean/lang/kotlin:indexer", "--show-full-output"]
     )
 
-    if sys.platform == "macos":
-        mode += ["@mode/mac"]
-
     return buildCommand
 
 
