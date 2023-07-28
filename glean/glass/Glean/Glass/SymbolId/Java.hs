@@ -177,9 +177,19 @@ instance ToQName Kotlin.MethodDeclaration_key where
   toQName Kotlin.MethodDeclaration_key{..} =
     Glean.keyOf methodDeclaration_key_name >>= toQName
 
+-- ctor qnames are indexed as "<init>" but should be the parent name + sig
 instance ToQName Java.ConstructorDeclaration_key where
-  toQName Java.ConstructorDeclaration_key{..} =
-    Glean.keyOf constructorDeclaration_key_name >>= toQName
+  toQName Java.ConstructorDeclaration_key{..} = do
+    parentName <- case constructorDeclaration_key_container of
+      Java.Definition_class_ cdecl -> toQName =<< Glean.keyOf cdecl
+      Java.Definition_interface_ idecl -> toQName =<< Glean.keyOf idecl
+      Java.Definition_enum_ edecl -> toQName =<< Glean.keyOf edecl
+      Java.Definition_EMPTY -> return $
+        Left "Java constructor with no parent container"
+    case parentName of
+      Left _err -> Glean.keyOf constructorDeclaration_key_name >>= toQName
+      Right (Name n, Name rest) -> return $
+        Right (Name n, Name (rest <> "." <> n))
 
 instance ToQName Java.LocalDeclaration_key where
   toQName Java.LocalDeclaration_key{..} =
