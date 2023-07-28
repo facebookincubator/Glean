@@ -9,7 +9,7 @@
 {-# OPTIONS_GHC -Wno-orphans #-}
 
 module Glean.Glass.SymbolId.Java (
-    flattenContext
+    flattenPath
     {- instances -}
 
   ) where
@@ -105,8 +105,12 @@ instance Symbol Kotlin.VariableDeclaration_key where
 --
 
 instance Symbol JavaKotlin.MethodName_key where
-  toSymbol JavaKotlin.MethodName_key{..} = toSymbolPredicate methodName_key_name
-    -- todo add method type signatures for overloading?
+  toSymbol JavaKotlin.MethodName_key{..} = do
+    qname <- toSymbolPredicate methodName_key_name
+    types <- mapM encodeType methodName_key_signature
+    return $ case types of
+      [] -> qname
+      _ -> qname ++ (".t" : types)
 
 instance Symbol JavaKotlin.Path_key where
   toSymbol JavaKotlin.Path_key{..} = path_key_container <:> path_key_base
@@ -119,6 +123,23 @@ instance Symbol JavaKotlin.QName_key where
 
 instance Symbol JavaKotlin.Name where
   toSymbol name = (:[]) <$> Glean.keyOf name
+
+--
+-- symbol ids for overloading: encode parameter types
+--
+encodeType :: JavaKotlin.Type -> RepoHaxl u w Text
+encodeType ty = do
+  key <- Glean.keyOf ty
+  case key of
+    JavaKotlin.Type_key_primitive prim -> return prim
+
+    JavaKotlin.Type_key_object path -> do
+      Text.intercalate "." . reverse <$> (flattenPath =<< Glean.keyOf path)
+
+    JavaKotlin.Type_key_array ty -> do
+      textTy <- encodeType ty
+      return (textTy <> "[]")
+    JavaKotlin.Type_key_EMPTY{} -> return "<unknown>"
 
 --
 -- names
@@ -218,14 +239,14 @@ instance ToQName JavaKotlin.MethodName_key where
 instance ToQName JavaKotlin.QName_key where
   toQName JavaKotlin.QName_key{..} = do
     nameStr <- Glean.keyOf qName_key_name
-    context <- flattenContext =<< Glean.keyOf qName_key_context
+    context <- flattenPath =<< Glean.keyOf qName_key_context
     return $ Right (Name nameStr, Name (Text.intercalate "." (reverse context)))
 
-flattenContext :: JavaKotlin.Path_key -> RepoHaxl u w [Text]
-flattenContext JavaKotlin.Path_key{..} = do
+flattenPath :: JavaKotlin.Path_key -> RepoHaxl u w [Text]
+flattenPath JavaKotlin.Path_key{..} = do
   nameStr <- Glean.keyOf path_key_base
   case path_key_container of
     Nothing -> return [nameStr]
     Just path -> do
-      rest <- flattenContext =<< Glean.keyOf path
+      rest <- flattenPath =<< Glean.keyOf path
       return (nameStr : rest)

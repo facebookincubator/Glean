@@ -40,7 +40,7 @@ import qualified Glean.Schema.JavaAlpha.Types as Java
 import qualified Glean.Schema.JavakotlinAlpha.Types as JavaKotlin
 
 import Glean.Glass.SymbolId (entityToAngle, toSymbolId)
-import Glean.Glass.SymbolId.Java ( flattenContext )
+import Glean.Glass.SymbolId.Java ( flattenPath )
 import qualified Glean.Glass.Types as Glass
 import Glean.Glass.Utils ( searchRecursiveWithLimit )
 import Glean.Glass.Path ( fromGleanPath )
@@ -201,7 +201,7 @@ instance HasAnnotations Java.Annotation where
     JavaKotlin.QName_key qName mcontext <- Glean.keyOf mname
     nameStr <- Glean.keyOf qName
     context <- Glean.keyOf mcontext
-    toks <- flattenContext context
+    toks <- flattenPath context
     let annKey = Text.intercalate "." (nameStr : reverse toks)
 
     return $ Just $ pure Glass.Annotation {

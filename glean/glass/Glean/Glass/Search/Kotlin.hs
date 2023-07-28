@@ -35,17 +35,17 @@ instance Search Kotlin.Entity where
       [] -> return $ None "Kotlin.symbolSearch: empty"
       [_] -> return $ None "Kotlin.symbolSearch: singleton: not a symbolid"
       (name:base:rest) -> do
-        result <- searchSymbolId toks $
+        result <- searchSymbolId skot $
           searchByQName (JavaKotlin.toQName name (base :| rest))
         case result of
-          None{}  -> searchSymbolId toks $
-            searchByMName (JavaKotlin.toMName name (base :| rest))
+          None{}  -> searchSymbolId skot $
+            searchByMName (JavaKotlin.toMName name (base :| rest) Nothing)
           x -> return x
     where
       toks = reverse skot
 
 searchByQName
-  :: Angle JavaKotlin.QName_key -> Angle (ResultLocation Kotlin.Entity)
+  :: Angle JavaKotlin.QName -> Angle (ResultLocation Kotlin.Entity)
 searchByQName qname =
   vars $ \(entity :: Angle Kotlin.Entity) (file :: Angle Src.File)
     (decl :: Angle Kotlin.Declaration) (rangespan :: Angle Code.RangeSpan)
@@ -53,7 +53,7 @@ searchByQName qname =
     tuple (entity,file,rangespan,lname) `where_` [
       wild .= predicate @Kotlin.LookupDeclaration (
         rec $
-          field @"qname" qname $
+          field @"qname" (asPredicate qname) $
           field @"decl" decl
         end),
       alt @"decl" decl .= sig entity,
@@ -62,7 +62,7 @@ searchByQName qname =
 
 -- methods
 searchByMName
-  :: Angle JavaKotlin.MethodName_key -> Angle (ResultLocation Kotlin.Entity)
+  :: Angle JavaKotlin.MethodName -> Angle (ResultLocation Kotlin.Entity)
 searchByMName mname =
   vars $ \(entity :: Angle Kotlin.Entity) (file :: Angle Src.File)
     (decl :: Angle Kotlin.Declaration) (rangespan :: Angle Code.RangeSpan)
@@ -70,7 +70,7 @@ searchByMName mname =
     tuple (entity,file,rangespan,lname) `where_` [
       wild .= predicate @Kotlin.LookupMethodDeclaration (
         rec $
-          field @"mname" mname $
+          field @"mname" (asPredicate mname) $
           field @"decl" decl
         end),
       alt @"decl" decl .= sig entity,
