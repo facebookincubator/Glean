@@ -168,11 +168,13 @@ toType (Param st) = case reverse st of
 
 toSimpleTypeOuter :: Text -> [Text] -> Angle JavaKotlin.Type
 toSimpleTypeOuter x [] = predicate @JavaKotlin.Type
-  (alt @"primitive" (string x))
-toSimpleTypeOuter x xs =
-  predicate @JavaKotlin.Type (alt @"array" (asPredicate (toSimpleType x xs)))
-   .|
-  toSimpleType x xs
+  (alt @"primitive" (string x)) -- non-qualified name. has to be a primitive
+toSimpleTypeOuter x xs
+  | Just x' <- Text.stripSuffix "[]" x -- definitely an array
+  = predicate @JavaKotlin.Type (
+      alt @"array" (asPredicate (toSimpleType x' xs)) -- array of xs.x
+    )
+  | otherwise = toSimpleType x xs
 
 toSimpleType :: Text -> [Text] -> Angle JavaKotlin.Type
 toSimpleType x xs = predicate @JavaKotlin.Type (

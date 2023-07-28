@@ -1,0 +1,77 @@
+[
+    "@generated",
+    {
+        "annotations": [
+            {
+                "name": "Deprecated.java.lang",
+                "source": "Deprecated"
+            }
+        ],
+        "comments": [],
+        "contains_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "extends_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "kind": 11,
+        "language": 5,
+        "location": {
+            "filepath": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java",
+            "range": {
+                "columnBegin": 3,
+                "columnEnd": 4,
+                "lineBegin": 19,
+                "lineEnd": 22
+            },
+            "repository": "test"
+        },
+        "modifiers": [],
+        "name": {
+            "container": "com.facebook.glean.glean.POJO",
+            "localName": "POJO"
+        },
+        "pretty_comments": [],
+        "repo_hash": "testhash",
+        "signature": "POJO()",
+        "sym": "test/java/com/facebook/glean/glean/POJO/%3Cinit%3E",
+        "sym_location": {
+            "filepath": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java",
+            "range": {
+                "columnBegin": 3,
+                "columnEnd": 4,
+                "lineBegin": 19,
+                "lineEnd": 22
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": [
+            {
+                "filepath": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java",
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 4,
+                    "lineBegin": 24,
+                    "lineEnd": 29
+                },
+                "repository": "test"
+            }
+        ],
+        "type_xrefs": [
+            {
+                "span": {
+                    "length": 4,
+                    "start": 0
+                },
+                "type": "test/java/com/facebook/glean/glean/POJO"
+            }
+        ],
+        "visibility": 20
+    }
+]

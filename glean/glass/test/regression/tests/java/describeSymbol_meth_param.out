@@ -1,0 +1,60 @@
+[
+    "@generated",
+    {
+        "comments": [],
+        "contains_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "extends_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "kind": 8,
+        "language": 5,
+        "location": {
+            "filepath": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java",
+            "range": {
+                "columnBegin": 3,
+                "columnEnd": 4,
+                "lineBegin": 31,
+                "lineEnd": 34
+            },
+            "repository": "test"
+        },
+        "modifiers": [],
+        "name": {
+            "container": "com.facebook.glean.glean.POJO",
+            "localName": "getList"
+        },
+        "pretty_comments": [],
+        "repo_hash": "testhash",
+        "signature": "void getList(List<? extends Class> clazz)",
+        "sym": "test/java/com/facebook/glean/glean/POJO/getList/.t/java.util.List",
+        "sym_location": {
+            "filepath": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java",
+            "range": {
+                "columnBegin": 3,
+                "columnEnd": 4,
+                "lineBegin": 31,
+                "lineEnd": 34
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": [],
+        "type_xrefs": [
+            {
+                "span": {
+                    "length": 7,
+                    "start": 5
+                },
+                "type": "test/java/com/facebook/glean/glean/POJO/getList/.t/java.util.List"
+            }
+        ],
+        "visibility": 20
+    }
+]
