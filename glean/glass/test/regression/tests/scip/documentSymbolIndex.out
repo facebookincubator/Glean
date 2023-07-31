@@ -10801,7 +10801,7 @@
                         "lineBegin": 169,
                         "lineEnd": 169
                     },
-                    "sym": "test/rs/rust-analyzer/cargo/relative_path/./Visitor%23Visitor%23%5BValue%5D"
+                    "sym": "test/rs/rust-analyzer/cargo/relative_path/./Visitor%23Visitor%23[Value]"
                 }
             ],
             "171": [
@@ -14874,32 +14874,6 @@
                 {
                     "attributes": {
                         "symbolKind": {
-                            "aInteger": 28
-                        },
-                        "symbolLanguage": {
-                            "aInteger": 10
-                        },
-                        "symbolName": {
-                            "aString": "[Map]"
-                        },
-                        "symbolParent": {
-                            "aString": ""
-                        },
-                        "symbolSignature": {
-                            "aString": "```rust\nrelative_path\n```\n\n```rust\npub type Map<T> = std::collections::BTreeMap<RelativePath, T>\n```"
-                        }
-                    },
-                    "range": {
-                        "columnBegin": 10,
-                        "columnEnd": 13,
-                        "lineBegin": 237,
-                        "lineEnd": 237
-                    },
-                    "sym": "test/rs/rust-analyzer/cargo/relative_path/./%5BMap%5D"
-                },
-                {
-                    "attributes": {
-                        "symbolKind": {
                             "aInteger": 7
                         },
                         "symbolLanguage": {
@@ -14932,6 +14906,32 @@
                         },
                         "repository": "test"
                     }
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 28
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 10
+                        },
+                        "symbolName": {
+                            "aString": "[Map]"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "```rust\nrelative_path\n```\n\n```rust\npub type Map<T> = std::collections::BTreeMap<RelativePath, T>\n```"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 10,
+                        "columnEnd": 13,
+                        "lineBegin": 237,
+                        "lineEnd": 237
+                    },
+                    "sym": "test/rs/rust-analyzer/cargo/relative_path/./[Map]"
                 }
             ],
             "239": [
@@ -15015,7 +15015,7 @@
                         "lineBegin": 240,
                         "lineEnd": 240
                     },
-                    "sym": "test/rs/rust-analyzer/cargo/relative_path/./%5BMap%5D",
+                    "sym": "test/rs/rust-analyzer/cargo/relative_path/./[Map]",
                     "target": {
                         "filepath": "relative_path.rs",
                         "range": {
@@ -19731,7 +19731,7 @@
                         "lineBegin": 38,
                         "lineEnd": 38
                     },
-                    "sym": "test/rs/rust-analyzer/cargo/relative_path/./Prefix%23TryFrom%23%5BError%5D"
+                    "sym": "test/rs/rust-analyzer/cargo/relative_path/./Prefix%23TryFrom%23[Error]"
                 }
             ],
             "40": [

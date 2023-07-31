@@ -1441,47 +1441,6 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aInteger": 28
-                        },
-                        "key": "symbolKind"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "[Map]"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": ""
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "```rust\nrelative_path\n```\n\n```rust\npub type Map<T> = std::collections::BTreeMap<RelativePath, T>\n```"
-                        },
-                        "key": "symbolSignature"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 10
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 10,
-                    "columnEnd": 13,
-                    "lineBegin": 237,
-                    "lineEnd": 237
-                },
-                "sym": "test/rs/rust-analyzer/cargo/relative_path/./%5BMap%5D"
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolKind"
@@ -1681,7 +1640,7 @@
                     "lineBegin": 38,
                     "lineEnd": 38
                 },
-                "sym": "test/rs/rust-analyzer/cargo/relative_path/./Prefix%23TryFrom%23%5BError%5D"
+                "sym": "test/rs/rust-analyzer/cargo/relative_path/./Prefix%23TryFrom%23[Error]"
             },
             {
                 "attributes": [
@@ -2993,7 +2952,7 @@
                     "lineBegin": 169,
                     "lineEnd": 169
                 },
-                "sym": "test/rs/rust-analyzer/cargo/relative_path/./Visitor%23Visitor%23%5BValue%5D"
+                "sym": "test/rs/rust-analyzer/cargo/relative_path/./Visitor%23Visitor%23[Value]"
             },
             {
                 "attributes": [
@@ -3076,6 +3035,47 @@
                     "lineEnd": 175
                 },
                 "sym": "test/rs/rust-analyzer/cargo/relative_path/./Visitor%23Visitor%23visit_str%28%29."
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 28
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "[Map]"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nrelative_path\n```\n\n```rust\npub type Map<T> = std::collections::BTreeMap<RelativePath, T>\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 10,
+                    "columnEnd": 13,
+                    "lineBegin": 237,
+                    "lineEnd": 237
+                },
+                "sym": "test/rs/rust-analyzer/cargo/relative_path/./[Map]"
             },
             {
                 "attributes": [
@@ -28543,57 +28543,6 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aInteger": 28
-                        },
-                        "key": "symbolKind"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "[Map]"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": ""
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "```rust\nrelative_path\n```\n\n```rust\npub type Map<T> = std::collections::BTreeMap<RelativePath, T>\n```"
-                        },
-                        "key": "symbolSignature"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 10
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 20,
-                    "columnEnd": 23,
-                    "lineBegin": 240,
-                    "lineEnd": 240
-                },
-                "sym": "test/rs/rust-analyzer/cargo/relative_path/./%5BMap%5D",
-                "target": {
-                    "filepath": "relative_path.rs",
-                    "range": {
-                        "columnBegin": 10,
-                        "columnEnd": 13,
-                        "lineBegin": 237,
-                        "lineEnd": 237
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
                             "aInteger": 7
                         },
                         "key": "symbolKind"
@@ -34043,6 +33992,57 @@
                         "columnEnd": 23,
                         "lineBegin": 166,
                         "lineEnd": 166
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 28
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "[Map]"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nrelative_path\n```\n\n```rust\npub type Map<T> = std::collections::BTreeMap<RelativePath, T>\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 20,
+                    "columnEnd": 23,
+                    "lineBegin": 240,
+                    "lineEnd": 240
+                },
+                "sym": "test/rs/rust-analyzer/cargo/relative_path/./[Map]",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 10,
+                        "columnEnd": 13,
+                        "lineBegin": 237,
+                        "lineEnd": 237
                     },
                     "repository": "test"
                 }

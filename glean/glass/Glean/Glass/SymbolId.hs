@@ -130,6 +130,8 @@ toSymbolId path entity = do
     isAllowed '+' = True
     isAllowed ',' = True
     isAllowed '*' = True
+    isAllowed '[' = True
+    isAllowed ']' = True
     isAllowed c = URI.isAllowed c
 
 --
