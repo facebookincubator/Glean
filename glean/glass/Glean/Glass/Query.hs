@@ -531,8 +531,8 @@ feelingLuckyQuery query@SearchQuery{..} = case sScope of
   NoScope ->
     [ GlobalScopedPriorityKinds Sensitive sString -- "vec" the class
     , GlobalScoped Sensitive sString -- "genmk", global "C"
+    , GlobalScoped Insensitive sString -- "Vec" vs "vec", match above containers
     , ContainerLiteral Sensitive sString -- "C" or "vec"
-    , GlobalScoped Insensitive sString -- "Vec" vs "vec"
     , ContainerLiteral Insensitive sString
     , Literal Sensitive sString
     , Literal Insensitive sString
