@@ -1246,7 +1246,7 @@ toReferenceSymbol repoName file srcOffsets (Code.XRefLocation {..}, entity) = do
       rangeSpanToLocationRange repoName fileLocation_file rangeSpan
     _ -> rangeSpanToLocationRange repoName location_file location_location
 
-  return $ (entity,) $ ReferenceRangeSymbolX sym range target attributes Nothing
+  return $ (entity,) $ ReferenceRangeSymbolX sym range target attributes
   where
     -- reference target is a Declaration and an Entity
     Code.Location{..} = xRefLocation_target
@@ -1276,7 +1276,7 @@ toDefinitionSymbol repoName file offsets (Code.Location {..}, entity) = do
           -> locationRange_range
         _ -> rangeSpanToRange offsets location_location
 
-  return $ (entity,) $ DefinitionSymbolX sym range attributes Nothing
+  return $ (entity,) $ DefinitionSymbolX sym range attributes
 
 -- | Decorate an entity with 'static' attributes.
 -- These are static in that they are derivable from the entity and

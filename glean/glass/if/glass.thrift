@@ -169,11 +169,6 @@ struct ReferenceRangeSymbolX {
 
   // attributes of this reference
   4: AttributeList attributes;
-
-  // this points to an optional name range of the `target` rather than
-  // the full definition. the range is assumed to be in the same
-  // `repository` and `filepath` as the `target` field.
-  5: optional Range targetName;
 }
 
 // a definition symbol
@@ -186,9 +181,6 @@ struct DefinitionSymbolX {
 
   // attributes of this definition
   3: AttributeList attributes;
-
-  // the resolved local line:col spans of the symbol name in this file
-  4: optional Range nameRange (hs.strict);
 }
 
 // sometimes we prefer to combine all symbols in a file, for use later
@@ -204,12 +196,6 @@ struct SymbolX {
 
   // additional metadata associated with the symbol
   4: Attributes attributes;
-
-  // the resolved local line:col spans of the symbol name in this file
-  5: optional Range nameRange (hs.strict);
-
-  // if this is a reference, it will point to the name of its definition
-  6: optional Range targetName;
 }
 
 // Path-based symbol identifer. This is less stable than an SymbolId, and is

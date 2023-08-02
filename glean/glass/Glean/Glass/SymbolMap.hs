@@ -78,9 +78,7 @@ definitionToSymbolX DefinitionSymbolX{..} =
     symbolX_sym = definitionSymbolX_sym,
     symbolX_range = definitionSymbolX_range,
     symbolX_target = Nothing,
-    symbolX_attributes = Attributes.attrListToMap definitionSymbolX_attributes,
-    symbolX_nameRange = Nothing,
-    symbolX_targetName = Nothing
+    symbolX_attributes = Attributes.attrListToMap definitionSymbolX_attributes
   }
 
 referenceToSymbolX :: ReferenceRangeSymbolX -> SymbolX
@@ -90,9 +88,7 @@ referenceToSymbolX ReferenceRangeSymbolX{..} =
     symbolX_range = referenceRangeSymbolX_range,
     symbolX_target = Just referenceRangeSymbolX_target,
     symbolX_attributes =
-      Attributes.attrListToMap referenceRangeSymbolX_attributes,
-    symbolX_nameRange = Nothing,
-    symbolX_targetName = Nothing
+      Attributes.attrListToMap referenceRangeSymbolX_attributes
   }
 
 -- | Symbols can span multiple lines (e.g. containers). However for the
@@ -113,8 +109,7 @@ toReferences m =
       referenceRangeSymbolX_range = symbolX_range,
       referenceRangeSymbolX_target = actual_target,
       referenceRangeSymbolX_attributes =
-        Attributes.attrMapToList symbolX_attributes,
-      referenceRangeSymbolX_targetName = Nothing
+        Attributes.attrMapToList symbolX_attributes
     }
   | lines <- Map.elems m
   , SymbolX { symbolX_target = Just actual_target, .. } <- lines
@@ -127,8 +122,7 @@ toDefinitions m =
       definitionSymbolX_sym = symbolX_sym,
       definitionSymbolX_range = symbolX_range,
       definitionSymbolX_attributes =
-        Attributes.attrMapToList symbolX_attributes,
-      definitionSymbolX_nameRange = Nothing
+        Attributes.attrMapToList symbolX_attributes
     }
   | lines <- Map.elems m
   , SymbolX { symbolX_target = Nothing, .. } <- lines
