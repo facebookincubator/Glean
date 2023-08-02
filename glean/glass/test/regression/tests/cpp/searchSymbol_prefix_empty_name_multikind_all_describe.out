@@ -33,6 +33,9 @@
                     "container": "",
                     "localName": "Global"
                 },
+                "native_sym": {
+                    "sym": "DB1D21D02C23A31D"
+                },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/cpp//Global",
@@ -79,6 +82,9 @@
                 "name": {
                     "container": "",
                     "localName": "GlobalClass"
+                },
+                "native_sym": {
+                    "sym": "BB2B21DEEB982133"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
@@ -177,6 +183,9 @@
                     "container": "baz::U",
                     "localName": "InU"
                 },
+                "native_sym": {
+                    "sym": "A0CCE49DC9734AF4"
+                },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/cpp//baz/U/InU",
@@ -224,6 +233,9 @@
                 "name": {
                     "container": "baz::U",
                     "localName": "InUClass"
+                },
+                "native_sym": {
+                    "sym": "0762166ED32F54E0"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
@@ -422,6 +434,9 @@
                 "name": {
                     "container": "maybe::Nothing",
                     "localName": "_secret"
+                },
+                "native_sym": {
+                    "sym": "24F6E8D8C3E783C4"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",

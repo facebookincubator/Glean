@@ -48,6 +48,9 @@
                     "container": "baz",
                     "localName": "U"
                 },
+                "native_sym": {
+                    "sym": "4D79BE8B1E4FA336"
+                },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "struct baz::U",
@@ -95,6 +98,9 @@
                 "name": {
                     "container": "baz::U",
                     "localName": "InUClass"
+                },
+                "native_sym": {
+                    "sym": "0762166ED32F54E0"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",

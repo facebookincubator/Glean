@@ -43,6 +43,9 @@
                     "container": "",
                     "localName": "Global"
                 },
+                "native_sym": {
+                    "sym": "DB1D21D02C23A31D"
+                },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "enum ::Global : int",

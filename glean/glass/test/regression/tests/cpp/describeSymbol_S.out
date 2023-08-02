@@ -31,6 +31,9 @@
             "container": "foo",
             "localName": "S"
         },
+        "native_sym": {
+            "sym": "CFCB19DD2F0ABBD2"
+        },
         "pretty_comments": [],
         "repo_hash": "testhash",
         "signature": "struct foo::S",

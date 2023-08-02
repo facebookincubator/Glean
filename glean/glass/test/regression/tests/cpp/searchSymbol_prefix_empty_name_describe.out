@@ -33,6 +33,9 @@
                     "container": "",
                     "localName": "Global"
                 },
+                "native_sym": {
+                    "sym": "DB1D21D02C23A31D"
+                },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/cpp//Global",
@@ -220,6 +223,9 @@
                 "name": {
                     "container": "",
                     "localName": "GlobalClass"
+                },
+                "native_sym": {
+                    "sym": "BB2B21DEEB982133"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
@@ -456,6 +462,9 @@
                     "container": "Q",
                     "localName": "OO"
                 },
+                "native_sym": {
+                    "sym": "552D8078FE8F17C6"
+                },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/cpp//Q/OO",
@@ -502,6 +511,9 @@
                 "name": {
                     "container": "Q",
                     "localName": "QQ"
+                },
+                "native_sym": {
+                    "sym": "214CA0D369C285FA"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
@@ -647,6 +659,9 @@
                     "container": "baz",
                     "localName": "U"
                 },
+                "native_sym": {
+                    "sym": "4D79BE8B1E4FA336"
+                },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/cpp//baz/U",
@@ -693,6 +708,9 @@
                 "name": {
                     "container": "baz::U",
                     "localName": "InU"
+                },
+                "native_sym": {
+                    "sym": "A0CCE49DC9734AF4"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
@@ -883,6 +901,9 @@
                     "container": "baz::U",
                     "localName": "InUClass"
                 },
+                "native_sym": {
+                    "sym": "0762166ED32F54E0"
+                },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/cpp//baz/U/InUClass",
@@ -1072,6 +1093,9 @@
                     "container": "",
                     "localName": "d"
                 },
+                "native_sym": {
+                    "sym": "7FD8EC107A3B0655"
+                },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/cpp//d",
@@ -1166,6 +1190,9 @@
                     "container": "foo",
                     "localName": "S"
                 },
+                "native_sym": {
+                    "sym": "CFCB19DD2F0ABBD2"
+                },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
                 "sym": "test/cpp//foo/S",
@@ -1259,6 +1286,9 @@
                 "name": {
                     "container": "foo::bar",
                     "localName": "T"
+                },
+                "native_sym": {
+                    "sym": "87CFEB5671D26AC6"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
@@ -1515,6 +1545,9 @@
                     "container": "maybe",
                     "localName": "Nothing"
                 },
+                "native_sym": {
+                    "sym": "9D2B88A610FC51C2"
+                },
                 "pretty_comments": [
                     {
                         "location": {
@@ -1574,6 +1607,9 @@
                 "name": {
                     "container": "maybe::Nothing",
                     "localName": "_secret"
+                },
+                "native_sym": {
+                    "sym": "24F6E8D8C3E783C4"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
@@ -1669,6 +1705,9 @@
                 "name": {
                     "container": "maybe",
                     "localName": "Something"
+                },
+                "native_sym": {
+                    "sym": "A2069B284A1459A1"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",

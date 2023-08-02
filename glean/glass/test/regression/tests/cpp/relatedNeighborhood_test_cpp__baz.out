@@ -89,6 +89,9 @@
                     "container": "baz",
                     "localName": "U"
                 },
+                "native_sym": {
+                    "sym": "4D79BE8B1E4FA336"
+                },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "struct baz::U",

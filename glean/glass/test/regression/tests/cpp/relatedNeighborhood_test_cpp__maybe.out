@@ -102,6 +102,9 @@
                     "container": "maybe",
                     "localName": "Nothing"
                 },
+                "native_sym": {
+                    "sym": "9D2B88A610FC51C2"
+                },
                 "pretty_comments": [
                     {
                         "location": {
@@ -162,6 +165,9 @@
                 "name": {
                     "container": "maybe",
                     "localName": "Something"
+                },
+                "native_sym": {
+                    "sym": "A2069B284A1459A1"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",

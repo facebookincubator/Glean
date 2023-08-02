@@ -1,0 +1,219 @@
+[
+  "@generated",
+  {
+    "key": {
+      "hash": "2AE7403A7CC8927A",
+      "declaration": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "f0" } } },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "c2" },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "foo" } } }
+                        }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "int" }, "parameters": [ ] }
+            },
+            "method": {
+              "isVirtual": true,
+              "isConst": false,
+              "isVolatile": false,
+              "refQualifier": 0
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 30,
+              "columnBegin": 7,
+              "lineEnd": 32,
+              "columnEnd": 7
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "hash": "309CD4944CF40D08",
+      "declaration": {
+        "record_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "c1" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "foo" } } }
+                }
+              }
+            },
+            "kind": { "class_": { } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 17,
+              "columnBegin": 3,
+              "lineEnd": 27,
+              "columnEnd": 3
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "hash": "3D2186494088196F",
+      "declaration": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "f1" } } },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "c1" },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "foo" } } }
+                        }
+                      }
+                    },
+                    "access": 2
+                  }
+                }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "int" }, "parameters": [ ] }
+            },
+            "method": {
+              "isVirtual": false,
+              "isConst": false,
+              "isVolatile": false,
+              "refQualifier": 0
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 24,
+              "columnBegin": 7,
+              "lineEnd": 26,
+              "columnEnd": 7
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "hash": "486A750A052080B6",
+      "declaration": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "f0" } } },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "c1" },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "foo" } } }
+                        }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "int" }, "parameters": [ ] }
+            },
+            "method": {
+              "isVirtual": true,
+              "isConst": false,
+              "isVolatile": false,
+              "refQualifier": 0
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 19,
+              "columnBegin": 7,
+              "lineEnd": 21,
+              "columnEnd": 7
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "hash": "70C13F5C85EAC837",
+      "declaration": {
+        "record_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "c2" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "foo" } } }
+                }
+              }
+            },
+            "kind": { "class_": { } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 28,
+              "columnBegin": 3,
+              "lineEnd": 33,
+              "columnEnd": 3
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "hash": "C35AE2B1527D994C",
+      "declaration": {
+        "record_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "bar_st" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "bar" } } }
+                }
+              }
+            },
+            "kind": { "struct_": { } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 10,
+              "columnBegin": 3,
+              "lineEnd": 13,
+              "columnEnd": 3
+            }
+          }
+        }
+      }
+    }
+  }
+]

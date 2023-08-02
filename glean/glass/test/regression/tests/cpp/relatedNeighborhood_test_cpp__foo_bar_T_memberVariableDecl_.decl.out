@@ -44,6 +44,9 @@
                     "container": "foo::bar",
                     "localName": "T"
                 },
+                "native_sym": {
+                    "sym": "87CFEB5671D26AC6"
+                },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "struct foo::bar::T",

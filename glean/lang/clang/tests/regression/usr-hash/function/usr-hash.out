@@ -29,6 +29,33 @@
   },
   {
     "key": {
+      "hash": "309CD4944CF40D08",
+      "declaration": {
+        "record_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "c1" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "foo" } } }
+                }
+              }
+            },
+            "kind": { "class_": { } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 30,
+              "columnBegin": 3,
+              "lineEnd": 39,
+              "columnEnd": 3
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "hash": "397DF99A08837D83",
       "declaration": {
         "function_": {
@@ -178,6 +205,33 @@
               "columnBegin": 7,
               "lineEnd": 33,
               "columnEnd": 7
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "hash": "C35AE2B1527D994C",
+      "declaration": {
+        "record_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "bar_st" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "bar" } } }
+                }
+              }
+            },
+            "kind": { "struct_": { } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 15,
+              "columnBegin": 3,
+              "lineEnd": 18,
+              "columnEnd": 3
             }
           }
         }

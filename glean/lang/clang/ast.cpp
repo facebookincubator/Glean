@@ -1034,6 +1034,11 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         enumerators.push_back(visitor.enumerator(decl, e));
       }
 
+      if (auto usr_hash = getUsrHash(d)){
+        visitor.db.fact<Cxx::USRToDeclaration>(usr_hash.value(),
+            Cxx::Declaration::enum_(decl));
+      }
+
       visitor.db.fact<Cxx::EnumDefinition>(decl, enumerators);
     }
 
@@ -1217,6 +1222,11 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
             }
           }
         }
+      }
+
+      if (auto usr_hash = getUsrHash(d)){
+        visitor.db.fact<Cxx::USRToDeclaration>(usr_hash.value(),
+            Cxx::Declaration::record_(decl));
       }
 
       visitor.db.fact<Cxx::RecordDefinition>(
