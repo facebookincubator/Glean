@@ -110,6 +110,8 @@ import qualified Glean.Index.GleanIndexingService.Client as IndexingService
 import Glean.Index.GleanIndexingService.Client ( GleanIndexingService )
 import Glean.Impl.ThriftService ( ThriftService )
 
+import Glean.Glass.RepoMapping ( gleanSnapshotLang )
+
 import qualified Glean.Glass.Env as Glass
 
 import qualified Glean.Glass.Query as Query
@@ -971,7 +973,7 @@ fetchSymbolsAndAttributes
         , Maybe ErrorLogger)
 fetchSymbolsAndAttributes latest req opts be snapshotbe mlang =
   case (mrevision, mlang) of
-    (Just revision, Just Language_Hack) -> do
+    (Just revision, Just lang) | (repo, lang) `elem` gleanSnapshotLang -> do
       Async.withAsync getFromGlean $ \gleanRes -> do
         esnapshot <- getSnapshot snapshotbe repo file revision trySnapshot
         case esnapshot of

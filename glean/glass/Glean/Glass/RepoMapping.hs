@@ -34,6 +34,10 @@ gleanIndices = Map.fromList
       ])
   ]
 
+-- | (Repo, language) eligible for precomputed results (snapshots)
+gleanSnapshotLang :: [(RepoName, Language)]
+gleanSnapshotLang = []
+
 -- repos that contain symbol attributes
 gleanAttrIndices :: Map.Map GleanDBName [GleanDBAttrName]
 gleanAttrIndices = Map.empty
