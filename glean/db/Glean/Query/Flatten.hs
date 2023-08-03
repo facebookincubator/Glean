@@ -244,14 +244,14 @@ calling
   -> F a
 calling ref seek inner = do
   stack <- gets flStack
-  EnableRecursion enableRecursion <- gets flRecursion
+  recursion <- gets flRecursion
   if
     | ref `notElem` stack -> do
       modify $ \state -> state { flStack = ref : stack }
       a <- inner
       modify $ \state -> state { flStack = stack }
       return a
-    | enableRecursion -> return seek
+    | EnableRecursion <- recursion -> return seek
     | otherwise ->
       throwError $ "recursive reference to predicate " <>
         Text.pack (show (displayDefault ref))

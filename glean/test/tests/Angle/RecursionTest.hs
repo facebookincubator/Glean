@@ -60,6 +60,38 @@ recursionTest = TestList
           , RTS.Tuple [ RTS.Nat 1, RTS.Nat 3 ]
           ]
           facts
+
+  , TestLabel "calculates recursive relation with fixed arguments" $
+    TestCase $ do
+    withSchemaAndFacts [enableRecursion]
+      [s|
+        schema x.1 {
+          type Node = nat
+          predicate Edge : { from: Node, to: Node }
+          predicate Path : { from: Node, to: Node }
+            { A, B } where
+              (Edge { A, B }) | (Path { A, K }; Edge { K, B })
+        }
+        schema all.1 : x.1 {}
+      |]
+      -- 1 -> 2 -> 3 -> 4 -> 5
+      [ mkBatch (PredicateRef "x.Edge" 1)
+          [ [s|{ "key": { "from": 1, "to": 2 } }|]
+          , [s|{ "key": { "from": 2, "to": 3 } }|]
+          , [s|{ "key": { "from": 3, "to": 4 } }|]
+          , [s|{ "key": { "from": 4, "to": 5 } }|]
+          ]
+      ]
+      $ \env repo schema -> do
+        response <- runQ env repo [s| x.Path { 1, _ } |]
+        facts <- decodeResultsAs "x.Path.1" schema response
+        assertEqual "result content"
+          [ RTS.Tuple [ RTS.Nat 1, RTS.Nat 2 ]
+          , RTS.Tuple [ RTS.Nat 1, RTS.Nat 3 ]
+          , RTS.Tuple [ RTS.Nat 1, RTS.Nat 4 ]
+          , RTS.Tuple [ RTS.Nat 1, RTS.Nat 5 ]
+          ]
+          facts
   ]
   where
     runQ env repo query =

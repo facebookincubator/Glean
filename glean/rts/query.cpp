@@ -130,6 +130,12 @@ struct QueryExecutor {
     recordResult(id, key, val, pid, rec);
   }
 
+  //
+  // First free id of the underlying Define.
+  //
+  Id firstFreeId() {
+    return facts.firstFreeId();
+  }
 
   //
   // wrapper around resultWithPid() used by ordinary queries where we
@@ -568,7 +574,8 @@ std::unique_ptr<QueryResults> executeQuery(
     &QueryExecutor::lookupKeyValue,
     &QueryExecutor::result,
     &QueryExecutor::resultWithPid,
-    &QueryExecutor::newDerivedFact>(q);
+    &QueryExecutor::newDerivedFact,
+    &QueryExecutor::firstFreeId>(q);
 
   folly::Optional<SerializedCont> cont;
   Subroutine::Activation::with(sub, context_.contextptr(), [&](Subroutine::Activation& activation) {

@@ -50,6 +50,7 @@ import Glean.Bytecode.Types
 import Glean.Display
 import qualified Glean.FFI as FFI
 import Glean.Query.Codegen.Types
+import Glean.Database.Types (EnableRecursion(..))
 import Glean.Database.Schema.Types
   ( Bytes(..)
   , PredicateTransformation(..)
@@ -62,7 +63,8 @@ import Glean.RTS.Bytecode.Code
 import Glean.RTS.Bytecode.Disassemble
 import Glean.RTS.Bytecode.Gen.Issue
 import Glean.RTS.Foreign.Bytecode
-import Glean.RTS.Foreign.Lookup (Lookup, startingId, firstFreeId)
+import Glean.RTS.Foreign.Lookup (Lookup)
+import qualified Glean.RTS.Foreign.Lookup as Lookup
 import Glean.RTS.Foreign.Query
 import Glean.RTS.Traverse
 import Glean.RTS.Types
@@ -178,11 +180,12 @@ stackedBoundaries base added =
 
 sectionBounds :: Lookup -> IO SectionBoundaries
 sectionBounds lookup = SectionBoundaries
-  <$> startingId lookup
-  <*> firstFreeId lookup
+  <$> Lookup.startingId lookup
+  <*> Lookup.firstFreeId lookup
 
 compileQuery
-  :: QueryTransformations
+  :: EnableRecursion
+  -> QueryTransformations
   -> Boundaries
   -> CodegenQuery
      -- ^ The query to compile. NB. no type checking or validation is
@@ -190,7 +193,7 @@ compileQuery
      -- malformed query can cause a crash.
   -> IO CompiledQuery
 
-compileQuery qtrans bounds (QueryWithInfo query numVars ty) = do
+compileQuery r qtrans bounds (QueryWithInfo query numVars ty) = do
   vlog 2 $ show (displayDefault query)
 
   (idTerm, resultKey, resultValue, stmts) <- case query of
@@ -217,7 +220,16 @@ compileQuery qtrans bounds (QueryWithInfo query numVars ty) = do
 
     -- resultKeyReg/resultValueReg is where we build up result values
     output $ \resultKeyOutput resultValueOutput ->
-      compileStatements qtrans bounds regs stmts vars $ mdo
+      let
+        code :: forall a. Code a -> Code a
+        code = compileStatements qtrans bounds regs stmts vars
+
+        queryStmts :: forall a. Code a -> Code a
+        queryStmts = case r of
+          EnableRecursion -> recursive regs code code
+          DisableRecursion -> code
+      in
+      queryStmts $ mdo
         -- If the result term is a variable, avoid unnecessarily
         -- copying it into resultOutput and just use it directly.
         resultKeyReg <- case resultKey of
@@ -1246,6 +1258,61 @@ withTerm vars term action = do
     buildTerm reg vars term
     action reg
 
+-- | Execute a piece of code repeatedly for as long as it keeps producing
+-- new facts.
+--
+-- The first argument is executed once first.
+-- If it defines new facts then the second argument is executed repeatedly
+-- for as long as it keeps adding facts to the Define.
+--
+recursive
+  :: QueryRegs s
+  -> (forall a. Code a -> Code a)  -- ^ code for first run
+  -> (forall a. Code a -> Code a)  -- ^ code to evaluate repeatedly
+  -> Code b                        -- ^ code to insert after
+  -> Code b
+recursive QueryRegs{..} before after andThen =
+  local $ \innerRet startId deltaId -> mdo
+
+  firstFreeId startId
+  siteBefore <- before $ mdo
+    site <- callSite
+    loadLabel ret_ innerRet
+    jump doInner
+    ret_ <- label
+    return site
+  firstFreeId deltaId
+
+  -- skip to end if there were no new facts produced
+  local $ \difference -> mdo
+    move deltaId difference
+    sub startId difference
+    jumpIf0 difference done
+
+  recurse <- label
+  move deltaId startId
+  siteAfter <- after $ mdo
+    site <- callSite
+    loadLabel ret_ innerRet
+    jump doInner
+    ret_ <- label
+    return site
+  firstFreeId deltaId
+
+  -- execute 'after' again if there are new facts
+  local $ \difference -> mdo
+    move deltaId difference
+    sub startId difference
+    jumpIfNot0 difference recurse
+    jump done
+
+  doInner <- label
+  a <- calledFrom [siteBefore, siteAfter] andThen
+  jumpReg innerRet
+
+  done <- label
+  return a
+
 -- | check that a value matches a pattern, and bind variables as
 -- necessary. The pattern is assumed to cover the *whole* of the
 -- input.
@@ -1473,6 +1540,10 @@ data QueryRegs s = QueryRegs
      -> Register 'Word
      -> Code ()
 
+  , firstFreeId
+    :: Register 'Word -- first free id
+    -> Code ()
+
     -- | Unused, temporarily kept for backwards compatibility
   , saveState :: Register 'Word
 
@@ -1489,7 +1560,7 @@ generateQueryCode
 generateQueryCode f = generate Optimised $
   \ seek_ seekWithinSection_ currentSeek_ endSeek_ next_
     lookupKey_ result_ resultWithPid_ newDerivedFact_
-    saveState
+    firstFreeId_ saveState
     maxResults maxBytes ->
   let
     seek typ ptr end tok =
@@ -1531,5 +1602,9 @@ generateQueryCode f = generate Optimised $
 
     newDerivedFact ty key val id =
       callFun_3_1 newDerivedFact_ ty (castRegister key) (castRegister val) id
+
+    firstFreeId fid =
+      callFun_0_1 firstFreeId_ fid
+
   in
     f QueryRegs{..}

@@ -199,7 +199,9 @@ instance NFData Derivation where
     `seq` derivationHandle
     `seq`()
 
-newtype EnableRecursion = EnableRecursion Bool
+data EnableRecursion
+  = EnableRecursion
+  | DisableRecursion
 
 data Env = forall storage. Storage storage => Env
   { envEventBase :: EventBaseDataplane

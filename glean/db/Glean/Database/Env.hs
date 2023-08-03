@@ -141,7 +141,10 @@ initEnv evb envStorage envCatalog shardManager cfg
       , envSchemaId = cfgSchemaId cfg
       , envShardManager = shardManager
       , envBackupBackends = cfgBackupBackends cfg
-      , envEnableRecursion = EnableRecursion $ cfgEnableRecursion cfg
+      , envEnableRecursion =
+          if cfgEnableRecursion cfg
+          then EnableRecursion
+          else DisableRecursion
       , .. }
 
 spawnThreads :: Env -> IO ()

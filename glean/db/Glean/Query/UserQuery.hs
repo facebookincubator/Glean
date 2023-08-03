@@ -760,7 +760,7 @@ userQueryImpl
               | Thrift.queryDebugOptions_bytecode debug ]
 
           bracket
-            (timeIt $ compileQuery trans bounds query)
+            (timeIt $ compileQuery (envEnableRecursion env) trans bounds query)
             (\(_, _, sub) -> release $ compiledQuerySub sub)
             $ \(codegenTime, _, sub) -> do
               results <- transformResultsBack appliedTrans <$>
@@ -925,7 +925,7 @@ userQueryImpl
             defineOwners <- mkDefineOwners nextId
             let stack = stacked lookup derived
             (fullScans, qResults) <- bracket
-              (compileQuery trans bounds gens)
+              (compileQuery (envEnableRecursion env) trans bounds gens)
               (release . compiledQuerySub)
               $ \sub -> (compiledQueryFullScans sub,) <$>
                 executeCompiled schemaInventory defineOwners stack sub limits
