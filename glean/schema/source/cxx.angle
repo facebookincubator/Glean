@@ -1119,44 +1119,6 @@ predicate ObjContainerIdName :
     ( { implementation = Name } = Id) |
     ( { categoryImplementation = { categoryName = Name  } } = Id)
 
-# DEPRECATED: this doesn't work for operators and a few other
-# things. Use DeclarationLocationName instead.
-predicate DeclarationLocation :
-  {
-    decl : Declaration,
-    source : src.Range,
-    name : Name,
-  }
-  { Decl, Range, Name } where
-    ( { namespace_ = X } = Decl;
-      X = NamespaceDeclaration { source = Range, name = QName };
-      NamespaceDeclarationName { QName, Name }) |
-    ( { usingDeclaration = X } = Decl;
-      X = UsingDeclaration { source = Range, name = QName };
-      QName = FunctionQName { name = { name = Name }}) |
-    ( { usingDirective = X } = Decl;
-      X = UsingDirective { source = Range, name = { name = Name }}) |
-    ( { record_ = X } = Decl;
-      X = RecordDeclaration { source = Range, name = { name = Name }}) |
-    ( { enum_ = X } = Decl;
-      X = EnumDeclaration { source = Range, name = { name = Name }}) |
-    ( { function_ = X } = Decl;
-      FunctionDeclaration { source = Range, name = { FName, _ } } = X;
-      FunctionDeclarationName { FName, Name }) |
-    ( { variable = X } = Decl;
-      X = VariableDeclaration { source = Range, name = { name = Name }}) |
-    ( { objcContainer = X } = Decl;
-      X = ObjcContainerDeclaration { source = Range, id = Id };
-      ObjContainerIdName { Id, Name }) |
-    ( { objcMethod = X } = Decl;
-      X = ObjcMethodDeclaration { source = Range, selector = S };
-      S = ObjcSelector [Str];
-      Name = Name Str) |
-    ( { objcProperty = X } = Decl;
-      X = ObjcPropertyDeclaration { source = Range, name = Name }) |
-    ( { typeAlias = X } = Decl;
-      X = TypeAliasDeclaration { source = Range, name = { name = Name }})
-
 # General purpose Declaration to shortname Name
 predicate DeclarationLocationName :
   {
