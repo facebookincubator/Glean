@@ -127,7 +127,7 @@ mainGlassSnapshot_
 mainGlassSnapshot_ testName testRoot driver extraOpts extras = do
   -- just check for --replace, everything else is passed through
   -- really want to compose these with the underlying testsuite's options
-  cfgReplace <- ("--replace" `elem`) <$> getArgs
+  cfgReplace <- any (`elem` ["--replace", "--replace-all"]) <$> getArgs
   qs <- findQueries testRoot
   withOutput cfgOutput $ \temp ->
     mainTestIndexGeneric driver extraOpts testName $ \_ _ _ _ get ->
