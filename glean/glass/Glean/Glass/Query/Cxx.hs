@@ -137,7 +137,6 @@ fileEntityXRefLocations
   -> Glean.IdOf Cxx.Trace
   -> Glean.RepoHaxl u w ([(Code.XRefLocation,Code.Entity)], Bool)
 fileEntityXRefLocations mlimit fileId traceId = do
-  spellingXRefs <- spellingXRefs mlimit fileId
   mresult <- getFirstFileXRefs fileId
   fileXRefs <- case mresult of
     Nothing -> return []
@@ -147,7 +146,8 @@ fileEntityXRefLocations mlimit fileId traceId = do
       ppxrefs <- ppXRefs mlimit traceId
       defXRefs <- declToDefXRefs mlimit traceId
       return [fixedXRefs, variableXRefs, ppxrefs, defXRefs]
-  let result = spellingXRefs:fileXRefs
+  spellingXRefs <- spellingXRefs mlimit fileId
+  let result = fileXRefs ++ [spellingXRefs]
   return (concatMap fst result, any snd result)
 
 -- spelling (easily discoverable) xrefs
