@@ -34,10 +34,12 @@ instance Symbol Pp.Entity where
     Pp.Entity_EMPTY -> return []
 
 instance Symbol Pp1.Define_key where
-  toSymbol (Pp1.Define_key macro source) = toSymbolMacro macro source
+  toSymbol (Pp1.Define_key macro source) =
+    (\x -> "define" : x) <$> toSymbolMacro macro source
 
 instance Symbol Pp1.Undef_key where
-  toSymbol (Pp1.Undef_key macro source) = toSymbolMacro macro source
+  toSymbol (Pp1.Undef_key macro source) =
+    (\x -> "undef" : x) <$> toSymbolMacro macro source
 
 instance Symbol Src.File where
   toSymbol k = pathFragments <$> Glean.keyOf k

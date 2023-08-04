@@ -36,8 +36,9 @@ import qualified Glean.Glass.Search.Haskell ({- instances -})
 import qualified Glean.Glass.Search.Java ({- instances -})
 import qualified Glean.Glass.Search.Kotlin ({- instances -})
 import qualified Glean.Glass.Search.LSIF ({- instances -})
-import qualified Glean.Glass.Search.SCIP ({- instances -})
+import qualified Glean.Glass.Search.Pp ({- instances -})
 import qualified Glean.Glass.Search.Python ({- instances -})
+import qualified Glean.Glass.Search.SCIP ({- instances -})
 import qualified Glean.Glass.Search.Thrift ({- instances -})
 import Glean.Glass.Types (ServerException(ServerException))
 import qualified Glean.Schema.Code.Types as Code
@@ -66,6 +67,7 @@ searchEntity
 searchEntity lang toks = case lang of
   Language_Cpp -> fmap Code.Entity_cxx <$> Search.symbolSearch toks
   Language_Hack -> fmap Code.Entity_hack <$> Search.symbolSearch toks
+  Language_PreProcessor -> fmap Code.Entity_pp <$> Search.symbolSearch toks
   Language_Python -> fmap Code.Entity_python <$> Search.symbolSearch toks
   Language_JavaScript -> fmap Code.Entity_flow <$> Search.symbolSearch toks
   Language_Haskell -> fmap Code.Entity_hs <$> Search.symbolSearch toks

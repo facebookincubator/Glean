@@ -1807,7 +1807,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "sym": "test/pp/test.cpp/A",
+                "sym": "test/pp/define/test.cpp/A",
                 "sym_location": {
                     "filepath": "test.cpp",
                     "range": {
@@ -1854,7 +1854,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "sym": "test/pp/test.cpp/B",
+                "sym": "test/pp/define/test.cpp/B",
                 "sym_location": {
                     "filepath": "test.cpp",
                     "range": {
@@ -1901,7 +1901,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "sym": "test/pp/test.h/C",
+                "sym": "test/pp/define/test.h/C",
                 "sym_location": {
                     "filepath": "test.h",
                     "range": {
@@ -1948,7 +1948,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "sym": "test/pp/test2.h/D",
+                "sym": "test/pp/define/test2.h/D",
                 "sym_location": {
                     "filepath": "test2.h",
                     "range": {
@@ -1995,7 +1995,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "sym": "test/pp/test2.h/FOO",
+                "sym": "test/pp/define/test2.h/FOO",
                 "sym_location": {
                     "filepath": "test2.h",
                     "range": {
@@ -2042,7 +2042,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "sym": "test/pp/test3.h/D",
+                "sym": "test/pp/define/test3.h/D",
                 "sym_location": {
                     "filepath": "test3.h",
                     "range": {
@@ -2998,7 +2998,7 @@
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/pp/test.cpp/A"
+                "symbol": "test/pp/define/test.cpp/A"
             },
             {
                 "kind": 30,
@@ -3021,7 +3021,7 @@
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/pp/test.cpp/B"
+                "symbol": "test/pp/define/test.cpp/B"
             },
             {
                 "kind": 30,
@@ -3044,7 +3044,7 @@
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/pp/test.h/C"
+                "symbol": "test/pp/define/test.h/C"
             },
             {
                 "kind": 30,
@@ -3067,7 +3067,7 @@
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/pp/test2.h/D"
+                "symbol": "test/pp/define/test2.h/D"
             },
             {
                 "kind": 30,
@@ -3090,7 +3090,7 @@
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/pp/test2.h/FOO"
+                "symbol": "test/pp/define/test2.h/FOO"
             },
             {
                 "kind": 30,
@@ -3113,7 +3113,7 @@
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/pp/test3.h/D"
+                "symbol": "test/pp/define/test3.h/D"
             }
         ]
     }

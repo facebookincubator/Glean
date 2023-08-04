@@ -4929,7 +4929,7 @@
                     "lineBegin": 87,
                     "lineEnd": 87
                 },
-                "sym": "test/pp/test.cpp/A"
+                "sym": "test/pp/define/test.cpp/A"
             },
             {
                 "attributes": [
@@ -4970,7 +4970,7 @@
                     "lineBegin": 88,
                     "lineEnd": 88
                 },
-                "sym": "test/pp/test.cpp/B"
+                "sym": "test/pp/define/test.cpp/B"
             }
         ],
         "references": [
@@ -7543,6 +7543,57 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "FOO"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "test2.h"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 30
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 14,
+                    "columnEnd": 17,
+                    "lineBegin": 25,
+                    "lineEnd": 25
+                },
+                "sym": "test/pp/define/test2.h/FOO",
+                "target": {
+                    "filepath": "test2.h",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 12,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
                             "aString": "test.h"
                         },
                         "key": "symbolName"
@@ -7637,57 +7688,6 @@
                         "columnEnd": 1,
                         "lineBegin": 1,
                         "lineEnd": 1
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aString": "FOO"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "test2.h"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 30
-                        },
-                        "key": "symbolKind"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 8
-                        },
-                        "key": "symbolLanguage"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 1
-                        },
-                        "key": "symbolDefinitionType"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 14,
-                    "columnEnd": 17,
-                    "lineBegin": 25,
-                    "lineEnd": 25
-                },
-                "sym": "test/pp/test2.h/FOO",
-                "target": {
-                    "filepath": "test2.h",
-                    "range": {
-                        "columnBegin": 9,
-                        "columnEnd": 12,
-                        "lineBegin": 10,
-                        "lineEnd": 10
                     },
                     "repository": "test"
                 }

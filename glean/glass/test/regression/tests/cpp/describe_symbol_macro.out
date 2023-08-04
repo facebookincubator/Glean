@@ -1,0 +1,50 @@
+[
+    "@generated",
+    {
+        "comments": [],
+        "contains_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "extends_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "kind": 30,
+        "language": 8,
+        "location": {
+            "filepath": "test2.h",
+            "range": {
+                "columnBegin": 9,
+                "columnEnd": 12,
+                "lineBegin": 10,
+                "lineEnd": 10
+            },
+            "repository": "test"
+        },
+        "modifiers": [],
+        "name": {
+            "container": "test2.h",
+            "localName": "FOO"
+        },
+        "pretty_comments": [],
+        "repo_hash": "testhash",
+        "sym": "test/pp/define/test2.h/FOO",
+        "sym_location": {
+            "filepath": "test2.h",
+            "range": {
+                "columnBegin": 9,
+                "columnEnd": 12,
+                "lineBegin": 10,
+                "lineEnd": 10
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": [],
+        "type_xrefs": []
+    }
+]

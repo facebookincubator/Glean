@@ -943,7 +943,7 @@
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/pp/test.cpp/A"
+                "symbol": "test/pp/define/test.cpp/A"
             },
             {
                 "kind": 30,
@@ -966,7 +966,7 @@
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/pp/test.cpp/B"
+                "symbol": "test/pp/define/test.cpp/B"
             },
             {
                 "kind": 30,
@@ -989,7 +989,7 @@
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/pp/test.h/C"
+                "symbol": "test/pp/define/test.h/C"
             },
             {
                 "kind": 30,
@@ -1012,7 +1012,7 @@
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/pp/test2.h/D"
+                "symbol": "test/pp/define/test2.h/D"
             },
             {
                 "kind": 30,
@@ -1035,7 +1035,7 @@
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/pp/test2.h/FOO"
+                "symbol": "test/pp/define/test2.h/FOO"
             },
             {
                 "kind": 30,
@@ -1058,7 +1058,7 @@
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/pp/test3.h/D"
+                "symbol": "test/pp/define/test3.h/D"
             }
         ]
     }

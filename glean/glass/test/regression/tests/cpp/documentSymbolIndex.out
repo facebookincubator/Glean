@@ -2554,7 +2554,7 @@
                         "lineBegin": 25,
                         "lineEnd": 25
                     },
-                    "sym": "test/pp/test2.h/FOO",
+                    "sym": "test/pp/define/test2.h/FOO",
                     "target": {
                         "filepath": "test2.h",
                         "range": {
@@ -4598,7 +4598,7 @@
                         "lineBegin": 87,
                         "lineEnd": 87
                     },
-                    "sym": "test/pp/test.cpp/A"
+                    "sym": "test/pp/define/test.cpp/A"
                 }
             ],
             "88": [
@@ -4626,7 +4626,7 @@
                         "lineBegin": 88,
                         "lineEnd": 88
                     },
-                    "sym": "test/pp/test.cpp/B"
+                    "sym": "test/pp/define/test.cpp/B"
                 }
             ],
             "9": [
