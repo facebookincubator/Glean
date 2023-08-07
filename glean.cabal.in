@@ -1230,6 +1230,7 @@ library glass-lib
         Glean.Glass.Pretty.Cxx
         Glean.Glass.Pretty.Flow
         Glean.Glass.Pretty.Hack
+        Glean.Glass.Pretty.Java
         Glean.Glass.Pretty.LSIF
         Glean.Glass.Pretty.Python
         Glean.Glass.Pretty.SCIP
