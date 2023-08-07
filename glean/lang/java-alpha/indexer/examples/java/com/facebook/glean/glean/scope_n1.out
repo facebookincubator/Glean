@@ -69,12 +69,12 @@
                           "signature": [ ]
                         }
                       },
-                      "span": { "start": 110, "length": 11 }
+                      "span": { "start": 142, "length": 11 }
                     }
                   }
                 ],
                 "typeParams": [ ],
-                "span": { "start": 110, "length": 354 },
+                "span": { "start": 142, "length": 354 },
                 "file": {
                   "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/Glean.java"
                 }
@@ -88,7 +88,7 @@
         "file": {
           "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/Glean.java"
         },
-        "location": { "span": { "start": 110, "length": 354 } }
+        "location": { "span": { "start": 142, "length": 354 } }
       },
       "kind": 6,
       "language": 2

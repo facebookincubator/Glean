@@ -55,12 +55,12 @@
                 "signature": [ ]
               }
             },
-            "span": { "start": 110, "length": 11 }
+            "span": { "start": 142, "length": 11 }
           }
         }
       ],
       "typeParams": [ ],
-      "span": { "start": 110, "length": 354 },
+      "span": { "start": 142, "length": 354 },
       "file": {
         "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/Glean.java"
       }
@@ -93,7 +93,7 @@
       "implements_": [ ],
       "annotations": [ ],
       "typeParams": [ ],
-      "span": { "start": 110, "length": 898 },
+      "span": { "start": 134, "length": 898 },
       "file": {
         "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
       }

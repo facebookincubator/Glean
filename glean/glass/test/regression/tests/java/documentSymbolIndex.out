@@ -4,7 +4,35 @@
         "revision": "testhash",
         "size": 12,
         "symbols": {
-            "10": [
+            "11": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 10
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 5
+                        },
+                        "symbolName": {
+                            "aString": "LOG_TAG"
+                        },
+                        "symbolParent": {
+                            "aString": "com.facebook.glean.glean.Glean"
+                        },
+                        "symbolSignature": {
+                            "aString": "String LOG_TAG"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 48,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "sym": "test/java/com/facebook/glean/glean/Glean/LOG_TAG"
+                }
+            ],
+            "13": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -26,13 +54,13 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 4,
-                        "lineBegin": 10,
-                        "lineEnd": 14
+                        "lineBegin": 13,
+                        "lineEnd": 17
                     },
                     "sym": "test/java/com/facebook/glean/glean/Glean/fetch"
                 }
             ],
-            "12": [
+            "15": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -54,8 +82,8 @@
                     "range": {
                         "columnBegin": 10,
                         "columnEnd": 14,
-                        "lineBegin": 12,
-                        "lineEnd": 12
+                        "lineBegin": 15,
+                        "lineEnd": 15
                     },
                     "sym": "test/java/com/facebook/glean/glean/POJO",
                     "target": {
@@ -63,14 +91,14 @@
                         "range": {
                             "columnBegin": 1,
                             "columnEnd": 2,
-                            "lineBegin": 5,
-                            "lineEnd": 47
+                            "lineBegin": 8,
+                            "lineEnd": 50
                         },
                         "repository": "test"
                     }
                 }
             ],
-            "13": [
+            "16": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -92,8 +120,8 @@
                     "range": {
                         "columnBegin": 16,
                         "columnEnd": 20,
-                        "lineBegin": 13,
-                        "lineEnd": 13
+                        "lineBegin": 16,
+                        "lineEnd": 16
                     },
                     "sym": "test/java/com/facebook/glean/glean/POJO/%3Cinit%3E",
                     "target": {
@@ -101,14 +129,14 @@
                         "range": {
                             "columnBegin": 3,
                             "columnEnd": 4,
-                            "lineBegin": 19,
-                            "lineEnd": 22
+                            "lineBegin": 22,
+                            "lineEnd": 25
                         },
                         "repository": "test"
                     }
                 }
             ],
-            "16": [
+            "19": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -130,13 +158,13 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 4,
-                        "lineBegin": 16,
-                        "lineEnd": 22
+                        "lineBegin": 19,
+                        "lineEnd": 25
                     },
                     "sym": "test/java/com/facebook/glean/glean/Glean/main/.t/java.lang.String[]"
                 }
             ],
-            "17": [
+            "20": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -158,8 +186,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 10,
-                        "lineBegin": 17,
-                        "lineEnd": 17
+                        "lineBegin": 20,
+                        "lineEnd": 20
                     },
                     "sym": "test/java/com/facebook/glean/glean/Glean",
                     "target": {
@@ -167,14 +195,14 @@
                         "range": {
                             "columnBegin": 1,
                             "columnEnd": 2,
-                            "lineBegin": 5,
-                            "lineEnd": 23
+                            "lineBegin": 8,
+                            "lineEnd": 26
                         },
                         "repository": "test"
                     }
                 }
             ],
-            "18": [
+            "21": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -196,8 +224,8 @@
                     "range": {
                         "columnBegin": 17,
                         "columnEnd": 30,
-                        "lineBegin": 18,
-                        "lineEnd": 18
+                        "lineBegin": 21,
+                        "lineEnd": 21
                     },
                     "sym": "test/java/com/facebook/glean/glean/Glean/fetch",
                     "target": {
@@ -205,8 +233,8 @@
                         "range": {
                             "columnBegin": 3,
                             "columnEnd": 4,
-                            "lineBegin": 10,
-                            "lineEnd": 14
+                            "lineBegin": 13,
+                            "lineEnd": 17
                         },
                         "repository": "test"
                     }
@@ -232,8 +260,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 9,
-                        "lineBegin": 18,
-                        "lineEnd": 18
+                        "lineBegin": 21,
+                        "lineEnd": 21
                     },
                     "sym": "test/java/com/facebook/glean/glean/POJO",
                     "target": {
@@ -241,14 +269,14 @@
                         "range": {
                             "columnBegin": 1,
                             "columnEnd": 2,
-                            "lineBegin": 5,
-                            "lineEnd": 47
+                            "lineBegin": 8,
+                            "lineEnd": 50
                         },
                         "repository": "test"
                     }
                 }
             ],
-            "19": [
+            "22": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -270,8 +298,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 16,
-                        "lineBegin": 19,
-                        "lineEnd": 19
+                        "lineBegin": 22,
+                        "lineEnd": 22
                     },
                     "sym": "test/java/com/facebook/glean/glean/POJO/getE",
                     "target": {
@@ -279,14 +307,14 @@
                         "range": {
                             "columnBegin": 3,
                             "columnEnd": 4,
-                            "lineBegin": 36,
-                            "lineEnd": 38
+                            "lineBegin": 39,
+                            "lineEnd": 41
                         },
                         "repository": "test"
                     }
                 }
             ],
-            "20": [
+            "23": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -308,8 +336,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 18,
-                        "lineBegin": 20,
-                        "lineEnd": 20
+                        "lineBegin": 23,
+                        "lineEnd": 23
                     },
                     "sym": "test/java/com/facebook/glean/glean/POJO/getE/.t/I",
                     "target": {
@@ -317,14 +345,14 @@
                         "range": {
                             "columnBegin": 3,
                             "columnEnd": 4,
-                            "lineBegin": 40,
-                            "lineEnd": 42
+                            "lineBegin": 43,
+                            "lineEnd": 45
                         },
                         "repository": "test"
                     }
                 }
             ],
-            "21": [
+            "24": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -346,8 +374,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 23,
-                        "lineBegin": 21,
-                        "lineEnd": 21
+                        "lineBegin": 24,
+                        "lineEnd": 24
                     },
                     "sym": "test/java/com/facebook/glean/glean/POJO/getList/.t/java.util.List",
                     "target": {
@@ -355,14 +383,14 @@
                         "range": {
                             "columnBegin": 3,
                             "columnEnd": 4,
-                            "lineBegin": 31,
-                            "lineEnd": 34
+                            "lineBegin": 34,
+                            "lineEnd": 37
                         },
                         "repository": "test"
                     }
                 }
             ],
-            "5": [
+            "8": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -384,38 +412,10 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 5,
-                        "lineEnd": 23
+                        "lineBegin": 8,
+                        "lineEnd": 26
                     },
                     "sym": "test/java/com/facebook/glean/glean/Glean"
-                }
-            ],
-            "8": [
-                {
-                    "attributes": {
-                        "symbolKind": {
-                            "aInteger": 10
-                        },
-                        "symbolLanguage": {
-                            "aInteger": 5
-                        },
-                        "symbolName": {
-                            "aString": "LOG_TAG"
-                        },
-                        "symbolParent": {
-                            "aString": "com.facebook.glean.glean.Glean"
-                        },
-                        "symbolSignature": {
-                            "aString": "String LOG_TAG"
-                        }
-                    },
-                    "range": {
-                        "columnBegin": 3,
-                        "columnEnd": 48,
-                        "lineBegin": 8,
-                        "lineEnd": 8
-                    },
-                    "sym": "test/java/com/facebook/glean/glean/Glean/LOG_TAG"
                 }
             ]
         },

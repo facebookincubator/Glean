@@ -4,6 +4,8 @@ package com.facebook.glean.descriptors;
 
 import com.facebook.glean.IndexerContext;
 import com.facebook.glean.schema.java_alpha.Annotation;
+import com.facebook.glean.schema.java_alpha.Declaration;
+import com.facebook.glean.schema.java_alpha.DeclarationComment;
 import com.facebook.glean.schema.java_alpha.Definition;
 import com.facebook.glean.schema.java_alpha.FieldDeclaration;
 import com.facebook.glean.schema.java_alpha.InterfaceDeclaration;
@@ -51,6 +53,8 @@ public class InterfaceDescriptor {
         new InterfaceDeclaration.Builder().setKey(key).build();
     ic.predicates.interfaceDeclarationPredicate.addFact(interfaceDeclaration);
     Definition interfaceDef = Definition.fromInterface_(interfaceDeclaration);
+    Declaration declaration = Declaration.fromInterface_(interfaceDeclaration);
+    DeclarationComment commentDescriptor = CommentDescriptor.describe(ic, tree, declaration);
 
     List<MethodDeclaration> methods = ClassUtils.buildMethods(ic, tree, interfaceDef);
     List<FieldDeclaration> variables = ClassUtils.buildFields(ic, tree, interfaceDef, false);

@@ -2,6 +2,9 @@
 
 package com.facebook.glean.glean;
 
+/*
+  Comment for Glean class
+*/
 @Deprecated
 public class Glean {
 

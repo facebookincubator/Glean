@@ -7,6 +7,8 @@ import com.facebook.glean.schema.java_alpha.Annotation;
 import com.facebook.glean.schema.java_alpha.ClassDeclaration;
 import com.facebook.glean.schema.java_alpha.ClassDeclarationKey;
 import com.facebook.glean.schema.java_alpha.ConstructorDeclaration;
+import com.facebook.glean.schema.java_alpha.Declaration;
+import com.facebook.glean.schema.java_alpha.DeclarationComment;
 import com.facebook.glean.schema.java_alpha.Definition;
 import com.facebook.glean.schema.java_alpha.FieldDeclaration;
 import com.facebook.glean.schema.java_alpha.MethodDeclaration;
@@ -52,6 +54,8 @@ public class ClassDescriptor {
     ClassDeclaration classDeclaration = new ClassDeclaration.Builder().setKey(key).build();
     Definition classDef = Definition.fromClass_(classDeclaration);
     ic.predicates.classDeclarationPredicate.addFact(classDeclaration);
+    Declaration declaration = Declaration.fromClass_(classDeclaration);
+    DeclarationComment commentDescriptor = CommentDescriptor.describe(ic, tree, declaration);
 
     List<FieldDeclaration> fields = ClassUtils.buildFields(ic, tree, classDef, false);
     List<ConstructorDeclaration> constructors = ClassUtils.buildConstructors(ic, tree, classDef);

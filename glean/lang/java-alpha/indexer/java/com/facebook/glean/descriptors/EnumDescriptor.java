@@ -4,6 +4,8 @@ package com.facebook.glean.descriptors;
 
 import com.facebook.glean.IndexerContext;
 import com.facebook.glean.schema.java_alpha.Annotation;
+import com.facebook.glean.schema.java_alpha.Declaration;
+import com.facebook.glean.schema.java_alpha.DeclarationComment;
 import com.facebook.glean.schema.java_alpha.Definition;
 import com.facebook.glean.schema.java_alpha.EnumDeclaration;
 import com.facebook.glean.schema.java_alpha.EnumDeclarationKey;
@@ -45,6 +47,8 @@ public class EnumDescriptor {
     EnumDeclaration enumDeclaration = new EnumDeclaration.Builder().setKey(key).build();
     ic.predicates.enumDeclarationPredicate.addFact(enumDeclaration);
     Definition enumDef = Definition.fromEnum_(enumDeclaration);
+    Declaration declaration = Declaration.fromEnum_(enumDeclaration);
+    DeclarationComment commentDescriptor = CommentDescriptor.describe(ic, tree, declaration);
 
     List<FieldDeclaration> variables = ClassUtils.buildFields(ic, tree, enumDef, true);
     List<MethodDeclaration> methods = ClassUtils.buildMethods(ic, tree, enumDef);

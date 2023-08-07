@@ -4,6 +4,7 @@ package com.facebook.glean.predicates;
 
 import com.facebook.glean.schema.java_alpha.ClassDeclaration;
 import com.facebook.glean.schema.java_alpha.ConstructorDeclaration;
+import com.facebook.glean.schema.java_alpha.DeclarationComment;
 import com.facebook.glean.schema.java_alpha.EnumDeclaration;
 import com.facebook.glean.schema.java_alpha.FieldDeclaration;
 import com.facebook.glean.schema.java_alpha.FileXRefs;
@@ -43,6 +44,8 @@ public class Predicates {
       new ListPredicate<>("java.alpha.ImportDeclaration." + JAVA_SCHEMA_VERSION);
   public final Predicate<PackageDeclaration> packageDeclarationPredicate =
       new ListPredicate<>("java.alpha.PackageDeclaration." + JAVA_SCHEMA_VERSION);
+  public final Predicate<DeclarationComment> declarationCommentPredicate =
+      new ListPredicate<>("java.alpha.DeclarationComment." + JAVA_SCHEMA_VERSION);
   public final XRefPredicate xRefPredicate =
       new XRefPredicate("java.alpha.XRef." + JAVA_SCHEMA_VERSION);
   public final Predicate<FileXRefs> fileXRefsPredicate =
@@ -62,6 +65,7 @@ public class Predicates {
           enumDeclarationPredicate,
           importDeclarationPredicate,
           packageDeclarationPredicate,
+          declarationCommentPredicate,
           xRefPredicate,
           fileXRefsPredicate,
           fileLinesPredicate);

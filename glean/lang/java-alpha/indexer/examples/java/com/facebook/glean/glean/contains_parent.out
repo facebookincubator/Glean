@@ -74,7 +74,7 @@
                         "signature": [ ]
                       }
                     },
-                    "span": { "start": 460, "length": 11 }
+                    "span": { "start": 484, "length": 11 }
                   }
                 }
               ],
@@ -111,14 +111,14 @@
                     "implements_": [ ],
                     "annotations": [ ],
                     "typeParams": [ ],
-                    "span": { "start": 110, "length": 898 },
+                    "span": { "start": 134, "length": 898 },
                     "file": {
                       "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
                     }
                   }
                 }
               },
-              "span": { "start": 460, "length": 107 }
+              "span": { "start": 484, "length": 107 }
             }
           }
         }
@@ -154,7 +154,7 @@
               "implements_": [ ],
               "annotations": [ ],
               "typeParams": [ ],
-              "span": { "start": 110, "length": 898 },
+              "span": { "start": 134, "length": 898 },
               "file": {
                 "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
               }
@@ -328,7 +328,7 @@
                                   }
                                 }
                               },
-                              "span": { "start": 583, "length": 6 }
+                              "span": { "start": 607, "length": 6 }
                             }
                           }
                         },
@@ -355,7 +355,7 @@
                     },
                     "annotations": [ ],
                     "modifier": [ ],
-                    "span": { "start": 583, "length": 8 }
+                    "span": { "start": 607, "length": 8 }
                   }
                 },
                 {
@@ -413,7 +413,7 @@
                                   }
                                 }
                               },
-                              "span": { "start": 593, "length": 6 }
+                              "span": { "start": 617, "length": 6 }
                             }
                           }
                         },
@@ -440,7 +440,7 @@
                     },
                     "annotations": [ ],
                     "modifier": [ ],
-                    "span": { "start": 593, "length": 8 }
+                    "span": { "start": 617, "length": 8 }
                   }
                 },
                 {
@@ -498,7 +498,7 @@
                                   }
                                 }
                               },
-                              "span": { "start": 603, "length": 6 }
+                              "span": { "start": 627, "length": 6 }
                             }
                           }
                         },
@@ -525,7 +525,7 @@
                     },
                     "annotations": [ ],
                     "modifier": [ ],
-                    "span": { "start": 603, "length": 8 }
+                    "span": { "start": 627, "length": 8 }
                   }
                 },
                 {
@@ -583,7 +583,7 @@
                                   }
                                 }
                               },
-                              "span": { "start": 613, "length": 6 }
+                              "span": { "start": 637, "length": 6 }
                             }
                           }
                         },
@@ -610,7 +610,7 @@
                     },
                     "annotations": [ ],
                     "modifier": [ ],
-                    "span": { "start": 613, "length": 8 }
+                    "span": { "start": 637, "length": 8 }
                   }
                 }
               ],
@@ -648,14 +648,14 @@
                     "implements_": [ ],
                     "annotations": [ ],
                     "typeParams": [ ],
-                    "span": { "start": 110, "length": 898 },
+                    "span": { "start": 134, "length": 898 },
                     "file": {
                       "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
                     }
                   }
                 }
               },
-              "span": { "start": 571, "length": 121 }
+              "span": { "start": 595, "length": 121 }
             }
           }
         }
@@ -691,7 +691,7 @@
               "implements_": [ ],
               "annotations": [ ],
               "typeParams": [ ],
-              "span": { "start": 110, "length": 898 },
+              "span": { "start": 134, "length": 898 },
               "file": {
                 "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
               }
@@ -753,7 +753,7 @@
                             }
                           }
                         },
-                        "span": { "start": 166, "length": 6 }
+                        "span": { "start": 198, "length": 6 }
                       }
                     }
                   },
@@ -842,19 +842,19 @@
                               "signature": [ ]
                             }
                           },
-                          "span": { "start": 110, "length": 11 }
+                          "span": { "start": 142, "length": 11 }
                         }
                       }
                     ],
                     "typeParams": [ ],
-                    "span": { "start": 110, "length": 354 },
+                    "span": { "start": 142, "length": 354 },
                     "file": {
                       "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/Glean.java"
                     }
                   }
                 }
               },
-              "span": { "start": 146, "length": 45 }
+              "span": { "start": 178, "length": 45 }
             }
           }
         }
@@ -922,12 +922,12 @@
                         "signature": [ ]
                       }
                     },
-                    "span": { "start": 110, "length": 11 }
+                    "span": { "start": 142, "length": 11 }
                   }
                 }
               ],
               "typeParams": [ ],
-              "span": { "start": 110, "length": 354 },
+              "span": { "start": 142, "length": 354 },
               "file": {
                 "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/Glean.java"
               }
@@ -1011,14 +1011,14 @@
                     "implements_": [ ],
                     "annotations": [ ],
                     "typeParams": [ ],
-                    "span": { "start": 110, "length": 898 },
+                    "span": { "start": 134, "length": 898 },
                     "file": {
                       "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
                     }
                   }
                 }
               },
-              "span": { "start": 132, "length": 30 }
+              "span": { "start": 156, "length": 30 }
             }
           }
         }
@@ -1054,7 +1054,7 @@
               "implements_": [ ],
               "annotations": [ ],
               "typeParams": [ ],
-              "span": { "start": 110, "length": 898 },
+              "span": { "start": 134, "length": 898 },
               "file": {
                 "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
               }
@@ -1116,7 +1116,7 @@
                             }
                           }
                         },
-                        "span": { "start": 428, "length": 14 }
+                        "span": { "start": 452, "length": 14 }
                       }
                     }
                   },
@@ -1173,14 +1173,14 @@
                     "implements_": [ ],
                     "annotations": [ ],
                     "typeParams": [ ],
-                    "span": { "start": 110, "length": 898 },
+                    "span": { "start": 134, "length": 898 },
                     "file": {
                       "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
                     }
                   }
                 }
               },
-              "span": { "start": 421, "length": 35 }
+              "span": { "start": 445, "length": 35 }
             }
           }
         }
@@ -1216,7 +1216,7 @@
               "implements_": [ ],
               "annotations": [ ],
               "typeParams": [ ],
-              "span": { "start": 110, "length": 898 },
+              "span": { "start": 134, "length": 898 },
               "file": {
                 "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
               }
@@ -1302,7 +1302,7 @@
                         "signature": [ ]
                       }
                     },
-                    "span": { "start": 165, "length": 11 }
+                    "span": { "start": 189, "length": 11 }
                   }
                 }
               ],
@@ -1337,14 +1337,14 @@
                     "implements_": [ ],
                     "annotations": [ ],
                     "typeParams": [ ],
-                    "span": { "start": 110, "length": 898 },
+                    "span": { "start": 134, "length": 898 },
                     "file": {
                       "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
                     }
                   }
                 }
               },
-              "span": { "start": 165, "length": 43 }
+              "span": { "start": 189, "length": 43 }
             }
           }
         }
@@ -1380,7 +1380,7 @@
               "implements_": [ ],
               "annotations": [ ],
               "typeParams": [ ],
-              "span": { "start": 110, "length": 898 },
+              "span": { "start": 134, "length": 898 },
               "file": {
                 "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
               }
@@ -1464,14 +1464,14 @@
                     "implements_": [ ],
                     "annotations": [ ],
                     "typeParams": [ ],
-                    "span": { "start": 110, "length": 898 },
+                    "span": { "start": 134, "length": 898 },
                     "file": {
                       "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
                     }
                   }
                 }
               },
-              "span": { "start": 211, "length": 33 }
+              "span": { "start": 235, "length": 33 }
             }
           }
         }
@@ -1507,7 +1507,7 @@
               "implements_": [ ],
               "annotations": [ ],
               "typeParams": [ ],
-              "span": { "start": 110, "length": 898 },
+              "span": { "start": 134, "length": 898 },
               "file": {
                 "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
               }
@@ -1591,14 +1591,14 @@
                     "implements_": [ ],
                     "annotations": [ ],
                     "typeParams": [ ],
-                    "span": { "start": 110, "length": 898 },
+                    "span": { "start": 134, "length": 898 },
                     "file": {
                       "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
                     }
                   }
                 }
               },
-              "span": { "start": 247, "length": 23 }
+              "span": { "start": 271, "length": 23 }
             }
           }
         }
@@ -1634,7 +1634,7 @@
               "implements_": [ ],
               "annotations": [ ],
               "typeParams": [ ],
-              "span": { "start": 110, "length": 898 },
+              "span": { "start": 134, "length": 898 },
               "file": {
                 "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
               }
@@ -1696,7 +1696,7 @@
                             }
                           }
                         },
-                        "span": { "start": 281, "length": 6 }
+                        "span": { "start": 305, "length": 6 }
                       }
                     }
                   },
@@ -1753,14 +1753,14 @@
                     "implements_": [ ],
                     "annotations": [ ],
                     "typeParams": [ ],
-                    "span": { "start": 110, "length": 898 },
+                    "span": { "start": 134, "length": 898 },
                     "file": {
                       "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
                     }
                   }
                 }
               },
-              "span": { "start": 274, "length": 22 }
+              "span": { "start": 298, "length": 22 }
             }
           }
         }
@@ -1796,7 +1796,7 @@
               "implements_": [ ],
               "annotations": [ ],
               "typeParams": [ ],
-              "span": { "start": 110, "length": 898 },
+              "span": { "start": 134, "length": 898 },
               "file": {
                 "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
               }
@@ -1858,7 +1858,7 @@
                             }
                           }
                         },
-                        "span": { "start": 307, "length": 6 }
+                        "span": { "start": 331, "length": 6 }
                       }
                     }
                   },
@@ -1915,14 +1915,14 @@
                     "implements_": [ ],
                     "annotations": [ ],
                     "typeParams": [ ],
-                    "span": { "start": 110, "length": 898 },
+                    "span": { "start": 134, "length": 898 },
                     "file": {
                       "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
                     }
                   }
                 }
               },
-              "span": { "start": 299, "length": 23 }
+              "span": { "start": 323, "length": 23 }
             }
           }
         }
@@ -1958,7 +1958,7 @@
               "implements_": [ ],
               "annotations": [ ],
               "typeParams": [ ],
-              "span": { "start": 110, "length": 898 },
+              "span": { "start": 134, "length": 898 },
               "file": {
                 "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
               }
@@ -2020,7 +2020,7 @@
                             }
                           }
                         },
-                        "span": { "start": 335, "length": 6 }
+                        "span": { "start": 359, "length": 6 }
                       }
                     }
                   },
@@ -2077,14 +2077,14 @@
                     "implements_": [ ],
                     "annotations": [ ],
                     "typeParams": [ ],
-                    "span": { "start": 110, "length": 898 },
+                    "span": { "start": 134, "length": 898 },
                     "file": {
                       "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
                     }
                   }
                 }
               },
-              "span": { "start": 325, "length": 25 }
+              "span": { "start": 349, "length": 25 }
             }
           }
         }
@@ -2120,7 +2120,7 @@
               "implements_": [ ],
               "annotations": [ ],
               "typeParams": [ ],
-              "span": { "start": 110, "length": 898 },
+              "span": { "start": 134, "length": 898 },
               "file": {
                 "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
               }
@@ -2182,7 +2182,7 @@
                             }
                           }
                         },
-                        "span": { "start": 353, "length": 6 }
+                        "span": { "start": 377, "length": 6 }
                       }
                     }
                   },
@@ -2239,14 +2239,14 @@
                     "implements_": [ ],
                     "annotations": [ ],
                     "typeParams": [ ],
-                    "span": { "start": 110, "length": 898 },
+                    "span": { "start": 134, "length": 898 },
                     "file": {
                       "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
                     }
                   }
                 }
               },
-              "span": { "start": 353, "length": 15 }
+              "span": { "start": 377, "length": 15 }
             }
           }
         }
@@ -2282,7 +2282,7 @@
               "implements_": [ ],
               "annotations": [ ],
               "typeParams": [ ],
-              "span": { "start": 110, "length": 898 },
+              "span": { "start": 134, "length": 898 },
               "file": {
                 "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
               }
@@ -2341,7 +2341,7 @@
                             "span": { "start": 0, "length": 0 }
                           }
                         },
-                        "span": { "start": 379, "length": 13 }
+                        "span": { "start": 403, "length": 13 }
                       }
                     }
                   },
@@ -2392,14 +2392,14 @@
                     "implements_": [ ],
                     "annotations": [ ],
                     "typeParams": [ ],
-                    "span": { "start": 110, "length": 898 },
+                    "span": { "start": 134, "length": 898 },
                     "file": {
                       "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
                     }
                   }
                 }
               },
-              "span": { "start": 372, "length": 46 }
+              "span": { "start": 396, "length": 46 }
             }
           }
         }
@@ -2435,7 +2435,7 @@
               "implements_": [ ],
               "annotations": [ ],
               "typeParams": [ ],
-              "span": { "start": 110, "length": 898 },
+              "span": { "start": 134, "length": 898 },
               "file": {
                 "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
               }
@@ -2513,7 +2513,7 @@
                             }
                           }
                         },
-                        "span": { "start": 251, "length": 4 }
+                        "span": { "start": 283, "length": 4 }
                       }
                     }
                   },
@@ -2582,7 +2582,7 @@
                         "signature": [ ]
                       }
                     },
-                    "span": { "start": 195, "length": 11 }
+                    "span": { "start": 227, "length": 11 }
                   }
                 },
                 {
@@ -2619,7 +2619,7 @@
                       }
                     },
                     "constant": "deprecation",
-                    "span": { "start": 209, "length": 32 }
+                    "span": { "start": 241, "length": 32 }
                   }
                 }
               ],
@@ -2688,19 +2688,19 @@
                               "signature": [ ]
                             }
                           },
-                          "span": { "start": 110, "length": 11 }
+                          "span": { "start": 142, "length": 11 }
                         }
                       }
                     ],
                     "typeParams": [ ],
-                    "span": { "start": 110, "length": 354 },
+                    "span": { "start": 142, "length": 354 },
                     "file": {
                       "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/Glean.java"
                     }
                   }
                 }
               },
-              "span": { "start": 195, "length": 97 }
+              "span": { "start": 227, "length": 97 }
             }
           }
         }
@@ -2768,12 +2768,12 @@
                         "signature": [ ]
                       }
                     },
-                    "span": { "start": 110, "length": 11 }
+                    "span": { "start": 142, "length": 11 }
                   }
                 }
               ],
               "typeParams": [ ],
-              "span": { "start": 110, "length": 354 },
+              "span": { "start": 142, "length": 354 },
               "file": {
                 "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/Glean.java"
               }
@@ -2841,7 +2841,7 @@
                             }
                           }
                         },
-                        "span": { "start": 809, "length": 6 }
+                        "span": { "start": 833, "length": 6 }
                       }
                     }
                   },
@@ -2900,14 +2900,14 @@
                     "implements_": [ ],
                     "annotations": [ ],
                     "typeParams": [ ],
-                    "span": { "start": 110, "length": 898 },
+                    "span": { "start": 134, "length": 898 },
                     "file": {
                       "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
                     }
                   }
                 }
               },
-              "span": { "start": 802, "length": 40 }
+              "span": { "start": 826, "length": 40 }
             }
           }
         }
@@ -2943,7 +2943,7 @@
               "implements_": [ ],
               "annotations": [ ],
               "typeParams": [ ],
-              "span": { "start": 110, "length": 898 },
+              "span": { "start": 134, "length": 898 },
               "file": {
                 "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
               }
@@ -3042,7 +3042,7 @@
                     },
                     "annotations": [ ],
                     "modifier": [ 2 ],
-                    "span": { "start": 865, "length": 19 }
+                    "span": { "start": 889, "length": 19 }
                   }
                 }
               ],
@@ -3064,7 +3064,7 @@
                             }
                           }
                         },
-                        "span": { "start": 853, "length": 6 }
+                        "span": { "start": 877, "length": 6 }
                       }
                     }
                   },
@@ -3123,14 +3123,14 @@
                     "implements_": [ ],
                     "annotations": [ ],
                     "typeParams": [ ],
-                    "span": { "start": 110, "length": 898 },
+                    "span": { "start": 134, "length": 898 },
                     "file": {
                       "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
                     }
                   }
                 }
               },
-              "span": { "start": 846, "length": 59 }
+              "span": { "start": 870, "length": 59 }
             }
           }
         }
@@ -3166,7 +3166,7 @@
               "implements_": [ ],
               "annotations": [ ],
               "typeParams": [ ],
-              "span": { "start": 110, "length": 898 },
+              "span": { "start": 134, "length": 898 },
               "file": {
                 "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
               }
@@ -3289,7 +3289,7 @@
                                   }
                                 }
                               },
-                              "span": { "start": 716, "length": 14 }
+                              "span": { "start": 740, "length": 14 }
                             }
                           }
                         },
@@ -3317,7 +3317,7 @@
                                               }
                                             }
                                           },
-                                          "span": { "start": 741, "length": 15 }
+                                          "span": { "start": 765, "length": 15 }
                                         }
                                       }
                                     },
@@ -3370,7 +3370,7 @@
                     },
                     "annotations": [ ],
                     "modifier": [ ],
-                    "span": { "start": 716, "length": 47 }
+                    "span": { "start": 740, "length": 47 }
                   }
                 }
               ],
@@ -3416,14 +3416,14 @@
                     "implements_": [ ],
                     "annotations": [ ],
                     "typeParams": [ ],
-                    "span": { "start": 110, "length": 898 },
+                    "span": { "start": 134, "length": 898 },
                     "file": {
                       "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
                     }
                   }
                 }
               },
-              "span": { "start": 696, "length": 102 }
+              "span": { "start": 720, "length": 102 }
             }
           }
         }
@@ -3459,7 +3459,7 @@
               "implements_": [ ],
               "annotations": [ ],
               "typeParams": [ ],
-              "span": { "start": 110, "length": 898 },
+              "span": { "start": 134, "length": 898 },
               "file": {
                 "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
               }
@@ -3582,7 +3582,7 @@
                                   }
                                 }
                               },
-                              "span": { "start": 941, "length": 6 }
+                              "span": { "start": 965, "length": 6 }
                             }
                           }
                         },
@@ -3609,7 +3609,7 @@
                     },
                     "annotations": [ ],
                     "modifier": [ ],
-                    "span": { "start": 941, "length": 13 }
+                    "span": { "start": 965, "length": 13 }
                   }
                 }
               ],
@@ -3655,14 +3655,14 @@
                     "implements_": [ ],
                     "annotations": [ ],
                     "typeParams": [ ],
-                    "span": { "start": 110, "length": 898 },
+                    "span": { "start": 134, "length": 898 },
                     "file": {
                       "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
                     }
                   }
                 }
               },
-              "span": { "start": 909, "length": 97 }
+              "span": { "start": 933, "length": 97 }
             }
           }
         }
@@ -3698,7 +3698,7 @@
               "implements_": [ ],
               "annotations": [ ],
               "typeParams": [ ],
-              "span": { "start": 110, "length": 898 },
+              "span": { "start": 134, "length": 898 },
               "file": {
                 "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java"
               }
@@ -3832,7 +3832,7 @@
                                             }
                                           }
                                         },
-                                        "span": { "start": 320, "length": 6 }
+                                        "span": { "start": 352, "length": 6 }
                                       }
                                     }
                                   },
@@ -3859,7 +3859,7 @@
                                   "span": { "start": 0, "length": 0 }
                                 }
                               },
-                              "span": { "start": 320, "length": 8 }
+                              "span": { "start": 352, "length": 8 }
                             }
                           }
                         },
@@ -3890,7 +3890,7 @@
                     },
                     "annotations": [ ],
                     "modifier": [ ],
-                    "span": { "start": 320, "length": 13 }
+                    "span": { "start": 352, "length": 13 }
                   }
                 }
               ],
@@ -3968,19 +3968,19 @@
                               "signature": [ ]
                             }
                           },
-                          "span": { "start": 110, "length": 11 }
+                          "span": { "start": 142, "length": 11 }
                         }
                       }
                     ],
                     "typeParams": [ ],
-                    "span": { "start": 110, "length": 354 },
+                    "span": { "start": 142, "length": 354 },
                     "file": {
                       "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/Glean.java"
                     }
                   }
                 }
               },
-              "span": { "start": 296, "length": 166 }
+              "span": { "start": 328, "length": 166 }
             }
           }
         }
@@ -4048,12 +4048,12 @@
                         "signature": [ ]
                       }
                     },
-                    "span": { "start": 110, "length": 11 }
+                    "span": { "start": 142, "length": 11 }
                   }
                 }
               ],
               "typeParams": [ ],
-              "span": { "start": 110, "length": 354 },
+              "span": { "start": 142, "length": 354 },
               "file": {
                 "key": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/Glean.java"
               }

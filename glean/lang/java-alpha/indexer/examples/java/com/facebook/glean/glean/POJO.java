@@ -2,6 +2,9 @@
 
 package com.facebook.glean.glean;
 
+/*
+ Comment for POJO
+*/
 public class POJO {
   public static final int a = 1;
   @Deprecated private static final int b = 2;

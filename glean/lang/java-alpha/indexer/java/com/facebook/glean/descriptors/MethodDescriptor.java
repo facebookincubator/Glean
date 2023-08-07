@@ -6,6 +6,8 @@ import com.facebook.glean.IndexerContext;
 import com.facebook.glean.descriptors.exceptions.DescriptorException;
 import com.facebook.glean.descriptors.utils.TypeUtils;
 import com.facebook.glean.schema.java_alpha.Annotation;
+import com.facebook.glean.schema.java_alpha.Declaration;
+import com.facebook.glean.schema.java_alpha.DeclarationComment;
 import com.facebook.glean.schema.java_alpha.Definition;
 import com.facebook.glean.schema.java_alpha.MethodDeclaration;
 import com.facebook.glean.schema.java_alpha.MethodDeclarationKey;
@@ -100,6 +102,9 @@ public class MethodDescriptor {
 
     MethodDeclaration methodDeclaration = new MethodDeclaration.Builder().setKey(key).build();
     ic.predicates.methodDeclarationPredicate.addFact(methodDeclaration);
+    Declaration declaration = Declaration.fromMethod(methodDeclaration);
+    DeclarationComment commentDescriptor = CommentDescriptor.describe(ic, tree, declaration);
+
     return methodDeclaration;
   }
 }

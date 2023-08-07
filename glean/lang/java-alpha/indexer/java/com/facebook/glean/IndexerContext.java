@@ -11,6 +11,7 @@ import com.sun.source.tree.Tree;
 import com.sun.source.util.JavacTask;
 import com.sun.source.util.SourcePositions;
 import com.sun.source.util.Trees;
+import java.io.IOException;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
@@ -23,6 +24,7 @@ public class IndexerContext {
   public final Types types;
 
   public final CompilationUnitTree cu;
+  public final Utils.Lexer lexer;
   public final SourcePositions sourcePositions;
   public final LineMap lineMap;
 
@@ -47,6 +49,11 @@ public class IndexerContext {
     this.types = task.getTypes();
 
     this.cu = cu;
+    try {
+      this.lexer = new Utils.Lexer(cu.getSourceFile().getCharContent(false).toString(), cu, trees);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
     this.sourcePositions = this.trees.getSourcePositions();
     this.lineMap = cu.getLineMap();
 
