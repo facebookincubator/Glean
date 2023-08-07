@@ -120,7 +120,7 @@ public class Indexer implements Plugin {
             }
 
             tree.accept(XRefDescriptor.XREF_DESCRIPTOR_TREE_SCANNER, ic);
-            return super.visitClass(tree, ic);
+            return null;
           }
 
           @Override
