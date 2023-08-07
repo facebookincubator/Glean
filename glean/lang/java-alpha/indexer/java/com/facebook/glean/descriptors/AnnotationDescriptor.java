@@ -13,6 +13,7 @@ import com.facebook.glean.schema.javakotlin_alpha.QName;
 import com.facebook.glean.schema.javakotlin_alpha.Type;
 import com.facebook.glean.schema.src.ByteSpan;
 import com.sun.source.tree.AnnotationTree;
+import com.sun.source.tree.AssignmentTree;
 import com.sun.source.tree.ExpressionTree;
 import com.sun.source.tree.LiteralTree;
 import com.sun.source.tree.Tree;
@@ -54,6 +55,11 @@ public class AnnotationDescriptor {
     if (arguments.size() == 1) {
       if (arguments.get(0).getKind() == Tree.Kind.STRING_LITERAL) {
         constant = (String) ((LiteralTree) arguments.get(0)).getValue();
+      } else if (arguments.get(0).getKind() == Tree.Kind.ASSIGNMENT) {
+        ExpressionTree expr = ((AssignmentTree) arguments.get(0)).getExpression();
+        if (expr.getKind() == Tree.Kind.STRING_LITERAL) {
+          constant = (String) ((LiteralTree) expr).getValue();
+        }
       }
     }
     // Todo add methodName for constructor used, add optional strings if present
