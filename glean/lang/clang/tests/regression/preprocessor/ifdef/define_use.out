@@ -1,0 +1,75 @@
+[
+  "@generated",
+  {
+    "key": {
+      "define": {
+        "key": {
+          "macro": { "key": "IFDEF1" },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 9,
+            "columnBegin": 9,
+            "lineEnd": 9,
+            "columnEnd": 14
+          }
+        }
+      },
+      "use": {
+        "key": {
+          "macro": { "key": "IFDEF1" },
+          "name": { "begin": 259, "end": 265 },
+          "definition": {
+            "file": { "key": "test.cpp" },
+            "line": 9,
+            "column": 9
+          },
+          "expand": false,
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 12,
+            "columnBegin": 8,
+            "lineEnd": 12,
+            "columnEnd": 14
+          },
+          "nameSpan": { "start": 259, "length": 6 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "define": {
+        "key": {
+          "macro": { "key": "IFDEF2" },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 10,
+            "columnBegin": 9,
+            "lineEnd": 10,
+            "columnEnd": 14
+          }
+        }
+      },
+      "use": {
+        "key": {
+          "macro": { "key": "IFDEF2" },
+          "name": { "begin": 307, "end": 313 },
+          "definition": {
+            "file": { "key": "test.cpp" },
+            "line": 10,
+            "column": 9
+          },
+          "expand": false,
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 18,
+            "columnBegin": 9,
+            "lineEnd": 18,
+            "columnEnd": 15
+          },
+          "nameSpan": { "start": 307, "length": 6 }
+        }
+      }
+    }
+  }
+]

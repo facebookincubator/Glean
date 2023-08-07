@@ -43,4 +43,17 @@ predicate Use :
     nameSpan : src.ByteSpan      # macro name at use site
   }
 
+# for historical reasons pp1.Define and pp1.Use/Undefs are keyed by macro
+# rather than a more unique pp1.Define or similar fact. All similar named
+# macros collide. We can disambiguate uses by definition (though this means
+# no nested macro uses will be found)
+predicate DefineUse:
+  {
+    define: pp1.Define,
+    use: pp1.Use
+  }
+  { Def, Use } where
+    { macro = M, source = { file = F } } = Def;
+    Use = pp1.Use { macro = M, definition = { just = { file = F } } }
+
 }

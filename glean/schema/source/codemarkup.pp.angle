@@ -123,4 +123,19 @@ predicate PpIncludeXRefLocations:
     { include_ = { include_ = Include } } = Events[..];
     { file = Target, source = Range } = Include;
 
+#
+# Uses
+#
+predicate PpEntityUses:
+  {
+    entity: code.pp.Entity,
+    file: src.File,
+    span: src.ByteSpan
+  }
+  { Entity, File, Span } where
+    { define = D } = Entity;
+    pp1.DefineUse { D, Use };
+    { source = { file = File }, nameSpan = Span } = Use;
+
+
 }

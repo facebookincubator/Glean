@@ -310,7 +310,9 @@ predicate EntityReferences:
     (codemarkup.java.JavaEntityUses { E, File, Span };
      { java = E } = Entity) |
     (codemarkup.kotlin.KotlinEntityUses { E, File, Span };
-     { kotlin = E } = Entity);
+     { kotlin = E } = Entity) |
+    (codemarkup.pp.PpEntityUses { E, File, Span };
+     { pp = E } = Entity);
     { span = Span } = RangeSpan;
   ) | (
     codemarkup.lsif.LsifEntityUses { E, File, Range };
@@ -320,8 +322,7 @@ predicate EntityReferences:
     codemarkup.scip.ScipEntityUses { E, File, Range };
     { scip = E } = Entity;
     { range = Range } = RangeSpan;
-  )
-
+  );
 
 # Information for all calls, organized by file and callee_span
 predicate FileCall :
@@ -686,7 +687,6 @@ predicate IndexedFile: src.File
    File where
     codemarkup.cxx.CxxDataAvailable File |
     codemarkup.EntityDataAvailable File
-
 
 # Identifies files with indexed entities.
 # You should not use this, instead use codemarkup.IndexedFile
