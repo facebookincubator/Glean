@@ -1251,6 +1251,7 @@ library glass-lib
         Glean.Glass.Search.Java
         Glean.Glass.Search.Kotlin
         Glean.Glass.Search.LSIF
+        Glean.Glass.Search.Pp
         Glean.Glass.Search.Python
         Glean.Glass.SearchRelated
         Glean.Glass.Search.SCIP
