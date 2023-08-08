@@ -35,7 +35,7 @@ public class CommentDescriptor {
 
     DeclarationCommentKey commentKey =
         new DeclarationCommentKey.Builder()
-            .setSpan(new ByteSpan(commentSourceStart, commentSourceStart + commentText.length()))
+            .setSpan(new ByteSpan(commentSourceStart, commentText.length()))
             .setFile(ClassUtils.buildFile(ic))
             .setDeclaration(decl)
             .build();
