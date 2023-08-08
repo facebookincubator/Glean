@@ -204,4 +204,14 @@ predicate JavaExtendsChildEntity:
   { { decl = Parent }, { decl = Child } } where
     java.alpha.ExtendedByDeclaration { Parent, Child };
 
+predicate JavaEntityDocumentation :
+  {
+    entity : code.java.Entity,
+    file : src.File,
+    span : src.ByteSpan
+  }
+  { Entity, File, Span } where
+    { decl = Decl } = Entity;
+    java.alpha.DeclarationComment { Decl, File, Span }
+
 }

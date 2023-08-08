@@ -680,6 +680,10 @@ predicate EntityComments:
     ) | (
       { python = Decl } = Entity;
       codemarkup.python.PythonEntityComments { Decl, File, Span, Text }
+    ) | (
+      { java = Decl } = Entity;
+      codemarkup.java.JavaEntityDocumentation { Decl, File, Span };
+      nothing = Text
     )
 
 # Identifies indexed files

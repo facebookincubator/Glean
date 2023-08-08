@@ -1,7 +1,18 @@
 [
     "@generated",
     {
-        "comments": [],
+        "comments": [
+            {
+                "filepath": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java",
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 11,
+                    "lineBegin": 5,
+                    "lineEnd": 11
+                },
+                "repository": "test"
+            }
+        ],
         "contains_relation": {
             "firstChild": "nondeterministic",
             "firstParent": "nondeterministic",
@@ -31,7 +42,20 @@
             "container": "com.facebook.glean.glean",
             "localName": "POJO"
         },
-        "pretty_comments": [],
+        "pretty_comments": [
+            {
+                "location": {
+                    "filepath": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/POJO.java",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 11,
+                        "lineBegin": 5,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
         "repo_hash": "testhash",
         "signature": "public class POJO",
         "sym": "test/java/com/facebook/glean/glean/POJO",

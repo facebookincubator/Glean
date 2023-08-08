@@ -7,7 +7,18 @@
                 "source": "Deprecated"
             }
         ],
-        "comments": [],
+        "comments": [
+            {
+                "filepath": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/Glean.java",
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 13,
+                    "lineBegin": 5,
+                    "lineEnd": 14
+                },
+                "repository": "test"
+            }
+        ],
         "contains_relation": {
             "firstChild": "nondeterministic",
             "firstParent": "nondeterministic",
@@ -37,7 +48,20 @@
             "container": "com.facebook.glean.glean",
             "localName": "Glean"
         },
-        "pretty_comments": [],
+        "pretty_comments": [
+            {
+                "location": {
+                    "filepath": "fbcode/glean/lang/java-alpha/indexer/examples/java/com/facebook/glean/glean/Glean.java",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 5,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
         "repo_hash": "testhash",
         "signature": "public class Glean",
         "sym": "test/java/com/facebook/glean/glean/Glean",
