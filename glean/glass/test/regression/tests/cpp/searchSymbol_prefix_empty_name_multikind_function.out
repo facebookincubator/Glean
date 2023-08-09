@@ -33,6 +33,52 @@
                     "filepath": "test.cpp",
                     "range": {
                         "columnBegin": 1,
+                        "columnEnd": 9,
+                        "lineBegin": 41,
+                        "lineEnd": 41
+                    },
+                    "repository": "test"
+                },
+                "name": "g",
+                "qname": {
+                    "container": "foo::bar",
+                    "localName": "g"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//foo/bar/g/.f//.decl"
+            },
+            {
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 9,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "name": "f",
+                "qname": {
+                    "container": "foo",
+                    "localName": "f"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//foo/f/.f//.decl"
+            },
+            {
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
                         "columnEnd": 2,
                         "lineBegin": 24,
                         "lineEnd": 27
@@ -48,6 +94,29 @@
                     "exactness": 2
                 },
                 "symbol": "test/cpp//foo/foo/.f/"
+            },
+            {
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 11,
+                        "lineBegin": 31,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "name": "foo",
+                "qname": {
+                    "container": "foo",
+                    "localName": "foo"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//foo/foo/.f//.decl"
             },
             {
                 "kind": 14,
@@ -94,6 +163,29 @@
                     "exactness": 2
                 },
                 "symbol": "test/cpp//h/.f/int"
+            },
+            {
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 15,
+                        "lineBegin": 52,
+                        "lineEnd": 52
+                    },
+                    "repository": "test"
+                },
+                "name": "h",
+                "qname": {
+                    "container": "",
+                    "localName": "h(int)"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//h/.f/int/.decl"
             }
         ]
     }

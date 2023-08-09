@@ -2,6 +2,99 @@
   "@generated",
   {
     "key": {
+      "name": "F1",
+      "language": 0,
+      "entity": {
+        "cxx": {
+          "decl": {
+            "typeAlias": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "F1" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "type": { "key": "T" },
+                "kind": 1,
+                "source": {
+                  "file": { "key": "main.cpp" },
+                  "lineBegin": 12,
+                  "columnBegin": 22,
+                  "lineEnd": 12,
+                  "columnEnd": 33
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "F2",
+      "language": 0,
+      "entity": {
+        "cxx": {
+          "decl": {
+            "typeAlias": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "F2" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": 1,
+                "source": {
+                  "file": { "key": "main.cpp" },
+                  "lineBegin": 13,
+                  "columnBegin": 22,
+                  "lineEnd": 13,
+                  "columnEnd": 35
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "F3",
+      "language": 0,
+      "entity": {
+        "cxx": {
+          "decl": {
+            "typeAlias": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "F3" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "type": { "key": "S<T>" },
+                "kind": 1,
+                "source": {
+                  "file": { "key": "main.cpp" },
+                  "lineBegin": 14,
+                  "columnBegin": 22,
+                  "lineEnd": 14,
+                  "columnEnd": 36
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "name": "S",
       "language": 0,
       "entity": {

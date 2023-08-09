@@ -25,6 +25,29 @@
                     "exactness": 2
                 },
                 "symbol": "test/cpp//foo/S"
+            },
+            {
+                "kind": 15,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 11,
+                        "lineBegin": 56,
+                        "lineEnd": 56
+                    },
+                    "repository": "test"
+                },
+                "name": "s",
+                "qname": {
+                    "container": "h",
+                    "localName": "s"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//h/s/.decl"
             }
         ]
     }

@@ -514,10 +514,13 @@ predicate CxxSearchByNameAndScopeFact:
   }
   { Name, Scope, { cxx = DefnE }} where
     search.cxx.SearchByNameAndScope { Name, Scope, Ent };
-    # I think we can avoid searching through decl families since we're
-    # searching all matches anyway
-    if ({ decl = Decl } = Ent) # just definitions , not decls
-      then ( search.cxx.DeclIsDefn { Decl, Defn }; { defn = Defn } = DefnE )
+    if ({ decl = Decl } = Ent)
+      then (
+        # avoid returning all members of decl families
+        if (search.cxx.DeclIsDefn { Decl, Defn })
+          then ({ defn = Defn } = DefnE)
+          else ({ decl = Decl } = DefnE)
+        )
       else ( Ent = DefnE );
 
 predicate PpSearchByName:

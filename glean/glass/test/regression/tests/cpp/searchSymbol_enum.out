@@ -1,7 +1,79 @@
 [
     "@generated",
     {
-        "symbolDetails": [],
-        "symbols": []
+        "symbolDetails": [
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 15,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 11,
+                        "lineBegin": 56,
+                        "lineEnd": 56
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "h",
+                    "localName": "s"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/cpp//h/s/.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 11,
+                        "lineBegin": 56,
+                        "lineEnd": 56
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            }
+        ],
+        "symbols": [
+            {
+                "kind": 15,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 11,
+                        "lineBegin": 56,
+                        "lineEnd": 56
+                    },
+                    "repository": "test"
+                },
+                "name": "s",
+                "qname": {
+                    "container": "h",
+                    "localName": "s"
+                },
+                "score": {
+                    "exactness": 0
+                },
+                "symbol": "test/cpp//h/s/.decl"
+            }
+        ]
     }
 ]
