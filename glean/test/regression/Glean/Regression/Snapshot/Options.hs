@@ -18,6 +18,7 @@ import qualified Options.Applicative as O
 import System.Directory
 import System.FilePath
 import System.Process (readProcess)
+import Data.List (isPrefixOf, isSuffixOf)
 
 data Config = Config
   { cfgProjectRoot :: FilePath
@@ -89,28 +90,48 @@ optionsWith other = O.info (O.helper <*> ((,) <$> parser <*> other)) O.fullDesc
 -- | Simple heuristics to get the path of the source files
 -- from the buck-out path. Will take a path like
 --
---   /data/users/unixname/fbsource/buck-out/v2/gen/fbcode/778788177e01483d/glean/lang/codemarkup/tests/python/__sources__/sources/
+--   /data/users/unixname/fbsource/buck-out/v2/gen/fbcode/e1b1d0a81b509819/glean/facebook/tools/diff-sketch/test/__hack-sources__/hack-sources/hack
 --
 --  and transform it into
 --
---   /data/users/unixname/fbsource/fbcode/glean/lang/codemarkup/tests/python/
+--   /data/users/unixname/fbsource/fbcode/glean/facebook/tools/diff-sketch/test/hack
 --
 sourcePath :: FilePath -> IO FilePath
 sourcePath path = do
   root <- head . lines <$> readProcess "buck" ["root"] ""
   let
     sourcePath = root </> path'
+
     path' = joinPath
-      $ takeWhile (/= "__sources__") -- drop __sources__/sources
-      $ tail -- drop hash
-        -- drop buck-out bit
+      $ removeBuckFileGroup
+      $ dropWhile (/= "glean") -- drop hash
       $ go (splitDirectories root) (splitDirectories path)
   exists <- doesDirectoryExist sourcePath
-  putStrLn sourcePath
+  putStrLn $ unlines
+    [ "sourcePath: "
+    , sourcePath
+    , path
+    ]
   unless exists $
-    error "unable to find tests path. Specify it with --replace PATH"
+    error $ unlines
+     [ "Unable to find tests path."
+     , "Expected to find it in: " <> sourcePath
+     , "Specify it with --replace PATH"
+     ]
   return sourcePath
   where
+    -- A buck file_group target will add two directories with the name
+    -- of the target to the path. The first one will be surrounded by
+    -- double underscores. i.e. ../__dir__/dir/..
+    removeBuckFileGroup p = xs ++ drop 2 ys
+      where
+        (xs, ys) = break isBuckFileGroupDir p
+
+        isBuckFileGroupDir = isSurroundedBy "__"
+        isSurroundedBy term str =
+          term `isPrefixOf` str &&
+          term `isSuffixOf` str
+
     go [] ys = ys
     go _  [] = error "test path is not a subdirectory of root"
     go (x:xs) (y:ys) =
