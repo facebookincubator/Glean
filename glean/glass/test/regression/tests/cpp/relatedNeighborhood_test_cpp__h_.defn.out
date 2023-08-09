@@ -8,8 +8,7 @@
         "parentsExtended": [],
         "symbolBasicDetails": {},
         "symbolDetails": {
-            "test/cpp//h/.f/int/.decl": {
-                "annotations": [],
+            "test/cpp//h/.f/int": {
                 "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
@@ -46,7 +45,7 @@
                 "pretty_comments": [],
                 "repo_hash": "testhash",
                 "signature": "void ::h(int i)",
-                "sym": "test/cpp//h/.f/int/.decl",
+                "sym": "test/cpp//h/.f/int",
                 "sym_location": {
                     "filepath": "test.cpp",
                     "range": {
