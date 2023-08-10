@@ -8,7 +8,7 @@
         "parentsExtended": [],
         "symbolBasicDetails": {},
         "symbolDetails": {
-            "test/cpp//h/.f/int/.decl": {
+            "test/cpp//h/.decl": {
                 "annotations": [],
                 "comments": [],
                 "contains_relation": {
@@ -29,9 +29,9 @@
                     "filepath": "test.cpp",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 54,
-                        "lineEnd": 62
+                        "columnEnd": 15,
+                        "lineBegin": 52,
+                        "lineEnd": 52
                     },
                     "repository": "test"
                 },
@@ -45,15 +45,15 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "void ::h(int i)",
-                "sym": "test/cpp//h/.f/int/.decl",
+                "signature": "void ::h(int _i)",
+                "sym": "test/cpp//h/.decl",
                 "sym_location": {
                     "filepath": "test.cpp",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 54,
-                        "lineEnd": 62
+                        "columnEnd": 15,
+                        "lineBegin": 52,
+                        "lineEnd": 52
                     },
                     "repository": "test"
                 },
