@@ -1,0 +1,19 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema digest.1 {
+
+import src.1
+
+# type of CAS digest keys
+type Digest = {
+  hash: string,
+  size: nat
+}
+
+# Associate a file path with its content digest
+predicate FileDigest: {
+  file: src.File,
+  digest: Digest,
+}
+
+}

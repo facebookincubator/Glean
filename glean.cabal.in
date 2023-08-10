@@ -658,6 +658,7 @@ library schema
         Glean.Schema.CodeThrift
         Glean.Schema.CodeBuck
         Glean.Schema.Cxx1
+        Glean.Schema.Digest
         Glean.Schema.Docmarkup
         Glean.Schema.Erlang
         Glean.Schema.Flow

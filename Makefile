@@ -179,6 +179,7 @@ SCHEMAS= \
 	code_scip \
 	code_thrift \
 	cxx1 \
+	digiest \
 	docmarkup \
 	dyn \
 	erlang \
