@@ -145,7 +145,7 @@ data Inout = Inout
 data Variadic = Variadic
 data Parameter
   = Parameter Name HackType (Maybe Inout)
-      (Maybe Variadic) (Maybe DefaultValue) XRefs
+      (Maybe Variadic) (Maybe DefaultValue) ReadOnly XRefs
 data Variance = Contravariant | Covariant | Invariant
 data Reify = Erased | Reified | SoftReified
 data ConstraintKind = As | Equal | Super
@@ -274,6 +274,9 @@ ppFinal :: Final -> Doc Ann
 ppFinal Final = "final" <> space
 ppFinal NotFinal = mempty
 
+ppReadOnly :: Doc Ann
+ppReadOnly = "readonly"
+
 ppSignature :: LayoutOptions -> Doc Ann -> Signature -> Doc Ann
 ppSignature
   opts head (Signature readOnly returnType typeParams params ctxs xrefs) =
@@ -319,7 +322,7 @@ ppSignature
     fitsOnOneLine = not containsNewline
     containsNewline = Text.any (== '\n') paramsText
     readOnlyKwd = case readOnly of
-      IsReadOnly -> " readonly"
+      IsReadOnly -> space <> ppReadOnly
       NotReadOnly -> ""
 
 ppTypeParams :: [TypeParameter] -> Doc Ann
@@ -404,8 +407,9 @@ ppReturnType :: ReturnType -> XRefs -> Doc Ann
 ppReturnType (ReturnType t) xrefs = ppTypeXRefs (HackType t) xrefs
 
 ppParameter :: Parameter -> Doc Ann
-ppParameter (Parameter name typeName inout variadic defaultValue xrefs) =
-  nest 4 $ sep $ execWriter $ do
+ppParameter (Parameter name typeName inout variadic defaultValue readOnly xrefs)
+  = nest 4 $ sep $ execWriter $ do
+    when (readOnly == IsReadOnly) $ tell [ppReadOnly]
     whenJust inout $ tell . ppInout
     tell [ppTypeXRefs typeName xrefs]
     case variadic of
@@ -784,7 +788,7 @@ toConstraintKind (Hack.ConstraintKind__UNKNOWN _) = Equal
 
 toParameter :: Hack.Parameter -> Parameter
 toParameter
-  (Hack.Parameter name mtype inout variadic mdefaultValue _ typeInfo _) =
+  (Hack.Parameter name mtype inout variadic mdefaultValue _ typeInfo readOnly) =
   let (type_, xrefs) = toTypeAndXRefs mtype typeInfo
   in Parameter
       (toName name)
@@ -792,6 +796,7 @@ toParameter
       (if inout then Just Inout else Nothing)
       (if variadic then Just Variadic else Nothing)
       (DefaultValue <$> mdefaultValue)
+      (maybe NotReadOnly (const IsReadOnly) readOnly)
       xrefs
 
 toName :: Hack.Name -> Name
