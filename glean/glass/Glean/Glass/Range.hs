@@ -37,6 +37,7 @@ import qualified Glean.Util.Range as Range
 import qualified Glean.Glass.Types as Glass
 import qualified Glean.Glass.Query as Query
 import qualified Glean.Schema.Src.Types as Src
+import qualified Glean.Schema.Digest.Types as Digest
 
 import Glean.Glass.Types
     ( LocationRange(..),
@@ -138,7 +139,8 @@ data FileInfo = FileInfo {
     fileId :: {-# UNPACK #-} !(Glean.IdOf Src.File),
     srcFile :: !Src.File,
     offsets :: !(Maybe Range.LineOffsets),
-    isIndexed :: !Bool
+    isIndexed :: !Bool,
+    fileDigest :: Maybe Digest.Digest
   }
 
 -- | Get file metadata. Throw if we have no src.File
@@ -155,7 +157,7 @@ getFileAndLines fileRepo path = do
     Nothing -> return $ Left $
       GlassExceptionReason_noSrcFileFact $ "No src.File fact for "
         <> gleanPath path
-    Just (srcFile, isIndexed) -> do
+    Just (srcFile, isIndexed, fileDigest) -> do
       offsets <- memoLineOffsets srcFile
       return $ do
         let fileId = Glean.getId srcFile

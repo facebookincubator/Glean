@@ -83,6 +83,7 @@ import qualified Glean.Schema.CodemarkupSearch.Types as CodeSearch
 import qualified Glean.Schema.Codemarkup.Types as Code
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Schema.Src.Types as Src
+import qualified Glean.Schema.Digest.Types as Digest
 
 --
 -- Find the id in this db of a source file. We mostly operate on these ids once
@@ -96,12 +97,19 @@ srcFile (GleanPath path) =
     string path
 
 -- Given a 'Src.File' query, extend it to 'Code.IndexedFile'
-indexedFile :: Angle Src.File -> Angle (Src.File, Bool)
-indexedFile query = var $ \file -> var $ \isIndexed ->
-  tuple (file, isIndexed) `where_`
-    [
-     query .= file,
-     isIndexed .= if_ (predicate @Code.IndexedFile file) true false
+indexedFile :: Angle Src.File -> Angle (Src.File, Bool, Maybe Digest.Digest)
+indexedFile query = var $ \file -> vars $ \isIndexed mdigest digest ->
+  tuple (file, isIndexed, mdigest) `where_`
+    [ query .= file
+    , isIndexed .= if_ (predicate @Code.IndexedFile file) true false
+    , mdigest .= if_ (
+        predicate @Digest.FileDigest (
+          rec $
+            field @"file" (asPredicate file) $
+            field @"digest" digest
+          end
+        )
+      ) (just digest) nothing
     ]
 
 -- | Given a file id, look up the index of line endings

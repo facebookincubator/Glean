@@ -283,14 +283,16 @@ instance DeterministicResponse (Either [Text] Cxx.SymbolEnv) where
   det = id
 
 instance DeterministicResponse DocumentSymbolListXResult where
-  det (DocumentSymbolListXResult refs defs _rev truncated) =
+  det (DocumentSymbolListXResult refs defs _rev truncated digest) =
     DocumentSymbolListXResult (det refs) (det defs) (Revision "testhash")
       truncated
+      digest
       -- n.b. don't want to include any test group revision tags
 
 instance DeterministicResponse DocumentSymbolIndex where
-  det (DocumentSymbolIndex syms _rev size truncated) =
+  det (DocumentSymbolIndex syms _rev size truncated digest) =
     DocumentSymbolIndex (Map.map sort syms) (Revision "testhash") size truncated
+      digest
 
 instance DeterministicResponse SymbolSearchResult where
   det (SymbolSearchResult syms deets) =

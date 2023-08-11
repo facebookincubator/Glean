@@ -230,6 +230,9 @@ struct DocumentSymbolListXResult {
 
   // was the result truncated either by glean or glass?
   4: bool truncated;
+
+  // an optional file content digest
+  5: optional FileDigest digest;
 }
 
 // For cursor navigation in a file, it is useful to have a line indexed
@@ -246,6 +249,9 @@ struct DocumentSymbolIndex {
 
   // was the result truncated either by glean or glass?
   4: bool truncated;
+
+  // content digest if available
+  5: optional FileDigest digest;
 }
 
 // Generic server exception
@@ -625,6 +631,12 @@ struct USRSymbolReference {
 # clang USR, for scip indexers its the scip symbol.
 struct NativeSymbol {
   1: string sym;
+}
+
+# File digests
+struct FileDigest {
+  1: string hash; // e.g. sha1 hash of contents
+  2: i64 size; // file size in bytes
 }
 
 // Glass symbol service

@@ -93,6 +93,7 @@ import Glean.Util.ThriftService ( ThriftServiceOptions(..), runThrift )
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Schema.Src.Types as Src
+import qualified Glean.Schema.Digest.Types as Digest
 
 import qualified Glean.Glass.Attributes as Attributes
 import Glean.Glass.Base
@@ -1033,7 +1034,7 @@ fetchDocumentSymbols (FileReference scsrepo path) mlimit
 
   case efile of
     Left err -> do
-      let emptyResponse = DocumentSymbols [] [] (revision b) False
+      let emptyResponse = DocumentSymbols [] [] (revision b) False Nothing
           logs = logError err <> logError (gleanDBs b)
       return (emptyResponse, FoundNone, Just logs)
 
@@ -1060,6 +1061,7 @@ fetchDocumentSymbols (FileReference scsrepo path) mlimit
             (Attributes.fromSymbolId Attributes.SymbolKindAttr)
               kindMap refs1 defs1
       let revision = getRepoHash fileRepo
+          digest = toDigest <$> fileDigest
       return (DocumentSymbols {..}, gleanDataLog, merr)
 
   where
@@ -1074,12 +1076,20 @@ data DocumentSymbols = DocumentSymbols
   , defs :: [(Code.Entity, DefinitionSymbolX)]
   , revision :: !Revision
   , truncated :: !Bool
+  , digest :: Maybe FileDigest
   }
+
+-- Export Src.Digest to Glass type
+toDigest :: Digest.Digest -> FileDigest
+toDigest Digest.Digest{..} = FileDigest{..}
+  where
+    fileDigest_hash = digest_hash
+    fileDigest_size = Glean.unNat digest_size
 
 -- | Drop any remnant entities after we are done with them
 toDocumentSymbolResult :: DocumentSymbols -> DocumentSymbolListXResult
 toDocumentSymbolResult DocumentSymbols{..} = DocumentSymbolListXResult
-  (map snd refs) (map snd defs) revision truncated
+  (map snd refs) (map snd defs) revision truncated digest
 
 --
 -- | Check if this db / lang pair has additional dynamic attributes
@@ -1145,13 +1155,14 @@ fetchDocumentSymbolIndex latest req opts be snapshotbe mlang = do
   ((result, status, gleanDataLog), merr1) <-
     fetchSymbolsAndAttributes latest req opts be snapshotbe mlang
 
-  let DocumentSymbolListXResult refs defs revision truncated = result
+  let DocumentSymbolListXResult refs defs revision truncated digest = result
 
       result' = DocumentSymbolIndex {
         documentSymbolIndex_symbols = toSymbolIndex refs defs,
         documentSymbolIndex_revision = revision,
         documentSymbolIndex_size = fromIntegral (length defs + length refs),
-        documentSymbolIndex_truncated = truncated
+        documentSymbolIndex_truncated = truncated,
+        documentSymbolIndex_digest = digest
   }
   return ((result', status, gleanDataLog), merr1)
 
