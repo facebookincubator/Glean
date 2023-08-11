@@ -7,6 +7,7 @@
  */
 
 #include "glean/lang/clang/db.h"
+#include <llvm/Support/SHA1.h>
 
 #include <folly/Overload.h>
 
@@ -86,6 +87,18 @@ std::pair<Fact<Src::File>, std::filesystem::path> ClangDB::fileFromEntry(
   auto buffer = sourceManager().getMemoryBufferForFile(&entry, &invalid);
   if (buffer != nullptr && !invalid) {
   #endif
+    // compute the SHA1 digest of the file content and get the file size
+    const uint64_t fileSize = entry.getSize();
+    auto Hash =
+        llvm::SHA1::hash(llvm::arrayRefFromStringRef(buffer->getBuffer()));
+    constexpr static size_t hashSize = 20;
+    auto fileHash = llvm::toHex(
+        llvm::StringRef(reinterpret_cast<const char *>(Hash.data()), hashSize),
+        true);
+    struct Digest::Digest digest = {fileHash, fileSize};
+    batch.fact<Digest::FileDigest>(file, digest);
+
+    // compute the line endings and unicode status
     std::vector<uint64_t> lengths;
     bool hasUnicodeOrTabs = false;
     auto p = buffer->getBufferStart();
