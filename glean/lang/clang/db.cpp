@@ -72,21 +72,16 @@ std::pair<Fact<Src::File>, std::filesystem::path> ClangDB::fileFromEntry(
 
   const auto file = batch.fact<Src::File>(path.native());
 
-  // define FileLines
-  #if LLVM_VERSION_MAJOR >= 12
-  auto bufferOpt = sourceManager().getMemoryBufferForFileOrNone(&entry);
-    #if LLVM_VERSION_MAJOR >= 16
-  if (bufferOpt.has_value()) {
-    auto buffer = &(bufferOpt.value());
-    #else
-  if (bufferOpt.hasValue()) {
-    auto buffer = &(bufferOpt.getValue());
-    #endif
-  #else
-  bool invalid = false;
-  auto buffer = sourceManager().getMemoryBufferForFile(&entry, &invalid);
-  if (buffer != nullptr && !invalid) {
-  #endif
+  const auto buffer = [&] {
+#if LLVM_VERSION_MAJOR >= 12
+    return sourceManager().getMemoryBufferForFileOrNone(&entry);
+#else
+    bool invalid = false;
+    auto buffer = sourceManager().getMemoryBufferForFile(&entry, &invalid);
+    return !invalid ? buffer : nullptr;
+#endif
+  }();
+  if (buffer) {
     // compute the SHA1 digest of the file content and get the file size
     const uint64_t fileSize = entry.getSize();
     auto Hash =
