@@ -59,12 +59,13 @@ std::filesystem::path subpath(
 //
 std::pair<Fact<Src::File>, std::filesystem::path> ClangDB::fileFromEntry(
     const clang::FileEntry& entry) {
-  auto path = goodPath(root, subpath(subdir, entry.getName().str()));
-  auto canon = goodPath(root,
+  auto path = goodPath(root,
                         std::filesystem::canonical(entry.getName().str()));
-  path = canon.is_relative() ? canon : path;
+  if (path.is_absolute()) {
+    path = goodPath(root, subpath(subdir, entry.getName().str()));
+  }
   if (path_prefix.has_value()) {
-     path = std::filesystem::path(path_prefix.value()) / path;
+    path = std::filesystem::path(path_prefix.value()) / path;
   }
 #if GLEAN_FACEBOOK
   path = goodBuckPath(path);
@@ -83,15 +84,11 @@ std::pair<Fact<Src::File>, std::filesystem::path> ClangDB::fileFromEntry(
   }();
   if (buffer) {
     // compute the SHA1 digest of the file content and get the file size
-    const uint64_t fileSize = entry.getSize();
-    auto Hash =
-        llvm::SHA1::hash(llvm::arrayRefFromStringRef(buffer->getBuffer()));
-    constexpr static size_t hashSize = 20;
-    auto fileHash = llvm::toHex(
-        llvm::StringRef(reinterpret_cast<const char *>(Hash.data()), hashSize),
-        true);
-    struct Digest::Digest digest = {fileHash, fileSize};
-    batch.fact<Digest::FileDigest>(file, digest);
+    auto hash = llvm::toHex(
+        llvm::SHA1::hash(llvm::arrayRefFromStringRef(buffer->getBuffer())),
+        true /* LowerCase */);
+    const uint64_t size = entry.getSize();
+    batch.fact<Digest::FileDigest>(file, Digest::Digest{hash, size});
 
     // compute the line endings and unicode status
     std::vector<uint64_t> lengths;
@@ -108,14 +105,14 @@ std::pair<Fact<Src::File>, std::filesystem::path> ClangDB::fileFromEntry(
         // sum(lengths) == file size.
         lengths.push_back(len);
         len = 0;
-      } else if (c == '\t' || (c&0x80) != 0) {
+      } else if (c == '\t' || (c & 0x80) != 0) {
         hasUnicodeOrTabs = true;
       }
     }
     if (len != 0) {
       lengths.push_back(len);
     }
-    batch.fact<Src::FileLines>(file, lengths, len==0, hasUnicodeOrTabs);
+    batch.fact<Src::FileLines>(file, lengths, len == 0, hasUnicodeOrTabs);
   } else {
     LOG(WARNING) << "couldn't get MemoryBuffer for " << path.native();
   }
