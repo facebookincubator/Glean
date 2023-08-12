@@ -37,24 +37,23 @@ template<typename T> T identity(T x) { return x; }
 /// We currently keep hex string (16bit encoding). We could use 64bit encoding
 /// to reduce the size further.
 //
-std::optional<std::string> getUsrHash (const clang::Decl *decl){
+std::optional<std::string> getUsrHash(const clang::Decl *decl){
   llvm::SmallString<32> usr;
-  constexpr static size_t size = 8;
-  //generateUSRForDecl can return false for reasons such as:
-  // 1. Decl is null
-  // 2. anonymous bit fields
-  // 3. ParmDecl with no name for declaration of a function pointer type such
-  //    as void  (*f)(void *);
-  // 4. USRs for linkage specs themselves etc.
+  if (clang::index::generateUSRForDecl(decl, usr)) {
+    return {};
+  }
+  // `generateUSRForDecl` can return false for reasons such as:
+  //
+  //   1. `Decl` is `nullptr`
+  //   2. anonymous bit fields
+  //   3. `ParmDecl` with no name for declaration of a function pointer type
+  //      such as `void (*f)(void *)`;
+  //   4. USRs for linkage specs themselves etc.
+  //
   // These cases does not really matter much to us and not going to lead to any
   // false positives. Also, Glean and clangd uses the same implementation.
-  //
-  if (!clang::index::generateUSRForDecl(decl, usr)) {
-    auto Hash = llvm::SHA1::hash(llvm::arrayRefFromStringRef(usr.str()));
-    return llvm::toHex(
-        llvm::StringRef(reinterpret_cast<const char *>(Hash.data()), size));
-  }
-  return {};
+  auto hash = llvm::SHA1::hash(llvm::arrayRefFromStringRef(usr));
+  return llvm::toHex(llvm::ArrayRef(hash.data(), 8));
 }
 
 /// Track usage of using declarations
