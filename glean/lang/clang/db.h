@@ -71,8 +71,8 @@ public:
 
   // Files
 
-  std::pair<Fact<Src::File>, std::filesystem::path> fileFromEntry(
-      const clang::FileEntry& entry);
+  std::optional<std::pair<Fact<Src::File>, std::filesystem::path>>
+  fileFromEntry(const clang::FileEntry& entry);
 
   bool isPhysicalFile(clang::FileID id) {
     return sourceManager().getFileEntryForID(id);

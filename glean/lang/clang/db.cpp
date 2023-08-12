@@ -57,8 +57,8 @@ std::filesystem::path subpath(
 //      e.g. "buck-out/v2/gen/fbcode/<hash>/...".
 //    Replace the buck-out hash with the file contents hash to eliminate dupes
 //
-std::pair<Fact<Src::File>, std::filesystem::path> ClangDB::fileFromEntry(
-    const clang::FileEntry& entry) {
+std::optional<std::pair<Fact<Src::File>, std::filesystem::path>>
+ClangDB::fileFromEntry(const clang::FileEntry& entry) {
   auto path = goodPath(root,
                         std::filesystem::canonical(entry.getName().str()));
   if (path.is_absolute()) {
@@ -67,12 +67,6 @@ std::pair<Fact<Src::File>, std::filesystem::path> ClangDB::fileFromEntry(
   if (path_prefix.has_value()) {
     path = std::filesystem::path(path_prefix.value()) / path;
   }
-#if GLEAN_FACEBOOK
-  path = goodBuckPath(path);
-#endif
-
-  const auto file = batch.fact<Src::File>(path.native());
-
   const auto buffer = [&] {
 #if LLVM_VERSION_MAJOR >= 12
     return sourceManager().getMemoryBufferForFileOrNone(&entry);
@@ -82,42 +76,53 @@ std::pair<Fact<Src::File>, std::filesystem::path> ClangDB::fileFromEntry(
     return !invalid ? buffer : nullptr;
 #endif
   }();
-  if (buffer) {
-    // compute the SHA1 digest of the file content and get the file size
-    auto hash = llvm::toHex(
-        llvm::SHA1::hash(llvm::arrayRefFromStringRef(buffer->getBuffer())),
-        true /* LowerCase */);
-    const uint64_t size = entry.getSize();
-    batch.fact<Digest::FileDigest>(file, Digest::Digest{hash, size});
-
-    // compute the line endings and unicode status
-    std::vector<uint64_t> lengths;
-    bool hasUnicodeOrTabs = false;
-    auto p = buffer->getBufferStart();
-    const auto n = buffer->getBufferSize();
-    uint64_t len = 0;
-    for (size_t i = 0; i < n; ++i) {
-      const auto c = *p;
-      ++p;
-      ++len;
-      if (c == '\n') {
-        // NOTE: We include the terminating '\n' in the length to ensure that
-        // sum(lengths) == file size.
-        lengths.push_back(len);
-        len = 0;
-      } else if (c == '\t' || (c & 0x80) != 0) {
-        hasUnicodeOrTabs = true;
-      }
+  if (!buffer) {
+    LOG(WARNING) << "Couldn't get MemoryBuffer for " << path.native();
+#if GLEAN_FACEBOOK
+    if (isBuckOutPath(path)) {
+      return {};
     }
-    if (len != 0) {
-      lengths.push_back(len);
-    }
-    batch.fact<Src::FileLines>(file, lengths, len == 0, hasUnicodeOrTabs);
-  } else {
-    LOG(WARNING) << "couldn't get MemoryBuffer for " << path.native();
+#endif
+    const auto file = batch.fact<Src::File>(path.native());
+    return std::pair{file, std::move(path)};
   }
+  // compute the SHA1 digest of the file content and get the file size
+  auto hash = llvm::toHex(
+      llvm::SHA1::hash(llvm::arrayRefFromStringRef(buffer->getBuffer())),
+      true /* LowerCase */);
+#if GLEAN_FACEBOOK
+  if (isBuckOutPath(path)) {
+    path = replaceBuckOutHash(path, hash);
+  }
+#endif
+  const auto file = batch.fact<Src::File>(path.native());
+  const uint64_t size = entry.getSize();
+  batch.fact<Digest::FileDigest>(file, Digest::Digest{hash, size});
 
-  return {file, std::move(path)};
+  // compute the line endings and unicode status
+  std::vector<uint64_t> lengths;
+  bool hasUnicodeOrTabs = false;
+  auto p = buffer->getBufferStart();
+  const auto n = buffer->getBufferSize();
+  uint64_t len = 0;
+  for (size_t i = 0; i < n; ++i) {
+    const auto c = *p;
+    ++p;
+    ++len;
+    if (c == '\n') {
+      // NOTE: We include the terminating '\n' in the length to ensure that
+      // sum(lengths) == file size.
+      lengths.push_back(len);
+      len = 0;
+    } else if (c == '\t' || (c & 0x80) != 0) {
+      hasUnicodeOrTabs = true;
+    }
+  }
+  if (len != 0) {
+    lengths.push_back(len);
+  }
+  batch.fact<Src::FileLines>(file, lengths, len == 0, hasUnicodeOrTabs);
+  return std::pair{file, std::move(path)};
 }
 
 void ClangDB::ppevent(
@@ -166,7 +171,9 @@ void ClangDB::enterFile(
 void ClangDB::skipFile(
     folly::Optional<Include> inc, const clang::FileEntry *entry) {
   if (inc && inc->entry != nullptr && inc->entry == entry) {
-    include(inc.value(), fileFromEntry(*entry).first, folly::none);
+    if (auto file = fileFromEntry(*entry)) {
+      include(inc.value(), file->first, folly::none);
+    }
   }
 }
 
