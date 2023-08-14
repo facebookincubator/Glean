@@ -76,8 +76,6 @@ deriveUses e cfg writer = do
             makeFact_ @Cxx.TargetUses Cxx.TargetUses_key
               { targetUses_key_target = target
               , targetUses_key_file = file
-              , targetUses_key_uses = rangesToRelSpans $
-                  Set.toList (ranges <> expansions <> spellings)
               , targetUses_key_from = Cxx.From (rangesToSpans ranges)
                                                (rangesToSpans expansions)
                                                (rangesToSpans spellings)

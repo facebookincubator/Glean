@@ -549,7 +549,7 @@ predicate XRefTargets : [XRefTarget]
 # and where the spelling is the macro argument such as (4).
 #
 # An extra wrinkle here is that this predicate captures uses from a single file.
-# Refer to the `SpellingXRefs` predicate for further details.
+# Refer to the `SpellingXRef` predicate for further details.
 type From =
   {
     spans : src.PackedByteSpans,
@@ -629,7 +629,6 @@ predicate TargetUses :
   {
     target : XRefTarget,
     file : src.File,
-    uses : [src.RelByteSpan],
     from : From,
   }
 

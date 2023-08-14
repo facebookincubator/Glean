@@ -299,7 +299,7 @@ predicate CxxEntityUses:
   }
   ({ { decl = Decl }, File, Span } where
     cxx1.DeclFamilyOf { Decl, D };
-    cxx1.TargetUses { { declaration = D }, File, _, From };
+    cxx1.TargetUses { { declaration = D }, File, From };
     { spans = PackedSpans, spellings = PackedSpellings } = From;
     Spans = prim.unpackByteSpans PackedSpans;
     Spellings = prim.unpackByteSpans PackedSpellings;
@@ -307,13 +307,13 @@ predicate CxxEntityUses:
   ({ { defn = Defn }, File, Span } where
     CxxEntityDefinitionBase { Defn, DeclBase };
     cxx1.DeclFamilyOf { DeclBase, D };
-    cxx1.TargetUses { { declaration = D }, File, _, From };
+    cxx1.TargetUses { { declaration = D }, File, From };
     { spans = PackedSpans, spellings = PackedSpellings } = From;
     Spans = prim.unpackByteSpans PackedSpans;
     Spellings = prim.unpackByteSpans PackedSpellings;
     Span = (Spans | Spellings)[..]) |
   ({ { enumerator = E }, File, Span } where
-    cxx1.TargetUses { { enumerator = E }, File, _, From };
+    cxx1.TargetUses { { enumerator = E }, File, From };
     { spans = PackedSpans, spellings = PackedSpellings } = From;
     Spans = prim.unpackByteSpans PackedSpans;
     Spellings = prim.unpackByteSpans PackedSpellings;
