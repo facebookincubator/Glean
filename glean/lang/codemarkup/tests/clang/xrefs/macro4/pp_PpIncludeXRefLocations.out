@@ -11,7 +11,6 @@
                 "include_": {
                   "key": {
                     "file": { "key": "a.h" },
-                    "path": { "begin": 230, "end": 235 },
                     "source": {
                       "file": { "key": "test.cpp" },
                       "lineBegin": 9,
@@ -28,7 +27,6 @@
               "use": {
                 "key": {
                   "macro": { "key": "REF_NONMACRO" },
-                  "name": { "begin": 285, "end": 297 },
                   "definition": {
                     "file": { "key": "a.h" },
                     "line": 9,
@@ -50,7 +48,6 @@
               "use": {
                 "key": {
                   "macro": { "key": "REF_MACRO" },
-                  "name": { "begin": 319, "end": 328 },
                   "definition": {
                     "file": { "key": "a.h" },
                     "line": 11,
@@ -72,7 +69,6 @@
               "use": {
                 "key": {
                   "macro": { "key": "REF_MACRO" },
-                  "name": { "begin": 335, "end": 344 },
                   "definition": {
                     "file": { "key": "a.h" },
                     "line": 11,
@@ -94,7 +90,6 @@
               "use": {
                 "key": {
                   "macro": { "key": "REF_MACRO" },
-                  "name": { "begin": 351, "end": 360 },
                   "definition": {
                     "file": { "key": "a.h" },
                     "line": 11,

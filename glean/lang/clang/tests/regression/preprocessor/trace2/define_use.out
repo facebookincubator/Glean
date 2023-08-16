@@ -17,7 +17,6 @@
       "use": {
         "key": {
           "macro": { "key": "F" },
-          "name": { "begin": 276, "end": 277 },
           "definition": {
             "file": { "key": "test.h" },
             "line": 10,
@@ -26,12 +25,12 @@
           "expand": true,
           "source": {
             "file": { "key": "test.cpp" },
-            "lineBegin": 12,
+            "lineBegin": 10,
             "columnBegin": 1,
-            "lineEnd": 12,
+            "lineEnd": 10,
             "columnEnd": 17
           },
-          "nameSpan": { "start": 276, "length": 1 }
+          "nameSpan": { "start": 239, "length": 1 }
         }
       }
     }
@@ -53,7 +52,6 @@
       "use": {
         "key": {
           "macro": { "key": "F" },
-          "name": { "begin": 239, "end": 240 },
           "definition": {
             "file": { "key": "test.h" },
             "line": 10,
@@ -62,12 +60,12 @@
           "expand": true,
           "source": {
             "file": { "key": "test.cpp" },
-            "lineBegin": 10,
+            "lineBegin": 12,
             "columnBegin": 1,
-            "lineEnd": 10,
+            "lineEnd": 12,
             "columnEnd": 17
           },
-          "nameSpan": { "start": 239, "length": 1 }
+          "nameSpan": { "start": 276, "length": 1 }
         }
       }
     }

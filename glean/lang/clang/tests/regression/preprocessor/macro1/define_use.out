@@ -17,259 +17,6 @@
       "use": {
         "key": {
           "macro": { "key": "M1" },
-          "name": { "begin": 514, "end": 559 },
-          "definition": {
-            "file": { "key": "test.cpp" },
-            "line": 9,
-            "column": 9
-          },
-          "expand": true,
-          "source": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 36,
-            "columnBegin": 1,
-            "lineEnd": 36,
-            "columnEnd": 45
-          },
-          "nameSpan": { "start": 514, "length": 45 }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "define": {
-        "key": {
-          "macro": { "key": "M1" },
-          "source": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 9,
-            "columnBegin": 9,
-            "lineEnd": 9,
-            "columnEnd": 10
-          }
-        }
-      },
-      "use": {
-        "key": {
-          "macro": { "key": "M1" },
-          "name": { "begin": 387, "end": 405 },
-          "definition": {
-            "file": { "key": "test.cpp" },
-            "line": 9,
-            "column": 9
-          },
-          "expand": true,
-          "source": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 26,
-            "columnBegin": 1,
-            "lineEnd": 26,
-            "columnEnd": 18
-          },
-          "nameSpan": { "start": 387, "length": 18 }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "define": {
-        "key": {
-          "macro": { "key": "M1" },
-          "source": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 9,
-            "columnBegin": 9,
-            "lineEnd": 9,
-            "columnEnd": 10
-          }
-        }
-      },
-      "use": {
-        "key": {
-          "macro": { "key": "M1" },
-          "name": { "begin": 274, "end": 282 },
-          "definition": {
-            "file": { "key": "test.cpp" },
-            "line": 9,
-            "column": 9
-          },
-          "expand": true,
-          "source": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 16,
-            "columnBegin": 1,
-            "lineEnd": 16,
-            "columnEnd": 8
-          },
-          "nameSpan": { "start": 274, "length": 8 }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "define": {
-        "key": {
-          "macro": { "key": "M1" },
-          "source": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 9,
-            "columnBegin": 9,
-            "lineEnd": 9,
-            "columnEnd": 10
-          }
-        }
-      },
-      "use": {
-        "key": {
-          "macro": { "key": "M1" },
-          "name": { "begin": 284, "end": 292 },
-          "definition": {
-            "file": { "key": "test.cpp" },
-            "line": 9,
-            "column": 9
-          },
-          "expand": true,
-          "source": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 17,
-            "columnBegin": 1,
-            "lineEnd": 17,
-            "columnEnd": 8
-          },
-          "nameSpan": { "start": 284, "length": 8 }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "define": {
-        "key": {
-          "macro": { "key": "M1" },
-          "source": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 9,
-            "columnBegin": 9,
-            "lineEnd": 9,
-            "columnEnd": 10
-          }
-        }
-      },
-      "use": {
-        "key": {
-          "macro": { "key": "M1" },
-          "name": { "begin": 578, "end": 581 },
-          "definition": {
-            "file": { "key": "test.cpp" },
-            "line": 9,
-            "column": 9
-          },
-          "expand": true,
-          "source": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 40,
-            "columnBegin": 1,
-            "lineEnd": 40,
-            "columnEnd": 3
-          },
-          "nameSpan": { "start": 578, "length": 3 }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "define": {
-        "key": {
-          "macro": { "key": "M1" },
-          "source": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 9,
-            "columnBegin": 9,
-            "lineEnd": 9,
-            "columnEnd": 10
-          }
-        }
-      },
-      "use": {
-        "key": {
-          "macro": { "key": "M1" },
-          "name": { "begin": 613, "end": 616 },
-          "definition": {
-            "file": { "key": "test.cpp" },
-            "line": 9,
-            "column": 9
-          },
-          "expand": true,
-          "source": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 44,
-            "columnBegin": 1,
-            "lineEnd": 44,
-            "columnEnd": 3
-          },
-          "nameSpan": { "start": 613, "length": 3 }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "define": {
-        "key": {
-          "macro": { "key": "M1" },
-          "source": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 9,
-            "columnBegin": 9,
-            "lineEnd": 9,
-            "columnEnd": 10
-          }
-        }
-      },
-      "use": {
-        "key": {
-          "macro": { "key": "M1" },
-          "name": { "begin": 487, "end": 512 },
-          "definition": {
-            "file": { "key": "test.cpp" },
-            "line": 9,
-            "column": 9
-          },
-          "expand": true,
-          "source": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 35,
-            "columnBegin": 1,
-            "lineEnd": 35,
-            "columnEnd": 25
-          },
-          "nameSpan": { "start": 487, "length": 25 }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "define": {
-        "key": {
-          "macro": { "key": "M1" },
-          "source": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 9,
-            "columnBegin": 9,
-            "lineEnd": 9,
-            "columnEnd": 10
-          }
-        }
-      },
-      "use": {
-        "key": {
-          "macro": { "key": "M1" },
-          "name": { "begin": 237, "end": 239 },
           "definition": {
             "file": { "key": "test.cpp" },
             "line": 9,
@@ -305,43 +52,6 @@
       "use": {
         "key": {
           "macro": { "key": "M1" },
-          "name": { "begin": 498, "end": 500 },
-          "definition": {
-            "file": { "key": "test.cpp" },
-            "line": 9,
-            "column": 9
-          },
-          "expand": true,
-          "source": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 35,
-            "columnBegin": 12,
-            "lineEnd": 35,
-            "columnEnd": 13
-          },
-          "nameSpan": { "start": 498, "length": 2 }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "define": {
-        "key": {
-          "macro": { "key": "M1" },
-          "source": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 9,
-            "columnBegin": 9,
-            "lineEnd": 9,
-            "columnEnd": 10
-          }
-        }
-      },
-      "use": {
-        "key": {
-          "macro": { "key": "M1" },
-          "name": { "begin": 244, "end": 246 },
           "definition": {
             "file": { "key": "test.cpp" },
             "line": 9,
@@ -377,7 +87,76 @@
       "use": {
         "key": {
           "macro": { "key": "M1" },
-          "name": { "begin": 372, "end": 385 },
+          "definition": {
+            "file": { "key": "test.cpp" },
+            "line": 9,
+            "column": 9
+          },
+          "expand": true,
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 16,
+            "columnBegin": 1,
+            "lineEnd": 16,
+            "columnEnd": 8
+          },
+          "nameSpan": { "start": 274, "length": 8 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "define": {
+        "key": {
+          "macro": { "key": "M1" },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 9,
+            "columnBegin": 9,
+            "lineEnd": 9,
+            "columnEnd": 10
+          }
+        }
+      },
+      "use": {
+        "key": {
+          "macro": { "key": "M1" },
+          "definition": {
+            "file": { "key": "test.cpp" },
+            "line": 9,
+            "column": 9
+          },
+          "expand": true,
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 17,
+            "columnBegin": 1,
+            "lineEnd": 17,
+            "columnEnd": 8
+          },
+          "nameSpan": { "start": 284, "length": 8 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "define": {
+        "key": {
+          "macro": { "key": "M1" },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 9,
+            "columnBegin": 9,
+            "lineEnd": 9,
+            "columnEnd": 10
+          }
+        }
+      },
+      "use": {
+        "key": {
+          "macro": { "key": "M1" },
           "definition": {
             "file": { "key": "test.cpp" },
             "line": 9,
@@ -400,59 +179,22 @@
     "key": {
       "define": {
         "key": {
-          "macro": { "key": "ABCD" },
+          "macro": { "key": "M1" },
           "source": {
             "file": { "key": "test.cpp" },
-            "lineBegin": 14,
+            "lineBegin": 9,
             "columnBegin": 9,
-            "lineEnd": 14,
-            "columnEnd": 12
+            "lineEnd": 9,
+            "columnEnd": 10
           }
         }
       },
       "use": {
         "key": {
-          "macro": { "key": "ABCD" },
-          "name": { "begin": 514, "end": 559 },
+          "macro": { "key": "M1" },
           "definition": {
             "file": { "key": "test.cpp" },
-            "line": 14,
-            "column": 9
-          },
-          "expand": true,
-          "source": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 36,
-            "columnBegin": 1,
-            "lineEnd": 36,
-            "columnEnd": 45
-          },
-          "nameSpan": { "start": 514, "length": 45 }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "define": {
-        "key": {
-          "macro": { "key": "ABCD" },
-          "source": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 14,
-            "columnBegin": 9,
-            "lineEnd": 14,
-            "columnEnd": 12
-          }
-        }
-      },
-      "use": {
-        "key": {
-          "macro": { "key": "ABCD" },
-          "name": { "begin": 387, "end": 405 },
-          "definition": {
-            "file": { "key": "test.cpp" },
-            "line": 14,
+            "line": 9,
             "column": 9
           },
           "expand": true,
@@ -472,6 +214,181 @@
     "key": {
       "define": {
         "key": {
+          "macro": { "key": "M1" },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 9,
+            "columnBegin": 9,
+            "lineEnd": 9,
+            "columnEnd": 10
+          }
+        }
+      },
+      "use": {
+        "key": {
+          "macro": { "key": "M1" },
+          "definition": {
+            "file": { "key": "test.cpp" },
+            "line": 9,
+            "column": 9
+          },
+          "expand": true,
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 35,
+            "columnBegin": 1,
+            "lineEnd": 35,
+            "columnEnd": 25
+          },
+          "nameSpan": { "start": 487, "length": 25 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "define": {
+        "key": {
+          "macro": { "key": "M1" },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 9,
+            "columnBegin": 9,
+            "lineEnd": 9,
+            "columnEnd": 10
+          }
+        }
+      },
+      "use": {
+        "key": {
+          "macro": { "key": "M1" },
+          "definition": {
+            "file": { "key": "test.cpp" },
+            "line": 9,
+            "column": 9
+          },
+          "expand": true,
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 35,
+            "columnBegin": 12,
+            "lineEnd": 35,
+            "columnEnd": 13
+          },
+          "nameSpan": { "start": 498, "length": 2 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "define": {
+        "key": {
+          "macro": { "key": "M1" },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 9,
+            "columnBegin": 9,
+            "lineEnd": 9,
+            "columnEnd": 10
+          }
+        }
+      },
+      "use": {
+        "key": {
+          "macro": { "key": "M1" },
+          "definition": {
+            "file": { "key": "test.cpp" },
+            "line": 9,
+            "column": 9
+          },
+          "expand": true,
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 36,
+            "columnBegin": 1,
+            "lineEnd": 36,
+            "columnEnd": 45
+          },
+          "nameSpan": { "start": 514, "length": 45 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "define": {
+        "key": {
+          "macro": { "key": "M1" },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 9,
+            "columnBegin": 9,
+            "lineEnd": 9,
+            "columnEnd": 10
+          }
+        }
+      },
+      "use": {
+        "key": {
+          "macro": { "key": "M1" },
+          "definition": {
+            "file": { "key": "test.cpp" },
+            "line": 9,
+            "column": 9
+          },
+          "expand": true,
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 40,
+            "columnBegin": 1,
+            "lineEnd": 40,
+            "columnEnd": 3
+          },
+          "nameSpan": { "start": 578, "length": 3 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "define": {
+        "key": {
+          "macro": { "key": "M1" },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 9,
+            "columnBegin": 9,
+            "lineEnd": 9,
+            "columnEnd": 10
+          }
+        }
+      },
+      "use": {
+        "key": {
+          "macro": { "key": "M1" },
+          "definition": {
+            "file": { "key": "test.cpp" },
+            "line": 9,
+            "column": 9
+          },
+          "expand": true,
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 44,
+            "columnBegin": 1,
+            "lineEnd": 44,
+            "columnEnd": 3
+          },
+          "nameSpan": { "start": 613, "length": 3 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "define": {
+        "key": {
           "macro": { "key": "ABCD" },
           "source": {
             "file": { "key": "test.cpp" },
@@ -485,7 +402,6 @@
       "use": {
         "key": {
           "macro": { "key": "ABCD" },
-          "name": { "begin": 274, "end": 278 },
           "definition": {
             "file": { "key": "test.cpp" },
             "line": 14,
@@ -521,7 +437,6 @@
       "use": {
         "key": {
           "macro": { "key": "ABCD" },
-          "name": { "begin": 284, "end": 288 },
           "definition": {
             "file": { "key": "test.cpp" },
             "line": 14,
@@ -557,79 +472,6 @@
       "use": {
         "key": {
           "macro": { "key": "ABCD" },
-          "name": { "begin": 613, "end": 616 },
-          "definition": {
-            "file": { "key": "test.cpp" },
-            "line": 14,
-            "column": 9
-          },
-          "expand": true,
-          "source": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 44,
-            "columnBegin": 1,
-            "lineEnd": 44,
-            "columnEnd": 3
-          },
-          "nameSpan": { "start": 613, "length": 3 }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "define": {
-        "key": {
-          "macro": { "key": "ABCD" },
-          "source": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 14,
-            "columnBegin": 9,
-            "lineEnd": 14,
-            "columnEnd": 12
-          }
-        }
-      },
-      "use": {
-        "key": {
-          "macro": { "key": "ABCD" },
-          "name": { "begin": 487, "end": 512 },
-          "definition": {
-            "file": { "key": "test.cpp" },
-            "line": 14,
-            "column": 9
-          },
-          "expand": true,
-          "source": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 35,
-            "columnBegin": 1,
-            "lineEnd": 35,
-            "columnEnd": 25
-          },
-          "nameSpan": { "start": 487, "length": 25 }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "define": {
-        "key": {
-          "macro": { "key": "ABCD" },
-          "source": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 14,
-            "columnBegin": 9,
-            "lineEnd": 14,
-            "columnEnd": 12
-          }
-        }
-      },
-      "use": {
-        "key": {
-          "macro": { "key": "ABCD" },
-          "name": { "begin": 372, "end": 385 },
           "definition": {
             "file": { "key": "test.cpp" },
             "line": 14,
@@ -665,7 +507,76 @@
       "use": {
         "key": {
           "macro": { "key": "ABCD" },
-          "name": { "begin": 504, "end": 508 },
+          "definition": {
+            "file": { "key": "test.cpp" },
+            "line": 14,
+            "column": 9
+          },
+          "expand": true,
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 26,
+            "columnBegin": 1,
+            "lineEnd": 26,
+            "columnEnd": 18
+          },
+          "nameSpan": { "start": 387, "length": 18 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "define": {
+        "key": {
+          "macro": { "key": "ABCD" },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 14,
+            "columnBegin": 9,
+            "lineEnd": 14,
+            "columnEnd": 12
+          }
+        }
+      },
+      "use": {
+        "key": {
+          "macro": { "key": "ABCD" },
+          "definition": {
+            "file": { "key": "test.cpp" },
+            "line": 14,
+            "column": 9
+          },
+          "expand": true,
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 35,
+            "columnBegin": 1,
+            "lineEnd": 35,
+            "columnEnd": 25
+          },
+          "nameSpan": { "start": 487, "length": 25 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "define": {
+        "key": {
+          "macro": { "key": "ABCD" },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 14,
+            "columnBegin": 9,
+            "lineEnd": 14,
+            "columnEnd": 12
+          }
+        }
+      },
+      "use": {
+        "key": {
+          "macro": { "key": "ABCD" },
           "definition": {
             "file": { "key": "test.cpp" },
             "line": 14,
@@ -688,6 +599,76 @@
     "key": {
       "define": {
         "key": {
+          "macro": { "key": "ABCD" },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 14,
+            "columnBegin": 9,
+            "lineEnd": 14,
+            "columnEnd": 12
+          }
+        }
+      },
+      "use": {
+        "key": {
+          "macro": { "key": "ABCD" },
+          "definition": {
+            "file": { "key": "test.cpp" },
+            "line": 14,
+            "column": 9
+          },
+          "expand": true,
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 36,
+            "columnBegin": 1,
+            "lineEnd": 36,
+            "columnEnd": 45
+          },
+          "nameSpan": { "start": 514, "length": 45 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "define": {
+        "key": {
+          "macro": { "key": "ABCD" },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 14,
+            "columnBegin": 9,
+            "lineEnd": 14,
+            "columnEnd": 12
+          }
+        }
+      },
+      "use": {
+        "key": {
+          "macro": { "key": "ABCD" },
+          "definition": {
+            "file": { "key": "test.cpp" },
+            "line": 14,
+            "column": 9
+          },
+          "expand": true,
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 44,
+            "columnBegin": 1,
+            "lineEnd": 44,
+            "columnEnd": 3
+          },
+          "nameSpan": { "start": 613, "length": 3 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "define": {
+        "key": {
           "macro": { "key": "HELLOHELLO" },
           "source": {
             "file": { "key": "test.cpp" },
@@ -701,7 +682,41 @@
       "use": {
         "key": {
           "macro": { "key": "HELLOHELLO" },
-          "name": { "begin": 387, "end": 397 },
+          "definition": {
+            "file": { "key": "test.cpp" },
+            "line": 19,
+            "column": 9
+          },
+          "expand": true,
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 25,
+            "columnBegin": 1,
+            "lineEnd": 25,
+            "columnEnd": 13
+          },
+          "nameSpan": { "start": 372, "length": 10 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "define": {
+        "key": {
+          "macro": { "key": "HELLOHELLO" },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 19,
+            "columnBegin": 9,
+            "lineEnd": 19,
+            "columnEnd": 18
+          }
+        }
+      },
+      "use": {
+        "key": {
+          "macro": { "key": "HELLOHELLO" },
           "definition": {
             "file": { "key": "test.cpp" },
             "line": 19,
@@ -737,7 +752,6 @@
       "use": {
         "key": {
           "macro": { "key": "HELLOHELLO" },
-          "name": { "begin": 526, "end": 536 },
           "definition": {
             "file": { "key": "test.cpp" },
             "line": 19,
@@ -773,7 +787,6 @@
       "use": {
         "key": {
           "macro": { "key": "HELLOHELLO" },
-          "name": { "begin": 543, "end": 553 },
           "definition": {
             "file": { "key": "test.cpp" },
             "line": 19,
@@ -796,42 +809,6 @@
     "key": {
       "define": {
         "key": {
-          "macro": { "key": "HELLOHELLO" },
-          "source": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 19,
-            "columnBegin": 9,
-            "lineEnd": 19,
-            "columnEnd": 18
-          }
-        }
-      },
-      "use": {
-        "key": {
-          "macro": { "key": "HELLOHELLO" },
-          "name": { "begin": 372, "end": 382 },
-          "definition": {
-            "file": { "key": "test.cpp" },
-            "line": 19,
-            "column": 9
-          },
-          "expand": true,
-          "source": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 25,
-            "columnBegin": 1,
-            "lineEnd": 25,
-            "columnEnd": 13
-          },
-          "nameSpan": { "start": 372, "length": 10 }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "define": {
-        "key": {
           "macro": { "key": "FOOBAR" },
           "source": {
             "file": { "key": "test.cpp" },
@@ -845,43 +822,6 @@
       "use": {
         "key": {
           "macro": { "key": "FOOBAR" },
-          "name": { "begin": 514, "end": 520 },
-          "definition": {
-            "file": { "key": "test.cpp" },
-            "line": 28,
-            "column": 9
-          },
-          "expand": true,
-          "source": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 36,
-            "columnBegin": 1,
-            "lineEnd": 36,
-            "columnEnd": 45
-          },
-          "nameSpan": { "start": 514, "length": 6 }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "define": {
-        "key": {
-          "macro": { "key": "FOOBAR" },
-          "source": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 28,
-            "columnBegin": 9,
-            "lineEnd": 28,
-            "columnEnd": 14
-          }
-        }
-      },
-      "use": {
-        "key": {
-          "macro": { "key": "FOOBAR" },
-          "name": { "begin": 487, "end": 493 },
           "definition": {
             "file": { "key": "test.cpp" },
             "line": 28,
@@ -904,6 +844,41 @@
     "key": {
       "define": {
         "key": {
+          "macro": { "key": "FOOBAR" },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 28,
+            "columnBegin": 9,
+            "lineEnd": 28,
+            "columnEnd": 14
+          }
+        }
+      },
+      "use": {
+        "key": {
+          "macro": { "key": "FOOBAR" },
+          "definition": {
+            "file": { "key": "test.cpp" },
+            "line": 28,
+            "column": 9
+          },
+          "expand": true,
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 36,
+            "columnBegin": 1,
+            "lineEnd": 36,
+            "columnEnd": 45
+          },
+          "nameSpan": { "start": 514, "length": 6 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "define": {
+        "key": {
           "macro": { "key": "XYZ" },
           "source": {
             "file": { "key": "test.cpp" },
@@ -917,7 +892,6 @@
       "use": {
         "key": {
           "macro": { "key": "XYZ" },
-          "name": { "begin": 578, "end": 581 },
           "definition": {
             "file": { "key": "test.cpp" },
             "line": 38,
@@ -953,7 +927,6 @@
       "use": {
         "key": {
           "macro": { "key": "ZYX" },
-          "name": { "begin": 613, "end": 616 },
           "definition": {
             "file": { "key": "test.cpp" },
             "line": 42,

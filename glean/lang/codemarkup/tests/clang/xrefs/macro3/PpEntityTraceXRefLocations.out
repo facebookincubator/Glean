@@ -131,7 +131,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 396, "end": 403 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -153,7 +152,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 404, "end": 409 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -175,7 +173,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_2" },
-                      "name": { "begin": 425, "end": 432 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 13,
@@ -197,7 +194,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 433, "end": 438 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -219,7 +215,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 425, "end": 448 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -241,7 +236,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_3" },
-                      "name": { "begin": 454, "end": 461 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 14,
@@ -263,7 +257,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 462, "end": 467 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -285,7 +278,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_2" },
-                      "name": { "begin": 454, "end": 477 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 13,
@@ -307,7 +299,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 454, "end": 477 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -329,7 +320,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "NESTED_PASTE" },
-                      "name": { "begin": 484, "end": 496 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 10,
@@ -351,7 +341,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 484, "end": 505 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -537,7 +526,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 396, "end": 403 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -559,7 +547,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 404, "end": 409 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -581,7 +568,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_2" },
-                      "name": { "begin": 425, "end": 432 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 13,
@@ -603,7 +589,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 433, "end": 438 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -625,7 +610,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 425, "end": 448 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -647,7 +631,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_3" },
-                      "name": { "begin": 454, "end": 461 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 14,
@@ -669,7 +652,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 462, "end": 467 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -691,7 +673,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_2" },
-                      "name": { "begin": 454, "end": 477 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 13,
@@ -713,7 +694,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 454, "end": 477 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -735,7 +715,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "NESTED_PASTE" },
-                      "name": { "begin": 484, "end": 496 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 10,
@@ -757,7 +736,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 484, "end": 505 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -943,7 +921,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 396, "end": 403 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -965,7 +942,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 404, "end": 409 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -987,7 +963,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_2" },
-                      "name": { "begin": 425, "end": 432 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 13,
@@ -1009,7 +984,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 433, "end": 438 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -1031,7 +1005,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 425, "end": 448 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -1053,7 +1026,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_3" },
-                      "name": { "begin": 454, "end": 461 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 14,
@@ -1075,7 +1047,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 462, "end": 467 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -1097,7 +1068,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_2" },
-                      "name": { "begin": 454, "end": 477 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 13,
@@ -1119,7 +1089,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 454, "end": 477 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -1141,7 +1110,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "NESTED_PASTE" },
-                      "name": { "begin": 484, "end": 496 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 10,
@@ -1163,7 +1131,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 484, "end": 505 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -1349,7 +1316,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 396, "end": 403 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -1371,7 +1337,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 404, "end": 409 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -1393,7 +1358,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_2" },
-                      "name": { "begin": 425, "end": 432 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 13,
@@ -1415,7 +1379,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 433, "end": 438 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -1437,7 +1400,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 425, "end": 448 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -1459,7 +1421,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_3" },
-                      "name": { "begin": 454, "end": 461 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 14,
@@ -1481,7 +1442,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 462, "end": 467 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -1503,7 +1463,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_2" },
-                      "name": { "begin": 454, "end": 477 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 13,
@@ -1525,7 +1484,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 454, "end": 477 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -1547,7 +1505,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "NESTED_PASTE" },
-                      "name": { "begin": 484, "end": 496 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 10,
@@ -1569,7 +1526,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 484, "end": 505 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -1755,7 +1711,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 396, "end": 403 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -1777,7 +1732,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 404, "end": 409 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -1799,7 +1753,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_2" },
-                      "name": { "begin": 425, "end": 432 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 13,
@@ -1821,7 +1774,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 433, "end": 438 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -1843,7 +1795,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 425, "end": 448 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -1865,7 +1816,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_3" },
-                      "name": { "begin": 454, "end": 461 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 14,
@@ -1887,7 +1837,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 462, "end": 467 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -1909,7 +1858,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_2" },
-                      "name": { "begin": 454, "end": 477 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 13,
@@ -1931,7 +1879,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 454, "end": 477 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -1953,7 +1900,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "NESTED_PASTE" },
-                      "name": { "begin": 484, "end": 496 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 10,
@@ -1975,7 +1921,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 484, "end": 505 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -2161,7 +2106,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 396, "end": 403 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -2183,7 +2127,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 404, "end": 409 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -2205,7 +2148,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_2" },
-                      "name": { "begin": 425, "end": 432 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 13,
@@ -2227,7 +2169,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 433, "end": 438 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -2249,7 +2190,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 425, "end": 448 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -2271,7 +2211,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_3" },
-                      "name": { "begin": 454, "end": 461 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 14,
@@ -2293,7 +2232,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 462, "end": 467 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -2315,7 +2253,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_2" },
-                      "name": { "begin": 454, "end": 477 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 13,
@@ -2337,7 +2274,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 454, "end": 477 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -2359,7 +2295,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "NESTED_PASTE" },
-                      "name": { "begin": 484, "end": 496 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 10,
@@ -2381,7 +2316,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 484, "end": 505 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -2567,7 +2501,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 396, "end": 403 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -2589,7 +2522,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 404, "end": 409 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -2611,7 +2543,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_2" },
-                      "name": { "begin": 425, "end": 432 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 13,
@@ -2633,7 +2564,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 433, "end": 438 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -2655,7 +2585,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 425, "end": 448 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -2677,7 +2606,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_3" },
-                      "name": { "begin": 454, "end": 461 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 14,
@@ -2699,7 +2627,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 462, "end": 467 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -2721,7 +2648,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_2" },
-                      "name": { "begin": 454, "end": 477 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 13,
@@ -2743,7 +2669,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 454, "end": 477 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -2765,7 +2690,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "NESTED_PASTE" },
-                      "name": { "begin": 484, "end": 496 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 10,
@@ -2787,7 +2711,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 484, "end": 505 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -2973,7 +2896,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 396, "end": 403 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -2995,7 +2917,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 404, "end": 409 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -3017,7 +2938,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_2" },
-                      "name": { "begin": 425, "end": 432 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 13,
@@ -3039,7 +2959,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 433, "end": 438 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -3061,7 +2980,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 425, "end": 448 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -3083,7 +3001,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_3" },
-                      "name": { "begin": 454, "end": 461 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 14,
@@ -3105,7 +3022,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 462, "end": 467 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -3127,7 +3043,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_2" },
-                      "name": { "begin": 454, "end": 477 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 13,
@@ -3149,7 +3064,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 454, "end": 477 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -3171,7 +3085,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "NESTED_PASTE" },
-                      "name": { "begin": 484, "end": 496 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 10,
@@ -3193,7 +3106,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 484, "end": 505 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -3379,7 +3291,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 396, "end": 403 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -3401,7 +3312,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 404, "end": 409 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -3423,7 +3333,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_2" },
-                      "name": { "begin": 425, "end": 432 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 13,
@@ -3445,7 +3354,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 433, "end": 438 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -3467,7 +3375,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 425, "end": 448 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -3489,7 +3396,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_3" },
-                      "name": { "begin": 454, "end": 461 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 14,
@@ -3511,7 +3417,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 462, "end": 467 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -3533,7 +3438,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_2" },
-                      "name": { "begin": 454, "end": 477 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 13,
@@ -3555,7 +3459,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 454, "end": 477 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -3577,7 +3480,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "NESTED_PASTE" },
-                      "name": { "begin": 484, "end": 496 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 10,
@@ -3599,7 +3501,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 484, "end": 505 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -3785,7 +3686,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 396, "end": 403 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -3807,7 +3707,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 404, "end": 409 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -3829,7 +3728,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_2" },
-                      "name": { "begin": 425, "end": 432 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 13,
@@ -3851,7 +3749,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 433, "end": 438 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -3873,7 +3770,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 425, "end": 448 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -3895,7 +3791,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_3" },
-                      "name": { "begin": 454, "end": 461 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 14,
@@ -3917,7 +3812,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 462, "end": 467 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -3939,7 +3833,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_2" },
-                      "name": { "begin": 454, "end": 477 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 13,
@@ -3961,7 +3854,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 454, "end": 477 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -3983,7 +3875,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "NESTED_PASTE" },
-                      "name": { "begin": 484, "end": 496 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 10,
@@ -4005,7 +3896,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 484, "end": 505 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -4191,7 +4081,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 396, "end": 403 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -4213,7 +4102,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 404, "end": 409 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -4235,7 +4123,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_2" },
-                      "name": { "begin": 425, "end": 432 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 13,
@@ -4257,7 +4144,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 433, "end": 438 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -4279,7 +4165,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 425, "end": 448 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -4301,7 +4186,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_3" },
-                      "name": { "begin": 454, "end": 461 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 14,
@@ -4323,7 +4207,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 462, "end": 467 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,
@@ -4345,7 +4228,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_2" },
-                      "name": { "begin": 454, "end": 477 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 13,
@@ -4367,7 +4249,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "MACRO_1" },
-                      "name": { "begin": 454, "end": 477 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 12,
@@ -4389,7 +4270,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "NESTED_PASTE" },
-                      "name": { "begin": 484, "end": 496 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 10,
@@ -4411,7 +4291,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "PASTE" },
-                      "name": { "begin": 484, "end": 505 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,

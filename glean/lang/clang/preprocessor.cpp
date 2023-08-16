@@ -255,7 +255,6 @@ struct PPCallbacks final : public clang::PPCallbacks {
 
     auto use = db.fact<Pp::Use>(
       macro(name),
-      Src::ByteRange{name_r.span.start, name_r.span.start + name_r.span.length},
       maybe(defloc),
       expand,
       src.range,

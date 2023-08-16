@@ -17,7 +17,6 @@
       "use": {
         "key": {
           "macro": { "key": "F" },
-          "name": { "begin": 239, "end": 240 },
           "definition": {
             "file": { "key": "test.h" },
             "line": 10,
@@ -53,7 +52,6 @@
       "use": {
         "key": {
           "macro": { "key": "F" },
-          "name": { "begin": 252, "end": 253 },
           "definition": {
             "file": { "key": "test.h" },
             "line": 10,

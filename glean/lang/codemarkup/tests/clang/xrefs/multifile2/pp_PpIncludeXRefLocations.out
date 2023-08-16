@@ -11,7 +11,6 @@
                 "include_": {
                   "key": {
                     "file": { "key": "a.h" },
-                    "path": { "begin": 230, "end": 235 },
                     "source": {
                       "file": { "key": "test.cpp" },
                       "lineBegin": 9,
@@ -29,7 +28,6 @@
                 "include_": {
                   "key": {
                     "file": { "key": "b.h" },
-                    "path": { "begin": 245, "end": 250 },
                     "source": {
                       "file": { "key": "test.cpp" },
                       "lineBegin": 10,
@@ -66,7 +64,6 @@
                 "include_": {
                   "key": {
                     "file": { "key": "a.h" },
-                    "path": { "begin": 230, "end": 235 },
                     "source": {
                       "file": { "key": "test.cpp" },
                       "lineBegin": 9,
@@ -84,7 +81,6 @@
                 "include_": {
                   "key": {
                     "file": { "key": "b.h" },
-                    "path": { "begin": 245, "end": 250 },
                     "source": {
                       "file": { "key": "test.cpp" },
                       "lineBegin": 10,

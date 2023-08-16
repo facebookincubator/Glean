@@ -97,7 +97,6 @@
                   "use": {
                     "key": {
                       "macro": { "key": "BLAH" },
-                      "name": { "begin": 481, "end": 485 },
                       "definition": {
                         "file": { "key": "test.cpp" },
                         "line": 9,

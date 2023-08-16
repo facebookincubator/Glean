@@ -143,9 +143,6 @@ void ClangDB::include(
   const auto name_range = srcRange(inc.name);
   const auto include = fact<Pp::Include>(
     file,
-    Src::ByteRange{
-      name_range.span.start,
-      name_range.span.start + name_range.span.length},
     range.range,
     Src::ByteSpan{
       name_range.span.start,

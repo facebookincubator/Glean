@@ -9,7 +9,6 @@
             "include_": {
               "key": {
                 "file": { "key": "foo.h" },
-                "path": { "begin": 230, "end": 237 },
                 "source": {
                   "file": { "key": "test.cpp" },
                   "lineBegin": 9,
@@ -27,7 +26,6 @@
             "include_": {
               "key": {
                 "file": { "key": "foo.h" },
-                "path": { "begin": 247, "end": 254 },
                 "source": {
                   "file": { "key": "test.cpp" },
                   "lineBegin": 10,

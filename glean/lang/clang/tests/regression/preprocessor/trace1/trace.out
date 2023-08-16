@@ -9,7 +9,6 @@
             "include_": {
               "key": {
                 "file": { "key": "test.h" },
-                "path": { "begin": 230, "end": 238 },
                 "source": {
                   "file": { "key": "test.cpp" },
                   "lineBegin": 9,
@@ -26,7 +25,6 @@
           "use": {
             "key": {
               "macro": { "key": "F" },
-              "name": { "begin": 239, "end": 240 },
               "definition": {
                 "file": { "key": "test.h" },
                 "line": 10,
@@ -48,7 +46,6 @@
           "use": {
             "key": {
               "macro": { "key": "F" },
-              "name": { "begin": 252, "end": 253 },
               "definition": {
                 "file": { "key": "test.h" },
                 "line": 10,
