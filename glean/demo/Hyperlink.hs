@@ -258,19 +258,19 @@ cxxGetHyperlinks path = do  -- ApplicativeDo makes these parallel:
           key <- Glean.getKey (Cxx.includeTrace_include_ trace)
           let !Pp1.Include_key
                 { include_key_file = file
-                , include_key_path = Src.ByteRange b e } = key
-          fmap (Hyperlink (fromIntegral $ Glean.unNat b)
-              (fromIntegral $ Glean.unNat e))
+                , include_key_pathSpan = Src.ByteSpan s l } = key
+          fmap (Hyperlink (fromIntegral $ Glean.unNat s)
+              (fromIntegral $ Glean.unNat s + Glean.unNat l))
             <$> target_locH "include" file (Glean.Nat 1)
 
         crossref (Cxx.PPEvent_use use) = do
           key <- Glean.getKey use
           case key of
             Pp1.Use_key
-              { use_key_name = Src.ByteRange b e
+              { use_key_nameSpan = Src.ByteSpan s l
               , use_key_definition = Just (Src.Loc file line _) } ->
-              fmap (Hyperlink (fromIntegral $ Glean.unNat b)
-                  (fromIntegral $ Glean.unNat e))
+              fmap (Hyperlink (fromIntegral $ Glean.unNat s)
+                  (fromIntegral $ Glean.unNat s + Glean.unNat l))
                 <$> target_locH "macro" file line
             _ -> return Nothing
 
