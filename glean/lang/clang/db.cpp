@@ -373,25 +373,21 @@ ClangDB::SourceRange ClangDB::immediateSrcRange(
 
 namespace {
 
-Src::ByteSpans byteSpans(const std::vector<Src::ByteSpan>& v) {
-  std::vector<Src::RelByteSpan> spans;
-  spans.reserve(v.size());
+Src::PackedByteSpans packByteSpans(std::vector<Src::ByteSpan>&& v) {
+  auto spans = std::move(v);
   size_t offset = 0;
-  for (const auto& span : v) {
+  for (auto& span : spans) {
     assert(span.start >= offset);
-    spans.push_back(Src::RelByteSpan{span.start - offset, span.length});
-    offset = span.start;
+    auto start = span.start;
+    span.start -= offset;
+    offset = start;
   }
-  return spans;
-}
-
-Src::PackedByteSpans packByteSpans(const Src::ByteSpans& spans) {
   Src::PackedByteSpans result;
   for (const auto& span : spans) {
     if (result.empty() || span.length != result.back().length) {
       result.push_back({span.length, {}});
     }
-    result.back().offsets.push_back(span.offset);
+    result.back().offsets.push_back(span.start);
   }
   return result;
 }
@@ -433,22 +429,12 @@ std::vector<Cxx::FixedXRef> finishRefs(std::deque<ClangDB::CrossRef>&& v) {
       });
   std::vector<Cxx::FixedXRef> fixed;
   fixed.reserve(xrefs.size());
-  for (auto& xref : xrefs) {
-    std::vector<Src::ByteSpan> ranges;
-    ranges.reserve(
-        xref.spans.size() + xref.expansions.size() + xref.spellings.size());
-    for (auto* spans : {&xref.spans, &xref.expansions, &xref.spellings}) {
-      ranges.insert(ranges.end(), spans->begin(), spans->end());
-    }
-    std::sort(ranges.begin(), ranges.end());
-    ranges.erase(std::unique(ranges.begin(), ranges.end()), ranges.end());
+  for (auto&& xref : std::move(xrefs)) {
     fixed.push_back(
-        {xref.target,
-         byteSpans(ranges),
-         Cxx::From{
-             packByteSpans(byteSpans(xref.spans)),
-             packByteSpans(byteSpans(xref.expansions)),
-             packByteSpans(byteSpans(xref.spellings))}});
+        {std::move(xref.target),
+         {packByteSpans(std::move(xref.spans)),
+          packByteSpans(std::move(xref.expansions)),
+          packByteSpans(std::move(xref.spellings))}});
   }
   return fixed;
 }
@@ -472,21 +458,12 @@ void ClangDB::finish() {
       auto fixed = finishRefs(std::move(xrefs.fixed));
       auto external_refs = finishRefs(std::move(xrefs.variable));
 
-      std::vector<Cxx::XRefTarget> external_targets;
-      std::vector<Src::ByteSpans> external_spans;
-      external_targets.reserve(external_refs.size());
-      external_spans.reserve(external_refs.size());
-      for (const auto& ext : external_refs) {
-        external_targets.push_back(ext.target);
-        external_spans.push_back(ext.ranges);
-      }
-
       struct VariableXRef {
         Cxx::From from;
         std::vector<Cxx::XRefTarget> group;
       };
       std::vector<VariableXRef> variable;
-      for (auto&& [target, _, from] : std::move(external_refs)) {
+      for (auto&& [target, from] : std::move(external_refs)) {
         if (variable.empty() || from != variable.back().from) {
           variable.push_back({std::move(from), {}});
         }
@@ -507,11 +484,9 @@ void ClangDB::finish() {
       auto xmap = fact<Cxx::FileXRefMap>(
         file.fact,
         std::move(fixed),
-        std::move(external_spans),
         std::move(froms));
       auto fileXRefs = fact<Cxx::FileXRefs>(
         xmap,
-        std::move(external_targets),
         std::move(targets));
       tunitXRefs.push_back(fileXRefs);
     }

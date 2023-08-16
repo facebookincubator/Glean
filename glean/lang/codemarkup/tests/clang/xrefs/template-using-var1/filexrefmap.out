@@ -21,24 +21,12 @@
               }
             }
           },
-          "ranges": [
-            { "offset": 438, "length": 2 },
-            { "offset": 94, "length": 2 }
-          ],
           "from": {
             "spans": [ { "length": 2, "offsets": [ 438, 94 ] } ],
             "expansions": [ ],
             "spellings": [ ]
           }
         }
-      ],
-      "variable": [
-        [ { "offset": 456, "length": 3 }, { "offset": 38, "length": 3 } ],
-        [ { "offset": 468, "length": 3 } ],
-        [ { "offset": 481, "length": 3 } ],
-        [ { "offset": 555, "length": 3 }, { "offset": 38, "length": 3 } ],
-        [ { "offset": 567, "length": 3 } ],
-        [ { "offset": 580, "length": 3 } ]
       ],
       "froms": [
         {

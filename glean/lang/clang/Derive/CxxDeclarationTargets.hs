@@ -435,7 +435,7 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
       oneFileXRefMap (i, key) =
         let fixedTargets =
               [ (range, [decl])
-              | Cxx.FixedXRef target _ from <- Cxx.fileXRefMap_key_fixed key
+              | Cxx.FixedXRef target from <- Cxx.fileXRefMap_key_fixed key
               , (Cxx.XRefTarget_declaration decl)
                     <- mapMaybe (resolve indirects) [target]
               , range <- fromToSpansAndExpansions from

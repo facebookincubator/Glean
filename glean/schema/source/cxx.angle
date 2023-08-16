@@ -561,28 +561,23 @@ type From =
 type FixedXRef =
   {
     target : XRefTarget,
-    ranges : [src.RelByteSpan],
     from : From,
   }
 
-# Note that "variable" corresponds to many "externals" in FileXRefs
-# Note that "free" corresponds to many "targets" in FileXRefs
+# Note that "froms" corresponds to many "targets" in FileXRefs
 # Cross-references in a file
 predicate FileXRefMap :
   {
     file : src.File,
     fixed : [FixedXRef],
-    variable : [src.ByteSpans],
     froms : [From],
   }
 
-# Note that "externals" entries correspond to "variable" entries (in the "xmap"),
-# Note that "targets" entries correspond to "free" entries (in the "xmap").
+# Note that "targets" entries correspond to "froms" entries (in the "xmap").
 # Instantiation of a FileXRefMap with set of external references
 predicate FileXRefs :
   {
     xmap : FileXRefMap,
-    externals : [XRefTarget],
     targets : [XRefTargets],
   }
 

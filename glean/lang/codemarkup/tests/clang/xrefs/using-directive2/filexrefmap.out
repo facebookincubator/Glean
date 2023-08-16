@@ -21,7 +21,6 @@
               }
             }
           },
-          "ranges": [ { "offset": 487, "length": 2 } ],
           "from": {
             "spans": [ { "length": 2, "offsets": [ 487 ] } ],
             "expansions": [ ],
@@ -45,18 +44,6 @@
               }
             }
           },
-          "ranges": [
-            { "offset": 527, "length": 2 },
-            { "offset": 33, "length": 2 },
-            { "offset": 38, "length": 2 },
-            { "offset": 37, "length": 2 },
-            { "offset": 44, "length": 2 },
-            { "offset": 49, "length": 2 },
-            { "offset": 64, "length": 2 },
-            { "offset": 57, "length": 2 },
-            { "offset": 45, "length": 2 },
-            { "offset": 45, "length": 2 }
-          ],
           "from": {
             "spans": [
               {
@@ -100,10 +87,6 @@
               }
             }
           },
-          "ranges": [
-            { "offset": 712, "length": 2 },
-            { "offset": 25, "length": 2 }
-          ],
           "from": {
             "spans": [ { "length": 2, "offsets": [ 712, 25 ] } ],
             "expansions": [ ],
@@ -127,36 +110,12 @@
               }
             }
           },
-          "ranges": [
-            { "offset": 871, "length": 2 },
-            { "offset": 45, "length": 2 }
-          ],
           "from": {
             "spans": [ { "length": 2, "offsets": [ 871, 45 ] } ],
             "expansions": [ ],
             "spellings": [ ]
           }
         }
-      ],
-      "variable": [
-        [ { "offset": 543, "length": 2 }, { "offset": 231, "length": 2 } ],
-        [ { "offset": 564, "length": 2 }, { "offset": 232, "length": 2 } ],
-        [
-          { "offset": 582, "length": 2 },
-          { "offset": 251, "length": 2 },
-          { "offset": 42, "length": 2 }
-        ],
-        [
-          { "offset": 602, "length": 2 },
-          { "offset": 251, "length": 2 },
-          { "offset": 45, "length": 2 }
-        ],
-        [ { "offset": 619, "length": 2 }, { "offset": 301, "length": 2 } ],
-        [ { "offset": 639, "length": 2 }, { "offset": 304, "length": 2 } ],
-        [ { "offset": 656, "length": 2 } ],
-        [ { "offset": 683, "length": 2 } ],
-        [ { "offset": 707, "length": 3 } ],
-        [ { "offset": 732, "length": 3 } ]
       ],
       "froms": [
         {

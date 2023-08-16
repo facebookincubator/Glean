@@ -8,10 +8,6 @@
             "key": {
               "file": { "key": "a.h" },
               "fixed": [ ],
-              "variable": [
-                [ { "offset": 234, "length": 1 } ],
-                [ { "offset": 241, "length": 1 } ]
-              ],
               "froms": [
                 {
                   "spans": [ { "length": 1, "offsets": [ 234 ] } ],
@@ -26,58 +22,6 @@
               ]
             }
           },
-          "externals": [
-            {
-              "declaration": {
-                "record_": {
-                  "key": {
-                    "name": {
-                      "key": {
-                        "name": { "key": "T" },
-                        "scope": {
-                          "namespace_": { "key": { "name": { "key": "A" } } }
-                        }
-                      }
-                    },
-                    "kind": { "struct_": { } },
-                    "source": {
-                      "file": { "key": "test.cpp" },
-                      "lineBegin": 12,
-                      "columnBegin": 1,
-                      "lineEnd": 12,
-                      "columnEnd": 11
-                    }
-                  }
-                }
-              }
-            },
-            {
-              "declaration": {
-                "function_": {
-                  "key": {
-                    "name": {
-                      "key": {
-                        "name": { "key": { "name": { "key": "f" } } },
-                        "scope": {
-                          "namespace_": { "key": { "name": { "key": "A" } } }
-                        }
-                      }
-                    },
-                    "signature": {
-                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
-                    },
-                    "source": {
-                      "file": { "key": "test.cpp" },
-                      "lineBegin": 11,
-                      "columnBegin": 1,
-                      "lineEnd": 11,
-                      "columnEnd": 11
-                    }
-                  }
-                }
-              }
-            }
-          ],
           "targets": [
             {
               "key": [
@@ -196,10 +140,6 @@
             "key": {
               "file": { "key": "a.h" },
               "fixed": [ ],
-              "variable": [
-                [ { "offset": 234, "length": 1 } ],
-                [ { "offset": 241, "length": 1 } ]
-              ],
               "froms": [
                 {
                   "spans": [ { "length": 1, "offsets": [ 234 ] } ],
@@ -214,58 +154,6 @@
               ]
             }
           },
-          "externals": [
-            {
-              "declaration": {
-                "record_": {
-                  "key": {
-                    "name": {
-                      "key": {
-                        "name": { "key": "T" },
-                        "scope": {
-                          "namespace_": { "key": { "name": { "key": "A" } } }
-                        }
-                      }
-                    },
-                    "kind": { "struct_": { } },
-                    "source": {
-                      "file": { "key": "test.cpp" },
-                      "lineBegin": 12,
-                      "columnBegin": 1,
-                      "lineEnd": 12,
-                      "columnEnd": 11
-                    }
-                  }
-                }
-              }
-            },
-            {
-              "declaration": {
-                "function_": {
-                  "key": {
-                    "name": {
-                      "key": {
-                        "name": { "key": { "name": { "key": "f" } } },
-                        "scope": {
-                          "namespace_": { "key": { "name": { "key": "A" } } }
-                        }
-                      }
-                    },
-                    "signature": {
-                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
-                    },
-                    "source": {
-                      "file": { "key": "test.cpp" },
-                      "lineBegin": 11,
-                      "columnBegin": 1,
-                      "lineEnd": 11,
-                      "columnEnd": 11
-                    }
-                  }
-                }
-              }
-            }
-          ],
           "targets": [
             {
               "key": [
@@ -382,10 +270,6 @@
             "key": {
               "file": { "key": "a.h" },
               "fixed": [ ],
-              "variable": [
-                [ { "offset": 234, "length": 1 } ],
-                [ { "offset": 241, "length": 1 } ]
-              ],
               "froms": [
                 {
                   "spans": [ { "length": 1, "offsets": [ 234 ] } ],
@@ -400,58 +284,6 @@
               ]
             }
           },
-          "externals": [
-            {
-              "declaration": {
-                "record_": {
-                  "key": {
-                    "name": {
-                      "key": {
-                        "name": { "key": "T" },
-                        "scope": {
-                          "namespace_": { "key": { "name": { "key": "B" } } }
-                        }
-                      }
-                    },
-                    "kind": { "struct_": { } },
-                    "source": {
-                      "file": { "key": "test.cpp" },
-                      "lineBegin": 21,
-                      "columnBegin": 1,
-                      "lineEnd": 21,
-                      "columnEnd": 11
-                    }
-                  }
-                }
-              }
-            },
-            {
-              "declaration": {
-                "function_": {
-                  "key": {
-                    "name": {
-                      "key": {
-                        "name": { "key": { "name": { "key": "f" } } },
-                        "scope": {
-                          "namespace_": { "key": { "name": { "key": "B" } } }
-                        }
-                      }
-                    },
-                    "signature": {
-                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
-                    },
-                    "source": {
-                      "file": { "key": "test.cpp" },
-                      "lineBegin": 20,
-                      "columnBegin": 1,
-                      "lineEnd": 20,
-                      "columnEnd": 11
-                    }
-                  }
-                }
-              }
-            }
-          ],
           "targets": [
             {
               "key": [
@@ -570,10 +402,6 @@
             "key": {
               "file": { "key": "a.h" },
               "fixed": [ ],
-              "variable": [
-                [ { "offset": 234, "length": 1 } ],
-                [ { "offset": 241, "length": 1 } ]
-              ],
               "froms": [
                 {
                   "spans": [ { "length": 1, "offsets": [ 234 ] } ],
@@ -588,58 +416,6 @@
               ]
             }
           },
-          "externals": [
-            {
-              "declaration": {
-                "record_": {
-                  "key": {
-                    "name": {
-                      "key": {
-                        "name": { "key": "T" },
-                        "scope": {
-                          "namespace_": { "key": { "name": { "key": "B" } } }
-                        }
-                      }
-                    },
-                    "kind": { "struct_": { } },
-                    "source": {
-                      "file": { "key": "test.cpp" },
-                      "lineBegin": 21,
-                      "columnBegin": 1,
-                      "lineEnd": 21,
-                      "columnEnd": 11
-                    }
-                  }
-                }
-              }
-            },
-            {
-              "declaration": {
-                "function_": {
-                  "key": {
-                    "name": {
-                      "key": {
-                        "name": { "key": { "name": { "key": "f" } } },
-                        "scope": {
-                          "namespace_": { "key": { "name": { "key": "B" } } }
-                        }
-                      }
-                    },
-                    "signature": {
-                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
-                    },
-                    "source": {
-                      "file": { "key": "test.cpp" },
-                      "lineBegin": 20,
-                      "columnBegin": 1,
-                      "lineEnd": 20,
-                      "columnEnd": 11
-                    }
-                  }
-                }
-              }
-            }
-          ],
           "targets": [
             {
               "key": [

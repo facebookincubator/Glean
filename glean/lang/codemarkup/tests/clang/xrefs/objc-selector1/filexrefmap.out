@@ -21,7 +21,6 @@
               }
             }
           },
-          "ranges": [ { "offset": 325, "length": 1 } ],
           "from": {
             "spans": [ { "length": 1, "offsets": [ 325 ] } ],
             "expansions": [ ],
@@ -30,10 +29,6 @@
         },
         {
           "target": { "objcSelector": { "key": [ "foo" ] } },
-          "ranges": [
-            { "offset": 376, "length": 14 },
-            { "offset": 35, "length": 14 }
-          ],
           "from": {
             "spans": [ { "length": 14, "offsets": [ 376, 35 ] } ],
             "expansions": [ ],
@@ -71,7 +66,6 @@
               }
             }
           },
-          "ranges": [ { "offset": 395, "length": 1 } ],
           "from": {
             "spans": [ { "length": 1, "offsets": [ 395 ] } ],
             "expansions": [ ],
@@ -110,7 +104,6 @@
               }
             }
           },
-          "ranges": [ { "offset": 397, "length": 13 } ],
           "from": {
             "spans": [ { "length": 13, "offsets": [ 397 ] } ],
             "expansions": [ ],
@@ -118,7 +111,6 @@
           }
         }
       ],
-      "variable": [ ],
       "froms": [ ]
     }
   }

@@ -21,7 +21,6 @@
               }
             }
           },
-          "ranges": [ { "offset": 260, "length": 2 } ],
           "from": {
             "spans": [ { "length": 2, "offsets": [ 260 ] } ],
             "expansions": [ ],
@@ -45,7 +44,6 @@
               }
             }
           },
-          "ranges": [ { "offset": 316, "length": 2 } ],
           "from": {
             "spans": [ { "length": 2, "offsets": [ 316 ] } ],
             "expansions": [ ],
@@ -53,7 +51,6 @@
           }
         }
       ],
-      "variable": [ [ { "offset": 336, "length": 1 } ] ],
       "froms": [
         {
           "spans": [ { "length": 1, "offsets": [ 336 ] } ],

@@ -142,7 +142,7 @@ predicate CxxFileEntityXMapFixedXRefLocations:
   }
   { Trace, XRef, Entity } where
     cxx1.FileXRefs { xmap = { fixed = Fixeds } } = Trace;
-    cxx1.FixedXRef { XRefTarget, _, From } = Fixeds[..];
+    cxx1.FixedXRef { XRefTarget, From } = Fixeds[..];
     CxxXRefTargetLocation { XRefTarget, Entity, Location };
     { spans = PackedSpans, spellings = PackedSpellings } = From;
     Spans = prim.unpackByteSpans PackedSpans;

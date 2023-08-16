@@ -21,18 +21,6 @@
               }
             }
           },
-          "ranges": [
-            { "offset": 487, "length": 2 },
-            { "offset": 33, "length": 2 },
-            { "offset": 38, "length": 2 },
-            { "offset": 37, "length": 2 },
-            { "offset": 44, "length": 2 },
-            { "offset": 49, "length": 2 },
-            { "offset": 64, "length": 2 },
-            { "offset": 57, "length": 2 },
-            { "offset": 45, "length": 2 },
-            { "offset": 45, "length": 2 }
-          ],
           "from": {
             "spans": [
               {
@@ -76,10 +64,6 @@
               }
             }
           },
-          "ranges": [
-            { "offset": 524, "length": 2 },
-            { "offset": 232, "length": 2 }
-          ],
           "from": {
             "spans": [ { "length": 2, "offsets": [ 524, 232 ] } ],
             "expansions": [ ],
@@ -117,11 +101,6 @@
               }
             }
           },
-          "ranges": [
-            { "offset": 562, "length": 2 },
-            { "offset": 251, "length": 2 },
-            { "offset": 45, "length": 2 }
-          ],
           "from": {
             "spans": [ { "length": 2, "offsets": [ 562, 251, 45 ] } ],
             "expansions": [ ],
@@ -155,10 +134,6 @@
               }
             }
           },
-          "ranges": [
-            { "offset": 599, "length": 2 },
-            { "offset": 304, "length": 2 }
-          ],
           "from": {
             "spans": [ { "length": 2, "offsets": [ 599, 304 ] } ],
             "expansions": [ ],
@@ -200,7 +175,6 @@
               }
             }
           },
-          "ranges": [ { "offset": 643, "length": 2 } ],
           "from": {
             "spans": [ { "length": 2, "offsets": [ 643 ] } ],
             "expansions": [ ],
@@ -239,10 +213,6 @@
               }
             }
           },
-          "ranges": [
-            { "offset": 672, "length": 2 },
-            { "offset": 25, "length": 2 }
-          ],
           "from": {
             "spans": [ { "length": 2, "offsets": [ 672, 25 ] } ],
             "expansions": [ ],
@@ -271,7 +241,6 @@
               }
             }
           },
-          "ranges": [ { "offset": 692, "length": 3 } ],
           "from": {
             "spans": [ { "length": 3, "offsets": [ 692 ] } ],
             "expansions": [ ],
@@ -295,27 +264,12 @@
               }
             }
           },
-          "ranges": [
-            { "offset": 831, "length": 2 },
-            { "offset": 45, "length": 2 }
-          ],
           "from": {
             "spans": [ { "length": 2, "offsets": [ 831, 45 ] } ],
             "expansions": [ ],
             "spellings": [ ]
           }
         }
-      ],
-      "variable": [
-        [ { "offset": 503, "length": 2 }, { "offset": 231, "length": 2 } ],
-        [
-          { "offset": 542, "length": 2 },
-          { "offset": 251, "length": 2 },
-          { "offset": 42, "length": 2 }
-        ],
-        [ { "offset": 579, "length": 2 }, { "offset": 301, "length": 2 } ],
-        [ { "offset": 616, "length": 2 } ],
-        [ { "offset": 667, "length": 3 } ]
       ],
       "froms": [
         {

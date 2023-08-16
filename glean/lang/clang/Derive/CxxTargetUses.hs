@@ -102,7 +102,7 @@ deriveUses e cfg writer = do
           return HashMap.empty
       let new_uses = foldr (addUses indirects) uses $
             [ (target, from)
-            | Cxx.FixedXRef target _ from <- Cxx.fileXRefMap_key_fixed key ]
+            | Cxx.FixedXRef target from <- Cxx.fileXRefMap_key_fixed key ]
             ++
             [ (target, from)
             | (targets, from) <- zip

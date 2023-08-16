@@ -31,7 +31,6 @@
                       }
                     }
                   },
-                  "ranges": [ { "offset": 261, "length": 1 } ],
                   "from": {
                     "spans": [ { "length": 1, "offsets": [ 261 ] } ],
                     "expansions": [ ],
@@ -66,7 +65,6 @@
                       }
                     }
                   },
-                  "ranges": [ { "offset": 268, "length": 1 } ],
                   "from": {
                     "spans": [ { "length": 1, "offsets": [ 268 ] } ],
                     "expansions": [ ],
@@ -74,11 +72,9 @@
                   }
                 }
               ],
-              "variable": [ ],
               "froms": [ ]
             }
           },
-          "externals": [ ],
           "targets": [ ]
         }
       },
@@ -163,7 +159,6 @@
                       }
                     }
                   },
-                  "ranges": [ { "offset": 261, "length": 1 } ],
                   "from": {
                     "spans": [ { "length": 1, "offsets": [ 261 ] } ],
                     "expansions": [ ],
@@ -198,7 +193,6 @@
                       }
                     }
                   },
-                  "ranges": [ { "offset": 268, "length": 1 } ],
                   "from": {
                     "spans": [ { "length": 1, "offsets": [ 268 ] } ],
                     "expansions": [ ],
@@ -206,11 +200,9 @@
                   }
                 }
               ],
-              "variable": [ ],
               "froms": [ ]
             }
           },
-          "externals": [ ],
           "targets": [ ]
         }
       },
@@ -296,7 +288,6 @@
                       }
                     }
                   },
-                  "ranges": [ { "offset": 248, "length": 1 } ],
                   "from": {
                     "spans": [ { "length": 1, "offsets": [ 248 ] } ],
                     "expansions": [ ],
@@ -304,7 +295,6 @@
                   }
                 }
               ],
-              "variable": [ [ { "offset": 255, "length": 1 } ] ],
               "froms": [
                 {
                   "spans": [ { "length": 1, "offsets": [ 255 ] } ],
@@ -314,32 +304,6 @@
               ]
             }
           },
-          "externals": [
-            {
-              "declaration": {
-                "function_": {
-                  "key": {
-                    "name": {
-                      "key": {
-                        "name": { "key": { "name": { "key": "g" } } },
-                        "scope": { "global_": { } }
-                      }
-                    },
-                    "signature": {
-                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
-                    },
-                    "source": {
-                      "file": { "key": "a.h" },
-                      "lineBegin": 12,
-                      "columnBegin": 1,
-                      "lineEnd": 15,
-                      "columnEnd": 1
-                    }
-                  }
-                }
-              }
-            }
-          ],
           "targets": [
             {
               "key": [

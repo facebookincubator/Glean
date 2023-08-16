@@ -28,7 +28,6 @@
               }
             }
           },
-          "ranges": [ { "offset": 265, "length": 1 } ],
           "from": {
             "spans": [ { "length": 1, "offsets": [ 265 ] } ],
             "expansions": [ ],
@@ -36,7 +35,6 @@
           }
         }
       ],
-      "variable": [ ],
       "froms": [ ]
     }
   }

@@ -23,7 +23,6 @@
                   }
                 }
               },
-              "ranges": [ { "offset": 363, "length": 2 } ],
               "from": {
                 "spans": [ { "length": 2, "offsets": [ 363 ] } ],
                 "expansions": [ ],
@@ -47,10 +46,6 @@
                   }
                 }
               },
-              "ranges": [
-                { "offset": 372, "length": 2 },
-                { "offset": 29, "length": 2 }
-              ],
               "from": {
                 "spans": [ { "length": 2, "offsets": [ 372, 29 ] } ],
                 "expansions": [ ],
@@ -82,7 +77,6 @@
                   }
                 }
               },
-              "ranges": [ { "offset": 376, "length": 3 } ],
               "from": {
                 "spans": [ { "length": 3, "offsets": [ 376 ] } ],
                 "expansions": [ ],
@@ -119,16 +113,12 @@
                   }
                 }
               },
-              "ranges": [ { "offset": 405, "length": 3 } ],
               "from": {
                 "spans": [ { "length": 3, "offsets": [ 405 ] } ],
                 "expansions": [ ],
                 "spellings": [ ]
               }
             }
-          ],
-          "variable": [
-            [ { "offset": 380, "length": 3 }, { "offset": 29, "length": 3 } ]
           ],
           "froms": [
             {
@@ -139,59 +129,6 @@
           ]
         }
       },
-      "externals": [
-        {
-          "indirect": {
-            "key": {
-              "via": {
-                "usingDeclaration": {
-                  "key": {
-                    "name": {
-                      "key": {
-                        "name": { "key": { "name": { "key": "Foo" } } },
-                        "scope": {
-                          "namespace_": { "key": { "name": { "key": "N1" } } }
-                        }
-                      }
-                    },
-                    "source": {
-                      "file": { "key": "test.cpp" },
-                      "lineBegin": 19,
-                      "columnBegin": 1,
-                      "lineEnd": 19,
-                      "columnEnd": 13
-                    }
-                  }
-                }
-              },
-              "target": {
-                "declaration": {
-                  "enum_": {
-                    "key": {
-                      "name": {
-                        "key": {
-                          "name": { "key": "Foo" },
-                          "scope": {
-                            "namespace_": { "key": { "name": { "key": "N1" } } }
-                          }
-                        }
-                      },
-                      "isScoped": false,
-                      "source": {
-                        "file": { "key": "test.cpp" },
-                        "lineBegin": 10,
-                        "columnBegin": 1,
-                        "lineEnd": 10,
-                        "columnEnd": 12
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      ],
       "targets": [
         {
           "key": [

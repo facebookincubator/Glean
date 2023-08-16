@@ -29,10 +29,6 @@
               }
             }
           },
-          "ranges": [
-            { "offset": 340, "length": 3 },
-            { "offset": 53, "length": 3 }
-          ],
           "from": {
             "spans": [ { "length": 3, "offsets": [ 340, 53 ] } ],
             "expansions": [ ],
@@ -64,7 +60,6 @@
               }
             }
           },
-          "ranges": [ { "offset": 344, "length": 3 } ],
           "from": {
             "spans": [ { "length": 3, "offsets": [ 344 ] } ],
             "expansions": [ ],
@@ -88,22 +83,12 @@
               }
             }
           },
-          "ranges": [
-            { "offset": 378, "length": 2 },
-            { "offset": 11, "length": 2 },
-            { "offset": 49, "length": 2 }
-          ],
           "from": {
             "spans": [ { "length": 2, "offsets": [ 378, 11, 49 ] } ],
             "expansions": [ ],
             "spellings": [ ]
           }
         }
-      ],
-      "variable": [
-        [ { "offset": 397, "length": 3 } ],
-        [ { "offset": 444, "length": 3 } ],
-        [ { "offset": 448, "length": 3 } ]
       ],
       "froms": [
         {

@@ -4,10 +4,6 @@
     "key": {
       "file": { "key": "a.h" },
       "fixed": [ ],
-      "variable": [
-        [ { "offset": 234, "length": 1 } ],
-        [ { "offset": 241, "length": 1 } ]
-      ],
       "froms": [
         {
           "spans": [ { "length": 1, "offsets": [ 234 ] } ],

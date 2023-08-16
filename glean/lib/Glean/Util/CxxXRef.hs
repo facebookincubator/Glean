@@ -26,17 +26,12 @@ order (XRef o1 n1 v1) (XRef o2 n2 v2) =
 -- shell.
 transformXRefs :: JSValue -> Result JSValue
 transformXRefs v = do
-  [ ("xmap", xmap),
-    ("externals", JSArray _),
-    ("targets", JSArray targets) ] <- keyVals v
+  [ ("xmap", xmap), ("targets", JSArray targets) ] <- keyVals v
   [ ("file", file),
     ("fixed", JSArray fixed),
-    ("variable", JSArray _),
     ("froms", JSArray froms) ] <- keyVals xmap
   fixed_xrefs <- forM fixed $ \x -> do
-    [ ("target", target),
-      ("ranges", JSArray _),
-      ("from", from) ] <- objVals x
+    [ ("target", target), ("from", from) ] <- objVals x
     spans <- fromToByteSpans from
     return [ XRef o n target | (o, n) <- spans ]
   when (length froms /= length targets) $ fail "invalid xrefs"

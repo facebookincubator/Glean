@@ -34,15 +34,6 @@
                   }
                 }
               },
-              "ranges": [
-                { "offset": 396, "length": 23 },
-                { "offset": 8, "length": 14 },
-                { "offset": 21, "length": 23 },
-                { "offset": 8, "length": 14 },
-                { "offset": 21, "length": 23 },
-                { "offset": 8, "length": 14 },
-                { "offset": 22, "length": 21 }
-              ],
               "from": {
                 "spans": [ ],
                 "expansions": [
@@ -53,11 +44,9 @@
               }
             }
           ],
-          "variable": [ ],
           "froms": [ ]
         }
       },
-      "externals": [ ],
       "targets": [ ]
     }
   }
