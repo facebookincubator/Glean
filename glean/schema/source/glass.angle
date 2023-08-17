@@ -1,0 +1,35 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema glass.1 {
+
+import src.1
+import digest.1
+import codemarkup.30
+
+# Everything we need to initialize a file info for querying in Glass
+type FileMetadata = {
+  indexed: bool,
+  offsets: maybe src.FileLines,
+  digest: maybe digest.Digest
+}
+
+# Key by filepath to get blob of metadata back.
+# This is how src.File facts and their related data are introduced into Glass
+predicate FileInfo:
+  {
+    file: src.File,
+    info: FileMetadata
+  }
+  { File, { Indexed, MOffsets, MDigest } } where
+    src.File _ = File; # binding occurence
+    MOffsets =
+      if (Offsets = src.FileLines { file = File } )
+      then ( { just = Offsets } )
+      else ( nothing );
+    MDigest =
+      if (digest.FileDigest { File, Digest })
+      then ( { just = Digest } )
+      else ( nothing );
+    Indexed = if (codemarkup.IndexedFile File) then (true) else (false);
+
+}

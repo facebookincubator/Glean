@@ -313,7 +313,7 @@ class GleanShellCompletion(GleanShellTest):
         output = self.shellCommand(":schema glean.test.Ex\t")
         self.assertIsNotNone(re.search("predicate glean.test.Expr.1 :", output))
         # test completing a predicate name in a query
-        output = self.shellCommand('gl\tP\t { string_ = "abba" }')
+        output = self.shellCommand('glea\tP\t { string_ = "abba" }')
         # test that we completed to the correct thing
         self.assertIn("1 results", output)
 

@@ -185,6 +185,7 @@ SCHEMAS= \
 	erlang \
 	flow \
 	gencode \
+	glass \
 	glean_test \
 	graphql \
 	hack \
