@@ -132,7 +132,6 @@ glassHandler env cmd = case cmd of
   FindReferenceRanges r opts -> Handler.findReferenceRanges env r opts
 
   -- Resolving symbol information
-  JumpTo r opts -> Handler.jumpTo env r opts
   ResolveSymbolRange r opts -> Handler.resolveSymbolRange env r opts
 
   -- Symbol info

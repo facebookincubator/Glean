@@ -162,8 +162,6 @@ evalQuery glassEnv qFile Query{..} oFile = case action of
     (Glass.documentSymbolListX glassEnv)
   "documentSymbolIndex" -> withObjectArgs qFile oFile args
     (Glass.documentSymbolIndex glassEnv)
-  "jumpTo" -> withObjectArgs qFile oFile args
-    (Glass.jumpTo glassEnv)
   "findReferences" -> withSymbolId oFile args
     (Glass.findReferences glassEnv)
   "findReferenceRanges" -> withSymbolId oFile args

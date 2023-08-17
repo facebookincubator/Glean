@@ -653,12 +653,6 @@ service GlassService extends fb303.FacebookService {
     2: RequestOptions options,
   ) throws (1: ServerException e, 2: GlassException g);
 
-  // Resolve a location span to a concrete line:col range in a file
-  Range jumpTo(1: Location reference, 2: RequestOptions options) throws (
-    1: ServerException e,
-    2: GlassException g,
-  );
-
   // Find any uses of a definition, generically
   list<Location> findReferences(
     1: SymbolId symbol,

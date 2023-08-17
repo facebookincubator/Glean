@@ -19,9 +19,6 @@ module Glean.Glass.Range
   , rangeSpanToRange
   , inclusiveRangeToExclusiveRange
 
-  -- * locations, these have paths and repo names
-  , resolveLocationToRange
-
   -- * File metadata
   , FileInfo(..)
   , getFileInfo
@@ -50,7 +47,7 @@ import Glean.Glass.Types
     )
 import Glean.Glass.Utils ( fetchDataRecursive )
 import Glean.Glass.Base ( GleanPath(..),  SymbolRepoPath(..))
-import Glean.Glass.Path ( toGleanPath, fromGleanPath )
+import Glean.Glass.Path ( fromGleanPath )
 import qualified Haxl.Core.Memo as Haxl
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import qualified Glean.Schema.Glass.Types as Glass
@@ -115,26 +112,6 @@ rangeSpanToRange _ (Code.RangeSpan_range range) =
   inclusiveRangeToExclusiveRange range
 rangeSpanToRange _ Code.RangeSpan_EMPTY =
   unexpected
-
--- | Convert a client-side target locator to a specific line/col range
--- Used to implement location jumpTo thrift call
-resolveLocationToRange
-  :: Glean.Repo
-  -> Location
-  -> Glean.RepoHaxl u w (Either GlassExceptionReason Range)
-resolveLocationToRange repo Location{..} = do
-  let path = toGleanPath $ SymbolRepoPath location_repository location_filepath
-  eFileInfo <- getFileInfo repo path
-  return $ flip fmap eFileInfo $ \ FileInfo{..} ->
-    fileByteSpanToExclusiveRange offsets (spanFromSpan location_span)
-  where
-    -- Span un-conversion
-    spanFromSpan :: ByteSpan -> Src.ByteSpan
-    spanFromSpan ByteSpan{..} =
-      Src.ByteSpan{
-        byteSpan_start = Glean.Nat byteSpan_start,
-        byteSpan_length = Glean.Nat byteSpan_length
-      }
 
 -- | Package of src.File metadata we typically need
 data FileInfo = FileInfo {

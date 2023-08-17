@@ -16,8 +16,6 @@ module Glean.Glass.Handler
   -- * listing symbols by file
     documentSymbolListX
   , documentSymbolIndex
-  -- ** resolving spans to files
-  , jumpTo
 
   -- ** find references
   , findReferences
@@ -240,27 +238,6 @@ allOrError = go (Right [])
       Right (ok :| res)
     go (Right res) ((Right ok) :| (x:xs)) =
       go (Right (ok:res)) (x :| xs)
-
--- | Given a Location , resolve it to a line:col range in the target file
-jumpTo
-  :: Glass.Env
-  -> Location
-  -> RequestOptions
-  -> IO Range
-jumpTo env@Glass.Env{..} req@Location{..} opts =
-  withRepoFile "jumpTo" env req repo file $ \(gleanDBs,_) _lang ->
-    withStrictErrorHandling opts $
-      backendRunHaxl GleanBackend{..} $ do
-        result <-
-          firstOrErrors $ do
-            repo <- Glean.haxlRepo
-            resolveLocationToRange repo req
-        case result of
-          Left err -> throwM $ ServerException $ errorsText err
-          Right (efile, _) -> return (efile, Nothing)
-  where
-    repo = location_repository
-    file = location_filepath
 
 -- | Symbol-based find-refernces.
 findReferences
