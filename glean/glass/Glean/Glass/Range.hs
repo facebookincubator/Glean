@@ -10,11 +10,12 @@ module Glean.Glass.Range
   (
   -- * working with ranges and bytespans, to and from Glean representations
      rangeContains
+
   -- ** high level
   , rangeSpanToLocation
   , rangeSpanToLocationRange
+
   -- ** lower level
-  , memoRangeSpanToRange
   , rangeSpanToRange
   , inclusiveRangeToExclusiveRange
 
@@ -23,7 +24,7 @@ module Glean.Glass.Range
 
   -- * File metadata
   , FileInfo(..)
-  , getFileAndLines
+  , getFileInfo
   , getFile
 
   ) where
@@ -47,10 +48,12 @@ import Glean.Glass.Types
       Range(range_columnEnd, range_lineEnd, range_columnBegin, range_lineBegin),
       GlassExceptionReason (GlassExceptionReason_noSrcFileFact)
     )
+import Glean.Glass.Utils ( fetchDataRecursive )
 import Glean.Glass.Base ( GleanPath(..),  SymbolRepoPath(..))
 import Glean.Glass.Path ( toGleanPath, fromGleanPath )
 import qualified Haxl.Core.Memo as Haxl
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
+import qualified Glean.Schema.Glass.Types as Glass
 import Glean.Angle ( query )
 import qualified Glean.Haxl.Repos as Glean
 
@@ -114,15 +117,15 @@ rangeSpanToRange _ Code.RangeSpan_EMPTY =
   unexpected
 
 -- | Convert a client-side target locator to a specific line/col range
--- Used to implement location jumpTo
+-- Used to implement location jumpTo thrift call
 resolveLocationToRange
   :: Glean.Repo
   -> Location
   -> Glean.RepoHaxl u w (Either GlassExceptionReason Range)
 resolveLocationToRange repo Location{..} = do
   let path = toGleanPath $ SymbolRepoPath location_repository location_filepath
-  efile <- getFileAndLines repo path
-  return $ flip fmap efile $ \ FileInfo{..} ->
+  eFileInfo <- getFileInfo repo path
+  return $ flip fmap eFileInfo $ \ FileInfo{..} ->
     fileByteSpanToExclusiveRange offsets (spanFromSpan location_span)
   where
     -- Span un-conversion
@@ -143,28 +146,26 @@ data FileInfo = FileInfo {
     fileDigest :: Maybe Digest.Digest
   }
 
--- | Get file metadata. Throw if we have no src.File
--- This is the first point we might encounter an unindexed file path
--- Note: we may not have lineoffsets, but this is not necessarily fatal as
--- they are only needed for bytespan conversions
-getFileAndLines
+getFileInfo
   :: Glean.Repo
   -> GleanPath
   -> Glean.RepoHaxl u w (Either GlassExceptionReason FileInfo)
-getFileAndLines fileRepo path = do
-  mfile <- Glean.getFirstResult (query (Query.indexedFile (Query.srcFile path)))
-  case mfile of
+getFileInfo fileRepo path = do
+  minfo <- fetchDataRecursive (Query.fileInfo path)
+  case minfo of
     Nothing -> return $ Left $
       GlassExceptionReason_noSrcFileFact $ "No src.File fact for "
         <> gleanPath path
-    Just (srcFile, isIndexed, fileDigest) -> do
-      offsets <- memoLineOffsets srcFile
-      return $ do
-        let fileId = Glean.getId srcFile
-        Right FileInfo{..}
+    Just fileInfoP -> do
+      Glass.FileInfo_key srcFile infos <- Glean.keyOf fileInfoP
+      let fileId = Glean.getId srcFile
+          Glass.FileMetadata isIndexed mLineOffsets fileDigest = infos
+      offsets <- memoLineOffsetsFileLines srcFile mLineOffsets
+      return $ Right FileInfo{..}
 
 -- | Get the src.File fact for a path
-getFile :: GleanPath -> Glean.RepoHaxl u w (Either GlassExceptionReason Src.File)
+getFile
+  :: GleanPath -> Glean.RepoHaxl u w (Either GlassExceptionReason Src.File)
 getFile path = do
   mfile <- Glean.getFirstResult (query (Query.srcFile path))
   return $ case mfile of
@@ -173,8 +174,7 @@ getFile path = do
         <> gleanPath path
     Just srcFile -> Right srcFile
 
--- | Glean's Src.Range is inclusive of start/end. Glass is exclusive
--- of end
+-- | Glean's Src.Range is inclusive of start/end. Glass is exclusive of end
 inclusiveRangeToExclusiveRange :: Src.Range -> Glass.Range
 inclusiveRangeToExclusiveRange Src.Range{..} =
   Glass.Range {
@@ -217,7 +217,6 @@ fileByteSpanToExclusiveRange (Just lineoffs) bytespan =
     range_columnEnd = fromIntegral $ range_columnEnd + 1
   }
 
-
 -- | (internal) Convert a src.Range from glean to a src.ByteSpan
 inclusiveRangeToFileByteSpan
   :: Maybe Range.LineOffsets -> Src.Range -> Src.ByteSpan
@@ -234,15 +233,30 @@ memoLineOffsets file = do
   key <- Glean.keyOf file
   Haxl.memo (repo, key) $ toLineOffsets file
 
+-- | Sometimes we already have the FileLines fact handy. Set the memo table
+-- directly in this case (internal)
+memoLineOffsetsFileLines
+  :: Src.File
+  -> Maybe Src.FileLines
+  -> Glean.RepoHaxl u w (Maybe Range.LineOffsets)
+memoLineOffsetsFileLines file mFileLines = do
+  repo <- Glean.haxlRepo
+  key <- Glean.keyOf file
+  Haxl.memo (repo, key) $ fromFileLines mFileLines
+
 -- | (internal) Get the line offsets associated with a file
 -- Use the memoized version, memoLineOffsets
 toLineOffsets :: Src.File -> Glean.RepoHaxl u w (Maybe Range.LineOffsets)
 toLineOffsets file = do
   let fileId = Glean.getId file
-  mlines <- Glean.getFirstResult (query (Query.fileLines fileId))
-  case mlines of
-    Nothing -> return Nothing
-    Just offs -> Just . Range.lengthsToLineOffsets <$> Glean.keyOf offs
+  fromFileLines =<< Glean.getFirstResult (query (Query.fileLines fileId))
+
+-- | Just the file line endings to range conversion
+fromFileLines
+  :: Maybe Src.FileLines -> Glean.RepoHaxl u w (Maybe Range.LineOffsets)
+fromFileLines mlines = case mlines of
+  Nothing -> pure Nothing
+  Just offs -> Just . Range.lengthsToLineOffsets <$> Glean.keyOf offs
 
 -- | (internal) Target cross-references. these are unresolved (raw) spans of
 -- locations.  They can be resolved to Ranges via a FileLines call (client or

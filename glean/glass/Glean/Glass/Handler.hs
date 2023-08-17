@@ -1023,7 +1023,7 @@ fetchDocumentSymbols (FileReference scsrepo path) mlimit
       then return $ Left $ GlassExceptionReason_exactRevisionNotAvailable $
         revisionSpecifierError revSpec
       else do
-        res <- getFileAndLines repo path
+        res <- getFileInfo repo path
         return $ case res of
           Left _ -> res
           Right fi@FileInfo{..}

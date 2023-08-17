@@ -12,7 +12,7 @@ module Glean.Glass.Query
   (
   -- * Files
     srcFile
-  , indexedFile
+  , fileInfo
 
   -- * Working with XRefs
   , fileEntityLocations
@@ -83,7 +83,7 @@ import qualified Glean.Schema.CodemarkupSearch.Types as CodeSearch
 import qualified Glean.Schema.Codemarkup.Types as Code
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Schema.Src.Types as Src
-import qualified Glean.Schema.Digest.Types as Digest
+import qualified Glean.Schema.Glass.Types as Glass
 
 --
 -- Find the id in this db of a source file. We mostly operate on these ids once
@@ -96,21 +96,12 @@ srcFile (GleanPath path) =
   predicate @Src.File $
     string path
 
--- Given a 'Src.File' query, extend it to 'Code.IndexedFile'
-indexedFile :: Angle Src.File -> Angle (Src.File, Bool, Maybe Digest.Digest)
-indexedFile query = var $ \file -> vars $ \isIndexed mdigest digest ->
-  tuple (file, isIndexed, mdigest) `where_`
-    [ query .= file
-    , isIndexed .= if_ (predicate @Code.IndexedFile file) true false
-    , mdigest .= if_ (
-        predicate @Digest.FileDigest (
-          rec $
-            field @"file" (asPredicate file) $
-            field @"digest" digest
-          end
-        )
-      ) (just digest) nothing
-    ]
+-- For a potential filepath, fetch all file metadata
+fileInfo :: GleanPath -> Angle Glass.FileInfo
+fileInfo (GleanPath path) = predicate @Glass.FileInfo $
+  rec $
+    field @"file" (string path)
+  end
 
 -- | Given a file id, look up the index of line endings
 --
