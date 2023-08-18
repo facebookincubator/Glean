@@ -2291,7 +2291,8 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   // TODO: It's not clear if/when this is used instead of
   // TraverseTemplateArgumentLoc
   bool TraverseTemplateArguments(
-#if LLVM_VERSION_MAJOR >= 17
+#if LLVM_VERSION_MAJOR >= 17 || \
+    (LLVM_VERSION_MAJOR >= 16 && defined(CAST_TARGET_REPO_FBANDROID))
       llvm::ArrayRef<clang::TemplateArgument> args
 #else
       const clang::TemplateArgument* args,
@@ -2300,7 +2301,8 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   ) {
     return usingTracker.inNameContext(nullptr,
       [&] {
-#if LLVM_VERSION_MAJOR >= 17
+#if LLVM_VERSION_MAJOR >= 17 || \
+    (LLVM_VERSION_MAJOR >= 16 && defined(CAST_TARGET_REPO_FBANDROID))
         return Base::TraverseTemplateArguments(args);
 #else
         return Base::TraverseTemplateArguments(args, num);
