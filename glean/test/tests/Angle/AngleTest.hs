@@ -735,6 +735,13 @@ angleTest modify = dbTestCase $ \env repo -> do
     [Nat 1] r
 
   r <- runQuery_ env repo $ modify $ angleData @Nat
+    "if (0 = 0) then 1 else if (0 = 0) then 2 else 3"
+  print r
+  assertEqual
+    "if statement - works when nested if's condition is subquery without return type"
+    [Nat 1] r
+
+  r <- runQuery_ env repo $ modify $ angleData @Nat
     "if glean.test.IsGlean _ then 1 else 2"
   print r
   assertEqual

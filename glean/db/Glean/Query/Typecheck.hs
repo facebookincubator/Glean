@@ -436,7 +436,7 @@ typecheckPattern ctx typ pat = case (typ, pat) of
 
   (ty, IfPattern _ srcCond srcThen srcElse) -> do
     let tcThen = do
-          (cond,condTy) <- inferExpr ctx srcCond
+          (cond,condTy) <- inferExpr ctx (ignoreResult srcCond)
           then_ <- typecheckPattern ctx ty srcThen
           return (Typed condTy cond, then_)
 
