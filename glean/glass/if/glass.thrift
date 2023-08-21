@@ -614,6 +614,7 @@ struct FileIncludeLocationResults {
 struct USRSymbolDefinition {
   // location of the definition (or fallback to decl)
   2: LocationRange location;
+  3: SymbolId sym;
   // actual revision used for results
   5: Revision revision;
 }

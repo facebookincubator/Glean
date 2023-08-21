@@ -376,12 +376,15 @@ clangUSRToDefinition env@Glass.Env{..} usr@(USR hash) opts = withRepoLanguage
             Nothing -> -- either hash is unknown or decl is already defn
               pure (Left (GlassExceptionReason_entitySearchFail
                 "No definition result for hash"))
-            Just (Code.Location{..},_entity) -> do
+            Just (Code.Location{..}, entity) -> do
               range <- rangeSpanToLocationRange repo location_file
                 location_location
+              path <- GleanPath <$> Glean.keyOf location_file
+              sym <- toSymbolId (fromGleanPath repo path) entity
               pure (Right (USRSymbolDefinition {
                 uSRSymbolDefinition_location = range,
-                uSRSymbolDefinition_revision = rev
+                uSRSymbolDefinition_revision = rev,
+                uSRSymbolDefinition_sym = sym
               }))
         case result of
           Left err -> throwM $ ServerException $ errorsText err
