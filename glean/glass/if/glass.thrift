@@ -216,6 +216,11 @@ struct SymbolPath {
   3: Range range (hs.strict);
 }
 
+// filepath to digest
+typedef map<string, FileDigest> FileDigestMap
+// repo to (filepath to digest)
+typedef map<string, FileDigestMap> RepoFileDigestMap
+
 // A list of known symbols in the file, their locations, and their keys
 // with all locations resolved to line/column ranges, and attributes
 struct DocumentSymbolListXResult {
@@ -231,8 +236,11 @@ struct DocumentSymbolListXResult {
   // was the result truncated either by glean or glass?
   4: bool truncated;
 
-  // an optional file content digest
+  // an optional file content digest for this file
   5: optional FileDigest digest;
+
+  // map of repo to filepath mappings. Key is repo name
+  6: RepoFileDigestMap referenced_file_digests;
 }
 
 // For cursor navigation in a file, it is useful to have a line indexed
@@ -250,8 +258,11 @@ struct DocumentSymbolIndex {
   // was the result truncated either by glean or glass?
   4: bool truncated;
 
-  // content digest if available
+  // content digest of requested file, if available
   5: optional FileDigest digest;
+
+  // map of repo + filepath to digest for referenced files
+  6: RepoFileDigestMap referenced_file_digests;
 }
 
 // Generic server exception

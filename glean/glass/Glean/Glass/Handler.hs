@@ -1068,8 +1068,14 @@ toDigest Digest.Digest{..} = FileDigest{..}
 
 -- | Drop any remnant entities after we are done with them
 toDocumentSymbolResult :: DocumentSymbols -> DocumentSymbolListXResult
-toDocumentSymbolResult DocumentSymbols{..} = DocumentSymbolListXResult
-  (map snd refs) (map snd defs) revision truncated digest
+toDocumentSymbolResult DocumentSymbols{..} = DocumentSymbolListXResult{..}
+  where
+    documentSymbolListXResult_references = map snd refs
+    documentSymbolListXResult_definitions = map snd defs
+    documentSymbolListXResult_revision = revision
+    documentSymbolListXResult_truncated = truncated
+    documentSymbolListXResult_digest = digest
+    documentSymbolListXResult_referenced_file_digests = mempty
 
 --
 -- | Check if this db / lang pair has additional dynamic attributes
@@ -1132,19 +1138,25 @@ fetchDocumentSymbolIndex
   -> Maybe Language
   -> IO ((DocumentSymbolIndex, SnapshotStatus, QueryEachRepoLog), Maybe ErrorLogger)
 fetchDocumentSymbolIndex latest req opts be snapshotbe mlang = do
-  ((result, status, gleanDataLog), merr1) <-
+  ((DocumentSymbolListXResult{..}, status, gleanDataLog), merr1) <-
     fetchSymbolsAndAttributes latest req opts be snapshotbe mlang
 
-  let DocumentSymbolListXResult refs defs revision truncated digest = result
+  --  refs defs revision truncated digest = result
+  let lineIndex = toSymbolIndex documentSymbolListXResult_references
+        documentSymbolListXResult_definitions
+      totalSymCount = length documentSymbolListXResult_references +
+        length documentSymbolListXResult_definitions
 
-      result' = DocumentSymbolIndex {
-        documentSymbolIndex_symbols = toSymbolIndex refs defs,
-        documentSymbolIndex_revision = revision,
-        documentSymbolIndex_size = fromIntegral (length defs + length refs),
-        documentSymbolIndex_truncated = truncated,
-        documentSymbolIndex_digest = digest
-  }
-  return ((result', status, gleanDataLog), merr1)
+  let idxResult = DocumentSymbolIndex {
+        documentSymbolIndex_symbols = lineIndex,
+        documentSymbolIndex_revision = documentSymbolListXResult_revision,
+        documentSymbolIndex_size = fromIntegral totalSymCount,
+        documentSymbolIndex_truncated = documentSymbolListXResult_truncated,
+        documentSymbolIndex_digest = documentSymbolListXResult_digest,
+        documentSymbolIndex_referenced_file_digests =
+          documentSymbolListXResult_referenced_file_digests
+      }
+  return ((idxResult, status, gleanDataLog), merr1)
 
 -- Work out if we have extra attribute dbs and then run the queries
 getSymbolAttributes
