@@ -91,11 +91,11 @@ import Glean.Util.ThriftService ( ThriftServiceOptions(..), runThrift )
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Schema.Src.Types as Src
-import qualified Glean.Schema.Digest.Types as Digest
 
 import qualified Glean.Glass.Attributes as Attributes
 import Glean.Glass.Base
 import Glean.Glass.Describe ( mkSymbolDescription, describeEntity )
+import Glean.Glass.Digest
 import Glean.Glass.Logging
 import Glean.Glass.Repos
 import Glean.Glass.Path ( toGleanPath, fromGleanPath )
@@ -1014,7 +1014,8 @@ fetchDocumentSymbols (FileReference scsrepo path) mlimit
 
   case efile of
     Left err -> do
-      let emptyResponse = DocumentSymbols [] [] (revision b) False Nothing
+      let emptyResponse = DocumentSymbols [] []
+            (revision b) False Nothing mempty
           logs = logError err <> logError (gleanDBs b)
       return (emptyResponse, FoundNone, Just logs)
 
@@ -1025,7 +1026,7 @@ fetchDocumentSymbols (FileReference scsrepo path) mlimit
 
     Right (FileInfo{..}, gleanDataLog) -> do
 
-      -- from Glean, fetch xrefs and defs in batches
+      -- from Glean, fetch xrefs and defs in two batches
       (xrefs, defns, truncated) <- withRepo fileRepo $
         documentSymbolsForLanguage mlimit mlang includeRefs fileId
       (kindMap, merr) <- withRepo fileRepo $
@@ -1037,9 +1038,15 @@ fetchDocumentSymbols (FileReference scsrepo path) mlimit
       defs1 <- withRepo fileRepo $
         mapM (toDefinitionSymbol scsrepo srcFile offsets) defns
 
+      xref_digests <- withRepo fileRepo $ do
+        let fileMap = xrefFileMap refs1
+        results <- fetchFileDigests (Map.size fileMap) (Map.keys fileMap)
+        toDigestMap fileMap results
+
       let (refs, defs) = Attributes.extendAttributes
             (Attributes.fromSymbolId Attributes.SymbolKindAttr)
-              kindMap refs1 defs1
+              kindMap (map (\XRefData{..} -> (xrefEntity, xrefSymbol)) refs1)
+                defs1
       let revision = getRepoHash fileRepo
           digest = toDigest <$> fileDigest
       return (DocumentSymbols {..}, gleanDataLog, merr)
@@ -1050,6 +1057,15 @@ fetchDocumentSymbols (FileReference scsrepo path) mlimit
       AnyRevision -> const True
       ExactOnly (Revision required) -> \repo -> Glean.repo_hash repo == required
 
+    -- We will lookup digests by file id, but return to the user a map by
+    -- glass path and scm repo
+    xrefFileMap :: [XRefData] -> Map.Map (Glean.IdOf Src.File) (RepoName, Path)
+    xrefFileMap xrefs = Map.fromList $ map (\XRefData{..} ->
+        (xrefFile,
+          let LocationRange{..} = referenceRangeSymbolX_target xrefSymbol
+          in (locationRange_repository, locationRange_filepath)
+      )) xrefs
+
 -- | Wrapper for tracking symbol/entity pairs through processing
 data DocumentSymbols = DocumentSymbols
   { refs :: [(Code.Entity, ReferenceRangeSymbolX)]
@@ -1057,14 +1073,8 @@ data DocumentSymbols = DocumentSymbols
   , revision :: !Revision
   , truncated :: !Bool
   , digest :: Maybe FileDigest
+  , xref_digests :: Map.Map Text FileDigestMap
   }
-
--- Export Src.Digest to Glass type
-toDigest :: Digest.Digest -> FileDigest
-toDigest Digest.Digest{..} = FileDigest{..}
-  where
-    fileDigest_hash = digest_hash
-    fileDigest_size = Glean.unNat digest_size
 
 -- | Drop any remnant entities after we are done with them
 toDocumentSymbolResult :: DocumentSymbols -> DocumentSymbolListXResult
@@ -1075,7 +1085,7 @@ toDocumentSymbolResult DocumentSymbols{..} = DocumentSymbolListXResult{..}
     documentSymbolListXResult_revision = revision
     documentSymbolListXResult_truncated = truncated
     documentSymbolListXResult_digest = digest
-    documentSymbolListXResult_referenced_file_digests = mempty
+    documentSymbolListXResult_referenced_file_digests = xref_digests
 
 --
 -- | Check if this db / lang pair has additional dynamic attributes
@@ -1234,24 +1244,36 @@ searchFileAttributes key mlimit fileId = do
     Right raw
       -> return (Attributes.toAttrMap key raw, Nothing)
 
--- | Like toReferenceSymbol but we convert the xref target to a src.Range
+data XRefData = XRefData
+  { xrefEntity :: !Code.Entity
+  , xrefSymbol :: !ReferenceRangeSymbolX
+  , xrefFile :: {-# UNPACK #-}!(Glean.IdOf Src.File)
+  }
+
+-- | Convert the xref target to a src.Range
 toReferenceSymbol
   :: RepoName
   -> Src.File
   -> Maybe Range.LineOffsets
   -> (Code.XRefLocation, Code.Entity)
-  -> Glean.RepoHaxl u w (Code.Entity, ReferenceRangeSymbolX)
+  -> Glean.RepoHaxl u w XRefData
 toReferenceSymbol repoName file srcOffsets (Code.XRefLocation {..}, entity) = do
   path <- GleanPath <$> Glean.keyOf file
   sym <- toSymbolId (fromGleanPath repoName path) entity
   attributes <- getStaticAttributes entity repoName sym
-  target <- case location_destination of
+  (target, xrefFile) <- case location_destination of
     Just Src.FileLocation{..} -> do -- if we have a best identifier location
       let rangeSpan = Code.RangeSpan_span fileLocation_span
-      rangeSpanToLocationRange repoName fileLocation_file rangeSpan
-    _ -> rangeSpanToLocationRange repoName location_file location_location
+      t <- rangeSpanToLocationRange repoName fileLocation_file rangeSpan
+      return (t, Glean.getId fileLocation_file)
+    _ -> do
+      t <- rangeSpanToLocationRange repoName location_file location_location
+      return (t, Glean.getId location_file)
 
-  return $ (entity,) $ ReferenceRangeSymbolX sym range target attributes
+  let xrefEntity = entity
+      xrefSymbol = ReferenceRangeSymbolX sym range target attributes
+  return XRefData{..}
+
   where
     -- reference target is a Declaration and an Entity
     Code.Location{..} = xRefLocation_target

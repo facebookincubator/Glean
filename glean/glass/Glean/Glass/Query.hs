@@ -13,6 +13,7 @@ module Glean.Glass.Query
   -- * Files
     srcFile
   , fileInfo
+  , fileDigests
 
   -- * Working with XRefs
   , fileEntityLocations
@@ -84,6 +85,7 @@ import qualified Glean.Schema.Codemarkup.Types as Code
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Schema.Src.Types as Src
 import qualified Glean.Schema.Glass.Types as Glass
+import qualified Glean.Schema.Digest.Types as Digest
 
 --
 -- Find the id in this db of a source file. We mostly operate on these ids once
@@ -114,6 +116,19 @@ fileLines fileid =
   predicate @Src.FileLines (
     rec $ field @"file"
       (asPredicate (factId fileid))
+    end)
+
+--
+-- Bulk fetch all digests for a set of filepath facts. Non-recursive, as the
+-- Digest type will expand. Extremely cheap
+--
+-- > digest.FileDigest { file = [$371971 : src.File, $61059][..] }
+--
+fileDigests :: [Glean.IdOf Src.File] -> Angle Digest.FileDigest
+fileDigests fileIds =
+  predicate @Digest.FileDigest (
+    rec $ field @"file"
+      (asPredicate (elementsOf (factIdsArray fileIds)))
     end)
 
 -- | Get the definition entities defined in this file, and their declaration

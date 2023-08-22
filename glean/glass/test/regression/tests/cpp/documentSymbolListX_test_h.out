@@ -1,0 +1,56 @@
+[
+    "@generated",
+    {
+        "definitions": [
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "C"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "test.h"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 30
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 9,
+                    "columnEnd": 10,
+                    "lineBegin": 9,
+                    "lineEnd": 9
+                },
+                "sym": "test/pp/define/test.h/C"
+            }
+        ],
+        "digest": {
+            "hash": "ce71a4bc848a767198c61bd5c21d1ead3be6a19b",
+            "size": 273
+        },
+        "referenced_file_digests": {},
+        "references": [],
+        "revision": "testhash",
+        "truncated": false
+    }
+]

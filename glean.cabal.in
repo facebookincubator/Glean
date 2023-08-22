@@ -1223,6 +1223,7 @@ library glass-lib
         Glean.Glass.Comments
         Glean.Glass.Config
         Glean.Glass.Describe
+        Glean.Glass.Digest
         Glean.Glass.Env
         Glean.Glass.Handler
         Glean.Glass.Logging

@@ -43,6 +43,7 @@ module Glean.Query.Angle
   , sig
   , factId
   , factIds
+  , factIdsArray
   , elementsOf
   , arrayPrefix
   , unit
@@ -390,12 +391,19 @@ factId_ = Angle
 -- | Convert @factIds (1 :| [2,3]) :: NonEmpty (IdOf p)@ into
 -- @($1 : p.v) ++ $2 ++ $3@ for building angle
 -- queries, where @v@ is the version of predicate @p@.
+-- Uses disjuction, and nubOrds the input list
 factIds :: forall p. Predicate p => NonEmpty (IdOf p) -> Angle p
 factIds xs = sig $ foldr1 (.|) (fmap factId_ (nubOrd' xs))
   where
     -- Our version of package extra lacks Data.List.NonEmpty.Extra
     nubOrd' :: Ord a => NonEmpty a -> NonEmpty a
     nubOrd' = NonEmpty.fromList . List.nubOrd . NonEmpty.toList
+
+-- | Similar to `factIds` but generate an array of ids with the signature of the
+-- first element only. This doesn't nubOrd the input set
+factIdsArray :: forall p. Predicate p => [IdOf p] -> Angle [p]
+factIdsArray [] = array []
+factIdsArray (x:xs) = array (sig (factId_ x) : map factId_ xs)
 
 elementsOf :: Angle [x] -> Angle x
 elementsOf listOfX = Angle $ do

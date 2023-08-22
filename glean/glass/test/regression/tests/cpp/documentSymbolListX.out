@@ -4977,7 +4977,22 @@
             "hash": "99a993b583112b6187a1b069eb21780ceb79589c",
             "size": 2436
         },
-        "referenced_file_digests": {},
+        "referenced_file_digests": {
+            "test": {
+                "test.cpp": {
+                    "hash": "99a993b583112b6187a1b069eb21780ceb79589c",
+                    "size": 2436
+                },
+                "test.h": {
+                    "hash": "ce71a4bc848a767198c61bd5c21d1ead3be6a19b",
+                    "size": 273
+                },
+                "test2.h": {
+                    "hash": "c522430338f3620e08fe42afbcff1f66599c0efe",
+                    "size": 267
+                }
+            }
+        },
         "references": [
             {
                 "attributes": [

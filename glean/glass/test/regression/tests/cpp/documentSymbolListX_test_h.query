@@ -1,0 +1,2 @@
+action: documentSymbolListX
+args: {"include_refs":true,"filepath":"test.h","repository":"test"}
