@@ -109,8 +109,8 @@ annotationsToSymbols repo annotations = case annotations of
 -- Generate a query of the form
 --   hack.AttributeToDeclaration.6 {attribute = X0}
 --   where X0 = [$388098 : hack.UserAttribute.6,
---               $41135 : hack.UserAttribute.6,
---               $139800678 : hack.UserAttribute.6][..]"]
+--               $41135,
+--               $139800678][..]"]
 -- From AttributeToDeclaration facts, we get the info
 -- required to build an Annotation SymbolId
 queryAttributeToDecl
@@ -124,7 +124,7 @@ queryAttributeToDecl attrs = fmap fst <$> searchRecursiveWithLimit
       field @"attribute" (asPredicate (elementsOf factIds))
     end
   where
-    factIds = array (factId . Glean.getId <$> attrs)
+    factIds = factIdsArray (map Glean.getId attrs)
 
 -- | Unpack the decl and file fields of the annotation lookup and
 -- construct a symbol id

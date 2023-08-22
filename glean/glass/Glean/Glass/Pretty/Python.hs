@@ -413,7 +413,7 @@ angleDeclsByNames names = vars $ \(decl :: Angle Python.Declaration)
   tuple (p, file) `where_` [
     p .= predicate @Python.DeclarationWithName (
       rec $
-        field @"name" (elementsOf (array (map (asPredicate . factId) names))) $
+        field @"name" (asPredicate (elementsOf (factIdsArray names))) $
         field @"declaration" decl
       end),
     wild .= predicate @Code.EntityLocation (
