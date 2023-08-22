@@ -26,6 +26,7 @@ namespace py3 glean
 
 // Uniquely identifies a fact in a database
 typedef i64 Id
+typedef list<Id> (hs.type = "VectorStorable") listOfIds
 
 const Id INVALID_ID = 0;
 const Id FIRST_FREE_ID = 1024;
@@ -43,8 +44,8 @@ typedef Identifier TypeName
 // Time points
 typedef i64 PosixEpochTime (hs.newtype)
 
-// JSON strings are represented by ByteString in Haskell
-typedef string (hs.type = "ByteString") json
+typedef string (hs.type = "ByteString") bytestring
+typedef bytestring json
 
 // Identifies a Predicate by name and version
 struct PredicateRef {
@@ -66,7 +67,7 @@ struct TypeRef {
 }
 
 // The unit of fact ownership
-typedef string (hs.type = "ByteString") UnitName
+typedef bytestring UnitName
 
 struct Empty {}
 
@@ -267,7 +268,7 @@ struct Batch {
   //
   // Units do not need to be declared beforehand; a Unit exists if
   // it is the owner of at least one fact.
-  5: map<UnitName, list_Id_1857> (hs.type = "HashMap") owned;
+  5: map<UnitName, listOfIds> (hs.type = "HashMap") owned;
 }
 
 struct Subst {
@@ -694,7 +695,7 @@ struct UserQuery {
   // Name of the predicate to query
   // (only necessary when using JSON query syntax)
 
-  2: string (hs.type = "ByteString") query;
+  2: bytestring query;
   // Query string; syntax specified by UserQueryOptions.syntax
 
   3: optional Version predicate_version;
@@ -726,7 +727,7 @@ struct UserQueryBatch {
   // Name of the predicate to query
   // (only necessary when using JSON query syntax)
 
-  2: list<string_2619> queries;
+  2: list<bytestring> queries;
   // Query strings; syntax specified by UserQueryOptions.syntax
   // The list of returned UserQueryResults is guaranteed to be
   // the same length as this list
@@ -923,7 +924,7 @@ struct JsonFactBatch {
   2: list<json> facts;
 
   // the unit that owns these facts, if known.
-  3: optional string (hs.type = "ByteString") unit;
+  3: optional bytestring unit;
 }
 
 struct SendJsonBatch {
@@ -1064,7 +1065,7 @@ struct WorkFinished {
 
 struct SchemaInfo {
   // The complete source of the schema selected by GetSchemaInfo.select
-  1: string (hs.type = "ByteString") schema;
+  1: bytestring schema;
 
   // The mapping from Pid to PredicateRef stored in the DB. This can
   // be used to interpret Pids returned by other methods, such as
@@ -1111,7 +1112,7 @@ struct FactIdRange {
 }
 
 struct ValidateSchema {
-  1: string (hs.type = "ByteString") schema;
+  1: bytestring schema;
 }
 
 struct PredicateStatsOpts {
@@ -1286,7 +1287,3 @@ struct PredicateAnnotation {
   1: PredicateName name;
   2: i32 version;
 }
-
-// The following were automatically generated and may benefit from renaming.
-typedef list<Id> (hs.type = "VectorStorable") list_Id_1857
-typedef string (hs.type = "ByteString") string_2619
