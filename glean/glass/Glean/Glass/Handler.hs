@@ -377,8 +377,12 @@ clangUSRToDefinition env@Glass.Env{..} usr@(USR hash) opts = withRepoLanguage
               pure (Left (GlassExceptionReason_entitySearchFail
                 "No definition result for hash"))
             Just (Code.Location{..}, entity) -> do
-              range <- rangeSpanToLocationRange repo location_file
-                location_location
+              range <- case location_destination of
+                Just Src.FileLocation{..} -> do
+                  let rangeSpan = Code.RangeSpan_span fileLocation_span
+                  rangeSpanToLocationRange repo fileLocation_file rangeSpan
+                _ -> rangeSpanToLocationRange repo location_file
+                  location_location
               path <- GleanPath <$> Glean.keyOf location_file
               sym <- toSymbolId (fromGleanPath repo path) entity
               pure (Right (USRSymbolDefinition {
