@@ -8,11 +8,10 @@
 
 package glean.lang.kotlin.indexer
 
-import com.intellij.mock.MockProject
 import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
-import org.jetbrains.kotlin.compiler.plugin.ComponentRegistrar
+import org.jetbrains.kotlin.compiler.plugin.CompilerPluginRegistrar
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.config.JVMConfigurationKeys
 import org.jetbrains.kotlin.resolve.jvm.extensions.AnalysisHandlerExtension
@@ -25,11 +24,8 @@ import org.jetbrains.kotlin.resolve.jvm.extensions.AnalysisHandlerExtension
  * find it and load it
  */
 @OptIn(org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi::class)
-class KotlinIndexerPluginComponentRegistrar : ComponentRegistrar {
-  override fun registerProjectComponents(
-      project: MockProject,
-      configuration: CompilerConfiguration
-  ) {
+class KotlinIndexerPluginCompilerPluginRegistrar : CompilerPluginRegistrar() {
+  override fun ExtensionStorage.registerExtensions(configuration: CompilerConfiguration) {
     val outputDir = configuration.get(JVMConfigurationKeys.OUTPUT_DIRECTORY)
     checkNotNull(
         outputDir, { "Kotlin Indexer compiler plugin failed. 'outputDir' option is not provided" })
@@ -44,6 +40,8 @@ class KotlinIndexerPluginComponentRegistrar : ComponentRegistrar {
     val extension = KotlinIndexerPluginExtension(outputDir.absolutePath, messageCollector)
 
     // Register it to a specific extension point in the compiler, the analysis part
-    AnalysisHandlerExtension.registerExtension(project, extension)
+    AnalysisHandlerExtension.registerExtension(extension)
   }
+
+  override val supportsK2: Boolean = true
 }
