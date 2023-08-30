@@ -38,17 +38,45 @@ const Family Family::keys("keys", [](auto& opts) {
 const Family Family::stats("stats", [](auto& opts) {
   opts.OptimizeForPointLookup(10); });
 const Family Family::meta("meta", [](auto&) {});
+
+// Maps a unit's name to its UnitId
+// ownershipUnits: String -> UnitId
 const Family Family::ownershipUnits("ownershipUnits", [](auto& opts) {
   opts.OptimizeForPointLookup(10); });
+
+// Translates UnitId to its name. Dual of ownershipUnits.
+// ownershipUnitIds: UnitId -> String
 const Family Family::ownershipUnitIds("ownershipUnitIds", [](auto& opts) {
   opts.OptimizeForPointLookup(10); });
+
+// Append-only log of non-derived facts' ownership information.
+// Describes a map from UnitId to list of facts.
+// The key contains a tuple of UnitId and a monotonically incrementing counter.
+// The value is an interval map of fact ids.
+// ownershipRaw: (UnitId, nat) -> [Fid]
 const Family Family::ownershipRaw("ownershipRaw", [](auto&) {}, false);
+
+// Append-only log of derived facts' ownership information.
+// Describes a (Map Pid (Map Fid UsetId))
+// The key contains a tuple of Pid and a monotonically incrementing counter.
+// ownershipDerivedRaw: (Pid, nat) -> ( [Fid], [UsetId] )
 const Family Family::ownershipDerivedRaw("ownershipDerivedRaw", [](auto& opts) {
   opts.inplace_update_support = false; }, false);
+
+// ownershipSets: UsetId -> (Operation, [UsetId])
 const Family Family::ownershipSets("ownershipSets", [](auto& opts){
   opts.inplace_update_support = false; });
+
+// An interval map, mapping fact ids to UsetId.
+// factOwners: Fid -> UsetId
 const Family Family::factOwners("factOwners", [](auto& opts){
   opts.inplace_update_support = false; }, false);
+
+// Used to efficiently map fact ids to UsetIds
+// Contains:
+// - A page index at key INDEX_KEY with type [UsetId]
+// - A map from page prefix to a map from page suffix to UsetId
+//    prefix -> ([suffix], [UsetId])
 const Family Family::factOwnerPages("factOwnerPages", [](auto& opts) {
   opts.OptimizeForPointLookup(10); });
 

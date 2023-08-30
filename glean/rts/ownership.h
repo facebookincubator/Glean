@@ -68,7 +68,9 @@ struct Ownership {
 };
 
 ///
-// Computed ownership data stored in memory
+// Computed ownership data stored in memory.
+// Holds data about multiple predicates.
+// Contains the canonical 'UsetId's that will be added to the database.
 //
 struct ComputedOwnership {
   ~ComputedOwnership() {

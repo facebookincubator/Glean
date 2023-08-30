@@ -140,8 +140,10 @@ class CanLookup (Database s) => Storage s where
   getUnitId :: Database s -> ByteString -> IO (Maybe UnitId)
   getUnit :: Database s -> UnitId -> IO (Maybe ByteString)
 
+  -- | Called once per batch.
   addDefineOwnership :: Database s -> DefineOwnership -> IO ()
 
+  -- | Called once per derived predicate at the end of its derivation.
   computeDerivedOwnership
     :: Database s
     -> Ownership

@@ -254,6 +254,13 @@ folly::Optional<std::string> DatabaseImpl::getUnit(uint32_t unit_id) {
   }
 }
 
+// Called once per batch inside Store.commit.
+// Only function that can add new UnitIds to the DB.
+// Adds to
+//   - Family::ownershipUnits
+//   - Family::ownershipUnitIds
+//   - Family::ownershipRaw
+//   - Family::admin
 void DatabaseImpl::addOwnership(const std::vector<OwnershipSet>& ownership) {
   container_.requireOpen();
 
@@ -470,6 +477,9 @@ void DatabaseImpl::storeOwnership(ComputedOwnership& ownership) {
 
 namespace {
 
+//
+// Wrapper around DatabaseImpl. Doesn't hold any extra data of its own.
+//
 struct StoredOwnership : Ownership {
   explicit StoredOwnership(DatabaseImpl* db) : db_(db) {}
 
@@ -877,6 +887,11 @@ void DatabaseImpl::FactOwnerCache::prepare(ContainerImpl& container) {
   check(container.db->Write(container.writeOptions, &batch));
 }
 
+// Called once per batch. Can't be run in parallel.
+// Will add data into:
+// - Family::ownershipSets
+// - Family::ownershipDerivedRaw
+// - Family::admin
 void DatabaseImpl::addDefineOwnership(DefineOwnership& def) {
   auto t = makeAutoTimer("addDefineOwnership");
   container_.requireOpen();
