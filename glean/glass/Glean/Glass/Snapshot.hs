@@ -16,35 +16,55 @@
 module Glean.Glass.Snapshot
   ( main ) where
 
-import Data.Default (def)
-import Text.Printf
-import Glean.Glass.Main ( withEnv )
-import Glean.Init ( withOptions )
-import qualified Glean.Glass.Env as Glass
-import qualified Glean.Glass.Options as Glass
-import qualified Glean.Glass.Handler as Handler
-import qualified Glean.Glass.Types as Types
-import qualified Glean.Snapshot.Types as Types
-import Options.Applicative
-    ( fullDesc, help, info, long, short, metavar, progDesc, strOption,
-      strArgument, optional, helper, Parser, ParserInfo, some,
-      Parser, auto, help, long, option, showDefault, value, maybeReader )
-import Data.Text (Text, unpack, pack)
-import System.FilePath.Posix (splitDirectories, joinPath)
-import Control.Monad ( forM_ )
-import Data.Proxy ( Proxy(..) )
-import Thrift.Protocol.Compact (Compact)
-import Thrift.Protocol ( serializeGen )
-import qualified Data.ByteString as BS
-import Control.Monad.Catch ( try )
-import Data.Int ( Int64 )
 import Control.Exception (SomeException)
-import Util.Log.String ( logError, logInfo )
+import Control.Monad (forM_)
+import Control.Monad.Catch (try)
+import qualified Data.ByteString as BS
+import Data.Default (def)
+import Data.Int (Int64)
 import Data.Maybe (fromMaybe)
-import qualified Database.MySQL.Simple as DB
-import Facebook.Db ( withConnection, InstanceRequirement(Master) )
+import Data.Proxy (Proxy (..))
+import Data.Text (Text, pack, unpack)
 import qualified Data.Text.Encoding as TE
+import qualified Database.MySQL.Simple as DB
+import Options.Applicative (
+  Parser,
+  ParserInfo,
+  auto,
+  fullDesc,
+  help,
+  helper,
+  info,
+  long,
+  maybeReader,
+  metavar,
+  option,
+  optional,
+  progDesc,
+  short,
+  showDefault,
+  some,
+  strArgument,
+  strOption,
+  value,
+ )
+import System.FilePath.Posix (joinPath, splitDirectories)
+import Thrift.Protocol (serializeGen)
+import Thrift.Protocol.Compact (Compact)
+import Text.Printf
+
+import Facebook.Db (InstanceRequirement (Master), withConnection)
+import Util.Log.String (logError, logInfo)
+
 import qualified Glean
+import qualified Glean.Glass.Env as Glass
+import qualified Glean.Glass.Handler as Handler
+import Glean.Glass.Main (withEnv)
+import qualified Glean.Glass.Options as Glass
+import qualified Glean.Glass.Types as Types
+import Glean.Init (withOptions)
+
+import qualified Glean.Snapshot.Types as Types
 
 type FileToSnapshot = (Types.RepoName, Types.Path)
 
@@ -110,7 +130,6 @@ data Config = Config
   , threshold :: Maybe Int
   , gleanDBName :: Maybe Glean.Repo
   }
-
 
 configParser :: Parser Config
 configParser =
