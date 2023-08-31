@@ -39,7 +39,7 @@ import qualified Data.ByteString as BS
 import Control.Monad.Catch ( try )
 import Data.Int ( Int64 )
 import Control.Exception (SomeException)
-import Util.Log.String ( logError )
+import Util.Log.String ( logError, logInfo )
 import Data.Maybe (fromMaybe)
 import qualified Database.MySQL.Simple as DB
 import Facebook.Db ( withConnection, InstanceRequirement(Master) )
@@ -141,7 +141,7 @@ buildSnapshot env rev (repo, path) = do
           [Types.DocumentSymbolListXQuery req opts symbolList]
     let ser = serializeGen (Proxy :: Proxy Compact) snapshots
     let snapshotSizeKB = BS.length ser `div` 1000
-    printf "Building snapshot %s %s: %d defs %d refs %dKB\n"
+    logInfo $ printf "Building snapshot %s %s: %d defs %d refs %dKB"
       (Types.unPath path) (Types.unRevision revision) defs refs
       snapshotSizeKB
     return (ser, revision, snapshotSizeKB)
@@ -168,15 +168,14 @@ uploadToXdb
     res <- try num_rows
     case res of
       Right 1 -> do
-        printf "Successfully uploaded\n"
+        logInfo $ printf "%s: Successfully uploaded" path
         return ()
       Right 0 ->
-        logError "Value already present"
+        logError $ printf "%s: already present - skipping" path
       Right _ ->
-        logError "Couldn't upload "
+        logError $ printf "%s: Couldn't upload" path
       Left (exc::SomeException) -> do
-         logError "Couldn't upload "
-         logError $ "Db error: " ++ show exc
+         logError $ printf "%s: %s" path (show exc)
 
 main :: IO ()
 main =
@@ -195,7 +194,8 @@ main =
             if snapshotSizeKB < fromMaybe maxBound threshold then
               uploadToXdb tier repo rev_ path ser
             else
-              printf "Too big, don't upload\n"
+              logInfo $
+                printf "Snapshot too big (%d kB), don't upload" snapshotSizeKB
         (Just output_, [file]) -> do
           (ser, _, _) <- buildSnapshot env rev file
           BS.writeFile output_ ser
