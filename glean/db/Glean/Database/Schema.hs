@@ -15,6 +15,7 @@ module Glean.Database.Schema
   , fromStoredSchema, toStoredSchema
   , newDbSchema
   , newMergedDbSchema
+  , mkDbSchemaFromSource
   , lookupPid
   , compareSchemaPredicates
   , validateNewSchema
@@ -25,6 +26,7 @@ module Glean.Database.Schema
   , getSchemaInfo
   , renderSchemaSource
   , toStoredVersions
+  , derivationEdges
   -- testing
   , newDbSchemaForTesting
   ) where
@@ -99,6 +101,7 @@ import Glean.Types as Thrift
 import Glean.Schema.Types
 import Glean.Database.Schema.ComputeIds
 import Glean.Query.Prune (pruneDerivations)
+import Glean.Query.Typecheck.Types (TcQuery)
 
 -- | Used to decide whether to activate 'derive default' definitions and
 -- 'evolves' directives.
@@ -945,17 +948,21 @@ usesOfNegation preds =
     -- derivations in dependency order with flag for use of negation
     derivations :: [(Maybe UseOfNegation, PredicateId, [PredicateId])]
     derivations = toPred . getNode <$> reverse (topSort graph)
-      where
-        (graph, getNode, _) = graphFromEdges
-          [ fromPred
-            (tcQueryUsesNegation query, ref, Set.toList (tcQueryDeps query))
-          | (ref, details) <- HashMap.toList preds
-          , Derive _ (QueryWithInfo query _ _)  <- [predicateDeriving details]
-          ]
-        fromPred (b, p, ps) = (b, toKey p, map toKey ps)
-        toPred (b, k, ks)   = (b, fromKey k, map fromKey ks)
-        toKey (PredicateId n v) = (n, v)
-        fromKey (n, v) = PredicateId n v
+    (graph, getNode, _) = graphFromEdges $ derivationEdges preds
+    toPred (b, k, ks)   = (tcQueryUsesNegation b, fromKey k, map fromKey ks)
+    fromKey (n, v) = PredicateId n v
+
+derivationEdges
+  :: HashMap PredicateId PredicateDetails
+  -> [(TcQuery, (PredicateRef, Hash), [(PredicateRef, Hash)])]
+derivationEdges preds =
+  [ fromPred (query, ref, Set.toList (tcQueryDeps query))
+  | (ref, details) <- HashMap.toList preds
+  , Derive _ (QueryWithInfo query _ _)  <- [predicateDeriving details]
+  ]
+  where
+    fromPred (b, p, ps) = (b, toKey p, map toKey ps)
+    toKey (PredicateId n v) = (n, v)
 
 -- | Check that the type of a stored predicate doesn't refer to any
 -- derived predicates.
