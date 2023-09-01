@@ -6,13 +6,14 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-
+{- |
  glass-snapshot F1 ... Fn --o OUTPUT
 
  pre-computes the DocumentSymbolListX queries for files passed as input,
  store the results in OUTPUT as a serialized thrift value Snapshot
 -}
 
+{-# LANGUAGE NamedFieldPuns #-}
 module Glean.Glass.Snapshot
   ( main ) where
 
@@ -54,7 +55,7 @@ import Thrift.Protocol.Compact (Compact)
 import Text.Printf
 
 import Facebook.Db (InstanceRequirement (Master), withConnection)
-import Util.Log.String (logError, logInfo)
+import Util.Log.String (logError, logInfo, logWarning)
 
 import qualified Glean
 import qualified Glean.Glass.Env as Glass
@@ -141,11 +142,24 @@ options = info (helper <*> configParser) (fullDesc <>
     progDesc ("pre-computes the DocumentSymbolListX results for input files, "
     <> "and upload to XDB tier"))
 
+data BuildSnapshot = BuildSnapshot
+  {
+    bytes :: !BS.ByteString,
+    revision :: Types.Revision,
+    sizeKB :: !Int,
+    symbolList :: Types.DocumentSymbolListXResult
+  }
+
+isEmptySymbols :: Types.DocumentSymbolListXResult -> Bool
+isEmptySymbols Types.DocumentSymbolListXResult{..} =
+    null documentSymbolListXResult_definitions &&
+    null documentSymbolListXResult_definitions
+
 buildSnapshot
   :: Glass.Env
   -> Maybe Types.Revision
   -> FileToSnapshot
-  -> IO (BS.ByteString, Types.Revision, Int)
+  -> IO BuildSnapshot
 buildSnapshot env rev (repo, path) = do
     let opts = def
     let req = Types.DocumentSymbolsRequest repo path Nothing True
@@ -163,32 +177,34 @@ buildSnapshot env rev (repo, path) = do
     logInfo $ printf "Building snapshot %s %s: %d defs %d refs %dKB"
       (Types.unPath path) (Types.unRevision revision) defs refs
       snapshotSizeKB
-    return (ser, revision, snapshotSizeKB)
+    return $! BuildSnapshot ser revision snapshotSizeKB symbolList
 
 uploadToXdb
   :: SnapshotTier
   -> Types.RepoName
   -> Types.Revision
   -> Types.Path
-  -> BS.ByteString
+  -> BuildSnapshot
   -> IO ()
 uploadToXdb
   (SnapshotTier xdbTier)
   (Types.RepoName repo)
   (Types.Revision rev)
   (Types.Path path)
-  snapshot = do
+  BuildSnapshot{bytes, sizeKB, symbolList}
+    | isEmptySymbols symbolList =
+      logWarning $ printf "%s: Refusing to upload empty snapshot" path
+    | otherwise = do
     let num_rows :: IO Int64 = withConnection (TE.encodeUtf8 xdbTier) Master $
           \conn -> do
           DB.execute conn
             "INSERT IGNORE INTO snapshot (repo, revision, file, snapshot)\
             \VALUES (?, ?, ?, ?)"
-            (repo, rev, path, snapshot)
+            (repo, rev, path, bytes)
     res <- try num_rows
     case res of
       Right 1 -> do
-        logInfo $ printf "%s: Successfully uploaded" path
-        return ()
+        logInfo $ printf "%s: successfully uploaded %d KB\n" path sizeKB
       Right 0 ->
         logError $ printf "%s: already present - skipping" path
       Right _ ->
@@ -209,14 +225,14 @@ main =
      $ \env@Glass.Env{..} ->
       case (output, files) of
         (Nothing, _) -> forM_ files $ \file@(repo, path) -> do
-            (ser, rev_, snapshotSizeKB) <- buildSnapshot env rev file
-            if snapshotSizeKB < fromMaybe maxBound threshold then
-              uploadToXdb tier repo rev_ path ser
+            snap@BuildSnapshot{revision, sizeKB} <- buildSnapshot env rev file
+            if sizeKB < fromMaybe maxBound threshold then
+              uploadToXdb tier repo revision path snap
             else
               logInfo $
-                printf "Snapshot too big (%d kB), don't upload" snapshotSizeKB
+                printf "Snapshot too big (%d kB), don't upload" sizeKB
         (Just output_, [file]) -> do
-          (ser, _, _) <- buildSnapshot env rev file
-          BS.writeFile output_ ser
+          BuildSnapshot{bytes} <- buildSnapshot env rev file
+          BS.writeFile output_ bytes
         _ -> fail "Exactly one file must be provided when generating an output\
                   \ file"
