@@ -1500,11 +1500,18 @@ withStrictErrorHandling opts action = do
     Just err
       | requestOptions_strict opts
       , not $ null $ errorTy err
-      -> throwM $
-        GlassException
-          (errorTy err)
-          (map (Revision . Glean.repo_hash) $ errorGleanRepo err)
+      ->
+      -- select the right exception type based on the error types
+      if all isRevisionNotAvailable (errorTy err)
+        then throwM RevisionNotAvailableException
+        else throwM $ GlassException
+            (errorTy err)
+            (map (Revision . Glean.repo_hash) $ errorGleanRepo err)
     _ -> return (res, merr)
+  where
+    isRevisionNotAvailable GlassExceptionReason_exactRevisionNotAvailable{} =
+      True
+    isRevisionNotAvailable _ = False
 
 runLog :: Glass.Env -> Text -> GleanGlassLogger -> IO ()
 runLog env cmd log = Logger.runLog (Glass.logger env) $

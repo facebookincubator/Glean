@@ -288,6 +288,9 @@ safe exception GlassException {
   2: list<Revision> revisions;
 }
 
+// only thrown when the strict and exact revision options are set
+safe stateful client exception RevisionNotAvailableException {}
+
 // Type of abstract identifiers
 typedef string Name (hs.newtype)
 
