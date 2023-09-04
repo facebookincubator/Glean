@@ -660,43 +660,70 @@ service GlassService extends fb303.FacebookService {
   DocumentSymbolListXResult documentSymbolListX(
     1: DocumentSymbolsRequest request,
     2: RequestOptions options,
-  ) throws (1: ServerException e, 2: GlassException g);
+  ) throws (
+    1: ServerException e,
+    2: GlassException g,
+    3: RevisionNotAvailableException revisionNotAvailable,
+  );
 
   // Return a line-index map of resolved symbols, useful for cursor lookup
   DocumentSymbolIndex documentSymbolIndex(
     1: DocumentSymbolsRequest request,
     2: RequestOptions options,
-  ) throws (1: ServerException e, 2: GlassException g);
+  ) throws (
+    1: ServerException e,
+    2: GlassException g,
+    3: RevisionNotAvailableException revisionNotAvailable,
+  );
 
   // Find any uses of a definition, generically
   list<Location> findReferences(
     1: SymbolId symbol,
     2: RequestOptions options,
-  ) throws (1: ServerException e, 2: GlassException g);
+  ) throws (
+    1: ServerException e,
+    2: GlassException g,
+    3: RevisionNotAvailableException revisionNotAvailable,
+  );
 
   // Find any uses of a definition, resolving all locations to line/col ranges
   list<LocationRange> findReferenceRanges(
     1: SymbolId symbol,
     2: RequestOptions options,
-  ) throws (1: ServerException e, 2: GlassException g);
+  ) throws (
+    1: ServerException e,
+    2: GlassException g,
+    3: RevisionNotAvailableException revisionNotAvailable,
+  );
 
   // Resolve a symbol id to its definition location range
   LocationRange resolveSymbolRange(
     1: SymbolId symbol,
     2: RequestOptions options,
-  ) throws (1: ServerException e, 2: GlassException g);
+  ) throws (
+    1: ServerException e,
+    2: GlassException g,
+    3: RevisionNotAvailableException revisionNotAvailable,
+  );
 
   // Return details about a symbol, such as its location or type signature
   SymbolDescription describeSymbol(
     1: SymbolId symbol,
     2: RequestOptions options,
-  ) throws (1: ServerException e, 2: GlassException g);
+  ) throws (
+    1: ServerException e,
+    2: GlassException g,
+    3: RevisionNotAvailableException revisionNotAvailable,
+  );
 
   // Generic symbol search by string query
   SymbolSearchResult searchSymbol(
     1: SymbolSearchRequest request,
     3: RequestOptions options,
-  ) throws (1: ServerException e);
+  ) throws (
+    1: ServerException e,
+    3: RevisionNotAvailableException revisionNotAvailable,
+  );
 
   // Find symbol ids based on the prefix of a full symbol id
   // (e.g. www/php/Gl).
@@ -704,21 +731,30 @@ service GlassService extends fb303.FacebookService {
   SearchBySymbolIdResult searchBySymbolId(
     1: SymbolId symbol_prefix,
     2: RequestOptions options,
-  ) throws (1: ServerException e);
+  ) throws (
+    1: ServerException e,
+    3: RevisionNotAvailableException revisionNotAvailable,
+  );
 
   // Search for symbols by a specific relationship (child/parent, inheritance)
   SearchRelatedResult searchRelated(
     1: SymbolId symbol,
     2: RequestOptions options,
     3: SearchRelatedRequest request,
-  ) throws (1: ServerException e);
+  ) throws (
+    1: ServerException e,
+    3: RevisionNotAvailableException revisionNotAvailable,
+  );
 
   // Search neighborhood of symbols by all relationships
   RelatedNeighborhoodResult searchRelatedNeighborhood(
     1: SymbolId symbol,
     2: RequestOptions options,
     3: RelatedNeighborhoodRequest request,
-  ) throws (1: ServerException e);
+  ) throws (
+    1: ServerException e,
+    3: RevisionNotAvailableException revisionNotAvailable,
+  );
 
   // Special purpose queries
 
@@ -732,17 +768,29 @@ service GlassService extends fb303.FacebookService {
   FileIncludeLocationResults fileIncludeLocations(
     1: FileIncludeLocationRequest request,
     2: RequestOptions options,
-  ) throws (1: ServerException e, 2: GlassException g);
+  ) throws (
+    1: ServerException e,
+    2: GlassException g,
+    3: RevisionNotAvailableException revisionNotAvailable,
+  );
 
   // Resolve declaration USR from ClangD to definition sites
   USRSymbolDefinition clangUSRToDefinition(
     1: USR hash,
     2: RequestOptions options,
-  ) throws (1: ServerException e, 2: GlassException g);
+  ) throws (
+    1: ServerException e,
+    2: GlassException g,
+    3: RevisionNotAvailableException revisionNotAvailable,
+  );
 
   // Resolve declaration USR from ClangD to xref sites
   list<USRSymbolReference> clangUSRToReferenceRanges(
     1: USR hash,
     2: RequestOptions options,
-  ) throws (1: ServerException e, 2: GlassException g);
+  ) throws (
+    1: ServerException e,
+    2: GlassException g,
+    3: RevisionNotAvailableException revisionNotAvailable,
+  );
 } (sr.service_name = 'glean.glass')
