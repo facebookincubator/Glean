@@ -269,6 +269,16 @@ struct Batch {
   // Units do not need to be declared beforehand; a Unit exists if
   // it is the owner of at least one fact.
   5: map<UnitName, listOfIds> (hs.type = "HashMap") owned;
+
+  // Specifies explicit dependencies of derived facts per predicate.
+  //
+  // Outer map key is a Pid.
+  // Each key of the inner map the id of a fact in the batch and each value is
+  // a list of fact ids of all facts, within or outside the batch, required to
+  // derive that fact.
+  //
+  // The dependency relation is used to determine ownership.
+  6: map<Id, map<Id, listOfIds>> dependencies;
 }
 
 struct Subst {

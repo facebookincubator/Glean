@@ -183,6 +183,7 @@ withFactBuilder action =
     mem
     (Just $ Vector.fromList $ coerce $ reverse ids)
     (fmap (Vector.fromList . coerce . reverse) ownerMap)
+    mempty
 
 
 type WriteFacts a = ReaderT FactBuilder IO a

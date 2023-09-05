@@ -86,6 +86,7 @@ mkBatch fn = mask_ $ do
     <$> unsafeMallocedByteString facts_data facts_size
     <*> pure Nothing
     <*> pure mempty
+    <*> pure mempty
 
 serialize :: FactSet -> IO Thrift.Batch
 serialize facts =
