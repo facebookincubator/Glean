@@ -713,6 +713,7 @@ library schema
         Glean.Schema.CodeThrift.Types
         Glean.Schema.Code.Types
         Glean.Schema.Cxx1.Types
+        Glean.Schema.Digest.Types
         Glean.Schema.Docmarkup.Types
         Glean.Schema.Erlang.Types
         Glean.Schema.Flow.Types
